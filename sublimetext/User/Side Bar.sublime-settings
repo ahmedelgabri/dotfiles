@@ -1,0 +1,7 @@
+{
+	"close_affected_buffers_when_deleting_even_if_dirty": false,
+	"statusbar_file_size": true,
+	"statusbar_modified_time": true,
+	"statusbar_modified_time_format": "%A %b %d %H:%M:%S %Y",
+	"version": "11.13.2012.1305.0"
+}

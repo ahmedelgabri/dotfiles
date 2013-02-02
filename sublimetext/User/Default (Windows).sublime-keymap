@@ -1,0 +1,5 @@
+[
+	{ "keys": ["ctrl+g"], "command": "convert_special_characters" },
+	{ "keys": ["ctrl+n"], "command": "advanced_new_file" },
+	{ "keys": ["ctrl+alt+f"], "command": "js_format"}
+]

@@ -1,0 +1,10 @@
+{
+	"files":
+	{
+		"jquery": "http://code.jquery.com/jquery-1.7.1.min.js",
+		"selectvizr": "https://github.com/keithclark/selectivizr/blob/master/selectivizr.js"
+	},
+	"packages":
+	{
+	}
+}

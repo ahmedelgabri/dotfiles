@@ -1,0 +1,6 @@
+{
+	 "sublimelinter_syntax_map":
+    {
+        "jQueryJavaScript": "javascript"
+    }
+}

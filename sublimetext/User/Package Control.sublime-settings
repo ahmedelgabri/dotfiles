@@ -1,0 +1,41 @@
+{
+	"auto_upgrade_last_run": null,
+	"installed_packages":
+	[
+		"Alignment",
+		"ApacheConf",
+		"AutoFileName",
+		"BracketHighlighter",
+		"DocBlockr",
+		"Dotfiles Syntax Highlighting",
+		"EditorConfig",
+		"Emmet",
+		"Gist",
+		"Git",
+		"GitGutter",
+		"jQuery",
+		"LESS",
+		"markdown.tmbundle",
+		"Package Control",
+		"Sass",
+		"SCSS",
+		"SFTP",
+		"SideBarEnhancements",
+		"SublimeLinter",
+		"Theme - Soda",
+		"Wordpress"
+	],
+	"repositories":
+	[
+		"https://github.com/appden/less.tmbundle",
+		"https://github.com/Gipetto/wordpress.tmbundle",
+		"https://github.com/textmate/markdown.tmbundle",
+		"https://github.com/n00ge/sublime-text-haml-sass",
+		"https://github.com/facelessuser/BracketHighlighter",
+		"https://github.com/kuroir/SCSS.tmbundle/tree/SublimeText2",
+		"https://github.com/mrmartineau/jQuery.git",
+		"https://github.com/sergeche/emmet-sublime",
+		"https://github.com/colinta/ApacheConf.tmLanguage.git",
+		"https://github.com/mattbanks/dotfiles-syntax-highlighting-st2.git"
+	]
+}

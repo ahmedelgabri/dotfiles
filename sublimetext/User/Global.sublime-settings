@@ -1,0 +1,19 @@
+{
+	"folder_exclude_patterns":
+	[
+		".bundle",
+		".git",
+		".sass-cache",
+		"*.esproj",
+		"*.tiles"
+	],
+	"ignored_packages":
+	[
+		"BracketHighlighter"
+	],
+	"open_files_in_new_window": false,
+	"overlay_scroll_bars": "enabled",
+	"show_tab_close_buttons": false,
+	// "theme": "Soda Light.sublime-theme",
+	"word_wrap": true
+}

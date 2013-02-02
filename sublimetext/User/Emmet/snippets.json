@@ -1,0 +1,8 @@
+{
+    "css": {
+       "snippets": {
+           "@inc": "@include $1($2);",
+           "@ex": "@extend $1;"
+       }
+   }
+}

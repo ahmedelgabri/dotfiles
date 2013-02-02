@@ -1,0 +1,41 @@
+[user]
+	name = Ahmed El Gabri
+	email = ahmed@gabri.me
+[color]
+  ui = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+  whitespace = red reverse
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red
+  new = green
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = red
+[core]
+  editor = subl -w
+  whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+  excludesfile = /Users/Gabri/.gitignore
+  pager = less -r
+[alias]
+  co = checkout
+  cm = commit
+  st = status
+  br = branch
+  df = diff --color-words
+  lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
+  wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
+  fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
+  gr = grep -Ii
+  la = !git config -l | grep alias | cut -c 7-
+  setr = remote set-url
+  rmr = remote remove
+  untrack = update-index --assume-unchanged
+  track = update-index --no-assume-unchanged
+[mergetool]
+	keepBackup = true

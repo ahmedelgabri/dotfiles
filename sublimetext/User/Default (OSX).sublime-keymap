@@ -1,0 +1,6 @@
+[
+    {"keys": ["ctrl+g"], "command": "convert_special_characters"},
+    {"keys": ["super+alt+f"], "command": "show_panel", "args": {"panel": "find"}},
+    {"keys": ["super+f"], "command":  "show_panel", "args": {"panel": "replace"}},
+    {"keys": ["super+ctrl+w"], "command":  "close_project"}
+]
