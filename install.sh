@@ -1,12 +1,12 @@
 #!/bin/bash
-
+# TODO: Make it more automated & add check for (zsh, git, homebrew, RVM, etc...)
 echo "Cleaning..."
 
 rm ~/.gitignore
 rm ~/.gitconfig
 rm ~/.zshrc
+rm ~/.oh-my-zsh/themes/gabri-new.zsh-theme
 rm ~/.osx
-sudo rm /usr/bin/subl
 rm -rf ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
 rm -rf ~/Library/Preferences/com.googlecode.iterm2.plist
 
@@ -14,13 +14,16 @@ echo "House is clean."
 echo "Building..."
 
 ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
-ln -s ~/.dotfiles/git-config/.gitignore ~/.gitignore
-ln -s ~/.dotfiles/git-config/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/zsh/gabri-new.zsh-theme ~/.oh-my-zsh/themes/gabri-new.zsh-theme
+ln -s ~/.dotfiles/gitconfig/.gitignore ~/.gitignore
+ln -s ~/.dotfiles/gitconfig/.gitconfig ~/.gitconfig
 ln -s ~/.dotfiles/osx/.osx ~/.osx
-sudo ln -s ~/.dotfiles/bin/subl /usr/bin/subl
-ln -s ~/.dotfiles/sublimetext/User/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User/
+ln -s ~/.dotfiles/sublimetext/User ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
 ln -s ~/.dotfiles/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
-source ~/.zshrc
+sudo rm /usr/bin/subl
+sudo ln -s ~/.dotfiles/bin/subl /usr/bin/subl
+
+# source ~/.zshrc
 
 echo "Done. Wohoo!"
