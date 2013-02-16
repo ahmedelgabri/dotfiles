@@ -1,6 +1,4 @@
 {
-	"theme": "Soda Dark.sublime-theme",
-    "soda_classic_tabs": true,
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
@@ -8,6 +6,7 @@
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
+	"draw_white_space": "all",
 	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
 	"folder_exclude_patterns":
@@ -27,18 +26,30 @@
 		"Vintage"
 	],
 	"indent_subsequent_lines": true,
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
 	"open_files_in_new_window": false,
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": false,
+	"soda_classic_tabs": true,
 	"spell_check": false,
 	"tab_size": 4,
+	"theme": "Soda Dark.sublime-theme",
+	"todo":
+	{
+		"case_sensitive": true,
+		"patterns":
+		{
+			"CHANGED": "@CHANGED[\\s]*?:+(?P<changed>\\S.*)$",
+			"FIXME": "@FIX ME[\\s]*?:+(?P<fixme>\\S.*)$",
+			"NOTE": "@NOTE[\\s]*?:+(?P<note>.*)$",
+			"TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
+		}
+	},
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,
-	"word_wrap": true,
-    "line_padding_bottom": 1,
-    "line_padding_top": 1,
-    "draw_white_space": "all"
+	"word_wrap": true
 }

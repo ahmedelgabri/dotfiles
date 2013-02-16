@@ -3,7 +3,7 @@
 	"installed_packages":
 	[
 		"Alignment",
-		"ApacheConf",
+		"ApacheConf.tmLanguage",
 		"AutoFileName",
 		"BracketHighlighter",
 		"DocBlockr",
@@ -13,8 +13,10 @@
 		"Gist",
 		"Git",
 		"GitGutter",
+		"Haml",
 		"jQuery",
 		"LESS",
+		"Liquid",
 		"markdown.tmbundle",
 		"Package Control",
 		"Sass",
@@ -22,6 +24,7 @@
 		"SFTP",
 		"SideBarEnhancements",
 		"SublimeLinter",
+		"SublimeTODO",
 		"Theme - Soda",
 		"Wordpress"
 	],
@@ -33,9 +36,8 @@
 		"https://github.com/n00ge/sublime-text-haml-sass",
 		"https://github.com/facelessuser/BracketHighlighter",
 		"https://github.com/kuroir/SCSS.tmbundle/tree/SublimeText2",
-		"https://github.com/mrmartineau/jQuery.git",
+		"https://github.com/mrmartineau/jQuery",
 		"https://github.com/sergeche/emmet-sublime",
-		"https://github.com/colinta/ApacheConf.tmLanguage.git",
-		"https://github.com/mattbanks/dotfiles-syntax-highlighting-st2.git"
+		"https://github.com/colinta/ApacheConf.tmLanguage"
 	]
 }

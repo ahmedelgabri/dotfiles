@@ -2,6 +2,7 @@
 	"extensions":
 	[
 		".zshrc",
-		"zsh-theme"
+		"zsh-theme",
+		".zshrc"
 	]
 }

@@ -113,11 +113,15 @@ source $ZSH/oh-my-zsh.sh
 # PATH.
 ##############################################################
 
-export PATH=:/usr/local/bin
-export PATH=$PATH:/usr/bin
-export PATH=$PATH:/bin
-export PATH=$PATH:/usr/sbin
-export PATH=$PATH:/sbin
-export PATH=$PATH:/usr/local/Cellar/git
-export PATH=$PATH:/usr/local/share/npm/bin
-export PATH=$PATH:/.rvm/bin
+# export PATH=:/usr/local/bin
+# export PATH=$PATH:/usr/bin
+# export PATH=$PATH:/bin
+# export PATH=$PATH:/usr/sbin
+# export PATH=$PATH:/sbin
+# export PATH=$PATH:/usr/local/Cellar/git
+# export PATH=$PATH:/usr/local/share/npm/bin
+# export PATH=$PATH:/.rvm/bin
+
+export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
