@@ -44,6 +44,8 @@ Thumbs.db
 # Folders #
 ###########
 .sass-cache/
+.grunt/
+node_modules/
 
 # Photoshop/Illustrator files #
 ###############################

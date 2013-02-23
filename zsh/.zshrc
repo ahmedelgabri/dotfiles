@@ -20,6 +20,7 @@ ZSH_THEME="gabri-new"
 # aliases
 ##############################################################
 
+alias reload="source ~/.zshrc && rvm reload"
 alias zshconfig="subl -a ~/.zshrc"
 alias ohmyzsh="subl -a ~/.oh-my-zsh"
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"

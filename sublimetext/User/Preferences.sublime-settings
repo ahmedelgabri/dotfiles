@@ -2,7 +2,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/User/color-themes/Solarized (dark).tmTheme",
+	"color_scheme": "Packages/User/color-themes/Solarized-official-mod-dark.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
