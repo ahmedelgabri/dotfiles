@@ -29,6 +29,9 @@ alias dropbox="cd ~/Dropbox"
 alias ..="cd ../"
 alias ...="cd ../../"
 alias "?"="pwd"
+alias pu="pushd"
+alias po="popd"
+alias d="dirs -v"
 alias sp="sass --watch --style compressed" # later on we can use --sourcemap
 alias sd="sass --watch --debug-info" # later on we can use --sourcemap this makes it work in Chrome ;)
 
