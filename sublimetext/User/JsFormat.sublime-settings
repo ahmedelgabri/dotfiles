@@ -5,5 +5,5 @@
 	"max_preserve_newlines": 4,
 	"preserve_newlines": true,
     "keep_function_indentation": false,
-    "indent_with_tabs": true
+    "indent_with_tabs": false
 }

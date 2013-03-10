@@ -13,16 +13,16 @@ rm -rf ~/Library/Preferences/com.googlecode.iterm2.plist
 echo "House is clean."
 echo "Building..."
 
-ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
+ln -s ~/.dotfiles/zsh/zshrc.local ~/.zshrc
 ln -s ~/.dotfiles/zsh/gabri-new.zsh-theme ~/.oh-my-zsh/themes/gabri-new.zsh-theme
-ln -s ~/.dotfiles/gitconfig/.gitignore ~/.gitignore
-ln -s ~/.dotfiles/gitconfig/.gitconfig ~/.gitconfig
-ln -s ~/.dotfiles/osx/.osx ~/.osx
+ln -s ~/.dotfiles/gitconfig/gitignore.local ~/.gitignore
+ln -s ~/.dotfiles/gitconfig/gitconfig.local ~/.gitconfig
+ln -s ~/.dotfiles/osx/osx.local ~/.osx
 ln -s ~/.dotfiles/sublimetext/User ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
 ln -s ~/.dotfiles/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
 
 sudo rm /usr/bin/subl
-sudo ln -s ~/.dotfiles/bin/subl /usr/bin/subl
+sudo ln -s ~/.dotfiles/bin/subl.local /usr/bin/subl
 
 # source ~/.zshrc
 

@@ -2,5 +2,10 @@
 	 "sublimelinter_syntax_map":
     {
         "jQueryJavaScript": "javascript"
+    },
+
+    "sublimelinter_executable_map":
+    {
+        "ruby": "/Users/Gabri/.rvm/rubies/ruby-1.9.3-p362/bin/ruby"
     }
 }

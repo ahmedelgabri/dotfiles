@@ -6,19 +6,22 @@
 		"ApacheConf.tmLanguage",
 		"AutoFileName",
 		"BracketHighlighter",
+		"Can I Use",
+		"DashDoc",
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
 		"EditorConfig",
 		"Emmet",
 		"Gist",
-		"Git",
 		"GitGutter",
 		"Haml",
 		"jQuery",
+		"JsFormat",
 		"LESS",
 		"Liquid",
 		"markdown.tmbundle",
 		"Package Control",
+		"ruby-slim.tmbundle",
 		"Sass",
 		"SCSS",
 		"Search WordPress Codex",
@@ -26,8 +29,7 @@
 		"SideBarEnhancements",
 		"SublimeLinter",
 		"SublimeTODO",
-		"Theme - Soda",
-		"Wordpress"
+		"Theme - Soda"
 	],
 	"repositories":
 	[

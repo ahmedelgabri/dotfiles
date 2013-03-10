@@ -2,5 +2,7 @@
     {"keys": ["ctrl+g"], "command": "convert_special_characters"},
     {"keys": ["super+alt+f"], "command": "show_panel", "args": {"panel": "find"}},
     {"keys": ["super+f"], "command":  "show_panel", "args": {"panel": "replace"}},
-    {"keys": ["super+ctrl+w"], "command":  "close_project"}
+    {"keys": ["super+ctrl+w"], "command":  "close_project"},
+    { "keys": ["command+v"], "command":"paste_and_indent" },
+    { "keys": ["command+shift+v"], "command":"paste" }
 ]

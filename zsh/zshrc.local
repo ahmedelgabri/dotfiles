@@ -20,10 +20,10 @@ ZSH_THEME="gabri-new"
 # aliases
 ##############################################################
 
+# TERMINAL
 alias reload="source ~/.zshrc && rvm reload"
 alias zshconfig="subl -a ~/.zshrc"
 alias ohmyzsh="subl -a ~/.oh-my-zsh"
-alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias desk="cd ~/Desktop"
 alias dropbox="cd ~/Dropbox"
 alias ..="cd ../"
@@ -32,12 +32,42 @@ alias "?"="pwd"
 alias pu="pushd"
 alias po="popd"
 alias d="dirs -v"
+
+# DEV
+alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias sp="sass --watch --style compressed" # later on we can use --sourcemap
 alias sd="sass --watch --debug-info" # later on we can use --sourcemap this makes it work in Chrome ;)
+
+
+# APPS
+alias trans="open -a Transmit"
+alias fw="open -a Adobe\ Fireworks\ CS6"
+alias ia="open -a Adobe\ Illustrator"
+alias ps="open -a Adobe\ Photoshop\ CS6"
+alias chrome="open -a Google\ Chrome"
+alias sequel="open -a Sequel\ Pro"
+alias wunder="open -a Wunderlist"
+alias mamp="open -a MAMP"
+alias skype="open -a Skype"
+alias tweetbot="open -a Tweetbot"
+alias mou="open -a Mou"
+alias iwriter="open -a iA\ Writer"
+alias appstore="open -a App\ Store"
 
 ##############################################################
 # Functions
 ##############################################################
+
+# SH key https://help.github.com/articles/generating-ssh-keys
+function new_SSH(){
+    ssh-keygen -t rsa -C "$@"
+}
+
+function copy_SSH(){
+    pbcopy < ~/.ssh/$@.pub
+}
+
+
 
 # My Startup Template.
 function new_template(){
@@ -109,7 +139,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx brew gem ruby heroku)
+plugins=(git osx brew gem npm powder pow themes ruby heroku)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,15 +147,16 @@ source $ZSH/oh-my-zsh.sh
 # PATH.
 ##############################################################
 
-# export PATH=:/usr/local/bin
-# export PATH=$PATH:/usr/bin
-# export PATH=$PATH:/bin
-# export PATH=$PATH:/usr/sbin
-# export PATH=$PATH:/sbin
-# export PATH=$PATH:/usr/local/Cellar/git
-# export PATH=$PATH:/usr/local/share/npm/bin
-# export PATH=$PATH:/.rvm/bin
+export PATH=:/usr/local/bin
+export PATH=$PATH:/usr/local/sbin
+export PATH=$PATH:/usr/bin
+export PATH=$PATH:/bin
+export PATH=$PATH:/usr/sbin
+export PATH=$PATH:/sbin
+export PATH=$PATH:/usr/local/Cellar/git
+export PATH=$PATH:/usr/local/share/npm/bin
+export PATH=$PATH:~/bin:$PATH
 
-export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+# export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
