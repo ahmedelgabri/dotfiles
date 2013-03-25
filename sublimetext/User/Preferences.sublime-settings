@@ -15,7 +15,8 @@
 		".git",
 		".sass-cache",
 		"*.esproj",
-		"*.tiles"
+		"*.tiles",
+        "node_modules"
 	],
 	"font_face": "droid sans mono",
 	"font_size": 14.0,

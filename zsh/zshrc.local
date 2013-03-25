@@ -67,8 +67,6 @@ function copy_SSH(){
     pbcopy < ~/.ssh/$@.pub
 }
 
-
-
 # My Startup Template.
 function new_template(){
   git clone git@github.com:ahmedelgabri/Startup-template.git $@
@@ -117,6 +115,48 @@ function git_grep(){
   git lg --grep="$@"
 }
 
+# Forked from https://gist.github.com/ethanmuller/4673740
+# @TODO: Clean it up a bit & understand it more!
+
+function blank_init() {
+  if [[ $# != 1 ]]; then
+    echo -e "$fg[red] Please specify a project name.$reset_color"
+    echo -e "Usage: init project-name\n"
+  else
+    if ! type "ruby" > /dev/null; then
+      echo -e "$fg[red] Please install Ruby:$reset_color"
+      echo "http://www.ruby-lang.org/en/downloads/"
+    else
+      if ! type "npm" > /dev/null; then
+        echo -e "$fg[red] Please install Node:$reset_color"
+        echo "http://nodejs.org/download/ or 'brew install node' if you have homebrew installed"
+      else
+        if ! type "grunt" > /dev/null; then
+          echo -e "$fg[red] Please install grunt-cli:$reset_color"
+          echo "npm install grunt-cli"
+        else
+          echo -e "$fg[yellow] Downloading Blank$reset_color\n"
+          #@TODO: Change the URL to my blank URL
+          curl -s -S -O -L https://github.com/ahmedelgabri/Startup-template/archive/master.zip;
+          echo -e "$fg[green] Download finished.$reset_color\n"
+          echo -e "$fg[yellow] Setting up project config files.$reset_color\n"
+          unzip -qq master.zip;
+          rm master.zip;
+          mv Startup-template-master $1
+          sed -i.bak "s/Project-Name/$1/g" $1/package.json;
+          rm $1/package.json.bak;
+          # sed -i.bak "s/Project-Name/$1/g" $1/.rvmrc;
+          # rm $1/.rvmrc.bak;
+          cd $1
+          npm install;
+          # bundle;
+          echo -e "$fg[green] Your project is all ready to go. Enjoy$reset_color\n"
+        fi
+      fi
+    fi
+  fi
+}
+
 ##############################################################
 # ZSH Configurations.
 ##############################################################
@@ -160,3 +200,4 @@ export PATH=$PATH:~/bin:$PATH
 # export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

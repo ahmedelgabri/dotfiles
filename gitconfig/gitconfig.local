@@ -31,9 +31,9 @@
 [alias]
     co = checkout
     cm = commit
-    st = status
+    st = status -sb
     br = branch
-    df = diff --color-words
+    df = diff --color-words --word-diff
     lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
     wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
     fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short

@@ -1,33 +1,32 @@
 #!/bin/bash
-# TODO: Make it more automated & add check for (zsh, git, homebrew, RVM, etc...)
-echo "Cleaning..."
+echo -e "Cleaning..."
 
-rm ~/.gitignore
-rm ~/.gitconfig
-rm ~/.zshrc
-rm ~/.oh-my-zsh/themes/gabri-new.zsh-theme
-rm ~/.osx
-rm ~/.vimrc
-rm -rf ~/.vim
-rm -rf ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
-rm -rf ~/Library/Preferences/com.googlecode.iterm2.plist
+rm $HOME/.gitignore
+rm $HOME/.gitconfig
+rm $HOME/.zshrc
+rm $HOME/.oh-my-zsh/themes/gabri-new.zsh-theme
+rm $HOME/.osx
+rm $HOME/.vimrc
+rm -rf $HOME/.vim
+rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
+rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
 
-echo "House is clean."
-echo "Building..."
+echo -e "House is clean."
+echo -e "Building..."
 
-ln -s ~/.dotfiles/zsh/zshrc.local ~/.zshrc
-ln -s ~/.dotfiles/zsh/gabri-new.zsh-theme ~/.oh-my-zsh/themes/gabri-new.zsh-theme
-ln -s ~/.dotfiles/gitconfig/gitignore.local ~/.gitignore
-ln -s ~/.dotfiles/gitconfig/gitconfig.local ~/.gitconfig
-ln -s ~/.dotfiles/osx/osx.local ~/.osx
-ln -s ~/.dotfiles/vim/vimrc.local ~/.vimrc
-ln -s ~/.dotfiles/vim/config ~/.vim
-ln -s ~/.dotfiles/sublimetext/User ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
-ln -s ~/.dotfiles/iterm2/com.googlecode.iterm2.plist ~/Library/Preferences/com.googlecode.iterm2.plist
+ln -s $HOME/.dotfiles/zsh/zshrc.local $HOME/.zshrc
+ln -s $HOME/.dotfiles/zsh/gabri-new.zsh-theme $HOME/.oh-my-zsh/themes/gabri-new.zsh-theme
+ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
+ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
+ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
+ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
+ln -s $HOME/.dotfiles/vim/config $HOME/.vim
+ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
+ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 
 sudo rm /usr/bin/subl
-sudo ln -s ~/.dotfiles/bin/subl.local /usr/bin/subl
+sudo ln -s $HOME/.dotfiles/bin/subl.local /usr/bin/subl
 
-# source ~/.zshrc
+# source $HOME/.zshrc
 
-echo "Done. Wohoo!"
+echo -e "Done. Wohoo!"
