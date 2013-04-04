@@ -4,10 +4,10 @@ function setup {
     if ! type "rvm" > /dev/null; then
         echo -e "$fg[red] Installing RVM... $reset_color"
         curl -L https://get.rvm.io | bash -s stable
+
     fi
 
     if ! type_exists "gcc"; then
-
         echo -e "The XCode Command Line Tools must be installed first."
         printf "  Download them from: https://developer.apple.com/downloads\n"
 
@@ -18,6 +18,7 @@ function setup {
             if ! type "git" > /dev/null; then
                 echo -e "$fg[red] Installing git... $reset_color"
                 brew install git
+
             fi
             if ! type "npm" > /dev/null; then
                 echo -e "$fg[red] Installing Node... $reset_color"
@@ -26,9 +27,9 @@ function setup {
                 if ! type "grunt" > /dev/null; then
                   echo -e "$fg[red] Installing grunt-cli... $reset_color"
                   npm install -g grunt-cli
+
                 fi
             fi
-
         fi
     fi
 }

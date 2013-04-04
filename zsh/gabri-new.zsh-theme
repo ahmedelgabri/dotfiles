@@ -13,7 +13,7 @@ function git_prompt_info() {
 
 function rvm_info(){
     if [[ -s ~/.rvm/scripts/rvm ]] ; then
-      echo "$FG[210][rvm:`~/.rvm/bin/rvm-prompt v`]%{$reset_color%} $EPS1"
+      echo "$FG[210]`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
     else
       if which rbenv &> /dev/null; then
         echo "$FG[117][`rbenv version | sed -e "s/ (set.*$//"`]%{$reset_color%} $EPS1"
@@ -27,12 +27,14 @@ function rvm_info(){
 # PROMPT Colors & config.
 ##############################################################
 
-PROMPT='$FG[096]%~
-$FG[003]⚡︎%{$reset_color%} '
+PROMPT='$FG[104]%n@%m: $FG[096]%~
+$FG[180]✭%{$reset_color%} '
 
-ZSH_THEME_GIT_PROMPT_PREFIX="[git:"
-ZSH_THEME_GIT_PROMPT_SUFFIX="]$FG[242]"
-ZSH_THEME_GIT_PROMPT_DIRTY="$FG[160]+"
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX="$FG[239] • "
+ZSH_THEME_GIT_PROMPT_DIRTY="$FG[160]+ "
 ZSH_THEME_GIT_PROMPT_CLEAN="$FG[010]"
 
-RPROMPT='$(git_prompt_info) $(rvm_info)'
+RPROMPT='$(git_prompt_info)$(rvm_info)'
+
+

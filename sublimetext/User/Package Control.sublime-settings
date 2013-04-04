@@ -5,9 +5,9 @@
 		"Alignment",
 		"ApacheConf.tmLanguage",
 		"AutoFileName",
+		"Bower",
 		"BracketHighlighter",
 		"Can I Use",
-		"DashDoc",
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
 		"EditorConfig",
@@ -31,6 +31,7 @@
 		"SideBarEnhancements",
 		"SublimeLinter",
 		"SublimeTODO",
+		"TernJS",
 		"Theme - Soda"
 	],
 	"repositories":

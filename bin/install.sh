@@ -25,7 +25,7 @@ ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublim
 ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 
 sudo rm /usr/bin/subl
-sudo ln -s $HOME/.dotfiles/bin/subl.local /usr/bin/subl
+sudo ln -s $HOME/.dotfiles/sublimetext/subl.local /usr/bin/subl
 
 # source $HOME/.zshrc
 

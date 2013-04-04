@@ -1,4 +1,5 @@
 {
+	"afn_insert_dimensions": false,
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
@@ -16,9 +17,9 @@
 		".sass-cache",
 		"*.esproj",
 		"*.tiles",
-        "node_modules"
+		"node_modules"
 	],
-	"font_face": "droid sans mono",
+	"font_face": "menlo",
 	"font_size": 14.0,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
@@ -36,7 +37,7 @@
 	"soda_classic_tabs": true,
 	"spell_check": false,
 	"tab_size": 4,
-	"theme": "Soda Dark.sublime-theme",
+	"theme": "Flatland.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
