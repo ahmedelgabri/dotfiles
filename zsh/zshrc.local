@@ -1,13 +1,9 @@
 ##############################################################
-# To fix ruby GEMS ASCII errors.
-##############################################################
-
-export LC_CTYPE="utf-8"
-
-##############################################################
 # Environment
 ##############################################################
-
+# export LC_CTYPE="utf-8" not working?!
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 export EDITOR="subl -w"
 
 ##############################################################
@@ -22,12 +18,18 @@ ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="gabri-new"
 
+
+##############################################################
+# rbenv
+##############################################################
+eval "$(rbenv init -)"
+
 ##############################################################
 # aliases
 ##############################################################
 
 # TERMINAL
-alias reload="source ~/.zshrc && rvm reload"
+alias reload="source ~/.zshrc"
 alias zshconfig="subl -a ~/.zshrc"
 alias ohmyzsh="subl -a ~/.oh-my-zsh"
 alias desk="cd ~/Desktop"
@@ -35,12 +37,16 @@ alias dropbox="cd ~/Dropbox"
 alias ..="cd ../"
 alias ...="cd ../../"
 alias "?"="pwd"
+alias o.="open . "
+alias s.="subl . "
 alias pu="pushd"
 alias po="popd"
 alias d="dirs -v"
 alias KABOOM="gem update && gem cleanup && brew update && brew upgrade && npm cache clean && npm -g update && brew doctor && reload"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
+alias c="pygmentize -O style=emacs -f console256 -g"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
 
 # DEV
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
@@ -67,18 +73,18 @@ alias appstore="open -a App\ Store"
 # Functions
 ##############################################################
 
-# SH key https://help.github.com/articles/generating-ssh-keys
+# SSH key http://kb.mediatemple.net/questions/1626/Using+SSH+keys+on+your+server#all/-instructions--
+# $1 = keyname $2 = Email ID used
 function new_SSH(){
-    ssh-keygen -t rsa -C "$@"
+    ssh-keygen -t rsa -b 2048 -f ~/.ssh/$1 -C "$2"
+    cat ~/.ssh/$1.pub | pbcopy
+    echo -e "------------------------------------------------------------\n"
+    echo -e "$fg[green]($1.pub) has been created & copied to your clipboard $reset_color\n"
+    echo -e "------------------------------------------------------------\n"
 }
 
 function copy_SSH(){
     pbcopy < ~/.ssh/$@.pub
-}
-
-# My Startup Template.
-function new_template(){
-  git clone git@github.com:ahmedelgabri/Startup-template.git $@
 }
 
 # WordPress latest
@@ -196,7 +202,8 @@ source $ZSH/oh-my-zsh.sh
 # PATH.
 ##############################################################
 
-export PATH=:/usr/local/bin
+export PATH=$HOME/.rbenv/shims
+export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:/usr/bin
 export PATH=$PATH:/bin
@@ -207,6 +214,3 @@ export PATH=$PATH:/usr/local/share/npm/bin
 export PATH=$PATH:~/bin:$PATH
 
 # export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

@@ -1,4 +1,14 @@
 ##############################################################
+# Setting the tab titles to the current directory
+##############################################################
+
+function precmd () {
+  tab_label=${PWD/${HOME}/\~} # use 'relative' path
+  echo -ne "\e]2;${tab_label}\a" # set window title to full string
+  echo -ne "\e]1;${tab_label: -24}\a" # set tab title to rightmost 24 characters
+}
+
+##############################################################
 # Showing Git branch name & status.
 ##############################################################
 
@@ -16,7 +26,7 @@ function rvm_info(){
       echo "$FG[210]`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
     else
       if which rbenv &> /dev/null; then
-        echo "$FG[117][`rbenv version | sed -e "s/ (set.*$//"`]%{$reset_color%} $EPS1"
+        echo "$FG[210]`rbenv version | sed -e "s/ (set.*$//"`%{$reset_color%} $EPS1"
       else
         echo "$EPS1"
       fi
