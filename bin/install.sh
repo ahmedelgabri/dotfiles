@@ -13,8 +13,6 @@ echo -e "$fg[red]------------------------------------------------------------$re
 echo -e "$fg[red]cloning dotfiles$reset_color\n"
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
 git clone https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
-cd $HOME/.dotfiles/bin
-sh install.sh
 
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[red]Cleaning...$reset_color\n"
