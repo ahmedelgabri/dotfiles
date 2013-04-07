@@ -4,6 +4,7 @@ function setup {
     if ! type_exists "gcc"; then
         echo -e "The XCode Command Line Tools must be installed first."
         printf "Download them from: https://developer.apple.com/downloads or download xcode from the App Store\n"
+        exit 1
 
         if ! type "brew" > /dev/null; then
             echo -e "$fg[red] Installing Homebrew... $reset_color\n"
@@ -25,7 +26,6 @@ function setup {
                 brew install rbenv
                 brew install ruby-build
                 brew install rbenv-gem-rehash
-                echo 'eval "$(rbenv init -)"' >> ~/.zshrc
                 source $HOME/.zshrc
                 gem update --system
                 # @TODO: Automate this
@@ -54,25 +54,10 @@ function setup {
     fi
 }
 
-
-echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
-echo -e "$fg[red]installing ohmyzsh$reset_color\n"
-echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
-
-curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
-source $HOME/.zshrc
-
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[red]Starting setup ......$reset_color\n"
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
 setup
-
-echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
-echo -e "$fg[red]cloning dotfiles$reset_color\n"
-echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
-git clone https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
-cd $HOME/.dotfiles
-sh install.sh
 
 echo -e "$fg[green]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[green]reload ZSH$reset_color\n"

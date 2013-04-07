@@ -1,4 +1,21 @@
 #!/bin/bash
+
+echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
+echo -e "$fg[red]installing ohmyzsh$reset_color\n"
+echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
+
+curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+/bin/zsh
+source $HOME/.zshrc
+
+
+echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
+echo -e "$fg[red]cloning dotfiles$reset_color\n"
+echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
+git clone https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
+cd $HOME/.dotfiles/bin
+sh install.sh
+
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[red]Cleaning...$reset_color\n"
 echo -e "$fg[red]------------------------------------------------------------$reset_color\n"
@@ -11,8 +28,7 @@ rm $HOME/.osx
 rm $HOME/.vimrc
 rm $HOME/.gemrc
 rm -rf $HOME/.vim
-rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
-rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
+
 
 echo -e "$fg[green]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[green]House is clean.$reset_color\n"
@@ -27,11 +43,7 @@ ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -s $HOME/.dotfiles/vim/config $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
-ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 2/Packages/User
-ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 
-sudo rm /usr/bin/subl
-sudo ln -s $HOME/.dotfiles/sublimetext/subl.local /usr/bin/subl
 
 # source $HOME/.zshrc
 
