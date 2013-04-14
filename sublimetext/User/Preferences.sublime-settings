@@ -16,8 +16,7 @@
 		".git",
 		".sass-cache",
 		"*.esproj",
-		"*.tiles",
-		"node_modules"
+		"*.tiles"
 	],
 	"font_face": "menlo",
 	"font_size": 14.0,
