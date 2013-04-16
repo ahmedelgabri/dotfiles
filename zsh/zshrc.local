@@ -37,8 +37,8 @@ alias dropbox="cd ~/Dropbox"
 alias ..="cd ../"
 alias ...="cd ../../"
 alias "?"="pwd"
-alias o.="open . "
-alias s.="subl . "
+alias o="open "
+alias s="subl "
 alias pu="pushd"
 alias po="popd"
 alias d="dirs -v"
@@ -47,11 +47,16 @@ alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && kill
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias c="pygmentize -O style=emacs -f console256 -g"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
+alias localip="ipconfig getifaddr en1"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+alias fs="stat -f '%z bytes'"
 
 # DEV
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias sp="sass --watch --style compressed" # later on we can use --sourcemap
 alias sd="sass --watch --debug-info" # later on we can use --sourcemap this makes it work in Chrome ;)
+alias apache="sudo apachectl "
+alias undopush="git push -f origin HEAD^:master"
 
 
 # APPS

@@ -37,8 +37,8 @@ function rvm_info(){
 # PROMPT Colors & config.
 ##############################################################
 
-PROMPT='$FG[104]%n@%m: $FG[096]%~
-$FG[180]⚽ %{$reset_color%} '
+PROMPT='$FG[096]%~
+$FG[172]⚡%{$reset_color%} '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX="$FG[239] • "
