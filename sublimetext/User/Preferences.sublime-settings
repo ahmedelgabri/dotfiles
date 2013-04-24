@@ -3,7 +3,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/User/themes/Solarized-official-mod-dark.tmTheme",
+	"color_scheme": "Packages/User/themes/Glowfish.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
@@ -34,9 +34,10 @@
 	"shift_tab_unindent": true,
 	"show_full_path": false,
 	"soda_classic_tabs": true,
+	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 2,
-	"theme": "Flatland.sublime-theme",
+	"theme": "Soda Dark.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
