@@ -38,7 +38,7 @@ function rvm_info(){
 ##############################################################
 
 PROMPT='$FG[096]%~
-$FG[172]⚡%{$reset_color%} '
+$FG[172]⚡︎%{$reset_color%} '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX="$FG[239] • "

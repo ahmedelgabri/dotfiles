@@ -3,7 +3,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/User/themes/Glowfish.tmTheme",
+	"color_scheme": "Packages/User/themes/Solarized-official-mod-dark.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,

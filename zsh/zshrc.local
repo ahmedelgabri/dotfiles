@@ -115,7 +115,7 @@ mcd() {
 # vHosts
 function vhosts() {
   subl /etc/hosts
-  #subl /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
+  subl /etc/apache2/extra/httpd-vhosts.conf
 }
 
 # Git functions
@@ -207,7 +207,9 @@ source $ZSH/oh-my-zsh.sh
 # PATH.
 ##############################################################
 
-export PATH=$HOME/.rbenv/shims
+export PATH=/usr/local/mysql/bin
+export PATH=$PATH:/usr/local/php5/bin
+export PATH=$PATH:$HOME/.rbenv/shims
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:/usr/bin
@@ -216,6 +218,6 @@ export PATH=$PATH:/usr/sbin
 export PATH=$PATH:/sbin
 export PATH=$PATH:/usr/local/Cellar/git
 export PATH=$PATH:/usr/local/share/npm/bin
-export PATH=$PATH:~/bin:$PATH
-
-# export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+export PATH=$PATH:$HOME/bin:$PATH
+### Added by the Heroku Toolbel
+export PATH="/usr/local/heroku/bin:$PATH"
