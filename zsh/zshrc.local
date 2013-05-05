@@ -4,6 +4,7 @@
 # export LC_CTYPE="utf-8" not working?!
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export TERM=screen-256color
 export EDITOR="subl -w"
 
 ##############################################################
@@ -29,6 +30,7 @@ eval "$(rbenv init -)"
 ##############################################################
 
 # TERMINAL
+alias vim="mvim -v"
 alias reload="source ~/.zshrc && echo 'Vroooom Vrooom!'"
 alias zshconfig="subl -a ~/.zshrc"
 alias ohmyzsh="subl -a ~/.oh-my-zsh"
