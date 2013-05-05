@@ -1,8 +1,10 @@
 {
     "css": {
        "snippets": {
-           "@inc": "@include $1($2);",
-           "@ex": "@extend $1;"
+           "inc": "@include $1($2);",
+           "ext": "@extend $1;",
+           "imp": "@import \"$1\";",
+           "mix": "@mixin ${1:mixin-name}${2:(${3:\$params})} {\n\t$4\n}"
        }
    }
 }

@@ -1,0 +1,10 @@
+{
+	"extensions":
+	[
+		"xml",
+		"xsd",
+		"xslt",
+		"svg",
+		"sublime-snippet"
+	]
+}
