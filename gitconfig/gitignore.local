@@ -39,7 +39,8 @@ Thumbs.db
 
 # Sublime workspace files #
 ###########################
-*.sublime-*
+*.sublime-project
+*.sublime-workspace
 
 # Folders #
 ###########
