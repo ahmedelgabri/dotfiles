@@ -5,7 +5,7 @@ bind C-a send-prefix
 
 # force a reload of the config file
 unbind r
-bind r source-file ~/.tmux.conf
+bind r source-file ~/.tmux.conf\; display-message " Reloaded!"
 
 set -g history-limit 20000
 setw -g mode-mouse on
