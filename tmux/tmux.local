@@ -27,11 +27,11 @@ set-option -g status-fg colour8
 
 # Status Left
 set-option -g status-left-length 60
-set-option -g status-left '#[bg=colour214]#[fg=colour236]#[bold] #S #[default]#[fg=colour214]▶#[default]'
+set-option -g status-left '#[bg=colour214]#[fg=colour236]#[bold] #S #[default]#[fg=colour214] •#[default]'
 
 # Status Right
 set-option -g status-right-length 60
-set-option -g status-right '#[fg=colour239]◀#[bg=colour239]#[fg=colour250] #T #[fg=colour252]◀#[bg=colour252]#[fg=colour234] #(whoami)@#H '
+set-option -g status-right '#[fg=colour10]◀#[bg=colour10]#[fg=colour22] #T #[fg=colour9]◀#[bg=colour9]#[fg=colour234] #(whoami)@#H '
 
 # tmux window titling for X
 set-option -g set-titles on
@@ -44,8 +44,8 @@ set-window-option -g window-status-attr bold
 set-window-option -g window-status-fg colour243
 
 # Active window tabs
-set-window-option -g window-status-current-bg colour239
-set-window-option -g window-status-current-fg colour255
+set-window-option -g window-status-current-bg colour4
+set-window-option -g window-status-current-fg colour17
 set-window-option -g window-status-current-attr bold
 set-window-option -g window-status-current-format ' #I: #W '
 
