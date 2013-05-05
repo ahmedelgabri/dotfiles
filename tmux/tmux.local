@@ -1,0 +1,88 @@
+# remap prefix to Control + a
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+
+# force a reload of the config file
+unbind r
+bind r source-file ~/.tmux.conf
+
+set -g history-limit 20000
+setw -g mode-mouse on
+set-option -g mouse-select-pane on
+# Use a 256 color terminal
+set -g default-terminal "screen"
+
+# Fix for sending keys to Vim
+set-window-option -g xterm-keys on
+
+# quick pane cycling
+unbind ^A
+bind ^A select-pane -t :.+
+
+# Status bar
+set-option -g status-utf8 on
+set-option -g status-bg colour236
+set-option -g status-fg colour8
+
+# Status Left
+set-option -g status-left-length 60
+set-option -g status-left '#[bg=colour214]#[fg=colour236]#[bold] #S #[default]#[fg=colour214]▶#[default]'
+
+# Status Right
+set-option -g status-right-length 60
+set-option -g status-right '#[fg=colour239]◀#[bg=colour239]#[fg=colour250] #T #[fg=colour252]◀#[bg=colour252]#[fg=colour234] #(whoami)@#H '
+
+# tmux window titling for X
+set-option -g set-titles on
+set-option -g set-titles-string '[#I] #W'
+set-window-option -g automatic-rename on
+
+# Inactive window tabs
+set-window-option -g window-status-format ' #I: #W '
+set-window-option -g window-status-attr bold
+set-window-option -g window-status-fg colour243
+
+# Active window tabs
+set-window-option -g window-status-current-bg colour239
+set-window-option -g window-status-current-fg colour255
+set-window-option -g window-status-current-attr bold
+set-window-option -g window-status-current-format ' #I: #W '
+
+# set window notifications
+set-option -g visual-activity off
+set-option -g visual-content on
+set-window-option -g monitor-activity off
+
+
+# #### COLOUR (Solarized dark)
+
+# # default statusbar colors
+# set-option -g status-bg black #base02
+# set-option -g status-fg yellow #yellow
+# set-option -g status-attr default
+
+# # default window title colors
+# set-window-option -g window-status-fg brightblue #base0
+# set-window-option -g window-status-bg default
+# #set-window-option -g window-status-attr dim
+
+# # active window title colors
+# set-window-option -g window-status-current-fg brightred #orange
+# set-window-option -g window-status-current-bg default
+# #set-window-option -g window-status-current-attr bright
+
+# # pane border
+# set-option -g pane-border-fg black #base02
+# set-option -g pane-active-border-fg brightgreen #base01
+
+# # message text
+# set-option -g message-bg black #base02
+# set-option -g message-fg brightred #orange
+
+# # pane number display
+# set-option -g display-panes-active-colour blue #blue
+# set-option -g display-panes-colour brightred #orange
+
+# # clock
+# set-window-option -g clock-mode-colour green #green
