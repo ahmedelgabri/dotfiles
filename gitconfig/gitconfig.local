@@ -24,7 +24,7 @@
 
 [core]
     editor = subl -w
-    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
     excludesfile = /Users/Gabri/.gitignore
     pager = less -r
 
@@ -44,7 +44,12 @@
     untrack = update-index --assume-unchanged
     track = update-index --no-assume-unchanged
     latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
-    blamee = blame -wMC
+    blm = blame -wMC
 
 [mergetool]
-    keepBackup = true
+    keepBackup = false
+
+[push]
+    default = simple
+[apply]
+	whitespace = warn
