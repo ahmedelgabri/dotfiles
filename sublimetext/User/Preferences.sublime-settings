@@ -1,6 +1,17 @@
 {
 	"afn_insert_dimensions": false,
 	"auto_complete_commit_on_tab": true,
+	"auto_complete_triggers":
+	[
+		{
+			"characters": "<",
+			"selector": "text.html"
+		},
+		{
+			"characters": ".",
+			"selector": "source.js"
+		}
+	],
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
@@ -47,7 +58,8 @@
 	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
-	"tab_size": 2,
+	"tab_size": 4,
+	"tern_argument_hints": true,
 	"theme": "Soda Dark.sublime-theme",
 	"todo":
 	{
