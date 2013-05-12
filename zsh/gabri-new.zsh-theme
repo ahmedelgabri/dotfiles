@@ -19,6 +19,8 @@ function precmd () {
   tab_label=${PWD/${HOME}/\~} # use 'relative' path
   echo -ne "\e]2;${tab_label}\a" # set window title to full string
   echo -ne "\e]1;${tab_label: -24}\a" # set tab title to rightmost 24 characters
+
+  print -P "\n" # new line for better readability
 }
 
 ##############################################################
@@ -50,13 +52,13 @@ function rvm_info(){
 # PROMPT Colors & config.
 ##############################################################
 
-PROMPT='$FG[096]%~
-$FG[172]⚡︎%{$reset_color%} '
+PROMPT='%F{074}%~
+%F{172}⚡︎%f '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX="%F{239} • "
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{160}+ "
-ZSH_THEME_GIT_PROMPT_CLEAN="%F{green}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{070}"
 
 RPROMPT='$(git_prompt_info)$(rvm_info)'
 
