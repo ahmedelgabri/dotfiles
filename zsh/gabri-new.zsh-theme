@@ -1,3 +1,16 @@
+# From https://github.com/sindresorhus/pure/blob/master/prompt.zsh#L14
+# git:
+# %b => current branch
+# %a => current action (rebase/merge)
+# prompt:
+# %F => color dict
+# %f => reset color
+# %~ => current path
+# %* => time
+# %n => username
+# %m => shortname host
+# %(?..) => prompt conditional - %(condition.true.false)
+
 ##############################################################
 # Setting the tab titles to the current directory
 ##############################################################
@@ -23,10 +36,10 @@ function git_prompt_info() {
 
 function rvm_info(){
     if [[ -s ~/.rvm/scripts/rvm ]] ; then
-      echo "$FG[210]`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
+      echo "%F{red}`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
     else
       if which rbenv &> /dev/null; then
-        echo "$FG[210]`rbenv version | sed -e "s/ (set.*$//"`%{$reset_color%} $EPS1"
+        echo "%F{red}`rbenv version | sed -e "s/ (set.*$//"`%{$reset_color%} $EPS1"
       else
         echo "$EPS1"
       fi
@@ -41,9 +54,9 @@ PROMPT='$FG[096]%~
 $FG[172]⚡︎%{$reset_color%} '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
-ZSH_THEME_GIT_PROMPT_SUFFIX="$FG[239] • "
-ZSH_THEME_GIT_PROMPT_DIRTY="$FG[160]+ "
-ZSH_THEME_GIT_PROMPT_CLEAN="$FG[010]"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%F{239} • "
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{160}+ "
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{green}"
 
 RPROMPT='$(git_prompt_info)$(rvm_info)'
 
