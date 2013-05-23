@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[
+/* $0
+------------------------------------------------------*/
+]]></content>
+    <tabTrigger>@scom</tabTrigger>
+    <scope>source.css, source.scss</scope>
+</snippet>

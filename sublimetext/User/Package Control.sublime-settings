@@ -1,5 +1,7 @@
 {
 	"auto_upgrade_last_run": null,
+	"debug": true,
+	"git_binary": "/usr/local/bin/git",
 	"installed_packages":
 	[
 		"Alignment",
@@ -23,6 +25,7 @@
 		"LESS",
 		"Liquid",
 		"markdown.tmbundle",
+		"MaxPane",
 		"Package Control",
 		"ruby-slim.tmbundle",
 		"Sass",
@@ -32,18 +35,7 @@
 		"SideBarEnhancements",
 		"SublimeLinter",
 		"SublimeTODO",
+		"Syntax Highlighting for Sass",
 		"Theme - Soda"
-	],
-	"repositories":
-	[
-		"https://github.com/appden/less.tmbundle",
-		"https://github.com/Gipetto/wordpress.tmbundle",
-		"https://github.com/textmate/markdown.tmbundle",
-		"https://github.com/n00ge/sublime-text-haml-sass",
-		"https://github.com/facelessuser/BracketHighlighter",
-		"https://github.com/kuroir/SCSS.tmbundle/tree/SublimeText2",
-		"https://github.com/mrmartineau/jQuery",
-		"https://github.com/sergeche/emmet-sublime",
-		"https://github.com/colinta/ApacheConf.tmLanguage"
 	]
 }

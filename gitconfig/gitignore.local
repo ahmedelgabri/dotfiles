@@ -41,6 +41,7 @@ Thumbs.db
 ###########################
 *.sublime-project
 *.sublime-workspace
+.tern-port
 
 # Folders #
 ###########

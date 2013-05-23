@@ -49,3 +49,5 @@ function! SearchDash()
 endfunction
 map <leader>d :call SearchDash()<CR>
 
+highlight LineNr ctermfg=254 ctermbg=234
+set number

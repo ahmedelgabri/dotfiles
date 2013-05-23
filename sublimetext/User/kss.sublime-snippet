@@ -1,0 +1,16 @@
+<snippet>
+    <content><![CDATA[
+// $1
+//
+// $2
+//
+// Markup:
+// $3
+//
+// $4
+//
+// $5
+]]></content>
+    <tabTrigger>kss</tabTrigger>
+    <scope>source.sass, source.scss</scope>
+</snippet>
