@@ -112,3 +112,25 @@ yajl-ruby (1.1.0)
 ├─┬ prefixr@1.0.1
 ├─┬ svgo@0.3.5
 └─┬ yo@1.0.0-beta.4
+ack
+autoconf
+coreutils
+fontforge
+gettext
+git
+jpeg
+libevent
+libpng
+libtiff
+macvim
+mongodb
+node
+pkg-config
+rbenv
+rbenv-gem-rehash
+ruby-build
+tig
+tmux
+tree
+wget
+xz

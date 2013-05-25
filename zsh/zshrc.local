@@ -82,8 +82,9 @@ alias appstore="open -a App\ Store"
 ##############################################################
 
 # SSH key http://kb.mediatemple.net/questions/1626/Using+SSH+keys+on+your+server#all/-instructions--
-# $1 = keyname $2 = Email ID used
-function new_SSH(){
+# $1 = keyname
+# $2 = Email ID used
+new_SSH(){
     ssh-keygen -t rsa -b 2048 -f ~/.ssh/$1 -C "$2"
     cat ~/.ssh/$1.pub | pbcopy
     echo -e "------------------------------------------------------------\n"
@@ -91,12 +92,12 @@ function new_SSH(){
     echo -e "------------------------------------------------------------\n"
 }
 
-function copy_SSH(){
+copy_SSH(){
     pbcopy < ~/.ssh/$@.pub
 }
 
 # WordPress latest
-function new_wp() {
+new_wp() {
   latest="http://wordpress.org/latest.zip"
   curl -O $latest
   unzip latest.zip
@@ -116,32 +117,32 @@ mcd() {
 }
 
 # vHosts
-function vhosts() {
+vhosts() {
   subl /etc/hosts
   subl /etc/apache2/extra/httpd-vhosts.conf
 }
 
 # Git functions
-function git_since(){
+git_since(){
   git lg --since=$@
 }
 
-function git_until(){
+git_until(){
   git lg --until=$@
 }
 
-function git_author(){
+git_author(){
   git lg --author="$@"
 }
 
-function git_grep(){
+git_grep(){
   git lg --grep="$@"
 }
 
 # Forked from https://gist.github.com/ethanmuller/4673740
 # @TODO: Clean it up a bit & understand it more!
 
-function blank_init() {
+blank_init() {
   if [[ $# != 1 ]]; then
     echo -e "$fg[red] Please specify a project name.$reset_color"
     echo -e "Usage: init project-name\n"
@@ -181,7 +182,7 @@ function blank_init() {
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
-function server() {
+staticServer() {
     local port="${1:-8000}"
     open "http://localhost:${port}/"
     # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
