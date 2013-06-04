@@ -49,6 +49,10 @@ Thumbs.db
 .grunt/
 node_modules/
 
+# vim       #
+#############
+*.un~
+
 # Photoshop/Illustrator files #
 ###############################
 *.psd

@@ -4,7 +4,7 @@
 # export LC_CTYPE="utf-8" not working?!
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-export TERM=screen-256color
+export TERM=xterm-256color
 export EDITOR="subl -w"
 
 ##############################################################
@@ -40,7 +40,9 @@ alias ..="cd ../"
 alias ...="cd ../../"
 alias "?"="pwd"
 alias o="open "
+alias o.="open . "
 alias s="subl "
+alias s.="subl . "
 alias l="ls -al "
 alias pu="pushd"
 alias po="popd"
@@ -212,9 +214,10 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx brew gem npm powder pow sublime colored-man ruby heroku vagrant safe-paste tmux)
+plugins=(git osx brew gem npm powder pow sublime colored-man ruby heroku vagrant safe-paste tmux vi-mode)
 
 source $ZSH/oh-my-zsh.sh
+source $HOME/.dotfiles/zsh/z/z.sh
 
 ##############################################################
 # PATH.

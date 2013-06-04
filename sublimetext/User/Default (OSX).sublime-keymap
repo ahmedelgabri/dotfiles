@@ -4,5 +4,7 @@
     {"keys": ["super+f"], "command":  "show_panel", "args": {"panel": "replace"}},
     {"keys": ["super+ctrl+w"], "command":  "close_project"},
     { "keys": ["command+v"], "command":"paste_and_indent" },
-    { "keys": ["command+shift+v"], "command":"paste" }
+    { "keys": ["command+shift+v"], "command":"paste" },
+    { "keys": ["f8"], "command": "schemr_next_scheme" },
+    { "keys": ["command+f8"], "command": "schemr_previous_scheme" }
 ]
