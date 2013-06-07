@@ -1,11 +1,10 @@
 execute pathogen#infect()
+filetype plugin indent  on
 
 syntax enable
 set background=dark
 let g:solarized_termcolors=256
-let g:solarized_termtrans=1
 colorscheme solarized
-filetype plugin indent on
 
 " Searches Dash for the word under your cursor in vim, using the keyword
 " operator, based on file type. E.g. for JavaScript files, I have it
@@ -84,6 +83,7 @@ set nowritebackup
 
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8
+set nocompatible
 set scrolloff=3
 set autoindent
 set showmode
@@ -95,6 +95,8 @@ set visualbell
 set cursorline
 set ttyfast
 set ruler
+set foldenable
+set guifont=inconsolata:h16
 "set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
 set statusline=
 set statusline +=%1*\ %n\ %*            "buffer number
@@ -135,3 +137,14 @@ nnoremap <C-n> :call NumberToggle()<cr>
 :au FocusGained * :set relativenumber
 autocmd InsertEnter * :set number
 autocmd InsertLeave * :set relativenumber
+
+function! ClearRegisters()
+    let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
+    let i=0
+    while (i<strlen(regs))
+        exec 'let @'.regs[i].'=""'
+        let i=i+1
+    endwhile
+endfunction
+
+command! ClearRegisters call ClearRegisters()
