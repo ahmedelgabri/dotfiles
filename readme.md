@@ -1,6 +1,6 @@
 # My [.]files
 
-For setting up development environment on new Macs, this installs Git, Node, Ruby & other useful tools/packages for my work. Also, have settings for [SublimeText2](http://www.sublimetext.com/), [ZSH](http://zsh.sourceforge.net/), [iTerm2](http://www.iterm2.com/#/section/home), OSX, [TMUX](http://tmux.sourceforge.net/) & [VIM](http://www.vim.org/).
+For setting up development environment on new Macs, it has settings for Git, Node, Ruby, [SublimeText2](http://www.sublimetext.com/), [ZSH](http://zsh.sourceforge.net/), [iTerm2](http://www.iterm2.com/#/section/home), OSX, [TMUX](http://tmux.sourceforge.net/) & [VIM](http://www.vim.org/).
 
 *Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk. also you are welcome to give tips on how can I improve this.
 
