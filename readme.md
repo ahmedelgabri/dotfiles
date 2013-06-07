@@ -12,7 +12,7 @@ For setting up development environment on new Macs, this installs Git, Node, Rub
 * [Homebrew](http://mxcl.github.io/homebrew/)
     * [Git](http://git-scm.com/)
     * [Nodejs](http://nodejs.org/) with [NPM](https://npmjs.org/)
-    * [Ruby](http://www.ruby-lang.org/en/) using [Rbenv](https://github.com/sstephenson/rbenv/) & [Ruby build](https://github.com/sstephenson/ruby-build)  & [Ruby Gems](http://rubygems.org)
+    * [Ruby](http://www.ruby-lang.org/en/) using [rbenv](https://github.com/sstephenson/rbenv/) & [Ruby build](https://github.com/sstephenson/ruby-build)  & [Ruby Gems](http://rubygems.org)
 * [PHP](http://php-osx.liip.ch/)
 
 <!-- ## Installation
