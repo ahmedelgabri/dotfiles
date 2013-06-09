@@ -6,6 +6,74 @@ set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
 
+" Remap the leader key
+let mapleader = ";"
+
+" Some handy stuff for autocmd
+if has("autocmd")
+  " Auto reload the .vimrc
+  autocmd! bufwritepost .vimrc source %
+
+  " Open nerdtree if there wasn't a file specified
+  autocmd vimenter * if !argc() | NERDTree | endif
+endif
+
+" Make dot work in visual mode
+vnoremap . :norm.<CR>
+
+" Don't close if nerdtree is the last thing
+" let nerdtree_tabs_autoclose=0
+
+" Highlight search results by default
+nnoremap <F3> :set invhlsearch hlsearch?<CR>
+
+" Setting font & status bar
+set guifont=inconsolata:h16
+"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+hi User1 ctermfg=51 ctermbg=21  guifg=#eea040 guibg=#222222
+hi User2 ctermfg=51 ctermbg=21 guifg=#dd3333 guibg=#222222
+hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
+hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
+hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
+
+" powerline"
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_theme="default"
+let g:Powerline_colorscheme="default"
+set laststatus=2
+
+" Make the nerdtree a bit wider
+let g:NERDTreeWinSize = 45
+
+" Nerdtree doesn't have to show tmp
+let NERDTreeIgnore=['tmp']
+
+" Map nerdtree to <leader>nt
+nnoremap <leader>nt :NERDTreeToggle<cr> :NERDTreeMirror<CR>
+
+" Conditionals upon if a gui is running
+if has('gui_running')
+  let titlestring=system('pwd | sed "s/.*\///"')
+  execute "set titlestring=".titlestring
+
+  " Always show the tab bar in macvim
+  set showtabline=2
+else
+  set mouse=a
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
 " Searches Dash for the word under your cursor in vim, using the keyword
 " operator, based on file type. E.g. for JavaScript files, I have it
 " configured to search j:term, which immediately brings up the JS doc
@@ -70,7 +138,7 @@ hi clear SpellBad
 hi SpellBad cterm=underline
 
 " Tabs
-set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
@@ -96,23 +164,6 @@ set cursorline
 set ttyfast
 set ruler
 set foldenable
-set guifont=inconsolata:h16
-"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
-set statusline=
-set statusline +=%1*\ %n\ %*            "buffer number
-set statusline +=%5*%{&ff}%*            "file format
-set statusline +=%3*%y%*                "file type
-set statusline +=%4*\ %<%F%*            "full path
-set statusline +=%2*%m%*                "modified flag
-set statusline +=%1*%=%5l%*             "current line
-set statusline +=%2*/%L%*               "total lines
-set statusline +=%1*%4v\ %*             "virtual column number
-set statusline +=%2*0x%04B\ %*          "character under cursor
-hi User1 ctermfg=51 ctermbg=21  guifg=#eea040 guibg=#222222
-hi User2 ctermfg=51 ctermbg=21 guifg=#dd3333 guibg=#222222
-hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
-hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
-hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
 set backspace=indent,eol,start
 set laststatus=2
 set relativenumber
