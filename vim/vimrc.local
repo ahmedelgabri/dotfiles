@@ -46,14 +46,9 @@ hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
 hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
 hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
 
-" powerline"
-let g:Powerline_symbols = 'fancy'
-let g:Powerline_theme="default"
-let g:Powerline_colorscheme="default"
-set laststatus=2
-
 " Make the nerdtree a bit wider
-let g:NERDTreeWinSize = 45
+let g:NERDTreeWinSize = 30
+let NERDTreeShowHidden=1
 
 " Nerdtree doesn't have to show tmp
 let NERDTreeIgnore=['tmp']
