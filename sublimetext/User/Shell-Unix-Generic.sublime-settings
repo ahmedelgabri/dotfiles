@@ -3,6 +3,7 @@
 	[
 		".zshrc",
 		"zsh-theme",
-		".zshrc"
+		".zshrc",
+		"local"
 	]
 }

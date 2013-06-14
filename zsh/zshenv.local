@@ -1,0 +1,5 @@
+# export LC_CTYPE="utf-8" not working?!
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export TERM=xterm-256color
+export EDITOR="subl -w"
