@@ -1,6 +1,7 @@
 {
 	"afn_insert_dimensions": false,
 	"auto_complete_commit_on_tab": true,
+	"auto_complete_delay": 0,
 	"auto_complete_triggers":
 	[
 		{
@@ -20,7 +21,6 @@
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
 	"draw_white_space": "all",
-	"ensure_newline_at_eof_on_save": true,
 	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
 	"file_exclude_patterns":
@@ -35,7 +35,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Inconsolata-dz for Powerline",
+	"font_face": "Meslo LG L Regular",
 	"font_options":
 	[
 		"no_bold",
@@ -47,11 +47,10 @@
 	"ignored_packages":
 	[
 		"Vintage",
-		"Syntax Highlighting for Sass"
+		"tern_for_sublime"
 	],
 	"indent_subsequent_lines": true,
-	"line_padding_bottom": 1,
-	"line_padding_top": 1,
+	"indent_to_bracket": true,
 	"open_files_in_new_window": false,
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,

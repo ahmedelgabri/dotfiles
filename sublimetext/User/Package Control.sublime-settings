@@ -6,10 +6,12 @@
 	[
 		"Alignment",
 		"ApacheConf.tmLanguage",
+		"ApplySyntax",
 		"AutoFileName",
 		"Bower",
 		"BracketHighlighter",
 		"Can I Use",
+		"CoffeeScript",
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
 		"EditorConfig",
@@ -21,11 +23,13 @@
 		"Handlebars",
 		"HTML Mustache",
 		"Jade",
+		"JavaScript and jQuery API Completions",
 		"jQuery",
+		"JS2Coffee",
 		"JsFormat",
 		"LESS",
 		"Liquid",
-		"markdown.tmbundle",
+		"MarkdownEditing",
 		"MaxPane",
 		"Package Control",
 		"ruby-slim.tmbundle",
@@ -37,7 +41,6 @@
 		"SideBarEnhancements",
 		"SublimeLinter",
 		"SublimeTODO",
-		"Syntax Highlighting for Sass",
 		"Theme - Soda"
 	]
 }
