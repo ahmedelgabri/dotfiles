@@ -29,8 +29,7 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 # DEV
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias phpserver="php -S localhost:8080 && open http://localhost:8080"
-alias sp="sass --watch --style compressed" # later on we can use --sourcemap
-alias sd="sass --watch --debug-info" # later on we can use --sourcemap this makes it work in Chrome ;)
+alias sp="sass --watch --style --sourcemap compressed"
 alias apache="sudo apachectl "
 alias git="hub"
 alias undopush="git push -f origin HEAD^:master"

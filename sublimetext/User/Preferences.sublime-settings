@@ -16,7 +16,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/Color Scheme - Default/Solarized-official-mod-dark.tmTheme",
+	"color_scheme": "Packages/Color Scheme - Default/Solarized-official-mod-light.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
@@ -60,7 +60,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Dark.sublime-theme",
+	"theme": "Soda Light.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
