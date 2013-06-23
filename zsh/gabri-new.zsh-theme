@@ -51,7 +51,7 @@ function git_prompt_info() {
 ##############################################################
 
 PROMPT='
-%F{074}%~$(git_prompt_info)
+%F{074}%~ $(git_prompt_info)
 %F{172}⚡︎%f '
 
 ZSH_THEME_GIT_PROMPT_PREFIX="["
