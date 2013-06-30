@@ -24,7 +24,6 @@
 		"Handlebars",
 		"HTML Mustache",
 		"Jade",
-		"JavaScript and jQuery API Completions",
 		"jQuery",
 		"JS2Coffee",
 		"JsFormat",
@@ -34,14 +33,15 @@
 		"MaxPane",
 		"Package Control",
 		"ruby-slim.tmbundle",
-		"Sass",
 		"Schemr",
-		"SCSS",
 		"Search WordPress Codex",
 		"SFTP",
 		"SideBarEnhancements",
 		"SublimeLinter",
 		"SublimeTODO",
+		"Syntax Highlighting for Sass",
+		"TernJS",
+		"Theme - Flatland",
 		"Theme - Soda"
 	]
 }

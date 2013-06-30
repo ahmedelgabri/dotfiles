@@ -1,0 +1,3 @@
+{
+    "default_libs": ["ecma5", "browser", "jquery"]
+}
