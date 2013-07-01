@@ -51,6 +51,11 @@
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
 	"open_files_in_new_window": false,
+	"rulers":
+	[
+		80,
+		120
+	],
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": false,
@@ -59,7 +64,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Flatland Dark.sublime-theme",
+	"theme": "Soda Dark.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
