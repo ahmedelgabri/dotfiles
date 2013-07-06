@@ -1,6 +1,6 @@
 # TERMINAL
-alias vim="mvim -v"
-alias reload="source ~/.zshrc && echo 'Vroooom Vrooom!'"
+alias v="mvim -v"
+alias r="source ~/.zshrc && echo 'Vroooom Vrooom!'"
 alias zshconfig="subl -a ~/.zshrc"
 alias ohmyzsh="subl -a ~/.oh-my-zsh"
 alias ..='cd ..'
@@ -30,7 +30,7 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 # DEV
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias phpserver="php -S localhost:8080 && open http://localhost:8080"
-alias sp="sass --watch --style --sourcemap compressed"
+alias sp="sass --watch --style compressed --precision 3 --sourcemap"
 alias apache="sudo apachectl "
 alias git="hub"
 alias undopush="git push -f origin HEAD^:master"
