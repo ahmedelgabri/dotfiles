@@ -34,30 +34,29 @@ function git_prompt_info() {
 # Show Ruby "RVM" version.
 ##############################################################
 
-# function rvm_info(){
-#     if [[ -s ~/.rvm/scripts/rvm ]] ; then
-#       echo "%F{red}`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
-#     else
-#       if which rbenv &> /dev/null; then
-#         echo "%F{red}`rbenv version | sed -e "s/ (set.*$//"`%{$reset_color%} $EPS1"
-#       else
-#         echo "$EPS1"
-#       fi
-#     fi
-# }
+function rvm_info(){
+    if [[ -s ~/.rvm/scripts/rvm ]] ; then
+      echo "%F{red}`~/.rvm/bin/rvm-prompt v`%{$reset_color%} $EPS1"
+    else
+      if which rbenv &> /dev/null; then
+        echo "%F{red}`rbenv version | sed -e "s/ (set.*$//"`%{$reset_color%} $EPS1"
+      else
+        echo "$EPS1"
+      fi
+    fi
+}
 
 ##############################################################
 # PROMPT Colors & config.
 ##############################################################
 
 PROMPT='
-%F{074}%~ $(git_prompt_info)
-%F{172}⚡︎%f '
+%F{074}%~ $(git_prompt_info) %F{001}❯%F{003}❯%F{002}❯%f '
 
-ZSH_THEME_GIT_PROMPT_PREFIX="["
-ZSH_THEME_GIT_PROMPT_SUFFIX="]"
-ZSH_THEME_GIT_PROMPT_DIRTY="%F{160}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%F{070}"
+ZSH_THEME_GIT_PROMPT_PREFIX=""
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{001}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{002}"
 
 RPROMPT='' # $(rvm_info)
 
