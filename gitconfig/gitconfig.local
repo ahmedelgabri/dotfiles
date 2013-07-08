@@ -41,10 +41,15 @@
     la = !git config -l | grep alias | cut -c 7-
     setr = remote set-url
     rmr = remote remove
-    untrack = update-index --assume-unchanged
+    # untrack = update-index --assume-unchanged
+    untrack = rm --cached <file>
     track = update-index --no-assume-unchanged
     latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
     blm = blame -wMC
+    this = !git init && git add . && git commit -m \"initial commit\"
+    amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+    ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
+    unstage = reset HEAD
 
 [mergetool]
     keepBackup = false
@@ -52,4 +57,4 @@
 [push]
     default = simple
 [apply]
-	whitespace = warn
+	whitespace = nowarn
