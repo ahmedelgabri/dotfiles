@@ -1,9 +1,4 @@
 ##############################################################
-# rbenv
-##############################################################
-eval "$(rbenv init -)"
-
-##############################################################
 # Environment
 ##############################################################
 
@@ -47,7 +42,7 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx brew gem npm powder pow sublime colored-man ruby heroku vagrant safe-paste tmux vi-mode)
+plugins=(git osx brew gem npm colored-man ruby heroku vagrant safe-paste tmux)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.dotfiles/zsh/z/z.sh
@@ -74,3 +69,15 @@ export PATH=$PATH:/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:/usr/local/share/npm/bin
 export PATH=$PATH:/usr/local/Cellar/git
+
+
+##############################################################
+# rbenv
+##############################################################
+eval "$(rbenv init -)"
+
+##############################################################
+# NVM
+##############################################################
+[[ -s /Users/Gabri/.nvm/nvm.sh ]] && . /Users/Gabri/.nvm/nvm.sh
+[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
