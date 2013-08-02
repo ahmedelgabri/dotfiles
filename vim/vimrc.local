@@ -29,7 +29,6 @@ nnoremap <F3> :set invhlsearch hlsearch?<CR>
 
 " Setting font & status bar
 set guifont=inconsolata:h16
-"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
 set statusline=
 set statusline +=%1*\ %n\ %*            "buffer number
 set statusline +=%5*%{&ff}%*            "file format
@@ -133,8 +132,9 @@ hi clear SpellBad
 hi SpellBad cterm=underline
 
 " Tabs
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 
@@ -194,3 +194,5 @@ function! ClearRegisters()
 endfunction
 
 command! ClearRegisters call ClearRegisters()
+
+set autoread
