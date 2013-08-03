@@ -133,10 +133,7 @@ staticServer() {
 }
 
 # Search dash app
+# dash js:tostring or dash tostring
 dash(){
-    if [ ! -z "$2" ]; then
-        open "dash://$1:$2" # passing the keyword & the query
-    else
-        open "dash://$1" # passing only the query
-    fi
+    open "dash://$@"
 }
