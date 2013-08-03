@@ -61,10 +61,12 @@
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": false,
+	"soda_classic_tabs": true,
+	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Flatland Dark.sublime-theme",
+	"theme": "Soda Light.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
