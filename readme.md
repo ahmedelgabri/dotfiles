@@ -2,7 +2,9 @@
 
 For setting up development environment on new Macs, it has settings for Git, Node, Ruby, [SublimeText2](http://www.sublimetext.com/), [ZSH](http://zsh.sourceforge.net/), [iTerm2](http://www.iterm2.com/#/section/home), OSX, [TMUX](http://tmux.sourceforge.net/) & [VIM](http://www.vim.org/).
 
-*Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk. also you are welcome to give tips on how can I improve this.
+*Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk. The `bin/` folder is not stable, don't use any of the files inside.
+
+You are welcome to give tips on how can I improve this. 
 
 
 ## Prerequisites:
@@ -15,7 +17,7 @@ For setting up development environment on new Macs, it has settings for Git, Nod
     * [Ruby](http://www.ruby-lang.org/en/) using [rbenv](https://github.com/sstephenson/rbenv/) & [Ruby build](https://github.com/sstephenson/ruby-build)  & [Ruby Gems](http://rubygems.org)
 * [PHP](http://php-osx.liip.ch/)
 
-<!-- ## Installation
+## Installation
 1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or download it directly from [Apple Developer website](https://developer.apple.com/downloads).
 2- Install [ohmyzsh](https://github.com/robbyrussell/oh-my-zsh)
 
@@ -43,7 +45,7 @@ For setting up development environment on new Macs, it has settings for Git, Nod
 afterward install Ruby
 
     rbenv install 2.0.0p-0
-    rbenv global 2.0.0p-0 -->
+    rbenv global 2.0.0p-0
 
 
 

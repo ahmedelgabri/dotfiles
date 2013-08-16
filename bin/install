@@ -23,8 +23,9 @@ ln -s $HOME/.dotfiles/vim/config $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 
 
-# source $HOME/.zshrc
 
 echo -e "$fg[green]------------------------------------------------------------$reset_color\n"
 echo -e "$fg[green]Done. Wohoo!$reset_color\n"
 echo -e "$fg[green]------------------------------------------------------------$reset_color\n"
+
+source $HOME/.zshrc

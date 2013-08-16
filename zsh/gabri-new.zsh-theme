@@ -52,7 +52,7 @@ function rvm_info(){
 
 PROMPT='
 %F{074}${PWD/#$HOME/~} $(git_prompt_info)
-%F{009}❯%F{011}❯%F{010}❯%f '
+%F{red}❯%F{yellow}❯%F{green}❯%f '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX=""

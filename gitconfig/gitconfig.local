@@ -33,7 +33,7 @@
     cm = commit
     st = status -sb
     br = branch
-    df = diff 
+    df = diff
     lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
     wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
     fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
@@ -50,6 +50,8 @@
     amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
     ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
     unstage = reset HEAD
+    undo = reset HEAD~ && clean -df
+    who = shortlog -sne
 
 [mergetool]
     keepBackup = false
