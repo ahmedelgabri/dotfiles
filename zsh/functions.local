@@ -102,19 +102,19 @@ blank_init() {
           echo "npm install grunt-cli"
         else
           echo -e "$fg[yellow] Downloading Blank$reset_color\n"
-          #@TODO: Change the URL to my blank URL
-          curl -s -S -O -L https://github.com/ahmedelgabri/blank-css/archive/master.zip;
+          curl -s -S -O -L https://github.com/ahmedelgabri/Blank/archive/master.zip;
           echo -e "$fg[green] Download finished.$reset_color\n"
           echo -e "$fg[yellow] Setting up project config files.$reset_color\n"
           unzip -qq master.zip;
           rm master.zip;
-          mv Startup-template-master $1
+          mv Blank-master $1
           sed -i.bak "s/Project-Name/$1/g" $1/package.json;
           rm $1/package.json.bak;
           # sed -i.bak "s/Project-Name/$1/g" $1/.rvmrc;
           # rm $1/.rvmrc.bak;
           cd $1
           npm install;
+          grunt -v && open http://localhost:9000;
           # bundle;
           echo -e "$fg[green] Your project is all ready to go. Enjoy$reset_color\n"
         fi
