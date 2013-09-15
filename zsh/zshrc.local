@@ -2,20 +2,20 @@
 # Environment
 ##############################################################
 
-source ~/.zshenv
-source ~/.ghi
+source $HOME/.dotfiles/zsh/zshenv.local
+source $HOME/.ghi
 
 ##############################################################
 # aliases
 ##############################################################
 
-source ~/.aliases
+source $HOME/.dotfiles/zsh/aliases.local
 
 ##############################################################
 # Functions
 ##############################################################
 
-source ~/.functions
+source $HOME/.dotfiles/zsh/functions.local
 
 ##############################################################
 # OHMYZSH
@@ -39,7 +39,7 @@ ZSH_THEME="gabri-new"
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load? (plugins can be found in $HOME/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git osx brew gem npm colored-man ruby heroku vagrant safe-paste tmux)
