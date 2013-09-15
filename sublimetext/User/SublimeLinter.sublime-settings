@@ -1,11 +1,19 @@
 {
+    "sublimelinter": true,
 	 "sublimelinter_syntax_map":
     {
-        "jQueryJavaScript": "javascript"
+        "jQuery": "javascript"
     },
 
     "sublimelinter_executable_map":
     {
-        "ruby": "/Users/Gabri/.rvm/rubies/ruby-1.9.3-p362/bin/ruby"
-    }
+        "ruby": "/Users/Gabri/.rbenv/shims/ruby"
+    },
+    "sublimelinter_disable":
+        [
+            "objective-j",
+            "java",
+            "perl"
+        ],
+        "sublimelinter_fill_outlines": false
 }
