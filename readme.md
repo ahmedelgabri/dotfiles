@@ -10,7 +10,7 @@ You are welcome to give tips on how can I improve this.
 ## Prerequisites:
 
 * Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) or from [Apple Developer website](https://developer.apple.com/downloads)
-* [ohmyzsh](https://github.com/robbyrussell/oh-my-zsh)
+* [Prezto](https://github.com/sorin-ionescu/prezto)
 * [Homebrew](http://mxcl.github.io/homebrew/)
     * [Git](http://git-scm.com/)
     * [Nodejs](http://nodejs.org/) with [NPM](https://npmjs.org/)
@@ -19,9 +19,7 @@ You are welcome to give tips on how can I improve this.
 
 ## Installation
 1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or download it directly from [Apple Developer website](https://developer.apple.com/downloads).
-2- Install [ohmyzsh](https://github.com/robbyrussell/oh-my-zsh)
-
-    curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+2- Install [Prezto](https://github.com/sorin-ionescu/prezto)
 3- Install [Homebrew](http://mxcl.github.io/homebrew/)
 
     ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)
