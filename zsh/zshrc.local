@@ -1,15 +1,22 @@
-##############################################################
-# PREZTO.
-##############################################################
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
 
+# Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
+
+# Customize to your needs...
 
 ##############################################################
 # ENVIRONMENT.
 ##############################################################
 
+# source $HOME/.dotfiles/zsh/pure.zsh
 source $HOME/.dotfiles/zsh/zshenv.local
 source $HOME/.ghi
 
@@ -29,7 +36,6 @@ source $HOME/.dotfiles/zsh/functions.local
 # PROMPT.
 ##############################################################
 source $HOME/.dotfiles/zsh/z/z.sh
-source $HOME/.dotfiles/zsh/pure.zsh
 
 ##############################################################
 # PATH.
@@ -62,4 +68,4 @@ eval "$(rbenv init -)"
 # NVM
 ##############################################################
 [[ -s /Users/Gabri/.nvm/nvm.sh ]] && . /Users/Gabri/.nvm/nvm.sh
-[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
+# [[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion

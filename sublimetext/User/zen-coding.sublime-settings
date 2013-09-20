@@ -1,7 +1,0 @@
-{
-    "completions_blacklist": [
-    "css_selectors",
-    "css_property_values",
-    "css_properties"
-  ]
-}

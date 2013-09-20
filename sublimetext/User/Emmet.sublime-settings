@@ -1,7 +1,7 @@
 {
 	// Copy any modified settings to `User/Emmet.sublime-settings`
 	// otherwise modifications will not survive updates.
-	"extensions_path": "~/Library/Application Support/Sublime Text 2/Packages/User/Emmet",
+	"extensions_path": "~/Library/Application Support/Sublime Text 3/Packages/User/Emmet",
 
 	// Disable completions of HTML attributes
 	// with this option disabled, you can get attribute list completions
