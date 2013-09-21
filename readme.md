@@ -44,6 +44,8 @@ You are welcome to give tips on how can I improve this.
 * [Limechat](http://limechat.net/mac/)
 * [Tweetbot](https://itunes.apple.com/us/app/tweetbot-for-twitter/id557168941?mt=12)
 * [XtraFinder](http://www.trankynam.com/xtrafinder/)
+* [Transmit](http://panic.com/transmit/)
+* ~~[Codekit](http://incident57.com/codekit/)~~
 
 ## Installation
 1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or download it directly from [Apple Developer website](https://developer.apple.com/downloads).
@@ -54,7 +56,7 @@ You are welcome to give tips on how can I improve this.
 
 3- Install Homebrew packages needed.
 
-    brew install git node rbenv ruby-build rbenv-gem-rehash ack coreutils wget dnsmasq mongodb
+    brew install git node rbenv ruby-build rbenv-gem-rehash ack coreutils wget dnsmasq mongodb phantomjs
 
 afterward install Ruby like so
 
@@ -70,15 +72,17 @@ afterward install Ruby like so
     git clone https://github.com/ahmedelgabri/dotfiles.git .dotfiles
     $ cd .dotfiles/ && ./bin/install
 
+### Packages & Gems
 
-#### Through Homebrew
+* Node:
+    * [NVM](https://github.com/creationix/nvm) 
+    * `npm i -g grunt-cli grunt-init` _`npm init` to create an empty package.json_
+    * [Lo-Dash](http://lodash.com/)
+    * `npm i -g imageoptim-cli`
+    * `npm i -g bower`
 
-6- Install Node with NPM & it's packages under NPM `packages.local`
-
-    brew install node
-7- Install Rbenv
-
-    brew install rbenv ruby-build
+* Ruby:
+    * `gem install sass jekyll compass`
 
 
 

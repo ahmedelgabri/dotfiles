@@ -1,62 +1,62 @@
 [user]
-    name = Ahmed El Gabri
-    email = ahmed@gabri.me
+	name = Ahmed El Gabri
+	email = ahmed@gabri.me
 
 [color]
-    ui = true
+	ui = true
 
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
-    whitespace = red reverse
+	current = yellow reverse
+	local = yellow
+	remote = green
+	whitespace = red reverse
 
 [color "diff"]
-    meta = yellow
-    frag = magenta
-    old = red
-    new = green
+	meta = yellow
+	frag = magenta
+	old = red
+	new = green
 
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = red
+	added = yellow
+	changed = green
+	untracked = red
 
 [core]
-    editor = subl -w
-    whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-    excludesfile = /Users/Gabri/.gitignore
-    pager = less -r
+	editor = subl -w
+	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
+	excludesfile = /Users/Gabri/.gitignore
+	pager = less -r
 
 [alias]
-    co = checkout
-    cm = commit
-    st = status -sb
-    br = branch
-    df = diff
-    lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
-    wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
-    fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
-    gr = grep -Ii
-    la = !git config -l | grep alias | cut -c 7-
-    setr = remote set-url
-    rmr = remote remove
-    # untrack = update-index --assume-unchanged
-    untrack = rm --cached <file>
-    track = update-index --no-assume-unchanged
-    latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
-    blm = blame -wMC
-    this = !git init && git add . && git commit -m \"initial commit\"
-    amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
-    ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
-    unstage = reset HEAD
-    undo = reset HEAD~ && clean -df
-    who = shortlog -sne
+	co = checkout
+	cm = commit
+	st = status -sb
+	br = branch
+	df = diff
+	lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
+	wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
+	fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
+	gr = grep -Ii
+	la = !git config -l | grep alias | cut -c 7-
+	setr = remote set-url
+	rmr = remote remove
+	# untrack = update-index --assume-unchanged
+	untrack = rm --cached <file>
+	track = update-index --no-assume-unchanged
+	latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
+	blm = blame -wMC
+	this = !git init && git add . && git commit -m \"initial commit\"
+	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+	ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
+	unstage = reset HEAD
+	undo = reset HEAD~ && clean -df
+	who = shortlog -sne
 
 [mergetool]
-    keepBackup = false
+	keepBackup = false
 
 [push]
-    default = simple
+	default = simple
 [apply]
 	whitespace = nowarn
