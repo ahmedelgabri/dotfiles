@@ -84,7 +84,12 @@ afterward install Ruby like so
 * Ruby:
     * `gem install sass jekyll compass`
 
+---
 
+#### TODO
+
+* Add Apache & dnsmasq config
+* Document PHP & MySQL
 
 
 
