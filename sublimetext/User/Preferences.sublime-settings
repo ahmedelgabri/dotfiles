@@ -1,6 +1,7 @@
 {
 	"afn_insert_dimensions": false,
 	"auto_complete_commit_on_tab": true,
+	"animation_enabled": false,
 	"auto_complete_delay": 0,
 	"auto_complete_triggers":
 	[
@@ -19,14 +20,13 @@
 	],
 	"bold_folder_labels": true,
 	"caret_style": "wide",
-	"close_windows_when_empty": false,
 	"color_scheme": "Packages/User/Solarized-official-mod-dark.tmTheme",
 	"default_line_ending": "unix",
-	"detect_indentation": false,
 	"disable_formatted_linebreak": true,
 	"draw_white_space": "all",
 	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
+	"default_encoding": "UTF-8",
 	"file_exclude_patterns":
 	[
 		".DS_Store"
@@ -64,7 +64,7 @@
 	],
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
-	"show_full_path": false,
+	"show_full_path": true,
 	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
@@ -82,9 +82,9 @@
 			"TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
 		}
 	},
-	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,
-	"word_wrap": true
+	"word_wrap": true,
+	"enable_tab_scrolling": false
 }

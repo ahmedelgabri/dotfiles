@@ -1,13 +1,9 @@
 # TERMINAL
 alias v="mvim -v"
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"
-alias zshconfig="subl -a ~/.zshrc"
-alias ohmyzsh="subl -a ~/.oh-my-zsh"
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
-alias .....='cd ../../../../'
-alias ......='cd ../../../../../'
 alias "?"="pwd"
 alias o="open "
 alias o.="open . "
@@ -25,6 +21,7 @@ alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && kil
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 alias cat="pygmentize -O style=emacs -f console256 -g"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
