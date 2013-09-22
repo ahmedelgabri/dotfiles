@@ -4,6 +4,7 @@
 	"git_binary": "/usr/local/bin/git",
 	"installed_packages":
 	[
+		"AdvancedNewFile",
 		"Alignment",
 		"ApacheConf.tmLanguage",
 		"ApplySyntax",
