@@ -1,7 +1,6 @@
 {
 	"afn_insert_dimensions": false,
 	"always_show_minimap_viewport": true,
-	"animation_enabled": false,
 	"auto_complete_commit_on_tab": true,
 	"auto_complete_delay": 0,
 	"auto_complete_triggers":
@@ -30,8 +29,6 @@
 	"enable_tab_scrolling": false,
 	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
-	"default_encoding": "UTF-8",
-	"enable_tab_scrolling": false,
 	"file_exclude_patterns":
 	[
 		".DS_Store"
@@ -75,7 +72,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Dark 3.sublime-theme",
+	"theme": "Soda Light 3.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
