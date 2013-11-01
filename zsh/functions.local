@@ -155,3 +155,8 @@ explain() {
   # opens url in browser
   open $url
 }
+
+# gitignore.io
+gi() {
+  curl http://gitignore.io/api/\$@ ;
+}
