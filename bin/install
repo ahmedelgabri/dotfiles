@@ -11,6 +11,9 @@ rm $HOME/.vimrc
 rm $HOME/.gemrc
 rm $HOME/.osx
 rm -rf $HOME/.vim
+rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
+rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+sudo rm /usr/bin/subl
 
 echo "\033[0;34m------------------------------------------------------------\033[0;0m"
 echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
@@ -23,6 +26,9 @@ ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -s $HOME/.dotfiles/vim/config $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
+ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
+ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl
 
 
 

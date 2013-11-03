@@ -4,7 +4,7 @@ For setting up development environment on new Macs.
 
 *Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk. The `bin/` folder is not stable, don't use any of the files inside.
 
-You are welcome to give tips on how can I improve this. 
+You are welcome to give tips on how can I improve this.
 
 ## Tools:
 
@@ -31,7 +31,7 @@ You are welcome to give tips on how can I improve this.
 * [Alfred](http://www.alfredapp.com/)
 * [AppCleaner](http://www.freemacsoft.net/appcleaner/)
 * [Dropbox](http://dropbox.com)
-* [CloudApp](https://itunes.apple.com/us/app/cloud/id417602904?mt=12)
+* ~~[CloudApp](https://itunes.apple.com/us/app/cloud/id417602904?mt=12)~~
 * [VLC Player](http://www.videolan.org/vlc/index.html)
 * [Dash](https://itunes.apple.com/us/app/dash-docs-snippets/id458034879?mt=12)
 * [ImageAlpha](http://pngmini.com/)
@@ -43,7 +43,7 @@ You are welcome to give tips on how can I improve this.
 * [Wunderlist](https://itunes.apple.com/us/app/wunderlist-to-do-task-list/id410628904?mt=12)
 * [Limechat](http://limechat.net/mac/)
 * [Tweetbot](https://itunes.apple.com/us/app/tweetbot-for-twitter/id557168941?mt=12)
-* [XtraFinder](http://www.trankynam.com/xtrafinder/)
+* ~~[XtraFinder](http://www.trankynam.com/xtrafinder/)~~
 * [Transmit](http://panic.com/transmit/)
 * ~~[Codekit](http://incident57.com/codekit/)~~
 
@@ -75,7 +75,7 @@ afterward install Ruby like so
 ### Packages & Gems
 
 * Node:
-    * [NVM](https://github.com/creationix/nvm) 
+    * [NVM](https://github.com/creationix/nvm)
     * `npm i -g grunt-cli grunt-init` _`npm init` to create an empty package.json_
     * [Lo-Dash](http://lodash.com/)
     * `npm i -g imageoptim-cli`

@@ -41,7 +41,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG L Regular",
+	"font_face": "droid sans mono",
 	"font_options":
 	[
 		"no_bold",
@@ -72,7 +72,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Light 3.sublime-theme",
+	"theme": "Soda Dark 3.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
