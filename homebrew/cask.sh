@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Install apps
 brew tap phinze/homebrew-cask
 brew install brew-cask

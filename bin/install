@@ -1,39 +1,14 @@
 #!/bin/bash
+# curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/bin/install | sh
 
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-echo "\033[0;34m====== Cleaning the House. =================================\033[0;0m"
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+cd $HOME
+xcode-select --install
+git clone git@github.com:ahmedelgabri/dotfiles.git $HOME/.dotfiles
+ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)
+sh $HOME/.dotfiles/homebrew/brew.sh
+sh $HOME/.dotfiles/homebrew/cask.sh
+sh $HOME/.dotfiles/node/modules.sh
+sh $HOME/.dotfiles/bin/setup.sh
 
-rm $HOME/.gitignore
-rm $HOME/.gitconfig
-rm $HOME/.zshrc
-rm $HOME/.vimrc
-rm $HOME/.gemrc
-rm $HOME/.osx
-rm -rf $HOME/.vim
-rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
-rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-sudo rm /usr/bin/subl
-
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-
-ln -s $HOME/.dotfiles/zsh/zshrc.local $HOME/.zshrc
-ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
-ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
-ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
-ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
-ln -s $HOME/.dotfiles/vim/config $HOME/.vim
-ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
-ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
-ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl
-
-
-
-echo "\033[0;32m------------------------------------------------------------\033[0;0m"
-echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"
-echo "\033[0;32m------------------------------------------------------------\033[0;0m"
-
-source $HOME/.zshrc
+rbenv install 2.0.0p-247 && rbenv global 2.0.0p-247
+sh $HOME/.dotfiles/ruby/gems.sh
