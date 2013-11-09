@@ -1,7 +1,0 @@
-<snippet>
-    <content><![CDATA[
-// ${1:This is a basic comment}
-]]></content>
-    <tabTrigger>comm</tabTrigger>
-    <scope>source.scss, source.sass</scope>
-</snippet>

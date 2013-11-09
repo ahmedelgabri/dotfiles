@@ -26,6 +26,7 @@ alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
 
 # DEV
+alias grunt="grunt -v"
 alias bower="noglob bower"
 alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
 alias phpserver="php -S localhost:8080 && open http://localhost:8080"

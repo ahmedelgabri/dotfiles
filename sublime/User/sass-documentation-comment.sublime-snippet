@@ -6,13 +6,13 @@ $1
 $2
 
 Markup:
-$3
+    $3
 
 $4
 
 $5
 */
 ]]></content>
-    <tabTrigger>kss</tabTrigger>
+    <tabTrigger>sdoc</tabTrigger>
     <scope>source.sass, source.scss, source.css</scope>
 </snippet>
