@@ -10,5 +10,12 @@
 
     // Put your custom syntax rules here:
     "syntaxes": [
+        {
+            "name": "HTML (Django)",
+            "rules": [
+                {"file_name": ".*\\.html$"},
+                {"contains": "{{%.*%}}"}
+            ]
+        }
     ]
 }

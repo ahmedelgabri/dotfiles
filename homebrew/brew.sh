@@ -15,20 +15,7 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 brew install zsh
 echo "You need to sudo vim /etc/shells & add this /usr/local/bin/zsh to the end of the file. then run chsh -s /usr/local/bin/zsh"
 
-brew install wget
-brew install ack
-brew install git
-brew install node
-brew install tree
-brew install dnsmasq
-brew install mongodb
-brew install phantomjs
-brew install rbenv
-brew install rbenv-gem-rehash
-brew install reattach-to-user-namespace
-brew install ruby-build
-brew install tmux
-brew install the_silver_searcher
+brew install wget ack git node tree dnsmasq mongodb phantomjs rbenv rbenv-gem-rehash reattach-to-user-namespace ruby-build tmux the_silver_searcher python gdal geos postgis postgresql proj
 # brew install webkit2png
 # brew install imagemagick
 

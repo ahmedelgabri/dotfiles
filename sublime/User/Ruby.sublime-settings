@@ -2,6 +2,7 @@
 	"extensions":
 	[
 		"ru",
-		"lock"
+		"lock",
+		"Vagrantfile"
 	]
 }

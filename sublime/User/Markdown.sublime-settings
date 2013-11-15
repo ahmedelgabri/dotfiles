@@ -2,6 +2,6 @@
     "draw_centered": true,
     "word_wrap": true,
     "wrap_width": 80,
-    "color_scheme": "Packages/User/MarkdownEditor.tmTheme",
+    // "color_scheme": "Packages/User/MarkdownEditor.tmTheme",
     "spell_check": true
 }

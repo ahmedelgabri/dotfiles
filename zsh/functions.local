@@ -81,6 +81,10 @@ git_grep(){
   git lg --grep="$@"
 }
 
+gitwork(){
+    git config user.email "$1"
+}
+
 # Forked from https://gist.github.com/ethanmuller/4673740
 # @TODO: Clean it up a bit & understand it more!
 

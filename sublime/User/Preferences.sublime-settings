@@ -1,5 +1,6 @@
 {
 	"afn_insert_dimensions": false,
+    "afn_use_project_root": true,
 	"always_show_minimap_viewport": true,
 	"auto_complete_commit_on_tab": true,
 	"auto_complete_delay": 0,
@@ -7,7 +8,7 @@
 	[
 		{
 			"characters": "<",
-			"selector": "text.html"
+			"selector": "text.html, text.html.django"
 		},
 		{
 			"characters": ".",
@@ -52,7 +53,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
+		"anaconda"
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
