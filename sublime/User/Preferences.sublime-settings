@@ -1,6 +1,6 @@
 {
 	"afn_insert_dimensions": false,
-    "afn_use_project_root": true,
+	"afn_use_project_root": true,
 	"always_show_minimap_viewport": true,
 	"auto_complete_commit_on_tab": true,
 	"auto_complete_delay": 0,
@@ -22,12 +22,13 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_window_when_empty": true,
-	"color_scheme": "Packages/User/Solarized-official-mod-dark.tmTheme",
+	"color_scheme": "Packages/User/Solarized-(Dark)-md-support.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
-	"draw_white_space": "all",
+	"draw_white_space": "selection",
 	"enable_tab_scrolling": false,
+	"ensure_newline_at_eof_on_save": true,
 	"fade_fold_buttons": false,
 	"fallback_encoding": "UTF-8",
 	"file_exclude_patterns":
@@ -81,7 +82,7 @@
 		"patterns":
 		{
 			"CHANGED": "@CHANGED[\\s]*?:+(?P<changed>\\S.*)$",
-			"FIXME": "@FIX ME[\\s]*?:+(?P<fixme>\\S.*)$",
+			"FIXME": "@FIXME[\\s]*?:+(?P<fixme>\\S.*)$",
 			"NOTE": "@NOTE[\\s]*?:+(?P<note>.*)$",
 			"TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
 		}
