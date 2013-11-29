@@ -18,7 +18,13 @@ echo "\033[0;34m------------------------------------------------------------\033
 echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
 echo "\033[0;34m------------------------------------------------------------\033[0;0m"
 
-ln -s $HOME/.dotfiles/zsh/zshrc.local $HOME/.zshrc
+ln -s $HOME/.dotfiles/zsh/zprezto $HOME/.zprezto
+
+setopt EXTENDED_GLOB
+for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+  ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+done
+
 ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
 ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
 ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
