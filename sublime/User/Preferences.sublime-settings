@@ -72,6 +72,7 @@
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
+    "translate_tabs_to_spaces": true,
 	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,

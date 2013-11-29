@@ -48,7 +48,12 @@ You are welcome to give tips on how can I improve this.
 * ~~[Codekit](http://incident57.com/codekit/)~~
 
 ## Installation
-1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or download it directly from [Apple Developer website](https://developer.apple.com/downloads).
+<!--
+    curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/bin/install | sh -->
+
+1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or run this command if you are on OSX 10.9 Mavericks
+
+    xcode-select --install
 
 2- Install [Homebrew](http://mxcl.github.io/homebrew/)
 

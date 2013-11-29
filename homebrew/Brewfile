@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Make sure we’re using the latest Homebrew
 brew update
 
@@ -15,7 +13,14 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 brew install zsh
 echo "You need to sudo vim /etc/shells & add this /usr/local/bin/zsh to the end of the file. then run chsh -s /usr/local/bin/zsh"
 
-brew install wget ack git node tree dnsmasq mongodb phantomjs rbenv rbenv-gem-rehash reattach-to-user-namespace ruby-build tmux the_silver_searcher python gdal geos postgis postgresql proj
+# Updated rsync
+# brew tap homebrew/dupes
+# brew install rsync
+
+brew install wget ack git node tree dnsmasq mongodb phantomjs rbenv rbenv-gem-rehash ruby-build tmux the_silver_searcher
+
+# Python & work related stuff
+brew install python gdal geos postgis postgresql proj
 # brew install webkit2png
 # brew install imagemagick
 

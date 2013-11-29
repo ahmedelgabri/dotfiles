@@ -5,10 +5,12 @@ cd $HOME
 xcode-select --install
 git clone git@github.com:ahmedelgabri/dotfiles.git $HOME/.dotfiles
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)
-sh $HOME/.dotfiles/homebrew/brew.sh
+brew bundle $HOME/.dotfiles/homebrew/Brewfile
 sh $HOME/.dotfiles/homebrew/cask.sh
 sh $HOME/.dotfiles/node/modules.sh
 sh $HOME/.dotfiles/bin/setup.sh
 
 rbenv install 2.0.0p-247 && rbenv global 2.0.0p-247
 sh $HOME/.dotfiles/ruby/gems.sh
+
+echo "Make sure you generate SSH keys \for github, bitbucket \& other servers you use."
