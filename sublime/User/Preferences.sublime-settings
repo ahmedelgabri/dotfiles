@@ -41,7 +41,8 @@
 		".git",
 		".sass-cache",
 		"*.esproj",
-		"*.tiles"
+		"*.tiles",
+        "*.pyc"
 	],
 	"font_face": "droid sans mono",
 	"font_options":
@@ -54,6 +55,7 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"JavaScript & NodeJS Snippets",
 		"Vintage",
 		"anaconda"
 	],

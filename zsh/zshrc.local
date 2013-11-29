@@ -56,11 +56,3 @@ export PATH=$PATH:/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:/usr/local/share/npm/bin
 export PATH=$PATH:/usr/local/Cellar/git
-
-
-
-##############################################################
-# NVM
-##############################################################
-[[ -s /Users/Gabri/.nvm/nvm.sh ]] && . /Users/Gabri/.nvm/nvm.sh
-[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion

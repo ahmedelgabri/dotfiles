@@ -1,0 +1,3 @@
+{
+    "browsers": ["last 2 versions", "> 1%", "ie 8", "ios 6", "Android 4"]
+}

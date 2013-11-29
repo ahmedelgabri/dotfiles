@@ -8,12 +8,12 @@
 		    "style": "angle",
 		    "scope_exclude": ["string", "comment", "keyword.operator"],
 		    "language_filter": "whitelist",
-		    "language_list": ["HTML", "HTML 5", "XML", "PHP", "Handlebars", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+		    "language_list": ["HTML", "HTML 5", "XML", "PHP", "Handlebars", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "HTML (Django)"],
 		    "plugin_library": "bh_modules.tags",
 		    "enabled": true
 		}
     ],
 	"tag_mode": {
-	        "html": ["HTML", "HTML 5", "PHP", "Handlebars"]
+	        "html": ["HTML", "HTML 5", "PHP", "Handlebars", "HTML (Django)"]
 	 }
 }

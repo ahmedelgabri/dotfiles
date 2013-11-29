@@ -5,7 +5,7 @@
 	"installed_packages":
 	[
 		"AdvancedNewFile",
-		"Alignment",
+		"AlignTab",
 		"ApacheConf.tmLanguage",
 		"ApplySyntax",
 		"AutoFileName",
