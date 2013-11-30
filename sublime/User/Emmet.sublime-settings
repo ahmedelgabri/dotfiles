@@ -1,3 +1,21 @@
 {
-	"extensions_path": "~/.dotfiles/sublime/User/Emmet"
+    "snippets": {
+         "css": {
+            "snippets": {
+                "inc": "@include $1($2);",
+                "ext": "@extend $1;",
+                "imp": "@import '$1';",
+                "mix": "@mixin ${1:mixin-name}${2:(${3:$params})} {\n\t$4\n}"
+            }
+        }
+    },
+    "preferences": {
+        "bem.modifierSeparator": "--",
+    },
+
+    "syntaxProfiles": {
+        "html": {
+            "inline_break": 2
+        }
+    }
 }
