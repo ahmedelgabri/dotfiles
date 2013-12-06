@@ -16,6 +16,26 @@
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 
+# Node version
+node_info(){
+  if [[ -s /usr/local/bin/node ]] ; then
+    echo "%F{065}[`/usr/local/bin/node -v`]%{$reset_color%}"
+  fi
+}
+
+# Ruby version
+ruby_info(){
+    if [[ -s ~/.rvm/scripts/rvm ]] ; then
+      echo "%F{125}`~/.rvm/bin/rvm-prompt v`%{$reset_color%}"
+    else
+      if which rbenv &> /dev/null; then
+        echo "%F{125}[`rbenv version | sed -e "s/ (set.*$//"`]%{$reset_color%}"
+      else
+        echo "$EPS1"
+      fi
+    fi
+}
+
 # fastest possible way to check if repo is dirty
 prompt_pure_git_dirty() {
     # check if we're in a git repo
@@ -93,7 +113,7 @@ prompt_pure_setup() {
     [[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
 
     # prompt turns red if the previous command didn't exit with 0
-    PROMPT='%(?.%F{003}⚡︎.%F{red}⚡︎)%f '
+    PROMPT='%(?.%F{003}.%F{red})⚡︎%f '
 }
 
 prompt_pure_setup "$@"

@@ -22,7 +22,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_window_when_empty": true,
-	"color_scheme": "Packages/User/Solarized-(Dark)-md-support.tmTheme",
+	"color_scheme": "Packages/User/Bongzilla.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -33,7 +33,8 @@
 	"fallback_encoding": "UTF-8",
 	"file_exclude_patterns":
 	[
-		".DS_Store"
+		".DS_Store",
+		"*.pyc"
 	],
 	"folder_exclude_patterns":
 	[
@@ -41,10 +42,9 @@
 		".git",
 		".sass-cache",
 		"*.esproj",
-		"*.tiles",
-        "*.pyc"
+		"*.tiles"
 	],
-	"font_face": "droid sans mono",
+	"font_face": "source code pro",
 	"font_options":
 	[
 		"no_bold",
@@ -55,9 +55,10 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"anaconda",
 		"JavaScript & NodeJS Snippets",
-		"Vintage",
-		"anaconda"
+		"Nodejs",
+		"Vintage"
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
@@ -72,13 +73,12 @@
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
-    "translate_tabs_to_spaces": true,
 	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Dark 3.sublime-theme",
+	"theme": "Flatland Dark.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,
@@ -90,6 +90,7 @@
 			"TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
 		}
 	},
+	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,

@@ -13,7 +13,9 @@
 		"Better CoffeeScript",
 		"Bower",
 		"BracketHighlighter",
+		"Codeivate",
 		"DashDoc",
+		"Dayle Rees Color Schemes",
 		"Djaneiro",
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
@@ -38,6 +40,8 @@
 		"SublimeTODO",
 		"Syntax Highlighting for Sass",
 		"TernJS",
-		"Theme - Soda"
+		"Theme - Flatland",
+		"Theme - Soda",
+		"Tomorrow Color Schemes"
 	]
 }
