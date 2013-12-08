@@ -22,7 +22,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_window_when_empty": true,
-	"color_scheme": "Packages/User/Bongzilla.tmTheme",
+	"color_scheme": "Packages/User/Solarized-(Dark)-md-support.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -44,7 +44,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "source code pro",
+	"font_face": "droid sans mono",
 	"font_options":
 	[
 		"no_bold",
@@ -55,10 +55,10 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"anaconda",
-		"JavaScript & NodeJS Snippets",
 		"Nodejs",
-		"Vintage"
+		"Vintage",
+		"JavaScript & NodeJS Snippets",
+		"anaconda"
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
@@ -78,7 +78,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Flatland Dark.sublime-theme",
+	"theme": "Soda Dark 3.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,

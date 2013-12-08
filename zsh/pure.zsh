@@ -113,7 +113,7 @@ prompt_pure_setup() {
     [[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%n@%m '
 
     # prompt turns red if the previous command didn't exit with 0
-    PROMPT='%(?.%F{003}.%F{red})⚡︎%f '
+    PROMPT='%(?.%F{003}.%F{red})❯%f '
 }
 
 prompt_pure_setup "$@"
