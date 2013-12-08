@@ -8,6 +8,7 @@ function installcask() {
     brew cask install --appdir="~/Applications" "${@}" 2> /dev/null
 }
 
+installcask macvim
 installcask dropbox
 installcask google-chrome
 installcask google-chrome-canary

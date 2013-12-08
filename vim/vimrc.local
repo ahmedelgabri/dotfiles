@@ -119,7 +119,8 @@ vnoremap . :norm.<CR>
 nnoremap <F3> :set invhlsearch hlsearch?<CR>
 
 " Setting font & status bar
-set guifont=inconsolata:h16
+set guifont=droid\ sans\ mono:h14
+set linespace=4             " line height
 set statusline=
 set statusline +=%1*\ %n\ %*            "buffer number
 set statusline +=%5*%{&ff}%*            "file format
