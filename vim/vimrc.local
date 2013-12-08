@@ -9,13 +9,19 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" " required! 
+" " required!
 Bundle 'gmarik/vundle'
 
 " Other Bundles
 
 Bundle 'scrooloose/nerdtree'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'bling/vim-airline'
+Bundle 'Yggdroot/indentLine'
+Bundle 'majutsushi/tagbar'
 
 " enable syntax highlighting
 syntax enable

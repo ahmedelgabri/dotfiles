@@ -18,6 +18,7 @@ echo "You need to sudo vim /etc/shells & add this /usr/local/bin/zsh to the end 
 # brew install rsync
 
 brew install wget ack git node tree dnsmasq mongodb phantomjs rbenv rbenv-gem-rehash ruby-build tmux the_silver_searcher
+brew install macvim --override-system-vim
 
 # Python & work related stuff
 brew install python gdal geos postgis postgresql proj
