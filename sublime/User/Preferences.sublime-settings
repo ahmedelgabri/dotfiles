@@ -44,7 +44,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "droid sans mono",
+	"font_face": "Meslo LG L Regular",
 	"font_options":
 	[
 		"no_bold",
@@ -56,14 +56,15 @@
 	"ignored_packages":
 	[
 		"Nodejs",
-		"Vintage",
 		"JavaScript & NodeJS Snippets",
-		"anaconda"
+		"anaconda",
+		"Vintage",
+		"codeivate-st"
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
-	"line_padding_bottom": 3,
-	"line_padding_top": 3,
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
 	"open_files_in_new_window": false,
 	"rulers":
 	[
