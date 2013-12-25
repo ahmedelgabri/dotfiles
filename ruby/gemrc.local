@@ -5,4 +5,4 @@ gem: --no-ri --no-rdoc
 :sources:
 - https://rubygems.org/
 :update_sources: true
-:verbose: true
+:verbose: false
