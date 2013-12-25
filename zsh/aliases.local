@@ -28,8 +28,6 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 # DEV
 alias gruntv="grunt -v"
 alias bower="noglob bower"
-alias server="open http://localhost:8000 && python -m SimpleHTTPServer"
-alias phpserver="php -S localhost:8080 && open http://localhost:8080"
 alias sp="sass --watch --style compressed --precision 3"
 alias sd="sass --watch --style expanded --precision 3 --sourcemap"
 alias cs="sass --compass --sourcemap --watch"
