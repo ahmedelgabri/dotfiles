@@ -26,10 +26,9 @@ Bundle 'majutsushi/tagbar'
 " enable syntax highlighting
 syntax enable
 
-if (&t_Co == 256 || has('gui_running'))
-    colorscheme solarized
-    set background=dark
-endif
+colorscheme solarized
+set background=dark
+let g:solarized_termtrans=1
 
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`

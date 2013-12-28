@@ -55,16 +55,17 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Nodejs",
 		"JavaScript & NodeJS Snippets",
-		"anaconda",
-		"codeivate-st",
+		"Nodejs",
 		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_active"
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
-	"line_padding_bottom": 1,
-	"line_padding_top": 1,
+	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
 	"rulers":
 	[
@@ -74,7 +75,6 @@
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
-	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
