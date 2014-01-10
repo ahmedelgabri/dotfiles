@@ -22,7 +22,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_window_when_empty": true,
-	"color_scheme": "Packages/User/Solarized-(Dark)-md-support.tmTheme",
+	"color_scheme": "Packages/User/Solarized-(Dark)-md-support (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -44,7 +44,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG L Regular",
+	"font_face": "Inconsolata-dz for Powerline",
 	"font_options":
 	[
 		"no_bold",
@@ -55,8 +55,6 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"JavaScript & NodeJS Snippets",
-		"Nodejs",
 		"Vintage"
 	],
 	"indent_guide_options":
@@ -67,11 +65,6 @@
 	"indent_to_bracket": true,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
-	"rulers":
-	[
-		80,
-		120
-	],
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
@@ -79,7 +72,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Dark 3.sublime-theme",
+	"theme": "Spacegray.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,

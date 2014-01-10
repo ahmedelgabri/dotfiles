@@ -14,8 +14,5 @@
     },
 
     "syntaxProfiles": {
-        "html": {
-            "inline_break": 2
-        }
     }
 }

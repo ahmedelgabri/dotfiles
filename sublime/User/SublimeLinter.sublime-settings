@@ -1,111 +1,61 @@
 {
-    "sublimelinter": true,
-	 "sublimelinter_syntax_map":
-    {
-        "jQuery": "javascript"
-    },
-
-    "sublimelinter_executable_map":
-    {
-        "ruby": "/Users/Gabri/.rbenv/shims/ruby"
-    },
-    "sublimelinter_disable":
-    [
-        "objective-j",
-        "java",
-        "perl"
-    ],
-
-    "jshint_options":
-      {
-        /*
-         * ENVIRONMENTS
-         * =================
-         */
-
-        // Define globals exposed by modern browsers.
-        "browser": true,
-
-        // Define globals exposed by jQuery.
-        "jquery": true,
-
-        // Define globals exposed by Node.js.
-        "node": true,
-
-        /*
-         * ENFORCING OPTIONS
-         * =================
-         */
-
-        // Force all variable names to use either camelCase style or UPPER_CASE
-        // with underscores.
-        "camelcase": true,
-
-        // Prohibit use of == and != in favor of === and !==.
-        "eqeqeq": true,
-
-        // Suppress warnings about == null comparisons.
-        // "eqnull": true,
-
-        // Enforce tab width of 2 spaces.
-        "indent": 4,
-
-        // Prohibit use of a variable before it is defined.
-        "latedef": true,
-
-        // Require capitalized names for constructor functions.
-        "newcap": true,
-
-        // Enforce use of single quotation marks for strings.
-        "quotmark": "single",
-
-        // Prohibit trailing whitespace.
-        "trailing": true,
-
-        // Prohibit use of explicitly undeclared variables.
-        "undef": true,
-
-        // Warn when variables are defined but never used.
-        "unused": true,
-
-        // This option prohibits the use of bitwise operators such as ^ (XOR), | (OR) and others. Bitwise operators are very rare in JavaScript programs and quite often & is simply a mistyped &&.
-        "bitwise": true,
-
-        // requires you to always put curly braces around blocks in loops and conditionals.
-        "curly": true
-      },
-      "csslint_options":
-      {
-          "adjoining-classes": "warning",
-          "box-model": false,
-          "box-sizing": false,
-          "compatible-vendor-prefixes": "warning",
-          "display-property-grouping": true,
-          "duplicate-background-images": "warning",
-          "duplicate-properties": true,
-          "empty-rules": true,
-          "errors": true,
-          "fallback-colors": "warning",
-          "floats": "warning",
-          "font-faces": "warning",
-          "font-sizes": "warning",
-          "gradients": "warning",
-          "ids": true,
-          "import": true,
-          "important": "warning",
-          "known-properties": true,
-          "outline-none": "warning",
-          "overqualified-elements": true,
-          "qualified-headings": "warning",
-          "regex-selectors": "warning",
-          "rules-count": "warning",
-          "shorthand": "warning",
-          "star-property-hack": "warning",
-          "text-indent": "warning",
-          "underscore-property-hack": "warning",
-          "unique-headings": "warning",
-          "universal-selector": "warning",
-          "vendor-prefix": true,
-          "zero-units": true
-      }
+    "user": {
+        "debug": true,
+        "delay": 0.25,
+        "error_color": "D02000",
+        "gutter_theme": "Packages/SublimeLinter/gutter-themes/Koloria/Koloria.gutter-theme",
+        "gutter_theme_excludes": [],
+        "lint_mode": "background",
+        "linters": {
+            "coffee": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "csslint": {
+                "@disable": false,
+                "args": [],
+                "errors": "display-property-grouping,duplicate-properties,empty-rules,ids,import ,known-properties,overqualified-elements,vendor-prefix,zero-units",
+                "excludes": [],
+                "ignore": "box-model,box-sizing",
+                "warnings": "adjoining-classes,compatible-vendor-prefixes,duplicate-background-images,fallback-colors,floats,font-faces,font-sizes,gradients,important,outline-none,qualified-headings,regex-selectors,rules-count,shorthand,star-property-hack,text-indent,underscore-property-hack,unique-headings,universal-selector"
+            },
+            "htmltidy": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "jshint": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "ruby": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            }
+        },
+        "mark_style": "outline",
+        "no_column_highlights_line": false,
+        "paths": {
+            "linux": [],
+            "osx": [],
+            "windows": []
+        },
+        "python_paths": {
+            "linux": [],
+            "osx": [],
+            "windows": []
+        },
+        "rc_search_limit": 3,
+        "show_errors_on_save": true,
+        "show_marks_in_minimap": false,
+        "syntax_map": {
+            "HTML (Django)": "html",
+            "jQuery": "javascript"
+        },
+        "warning_color": "DDB700",
+        "wrap_find": true
+    }
 }
