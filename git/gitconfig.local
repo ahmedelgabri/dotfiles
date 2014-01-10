@@ -23,7 +23,6 @@
 	untracked = red
 
 [core]
-	editor = subl -w
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	excludesfile = /Users/Gabri/.gitignore
 	pager = less -r
