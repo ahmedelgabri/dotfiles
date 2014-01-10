@@ -17,7 +17,6 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'bling/vim-airline'
 Bundle 'Yggdroot/indentLine'
 Bundle 'majutsushi/tagbar'
-Bundle 'scrooloose/syntastic'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'Townk/vim-autoclose'
 Bundle 'chriskempson/vim-tomorrow-theme'
@@ -35,16 +34,15 @@ filetype plugin indent on
 " don't bother with vi compatibility
 set nocompatible
 
+colorscheme solarized
+set background=dark
+let g:solarized_termtrans=1
+
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 " let g:user_emmet_leader_key='<C-Z>'
-
-
-colorscheme solarized
-set background=dark
-let g:solarized_termtrans=1
 
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
