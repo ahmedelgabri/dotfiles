@@ -1,6 +1,9 @@
 # Make sure we’re using the latest Homebrew
 update
 
+# Upgrade any already-installed formulae
+upgrade
+
 # For brew-cask
 tap phinze/homebrew-cask
 tap caskroom/fonts
@@ -74,9 +77,6 @@ cask install transmit
 cask install virtualbox
 cask install vlc
 echo "Put your license in Dash & Sublime. and Install Tweetbot & AppCleaner"
-
-# Upgrade any already-installed formulae
-upgrade
 
 # Remove outdated versions from the cellar
 cleanup

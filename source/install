@@ -1,14 +1,13 @@
 #!/bin/bash
-# curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/bin/install | sh
+# curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/source/install | sh
 
 cd $HOME
-xcode-select --install
+# xcode-select --install
 git clone https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
-ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)
+ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 brew bundle $HOME/.dotfiles/homebrew/Brewfile
-sh $HOME/.dotfiles/homebrew/cask.sh
-sh $HOME/.dotfiles/node/modules.sh
-sh $HOME/.dotfiles/bin/setup.sh
+sh $HOME/.dotfiles/node/packages.sh
+sh $HOME/.dotfiles/source/setup.sh
 
 rbenv install 2.0.0p-247 && rbenv global 2.0.0p-247
 sh $HOME/.dotfiles/ruby/gems.sh

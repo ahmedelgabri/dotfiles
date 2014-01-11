@@ -14,6 +14,7 @@ You are welcome to give tips on how can I improve this.
     * [Git](http://git-scm.com/)
     * [Nodejs](http://nodejs.org/) with [NPM](https://npmjs.org/)
     * [Ruby](http://www.ruby-lang.org/en/) using [rbenv](https://github.com/sstephenson/rbenv/) & [Ruby build](https://github.com/sstephenson/ruby-build)  & [Ruby Gems](http://rubygems.org)
+    * [Python](http://www.python.org/)
 * [PHP](http://php-osx.liip.ch/)
 
 ### Applications
@@ -43,57 +44,28 @@ You are welcome to give tips on how can I improve this.
 * [Wunderlist](https://itunes.apple.com/us/app/wunderlist-to-do-task-list/id410628904?mt=12)
 * [Limechat](http://limechat.net/mac/)
 * [Tweetbot](https://itunes.apple.com/us/app/tweetbot-for-twitter/id557168941?mt=12)
-* ~~[XtraFinder](http://www.trankynam.com/xtrafinder/)~~
 * [Transmit](http://panic.com/transmit/)
-* ~~[Codekit](http://incident57.com/codekit/)~~
 
 ## Installation
-<!--
-    curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/bin/install | sh -->
 
-1- Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or run this command if you are on OSX 10.9 Mavericks
+Change shell to `zsh`
 
-    xcode-select --install
+    $ chsh -s /bin/zsh
 
-2- Install [Homebrew](http://mxcl.github.io/homebrew/)
+Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or run this command if you are on OSX 10.9 Mavericks
 
-    ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)
+    $ xcode-select --install
 
-3- Install Homebrew packages needed.
+Install
 
-    brew install git node rbenv ruby-build rbenv-gem-rehash ack coreutils wget dnsmasq mongodb phantomjs
+    $ curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/source/install | sh
 
-afterward install Ruby like so
 
-    rbenv install 2.0.0p-0
-    rbenv global 2.0.0p-0
-
-4- Install [Prezto](https://github.com/sorin-ionescu/prezto) & Change the shel to ZSH
-
-    chsh -s /bin/zsh
-
-5- Clone the repo, symlink the files & install all the needed packages/gems/etc...
-
-    git clone https://github.com/ahmedelgabri/dotfiles.git .dotfiles
-    $ cd .dotfiles/ && ./bin/install
-
-### Packages & Gems
-
-* Node:
-    * [NVM](https://github.com/creationix/nvm)
-    * `npm i -g grunt-cli grunt-init` _`npm init` to create an empty package.json_
-    * [Lo-Dash](http://lodash.com/)
-    * `npm i -g imageoptim-cli`
-    * `npm i -g bower`
-
-* Ruby:
-    * `gem install sass jekyll compass`
 
 ---
 
 #### TODO
 
-* Add Apache & dnsmasq config
 * Document PHP & MySQL
 
 
