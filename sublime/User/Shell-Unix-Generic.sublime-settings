@@ -4,6 +4,8 @@
 		".zshrc",
 		"zsh-theme",
 		".zshrc",
-		"local"
+		"local",
+		"Brewfile",
+		"zshenv"
 	]
 }
