@@ -10,6 +10,8 @@ rm $HOME/.zshrc
 rm $HOME/.vimrc
 rm $HOME/.gemrc
 rm $HOME/.osx
+rm $HOME/.pythonrc.py
+rm $HOME/.pip.conf
 rm -rf $HOME/.vim
 rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
 rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
@@ -28,14 +30,14 @@ done
 ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
 ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
 ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
+ln -s $HOME/.dotfiles/python/pythonrc.py $HOME/.pythonrc.py
+ln -s $HOME/.dotfiles/python/pip.conf $HOME/.pip.conf
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -s $HOME/.dotfiles/vim/config $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 
-sudo rm /usr/bin/subl
-sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl
 
 echo "\033[0;32m------------------------------------------------------------\033[0;0m"
 echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"

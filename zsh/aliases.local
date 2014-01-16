@@ -17,7 +17,7 @@ alias KABOOM="gem update; gem cleanup; brew update; brew upgrade; brew cleanup; 
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
-alias cat="pygmentize -O style=emacs -f console256 -g"
+alias catc="pygmentize -O style=emacs -f console256 -g"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
@@ -28,6 +28,7 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 # DEV
 alias gruntv="grunt -v"
 alias bower="noglob bower"
+alias npmls="npm list --depth=0 "
 alias sp="sass --watch --style compressed --precision 3"
 alias sd="sass --watch --style expanded --precision 3 --sourcemap"
 alias cs="sass --compass --sourcemap --watch"
@@ -36,3 +37,5 @@ alias git="hub"
 alias undopush="git push -f origin HEAD^:master"
 alias postgresup="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
 alias postgresdown="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
+alias runserver='python manage.py runserver'
+alias syncdb='python manage.py syncdb'

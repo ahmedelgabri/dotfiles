@@ -36,6 +36,12 @@ ruby_info(){
     fi
 }
 
+virtualenv_prompt_info(){
+  if [[ -n $VIRTUAL_ENV ]]; then
+    printf "[%s]" ${${VIRTUAL_ENV}:t}
+  fi
+}
+
 # fastest possible way to check if repo is dirty
 prompt_pure_git_dirty() {
     # check if we're in a git repo
@@ -75,7 +81,7 @@ prompt_pure_precmd() {
     # git info
     vcs_info
 
-    local prompt_pure_preprompt='\n%F{blue}%~%F{240}$vcs_info_msg_0_`prompt_pure_git_dirty` $prompt_pure_username%f %F{yellow}`prompt_pure_cmd_exec_time`%f'
+    local prompt_pure_preprompt='\n%F{blue}%~%F{240}$vcs_info_msg_0_`prompt_pure_git_dirty` %F{009}`virtualenv_prompt_info`$prompt_pure_username%f %F{yellow}`prompt_pure_cmd_exec_time`%f'
     print -P $prompt_pure_preprompt
 
     # check async if there is anything to pull
