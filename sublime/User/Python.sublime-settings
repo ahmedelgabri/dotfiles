@@ -4,5 +4,10 @@
         "py"
     ],
     "tab_size": 2,
-    "auto_complete_triggers": [{"selector": "source.python - string - comment - constant.numeric", "characters": "."}]
+    "auto_complete_triggers": [{"selector": "source.python - string - comment - constant.numeric", "characters": "."}],
+    "rulers":
+        [
+            80,
+            120
+        ]
 }
