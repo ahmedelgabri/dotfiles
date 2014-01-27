@@ -75,12 +75,13 @@ readline.set_history_length(300)
 def savehist():
     readline.write_history_file(HISTFILE)
 
+readline.parse_and_bind("tab: complete")
 atexit.register(savehist)
 
 # Enable Color Prompts
 ######################
 
-sys.ps1 = '%s>>> %s' % (_c['Green'], _c['Normal'])
+sys.ps1 = '%s❯%s❯%s❯ %s' % (_c['Red'], _c['Yellow'], _c['Green'], _c['Normal'])
 sys.ps2 = '%s... %s' % (_c['Red'], _c['Normal'])
 
 # Enable Pretty Printing for stdout
