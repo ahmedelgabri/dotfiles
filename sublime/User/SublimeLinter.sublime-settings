@@ -65,7 +65,7 @@
 				]
 			}
 		},
-		"mark_style": "outline",
+		"mark_style": "stippled underline",
 		"no_column_highlights_line": false,
 		"paths":
 		{
@@ -98,7 +98,12 @@
 		"syntax_map":
 		{
 			"HTML (Django)": "html",
-			"jQuery": "javascript"
+			"html (django)": "html",
+			"html (rails)": "html",
+			"html 5": "html",
+			"jQuery": "javascript",
+			"php": "html",
+			"python django": "python"
 		},
 		"warning_color": "DDB700",
 		"wrap_find": true
