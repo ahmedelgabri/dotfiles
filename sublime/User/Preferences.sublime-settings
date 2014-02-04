@@ -55,9 +55,9 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
+		"SublimeLinter-csslint",
 		"SublimeLinter-coffee",
-		"SublimeLinter-csslint"
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
@@ -67,6 +67,11 @@
 	"indent_to_bracket": true,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
+	"rulers":
+	[
+		80,
+		100
+	],
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,

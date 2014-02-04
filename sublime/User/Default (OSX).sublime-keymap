@@ -4,5 +4,6 @@
     {"keys": ["super+f"], "command":  "show_panel", "args": {"panel": "replace"}},
     {"keys": ["super+ctrl+w"], "command":  "close_workspace"},
     { "keys": ["command+v"], "command":"paste_and_indent" },
-    { "keys": ["command+shift+v"], "command":"paste" }
+    { "keys": ["command+shift+v"], "command":"paste" },
+    { "keys": ["super+k", "super+z"], "command": "distraction_free_window" }
 ]
