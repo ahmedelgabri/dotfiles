@@ -33,9 +33,13 @@ alias sp="sass --watch --style compressed --precision 3"
 alias sd="sass --watch --style expanded --precision 3 --sourcemap"
 alias cs="sass --compass --sourcemap --watch"
 alias apache="sudo apachectl "
-alias git="hub"
-alias undopush="git push -f origin HEAD^:master"
 alias postgresup="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
 alias postgresdown="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
 alias runserver='python manage.py runserver'
 alias syncdb='python manage.py syncdb'
+alias todo="ag @TODO "
+
+# Git
+alias git="hub"
+alias ghere="git init && git add . && git commit -m'Initial commit'"
+alias undopush="git push -f origin HEAD^:master"
