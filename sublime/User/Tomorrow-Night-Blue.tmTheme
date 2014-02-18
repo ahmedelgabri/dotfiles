@@ -5,59 +5,59 @@
 	<key>comment</key>
 	<string>http://chriskempson.com</string>
 	<key>name</key>
-	<string>Tomorrow Night - Eighties</string>
+	<string>Tomorrow Night - Blue</string>
 	<key>settings</key>
 	<array>
 		<dict>
 			<key>settings</key>
 			<dict>
 				<key>background</key>
-				<string>#2D2D2D</string>
+				<string>#002451</string>
 				<key>caret</key>
-				<string>#CCCCCC</string>
+				<string>#FFFFFF</string>
 				<key>foreground</key>
-				<string>#CCCCCC</string>
+				<string>#FFFFFF</string>
 				<key>invisibles</key>
-				<string>#6A6A6A</string>
+				<string>#404F7D</string>
 				<key>lineHighlight</key>
-				<string>#393939</string>
+				<string>#00346E</string>
 				<key>selection</key>
-				<string>#515151</string>
+				<string>#003F8E</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>Comment</string>
 			<key>scope</key>
-			<string>comment, string.quoted.double.block.python</string>
+			<string>comment</string>
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#999999</string>
+				<string>#7285B7</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Foreground</string>
+			<string>Foreground, Operator</string>
 			<key>scope</key>
-			<string>keyword.operator.class, constant.other, source.php.embedded.line</string>
+			<string>keyword.operator.class, keyword.operator, constant.other, source.php.embedded.line</string>
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#CCCCCC</string>
+				<string>#FFFFFF</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Variable, String Link, Tag Name</string>
+			<string>Variable, String Link, Regular Expression, Tag Name, GitGutter deleted</string>
 			<key>scope</key>
-			<string>variable, support.other.variable, string.other.link, entity.name.tag, entity.other.attribute-name, meta.tag, declaration.tag</string>
+			<string>variable, support.other.variable, string.other.link, string.regexp, entity.name.tag, entity.other.attribute-name, meta.tag, declaration.tag, markup.deleted.git_gutter</string>
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#F2777A</string>
+				<string>#FF9DA4</string>
 			</dict>
 		</dict>
 		<dict>
@@ -68,9 +68,9 @@
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#F99157</string>
+				<string>#FFC58F</string>
 			</dict>
 		</dict>
 		<dict>
@@ -81,22 +81,22 @@
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#FFCC66</string>
+				<string>#FFEEAD</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>String, Symbols, Inherited Class, Markup Heading</string>
+			<string>String, Symbols, Inherited Class, Markup Heading, GitGutter inserted</string>
 			<key>scope</key>
-			<string>string, constant.other.symbol, entity.other.inherited-class, markup.heading</string>
+			<string>string, constant.other.symbol, entity.other.inherited-class, entity.name.filename, markup.heading, markup.inserted.git_gutter</string>
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#99CC99</string>
+				<string>#D1F1A9</string>
 			</dict>
 		</dict>
 		<dict>
@@ -107,20 +107,20 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#66CCCC</string>
+				<string>#99FFFF</string>
 			</dict>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Function, Special Method, Block Level</string>
+			<string>Function, Special Method, Block Level, GitGutter changed</string>
 			<key>scope</key>
-			<string>entity.name.function, meta.function-call, support.function, keyword.other.special-method, meta.block-level</string>
+			<string>entity.name.function, meta.function-call, support.function, keyword.other.special-method, meta.block-level, markup.changed.git_gutter</string>
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#6699CC</string>
+				<string>#BBDAFF</string>
 			</dict>
 		</dict>
 		<dict>
@@ -131,9 +131,9 @@
 			<key>settings</key>
 			<dict>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#CC99CC</string>
+				<string>#EBBBFF</string>
 			</dict>
 		</dict>
 		<dict>
@@ -144,11 +144,11 @@
 			<key>settings</key>
 			<dict>
 				<key>background</key>
-				<string>#F2777A</string>
+				<string>#F99DA5</string>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#CDCDCD</string>
+				<string>#FFFFFF</string>
 			</dict>
 		</dict>
 		<dict>
@@ -159,9 +159,9 @@
 			<key>settings</key>
 			<dict>
 				<key>background</key>
-				<string>#99CCCC</string>
+				<string>#BBDAFE</string>
 				<key>foreground</key>
-				<string>#CDCDCD</string>
+				<string>#FFFFFF</string>
 			</dict>
 		</dict>
 		<dict>
@@ -172,11 +172,11 @@
 			<key>settings</key>
 			<dict>
 				<key>background</key>
-				<string>#CC99CC</string>
+				<string>#EBBBFF</string>
 				<key>fontStyle</key>
-				<string />
+				<string></string>
 				<key>foreground</key>
-				<string>#CDCDCD</string>
+				<string>#FFFFFF</string>
 			</dict>
 		</dict>
 		<dict>
@@ -238,71 +238,10 @@
 				<string>#3e999f</string>
 			</dict>
 		</dict>
-		<dict>
-		  <key>name</key>
-		  <string>diff.deleted</string>
-		  <key>scope</key>
-		  <string>markup.deleted</string>
-		  <key>settings</key>
-		  <dict>
-		    <key>foreground</key>
-		    <string>#F92672</string>
-		  </dict>
-		</dict>
-		<dict>
-		  <key>name</key>
-		  <string>diff.inserted</string>
-		  <key>scope</key>
-		  <string>markup.inserted</string>
-		  <key>settings</key>
-		  <dict>
-		    <key>foreground</key>
-		    <string>#A6E22E</string>
-		  </dict>
-		</dict>
-		<dict>
-		  <key>name</key>
-		  <string>diff.changed</string>
-		  <key>scope</key>
-		  <string>markup.changed</string>
-		  <key>settings</key>
-		  <dict>
-		    <key>foreground</key>
-		    <string>#967EFB</string>
-		  </dict>
-		</dict>
-	<dict>
-            <key>name</key>
-            <string>SublimeLinter Error</string>
-            <key>scope</key>
-            <string>sublimelinter.mark.error</string>
-            <key>settings</key>
-            <dict>
-                <key>foreground</key>
-                <string>#D02000</string>
-            </dict>
-        </dict><dict>
-            <key>name</key>
-            <string>SublimeLinter Warning</string>
-            <key>scope</key>
-            <string>sublimelinter.mark.warning</string>
-            <key>settings</key>
-            <dict>
-                <key>foreground</key>
-                <string>#DDB700</string>
-            </dict>
-        </dict><dict>
-            <key>name</key>
-            <string>SublimeLinter Gutter Mark</string>
-            <key>scope</key>
-            <string>sublimelinter.gutter-mark</string>
-            <key>settings</key>
-            <dict>
-                <key>foreground</key>
-                <string>#FFFFFF</string>
-            </dict>
-        </dict></array>
+	</array>
 	<key>uuid</key>
-	<string>DE477E5B-BD4D-46B0-BF80-2EA32A2814D5</string>
+	<string>3F4BB232-3C3A-4396-99C0-06A9573715E9</string>
+  <key>colorSpaceName</key>
+  <string>sRGB</string>
 </dict>
 </plist>

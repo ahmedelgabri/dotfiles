@@ -55,9 +55,10 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"SublimeLinter-csslint",
 		"SublimeLinter-coffee",
-		"Vintage",
-		"SublimeLinter-csslint"
+		"Markdown",
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
@@ -75,12 +76,11 @@
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
-	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Dark 3.sublime-theme",
+	"theme": "Spacegray.sublime-theme",
 	"todo":
 	{
 		"case_sensitive": true,

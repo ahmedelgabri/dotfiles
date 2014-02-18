@@ -17,6 +17,7 @@
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
 		"EditorConfig",
+		"EJS",
 		"Emmet",
 		"Gist",
 		"GitGutter",
@@ -25,6 +26,7 @@
 		"Jade",
 		"Jinja2",
 		"jQuery",
+		"MarkdownEditing",
 		"MaxPane",
 		"Package Control",
 		"Stylus",
@@ -37,9 +39,7 @@
 		"SublimeTODO",
 		"Syntax Highlighting for Sass",
 		"TernJS",
-		"Theme - Numix",
 		"Theme - Soda",
-		"Theme - Spacegray",
-		"Tomorrow Color Schemes"
+		"Theme - Spacegray"
 	]
 }
