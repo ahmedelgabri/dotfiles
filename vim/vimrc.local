@@ -29,6 +29,7 @@ Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
 Bundle 'tpope/vim-surround'
 Bundle 'mileszs/ack.vim'
+Bundle 'reedes/vim-colors-pencil'
 
 filetype off
 syntax enable " enable syntax processing
@@ -37,9 +38,9 @@ filetype plugin indent on                                   " load filetype-spec
 
 " Colorscheme {{{
 
-colorscheme solarized
+colorscheme pencil
 set background=dark
-let g:solarized_termtrans=1
+"let g:solarized_termtrans=1
 " }}}
 
 " General configs {{{

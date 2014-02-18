@@ -17,5 +17,5 @@ indent_size = 4
 
 
 # Tab indentation
-[*.{coffee,rb,sass,jade,slim,haml,yaml,yml}]
+[*.{rb,sass,jade,slim,haml,yaml,yml}]
 indent_size = 2
