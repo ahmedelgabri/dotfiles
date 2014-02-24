@@ -20,24 +20,20 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 install zsh
 echo "You need to sudo vim /etc/shells & add this /usr/local/bin/zsh to the end of the file. then run chsh -s /usr/local/bin/zsh"
 
-# Updated rsync
-# tap homebrew/dupes
-# install rsync
-
 install wget
-isntall ack
-isntall git
-isntall node
-isntall tree
-isntall dnsmasq
-isntall mongodb
-isntall phantomjs
-isntall hub
-isntall rbenv
-isntall rbenv-gem-rehash
-isntall ruby-build
-isntall the_silver_searcher
+install git
+install node
+install tree
+install dnsmasq
+install mongodb
+install phantomjs
+install hub
+install rbenv
+install rbenv-gem-rehash
+install ruby-build
+install the_silver_searcher
 install macvim --override-system-vim
+install imagemagick
 
 # Python & work related stuff
 install python
