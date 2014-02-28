@@ -1,2 +1,9 @@
 Gist.sublime-settings
 * (SL).tmTheme
+Package Control.cache
+*.cache
+Evernote.*
+Package Control.ca-bundle
+Package Control.ca-list
+Package Control.last-run
+Package Control.system-ca-bundle
