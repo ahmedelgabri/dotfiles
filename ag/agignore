@@ -1,0 +1,14 @@
+log
+vendor
+tmp
+doc
+rdoc
+coverage
+Gemfile.lock
+dump
+solr
+.gitkeep
+.git
+*.min.*
+*.pyc
+*.map

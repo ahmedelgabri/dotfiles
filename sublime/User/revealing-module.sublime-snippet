@@ -1,0 +1,25 @@
+<snippet>
+    <content><![CDATA[
+${1:namespace}.${2:module} = (function(){
+    'use strict';
+
+    var init = function(){
+
+    };
+
+    var _events = function(){
+
+    };
+
+    var ${3:method} = function( ${4} ){
+        ${5}
+    };
+
+    return {
+        init: init
+    };
+})();
+]]></content>
+    <tabTrigger>module</tabTrigger>
+    <scope>source.js</scope>
+</snippet>
