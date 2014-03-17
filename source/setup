@@ -30,8 +30,8 @@ done
 ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
 ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
 ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
-ln -s $HOME/.dotfiles/python/pythonrc.py $HOME/.pythonrc.py
-ln -s $HOME/.dotfiles/python/pip.conf $HOME/.pip.conf
+ln -s $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
+ln -s $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -s $HOME/.dotfiles/vim/config $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc

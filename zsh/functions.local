@@ -172,7 +172,7 @@ explain() {
 
 # gitignore.io
 gi() {
-  curl http://gitignore.io/api/\$@ ;
+  curl http://www.gitignore.io/api/$@ ;
 }
 
 

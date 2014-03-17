@@ -22,7 +22,7 @@
 	],
 	"bold_folder_labels": true,
 	"caret_style": "wide",
-	"color_scheme": "Packages/User/Solarized-(Dark)-md-support (SL).tmTheme",
+	"color_scheme": "Packages/User/base16-ocean.dark (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -45,7 +45,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Droid Sans Mono",
+	"font_face": "Menlo Regular for Powerline",
 	"font_options":
 	[
 		"subpixel_antialias",
@@ -56,8 +56,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
-		"Markdown"
+		"Markdown",
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
@@ -65,8 +65,6 @@
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
-	"line_padding_bottom": 3,
-	"line_padding_top": 3,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
 	"rulers":
@@ -78,23 +76,11 @@
 	"scroll_speed": 5.0,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
-	"soda_classic_tabs": true,
 	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Soda Light 3.sublime-theme",
-	"todo":
-	{
-		"case_sensitive": true,
-		"patterns":
-		{
-			"CHANGED": "@CHANGED[\\s]*?:+(?P<changed>\\S.*)$",
-			"FIXME": "@FIXME[\\s]*?:+(?P<fixme>\\S.*)$",
-			"NOTE": "@NOTE[\\s]*?:+(?P<note>.*)$",
-			"TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
-		}
-	},
+	"theme": "Spacegray.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,

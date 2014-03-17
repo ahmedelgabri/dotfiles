@@ -22,21 +22,23 @@
 		"Handlebars",
 		"Jade",
 		"JavaScript & NodeJS Snippets",
+		"JavaScriptNext - ES6 Syntax",
 		"MarkdownEditing",
 		"MaxPane",
 		"Package Control",
 		"Pretty JSON",
 		"Pretty YAML",
+		"SideBarEnhancements",
 		"Stylus",
 		"SublimeLinter",
 		"SublimeLinter-coffeelint",
 		"SublimeLinter-csslint",
 		"SublimeLinter-jshint",
 		"SublimeLinter-ruby",
-		"SublimeTODO",
 		"Syntax Highlighting for Sass",
 		"TernJS",
 		"Theme - Soda",
-		"Theme - Spacegray"
+		"Theme - Spacegray",
+		"TodoReview"
 	]
 }
