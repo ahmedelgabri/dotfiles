@@ -1,6 +1,4 @@
 {
-	"afn_insert_dimensions": false,
-	"afn_use_project_root": true,
 	"always_show_minimap_viewport": true,
 	"atomic_save": false,
 	"auto_complete_commit_on_tab": true,
@@ -18,15 +16,28 @@
 	],
 	"binary_file_patterns":
 	[
-		"node_modules/*"
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.psd",
+		"*.swf",
+		"*.jar",
+		"*.zip"
 	],
 	"bold_folder_labels": true,
 	"caret_style": "wide",
-	"color_scheme": "Packages/User/base16-ocean.dark (SL).tmTheme",
+	"close_windows_when_empty": true,
+	"color_scheme": "Packages/User/base16-eighties.dark (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
-	"drag_text": false,
 	"draw_white_space": "selection",
 	"enable_tab_scrolling": false,
 	"ensure_newline_at_eof_on_save": true,
@@ -43,21 +54,17 @@
 		".git",
 		".sass-cache",
 		"*.esproj",
-		"*.tiles"
+		"*.tiles",
+		"node_modules"
 	],
-	"font_face": "Menlo Regular for Powerline",
-	"font_options":
-	[
-		"subpixel_antialias",
-		"no_round"
-	],
+	"font_face": "source code pro",
 	"font_size": 14.0,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Markdown",
-		"Vintage"
+		"Vintage",
+		"Markdown"
 	],
 	"indent_guide_options":
 	[
@@ -65,12 +72,16 @@
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
+	"original_color_scheme": "Packages/User/base16-eighties.dark (SL).tmTheme",
 	"rulers":
 	[
 		80,
-		100
+		100,
+		120
 	],
 	"scroll_past_end": true,
 	"scroll_speed": 5.0,
@@ -80,7 +91,7 @@
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Spacegray.sublime-theme",
+	"theme": "Spacegray Eighties.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,

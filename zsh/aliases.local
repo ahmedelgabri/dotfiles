@@ -24,6 +24,7 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
+alias t='todo.sh -d $HOME/Dropbox/Notes/todo/todo.cfg'
 
 # DEV
 alias gruntv="grunt -v"
@@ -37,7 +38,6 @@ alias postgresup="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/s
 alias postgresdown="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
 alias runserver='python manage.py runserver'
 alias syncdb='python manage.py syncdb'
-alias todo="ag @TODO "
 
 # Git
 alias git="hub"

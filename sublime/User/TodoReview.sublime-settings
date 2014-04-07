@@ -6,8 +6,8 @@
         "TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
     },
     "exclude_folders": [
-        ".git",
-        "node_modules"
+        "*.git*",
+        "*node_modules*"
     ],
     "exclude_files": [
         "*.py",

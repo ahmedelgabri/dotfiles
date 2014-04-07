@@ -1,6 +1,8 @@
 {
     "pep8_ignore":[
         "E111",
-        "E221" // Multiple spaces before/after =
+        "E221", // Multiple spaces before/after =
+        "E501", // 80 chars length
+        "E251"
     ]
 }
