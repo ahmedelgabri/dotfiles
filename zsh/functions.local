@@ -85,48 +85,6 @@ gitwork(){
     git config user.email "$1"
 }
 
-# Forked from https://gist.github.com/ethanmuller/4673740
-# @TODO: Clean it up a bit & understand it more!
-
-blank_init() {
-  if [[ $# != 1 ]]; then
-    echo -e "$fg[red] Please specify a project name.$reset_color"
-    echo -e "Usage: init project-name\n"
-  else
-    if ! type "ruby" > /dev/null; then
-      echo -e "$fg[red] Please install Ruby:$reset_color"
-      echo "http://www.ruby-lang.org/en/downloads/"
-    else
-      if ! type "npm" > /dev/null; then
-        echo -e "$fg[red] Please install Node:$reset_color"
-        echo "http://nodejs.org/download/ or 'brew install node' if you have homebrew installed"
-      else
-        if ! type "grunt" > /dev/null; then
-          echo -e "$fg[red] Please install grunt-cli:$reset_color"
-          echo "npm install grunt-cli"
-        else
-          echo -e "$fg[yellow] Downloading Blank$reset_color\n"
-          curl -s -S -O -L https://github.com/ahmedelgabri/Blank/archive/master.zip;
-          echo -e "$fg[green] Download finished.$reset_color\n"
-          echo -e "$fg[yellow] Setting up project config files.$reset_color\n"
-          unzip -qq master.zip;
-          rm master.zip;
-          mv Blank-master $1
-          sed -i.bak "s/Project-Name/$1/g" $1/package.json;
-          rm $1/package.json.bak;
-          # sed -i.bak "s/Project-Name/$1/g" $1/.rvmrc;
-          # rm $1/.rvmrc.bak;
-          cd $1
-          npm install;
-          grunt -v && open http://localhost:9000;
-          # bundle;
-          echo -e "$fg[green] Your project is all ready to go. Enjoy$reset_color\n"
-        fi
-      fi
-    fi
-  fi
-}
-
 # Start an HTTP server from a directory, optionally specifying the port
 # Works like this "server <LANG>(default python simple server) <PORT>"
 server() {
@@ -229,3 +187,7 @@ github-create() {
   git push -u origin master > /dev/null 2>&1
   echo " done."
 }
+
+bdeps() {
+    brew list | while read cask; do echo -n "\e[1;34m$cask ->\e[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+};
