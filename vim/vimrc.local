@@ -1,37 +1,6 @@
 " Vundle {{{
 "-----------------
-" set up Vundle,
-" https://github.com/gmarik/vundle
-"-----------------
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle
-"  required!
-Bundle 'gmarik/vundle'
-
-" Other Bundles
-
-Bundle 'scrooloose/nerdtree'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'editorconfig/editorconfig-vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'bling/vim-airline'
-Bundle 'Yggdroot/indentLine'
-Bundle 'majutsushi/tagbar'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Townk/vim-autoclose'
-Bundle 'chriskempson/vim-tomorrow-theme'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'mattn/emmet-vim'
-Bundle 'mattn/webapi-vim'
-Bundle 'mattn/gist-vim'
-Bundle 'tpope/vim-surround'
-Bundle 'mileszs/ack.vim'
-Bundle 'reedes/vim-colors-pencil'
-Bundle 'rizzatti/funcoo.vim'
-Bundle 'rizzatti/dash.vim'
+execute pathogen#infect()
 
 filetype off
 syntax enable " enable syntax processing
@@ -56,6 +25,7 @@ set softtabstop=4                                            " insert mode tab a
 set expandtab                                                " expand tabs to spaces
 set number                                                   " show line numbers
 set showcmd                                                  " show command in bottom bar
+set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
 
 set wildmenu                                                 " show a navigable menu for tab completion
 set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
@@ -71,6 +41,7 @@ set showmatch                                                " highlight matchin
 "-----------------
 set incsearch                                                " search as characters are entered
 set hlsearch                                                 " highlight matches
+set ignorecase                                               " Ignore case in search
 " Highlight search results by default
 " nnoremap <F3> :set invhlsearch hlsearch?<CR>
 " turn off search highlight
@@ -93,29 +64,27 @@ set foldmethod=indent                                        " fold based on ind
 nnoremap gV `[v`]
 
 " Other
-" @TODO: Cleanup.
+" TODO: Cleanup.
 "-----------------
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
-set backspace=2                                              " Fix broken backspace in some setups
-set backupcopy=yes                                           " see :help crontab
+"set backspace=2                                              " Fix broken backspace in some setups
+"set backupcopy=yes                                           " see :help crontab
 set clipboard=unnamed                                        " yank and paste with the system clipboard
 set directory-=.                                             " don't store swapfiles in the current directory
 set encoding=utf-8
-set ignorecase                                               " case-insensitive search
 set laststatus=2                                             " always show statusline
 set list                                                     " show trailing whitespace
-set listchars=tab:▸\ ,eol:¬
+set listchars=tab:.\ ,trail:·,nbsp:_
 set ruler                                                    " show where you are
-set scrolloff=3                                              " show context above/below cursorline
-set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
+set scrolloff=2                                              " show context above/below cursorline
 set smartcase                                                " case-sensitive search if any caps
-set expandtab
 set smartindent
 set noswapfile
 set showmode
 set hidden
-set visualbell
+set vb                                                       " Visual bell
+set mouse=a                                                  " Enable mouse support
 set ttyfast
 set relativenumber
 set wrap
@@ -124,7 +93,6 @@ set formatoptions=qrn1
 set colorcolumn=85
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
-set showmode
 :set spell                                                 " Spell check
 
 hi clear SpellBad
@@ -138,8 +106,6 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-nmap <leader>d :NERDTreeToggle<CR>
-nmap <leader>f :NERDTreeFind<CR>
 map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 inoremap jj <ESC>
 
@@ -156,11 +122,6 @@ let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 " let g:user_emmet_leader_key='<C-Z>'
-
-" Make the nerdtree a bit wider
-let g:NERDTreeWinSize = 30
-let NERDTreeShowHidden=1
-let g:NERDSpaceDelims=1
 
 " CtrlP settings
 let g:ctrlp_match_window = 'bottom,order:ttb'

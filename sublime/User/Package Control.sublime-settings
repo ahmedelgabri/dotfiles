@@ -11,7 +11,6 @@
 		"Better CoffeeScript",
 		"BracketHighlighter",
 		"ColorPicker",
-		"DashDoc",
 		"Djaneiro",
 		"DocBlockr",
 		"Dotfiles Syntax Highlighting",
@@ -37,6 +36,8 @@
 		"SublimeLinter-ruby",
 		"Syntax Highlighting for Sass",
 		"TernJS",
+		"Theme - Augmented Reaction",
+		"Theme - Cyanide",
 		"Theme - Soda",
 		"Theme - Spacegray",
 		"TodoReview"

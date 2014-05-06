@@ -1,0 +1,51 @@
+[submodule "zsh/zprezto"]
+    path = zsh/zprezto
+    url = git@github.com:ahmedelgabri/prezto.git
+[submodule "zsh/z"]
+    path = zsh/z
+    url = git@github.com:rupa/z.git
+[submodule "vim/.vim/bundle/ack.vim"]
+	path = vim/.vim/bundle/ack.vim
+	url = git@github.com:mileszs/ack.vim.git
+[submodule "vim/.vim/bundle/ctrlp.vim"]
+    path = vim/.vim/bundle/ctrlp.vim
+    url = git@github.com:kien/ctrlp.vim.git
+[submodule "vim/.vim/bundle/editorconfig-vim"]
+    path = vim/.vim/bundle/editorconfig-vim
+    url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule "vim/.vim/bundle/emmet-vim"]
+    path = vim/.vim/bundle/emmet-vim
+    url = git@github.com:mattn/emmet-vim.git
+[submodule "vim/.vim/bundle/gist-vim"]
+    path = vim/.vim/bundle/gist-vim
+    url = git@github.com:mileszs/mattn/gist-vim.git
+[submodule "vim/.vim/bundle/syntastic"]
+    path = vim/.vim/bundle/syntastic
+    url = git@github.com:scrooloose/syntastic.git
+[submodule "vim/.vim/bundle/tagbar"]
+    path = vim/.vim/bundle/tagbar
+    url = git@github.com:majutsushi/tagbar.git
+[submodule "vim/.vim/bundle/vim-airline"]
+    path = vim/.vim/bundle/vim-airline
+    url = git@github.com:bling/vim-airline.git
+[submodule "vim/.vim/bundle/vim-autoclose"]
+    path = vim/.vim/bundle/vim-autoclose
+    url = git@github.com:Townk/vim-autoclose.git
+[submodule "vim/.vim/bundle/vim-coffee-script"]
+    path = vim/.vim/bundle/vim-coffee-script
+    url = git@github.com:kchmck/vim-coffee-script.git
+[submodule "vim/.vim/bundle/vim-colors-pencil"]
+    path = vim/.vim/bundle/vim-colors-pencil
+    url = git@github.com:reedes/vim-colors-pencil.git
+[submodule "vim/.vim/bundle/vim-colors-solarized"]
+    path = vim/.vim/bundle/vim-colors-solarized
+    url = git@github.com:altercation/vim-colors-solarized.git
+[submodule "vim/.vim/bundle/vim-surround"]
+    path = vim/.vim/bundle/vim-surround
+    url = git@github.com:tpope/vim-surround.git
+[submodule "vim/.vim/bundle/vim-tomorrow-theme"]
+    path = vim/.vim/bundle/vim-tomorrow-theme
+    url = git@github.com:chriskempson/vim-tomorrow-theme.git
+[submodule "vim/.vim/bundle/webapi-vim"]
+    path = vim/.vim/bundle/webapi-vim
+    url = git@github.com:mattn/webapi-vim.git
