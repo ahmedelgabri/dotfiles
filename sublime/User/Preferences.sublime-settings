@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/base16-eighties.dark (SL).tmTheme",
+	"color_scheme": "Packages/User/base16-ocean.dark (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -62,8 +62,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
-		"Markdown"
+		"Markdown",
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
@@ -75,7 +75,6 @@
 	"line_padding_top": 1,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
-	"original_color_scheme": "Packages/User/base16-eighties.dark (SL).tmTheme",
 	"rulers":
 	[
 		80,
@@ -86,14 +85,14 @@
 	"scroll_speed": 5.0,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
-	"soda_folder_icons": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Spacegray Eighties.sublime-theme",
+	"theme": "Spacegray.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,
-	"word_wrap": true
+	"word_wrap": true,
+	"word_wrap_width": 120
 }
