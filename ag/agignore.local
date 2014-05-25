@@ -12,3 +12,4 @@ solr
 *.min.*
 *.pyc
 *.map
+node_modules

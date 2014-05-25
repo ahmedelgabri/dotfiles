@@ -85,6 +85,16 @@ gitwork(){
     git config user.email "$1"
 }
 
+
+# Uninstall all Ruby gems
+# http://stackoverflow.com/questions/8095209/uninstall-all-installed-gems-in-osx
+
+uninstall_gems(){
+    for i in `gem list --no-versions`;
+        do gem uninstall -aIx $i;
+    done
+}
+
 # Start an HTTP server from a directory, optionally specifying the port
 # Works like this "server <LANG>(default python simple server) <PORT>"
 server() {
