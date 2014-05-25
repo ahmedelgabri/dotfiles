@@ -1,25 +1,44 @@
 " Vundle {{{
 "-----------------
-execute pathogen#infect()
-
+set nocompatible
 filetype off
-syntax enable " enable syntax processing
-filetype plugin indent on                                   " load filetype-specific indent files
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'bling/vim-airline'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'reedes/vim-colors-pencil'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tpope/vim-surround'
+Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'mattn/webapi-vim'
+
+call vundle#end()
+filetype plugin indent on
+syntax enable
 " }}}
 
 " Colorscheme {{{
-
-color pencil
+"let g:solarized_italic=0
+"let g:solarized_bold=0
+"let g:solarized_underline=0
+let g:solarized_visibility="low"
 set background=dark
-"let g:solarized_termtrans=1
+color solarized
 " }}}
 
 " General configs {{{
 
 " UI Configs
 "-----------------
-
-set nocompatible                                             " don't bother with vi compatibility
 set tabstop=4                                                " number of visual spaces per TAB
 set softtabstop=4                                            " insert mode tab and backspace, number of spaces in tab when editing
 set expandtab                                                " expand tabs to spaces
@@ -70,6 +89,11 @@ set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
 "set backspace=2                                              " Fix broken backspace in some setups
 "set backupcopy=yes                                           " see :help crontab
+" Start scrolling slightly before the cursor reaches an edge
+set scrolloff=3
+set sidescrolloff=5
+" Scroll sideways a character at a time, rather than a screen at a time
+set sidescroll=1
 set clipboard=unnamed                                        " yank and paste with the system clipboard
 set directory-=.                                             " don't store swapfiles in the current directory
 set encoding=utf-8
@@ -137,9 +161,9 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
-let g:airline_left_sep = '⮀'
+let g:airline_left_sep = ''
 let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
+let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '⮃'
 let g:airline_symbols.branch = '⭠'
 let g:airline_symbols.readonly = '⭤'
