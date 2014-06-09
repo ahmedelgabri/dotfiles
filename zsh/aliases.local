@@ -26,7 +26,7 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
-alias t='task'
+alias t='todo.sh'
 
 # DEV
 alias gruntv="grunt -v"

@@ -1,4 +1,4 @@
-" Vundle {{{
+
 "-----------------
 set nocompatible
 filetype off
@@ -20,22 +20,19 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'mattn/webapi-vim'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()
 filetype plugin indent on
 syntax enable
-" }}}
 
-" Colorscheme {{{
 "let g:solarized_italic=0
 "let g:solarized_bold=0
 "let g:solarized_underline=0
 let g:solarized_visibility="low"
 set background=dark
 color solarized
-" }}}
 
-" General configs {{{
 
 " UI Configs
 "-----------------
@@ -121,9 +118,8 @@ set pastetoggle=<F2>
 
 hi clear SpellBad
 hi SpellBad cterm=underline
-" }}}
 
-" Keyboard shortcuts {{{
+
 
 let mapleader = ','                                        " leader is comma
 map <C-h> <C-w>h
@@ -138,9 +134,8 @@ nnoremap <leader>s :mksession<CR>
 
 " Make dot work in visual mode
 vnoremap . :norm.<CR>
-" }}}
 
-" Plugins {{{
+
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:user_emmet_install_global = 0
@@ -155,23 +150,23 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 let g:ctrlp_use_cahcing = 0
 
 " Airline customization
-let g:airline_theme = 'base16'
+let g:airline_theme = 'solarized'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
+let g:airline_powerline_fonts = 1
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '⮃'
+let g:airline_right_sep = '⮂'
+let g:airline_left_alt_sep= '⮁'
+let g:airline_left_sep = '⮀'
 let g:airline_symbols.branch = '⭠'
 let g:airline_symbols.readonly = '⭤'
 let g:airline_symbols.linenr = '⭡'
 let g:airline_symbols.whitespace = 'Ξ'
-" }}}
 
-" Autogroups {{{
+
 
 augroup configgroup
     au!
@@ -203,18 +198,16 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
-" }}}
 
-" Backup {{{
+
 
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
-" }}}
 
-" Status bar {{{
+
 "
 "" Setting font & status bar
 set guifont=droid\ sans\ mono:h14
@@ -234,9 +227,8 @@ set linespace=4             " line height
 "hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
 "hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
 "hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
-"" }}}
+"
 
-" GUI {{{
 
 " Conditionals upon if a gui is running
 if has('gui_running')
@@ -250,9 +242,8 @@ else
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-" }}}
 
-" Custom functions {{{
+
 
 function! ClearRegisters()
     let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
@@ -286,6 +277,3 @@ function! <SID>StripTrailingWhitespaces()
     let @/=_s
     call cursor(l, c)
 endfunction
-" }}}
-
-" vim:foldmethod=marker:foldlevel=0
