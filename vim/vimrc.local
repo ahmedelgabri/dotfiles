@@ -143,11 +143,12 @@ autocmd FileType html,css EmmetInstall
 " let g:user_emmet_leader_key='<C-Z>'
 
 " CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
+let g:ctrlp_match_window = 'top,order:ttb'
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-let g:ctrlp_use_cahcing = 0
+let g:ctrlp_use_caching = 0
+let g:ctrlp_jump_to_buffer = 'Et'
+let g:ctrlp_open_new_file = 't'
+let g:ctrlp_open_multiple_files = 't'
 
 " Airline customization
 let g:airline_theme = 'solarized'
@@ -155,6 +156,9 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
 let g:airline_right_alt_sep = '⮃'
@@ -210,25 +214,7 @@ set writebackup
 
 "
 "" Setting font & status bar
-set guifont=droid\ sans\ mono:h14
-set linespace=4             " line height
-"set statusline=
-"set statusline +=%1*\ %n\ %*            "buffer number
-"set statusline +=%5*%{&ff}%*            "file format
-"set statusline +=%3*%y%*                "file type
-"set statusline +=%4*\ %<%F%*            "full path
-"set statusline +=%2*%m%*                "modified flag
-"set statusline +=%1*%=%5l%*             "current line
-"set statusline +=%2*/%L%*               "total lines
-"set statusline +=%1*%4v\ %*             "virtual column number
-"set statusline +=%2*0x%04B\ %*          "character under cursor
-"hi User1 ctermfg=51 ctermbg=21  guifg=#eea040 guibg=#222222
-"hi User2 ctermfg=51 ctermbg=21 guifg=#dd3333 guibg=#222222
-"hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
-"hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
-"hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
-"
-
+set guifont=Meslo\ LG\ S\ DZ:h14
 
 " Conditionals upon if a gui is running
 if has('gui_running')
