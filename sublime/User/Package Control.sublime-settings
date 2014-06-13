@@ -32,6 +32,7 @@
 		"SublimeLinter",
 		"SublimeLinter-coffeelint",
 		"SublimeLinter-csslint",
+		"SublimeLinter-jscs",
 		"SublimeLinter-jshint",
 		"SublimeLinter-ruby",
 		"Syntax Highlighting for Sass",

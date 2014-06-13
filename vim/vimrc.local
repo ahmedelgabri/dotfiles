@@ -6,7 +6,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'mattn/emmet-vim'
@@ -26,9 +26,6 @@ call vundle#end()
 filetype plugin indent on
 syntax enable
 
-"let g:solarized_italic=0
-"let g:solarized_bold=0
-"let g:solarized_underline=0
 let g:solarized_visibility="low"
 set background=dark
 color solarized
@@ -137,18 +134,19 @@ vnoremap . :norm.<CR>
 
 
 
-let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:agprg="ag --column"
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 " let g:user_emmet_leader_key='<C-Z>'
 
 " CtrlP settings
 let g:ctrlp_match_window = 'top,order:ttb'
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+let g:ctrlp_user_command = 'ag %s -l --hidden -g ""'
 let g:ctrlp_use_caching = 0
 let g:ctrlp_jump_to_buffer = 'Et'
 let g:ctrlp_open_new_file = 't'
 let g:ctrlp_open_multiple_files = 't'
+let g:ctrlp_follow_symlinks = 2
 
 " Airline customization
 let g:airline_theme = 'solarized'
