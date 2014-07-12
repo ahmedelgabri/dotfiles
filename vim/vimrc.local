@@ -6,14 +6,10 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'rking/ag.vim'
-Plugin 'kien/ctrlp.vim'
 Plugin 'editorconfig/editorconfig-vim'
-Plugin 'mattn/emmet-vim'
 Plugin 'mattn/gist-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'reedes/vim-colors-pencil'
 Plugin 'altercation/vim-colors-solarized'
@@ -21,14 +17,60 @@ Plugin 'tpope/vim-surround'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'mattn/webapi-vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'wavded/vim-stylus'
+Plugin 'marijnh/tern_for_vim'
+
+Plugin 'rking/ag.vim'
+let g:agprg="ag --column"
+
+Plugin 'mattn/emmet-vim'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+" expand items with tab
+imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+" go to next edit with ctrl+n
+let g:user_emmet_next_key='<C-n>'
+
+Plugin 'kien/ctrlp.vim'
+let g:ctrlp_match_window = 'top,order:ttb'
+let g:ctrlp_user_command = 'ag %s -l --hidden -g ""'
+let g:ctrlp_use_caching = 0
+let g:ctrlp_jump_to_buffer = 'Et'
+let g:ctrlp_open_new_file = 't'
+let g:ctrlp_open_multiple_files = 't'
+let g:ctrlp_follow_symlinks = 2
+
+Plugin 'bling/vim-airline'
+let g:airline_theme = 'tomorrow'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline_detect_modified=1
+let g:airline_inactive_collapse=1
+let g:airline_right_alt_sep = '⮃'
+let g:airline_right_sep = '⮂'
+let g:airline_left_alt_sep= '⮁'
+let g:airline_left_sep = '⮀'
+let g:airline_symbols.branch = '⭠'
+let g:airline_symbols.readonly = '⭤'
+let g:airline_symbols.linenr = '⭡'
+let g:airline_symbols.whitespace = 'Ξ'
+
+Plugin 'Valloric/YouCompleteMe'
+let g:ycm_autoclose_preview_window_after_completion = 0
 
 call vundle#end()
 filetype plugin indent on
 syntax enable
 
-let g:solarized_visibility="low"
-set background=dark
-color solarized
+" let g:solarized_visibility="low"
+" set background=dark
+color Tomorrow-Night
 
 
 " UI Configs
@@ -81,7 +123,7 @@ nnoremap gV `[v`]
 "-----------------
 set autoindent
 set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
-"set backspace=2                                              " Fix broken backspace in some setups
+set backspace=2                                              " Fix broken backspace in some setups
 "set backupcopy=yes                                           " see :help crontab
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=3
@@ -131,44 +173,6 @@ nnoremap <leader>s :mksession<CR>
 
 " Make dot work in visual mode
 vnoremap . :norm.<CR>
-
-
-
-let g:agprg="ag --column"
-let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
-" let g:user_emmet_leader_key='<C-Z>'
-
-" CtrlP settings
-let g:ctrlp_match_window = 'top,order:ttb'
-let g:ctrlp_user_command = 'ag %s -l --hidden -g ""'
-let g:ctrlp_use_caching = 0
-let g:ctrlp_jump_to_buffer = 'Et'
-let g:ctrlp_open_new_file = 't'
-let g:ctrlp_open_multiple_files = 't'
-let g:ctrlp_follow_symlinks = 2
-
-" Airline customization
-let g:airline_theme = 'solarized'
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline_detect_modified=1
-let g:airline_inactive_collapse=1
-let g:airline_right_alt_sep = '⮃'
-let g:airline_right_sep = '⮂'
-let g:airline_left_alt_sep= '⮁'
-let g:airline_left_sep = '⮀'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
-let g:airline_symbols.whitespace = 'Ξ'
-
-
 
 augroup configgroup
     au!
