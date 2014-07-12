@@ -25,7 +25,7 @@
 				"command": "side_bar_files_open_with",
 				"args": {
 					"paths": [],
-					"application": "~/Applications/Google Chrome.app,
+					"application": "~/Applications/Google Chrome Canary.app,
 					"extensions":".*" //any file with extension
 				}
 			},

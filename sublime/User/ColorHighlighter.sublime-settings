@@ -1,0 +1,8 @@
+{
+    "icons_all": true,
+    "enabled": true,
+    "style": "default",
+    "icons": true,
+    "ha_style": "none",
+    "file_exts": [".css", ".sass", ".scss", ".less", ".styl", ".html", ".js", ".sublime-settings", ".tmTheme"]
+}

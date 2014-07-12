@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/base16-eighties.dark (SL).tmTheme",
+	"color_scheme": "Packages/User/Tomorrow-Night (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -56,8 +56,12 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG S DZ",
-	"font_size": 14.0,
+	"font_face": "droid sans mono",
+	"font_options":
+	[
+		"no_bold"
+	],
+	"font_size": 12.0,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
@@ -77,9 +81,7 @@
 	"open_files_in_new_window": false,
 	"rulers":
 	[
-		80,
-		100,
-		120
+		80
 	],
 	"scroll_past_end": true,
 	"scroll_speed": 5.0,

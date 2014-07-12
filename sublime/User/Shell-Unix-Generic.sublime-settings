@@ -1,11 +1,19 @@
 {
+	"apply_syntax_extensions":
+	[
+		"bash",
+		"sh",
+		"zsh"
+	],
 	"extensions":
 	[
-		".zshrc",
-		"zsh-theme",
-		".zshrc",
 		"local",
 		"Brewfile",
-		"zshenv"
+		"zsh-theme",
+		".zshrc",
+		"bash",
+		"zshenv",
+		"sh",
+		"zsh"
 	]
 }
