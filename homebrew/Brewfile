@@ -22,6 +22,7 @@ install zsh
 echo "You need to sudo vim /etc/shells & add this /usr/local/bin/zsh to the end of the file. then run chsh -s /usr/local/bin/zsh"
 
 install wget
+install z
 install git
 install node
 install tree
