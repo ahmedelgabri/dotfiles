@@ -51,6 +51,7 @@
 	unstage = reset HEAD
 	undo = reset HEAD~ && clean -df
 	who = shortlog -sne
+	doctor = remote -v show origin
 
 [mergetool]
 	keepBackup = false
@@ -59,3 +60,6 @@
 	default = simple
 [apply]
 	whitespace = nowarn
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
