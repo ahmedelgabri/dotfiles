@@ -27,6 +27,7 @@ alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
+alias formatJSON='python -m json.tool | catc '
 
 # DEV
 alias gruntv="grunt -v"
@@ -38,10 +39,7 @@ alias cs="sass --compass --sourcemap --watch"
 alias apache="sudo apachectl "
 alias runserver='python manage.py runserver'
 alias syncdb='python manage.py syncdb'
-alias start="brew services start "
-alias stop="brew services stop "
-alias restart="brew services restart "
-alias services="brew services list"
+alias services="launchctl list"
 
 # Git
 alias git="hub"
@@ -51,4 +49,4 @@ alias undopush="git push -f origin HEAD^:master"
 # Python/Django
 alias py="python manage.py "
 alias django="django-admin.py "
-alias runginja="cd ~/Sites/dev/dubizzle/ginja && workon ginja && python manage.py runserver 0.0.0.0:8000"
+
