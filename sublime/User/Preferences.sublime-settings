@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/Tomorrow-Night (SL).tmTheme",
+	"color_scheme": "Packages/User/Solarized-(Dark)-md-support (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -56,7 +56,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "droid sans mono",
+	"font_face": "Meslo LG M DZ",
 	"font_options":
 	[
 		"no_bold"
@@ -67,7 +67,8 @@
 	"ignored_packages":
 	[
 		"Markdown",
-		"Vintage"
+		"Vintage",
+		"Color Highlighter"
 	],
 	"indent_guide_options":
 	[
@@ -75,8 +76,6 @@
 	],
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
-	"line_padding_bottom": 1,
-	"line_padding_top": 1,
 	"match_brackets_angle": true,
 	"open_files_in_new_window": false,
 	"rulers":
@@ -84,17 +83,16 @@
 		80
 	],
 	"scroll_past_end": true,
-	"scroll_speed": 5.0,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
-	"theme": "Spacegray Eighties.sublime-theme",
+	"theme": "Spacegray.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,
 	"word_wrap": true,
-	"word_wrap_width": 120
+	"word_wrap_width": 80
 }
