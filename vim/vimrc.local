@@ -11,7 +11,6 @@ Plugin 'mattn/gist-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'reedes/vim-colors-pencil'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
 Plugin 'chriskempson/vim-tomorrow-theme'
@@ -20,6 +19,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'wavded/vim-stylus'
 Plugin 'marijnh/tern_for_vim'
+Plugin 'chriskempson/base16-vim'
 
 Plugin 'rking/ag.vim'
 let g:agprg="ag --column"
@@ -42,7 +42,8 @@ let g:ctrlp_open_multiple_files = 't'
 let g:ctrlp_follow_symlinks = 2
 
 Plugin 'bling/vim-airline'
-let g:airline_theme = 'tomorrow'
+let g:airline_theme = 'solarized'
+
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -68,10 +69,9 @@ call vundle#end()
 filetype plugin indent on
 syntax enable
 
-" let g:solarized_visibility="low"
-" set background=dark
-color Tomorrow-Night
-
+let g:solarized_visibility="low"
+set background=dark
+color solarized
 
 " UI Configs
 "-----------------
@@ -148,9 +148,8 @@ set mouse=a                                                  " Enable mouse supp
 set ttyfast
 set relativenumber
 set wrap
-set textwidth=79
 set formatoptions=qrn1
-set colorcolumn=85
+set colorcolumn=81
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 :set spell                                                 " Spell check
@@ -265,3 +264,5 @@ function! <SID>StripTrailingWhitespaces()
     let @/=_s
     call cursor(l, c)
 endfunction
+
+
