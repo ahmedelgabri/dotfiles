@@ -33,9 +33,9 @@
 	st = status -sb
 	br = branch
 	df = diff
-	lg = log --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
-	wt = whatchanged --pretty=format:\"%C(yellow)<%h> | %C(green)%ad | %C(cyan)[%an] %Creset%ae %Creset %n %Cblue%s%C(magenta)%d\" --date=short
-	fl = log -u --graph --pretty=format:\"%C(green)%ad | %C(cyan)[%an] %Creset%ae %C(yellow)<%h> %Creset| %Creset%s%C(magenta)%d\" --date=short
+	lg = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
+	wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%an> %Creset%ae %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
+	fl = log -u --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %Creset%ae %C(magenta)%d\" --date=short
 	gr = grep -Ii
 	la = !git config -l | grep alias | cut -c 7-
 	setr = remote set-url
@@ -52,6 +52,7 @@
 	undo = reset HEAD~ && clean -df
 	who = shortlog -sne
 	doctor = remote -v show origin
+	g = grep --break --heading --line-number
 
 [mergetool]
 	keepBackup = false
