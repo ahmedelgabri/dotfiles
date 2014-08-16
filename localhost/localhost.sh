@@ -4,3 +4,4 @@ sudo ln -s $HOME/.dotfiles/localhost/httpd-vhosts.local /etc/apache2/extra/httpd
 ln -s $HOME/.dotfiles/localhost/dnsmasq.local /usr/local/etc/dnsmasq.conf
 sudo ln -s $HOME/.dotfiles/localhost/gabri.local /etc/resolver/gabri
 sudo ln -s $HOME/.dotfiles/localhost/trunk.local /etc/resolver/trunk
+sudo ln -s $HOME/.dotfiles/localhost/dev.local /etc/resolver/dev
