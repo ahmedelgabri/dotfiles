@@ -4,7 +4,6 @@
 	"git_binary": "/usr/local/bin/git",
 	"installed_packages":
 	[
-		"AdvancedNewFile",
 		"AlignTab",
 		"Anaconda",
 		"ApplySyntax",
@@ -17,6 +16,7 @@
 		"EditorConfig",
 		"EJS",
 		"Emmet",
+		"Evernote",
 		"Gherkin (Cucumber) Formatter",
 		"Gist",
 		"GitGutter",
