@@ -1,3 +1,3 @@
 #!/bin/bash
 
-npm i -g grunt-cli lodash n jshint csslint coffee-script nodemon gulp stylus svgo yo bower
+npm i -g analyze-css bower browser-sync colorguard csslint eslint express finch grunt-cli gulp harp jscs jsfmt jshint jspm nodemon stylus svgo webpack

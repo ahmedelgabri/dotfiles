@@ -4,7 +4,15 @@
 cd $HOME
 # xcode-select --install
 git clone --recursive https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
-ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+
+# Check for Homebrew,
+# Install if we don't have it
+if ! command -v brew >/dev/null; then
+    echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+    echo "\033[0;34m====== Installing Homebrew =================================\033[0;0m"
+    echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 brew bundle $HOME/.dotfiles/homebrew/Brewfile
 brew bundle $HOME/.dotfiles/homebrew/Caskfile
 sh $HOME/.dotfiles/node/packages.sh
@@ -13,5 +21,8 @@ sh $HOME/.dotfiles/source/setup.sh
 rbenv install 2.0.0p-247 && rbenv global 2.0.0p-247
 sh $HOME/.dotfiles/ruby/gems.sh
 
-echo "Make sure you generate SSH keys \for github, bitbucket \& other servers you use."
-echo "Run sh localhost.sh from localhost folder to get your virtual hosts working."
+echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
+echo "\033[0;34m====== Generate SSH keys \for github, bitbucket \& other services you use =====\033[0;0m"
+echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
+
+#echo "Run sh localhost.sh from localhost folder to get your virtual hosts working."
