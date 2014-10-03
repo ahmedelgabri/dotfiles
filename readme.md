@@ -31,8 +31,7 @@ You are welcome to give tips on how can I improve this.
 * [Caffeine](http://itunes.apple.com/us/app/caffeine/id411246225)
 * [Alfred](http://www.alfredapp.com/)
 * [AppCleaner](http://www.freemacsoft.net/appcleaner/)
-* [Dropbox](http://dropbox.com)
-* ~~[CloudApp](https://itunes.apple.com/us/app/cloud/id417602904?mt=12)~~
+* [Box Sync](http://box.com)
 * [VLC Player](http://www.videolan.org/vlc/index.html)
 * [Dash](https://itunes.apple.com/us/app/dash-docs-snippets/id458034879?mt=12)
 * [ImageAlpha](http://pngmini.com/)
@@ -59,16 +58,3 @@ Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode
 Install
 
     $ curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/source/install | sh
-
-
-
----
-
-#### TODO
-
-* Document PHP & MySQL
-
-
-
-
-
