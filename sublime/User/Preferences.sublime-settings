@@ -67,8 +67,8 @@
 	"ignored_packages":
 	[
 		"Vintage",
-		"Markdown",
-		"Color Highlighter"
+		"Color Highlighter",
+		"Markdown"
 	],
 	"indent_guide_options":
 	[
