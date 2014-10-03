@@ -13,12 +13,11 @@ if ! command -v brew >/dev/null; then
     echo "\033[0;34m------------------------------------------------------------\033[0;0m"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
-brew bundle $HOME/.dotfiles/homebrew/Brewfile
-brew bundle $HOME/.dotfiles/homebrew/Caskfile
+sh $HOME/.dotfiles/homebrew/homebrew.sh
 sh $HOME/.dotfiles/node/packages.sh
 sh $HOME/.dotfiles/source/setup.sh
 
-rbenv install 2.0.0p-247 && rbenv global 2.0.0p-247
+rbenv install 2.0.0 && rbenv global 2.0.0
 sh $HOME/.dotfiles/ruby/gems.sh
 
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
