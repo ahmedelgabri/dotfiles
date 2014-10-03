@@ -13,20 +13,6 @@ copy_SSH(){
     pbcopy < ~/.ssh/$@.pub
 }
 
-# WordPress latest
-new_wp() {
-  latest="http://wordpress.org/latest.zip"
-  curl -O $latest
-  unzip latest.zip
-  rm -rf __MACOSX latest.zip
-  cp -rf ./wordpress/* ./
-  rm -rf ./wordpress/
-  mkdir ./wp-content/uploads/
-  mv wp-config-sample.php wp-config.php
-  touch .htaccess
-  subl wp-config.php
-  open https://api.wordpress.org/secret-key/1.1/salt/
-}
 
 # make a directory and cd to it
 mcd() {
@@ -114,14 +100,14 @@ uninstall_gems(){
 # Start an HTTP server from a directory, optionally specifying the port
 # Works like this "server <LANG>(default python simple server) <PORT>"
 server() {
-    local port="${2:-8000}"
+    local port="${1:-8000}"
     open "http://localhost:${port}/"
 
-    if [[ "$1" == "ruby" ]]; then
+    if [[ "$2" == "ruby" ]]; then
         ruby -run -ehttpd . -p$port
-    elif [[ "$1" == "sinatra" ]]; then
+    elif [[ "$2" == "sinatra" ]]; then
         ruby -rsinatra -e'set :public_folder, "."; set :port, $port'
-    elif [[ "$1" == "php" ]]; then
+    elif [[ "$2" == "php" ]]; then
         php -S localhost:$port
     else
         # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
@@ -195,8 +181,8 @@ github-create() {
     invalid_credentials=1
   fi
 
-  if [[ "$GITHUB_GLOBAL_TOKEN" = "" ]]; then
-    echo "Could not find token, add 'export GITHUB_GLOBAL_TOKEN=<token>'"
+  if [[ "$GITHUB_TOKEN" = "" ]]; then
+    echo "Could not find token, add 'export GITHUB_TOKEN=<token>'"
     invalid_credentials=1
   fi
 
@@ -205,7 +191,7 @@ github-create() {
   fi
 
   echo -n "Creating Github repository '$repo_name' ..."
-  curl -u "$GITHUB_USER:$GITHUB_GLOBAL_TOKEN" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}' > /dev/null 2>&1
+  curl -u "$GITHUB_USER:$GITHUB_TOKEN" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}' > /dev/null 2>&1
   echo " done."
 
   echo -n "Pushing local code to remote ..."
