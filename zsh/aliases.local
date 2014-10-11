@@ -1,6 +1,7 @@
 # TERMINAL
-alias v="vim "
-alias v.="vim . "
+alias v="mvim -v "
+alias v.="mvim -v . "
+alias vim="mvim -v "
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"
 alias ..='cd ..'
 alias ...='cd ../../'
