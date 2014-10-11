@@ -364,7 +364,7 @@ nnoremap <Leader>v :vsplit
 nnoremap <Leader>s :split
 nnoremap <Leader>p :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
 nnoremap <Leader>t :TagbarToggle<cr>
-nnoremap <leader>d :Vex<cr>
+nnoremap <leader>d :Lex<cr>
 noremap <Leader><TAB> <C-w><C-w>
 
 " save session
