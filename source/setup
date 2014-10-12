@@ -33,6 +33,7 @@ ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -s $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -s $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
+mkdir $HOME/.dotfiles/vim/.vim
 ln -s $HOME/.dotfiles/vim/.vim $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
