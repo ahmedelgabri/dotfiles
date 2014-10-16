@@ -37,7 +37,8 @@ FORMULAS=(
     todo-txt
     ctags
     # Python & work related stuff
-    python #2.7.8
+    python --universal #2.7.8
+    # openssl
     gdal #1.11.1
     geos #3.4.2
     postgis #2.1.4

@@ -25,6 +25,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-repeat'
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
 NeoBundle 'godlygeek/tabular'
+NeoBundle 'kakkyz81/evervim', { 'build': { 'mac': 'pip install markdown' } }
 
 " Syntax
 NeoBundleLazy 'digitaltoad/vim-jade', { 'autoload': { 'filetypes': ['jade'] } }
@@ -206,6 +207,9 @@ function! s:unite_settings()
   nmap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 
+" Evernote
+let g:evervim_devtoken= $EVERNOTE_TOKEN
+
 " File Explorer
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 15
@@ -355,8 +359,8 @@ map <C-l> <C-w>l
 map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
 inoremap jj <ESC>
-nnoremap jj <C-]>
-nnoremap kk <C-t>
+" nnoremap jj <C-]>
+" nnoremap kk <C-t>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>e :e
