@@ -57,6 +57,7 @@ CASKS=(
     font-droid-sans-mono
     font-meslo-lg
     box-sync
+    chromecast
     google-chrome
     google-chrome-canary
     firefox
@@ -65,6 +66,7 @@ CASKS=(
     webkit-nightly
     opera
     opera-next
+    lynxlet
     caffeine
     alfred
     #cloudapp
@@ -77,6 +79,10 @@ CASKS=(
     sublime-text-3
     the-unarchiver
     sketch
+    evernote
+    synergy
+    telegram
+    jdownloader2
     skype
     wunderlist
     lime-chat
