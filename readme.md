@@ -51,10 +51,8 @@ Change shell to `zsh`
 
     $ chsh -s $(which zsh)
 
-Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or run this command if you are on OSX 10.9 Mavericks
-
-    $ xcode-select --install
+Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store
 
 Install
 
-    $ curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/source/install | sh
+    $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/source/install | sh
