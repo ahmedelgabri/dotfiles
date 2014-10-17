@@ -49,7 +49,7 @@ You are welcome to give tips on how can I improve this.
 
 Change shell to `zsh`
 
-    $ chsh -s /bin/zsh
+    $ chsh -s $(which zsh)
 
 Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) from the App Store or run this command if you are on OSX 10.9 Mavericks
 

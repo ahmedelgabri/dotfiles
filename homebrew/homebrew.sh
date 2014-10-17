@@ -112,7 +112,7 @@ brew tap ${TAPS[@]} && brew install ${FORMULAS[@]}
 echo "to update setuptools & pip run: pip install --upgrade setuptools pip install --upgrade pip"
 echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH."
 echo " Changing shell...."
-sudo echo "/usr/local/bin/zsh" >> /etc/shells && chsh -s /usr/local/bin/zsh
+# sudo echo "/usr/local/bin/zsh" >> /etc/shells && chsh -s /usr/local/bin/zsh
 
 
 brew cask ${CASKS[@]} && brew cask alfred link

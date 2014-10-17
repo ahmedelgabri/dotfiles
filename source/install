@@ -24,4 +24,4 @@ echo "\033[0;34m----------------------------------------------------------------
 echo "\033[0;34m====== Generate SSH keys \for github, bitbucket \& other services you use =====\033[0;0m"
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 
-echo "Run sh localhost.sh from localhost folder to get your virtual hosts working. Run python/packages.sh for Python packages."
+echo "Run sh localhost.sh from localhost folder to get your virtual hosts working. Run python/packages.sh for Python packages, also change your zsh to the brew installed one."
