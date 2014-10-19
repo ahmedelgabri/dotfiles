@@ -5,7 +5,6 @@ TAPS=(
     caskroom/cask
     caskroom/fonts
     caskroom/versions
-    # for sitespeedio
     sitespeedio/sitespeedio
     tobli/browsertime
 )
@@ -33,18 +32,17 @@ FORMULAS=(
     imagemagick
     nginx
     mysql
-    sitespeedio
+    sitespeed.io
     todo-txt
     ctags
-    # Python & work related stuff
     python --universal #2.7.8
-    # openssl
+    openssl
     gdal #1.11.1
     geos #3.4.2
     postgis #2.1.4
     postgresql #9.3.5
     proj #4.8.0
-    elasticsearch-0.20 #0.20.6
+    homebrew/versions/elasticsearch-0.20 #0.20.6
     libmemcached #1.0.18
     redis
 )
@@ -58,25 +56,22 @@ CASKS=(
     font-meslo-lg
     box-sync
     chromecast
-    google-chrome
-    google-chrome-canary
     firefox
     firefox-aurora
     firefox-nightly
     webkit-nightly
     opera
-    opera-next
+    opera-beta
     lynxlet
     caffeine
     alfred
-    #cloudapp
     dash
     spectacle
     imagealpha
     imageoptim
     iterm2
     sequel-pro
-    sublime-text-3
+    sublime-text3
     the-unarchiver
     sketch
     evernote
@@ -84,7 +79,6 @@ CASKS=(
     telegram
     jdownloader2
     skype
-    wunderlist
     lime-chat
     transmit
     virtualbox
@@ -115,7 +109,16 @@ echo " Changing shell...."
 # sudo echo "/usr/local/bin/zsh" >> /etc/shells && chsh -s /usr/local/bin/zsh
 
 
-brew cask ${CASKS[@]} && brew cask alfred link
+brew cask install --appdir="~/Applications" ${CASKS[@]} && brew cask alfred link
+
+# 1Password form the Apple Store needs Chrome to be in /Applications
+# Known issues #3
+# https://guides.agilebits.com/1password-mac-kb/5/en/topic/browser-validation-failed
+
+echo "Install Chrome & Chrome Canary in /Applications dir"
+# brew cask install --appdir="/Applications" google-chrome
+# brew cask install --appdir="/Applications" google-chrome-canary
+
 
 echo "Put your license in Dash & Sublime. and Install Tweetbot"
 

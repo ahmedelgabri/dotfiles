@@ -56,7 +56,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG M DZ",
+	"font_face": "Meslo LG M",
 	"font_options":
 	[
 		"no_bold"

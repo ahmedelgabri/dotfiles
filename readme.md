@@ -40,10 +40,13 @@ You are welcome to give tips on how can I improve this.
 * [Sequel Pro](http://www.sequelpro.com/)
 * [Sketch](http://www.bohemiancoding.com/sketch/)
 * [Skype](http://www.skype.com/en/)
-* [Wunderlist](https://itunes.apple.com/us/app/wunderlist-to-do-task-list/id410628904?mt=12)
 * [Limechat](http://limechat.net/mac/)
 * [Tweetbot](https://itunes.apple.com/us/app/tweetbot-for-twitter/id557168941?mt=12)
-* [Transmit](http://panic.com/transmit/)
+
+#### From the App Store
+* Wunderlist
+* CloudApp
+* Transmit
 
 ## Installation
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+mkdir ~/.venv
 pip install --upgrade setuptools
 pip install --upgrade pip
 pip install numpy

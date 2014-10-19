@@ -12,6 +12,7 @@ rm $HOME/.gemrc
 rm $HOME/.osx
 rm $HOME/.pythonrc.py
 rm $HOME/.pip.conf
+rm $HOME/.hushlogin
 rm -rf $HOME/.vim
 rm -rf $HOME/Library/Preferences/com.googlecode.iterm2.plist
 rm -rf $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
@@ -23,12 +24,13 @@ echo "\033[0;34m------------------------------------------------------------\033
 ln -s $HOME/.dotfiles/zsh/zprezto $HOME/.zprezto
 
 setopt EXTENDED_GLOB
-for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md\(.N\); do
   ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
 done
 
-ln -s $HOME/.dotfiles/gitconfig/gitignore.local $HOME/.gitignore
-ln -s $HOME/.dotfiles/gitconfig/gitconfig.local $HOME/.gitconfig
+ln -s $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
+ln -s $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
+ln -s $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
 ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -s $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -s $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
@@ -37,11 +39,11 @@ mkdir $HOME/.dotfiles/vim/.vim
 ln -s $HOME/.dotfiles/vim/.vim $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -s $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
-ln -s $HOME/.dotfiles/sublimetext/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+ln -s $HOME/.dotfiles/sublime/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 
 
 echo "\033[0;32m------------------------------------------------------------\033[0;0m"
 echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"
 echo "\033[0;32m------------------------------------------------------------\033[0;0m"
 
-source $HOME/.osx && source $HOME/.zshrc
+source $HOME/.zshrc
