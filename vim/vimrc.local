@@ -1,72 +1,69 @@
-" NeoBundle
+" Vim-Plug https://github.com/junegu,/vim-plug
 "================================================================================
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Main packages
-NeoBundleFetch 'Shougo/neobundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " General
+
 " Too slow, need to investigate.
-"NeoBundle 'marijnh/tern_for_vim', { 'build': { 'mac': 'npm install' } }
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'Shougo/unite.vim', { 'depends': ['Shougo/vimproc.vim'] }
-NeoBundleLazy 'Shougo/vimproc.vim', { 'build': { 'mac': 'make' } }
-NeoBundleLazy 'mattn/emmet-vim', { 'autoload': { 'filetypes': ['html','htmldjango'] } }
-NeoBundle 'ervandew/supertab'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'pbrisbin/vim-mkdir'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat'
-NeoBundleLazy 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'kakkyz81/evervim', { 'build': { 'mac': 'pip install markdown' } }
+"Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+
+Plug 'Shougo/neocomplete.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/unite.vim'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango'] }
+" Plug 'ervandew/supertab'
+Plug 'rking/ag.vim'
+Plug 'pbrisbin/vim-mkdir'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'godlygeek/tabular'
+Plug 'kakkyz81/evervim', { 'do': 'pip install markdown' }
 
 " Syntax
-NeoBundleLazy 'digitaltoad/vim-jade', { 'autoload': { 'filetypes': ['jade'] } }
-NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload': { 'filetypes': ['javascript'] } }
-NeoBundleLazy 'kchmck/vim-coffee-script', { 'autoload': { 'filetypes': ['coffee'] } }
-NeoBundle 'moll/vim-node'
-NeoBundle 'mustache/vim-mustache-handlebars'
-NeoBundleLazy 'mxw/vim-jsx', { 'autoload': { 'filetypes': ['jsx'] } }
-NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes': ['html', 'htmldjango'] } }
-NeoBundleLazy 'tpope/vim-markdown', { 'autoload': { 'filetypes': ['markdown'] } }
-NeoBundleLazy 'wavded/vim-stylus', { 'autoload': { 'filetypes': ['stylus'] } }
-NeoBundleLazy 'tpope/vim-git', { 'autoload': { 'filetypes': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] } }
+Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
+Plug 'kchmck/vim-coffee-script', { 'for': ['coffee'] }
+Plug 'moll/vim-node'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
+Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
+Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
+Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
+Plug 'elzr/vim-json'
+Plug 'groenewege/vim-less'
 
 " Linters & Code quality
-NeoBundle 'editorconfig/editorconfig-vim'
-NeoBundle 'scrooloose/syntastic'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'scrooloose/syntastic'
 
 " Status bar
-NeoBundle 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 " Colors
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'chriskempson/base16-vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 
 " Git
-" NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'mattn/gist-vim', { 'depends': ['mattn/webapi-vim'] }
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'tpope/vim-fugitive'
+" Plug 'airblade/vim-gitgutter'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
+Plug 'tpope/vim-fugitive'
 
-call neobundle#end()
-NeoBundleCheck
+" Misc.
+" Plug 'junegunn/vim-emoji'
+Plug 'junegunn/limelight.vim'
+call plug#end()
 
 syntax on
 filetype plugin indent on
 
 
-" NeoBundles settings
+" Plug settings
 "================================================================================
 
-let base16colorspace=256
 set t_Co=256
 set background=dark
 colorscheme solarized
@@ -91,9 +88,11 @@ let g:agprg="ag --column"
 
 " Emmet
 let g:user_emmet_install_global = 0
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+imap nn <C-y>,
+" imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 let g:user_emmet_next_key='<C-n>'
 let g:use_emmet_complete_tag = 1
+autocmd FileType html,htmldjango EmmetInstall
 
 " Airline
 if !exists('g:airline_symbols')
@@ -120,14 +119,14 @@ let g:airline#extensions#tabline#left_alt_sep = '¦'
 let g:airline#extensions#tabline#right_alt_sep = '¦'
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
-let g:airline_right_alt_sep = '⮃'
-let g:airline_right_sep = '⮂'
-let g:airline_left_alt_sep= '⮁'
-let g:airline_left_sep = '⮀'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
-let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_left_alt_sep= ''
+let g:airline_left_sep = ''
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.readonly = 'x'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.whitespace = '░'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tagbar#enabled = 0
 
@@ -166,12 +165,11 @@ augroup omnicomplete
   autocmd!
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType html,htmldjango setlocal omnifunc=emmet#completeTag
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
-
 
 
 " Unite
@@ -214,6 +212,12 @@ let g:evervim_devtoken= $EVERNOTE_TOKEN
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 15
 
+" Vim Commentary
+autocmd FileType jade set commentstring=//-\ %s
+
+" JSON
+let g:vim_json_syntax_conceal = 0
+
 " Settings
 "================================================================================
 
@@ -233,6 +237,7 @@ highlight clear SignColumn
 set tabstop=4                                                " number of visual spaces per TAB
 set softtabstop=4                                            " insert mode tab and backspace, number of spaces in tab when editing
 set expandtab                                                " expand tabs to spaces
+set colorcolumn=81,101
 set number                                                   " show line numbers
 set showcmd                                                  " show command in bottom bar
 set showmode                                                 " Display the mode you're in.
@@ -299,7 +304,6 @@ set ttyfast
 set number
 set wrap
 set formatoptions=qrn1
-set colorcolumn=81
 set nobackup                                                 " No backups.
 set nowritebackup                                            " No backups.
 set noswapfile                                               " No swap files; more hassle than they're worth.
@@ -348,6 +352,7 @@ autocmd BufEnter Makefile setlocal noexpandtab
 autocmd BufEnter *.sh,.vimrc setlocal tabstop=2 shiftwidth=2 softtabstop=2
 au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
 
+autocmd BufRead,BufNewFile *.json set filetype=json
 " Key mappings
 "================================================================================
 
