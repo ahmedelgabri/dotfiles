@@ -23,7 +23,7 @@ FORMULAS=(
     dnsmasq
     mongodb
     phantomjs
-    gh
+    hub
     rbenv
     rbenv-gem-rehash
     ruby-build
