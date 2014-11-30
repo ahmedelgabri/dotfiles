@@ -1,0 +1,20 @@
+"" Setting font & status bar
+set guifont=Meslo\ LG\ S\ DZ:h12
+
+let titlestring=system('pwd | sed "s/.*\///"')
+execute "set titlestring=".titlestring
+
+" Always show the tab bar in macvim
+set showtabline=2
+
+" Hide the MacVim toolbar
+set go-=T
+
+" Display the tab bar if there is more than one tab
+set showtabline=1
+
+" Turn off the blinking cursor in normal mode
+set gcr=n:blinkon0
+
+" Increase the default number of lines and columns
+set lines=999 columns=999

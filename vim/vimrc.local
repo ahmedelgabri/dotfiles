@@ -1,4 +1,4 @@
-" Vim-Plug https://github.com/junegu,/vim-plug
+" Vim-Plug https://github.com/junegunn/vim-plug
 "================================================================================
 call plug#begin('~/.vim/plugged')
 
@@ -12,6 +12,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/unite.vim'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango'] }
+" Conflicts with Emmet
 " Plug 'ervandew/supertab'
 Plug 'rking/ag.vim'
 Plug 'pbrisbin/vim-mkdir'
@@ -33,9 +34,9 @@ Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
 Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
 Plug 'elzr/vim-json'
-Plug 'groenewege/vim-less'
 
 " Linters & Code quality
+Plug 'ruanyl/vim-fixmyjs'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'scrooloose/syntastic'
 
@@ -44,7 +45,7 @@ Plug 'bling/vim-airline'
 
 " Colors
 Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+Plug 'chriskempson/base16-vim'
 
 " Git
 " Plug 'airblade/vim-gitgutter'
@@ -55,6 +56,7 @@ Plug 'tpope/vim-fugitive'
 " Misc.
 " Plug 'junegunn/vim-emoji'
 Plug 'junegunn/limelight.vim'
+Plug 'rizzatti/dash.vim'
 call plug#end()
 
 syntax on
@@ -66,7 +68,7 @@ filetype plugin indent on
 
 set t_Co=256
 set background=dark
-colorscheme solarized
+colorscheme base16-ocean
 
 " JavaScript
 let g:javascript_enable_domhtmlcss = 1
@@ -76,6 +78,8 @@ let g:syntastic_scss_checkers = ['scss_lint']
 let g:syntastic_mode_map = { "mode": "active",
       \ 'active_filetypes': [],
       \ 'passive_filetypes': ['html'] }
+" I want to move to eslint
+" let g:syntastic_javascript_checkers = ['eslint', 'jscs']
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
@@ -234,40 +238,69 @@ highlight clear SignColumn
 
 " UI Configs
 "-----------------
-set tabstop=4                                                " number of visual spaces per TAB
-set softtabstop=4                                            " insert mode tab and backspace, number of spaces in tab when editing
-set expandtab                                                " expand tabs to spaces
-set colorcolumn=81,101
-set number                                                   " show line numbers
-set showcmd                                                  " show command in bottom bar
-set showmode                                                 " Display the mode you're in.
-set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
-set wildmenu                                                 " show a navigable menu for tab completion
+" number of visual spaces per TAB
+set tabstop=2
+
+" insert mode tab and backspace, number of spaces in tab when editing
+set softtabstop=2
+
+" expand tabs to spaces
+set expandtab
+
+" highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let colorcolumn="80,120"
+
+" show line numbers
+set number
+
+" show command in bottom bar
+set showcmd
+
+" Display the mode you're in.
+set showmode
+
+" normal mode indentation commands use 2 spaces
+set shiftwidth=2
+
+" show a navigable menu for tab completion
+set wildmenu
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*.,*/.DS_Store,*/tmp/*,*.so,*.swp
 set wildmode=longest,list,full
-set complete-=i                                              " Don't look in included files.
-set display+=lastline                                        " Display as much as possibe of a window's last line.
-set cursorline                                               " highlight current line (Check auto groups too)
-set lazyredraw                                               " redraw only when we need to.
-set showmatch                                                " highlight matching [{()}]
+
+" Don't look in included files.
+set complete-=i
+
+" Display as much as possibe of a window's last line.
+set display+=lastline
+
+" highlight current line (Check auto groups too)
+set cursorline
+
+" redraw only when we need to.
+set lazyredraw
+
+" highlight matching [{()}]
+set showmatch
 set title
 hi MatchParen cterm=none ctermbg=black ctermfg=yellow
 
+" More natural splitting
+set splitbelow
+set splitright
+
 " Search
 "-----------------
-set incsearch                                                " search as characters are entered
-set hlsearch                                                 " highlight matches
-set ignorecase                                               " Ignore case in search.
-set smartcase                                                " But case-sensitive if expression contains a capital letter.
+" search as characters are entered
+set incsearch
 
-" Folding
-"-----------------
-set foldenable                                               " enable folding
-set foldlevelstart=10                                        " open most folds by default
-set foldnestmax=10                                           " 10 nested fold max
-"nnoremap <space> za                                          " space open/closes folds
-set foldmethod=indent                                        " fold based on indent level Other acceptable values are marker, manual, expr, syntax, diff.
-" Run :help foldmethod
+" highlight matches
+set hlsearch
+
+" Ignore case in search.
+set ignorecase
+
+" But case-sensitive if expression contains a capital letter.
+set smartcase
 
 " Movement
 "-----------------
@@ -278,85 +311,138 @@ nnoremap gV `[v`]
 " TODO: Cleanup.
 "-----------------
 set autoindent
-set visualbell                                               " No beeping.
+
+" No beeping.
+set visualbell
+
+" No flashing.
 set noerrorbells
-set history=10000
-set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
-set backspace=2                                              " Fix broken backspace in some setups
-"set backupcopy=yes                                           " see :help crontab
+
+" History
+set history=200
+
+" reload files when changed on disk, i.e. via `git checkout`
+set autoread
+
+" Fix broken backspace in some setups
+set backspace=2
+
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=3
 set sidescrolloff=5
+
 " Scroll sideways a character at a time, rather than a screen at a time
 set sidescroll=1
-set clipboard=unnamed                                        " yank and paste with the system clipboard
+
+" yank and paste with the system clipboard
+set clipboard=unnamed
+
+" Alwyas use UTF-8
 set encoding=utf-8
-set laststatus=2                                             " always show statusline
-set list                                                     " show trailing whitespace
+
+" always show statusline
+set laststatus=2
+
+" show trailing whitespace
+set list
 set listchars=tab:.\ ,trail:·,nbsp:_
-set ruler                                                    " show where you are
-set scrolloff=3                                              " show context above/below cursorline
+
+" show where you are
+set ruler
+
 set smartindent
+
 set noswapfile
+
 set hidden
-set mouse=a                                                  " Enable mouse support
-set ttyfast
-set number
-set wrap
-set formatoptions=qrn1
-set nobackup                                                 " No backups.
-set nowritebackup                                            " No backups.
-set noswapfile                                               " No swap files; more hassle than they're worth.
-set tildeop                                                  " Make tilde command behave like an operator.
-set shortmess=atI                                            " Avoid unnecessary hit-enter prompts.
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
-:set spell                                                   " Spell check
 
-hi clear SpellBad
-hi SpellBad cterm=underline
-
-"" Setting font & status bar
-set guifont=Meslo\ LG\ S\ DZ:h12
-
-" Conditionals upon if a gui is running
-if has('gui_running')
-  let titlestring=system('pwd | sed "s/.*\///"')
-  execute "set titlestring=".titlestring
-
-  " Always show the tab bar in macvim
-  set showtabline=2
+" Enable mouse support
+set mouse=a
+" Swap iTerm2 cursors in vim insert mode when using tmux, more here https://gist.github.com/andyfowler/1195581
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 else
-  set mouse=a
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+set ttyfast
+
+set wrap
+
+set formatoptions=qrn1
+
+" No backups.
+set nobackup
+set nowritebackup
+
+" Make tilde command behave like an operator.
+set tildeop
+
+" Avoid unnecessary hit-enter prompts.
+" set shortmess=atI
+
+" nnoremap <F2> :set invpaste paste?<CR>
+" set pastetoggle=<F2>
+
+" Spell check
+:set spell
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+
 " Autocommands
 "================================================================================
+" Automatically make splits equal in size
+autocmd VimResized * wincmd =
 
-" md is markdown
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
-autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
-autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
+augroup vimrcEx
+  autocmd!
 
-" #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
-autocmd Filetype gitcommit setlocal spell textwidth=72
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it for commit messages, when the position is invalid, or when
+  " inside an event handler (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
 
-" fdoc is yaml
-autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
-autocmd FileType yaml setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-autocmd FileType ruby setlocal commentstring=#\ %s
-autocmd FileType python setlocal commentstring=#\ %s
-autocmd BufEnter Makefile setlocal noexpandtab
-autocmd BufEnter *.sh,.vimrc setlocal tabstop=2 shiftwidth=2 softtabstop=2
-au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
+  " Some file types use real tabs
+  autocmd FileType {make,gitconfig} set noexpandtab
 
-autocmd BufRead,BufNewFile *.json set filetype=json
+  " Make sure all markdown files have the correct filetype set and setup wrapping
+  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
+
+  " md is markdown
+  " autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+  autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
+  autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
+
+  " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
+  autocmd Filetype gitcommit setlocal spell textwidth=72
+
+  " fdoc is yaml
+  autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
+  autocmd FileType ruby setlocal commentstring=#\ %s
+  " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
+  autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79 commentstring=#\ %s
+  autocmd BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
+
+  autocmd BufRead,BufNewFile *.json set filetype=json
+
+  " Don't show column width marker in HTML & md
+  autocmd BufNewFile,BufRead *.{html,md} setlocal colorcolumn=0
+
+  " Allow stylesheets to autocomplete hyphenated words
+  autocmd FileType css,scss,sass setlocal iskeyword+=-
+augroup END
+
 " Key mappings
 "================================================================================
 
-let mapleader = ' '                                        " leader is space
+" leader is <space>
+let mapleader = ' '
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -372,7 +458,7 @@ nnoremap <Leader>e :e
 nnoremap <Leader>v :vsplit
 nnoremap <Leader>s :split
 nnoremap <Leader>p :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
-nnoremap <Leader>t :TagbarToggle<cr>
+nnoremap <Leader>t :call ToggleNumber()<cr>
 nnoremap <leader>d :Lex<cr>
 noremap <Leader><TAB> <C-w><C-w>
 
@@ -382,7 +468,8 @@ nnoremap <leader>s :mksession<CR>
 " Make dot work in visual mode
 vnoremap . :norm.<CR>
 
-
+" clear the search buffer when hitting return
+nnoremap <CR> :nohlsearch<cr>
 " Functions
 "================================================================================
 
@@ -439,4 +526,8 @@ function! WordCount()
   return s:word_count
 endfunction
 
-
+function! s:setupWrapping()
+  set wrap
+  set wrapmargin=2
+  set textwidth=80
+endfunction
