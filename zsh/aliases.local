@@ -9,8 +9,8 @@ alias ....='cd ../../../'
 alias "?"="pwd"
 alias o="open "
 alias o.="open . "
-alias s="subl "
-alias s.="subl . "
+alias s="subl --command toggle_full_screen "
+alias s.="subl --command toggle_full_screen . "
 alias c="clear "
 alias l="ls -alh "
 alias ld="ls -alh | grep '^d' "
@@ -44,6 +44,7 @@ alias migrate='python manage.py migrate'
 alias services="launchctl list"
 
 # Git
+alias git='hub'
 alias ghere="git init && git add . && git commit -m'Initial commit'"
 alias undopush="git push -f origin HEAD^:master"
 
