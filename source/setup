@@ -8,6 +8,7 @@ rm $HOME/.gitignore
 rm $HOME/.gitconfig
 rm $HOME/.zshrc
 rm $HOME/.vimrc
+rm $HOME/.gvimrc
 rm $HOME/.gemrc
 rm $HOME/.osx
 rm $HOME/.pythonrc.py
@@ -35,6 +36,7 @@ ln -s $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -s $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -s $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 ln -s $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
+ln -s $HOME/.dotfiles/vim/gvimrc.local $HOME/.gvimrc
 mkdir $HOME/.dotfiles/vim/.vim
 ln -s $HOME/.dotfiles/vim/.vim $HOME/.vim
 ln -s $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
