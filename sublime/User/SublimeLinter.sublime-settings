@@ -1,7 +1,6 @@
 {
 	"user":
 	{
-		"@disable": true,
 		"debug": true,
 		"delay": 0.25,
 		"error_color": "D02000",

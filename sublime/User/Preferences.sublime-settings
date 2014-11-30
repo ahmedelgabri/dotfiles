@@ -67,8 +67,7 @@
 	"ignored_packages":
 	[
 		"Markdown",
-		"Color Highlighter",
-		"Vintage"
+		"vintage"
 	],
 	"indent_guide_options":
 	[
@@ -80,11 +79,13 @@
 	"open_files_in_new_window": false,
 	"rulers":
 	[
-		80
+		80,
+		100
 	],
 	"scroll_past_end": true,
 	"shift_tab_unindent": true,
 	"show_full_path": true,
+	"spacegray_tabs_auto_width": true,
 	"spell_check": false,
 	"tab_size": 4,
 	"tern_argument_hints": true,
