@@ -47,6 +47,7 @@ You are welcome to give tips on how can I improve this.
 * Wunderlist
 * CloudApp
 * Transmit
+* Dash
 
 ## Installation
 
