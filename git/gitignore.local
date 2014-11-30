@@ -48,7 +48,8 @@ Thumbs.db
 .sass-cache/
 .grunt/
 node_modules/
-
+.gems/
+.bundle/
 # vim       #
 #############
 *.un~
