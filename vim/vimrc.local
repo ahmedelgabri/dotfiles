@@ -31,7 +31,7 @@ Plug 'moll/vim-node'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
 Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
+Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
 Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
 Plug 'elzr/vim-json', { 'for': ['json'] }
@@ -231,17 +231,6 @@ let g:goyo_width=120
 
 " Settings
 "================================================================================
-
-" status bar
-set statusline=%F%m%r%h%w\  "fullpath and status modified sign
-set statusline+=\ %y "filetype
-set statusline+=\ %{fugitive#statusline()}
-set statusline+=%= " this line bumps the line number to RHS
-set statusline+=\ [%l\/%L] "line number and column number
-
-" For gitgutter to fix colors issue with Solarized
-" https://github.com/airblade/vim-gitgutter/issues/164
-highlight clear SignColumn
 
 " UI Configs
 "-----------------
