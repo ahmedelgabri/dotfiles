@@ -2,6 +2,14 @@
 	"auto_upgrade_last_run": null,
 	"debug": true,
 	"git_binary": "/usr/local/bin/git",
+	"in_process_packages":
+	[
+	],
+	"installed_dependencies":
+	[
+		"0_package_control_loader",
+		"bz2"
+	],
 	"installed_packages":
 	[
 		"AlignTab",
@@ -19,10 +27,12 @@
 		"Evernote",
 		"Gherkin (Cucumber) Formatter",
 		"Gist",
+		"Git",
 		"GitGutter",
 		"Handlebars",
 		"Jade",
 		"JavaScript & NodeJS Snippets",
+		"JavaScriptNext - ES6 Syntax",
 		"MarkdownEditing",
 		"MaxPane",
 		"Package Control",

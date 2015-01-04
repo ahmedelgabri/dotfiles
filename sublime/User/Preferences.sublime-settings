@@ -56,7 +56,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG M",
+	"font_face": "Meslo LG S",
 	"font_options":
 	[
 		"no_bold"
@@ -66,8 +66,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Markdown",
-		"vintage"
+		"Vintage",
+		"Markdown"
 	],
 	"indent_guide_options":
 	[
