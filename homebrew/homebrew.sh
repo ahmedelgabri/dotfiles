@@ -52,7 +52,9 @@ CASKS=(
     font-inconsolata-dz-for-powerline
     font-inconsolata
     font-source-code-pro
+    font-droid-sans-mono-for-powerline
     font-droid-sans-mono
+    font-meslo-lg-for-powerline
     font-meslo-lg
     box-sync
     chromecast
