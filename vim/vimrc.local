@@ -12,8 +12,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/unite.vim'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango'] }
-" Conflicts with Emmet
-" Plug 'ervandew/supertab'
+Plug 'ervandew/supertab'
 Plug 'rking/ag.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'tpope/vim-commentary'
@@ -21,6 +20,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
 Plug 'kakkyz81/evervim', { 'do': 'pip install markdown' }
+Plug 'moll/vim-bbye'
+Plug 'sjl/gundo.vim'
 
 " Syntax
 Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
@@ -30,10 +31,10 @@ Plug 'moll/vim-node'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
 Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown'] }
 Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
 Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
-Plug 'elzr/vim-json'
+Plug 'elzr/vim-json', { 'for': ['json'] }
 
 " Linters & Code quality
 Plug 'ruanyl/vim-fixmyjs'
@@ -55,8 +56,12 @@ Plug 'tpope/vim-fugitive'
 
 " Misc.
 " Plug 'junegunn/vim-emoji'
-Plug 'junegunn/limelight.vim'
 Plug 'rizzatti/dash.vim'
+
+" Distraction-free writing
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
+
 call plug#end()
 
 syntax on
@@ -68,7 +73,7 @@ filetype plugin indent on
 
 set t_Co=256
 set background=dark
-colorscheme base16-ocean
+colorscheme base16-eighties
 
 " JavaScript
 let g:javascript_enable_domhtmlcss = 1
@@ -92,7 +97,8 @@ let g:agprg="ag --column"
 
 " Emmet
 let g:user_emmet_install_global = 0
-imap nn <C-y>,
+" let g:user_emmet_leader_key = '<Leader>'
+let user_emmet_expandabbr_key = '<Leader>e'
 " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 let g:user_emmet_next_key='<C-n>'
 let g:use_emmet_complete_tag = 1
@@ -117,22 +123,20 @@ let g:airline_mode_map = {
       \ }
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
+" let g:airline#extensions#tabline#left_sep = ''
+" let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = '¦'
 let g:airline#extensions#tabline#right_alt_sep = '¦'
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_left_alt_sep= ''
-let g:airline_left_sep = ''
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.readonly = 'x'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.whitespace = '░'
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.whitespace = 'Ξ'
+" let g:airline_symbols.whitespace = '░'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " Tagbar
 let g:tagabar_show_linenumbers = -1
@@ -221,6 +225,9 @@ autocmd FileType jade set commentstring=//-\ %s
 
 " JSON
 let g:vim_json_syntax_conceal = 0
+
+" Goyo
+let g:goyo_width=120
 
 " Settings
 "================================================================================
@@ -412,7 +419,7 @@ augroup vimrcEx
   autocmd FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
+  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
 
   " md is markdown
   " autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
@@ -468,8 +475,6 @@ nnoremap <leader>s :mksession<CR>
 " Make dot work in visual mode
 vnoremap . :norm.<CR>
 
-" clear the search buffer when hitting return
-nnoremap <CR> :nohlsearch<cr>
 " Functions
 "================================================================================
 
