@@ -1,0 +1,36 @@
+snippet func
+function $1($2) {
+	$0
+}
+endsnippet
+
+snippet vfunc
+var $1 = function($2) {
+	$0
+}
+endsnippet
+
+snippet cl
+console.log($1);$0
+endsnippet
+
+snippet clogargs
+console.log.apply(console, arguments);
+$0
+endsnippet
+
+snippet req
+var ${1} = require('${2:$1}');
+$0
+endsnippet
+
+snippet iife
+(function ($1) {
+	$0
+}(${2:$1}));
+endsnippet
+
+snippet shebang
+#!/usr/bin/env node
+endsnippet
+# vim:ft=snippets:

@@ -8,6 +8,8 @@ call plug#begin('~/.vim/plugged')
 "Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 
 Plug 'Shougo/neocomplete.vim'
+Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
 Plug 'Raimondi/delimitMate'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/unite.vim'
@@ -33,11 +35,11 @@ Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
 Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
+Plug 'ap/vim-css-color'
 Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
 Plug 'elzr/vim-json', { 'for': ['json'] }
 
 " Linters & Code quality
-Plug 'ruanyl/vim-fixmyjs'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'scrooloose/syntastic'
 
@@ -49,6 +51,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/base16-vim'
 
 " Git
+" Slows Vim loading?
 " Plug 'airblade/vim-gitgutter'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
@@ -68,7 +71,7 @@ syntax on
 filetype plugin indent on
 
 
-" Plug settings
+" Plugins settings
 "================================================================================
 
 set t_Co=256
@@ -98,11 +101,11 @@ let g:agprg="ag --column"
 " Emmet
 let g:user_emmet_install_global = 0
 " let g:user_emmet_leader_key = '<Leader>'
-let user_emmet_expandabbr_key = '<Leader>e'
+let user_emmet_expandabbr_key = '<C-e>'
 " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 let g:user_emmet_next_key='<C-n>'
 let g:use_emmet_complete_tag = 1
-autocmd FileType html,htmldjango EmmetInstall
+au FileType html,htmldjango EmmetInstall
 
 " Airline
 if !exists('g:airline_symbols')
@@ -169,16 +172,21 @@ let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 " Tab completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-augroup omnicomplete
-  autocmd!
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType html,htmldjango setlocal omnifunc=emmet#completeTag
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup END
+aug omnicomplete
+  au!
+  au FileType css setl omnifunc=csscomplete#CompleteCSS
+  au FileType markdown setl omnifunc=htmlcomplete#CompleteTags
+  au FileType html,htmldjango setl omnifunc=emmet#completeTag
+  au FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+  au FileType python setl omnifunc=pythoncomplete#Complete
+  au FileType xml setl omnifunc=xmlcomplete#CompleteTags
+aug END
 
+" Ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 " Unite
 let g:unite_enable_start_insert = 1
@@ -198,9 +206,9 @@ endif
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 
-nnoremap <C-P> :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
+nnoremap <C-P> :Unite -buffer-name=files -start-insert buffer file_rec/async<CR>
 
-autocmd FileType unite call s:unite_settings()
+au FileType unite call s:unite_settings()
 
 function! s:unite_settings()
   let b:SuperTabDisabled=1
@@ -221,7 +229,8 @@ let g:netrw_liststyle = 3
 let g:netrw_winsize   = 15
 
 " Vim Commentary
-autocmd FileType jade set commentstring=//-\ %s
+au FileType jade set commentstring=//-\ %s
+au FileType ruby set commentstring=#\ %s
 
 " JSON
 let g:vim_json_syntax_conceal = 0
@@ -239,6 +248,7 @@ set tabstop=2
 
 " insert mode tab and backspace, number of spaces in tab when editing
 set softtabstop=2
+set nowrap
 
 " expand tabs to spaces
 set expandtab
@@ -260,8 +270,25 @@ set shiftwidth=2
 
 " show a navigable menu for tab completion
 set wildmenu
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*.,*/.DS_Store,*/tmp/*,*.so,*.swp
 set wildmode=longest,list,full
+" Disable output and VCS files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+
+" Disable archive files
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+
+" Ignore bundler and sass cache
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+
+" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
+set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
+
+" Ignore rails temporary asset caches
+set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
+
+" Disable temp and backup files
+set wildignore+=*.swp,*~,._*
+set wildignore+=*/.DS_Store,*/tmp/*
 
 " Don't look in included files.
 set complete-=i
@@ -365,8 +392,6 @@ endif
 
 set ttyfast
 
-set wrap
-
 set formatoptions=qrn1
 
 " No backups.
@@ -379,8 +404,8 @@ set tildeop
 " Avoid unnecessary hit-enter prompts.
 " set shortmess=atI
 
-" nnoremap <F2> :set invpaste paste?<CR>
-" set pastetoggle=<F2>
+nmap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
 
 " Spell check
 :set spell
@@ -391,48 +416,46 @@ hi SpellBad cterm=underline
 " Autocommands
 "================================================================================
 " Automatically make splits equal in size
-autocmd VimResized * wincmd =
+au VimResized * wincmd =
 
-augroup vimrcEx
-  autocmd!
+aug vimrcEx
+  au!
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it for commit messages, when the position is invalid, or when
   " inside an event handler (happens when dropping a file on gvim).
-  autocmd BufReadPost *
+  au BufReadPost *
     \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
 
   " Some file types use real tabs
-  autocmd FileType {make,gitconfig} set noexpandtab
+  au FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
-
-  " md is markdown
-  " autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
-  autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
-  autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set ft=markdown
+  au FileType markdown setl wrap linebreak textwidth=72 nolist
+  au FileType markdown setl statusline+=\ %{WordCount()}
+  au BufWritePre * call Preserve("%s/\\s\\+$//e")
 
   " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
-  autocmd Filetype gitcommit setlocal spell textwidth=72
+  au Filetype gitcommit setl spell textwidth=72
 
   " fdoc is yaml
-  autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
-  autocmd FileType ruby setlocal commentstring=#\ %s
+  au BufRead,BufNewFile *.fdoc set ft=yaml
+  au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} set ft=ruby
   " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
-  autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79 commentstring=#\ %s
-  autocmd BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
+  au FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79 commentstring=#\ %s
+  au BufRead,BufNewFile,BufReadPre *.coffee set ft=coffee
 
-  autocmd BufRead,BufNewFile *.json set filetype=json
+  au BufRead,BufNewFile *.json set ft=json
 
   " Don't show column width marker in HTML & md
-  autocmd BufNewFile,BufRead *.{html,md} setlocal colorcolumn=0
+  au BufNewFile,BufRead *.{html,md} setl colorcolumn=0
 
   " Allow stylesheets to autocomplete hyphenated words
-  autocmd FileType css,scss,sass setlocal iskeyword+=-
-augroup END
+  au FileType css,scss,sass setl iskeyword+=-
+aug END
 
 " Key mappings
 "================================================================================
@@ -445,24 +468,31 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
-inoremap jj <ESC>
+imap jj <ESC>
 " nnoremap jj <C-]>
 " nnoremap kk <C-t>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>e :e
-nnoremap <Leader>v :vsplit
-nnoremap <Leader>s :split
-nnoremap <Leader>p :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
-nnoremap <Leader>t :call ToggleNumber()<cr>
-nnoremap <leader>d :Lex<cr>
-noremap <Leader><TAB> <C-w><C-w>
-
+nmap <Leader>q :q<CR>
+nmap <Leader>w :w<CR>
+nmap <Leader>e :e
+nmap <Leader>v :vsplit
+nmap <Leader>s :split
+nmap <Leader>p :Unite -buffer-name=files -start-insert buffer file_rec/async<CR>
+nmap <Leader>t :call ToggleNumber()<CR>
+nmap <leader>d :Lex<CR>
+nmap <Leader>bd :Bdelete<CR>
+nmap <Leader><TAB> <C-w><C-w>
+" set text wrapping toggles
+nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+" Toggle hlsearch with <leader>hs
+nmap <leader>hs :set hlsearch! hlsearch?<CR>
 " save session
-nnoremap <leader>s :mksession<CR>
+nmap <leader>s :mksession<CR>
+nmap <leader>gd :GundoToggle<CR>
+nmap <leader>ll :Limelight!!<CR>
+nmap <leader>fm :Goyo<CR>
 
 " Make dot work in visual mode
-vnoremap . :norm.<CR>
+vmap . :norm.<CR>
 
 " Functions
 "================================================================================
@@ -525,3 +555,10 @@ function! s:setupWrapping()
   set wrapmargin=2
   set textwidth=80
 endfunction
+
+
+" Overrrides
+" =================
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
