@@ -93,7 +93,7 @@ CASKS=(
     qlstephen
     quicklook-csv
     quicklook-json
-    webp-quicklook
+    webpquicklook
     recordit
     transmission
     appcleaner
