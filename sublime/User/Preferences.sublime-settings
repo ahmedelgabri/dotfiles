@@ -56,7 +56,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Meslo LG S",
+	"font_face": "Meslo LG S Regular for Powerline",
 	"font_options":
 	[
 		"no_bold"
