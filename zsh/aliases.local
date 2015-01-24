@@ -1,4 +1,6 @@
 # TERMINAL
+alias n="nvim "
+alias n.="nvim . "
 alias v="mvim -v "
 alias v.="mvim -v . "
 alias vim="mvim -v "
@@ -9,14 +11,14 @@ alias ....='cd ../../../'
 alias "?"="pwd"
 alias o="open "
 alias o.="open . "
-alias s="subl --command toggle_full_screen "
-alias s.="subl --command toggle_full_screen . "
+alias s="subl "
+alias s.="subl . "
 alias c="clear "
 alias l="ls -alh "
 alias ld="ls -alh | grep '^d' "
 alias ll="ls -alrth "
 alias lc="ls -alCF "
-alias KABOOM="npm cache clean; npm -g update; gem update && gem cleanup; brew update && brew upgrade && brew cleanup && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
+alias KABOOM="npm cache clean; sh ~/.dotfiles/node/npm-upgrade.sh; gem update && gem cleanup; brew update && brew upgrade && brew cleanup && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
@@ -32,7 +34,6 @@ alias formatJSON='python -m json.tool | catc '
 alias brewc='brew cask '
 
 # DEV
-alias gruntv="grunt -v"
 alias bower="noglob bower"
 alias npmls="npm list --depth=0 "
 alias sp="sass --watch --style compressed --precision 3"
