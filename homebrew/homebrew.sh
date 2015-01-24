@@ -1,14 +1,15 @@
 #!/bin/bash
 
+# sitespeedio/sitespeedio
+# tobli/browsertime
+
 # Homebrew taps
 TAPS=(
-  homebrew/dupes
-  homebrew/versions
   caskroom/cask
   caskroom/fonts
   caskroom/versions
-  sitespeedio/sitespeedio
-  tobli/browsertime
+  homebrew/dupes
+  homebrew/versions
 )
 
 # Homebrew Formulas
@@ -26,15 +27,16 @@ FORMULAS=(
   mongodb
   phantomjs
   hub
+  heroku-toolbelt
   rbenv
   rbenv-gem-rehash
   ruby-build
   the_silver_searcher
   macvim --override-system-vim --custom-icons --with-lua
+  weechat --with-perl --with-python --with-lua --with-curl
   imagemagick
   nginx
   mysql
-  sitespeed.io
   todo-txt
   ctags
   python --universal #2.7.8
@@ -51,54 +53,54 @@ FORMULAS=(
 
 # Homebrew casks
 CASKS=(
-  font-inconsolata-dz-for-powerline
-  font-inconsolata
-  font-source-code-pro
-  font-droid-sans-mono-for-powerline
-  font-droid-sans-mono
-  font-meslo-lg-for-powerline
-  font-meslo-lg
+  alfred
+  appcleaner
+  betterzipql
   box-sync
+  caffeine
   chromecast
+  dash
+  evernote
   firefox
   firefox-aurora
   firefox-nightly
-  webkit-nightly
-  opera
-  opera-beta
-  lynxlet
-  caffeine
-  alfred
-  dash
-  spectacle
+  font-droid-sans-mono
+  font-droid-sans-mono-for-powerline
+  font-inconsolata
+  font-inconsolata-dz-for-powerline
+  font-meslo-lg
+  font-meslo-lg-for-powerline
+  font-source-code-pro
+  hipchat
   imagealpha
   imageoptim
   iterm2
-  sequel-pro
-  sublime-text3
-  the-unarchiver
-  sketch
-  evernote
-  synergy
-  telegram
   jdownloader2
-  skype
-  lime-chat
-  transmit
-  virtualbox
-  vlc
-  hipchat
-  betterzipql
+  lynxlet
+  opera
+  opera-beta
   qlcolorcode
   qlmarkdown
   qlprettypatch
   qlstephen
   quicklook-csv
   quicklook-json
-  webpquicklook
   recordit
+  sequel-pro
+  sketch
+  skype
+  spectacle
+  sublime-text3
+  synergy
+  teamviewer
+  telegram
+  the-unarchiver
   transmission
-  appcleaner
+  transmit
+  virtualbox
+  vlc
+  webkit-nightly
+  webpquicklook
 )
 
 #================================================================================

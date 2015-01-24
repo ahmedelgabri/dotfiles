@@ -66,5 +66,3 @@
 	smudge = git-media-smudge %f
 [fetch]
 	prune = true
-[branch]
-	autosetuprebase = always

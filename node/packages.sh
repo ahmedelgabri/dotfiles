@@ -1,12 +1,8 @@
 #!/bin/bash
 
 PACKAGES=(
-  analyze-css
   bower
-  colorguard
-  csslint
   eslint
-  express
   finch
   grunt-cli
   gulp
@@ -15,12 +11,12 @@ PACKAGES=(
   jsfmt
   jshint
   jspm
+  keybase
+  keybase-installer
+  ngrok
+  node-sass
   nodemon
   stylus
-  node-sass
-  svgo
-  webpack
-  browserify
 )
 
 npm i -g ${PACKAGES[@]}
