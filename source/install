@@ -16,7 +16,7 @@ fi
 sh $HOME/.dotfiles/homebrew/homebrew.sh
 sh $HOME/.dotfiles/source/setup
 # https://github.com/junegunn/vim-plug#usage
-mkdir -p ~/.vim/autoload && curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# mkdir -p ~/.vim/autoload && curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 sh $HOME/.dotfiles/node/packages.sh
 
 rbenv install 2.1.0 && rbenv global 2.1.0

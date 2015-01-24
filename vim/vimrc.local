@@ -1,242 +1,275 @@
-" Vim-Plug https://github.com/junegunn/vim-plug
-"================================================================================
-call plug#begin('~/.vim/plugged')
+set nocompatible
 
-" General
+" https://github.com/justinmk/config/blob/master/.vimrc#L87-L94
+let s:plugins=filereadable(expand("~/.vim/autoload/plug.vim", 1))
 
-" Too slow, need to investigate.
-"Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+if !s:plugins
 
-Plug 'Shougo/neocomplete.vim'
-Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
-Plug 'Raimondi/delimitMate'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'Shougo/unite.vim'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango'] }
-Plug 'ervandew/supertab'
-Plug 'rking/ag.vim'
-Plug 'pbrisbin/vim-mkdir'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'godlygeek/tabular'
-Plug 'kakkyz81/evervim', { 'do': 'pip install markdown' }
-Plug 'moll/vim-bbye'
-Plug 'sjl/gundo.vim'
+  fun! InstallPlug() "bootstrap plug.vim on new systems
+    silent call mkdir(expand("~/.vim/autoload", 1), 'p')
+    exe '!curl -fLo '.expand("~/.vim/autoload/plug.vim", 1).' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  endfun
 
-" Syntax
-Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
-Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
-Plug 'kchmck/vim-coffee-script', { 'for': ['coffee'] }
-Plug 'moll/vim-node'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
-Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
-Plug 'ap/vim-css-color'
-Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
-Plug 'elzr/vim-json', { 'for': ['json'] }
+else
 
-" Linters & Code quality
-Plug 'editorconfig/editorconfig-vim'
-Plug 'scrooloose/syntastic'
+  " Vim-Plug https://github.com/junegunn/vim-plug
+  "================================================================================
+  call plug#begin('~/.vim/plugged')
 
-" Status bar
-Plug 'bling/vim-airline'
+  " General
 
-" Colors
-Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/base16-vim'
+  " Too slow, need to investigate.
+  "Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+  if has('lua')
+    Plug 'Shougo/neocomplete.vim'
+  end
+  Plug 'SirVer/ultisnips'
+  " Plug 'honza/vim-snippets'
+  Plug 'Raimondi/delimitMate'
+  Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+  Plug 'Shougo/unite.vim'
+  Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango'] }
+  Plug 'ervandew/supertab'
+  Plug 'rking/ag.vim'
+  Plug 'pbrisbin/vim-mkdir'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-repeat'
+  Plug 'godlygeek/tabular'
+  Plug 'kakkyz81/evervim', { 'do': 'pip install markdown' }
+  Plug 'mrtazz/simplenote.vim'
+  Plug 'moll/vim-bbye'
+  Plug 'sjl/gundo.vim'
 
-" Git
-" Slows Vim loading?
-" Plug 'airblade/vim-gitgutter'
-Plug 'mattn/gist-vim'
-Plug 'mattn/webapi-vim'
-Plug 'tpope/vim-fugitive'
+  " Syntax
+  Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
+  Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript'] }
+  Plug 'kchmck/vim-coffee-script', { 'for': ['coffee'] }
+  Plug 'moll/vim-node'
+  Plug 'mustache/vim-mustache-handlebars'
+  Plug 'mxw/vim-jsx', { 'for': ['jsx'] }
+  Plug 'othree/html5.vim', { 'for': ['html', 'htmldjango'] }
+  Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+  Plug 'wavded/vim-stylus', { 'for': ['stylus'] }
+  Plug 'ap/vim-css-color'
+  Plug 'tpope/vim-git', { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
+  Plug 'elzr/vim-json', { 'for': ['json'] }
 
-" Misc.
-" Plug 'junegunn/vim-emoji'
-Plug 'rizzatti/dash.vim'
+  " Linters & Code quality
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'scrooloose/syntastic'
 
-" Distraction-free writing
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
+  " Status bar
+  Plug 'bling/vim-airline'
 
-call plug#end()
+  " Colors
+  Plug 'altercation/vim-colors-solarized'
+  Plug 'chriskempson/base16-vim'
 
-syntax on
-filetype plugin indent on
+  " Git
+  " Slows Vim loading?
+  " Plug 'airblade/vim-gitgutter'
+  Plug 'mattn/gist-vim'
+  Plug 'mattn/webapi-vim'
+  Plug 'tpope/vim-fugitive'
+
+  " Misc.
+  " Plug 'rizzatti/dash.vim' Slows startup?
+  Plug 'Z1MM32M4N/vim-superman'
+
+  " Distraction-free writing
+  Plug 'junegunn/limelight.vim'
+  Plug 'junegunn/goyo.vim'
+
+  call plug#end()
+
+  syntax enable
+  filetype plugin indent on
 
 
-" Plugins settings
-"================================================================================
+  " Plugins settings
+  "================================================================================
 
-set t_Co=256
-set background=dark
-colorscheme base16-eighties
+  set t_Co=256
+  set background=dark
+  " let g:solarized_termtrans=1
+  " let g:solarized_contrast="high"
+  colorscheme base16-ocean
 
-" JavaScript
-let g:javascript_enable_domhtmlcss = 1
+  " JavaScript
+  let g:javascript_enable_domhtmlcss = 1
 
-" Syntastic
-let g:syntastic_scss_checkers = ['scss_lint']
-let g:syntastic_mode_map = { "mode": "active",
-      \ 'active_filetypes': [],
-      \ 'passive_filetypes': ['html'] }
-" I want to move to eslint
-" let g:syntastic_javascript_checkers = ['eslint', 'jscs']
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '!'
+  " Syntastic
+  let g:syntastic_scss_checkers = ['scss_lint']
+  let g:syntastic_mode_map = { "mode": "active",
+        \ 'active_filetypes': [],
+        \ 'passive_filetypes': ['html'] }
+  " I want to move to eslint
+  " let g:syntastic_javascript_checkers = ['eslint', 'jscs']
+  let g:syntastic_javascript_checkers = ['jshint']
+  let g:syntastic_error_symbol = '✗'
+  let g:syntastic_warning_symbol = '!'
 
-" SuperTab
-let g:SuperTabDefaultCompletionType = "context"
+  " SuperTab
+  let g:SuperTabDefaultCompletionType = "context"
 
-" Ag
-let g:agprg="ag --column"
+  " Ag
+  let g:agprg="ag --column"
 
-" Emmet
-let g:user_emmet_install_global = 0
-" let g:user_emmet_leader_key = '<Leader>'
-let user_emmet_expandabbr_key = '<C-e>'
-" imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-let g:user_emmet_next_key='<C-n>'
-let g:use_emmet_complete_tag = 1
-au FileType html,htmldjango EmmetInstall
+  " Emmet
+  let g:user_emmet_install_global = 0
+  " let g:user_emmet_leader_key = '<Leader>'
+  let user_emmet_expandabbr_key = '<C-e>'
+  " imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+  let g:user_emmet_next_key='<C-n>'
+  let g:use_emmet_complete_tag = 1
+  au FileType html,htmldjango EmmetInstall
 
-" Airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+  " Airline
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+  let g:airline_mode_map = {
+        \ '__' : '-',
+        \ 'n' : 'N',
+        \ 'i' : 'I',
+        \ 'R' : 'R',
+        \ 'c' : 'C',
+        \ 'v' : 'V',
+        \ 'V' : 'V',
+        \ '' : 'V',
+        \ 's' : 'S',
+        \ 'S' : 'S',
+        \ '' : 'S',
+        \ }
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+  " let g:airline#extensions#tabline#left_sep = ''
+  " let g:airline#extensions#tabline#right_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = '¦'
+  let g:airline#extensions#tabline#right_alt_sep = '¦'
+  let g:airline_detect_modified=1
+  let g:airline_inactive_collapse=1
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+  let g:airline_symbols.whitespace = 'Ξ'
+  " let g:airline_symbols.whitespace = '░'
+  let g:airline#extensions#syntastic#enabled = 1
+  let g:airline#extensions#tagbar#enabled = 0
+  let g:airline#extensions#tabline#buffer_nr_show = 1
+
+  " Tagbar
+  let g:tagabar_show_linenumbers = -1
+  let g:tagbar_singleclick = 1
+  let g:tagbar_auto_open = 1
+
+  " Github Auth
+  let g:github_user = $GITHUB_USER
+  " not working cause there is a problem with 2FA & Gist.vim
+  "let g:github_token = $GITHUB_TOKEN
+  let g:gist_detect_filetype = 1
+  let g:gist_open_browser_after_post = 1
+
+  " Tern
+  " let g:tern_show_argument_hints = 'on_hold'
+  " let g:tern_show_signature_in_pum = 1
+  " let g:tern_majp_keys=1
+
+  " Neocomplete
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#auto_completion_start_length = 1
+  let g:neocomplete#sources#buffer#cache_limit_size = 50000
+  let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+  endif
+  let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+  " Tab completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+  aug omnicomplete
+    au!
+    au FileType css setl omnifunc=csscomplete#CompleteCSS
+    au FileType markdown setl omnifunc=htmlcomplete#CompleteTags
+    au FileType html,htmldjango setl omnifunc=emmet#completeTag
+    au FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
+    au FileType python setl omnifunc=pythoncomplete#Complete
+    au FileType xml setl omnifunc=xmlcomplete#CompleteTags
+  aug END
+
+  " Ultisnips
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+  let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+
+  " Unite
+  let g:unite_enable_start_insert = 1
+  let g:unite_force_overwrite_statusline = 0
+  let g:unite_prompt = '>>> '
+
+  call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+        \ 'ignore_pattern', join([ '\.git/', '\.sass-cache/' ,'tmp/', 'node_modules/', 'bower_components/'], '\|'))
+
+  if executable('ag')
+    let g:unite_source_rec_async_command= 'ag --follow --nocolor --nogroup --hidden -g ""'
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--column --nogroup --nogroup'
+    let g:unite_source_grep_recursive_opt = ''
+  endif
+
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  call unite#filters#sorter_default#use(['sorter_rank'])
+
+  nnoremap <C-P> :Unite -buffer-name=files -start-insert buffer file_rec/async<CR>
+
+  au FileType unite call s:unite_settings()
+
+  function! s:unite_settings()
+    let b:SuperTabDisabled=1
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+    imap <buffer> <Tab>   <Plug>(unite_complete)
+    imap <silent><buffer><expr> <C-x> unite#do_action('split')
+    imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+    imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+    nmap <buffer> <ESC> <Plug>(unite_exit)
+  endfunction
+
+  " Evernote
+  let g:evervim_devtoken= $EVERNOTE_TOKEN
+
+  " Simplenote
+  if filereadable($HOME . '/.simplenote')
+    source ~/.simplenote
+  endif
+  let g:SimplenoteFiletype = "markdown"
+
+  " File Explorer
+  let g:netrw_liststyle = 3
+  let g:netrw_winsize   = 15
+  let g:netrw_banner = 0
+
+  " Vim Commentary
+  au FileType jade set commentstring=//-\ %s
+  au FileType ruby set commentstring=#\ %s
+
+  " JSON
+  let g:vim_json_syntax_conceal = 0
+
+  " Goyo
+  let g:goyo_width=120
+
+  " Limelight
+  let g:limelight_conceal_ctermfg = 240
+
+  " Markdown
+  let g:markdown_fenced_languages=['python', 'ruby', 'javascript', 'css', 'scss', 'sass', 'stylus', 'html']
+
 endif
-let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n' : 'N',
-      \ 'i' : 'I',
-      \ 'R' : 'R',
-      \ 'c' : 'C',
-      \ 'v' : 'V',
-      \ 'V' : 'V',
-      \ '' : 'V',
-      \ 's' : 'S',
-      \ 'S' : 'S',
-      \ '' : 'S',
-      \ }
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = ''
-" let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = '¦'
-let g:airline#extensions#tabline#right_alt_sep = '¦'
-let g:airline_detect_modified=1
-let g:airline_inactive_collapse=1
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.whitespace = 'Ξ'
-" let g:airline_symbols.whitespace = '░'
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#tabline#buffer_nr_show = 1
-
-" Tagbar
-let g:tagabar_show_linenumbers = -1
-let g:tagbar_singleclick = 1
-let g:tagbar_auto_open = 1
-
-" Github Auth
-let g:github_user = $GITHUB_USER
-" not working cause there is a problem with 2FA & Gist.vim
-"let g:github_token = $GITHUB_TOKEN
-let g:gist_detect_filetype = 1
-let g:gist_open_browser_after_post = 1
-
-" Tern
-" let g:tern_show_argument_hints = 'on_hold'
-" let g:tern_show_signature_in_pum = 1
-" let g:tern_map_keys=1
-
-" Neocomplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#sources#buffer#cache_limit_size = 50000
-let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
-" Tab completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-aug omnicomplete
-  au!
-  au FileType css setl omnifunc=csscomplete#CompleteCSS
-  au FileType markdown setl omnifunc=htmlcomplete#CompleteTags
-  au FileType html,htmldjango setl omnifunc=emmet#completeTag
-  au FileType javascript setl omnifunc=javascriptcomplete#CompleteJS
-  au FileType python setl omnifunc=pythoncomplete#Complete
-  au FileType xml setl omnifunc=xmlcomplete#CompleteTags
-aug END
-
-" Ultisnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:UltiSnipsSnippetDirectories=["UltiSnips"]
-
-" Unite
-let g:unite_enable_start_insert = 1
-let g:unite_force_overwrite_statusline = 0
-let g:unite_prompt = '>>> '
-
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-      \ 'ignore_pattern', join([ '\.git/', '\.sass-cache/' ,'tmp/', 'node_modules/', 'bower_components/'], '\|'))
-
-if executable('ag')
-  let g:unite_source_rec_async_command= 'ag --follow --nocolor --nogroup --hidden -g ""'
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--column --nogroup --nogroup'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-nnoremap <C-P> :Unite -buffer-name=files -start-insert buffer file_rec/async<CR>
-
-au FileType unite call s:unite_settings()
-
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <buffer> <Tab>   <Plug>(unite_complete)
-  imap <silent><buffer><expr> <C-x> unite#do_action('split')
-  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
-
-" Evernote
-let g:evervim_devtoken= $EVERNOTE_TOKEN
-
-" File Explorer
-let g:netrw_liststyle = 3
-let g:netrw_winsize   = 15
-
-" Vim Commentary
-au FileType jade set commentstring=//-\ %s
-au FileType ruby set commentstring=#\ %s
-
-" JSON
-let g:vim_json_syntax_conceal = 0
-
-" Goyo
-let g:goyo_width=120
 
 " Settings
 "================================================================================
@@ -408,17 +441,21 @@ nmap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 
 " Spell check
-:set spell
-
-hi clear SpellBad
-hi SpellBad cterm=underline
+if has('nvim')
+" `set spell` gives errors in Neovim https://github.com/neovim/neovim/issues/1551
+  set nospell
+else
+  set spell
+  hi clear SpellBad
+  hi SpellBad cterm=underline
+endif
 
 " Autocommands
 "================================================================================
 " Automatically make splits equal in size
 au VimResized * wincmd =
 
-aug vimrcEx
+augroup vimrcEx
   au!
 
   " When editing a file, always jump to the last known cursor position.
@@ -433,9 +470,7 @@ aug vimrcEx
   au FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set ft=markdown
-  au FileType markdown setl wrap linebreak textwidth=72 nolist
-  au FileType markdown setl statusline+=\ %{WordCount()}
+  au FileType markdown setl wrap textwidth=80 nolist statusline+=\ %{WordCount()}
   au BufWritePre * call Preserve("%s/\\s\\+$//e")
 
   " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
@@ -449,13 +484,13 @@ aug vimrcEx
   au BufRead,BufNewFile,BufReadPre *.coffee set ft=coffee
 
   au BufRead,BufNewFile *.json set ft=json
-
+  au BufNewFile,BufRead,BufWrite * if getline(1) =~ '^\#!.*node' | setf javascript | endif
   " Don't show column width marker in HTML & md
   au BufNewFile,BufRead *.{html,md} setl colorcolumn=0
 
   " Allow stylesheets to autocomplete hyphenated words
   au FileType css,scss,sass setl iskeyword+=-
-aug END
+augroup END
 
 " Key mappings
 "================================================================================
