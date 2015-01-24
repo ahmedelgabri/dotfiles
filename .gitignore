@@ -8,3 +8,9 @@ Package Control.ca-list
 Package Control.last-run
 Package Control.system-ca-bundle
 vim/.vim/
+!vim/.vim/UltiSnips/
+weechat/logs
+weechat/sec.conf
+weechat/weechat.log
+weechat/irc.conf
+weechat/urls.log
