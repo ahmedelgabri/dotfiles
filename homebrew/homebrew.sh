@@ -1,102 +1,104 @@
+#!/bin/bash
+
 # Homebrew taps
 TAPS=(
-    homebrew/dupes
-    homebrew/versions
-    caskroom/cask
-    caskroom/fonts
-    caskroom/versions
-    sitespeedio/sitespeedio
-    tobli/browsertime
+  homebrew/dupes
+  homebrew/versions
+  caskroom/cask
+  caskroom/fonts
+  caskroom/versions
+  sitespeedio/sitespeedio
+  tobli/browsertime
 )
 
 # Homebrew Formulas
 FORMULAS=(
-    coreutils
-    findutils
-    zsh
-    caskroom/cask/brew-cask
-    wget
-    z
-    git
-    node
-    tree
-    dnsmasq
-    mongodb
-    phantomjs
-    hub
-    rbenv
-    rbenv-gem-rehash
-    ruby-build
-    the_silver_searcher
-    macvim --override-system-vim --custom-icons --with-lua
-    imagemagick
-    nginx
-    mysql
-    sitespeed.io
-    todo-txt
-    ctags
-    python --universal #2.7.8
-    openssl
-    gdal #1.11.1
-    geos #3.4.2
-    postgis #2.1.4
-    postgresql #9.3.5
-    proj #4.8.0
-    homebrew/versions/elasticsearch-0.20 #0.20.6
-    libmemcached #1.0.18
-    redis
+  coreutils
+  findutils
+  zsh
+  caskroom/cask/brew-cask
+  wget
+  z
+  git
+  node
+  tree
+  dnsmasq
+  mongodb
+  phantomjs
+  hub
+  rbenv
+  rbenv-gem-rehash
+  ruby-build
+  the_silver_searcher
+  macvim --override-system-vim --custom-icons --with-lua
+  imagemagick
+  nginx
+  mysql
+  sitespeed.io
+  todo-txt
+  ctags
+  python --universal #2.7.8
+  openssl
+  gdal #1.11.1
+  geos #3.4.2
+  postgis #2.1.4
+  postgresql #9.3.5
+  proj #4.8.0
+  homebrew/versions/elasticsearch-0.20 #0.20.6
+  libmemcached #1.0.18
+  redis
 )
 
 # Homebrew casks
 CASKS=(
-    font-inconsolata-dz-for-powerline
-    font-inconsolata
-    font-source-code-pro
-    font-droid-sans-mono-for-powerline
-    font-droid-sans-mono
-    font-meslo-lg-for-powerline
-    font-meslo-lg
-    box-sync
-    chromecast
-    firefox
-    firefox-aurora
-    firefox-nightly
-    webkit-nightly
-    opera
-    opera-beta
-    lynxlet
-    caffeine
-    alfred
-    dash
-    spectacle
-    imagealpha
-    imageoptim
-    iterm2
-    sequel-pro
-    sublime-text3
-    the-unarchiver
-    sketch
-    evernote
-    synergy
-    telegram
-    jdownloader2
-    skype
-    lime-chat
-    transmit
-    virtualbox
-    vlc
-    hipchat
-    betterzipql
-    qlcolorcode
-    qlmarkdown
-    qlprettypatch
-    qlstephen
-    quicklook-csv
-    quicklook-json
-    webpquicklook
-    recordit
-    transmission
-    appcleaner
+  font-inconsolata-dz-for-powerline
+  font-inconsolata
+  font-source-code-pro
+  font-droid-sans-mono-for-powerline
+  font-droid-sans-mono
+  font-meslo-lg-for-powerline
+  font-meslo-lg
+  box-sync
+  chromecast
+  firefox
+  firefox-aurora
+  firefox-nightly
+  webkit-nightly
+  opera
+  opera-beta
+  lynxlet
+  caffeine
+  alfred
+  dash
+  spectacle
+  imagealpha
+  imageoptim
+  iterm2
+  sequel-pro
+  sublime-text3
+  the-unarchiver
+  sketch
+  evernote
+  synergy
+  telegram
+  jdownloader2
+  skype
+  lime-chat
+  transmit
+  virtualbox
+  vlc
+  hipchat
+  betterzipql
+  qlcolorcode
+  qlmarkdown
+  qlprettypatch
+  qlstephen
+  quicklook-csv
+  quicklook-json
+  webpquicklook
+  recordit
+  transmission
+  appcleaner
 )
 
 #================================================================================

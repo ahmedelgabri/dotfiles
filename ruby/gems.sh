@@ -1,3 +1,8 @@
 #!/bin/bash
 
-gem install sass scss-lint wraith
+GEMS=(
+  sass
+  scss-lint
+)
+
+gem install ${GEMS[@]}

@@ -1,10 +1,14 @@
 #!/bin/bash
 
+PACKAGES=(
+  --upgrade setuptools
+  --upgrade pip
+  numpy
+  pygments
+  virtualenv
+  virtualenvwrapper
+  markdown
+)
+
 mkdir ~/.venv
-pip install --upgrade setuptools
-pip install --upgrade pip
-pip install numpy
-pip install pygments
-pip install virtualenv
-pip install virtualenvwrapper
-pip install markdown
+pip install ${PACKAGES[@]}
