@@ -107,7 +107,11 @@ CASKS=(
 
 brew update
 
-brew tap ${TAPS[@]} && brew install ${FORMULAS[@]}
+for tap in $TAPS; do
+  brew tap $tap
+done
+
+brew install ${FORMULAS[@]}
 
 echo "to update setuptools & pip run: pip install --upgrade setuptools pip install --upgrade pip"
 echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH."
