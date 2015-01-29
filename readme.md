@@ -2,7 +2,7 @@
 
 For setting up development environment on new Macs.
 
-*Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk. The `source/` folder is not stable, don't use any of the files inside.
+*Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk.
 
 You are welcome to give tips on how can I improve this.
 
