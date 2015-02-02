@@ -67,7 +67,9 @@
 	"ignored_packages":
 	[
 		"Vintage",
-		"Markdown"
+		"Stylus",
+		"Markdown",
+		"JavaScriptNext - ES6 Syntax"
 	],
 	"indent_guide_options":
 	[

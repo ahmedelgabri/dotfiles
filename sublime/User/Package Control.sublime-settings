@@ -4,6 +4,8 @@
 	"git_binary": "/usr/local/bin/git",
 	"in_process_packages":
 	[
+		"JavaScriptNext - ES6 Syntax",
+		"Stylus"
 	],
 	"installed_dependencies":
 	[
