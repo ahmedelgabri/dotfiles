@@ -32,7 +32,7 @@ FORMULAS=(
   rbenv-gem-rehash
   ruby-build
   the_silver_searcher
-  macvim --override-system-vim --custom-icons --with-lua
+  macvim --override-system-vim --custom-icons --with-lua --with-cscope
   weechat --with-perl --with-python --with-lua --with-curl
   imagemagick
   nginx
