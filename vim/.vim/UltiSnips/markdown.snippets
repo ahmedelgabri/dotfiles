@@ -1,3 +1,13 @@
+snippet fmatter
+---
+title: ${1:Title}
+date: ${2:`date +%Y-%m-%d`}
+tags: $3
+---
+# $1
+$0
+endsnippet
+
 snippet link "Link to something"
 [${1:${VISUAL:Text}}](${3:http://${2:www.url.com}})$0
 endsnippet

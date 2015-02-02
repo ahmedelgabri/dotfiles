@@ -1,17 +1,18 @@
 snippet func
 function $1($2) {
-	$0
+	${0:${VISUAL:\/\/ Code}}
 }
 endsnippet
 
 snippet vfunc
 var $1 = function($2) {
-	$0
+	${0:${VISUAL:\/\/ Code}}
 }
 endsnippet
 
 snippet cl
-console.log($1);$0
+console.log($1);
+$0
 endsnippet
 
 snippet clogargs
@@ -25,9 +26,9 @@ $0
 endsnippet
 
 snippet iife
-(function ($1) {
-	$0
-}(${2:$1}));
+(function (${1:window, document, undefined}) {
+	${0:${VISUAL:\/\/ Code}}
+}(${2:win, doc}));
 endsnippet
 
 snippet shebang
