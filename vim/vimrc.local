@@ -304,22 +304,11 @@ set shiftwidth=2
 " show a navigable menu for tab completion
 set wildmenu
 set wildmode=longest,list,full
-" Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
-
-" Disable archive files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-
-" Ignore bundler and sass cache
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-
-" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
 set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
-
-" Ignore rails temporary asset caches
 set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
-
-" Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 set wildignore+=*/.DS_Store,*/tmp/*
 
@@ -434,7 +423,7 @@ set nowritebackup
 set tildeop
 
 " Avoid unnecessary hit-enter prompts.
-" set shortmess=atI
+set shortmess+=atI
 
 nmap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
@@ -446,7 +435,7 @@ if has('nvim')
 else
   set spell
   hi clear SpellBad
-  hi SpellBad cterm=underline
+  " hi SpellBad term=standout ctermfg=1 term=underline cterm=underline
 endif
 
 " Autocommands

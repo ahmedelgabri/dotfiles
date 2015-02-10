@@ -66,10 +66,8 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
-		"Stylus",
 		"Markdown",
-		"JavaScriptNext - ES6 Syntax"
+		"Vintage"
 	],
 	"indent_guide_options":
 	[
