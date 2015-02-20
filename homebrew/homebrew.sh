@@ -32,6 +32,7 @@ FORMULAS=(
   rbenv-gem-rehash
   ruby-build
   the_silver_searcher
+  python --universal #2.7.8
   macvim --override-system-vim --custom-icons --with-lua --with-cscope
   weechat --with-perl --with-python --with-lua --with-curl
   imagemagick
@@ -39,7 +40,6 @@ FORMULAS=(
   mysql
   todo-txt
   ctags
-  python --universal #2.7.8
   openssl
   gdal #1.11.1
   geos #3.4.2
