@@ -1,5 +1,5 @@
 "" Setting font & status bar
-set guifont=Droid\ Sans\ Mono\ for\ Powerline:h12
+set guifont=Droid\ Sans\ Mono\ for\ Powerline:h10
 
 let titlestring=system('pwd | sed "s/.*\///"')
 execute "set titlestring=".titlestring

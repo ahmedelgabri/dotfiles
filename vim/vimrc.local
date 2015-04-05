@@ -18,8 +18,6 @@ else
 
   " General
 
-  " Too slow, need to investigate.
-  "Plug 'marijnh/tern_for_vim'            , { 'do': 'npm install' }
   if has('lua')
     Plug 'Shougo/neocomplete.vim'
   end
@@ -35,19 +33,21 @@ else
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-repeat'
   Plug 'godlygeek/tabular'
-  Plug 'kakkyz81/evervim'                 , { 'do': 'pip install markdown', 'on': 'EvervimNotebookList' }
-  Plug 'mrtazz/simplenote.vim'            , { 'on': 'Simplenote -l' }
+  Plug 'kakkyz81/evervim'                 , { 'do': 'pip install markdown', 'on': ['EvervimNotebookList', 'EvervimCreateNote'] }
+  Plug 'mrtazz/simplenote.vim'
   Plug 'moll/vim-bbye'
   Plug 'sjl/gundo.vim'
   Plug 'majutsushi/tagbar'                , { 'on': 'TagbarToggle' }
-  if has('ruby')
-    Plug 'tpope/vim-pastie'               , { 'on': 'Pastie' }
-  end
+  Plug 'ConradIrwin/vim-bracketed-paste'
+  Plug 'xolox/vim-misc'
+  Plug 'xolox/vim-easytags'
+  Plug 'scrooloose/nerdtree'
+  Plug 'jistr/vim-nerdtree-tabs'
+  Plug 'szw/vim-g'
 
   " Syntax
   Plug 'digitaltoad/vim-jade'             , { 'for': ['jade'] }
   Plug 'jelera/vim-javascript-syntax'     , { 'for': ['javascript'] }
-  Plug 'kchmck/vim-coffee-script'         , { 'for': ['coffee'] }
   Plug 'moll/vim-node'
   Plug 'mustache/vim-mustache-handlebars'
   Plug 'mxw/vim-jsx'                      , { 'for': ['jsx'] }
@@ -57,6 +57,8 @@ else
   Plug 'ap/vim-css-color'
   Plug 'tpope/vim-git'                    , { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
   Plug 'elzr/vim-json'                    , { 'for': ['json'] }
+  Plug 'groenewege/vim-less'              , { 'for': ['less'] }
+  Plug 'kchmck/vim-coffee-script'         , { 'for': ['coffee'] }
 
   " Linters & Code quality
   Plug 'editorconfig/editorconfig-vim'
@@ -69,11 +71,9 @@ else
   Plug 'altercation/vim-colors-solarized'
   Plug 'chriskempson/base16-vim'
   Plug 'morhetz/gruvbox'
-  Plug 'jordwalke/flatlandia/'
 
   " Git
-  " Slows Vim loading?
-  " Plug 'airblade/vim-gitgutter'
+  " Plug 'airblade/vim-gitgutter' " Slows Vim loading?
   Plug 'mattn/gist-vim'
   Plug 'mattn/webapi-vim'
   Plug 'tpope/vim-fugitive'
@@ -97,9 +97,13 @@ else
   "================================================================================
 
   set t_Co=256
-  set background=dark
+  if strftime("%H") < 17
+    set background=light
+  else
+    set background=dark
+  endif
   let g:gruvbox_italic=0
-  color gruvbox
+  color base16-ocean
 
   " JavaScript
   let g:javascript_enable_domhtmlcss = 1
@@ -109,9 +113,7 @@ else
   let g:syntastic_mode_map = { "mode": "active",
         \ 'active_filetypes': [],
         \ 'passive_filetypes': ['html'] }
-  " I want to move to eslint
-  " let g:syntastic_javascript_checkers = ['eslint', 'jscs']
-  let g:syntastic_javascript_checkers = ['jshint']
+  au FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['jshint']
   let g:syntastic_error_symbol = '✗'
   let g:syntastic_warning_symbol = '!'
 
@@ -148,18 +150,17 @@ else
         \ '' : 'S',
         \ }
   let g:airline_powerline_fonts = 1
+  let g:airline_detect_paste=1
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#left_alt_sep = '¦'
   let g:airline#extensions#tabline#right_alt_sep = '¦'
   let g:airline_detect_modified=1
   let g:airline_inactive_collapse=1
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-  let g:airline_symbols.whitespace = 'Ξ'
   let g:airline#extensions#syntastic#enabled = 1
   let g:airline#extensions#tagbar#enabled = 0
   let g:airline#extensions#tabline#buffer_nr_show = 1
+  let g:airline#extensions#hunks#non_zero_only = 1
+  let g:airline#extensions#hunks#enabled = 0
 
   " Tagbar
   let g:tagabar_show_linenumbers = -1
@@ -172,11 +173,6 @@ else
   "let g:github_token = $GITHUB_TOKEN
   let g:gist_detect_filetype = 1
   let g:gist_open_browser_after_post = 1
-
-  " Tern
-  " let g:tern_show_argument_hints = 'on_hold'
-  " let g:tern_show_signature_in_pum = 1
-  " let g:tern_majp_keys=1
 
   " Neocomplete
   let g:neocomplete#enable_at_startup = 1
@@ -256,6 +252,7 @@ else
   " Vim Commentary
   au FileType jade set commentstring=//-\ %s
   au FileType ruby set commentstring=#\ %s
+  au FileType htmldjango set commentstring={#\ %s\ #}
 
   " JSON
   let g:vim_json_syntax_conceal = 0
@@ -267,7 +264,21 @@ else
   let g:limelight_conceal_ctermfg = 240
 
   " Markdown
-  let g:markdown_fenced_languages=['python', 'ruby', 'javascript', 'css', 'scss', 'sass', 'stylus', 'html']
+  let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css']
+
+  " Easytags
+  set tags=./.tags,~/.tags
+  let g:easytags_events = ['BufReadPost', 'BufWritePost']
+  let g:easytags_async = 1
+  let g:easytags_dynamic_files = 2
+  let g:easytags_resolve_links = 1
+  " let g:easytags_suppress_ctags_warning = 1
+
+  " gitgutter
+
+  " NerdTree
+  let g:NERDTreeShowHidden=1
+  let NERDTreeIgnore = ['\.pyc$']
 
 endif
 
@@ -278,13 +289,16 @@ endif
 "-----------------
 " number of visual spaces per TAB
 set tabstop=2
-
 " insert mode tab and backspace, number of spaces in tab when editing
 set softtabstop=2
-set nowrap
-
 " expand tabs to spaces
 set expandtab
+" normal mode indentation commands use 2 spaces
+set shiftwidth=2
+set autoindent
+set shiftround
+
+set nowrap
 
 " highlight ColorColumn ctermbg=235 guibg=#2c2d27
 let colorcolumn="80,120"
@@ -298,9 +312,6 @@ set showcmd
 " Display the mode you're in.
 set showmode
 
-" normal mode indentation commands use 2 spaces
-set shiftwidth=2
-
 " show a navigable menu for tab completion
 set wildmenu
 set wildmode=longest,list,full
@@ -312,8 +323,8 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*.swp,*~,._*
 set wildignore+=*/.DS_Store,*/tmp/*
 
-" Don't look in included files.
-set complete-=i
+
+set complete+=kspell
 
 " Display as much as possibe of a window's last line.
 set display+=lastline
@@ -355,7 +366,6 @@ nnoremap gV `[v`]
 " Other
 " TODO: Cleanup.
 "-----------------
-set autoindent
 
 " No beeping.
 set visualbell
@@ -458,8 +468,8 @@ augroup vimrcEx
   au FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  au FileType markdown setl wrap textwidth=80 nolist statusline+=\ %{WordCount()}
   au BufWritePre * call Preserve("%s/\\s\\+$//e")
+  au FileType markdown setl wrap textwidth=120 nolist statusline+=\ delimitMate_nesting_quotes=["`"] %{WordCount()}
 
   " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
   au Filetype gitcommit setl spell textwidth=72
@@ -476,6 +486,9 @@ augroup vimrcEx
   " Don't show column width marker in HTML & md
   au BufNewFile,BufRead *.{html,md} setl colorcolumn=0
 
+  au BufNewFile,BufRead *.html set ft=htmldjango
+  au BufNewFile,BufRead .tags set ft=tags
+
   " Allow stylesheets to autocomplete hyphenated words
   au FileType css,scss,sass setl iskeyword+=-
 augroup END
@@ -483,7 +496,7 @@ augroup END
 " Activate goyo with Markdown files
 function! s:auto_goyo()
   if &ft == 'markdown'
-    Goyo 80
+    Goyo 120
   elseif exists('#goyo')
     let bufnr = bufnr('%')
     Goyo!
@@ -495,6 +508,7 @@ augroup goyo_markdown
   au!
   au BufNewFile,BufRead * call s:auto_goyo()
 augroup END
+
 " Key mappings
 "================================================================================
 
@@ -517,7 +531,8 @@ nmap <Leader>s :split
 nmap <Leader>p :Unite buffer -buffer-name=files -start-insert -auto-preview -no-split file_rec/async<CR>
 nmap <Leader>n :call ToggleNumber()<CR>
 nmap <Leader>t :TagbarToggle<CR>
-nmap <leader>d :Lex<CR>
+" nmap <leader>d :Lex<CR>
+nmap <leader>d :NERDTreeTabsToggle<CR>
 nmap <leader>dd :Dash<CR>
 nmap <Leader>bd :Bdelete<CR>
 nmap <Leader><TAB> <C-w><C-w>
@@ -531,6 +546,25 @@ nmap <leader>fm :Goyo<CR>
 
 " Make dot work in visual mode
 vmap . :norm.<CR>
+
+" Convenience commands and cabbrev's
+"================================================================================
+"
+" Make these commonly mistyped commands still work
+command! WQ wq
+command! Wq wq
+command! Wqa wqa
+command! W w
+command! Q q
+
+" Use :C to clear hlsearch
+command! C nohlsearch
+
+" Force write readonly files using sudo
+command! WS w !sudo tee %
+
+" open help in a new tab
+cabbrev help tab help
 
 " Functions
 "================================================================================
