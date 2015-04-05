@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/base16-ocean.dark (SL).tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/Oceanic Next (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -61,7 +61,7 @@
 	[
 		"no_bold"
 	],
-	"font_size": 12.0,
+	"font_size": 10.0,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"ignored_packages":
@@ -87,7 +87,7 @@
 	"show_full_path": true,
 	"spacegray_tabs_auto_width": true,
 	"spell_check": false,
-	"tab_size": 4,
+	"tab_size": 2,
 	"tern_argument_hints": true,
 	"theme": "Spacegray.sublime-theme",
 	"translate_tabs_to_spaces": true,

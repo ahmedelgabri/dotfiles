@@ -53,6 +53,8 @@ node_modules/
 # vim       #
 #############
 *.un~
+tags
+.tags
 
 # Photoshop/Illustrator files #
 ###############################

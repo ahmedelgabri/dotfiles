@@ -53,6 +53,7 @@
 	who = shortlog -sne
 	doctor = remote -v show origin
 	g = grep --break --heading --line-number
+	credit = !sh -c 'git commit --amend --author \"\" -C HEAD' -
 
 [mergetool]
 	keepBackup = false
