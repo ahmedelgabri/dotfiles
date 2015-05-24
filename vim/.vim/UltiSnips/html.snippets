@@ -3,11 +3,11 @@ snippet html5
 <html>
 	<head>
 		<title></title>
+		<link rel="stylesheet" href="${1:style.css}">
 	</head>
 	<body>
-		<div class="wrap">
-			$0
-		</div>
+		$0
+		<script src="${2:script.js}"></script>
 	</body>
 </html>
 endsnippet
@@ -15,4 +15,21 @@ endsnippet
 snippet code
 <code>${1}</code> $0
 endsnippet
+
+snippet jspm
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script src="jspm_packages/system.js"></script>
+		<script src="config.js"></script>
+		<script>
+			System.import('app/main');
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
+endsnippet
+
 # vim:ft=snippets:
