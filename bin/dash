@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Search dash app
+# dash js:tostring or dash tostring
+open "dash://$@"

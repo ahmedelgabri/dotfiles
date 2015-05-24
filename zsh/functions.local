@@ -1,53 +1,32 @@
-# $1 = keyname
-# $2 = Email ID used
-new_SSH(){
-    ssh-keygen -t rsa -b 2048 -f ~/.ssh/$1 -C "$2"
-    cat ~/.ssh/$1.pub | pbcopy
-    echo -e "------------------------------------------------------------\n"
-    echo -e "$fg[green]($1.pub) has been created & copied to your clipboard $reset_color\n"
-    echo -e "------------------------------------------------------------\n"
-}
-
-copy_SSH(){
-    pbcopy < ~/.ssh/$@.pub
-}
-
-
 # make a directory and cd to it
 mcd() {
     test -d "$1" || mkdir "$1" && cd "$1"
 }
 
 
-# Extract most know archives with one command
-# http://alias.sh/extract-most-know-archives-one-command
-extract () {
-    if [ -f $1 ] ; then
-      case $1 in
-        *.tar.bz2)   tar xjf $1     ;;
-        *.tar.gz)    tar xzf $1     ;;
-        *.bz2)       bunzip2 $1     ;;
-        *.rar)       unrar e $1     ;;
-        *.gz)        gunzip $1      ;;
-        *.tar)       tar xf $1      ;;
-        *.tbz2)      tar xjf $1     ;;
-        *.tgz)       tar xzf $1     ;;
-        *.zip)       unzip $1       ;;
-        *.Z)         uncompress $1  ;;
-        *.7z)        7z x $1        ;;
-        *)     echo "'$1' cannot be extracted via extract()" ;;
-         esac
-     else
-         echo "'$1' is not a valid file"
-     fi
-}
+# # Extract most know archives with one command
+# # http://alias.sh/extract-most-know-archives-one-command
+# extract () {
+#     if [ -f $1 ] ; then
+#       case $1 in
+#         *.tar.bz2)   tar xjf $1     ;;
+#         *.tar.gz)    tar xzf $1     ;;
+#         *.bz2)       bunzip2 $1     ;;
+#         *.rar)       unrar e $1     ;;
+#         *.gz)        gunzip $1      ;;
+#         *.tar)       tar xf $1      ;;
+#         *.tbz2)      tar xjf $1     ;;
+#         *.tgz)       tar xzf $1     ;;
+#         *.zip)       unzip $1       ;;
+#         *.Z)         uncompress $1  ;;
+#         *.7z)        7z x $1        ;;
+#         *)     echo "'$1' cannot be extracted via extract()" ;;
+#          esac
+#      else
+#          echo "'$1' is not a valid file"
+#      fi
+# }
 
-
-# vHosts
-vhosts() {
-  subl /etc/hosts
-  subl /etc/apache2/extra/httpd-vhosts.conf
-}
 
 # Git functions
 git_since(){
@@ -70,81 +49,6 @@ gitwork(){
     git config user.email "$1"
 }
 
-branches(){
-    current_branch="$(git symbolic-ref --short -q HEAD)"
-    git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(authorname)' |
-      sed 's/refs\/heads\///g' |
-      grep -v BACKUP  |
-      while IFS='|' read branch date author
-      do
-        start='  '
-        end=''
-        if [[ $branch = $current_branch ]]; then
-          start='* \e[32m'
-          end='\e[0m'
-        fi
-        printf "$start%-30s %-15s %s$end\n" "$branch" "$date" "$author"
-      done
-}
-
-# Uninstall all Ruby gems
-# http://stackoverflow.com/questions/8095209/uninstall-all-installed-gems-in-osx
-
-uninstall_gems(){
-    for i in `gem list --no-versions`;
-        do gem uninstall -aIx $i;
-    done
-}
-
-# Start an HTTP server from a directory, optionally specifying the port
-# Works like this "server <LANG>(default python simple server) <PORT>"
-server() {
-    local port="${1:-8000}"
-    open "http://localhost:${port}/"
-
-    if [[ "$2" == "ruby" ]]; then
-        ruby -run -ehttpd . -p$port
-    elif [[ "$2" == "sinatra" ]]; then
-        ruby -rsinatra -e'set :public_folder, "."; set :port, $port'
-    elif [[ "$2" == "php" ]]; then
-        php -S localhost:$port
-    else
-        # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-        # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-        python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
-    fi
-}
-
-# Search dash app
-# dash js:tostring or dash tostring
-dash(){
-    open "dash://$@"
-}
-
-explain() {
-  # base url with first command already injected
-  # $ explain tar
-  #   => http://explainshel.com/explain/tar?args=
-  url="http://explainshell.com/explain/$1?args="
-
-  # removes $1 (tar) from arguments ($@)
-  shift;
-
-  # iterates over remaining args and adds builds the rest of the url
-  for i in "$@"; do
-    url=$url"$i""+"
-  done
-
-  # opens url in browser
-  open $url
-}
-
-# gitignore.io
-gi() {
-  curl http://www.gitignore.io/api/$@ ;
-}
-
-
 spectrum_ls() {
   for code in {000..255}; do
     print -P -- "$code: %F{$code}Test%f"
@@ -157,11 +61,6 @@ spectrum_bls() {
     print -P -- "$BG[$code]$code: Test %{$reset_color%}"
   done
 }
-
-bdeps() {
-    brew list | while read cask; do echo -n "\e[1;34m$cask ->\e[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
-};
-
 
 vman() {
   vim -c "SuperMan $*"

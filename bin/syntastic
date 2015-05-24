@@ -1,0 +1,6 @@
+#! /bin/sh
+if [ -x node_modules/.bin/eslint ]; then
+    exec ./node_modules/.bin/eslint "$@"
+else
+    exec eslint "$@"
+fi

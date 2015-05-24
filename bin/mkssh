@@ -1,0 +1,12 @@
+#!/bin/sh
+# Create and copy SSH key to your clipboard
+#   author: @ahmedelgabri
+#   version: 1.0.0
+# $1 = keyname
+# $2 = Email ID used
+
+ssh-keygen -t rsa -b 2048 -f ~/.ssh/$1 -C "$2"
+cat ~/.ssh/$1.pub | pbcopy
+echo -e "------------------------------------------------------------\n"
+echo -e "$fg[green]($1.pub) has been created & copied to your clipboard $reset_color\n"
+echo -e "------------------------------------------------------------\n"

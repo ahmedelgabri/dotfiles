@@ -1,0 +1,6 @@
+#!/bin/sh
+# Copy SSH key to your clipboard
+#   author: @ahmedelgabri
+#   version: 1.0.0
+
+pbcopy < ~/.ssh/$@.pub
