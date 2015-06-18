@@ -1,0 +1,1 @@
+/Users/Gabri/.weechat/python/emojis.py

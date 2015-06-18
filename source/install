@@ -24,6 +24,7 @@ sh $HOME/.dotfiles/homebrew/homebrew.sh
 sh $HOME/.dotfiles/source/setup
 sh $HOME/.dotfiles/node/packages.sh
 sh $HOME/.dotfiles/python/packages.sh
+sh $HOME/.dotfiles/iterm2/themes.sh
 
 
 rbenv install 2.1.0 && rbenv global 2.1.0

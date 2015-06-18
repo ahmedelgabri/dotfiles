@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# A script that loops over folders and runs `npm install` inside each folder
-# http://askubuntu.com/a/531487
-
-for f in $PWD/*;
-  do
-     [ -d $f ] && cd "$f" && echo Entering into $f and installing packages && npm i
-  done;
