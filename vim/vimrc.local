@@ -27,35 +27,33 @@ else
   Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango'] }
   Plug 'ervandew/supertab'
   Plug 'rking/ag.vim'                               , { 'on': 'Ag' }
-  Plug 'pbrisbin/vim-mkdir'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-repeat'
   Plug 'godlygeek/tabular'
-  Plug 'kakkyz81/evervim'                           , { 'do': 'pip install markdown', 'on': ['EvervimNotebookList', 'EvervimCreateNote'] }
   Plug 'moll/vim-bbye'
   Plug 'mbbill/undotree'                            , { 'on': 'UndotreeToggle' }
   Plug 'majutsushi/tagbar'                          , { 'on': 'TagbarToggle' }
   Plug 'ConradIrwin/vim-bracketed-paste'
-  Plug 'xolox/vim-misc'
-  Plug 'xolox/vim-easytags'
+  Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
   Plug 'scrooloose/nerdtree'
   Plug 'jistr/vim-nerdtree-tabs'
   Plug 'szw/vim-g'
   Plug 'justinmk/vim-gtfo'
   Plug 'junegunn/vim-peekaboo'
+  Plug 'epeli/slimux'                               , { 'on': [ 'SlimuxREPLSendBuffer', 'SlimuxREPLSendLine', 'SlimuxREPLSendSelection' ] }
 
   " Syntax
   Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
-  Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
+  Plug 'marijnh/tern_for_vim'                       , { 'for': ['javascript'], 'do': 'npm i' }
+  Plug 'othree/yajs.vim'                            , { 'for': ['javascript'] }
   Plug 'moll/vim-node'
-  Plug 'mustache/vim-mustache-handlebars'
   Plug 'mxw/vim-jsx'                                , { 'for': ['jsx'] }
-  Plug 'othree/html5.vim'                           , { 'for': ['html', 'htmldjango'] }
+  Plug 'othree/html5.vim'                           , { 'for': ['html'] }
+  Plug 'Glench/Vim-Jinja2-Syntax'                   , { 'for': ['htmldjango', 'jinja'] }
   Plug 'tpope/vim-markdown'                         , { 'for': ['markdown'] }
   Plug 'wavded/vim-stylus'                          , { 'for': ['stylus'] }
   Plug 'ap/vim-css-color'
-  Plug 'tpope/vim-git'                              , { 'for': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] }
   Plug 'elzr/vim-json'                              , { 'for': ['json'] }
   Plug 'groenewege/vim-less'                        , { 'for': ['less'] }
   Plug 'kchmck/vim-coffee-script'                   , { 'for': ['coffee'] }
@@ -73,15 +71,13 @@ else
   Plug 'morhetz/gruvbox'
 
   " Git
-  " Gitgutter Slows Vim loading?
   Plug 'airblade/vim-gitgutter'
-  Plug 'mattn/gist-vim'
-  Plug 'mattn/webapi-vim'
+  Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
   Plug 'tpope/vim-fugitive'
   Plug 'gregsexton/gitv'                            , { 'on': 'Gitv' }
+
   " Misc.
   Plug 'rizzatti/dash.vim'                          , { 'on': 'Dash' }
-  Plug 'Z1MM32M4N/vim-superman'
   Plug 'vim-scripts/utl.vim'
 
   " Distraction-free writing
@@ -218,9 +214,6 @@ else
   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
   let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
-  " Evernote
-  let g:evervim_devtoken= $EVERNOTE_TOKEN
-
   " File Explorer
   let g:netrw_liststyle = 3
   let g:netrw_winsize   = 15
@@ -270,7 +263,12 @@ else
   let g:undotree_SetFocusWhenToggle= 1
 
   " Peekaboo
-  let g:peekaboo_window = 'vertical botrightet 60new'
+  let g:peekaboo_window = 'vertical botright 60new'
+
+  " Vim-g
+  let g:vim_g_query_url = "http://google.com/search?q="
+  let g:vim_g_command = "G"
+  let g:vim_g_f_command = "Gf"
 
 endif
 
@@ -542,42 +540,49 @@ map <C-l> <C-w>l
 " map  <right> <nop>
 " imap <right> <nop>
 
-map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+nnoremap <silent> <leader>sv :so $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+nnoremap <silent> <leader>ev :vs $MYVIMRC<CR>
 
-imap jj <ESC>
-" nmap jj <C-]>
-" nmap kk <C-t>
-nmap <Leader>q :q<CR>
-nmap <Leader>w :w<CR>
-nmap <Leader>e :e
-" nmap <Leader>v :vsplit
-" nmap <Leader>s :split
-nmap <silent> <Leader><Leader> :FZF -m<CR>
-" nmap <Leader>p :FZF<CR>
-nmap <Leader>n :call ToggleNumber()<CR>
-nmap <Leader>t :TagbarToggle<CR>
-" nmap <leader>d :Lex<CR>
-nmap <leader>d :NERDTreeTabsToggle<CR>
-nmap <leader>dd :Dash<CR>
-nmap <Leader>bd :Bdelete<CR>
-nmap <Leader><TAB> <C-w><C-w>
+nnoremap gb  :Gbrowse<CR> " Open current file on github.com
+vnoremap gb  :Gbrowse<CR> " Make it work in Visual mode to open with highlighted linenumbers
+
+inoremap jj <ESC>
+" nnoremap jj <C-]>
+" nnoremap kk <C-t>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>e :e
+" nnoremap <Leader>v :vsplit
+" nnoremap <Leader>s :split
+nnoremap <silent> <Leader><Leader> :FZF -m<CR>
+nnoremap <C-x> :SlimaxREPLSendLine<CR>
+nnoremap <Leader>x :SlimaxREPLSendBuffer<CR>
+vnoremap <Leader>x :SlimaxREPLSendSelection<CR>
+nnoremap <Leader>n :call ToggleNumber()<CR>
+nnoremap <Leader>t :TagbarToggle<CR>
+" nnoremap <leader>d :Lex<CR>
+nnoremap <leader>d :NERDTreeTabsToggle<CR>
+nnoremap <leader>dd :Dash<CR>
+nnoremap <Leader>bd :Bdelete<CR>
+nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-nmap <leader>ss :mksession<CR>
-nmap <leader>u :UndotreeToggle<CR>
-nmap <leader>ll :Limelight!!<CR>
-nmap <leader>fm :Goyo<CR>
+nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+nnoremap <leader>ss :mksession<CR>
+nnoremap -- :UndotreeToggle<CR>
+nnoremap == <C-w>t<C-w>K<CR>
+nnoremap \|\| <C-w>t<C-w>H<CR>
+nnoremap <leader>ll :Limelight!!<CR>
+nnoremap <leader>fm :Goyo<CR>
 " Tab and Shift + Tab Circular buffer navigation
-nmap <tab>   :bnext<CR>
-nmap <S-tab> :bprevious<CR>
+nnoremap <tab>   :bnext<CR>
+nnoremap <S-tab> :bprevious<CR>
 " qq to record, Q to replay
-nmap Q @q
+nnoremap Q @q
 " Make dot work in visual mode
 vmap . :norm.<CR>
 
-
 " Choose a color scheme with fzf
-nmap <silent> <Leader>C :call fzf#run({
+nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
 \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
@@ -600,7 +605,7 @@ function! BufOpen(e)
   execute 'buffer '. matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-nmap <silent> <Leader><Enter> :call fzf#run({
+nnoremap <silent> <Leader><Enter> :call fzf#run({
 \   'source':  reverse(BufList()),
 \   'sink':    function('BufOpen'),
 \   'options': '+m',
@@ -608,7 +613,7 @@ nmap <silent> <Leader><Enter> :call fzf#run({
 \ })<CR>
 
 " Open files in horizontal split
-nmap <silent> <Leader>s :call fzf#run({
+nnoremap <silent> <Leader>s :call fzf#run({
 \   'down': '40%',
 \   'sink': 'botright split' })<CR>
 
@@ -631,6 +636,9 @@ command! Q q
 command! C nohlsearch
 command! Light set background=light
 
+" Delete the current file and clear the buffer
+command! Del :call delete(@%) | bdelete!
+
 " Force write readonly files using sudo
 command! WS w !sudo tee %
 
@@ -651,16 +659,6 @@ endfunction
 
 command! ClearRegisters call ClearRegisters()
 
-" toggle between number and relativenumber
-function! ToggleNumber()
-  if(&relativenumber == 1)
-    set norelativenumber
-    set number
-  else
-    set relativenumber
-  endif
-endfunc
-
 " strips trailing whitespace at the end of files. this
 " is called on buffer write in the autogroup above.
 function! Preserve(command)
@@ -674,8 +672,8 @@ function! Preserve(command)
   let @/=_s
   call cursor(l, c)
 endfunction
-nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
-nmap _= :call Preserve("normal gg=G")<CR>
+nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
+nnoremap _= :call Preserve("normal gg=G")<CR>
 
 " word count, taken from
 " http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
@@ -708,5 +706,9 @@ endif
 " Overrrides
 " =================
 if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
+  so ~/.vimrc.local
+endif
+
+if filereadable('.local.vim')
+  so .local.vim
 endif
