@@ -107,11 +107,13 @@ else
         \ 'active_filetypes': [],
         \ 'passive_filetypes': ['html'] }
   au FileType javascript let b:syntastic_checkers = findfile('.jshintrc', '.;') != '' ? ['jshint'] : ['eslint']
+  " ~/.dotfiles/bin/syntastic more info https://github.com/eslint/eslint/issues/1214#issuecomment-101012992 & https://github.com/scrooloose/syntastic/issues/1247#issuecomment-63020503
+  let g:syntastic_javascript_eslint_exec='syntastic'
   let g:syntastic_error_symbol = '✗'
   let g:syntastic_warning_symbol = '!'
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
   " Remove bg color from gutter signs
   highlight SyntasticErrorSign ctermbg=None
@@ -293,10 +295,11 @@ set nowrap
 " highlight ColorColumn ctermbg=235 guibg=#2c2d27
 set colorcolumn=80,120
 
-highlight OverLength ctermbg=000 ctermfg=white guibg=#592929
-match OverLength /\%121v.\+/
+" highlight OverLength ctermbg=000 ctermfg=white guibg=#592929
+" match OverLength /\%121v.\+/
 
-" show line numbers
+" show line numbers, hybrid. Relative with absolute for the line you are on.
+set number
 set relativenumber
 
 " show command in bottom bar
@@ -368,16 +371,13 @@ nnoremap gV `[v`]
 " No beeping.
 set visualbell
 
-" assume the /g flag on :s substitutions to replace all matches in a line
-set gdefault
-
 set linebreak
 
 " No flashing.
 set noerrorbells
 "
 " http://robots.thoughtbot.com/faster-grepping-in-vim/
-set grepprg=ag\ --nogroup\ --nocolor
+set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
 
 " History
 set history=200
@@ -442,7 +442,7 @@ set tildeop
 " Avoid unnecessary hit-enter prompts.
 set shortmess+=atI
 
-nmap <F2> :set invpaste paste?<CR>
+nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 
 " Spell check
@@ -493,11 +493,9 @@ augroup vimrcEx
   au BufNewFile,BufRead,BufWrite * if getline(1) =~ '^\#!.*node' | setf javascript | endif
   " Don't show column width marker in HTML & md
   au BufNewFile,BufRead *.{html,md} set colorcolumn=120
-
-  au BufNewFile,BufRead *.html set ft=htmldjango
   au BufNewFile,BufRead .tags set ft=tags
 
-  " Allow stylesheets to autocomplete hyphenated words
+  " "Makes foo-bar considered one word
   au FileType css,scss,sass setl iskeyword+=-
 
   " Wrap quickfix window
