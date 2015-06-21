@@ -61,13 +61,3 @@ spectrum_bls() {
     print -P -- "$BG[$code]$code: Test %{$reset_color%}"
   done
 }
-
-vman() {
-  vim -c "SuperMan $*"
-
-  if [ "$?" != "0" ]; then
-    echo "No manual entry for $*"
-  fi
-}
-
-compdef vman="man"
