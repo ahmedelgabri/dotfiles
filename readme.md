@@ -60,3 +60,5 @@ Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode
 Install
 
     $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/source/install | sh
+
+![](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
