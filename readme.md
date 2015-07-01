@@ -61,4 +61,4 @@ Install
 
     $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/source/install | sh
 
-![](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
+![](./screenshot.png)
