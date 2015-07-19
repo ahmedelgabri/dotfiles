@@ -1,6 +1,8 @@
 #! /bin/sh
 if [ -x node_modules/.bin/eslint ]; then
     exec ./node_modules/.bin/eslint "$@"
+elif [ -x node_modules/.bin/jshint ]; then
+    exec ./node_modules/.bin/jshint "$@"
 else
-    exec eslint "$@"
+    exec standard "$@"
 fi
