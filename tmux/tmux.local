@@ -11,6 +11,9 @@ bind-key C-a send-prefix
 
 set -g history-limit 5000
 
+# Neovim ESC issue https://github.com/neovim/neovim/issues/2017#issuecomment-75145262
+set -s escape-time 0
+
 # set window and pane index to 1 (0 by default)
 set-option -g base-index 1
 setw -g pane-base-index 1
@@ -57,11 +60,11 @@ bind-key = select-layout main-vertical
 set-window-option -g other-pane-height 25
 set-window-option -g other-pane-width 80
 
-bind-key a last-pane
+# bind-key a last-pane
 bind-key q display-panes
-bind-key c new-window
-bind-key t next-window
-bind-key T previous-window
+bind-key % split-window -h -c "#{pane_current_path}"
+bind-key '"' split-window -c "#{pane_current_path}"
+bind-key c  new-window -c "#{pane_current_path}"
 
 # Allow the arrow key to be used immediately after changing windows
 set-option -g repeat-time 0
@@ -97,9 +100,9 @@ bind-key * command-prompt -p 'save history to filename:' -I '~/tmux.history' 'ca
 # ----------------------
 # set some pretty colors
 # ----------------------
-# set pane colors - hilight the active pane
-set-option -g pane-border-fg colour235 #base02
-set-option -g pane-active-border-fg colour33 #blue
+# # set pane colors - hilight the active pane
+# set-option -g pane-border-fg colour235 #base02
+# set-option -g pane-active-border-fg colour33 #blue
 
 # colorize messages in the command line
 set-option -g message-bg default #base02
@@ -123,15 +126,19 @@ set-option -g status-bg default
 set-option -g status-fg default
 set-option -g status-attr dim
 
+set-window-option -g window-status-activity-fg black
+set-window-option -g window-status-activity-bg brightwhite
+set-window-option -g window-status-activity-attr bright
+
 set-window-option -g window-status-current-fg red #orange
 set-window-option -g window-status-current-attr bright
 
 # show session name, window & pane number, date and time on left side of
 # status bar
-set -g status-left-length 60
-set -g status-left "#[fg=colour237][ #[fg=colour243]#S #I:#P #[fg=colour237]] #[fg=colour237][ #[fg=colour243]#(PWD) #[fg=colour237]]"
+set -g status-left-length 70
+set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] #[fg=colour237][ #[fg=colour243]#T #[fg=colour237]]"
 
 # show host name and IP address on right side of status bar
-set -g status-right-length 85
+set -g status-right-length 75
 # set -g status-right "#[fg=colour243]#h #(dig +short myip.opendns.com @resolver1.opendns.com) #(ifconfig en0 | grep 'inet ' | awk '{print \"en0 \" $2}') #(ifconfig en1 | grep 'inet ' | awk '{print \"en1 \" $2}') #(ifconfig en3 | grep 'inet ' | awk '{print \"en3 \" $2}') #(ifconfig tun0 | grep 'inet ' | awk '{print \"vpn \" $2}') #(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') "
-set -g status-right "#[fg=colour237][ #[fg=colour243]#(whoami)@#h #[fg=colour237]] #[fg=colour237][ #(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
+set -g status-right "#[fg=colour237][ #[fg=colour243]#(whoami)@#h #[fg=colour237]] #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
