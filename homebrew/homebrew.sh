@@ -19,6 +19,7 @@ FORMULAS=(
   zsh
   caskroom/cask/brew-cask
   wget
+  curl
   z
   git
   node
@@ -35,20 +36,12 @@ FORMULAS=(
   python --universal #2.7.8
   macvim --override-system-vim --custom-icons --with-lua --with-cscope
   weechat --with-perl --with-python --with-lua --with-curl
+  tmux
+  reattach-to-user-namespace
   imagemagick
-  nginx
   mysql
   todo-txt
   ctags
-  openssl
-  gdal #1.11.1
-  geos #3.4.2
-  postgis #2.1.4
-  postgresql #9.3.5
-  proj #4.8.0
-  homebrew/versions/elasticsearch-0.20 #0.20.6
-  libmemcached #1.0.18
-  redis
 )
 
 # Homebrew casks
