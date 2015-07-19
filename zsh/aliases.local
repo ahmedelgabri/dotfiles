@@ -19,7 +19,8 @@ alias l="ls -alh "
 alias ld="ls -alh | grep '^d' "
 alias ll="ls -alrth "
 alias lc="ls -alCF "
-alias KABOOM="npm cache clean; npm update -g; gem update sass scss-lint && gem cleanup; brew update && brew upgrade --all && brew cleanup && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
+alias "brewc update"="brew cask list | egrep -v \"java\" | xargs brew cask install --force"
+alias KABOOM="npm cache clean; npm update -g; brew update && brew upgrade --all && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
@@ -33,6 +34,7 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
 alias formatJSON='python -m json.tool | catc '
 alias brewc='brew cask '
+alias work='tmuxifier s tb '
 
 # DEV
 alias bower="noglob bower"
