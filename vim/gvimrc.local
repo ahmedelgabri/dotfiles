@@ -1,5 +1,5 @@
 "" Setting font & status bar
-set guifont=InputMono:h10
+set guifont=FiraMono:h10
 
 let titlestring=system('pwd | sed "s/.*\///"')
 execute "set titlestring=".titlestring
