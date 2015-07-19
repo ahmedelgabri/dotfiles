@@ -20,6 +20,55 @@ console.log.apply(console, arguments);
 $0
 endsnippet
 
+snippet for "for loop" b
+for (var i = 0, len = ${1:list}.length; i < len; i++) {
+	var ${2:item} = $1[i];
+	${VISUAL}$0
+}
+endsnippet
+
+snippet foreach "for each loop" b
+for (var ${2:key} in ${1:object}) {
+	if (!$1.hasOwnProperty($2)) continue;
+	var ${3:val} = $1[$2];
+	${VISUAL}$0
+}
+endsnippet
+
+snippet umd "universal module loader" b
+;(function (root, factory) {
+	if (typeof define === 'function' && define.amd) define(factory)
+	else if (typeof exports === 'object') module.exports = factory()
+	else root.${1:MODULENAME} = factory()
+}(this, function () {
+
+	${VISUAL}$0
+
+}))
+endsnippet
+
+snippet umd! "universal module loader with deps" b
+;(function (root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory)
+	} else if (typeof exports === 'object') {
+		module.exports = factory(require('jquery'))
+	} else {
+		root.${1:MODULENAME} = factory(root.jQuery)
+	}
+}(this, function ($) {
+
+	${VISUAL}$0
+
+}))
+endsnippet
+
+snippet forof "for"
+for (const ${2:item} of ${1:list}) {
+	${VISUAL}$0
+}
+endsnippet
+
 snippet req
 var ${1} = require('${2:$1}');
 $0
@@ -27,6 +76,12 @@ endsnippet
 
 snippet iife
 (function (${1:window, document, undefined}) {
+	${0:${VISUAL:\/\/ Code}}
+}(${2:win, doc}));
+endsnippet
+
+snippet iife6
+((${1:window, document, undefined}) => {
 	${0:${VISUAL:\/\/ Code}}
 }(${2:win, doc}));
 endsnippet
