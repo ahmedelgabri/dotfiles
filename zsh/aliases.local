@@ -34,7 +34,6 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
 alias formatJSON='python -m json.tool | catc '
 alias brewc='brew cask '
-alias work='tmuxifier s tb '
 
 # DEV
 alias bower="noglob bower"
