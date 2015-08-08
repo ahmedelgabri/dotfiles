@@ -10,6 +10,9 @@ TAPS=(
   caskroom/versions
   homebrew/dupes
   homebrew/versions
+  universal-ctags/universal-ctags
+  neovim/neovim
+  tldr-pages/tldr
 )
 
 # Homebrew Formulas
@@ -24,16 +27,15 @@ FORMULAS=(
   git
   node
   tree
-  dnsmasq
   mongodb
-  phantomjs
   hub
   heroku-toolbelt
   rbenv
   rbenv-gem-rehash
   ruby-build
   the_silver_searcher
-  python --universal #2.7.8
+  python --universal
+  python3
   macvim --override-system-vim --custom-icons --with-lua --with-cscope
   weechat --with-perl --with-python --with-lua --with-curl
   tmux
@@ -41,7 +43,8 @@ FORMULAS=(
   imagemagick
   mysql
   todo-txt
-  ctags
+  # ctags
+  universal-ctags
 )
 
 # Homebrew casks
@@ -100,7 +103,7 @@ CASKS=(
 
 brew update
 
-for tap in $TAPS; do
+for tap in ${TAPS[@]}; do
   brew tap $tap
 done
 

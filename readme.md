@@ -15,7 +15,6 @@ You are welcome to give tips on how can I improve this.
     * [Nodejs](http://nodejs.org/) with [NPM](https://npmjs.org/)
     * [Ruby](http://www.ruby-lang.org/en/) using [rbenv](https://github.com/sstephenson/rbenv/) & [Ruby build](https://github.com/sstephenson/ruby-build)  & [Ruby Gems](http://rubygems.org)
     * [Python](http://www.python.org/)
-* [PHP](http://php-osx.liip.ch/)
 
 ### Applications
 * [iTerm](http://www.iterm2.com/)
@@ -40,7 +39,6 @@ You are welcome to give tips on how can I improve this.
 * [Sequel Pro](http://www.sequelpro.com/)
 * [Sketch](http://www.bohemiancoding.com/sketch/)
 * [Skype](http://www.skype.com/en/)
-* [Limechat](http://limechat.net/mac/)
 * [Tweetbot](https://itunes.apple.com/us/app/tweetbot-for-twitter/id557168941?mt=12)
 
 #### From the App Store

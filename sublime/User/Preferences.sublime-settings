@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/SublimeLinter/Material-Theme (SL).tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/Oceanic Next (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -53,7 +53,7 @@
 		".bundle",
 		".git",
 		".sass-cache",
-    "node_modules",
+		"node_modules",
 		"*.esproj",
 		"*.tiles"
 	],
@@ -67,7 +67,6 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"Vintage",
 		"Markdown"
 	],
 	"indent_guide_options":
@@ -77,6 +76,7 @@
 	"indent_subsequent_lines": true,
 	"indent_to_bracket": true,
 	"match_brackets_angle": true,
+	"material_theme_small_tab": true,
 	"open_files_in_new_window": false,
 	"rulers":
 	[

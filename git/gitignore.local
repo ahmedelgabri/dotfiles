@@ -42,6 +42,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 .tern-port
+.tern-project
 sublime/User/Package Control.merged-ca-bundle
 
 # Folders #
@@ -51,15 +52,10 @@ sublime/User/Package Control.merged-ca-bundle
 node_modules/
 .gems/
 .bundle/
+
 # vim       #
 #############
 *.un~
 tags
 .tags
-.local.vim
-
-# Photoshop/Illustrator files #
-###############################
-# *.psd
-# *.ai
-# *.eps
+*.vim
