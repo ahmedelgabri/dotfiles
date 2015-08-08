@@ -1,3 +1,0 @@
-[submodule "zsh/zprezto"]
-    path = zsh/zprezto
-    url = git://github.com/ahmedelgabri/prezto.git
