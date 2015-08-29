@@ -46,20 +46,17 @@
 	latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
 	blm = blame -wMC
 	this = !git init && git add . && git commit -m \"initial commit\"
-	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
-	ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
-	unstage = reset HEAD
-	undo = reset HEAD~ && clean -df
+	; amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
 	who = shortlog -sne
 	doctor = remote -v show origin
-	g = grep --break --heading --line-number
-	credit = !sh -c 'git commit --amend --author \"\" -C HEAD' -
+	grr = grep --break --heading --line-number
 
 [mergetool]
 	keepBackup = false
 
 [push]
 	default = simple
+	followTags = true
 [apply]
 	whitespace = nowarn
 [filter "media"]
