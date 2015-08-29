@@ -24,6 +24,7 @@ FORMULAS=(
   wget
   curl
   z
+  grc
   git
   node
   tree
