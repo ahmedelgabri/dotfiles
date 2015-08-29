@@ -46,11 +46,6 @@ alias syncdb='python manage.py syncdb'
 alias migrate='python manage.py migrate'
 alias services="launchctl list"
 
-# Git
-alias git='hub'
-alias ghere="git init && git add . && git commit -m'Initial commit'"
-alias undopush="git push -f origin HEAD^:master"
-
 # Python/Django
 alias py="python manage.py "
 alias django="django-admin.py "

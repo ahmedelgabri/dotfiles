@@ -24,6 +24,7 @@ source $HOME/.dotfiles/zsh/aliases.local
 ##############################################################
 
 source $HOME/.dotfiles/zsh/functions.local
+source $HOME/.dotfiles/git/git.local
 
 ##############################################################
 # rbenv
