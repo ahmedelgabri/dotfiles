@@ -6,17 +6,14 @@ alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias "?"="pwd"
-alias o="open "
-alias o.="open . "
 alias s="subl "
-alias s.="subl . "
 alias c="clear "
 alias l="ls -alh "
 alias ld="ls -alh | grep '^d' "
 alias ll="ls -alrth "
 alias lc="ls -alCF "
 alias "brewc update"="brew cask list | egrep -v \"java\" | xargs brew cask install --force"
-alias KABOOM="npm cache clean; npm update -g; brew update && brew upgrade --all && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
+alias KABOOM="npm cache clean; npm update -g; brew update && brew reinstall --HEAD neovim && brew upgrade --all && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor; source ~/.zshrc"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
@@ -32,17 +29,6 @@ alias formatJSON='python -m json.tool | catc '
 alias brewc='brew cask '
 
 # DEV
-alias bower="noglob bower"
 alias npmls="npm list --depth=0 "
-alias sp="sass --watch --style compressed --precision 3"
-alias sd="sass --watch --style expanded --precision 3"
 alias apache="sudo apachectl "
-alias runserver='python manage.py runserver '
-alias syncdb='python manage.py syncdb'
-alias migrate='python manage.py migrate'
 alias services="launchctl list"
-
-# Python/Django
-alias py="python manage.py "
-alias django="django-admin.py "
-

@@ -23,8 +23,10 @@ source $HOME/.dotfiles/zsh/aliases.local
 # FUNCTIONS.
 ##############################################################
 
-source $HOME/.dotfiles/zsh/functions.local
-source $HOME/.dotfiles/git/git.local
+for f in $HOME/.dotfiles/zsh/functions/*.zsh;
+  do
+    source "$f"
+   done;
 
 ##############################################################
 # rbenv
