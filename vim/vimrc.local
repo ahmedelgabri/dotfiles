@@ -38,8 +38,6 @@ else
   Plug 'majutsushi/tagbar'                          , { 'on': [ 'TagbarToggle' ] }
   Plug 'ConradIrwin/vim-bracketed-paste'
   Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-  Plug 'scrooloose/nerdtree'
-  Plug 'jistr/vim-nerdtree-tabs'
   Plug 'szw/vim-g'
   Plug 'justinmk/vim-gtfo'
   Plug 'junegunn/vim-peekaboo'
@@ -98,7 +96,7 @@ else
   set t_Co=256
   set background=dark
   let g:gruvbox_italic=0
-  color base16-ocean
+  color gruvbox
 
   " JavaScript
   let g:javascript_enable_domhtmlcss = 1
@@ -205,7 +203,7 @@ else
 
   " File Explorer
   let g:netrw_liststyle = 3
-  let g:netrw_winsize   = 15
+  let g:netrw_winsize   = 20
   let g:netrw_banner = 0
 
   " Vim Commentary
@@ -242,10 +240,6 @@ else
   " let g:gitgutter_sign_column_always = 1
   " let g:gitgutter_eager = 0
   " let g:gitgutter_realtime = 0
-
-  " NerdTree
-  let g:NERDTreeShowHidden=1
-  let NERDTreeIgnore = ['\.pyc$', '\.tags$']
 
   " Undotree
   let g:undotree_WindowLayout= 2
@@ -660,8 +654,7 @@ nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 nnoremap <Leader>n :call ToggleNumber()<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
-" nnoremap <leader>d :Lex<CR>
-nnoremap <leader>d :NERDTreeTabsToggle<CR>
+nnoremap <leader>d :Lex<CR>
 nnoremap <leader>dd :Dash<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
