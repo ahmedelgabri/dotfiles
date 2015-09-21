@@ -1,10 +1,8 @@
 # My [.]files
 
-For setting up development environment on new Macs.
+For setting up development environment on new Mac. You are welcome to give tips on how can I improve this.
 
-*Disclaimer:* I'm new to this stuff, so if you want to use it, use it on your own risk.
-
-You are welcome to give tips on how can I improve this.
+![](./screenshot.png)
 
 ## Tools:
 
@@ -58,5 +56,3 @@ Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode
 Install
 
     $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/source/install | sh
-
-![](./screenshot.png)
