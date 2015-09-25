@@ -50,6 +50,7 @@
 	who = shortlog -sne
 	doctor = remote -v show origin
 	grr = grep --break --heading --line-number
+	d = !"git diff-index --quiet HEAD -- || clear; git diff --patch-with-stat"
 
 [mergetool]
 	keepBackup = false
