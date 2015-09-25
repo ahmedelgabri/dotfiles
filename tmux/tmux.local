@@ -46,8 +46,9 @@ bind-key bspace previous-window
 bind-key enter next-layout
 
 # use vim-like keys for splits and windows
-bind-key v split-window -h
-bind-key s split-window -v
+bind-key v split-window -h -c "#{pane_current_path}"
+bind-key s split-window -v -c "#{pane_current_path}"
+
 # Smart pane switching with awareness of vim splits
 # This works with conjunction of ~/.dotfiles/bin/tmux-vim-select-pane
 # & https://github.com/christoomey/vim-tmux-navigator plugin
@@ -58,7 +59,7 @@ bind -n C-l run-shell 'tmux-vim-select-pane -R'
 bind -n "C-\\" run-shell 'tmux-vim-select-pane -l'
 
 # Bring back clear screen under tmux prefix
-bind C-l send-keys 'C-l'
+# bind C-l send-keys 'C-l'
 
 bind-key C-o rotate-window
 
