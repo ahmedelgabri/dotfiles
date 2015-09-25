@@ -1,5 +1,6 @@
 {
 	"auto_upgrade_last_run": null,
+	"bootstrapped": true,
 	"debug": true,
 	"git_binary": "/usr/local/bin/git",
 	"in_process_packages":
