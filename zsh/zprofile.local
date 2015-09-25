@@ -22,7 +22,7 @@ fi
 # Editors
 #
 
-export EDITOR=vim
+export EDITOR=nvim
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export PAGER='less'
@@ -36,7 +36,8 @@ if [[ -z "$LANG" ]]; then
   export LC_ALL='en_US.UTF-8'
 fi
 
-export TERM=xterm-256color
+# export TERM=xterm-256color
+export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
 
 # Make some commands not show up in history
@@ -49,7 +50,9 @@ KEYTIMEOUT=1
 export FZF_DEFAULT_OPTS="--reverse -x --no-mouse"
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
-NVIM_TUI_ENABLE_TRUE_COLOR=1
+# For Neovim
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 ##############################################################
 # Python stuff

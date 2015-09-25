@@ -27,8 +27,14 @@ alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
 alias formatJSON='python -m json.tool | catc '
 alias brewc='brew cask '
+alias ff='ag --nobreak --nonumbers --noheading . | fzf'
+alias dots="cd ~/.dotfiles"
+alias bin="cd ~/.dotfiles/bin"
 
 # DEV
 alias npmls="npm list --depth=0 "
 alias apache="sudo apachectl "
 alias services="launchctl list"
+
+# https://gist.github.com/sos4nt/3187620#gistcomment-1452131
+alias ssh="TERM=xterm-256color ssh"

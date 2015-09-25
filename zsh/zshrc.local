@@ -48,5 +48,4 @@ eval "`npm completion`"
 
 source "`brew --prefix`/etc/grc.bashrc"
 
-source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
