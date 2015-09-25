@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Usage: bbd "Sep 14"
+#        bbd "Sep"
+
+git reflog --date=local | grep "$1 .* checkout: moving from .* to" | grep -o "[a-zA-Z0-9\-]*$" | sort | uniq
