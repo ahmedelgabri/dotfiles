@@ -9,4 +9,4 @@ syntax match jsConcealFunction /\<function\>/ skipwhite conceal cchar=ƒ
 
 " hi def link jsConcealFunction jsFunc
 hi def link jsConcealFunction javaScriptIdentifier
-hi Conceal ctermfg=245
+hi Conceal ctermfg=245 ctermbg=None
