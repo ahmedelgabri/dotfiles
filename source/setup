@@ -53,9 +53,10 @@ ln -sf $HOME/.dotfiles/osx/osx.local $HOME/.osx
 ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
-ln -sf $HOME/.dotfiles/vim/gvimrc.local $HOME/.gvimrc
+ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.nvimrc
 mkdir $HOME/.dotfiles/vim/.vim
 ln -sf $HOME/.dotfiles/vim/.vim $HOME/.vim
+ln -sf $HOME/.dotfiles/vim/.vim $HOME/.nvim
 ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 ln -sf $HOME/.dotfiles/sublime/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
