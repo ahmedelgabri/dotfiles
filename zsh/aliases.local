@@ -17,7 +17,6 @@ alias KABOOM="npm cache clean; npm update -g; brew update && brew reinstall --HE
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
-alias catc="pygmentize -O style=emacs -f console256 -g"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
@@ -25,7 +24,7 @@ alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
-alias formatJSON='python -m json.tool | catc '
+alias formatJSON='python -m json.tool'
 alias brewc='brew cask '
 alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"

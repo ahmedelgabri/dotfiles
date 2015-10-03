@@ -50,10 +50,6 @@ KEYTIMEOUT=1
 export FZF_DEFAULT_OPTS="--reverse -x --no-mouse"
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 
-# For Neovim
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
 ##############################################################
 # Python stuff
 ###############################################################

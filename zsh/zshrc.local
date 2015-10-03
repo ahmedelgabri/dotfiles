@@ -44,6 +44,8 @@ eval "$(tmuxifier init -)"
 ## Fix NPM completion https://github.com/npm/npm/issues/1976
 ###############################################################
 
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
 eval "`npm completion`"
 
 source "`brew --prefix`/etc/grc.bashrc"

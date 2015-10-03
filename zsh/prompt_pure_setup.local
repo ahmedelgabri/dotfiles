@@ -22,14 +22,6 @@
 # \e8   => restore cursor position
 # \e[K  => clears everything after the cursor on the current line
 
-
-# Node version
-node_info(){
-  if [[ -s /usr/local/bin/node ]] ; then
-    echo "%F{065}[`/usr/local/bin/node -v`]%{$reset_color%}"
-  fi
-}
-
 virtualenv_prompt_info(){
   if [[ -n $VIRTUAL_ENV ]]; then
     printf "[%s]" ${${VIRTUAL_ENV}:t}
@@ -120,7 +112,6 @@ prompt_pure_string_length_to_var() {
 	typeset -g "${var}"="${length}"
 }
 
-
 prompt_pure_preprompt_render() {
 	# check that no command is currently running, the preprompt will otherwise be rendered in the wrong place
 	[[ -n ${prompt_pure_cmd_timestamp+x} && "$1" != "precmd" ]] && return
@@ -132,7 +123,7 @@ prompt_pure_preprompt_render() {
 	# construct preprompt, beginning with path
 	local preprompt="  %F{240}%1~%f"
 	# git info
-  preprompt+="%F{$git_color}${vcs_info_msg_0_}%F{red}${prompt_pure_git_dirty} %F{009}$(virtualenv_prompt_info)%f"
+	preprompt+="%F{$git_color}${vcs_info_msg_0_}%F{red}${prompt_pure_git_dirty} %F{009}${virtualenv_prompt_info}%f"
 	# git pull/push arrows
 	preprompt+="%F{cyan}${prompt_pure_git_arrows}%f"
 	# username and machine if applicable
@@ -337,8 +328,6 @@ prompt_pure_setup() {
 	zstyle ':vcs_info:git*' formats ' %b' 'x%R'
 	zstyle ':vcs_info:git*' actionformats ' %b|%a' 'x%R'
 
-  zstyle ':prezto:module:editor:info:keymap:primary'   format "λ%f"
-  zstyle ':prezto:module:editor:info:keymap:alternate' format "❮%f"
 	# if the user has not registered a custom zle widget for clear-screen,
 	# override the builtin one so that the preprompt is displayed correctly when
 	# ^L is issued.
@@ -353,7 +342,7 @@ prompt_pure_setup() {
 	[[ $UID -eq 0 ]] && prompt_pure_username=' %F{white}%n%f%F{242}@%m%f'
 
 	# prompt turns red if the previous command didn't exit with 0
-  PROMPT='  %(?.%F{003}.%F{red})${editor_info[keymap]} '
+	PROMPT="  %(?.%F{magenta}.%F{red})⚡%f "
 }
 
 prompt_pure_setup "$@"
