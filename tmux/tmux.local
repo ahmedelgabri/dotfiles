@@ -2,7 +2,8 @@
 set -g utf8
 set-window-option -g utf8 on
 
-set-option -g default-terminal "screen-256color"
+set-option -g default-terminal "xterm-256color-italic"
+# set-option -g default-terminal "screen-256color"
 
 # use C-a, since it's on the home row and easier to hit than C-b
 set-option -g prefix C-a
@@ -50,13 +51,14 @@ bind-key v split-window -h -c "#{pane_current_path}"
 bind-key s split-window -v -c "#{pane_current_path}"
 
 # Smart pane switching with awareness of vim splits
-# This works with conjunction of ~/.dotfiles/bin/tmux-vim-select-pane
 # & https://github.com/christoomey/vim-tmux-navigator plugin
-bind -n C-k run-shell 'tmux-vim-select-pane -U'
-bind -n C-j run-shell 'tmux-vim-select-pane -D'
-bind -n C-h run-shell 'tmux-vim-select-pane -L'
-bind -n C-l run-shell 'tmux-vim-select-pane -R'
-bind -n "C-\\" run-shell 'tmux-vim-select-pane -l'
+# Smart pane switching with awareness of vim splits
+is_vim='echo "#{pane_current_command}" | grep -iqE "(^|\/)g?(view|n?vim?)(diff)?$"'
+bind -n C-h if-shell "$is_vim" "send-keys C-h" "select-pane -L"
+bind -n C-j if-shell "$is_vim" "send-keys C-j" "select-pane -D"
+bind -n C-k if-shell "$is_vim" "send-keys C-k" "select-pane -U"
+bind -n C-l if-shell "$is_vim" "send-keys C-l" "select-pane -R"
+bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
 
 # Bring back clear screen under tmux prefix
 # bind C-l send-keys 'C-l'
@@ -123,7 +125,7 @@ set-option -g status on                # turn the status bar on
 set -g status-utf8 on                  # set utf-8 for the status bar
 set -g status-interval 5               # set update frequencey (default 15 seconds)
 set -g status-justify centre           # center window list for clarity
-# set-option -g status-position top    # position the status bar at top of screen
+set-option -g status-position top    # position the status bar at top of screen
 
 # visual notification of activity in other windows
 setw -g monitor-activity on
@@ -149,4 +151,4 @@ set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] #[fg=col
 # show host name and IP address on right side of status bar
 set -g status-right-length 75
 # set -g status-right "#[fg=colour243]#h #(dig +short myip.opendns.com @resolver1.opendns.com) #(ifconfig en0 | grep 'inet ' | awk '{print \"en0 \" $2}') #(ifconfig en1 | grep 'inet ' | awk '{print \"en1 \" $2}') #(ifconfig en3 | grep 'inet ' | awk '{print \"en3 \" $2}') #(ifconfig tun0 | grep 'inet ' | awk '{print \"vpn \" $2}') #(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') "
-set -g status-right "#[fg=colour237][ #[fg=colour243]#(whoami)@#h #[fg=colour237]] #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
+set -g status-right "#(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
