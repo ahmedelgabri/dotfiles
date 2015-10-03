@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# New note
+# Usage: nn 'string'
+#
+# Accepts strings with spaces and will slugify them too.
+
+if [ $# -eq 0 ]; then
+  echo "No arguments supplied: ex: nn 'Note title'"
+  exit 1;
+else
+  SLUG=$(echo -n $@ | iconv -t ascii//TRANSLIT | sed -E s/[^a-zA-Z0-9]+/-/g | sed -E s/^-+\|-+$//g | tr A-Z a-z)
+  $EDITOR $HOME/Box\ Sync/notes/$(date +%F)-$SLUG.md
+fi
