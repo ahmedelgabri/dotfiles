@@ -67,7 +67,11 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
+		"Babel",
+		"Emmet",
 		"Markdown",
+		"Predawn",
+		"Stylus",
 		"Vintage"
 	],
 	"indent_guide_options":
@@ -91,7 +95,7 @@
 	"spell_check": false,
 	"tab_size": 2,
 	"tern_argument_hints": true,
-	"theme": "Material-Theme-Darker.sublime-theme",
+	"theme": "Material-Theme.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,

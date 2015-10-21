@@ -5,6 +5,10 @@
 	"git_binary": "/usr/local/bin/git",
 	"in_process_packages":
 	[
+		"Babel",
+		"Emmet",
+		"Predawn",
+		"Stylus"
 	],
 	"installed_packages":
 	[
