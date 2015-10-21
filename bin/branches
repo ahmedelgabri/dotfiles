@@ -1,17 +1,23 @@
 #!/bin/sh
 
 # Lists branches sorted with latest commit
-current_branch="$(git symbolic-ref --short -q HEAD)"
-git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(authorname)' |
-  sed 's/refs\/heads\///g' |
-  grep -v BACKUP  |
-  while IFS='|' read branch date author
-  do
-    start='  '
-    end=''
-    if [[ $branch = $current_branch ]]; then
-      start='* \e[32m'
-      end='\e[0m'
-    fi
-    printf "$start%-30s %-15s %s$end\n" "$branch" "$date" "$author"
-  done
+
+main() {
+  local current_branch="$(git symbolic-ref --short -q HEAD)"
+
+  git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(authorname)' |
+    sed 's/refs\/heads\///g' |
+    grep -v BACKUP  |
+    while IFS='|' read branch date author
+    do
+      start='  '
+      end=''
+      if [[ $branch = $current_branch ]]; then
+        start='* \e[32m'
+        end='\e[0m'
+      fi
+      printf "$start%-30s %-15s %s$end\n" "$branch" "$date" "$author"
+    done
+}
+
+main

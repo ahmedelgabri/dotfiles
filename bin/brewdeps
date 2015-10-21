@@ -1,6 +1,9 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
-# List all installed brew formulas and its dependencies
+# List all installed brew formulas and its dependencies (so slow! make it fast)
 
-brew list | while read cask; do echo -n "$cask -> "; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+main() {
+  brew list | while read cask; do echo -n "$cask -> "; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+}
 
+main
