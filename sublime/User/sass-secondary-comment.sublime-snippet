@@ -1,9 +1,0 @@
-<snippet>
-    <content><![CDATA[
-// ${1: This is a secondary comment}
-// -----------------------------------------------------------------------------
-$2
-]]></content>
-    <tabTrigger>scom</tabTrigger>
-    <scope>source.scss</scope>
-</snippet>

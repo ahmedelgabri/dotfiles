@@ -1,9 +1,0 @@
-{
-	"extensions":
-	[
-		"sublime-settings",
-		".jshintrc",
-		".csslintrc",
-		".jscsrc"
-	]
-}
