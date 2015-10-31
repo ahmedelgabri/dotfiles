@@ -1,100 +1,171 @@
-snippet func
+global !p
+from helpers import *
+endglobal
+
+
+# Functions
+
+snippet fd "fn()" b
+`!p snip.rv=jsDoc(t[2])`
 function $1($2) {
 	${0:${VISUAL:\/\/ Code}}
 }
 endsnippet
 
-snippet vfunc
-var $1 = function($2) {
+snippet fe "var x = fn()" b
+`!p snip.rv=jsDoc(t[3])`
+$1`!p snip.rv=completeVar(t[1])` $2 = function $2($3) {
 	${0:${VISUAL:\/\/ Code}}
 }
 endsnippet
 
-snippet cl
-console.log($1);
-$0
-endsnippet
-
-snippet clogargs
-console.log.apply(console, arguments);
-$0
-endsnippet
-
-snippet for "for loop" b
-for (var i = 0, len = ${1:list}.length; i < len; i++) {
-	var ${2:item} = $1[i];
-	${VISUAL}$0
+snippet fun "function with dynamic docblock" b
+`!p snip.rv=jsDoc(t[2])`
+$1(${2}) {
+	${0:${VISUAL}}
 }
-endsnippet
-
-snippet forin "for each loop" b
-for (var ${2:key} in ${1:object}) {
-	if (!$1.hasOwnProperty($2)) continue;
-	var ${3:val} = $1[$2];
-	${VISUAL}$0
-}
-endsnippet
-
-snippet umd "universal module loader" b
-;(function (root, factory) {
-	if (typeof define === 'function' && define.amd) define(factory)
-	else if (typeof exports === 'object') module.exports = factory()
-	else root.${1:MODULENAME} = factory()
-}(this, function () {
-
-	${VISUAL}$0
-
-}))
-endsnippet
-
-snippet umd! "universal module loader with deps" b
-;(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['jquery'], factory)
-	} else if (typeof exports === 'object') {
-		module.exports = factory(require('jquery'))
-	} else {
-		root.${1:MODULENAME} = factory(root.jQuery)
-	}
-}(this, function ($) {
-
-	${VISUAL}$0
-
-}))
-endsnippet
-
-snippet forof "for"
-for (const ${2:item} of ${1:list}) {
-	${VISUAL}$0
-}
-endsnippet
-
-snippet req
-var ${1} = require('${2:$1}');
-$0
 endsnippet
 
 snippet iife
-(function (${1:window, document, undefined}) {
-	${0:${VISUAL:\/\/ Code}}
-}(${2:win, doc}));
-endsnippet
-
-snippet iife6
 ((${1:window, document, undefined}) => {
 	${0:${VISUAL:\/\/ Code}}
 }(${2:win, doc}));
 endsnippet
 
-snippet shebang
-#!/usr/bin/env node
+snippet cl "console.log" b
+console.log(${1:${VISUAL}});${0}
 endsnippet
 
+
+snippet cb "cb()"
+($1) => $0
+endsnippet
+
+snippet cb "cb()"
+function $1($2) {
+	$0
+}
+endsnippet
+
+
+# Loops
+
+snippet for "for loop" b
+for (let i = 0, len = ${1:list}.length; i < len; i++) {
+	${0:${VISUAL:\/\/ Code}}
+}
+endsnippet
+
+snippet forof "for of loop" b
+for (let ${1:item} of ${2:iterator}) {
+	${0:${VISUAL:\/\/ Code}}
+}
+endsnippet
+
+snippet forin "for each loop" b
+for (let ${1:key} in ${2:object}) {
+	if ($2.hasOwnProperty($1)) {
+		${0:let ${3:value} = $2[$1];}
+	}
+}
+endsnippet
+
+
+# Modules
+
+snippet re "require()" b
+$1`!p snip.rv=completeVar(t[1])` `!p snip.rv=formatVariableName(t[2])` = require('${2}');
+$0
+endsnippet
+
+
+snippet im "import x form y" b
+import `!p snip.rv=formatVariableName(t[1])` from '${1}';
+$0
+endsnippet
+
+
+snippet me "module.exports" b
+module.exports = ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`};$0
+endsnippet
+
+snippet ex "export default" b
+export default ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`};$0
+endsnippet
+
+
+# Conditionals
+
+snippet if "if" b
+if (${1}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet el "else"
+else {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet eif "else if" !
+else if (${1}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+
+# Switches
+
+snippet sw "switch" b
+switch (${1}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet case "case" b
+case ${1}:
+	${0:${VISUAL}}
+	break;
+endsnippet
 snippet desc
 describe('$1', function() {
 	$0
 });
 endsnippet
+
+
+# React
+
+snippet comp "React component (smart)" b
+class ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`} extends React.componenet {
+	constractor(props) {
+		super(props);
+	},
+	$0
+	/**
+	 * @return {Object}
+	 */
+	render() {
+		return (
+			$2
+		);
+	}
+}
+
+export default $1;
+endsnippet
+
+snippet comp "React component (dumb)" b
+const ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`} = (${2:props}) => (
+  ${0}
+);
+
+export default $1;
+endsnippet
+
+
+# Testing
 
 snippet test
 test('$1', function() {

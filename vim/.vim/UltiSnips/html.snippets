@@ -12,10 +12,6 @@ snippet html5
 </html>
 endsnippet
 
-snippet code
-<code>${1}</code> $0
-endsnippet
-
 snippet jspm
 <!DOCTYPE html>
 <html>
@@ -28,8 +24,15 @@ snippet jspm
 		</script>
 	</head>
 	<body>
+		$0
 	</body>
 </html>
+endsnippet
+
+snippet "wrap([a-z]+)?" "wrap with tag" br
+<${1:`!p snip.rv = match.group(1) if match.group(1) is not None else "div"`} ${2:class="$3"}>
+	${0:${VISUAL}}
+</$1>
 endsnippet
 
 # vim:ft=snippets:

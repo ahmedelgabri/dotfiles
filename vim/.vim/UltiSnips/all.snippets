@@ -1,10 +1,12 @@
-snippet mode
-vi: set ft=$1:
+snippet bang
+#!/usr/bin/env ${1:sh}
+
+$0
 endsnippet
 
-snippet todo
-@TODO: Added on `date +%Y-%m-%d`${1: - Ahmed El Gabri}
-$2
+snippet todo "Add a todo with date and github user" b
+@TODO: ${1:Do something} (`date +"%d-%m-%y %H:%M"`${2: - `echo $GITHUB_USER`})
+$0
 endsnippet
 
 snippet :d "Jan 25, 2011"
@@ -75,24 +77,8 @@ snippet :tab
 ⇥
 endsnippet
 
-snippet /*
-/*
- * ${1}
- */
-${0}
+snippet mode
+# vim:ft=${1}:
 endsnippet
 
-snippet /**
-/**
- * ${1}
- */
-${0}
-endsnippet
-
-
-snippet //
-//
-// ${1}
-//
-${0}
-endsnippet
+# vim:ft=snippets:
