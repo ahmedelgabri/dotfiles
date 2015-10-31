@@ -11,7 +11,7 @@ fi
 # ENVIRONMENT.
 ##############################################################
 
-source `brew --prefix`/etc/profile.d/z.sh
+source /usr/local/etc/profile.d/z.sh
 
 ##############################################################
 # ALIASES.
@@ -45,9 +45,9 @@ eval "$(tmuxifier init -)"
 ###############################################################
 
 export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+source /usr/local/opt/nvm/nvm.sh
 eval "`npm completion`"
 
-source "`brew --prefix`/etc/grc.bashrc"
+source "/usr/local/etc/grc.bashrc"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

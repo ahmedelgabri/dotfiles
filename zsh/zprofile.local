@@ -71,7 +71,7 @@ export PIP_RESPECT_VIRTUALENV=true
 fpath=('/usr/local/share/zsh/site-functions' $fpath)
 
 # GNU Coreutils
-export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
@@ -84,10 +84,9 @@ typeset -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 path=(
   /usr/local/{bin,sbin}
-  "$(brew --prefix coreutils)/libexec/gnubin"
+  "/usr/local/opt/coreutils/libexec/gnubin"
   ${HOME}/.rbenv/shims
   /usr/local/heroku/bin
-  /usr/local/share/npm/bin
   /usr/local/Cellar/git
   ${HOME}/.tmuxifier/bin
   ${HOME}/.dotfiles/bin
