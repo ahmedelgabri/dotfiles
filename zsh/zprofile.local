@@ -49,6 +49,7 @@ KEYTIMEOUT=1
 
 export FZF_DEFAULT_OPTS="--reverse -x --no-mouse"
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 
 ##############################################################
 # Python stuff

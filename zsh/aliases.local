@@ -1,12 +1,11 @@
 # TERMINAL
-alias vim="mvim -v "
+alias vim="nvim "
 alias ev="e ~/.vimrc"
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias "?"="pwd"
-alias s="subl "
 alias c="clear "
 alias l="ls -alh "
 alias ld="ls -alh | grep '^d' "
@@ -25,7 +24,6 @@ alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
 alias t='todo.sh'
 alias formatJSON='python -m json.tool'
-alias brewc='brew cask '
 alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
 alias bin="cd ~/.dotfiles/bin"

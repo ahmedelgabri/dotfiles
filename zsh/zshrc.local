@@ -49,5 +49,6 @@ source /usr/local/opt/nvm/nvm.sh
 eval "`npm completion`"
 
 source "/usr/local/etc/grc.bashrc"
+source /usr/local/share/zsh/site-functions/_aws
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
