@@ -62,6 +62,8 @@ Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'sc
 Plug 'elzr/vim-json'                              , { 'for': ['json'] }
 Plug 'tpope/vim-haml'                             , { 'for': ['sass', 'scss', 'haml'] }
 Plug 'mustache/vim-mustache-handlebars'           , { 'for': ['mustache', 'html.handlebars'] }
+Plug 'kewah/vim-cssfmt'                           , { 'on': [ 'Cssfmt', 'CssfmtVisual' ] }
+Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
@@ -73,7 +75,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'reedes/vim-colors-pencil'
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
-Plug 'zenorocha/dracula-theme'                   , { 'rtp': 'vim' }
+Plug 'geoffharcourt/one-dark.vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -99,10 +101,10 @@ if has('nvim')
 end
 
 set background=dark
-colorscheme dracula
 let g:pencil_terminal_italics = 1
 let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark='hard'
+colorscheme onedark
 highlight Comment cterm=italic gui=italic
 
 
@@ -146,7 +148,9 @@ let g:javascript_enable_domhtmlcss = 1
 " let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Syntastic
-let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_scss_checkers = ['stylelint']
+let g:syntastic_css_checkers = ['stylelint']
+
 let g:syntastic_mode_map = { "mode": "active",
       \ 'active_filetypes': [],
       \ 'passive_filetypes': ['html'] }
@@ -175,7 +179,11 @@ highlight SyntasticWarningLine ctermbg=None ctermfg=003 guifg=yellow
 highlight SyntasticStyleWarningLine ctermbg=None ctermfg=003 guifg=yellow
 
 " Ag
-let g:ag_prg="ag --column"
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
+  let g:ag_prg="ag --column"
+endif
 
 " Emmet
 let g:user_emmet_install_global = 0
@@ -220,8 +228,24 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 " File Explorer
 let g:netrw_liststyle = 3
-let g:netrw_winsize   = 20
 let g:netrw_banner = 0
+" Next lines are taken from here https://github.com/h3xx/dotfiles/blob/master/vim/.vimrc#L543-L582
+" horizontally split the window when opening a file via <cr>
+let g:netrw_browse_split = 4
+" preview window shown in a vertically split window.
+let g:netrw_preview = 1
+" split files below, right
+let g:netrw_alto = 1
+let g:netrw_altv = 1
+let g:netrw_hide = 1
+
+" bug workaround:
+" set bufhidden=wipe in netrw windows to circumvent a bug where vim won't let
+" you quit (!!!) if a netrw buffer doesn't like it
+" also buftype should prevent you from :w
+" (reproduce bug by opening netrw, :e ., :q)
+let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
+let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 
 " Vim Commentary
 autocmd FileType jade set commentstring=//-\ %s
@@ -319,25 +343,25 @@ let g:currentmode={
       \}
 
 
-highlight User1 ctermfg=007 guifg=fgcolor
-highlight User2 ctermfg=008 guifg=bgcolor
-highlight User3 ctermfg=008 guifg=bgcolor
-highlight User4 ctermfg=008 guifg=bgcolor
-highlight User5 ctermfg=008 guifg=bgcolor
-highlight User7 ctermfg=008 guifg=bgcolor
-highlight User8 ctermfg=008 guifg=bgcolor
-highlight User9 ctermfg=007 guifg=fgcolor
+highlight User1 cterm=None gui=None ctermfg=007 guifg=fgcolor
+highlight User2 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User3 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User4 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User5 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User7 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User8 cterm=None gui=None ctermfg=008 guifg=bgcolor
+highlight User9 cterm=None gui=None ctermfg=007 guifg=fgcolor
 
 " Automatically change the statusline color depending on mode
 function! ChangeStatuslineColor()
   if (mode() =~# '\v(n|no)')
-    exe 'hi! StatusLine ctermfg=008 guifg=fgcolor'
+    exe 'hi! StatusLine ctermfg=008 guifg=fgcolor gui=None cterm=None'
   elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-    exe 'hi! StatusLine ctermfg=005 guifg=#00ff00'
+    exe 'hi! StatusLine ctermfg=005 guifg=#00ff00 gui=None cterm=None'
   elseif (mode() ==# 'i')
-    exe 'hi! StatusLine ctermfg=004 guifg=#6CBCE8'
+    exe 'hi! StatusLine ctermfg=004 guifg=#6CBCE8 gui=None cterm=None'
   else
-    exe 'hi! StatusLine ctermfg=006 guifg=orange'
+    exe 'hi! StatusLine ctermfg=006 guifg=orange gui=None cterm=None'
   endif
 
   return ''
@@ -442,7 +466,7 @@ set wildignore+=*/.DS_Store,*/tmp/*
 
 set complete+=kspell
 set completeopt+=menuone
-set matchpairs+=<:>
+set completeopt-=preview
 
 " Display as much as possibe of a window's last line.
 set display+=lastline
@@ -503,9 +527,6 @@ set linebreak
 
 " No flashing.
 set noerrorbells
-"
-" http://robots.thoughtbot.com/faster-grepping-in-vim/
-set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
 
 " History
 set history=200
@@ -526,8 +547,10 @@ set sidescroll=1
 " yank and paste with the system clipboard
 set clipboard=unnamed
 
-" Alwyas use UTF-8
-set encoding=utf-8
+if !has('nvim')
+  " Alwyas use UTF-8, not required for Neovim
+  set encoding=utf-8
+endif
 
 " show trailing whitespace
 set list
@@ -635,6 +658,12 @@ endfunction
 
 " leader is <space>
 let mapleader = ' '
+nnoremap <space> <nop>
+
+" Treat overflowing lines as having line breaks.
+map j gj
+map k gk
+
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -650,6 +679,12 @@ imap <left>  <nop>
 map  <right> <nop>
 imap <right> <nop>
 
+" Make arrowkey do something usefull, resize the viewports accordingly
+nnoremap <Left> :vertical resize -2<CR>
+nnoremap <Right> :vertical resize +2<CR>
+nnoremap <Up> :resize -2<CR>
+nnoremap <Down> :resize +2<CR>
+
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
@@ -658,13 +693,12 @@ vnoremap gb  :Gbrowse<CR> " Make it work in Visual mode to open with highlighted
 
 inoremap jj <ESC>
 nnoremap <Leader>e :e<SPACE>
-nnoremap <Leader>f :Ag<SPACE>
+nnoremap \ :Ag<SPACE>
 nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 nnoremap <Leader>n :call ToggleNumber()<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
-nnoremap <leader>d :Lex<CR>
-nnoremap <leader>dd :Dash<CR>
+nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
@@ -675,6 +709,10 @@ nnoremap == <C-w>t<C-w>K<CR>
 nnoremap \|\| <C-w>t<C-w>H<CR>
 nnoremap <leader>ll :Limelight!!<CR>
 nnoremap <leader>fm :Goyo<CR>
+
+" bind K to grep word under cursor
+nnoremap K :silent! grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
 " new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
@@ -843,17 +881,17 @@ nnoremap _= :call Preserve("normal gg=G")<CR>
 " word count, taken from
 " http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
 function! WordCount()
-  let s:old_status = v:statusmsg
-  let position = getpos(".")
-  exe ":silent normal g\<c-g>"
-  let stat = v:statusmsg
-  let s:word_count = 0
-  if stat != '--No lines in buffer--'
-    let s:word_count = str2nr(split(v:statusmsg)[11])
-    let v:statusmsg = s:old_status
-  end
-  call setpos('.', position)
-  return s:word_count
+  " let s:old_status = v:statusmsg
+  " let position = getpos(".")
+  " exe ":silent normal g\<c-g>"
+  " let stat = v:statusmsg
+  " let s:word_count = 0
+  " if stat != '--No lines in buffer--'
+  "   let s:word_count = str2nr(split(v:statusmsg)[11])
+  "   let v:statusmsg = s:old_status
+  " end
+  " call setpos('.', position)
+  " return s:word_count
 endfunction
 
 function! s:setupWrapping()
