@@ -2,7 +2,7 @@
 
 For setting up development environment on new Mac. You are welcome to give tips on how can I improve this.
 
-![](./screenshot.png)
+![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
 
 ## Installation
 
