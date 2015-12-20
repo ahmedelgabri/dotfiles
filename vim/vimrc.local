@@ -26,6 +26,7 @@ end
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'ervandew/supertab'
+Plug 'bling/vim-airline'
 Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja'] }
@@ -43,9 +44,7 @@ Plug 'tpope/vim-dispatch'                         , { 'on': [ 'Dispatch', 'Start
 Plug 'justinmk/vim-gtfo'
 Plug 'junegunn/vim-peekaboo'
 Plug 'epeli/slimux'                               , { 'on': [ 'SlimuxREPLSendBuffer', 'SlimuxREPLSendLine', 'SlimuxREPLSendSelection' ] }
-Plug 'ap/vim-buftabline'
 Plug 'dhruvasagar/vim-table-mode'                 , { 'on': [ 'TableModeToggle' ] }
-Plug 'ryanss/vim-hackernews'                      , { 'on': [ 'HackerNews' ] }
 
 " Syntax
 Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
@@ -68,10 +67,10 @@ Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
 Plug 'scrooloose/syntastic'
+" Plug 'benekastah/neomake'
 
 " Colors
 Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/base16-vim'
 Plug 'reedes/vim-colors-pencil'
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
@@ -85,6 +84,10 @@ Plug 'tpope/vim-fugitive'
 " Distraction-free writing
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+
+" Misc
+Plug 'ryanss/vim-hackernews'                      , { 'on': [ 'HackerNews' ] }
+Plug 'joshhartigan/vim-reddit'                    , { 'on': [ 'Reddit' ] }
 
 call plug#end()
 
@@ -103,7 +106,6 @@ end
 set background=dark
 let g:pencil_terminal_italics = 1
 let g:gruvbox_italic=1
-let g:gruvbox_contrast_dark='hard'
 colorscheme onedark
 highlight Comment cterm=italic gui=italic
 
@@ -111,7 +113,7 @@ highlight Comment cterm=italic gui=italic
 aug omnicomplete
   autocmd!
   autocmd FileType css,scss,sass,stylus,less setl omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,htmldjango,jinja,markdown setl omnifunc=emmet#completeTag
+  autocmd FileType html,htmldjango,jinja setl omnifunc=emmet#completeTag
   autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
   autocmd FileType python setl omnifunc=pythoncomplete#Complete
   autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
@@ -147,14 +149,28 @@ let g:javascript_enable_domhtmlcss = 1
 " JSX
 " let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
+" Neomake
+
+let g:neomake_open_list=2
+let g:neomake_javascript_enabled_makers = ['standard']
+let g:neomake_jsx_enabled_makers = ['standard']
+let g:neomake_airline=1
+" let g:neomake_logfile='/tmp/neomake-errors.log'
+if findfile('.eslintrc', '.;') !=# ''
+  let g:neomake_javascript_enabled_makers = ['eslint']
+  let g:neomake_jsx_enabled_makers = ['eslint']
+  let g:neomake_javascript_eslint_maker_exec= $PWD . '/node_modules/.bin/eslint'
+endif
+
+" autocmd! BufWritePost * Neomake
+
+
 " Syntastic
 let g:syntastic_scss_checkers = ['stylelint']
 let g:syntastic_css_checkers = ['stylelint']
-
-let g:syntastic_mode_map = { "mode": "active",
-      \ 'active_filetypes': [],
-      \ 'passive_filetypes': ['html'] }
-autocmd FileType javascript let b:syntastic_checkers = findfile('.jshintrc', '.;') != '' ? ['jshint'] : findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['standard']
+let g:syntastic_html_tidy_exec = 'tidy5'
+let g:syntastic_javascript_checkers = []
+autocmd FileType javascript let b:syntastic_checkers = findfile('.jshintrc', '.;') !=# '' ? ['jshint'] : findfile('.eslintrc', '.;') !=# '' ? ['eslint'] : ['standard']
 " ~/.dotfiles/bin/syntastic more info https://github.com/eslint/eslint/issues/1214#issuecomment-101012992 & https://github.com/scrooloose/syntastic/issues/1247#issuecomment-63020503
 let g:syntastic_javascript_eslint_exec='syntastic'
 let g:syntastic_error_symbol = '✗'
@@ -297,75 +313,12 @@ let g:tern_show_signature_in_pum = 1
 " Buftabline
 let g:buftabline_indicators=1
 
-" Settings
-"================================================================================
-" Dynamically getting the fg/bg colors from the current colorscheme, returns hex which is enough for me to use in Neovim
-" Needs to figure out how to return cterm values too
-let fgcolor=synIDattr(synIDtrans(hlID("Normal")), "fg", "gui")
-let bgcolor=synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
-
+" Airline
+"
 " Tabline/Buffer line
 set showtabline=2
 set tabline="%1T"
-" reverse hybrid tabline colors
-if g:colors_name == 'hybrid'
-  highlight TabLineFill cterm=none gui=none
-  highlight TabLine cterm=none gui=none
-  " This doesn't work, odd!
-  " highlight TabLineSel ctermfg=black ctermfg=white guibg=fgcolor guifg=bgcolor
-  highlight TabLineSel ctermfg=black ctermfg=white guibg=#c5c8c6 guifg=#1d1f21
-  highlight BufTabLineActive cterm=none gui=none
-endif
-
-" Statusline
-" https://github.com/Greduan/dotfiles/blob/76e16dd8a04501db29989824af512c453550591d/vim/after/plugin/statusline.vim
-
-let g:currentmode={
-      \ 'n'  : 'N ',
-      \ 'no' : 'N·Operator Pending ',
-      \ 'v'  : 'V ',
-      \ 'V'  : 'V·Line ',
-      \ '' : 'V·Block ',
-      \ 's'  : 'Select ',
-      \ 'S'  : 'S·Line ',
-      \ '' : 'S·Block ',
-      \ 'i'  : 'I ',
-      \ 'R'  : 'R ',
-      \ 'Rv' : 'V·Replace ',
-      \ 'c'  : 'Command ',
-      \ 'cv' : 'Vim Ex ',
-      \ 'ce' : 'Ex ',
-      \ 'r'  : 'Prompt ',
-      \ 'rm' : 'More ',
-      \ 'r?' : 'Confirm ',
-      \ '!'  : 'Shell ',
-      \ 't'  : 'Terminal '
-      \}
-
-
-highlight User1 cterm=None gui=None ctermfg=007 guifg=fgcolor
-highlight User2 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User3 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User4 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User5 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User7 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User8 cterm=None gui=None ctermfg=008 guifg=bgcolor
-highlight User9 cterm=None gui=None ctermfg=007 guifg=fgcolor
-
-" Automatically change the statusline color depending on mode
-function! ChangeStatuslineColor()
-  if (mode() =~# '\v(n|no)')
-    exe 'hi! StatusLine ctermfg=008 guifg=fgcolor gui=None cterm=None'
-  elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-    exe 'hi! StatusLine ctermfg=005 guifg=#00ff00 gui=None cterm=None'
-  elseif (mode() ==# 'i')
-    exe 'hi! StatusLine ctermfg=004 guifg=#6CBCE8 gui=None cterm=None'
-  else
-    exe 'hi! StatusLine ctermfg=006 guifg=orange gui=None cterm=None'
-  endif
-
-  return ''
-endfunction
+set laststatus=2
 
 " Find out current buffer's size and output it.
 function! FileSize()
@@ -378,7 +331,7 @@ function! FileSize()
   endif
 
   if bytes <= 0
-    return '0'
+    return '[empty file] '
   endif
 
   if (exists('mbytes'))
@@ -390,38 +343,52 @@ function! FileSize()
   endif
 endfunction
 
-function! ReadOnly()
-  if &readonly || !&modifiable
-    return ''
-  else
-    return ''
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'no' : 'N·Operator Pending',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V·Line',
+      \ '' : 'V·Block',
+      \ 's'  : 'Select',
+      \ 'S'  : 'S·Line',
+      \ '' : 'S·Block',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'Rv' : 'V·Replace',
+      \ 'c'  : 'Command',
+      \ 'cv' : 'Vim Ex',
+      \ 'ce' : 'Ex',
+      \ 'r'  : 'Prompt',
+      \ 'rm' : 'More',
+      \ 'r?' : 'Confirm',
+      \ '!'  : 'Shell',
+      \ 't'  : 'Terminal'
+      \}
+let g:airline_powerline_fonts = 1
+let g:airline_detect_paste=1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
+let g:airline_detect_modified=1
+let g:airline_inactive_collapse=1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline#extensions#hunks#enabled = 0
+function! AirlineInit()
+  let g:airline_section_x = airline#section#create(['%{FileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
 endfunction
-
-function! GitInfo()
-  let git = fugitive#head()
-  if git != ''
-    return ' '.fugitive#head()
-  else
-    return ''
-endfunction
-
-" http://stackoverflow.com/a/10416234/213124
-set laststatus=2
-set statusline=
-set statusline+=%{ChangeStatuslineColor()}               " Changing the statusline color
-set statusline+=%0*\ %{toupper(g:currentmode[mode()])}   " Current mode
-set statusline+=%8*\ [%n]                                " buffernr
-set statusline+=%8*\ %{GitInfo()}                        " Git Branch name
-set statusline+=%8*\ %<%F\ %{ReadOnly()}\ %m\ %w\        " File+path
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}             " Syntastic errors
-set statusline+=%*
-set statusline+=%9*\ %=                                  " Space
-set statusline+=%8*\ %y\                                 " FileType
-set statusline+=%7*\ %{(&fenc!=''?&fenc:&enc)}\[%{&ff}]\ " Encoding & Fileformat
-set statusline+=%8*\ %-3(%{FileSize()}%)                 " File size
-set statusline+=%0*\ %3p%%\ \ %l:\ %3c\                 " Rownumber/total (%)
-
+autocmd User AirlineAfterInit call AirlineInit()
 
 " UI Configs
 "-----------------
@@ -463,8 +430,10 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg
 set wildignore+=*/.DS_Store,*/tmp/*
 
-
+set spelllang=en_us
+set spellfile=$HOME/.vim/.spell-en.utf-8.add
 set complete+=kspell
+
 set completeopt+=menuone
 set completeopt-=preview
 
@@ -615,7 +584,7 @@ augroup vimrcEx
   autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  autocmd FileType markdown setl shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999 statusline+=%9*\ %-3(%{WordCount()}%)\ Words
+  autocmd FileType markdown setl shiftwidth=4 spell softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999 statusline+=%9*\ %-3(%{WordCount()}%)\ Words
 
   autocmd BufEnter *.{markdown,md,text,txt,mkd} setl conceallevel=0
 
@@ -690,6 +659,9 @@ nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 nnoremap gb  :Gbrowse<CR> " Open current file on github.com
 vnoremap gb  :Gbrowse<CR> " Make it work in Visual mode to open with highlighted linenumbers
+nnoremap gs  :Gstatus<CR>
+vnoremap gs  :Gstatus<CR>
+
 
 inoremap jj <ESC>
 nnoremap <Leader>e :e<SPACE>
