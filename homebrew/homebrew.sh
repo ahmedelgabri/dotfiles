@@ -1,99 +1,108 @@
 #!/bin/bash
 
-# sitespeedio/sitespeedio
-# tobli/browsertime
-
 # Homebrew taps
 TAPS=(
   caskroom/cask
   caskroom/fonts
   caskroom/versions
+  choppsv1/term24
   homebrew/dupes
   homebrew/versions
-  universal-ctags/universal-ctags
   neovim/neovim
   tldr-pages/tldr
+  universal-ctags/universal-ctags
 )
 
 # Homebrew Formulas
 FORMULAS=(
+  git
+  python
+  python3
+  nvm
+  rbenv-gem-rehash
+  reattach-to-user-namespace
+  ruby-build
   coreutils
   findutils
-  zsh
-  caskroom/cask/brew-cask
+  gnu-sed
   wget
-  curl
-  z
+  asciinema
+  awscli
+  caskroom/cask/brew-cask
+  cowsay
+  docker
+  figlet
   grc
-  git
-  node
-  tree
-  mongodb
-  hub
   heroku-toolbelt
-  rbenv
-  rbenv-gem-rehash
-  ruby-build
+  hub
+  jq
+  jrnl
+  ledger
+  lynx
+  ncdu
+  neovim/neovim/neovim
+  spark
+  task
   the_silver_searcher
-  python --universal
-  python3
-  macvim --override-system-vim --custom-icons --with-lua --with-cscope
-  weechat --with-perl --with-python --with-lua --with-curl
-  tmux
-  reattach-to-user-namespace
-  imagemagick
-  mysql
+  tidy-html5
+  tig
+  tldr-pages/tldr/tldr
+  choppsv1/term24/tmux
   todo-txt
-  # ctags
-  universal-ctags
+  tree
+  unar
+  universal-ctags/universal-ctags/universal-ctags
+  weechat --with-perl --with-python --with-lua --with-curl
+  z
+  zsh
 )
 
 # Homebrew casks
 CASKS=(
   alfred
   appcleaner
+  atom
   betterzipql
   box-sync
-  caffeine
-  chromecast
-  dash
-  evernote
+  dayone-cli
+  elm-platform
   firefox
-  firefox-aurora
+  firefox-beta
   firefox-nightly
-  font-droid-sans-mono
+  firefoxdeveloperedition
+  flux
   font-droid-sans-mono-for-powerline
-  font-inconsolata
+  font-fira-mono-for-powerline
   font-inconsolata-dz-for-powerline
-  font-meslo-lg
   font-meslo-lg-for-powerline
-  font-source-code-pro
-  hipchat
+  font-source-code-pro-for-powerline
   imagealpha
   imageoptim
-  iterm2
-  jdownloader2
-  lynxlet
+  iterm2-nightly
+  jdownloader
+  keepingyouawake
   opera
   opera-beta
+  opera-developer
   qlcolorcode
+  qlimagesize
   qlmarkdown
   qlprettypatch
   qlstephen
+  qlvideo
   quicklook-csv
   quicklook-json
-  recordit
   sequel-pro
   sketch
+  sketch-toolbox
   skype
   spectacle
-  sublime-text3
-  synergy
   teamviewer
   telegram
   the-unarchiver
   transmission
   transmit
+  vagrant
   virtualbox
   vlc
   webkit-nightly
