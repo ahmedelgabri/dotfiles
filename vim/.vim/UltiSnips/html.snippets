@@ -3,6 +3,7 @@ snippet html5
 <html>
 	<head>
 		<title></title>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
 		<link rel="stylesheet" href="${1:style.css}">
 	</head>
 	<body>
@@ -17,14 +18,15 @@ snippet jspm
 <html>
 	<head>
 		<title></title>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+	</head>
+	<body>
+		$0
 		<script src="jspm_packages/system.js"></script>
 		<script src="config.js"></script>
 		<script>
 			System.import('app/main');
 		</script>
-	</head>
-	<body>
-		$0
 	</body>
 </html>
 endsnippet
