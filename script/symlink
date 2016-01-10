@@ -1,0 +1,71 @@
+#!/bin/bash
+
+echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+echo "\033[0;34m====== Cleaning the House. =================================\033[0;0m"
+echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+
+FILES=(
+  $HOME/.gitignore
+  $HOME/.gitconfig
+  $HOME/.zshrc
+  $HOME/.vimrc
+  $HOME/.gvimrc
+  $HOME/.gemrc
+  $HOME/.osx
+  $HOME/.pythonrc.py
+  $HOME/.pip.conf
+  $HOME/.hushlogin
+  $HOME/.vim
+  $HOME/Library/Preferences/com.googlecode.iterm2.plist
+)
+
+BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
+
+mkdir $BAKCUP_DIR
+
+for file in ${FILES[@]}; do
+  if [[ -d "$file" ]]; then
+    echo "Backing up directory: $file"
+    mv "$file" "$BAKCUP_DIR"
+  elif [[ -f "$file" ]]; then
+    echo "Backing up file: $file"
+    mv "$file" "$BAKCUP_DIR"
+  fi
+done
+
+echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
+echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+
+ZSH_FILES=(
+  zshrc
+  zprofile
+  zpreztorc
+)
+
+for file in ${ZSH_FILES[@]}; do
+  ls -sf $HOME/.dotfiles/zsh/"$file".local $HOME/."$file"
+done
+
+ln -sf $HOME/.dotfiles/zsh/prompt_pure_setup.local $HOME/.zprezto/modules/prompt/functions/prompt_pure_setup
+
+ln -sf $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
+ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
+ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
+ln -sf $HOME/.dotfiles/osx/osx.local $HOME/.osx
+ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
+ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
+
+mkdir -p $HOME/.config/nvim
+ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
+ln -sf $HOME/.dotfiles/vim/.vim $HOME/.vim
+ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.config/nvim/init.vim
+ln -sf $HOME/.dotfiles/vim/.vim $HOME/.config/nvim
+ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
+ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
+
+echo "\033[0;32m------------------------------------------------------------\033[0;0m"
+echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"
+echo "\033[0;32m------------------------------------------------------------\033[0;0m"
+
+source $HOME/.zshrc

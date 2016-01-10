@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Check for Homebrew,
+# Install if we don't have it
+if ! command -v brew >/dev/null; then
+  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+  echo "\033[0;34m====== Installing Homebrew =================================\033[0;0m"
+  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
 # Homebrew taps
 TAPS=(
   caskroom/cask

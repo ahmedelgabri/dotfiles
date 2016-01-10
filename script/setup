@@ -1,67 +1,50 @@
 #!/bin/bash
+# curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
 
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-echo "\033[0;34m====== Cleaning the House. =================================\033[0;0m"
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+# Ask for the administrator password upfront.
+sudo -v
 
-FILES=(
-  $HOME/.gitignore
-  $HOME/.gitconfig
-  $HOME/.zshrc
-  $HOME/.vimrc
-  $HOME/.gvimrc
-  $HOME/.gemrc
-  $HOME/.osx
-  $HOME/.pythonrc.py
-  $HOME/.pip.conf
-  $HOME/.hushlogin
-  $HOME/.vim
-  $HOME/Library/Preferences/com.googlecode.iterm2.plist
-)
+# Keep-alive: update existing `sudo` time stamp until the script has finished.
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-for file in ${FILES[@]}; do
-  if [[ -d "$file" ]]; then
-    echo "Removing directory: $file"
-    rm -rf "$file"
-  elif [[ -f "$file" ]]; then
-    echo "Removing file: $file"
-    rm "$file"
-  fi
-done
+cd $HOME
+softwareupdate --verbose --install --all
+xcode-select --install
 
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
-echo "\033[0;34m------------------------------------------------------------\033[0;0m"
 
-ZSH_FILES=(
-  zshrc
-  zprofile
-  zpreztorc
-)
+if [[ -d "/usr/local" ]]; then
+  chown -R $(whoami):admin /usr/local
+elif [[ ! -d "/usr/local" ]]; then
+  echo "/usr/local doesn't exist, we will try the nice way of creating it"
+  mkdir /usr/local && chflags norestricted /usr/local && chown -R $(whoami):admin /usr/local
+else
+  echo "Tough luck! check here and then run the script again"
+  open "https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/El_Capitan_and_Homebrew.md#if-usrlocal-does-not-exist"
+  exit 1
+fi
 
-for file in ${ZSH_FILES[@]}; do
-  ls -sf $HOME/.dotfiles/zsh/"$file".local $HOME/."$file"
-done
+if [[ ! -d "$HOME/.dotfiles" ]]; then
+  echo "Clonning dotfiles..."
+  git clone --recursive https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
+else
+  cd $HOME/.dotfiles && git pull origin master
+fi
 
-ln -sf $HOME/.dotfiles/zsh/prompt_pure_setup.local $HOME/.zprezto/modules/prompt/functions/prompt_pure_setup
+if [[ ! -d "$HOME/.zprezto" ]]; then
+  echo "Clonning prezto..."
+  git clone --recursive https://github.com/ahmedelgabri/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
-ln -sf $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
-ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
-ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
-ln -sf $HOME/.dotfiles/osx/osx.local $HOME/.osx
-ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
-ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
+  setopt EXTENDED_GLOB
+  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md\(.N\); do
+    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+  done
+else
+  cd $HOME/.zprezto && git pull && git submodule update --init --recursive
+fi
 
-mkdir -p $HOME/.config/nvim
-ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
-ln -sf $HOME/.dotfiles/vim/.vim $HOME/.vim
-ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.config/nvim/init.vim
-ln -sf $HOME/.dotfiles/vim/.vim $HOME/.config/nvim
-ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
-ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
+echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
+echo "\033[0;34m====== Generate SSH keys \for github, bitbucket \& other services you use =====\033[0;0m"
+echo "\033[0;34m====== Don't forget to run source ~/.osx & change your zsh to the brew one ====\033[0;0m"
+echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 
-echo "\033[0;32m------------------------------------------------------------\033[0;0m"
-echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"
-echo "\033[0;32m------------------------------------------------------------\033[0;0m"
-
-source $HOME/.zshrc
+echo "Change your zsh to the brew installed one."
