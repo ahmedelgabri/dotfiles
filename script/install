@@ -10,6 +10,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 cd $HOME
 softwareupdate --verbose --install --all
 xcode-select --install
+# xcodebuild -license accept # To accept Xcode EULA
 
 
 if [[ -d "/usr/local" ]]; then
@@ -25,7 +26,7 @@ fi
 
 if [[ ! -d "$HOME/.dotfiles" ]]; then
   echo "Clonning dotfiles..."
-  git clone --recursive https://github.com/ahmedelgabri/dotfiles.git $HOME/.dotfiles
+  git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$HOME/.dotfiles"
 else
   cd $HOME/.dotfiles && git pull origin master
 fi
@@ -48,3 +49,9 @@ echo "\033[0;34m====== Don't forget to run source ~/.osx & change your zsh to th
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 
 echo "Change your zsh to the brew installed one."
+
+if [[ -d "$HOME/.dotfiles" ]]; then
+  cd "$HOME/.dotfiles" && make all
+else
+  echo ".dotfiles directory doesn't exit"
+fi

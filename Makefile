@@ -1,4 +1,4 @@
-all: setup symlink homebrew node python iterm osx
+all: symlink homebrew node python iterm osx
 
 setup:
 	@./script/setup
