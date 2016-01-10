@@ -600,6 +600,7 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile *.json set ft=json
   autocmd BufNewFile,BufRead,BufWrite * if getline(1) =~ '^\#!.*node' | setf javascript | endif
   autocmd BufNewFile,BufRead .tags set ft=tags
+  autocmd BufRead,BufNewFile jrnl*.txt set ft=markdown
 
   " Wrap quickfix window
   autocmd FileType qf setlocal wrap linebreak

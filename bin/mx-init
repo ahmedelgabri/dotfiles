@@ -10,7 +10,6 @@ create_session () {
 
   tmux new-window -n 'notes' jrnl
   # These needs to be done automatically in Vim itself
-  tmux send-keys ':setfiletype markdown' C-m
   tmux send-keys 'i note' Tab
 
   # tmux new-window -n 'media' cmus
