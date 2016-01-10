@@ -1,0 +1,32 @@
+#!/bin/sh
+set -e
+
+SESSION='_shared'
+
+create_session () {
+  tmux new-session -d -s "$SESSION" -n 'weechat'
+  tmux send-keys weechat C-m
+  # tmux split-window -h && tmux send-keys mutt C-m
+
+  tmux new-window -n 'notes' jrnl
+  # These needs to be done automatically in Vim itself
+  tmux send-keys ':setfiletype markdown' C-m
+  tmux send-keys 'i note' Tab
+
+  # tmux new-window -n 'media' cmus
+  # tmux split-window -v && tmux send-keys newsbeuter C-m
+
+  local logpath="$PROJECTS"/knowledge
+  tmux new-window -n 'log' -c "$logpath"
+  tmux send-keys "$EDITOR" C-m
+  tmux split-window -h -c "$logpath"
+
+  local confpath=/Users/"$USER"/.dotfiles
+  tmux new-window -n 'dotfiles' -c "$confpath"
+  tmux send-keys "$EDITOR" C-m
+  tmux split-window -h -c "$confpath"
+}
+
+if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
+  create_session
+fi

@@ -3,7 +3,6 @@ set -g utf8
 set-window-option -g utf8 on
 
 set-option -g default-terminal "xterm-256color-italic"
-# set-option -g default-terminal "screen-256color"
 
 # use C-a, since it's on the home row and easier to hit than C-b
 set-option -g prefix C-a
@@ -42,9 +41,8 @@ bind-key : command-prompt
 # bind-key r refresh-client
 bind-key L clear-history
 
-bind-key space next-window
-bind-key bspace previous-window
-bind-key enter next-layout
+bind-key -n S-Right next-window
+bind-key -n S-Left previous-window
 
 # use vim-like keys for splits and windows
 bind-key v split-window -h -c "#{pane_current_path}"

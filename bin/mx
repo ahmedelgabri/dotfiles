@@ -1,0 +1,68 @@
+#!/usr/bin/env sh
+
+# mx
+# version 1.1
+
+# Contributors:
+#   Wynn Netherland - http://github.com/pengwynn
+#   Adam Jahnke - http://github.com/adamyonk
+#   Yoshua Wuyts - https://github.com/yoshuawuyts
+#   Ahmed El Gabri - https://github.com/ahmedelgabri
+
+# Usage:
+#   mx [session]
+
+# To 'auto-launch' projects, you'll need a $PROJECTS dir where you keep code
+# sorted like so: $PROJECTS/<org or user>/<repo>.
+# So, a typical workflow would look like:
+#   $ hub clone pengwynn/octonaut $PROJECTS/pengwynn/octonaut
+#   $ mx octonaut
+
+# If `mx` is called with a <session> name, and there is no valid repo inside
+# $PROJECTS, a new tmux session will be initialized in the current working
+# directory with a name of <session>
+
+set -e
+
+if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
+  mx-init
+fi
+
+if [ -z "$1" ]; then SESSION="${PWD##*/}";
+else SESSION="$1"; fi
+
+# tmux 1.9a+ doesn't like .'s in session names
+SESSION="$(echo "$SESSION" | sed -e 's/\.//g')"
+
+if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
+  WORKINGDIR=''
+
+  if [ "$SESSION" == "$WORK" ]; then
+    if [ -d "$PROJECTS"/"$WORK"/"$WORK" ]; then
+      WORKINGDIR="$PROJECTS"/"$WORK"/"$WORK"
+    fi
+  elif [ -d "$PROJECTS"/"$SESSION" ]; then
+    WORKINGDIR="$PROJECTS"/"$SESSION"
+  fi
+
+  if [ ! -z $WORKINGDIR ]; then
+    cd $WORKINGDIR;
+    tmux new-session -d -s "$SESSION"
+    tmux select-window -t "$SESSION"
+    if [ "$SESSION" == "$WORK" ]; then
+      tmux send-keys './start' C-m
+    else
+      tmux split-window -h;
+      tmux send-keys "$EDITOR" C-m
+    fi
+  fi
+
+  tmux link-window -s _shared:notes -t 6
+  tmux link-window -s _shared:dotfiles -t 7
+  tmux link-window -s _shared:log -t 8
+  tmux link-window -s _shared:weechat -t 9
+  tmux select-window -t 1
+fi
+
+if [ -z "$TMUX" ]; then tmux attach -t "$SESSION";
+else tmux switch-client -t "$SESSION"; fi
