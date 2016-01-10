@@ -30,21 +30,21 @@ Plug 'bling/vim-airline'
 Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja'] }
-Plug 'rking/ag.vim'                               , { 'on': [ 'Ag' ] }
+Plug 'rking/ag.vim'                               , { 'on':  ['Ag'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'junegunn/vim-easy-align'                    , { 'on': [ '<Plug>(EasyAlign)' ] }
+Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'moll/vim-bbye'
-Plug 'mbbill/undotree'                            , { 'on': [ 'UndotreeToggle' ] }
-Plug 'majutsushi/tagbar'                          , { 'on': [ 'TagbarToggle' ] }
+Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
+Plug 'majutsushi/tagbar'                          , { 'on': ['TagbarToggle'] }
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-Plug 'tpope/vim-dispatch'                         , { 'on': [ 'Dispatch', 'Start' ] }
+Plug 'tpope/vim-dispatch'                         , { 'on': ['Dispatch', 'Start'] }
 Plug 'justinmk/vim-gtfo'
 Plug 'junegunn/vim-peekaboo'
-Plug 'epeli/slimux'                               , { 'on': [ 'SlimuxREPLSendBuffer', 'SlimuxREPLSendLine', 'SlimuxREPLSendSelection' ] }
-Plug 'dhruvasagar/vim-table-mode'                 , { 'on': [ 'TableModeToggle' ] }
+Plug 'epeli/slimux'                               , { 'on': ['SlimuxREPLSendBuffer', 'SlimuxREPLSendLine', 'SlimuxREPLSendSelection'] }
+Plug 'dhruvasagar/vim-table-mode'                 , { 'on': ['TableModeToggle'] }
 
 " Syntax
 Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
@@ -61,7 +61,7 @@ Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'sc
 Plug 'elzr/vim-json'                              , { 'for': ['json'] }
 Plug 'tpope/vim-haml'                             , { 'for': ['sass', 'scss', 'haml'] }
 Plug 'mustache/vim-mustache-handlebars'           , { 'for': ['mustache', 'html.handlebars'] }
-Plug 'kewah/vim-cssfmt'                           , { 'on': [ 'Cssfmt', 'CssfmtVisual' ] }
+Plug 'kewah/vim-cssfmt'                           , { 'on':  ['Cssfmt', 'CssfmtVisual'] }
 Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 
 " Linters & Code quality
@@ -70,8 +70,7 @@ Plug 'scrooloose/syntastic'
 " Plug 'benekastah/neomake'
 
 " Colors
-Plug 'altercation/vim-colors-solarized'
-Plug 'reedes/vim-colors-pencil'
+Plug 'chriskempson/base16-vim'
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'geoffharcourt/one-dark.vim'
@@ -86,8 +85,9 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 
 " Misc
-Plug 'ryanss/vim-hackernews'                      , { 'on': [ 'HackerNews' ] }
-Plug 'joshhartigan/vim-reddit'                    , { 'on': [ 'Reddit' ] }
+Plug 'ryanss/vim-hackernews'                      , { 'on': ['HackerNews'] }
+Plug 'joshhartigan/vim-reddit'                    , { 'on': ['Reddit'] }
+Plug 'rizzatti/dash.vim'                          , { 'on': ['Dash'] }
 
 call plug#end()
 
@@ -104,11 +104,9 @@ if has('nvim')
 end
 
 set background=dark
-let g:pencil_terminal_italics = 1
 let g:gruvbox_italic=1
-colorscheme onedark
+colorscheme base16-eighties
 highlight Comment cterm=italic gui=italic
-
 
 aug omnicomplete
   autocmd!
@@ -171,6 +169,7 @@ let g:syntastic_css_checkers = ['stylelint']
 let g:syntastic_html_tidy_exec = 'tidy5'
 let g:syntastic_javascript_checkers = []
 autocmd FileType javascript let b:syntastic_checkers = findfile('.jshintrc', '.;') !=# '' ? ['jshint'] : findfile('.eslintrc', '.;') !=# '' ? ['eslint'] : ['standard']
+autocmd FileType javascript.jsx let b:syntastic_checkers = findfile('.jshintrc', '.;') !=# '' ? ['jshint'] : findfile('.eslintrc', '.;') !=# '' ? ['eslint'] : ['standard']
 " ~/.dotfiles/bin/syntastic more info https://github.com/eslint/eslint/issues/1214#issuecomment-101012992 & https://github.com/scrooloose/syntastic/issues/1247#issuecomment-63020503
 let g:syntastic_javascript_eslint_exec='syntastic'
 let g:syntastic_error_symbol = '✗'
@@ -604,7 +603,11 @@ augroup vimrcEx
 
   " Wrap quickfix window
   autocmd FileType qf setlocal wrap linebreak
+
 augroup END
+
+" Automatically reload vimrc when it's saved
+autocmd! BufWritePost vimrc.local,.vimrc so $MYVIMRC
 
 " Activate goyo with Markdown files
 function! s:auto_goyo()
@@ -649,12 +652,11 @@ map  <right> <nop>
 imap <right> <nop>
 
 " Make arrowkey do something usefull, resize the viewports accordingly
-nnoremap <Left> :vertical resize -2<CR>
-nnoremap <Right> :vertical resize +2<CR>
-nnoremap <Up> :resize -2<CR>
-nnoremap <Down> :resize +2<CR>
+nnoremap <Right> :vertical resize -2<CR>
+nnoremap <Left> :vertical resize +2<CR>
+nnoremap <Down> :resize -2<CR>
+nnoremap <Up> :resize +2<CR>
 
-nnoremap <silent> <leader>sv :so $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 nnoremap gb  :Gbrowse<CR> " Open current file on github.com
@@ -668,7 +670,6 @@ nnoremap <Leader>e :e<SPACE>
 nnoremap \ :Ag<SPACE>
 nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
-nnoremap <Leader>n :call ToggleNumber()<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <Leader>bd :Bdelete<CR>
@@ -681,9 +682,6 @@ nnoremap == <C-w>t<C-w>K<CR>
 nnoremap \|\| <C-w>t<C-w>H<CR>
 nnoremap <leader>ll :Limelight!!<CR>
 nnoremap <leader>fm :Goyo<CR>
-
-" bind K to grep word under cursor
-nnoremap K :silent! grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -816,6 +814,8 @@ command! Del :call delete(@%) | bdelete!
 
 " Force write readonly files using sudo
 command! WS w !sudo tee %
+
+command! FormatJSON %!python -m json.tool
 
 " open help in a new tab
 cabbrev help tab help
