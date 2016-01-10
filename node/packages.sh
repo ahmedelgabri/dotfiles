@@ -1,22 +1,31 @@
 #!/bin/bash
 
 PACKAGES=(
-  bower
-  eslint
-  finch
-  grunt-cli
+  caniuse-cmd
+  cssfmt
+  generator-p
+  gh
+  gh-gif
+  gh-travis
   gulp
-  harp
-  jscs
+  jscpd
   jsfmt
-  jshint
+  jsinspect
   jspm
   keybase
   keybase-installer
   ngrok
-  node-sass
-  nodemon
-  stylus
+  serve
+  sloc
+  spoof
+  spot
+  standard
+  surge
+  svgo
+  yo
 )
 
 npm i -g ${PACKAGES[@]}
+
+
+

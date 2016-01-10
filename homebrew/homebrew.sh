@@ -19,9 +19,7 @@ FORMULAS=(
   python
   python3
   nvm
-  rbenv-gem-rehash
   reattach-to-user-namespace
-  ruby-build
   coreutils
   findutils
   gnu-sed
@@ -40,7 +38,7 @@ FORMULAS=(
   ledger
   lynx
   ncdu
-  neovim/neovim/neovim
+  --HEAD neovim
   spark
   task
   the_silver_searcher
@@ -55,6 +53,7 @@ FORMULAS=(
   weechat --with-perl --with-python --with-lua --with-curl
   z
   zsh
+  bitlbee
 )
 
 # Homebrew casks
@@ -71,15 +70,19 @@ CASKS=(
   firefox-nightly
   firefoxdeveloperedition
   flux
+  font-anka-coder
+  font-droid-sans-mono
   font-droid-sans-mono-for-powerline
+  font-fira-code
   font-fira-mono-for-powerline
+  font-inconsolata
   font-inconsolata-dz-for-powerline
+  font-meslo-lg
   font-meslo-lg-for-powerline
-  font-source-code-pro-for-powerline
+  font-source-code-pro
   imagealpha
   imageoptim
   iterm2-nightly
-  jdownloader
   keepingyouawake
   opera
   opera-beta
@@ -92,6 +95,7 @@ CASKS=(
   qlvideo
   quicklook-csv
   quicklook-json
+  recordit
   sequel-pro
   sketch
   sketch-toolbox
@@ -99,12 +103,11 @@ CASKS=(
   spectacle
   teamviewer
   telegram
-  the-unarchiver
   transmission
   transmit
   vagrant
   virtualbox
-  vlc
+  visual-studio-code
   webkit-nightly
   webpquicklook
 )
@@ -125,7 +128,7 @@ echo " Changing shell...."
 # sudo echo "/usr/local/bin/zsh" >> /etc/shells && chsh -s /usr/local/bin/zsh
 
 
-brew cask install --appdir="~/Applications" ${CASKS[@]} && brew cask alfred link
+brew cask install --appdir="$HOME/Applications" ${CASKS[@]} && brew cask alfred link
 
 # 1Password form the Apple Store needs Chrome to be in /Applications
 # Known issues #3
