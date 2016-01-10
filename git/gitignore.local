@@ -52,6 +52,7 @@ sublime/User/Package Control.merged-ca-bundle
 node_modules/
 .gems/
 .bundle/
+elm-stuff/
 
 # vim       #
 #############
