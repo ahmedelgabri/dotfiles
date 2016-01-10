@@ -1,6 +1,6 @@
 # TERMINAL
 alias vim="nvim "
-alias ev="e ~/.vimrc"
+alias ev="e ~/.dotfiles/vim/vimrc.local"
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -27,6 +27,7 @@ alias formatJSON='python -m json.tool'
 alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
 alias bin="cd ~/.dotfiles/bin"
+alias work='mx $WORK'
 
 # DEV
 alias npmls="npm list --depth=0 "

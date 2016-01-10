@@ -36,9 +36,10 @@ if [[ -z "$LANG" ]]; then
   export LC_ALL='en_US.UTF-8'
 fi
 
-# export TERM=xterm-256color
-export TERM=xterm-256color-italic
+# export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
+export PROJECTS="$HOME/Sites/dev"
+export WORK="travelbird"
 
 # Make some commands not show up in history
 # The rest of history variables is handled by prezto history module
@@ -48,7 +49,7 @@ export HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
 KEYTIMEOUT=1
 
 export FZF_DEFAULT_OPTS="--reverse -x --no-mouse"
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
 export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
