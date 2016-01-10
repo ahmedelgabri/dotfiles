@@ -17,7 +17,6 @@ FILES=(
   $HOME/.hushlogin
   $HOME/.vim
   $HOME/Library/Preferences/com.googlecode.iterm2.plist
-  $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 )
 
 for file in ${FILES[@]}; do
