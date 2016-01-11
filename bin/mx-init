@@ -8,13 +8,6 @@ create_session () {
   tmux send-keys weechat C-m
   # tmux split-window -h && tmux send-keys mutt C-m
 
-  tmux new-window -n 'notes' jrnl
-  # These needs to be done automatically in Vim itself
-  tmux send-keys 'i note' Tab
-
-  # tmux new-window -n 'media' cmus
-  # tmux split-window -v && tmux send-keys newsbeuter C-m
-
   local logpath="$PROJECTS"/knowledge
   tmux new-window -n 'log' -c "$logpath"
   tmux send-keys "$EDITOR" C-m
