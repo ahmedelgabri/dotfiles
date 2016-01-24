@@ -5,6 +5,7 @@ echo "\033[0;34m====== Cleaning the House. =================================\033
 echo "\033[0;34m------------------------------------------------------------\033[0;0m"
 
 FILES=(
+  $HOME/.agignore
   $HOME/.gitignore
   $HOME/.gitconfig
   $HOME/.zshrc
@@ -50,6 +51,7 @@ done
 ln -sf $HOME/.dotfiles/zsh/prompt_pure_setup.local $HOME/.zprezto/modules/prompt/functions/prompt_pure_setup
 
 ln -sf $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
+ln -sf $HOME/.dotfiles/ag/agignore.local $HOME/.agignore
 ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
 ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
 ln -sf $HOME/.dotfiles/osx/osx.local $HOME/.osx
