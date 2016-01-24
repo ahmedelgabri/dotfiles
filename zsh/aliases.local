@@ -37,3 +37,4 @@ alias services="launchctl list"
 # https://gist.github.com/sos4nt/3187620#gistcomment-1452131
 alias ssh="TERM=xterm-256color ssh"
 alias vagrant="TERM=xterm-256color vagrant"
+alias brew="TERM=xterm-256color brew"
