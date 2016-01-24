@@ -18,6 +18,9 @@ set -s escape-time 0
 set-option -g base-index 1
 setw -g pane-base-index 1
 
+# re-number windows when one is closed
+set -g renumber-windows on
+
 # Make the current window the first window
 bind T swap-window -t 1
 
@@ -38,7 +41,6 @@ bind -n WheelDownPane select-pane -t= \; send-keys -M
 
 
 bind-key : command-prompt
-# bind-key r refresh-client
 bind-key L clear-history
 
 bind-key -n S-Right next-window
@@ -57,9 +59,6 @@ bind -n C-j if-shell "$is_vim" "send-keys C-j" "select-pane -D"
 bind -n C-k if-shell "$is_vim" "send-keys C-k" "select-pane -U"
 bind -n C-l if-shell "$is_vim" "send-keys C-l" "select-pane -R"
 bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
-
-# Bring back clear screen under tmux prefix
-# bind C-l send-keys 'C-l'
 
 bind-key C-o rotate-window
 
@@ -92,9 +91,11 @@ setw -g mode-keys vi
 bind-key -t vi-copy v begin-selection
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
-# update default binding of 'Enter' to also use copy-pipe
-# unbind -t vi-copy Enter
-# bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+# decrease command delay (increases vim responsiveness)
+set -sg escape-time 1
+
+# increase repeat time for repeatable commands
+set -g repeat-time 1000
 
 bind y run 'tmux save-buffer - | reattach-to-user-namespace pbcopy '
 bind C-y run 'tmux save-buffer - | reattach-to-user-namespace pbcopy '
@@ -103,15 +104,11 @@ bind C-y run 'tmux save-buffer - | reattach-to-user-namespace pbcopy '
 # running
 bind-key * command-prompt -p 'save history to filename:' -I '~/tmux.history' 'capture-pane -S -32768 ; save-buffer %1 ; delete-buffer'
 
-# set-window-option display-panes-time 1500
+# set-window-option -g display-panes-time 1500
 
 # ----------------------
 # set some pretty colors
 # ----------------------
-# # set pane colors - hilight the active pane
-# set-option -g pane-border-fg colour235 #base02
-# set-option -g pane-active-border-fg colour33 #blue
-
 # colorize messages in the command line
 set-option -g message-bg default #base02
 set-option -g message-fg brightred #orange
@@ -120,32 +117,38 @@ set-option -g message-fg brightred #orange
 # Status Bar
 # -----------------------
 set-option -g status on                # turn the status bar on
-set -g status-utf8 on                  # set utf-8 for the status bar
-set -g status-interval 5               # set update frequencey (default 15 seconds)
-set -g status-justify centre           # center window list for clarity
-set-option -g status-position top    # position the status bar at top of screen
-
 # visual notification of activity in other windows
 setw -g monitor-activity on
 set -g visual-activity on
+
+set -g status-utf8 on                  # set utf-8 for the status bar
+set -g status-interval 5               # set update frequencey (default 15 seconds)
+set -g status-justify left           # center window list for clarity
+set-option -g status-position top    # position the status bar at top of screen
+
 
 # set color for status bar
 set-option -g status-bg default
 set-option -g status-fg default
 set-option -g status-attr dim
 
-set-window-option -g window-status-activity-fg black
-set-window-option -g window-status-activity-bg brightwhite
-set-window-option -g window-status-activity-attr bright
+set-window-option -g window-status-format ' #I '
+set-window-option -g window-status-current-format ' #I #W '
+set-window-option -g window-status-attr bright
+set-window-option -g window-status-current-attr bold
 
-set-window-option -g window-status-current-fg red #orange
-set-window-option -g window-status-current-attr bright
+set-window-option -g window-status-activity-fg red
+set-window-option -g window-status-activity-bg black
+set-window-option -g window-status-activity-attr reverse
+
+set-window-option -g window-status-current-fg black
+set-window-option -g window-status-current-bg cyan
 
 # show session name, window & pane number, date and time on left side of
 # status bar
 set -g status-left-length 70
-set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] #[fg=colour237][ #[fg=colour243]#T #[fg=colour237]]"
+set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] "
 
 # show host name and IP address on right side of status bar
-set -g status-right-length 75
+set -g status-right-length 120
 set -g status-right "#(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
