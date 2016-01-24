@@ -68,6 +68,7 @@ FORMULAS=(
 # Homebrew casks
 CASKS=(
   alfred
+  arq
   appcleaner
   atom
   betterzipql
