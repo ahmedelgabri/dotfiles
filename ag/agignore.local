@@ -9,7 +9,12 @@ dump
 solr
 .gitkeep
 .git
-*.min
+*.min.*
 *.pyc
 *.map
 node_modules
+elm_stuff
+build
+dist
+tags
+__build__
