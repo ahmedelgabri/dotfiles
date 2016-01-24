@@ -43,6 +43,8 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
     fi
   elif [ -d "$PROJECTS"/"$SESSION" ]; then
     WORKINGDIR="$PROJECTS"/"$SESSION"
+  else
+    WORKINGDIR="$HOME"
   fi
 
   if [ ! -z $WORKINGDIR ]; then
