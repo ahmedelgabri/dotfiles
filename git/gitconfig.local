@@ -39,6 +39,7 @@
 	st = status -sb
 	br = branch
 	d = diff --patch-with-stat
+	dc = diff --cached --patch-with-stat
 	lgnm = log --graph --no-merges --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
 	lg = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
 	wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%an> %Creset%ae %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
