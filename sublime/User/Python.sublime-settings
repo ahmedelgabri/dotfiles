@@ -1,0 +1,21 @@
+{
+	"apply_syntax_extensions":
+	[
+		"py3",
+		"pyw"
+	],
+	"auto_complete_triggers":
+	[
+		{
+			"characters": ".",
+			"selector": "source.python - string - comment - constant.numeric"
+		}
+	],
+	"extensions":
+	[
+		"py",
+		"pyw",
+		"py3"
+	],
+	"tab_size": 2
+}

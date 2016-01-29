@@ -1,0 +1,36 @@
+[
+	{"id": "side-bar-files-open-with",
+		"children":
+		[
+
+			//application 1
+			{
+				"caption": "Preview",
+				"id": "side-bar-files-open-with-preview",
+
+				"command": "side_bar_files_open_with",
+				"args": {
+					"paths": [],
+					"application": "~/Applications/Preview.app", // OSX
+					"extensions":"psd|png|jpg|jpeg"  //any file with these extensions
+				}
+			},
+
+			//separator
+			{"caption":"-"},
+			{
+				"caption": "Chrome",
+				"id": "side-bar-files-open-with-chrome",
+
+				"command": "side_bar_files_open_with",
+				"args": {
+					"paths": [],
+					"application": "~/Applications/Google Chrome Canary.app,
+					"extensions":".*" //any file with extension
+				}
+			},
+
+			{"caption":"-"}
+		]
+	}
+]

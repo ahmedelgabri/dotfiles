@@ -1,0 +1,20 @@
+{
+    // Put your custom syntax rules here:
+    "syntaxes": [
+        {
+            "name": "Djaneiro/Syntaxes/HTML (Django)",
+            "rules": [
+                {"file_name": ".*\\.html$"},
+                {"contains": "{{%.*%}}"}
+            ]
+        },
+        {
+            "name": "Handlebars/Syntaxes/Handlebars",
+             "match": "all",
+             "rules": [
+                 {"file_name": ".*\\.html$"},
+                 {"contains": "<script [^>]*type=\"text\\/x-handlebars\"[^>]*>"}
+             ]
+        }
+    ]
+}

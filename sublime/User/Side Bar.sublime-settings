@@ -1,0 +1,12 @@
+{
+	"close_affected_buffers_when_deleting_even_if_dirty": false,
+	"default_browser": "Chrome",
+	"disabled_menuitem_edit": true,
+	"disabled_menuitem_find_in_project": true,
+	"disabled_menuitem_open_in_new_window": true,
+	"disabled_menuitem_open_run": true,
+	"statusbar_file_size": true,
+	"statusbar_modified_time": true,
+	"statusbar_modified_time_format": "%A %b %d %H:%M:%S %Y",
+	"version": "setting no longer updated"
+}

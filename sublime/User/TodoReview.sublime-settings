@@ -1,0 +1,24 @@
+{
+    "patterns": {
+        "CHANGED": "@CHANGED[\\s]*?:+(?P<changed>\\S.*)$",
+        "FIXME": "@FIXME[\\s]*?:+(?P<fixme>\\S.*)$",
+        "NOTE": "@NOTE[\\s]*?:+(?P<note>.*)$",
+        "TODO": "@TODO[\\s]*?:+(?P<todo>.*)$"
+    },
+    "exclude_folders": [
+        "*.git*",
+        "*node_modules*",
+        "*bower_components*",
+        "*dist*",
+        "*dest*",
+        "*vendor*",
+        "*libs*"
+    ],
+    "exclude_files": [
+        "*.py",
+        "*.pyc"
+    ],
+    "case_sensitive": false,
+    "render_include_folder": true,
+    "render_spaces": 1
+}

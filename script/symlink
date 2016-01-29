@@ -18,6 +18,7 @@ FILES=(
   $HOME/.hushlogin
   $HOME/.vim
   $HOME/Library/Preferences/com.googlecode.iterm2.plist
+  "$HOME/Library/Application Support/Sublime Text 3/Packages/User"
 )
 
 BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
@@ -65,6 +66,11 @@ ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.config/nvim/init.vim
 ln -sf $HOME/.dotfiles/vim/.vim $HOME/.config/nvim
 ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
+ln -sf $HOME/.dotfiles/sublime/User $HOME/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+
+if ! command -v subl >/dev/null; then
+  ln -sf $HOME/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+fi
 
 echo "\033[0;32m------------------------------------------------------------\033[0;0m"
 echo "\033[0;32m====== Done. Wohoo! ========================================\033[0;0m"

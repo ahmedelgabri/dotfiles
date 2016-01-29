@@ -1,0 +1,11 @@
+{
+	"extensions":
+	[
+		".jshintrc",
+		"sublime-settings",
+		".jscsrc",
+		".bowerrc",
+		".csslintrc",
+		".eslintrc"
+	]
+}

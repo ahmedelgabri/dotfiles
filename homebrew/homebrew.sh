@@ -70,7 +70,6 @@ CASKS=(
   alfred
   arq
   appcleaner
-  atom
   betterzipql
   box-sync
   dayone-cli
@@ -111,13 +110,13 @@ CASKS=(
   sketch-toolbox
   skype
   spectacle
+  sublime-text-dev
   teamviewer
   telegram
   transmission
   transmit
   vagrant
   virtualbox
-  visual-studio-code
   webkit-nightly
   webpquicklook
 )
