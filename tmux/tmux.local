@@ -2,7 +2,7 @@
 set -g utf8
 set-window-option -g utf8 on
 
-set-option -g default-terminal "xterm-256color-italic"
+set-option -g default-terminal "tmux-256color"
 
 # use C-a, since it's on the home row and easier to hit than C-b
 set-option -g prefix C-a
@@ -25,8 +25,8 @@ set -g renumber-windows on
 bind T swap-window -t 1
 
 # quick pane cycling
-unbind ^A
-bind ^A select-pane -t :.+
+# unbind ^A
+# bind ^A select-pane -t :.+
 
 # reload ~/.tmux.conf using PREFIX r
 bind r source-file ~/.tmux.conf \; display "Reloaded!"
@@ -39,7 +39,8 @@ set -g mouse on
 bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
 bind -n WheelDownPane select-pane -t= \; send-keys -M
 
-
+# Quick kill-session
+bind C-q confirm-before 'kill-session'
 bind-key : command-prompt
 bind-key L clear-history
 
