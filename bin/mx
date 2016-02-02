@@ -53,9 +53,6 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
     tmux select-window -t "$SESSION"
     if [ "$SESSION" == "$WORK" ]; then
       tmux send-keys './start' C-m
-    else
-      tmux split-window -h;
-      tmux send-keys "$EDITOR" C-m
     fi
   fi
 
