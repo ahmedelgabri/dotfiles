@@ -1,4 +1,3 @@
-set nocompatible
 
 " Vim-Plug
 "================================================================================
@@ -123,6 +122,23 @@ aug END
 
 " UI Configs
 "-----------------
+if !has('nvim')
+  set nocompatible
+  set encoding=utf-8
+  set autoindent
+  " Fix broken backspace in some setups
+  set backspace=2
+  " Display as much as possibe of a window's last line.
+  set display+=lastline
+  set incsearch
+  set hlsearch
+  set laststatus=2
+  " Enable mouse support
+  set mouse=a
+  set ttyfast
+  set wildmenu
+endif
+
 " number of visual spaces per TAB
 set tabstop=2
 " insert mode tab and backspace, number of spaces in tab when editing
@@ -131,7 +147,6 @@ set softtabstop=2
 set expandtab
 " normal mode indentation commands use 2 spaces
 set shiftwidth=2
-set autoindent
 set shiftround
 
 set nowrap
@@ -151,7 +166,6 @@ set showcmd
 set showmode
 
 " show a navigable menu for tab completion
-set wildmenu
 set wildmode=longest,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
@@ -167,9 +181,6 @@ set complete+=kspell
 
 set completeopt+=menuone
 set completeopt-=preview
-
-" Display as much as possibe of a window's last line.
-set display+=lastline
 
 " highlight current line (Check auto groups too)
 set cursorline
@@ -188,12 +199,6 @@ set splitright
 
 " Search
 "-----------------
-" search as characters are entered
-set incsearch
-
-" highlight matches
-set hlsearch
-
 " Ignore case in search.
 set ignorecase
 
@@ -228,14 +233,8 @@ set linebreak
 " No flashing.
 set noerrorbells
 
-" History
-set history=200
-
 " reload files when changed on disk, i.e. via `git checkout`
 set autoread
-
-" Fix broken backspace in some setups
-set backspace=2
 
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=5
@@ -246,11 +245,6 @@ set sidescroll=1
 
 " yank and paste with the system clipboard
 set clipboard=unnamed
-
-if !has('nvim')
-  " Alwyas use UTF-8, not required for Neovim
-  set encoding=utf-8
-endif
 
 " show trailing whitespace
 set list
@@ -264,9 +258,6 @@ set noswapfile
 
 set hidden
 
-" Enable mouse support
-set mouse=a
-
 " Swap iTerm2 cursors in [n]vim insert mode when using tmux,
 " more info here https://github.com/mhinz/vim-galore#change-cursor-style-in-insert-mode
 if empty($TMUX)
@@ -279,9 +270,7 @@ else
   let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
 endif
 
-set ttyfast
-
-set formatoptions=qrn1
+set formatoptions+=rn1
 
 " No backups.
 set nobackup
@@ -293,9 +282,6 @@ set tildeop
 
 " Avoid unnecessary hit-enter prompts.
 set shortmess+=atI
-
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
 
 " Autocommands
 "================================================================================
@@ -773,7 +759,7 @@ let g:limelight_conceal_ctermfg = 240
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
 
 " Easytags
-set tags=./.tags
+set tags=./.tags,.tags;
 let g:easytags_events = ['BufReadPost', 'BufWritePost']
 let g:easytags_async = 1
 let g:easytags_dynamic_files = 2
@@ -810,7 +796,6 @@ let g:buftabline_indicators=1
 " Tabline/Buffer line
 set showtabline=2
 set tabline="%1T"
-set laststatus=2
 
 " Find out current buffer's size and output it.
 function! FileSize()
