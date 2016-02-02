@@ -622,10 +622,6 @@ endfunction
 map <silent> <Leader>he :call HtmlEscape()<CR>
 map <silent> <Leader>hu :call HtmlUnEscape()<CR>
 
-function! StrTrim(txt)
-  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-endfunction
-
 " --------------- Folding! ----------------------------------------------------
 
 set fdm=indent
@@ -678,9 +674,6 @@ let g:neomake_jsx_enabled_makers = ['standard']
 if findfile('.eslintrc', '.;') !=# ''
   let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_jsx_enabled_makers = ['eslint']
-  " Feels slower?
-  " let g:neomake_javascript_eslint_exe = StrTrim(system('npm-which eslint'))
-  " let g:neomake_jsx_eslint_exe = StrTrim(system('npm-which eslint'))
   let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
   let g:neomake_jsx_eslint_exe = $PWD .'/node_modules/.bin/eslint'
 endif
@@ -868,7 +861,7 @@ let g:airline_mode_map = {
       \ 't'  : 'Terminal'
       \}
 let g:airline_powerline_fonts = 1
-let g:airline_detect_paste=1
+let g:airline_detect_paste = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#buffer_nr_show = 0
