@@ -44,10 +44,11 @@ FORMULAS=(
   hub
   jq
   jrnl
-  ledger
+  keybase
+  # ledger
   lynx
   ncdu
-  --HEAD neovim
+  neovim --HEAD
   spark
   task
   the_silver_searcher

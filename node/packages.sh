@@ -12,8 +12,6 @@ PACKAGES=(
   jsfmt
   jsinspect
   jspm
-  keybase
-  keybase-installer
   ngrok
   serve
   sloc
