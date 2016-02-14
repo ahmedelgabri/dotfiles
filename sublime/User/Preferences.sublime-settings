@@ -34,7 +34,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "wide",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/SublimeLinter/Oceanic Next (SL).tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/OneDark (SL).tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"disable_formatted_linebreak": true,
@@ -57,7 +57,7 @@
 		"*.esproj",
 		"*.tiles"
 	],
-	"font_face": "Fira Mono",
+	"font_face": "Fira Code",
 	"font_options":
 	[
 		"no_bold"
@@ -91,7 +91,7 @@
 	"spell_check": false,
 	"tab_size": 2,
 	"tern_argument_hints": true,
-	"theme": "Material-Theme.sublime-theme",
+	"theme": "Spacegray.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"tree_animation_enabled": false,
 	"trim_trailing_white_space_on_save": true,
