@@ -14,6 +14,8 @@ set -g history-limit 5000
 # Neovim ESC issue https://github.com/neovim/neovim/issues/2017#issuecomment-75145262
 set -s escape-time 0
 
+set -g focus-events on
+
 # set window and pane index to 1 (0 by default)
 set-option -g base-index 1
 setw -g pane-base-index 1
