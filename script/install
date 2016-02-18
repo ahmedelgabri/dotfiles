@@ -8,8 +8,8 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 cd $HOME
-softwareupdate --verbose --install --all
-xcode-select --install
+# softwareupdate --verbose --install --all
+# xcode-select --install
 # xcodebuild -license accept # To accept Xcode EULA
 
 
