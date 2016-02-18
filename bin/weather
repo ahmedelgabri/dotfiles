@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# Version: 0.0.1
+# Author: Ahmed El Gabri<ahmed@gabri.me>
+#
+# Simple function to get weather data
+#
+# Usage:
+#   $ weather
+#   $ weather <city>
+#   $ weather -e <city>
+#
+#   -e is for extra info
+#
+#   By default wttr.in is used for extra info graph.no is used
+#
+
+if [ -z "$1" ]; then
+  curl -4 http://wttr\.in/
+elif [ "$1" == "-e" ]; then
+  finger "$2"@graph.no
+else
+  curl -4 http://wttr\.in/"$1"
+fi
