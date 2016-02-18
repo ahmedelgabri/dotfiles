@@ -7,12 +7,12 @@ PACKAGES=(
   gh
   gh-gif
   gh-travis
-  gulp
   jscpd
   jsfmt
   jsinspect
   jspm
   ngrok
+  replem
   serve
   sloc
   spoof

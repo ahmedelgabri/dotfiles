@@ -64,6 +64,10 @@ FORMULAS=(
   z
   zsh
   bitlbee
+  curl
+  httpie
+  tidy-html5
+  elm
 )
 
 # Homebrew casks
@@ -74,20 +78,16 @@ CASKS=(
   betterzipql
   box-sync
   dayone-cli
-  elm-platform
   firefox
   firefox-beta
-  firefox-nightly
+  firefoxnightly
   firefoxdeveloperedition
   flux
   font-anka-coder
-  font-droid-sans-mono
   font-droid-sans-mono-for-powerline
   font-fira-code
   font-fira-mono-for-powerline
-  font-inconsolata
   font-inconsolata-dz-for-powerline
-  font-meslo-lg
   font-meslo-lg-for-powerline
   font-source-code-pro
   imagealpha
@@ -105,7 +105,6 @@ CASKS=(
   qlvideo
   quicklook-csv
   quicklook-json
-  recordit
   sequel-pro
   sketch
   sketch-toolbox
