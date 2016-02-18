@@ -16,9 +16,9 @@
 #
 
 if [ -z "$1" ]; then
-  curl -4 http://wttr\.in/
+  curl -s http://wttr.in/
 elif [ "$1" == "-e" ]; then
   finger "$2"@graph.no
 else
-  curl -4 http://wttr\.in/"$1"
+  curl -s http://wttr.in/"$1"
 fi
