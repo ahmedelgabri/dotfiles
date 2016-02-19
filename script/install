@@ -26,6 +26,7 @@ fi
 
 if [[ ! -d "$HOME/.dotfiles" ]]; then
   echo "Clonning dotfiles..."
+  mkdir "$HOME/.dotfiles"
   git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$HOME/.dotfiles"
 else
   cd $HOME/.dotfiles && git pull origin master
