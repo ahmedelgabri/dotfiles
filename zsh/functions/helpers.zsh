@@ -1,4 +1,4 @@
-function strip_diff_leading_symbols(){
+strip_diff_leading_symbols (){
 	color_code_regex="(\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K])"
 	reset_color="\x1B\[m"
 	dim_magenta="\x1B\[38;05;146m"

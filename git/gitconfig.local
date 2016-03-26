@@ -30,8 +30,8 @@
 
 [core]
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-	excludesfile = /Users/Gabri/.gitignore
-	pager = zsh -lc 'diff-highlight | strip_diff_leading_symbols | less -r' -
+	excludesfile = /Users/ahmed/.gitignore
+	pager = diff-highlight | diff-so-fancy | less -r
 
 [alias]
 	co = checkout
