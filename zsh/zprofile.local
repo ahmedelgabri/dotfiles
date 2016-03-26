@@ -39,7 +39,7 @@ fi
 # export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
 export PROJECTS="$HOME/Sites/dev"
-export WORK="travelbird"
+export WORK="lightspeed"
 
 # Make some commands not show up in history
 # The rest of history variables is handled by prezto history module
