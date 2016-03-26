@@ -44,3 +44,13 @@
 --regex-markdown=/^#[ \t]+(.*)/\1/h,heading1/
 --regex-markdown=/^##[ \t]+(.*)/\1/h,heading2/
 --regex-markdown=/^###[ \t]+(.*)/\1/h,heading3/
+
+--langdef=php
+--langmap=php:.php
+--regex-php=/^[ \t]*const[ \t]*([a-zA-Z]+[^=]*=.*);/\1/c,Class/i
+--regex-php=/^[ \t]*((var|protected|private|public|static).*);/\1/p,Properties/i
+--regex-php=/^([_a-zA-Z \t]*)function (.*)/\2/f,Functions/i
+--regex-php=/^([_a-zA-Z \t]*)protected.+function (.*)/\2/m,Protected Methods/i
+--regex-php=/^([_a-zA-Z \t]*)private.+function (.*)/\2/m,Private Methods/i
+--regex-php=/^([_a-zA-Z \t]*)public.+function (.*)/\2/m,Public Methods/i
+--regex-php=/^[ \t]*class[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/c,class, classes/
