@@ -14,7 +14,6 @@ TAPS=(
   caskroom/cask
   caskroom/fonts
   caskroom/versions
-  choppsv1/term24
   homebrew/dupes
   homebrew/versions
   neovim/neovim
@@ -55,7 +54,7 @@ FORMULAS=(
   tidy-html5
   tig
   tldr-pages/tldr/tldr
-  choppsv1/term24/tmux
+  tmux --HEAD
   todo-txt
   tree
   unar
