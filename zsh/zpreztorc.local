@@ -36,7 +36,6 @@ zstyle ':prezto:load' pmodule \
   'archive' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'autosuggestions' \
   'prompt'
 
 ###############################################################################
@@ -137,7 +136,7 @@ zstyle ':prezto:module:terminal:tab-title' format '%m: %s'
 # Autosuggestion (Fish like)
 ###############################################################################
 
-zstyle ':prezto:module:autosuggestions' color 'yes'
+# zstyle ':prezto:module:autosuggestions' color 'yes'
 # zstyle ':prezto:module:autosuggestions:color' found ''
 
 ###############################################################################
