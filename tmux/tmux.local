@@ -1,6 +1,3 @@
-# use UTF8
-set -g utf8
-set-window-option -g utf8 on
 # Enable true color support, the terminal info is from the outside of tmux
 # https://sunaku.github.io/tmux-24bit-color.html#usage
 set-option -ga terminal-overrides ",xterm-256color-italic:Tc"
@@ -126,7 +123,6 @@ set-option -g status on                # turn the status bar on
 setw -g monitor-activity on
 set -g visual-activity on
 
-set -g status-utf8 on                  # set utf-8 for the status bar
 set -g status-interval 5               # set update frequencey (default 15 seconds)
 set -g status-justify left           # center window list for clarity
 set-option -g status-position top    # position the status bar at top of screen
@@ -157,3 +153,29 @@ set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] "
 # show host name and IP address on right side of status bar
 set -g status-right-length 120
 set -g status-right "#(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
+
+# List of plugins
+# prefix + I to install plugins
+# prefix + u to uninstall plugins
+set -g @plugin 'tmux-plugins/tpm'
+
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @open 'C-o'
+set -g @open-editor 'o'
+
+set -g @plugin 'tmux-plugins/tmux-copycat'
+
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @shell_mode 'vi'
+
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-capture-pane-contents 'on'
+
+set -g @plugin 'tmux-plugins/tmux-continuum'
+# set -g @continuum-boot 'on'
+# set -g @continuum-boot-options 'iterm,fullscreen'
+
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
