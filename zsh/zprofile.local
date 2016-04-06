@@ -43,7 +43,10 @@ export WORK="lightspeed"
 
 # Make some commands not show up in history
 # The rest of history variables is handled by prezto history module
-export HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
+HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+
 
 # 10ms for key sequences
 KEYTIMEOUT=1
