@@ -67,6 +67,9 @@ FORMULAS=(
   httpie
   tidy-html5
   elm
+  gnupg
+  gpg-agent
+  pinentry-mac
 )
 
 # Homebrew casks

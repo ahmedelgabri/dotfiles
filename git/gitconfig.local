@@ -1,6 +1,5 @@
 [user]
 	name = Ahmed El Gabri
-	email = ahmed@gabri.me
 
 [color]
 	ui = true
@@ -30,7 +29,7 @@
 
 [core]
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-	excludesfile = /Users/ahmed/.gitignore
+	excludesfile = ~/.gitignore
 	pager = diff-highlight | diff-so-fancy | less -r
 
 [alias]
@@ -80,3 +79,6 @@
   fsckobjects = true
 [receive]
   fsckObjects = true
+
+[include]
+  path = ~/.gitconfig.extra
