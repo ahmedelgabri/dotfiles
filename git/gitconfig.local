@@ -1,3 +1,4 @@
+; vim: ft=gitconfig
 [user]
 	name = Ahmed El Gabri
 
@@ -29,8 +30,10 @@
 
 [core]
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.dotfiles/git/gitignore.local
 	pager = diff-highlight | diff-so-fancy | less -r
+	; https://news.ycombinator.com/item?id=11388479
+	untrackedCache = true
 
 [alias]
 	co = checkout
@@ -59,6 +62,7 @@
 	grr = grep --break --heading --line-number
 	ll = log --cc
 	lastchange = log -p --follow -n 1
+	ctags = !.git/hooks/ctags
 
 [mergetool]
 	keepBackup = false
@@ -66,6 +70,7 @@
 [diff]
 	# Detect copies as well as renames
 	renames = copies
+	tool = vimdiff
 
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages
@@ -118,3 +123,22 @@
 [include]
   path = ~/.gitconfig.extra
 
+[credential]
+	helper = osxkeychain
+
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[branch]
+	autosetuprebase = always
+[pull]
+	rebase = true
+[init]
+	templatedir = ~/.dotfiles/git/git-template
+
+[difftool]
+	prompt = false
+[difftool "vimdiff"]
+	; $BASE $LOCAL $REMOTE $MERGED
+	cmd = $EDITOR -d $LOCAL $REMOTE
