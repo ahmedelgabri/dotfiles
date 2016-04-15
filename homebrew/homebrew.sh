@@ -112,7 +112,6 @@ CASKS=(
   sketch-toolbox
   skype
   spectacle
-  sublime-text-dev
   teamviewer
   telegram
   transmission
@@ -150,6 +149,6 @@ echo "Install Chrome & Chrome Canary in /Applications dir"
 # brew cask install --appdir="/Applications" google-chrome-canary
 
 
-echo "Put your license in Dash & Sublime. and Install Tweetbot"
+echo "Put your license in Dash and Install Tweetbot"
 
 brew cleanup

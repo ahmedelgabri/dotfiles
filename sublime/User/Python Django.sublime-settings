@@ -1,8 +1,0 @@
-{
-    "extensions":
-    [
-        "py"
-    ],
-    "tab_size": 2,
-    "auto_complete_triggers": [{"selector": "source.python - string - comment - constant.numeric", "characters": "."}]
-}
