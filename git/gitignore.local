@@ -60,6 +60,11 @@ elm-stuff/
 tags
 .tags
 .local.vim
+Session.vim
 *.add.spl
 *.vim-rplugin~
 .netrwhist
+
+# node       #
+#############
+npm-debug.log*

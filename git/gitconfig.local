@@ -37,6 +37,7 @@
 
 [alias]
 	co = checkout
+	cb = checkout -b
 	cm = commit
 	st = status -sb
 	br = branch
@@ -142,3 +143,5 @@
 [difftool "vimdiff"]
 	; $BASE $LOCAL $REMOTE $MERGED
 	cmd = $EDITOR -d $LOCAL $REMOTE
+[ghi]
+	token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w

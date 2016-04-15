@@ -8,6 +8,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 ##############################################################
+# Prezto module overrides.
+##############################################################
+# Make some commands not show up in history
+HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+
+##############################################################
 # ENVIRONMENT.
 ##############################################################
 
@@ -53,3 +61,4 @@ source "/usr/local/etc/grc.bashrc"
 source /usr/local/share/zsh/site-functions/_aws
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
