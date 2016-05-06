@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
 Plug 'carlitux/deoplete-ternjs'                   , { 'for': ['javascript'], 'do': 'npm i -g tern' }
 Plug 'zchee/deoplete-jedi'                        , { 'for': ['python'] }
+" Plug 'Valloric/YouCompleteMe'                     , { 'do': './install.py --tern-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'ervandew/supertab'
@@ -51,6 +52,7 @@ Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
 Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
 Plug 'pangloss/vim-javascript'                    , { 'for': ['javascript'] }
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
+Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
 Plug 'mxw/vim-jsx'                                , { 'for': ['jsx', 'javascript.jsx'] }
 Plug 'othree/html5.vim'                           , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
 Plug 'Glench/Vim-Jinja2-Syntax'                   , { 'for': ['htmldjango', 'jinja', 'twig', 'rain'] }
@@ -65,7 +67,6 @@ Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 Plug 'tmux-plugins/vim-tmux'                      , { 'for': ['tmux'] }
 Plug 'lambdatoast/elm.vim'                        , { 'for': ['elm'] }
 Plug 'kchmck/vim-coffee-script'                   , { 'for': ['coffee'] }
-Plug 'apple/swift'                                , { 'rtp': 'utils/vim', 'for': ['swift'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
@@ -296,6 +297,10 @@ set shortmess+=atI
 autocmd VimResized * wincmd =
 autocmd FileType help wincmd L
 
+" Close preview buffer with q
+autocmd FileType preview nmap <buffer> <silent>  q :q<cr>
+
+
 augroup vimrcEx
   autocmd!
 
@@ -341,7 +346,7 @@ autocmd InsertEnter * set nocursorline
 autocmd InsertLeave * set cursorline
 
 " Automatically reload vimrc when it's saved
-autocmd! BufWritePost vimrc.local,.vimrc so $MYVIMRC
+autocmd! BufWritePost init.vim,vimrc.local,.vimrc so $MYVIMRC
 
 " Activate goyo with Markdown files
 function! s:auto_goyo()
@@ -491,6 +496,30 @@ endfunction
 vnoremap * :<c-u>call <sid>VSetSearch()<cr>//<cr><c-o>
 vnoremap # :<c-u>call <sid>VSetSearch()<cr>??<cr><c-o>
 
+" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+function! ToggleMovement(firstOp, thenOp)
+  let pos = getpos('.')
+  execute "normal! " . a:firstOp
+  if pos == getpos('.')
+    execute "normal! " . a:thenOp
+  endif
+endfunction
+
+" The original carat 0 swap
+nnoremap <silent> 0 :call ToggleMovement('^', '0')<CR>
+
+" How about ; and ,
+nnoremap <silent> ; :call ToggleMovement(';', ',')<CR>
+nnoremap <silent> , :call ToggleMovement(',', ';')<CR>
+
+" How about H and L
+nnoremap <silent> H :call ToggleMovement('H', 'L')<CR>
+nnoremap <silent> L :call ToggleMovement('L', 'H')<CR>
+
+" How about G and gg
+nnoremap <silent> G :call ToggleMovement('G', 'gg')<CR>
+nnoremap <silent> gg :call ToggleMovement('gg', 'G')<CR>
+
 " Convenience commands and cabbrev's
 "================================================================================
 "
@@ -594,6 +623,13 @@ endif
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
+
+" YouCompleteMe
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
+
+autocmd! User YouCompleteMe if !has('vim_starting')
+      \| call youcompleteme#Enable() | endif
 
 " Tab completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"

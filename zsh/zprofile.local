@@ -45,7 +45,7 @@ export WORK="lightspeed"
 KEYTIMEOUT=1
 
 export FZF_DEFAULT_OPTS="--reverse -x --no-mouse"
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND='ag --hidden -f --ignore .git -g ""'
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
 export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
