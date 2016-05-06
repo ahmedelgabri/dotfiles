@@ -64,6 +64,8 @@
 	ll = log --cc
 	lastchange = log -p --follow -n 1
 	ctags = !.git/hooks/ctags
+	aliases = config --get-regexp alias
+	stashes = stash list
 
 [mergetool]
 	keepBackup = false
