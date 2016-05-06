@@ -65,30 +65,44 @@ FORMULAS=(
   bitlbee
   curl
   httpie
-  tidy-html5
   elm
   gnupg
   gpg-agent
   pinentry-mac
+  ansiweather
+  asciidoc
+  cloc
+  fortune
+  fpp
+  gawk
+  ghi
+  highlight
+  jo
+  ponysay
+  ranger
+  ruby
+  screenfetch
 )
 
 # Homebrew casks
 CASKS=(
   alfred
-  arq
   appcleaner
+  arq
+  atom
   betterzipql
   box-sync
   dayone-cli
   firefox
   firefox-beta
-  firefoxnightly
   firefoxdeveloperedition
+  firefoxnightly
   flux
   font-anka-coder
   font-droid-sans-mono-for-powerline
   font-fira-code
   font-fira-mono-for-powerline
+  font-hack
   font-inconsolata-dz-for-powerline
   font-meslo-lg-for-powerline
   font-source-code-pro
@@ -118,6 +132,8 @@ CASKS=(
   transmit
   vagrant
   virtualbox
+  visual-studio-code
+  vlc
   webkit-nightly
   webpquicklook
 )
