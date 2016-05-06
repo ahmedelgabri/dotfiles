@@ -330,7 +330,7 @@ augroup vimrcEx
   autocmd BufEnter *.py silent! match OverLength /\%81v.\+/
   autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79 commentstring=#\ %s
 
-  autocmd BufRead,BufNewFile {babel,eslint,stylelint,jshint,tern_project}*rc,*.json set ft=json
+  autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}*rc,\.tern-*,*.json set ft=json
   autocmd BufNewFile,BufRead,BufWrite * if getline(1) =~ '^\#!.*node' | setf javascript | endif
   autocmd BufNewFile,BufRead .tags set ft=tags
   autocmd BufRead,BufNewFile jrnl*.txt set ft=markdown
@@ -732,7 +732,7 @@ autocmd! BufWritePost * Neomake
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
-  let g:ag_prg="ag --column"
+  let g:ag_prg="ag --hidden -f --column"
 endif
 
 " Emmet
