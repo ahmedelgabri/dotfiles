@@ -42,6 +42,7 @@ ZSH_FILES=(
   zshrc
   zprofile
   zpreztorc
+  zlogin
 )
 
 for file in ${ZSH_FILES[@]}; do
