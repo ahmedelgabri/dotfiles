@@ -24,6 +24,7 @@ Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'ervandew/supertab'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
@@ -45,12 +46,14 @@ Plug 'dhruvasagar/vim-table-mode'                 , { 'on': ['TableModeToggle'] 
 Plug 'Yggdroot/indentLine'                        , { 'on': ['IndentLinesToggle'] }
 Plug 'tpope/vim-obsession'
 Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'junegunn/vim-journal'
 
 " Syntax
 Plug 'junegunn/rainbow_parentheses.vim'           , { 'for': ['javascript', 'clojure', 'elm'] }
 Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
 Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
 Plug 'pangloss/vim-javascript'                    , { 'for': ['javascript'] }
+Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
 Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
 Plug 'mxw/vim-jsx'                                , { 'for': ['jsx', 'javascript.jsx'] }
@@ -75,7 +78,9 @@ Plug 'benekastah/neomake'
 " Colors
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
+Plug 'mhartington/oceanic-next'
 Plug 'geoffharcourt/one-dark.vim'
+Plug 'chriskempson/base16-vim'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
 
 " Git
@@ -103,7 +108,7 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 endif
 
 if has('nvim')
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  set termguicolors
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 end
 
@@ -117,7 +122,8 @@ let hour = strftime("%H")
 " endif
 set background=dark
 let g:gruvbox_italic=1
-colorscheme gruvbox
+let base16colorspace=256
+colorscheme onedark
 highlight Comment cterm=italic gui=italic
 
 aug omnicomplete
