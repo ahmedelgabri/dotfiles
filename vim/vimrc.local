@@ -15,21 +15,23 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-
-Plug 'Shougo/deoplete.nvim'
-Plug 'carlitux/deoplete-ternjs'                   , { 'for': ['javascript'], 'do': 'npm i -g tern' }
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'ternjs/tern_for_vim', { 'for': ['javascript'], 'do': 'npm i' }
+Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript'], 'do': 'npm i -g tern' }
 Plug 'zchee/deoplete-jedi'                        , { 'for': ['python'] }
-" Plug 'Valloric/YouCompleteMe'                     , { 'do': './install.py --tern-completer' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+" Plug 'tpope/vim-projectionist'
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'ervandew/supertab'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
-Plug 'rking/ag.vim'
+Plug 'ddrscott/vim-side-search'
+Plug 'wellle/targets.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -47,39 +49,46 @@ Plug 'Yggdroot/indentLine'                        , { 'on': ['IndentLinesToggle'
 Plug 'tpope/vim-obsession'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'junegunn/vim-journal'
+Plug 'kshenoy/vim-signature'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Syntax
 Plug 'junegunn/rainbow_parentheses.vim'           , { 'for': ['javascript', 'clojure', 'elm'] }
-Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
-Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
-Plug 'pangloss/vim-javascript'                    , { 'for': ['javascript'] }
 Plug 'ahmedelgabri/vim-ava-snippets'
-Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
-Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
-Plug 'mxw/vim-jsx'                                , { 'for': ['jsx', 'javascript.jsx'] }
-Plug 'othree/html5.vim'                           , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
-Plug 'Glench/Vim-Jinja2-Syntax'                   , { 'for': ['htmldjango', 'jinja', 'twig', 'rain'] }
-Plug 'tpope/vim-markdown'                         , { 'for': ['markdown'] }
-Plug 'wavded/vim-stylus'                          , { 'for': ['stylus'] }
+Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
+Plug 'sheerun/vim-polyglot'
+" Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
+" Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
+" Plug 'pangloss/vim-javascript'                    , { 'for': ['javascript'] }
+" Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
+" Plug 'Galooshi/vim-import-js'                     , { 'for': ['javascript'], 'do': 'npm i -g import-js' }
+" Plug 'mxw/vim-jsx'                                , { 'for': ['jsx', 'javascript.jsx'] }
+" Plug 'othree/html5.vim'                           , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
+" Plug 'Glench/Vim-Jinja2-Syntax'                   , { 'for': ['htmldjango', 'jinja', 'twig', 'rain'] }
+" Plug 'tpope/vim-markdown'                         , { 'for': ['markdown'] }
+" Plug 'wavded/vim-stylus'                          , { 'for': ['stylus'] }
 Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'twig', 'rain'] }
-Plug 'elzr/vim-json'                              , { 'for': ['json'] }
-Plug 'tpope/vim-haml'                             , { 'for': ['sass', 'scss', 'haml'] }
-Plug 'mustache/vim-mustache-handlebars'           , { 'for': ['mustache', 'html.handlebars'] }
-Plug 'kewah/vim-cssfmt'                           , { 'on':  ['Cssfmt', 'CssfmtVisual'] }
-Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
-Plug 'tmux-plugins/vim-tmux'                      , { 'for': ['tmux'] }
-Plug 'lambdatoast/elm.vim'                        , { 'for': ['elm'] }
-Plug 'kchmck/vim-coffee-script'                   , { 'for': ['coffee'] }
+" Plug 'elzr/vim-json'                              , { 'for': ['json'] }
+" Plug 'tpope/vim-haml'                             , { 'for': ['sass', 'scss', 'haml'] }
+" Plug 'mustache/vim-mustache-handlebars'           , { 'for': ['mustache', 'html.handlebars'] }
+" Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
+" Plug 'tmux-plugins/vim-tmux'                      , { 'for': ['tmux'] }
+" Plug 'lambdatoast/elm.vim'                        , { 'for': ['elm'] }
+" Plug 'kchmck/vim-coffee-script'                   , { 'for': ['coffee'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
 Plug 'benekastah/neomake'
 
-" Colors
+" Themes, UI & eye cnady
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ahmedelgabri/one-dark.vim', { 'branch': 'airline-theme' }
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
 Plug 'mhartington/oceanic-next'
-Plug 'geoffharcourt/one-dark.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
 
@@ -165,12 +174,14 @@ set shiftround
 
 set nowrap
 
-" highlight ColorColumn ctermbg=235 guibg=#2c2d27
-set colorcolumn=120
+" set colorcolumn=120
+set textwidth=120
+let &colorcolumn='+' . join(range(0, 254), ',+')
+" let &colorcolumn="100,".join(range(120,999),",")
+
 syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
 " set re=1                 " use explicit old regexpengine, seems to be more faster
-" set textwidth=80
 
 " show line numbers, hybrid. Relative with absolute for the line you are on.
 set number relativenumber
@@ -304,7 +315,7 @@ autocmd VimResized * wincmd =
 autocmd FileType help wincmd L
 
 " Close preview buffer with q
-autocmd FileType preview nmap <buffer> <silent>  q :q<cr>
+autocmd FileType preview,ag,netrw nmap <buffer> <silent>  q :q<cr>
 
 
 augroup vimrcEx
@@ -334,13 +345,11 @@ augroup vimrcEx
 
   " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
   autocmd BufEnter *.py silent! match OverLength /\%81v.\+/
-  autocmd FileType python setl softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79 commentstring=#\ %s
+  autocmd FileType python setl textwidth=79 commentstring=#\ %s
 
   autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}*rc,\.tern-*,*.json set ft=json
-  autocmd BufNewFile,BufRead,BufWrite * if getline(1) =~ '^\#!.*node' | setf javascript | endif
   autocmd BufNewFile,BufRead .tags set ft=tags
   autocmd BufRead,BufNewFile jrnl*.txt set ft=markdown
-
   " Wrap quickfix window
   autocmd FileType qf setlocal wrap linebreak
 augroup END
@@ -417,11 +426,12 @@ nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 inoremap jj <ESC>
-nnoremap \ :Ag<SPACE>
+nnoremap \ :SideSearch<SPACE>
 nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
-nnoremap <silent> <leader>d :20Lex<CR>
+" nnoremap <silent> <leader>d :20Lex<CR>
+nnoremap <silent> <leader>d :NERDTreeToggle<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
@@ -429,9 +439,13 @@ nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 nnoremap <leader>s :Obsession<CR>
 nnoremap <leader>ds :Obsession!<CR>
 nnoremap -- :UndotreeToggle<CR>
-nnoremap == <C-w>t<C-w>K<CR>
-nnoremap \|\| <C-w>t<C-w>H<CR>
+nnoremap <leader>= <C-w>t<C-w>K<CR>
+nnoremap <leader>\ <C-w>t<C-w>H<CR>
+" Use | and _ to split windows (while preserving original behaviour of [count]bar and [count]_).
+nnoremap <expr><silent> <Bar> v:count == 0 ? "<C-W>v<C-W><Right>" : ":<C-U>normal! 0".v:count."<Bar><CR>"
+nnoremap <expr><silent> _     v:count == 0 ? "<C-W>s<C-W><Down>"  : ":<C-U>normal! ".v:count."_<CR>"
 nnoremap <leader>ll :Limelight!!<CR>
+
 nnoremap <leader>fm :Goyo<CR>
 " open prev file
 nnoremap <Leader>p :e#<CR>
@@ -450,6 +464,7 @@ vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+
 " Tab and Shift + Tab Circular buffer navigation
 nnoremap <tab>   :bnext<CR>
 nnoremap <S-tab> :bprevious<CR>
@@ -460,11 +475,57 @@ nnoremap Q @q
 " Make dot work in visual mode
 vmap . :norm.<CR>
 
-" :h magic
+" Enable very magic. :h magic
 nnoremap / /\v
 vnoremap / /\v
-cnoremap %s/ %smagic/
+cnoremap %s/ %s/\v
+cnoremap s/ s/\v
 
+" For neovim terminal :term
+if has('nvim')
+  nnoremap <leader>t  :vsplit +terminal<cr>
+  " ignore when inisde FZF buffer
+  tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+  tnoremap <a-h>      <c-\><c-n><c-w>h
+  tnoremap <a-j>      <c-\><c-n><c-w>j
+  tnoremap <a-k>      <c-\><c-n><c-w>k
+  tnoremap <a-l>      <c-\><c-n><c-w>l
+  autocmd BufEnter term://* startinsert
+endif
+
+if has('nvim')
+  " dark0 + gray
+  let g:terminal_color_0 = "#282828"
+  let g:terminal_color_8 = "#928374"
+
+  " neurtral_red + bright_red
+  let g:terminal_color_1 = "#cc241d"
+  let g:terminal_color_9 = "#fb4934"
+
+  " neutral_green + bright_green
+  let g:terminal_color_2 = "#98971a"
+  let g:terminal_color_10 = "#b8bb26"
+
+  " neutral_yellow + bright_yellow
+  let g:terminal_color_3 = "#d79921"
+  let g:terminal_color_11 = "#fabd2f"
+
+  " neutral_blue + bright_blue
+  let g:terminal_color_4 = "#458588"
+  let g:terminal_color_12 = "#83a598"
+
+  " neutral_purple + bright_purple
+  let g:terminal_color_5 = "#b16286"
+  let g:terminal_color_13 = "#d3869b"
+
+  " neutral_aqua + faded_aqua
+  let g:terminal_color_6 = "#689d6a"
+  let g:terminal_color_14 = "#8ec07c"
+
+  " light4 + light1
+  let g:terminal_color_7 = "#a89984"
+  let g:terminal_color_15 = "#ebdbb2"
+endif
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
@@ -550,6 +611,17 @@ command! FormatJSON %!python -m json.tool
 
 " Functions
 "================================================================================
+" https://github.com/garybernhardt/dotfiles/blob/68554d69652cc62d43e659f2c6b9082b9938c72e/.vimrc#L182-L194
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>r :call RenameFile()<cr>
 
 function! ClearRegisters()
   let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
@@ -603,9 +675,6 @@ map <silent> <Leader>hu :call HtmlUnEscape()<CR>
 " --------------- Folding! ----------------------------------------------------
 
 set fdm=indent
-
-" Map space to toggle current fold
-noremap <Space>za za
 
 highlight Folded ctermbg=254
 
@@ -683,7 +752,20 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " 
 
 " FZF
 let g:fzf_layout = { 'window': 'aboveleft 20new' }
-let g:fzf_commits_log_options = '--graph --pretty=format:"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d" --date=short'
+let g:fzf_commits_log_options = substitute(system("git config --get alias.lg | awk '{$1=\"\"; print $0;}'"), '\n\+$', '', '')
+
+command! Plugs call fzf#run({
+  \ 'source':  map(sort(keys(g:plugs)), 'g:plug_home."/".v:val'),
+  \ 'options': '--delimiter / --nth -1',
+  \ 'sink':    'Explore'})
+
+autocmd VimEnter * command! Files
+  \ call fzf#vim#files('', { 'window': 'aboveleft 20new', 'options': $FZF_CTRL_T_OPTS })
+
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 nnoremap <silent> <leader><leader> :Files<cr>
 nnoremap <silent> <Leader>c :Colors<cr>
 nnoremap <silent> <Leader><Enter> :Buffers<cr>
@@ -707,7 +789,7 @@ augroup END
 let g:javascript_enable_domhtmlcss = 1
 
 " JSX
-" let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Neomake
 highlight NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=None
@@ -734,11 +816,9 @@ autocmd! BufWritePost * Neomake
 " let g:syntastic_css_checkers = ['stylelint']
 " let g:syntastic_html_tidy_exec = 'tidy5'
 
-" Ag
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
-  let g:ag_prg="ag --hidden -f --column"
 endif
 
 " Emmet
@@ -810,11 +890,25 @@ let g:netrw_hide = 1
 let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 
+" NERDTree
+" Make the nerdtree a bit wider
+let g:NERDTreeWinSize = 40
+let NERDTreeShowHidden=1
+
+" Don't close if nerdtree is the last thing
+" let nerdtree_tabs_autoclose=0
+
+" Nerdtree doesn't have to show tmp
+let NERDTreeIgnore=['tmp']
+
+" Open nerdtree if there wasn't a file specified
+" autocmd vimenter * if !argc() | NERDTree | endif
+
 " Vim Commentary
 autocmd FileType jade set commentstring=//-\ %s
 autocmd FileType ruby set commentstring=#\ %s
 autocmd FileType htmldjango,jinja,twig,rain set commentstring={#\ %s\ #}
-autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
+" autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
 
 " RainbowParentheses
 augroup rainbow_lisp
@@ -860,9 +954,13 @@ let g:undotree_SetFocusWhenToggle= 1
 " Peekaboo
 let g:peekaboo_window = 'vertical botright 60new'
 
-" " Tern
+" Tern & Deoplete tern
 " let g:tern_show_argument_hints = 'on_move'
 " let g:tern_show_signature_in_pum = 1
+let g:tern_request_timeout = 1
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+
 
 " Buftabline
 let g:buftabline_indicators=1
@@ -951,6 +1049,18 @@ augroup sourcesession
         \   source Session.vim |
         \ endif
 augroup END
+
+" Sidesearch
+" --heading and --stats are required!
+let g:side_search_prg = 'ag --word-regexp'
+  \. " --ignore='(*.map|*.min.*)'"
+  \. " --heading --stats -B 1 -A 4"
+
+" Can use `vnew` or `new`
+let g:side_search_splitter = 'vnew'
+
+" I like 40% splits, change it if you don't
+let g:side_search_split_pct = 0.4
 
 
 " Overrrides
