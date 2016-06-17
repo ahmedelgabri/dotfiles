@@ -46,6 +46,7 @@ bind -n WheelDownPane select-pane -t= \; send-keys -M
 bind C-q confirm-before 'kill-session'
 bind-key : command-prompt
 bind-key L clear-history
+bind-key l list-sessions
 
 bind-key -n S-Right next-window
 bind-key -n S-Left previous-window
