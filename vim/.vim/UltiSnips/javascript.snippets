@@ -5,60 +5,30 @@ endglobal
 
 # Functions
 
-snippet fd "fn()" b
-`!p snip.rv=jsDoc(t[2])`
-function $1($2) {
-	${0:${VISUAL:\/\/ Code}}
-}
-endsnippet
-
-snippet fe "var x = fn()" b
-`!p snip.rv=jsDoc(t[3])`
-$1`!p snip.rv=completeVar(t[1])` $2 = function $2($3) {
-	${0:${VISUAL:\/\/ Code}}
-}
-endsnippet
-
 snippet fun "function with dynamic docblock" b
 `!p snip.rv=jsDoc(t[2])`
-$1(${2}) {
+${1}(${2}) {
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet iife
 ((${1:window, document, undefined}) => {
-	${0:${VISUAL:\/\/ Code}}
+	${0:${VISUAL}}
 }(${2:win, doc}));
 endsnippet
 
-snippet cl "console.log" b
-console.log(${1})
-endsnippet
-
-
-snippet cb "cb()"
-($1) => $0
-endsnippet
-
-snippet cb "cb()"
-function $1($2) {
-	$0
-}
-endsnippet
-
-
 # Loops
 
-snippet for "for loop" b
-for (let i = 0, len = ${1:list}.length; i < len; i++) {
-	${0:${VISUAL:\/\/ Code}}
+snippet for "for loop" !
+for (let ${1:i} = 0, len = ${2:array}.length; $1 < len; $1++) {
+	$0${2/([^.]+).*/$1/}[$1]
 }
 endsnippet
 
 snippet forof "for of loop" b
-for (let ${1:item} of ${2:iterator}) {
-	${0:${VISUAL:\/\/ Code}}
+for (let ${1:value} of ${2:Things}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
@@ -73,24 +43,24 @@ endsnippet
 
 # Modules
 
-snippet re "require()" b
-$1`!p snip.rv=completeVar(t[1])` `!p snip.rv=formatVariableName(t[2])` = require('${2}');
+snippet "req(u|ui|uir|uire)?" "require()" !br
+const `!p snip.rv=formatVariableName(t[2])` = require('${2}');
 $0
 endsnippet
 
 
-snippet im "import x form y" b
+snippet "imp(ort)?" "import x form y" !br
 import `!p snip.rv=formatVariableName(t[1])` from '${1}';
 $0
 endsnippet
 
 
 snippet me "module.exports" b
-module.exports = ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`};$0
+module.exports = ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`};$0
 endsnippet
 
-snippet ex "export default" b
-export default ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`};$0
+snippet ed "export default" b
+export default ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}$0
 endsnippet
 
 
@@ -128,57 +98,152 @@ case ${1}:
 	${0:${VISUAL}}
 	break;
 endsnippet
-snippet desc
-describe('$1', function() {
-	$0
-});
-endsnippet
-
 
 # React
 
 snippet comp "React component (smart)" b
-class ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`} extends React.componenet {
-	constractor(props) {
-		super(props);
-	},
-	$0
-	/**
-	 * @return {Object}
-	 */
+export default class ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} extends Component {
+	constructor(props) {
+		super(props);${2}
+	}
+
 	render() {
 		return (
-			$2
+			$0
 		);
 	}
 }
-
-export default $1;
 endsnippet
 
-snippet comp "React component (dumb)" b
-const ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`} = (${2:props}) => (
-  ${0}
-);
-
-export default $1;
-endsnippet
-
-
-# Testing
-
-snippet test
-test('$1', function() {
+snippet con "constructor()" b
+constructor(props) {
+	super(props);
 	$0
-});
-endsnippet
-snippet it
-it('$1', function() {
-	$0
-});
+}
 endsnippet
 
-snippet exp
-expect($1).$0
+snippet cdm "componentDidMount" b
+componentDidMount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet cdu "componentDidUpdate" b
+componentDidUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(prevProps, prevState) {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet cwm "componentWillMount" b
+componentWillMount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet cwrp "componentWillReceiveProps" b
+componentWillReceiveProps`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps) {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet cwum "componentWillUnmount" b
+componentWillUnmount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet cwu "componentWillUpdate" b
+componentWillUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps, nextState) {
+	$0
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet Pt "PropTypes" w
+PropTypes.$1`!p snip.rv=complete(t[1], ['array', 'bool', 'func', 'number', 'object', 'string', 'node', 'element', 'instanceOf', 'oneOf([])', 'oneOfType([])', 'arrayOf()', 'objectOf()', 'shape({})', 'any'])`,$0
+endsnippet
+
+snippet scu "shouldComponentUpdate" b
+shouldComponentUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps, nextState) {
+	return ${1:true};
+}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+endsnippet
+
+snippet <> "<Component>" b
+<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}>
+	${0:${VISUAL}}
+</$1>
+endsnippet
+
+snippet < "<Component />" b
+<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} ${0}/>
+endsnippet
+
+# console.log
+
+snippet cl "console.log" b
+console.log(${1})
+endsnippet
+
+snippet ca "console.assert" b
+console.assert(${1}, ${2:'Condition'})
+endsnippet
+
+snippet ci "console.info" b
+console.info(${1})
+endsnippet
+
+snippet cw "console.warn" b
+console.warn(${1})
+endsnippet
+
+snippet cd "console.debug" b
+console.debug(${1})
+endsnippet
+
+snippet cc "console.count" b
+console.count(${1})
+endsnippet
+
+snippet ct "console.table" b
+console.table(${1}${2:,${3:['Optional column to show']}})
+endsnippet
+
+snippet cti "console.time" b
+console.time(${1})
+${0:${VISUAL}}
+console.timeEnd($1)
+endsnippet
+
+snippet cg "console.group" b
+console.group(${1})
+cosnole.log(${2})$3
+console.groupEnd()$0
+endsnippet
+
+# JSDoc
+
+snippet ** "docblock" b
+/**
+${VISUAL:/((?m)^)/ * /g}$0
+ */
+endsnippet
+
+snippet par "@param {...}"
+@param {${1:type}} ${0:name description}
+endsnippet
+
+snippet ret "@return {...}"
+@return {${1:type}} ${0}
+endsnippet
+
+
+# Misc
+
+snippet fl "flow" b
+/* @flow */
+endsnippet
+
+snippet "(use|strict)" "'use strict' declaration" br
+'use strict';
 endsnippet
 # vim:ft=snippets:
