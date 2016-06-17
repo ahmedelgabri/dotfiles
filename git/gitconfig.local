@@ -53,7 +53,7 @@
 	rmr = remote remove
 	# untrack = update-index --assume-unchanged
 	untrack = rm --cached <file>
-	track = update-index --no-assume-unchanged
+	track = push origin -u HEAD
 	latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
 	blm = blame -wMC
 	this = !git init && git add . && git commit -m \"initial commit\"
@@ -74,6 +74,7 @@
 	# Detect copies as well as renames
 	renames = copies
 	tool = vimdiff
+	compactionHeuristic = true
 
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages

@@ -65,6 +65,8 @@ Session.vim
 *.vim-rplugin~
 .netrwhist
 
-# node       #
+# Stuff     #
 #############
 npm-debug.log*
+*.pyc
+*.map
