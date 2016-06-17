@@ -9,4 +9,7 @@ syntax match jsConcealFunction /\<function\>/ skipwhite conceal cchar=ƒ
 
 " hi def link jsConcealFunction jsFunc
 hi def link jsConcealFunction javaScriptIdentifier
-hi Conceal ctermbg=None ctermfg=245 gui=italic guibg=none
+
+" Should make this dyanmic
+hi Conceal ctermbg=None ctermfg=245 gui=italic guibg=none guifg=#e06c75
+
