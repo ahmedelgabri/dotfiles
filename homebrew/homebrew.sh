@@ -106,6 +106,8 @@ CASKS=(
   font-inconsolata-dz-for-powerline
   font-meslo-lg-for-powerline
   font-source-code-pro
+  google-chrome
+  google-chrome-canary
   imagealpha
   imageoptim
   iterm2-nightly
@@ -153,17 +155,7 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 echo " Changing shell...."
 # sudo echo "/usr/local/bin/zsh" >> /etc/shells && chsh -s /usr/local/bin/zsh
 
-
-brew cask install --appdir="$HOME/Applications" ${CASKS[@]} && brew cask alfred link
-
-# 1Password form the Apple Store needs Chrome to be in /Applications
-# Known issues #3
-# https://guides.agilebits.com/1password-mac-kb/5/en/topic/browser-validation-failed
-
-echo "Install Chrome & Chrome Canary in /Applications dir"
-# brew cask install --appdir="/Applications" google-chrome
-# brew cask install --appdir="/Applications" google-chrome-canary
-
+brew cask install ${CASKS[@]}
 
 echo "Put your license in Dash and Install Tweetbot"
 
