@@ -10,7 +10,7 @@ set-option -g prefix C-a
 unbind-key C-a
 bind-key C-a send-prefix
 
-set -g history-limit 5000
+set -g history-limit 100000
 
 # Neovim ESC issue https://github.com/neovim/neovim/issues/2017#issuecomment-75145262
 set -s escape-time 0
@@ -46,7 +46,7 @@ bind -n WheelDownPane select-pane -t= \; send-keys -M
 bind C-q confirm-before 'kill-session'
 bind-key : command-prompt
 bind-key L clear-history
-bind-key l list-sessions
+bind-key l choose-tree -u
 
 bind-key -n S-Right next-window
 bind-key -n S-Left previous-window
