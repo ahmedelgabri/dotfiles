@@ -9,7 +9,7 @@ THEMES=(
   https://raw.githubusercontent.com/w0ng/dotfiles/master/iterm2/hybrid-reduced-contrast.itermcolors
   https://raw.githubusercontent.com/anunez/one-dark-iterm/master/one-dark.itermcolors
   https://raw.githubusercontent.com/oskarkrawczyk/honukai-iterm-zsh/master/honukai.itermcolors
-  https://raw.githubusercontent.com/joshdick/onedark.vim/master/One%20Dark.itermcolors
+  https://raw.githubusercontent.com/joshdick/onedark.vim/master/One\ Dark.itermcolors
 )
 
 # I need to find a way to import them in using the script
