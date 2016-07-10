@@ -46,6 +46,7 @@ export FZF_CTRL_T_OPTS='--preview "[ -f "{}" ] && pygmentize -g {}" --bind ?:tog
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
 export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
+export PURE_PROMPT_SYMBOL="▴" # λ ⚡
 
 ##############################################################
 # Python stuff
@@ -120,4 +121,3 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 # local
 source $HOME/.zstuff
 source /usr/local/bin/virtualenvwrapper.sh
-

@@ -1,3 +1,5 @@
+# vim:ft=zsh:
+
 # Pure
 # by Sindre Sorhus modified by Ahmed El Gabri
 # https://github.com/sindresorhus/pure
@@ -22,12 +24,13 @@
 # \e8   => restore cursor position
 # \e[K  => clears everything after the cursor on the current line
 
-virtualenv_prompt_info(){
-  if [[ -n $VIRTUAL_ENV ]]; then
-    printf "[%s]" ${${VIRTUAL_ENV}:t}
-  fi
+# http://frantic.im/notify-on-completion
+function f_notifyme {
+  LAST_EXIT_CODE=$?
+  CMD=$(fc -ln -1)
+  # No point in waiting for the command to complete
+  notifyme "$CMD" "$LAST_EXIT_CODE" &
 }
-
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
@@ -145,6 +148,8 @@ prompt_pure_preprompt_render() {
 	preprompt+=$prompt_pure_username
 	# execution time
 	preprompt+="%F{yellow}${prompt_pure_cmd_exec_time}%f"
+  # Jobs
+  preprompt+=" %F{008}%(1j.[%j].)"
 
 	# if executing through precmd, do not perform fancy terminal editing
 	if [[ "$1" == "precmd" ]]; then
@@ -353,7 +358,7 @@ prompt_pure_setup() {
 	[[ $UID -eq 0 ]] && prompt_pure_username=' %F{white}%n%f%F{242}@%m%f'
 
 	# prompt turns red if the previous command didn't exit with 0
-	PROMPT="  %(?.%F{003}.%F{red})λ%f "
+  PROMPT='  $(f_notifyme)%(?.%F{003}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"
