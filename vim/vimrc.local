@@ -148,7 +148,7 @@ if !has('nvim')
 endif
 
 if has('nvim')
-  set shada='1000,<500,:500,/500,n~/.config/nvim/shada/main.shada
+  set shada='1000,<500,:500,/500,n~/Box\ Sync/dotfiles/vim/main.shada
   autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
 else
   set viminfo='1000,<500,:500,/500,n~/.viminfo
