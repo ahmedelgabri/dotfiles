@@ -15,22 +15,17 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript'], 'do': 'npm i' }
-Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript'], 'do': 'npm i -g tern' }
-Plug 'zchee/deoplete-jedi'                        , { 'for': ['python'] }
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-" Plug 'tpope/vim-projectionist'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
+" Plug 'junegunn/vim-emoji'
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
-Plug 'ervandew/supertab'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
+" Plug 'ervandew/supertab'
+Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
+Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
 Plug 'ddrscott/vim-side-search'
+" Plug 'rking/ag.vim'
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -52,30 +47,19 @@ Plug 'junegunn/vim-journal'
 Plug 'kshenoy/vim-signature'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'wellle/visual-split.vim'
+Plug 'tpope/vim-abolish'
+Plug 'MarcWeber/vim-addon-local-vimrc'
 
 " Syntax
 Plug 'junegunn/rainbow_parentheses.vim'           , { 'for': ['javascript', 'clojure', 'elm'] }
 Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
-" Plug 'digitaltoad/vim-jade'                       , { 'for': ['jade'] }
-" Plug 'jelera/vim-javascript-syntax'               , { 'for': ['javascript'] }
-" Plug 'pangloss/vim-javascript'                    , { 'for': ['javascript'] }
-" Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
-" Plug 'Galooshi/vim-import-js'                     , { 'for': ['javascript'], 'do': 'npm i -g import-js' }
-" Plug 'mxw/vim-jsx'                                , { 'for': ['jsx', 'javascript.jsx'] }
-" Plug 'othree/html5.vim'                           , { 'for': ['html', 'htmldjango', 'jinja', 'twig', 'rain'] }
-" Plug 'Glench/Vim-Jinja2-Syntax'                   , { 'for': ['htmldjango', 'jinja', 'twig', 'rain'] }
-" Plug 'tpope/vim-markdown'                         , { 'for': ['markdown'] }
-" Plug 'wavded/vim-stylus'                          , { 'for': ['stylus'] }
-Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'twig', 'rain'] }
-" Plug 'elzr/vim-json'                              , { 'for': ['json'] }
-" Plug 'tpope/vim-haml'                             , { 'for': ['sass', 'scss', 'haml'] }
-" Plug 'mustache/vim-mustache-handlebars'           , { 'for': ['mustache', 'html.handlebars'] }
-" Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
-" Plug 'tmux-plugins/vim-tmux'                      , { 'for': ['tmux'] }
-" Plug 'lambdatoast/elm.vim'                        , { 'for': ['elm'] }
-" Plug 'kchmck/vim-coffee-script'                   , { 'for': ['coffee'] }
+Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
+Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
+Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
+Plug 'davidoc/todo.txt-vim'
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
@@ -84,22 +68,23 @@ Plug 'benekastah/neomake'
 " Themes, UI & eye cnady
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ahmedelgabri/one-dark.vim', { 'branch': 'airline-theme' }
+Plug 'ahmedelgabri/one-dark.vim'                  , { 'branch': 'airline-theme' }
 Plug 'morhetz/gruvbox'
 Plug 'w0ng/vim-hybrid'
-Plug 'mhartington/oceanic-next'
 Plug 'joshdick/onedark.vim'
-Plug 'chriskempson/base16-vim'
+Plug 'rakr/vim-one'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
 
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 
 " Distraction-free writing
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'davidbeckingsale/writegood.vim'             , { 'for': ['markdown', 'text'] }
 
 " Misc
 Plug 'ryanss/vim-hackernews'                      , { 'on': ['HackerNews'] }
@@ -162,12 +147,17 @@ if !has('nvim')
   set wildmenu
 endif
 
+if has('nvim')
+  set shada='1000,<500,:500,/500,n~/.config/nvim/shada/main.shada
+  autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+else
+  set viminfo='1000,<500,:500,/500,n~/.viminfo
+endif
+
 " number of visual spaces per TAB
 set tabstop=2
 " insert mode tab and backspace, number of spaces in tab when editing
 set softtabstop=2
-" expand tabs to spaces
-set expandtab
 " normal mode indentation commands use 2 spaces
 set shiftwidth=2
 set shiftround
@@ -202,9 +192,13 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg
 set wildignore+=*/.DS_Store,*/tmp/*
 
+" https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 set spelllang=en_us
-set spellfile=$HOME/.vim/.spell-en.utf-8.add
+set spellfile=$HOME/Box\ Sync/dotfiles/vim/en.utf-8.add
 set complete+=kspell
+" Disable unsafe commands.
+" http://andrew.stwrt.ca/posts/project-specific-vimrc/
+set secure
 
 set completeopt+=menuone
 set completeopt-=preview
@@ -274,6 +268,9 @@ set clipboard=unnamed
 " show trailing whitespace
 set list
 set listchars=tab:▸\ ,trail:•,nbsp:_,eol:¬,precedes:«,extends:»,nbsp:░
+set showbreak=↪
+set fillchars=diff:⣿,vert:│
+
 " show where you are
 set ruler
 
@@ -336,7 +333,7 @@ augroup vimrcEx
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
   autocmd FileType markdown setl shiftwidth=4 spell softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
-  autocmd BufEnter *.{markdown,md,text,txt,mkd} setl conceallevel=0
+  autocmd BufEnter *.{markdown,md,text,txt,mkd,json} setl conceallevel=0
 
   " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
   autocmd Filetype gitcommit setl spell textwidth=72
@@ -413,6 +410,8 @@ nnoremap <Down> :resize +2<CR>
 
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
+nnoremap gv  :GV<CR> " tig like git explorer
+vnoremap gv  :GV<CR> " tig like git explorer
 nnoremap gb  :Gbrowse<CR> " Open current file on github.com
 vnoremap gb  :Gbrowse<CR> " Make it work in Visual mode to open with highlighted linenumbers
 nnoremap gs  :Gstatus<CR>
@@ -696,9 +695,6 @@ endif
 " Plugins settings
 "================================================================================
 
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-
 " YouCompleteMe
 let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
 let g:ycm_python_binary_path = '/usr/local/bin/python3'
@@ -760,7 +756,7 @@ command! Plugs call fzf#run({
   \ 'sink':    'Explore'})
 
 autocmd VimEnter * command! Files
-  \ call fzf#vim#files('', { 'window': 'aboveleft 20new', 'options': $FZF_CTRL_T_OPTS })
+  \ call fzf#vim#files('', { 'window': 'aboveleft 50new', 'options': $FZF_CTRL_T_OPTS })
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
@@ -799,6 +795,14 @@ let g:neomake_open_list=2
 let g:neomake_error_sign = { 'text': '✗', 'texthl': 'NeomakeErrorMsg', }
 let g:neomake_warning_sign = { 'text': '!', 'texthl': 'NeomakeWarningMsg', }
 let g:neomake_airline=1
+let g:neomake_html_enabled_makers = ['tidy']
+let g:neomake_css_enabled_makers = ['stylelint']
+let g:neomake_scss_enabled_makers = ['stylelint']
+let g:neomake_scss_stylelint_maker = {
+\ 'exe': 'stylelint',
+\ 'args': ['--syntax', 'scss'],
+\ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
+\ }
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_jsx_enabled_makers = ['standard']
 if findfile('.eslintrc', '.;') !=# ''
@@ -810,11 +814,6 @@ endif
 
 autocmd! BufWritePost * Neomake
 
-
-" Syntastic
-" let g:syntastic_scss_checkers = ['stylelint']
-" let g:syntastic_css_checkers = ['stylelint']
-" let g:syntastic_html_tidy_exec = 'tidy5'
 
 if executable('ag')
   " Use ag over grep
@@ -831,8 +830,8 @@ autocmd FileType html,htmldjango,jinja,twig,rain EmmetInstall
 
 " IndentLine
 let g:indentLine_enabled = 0
-let g:indentLine_char = '.'
-let g:indentLine_color_gui = synIDattr(synIDtrans(hlID("SpecialKey")), "fg", "gui")
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_color_gui = synIDattr(synIDtrans(hlID("Comment")), "fg", "gui")
 nnoremap <leader>i  :IndentLinesToggle<CR>
 
 
@@ -868,6 +867,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+let g:UltiSnipsEditSplit="context"
 
 " File Explorer
 let g:netrw_liststyle = 3
@@ -916,9 +916,6 @@ augroup rainbow_lisp
   autocmd FileType clojure,javascript RainbowParentheses
 augroup END
 
-" JSON
-let g:vim_json_syntax_conceal = 0
-
 " Goyo
 let g:goyo_width=120
 
@@ -927,6 +924,7 @@ let g:limelight_conceal_guifg = '#6E6551'
 
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
+let g:vim_markdown_syntax_conceal = 0
 
 " Easytags
 set tags=./.tags,.tags;
@@ -944,7 +942,6 @@ highlight GitGutterDelete ctermbg=None guifg=red
 highlight GitGutterChangeDelete ctermbg=None guifg=DarkRed
 let g:gitgutter_sign_column_always = 1
 let g:gitgutter_eager = 0
-" let g:gitgutter_realtime = 0
 
 " Undotree
 let g:undotree_WindowLayout= 2
@@ -1062,13 +1059,16 @@ let g:side_search_splitter = 'vnew'
 " I like 40% splits, change it if you don't
 let g:side_search_split_pct = 0.4
 
+" JavaScript conceal
+let g:javascript_conceal_function = "ƒ"
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+
+" vim-addon-local-vimrc
+let g:local_vimrc = {'names':['.local.vim'],'hash_fun':'LVRHashOfFile'}
 
 " Overrrides
 " =================
 if filereadable(expand("~/.vimrc.local"))
   so ~/.vimrc.local
-endif
-
-if filereadable('.local.vim')
-  so .local.vim
 endif
