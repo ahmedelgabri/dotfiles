@@ -19,6 +19,7 @@ TAPS=(
   neovim/neovim
   tldr-pages/tldr
   universal-ctags/universal-ctags
+  neomutt/homebrew-neomutt
 )
 
 # Homebrew Formulas
@@ -45,7 +46,7 @@ FORMULAS=(
   jrnl
   keybase
   # ledger
-  lynx
+  links
   ncdu
   neovim --HEAD
   spark
@@ -82,6 +83,9 @@ FORMULAS=(
   ranger
   ruby
   screenfetch
+  neomutt/neomutt/neomutt --with-sidebar-patch
+  urlview
+  msmtp
 )
 
 # Homebrew casks
