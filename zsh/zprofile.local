@@ -46,7 +46,7 @@ export FZF_CTRL_T_OPTS='--preview "[ -f "{}" ] && pygmentize -g {}" --bind ?:tog
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
 export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
-export PURE_PROMPT_SYMBOL="▴" # λ ⚡
+export PURE_PROMPT_SYMBOL="λ" # λ ▴ ⚡
 
 ##############################################################
 # Python stuff

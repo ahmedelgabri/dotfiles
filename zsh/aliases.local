@@ -1,4 +1,5 @@
 # TERMINAL
+alias vi="mvim -v "
 alias vim="nvim "
 alias ev="e ~/.dotfiles/vim/vimrc.local"
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"
@@ -26,6 +27,7 @@ alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
 alias bin="cd ~/.dotfiles/bin"
 alias work='mx $WORK'
+alias personal='mx DOH!'
 alias cask="brew cask "
 
 # DEV
