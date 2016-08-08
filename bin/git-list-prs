@@ -1,0 +1,22 @@
+#!/bin/sh
+#/ Usage: git list-prs <github user>
+#/ Depends on ghi (https://github.com/stephencelis/ghi)
+#/ List all PRs for a specific user.
+#/
+#/ Examples:
+#/   List PRs for a specific user:
+#/     git list-prs <github user>
+#/
+set -e
+
+# # show usage message and exit
+usage () {
+    status=${1:-0}
+    grep '^#/' <"$0"| cut -c4-
+    exit $status
+}
+[ $# -eq 0 -o "$1" = "--help" ] && usage
+
+
+
+[ -n "$1" ] && ghi list -p --creator "$1"
