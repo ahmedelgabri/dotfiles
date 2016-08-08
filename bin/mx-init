@@ -4,9 +4,13 @@ set -e
 SESSION='_shared'
 
 create_session () {
-  tmux new-session -d -s "$SESSION" -n 'weechat'
+  tmux new-session -d -s "$SESSION" -n 'mail'
+  tmux send-keys mutt C-m
+
+  tmux new-window -n 'weechat'
+  # Stop Weechat from renaming the window
+  tmux set-option allow-rename off
   tmux send-keys weechat C-m
-  # tmux split-window -h && tmux send-keys mutt C-m
 
   local logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then

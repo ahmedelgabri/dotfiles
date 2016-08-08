@@ -56,6 +56,7 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
     fi
   fi
 
+  tmux link-window -s _shared:mail -t 6
   tmux link-window -s _shared:dotfiles -t 7
   tmux link-window -s _shared:log -t 8
   tmux link-window -s _shared:weechat -t 9
