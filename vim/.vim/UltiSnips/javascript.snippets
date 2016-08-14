@@ -5,9 +5,9 @@ endglobal
 
 # Functions
 
-snippet fun "function with dynamic docblock" b
+snippet fun "function with dynamic docblock" bA
 `!p snip.rv=jsDoc(t[2])`
-${1}(${2}) {
+function ${1}(${2}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -43,13 +43,13 @@ endsnippet
 
 # Modules
 
-snippet "req(u|ui|uir|uire)?" "require()" !br
+snippet "req(u|ui|uir|uire)?" "require()" !brA
 const `!p snip.rv=formatVariableName(t[2])` = require('${2}');
 $0
 endsnippet
 
 
-snippet "imp(ort)?" "import x form y" !br
+snippet "imp(ort)?" "import x form y" !brA
 import `!p snip.rv=formatVariableName(t[1])` from '${1}';
 $0
 endsnippet

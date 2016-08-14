@@ -17,10 +17,8 @@ call plug#begin('~/.vim/plugged')
 " General
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
-" Plug 'junegunn/vim-emoji'
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
-" Plug 'ervandew/supertab'
 Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
@@ -36,34 +34,35 @@ Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
 Plug 'majutsushi/tagbar'                          , { 'on': ['TagbarToggle'] }
 Plug 'xolox/vim-misc' | Plug 'Wraul/vim-easytags' , { 'branch': 'fix-universal-detection' }
 " Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-Plug 'tpope/vim-dispatch'                         , { 'on': ['Dispatch', 'Start'] }
 Plug 'justinmk/vim-gtfo'
 Plug 'junegunn/vim-peekaboo'
-Plug 'dhruvasagar/vim-table-mode'                 , { 'on': ['TableModeToggle'] }
 Plug 'Yggdroot/indentLine'                        , { 'on': ['IndentLinesToggle'] }
 Plug 'tpope/vim-obsession'
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'junegunn/vim-journal'
 Plug 'kshenoy/vim-signature'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'scrooloose/nerdtree'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'wellle/visual-split.vim'
 Plug 'tpope/vim-abolish'
 Plug 'MarcWeber/vim-addon-local-vimrc'
+Plug 'wincent/loupe'
+
+Plug 'vifm/neovim-vifm'
+let g:vifmSplitWidth=60
+let g:vifmUseCurrent=1
+let g:vifmUseLcd=1
 
 " Syntax
-Plug 'junegunn/rainbow_parentheses.vim'           , { 'for': ['javascript', 'clojure', 'elm'] }
 Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
 Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
 Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
-Plug 'davidoc/todo.txt-vim'
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
-Plug 'benekastah/neomake'
+Plug 'benekastah/neomake'                         , { 'do': 'npm i -g flow-vim-quickfix' }
 
 " Themes, UI & eye cnady
 Plug 'vim-airline/vim-airline'
@@ -74,6 +73,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'joshdick/onedark.vim'
 Plug 'rakr/vim-one'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
+Plug 'atelierbram/Base2Tone-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -88,7 +88,6 @@ Plug 'davidbeckingsale/writegood.vim'             , { 'for': ['markdown', 'text'
 
 " Misc
 Plug 'ryanss/vim-hackernews'                      , { 'on': ['HackerNews'] }
-Plug 'rizzatti/dash.vim'                          , { 'on': ['Dash'] }
 
 call plug#end()
 
@@ -107,16 +106,15 @@ if has('nvim')
 end
 
 let hour = strftime("%H")
-" if 6 <= hour && hour < 18
-"   " set background=light
-"   let g:gruvbox_contrast_dark='hard'
-" else
-"   " set background=dark
-"     let g:gruvbox_contrast_dark='medium'
-" endif
+if 6 <= hour && hour < 18
+  " set background=light
+  let g:gruvbox_contrast_dark='medium'
+else
+  " set background=dark
+    let g:gruvbox_contrast_dark='hard'
+endif
 set background=dark
 let g:gruvbox_italic=1
-let base16colorspace=256
 colorscheme onedark
 highlight Comment cterm=italic gui=italic
 
@@ -158,6 +156,7 @@ endif
 set tabstop=2
 " insert mode tab and backspace, number of spaces in tab when editing
 set softtabstop=2
+set expandtab
 " normal mode indentation commands use 2 spaces
 set shiftwidth=2
 set shiftround
@@ -167,7 +166,7 @@ set nowrap
 " set colorcolumn=120
 set textwidth=120
 let &colorcolumn='+' . join(range(0, 254), ',+')
-" let &colorcolumn="100,".join(range(120,999),",")
+autocmd FileType help,qf setl colorcolumn=
 
 syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
@@ -204,7 +203,9 @@ set completeopt+=menuone
 set completeopt-=preview
 
 " highlight current line (Check auto groups too)
-set cursorline
+" https://github.com/mhinz/vim-galore#smarter-cursorline
+autocmd InsertLeave,WinEnter * set cursorline
+autocmd InsertEnter,WinLeave * set nocursorline
 set nocursorcolumn       " do not highlight column
 
 " redraw only when we need to.
@@ -213,7 +214,6 @@ set lazyredraw
 " highlight matching [{()}]
 set showmatch
 set title
-highlight MatchParen cterm=none ctermbg=black ctermfg=yellow
 
 " More natural splitting
 " set splitbelow
@@ -312,7 +312,7 @@ autocmd VimResized * wincmd =
 autocmd FileType help wincmd L
 
 " Close preview buffer with q
-autocmd FileType preview,ag,netrw nmap <buffer> <silent>  q :q<cr>
+autocmd FileType help,preview,ag,netrw,qf,fzf nmap <buffer> <silent>  q :q<cr>
 
 
 augroup vimrcEx
@@ -351,30 +351,8 @@ augroup vimrcEx
   autocmd FileType qf setlocal wrap linebreak
 augroup END
 
-" https://github.com/mhinz/vim-galore#smarter-cursorline
-autocmd WinEnter    * set cursorline
-autocmd WinLeave    * set nocursorline
-autocmd InsertEnter * set nocursorline
-autocmd InsertLeave * set cursorline
-
 " Automatically reload vimrc when it's saved
 autocmd! BufWritePost init.vim,vimrc.local,.vimrc so $MYVIMRC
-
-" Activate goyo with Markdown files
-function! s:auto_goyo()
-  if &ft == 'markdown'
-    Goyo 120
-  elseif exists('#goyo')
-    let bufnr = bufnr('%')
-    Goyo!
-    execute 'b '.bufnr
-  endif
-endfunction
-
-" augroup goyo_markdown
-"   au!
-"   autocmd BufNewFile,BufRead * call s:auto_goyo()
-" augroup END
 
 " Key mappings
 "================================================================================
@@ -430,7 +408,8 @@ nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 " nnoremap <silent> <leader>d :20Lex<CR>
-nnoremap <silent> <leader>d :NERDTreeToggle<CR>
+" nnoremap <silent> <leader>d :NERDTreeToggle<CR>
+nnoremap <silent> <leader>d :Vifm <C-R>=expand("%:p:h") . "/"<CR><CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
@@ -475,14 +454,14 @@ nnoremap Q @q
 vmap . :norm.<CR>
 
 " Enable very magic. :h magic
-nnoremap / /\v
-vnoremap / /\v
-cnoremap %s/ %s/\v
-cnoremap s/ s/\v
+" nnoremap / /\v
+" vnoremap / /\v
+" cnoremap %s/ %s/\v
+" cnoremap s/ s/\v
 
 " For neovim terminal :term
 if has('nvim')
-  nnoremap <leader>t  :vsplit +terminal<cr>
+  " nnoremap <leader>t  :vsplit +terminal<cr>
   " ignore when inisde FZF buffer
   tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
   tnoremap <a-h>      <c-\><c-n><c-w>h
@@ -598,7 +577,9 @@ command! Q q
 
 " Use :C to clear hlsearch
 command! C nohlsearch
+
 command! Light set background=light
+command! Dark set background=dark
 
 " Delete the current file and clear the buffer
 command! Del :call delete(@%) | bdelete!
@@ -778,14 +759,10 @@ autocmd! User FzfStatusLine call <SID>fzf_statusline()
 augroup vimrc_fzf
     autocmd!
     autocmd FileType help nmap <buffer> <silent> <leader><leader> :Helptags<cr>
-    autocmd FileType help nmap <buffer> <silent>  q :q<cr>
 augroup END
 
-" JavaScript
-let g:javascript_enable_domhtmlcss = 1
-
 " JSX
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+" let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Neomake
 highlight NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=None
@@ -797,19 +774,45 @@ let g:neomake_warning_sign = { 'text': '!', 'texthl': 'NeomakeWarningMsg', }
 let g:neomake_airline=1
 let g:neomake_html_enabled_makers = ['tidy']
 let g:neomake_css_enabled_makers = ['stylelint']
-let g:neomake_scss_enabled_makers = ['stylelint']
+let g:neomake_scss_enabled_makers = g:neomake_css_enabled_makers
 let g:neomake_scss_stylelint_maker = {
-\ 'exe': 'stylelint',
-\ 'args': ['--syntax', 'scss'],
-\ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
-\ }
+    \ 'exe': 'stylelint',
+    \ 'args': ['--syntax', 'scss'],
+    \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
+    \ }
+
+" JavaScript & JSX stuff
 let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_jsx_enabled_makers = ['standard']
+let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
+
+" ESLint on demand
 if findfile('.eslintrc', '.;') !=# ''
   let g:neomake_javascript_enabled_makers = ['eslint']
-  let g:neomake_jsx_enabled_makers = ['eslint']
+  let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
+
   let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
-  let g:neomake_jsx_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+  let g:neomake_jsx_eslint_exe = g:neomake_javascript_eslint_exe
+endif
+
+" Flow on demand
+if findfile('.flowconfig', '.;') !=# ''
+  if executable($PWD .'/node_modules/.bin/flow')
+    let g:flow_path = $PWD .'/node_modules/.bin/flow'
+  else
+    let g:flow_path = 'flow'
+  endif
+
+  let g:neomake_javascript_flow_maker = {
+      \ 'exe': 'sh',
+      \ 'args': ['-c', g:flow_path.' --json --strip-root | flow-vim-quickfix'],
+      \ 'errorformat': '%E%f:%l:%c\,%n: %m',
+      \ 'cwd': '%:p:h'
+      \ }
+
+  let g:neomake_jsx_flow_maker = g:neomake_javascript_flow_maker
+
+  let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
+  let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 endif
 
 autocmd! BufWritePost * Neomake
@@ -846,16 +849,7 @@ let g:delimitMate_expand_space = 1
 let g:delimitMate_jump_expansion = 1
 let g:delimitMate_excluded_regions = ''
 
-" SuperTab
-let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabCrMapping = 1
-autocmd FileType *
-  \ if &omnifunc != '' |
-  \   call SuperTabChain(&omnifunc, "<c-p>") |
-  \ endif
-
-
-" Github Auth
+" Github Auth for Gists
 let g:github_user = $GITHUB_USER
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
@@ -891,16 +885,10 @@ let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 
 " NERDTree
-" Make the nerdtree a bit wider
 let g:NERDTreeWinSize = 40
 let NERDTreeShowHidden=1
-
-" Don't close if nerdtree is the last thing
 " let nerdtree_tabs_autoclose=0
-
-" Nerdtree doesn't have to show tmp
 let NERDTreeIgnore=['tmp']
-
 " Open nerdtree if there wasn't a file specified
 " autocmd vimenter * if !argc() | NERDTree | endif
 
@@ -909,12 +897,6 @@ autocmd FileType jade set commentstring=//-\ %s
 autocmd FileType ruby set commentstring=#\ %s
 autocmd FileType htmldjango,jinja,twig,rain set commentstring={#\ %s\ #}
 " autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
-
-" RainbowParentheses
-augroup rainbow_lisp
-  autocmd!
-  autocmd FileType clojure,javascript RainbowParentheses
-augroup END
 
 " Goyo
 let g:goyo_width=120
@@ -950,17 +932,6 @@ let g:undotree_SetFocusWhenToggle= 1
 
 " Peekaboo
 let g:peekaboo_window = 'vertical botright 60new'
-
-" Tern & Deoplete tern
-" let g:tern_show_argument_hints = 'on_move'
-" let g:tern_show_signature_in_pum = 1
-let g:tern_request_timeout = 1
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
-
-
-" Buftabline
-let g:buftabline_indicators=1
 
 " Airline
 "
@@ -1040,8 +1011,8 @@ autocmd User AirlineAfterInit call AirlineInit()
 
 " Vim Obsession auto restore on open
 augroup sourcesession
-        autocmd!
-        autocmd VimEnter * nested
+  autocmd!
+  autocmd VimEnter * nested
         \ if !argc() && empty(v:this_session) && filereadable('Session.vim') |
         \   source Session.vim |
         \ endif
@@ -1052,11 +1023,7 @@ augroup END
 let g:side_search_prg = 'ag --word-regexp'
   \. " --ignore='(*.map|*.min.*)'"
   \. " --heading --stats -B 1 -A 4"
-
-" Can use `vnew` or `new`
 let g:side_search_splitter = 'vnew'
-
-" I like 40% splits, change it if you don't
 let g:side_search_split_pct = 0.4
 
 " JavaScript conceal
@@ -1066,6 +1033,9 @@ let g:javascript_plugin_flow = 1
 
 " vim-addon-local-vimrc
 let g:local_vimrc = {'names':['.local.vim'],'hash_fun':'LVRHashOfFile'}
+
+" vim-polygot
+let g:polyglot_disabled = ['css']
 
 " Overrrides
 " =================
