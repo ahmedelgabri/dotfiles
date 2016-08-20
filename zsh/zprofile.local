@@ -83,7 +83,6 @@ typeset -gU cdpath fpath mailpath path
 path=(
   /usr/local/{bin,sbin}
   "/usr/local/opt/coreutils/libexec/gnubin"
-  ${HOME}/.rbenv/shims
   /usr/local/heroku/bin
   /usr/local/Cellar/git
   ${HOME}/.tmuxifier/bin
