@@ -12,8 +12,8 @@ bind-key C-a send-prefix
 
 set -g history-limit 100000
 
-# Neovim ESC issue https://github.com/neovim/neovim/issues/2017#issuecomment-75145262
-set -s escape-time 0
+# Neovim https://github.com/neovim/neovim/wiki/FAQ#esc-in-tmux-or-gnu-screen-is-delayed
+set -g escape-time 0
 
 set -g focus-events on
 
@@ -155,7 +155,7 @@ set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] "
 
 # show host name and IP address on right side of status bar
 set -g status-right-length 120
-set -g status-right "#(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
+set -g status-right "#[fg=colour237][ #[fg=#649C62]#(echo $(node -v)) #[fg=colour237]] #(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
 
 # List of plugins
 # prefix + I to install plugins
