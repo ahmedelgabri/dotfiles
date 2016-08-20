@@ -32,25 +32,18 @@ Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'
 Plug 'moll/vim-bbye'
 Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
 Plug 'majutsushi/tagbar'                          , { 'on': ['TagbarToggle'] }
+Plug 'duggiefresh/vim-easydir'
 Plug 'xolox/vim-misc' | Plug 'Wraul/vim-easytags' , { 'branch': 'fix-universal-detection' }
 " Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
 Plug 'justinmk/vim-gtfo'
 Plug 'junegunn/vim-peekaboo'
-Plug 'Yggdroot/indentLine'                        , { 'on': ['IndentLinesToggle'] }
 Plug 'tpope/vim-obsession'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'kshenoy/vim-signature'
-" Plug 'scrooloose/nerdtree'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'wellle/visual-split.vim'
-Plug 'tpope/vim-abolish'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'wincent/loupe'
-
-Plug 'vifm/neovim-vifm'
-let g:vifmSplitWidth=60
-let g:vifmUseCurrent=1
-let g:vifmUseLcd=1
 
 " Syntax
 Plug 'ahmedelgabri/vim-ava-snippets'
@@ -69,9 +62,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ahmedelgabri/one-dark.vim'                  , { 'branch': 'airline-theme' }
 Plug 'morhetz/gruvbox'
-Plug 'w0ng/vim-hybrid'
 Plug 'joshdick/onedark.vim'
-Plug 'rakr/vim-one'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
 Plug 'atelierbram/Base2Tone-vim'
 
@@ -85,9 +76,6 @@ Plug 'junegunn/gv.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'davidbeckingsale/writegood.vim'             , { 'for': ['markdown', 'text'] }
-
-" Misc
-Plug 'ryanss/vim-hackernews'                      , { 'on': ['HackerNews'] }
 
 call plug#end()
 
@@ -830,13 +818,6 @@ let user_emmet_expandabbr_key = '<C-e>'
 let g:user_emmet_next_key='<C-n>'
 let g:use_emmet_complete_tag = 1
 autocmd FileType html,htmldjango,jinja,twig,rain EmmetInstall
-
-" IndentLine
-let g:indentLine_enabled = 0
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_color_gui = synIDattr(synIDtrans(hlID("Comment")), "fg", "gui")
-nnoremap <leader>i  :IndentLinesToggle<CR>
-
 
 " Tagbar
 let g:tagabar_show_linenumbers = -1
