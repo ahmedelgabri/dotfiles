@@ -396,8 +396,7 @@ nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 " nnoremap <silent> <leader>d :20Lex<CR>
-" nnoremap <silent> <leader>d :NERDTreeToggle<CR>
-nnoremap <silent> <leader>d :Vifm <C-R>=expand("%:p:h") . "/"<CR><CR>
+nnoremap <silent> <leader>d :NERDTreeToggle<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
