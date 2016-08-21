@@ -14,4 +14,6 @@ weechat/sec.conf
 weechat/weechat.log
 weechat/irc.conf
 weechat/urls.log
+mail/mutt/cache
+mail/mutt/tmp
 *.itermcolors
