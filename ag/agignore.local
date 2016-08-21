@@ -1,20 +1,24 @@
+# AGIGNORE
+# ##########################
+
+.git
 log
 vendor
 tmp
 doc
 rdoc
 coverage
-Gemfile.lock
 dump
-solr
+build
+dist
+__build__
+
 .gitkeep
-.git
 *.min.*
 *.pyc
 *.map
-node_modules
-elm_stuff
-build
-dist
-tags
-__build__
+# *.pdf
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
