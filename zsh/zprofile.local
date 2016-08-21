@@ -40,7 +40,7 @@ export WORK="lightspeed"
 KEYTIMEOUT=1
 
 export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --no-mouse --margin 1'
-export FZF_DEFAULT_COMMAND='ag --hidden --follow --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND='ag --hidden --follow -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview "[ -f "{}" ] && pygmentize -g {}" --bind ?:toggle-preview'
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
