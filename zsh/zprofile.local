@@ -47,6 +47,7 @@ export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
 export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
 export PURE_PROMPT_SYMBOL="λ" # λ ▴ ⚡
+export HOMEBREW_INSTALL_BADGE="🍕"
 
 ##############################################################
 # Python stuff
