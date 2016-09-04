@@ -59,6 +59,7 @@ elm-stuff/
 *.un~
 tags
 .tags
+.tags.*
 .local.vim
 Session.vim
 *.add.spl

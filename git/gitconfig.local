@@ -9,13 +9,13 @@
 	current = yellow reverse
 	local = yellow
 	remote = green
-	whitespace = red reverse
 
 [color "diff"]
 	meta = yellow
 	frag = magenta
-	old = red
-	new = green
+	old = red strike
+	new = green italic
+	whitespace = red reverse
 
 [color "status"]
 	added = yellow
@@ -28,10 +28,15 @@
 	newNormal = "green bold"
 	newHighlight = "green bold 22"
 
+[pager]
+	diff = diff-so-fancy | less --tabs=4 -RFX
+
+[interactive]
+	diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
+
 [core]
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	excludesfile = ~/.dotfiles/git/gitignore.local
-	pager = diff-highlight | diff-so-fancy | less -r
 	; https://news.ycombinator.com/item?id=11388479
 	untrackedCache = true
 
@@ -40,7 +45,7 @@
 	cb = checkout -b
 	cm = commit
 	st = status -sb
-	br = branch
+	br = branch --sort=-committerdate
 	d = diff --patch-with-stat
 	dc = diff --staged --patch-with-stat
 	lgnm = log --graph --no-merges --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
