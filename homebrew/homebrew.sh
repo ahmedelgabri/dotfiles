@@ -41,6 +41,7 @@ brewtap neomutt/homebrew-neomutt
 
 # Formulas
 brewinstall git
+brewinstall diff-so-fancy
 brewinstall python
 brewinstall python3
 brewinstall nvm
