@@ -55,17 +55,8 @@ bind-key -n S-Left previous-window
 bind-key v split-window -h -c "#{pane_current_path}"
 bind-key s split-window -v -c "#{pane_current_path}"
 
-# Smart pane switching with awareness of vim splits
-# & https://github.com/christoomey/vim-tmux-navigator plugin
-# Smart pane switching with awareness of vim splits
-is_vim='echo "#{pane_current_command}" | grep -iqE "(^|\/)g?(view|n?vim?)(diff)?$"'
-bind -n C-h if-shell "$is_vim" "send-keys C-h" "select-pane -L"
-bind -n C-j if-shell "$is_vim" "send-keys C-j" "select-pane -D"
-bind -n C-k if-shell "$is_vim" "send-keys C-k" "select-pane -U"
-bind -n C-l if-shell "$is_vim" "send-keys C-l" "select-pane -R"
-bind -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
-
 bind-key C-o rotate-window
+bind C-l send-keys 'C-l'
 
 bind-key + select-layout main-horizontal
 bind-key = select-layout main-vertical
@@ -178,6 +169,8 @@ set -g @resurrect-capture-pane-contents 'on'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 # set -g @continuum-boot 'on'
 # set -g @continuum-boot-options 'iterm,fullscreen'
+
+set -g @plugin 'christoomey/vim-tmux-navigator'
 
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
