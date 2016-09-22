@@ -1,5 +1,5 @@
 # TERMINAL
-alias vi="mvim -v "
+alias vi="/usr/local/bin/vim "
 alias vim="nvim "
 alias ev="e ~/.dotfiles/vim/vimrc.local"
 alias r="source ~/.zshrc && clear && echo 'Vroooom Vrooom!'"

@@ -39,14 +39,14 @@ export WORK="lightspeed"
 # 10ms for key sequences
 KEYTIMEOUT=1
 
+# Make sure all the repos I clone uses my template, not sure if this is a good idea though?
+# export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
 export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --no-mouse --margin 1'
 export FZF_DEFAULT_COMMAND='ag --hidden --follow -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview "[ -f "{}" ] && pygmentize -g {}" --bind ?:toggle-preview'
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
-export LYNX_CFG=$HOME/.dotfiles/lynx/lynxrc
-export LYNX_LSS=$HOME/.dotfiles/lynx/lynxlss
 export PURE_PROMPT_SYMBOL="λ" # λ ▴ ⚡
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
 
 ##############################################################
