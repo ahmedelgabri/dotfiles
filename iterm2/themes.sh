@@ -10,6 +10,7 @@ THEMES=(
   https://raw.githubusercontent.com/anunez/one-dark-iterm/master/one-dark.itermcolors
   https://raw.githubusercontent.com/oskarkrawczyk/honukai-iterm-zsh/master/honukai.itermcolors
   https://raw.githubusercontent.com/joshdick/onedark.vim/master/One\ Dark.itermcolors
+  https://raw.githubusercontent.com/tyrannicaltoucan/vim-deep-space/master/term/deep-space.itermcolors
 )
 
 # I need to find a way to import them in using the script
