@@ -13,6 +13,7 @@ FILES=(
   $HOME/.gvimrc
   $HOME/.gemrc
   $HOME/.osx
+  $HOME/.macos
   $HOME/.pythonrc.py
   $HOME/.pip.conf
   $HOME/.hushlogin
@@ -55,7 +56,7 @@ ln -sf $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
 ln -sf $HOME/.dotfiles/ag/agignore.local $HOME/.agignore
 ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
 ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
-ln -sf $HOME/.dotfiles/osx/osx.local $HOME/.osx
+ln -sf $HOME/.dotfiles/osx/macos.local $HOME/.macos
 ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 
