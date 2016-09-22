@@ -29,15 +29,17 @@ function brewinstall() {
 }
 
 # Taps
-brewtap caskroom/cask
-brewtap caskroom/fonts
-brewtap caskroom/versions
-brewtap homebrew/dupes
-brewtap homebrew/versions
-brewtap neovim/neovim
-brewtap tldr-pages/tldr
-brewtap universal-ctags/universal-ctags
-brewtap neomutt/homebrew-neomutt
+brewtap "homebrew/bundle"
+brewtap "homebrew/services"
+brewtap "homebrew/versions"
+brewtap "homebrew/dupes"
+brewtap "caskroom/cask"
+brewtap "caskroom/fonts"
+brewtap "caskroom/versions"
+brewtap "neovim/neovim"
+brewtap "tldr-pages/tldr"
+brewtap "universal-ctags/universal-ctags"
+brewtap "neomutt/homebrew-neomutt"
 
 # Formulas
 brewinstall git
