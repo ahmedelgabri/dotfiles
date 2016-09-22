@@ -17,12 +17,20 @@ set -g escape-time 0
 
 set -g focus-events on
 
+# tmux messages are displayed for 1.5 seconds
+set-option -g display-time 1500
+
 # set window and pane index to 1 (0 by default)
 set-option -g base-index 1
 setw -g pane-base-index 1
 
 # re-number windows when one is closed
 set -g renumber-windows on
+
+# Rather than constraining window size to the maximum size of any client
+# connected to the *session*, constrain window size to the maximum size of any
+# client connected to *that window*. Much more reasonable.
+set-window-option -g aggressive-resize on
 
 # Make the current window the first window
 bind T swap-window -t 1
