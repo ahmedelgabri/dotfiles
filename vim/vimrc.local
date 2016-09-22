@@ -15,42 +15,44 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern' }
 Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
+Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'ddrscott/vim-side-search'
+Plug 'unblevable/quick-scope'
 " Plug 'rking/ag.vim'
-Plug 'wellle/targets.vim'
+" Plug 'wellle/targets.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'] }
+" Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'moll/vim-bbye'
 Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
-Plug 'majutsushi/tagbar'                          , { 'on': ['TagbarToggle'] }
 Plug 'duggiefresh/vim-easydir'
-Plug 'xolox/vim-misc' | Plug 'Wraul/vim-easytags' , { 'branch': 'fix-universal-detection' }
+" Plug 'xolox/vim-misc' | Plug 'Wraul/vim-easytags' , { 'branch': 'fix-universal-detection' }
 " Plug 'xolox/vim-misc' | Plug 'xolox/vim-easytags'
-Plug 'justinmk/vim-gtfo'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tpope/vim-obsession'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'kshenoy/vim-signature'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'wincent/loupe'
+Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Syntax
 Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
-Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'rain'] }
+Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 
 " Linters & Code quality
@@ -58,24 +60,22 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'benekastah/neomake'                         , { 'do': 'npm i -g flow-vim-quickfix' }
 
 " Themes, UI & eye cnady
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'ahmedelgabri/one-dark.vim'                  , { 'branch': 'airline-theme' }
+Plug 'jbleuzen/vim-buftabline'
+Plug 'itchyny/lightline.vim'
+Plug 'shirataki/lightline-onedark'
 Plug 'morhetz/gruvbox'
 Plug 'joshdick/onedark.vim'
+Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
-Plug 'atelierbram/Base2Tone-vim'
+Plug 'w0ng/vim-hybrid'
+Plug 'chriskempson/base16-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
+Plug 'lambdalisue/vim-gista'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-
-" Distraction-free writing
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'davidbeckingsale/writegood.vim'             , { 'for': ['markdown', 'text'] }
+Plug 'junegunn/gv.vim', { 'on': 'GV' }
 
 call plug#end()
 
@@ -88,32 +88,36 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-if has('nvim')
+if has('termguicolors')
   set termguicolors
+end
+
+if has('nvim')
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 end
 
-let hour = strftime("%H")
-if 6 <= hour && hour < 18
-  " set background=light
-  let g:gruvbox_contrast_dark='medium'
-else
-  " set background=dark
-    let g:gruvbox_contrast_dark='hard'
-endif
+
 set background=dark
 let g:gruvbox_italic=1
-colorscheme onedark
+
+let hour = strftime("%H")
+if hour >= 6 && hour < 18
+  colorscheme onedark
+else
+  colorscheme deep-space
+endif
+
+" colorscheme onedark
 highlight Comment cterm=italic gui=italic
 
-aug omnicomplete
-  autocmd!
-  autocmd FileType css,scss,sass,stylus,less setl omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,htmldjango,jinja setl omnifunc=emmet#completeTag
-  autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
-  autocmd FileType python setl omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
-aug END
+" aug omnicomplete
+"   autocmd!
+"   autocmd FileType css,scss,sass,stylus,less setl omnifunc=csscomplete#CompleteCSS
+"   autocmd FileType html,htmldjango,jinja setl omnifunc=emmet#completeTag
+"   autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
+"   autocmd FileType python setl omnifunc=pythoncomplete#Complete
+"   autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
+" aug END
 
 " UI Configs
 "-----------------
@@ -151,10 +155,19 @@ set shiftround
 
 set nowrap
 
-" set colorcolumn=120
-set textwidth=120
-let &colorcolumn='+' . join(range(0, 254), ',+')
-autocmd FileType help,qf setl colorcolumn=
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+silent! match OverLength /\%>120v.\+/
+" function! ToggleTextLimit()
+"   if &colorcolumn == '120'
+"     let &colorcolumn='+' . join(range(0, 254), ',+')
+"   else
+"     set textwidth=120
+"     set colorcolumn=120
+"   endif
+" endfunction
+" autocmd InsertEnter,InsertLeave * call ToggleTextLimit()
+" autocmd InsertEnter,InsertLeave * silent! match OverLength /\%>120v.\+/
+" autocmd FileType help,qf setl colorcolumn=
 
 syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
@@ -166,8 +179,8 @@ set number relativenumber
 " show command in bottom bar
 set showcmd
 
-" Display the mode you're in.
-set showmode
+" Don't Display the mode you're in. since it's already shown on the statusline
+set noshowmode
 
 " show a navigable menu for tab completion
 set wildmode=longest,list,full
@@ -320,7 +333,7 @@ augroup vimrcEx
   autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  autocmd FileType markdown setl shiftwidth=4 spell softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
+  autocmd FileType markdown setl shiftwidth=4 spell softtabstop=4 tabstop=4 linebreak nolist wrap lbr colorcolumn= synmaxcol=999999
   autocmd BufEnter *.{markdown,md,text,txt,mkd,json} setl conceallevel=0
 
   " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
@@ -329,7 +342,7 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} set ft=ruby
 
   " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
-  autocmd BufEnter *.py silent! match OverLength /\%81v.\+/
+  autocmd BufEnter *.py silent! match OverLength /\%>80v.\+/
   autocmd FileType python setl textwidth=79 commentstring=#\ %s
 
   autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}*rc,\.tern-*,*.json set ft=json
@@ -340,7 +353,10 @@ augroup vimrcEx
 augroup END
 
 " Automatically reload vimrc when it's saved
-autocmd! BufWritePost init.vim,vimrc.local,.vimrc so $MYVIMRC
+augroup reload_vimrc
+    autocmd!
+    autocmd BufWritePost init.vim,vimrc.local,.vimrc nested so $MYVIMRC
+augroup END
 
 " Key mappings
 "================================================================================
@@ -394,9 +410,8 @@ inoremap jj <ESC>
 nnoremap \ :SideSearch<SPACE>
 nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
 vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
-nnoremap <Leader>t :TagbarToggle<CR>
 " nnoremap <silent> <leader>d :20Lex<CR>
-nnoremap <silent> <leader>d :NERDTreeToggle<CR>
+nnoremap <silent> <leader>d :NERDTreeFind<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
@@ -409,9 +424,7 @@ nnoremap <leader>\ <C-w>t<C-w>H<CR>
 " Use | and _ to split windows (while preserving original behaviour of [count]bar and [count]_).
 nnoremap <expr><silent> <Bar> v:count == 0 ? "<C-W>v<C-W><Right>" : ":<C-U>normal! 0".v:count."<Bar><CR>"
 nnoremap <expr><silent> _     v:count == 0 ? "<C-W>s<C-W><Down>"  : ":<C-U>normal! ".v:count."_<CR>"
-nnoremap <leader>ll :Limelight!!<CR>
 
-nnoremap <leader>fm :Goyo<CR>
 " open prev file
 nnoremap <Leader>p :e#<CR>
 
@@ -639,6 +652,13 @@ endfunction
 map <silent> <Leader>he :call HtmlEscape()<CR>
 map <silent> <Leader>hu :call HtmlUnEscape()<CR>
 
+function! OpenFileFolder()
+  silent call system('open '.expand('%:p:h:~'))
+endfunction
+
+" maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
+nmap <silent> gof :call OpenFileFolder()<CR>
+
 " --------------- Folding! ----------------------------------------------------
 
 set fdm=indent
@@ -664,11 +684,26 @@ endif
 "================================================================================
 
 " YouCompleteMe
-let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
-let g:ycm_python_binary_path = '/usr/local/bin/python3'
+" let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+" let g:ycm_python_binary_path = '/usr/local/bin/python3'
+" autocmd! User YouCompleteMe if !has('vim_starting')
+"       \| call youcompleteme#Enable() | endif
 
-autocmd! User YouCompleteMe if !has('vim_starting')
-      \| call youcompleteme#Enable() | endif
+
+let g:tern_show_signature_in_pum=1
+let g:deoplete#enable_at_startup = 1
+" Sort results alphabetically
+call deoplete#custom#set('_', 'sorters', ['sorter_word'])
+" chnage the ranking of utlisnips
+call deoplete#custom#set('ultisnips', 'rank', 1000)
+function! StrTrim(txt)
+  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+endfunction
+
+let g:tern_path = StrTrim(system('PATH=$(npm bin):$PATH && which tern'))
+if g:tern_path != 'tern not found'
+  let g:deoplete#sources#ternjs#tern_bin = g:tern_path
+endif
 
 " Tab completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -752,28 +787,32 @@ augroup END
 " let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Neomake
-highlight NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=None
-highlight NeomakeWarningMsg ctermfg=0093ctermbg=None guifg=yellow guibg=None
+highlight NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=NONE
+highlight NeomakeWarningMsg ctermfg=003 ctermbg=None guifg=yellow guibg=NONE
 
 let g:neomake_open_list=2
 let g:neomake_error_sign = { 'text': '✗', 'texthl': 'NeomakeErrorMsg', }
 let g:neomake_warning_sign = { 'text': '!', 'texthl': 'NeomakeWarningMsg', }
-let g:neomake_airline=1
 let g:neomake_html_enabled_makers = ['tidy']
-let g:neomake_css_enabled_makers = ['stylelint']
-let g:neomake_scss_enabled_makers = g:neomake_css_enabled_makers
-let g:neomake_scss_stylelint_maker = {
-    \ 'exe': 'stylelint',
-    \ 'args': ['--syntax', 'scss'],
-    \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
-    \ }
+
+" Stylelint on demand
+if findfile('.stylelintrc', '.;') !=# ''
+  let g:neomake_css_enabled_makers = ['stylelint']
+  let g:neomake_scss_enabled_makers = g:neomake_css_enabled_makers
+  let g:neomake_scss_stylelint_maker = {
+      \ 'exe': $PWD .'./node_modules/.bin/stylelint',
+      \ 'args': ['--syntax', 'scss'],
+      \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
+      \ }
+
+endif
 
 " JavaScript & JSX stuff
 let g:neomake_javascript_enabled_makers = ['standard']
 let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 
 " ESLint on demand
-if findfile('.eslintrc', '.;') !=# ''
+if findfile('.eslintrc', '.;') !=# '' || findfile('.eslintrc.js', '.;') !=# ''
   let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 
@@ -818,11 +857,6 @@ let g:user_emmet_next_key='<C-n>'
 let g:use_emmet_complete_tag = 1
 autocmd FileType html,htmldjango,jinja,twig,rain EmmetInstall
 
-" Tagbar
-let g:tagabar_show_linenumbers = -1
-let g:tagbar_singleclick = 1
-let g:tagbar_auto_open = 1
-
 " DelimitMate
 let g:delimitMate_expand_cr = 2
 let g:delimitMate_expand_space = 1
@@ -830,6 +864,19 @@ let g:delimitMate_jump_expansion = 1
 let g:delimitMate_excluded_regions = ''
 
 " Github Auth for Gists
+let g:gista#client#default_username = $GITHUB_USER
+let g:gista#command#post#allow_empty_description = 1
+let g:gista#command#post#interactive_description = 0
+
+function! s:on_GistaPost() abort
+  let gistid = g:gista#avars.gistid
+  execute printf('Gista browse --gistid=%s', gistid)
+endfunction
+augroup my_vim_gista_autocmd
+  autocmd! *
+  autocmd User GistaPost call s:on_GistaPost()
+augroup END
+
 let g:github_user = $GITHUB_USER
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
@@ -867,8 +914,12 @@ let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 " NERDTree
 let g:NERDTreeWinSize = 40
 let NERDTreeShowHidden=1
+let NERDTreeAutoDeleteBuffer = 1
 " let nerdtree_tabs_autoclose=0
-let NERDTreeIgnore=['tmp']
+let NERDTreeIgnore = ['\.tags$','^tags$']
+let NERDTreeShowBookmarks=1
+let NERDTreeChDirMode=2
+let NERDTreeMinimalUI=1
 " Open nerdtree if there wasn't a file specified
 " autocmd vimenter * if !argc() | NERDTree | endif
 
@@ -878,23 +929,21 @@ autocmd FileType ruby set commentstring=#\ %s
 autocmd FileType htmldjango,jinja,twig,rain set commentstring={#\ %s\ #}
 " autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
 
-" Goyo
-let g:goyo_width=120
-
-" Limelight
-let g:limelight_conceal_guifg = '#6E6551'
-
 " Markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
 let g:vim_markdown_syntax_conceal = 0
 
-" Easytags
+" gutentags
 set tags=./.tags,.tags;
-let g:easytags_events = ['BufReadPost', 'BufWritePost']
-let g:easytags_async = 1
-let g:easytags_dynamic_files = 2
-let g:easytags_resolve_links = 1
+" let g:easytags_events = ['BufReadPost', 'BufWritePost']
+" let g:easytags_async = 1
+" let g:easytags_dynamic_files = 2
+" let g:easytags_resolve_links = 1
 " let g:easytags_suppress_ctags_warning = 1
+let g:gutentags_tagfile = '.tags'
+let g:gutentags_exclude_project_root = ['/usr/local', $HOME.'/.dotfiles', $HOME, $HOME.'/Desktop']
+let g:gutentags_exclude = ['*.min', 'node_modules']
+let g:gutentags_resolve_symlinks = 1
 
 " gitgutter
 highlight clear SignColumn
@@ -902,6 +951,7 @@ highlight GitGutterAdd ctermbg=None guifg=green
 highlight GitGutterChange ctermbg=None guifg=orange
 highlight GitGutterDelete ctermbg=None guifg=red
 highlight GitGutterChangeDelete ctermbg=None guifg=DarkRed
+" let g:gitgutter_highlight_lines = 1
 let g:gitgutter_sign_column_always = 1
 let g:gitgutter_eager = 0
 
@@ -913,11 +963,15 @@ let g:undotree_SetFocusWhenToggle= 1
 " Peekaboo
 let g:peekaboo_window = 'vertical botright 60new'
 
-" Airline
-"
-" Tabline/Buffer line
+" Statusline & Tabline/Buffer line
 set showtabline=2
+set laststatus=2
 set tabline="%1T"
+let g:buftabline_indicators = 1
+
+if g:colors_name == 'onedark'
+  hi BufTabLineCurrent guibg=#61afef guifg=#282c34
+endif
 
 " Find out current buffer's size and output it.
 function! FileSize()
@@ -942,52 +996,112 @@ function! FileSize()
   endif
 endfunction
 
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'no' : 'N·Operator Pending',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V·Line',
-      \ '' : 'V·Block',
-      \ 's'  : 'Select',
-      \ 'S'  : 'S·Line',
-      \ '' : 'S·Block',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'Rv' : 'V·Replace',
-      \ 'c'  : 'Command',
-      \ 'cv' : 'Vim Ex',
-      \ 'ce' : 'Ex',
-      \ 'r'  : 'Prompt',
-      \ 'rm' : 'More',
-      \ 'r?' : 'Confirm',
-      \ '!'  : 'Shell',
-      \ 't'  : 'Terminal'
-      \}
-let g:airline_powerline_fonts = 1
-let g:airline_detect_paste = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#buffer_nr_show = 0
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline_detect_modified=1
-let g:airline_inactive_collapse=1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline#extensions#hunks#enabled = 0
-function! AirlineInit()
-  let g:airline_section_x = airline#section#create(['%{ObsessionStatus()} %{FileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
+function! ReadOnly()
+  if &readonly || !&modifiable
+    return ''
+  else
+    return ''
 endfunction
-autocmd User AirlineAfterInit call AirlineInit()
+
+function! Modified()
+  if &filetype == "help"
+    return ""
+  elseif &modified
+    return "+"
+  elseif &modifiable
+    return ""
+  else
+    return ""
+  endif
+endfunction
+
+function! GitInfo()
+  let git = fugitive#head()
+  if git != ''
+    return ' '.fugitive#head()
+  else
+    return ''
+endfunction
+
+function! Filename()
+  return ('' != ReadOnly() ? ReadOnly() . ' ' : '') .
+       \ expand('%') =~? 'term://.*\.fzf/bin/fzf' ? '' :
+       \ ('' != expand('%:p:~') ? expand('%:p:~') : '[No Name]') .
+       \ ('' != Modified() ? ' ' . Modified() : '')
+endfunction
+
+function! LightlineNeomake()
+    return '%{neomake#statusline#LoclistStatus()}'
+endfunction
+
+function! LightlineTags()
+    return winwidth(0) > 120 ? '%{gutentags#statusline("[Generating\ tags...]")}' : ''
+endfunction
+
+function! LightlineObsession()
+    return '%{ObsessionStatus()}'
+endfunction
+
+let g:lightline = {
+\ 'enable' :{
+\   'tabline': 0,
+\   'statusline': 1
+\ },
+\ 'colorscheme': 'onedark',
+\ 'separator': {
+\   'left': '',
+\   'right': ''
+\ },
+\ 'subseparator': {
+\   'left': '',
+\   'right': ''
+\ },
+\ 'mode_map': {
+\   '__' : '-',
+\   'n'  : 'N',
+\   'no' : 'N·Operator Pending',
+\   'v'  : 'V',
+\   'V'  : 'V·Line',
+\   '' : 'V·Block',
+\   's'  : 'Select',
+\   'S'  : 'S·Line',
+\   '' : 'S·Block',
+\   'i'  : 'I',
+\   'R'  : 'R',
+\   'Rv' : 'V·Replace',
+\   'c'  : 'Command',
+\   'cv' : 'Vim Ex',
+\   'ce' : 'Ex',
+\   'r'  : 'Prompt',
+\   'rm' : 'More',
+\   'r?' : 'Confirm',
+\   '!'  : 'Shell',
+\   't'  : 'Terminal'
+\ },
+\ 'active': {
+\   'left': [ [ 'mode' ], [ 'spell', 'paste' ], ['fugitive'], ['filename'] ],
+\   'right': [ ['percent', 'lineinfo'], ['fileformat', 'fileencoding', 'filetype', 'filesize'], ['neomake', 'obsession'], ['tags'] ]
+\ },
+\ 'component': {
+\   'filename': '%<%f'
+\ },
+\ 'component_function': {
+\   'readonly': 'ReadOnly',
+\   'modified': 'Modified',
+\   'fugitive': 'GitInfo',
+\   'filesize': 'FileSize'
+\ },
+\ 'component_expand': {
+\   'neomake': 'LightlineNeomake',
+\   'tags': 'LightlineTags',
+\   'obsession': 'LightlineObsession'
+\ },
+\ 'component_type': {
+\   'paste': 'warning',
+\   'spell': 'warning',
+\   'neomake': 'error',
+\ },
+\ }
 
 " Vim Obsession auto restore on open
 augroup sourcesession
@@ -1016,6 +1130,9 @@ let g:local_vimrc = {'names':['.local.vim'],'hash_fun':'LVRHashOfFile'}
 
 " vim-polygot
 let g:polyglot_disabled = ['css']
+
+" Quick scope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Overrrides
 " =================
