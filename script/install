@@ -13,17 +13,6 @@ cd $HOME
 # xcodebuild -license accept # To accept Xcode EULA
 
 
-if [[ -d "/usr/local" ]]; then
-  chown -R $(whoami):admin /usr/local
-elif [[ ! -d "/usr/local" ]]; then
-  echo "/usr/local doesn't exist, we will try the nice way of creating it"
-  mkdir /usr/local && chflags norestricted /usr/local && chown -R $(whoami):admin /usr/local
-else
-  echo "Tough luck! check here and then run the script again"
-  open "https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/El_Capitan_and_Homebrew.md#if-usrlocal-does-not-exist"
-  exit 1
-fi
-
 if [[ ! -d "$HOME/.dotfiles" ]]; then
   echo "Clonning dotfiles..."
   mkdir "$HOME/.dotfiles"
@@ -34,7 +23,7 @@ fi
 
 if [[ ! -d "$HOME/.zprezto" ]]; then
   echo "Clonning prezto..."
-  git clone --recursive https://github.com/ahmedelgabri/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
   setopt EXTENDED_GLOB
   for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md\(.N\); do
