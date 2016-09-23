@@ -43,32 +43,53 @@ brewtap "neomutt/homebrew-neomutt"
 
 # Formulas
 brewinstall git
-brewinstall diff-so-fancy
 brewinstall python
 brewinstall python3
 brewinstall nvm
-brewinstall reattach-to-user-namespace
-brewinstall coreutils
-brewinstall findutils
-brewinstall gnu-sed
-brewinstall wget
+# brewinstall ledger
+# brewinstall cmake
 brewinstall asciinema
 brewinstall awscli
+brewinstall bitlbee
 brewinstall caskroom/cask/brew-cask
+brewinstall cloc
+brewinstall coreutils
 brewinstall cowsay
+brewinstall curl
+brewinstall diff-so-fancy
 brewinstall docker
+brewinstall elm
+brewinstall emacs
 brewinstall figlet
+brewinstall findutils
+brewinstall fortune
+brewinstall fpp
+brewinstall gawk
+brewinstall ghi
+brewinstall gnu-sed
+brewinstall gnupg2
+brewinstall gpg-agent
 brewinstall grc
 brewinstall heroku-toolbelt
+brewinstall highlight
+brewinstall htop
+brewinstall httpie
 brewinstall hub
+brewinstall jo
 brewinstall jq
 brewinstall jrnl
 brewinstall keybase
-# brewinstall ledger
 brewinstall links
+brewinstall msmtp
 brewinstall ncdu
+brewinstall neomutt/neomutt/neomutt --with-sidebar-patch
 brewinstall neovim --HEAD
-brewinstall spark
+brewinstall pinentry-mac
+brewinstall ponysay
+brewinstall ranger
+brewinstall reattach-to-user-namespace
+brewinstall ruby
+brewinstall screenfetch
 brewinstall task
 brewinstall the_silver_searcher
 brewinstall tidy-html5
@@ -79,32 +100,11 @@ brewinstall todo-txt
 brewinstall tree
 brewinstall unar
 brewinstall universal-ctags/universal-ctags/universal-ctags
+brewinstall urlview
 brewinstall weechat --with-perl --with-python --with-ruby --with-lua --with-curl
+brewinstall wget
 brewinstall z
 brewinstall zsh
-brewinstall bitlbee
-brewinstall curl
-brewinstall httpie
-brewinstall elm
-brewinstall gnupg
-brewinstall gpg-agent
-brewinstall pinentry-mac
-brewinstall ansiweather
-brewinstall asciidoc
-brewinstall cloc
-brewinstall fortune
-brewinstall fpp
-brewinstall gawk
-brewinstall ghi
-brewinstall highlight
-brewinstall jo
-brewinstall ponysay
-brewinstall ranger
-brewinstall ruby
-brewinstall screenfetch
-brewinstall neomutt/neomutt/neomutt --with-sidebar-patch
-brewinstall urlview
-brewinstall msmtp
 
 # casks
 brewinstall cask alfred
@@ -113,6 +113,7 @@ brewinstall cask arq
 brewinstall cask atom
 brewinstall cask betterzipql
 brewinstall cask box-sync
+brewinstall cask charles
 brewinstall cask dayone-cli
 brewinstall cask firefox
 brewinstall cask firefox-beta
@@ -123,16 +124,20 @@ brewinstall cask font-anka-coder
 brewinstall cask font-droid-sans-mono-for-powerline
 brewinstall cask font-fira-code
 brewinstall cask font-fira-mono-for-powerline
-brewinstall cask font-hack
+brewinstall cask font-inconsolata-dz-for-powerline
 brewinstall cask font-inconsolata-dz-for-powerline
 brewinstall cask font-meslo-lg-for-powerline
+brewinstall cask font-meslo-lg-for-powerline
+brewinstall cask font-source-code-pro
 brewinstall cask font-source-code-pro
 brewinstall cask google-chrome
 brewinstall cask google-chrome-canary
+brewinstall cask hyperterm
 brewinstall cask imagealpha
 brewinstall cask imageoptim
 brewinstall cask iterm2-nightly
 brewinstall cask keepingyouawake
+brewinstall cask licecap
 brewinstall cask opera
 brewinstall cask opera-beta
 brewinstall cask opera-developer
@@ -159,6 +164,7 @@ brewinstall cask visual-studio-code
 brewinstall cask vlc
 brewinstall cask webkit-nightly
 brewinstall cask webpquicklook
+brewinstall cask whatsapp
 # brewinstall cask gpgtools
 
 #================================================================================
