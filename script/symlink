@@ -45,7 +45,7 @@ ZSH_FILES=(
 )
 
 for file in ${ZSH_FILES[@]}; do
-  ls -sf $HOME/.dotfiles/zsh/"$file".local $HOME/."$file"
+  ln -sf $HOME/.dotfiles/zsh/"$file".local $HOME/."$file"
 done
 
 ln -sf $HOME/.dotfiles/zsh/prompt_pure_setup.local $HOME/.zprezto/modules/prompt/functions/prompt_pure_setup
