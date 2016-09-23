@@ -39,10 +39,11 @@ echo "\033[0;34m====== 1- Don't forget to run source ~/.osx & change your zsh to
 echo "\033[0;34m====== 2- Symlink other dotfiles files from Box Sync													====\033[0;0m"
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 
-echo "Change your zsh to the brew installed one."
-
 if [[ -d "$HOME/.dotfiles" ]]; then
-  cd "$HOME/.dotfiles" && make all
+  cd "$HOME/.dotfiles"
 else
   echo ".dotfiles directory doesn't exit"
 fi
+
+echo "Change your zsh to the brew installed one. and run Make all"
+
