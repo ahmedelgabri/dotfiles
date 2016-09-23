@@ -1,4 +1,4 @@
-all: symlink homebrew node python iterm osx
+all: symlink homebrew node python iterm
 
 install:
 		@./script/install
@@ -19,6 +19,6 @@ iterm:
 		@sh ./iterm2/themes.sh
 
 osx:
-		@source ~/.osx
+		@source ~/.dotfiles/osx/macos.local
 
 .PHONY: symlink homebrew node python iterm osx
