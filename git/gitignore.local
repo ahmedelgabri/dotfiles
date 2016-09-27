@@ -71,3 +71,7 @@ Session.vim
 npm-debug.log*
 *.pyc
 *.map
+
+# ag/rg     #
+#############
+.ignore

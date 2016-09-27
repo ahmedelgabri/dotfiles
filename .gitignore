@@ -17,3 +17,4 @@ weechat/urls.log
 mail/mutt/cache
 mail/mutt/tmp
 *.itermcolors
+scratch

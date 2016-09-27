@@ -1,10 +1,13 @@
 # No arguments: `open .`
 # With arguments: acts like `open`
-o() {
+
+unalias o # Prezto has it's own o alias
+
+function o {
   if [[ $# -eq 0 ]]; then
     open .
   else
-    open $@
+    open "$@"
   fi
 }
 

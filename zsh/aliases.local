@@ -29,7 +29,7 @@ alias bin="cd ~/.dotfiles/bin"
 alias work='mx $WORK'
 alias personal='mx DOH!'
 alias cask="brew cask "
-alias ag='ag --path-to-agignore ~/.agignore '
+alias ag='ag --path-to-ignore ~/.ignore '
 
 # DEV
 alias npmls="npm list --depth=0 "

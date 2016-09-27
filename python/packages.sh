@@ -8,6 +8,7 @@ PACKAGES=(
   virtualenv
   virtualenvwrapper
   markdown
+  neovim
 )
 
 mkdir ~/.venv

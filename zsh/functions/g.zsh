@@ -1,5 +1,12 @@
 # https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
 # Wrap git with hub
+#
+# Hey future self! if you are here because of this error `zsh compinit: insecure directories, run compaudit for list.`
+# do the following
+# $ cd /usr/local/share/
+# $ sudo chmod -R 755 zsh
+# $ sudo chown -R $USER:staff zsh
+
 if [[ -f `command -v hub` ]] ; then
     alias git=hub
     compdef g=hub
