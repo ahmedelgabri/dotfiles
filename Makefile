@@ -18,7 +18,7 @@ python:
 iterm:
 		@sh ./iterm2/themes.sh
 
-osx:
-		@source ~/.dotfiles/osx/macos.local
+macos:
+		@source ~/.dotfiles/macos/macos.local
 
-.PHONY: symlink homebrew node python iterm osx
+.PHONY: symlink homebrew node python iterm macos

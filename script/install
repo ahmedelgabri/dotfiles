@@ -35,7 +35,7 @@ fi
 
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 echo "\033[0;34m====== Generate SSH keys \for github, bitbucket \& other services you use =====\033[0;0m"
-echo "\033[0;34m====== 1- Don't forget to run source ~/.osx & change your zsh to the brew one ====\033[0;0m"
+echo "\033[0;34m====== 1- Don't forget to run source ~/.macos & change your zsh to the brew one ====\033[0;0m"
 echo "\033[0;34m====== 2- Symlink other dotfiles files from Box Sync													====\033[0;0m"
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
 
