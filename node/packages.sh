@@ -1,29 +1,25 @@
 #!/bin/bash
 
-PACKAGES=(
-  caniuse-cmd
-  cssfmt
-  generator-p
-  gh
-  gh-gif
-  gh-travis
-  jscpd
-  jsfmt
-  jsinspect
-  jspm
-  ngrok
-  replem
-  serve
-  sloc
-  spoof
-  spot
-  standard
-  surge
-  svgo
-  yo
-)
-
-npm i -g ${PACKAGES[@]}
-
-
-
+npm i -g create-react-app \
+firebase-tools \
+flow-bin \
+flow-vim-quickfix \
+hpm-cli \
+jscpd \
+jsinspect \
+ngrok \
+now \
+now-serve \
+npm \
+npms-cli \
+parker \
+parrotsay \
+serve \
+spoof \
+standard \
+stylefmt \
+stylelint \
+surge \
+svgo \
+tern \
+tslide
