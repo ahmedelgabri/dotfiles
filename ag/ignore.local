@@ -1,0 +1,24 @@
+# AGIGNORE
+# ##########################
+
+.git
+log
+vendor
+tmp
+doc
+rdoc
+coverage
+dump
+build
+dist
+__build__
+
+.gitkeep
+*.min.*
+*.pyc
+*.map
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
