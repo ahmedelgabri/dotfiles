@@ -52,6 +52,7 @@ Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
+Plug 'flowtype/vim-flow'                          , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
 Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 
@@ -140,6 +141,9 @@ endif
 if has('nvim')
   set shada='1000,<500,:500,/500,n~/Box\ Sync/dotfiles/vim/main.shada
   autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+
+  let g:python2_host_prog = '/usr/local/bin/python'
+  let g:python3_host_prog = '/usr/local/bin/python3'
 else
   set viminfo='1000,<500,:500,/500,n~/.viminfo
 endif
@@ -224,6 +228,11 @@ set splitright
 "-----------------
 " Ignore case in search.
 set ignorecase smartcase
+
+if has('persistent_undo')
+  set undofile                          " Save undos after file closes
+  set undodir=~/.config/nvim/undodir    " Save undos in undodir within nvim dir
+endif
 "
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " Keep search matches in the middle of the window.
