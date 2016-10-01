@@ -750,33 +750,34 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
 
 " FZF
-let g:fzf_layout = { 'window': 'aboveleft 20new' }
+let g:fzf_files_options = $FZF_CTRL_T_OPTS
+let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_commits_log_options = substitute(system("git config --get alias.lg | awk '{$1=\"\"; print $0;}'"), '\n\+$', '', '')
+let g:fzf_history_dir = '~/.fzf-history'
 
 command! Plugs call fzf#run({
   \ 'source':  map(sort(keys(g:plugs)), 'g:plug_home."/".v:val'),
   \ 'options': '--delimiter / --nth -1',
   \ 'sink':    'Explore'})
 
-autocmd VimEnter * command! Files
-  \ call fzf#vim#files('', { 'window': 'aboveleft 50new', 'options': $FZF_CTRL_T_OPTS })
-
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
 nnoremap <silent> <leader><leader> :Files<cr>
 nnoremap <silent> <Leader>c :Colors<cr>
 nnoremap <silent> <Leader><Enter> :Buffers<cr>
 
 function! s:fzf_statusline()
   " Override statusline as you like
-  hi def link fzf1 airline_a
-  hi def link fzf2 airline_b
-  hi def link fzf3 airline_c
+  highlight fzf1 guifg=161 guibg=251
+  highlight fzf2 guifg=23 guibg=251
+  highlight fzf3 guifg=237 guibg=251
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
+autocmd! FileType fzf silent! match OverLength
 
 augroup vimrc_fzf
     autocmd!
