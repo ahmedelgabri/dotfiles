@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 #
 # Sets Prezto options.
 #
@@ -36,7 +37,11 @@ zstyle ':prezto:load' pmodule \
   'archive' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'prompt'
+  'prompt' \
+  'gpg' \
+  'homebrew' \
+  'node' \
+  'python'
 
 ###############################################################################
 # Editor
@@ -53,7 +58,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 ###############################################################################
 
 # Ignore submodules when they are 'dirty', 'untracked', 'all', or 'none'.
-zstyle ':prezto:module:git:status:ignore' submodules 'all'
+# zstyle ':prezto:module:git:status:ignore' submodules 'all'
 
 ###############################################################################
 # GNU Utility

@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 #
 # Executes commands at login pre-zshrc.
 #
@@ -31,38 +32,8 @@ if [[ -z "$LANG" ]]; then
   export LC_ALL='en_US.UTF-8'
 fi
 
-# export TERM=xterm-256color-italic
-export GITHUB_USER="ahmedelgabri"
-export PROJECTS="$HOME/Sites/dev"
-export WORK="lightspeed"
-
 # 10ms for key sequences
 KEYTIMEOUT=1
-
-# Make sure all the repos I clone uses my template, not sure if this is a good idea though?
-# export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
-export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --no-mouse --margin 1'
-export FZF_DEFAULT_COMMAND='ag --hidden --follow -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview "[ -f "{}" ] && pygmentize -g {}" --bind ?:toggle-preview'
-export PURE_PROMPT_SYMBOL="λ" # λ ▴ ⚡
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
-export HOMEBREW_INSTALL_BADGE="🍕"
-
-##############################################################
-# Python stuff
-###############################################################
-export PYTHONSTARTUP=$HOME/.pyrc.py
-
-# disables prompt mangling in virtual_env/bin/activate
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-# Virtualenvwrapper
-export WORKON_HOME=$HOME/.venv
-export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-export PIP_VIRTUALENV_BASE=$WORKON_HOME
-export PIP_RESPECT_VIRTUALENV=true
-
 
 ##############################################################
 # PATH.
@@ -115,8 +86,3 @@ if [[ ! -d "$TMPDIR" ]]; then
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
-
-
-# local
-source $HOME/.zstuff
-source /usr/local/bin/virtualenvwrapper.sh

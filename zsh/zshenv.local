@@ -1,0 +1,41 @@
+# vim:ft=zsh:
+#
+# Defines environment variables.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Ensure that a non-login, non-interactive shell has a defined environment.
+if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
+
+export NVM_DIR=~/.nvm
+
+# export TERM=xterm-256color-italic
+export GITHUB_USER="ahmedelgabri"
+export PROJECTS="$HOME/Sites/dev"
+export WORK="lightspeed"
+
+# Make sure all the repos I clone uses my template, not sure if this is a good idea though?
+# export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
+export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --no-mouse --margin 1'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --follow -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview "(([[ "{}" =~ \.twig$ ]] &&  highlight -S html -O ansi -l {} 2> /dev/null || highlight -O ansi -l {} 2> /dev/null) || cat {} || tree -C {}) 2> /dev/null" --bind ?:toggle-preview'
+export PURE_PROMPT_SYMBOL="λ" # λ ▴ ⚡
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
+export HOMEBREW_INSTALL_BADGE="🍕"
+
+##############################################################
+# Python stuff
+###############################################################
+export PYTHONSTARTUP=$HOME/.pyrc.py
+
+# Virtualenvwrapper
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+export PIP_VIRTUALENV_BASE="$HOME/.virtualenvs"
+export PIP_RESPECT_VIRTUALENV=true
+
+
