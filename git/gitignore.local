@@ -65,6 +65,7 @@ Session.vim
 *.add.spl
 *.vim-rplugin~
 .netrwhist
+undodir/
 
 # Stuff     #
 #############
