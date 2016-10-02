@@ -61,6 +61,7 @@ fco() {
 }
 
 # Swicth Tmux sessions
+unalias fs 2> /dev/null
 fs() {
   local session
   session=$(tmux list-sessions -F "#{session_name}" | \

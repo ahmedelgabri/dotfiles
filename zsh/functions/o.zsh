@@ -1,7 +1,7 @@
 # No arguments: `open .`
 # With arguments: acts like `open`
 
-unalias o # Prezto has it's own o alias
+unalias o 2> /dev/null
 
 function o {
   if [[ $# -eq 0 ]]; then
