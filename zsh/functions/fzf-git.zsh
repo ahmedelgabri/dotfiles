@@ -14,7 +14,7 @@ gf() {
   git -c color.status=always status --short |
   fzf-tmux -m --ansi --nth 2..,.. \
     --preview 'NAME="$(cut -c4- <<< {})" &&
-               (git diff --color=always "$NAME" | sed 1,4d; cat "$NAME") | head -'$LINES |
+               (git diff --color=always "$NAME" | sed 1,4d; cat "$NAME" 2> /dev/null || tree -C "$NAME" 2> /dev/null) | head -'$LINES |
   cut -c4-
 }
 

@@ -56,7 +56,7 @@ fco() {
     sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
   target=$(
     (echo "$tags"; echo "$branches") |
-    fzf-tmux -l40 -- --no-hscroll --ansi +m -d "\t" -n 2 -1 -q "$*") || return
+    fzf-tmux -- --no-hscroll --ansi +m -d "\t" -n 2 -1 -q "$*") || return
   git checkout $(echo "$target" | awk '{print $2}')
 }
 
