@@ -48,7 +48,6 @@ Plug 'wincent/loupe'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Syntax
-Plug 'ahmedelgabri/vim-ava-snippets'
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
