@@ -3,7 +3,7 @@
 # Enable true color support, the terminal info is from the outside of tmux
 # https://sunaku.github.io/tmux-24bit-color.html#usage
 set-option -g default-terminal "tmux-256color"
-set-option -ga terminal-overrides ",xterm-256color-italic:Tc"
+set-option -ga terminal-overrides ",xterm-256color:Tc"
 
 # use C-a, since it's on the home row and easier to hit than C-b
 set-option -g prefix C-a
