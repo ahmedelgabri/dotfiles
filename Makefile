@@ -8,7 +8,7 @@ symlink:
 
 homebrew:
 		@brew update
-		@brew bundle --file=./homebrew/Brewfile
+		@brew bundle --file=~/.dotfiles/homebrew/Brewfile
 		@brew cleanup
 		@brew doctor
 
