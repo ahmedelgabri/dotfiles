@@ -7,7 +7,10 @@ symlink:
 		@./script/symlink
 
 homebrew:
-		@sh ./homebrew/homebrew.sh
+		@brew update
+		@brew bundle --file=./homebrew/Brewfile
+		@brew cleanup
+		@brew doctor
 
 node:
 		@sh ./node/packages.sh

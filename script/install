@@ -9,8 +9,20 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 cd $HOME
 # softwareupdate --verbose --install --all
-# xcode-select --install
+xcode-select --install
 # xcodebuild -license accept # To accept Xcode EULA
+
+
+
+# Check for Homebrew,
+# Install if we don't have it
+if ! command -v brew >/dev/null; then
+  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+  echo "\033[0;34m====== Installing Homebrew =================================\033[0;0m"
+  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  brew tap 'Homebrew/bundle'
+fi
 
 
 if [[ ! -d "$HOME/.dotfiles" ]]; then
@@ -30,7 +42,7 @@ if [[ ! -d "$HOME/.zprezto" ]]; then
     ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
   done
 else
-  cd $HOME/.zprezto && git pull && git submodule update --init --recursive
+  cd $HOME/.zprezto && git reset --hard origin/master && git submodule update --init --recursive
 fi
 
 echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
