@@ -54,7 +54,6 @@
 	fl = log -u --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %Creset%ae %C(magenta)%d\" --date=short
 	gr = grep -Ii
 	setr = remote set-url
-	del = "!f() { git branch -D \"$1\"; git push origin --delete \"$1\"; }; f"
 	rmr = remote remove
 	# untrack = update-index --assume-unchanged
 	untrack = rm --cached <file>
