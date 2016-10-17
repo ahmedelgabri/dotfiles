@@ -5,7 +5,10 @@
 set-option -g default-terminal "tmux-256color"
 set-option -ga terminal-overrides ",xterm-256color:Tc"
 
+
 # use C-a, since it's on the home row and easier to hit than C-b
+# unbind-key C-b
+# set -g prefix C-Space
 set-option -g prefix C-a
 unbind-key C-a
 bind-key C-a send-prefix
@@ -53,7 +56,6 @@ bind -n WheelDownPane select-pane -t= \; send-keys -M
 # Quick kill-session
 bind C-q confirm-before 'kill-session'
 bind-key : command-prompt
-bind-key L clear-history
 bind-key l choose-tree -u
 
 bind-key -n S-Right next-window
@@ -73,9 +75,26 @@ set-window-option -g other-pane-width 80
 
 # bind-key a last-pane
 bind-key q display-panes
-bind-key % split-window -h -c "#{pane_current_path}"
-bind-key '"' split-window -c "#{pane_current_path}"
-bind-key c  new-window -c "#{pane_current_path}"
+bind-key | split-window -h -c "#{pane_current_path}"
+bind-key \ split-window -h -c "#{pane_current_path}"
+bind-key - split-window -v -c "#{pane_current_path}"
+bind-key _ split-window -v -c "#{pane_current_path}"
+unbind c
+bind c new-window -c '#{pane_current_path}'
+unbind %
+bind % split-window -h -c '#{pane_current_path}'
+unbind '"'
+bind '"' split-window -v -c '#{pane_current_path}'
+
+# Resizing (mouse also works).
+unbind Left
+bind -r Left resize-pane -L 5
+unbind Right
+bind -r Right resize-pane -R 5
+unbind Down
+bind -r Down resize-pane -D 5
+unbind Up
+bind -r Up resize-pane -U 5
 
 # Allow the arrow key to be used immediately after changing windows
 set-option -g repeat-time 0
@@ -137,12 +156,12 @@ set-option -g status-attr dim
 
 set-window-option -g window-status-format ' #I '
 set-window-option -g window-status-current-format ' #I #W '
-set-window-option -g window-status-attr bright
-set-window-option -g window-status-current-attr bold
+set-window-option -g window-status-style default
+set-window-option -g window-status-current-style default
 
 set-window-option -g window-status-activity-fg red
 set-window-option -g window-status-activity-bg black
-set-window-option -g window-status-activity-attr reverse
+set-window-option -g window-status-activity-style reverse
 
 set-window-option -g window-status-current-fg black
 set-window-option -g window-status-current-bg cyan
@@ -155,31 +174,3 @@ set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] "
 # show host name and IP address on right side of status bar
 set -g status-right-length 120
 set -g status-right "#[fg=colour237][ #[fg=#649C62]#(echo $(node -v)) #[fg=colour237]] #(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
-
-# List of plugins
-# prefix + I to install plugins
-# prefix + u to uninstall plugins
-set -g @plugin 'tmux-plugins/tpm'
-
-set -g @plugin 'tmux-plugins/tmux-open'
-set -g @open 'C-o'
-set -g @open-editor 'o'
-
-set -g @plugin 'tmux-plugins/tmux-copycat'
-
-set -g @plugin 'tmux-plugins/tmux-yank'
-set -g @shell_mode 'vi'
-
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @resurrect-strategy-nvim 'session'
-set -g @resurrect-capture-pane-contents 'on'
-
-set -g @plugin 'tmux-plugins/tmux-continuum'
-# set -g @continuum-boot 'on'
-# set -g @continuum-boot-options 'iterm,fullscreen'
-
-set -g @plugin 'christoomey/vim-tmux-navigator'
-
-
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'
