@@ -129,7 +129,8 @@ if !has('nvim')
   set backspace=2
   " Display as much as possibe of a window's last line.
   set display+=lastline
-  set incsearch hlsearch
+  set incsearch
+  " set hlsearch
   set laststatus=2
   " Enable mouse support
   set mouse=a
@@ -318,11 +319,9 @@ set shortmess+=atI
 "================================================================================
 " Automatically make splits equal in size
 autocmd VimResized * wincmd =
-autocmd FileType help wincmd L
 
 " Close preview buffer with q
-autocmd FileType help,preview,ag,netrw,qf,fzf nmap <buffer> <silent>  q :q<cr>
-
+autocmd FileType preview,ag,netrw,qf nmap <buffer> <silent>  q :q<cr>
 
 augroup vimrcEx
   autocmd!
@@ -335,29 +334,7 @@ augroup vimrcEx
     \   exe "normal g`\"" |
     \ endif
 
-  " Some file types use real tabs
-  autocmd FileType {make,gitconfig} setl noexpandtab
-
   autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
-
-  " Make sure all markdown files have the correct filetype set and setup wrapping
-  autocmd FileType markdown setl shiftwidth=4 spell softtabstop=4 tabstop=4 linebreak nolist wrap lbr colorcolumn= synmaxcol=999999
-  autocmd BufEnter *.{markdown,md,text,txt,mkd,json} setl conceallevel=0
-
-  " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
-  autocmd Filetype gitcommit setl spell textwidth=72
-
-  autocmd BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} set ft=ruby
-
-  " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
-  autocmd BufEnter *.py silent! match OverLength /\%>80v.\+/
-  autocmd FileType python setl textwidth=79 commentstring=#\ %s
-
-  autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}*rc,\.tern-*,*.json set ft=json
-  autocmd BufNewFile,BufRead .tags set ft=tags
-  autocmd BufRead,BufNewFile jrnl*.txt set ft=markdown
-  " Wrap quickfix window
-  autocmd FileType qf setlocal wrap linebreak
 augroup END
 
 " Automatically reload vimrc when it's saved
@@ -454,6 +431,11 @@ nmap ga <Plug>(EasyAlign)
 " Tab and Shift + Tab Circular buffer navigation
 nnoremap <tab>   :bnext<CR>
 nnoremap <S-tab> :bprevious<CR>
+
+
+" use tab to toggle folds
+nnoremap <Enter> za
+
 
 " qq to record, Q to replay
 nnoremap Q @q
@@ -785,12 +767,6 @@ function! s:fzf_statusline()
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
-autocmd! FileType fzf silent! match OverLength
-
-augroup vimrc_fzf
-    autocmd!
-    autocmd FileType help nmap <buffer> <silent> <leader><leader> :Helptags<cr>
-augroup END
 
 " JSX
 " let g:jsx_ext_required = 0 " Allow JSX in normal JS files

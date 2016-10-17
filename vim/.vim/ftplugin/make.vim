@@ -1,0 +1,2 @@
+" Use tabs
+setl noexpandtab
