@@ -30,6 +30,7 @@ Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'wincent/terminus'
 " Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'moll/vim-bbye'
 Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
@@ -129,11 +130,7 @@ if !has('nvim')
   set backspace=2
   " Display as much as possibe of a window's last line.
   set display+=lastline
-  set incsearch
-  " set hlsearch
   set laststatus=2
-  " Enable mouse support
-  set mouse=a
   set ttyfast
   set wildmenu
 endif
@@ -289,18 +286,6 @@ set smartindent
 set noswapfile
 
 set hidden
-
-" Swap iTerm2 cursors in [n]vim insert mode when using tmux,
-" more info here https://github.com/mhinz/vim-galore#change-cursor-style-in-insert-mode
-if empty($TMUX)
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-  let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-else
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-endif
 
 set formatoptions+=rn1
 
