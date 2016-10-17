@@ -29,7 +29,8 @@
 	newHighlight = "green bold 22"
 
 [pager]
-	diff = diff-so-fancy | less --tabs=4 -RFX
+    show = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+    diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
 
 [interactive]
 	diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
@@ -39,6 +40,7 @@
 	excludesfile = ~/.dotfiles/git/gitignore.local
 	; https://news.ycombinator.com/item?id=11388479
 	untrackedCache = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
 
 [alias]
 	co = checkout
