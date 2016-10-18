@@ -156,12 +156,11 @@ set-option -g status-attr dim
 
 set-window-option -g window-status-format ' #I '
 set-window-option -g window-status-current-format ' #I #W '
-set-window-option -g window-status-style default
-set-window-option -g window-status-current-style default
+set-window-option -g window-status-attr default
+set-window-option -g window-status-current-attr default
 
 set-window-option -g window-status-activity-fg red
 set-window-option -g window-status-activity-bg black
-set-window-option -g window-status-activity-style reverse
 
 set-window-option -g window-status-current-fg black
 set-window-option -g window-status-current-bg cyan
@@ -174,3 +173,12 @@ set -g status-left "#[fg=colour237][ #[fg=colour243]#S #[fg=colour237]] "
 # show host name and IP address on right side of status bar
 set -g status-right-length 120
 set -g status-right "#[fg=colour237][ #[fg=#649C62]#(echo $(node -v)) #[fg=colour237]] #(battery -t -g '#98971a' -m '#d79921' -w '#cc241d') #[fg=colour237][ #[fg=colour243]#(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}') #[fg=colour237]] #[fg=colour237][ #[fg=colour243]%A, %d %b %Y %H:%M #[fg=colour237]]"
+
+# List of plugins
+# prefix + I to install plugins
+# prefix + u to uninstall plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
