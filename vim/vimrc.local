@@ -47,13 +47,14 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'wincent/loupe'
 Plug 'ConradIrwin/vim-bracketed-paste'
+Plug 'jaawerth/nrun.vim'
 
 " Syntax
 Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
-Plug 'flowtype/vim-flow'                          , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
-Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
+" Plug 'flowtype/vim-flow'                          , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
+" Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus', 'html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
 
 " Linters & Code quality
@@ -130,7 +131,11 @@ if !has('nvim')
   set backspace=2
   " Display as much as possibe of a window's last line.
   set display+=lastline
+  set incsearch
+  " set hlsearch
   set laststatus=2
+  " Enable mouse support
+  set mouse=a
   set ttyfast
   set wildmenu
 endif
@@ -278,6 +283,18 @@ set listchars=tab:▸\ ,trail:•,nbsp:_,eol:¬,precedes:«,extends:»,nbsp:░
 set showbreak=↪
 set fillchars=diff:⣿,vert:│
 
+if has('linebreak')
+  set breakindent                     " indent wrapped lines to match start
+  if exists('&breakindentopt')
+    set breakindentopt=shift:2        " emphasize broken lines by indenting them
+  endif
+endif
+
+
+if exists('&belloff')
+  set belloff=all                     " never ring the bell for any reason
+endif
+
 " show where you are
 set ruler
 
@@ -373,21 +390,21 @@ vnoremap gs  :Gstatus<CR>
 nnoremap <leader>k  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 
+nnoremap <leader>q :quit<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>x :xit<CR>
+
 " https://github.com/mhinz/vim-galore#quickly-edit-your-macros
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 inoremap jj <ESC>
 nnoremap \ :SideSearch<SPACE>
-nnoremap <Leader>x :SlimuxREPLSendBuffer<CR>
-vnoremap <Leader>x :SlimuxREPLSendSelection<CR>
 " nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
 nnoremap <Leader>bd :Bdelete<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 " set text wrapping toggles
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-nnoremap <leader>s :Obsession<CR>
-nnoremap <leader>ds :Obsession!<CR>
 nnoremap -- :UndotreeToggle<CR>
 nnoremap <leader>= <C-w>t<C-w>K<CR>
 nnoremap <leader>\ <C-w>t<C-w>H<CR>
@@ -593,14 +610,14 @@ command! ClearRegisters call ClearRegisters()
 " is called on buffer write in the autogroup above.
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
+  let l:pos=getcurpos()
+  let l:search=@/
   " Do the business:
-  execute a:command
+  keepjumps execute a:command
   " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
+  let @/=l:search
+  nohlsearch
+  call setpos('.', l:pos)
 endfunction
 nnoremap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 nnoremap _= :call Preserve("normal gg=G")<CR>
@@ -770,7 +787,7 @@ if findfile('.stylelintrc', '.;') !=# ''
   let g:neomake_css_enabled_makers = ['stylelint']
   let g:neomake_scss_enabled_makers = g:neomake_css_enabled_makers
   let g:neomake_scss_stylelint_maker = {
-      \ 'exe': $PWD .'./node_modules/.bin/stylelint',
+      \ 'exe': nrun#Which('stylelint'),
       \ 'args': ['--syntax', 'scss'],
       \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
       \ }
@@ -786,18 +803,13 @@ if findfile('.eslintrc', '.;') !=# '' || findfile('.eslintrc.js', '.;') !=# ''
   let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 
-  let g:neomake_javascript_eslint_exe = $PWD .'/node_modules/.bin/eslint'
+  let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
   let g:neomake_jsx_eslint_exe = g:neomake_javascript_eslint_exe
 endif
 
 " Flow on demand
 if findfile('.flowconfig', '.;') !=# ''
-  if executable($PWD .'/node_modules/.bin/flow')
-    let g:flow_path = $PWD .'/node_modules/.bin/flow'
-  else
-    let g:flow_path = 'flow'
-  endif
-
+  let g:flow_path = nrun#Which('flow')
   let g:neomake_javascript_flow_maker = {
       \ 'exe': 'sh',
       \ 'args': ['-c', g:flow_path.' --json --strip-root | flow-vim-quickfix'],
@@ -894,13 +906,12 @@ let NERDTreeMinimalUI=1
 " autocmd vimenter * if !argc() | NERDTree | endif
 
 " Vim Commentary
-autocmd FileType jade set commentstring=//-\ %s
 autocmd FileType ruby set commentstring=#\ %s
 autocmd FileType htmldjango,jinja,twig,rain set commentstring={#\ %s\ #}
 " autocmd FileType javascript.jsx set commentstring={/*\ %s\ */}
 
 " Markdown
-let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
+let g:vim_markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
 let g:vim_markdown_syntax_conceal = 0
 
 " gutentags
