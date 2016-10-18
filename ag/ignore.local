@@ -22,3 +22,5 @@ __build__
 *.jpg
 *.jpeg
 *.gif
+*.swp
+*.spl
