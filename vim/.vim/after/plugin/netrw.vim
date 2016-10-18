@@ -18,3 +18,5 @@ let g:netrw_hide = 1
 let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 
+autocmd FileType netrw nmap <buffer> <silent>  q :q<cr>
+

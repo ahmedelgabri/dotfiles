@@ -6,7 +6,6 @@ if has('nvim')
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 end
 
-
 set background=dark
 let g:gruvbox_italic=1
 
@@ -22,5 +21,6 @@ hi Tabline cterm=None gui=None
 hi TablineFill cterm=None gui=None
 hi TablineSel cterm=None gui=None
 
+" Italics
 hi Comment cterm=italic gui=italic
 

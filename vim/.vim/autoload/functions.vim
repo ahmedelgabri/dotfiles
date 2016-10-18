@@ -91,3 +91,24 @@ endfunction
 function! functions#OpenFileFolder()
   silent call system('open '.expand('%:p:h:~'))
 endfunction
+
+" Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
+" from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
+let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
+function! functions#should_mkview() abort
+  return
+        \ &buftype == '' &&
+        \ index(g:GabriMkviewFiletypeBlacklist, &filetype) == -1 &&
+        \ !exists('$SUDO_USER') " Don't create root-owned files.
+endfunction
+
+function! functions#mkview() abort
+  if exists('*haslocaldir') && haslocaldir()
+    " We never want to save an :lcd command, so hack around it...
+    cd -
+    mkview
+    lcd -
+  else
+    mkview
+  endif
+endfunction

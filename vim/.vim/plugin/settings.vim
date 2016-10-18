@@ -1,14 +1,8 @@
-set showtabline=2
-set laststatus=2
-set tabline="%1T"
-
-
 if !has('nvim')
   set nocompatible
   set encoding=utf-8
-  set autoindent
-  " Fix broken backspace in some setups
-  set backspace=2
+  set autoindent                        " maintain indent of current line
+  set backspace=indent,start,eol        " allow unrestricted backspacing in insert mode
   " Display as much as possibe of a window's last line.
   set display+=lastline
   set laststatus=2
@@ -16,26 +10,21 @@ if !has('nvim')
   set wildmenu
 endif
 
-if has('nvim')
-  set shada='1000,<500,:500,/500,n~/Box\ Sync/dotfiles/vim/main.shada
-  autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+set showtabline=2
+set laststatus=2
+set tabline="%1T"
 
-  let g:python2_host_prog = '/usr/local/bin/python'
-  let g:python3_host_prog = '/usr/local/bin/python3'
-else
-  set viminfo='1000,<500,:500,/500,n~/.viminfo
-endif
+" set highlight+=@:ColorColumn          " ~/@ at end of window, 'showbreak'
+" set highlight+=N:DiffText             " make current line number stand out a little
+" set highlight+=c:LineNr               " blend vertical separators with line numbers
 
-" number of visual spaces per TAB
-set tabstop=2
-" insert mode tab and backspace, number of spaces in tab when editing
+set expandtab                         " always use spaces instead of tabs
+set tabstop=2                         " spaces per tab
 set softtabstop=2
-set expandtab
-" normal mode indentation commands use 2 spaces
-set shiftwidth=2
-set shiftround
+set shiftround                        " always indent by multiple of shiftwidth
+set shiftwidth=2                      " spaces per tab (when shifting)
 
-set nowrap
+set nowrap                            " no wrap
 
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 silent! match OverLength /\%>120v.\+/
@@ -55,19 +44,21 @@ syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
 " set re=1                 " use explicit old regexpengine, seems to be more faster
 
-" show line numbers, hybrid. Relative with absolute for the line you are on.
-set number relativenumber
+set number                            " show line numbers in gutter
 
-" show command in bottom bar
-set showcmd
+if exists('+relativenumber')
+  set relativenumber                  " show relative numbers in gutter
+endif
 
-" Don't Display the mode you're in. since it's already shown on the statusline
-set noshowmode
+if has('showcmd')
+  set showcmd                         " extra info at end of command line
+endif
+
+set noshowmode                        " Don't Display the mode you're in. since it's already shown on the statusline
 
 " show a navigable menu for tab completion
 set wildmode=longest,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
-set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
 set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
@@ -76,11 +67,13 @@ set wildignore+=*/.DS_Store,*/tmp/*
 
 " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 set spelllang=en_us
-set spellfile=$HOME/Box\ Sync/dotfiles/vim/en.utf-8.add
+set spellfile=~/.vim/spell/en.utf-8.add
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
 endif
+
 set complete+=kspell
+
 " Disable unsafe commands.
 " http://andrew.stwrt.ca/posts/project-specific-vimrc/
 set secure
@@ -89,17 +82,18 @@ if has('virtualedit')
   set virtualedit=block               " allow cursor to move where there is no text in visual block mode
 endif
 set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
+
 set completeopt+=menuone
 set completeopt-=preview
 
 " highlight current line (Check auto groups too)
 " https://github.com/mhinz/vim-galore#smarter-cursorline
+set cursorline
+set nocursorcolumn       " do not highlight column
 autocmd InsertLeave,WinEnter * set cursorline
 autocmd InsertEnter,WinLeave * set nocursorline
-set nocursorcolumn       " do not highlight column
 
-" redraw only when we need to.
-set lazyredraw
+set lazyredraw                        " don't bother updating screen during macro playback
 
 " highlight matching [{()}]
 set showmatch
@@ -109,33 +103,21 @@ set title
 set splitbelow
 set splitright
 
-" Search
-"-----------------
 " Ignore case in search.
 set ignorecase smartcase
-
-if has('persistent_undo')
-  set undofile                          " Save undos after file closes
-  set undodir=~/.config/nvim/undodir    " Save undos in undodir within nvim dir
-endif
 
 " fix slight delay after pressing ESC then O http://ksjoberg.com/vim-esckeys.html
 " set timeout timeoutlen=500 ttimeoutlen=100
 set timeoutlen=1000 ttimeoutlen=0
 
-" nofold
-set nofoldenable
-
 if v:version > 703 || v:version == 703 && has('patch541')
   set formatoptions+=j                " remove comment leader when joining comment lines
 endif
-
 set formatoptions+=n                  " smart auto-indenting inside numbered lists
+set formatoptions+=r1
 
 " No beeping.
 set visualbell
-
-set linebreak
 
 " No flashing.
 set noerrorbells
@@ -148,18 +130,30 @@ set scrolloff=5
 set sidescrolloff=5
 
 " Scroll sideways a character at a time, rather than a screen at a time
-set sidescroll=1
+set sidescroll=3
 
 " yank and paste with the system clipboard
 set clipboard=unnamed
 
 " show trailing whitespace
 set list
-set listchars=tab:▸\ ,trail:•,nbsp:_,eol:¬,precedes:«,extends:»,nbsp:░
-set showbreak=↪
-set fillchars=diff:⣿,vert:│
+set listchars=nbsp:░
+set listchars+=eol:¬
+set listchars+=tab:▷┅                 " WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
+                                      " + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
+set listchars+=extends:»              " RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+set listchars+=precedes:«             " LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
+set nojoinspaces                      " don't autoinsert two spaces after '.', '?', '!' for join command
+
+
+if has('windows')
+  set fillchars=diff:⣿,vert:┃              " BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+endif
 
 if has('linebreak')
+  set linebreak
+  let &showbreak='↳ '                 " DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
   set breakindent                     " indent wrapped lines to match start
   if exists('&breakindentopt')
     set breakindentopt=shift:2        " emphasize broken lines by indenting them
@@ -176,22 +170,19 @@ set ruler
 
 set smartindent
 
-set noswapfile
-
 set hidden
-
-set formatoptions+=rn1
-
-" No backups.
-set nobackup
-set nowritebackup
-set noswapfile
 
 " Make tilde command behave like an operator.
 set tildeop
 
-" Avoid unnecessary hit-enter prompts.
-set shortmess+=atI
+set shortmess+=A                      " ignore annoying swapfile messages
+set shortmess+=I                      " no splash screen
+set shortmess+=O                      " file-read message overwrites previous
+set shortmess+=T                      " truncate non-file messages in middle
+set shortmess+=W                      " don't echo "[w]"/"[written]" when writing
+set shortmess+=a                      " use abbreviations in messages eg. `[RO]` instead of `[readonly]`
+set shortmess+=o                      " overwrite file-written messages
+set shortmess+=t                      " truncate file messages at start
 
 if has('nvim')
   " dark0 + gray
@@ -227,12 +218,15 @@ if has('nvim')
   let g:terminal_color_15 = "#ebdbb2"
 endif
 
-set fdm=indent
-
-highlight Folded ctermbg=254
+if has('nvim')
+  let g:python_host_prog = '/usr/local/bin/python'
+  let g:python3_host_prog = '/usr/local/bin/python3'
+endif
 
 " Configure fold status text
 if has("folding")
+  highlight Folded ctermbg=254
+
   function! NeatFoldText()
     let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
     let lines_count = v:foldend - v:foldstart + 1
@@ -244,11 +238,57 @@ if has("folding")
     return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
   endfunction
   set foldtext=NeatFoldText()
-endif
 
+  set foldmethod=indent               " not as cool as syntax, but faster
+  set foldlevelstart=99               " start unfolded
+endif
 
 if executable('ag')
   " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
 endif
 
+if has('mksession')
+  set viewdir=~/.vim/tmp/view       " override ~/.vim/view default
+  set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
+endif
+
+if exists('$SUDO_USER')
+  set nobackup                        " don't create root-owned files
+  set nowritebackup                   " don't create root-owned files
+else
+  set backupdir=~/.vim/tmp/backup    " keep backup files out of the way
+  set backupdir+=.
+endif
+
+if exists('$SUDO_USER')
+  set noswapfile                      " don't create root-owned files
+else
+  set directory=~/.vim/tmp/swap//    " keep swap files out of the way
+  set directory+=.
+endif
+
+if has('persistent_undo')
+  if exists('$SUDO_USER')
+    set noundofile                    " don't create root-owned files
+  else
+    set undodir=~/.vim/tmp/undo       " keep undo files out of the way
+    set undodir+=.
+    set undofile                      " actually use undo files
+  endif
+endif
+
+if exists('$SUDO_USER')               " don't create root-owned files
+  if has('nvim')
+    set shada=
+  else
+    set viminfo=
+  endif
+else
+  if has('nvim')
+    set shada='1000,<500,:500,/500,n~/.vim/tmp/main.shada
+    autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+  else
+    set viminfo='1000,<500,:500,/500,n~/.vim/tmp/viminfo
+  endif
+endif

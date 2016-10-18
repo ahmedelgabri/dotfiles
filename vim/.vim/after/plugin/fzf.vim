@@ -16,7 +16,8 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 
 nnoremap <silent> <leader><leader> :Files<cr>
 nnoremap <silent> <Leader>c :Colors<cr>
-nnoremap <silent> <Leader><Enter> :Buffers<cr>
+nnoremap <silent> <Leader>b :Buffers<cr>
+nnoremap <silent> <Leader>h :Helptags<cr>
 
 function! s:fzf_statusline()
   " Override statusline as you like
@@ -25,5 +26,6 @@ function! s:fzf_statusline()
   highlight fzf3 guifg=237 guibg=251
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
+
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
 

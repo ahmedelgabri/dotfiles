@@ -24,7 +24,7 @@ Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'ye
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'ddrscott/vim-side-search'
-Plug 'unblevable/quick-scope'
+" Plug 'unblevable/quick-scope'
 " Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -43,6 +43,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'MarcWeber/vim-addon-local-vimrc'
+Plug 'wincent/pinnacle'
 Plug 'wincent/loupe'
 Plug 'jaawerth/nrun.vim'
 
@@ -86,6 +87,8 @@ filetype plugin indent on
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
+
+let g:deoplete#enable_at_startup = 1
 
 " " http://ddrscott.github.io/blog/2016/vim-toggle-movement/
 " function! ToggleMovement(firstOp, thenOp)

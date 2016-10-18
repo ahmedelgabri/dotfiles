@@ -1,5 +1,5 @@
-highlight NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=NONE
-highlight NeomakeWarningMsg ctermfg=003 ctermbg=None guifg=yellow guibg=NONE
+hi NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=NONE
+hi NeomakeWarningMsg ctermfg=003 ctermbg=None guifg=yellow guibg=NONE
 
 let g:neomake_open_list=2
 let g:neomake_error_sign = { 'text': '✗', 'texthl': 'NeomakeErrorMsg', }
