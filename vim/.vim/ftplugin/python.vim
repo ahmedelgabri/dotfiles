@@ -2,4 +2,3 @@
 match OverLength /\%>80v.\+/
 
 setl textwidth=79
-setl commentstring=#\ %s
