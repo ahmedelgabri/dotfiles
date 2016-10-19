@@ -2,6 +2,13 @@ global !p
 from helpers import *
 endglobal
 
+snippet pretty "pretty-print JSON-able data" b
+console.log(
+  JSON.stringify({
+    $1
+  }, null, 2)
+);
+endsnippet
 
 # Functions
 
