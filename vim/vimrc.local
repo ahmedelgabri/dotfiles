@@ -88,8 +88,6 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-let g:deoplete#enable_at_startup = 1
-
 " " http://ddrscott.github.io/blog/2016/vim-toggle-movement/
 " function! ToggleMovement(firstOp, thenOp)
 "   let pos = getpos('.')
