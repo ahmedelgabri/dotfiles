@@ -8,6 +8,10 @@ if !has('nvim')
   set laststatus=2
   set ttyfast
   set wildmenu
+  if &term =~# '^tmux'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  endif
 endif
 
 set showtabline=2
