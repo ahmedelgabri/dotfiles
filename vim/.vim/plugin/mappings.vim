@@ -92,7 +92,7 @@ nnoremap <S-tab> :bprevious<CR>
 
 
 " use tab to toggle folds
-nnoremap <Enter> za
+" nnoremap <Enter> za
 
 
 " qq to record, Q to replay

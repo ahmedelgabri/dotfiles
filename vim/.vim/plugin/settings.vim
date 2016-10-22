@@ -272,6 +272,8 @@ else
   set directory+=.
 endif
 
+set updatecount=80                    " update swapfiles every 80 typed chars
+
 if has('persistent_undo')
   if exists('$SUDO_USER')
     set noundofile                    " don't create root-owned files
