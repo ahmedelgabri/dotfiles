@@ -37,6 +37,9 @@ echo "\033[0;34m------------------------------------------------------------\033
 echo "\033[0;34m====== Linking... ==========================================\033[0;0m"
 echo "\033[0;34m------------------------------------------------------------\033[0;0m"
 
+mkdir -p $HOME/.config
+mkdir -p $HOME/.dotfiles/vim/tmp/{swap,undo,view}
+
 ZSH_FILES=(
   zshrc
   zprofile
@@ -57,11 +60,9 @@ ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
 ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 
-mkdir -p $HOME/.config/nvim
 ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
-ln -sf $HOME/.dotfiles/vim/.vim $HOME/.vim
-ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.config/nvim/init.vim
-ln -sf $HOME/.dotfiles/vim/.vim $HOME/.config/nvim
+ln -sf $HOME/.dotfiles/vim/ $HOME/.vim
+ln -sf $HOME/.dotfiles/vim/ $HOME/.config/nvim
 ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 

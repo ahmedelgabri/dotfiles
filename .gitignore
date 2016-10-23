@@ -1,6 +1,6 @@
-vim/.vim/plugged/
-vim/.vim/tmp/
-vim/.vim/autoload/plug.vim*
+vim/plugged/
+vim/tmp/
+vim/autoload/plug.vim*
 weechat/logs
 weechat/sec.conf
 weechat/weechat.log
