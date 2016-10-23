@@ -2,10 +2,6 @@ if has('termguicolors')
   set termguicolors
 end
 
-if has('nvim')
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-end
-
 set background=dark
 let g:gruvbox_italic=1
 

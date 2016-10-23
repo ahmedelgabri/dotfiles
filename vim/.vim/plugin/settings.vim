@@ -1,3 +1,7 @@
+if has('nvim')
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+end
+
 if !has('nvim')
   set nocompatible
   set encoding=utf-8
