@@ -160,6 +160,11 @@ hs.hotkey.bind({"ctrl", "cmd", "alt"}, "l", function()
   os.execute("/Users/ahmed/.dotfiles/bin/lockscreen")
 end)
 
+
+hs.hotkey.bind({}, "F18", function()
+  hs.eventtap.keyStroke({}, 'ESCAPE')
+end)
+
 hs.hotkey.bind({'ctrl', 'alt', 'cmd'}, 'f3', (function()
   hs.alert('Hammerspoon console')
   hs.openConsole()
