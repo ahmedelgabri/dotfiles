@@ -1,7 +1,6 @@
 -- https://github.com/mhartington/dotfiles/blob/7dafb67c7be40f373e20c3f443216347c20534ea/hammerspoon/init.lua
 local modalKey = {"alt"}
 local focusKeys = {
-  a='Atom',
   b='Google Chrome',
   c='Google Chrome Canary',
   s='Slack',
