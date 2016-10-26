@@ -63,6 +63,10 @@ ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -sf $HOME/.dotfiles/vim/ $HOME/.vim
 ln -sf $HOME/.dotfiles/vim/ $HOME/.config/nvim
+
+ln -sf $HOME/.dotfiles/hammerspoon/ $HOME/.hammerspoon
+ln -sf $HOME/.dotfiles/karabiner.d/ $HOME/.karabiner.d
+
 ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist
 
