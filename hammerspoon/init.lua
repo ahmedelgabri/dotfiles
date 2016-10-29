@@ -160,8 +160,7 @@ hs.hotkey.bind({"ctrl", "cmd", "alt"}, "l", function()
   os.execute("/Users/ahmed/.dotfiles/bin/lockscreen")
 end)
 
-
-hs.hotkey.bind({}, "F18", function()
+hs.hotkey.bind({}, '§', function()
   hs.eventtap.keyStroke({}, 'ESCAPE')
 end)
 
