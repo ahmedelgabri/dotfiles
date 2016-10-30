@@ -9,5 +9,6 @@ augroup filetypedetect
   au! BufNewFile,BufRead .tags setfiletype tags
   au! BufRead,BufNewFile jrnl*.txt,TODO setfiletype markdown
   au! BufRead,BufNewFile *zsh/* setfiletype zsh
+  au! BufRead,BufNewFile *.twig setfiletype jinja2
 augroup END
 
