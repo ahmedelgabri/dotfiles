@@ -75,18 +75,13 @@ fgl() (
   ls *.flf | sort | fzf --no-multi --reverse --preview "figlet -f {} Hello World!"
 )
 
-# e [FUZZY PATTERN] - Open the selected file with the default editor
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 #   - Open editor normally if you pass a filepath
-unalias e 2> /dev/null
-e() {
-  if [[ $# > 0 ]]; then
-    ${EDITOR} "$@"
-  else
-    local file
-    file=$(fzf-tmux --query="$1" --select-1 --exit-0)
-    [ -n "$file" ] && ${EDITOR:-vim} "$file"
-  fi
+fe() {
+  local file
+  file=$(fzf-tmux --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
 }
 
