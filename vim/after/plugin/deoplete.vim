@@ -22,4 +22,5 @@ if has('nvim')
   let g:deoplete#sources_vim        = ['buffer', 'member', 'file', 'ultisnips']
   let g:deoplete#sources_txt        = ['buffer','dictionary', 'file', 'member']
   let g:deoplete#sources_mail       = ['buffer','dictionary', 'file', 'member']
+  let g:deoplete#sources#flow#flow_bin = nrun#Which('flow')
 endif

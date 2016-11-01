@@ -23,14 +23,20 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern' }
-Plug 'ternjs/tern_for_vim'                        , { 'for': ['javascript'], 'do': 'npm i' }
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim'      , { 'do': ':UpdateRemotePlugins' }
+  Plug 'carlitux/deoplete-ternjs'  , { 'do': 'npm i -g tern' }
+  Plug 'steelsojka/deoplete-flow'  , { 'do': 'npm i -g flow-bin' }
+else
+  Plug 'Valloric/YouCompleteMe'    , { 'do': './install.py --tern-completer' }
+  Plug 'flowtype/vim-flow'         , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
+endif
+Plug 'ternjs/tern_for_vim'         , { 'for': ['javascript'], 'do': 'npm i' }
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
-Plug 'junegunn/fzf'                               , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'                , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'mattn/emmet-vim'                            , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
+Plug 'mattn/emmet-vim'             , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'ddrscott/vim-side-search'
 " Plug 'unblevable/quick-scope'
 " Plug 'rking/ag.vim'
@@ -38,15 +44,15 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'wincent/terminus'
-Plug 'junegunn/vim-easy-align'                    , { 'on': ['<Plug>(EasyAlign)'] }
+Plug 'junegunn/vim-easy-align'     , { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'moll/vim-bbye'
-Plug 'mbbill/undotree'                            , { 'on': ['UndotreeToggle'] }
+Plug 'mbbill/undotree'             , { 'on': ['UndotreeToggle'] }
 Plug 'duggiefresh/vim-easydir'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tpope/vim-obsession'
 Plug 'kshenoy/vim-signature'
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'scrooloose/nerdtree'         , { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'wincent/pinnacle'
@@ -54,16 +60,15 @@ Plug 'wincent/loupe'
 Plug 'jaawerth/nrun.vim'
 
 " Syntax
-Plug 'kewah/vim-stylefmt'                         , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
+Plug 'kewah/vim-stylefmt'          , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
 Plug 'sheerun/vim-polyglot'
-Plug 'moll/vim-node'                              , { 'for': ['javascript'] }
-" Plug 'flowtype/vim-flow'                          , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
-Plug 'ap/vim-css-color'                           , { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
-Plug 'stephenway/postcss.vim'                     , { 'for': ['css'] }
+Plug 'moll/vim-node'               , { 'for': ['javascript'] }
+Plug 'ap/vim-css-color'            , { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
+Plug 'stephenway/postcss.vim'      , { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
-Plug 'benekastah/neomake'                         , { 'do': 'npm i -g flow-vim-quickfix' }
+Plug 'benekastah/neomake'          , { 'do': 'npm i -g flow-vim-quickfix' }
 
 " Themes, UI & eye cnady
 Plug 'jbleuzen/vim-buftabline'
@@ -81,7 +86,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 Plug 'lambdalisue/vim-gista'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim', { 'on': 'GV' }
+Plug 'junegunn/gv.vim'             , { 'on': 'GV' }
 
 call plug#end()
 
