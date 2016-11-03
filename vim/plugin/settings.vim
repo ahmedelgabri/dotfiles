@@ -35,7 +35,7 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 set nowrap                            " no wrap
 
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-silent! match OverLength /\%>120v.\+/
+silent! match OverLength /\%>100v.\+/
 " function! ToggleTextLimit()
 "   if &colorcolumn == '120'
 "     let &colorcolumn='+' . join(range(0, 254), ',+')
