@@ -111,7 +111,7 @@ fi
 print_status() {
 # Print the battery status
     if ((BATT_CONNECTED)); then
-        GRAPH="⚡"
+        GRAPH="ϟ"
     else
         if hash spark 2>/dev/null; then
             GRAPH=$(spark 0 ${BATT_PCT} 100 | awk '{print substr($0,4,3)}')
