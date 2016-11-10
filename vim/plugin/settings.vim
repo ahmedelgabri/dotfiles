@@ -302,3 +302,7 @@ else
     set viminfo='1000,<500,:500,/500,n~/.vim/tmp/viminfo
   endif
 endif
+
+if has('nvim')
+  set inccommand=nosplit                " incremental command live feedback"
+endif
