@@ -80,6 +80,7 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
 Plug 'w0ng/vim-hybrid'
 Plug 'chriskempson/base16-vim'
+Plug 'atelierbram/Base2Tone-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'

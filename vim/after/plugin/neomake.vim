@@ -1,7 +1,7 @@
 hi NeomakeErrorMsg ctermfg=009 ctermbg=None guifg=red guibg=NONE
 hi NeomakeWarningMsg ctermfg=003 ctermbg=None guifg=yellow guibg=NONE
 
-let g:neomake_open_list=2
+" let g:neomake_open_list=2
 let g:neomake_error_sign = { 'text': '✗', 'texthl': 'NeomakeErrorMsg', }
 let g:neomake_warning_sign = { 'text': '!', 'texthl': 'NeomakeWarningMsg', }
 let g:neomake_html_enabled_makers = ['tidy']
