@@ -28,7 +28,7 @@ alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
 alias bin="cd ~/.dotfiles/bin"
 alias work='mx $WORK'
-alias personal='mx DOH!'
+alias play='mx 🤔'
 # alias ag='ag --path-to-ignore ~/.ignore '
 
 # DEV
