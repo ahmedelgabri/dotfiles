@@ -65,16 +65,17 @@ Plug 'sheerun/vim-polyglot'
 Plug 'moll/vim-node'               , { 'for': ['javascript'] }
 Plug 'ap/vim-css-color'            , { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
 Plug 'stephenway/postcss.vim'      , { 'for': ['css'] }
+" Plug 'the-lambda-church/merlin'    , { 'for': ['ocaml', 'reason'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'
 Plug 'benekastah/neomake'          , { 'do': 'npm i -g flow-vim-quickfix' }
 
 " Themes, UI & eye cnady
-Plug 'jbleuzen/vim-buftabline'
-Plug 'itchyny/lightline.vim'
-Plug 'shirataki/lightline-onedark'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
+Plug 'ahmedelgabri/one-dark.vim'    , { 'branch': 'airline-theme' }
 Plug 'joshdick/onedark.vim'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'romainl/flattened' " Solarized, without the bullshit.

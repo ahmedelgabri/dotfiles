@@ -21,9 +21,9 @@ nnoremap <silent> <Leader>h :Helptags<cr>
 
 function! s:fzf_statusline()
   " Override statusline as you like
-  highlight fzf1 guifg=161 guibg=251
-  highlight fzf2 guifg=23 guibg=251
-  highlight fzf3 guifg=237 guibg=251
+  hi def link fzf1 airline_a
+  hi def link fzf2 airline_b
+  hi def link fzf3 airline_c
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
 
