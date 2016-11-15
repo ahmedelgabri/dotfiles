@@ -11,8 +11,20 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-export NVM_DIR=~/.nvm
+##############################################################
+# General
+###############################################################
+setopt autoparamslash  # tab completing directory appends a slash
+setopt noflowcontrol   # disable start (C-s) and stop (C-q) characters
+setopt interactivecomments  # allow comments, even in interactive shells
 
+
+# Better spell checking & auto correction prompt
+export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
+
+##############################################################
+# Custom/Plugins
+###############################################################
 # export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
 export PROJECTS="$HOME/Sites/dev"
@@ -32,7 +44,12 @@ export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
 
 ##############################################################
-# Python stuff
+# NVM
+###############################################################
+export NVM_DIR=~/.nvm
+
+##############################################################
+# Python
 ###############################################################
 export PYTHONSTARTUP=$HOME/.pyrc.py
 
@@ -40,5 +57,3 @@ export PYTHONSTARTUP=$HOME/.pyrc.py
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 export PIP_VIRTUALENV_BASE="$HOME/.virtualenvs"
 export PIP_RESPECT_VIRTUALENV=true
-
-
