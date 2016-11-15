@@ -77,7 +77,7 @@ let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#obsession#enabled = 1
 
 function! AirlineInit()
-  call airline#parts#define_raw('modified', '%{&modified ? " +" : ""}')
+  call airline#parts#define_raw('modified', '%{&modified ? " •" : ""}')
   call airline#parts#define_accent('modified', 'red')
   let g:airline_section_c = airline#section#create(['%f', 'modified'])
 
