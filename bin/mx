@@ -10,7 +10,7 @@
 #   Ahmed El Gabri - https://github.com/ahmedelgabri
 
 # Usage:
-#   mx [session]
+#   mx [session] [subdirectory (optional)]
 
 # To 'auto-launch' projects, you'll need a $PROJECTS dir where you keep code
 # sorted like so: $PROJECTS/<org or user>/<repo>.
@@ -28,30 +28,35 @@ if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
   mx-init
 fi
 
-if [ -z "$1" ]; then SESSION="${PWD##*/}";
-else SESSION="$1"; fi
+get_session () {
+  if [ -z "$1" ]; then
+    # tmux 1.9a+ doesn't like .'s in session names
+    pwd | awk -F"/" '{print $NF}'
+  else
+    echo "$1" | awk -F"/" '{print $NF}'
+  fi
+}
 
-# tmux 1.9a+ doesn't like .'s in session names
-SESSION="$(echo "$SESSION" | sed -e 's/\.//g')"
+SESSION="$(get_session "$1")"
 
 if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
-  WORKINGDIR=''
+  WORKINGDIR=""
 
-  if [ "$SESSION" == "$WORK" ]; then
-    if [ -d "$PROJECTS"/"$WORK"/"$WORK" ]; then
-      WORKINGDIR="$PROJECTS"/"$WORK"/"$WORK"
-    fi
+  # To handle the legacy structue I had, TODO: change the folder structure.
+  if [ -d "$PROJECTS"/"$SESSION"/"$2" ]; then
+    WORKINGDIR="$PROJECTS"/"$SESSION"/"$2"
   elif [ -d "$PROJECTS"/"$SESSION" ]; then
     WORKINGDIR="$PROJECTS"/"$SESSION"
   else
     WORKINGDIR="$HOME"
   fi
 
-  if [ ! -z $WORKINGDIR ]; then
+  if [ ! -z "$WORKINGDIR" ]; then
     cd $WORKINGDIR;
     tmux new-session -d -s "$SESSION"
     tmux select-window -t "$SESSION"
-    if [ "$SESSION" == "$WORK" ]; then
+    # Sometimes I need to setup some project specific stuff & run some commands
+    if [ -f "./start" ]; then
       tmux send-keys './start' C-m
     fi
   fi
@@ -63,5 +68,8 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
   tmux select-window -t 1
 fi
 
-if [ -z "$TMUX" ]; then tmux attach -t "$SESSION";
-else tmux switch-client -t "$SESSION"; fi
+if [ -z "$TMUX" ]; then
+  tmux attach -t "$SESSION";
+else
+  tmux switch-client -t "$SESSION"
+fi

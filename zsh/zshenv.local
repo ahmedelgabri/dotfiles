@@ -28,7 +28,6 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un
 # export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
 export PROJECTS="$HOME/Sites/dev"
-export WORK="lightspeed"
 
 # Make sure all the repos I clone uses my template, not sure if this is a good idea though?
 # export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
