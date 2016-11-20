@@ -53,6 +53,12 @@ node_modules/
 .gems/
 .bundle/
 elm-stuff/
+log/
+tmp/
+dump/
+build/
+dist/
+__build__/
 
 # vim       #
 #############
