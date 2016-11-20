@@ -251,11 +251,6 @@ if has("folding")
   set foldlevelstart=99               " start unfolded
 endif
 
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
-endif
-
 if has('mksession')
   set viewdir=~/.vim/tmp/view       " override ~/.vim/view default
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
