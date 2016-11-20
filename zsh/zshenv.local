@@ -32,7 +32,8 @@ export PROJECTS="$HOME/Sites/dev"
 # Make sure all the repos I clone uses my template, not sure if this is a good idea though?
 # export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
 export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --margin 3'
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --follow -g ""'
+# use --no-message instead of redirection when this is fixed https://github.com/BurntSushi/ripgrep/issues/241#issuecomment-261799658
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview "(([[ "{}" =~ \.twig$ ]] &&  highlight -S html -O ansi -l {} 2> /dev/null || highlight -O ansi -l {} 2> /dev/null) || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview,alt-k:preview-page-up,alt-j:preview-page-down"'
 export FZF_CTRL_R_OPTS="--no-mouse --preview 'echo {}' --preview-window down:5:hidden --bind '?:toggle-preview'"
