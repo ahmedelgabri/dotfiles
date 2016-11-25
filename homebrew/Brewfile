@@ -1,17 +1,16 @@
 # vim:ft=ruby:
 cask_args appdir: '~/Applications'
 
-tap "homebrew/bundle"
-tap "homebrew/services"
-tap "homebrew/versions"
-tap "homebrew/dupes"
-tap "caskroom/cask"
-tap "caskroom/fonts"
-tap "caskroom/versions"
-tap "neovim/neovim"
-tap "tldr-pages/tldr"
-tap "universal-ctags/universal-ctags"
-tap "neomutt/homebrew-neomutt"
+tap 'homebrew/bundle'
+tap 'homebrew/services'
+tap 'homebrew/versions'
+tap 'homebrew/dupes'
+tap 'caskroom/cask'
+tap 'caskroom/fonts'
+tap 'caskroom/versions'
+tap 'neovim/neovim'
+tap 'universal-ctags/universal-ctags'
+tap 'neomutt/neomutt'
 
 
 brew 'git'
@@ -22,7 +21,7 @@ brew 'nvm'
 # brew 'cmake'
 brew 'asciinema'
 brew 'awscli'
-brew 'bitlbee'
+brew 'bitlbee', restart_service: true
 brew 'cloc'
 brew 'coreutils'
 brew 'cowsay'
@@ -65,12 +64,12 @@ brew 'task'
 brew 'the_silver_searcher'
 brew 'tidy-html5'
 brew 'tig'
-brew 'tldr-pages/tldr/tldr'
+brew 'tldr'
 brew 'tmux', args: ['HEAD']
 brew 'todo-txt'
 brew 'tree'
 brew 'unar'
-brew 'universal-ctags/universal-ctags/universal-ctags'
+brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
 brew 'urlview'
 brew 'vim', args: ['with-lua', 'with-python3', 'with-override-system-vi']
 brew 'weechat', args: ['with-perl', 'with-python', 'with-ruby', 'with-lua', 'with-curl']
@@ -149,4 +148,5 @@ cask 'whatsapp'
 # mas 'Dash', id: 449589707
 # mas 'Xcode', id: 497799835
 # mas 'Tweetbot', id: 557168941
+# mas 'Sip', id: 507257563
 # mas 'Wire', id: 931134707
