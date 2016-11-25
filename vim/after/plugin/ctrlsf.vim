@@ -4,6 +4,7 @@ let g:ctrlsf_position = 'right'
 let g:ctrlsf_winsize = '40%'
 let g:ctrlsf_indent = 2
 let g:ctrlsf_mapping = {
+    \ "open"    : ["<CR>", "o"],
     \ "next": "n",
     \ "prev": "N",
     \ "quit": "q"
