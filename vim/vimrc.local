@@ -38,6 +38,7 @@ Plug 'junegunn/fzf'                , { 'dir': '~/.fzf', 'do': 'yes \| ./install 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'             , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
 Plug 'dyng/ctrlsf.vim'
+Plug 'mhinz/vim-grepper'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
