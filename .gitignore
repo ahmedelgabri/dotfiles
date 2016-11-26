@@ -6,7 +6,12 @@ weechat/sec.conf
 weechat/weechat.log
 weechat/irc.conf
 weechat/urls.log
+mail/mutt/alias
 mail/mutt/cache
 mail/mutt/tmp
+mail/mutt/certificates
+mail/mutt/accounts/work
+mail/mutt/accounts/personal
+mail/mutt/secure-ca.cert
 *.itermcolors
 scratch

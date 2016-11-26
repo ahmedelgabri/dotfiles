@@ -79,7 +79,3 @@ undodir/
 npm-debug.log*
 *.pyc
 *.map
-
-# ag/rg     #
-#############
-.ignore

@@ -1,0 +1,13 @@
+# I want to be able to search for these using ag/rg from CLI or inside Vim
+# So this will override `.gitignore` which they respect when searching.
+
+!mail/mutt/accounts/*
+!mail/mutt/certificates
+!mail/mutt/secure-ca.cert
+!weechat/logs
+!weechat/sec.conf
+!weechat/weechat.log
+!weechat/irc.conf
+!weechat/urls.log
+!*.itermcolors
+!scratch
