@@ -1,0 +1,17 @@
+# vim:ft=muttrc:
+
+unmailboxes *
+set my_user   = "EMAIL_ADDRESS"
+# set sendmail = "/usr/local/bin/msmtp -a work"
+set my_pass   = "`security find-internet-password -g -a EMAIL_ADDRESS 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`"
+
+set imap_user = "$my_user"
+set imap_pass = "$my_pass"
+set from      = "$my_user"
+set smtp_url  = "smtp://$my_user@smtp.gmail.com:587/"
+set smtp_pass = "$my_pass"
+set signature = ~/.mutt/account/signature.example
+
+alternates '^EMAIL_ADDRESS_ALIAS@example.com$'
+color status red default
+

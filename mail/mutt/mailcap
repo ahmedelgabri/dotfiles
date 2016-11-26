@@ -1,0 +1,22 @@
+text/plain; less %s; copiousoutput
+text/html; links -dump %s; nametemplate=%s.html; copiousoutput
+# application/pdf; /usr/bin/evince %s
+# text/pdf; /usr/bin/evince %s
+
+# application/msword; ~/.mutt/view-attachment.sh %s "-" '/Applications/TextEdit.app'
+
+# Images
+image/jpg; ~/.mutt/view-attachment.sh %s jpg
+image/jpeg; ~/.mutt/view-attachment.sh %s jpg
+image/pjpeg; ~/.mutt/view-attachment.sh %s jpg
+image/png; ~/.mutt/view-attachment.sh %s png
+image/gif; ~/.mutt/view-attachment.sh %s gif
+
+# PDFs
+text/pdf; ~/.mutt/view-attachment.sh %s pdf
+application/pdf; ~/.mutt/view-attachment.sh %s pdf
+
+# Unidentified files
+application/octet-stream; ~/.mutt/view-attachment.sh %s "-"
+
+text/calendar; ~/.mutt/dump-ical.py %s; copiousoutput;

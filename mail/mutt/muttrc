@@ -1,0 +1,260 @@
+# Paths
+set alias_file       = ~/.mutt/alias         # where to store aliases
+# set display_filter   = '~/.mutt/aliases.sh'
+set header_cache     = ~/.mutt/cache/headers # where to store headers
+set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
+set certificate_file = ~/.mutt/certificates  # where to store certs
+set mailcap_path     = ~/.mutt/mailcap       # entries for filetypes
+set tmpdir           = ~/.mutt/temp          # where to keep temp files
+
+# Connection options
+set ssl_force_tls = yes
+unset ssl_starttls
+
+# account config
+set realname = "Ahmed El Gabri"
+source ~/.mutt/accounts/personal
+macro index <f2> '<enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>'
+macro index <f3> '<enter-command>source ~/.mutt/accounts/work<enter><change-folder>!<enter>'
+
+# set sendmail_wait = 0
+unset record # don't save messages, gmail already does this.
+set folder = "imaps://imap.gmail.com:993"
+set smtp_authenticators = 'gssapi:login'
+set fast_reply
+set include
+
+# Pre-fills the "From" address when replying to emails, based on the email account that received the original mail.
+# Useful in case of multiple accounts or multiple aliases
+set reverse_name
+set envelope_from
+
+# Default inbox.
+set spoolfile = "+INBOX"
+
+# Other special folders. ----------------------------------------------------------------------------------------------
+set mbox      = "+[Gmail]/All Mail"
+set postponed = "+[Gmail]/Drafts"
+set trash     = "+[Gmail]/Trash" # This is using the 'trash' patch.
+
+# sorting -------------------------------------------------------------------------------------------------------------
+set sort=threads
+set sort_aux=reverse-last-date-received
+
+# Sidebar -------------------------------------------------------------------------------------------------------
+# set sidebar_visible
+set sidebar_width=30
+set sidebar_divider_char = " | "
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+set sidebar_short_path
+set sidebar_delim_chars="/"
+set sidebar_folder_indent
+set sidebar_indent_string="  "
+# # Mailboxes to show in sidebar
+set imap_check_subscribed=yes
+mailboxes "----- $my_user ------"\
+      +INBOX \
+      "+[Gmail]/All Mail" \
+      "+[Gmail]/Sent Mail" \
+      "+[Gmail]/Drafts" \
+      "+[Gmail]/Trash" \
+
+# Sidebar Navigation ---------------------------------
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+bind index,pager <left>   sidebar-toggle-visible
+
+# Basic Options --------------------------------------
+set sleep_time = 0
+set send_charset="utf-8"
+set wait_key = no        # shut up, mutt
+set mbox_type = Maildir  # mailbox type
+set timeout = 3          # idle time before scanning
+set mail_check = 0       # minimum time between scans
+unset move               # gmail does that
+set delete               # don't ask, just do
+unset confirmappend      # don't ask, just do!
+set quit                 # don't ask, just do!!
+unset mark_old           # read/new is good enough for me
+set beep_new             # bell on new mails
+set pipe_decode          # strip headers and eval mimes when piping
+set thorough_search      # strip headers and eval mimes before searching
+unset imap_passive # Allow Mutt to open new imap connection automatically.
+set imap_keepalive = 300 # Keep IMAP connection alive by polling intermittently (time in seconds).
+set mail_check = 120 # How often to check for new mail (time in seconds).
+
+# Header Options -------------------------------------
+ignore *                                # ignore all headers
+unignore from: to: cc: date: subject:   # show only these
+unhdr_order *                           # some distros order things by default
+hdr_order from: to: cc: date: subject:  # and in this order
+# unignore from: date subject to cc
+# unignore x-mailing-list: posted-to:
+# unignore x-mailer:
+
+
+# Index View Options ---------------------------------
+set date_format = "%d/%m at %H:%M"
+set index_format = "[%Z] (%D) %-20.50F %s"
+set sort = threads                         # like gmail
+set sort_aux = reverse-last-date-received  # like gmail
+set to_chars    = ' +>-<L' # This should be ' »›-‹L' to match Gmail, but $to_chars breaks on unicode.
+set uncollapse_jump                        # don't collapse on an unread message
+set sort_re                                # thread based on regex
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+# set move = no  #Stop asking to "move read messages to mbox"!
+
+# Index Key Bindings ---------------------------------
+bind index gg       first-entry
+bind index G        last-entry
+bind index r        group-reply
+bind index <space>  collapse-thread
+
+# Sync email
+# macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+# macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# Ctrl-R to mark all as read
+macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# Pager View Options ---------------------------------
+set pager_index_lines = 10 # number of index lines to show
+set pager_context = 3      # number of context lines to show
+set pager_stop             # don't go to next message automatically
+set menu_scroll            # scroll in menus
+set tilde                  # show tildes like in vim
+unset markers              # no ugly plus signs
+set pager_format="%4C %Z %[!%b %e at %I:%M %p]  %.20n  %s%* -- (%P)"
+
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+alternative_order text/plain text/enriched text/html
+
+# Pager Key Bindings ---------------------------------
+bind pager j next-line
+bind pager k previous-line
+bind pager r group-reply	#Reply all
+macro pager \Cu "|urlview<enter>" "call urlview to open links"
+# View attachments properly.
+bind attach <return> view-mailcap
+
+
+# Compose View Options -------------------------------
+set envelope_from                    # which from?
+set sig_dashes                       # dashes before sig
+set edit_headers                     # show headers when composing
+set fast_reply                       # skip to compose when replying
+set askcc                            # ask for CC:
+set fcc_attach                       # save attachments with the body
+unset mime_forward                   # forward attachments as part of body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set attribution = "On %d, %n wrote:" # format of quoting header
+set reply_to                         # reply to Reply to: field
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+set forward_quote                    # include message in forwards
+bind compose p postpone-message
+
+# sudo pip install goobook
+# https://hynek.me/articles/my-mutt-gmail-setup/
+# set query_command="goobook query '%s'"
+# macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
+# bind editor <Tab> complete-query
+# set sort_alias    = alias
+# set reverse_alias = yes
+# set reverse_name  = yes
+# source $alias_file
+
+# gpg
+# source $MAILCONF/gpg.muttrc
+# set pgp_use_gpg_agent = yes
+# set pgp_sign_as = D57E947A
+# set pgp_timeout = 3600
+# set crypt_autosign = no
+# set crypt_replyencrypt = no
+
+# Key Binidings --------------------------------------------------------------------------------------------------------
+bind  editor <space> noop
+# bind  index,pager c  mail #Compose
+macro index,pager e  "<save-message>=[Gmail]/All Mail<enter>" "Archive conversation"
+bind  index,pager s  flag-message	#Star a message
+macro index,pager !  <save-message>=[Gmail]/Spam<enter><enter> "Report spam"
+macro index,pager d "<save-message>=[Gmail]/Trash<enter>" "Trash"
+bind  index,pager D delete-thread	#Delete
+macro index,pager U  <clear-flag>O	"Mark as unread"
+macro index,pager ga "<change-folder>=[Gmail]/All Mail<enter>"	"Go to all mail"
+macro index,pager gs <change-folder>=[Gmail]/Starred<enter>	"Go to 'Starred'"
+macro index,pager gd <change-folder>=[Gmail]/Drafts<enter>	"Go to 'Drafts'"
+macro index,pager gl <change-folder>?				"Go to 'Label'"
+macro index,pager gi <change-folder>=INBOX<enter> 		"Go to inbox"
+macro index,pager gt "<change-folder>=[Gmail]/Sent Mail<enter>"	"Go to 'Sent Mail'"
+folder-hook +INBOX 'macro index,pager y "<save-message>=[Gmail]/All Mail<enter>" "Archive conversation"'
+folder-hook +INBOX 'macro index,pager Y "<save-thread>=[Gmail]/All Mail<enter>" "Archive conversation"'
+folder-hook +[Gmail]/Trash macro index,pager i <save-message>=INBOX<enter> "Move to inbox"
+folder-hook +[Gmail]/Starred bind  index,pager s flag-message #"Toggle star"
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
+# http://www.marksanborn.net/howto/reading-html-email-with-mutt/
+# http://simonjbeaumont.com/posts/mutt-exchange/
+alternative_order text/calendar text/plain text/enriched text/html text/*
+auto_view text/html text/calendar
+
+# Status Bar {{{
+set status_chars   = " *%A"
+
+## status_format - format of summary on the current folder in the index
+## meta strings:
+##  -----f-h---lmn-p-rst-v----  lower case letters (10)
+##  ------------M----------X--  upper case letters (02)
+## %d      the number of messages with the flag 'delete'  (v64)
+## %f      the full pathname of the current mailbox
+## %h      local hostname
+## %l      size (in bytes) of the current mailbox
+## %m      the number of messages in the mailbox
+## %M      the number of messages shown (i.e., which match the current limit)
+## %n      number of new messages in the mailbox
+## %p      number of postponed messages
+## %s      current sorting mode
+## %r      modified/read-only/won't-write/attach-message indicator-status_chars
+## %t      number of tagged messages
+## %v      Mutt version string
+## %>X     right justify the rest of the string and pad with "X"
+## %|X     pad to the end of the line with "X"
+##
+## %?<sequence_char>?<optional_string>? optionally print string, if>0
+##
+## Examples:
+#	set status_format="%v: %f (%s) [%?M/?%m]  [flags:%?t tagged,?%n new%?p post?]"
+#	set status_format="%v: %f (%s) [%?M/?%m]  [flags:%?t tagged,?%n new]"
+#	set status_format="%v: %f (%s) [%M/%m]\n[flags:n=%n,D=%d,t=%t,!=%F]"
+#	set status_format="%v: %f (%s) [%M/%m]  [flags:n=%n,t=%t]"
+#	set status_format="%v:    (%s) [%M/%m]  [flags:n=%n,t=%t]"
+#	set status_format="%v:    (%s) [%M/%m]  [flags:n:%n,t:%t,p:%p]"
+#	set status_format="%v:    (%s) [%M/%m]  [flags:%?02n new?,t:%t]"
+#	set status_format="%v: %f (%s) [%M/%m]  [flags:%n new,%?t tagged?]"
+#	set status_format="%v: %f (%s) [%M/%m;%l bytes]  [N=%n,*=%t,post=%p]"
+#	set status_format="%v: %f (%s) [%M/%m] [N=%n,*=%t,post=%p,new=%b]"
+#	set status_format=" Msgs=%M(%m) [N=%n,O=%o,*=%t,p=%p] %> %r (%P) %h:%f [%l] (%s/%S) (%v) "
+# set status_format  = "Folder: %f : %r%n new (%m messages)%?d? (%d to delete)?%?t? (%t tagged)? %>-%?p?( %p postponed )? : "
+# set status_format  = "Folder: %f : %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %>-%?p?( %p postponed )? : "
+set status_on_top = yes
+# set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p 📤 )?───"
+
+# Vanilla Searching
+# / works just like Vim, use `n` to go to next, 'N' to go to previous
+bind index N search-opposite
+bind pager N search-opposite
+
+# More powerful search is `limiting` using `l`
+# Limit queries work exactly like search queries, so you can do powerful stuff like ~f arthur ~C honza ~s api
+# (“limit to messages from ‘arthur’, to or cced to ‘honza’, containing ‘api’ in the subject”).
+
+# Color ---------------------------------------------------------
+source ~/.mutt/mutt-colors.muttrc
