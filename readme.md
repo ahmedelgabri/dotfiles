@@ -18,3 +18,8 @@ Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode
 Install
 
     $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/script/install | sh
+
+### After installation
+
+- Append `/etc/hosts` <br> `$ curl "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" | sudo tee -a /etc/hosts`
+- Use [Google DNS](https://developers.google.com/speed/public-dns/)
