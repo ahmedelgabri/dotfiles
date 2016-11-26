@@ -42,6 +42,7 @@ mkdir -p $HOME/.dotfiles/vim/tmp/{swap,undo,view}
 
 ZSH_FILES=(
   zshrc
+  zshenv
   zprofile
   zpreztorc
   zlogin
@@ -65,7 +66,7 @@ ln -sf $HOME/.dotfiles/vim/ $HOME/.vim
 ln -sf $HOME/.dotfiles/vim/ $HOME/.config/nvim
 
 ln -sf $HOME/.dotfiles/hammerspoon/ $HOME/.hammerspoon
-ln -sf $HOME/.dotfiles/karabiner.d/ $HOME/.karabiner.d
+ln -sf $HOME/.dotfiles/grc/ $HOME/.grc
 
 ln -sf $HOME/.dotfiles/ruby/gemrc.local $HOME/.gemrc
 ln -sf $HOME/.dotfiles/iterm2/com.googlecode.iterm2.plist $HOME/Library/Preferences/com.googlecode.iterm2.plist

@@ -21,6 +21,7 @@ SAVEHIST=$HISTSIZE
 ##############################################################
 
 source /usr/local/etc/profile.d/z.sh
+source "`brew --prefix`/etc/grc.bashrc"
 
 ##############################################################
 # ALIASES.
