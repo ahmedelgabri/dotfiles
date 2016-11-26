@@ -29,7 +29,7 @@ alias dots="cd ~/.dotfiles"
 alias bin="cd ~/.dotfiles/bin"
 alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
-# alias ag='ag --path-to-ignore ~/.ignore '
+# alias curl='grc -c ~/.dotfiles/grc/conf.curl curl '
 
 # DEV
 alias npmls="npm list --depth=0 "
