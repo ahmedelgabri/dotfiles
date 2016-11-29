@@ -38,6 +38,7 @@
 [core]
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	excludesfile = ~/.dotfiles/git/gitignore.local
+  attributesfile = ~/.dotfiles/git/gitattributes.local
 	; https://news.ycombinator.com/item?id=11388479
 	untrackedCache = true
 	pager = diff-so-fancy | less --tabs=4 -RFX
@@ -154,3 +155,5 @@
 	cmd = $EDITOR -d $LOCAL $REMOTE
 [ghi]
 	token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w
+[diff "exif"]
+	textconv = exiftool
