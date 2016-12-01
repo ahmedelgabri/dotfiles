@@ -17,6 +17,7 @@ fi
 setopt autoparamslash  # tab completing directory appends a slash
 setopt noflowcontrol   # disable start (C-s) and stop (C-q) characters
 setopt interactivecomments  # allow comments, even in interactive shells
+setopt printexitvalue       # for non-zero exit status
 
 
 # Better spell checking & auto correction prompt
@@ -43,7 +44,7 @@ export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
-export HOMEBREW_CASK_OPTS=--require-sha
+# export HOMEBREW_CASK_OPTS=--require-sha
 
 ##############################################################
 # NVM
