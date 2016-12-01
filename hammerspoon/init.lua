@@ -157,8 +157,12 @@ end))
 -- lock screen
 -- https://www.isi.edu/~calvin/mac-lockscreen.htm
 hs.hotkey.bind({"ctrl", "cmd", "alt"}, "l", function()
-  os.execute("/Users/ahmed/.dotfiles/bin/lockscreen")
+  os.execute("/Users/ahmed/.dotfiles/bin/lock")
 end)
+
+-- hs.hotkey.bind({}, '§', function()
+--   hs.eventtap.keyStroke({}, 'ESCAPE')
+-- end)
 
 hs.hotkey.bind({}, '§', function()
   hs.eventtap.keyStroke({}, 'ESCAPE')
