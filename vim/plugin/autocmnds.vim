@@ -52,3 +52,4 @@ aug omnicomplete
   autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
   autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
 aug END
+

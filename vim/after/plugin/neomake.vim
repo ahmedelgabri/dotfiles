@@ -26,7 +26,6 @@ let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 if findfile('.eslintrc', '.;') !=# '' || findfile('.eslintrc.js', '.;') !=# ''
   let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
-
   let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
   let g:neomake_jsx_eslint_exe = g:neomake_javascript_eslint_exe
 endif
@@ -42,10 +41,8 @@ if findfile('.flowconfig', '.;') !=# ''
       \ }
 
   let g:neomake_jsx_flow_maker = g:neomake_javascript_flow_maker
-
   let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
   let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 endif
 
 autocmd! BufWritePost * Neomake
-

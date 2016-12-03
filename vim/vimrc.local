@@ -53,7 +53,6 @@ Plug 'tpope/vim-obsession'
 Plug 'kshenoy/vim-signature'
 Plug 'scrooloose/nerdtree'         , { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'MarcWeber/vim-addon-local-vimrc'
 Plug 'wincent/pinnacle'
 Plug 'wincent/loupe'
 Plug 'jaawerth/nrun.vim'
@@ -152,6 +151,16 @@ let g:gist_get_multiplefile = 1
 
 " Overrrides
 " =================
-if filereadable(expand("~/.vimrc.local"))
-  so ~/.vimrc.local
+let s:vimrc_local = $HOME . '/.vimrc.local'
+if filereadable(s:vimrc_local)
+  execute 'source ' . s:vimrc_local
 endif
+
+" Project specific override
+" =========================
+let s:vimrc_project = $PWD . '/.local.vim'
+if filereadable(s:vimrc_project)
+  execute 'source ' . s:vimrc_project
+endif
+
+
