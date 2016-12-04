@@ -7,7 +7,7 @@ console.log(
   JSON.stringify({
     $1
   }, null, 2)
-);
+)
 endsnippet
 
 # Functions
@@ -22,7 +22,7 @@ endsnippet
 snippet iife
 ((${1:window, document, undefined}) => {
 	${0:${VISUAL}}
-}(${2:win, doc}));
+}(${2:win, doc}))
 endsnippet
 
 # Loops
@@ -51,19 +51,19 @@ endsnippet
 # Modules
 
 snippet "req(u|ui|uir|uire)?" "require()" !brA
-const `!p snip.rv=formatVariableName(t[2])` = require('${2}');
+const `!p snip.rv=formatVariableName(t[2])` = require('${2}')
 $0
 endsnippet
 
 
 snippet "imp(ort)?" "import x form y" !brA
-import `!p snip.rv=formatVariableName(t[1])` from '${1}';
+import `!p snip.rv=formatVariableName(t[1])` from '${1}'
 $0
 endsnippet
 
 
 snippet me "module.exports" b
-module.exports = ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`};$0
+module.exports = ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}$0
 endsnippet
 
 snippet ed "export default" b
@@ -117,14 +117,14 @@ export default class ${1:`!p snip.rv = path_to_component_name(path, pascal_case_
 	render() {
 		return (
 			$0
-		);
+		)
 	}
 }
 endsnippet
 
 snippet con "constructor()" b
 constructor(props) {
-	super(props);
+	super(props)
 	$0
 }
 endsnippet
@@ -247,7 +247,7 @@ endsnippet
 # Misc
 
 snippet fl "flow" b
-/* @flow */
+// @flow
 endsnippet
 
 snippet "(use|strict)" "'use strict' declaration" br
