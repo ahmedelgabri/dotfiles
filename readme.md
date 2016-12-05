@@ -17,7 +17,7 @@ Install Command line tools through [Xcode](https://itunes.apple.com/en/app/xcode
 
 Install
 
-    $ curl -sS https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/script/install | sh
+    $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && make install
 
 ### After installation
 
