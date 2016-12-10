@@ -21,7 +21,6 @@ if ! command -v brew >/dev/null; then
   echo "\033[0;34m====== Installing Homebrew =================================\033[0;0m"
   echo "\033[0;34m------------------------------------------------------------\033[0;0m"
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew tap 'Homebrew/bundle'
 fi
 
 
