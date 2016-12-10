@@ -22,22 +22,9 @@ augroup ahmedAutoCmds
     autocmd BufWinEnter * if line("'\"") > 1 && line("'\"") <= line('$') | execute "normal! g`\"" | endif
   endif
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it for commit messages, when the position is invalid, or when
-  " inside an event handler (happens when dropping a file on gvim).
-  " autocmd BufReadPost *
-  "   \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-  "   \   exe "normal g`\"" |
-  "   \ endif
-
   autocmd BufWritePre * call functions#Preserve("%s/\\s\\+$//e")
-augroup END
 
-" Automatically reload vimrc when it's saved
-" augroup reload_vimrc
-"     autocmd!
-"     autocmd BufWritePost init.vim,vimrc.local,.vimrc nested so $MYVIMRC
-" augroup END
+augroup END
 
 aug omnicomplete
   autocmd!
@@ -49,3 +36,9 @@ aug omnicomplete
   autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
 aug END
 
+" Those are heavy plugins that I lazy load them so startup time can be fast still
+augroup lazyLoadPlugins
+  autocmd!
+  autocmd CursorHold, CursorHoldI * call plug#load('tern') | autocmd! lazyLoadPlugins
+  autocmd CursorHold, CursorHoldI * call plug#load('editorconfig') | autocmd! lazyLoadPlugins
+augroup END

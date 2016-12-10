@@ -31,7 +31,7 @@ else
   Plug 'Valloric/YouCompleteMe'    , { 'do': './install.py --tern-completer' }
   Plug 'flowtype/vim-flow'         , { 'for': ['javascript'], 'do': 'npm i -g flow-bin' }
 endif
-Plug 'ternjs/tern_for_vim'         , { 'for': ['javascript'], 'do': 'npm i' }
+Plug 'ternjs/tern_for_vim'         , { 'for': ['javascript'], 'do': 'npm i', 'on': [] }
 Plug 'SirVer/ultisnips'
 Plug 'Raimondi/delimitMate'
 Plug 'junegunn/fzf'                , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
@@ -66,7 +66,7 @@ Plug 'stephenway/postcss.vim'      , { 'for': ['css'] }
 " Plug 'the-lambda-church/merlin'    , { 'for': ['ocaml', 'reason'] }
 
 " Linters & Code quality
-Plug 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim' , { 'on': [] }
 Plug 'benekastah/neomake'          , { 'do': 'npm i -g flow-vim-quickfix' }
 
 " Themes, UI & eye cnady
@@ -99,32 +99,9 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-" " http://ddrscott.github.io/blog/2016/vim-toggle-movement/
-" function! ToggleMovement(firstOp, thenOp)
-"   let pos = getpos('.')
-"   execute "normal! " . a:firstOp
-"   if pos == getpos('.')
-"     execute "normal! " . a:thenOp
-"   endif
-" endfunction
-
-" " The original carat 0 swap
-" nnoremap <silent> 0 :call ToggleMovement('^', '0')<CR>
-
-" " How about ; and ,
-" nnoremap <silent> ; :call ToggleMovement(';', ',')<CR>
-" nnoremap <silent> , :call ToggleMovement(',', ';')<CR>
-
-" " How about H and L
-" nnoremap <silent> H :call ToggleMovement('H', 'L')<CR>
-" nnoremap <silent> L :call ToggleMovement('L', 'H')<CR>
-
-" " How about G and gg
-" nnoremap <silent> G :call ToggleMovement('G', 'gg')<CR>
-" nnoremap <silent> gg :call ToggleMovement('gg', 'G')<CR>
-
 " Plugins settings
 "================================================================================
+let g:deoplete#enable_at_startup = 1
 
 " Tab completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"

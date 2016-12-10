@@ -1,9 +1,7 @@
 " deoplete currenty only works with neovim only
 if has('nvim')
-  " Because I'm loading deoplete here and not inside .vimrc directly
-  " I have to call the function instead of using the variable
-  " let g:deoplete#enable_at_startup = 1
-  call deoplete#enable()
+  " To benefit from deoplete lazy loading I don't call deoplete#enable() here
+  " instead I set let g:deoplete#enable_at_startup = 1 in `.vimrc` directly
 
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#enable_camel_case = 1
