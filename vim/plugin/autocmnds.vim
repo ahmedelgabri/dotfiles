@@ -6,10 +6,6 @@ augroup ahmedAutoCmds
   " Close preview buffer with q
   autocmd FileType preview,ag,qf nmap <buffer> <silent>  q :q<cr>
 
-  " Disable paste mode on leaving insert mode.
-  autocmd InsertLeave * set nopaste
-
-
   " https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/plugin/autocmds.vim#L27-L40
   if has('mksession')
     " Save/restore folds and cursor position.

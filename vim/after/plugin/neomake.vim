@@ -41,7 +41,7 @@ if findfile('.flowconfig', '.;') !=# ''
       \ }
 
   let g:neomake_jsx_flow_maker = g:neomake_javascript_flow_maker
-  let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
+  let g:neomake_javascript_enabled_makers = ['flow' ] + g:neomake_javascript_enabled_makers
   let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
 endif
 
