@@ -39,6 +39,7 @@ echo "\033[0;34m------------------------------------------------------------\033
 
 mkdir -p $HOME/.config
 mkdir -p $HOME/.dotfiles/vim/tmp/{swap,undo,view}
+mkdir -p $HOME/.mail/{personal,work}
 
 ZSH_FILES=(
   zshrc
@@ -60,6 +61,9 @@ ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
 ln -sf $HOME/.dotfiles/git/gitconfig.local $HOME/.gitconfig
 ln -sf $HOME/.dotfiles/python/pyrc.local $HOME/.pyrc.py
 ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
+
+ln -sf $HOME/.dotfiles/mail/msmtprc.local $HOME/.msmtprc
+ln -sf $HOME/.dotfiles/mail/mbsyncrc.local $HOME/.mbsyncrc
 
 ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -sf $HOME/.dotfiles/vim/ $HOME/.vim

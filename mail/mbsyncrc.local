@@ -47,12 +47,16 @@ Channel personal-drafts
 Master :personal-remote:"[Gmail]/Drafts"
 Slave :personal-local:Drafts
 
+Channel personal-starred
+Master :personal-remote:"[Gmail]/Starred"
+Slave :personal-local:Starred
+
 Channel personal-sent
 Master :personal-remote:"[Gmail]/Sent Mail"
 Slave :personal-local:Sent
 
 Channel personal-spam
-Master :personal-remote:Junk
+Master :personal-remote:"[Gmail]/Spam"
 Slave :personal-local:Spam
 
 Channel personal-trash
@@ -63,7 +67,7 @@ Channel personal-folders
 Master :personal-remote:
 Slave :personal-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Drafts !Sent !Spam !Trash
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash
 
 # Group the channels, so that all channels can be sync'd with `mbsync personal`
 Group personal
@@ -82,7 +86,7 @@ IMAPAccount work
 Host imap.gmail.com
 User ahmed.elgabri@lightspeedhq.com
 # Get the account password from the system Keychain
-PassCmd "~/.dotfiles/bin/get-keychain-pass 'ahmed.elgabri@lightspeedhq.com' 'smtp.gmail.com'"
+PassCmd "~/.dotfiles/bin/get-keychain-pass 'ahmed.elgabri+mutt@lightspeedhq.com' 'smtp.gmail.com'"
 AuthMechs LOGIN
 # AuthMechs *
 SSLType IMAPS
@@ -110,12 +114,16 @@ Channel work-drafts
 Master :work-remote:"[Gmail]/Drafts"
 Slave :work-local:Drafts
 
+Channel work-starred
+Master :work-remote:"[Gmail]/Starred"
+Slave :work-local:Starred
+
 Channel work-sent
 Master :work-remote:"[Gmail]/Sent Mail"
 Slave :work-local:Sent
 
 Channel work-spam
-Master :work-remote:Junk
+Master :work-remote:"[Gmail]/Spam"
 Slave :work-local:Spam
 
 Channel work-trash
@@ -126,7 +134,7 @@ Channel work-folders
 Master :work-remote:
 Slave :work-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Drafts !Sent !Spam !Trash
+Patterns * !INBOX !Archive !Starred !Drafts !Sent !Spam !Trash
 
 # Group the channels, so that all channels can be sync'd with `mbsync work`
 Group work
