@@ -1,0 +1,75 @@
+# vim:ft=muttrc:
+
+# Sidebar Navigation ---------------------------------
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+bind index,pager <left>   sidebar-toggle-visible
+
+# Index Key Bindings ---------------------------------
+bind index gg       first-entry
+bind index G        last-entry
+bind index r        group-reply
+bind index <space>  collapse-thread
+
+# Pager Key Bindings ---------------------------------
+bind pager j next-line
+bind pager k previous-line
+bind pager r group-reply	#Reply all
+macro pager \Cu "|urlview<enter>" "call urlview to open links"
+# View attachments properly.
+bind attach <return> view-mailcap
+
+# Sync email
+# macro index O "<shell-escape>mbsync -a<enter>"           "sync all mail"
+# macro index o "<shell-escape>mbsync personal work<enter>" "sync inboxes"
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# Ctrl-R to mark all as read
+macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# Key Binidings --------------------------------------------------------------------------------------------------------
+bind  editor <space> noop
+# bind  index,pager c  mail #Compose
+bind  index,pager s  flag-message	#Star a message
+bind  index,pager D delete-thread	#Delete
+macro index,pager U  <clear-flag>O	"Mark as unread"
+macro index,pager gl <change-folder>?				"Go to 'Label'"
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
+folder-hook +personal/* macro index,pager !  <save-message>=personal/Spam<enter><enter> "Report spam"
+folder-hook +personal/* macro index,pager d "<save-message>=personal/Trash<enter>" "Trash"
+folder-hook +personal/* macro index,pager ga "<change-folder>=personal/Archive<enter>"	"Go to all mail"
+folder-hook +personal/* macro index,pager gs <change-folder>=personal/Starred<enter>	"Go to 'Starred'"
+folder-hook +personal/* macro index,pager gd <change-folder>=personal/Drafts<enter>	"Go to 'Drafts'"
+folder-hook +personal/* macro index,pager gi <change-folder>=personal/Inbox<enter> 		"Go to inbox"
+folder-hook +personal/* macro index,pager gt "<change-folder>=personal/Sent<enter>"	"Go to 'Sent Mail'"
+folder-hook +personal/Inbox 'macro index,pager y "<save-message>=personal/Archive<enter>" "Archive conversation"'
+folder-hook +personal/Inbox 'macro index,pager Y "<save-thread>=personal/Archive<enter>" "Archive conversation"'
+folder-hook +personal/Trash macro index,pager i <save-message>=personal/Inbox<enter> "Move to inbox"
+folder-hook +personal/Starred bind  index,pager s flag-message #"Toggle star"
+
+folder-hook +work/* macro index,pager !  <save-message>=work/Spam<enter><enter> "Report spam"
+folder-hook +work/* macro index,pager d "<save-message>=work/Trash<enter>" "Trash"
+folder-hook +work/* macro index,pager ga "<change-folder>=work/Archive<enter>"	"Go to all mail"
+folder-hook +work/* macro index,pager gs <change-folder>=work/Starred<enter>	"Go to 'Starred'"
+folder-hook +work/* macro index,pager gd <change-folder>=work/Drafts<enter>	"Go to 'Drafts'"
+folder-hook +work/* macro index,pager gi <change-folder>=work/Inbox<enter> 		"Go to inbox"
+folder-hook +work/* macro index,pager gt "<change-folder>=work/Sent<enter>"	"Go to 'Sent Mail'"
+folder-hook +work/Inbox 'macro index,pager y "<save-message>=work/Archive<enter>" "Archive conversation"'
+folder-hook +work/Inbox 'macro index,pager Y "<save-thread>=work/Archive<enter>" "Archive conversation"'
+folder-hook +work/Trash macro index,pager i <save-message>=work/Inbox<enter> "Move to inbox"
+folder-hook +work/Starred bind  index,pager s flag-message #"Toggle star"
+
+# Vanilla Searching
+# / works just like Vim, use `n` to go to next, 'N' to go to previous
+bind index N search-opposite
+bind pager N search-opposite
+
+# More powerful search is `limiting` using `l`
+# Limit queries work exactly like search queries, so you can do powerful stuff like ~f arthur ~C honza ~s api
+# (“limit to messages from ‘arthur’, to or cced to ‘honza’, containing ‘api’ in the subject”).
+
