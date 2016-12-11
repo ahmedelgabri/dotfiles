@@ -1,8 +1,4 @@
-text/plain; less %s; copiousoutput
-text/html; links -dump %s; nametemplate=%s.html; copiousoutput
-# application/pdf; /usr/bin/evince %s
-# text/pdf; /usr/bin/evince %s
-
+# MS Word documents
 # application/msword; ~/.mutt/view-attachment.sh %s "-" '/Applications/TextEdit.app'
 
 # Images
@@ -16,7 +12,21 @@ image/gif; ~/.mutt/view-attachment.sh %s gif
 text/pdf; ~/.mutt/view-attachment.sh %s pdf
 application/pdf; ~/.mutt/view-attachment.sh %s pdf
 
+# HTML
+
+# Explicitly render in browser with "v" (view attachment):
+text/html; ~/.mutt/view-attachment.sh %s html
+
+# Try to display implicitly using elinks:
+text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
+
+# Or, alternatively:
+# text/html; w3m -I %{charset} -T text/html; copiousoutput;
+
+text/plain; ~/.mutt/view-mail.sh %s %{charset}; needsterminal
+
 # Unidentified files
 application/octet-stream; ~/.mutt/view-attachment.sh %s "-"
 
+# Better calendar invitations format
 text/calendar; ~/.mutt/dump-ical.py %s; copiousoutput;

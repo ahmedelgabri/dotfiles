@@ -1,0 +1,19 @@
+defaults
+host smtp.gmail.com
+port 587
+protocol smtp
+auth on
+tls on
+tls_trust_file /usr/local/etc/openssl/cert.pem
+
+account personal
+from ahmed@gabri.me
+user ahmed@gabri.me
+passwordeval ~/.dotfiles/bin/get-keychain-pass ahmed+mutt@gabri.me smtp.gmail.com
+
+account work
+from ahmed.elgabri@lightspeedhq.com
+user ahmed.elgabri@lightspeedhq.com
+passwordeval ~/.dotfiles/bin/get-keychain-pass ahmed.elgabri+mutt@lightspeedhq.com smtp.gmail.com
+
+account default : personal
