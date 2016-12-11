@@ -5,9 +5,9 @@ weechat/*
 !weechat/irc.conf
 !weechat/weechat.conf
 !weechat/plugins.conf
-mail/mutt/alias
+mail/mutt/config/aliases
 mail/mutt/cache
-mail/mutt/tmp
+mail/mutt/temp
 mail/mutt/certificates
 mail/mutt/accounts/work
 mail/mutt/accounts/personal
