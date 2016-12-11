@@ -23,7 +23,7 @@ augroup ahmedAutoCmds
   endif
 
   autocmd BufWritePre * call functions#Preserve("%s/\\s\\+$//e")
-
+  autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
 augroup END
 
 aug omnicomplete

@@ -73,7 +73,7 @@ Plug 'benekastah/neomake'          , { 'do': 'npm i -g flow-vim-quickfix' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'morhetz/gruvbox'
-Plug 'ahmedelgabri/one-dark.vim'    , { 'branch': 'airline-theme' }
+Plug 'ahmedelgabri/one-dark.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
