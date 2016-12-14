@@ -31,8 +31,7 @@ Account personal
 
 # Local storage (where the mail is retrieved to)
 MaildirStore personal-local
-# The trailing "/" is important
-Path ~/.mail/personal/
+Path ~/.mail/personal/ # The trailing "/" is important
 Inbox ~/.mail/personal/inbox
 
 Channel personal-inbox
@@ -98,8 +97,7 @@ Account work
 
 # Local storage (where the mail is retrieved to)
 MaildirStore work-local
-# The trailing "/" is important
-Path ~/.mail/work/
+Path ~/.mail/work/ # The trailing "/" is important
 Inbox ~/.mail/work/inbox
 
 Channel work-inbox

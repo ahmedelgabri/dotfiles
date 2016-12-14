@@ -180,4 +180,4 @@ set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d?
 # Color ---------------------------------------------------------
 source ~/.mutt/config/colors.mutt
 source ~/.mutt/config/bindings.mutt
-source ~/.mutt/config/hooks.mutt
+source ~/.mutt/hooks/hooks.mutt

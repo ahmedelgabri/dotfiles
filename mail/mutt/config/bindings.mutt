@@ -40,28 +40,28 @@ macro index,pager U  <clear-flag>O	"Mark as unread"
 macro index,pager gl <change-folder>?				"Go to 'Label'"
 macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
 
-folder-hook +personal/* macro index,pager !  <save-message>=personal/Spam<enter><enter> "Report spam"
-folder-hook +personal/* macro index,pager d "<save-message>=personal/Trash<enter>" "Trash"
-folder-hook +personal/* macro index,pager ga "<change-folder>=personal/Archive<enter>"	"Go to all mail"
-folder-hook +personal/* macro index,pager gs <change-folder>=personal/Starred<enter>	"Go to 'Starred'"
-folder-hook +personal/* macro index,pager gd <change-folder>=personal/Drafts<enter>	"Go to 'Drafts'"
-folder-hook +personal/* macro index,pager gi <change-folder>=personal/Inbox<enter> 		"Go to inbox"
-folder-hook +personal/* macro index,pager gt "<change-folder>=personal/Sent<enter>"	"Go to 'Sent Mail'"
+folder-hook +personal/* 'macro index,pager !  "<save-message>=personal/Spam<enter><enter>" "Report spam"'
+folder-hook +personal/* 'macro index,pager d "<save-message>=personal/Trash<enter>" "Trash"'
+folder-hook +personal/* 'macro index,pager ga "<change-folder>=personal/Archive<enter>"	"Go to all mail"'
+folder-hook +personal/* 'macro index,pager gs "<change-folder>=personal/Starred<enter>"	"Go to Starred"'
+folder-hook +personal/* 'macro index,pager gd "<change-folder>=personal/Drafts<enter>"	"Go to Drafts"'
+folder-hook +personal/* 'macro index,pager gi "<change-folder>=personal/Inbox<enter>" 	"Go to inbox"'
+folder-hook +personal/* 'macro index,pager gt "<change-folder>=personal/Sent<enter>"	"Go to Sent Mail"'
 folder-hook +personal/Inbox 'macro index,pager y "<save-message>=personal/Archive<enter>" "Archive conversation"'
 folder-hook +personal/Inbox 'macro index,pager Y "<save-thread>=personal/Archive<enter>" "Archive conversation"'
-folder-hook +personal/Trash macro index,pager i <save-message>=personal/Inbox<enter> "Move to inbox"
+folder-hook +personal/Trash 'macro index,pager i "<save-message>=personal/Inbox<enter>" "Move to inbox"'
 folder-hook +personal/Starred bind  index,pager s flag-message #"Toggle star"
 
-folder-hook +work/* macro index,pager !  <save-message>=work/Spam<enter><enter> "Report spam"
-folder-hook +work/* macro index,pager d "<save-message>=work/Trash<enter>" "Trash"
-folder-hook +work/* macro index,pager ga "<change-folder>=work/Archive<enter>"	"Go to all mail"
-folder-hook +work/* macro index,pager gs <change-folder>=work/Starred<enter>	"Go to 'Starred'"
-folder-hook +work/* macro index,pager gd <change-folder>=work/Drafts<enter>	"Go to 'Drafts'"
-folder-hook +work/* macro index,pager gi <change-folder>=work/Inbox<enter> 		"Go to inbox"
-folder-hook +work/* macro index,pager gt "<change-folder>=work/Sent<enter>"	"Go to 'Sent Mail'"
+folder-hook +work/* 'macro index,pager !  "<save-message>=work/Spam<enter><enter>" "Report spam"'
+folder-hook +work/* 'macro index,pager d "<save-message>=work/Trash<enter>" "Trash"'
+folder-hook +work/* 'macro index,pager ga "<change-folder>=work/Archive<enter>"	"Go to all mail"'
+folder-hook +work/* 'macro index,pager gs "<change-folder>=work/Starred<enter>"	"Go to Starred"'
+folder-hook +work/* 'macro index,pager gd "<change-folder>=work/Drafts<enter>"	"Go to Drafts"'
+folder-hook +work/* 'macro index,pager gi "<change-folder>=work/Inbox<enter>" 	"Go to inbox"'
+folder-hook +work/* 'macro index,pager gt "<change-folder>=work/Sent<enter>"	"Go to Sent Mail"'
 folder-hook +work/Inbox 'macro index,pager y "<save-message>=work/Archive<enter>" "Archive conversation"'
 folder-hook +work/Inbox 'macro index,pager Y "<save-thread>=work/Archive<enter>" "Archive conversation"'
-folder-hook +work/Trash macro index,pager i <save-message>=work/Inbox<enter> "Move to inbox"
+folder-hook +work/Trash 'macro index,pager i "<save-message>=work/Inbox<enter>" "Move to inbox"'
 folder-hook +work/Starred bind  index,pager s flag-message #"Toggle star"
 
 # Vanilla Searching
