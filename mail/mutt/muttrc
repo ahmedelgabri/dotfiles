@@ -110,17 +110,13 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-bind compose p postpone-message
 
-# sudo pip install goobook
-# https://hynek.me/articles/my-mutt-gmail-setup/
-# set query_command="goobook query '%s'"
-# macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
-# bind editor <Tab> complete-query
-# set sort_alias    = alias
-# set reverse_alias = yes
-# set reverse_name  = yes
-# source $alias_file
+# set query_command = "reattach-to-user-namespace lbdbq %s 2>/dev/null"
+set query_command = "reattach-to-user-namespace lbdbq %s"
+set sort_alias    = alias
+set reverse_alias = yes
+set reverse_name  = yes
+source $alias_file
 
 # gpg
 # source $MAILCONF/gpg.muttrc
@@ -130,10 +126,8 @@ bind compose p postpone-message
 # set crypt_autosign = no
 # set crypt_replyencrypt = no
 
-# http://www.marksanborn.net/howto/reading-html-email-with-mutt/
-# http://simonjbeaumont.com/posts/mutt-exchange/
-alternative_order text/calendar text/plain text/enriched text/html text/*
 auto_view text/html text/calendar
+alternative_order text/calendar text/plain text/enriched text/html text/*
 
 # Status Bar {{{
 set status_chars   = " *%A"
@@ -181,5 +175,4 @@ set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d?
 source ~/.mutt/config/aliases.mutt
 source ~/.mutt/config/colors.mutt
 source ~/.mutt/config/bindings.mutt
-source ~/.mutt/config/commands.mutt
 source ~/.mutt/hooks/hooks.mutt

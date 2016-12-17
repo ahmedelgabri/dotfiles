@@ -92,8 +92,6 @@ macro pager A ,@aoh= "toggle alternative order"
 
 # Sync email
 macro index sA "<shell-escape>mbsync -a<enter>"           "sync all mail"
-macro index sp "<shell-escape>mbsync personal-download<enter>" "sync inbox"
-macro index sw "<shell-escape>mbsync work-download<enter>" "sync inbox"
 
 
 # More powerful search is `limiting` using `l`
