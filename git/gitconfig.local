@@ -85,7 +85,7 @@
 
 [difftool "vimdiff"]
   ; $BASE $LOCAL $REMOTE $MERGED
-  cmd = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
 
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
@@ -97,7 +97,7 @@
   prompt = false
 
 [mergetool "vimdiff"]
-  cmd = $EDITOR -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
 
 [push]
   default = simple
