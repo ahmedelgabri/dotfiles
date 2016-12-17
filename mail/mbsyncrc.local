@@ -77,7 +77,7 @@ Channel personal-trash
 Channel personal-folders
 
 # For doing a quick sync of just the INBOX with `mbsync personal-Download`.
-Channel personal-Download
+Channel personal-download
 Master :personal-remote:INBOX
 Slave :personal-local:Inbox
 Create Slave
@@ -149,7 +149,7 @@ Channel work-trash
 Channel work-folders
 
 # For doing a quick sync of just the INBOX with `mbsync work-Download`.
-Channel work-Download
+Channel work-download
 Master :work-remote:INBOX
 Slave :work-local:Inbox
 Create Slave

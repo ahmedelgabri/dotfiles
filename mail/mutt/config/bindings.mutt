@@ -1,75 +1,112 @@
 # vim:ft=muttrc:
 
-# Sidebar Navigation ---------------------------------
-bind index,pager <down>   sidebar-next
-bind index,pager <up>     sidebar-prev
-bind index,pager <right>  sidebar-open
-bind index,pager <left>   sidebar-toggle-visible
-
-# Index Key Bindings ---------------------------------
+bind attach <return> view-mailcap
+bind editor <space> noop
+bind editor <Tab> complete-query
+bind generic x tag-entry
 bind index gg       first-entry
 bind index G        last-entry
 bind index r        group-reply
 bind index <space>  collapse-thread
-
-# Pager Key Bindings ---------------------------------
+bind index t tag-thread # Usually "tag-entry", but we use "x" (Gmail key) for that.
+bind index,pager <down>   sidebar-next
+bind index,pager <up>     sidebar-prev
+bind index,pager <right>  sidebar-open
+bind index,pager <left>   sidebar-toggle-visible
+bind index,pager c  mail #Compose
+bind index,pager s  flag-message	#Star a message
+bind index,pager D delete-thread	#Delete
+bind index,pager N search-opposite
+bind index,pager \Cd next-page
+bind index,pager \Cu previous-page
+bind index,pager b sidebar-toggle-visible
+bind pager <space> next-page
+bind pager G bottom
+bind pager gg top
+bind pager u exit
 bind pager j next-line
 bind pager k previous-line
 bind pager r group-reply	#Reply all
-macro pager \Cu "|urlview<enter>" "call urlview to open links"
-# View attachments properly.
-bind attach <return> view-mailcap
 
-# Sync email
-# macro index O "<shell-escape>mbsync -a<enter>"           "sync all mail"
-# macro index o "<shell-escape>mbsync personal work<enter>" "sync inboxes"
+# Legend:
+#   ! = $spoolfile (INBOX)
+#   > = $mbox (Archive)
+#   ; = <tag-prefix> (operate on tagged messages if possible, or current message if nothi=ng tagged)
 
-# Saner copy/move dialogs
-macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index,pager gi "<change-folder>!<enter>" "go to inbox"
+macro index,pager ga "<change-folder>><enter>" "go to all mail"
+macro index,pager gl "<change-folder>?<toggle-mailboxes>" "go to 'Label'"
+
+# UGLY!
+folder-hook +personal/* 'macro index,pager gs "<change-folder>+personal/Starred<enter>" "go to starred messages"'
+folder-hook +personal/* 'macro index,pager gt "<change-folder>+personal/Sent<enter>" "go to Sent Mail"'
+folder-hook +personal/* 'macro index,pager gd "<change-folder>+personal/Drafts<enter>" "go to drafts"'
+folder-hook +personal/* 'macro index,pager !  "<save-message>=+personal/Spam<enter><enter>" "Report spam"'
+folder-hook +personal/* 'macro index,pager d "<save-message>=+personal/Trash<enter>" "Trash"'
+folder-hook +personal/* 'macro index,pager y "<save-message>=+personal/Archive<enter>" "Archive conversation"'
+folder-hook +personal/* 'macro index,pager Y "<save-thread>=+personal/Archive<enter>" "Archive conversation"'
+
+folder-hook +work/* 'macro index,pager gs "<change-folder>+work/Starred<enter>" "go to starred messages"'
+folder-hook +work/* 'macro index,pager gt "<change-folder>+work/Sent<enter>" "go to Sent Mail"'
+folder-hook +work/* 'macro index,pager gd "<change-folder>+work/Drafts<enter>" "go to drafts"'
+folder-hook +work/* 'macro index,pager !  "<save-message>=+work/Spam<enter><enter>" "Report spam"'
+folder-hook +work/* 'macro index,pager d "<save-message>=+work/Trash<enter>" "Trash"'
+folder-hook +work/* 'macro index,pager y "<save-message>=+work/Archive<enter>" "Archive conversation"'
+folder-hook +work/* 'macro index,pager Y "<save-thread>=+work/Archive<enter>" "Archive conversation"'
+
+# "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
+# info.
+# macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
+# macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
+# macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
+# macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
+
+# # Default direction is "down".
+# source ~/.mutt/config/next.mutt
+
+macro pager s "<flag-message>" "star/unstar"
+macro index s ";<flag-message>" "star/unstar"
+
+macro index x "<tag-message>" "select message"
+macro pager x "<tag-message><exit>" "select message"
+
+macro index *a "<tag-pattern>~A<enter>" "select all"
+# Deselect all (mnemonic: "select [n]one"); for efficiency we only untag tagged.
+macro index *n "<untag-pattern>~T<enter>" "deselect all"
+macro index *r "<untag-pattern>~T<enter><tag-pattern>~R<enter>" "select read"
+macro index *u "<untag-pattern>~T<enter><tag-pattern>~U<enter>" "select unread"
+macro pager t "<exit><tag-thread>" "tag thread"
+
+macro pager \Cu "<enter-command>set pipe_decode = yes<enter>|urlview<enter><enter-command>set pipe_decode = no<enter>" "view URLs"
+# macro pager \Cu "|urlview<enter>" "call urlview to open links"
+
+macro pager m "<save-message>?<toggle-mailboxes>" "move to..."
+macro index m ";<save-message>?<toggle-mailboxes>" "move to..."
+
+macro pager U <set-flag>N "mark as unread"
+macro index U ";<set-flag>N" "mark as unread"
+macro pager I <clear-flag>N "mark as read"
+macro index I ";<clear-flag>N" "mark as read"
 
 # Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
-# Key Binidings --------------------------------------------------------------------------------------------------------
-bind  editor <space> noop
-# bind  index,pager c  mail #Compose
-bind  index,pager s  flag-message	#Star a message
-bind  index,pager D delete-thread	#Delete
-macro index,pager U  <clear-flag>O	"Mark as unread"
-macro index,pager gl <change-folder>?				"Go to 'Label'"
-macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+# Macro to toggle alternates (plain <-> html), based on:
+# https://groups.google.com/d/msg/comp.mail.mutt/9I702oMwQQE/JqdLnp3j9WAJ
+macro pager ,@aoh= "<enter-command>unalternative_order *; alternative_order text/html text/plain text/enriched; macro pager A ,@aot= 'toggle alternative order'<enter><exit><display-message>"
+macro pager ,@aot= "<enter-command>unalternative_order *; alternative_order text/plain text/enriched text/html; macro pager A ,@aoh= 'toggle alternative order'<enter><exit><display-message>"
+macro pager A ,@aoh= "toggle alternative order"
 
-folder-hook +personal/* 'macro index,pager !  "<save-message>=personal/Spam<enter><enter>" "Report spam"'
-folder-hook +personal/* 'macro index,pager d "<save-message>=personal/Trash<enter>" "Trash"'
-folder-hook +personal/* 'macro index,pager ga "<change-folder>=personal/Archive<enter>"	"Go to all mail"'
-folder-hook +personal/* 'macro index,pager gs "<change-folder>=personal/Starred<enter>"	"Go to Starred"'
-folder-hook +personal/* 'macro index,pager gd "<change-folder>=personal/Drafts<enter>"	"Go to Drafts"'
-folder-hook +personal/* 'macro index,pager gi "<change-folder>=personal/Inbox<enter>" 	"Go to inbox"'
-folder-hook +personal/* 'macro index,pager gt "<change-folder>=personal/Sent<enter>"	"Go to Sent Mail"'
-folder-hook +personal/Inbox 'macro index,pager y "<save-message>=personal/Archive<enter>" "Archive conversation"'
-folder-hook +personal/Inbox 'macro index,pager Y "<save-thread>=personal/Archive<enter>" "Archive conversation"'
-folder-hook +personal/Trash 'macro index,pager i "<save-message>=personal/Inbox<enter>" "Move to inbox"'
-folder-hook +personal/Starred bind  index,pager s flag-message #"Toggle star"
+# macro index,pager S "<enter-command>unset wait_key<enter><shell-escape>~/.mutt/mutt-notmuch-py/mutt-notmuch-py --history-path=~/.mutt/tmp/notmuch.history ~/.mail/Temporary/Search<enter><enter-command>mailboxes '+Temporary/Search'<enter><change-folder-readonly>+Temporary/Search<enter>" "search mail (using notmuch)"
 
-folder-hook +work/* 'macro index,pager !  "<save-message>=work/Spam<enter><enter>" "Report spam"'
-folder-hook +work/* 'macro index,pager d "<save-message>=work/Trash<enter>" "Trash"'
-folder-hook +work/* 'macro index,pager ga "<change-folder>=work/Archive<enter>"	"Go to all mail"'
-folder-hook +work/* 'macro index,pager gs "<change-folder>=work/Starred<enter>"	"Go to Starred"'
-folder-hook +work/* 'macro index,pager gd "<change-folder>=work/Drafts<enter>"	"Go to Drafts"'
-folder-hook +work/* 'macro index,pager gi "<change-folder>=work/Inbox<enter>" 	"Go to inbox"'
-folder-hook +work/* 'macro index,pager gt "<change-folder>=work/Sent<enter>"	"Go to Sent Mail"'
-folder-hook +work/Inbox 'macro index,pager y "<save-message>=work/Archive<enter>" "Archive conversation"'
-folder-hook +work/Inbox 'macro index,pager Y "<save-thread>=work/Archive<enter>" "Archive conversation"'
-folder-hook +work/Trash 'macro index,pager i "<save-message>=work/Inbox<enter>" "Move to inbox"'
-folder-hook +work/Starred bind  index,pager s flag-message #"Toggle star"
+# Sync email
+macro index sA "<shell-escape>mbsync -a<enter>"           "sync all mail"
+macro index sp "<shell-escape>mbsync personal-download<enter>" "sync inbox"
+macro index sw "<shell-escape>mbsync work-download<enter>" "sync inbox"
 
-# Vanilla Searching
-# / works just like Vim, use `n` to go to next, 'N' to go to previous
-bind index N search-opposite
-bind pager N search-opposite
 
 # More powerful search is `limiting` using `l`
 # Limit queries work exactly like search queries, so you can do powerful stuff like ~f arthur ~C honza ~s api
 # (“limit to messages from ‘arthur’, to or cced to ‘honza’, containing ‘api’ in the subject”).
 
+# macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"

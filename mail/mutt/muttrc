@@ -1,5 +1,5 @@
 # Paths
-set alias_file       = ~/.mutt/config/aliases # where to store aliases
+set alias_file       = ~/.mutt/config/aliases.mutt # where to store aliases
 # set display_filter   = '~/.mutt/aliases.sh'
 set header_cache     = ~/.mutt/cache/headers # where to store headers
 set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
@@ -178,6 +178,8 @@ set status_on_top = yes
 set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p 📤 )?───"
 
 # Color ---------------------------------------------------------
+source ~/.mutt/config/aliases.mutt
 source ~/.mutt/config/colors.mutt
 source ~/.mutt/config/bindings.mutt
+source ~/.mutt/config/commands.mutt
 source ~/.mutt/hooks/hooks.mutt
