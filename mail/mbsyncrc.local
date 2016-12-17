@@ -30,7 +30,7 @@ Account personal
 # Local storage (where the mail is retrieved to)
 MaildirStore personal-local
 Path ~/.mail/personal/ # The trailing "/" is important
-Inbox ~/.mail/personal/Inbox
+Inbox ~/.mail/personal/_
 
 Channel personal-inbox
 Master :personal-remote:INBOX
@@ -38,27 +38,27 @@ Slave :personal-local:Inbox
 
 Channel personal-archive
 Master :personal-remote:"[Gmail]/All Mail"
-Slave :personal-local:Archive
+Slave :personal-local:_.Archive
 
 Channel personal-drafts
 Master :personal-remote:"[Gmail]/Drafts"
-Slave :personal-local:Drafts
+Slave :personal-local:_.Drafts
 
 Channel personal-starred
 Master :personal-remote:"[Gmail]/Starred"
-Slave :personal-local:Starred
+Slave :personal-local:_.Starred
 
 Channel personal-sent
 Master :personal-remote:"[Gmail]/Sent Mail"
-Slave :personal-local:Sent
+Slave :personal-local:_.Sent
 
 Channel personal-spam
 Master :personal-remote:"[Gmail]/Spam"
-Slave :personal-local:Spam
+Slave :personal-local:_.Spam
 
 Channel personal-trash
 Master :personal-remote:"[Gmail]/Trash"
-Slave :personal-local:Trash
+Slave :personal-local:_.Trash
 
 Channel personal-folders
 Master :personal-remote:
@@ -102,7 +102,7 @@ Account work
 # Local storage (where the mail is retrieved to)
 MaildirStore work-local
 Path ~/.mail/work/ # The trailing "/" is important
-Inbox ~/.mail/work/Inbox
+Inbox ~/.mail/work/_
 
 Channel work-inbox
 Master :work-remote:INBOX
@@ -110,27 +110,27 @@ Slave :work-local:Inbox
 
 Channel work-archive
 Master :work-remote:"[Gmail]/All Mail"
-Slave :work-local:Archive
+Slave :work-local:_.Archive
 
 Channel work-drafts
 Master :work-remote:"[Gmail]/Drafts"
-Slave :work-local:Drafts
+Slave :work-local:_.Drafts
 
 Channel work-starred
 Master :work-remote:"[Gmail]/Starred"
-Slave :work-local:Starred
+Slave :work-local:_.Starred
 
 Channel work-sent
 Master :work-remote:"[Gmail]/Sent Mail"
-Slave :work-local:Sent
+Slave :work-local:_.Sent
 
 Channel work-spam
 Master :work-remote:"[Gmail]/Spam"
-Slave :work-local:Spam
+Slave :work-local:_.Spam
 
 Channel work-trash
 Master :work-remote:"[Gmail]/Trash"
-Slave :work-local:Trash
+Slave :work-local:_.Trash
 
 Channel work-folders
 Master :work-remote:

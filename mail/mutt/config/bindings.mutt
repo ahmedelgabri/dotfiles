@@ -1,6 +1,7 @@
 # vim:ft=muttrc:
 
 bind attach <return> view-mailcap
+bind compose p postpone-message
 bind editor <space> noop
 bind editor <Tab> complete-query
 bind generic x tag-entry
@@ -36,33 +37,23 @@ bind pager r group-reply	#Reply all
 macro index,pager gi "<change-folder>!<enter>" "go to inbox"
 macro index,pager ga "<change-folder>><enter>" "go to all mail"
 macro index,pager gl "<change-folder>?<toggle-mailboxes>" "go to 'Label'"
-
-# UGLY!
-folder-hook +personal/* 'macro index,pager gs "<change-folder>+personal/Starred<enter>" "go to starred messages"'
-folder-hook +personal/* 'macro index,pager gt "<change-folder>+personal/Sent<enter>" "go to Sent Mail"'
-folder-hook +personal/* 'macro index,pager gd "<change-folder>+personal/Drafts<enter>" "go to drafts"'
-folder-hook +personal/* 'macro index,pager !  "<save-message>=+personal/Spam<enter><enter>" "Report spam"'
-folder-hook +personal/* 'macro index,pager d "<save-message>=+personal/Trash<enter>" "Trash"'
-folder-hook +personal/* 'macro index,pager y "<save-message>=+personal/Archive<enter>" "Archive conversation"'
-folder-hook +personal/* 'macro index,pager Y "<save-thread>=+personal/Archive<enter>" "Archive conversation"'
-
-folder-hook +work/* 'macro index,pager gs "<change-folder>+work/Starred<enter>" "go to starred messages"'
-folder-hook +work/* 'macro index,pager gt "<change-folder>+work/Sent<enter>" "go to Sent Mail"'
-folder-hook +work/* 'macro index,pager gd "<change-folder>+work/Drafts<enter>" "go to drafts"'
-folder-hook +work/* 'macro index,pager !  "<save-message>=+work/Spam<enter><enter>" "Report spam"'
-folder-hook +work/* 'macro index,pager d "<save-message>=+work/Trash<enter>" "Trash"'
-folder-hook +work/* 'macro index,pager y "<save-message>=+work/Archive<enter>" "Archive conversation"'
-folder-hook +work/* 'macro index,pager Y "<save-thread>=+work/Archive<enter>" "Archive conversation"'
+macro index,pager gs "<change-folder>!.Starred<enter>" "go to starred messages"
+macro index,pager gt "<change-folder>!.Sent<enter>" "go to Sent Mail"
+macro index,pager gd "<change-folder>!.Drafts<enter>" "go to drafts"
+macro index,pager !  "<save-message>=!.Spam<enter><enter>" "Report spam"
+macro index,pager d "<save-message>=!.Trash<enter>" "Trash"
+macro index,pager y "<save-message>=!.Archive<enter>" "Archive conversation"
+macro index,pager Y "<save-thread>=!.Archive<enter>" "Archive conversation"
 
 # "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
 # info.
-# macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
-# macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
-# macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
-# macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
+macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
+macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
+macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
+macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
 
-# # Default direction is "down".
-# source ~/.mutt/config/next.mutt
+# Default direction is "down".
+source ~/.mutt/config/next.mutt
 
 macro pager s "<flag-message>" "star/unstar"
 macro index s ";<flag-message>" "star/unstar"
