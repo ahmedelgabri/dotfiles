@@ -21,6 +21,7 @@ bind index,pager N search-opposite
 bind index,pager \Cd next-page
 bind index,pager \Cu previous-page
 bind index,pager b sidebar-toggle-visible
+bind index,pager / vfolder-from-query # Searching with notmuch integration in neomutt
 bind pager <space> next-page
 bind pager G bottom
 bind pager gg top
