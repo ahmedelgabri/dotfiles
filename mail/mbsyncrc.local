@@ -21,9 +21,7 @@ User ahmed@gabri.me
 # Get the account password from the system Keychain
 PassCmd "~/.dotfiles/bin/get-keychain-pass 'ahmed+mutt@gabri.me' 'smtp.gmail.com'"
 AuthMechs LOGIN
-# AuthMechs *
 SSLType IMAPS
-CertificateFile /usr/local/etc/openssl/cert.pem
 
 # Remote storage (where the mail is retrieved from)
 IMAPStore personal-remote
@@ -32,7 +30,7 @@ Account personal
 # Local storage (where the mail is retrieved to)
 MaildirStore personal-local
 Path ~/.mail/personal/ # The trailing "/" is important
-Inbox ~/.mail/personal/inbox
+Inbox ~/.mail/personal/Inbox
 
 Channel personal-inbox
 Master :personal-remote:INBOX
@@ -66,7 +64,7 @@ Channel personal-folders
 Master :personal-remote:
 Slave :personal-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync personal`
 Group personal
@@ -78,6 +76,14 @@ Channel personal-spam
 Channel personal-trash
 Channel personal-folders
 
+# For doing a quick sync of just the INBOX with `mbsync personal-Download`.
+Channel personal-Download
+Master :personal-remote:INBOX
+Slave :personal-local:Inbox
+Create Slave
+Expunge Slave
+Sync Pull
+
 ########################################
 # Work
 ########################################
@@ -87,9 +93,7 @@ User ahmed.elgabri@lightspeedhq.com
 # Get the account password from the system Keychain
 PassCmd "~/.dotfiles/bin/get-keychain-pass 'ahmed.elgabri+mutt@lightspeedhq.com' 'smtp.gmail.com'"
 AuthMechs LOGIN
-# AuthMechs *
 SSLType IMAPS
-CertificateFile /usr/local/etc/openssl/cert.pem
 
 # Remote storage (where the mail is retrieved from)
 IMAPStore work-remote
@@ -98,7 +102,7 @@ Account work
 # Local storage (where the mail is retrieved to)
 MaildirStore work-local
 Path ~/.mail/work/ # The trailing "/" is important
-Inbox ~/.mail/work/inbox
+Inbox ~/.mail/work/Inbox
 
 Channel work-inbox
 Master :work-remote:INBOX
@@ -132,7 +136,7 @@ Channel work-folders
 Master :work-remote:
 Slave :work-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Starred !Drafts !Sent !Spam !Trash
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync work`
 Group work
@@ -143,3 +147,11 @@ Channel work-sent
 Channel work-spam
 Channel work-trash
 Channel work-folders
+
+# For doing a quick sync of just the INBOX with `mbsync work-Download`.
+Channel work-Download
+Master :work-remote:INBOX
+Slave :work-local:Inbox
+Create Slave
+Expunge Slave
+Sync Pull

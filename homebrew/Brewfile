@@ -36,7 +36,7 @@ brew 'figlet'
 brew 'findutils'
 brew 'fortune'
 brew 'fpp'
-brew 'isync'
+brew 'isync', args: ['with-berkeley-db']
 brew 'gawk'
 brew 'ghi'
 brew 'gnu-sed'
