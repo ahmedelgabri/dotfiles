@@ -1,21 +1,21 @@
 # MS Word documents
-# application/msword; ~/.mutt/view-attachment.sh %s "-" '/Applications/TextEdit.app'
+# application/msword; ~/.mutt/scripts/view-attachment.sh %s "-" '/Applications/TextEdit.app'
 
 # Images
-image/jpg; ~/.mutt/view-attachment.sh %s jpg
-image/jpeg; ~/.mutt/view-attachment.sh %s jpg
-image/pjpeg; ~/.mutt/view-attachment.sh %s jpg
-image/png; ~/.mutt/view-attachment.sh %s png
-image/gif; ~/.mutt/view-attachment.sh %s gif
+image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/png; ~/.mutt/scripts/view-attachment.sh %s png
+image/gif; ~/.mutt/scripts/view-attachment.sh %s gif
 
 # PDFs
-text/pdf; ~/.mutt/view-attachment.sh %s pdf
-application/pdf; ~/.mutt/view-attachment.sh %s pdf
+text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
+application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
 
 # HTML
 
 # Explicitly render in browser with "v" (view attachment):
-text/html; ~/.mutt/view-attachment.sh %s html
+text/html; ~/.mutt/scripts/view-attachment.sh %s html
 
 # Try to display implicitly using elinks:
 text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
@@ -23,10 +23,10 @@ text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s
 # Or, alternatively:
 # text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
-text/plain; ~/.mutt/view-mail.sh %s %{charset}; needsterminal
+text/plain; ~/.mutt/scripts/view-mail.sh %s %{charset}; needsterminal
 
 # Unidentified files
-application/octet-stream; ~/.mutt/view-attachment.sh %s "-"
+application/octet-stream; ~/.mutt/scripts/view-attachment.sh %s "-"
 
 # Better calendar invitations format
-text/calendar; ~/.mutt/dump-ical.py %s; copiousoutput;
+text/calendar; ~/.mutt/scripts/dump-ical.py %s; copiousoutput;
