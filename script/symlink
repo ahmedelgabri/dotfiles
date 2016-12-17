@@ -64,6 +64,9 @@ ln -sf $HOME/.dotfiles/python/pip.local $HOME/.pip.conf
 
 ln -sf $HOME/.dotfiles/mail/msmtprc.local $HOME/.msmtprc
 ln -sf $HOME/.dotfiles/mail/mbsyncrc.local $HOME/.mbsyncrc
+ln -sf $HOME/.dotfiles/mail/lbdbrc.local $HOME/.lbdbrc
+ln -sf $HOME/.dotfiles/mail/notmuch-config.local $HOME/.notmuch-config
+ln -sf $HOME/.dotfiles/mail/com.ahmedelgabri.isync.plist $HOME/Library/LaunchAgents/com.ahmedelgabri.isync.plist
 
 ln -sf $HOME/.dotfiles/vim/vimrc.local $HOME/.vimrc
 ln -sf $HOME/.dotfiles/vim/ $HOME/.vim
