@@ -63,7 +63,8 @@ nnoremap <leader>tf :TernRefs<CR>
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 inoremap jj <ESC>
-nnoremap \ :CtrlSF<SPACE>
+" nnoremap \ :CtrlSF<SPACE>
+nnoremap \ :Grepper -side -tool rg -query<SPACE>
 " nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
 nnoremap <Leader>bd :Bdelete<CR>
