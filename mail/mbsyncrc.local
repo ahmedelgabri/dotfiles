@@ -34,7 +34,7 @@ Inbox ~/.mail/personal/_
 
 Channel personal-inbox
 Master :personal-remote:INBOX
-Slave :personal-local:Inbox
+Slave :personal-local:_
 
 Channel personal-archive
 Master :personal-remote:"[Gmail]/All Mail"
@@ -79,7 +79,7 @@ Channel personal-folders
 # For doing a quick sync of just the INBOX with `mbsync personal-Download`.
 Channel personal-download
 Master :personal-remote:INBOX
-Slave :personal-local:Inbox
+Slave :personal-local:_
 Create Slave
 Expunge Slave
 Sync Pull
@@ -106,7 +106,7 @@ Inbox ~/.mail/work/_
 
 Channel work-inbox
 Master :work-remote:INBOX
-Slave :work-local:Inbox
+Slave :work-local:_
 
 Channel work-archive
 Master :work-remote:"[Gmail]/All Mail"
@@ -151,7 +151,7 @@ Channel work-folders
 # For doing a quick sync of just the INBOX with `mbsync work-Download`.
 Channel work-download
 Master :work-remote:INBOX
-Slave :work-local:Inbox
+Slave :work-local:_
 Create Slave
 Expunge Slave
 Sync Pull
