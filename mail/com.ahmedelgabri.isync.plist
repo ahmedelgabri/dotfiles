@@ -10,15 +10,10 @@ Copy/move/symlink this file to ~/Library/LaunchAgents, and then load it with
  <key>Label</key>
  <string>com.ahmedelgabri.isync</string>
  <key>Program</key>
- <string>/usr/local/bin/mbsync</string>
- <key>ProgramArguments</key>
- <array>
-   <string>/usr/local/bin/mbsync</string>
-   <string>-a</string>
- </array>
+ <string>/Users/ahmed/.dotfiles/bin/mail-sync</string>
  <key>RunAtLoad</key>
  <true/>
  <key>StartInterval</key>
- <integer>300</integer>
+ <integer>120</integer>
 </dict>
 </plist>
