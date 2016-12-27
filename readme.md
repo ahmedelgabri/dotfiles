@@ -4,6 +4,8 @@ For setting up development environment on new Mac. You are welcome to give tips 
 
 ![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.gif)
 
+The config is managed by [GNU stow](https://www.gnu.org/software/stow/)
+
 ## Installation
 
 Change shell to `zsh`
@@ -21,5 +23,4 @@ Install
 
 ### After installation
 
-- Append `/etc/hosts` <br> `$ curl "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" | sudo tee -a /etc/hosts`
 - Use [Google DNS](https://developers.google.com/speed/public-dns/)
