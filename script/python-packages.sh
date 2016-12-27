@@ -11,5 +11,4 @@ PACKAGES=(
   neovim
 )
 
-mkdir ~/.venv
-pip install ${PACKAGES[@]}
+mkdir ~/.venv && pip install ${PACKAGES[@]}

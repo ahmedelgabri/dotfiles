@@ -4,24 +4,39 @@ install:
 		@./script/install
 
 symlink:
-		@./script/symlink
+		@stow --ignore ".DS_Store" --target="$(HOME)" --dir="$(HOME)/.dotfiles" \
+			misc \
+			ctags \
+			curl \
+			git \
+			grc \
+			hammerspoon \
+			irc \
+			iterm2 \
+			mail \
+			neovim \
+			python \
+			ruby \
+			terminfo \
+			tmux \
+			vim \
+			zsh
 
 homebrew:
-		@brew update
-		@brew bundle --file=~/.dotfiles/homebrew/Brewfile
+		@brew bundle --file="$(HOME)/.dotfiles/homebrew/Brewfile"
 		@brew cleanup
 		@brew doctor
 
 node:
-		@sh ./node/packages.sh
+		@sh ./script/node-packages.sh
 
 python:
-		@sh ./python/packages.sh
+		@sh ./script/python-packages.sh
 
 iterm:
 		@sh ./iterm2/themes.sh
 
 macos:
-		@source ~/.dotfiles/macos/macos.local
+		@source $(HOME)/.dotfiles/macos/.macos
 
 .PHONY: symlink homebrew node python iterm macos

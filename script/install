@@ -1,6 +1,175 @@
 #!/bin/bash
 # curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
 
+# =======================================================================
+# = Helpers & setting some variables
+# =======================================================================
+
+DOTFILES_DIR="$HOME/.dotfiles"
+BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
+
+tput sgr0
+RED=$(tput setaf 1)
+ORANGE=$(tput setaf 3)
+GREEN=$(tput setaf 2)
+PURPLE=$(tput setaf 5)
+BLUE=$(tput setaf 4)
+WHITE=$(tput setaf 7)
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+
+log_error() {
+  local MSG="$1"
+  let COL=$(tput cols)-2-${#MSG}+${#RESET}
+
+  printf "${RED}%*s${RESET}" $(tput cols) | tr ' ' '='
+  printf "%s%${COL}s" "$RED= $MSG" "[FAIL]$RESET"
+  printf "${RED}%*s${RESET}" $(tput cols) | tr ' ' '='
+}
+
+log_success() {
+  local MSG="$1"
+  let COL=$(tput cols)-2-${#MSG}+${#RESET}
+
+  printf "${GREEN}%*s${RESET}" $(tput cols) | tr ' ' '='
+  printf "%s%${COL}s" "$GREEN= $MSG" "[OK]$RESET"
+  printf "${GREEN}%*s${RESET}" $(tput cols) | tr ' ' '='
+}
+
+# =======================================================================
+# = Main functions
+# =======================================================================
+
+install_homebrew() {
+  # Check for Homebrew,
+  # Install if we don't have it
+  if ! command -v brew >/dev/null; then
+    log_success "Installing Homebrew"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew install stow
+  fi
+}
+
+install_dotfiles() {
+  if [[ ! -d "$DOTFILES_DIR" ]]; then
+    log_success "Cloning dotfiles..."
+    mkdir "$DOTFILES_DIR"
+    git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
+  else
+    cd $DOTFILES_DIR && \
+    git stash && \
+    git checkout master && \
+    git reset --hard origin/master && \
+    git submodule update --init --recursive && \
+    git checkout - && \
+    git stash pop
+  fi
+}
+
+take_backup() {
+  log_success "Taking backups for old files..."
+  # @TODO: Look into how to automate this list
+  local FILES=(
+    $HOME/.ignore
+    $HOME/.gitignore
+    $HOME/.gitconfig
+    $HOME/.gitattributes
+    $HOME/.zshrc
+    $HOME/.zshenv
+    $HOME/.zpreztorc
+    $HOME/.zprofile
+    $HOME/.vimrc
+    $HOME/.gvimrc
+    $HOME/.gemrc
+    $HOME/.pyrc.py
+    $HOME/.pip.conf
+    $HOME/.hushlogin
+    $HOME/.vim
+    $HOME/Library/Preferences/com.googlecode.iterm2.plist
+    $HOME/.config/nvim
+    $HOME/.mutt
+    $HOME/.hammerspoon
+    $HOME/.grc
+    $HOME/.terminfo
+    $HOME/.tmux.conf
+    $HOME/.urlview
+    $HOME/.notmuch-config
+    $HOME/.msmtprc
+    $HOME/.mbsyncrc
+    $HOME/.lbdbrc
+    $HOME/.editorconfig
+    $HOME/.hushlogin
+    $HOME/.curlrc
+    $HOME/.ctags
+  )
+
+  mkdir -p $BAKCUP_DIR
+
+  for file in ${FILES[@]}; do
+    if [[ -d "$file" ]]; then
+      echo "Backing up directory: $file"
+      mv "$file" "$BAKCUP_DIR"
+    elif [[ -f "$file" ]]; then
+      echo "Backing up file: $file"
+      mv "$file" "$BAKCUP_DIR"
+    fi
+  done
+}
+
+symlink_files() {
+  log_success "Create some required folders..."
+  mkdir -p $HOME/.config && \
+  mkdir -p $HOME/.dotfiles/neovim/.config/nvim/tmp/{swap,undo,view} && \
+  mkdir -p $HOME/.mail/{personal,work}
+
+  if [[ -d "$DOTFILES_DIR" ]]; then
+    log_success "Symlinking files/folders..."
+    cd "$DOTFILES_DIR" && make symlink
+  else
+    log_error "There is no $DOTFILES_DIR directory"
+  fi
+}
+
+install_apps(){
+  if [[ -d "$DOTFILES_DIR" ]]; then
+    log_success "Installing apps & tools, this will take a while..."
+    cd "$DOTFILES_DIR" && make all
+  else
+    log_error "There is no $DOTFILES_DIR directory"
+  fi
+}
+
+change_shell() {
+  log_success "Switching shell to (homebrew) zsh..."
+  echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells > /dev/null
+  chsh -s "/usr/local/bin/zsh" "$(whoami)"
+}
+
+# =======================================================================
+# = Run!
+# =======================================================================
+
+cat <<EOF
+$BLUE
+                            _       _    __ _ _
+                           | |     | |  / _(_) |
+                         __| | ___ | |_| |_ _| | ___  ___
+                        / _. |/ _ \| __|  _| | |/ _ \/ __|
+                       | (_| | (_) | |_| | | | |  __/\__ \ $()
+                      (_)__,_|\___/ \__|_| |_|_|\___||___/
+
+
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+                      $RESET$BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(red)date:    %ad' --date=short) $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(cyan)author:  %an') $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(green)message: %s') $BLUE
+                      $RESET$BLUE
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+$RESET
+EOF
+
 # Ask for the administrator password upfront.
 sudo -v
 
@@ -12,49 +181,18 @@ cd $HOME
 xcode-select --install
 # xcodebuild -license accept # To accept Xcode EULA
 
+install_homebrew
+install_dotfiles
+take_backup
+symlink_files
+install_apps
+change_shell
 
-
-# Check for Homebrew,
-# Install if we don't have it
-if ! command -v brew >/dev/null; then
-  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-  echo "\033[0;34m====== Installing Homebrew =================================\033[0;0m"
-  echo "\033[0;34m------------------------------------------------------------\033[0;0m"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi
-
-
-if [[ ! -d "$HOME/.dotfiles" ]]; then
-  echo "Clonning dotfiles..."
-  mkdir "$HOME/.dotfiles"
-  git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$HOME/.dotfiles"
+if [ $? -eq 0 ]; then
+  log_success "Done."
+  log_success "Change your zsh to the brew installed one. and run Make all"
+  log_success "Don't forget to generate SSH keys, symlink files from box & source .macos"
 else
-  cd $HOME/.dotfiles && git pull origin master
+  log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"
 fi
-
-if [[ ! -d "$HOME/.zprezto" ]]; then
-  echo "Clonning prezto..."
-  git clone --recursive https://github.com/ahmedelgabri/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-
-  setopt EXTENDED_GLOB
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md\(.N\); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
-else
-  cd $HOME/.zprezto && git reset --hard origin/master && git submodule update --init --recursive
-fi
-
-echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
-echo "\033[0;34m====== Generate SSH keys \for github, bitbucket \& other services you use =====\033[0;0m"
-echo "\033[0;34m====== 1- Don't forget to run source ~/.macos & change your zsh to the brew one ====\033[0;0m"
-echo "\033[0;34m====== 2- Symlink other dotfiles files from Box Sync													====\033[0;0m"
-echo "\033[0;34m-------------------------------------------------------------------------------\033[0;0m"
-
-if [[ -d "$HOME/.dotfiles" ]]; then
-  cd "$HOME/.dotfiles"
-else
-  echo ".dotfiles directory doesn't exit"
-fi
-
-echo "Change your zsh to the brew installed one. and run Make all"
 
