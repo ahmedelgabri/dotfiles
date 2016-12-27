@@ -1,0 +1,164 @@
+; vim: ft=gitconfig
+[user]
+  name = Ahmed El Gabri
+
+[color]
+  ui = true
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red strike
+  new = green italic
+  whitespace = red reverse
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = red
+
+[color "diff-highlight"]
+  oldNormal = "red bold"
+  oldHighlight = "red bold 52"
+  newNormal = "green bold"
+  newHighlight = "green bold 22"
+
+[pager]
+  show = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+  diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+
+[interactive]
+  diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
+
+[core]
+  whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
+  excludesfile = ~/.dotfiles/git/.gitignore
+  attributesfile = ~/.dotfiles/git/.gitattributes
+  ; https://news.ycombinator.com/item?id=11388479
+  untrackedCache = true
+  pager = diff-so-fancy | less --tabs=4 -RFX
+
+[alias]
+  co = checkout
+  cb = checkout -b
+  cm = commit
+  st = status -sb
+  br = branch --sort=-committerdate
+  d = diff --patch-with-stat
+  dc = diff --staged --patch-with-stat
+  lgnm = log --graph --no-merges --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
+  lg = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
+  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%an> %Creset%ae %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
+  fl = log -u --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %Creset%ae %C(magenta)%d\" --date=short
+  gr = grep -Ii
+  setr = remote set-url
+  rmr = remote remove
+  # untrack = update-index --assume-unchanged
+  untrack = rm --cached <file>
+  track = push origin -u HEAD
+  latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
+  blm = blame -wMC
+  this = !git init && git add . && git commit -m \"initial commit\"
+  ; amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+  who = shortlog -sne
+  doctor = remote -v show origin
+  grr = grep --break --heading --line-number
+  ll = log --cc
+  lastchange = log -p --follow -n 1
+  ctags = !.git/hooks/ctags
+  aliases = config --get-regexp alias
+  stashes = stash list
+
+[diff]
+  # Detect copies as well as renames
+  renames = copies
+  tool = vimdiff
+  compactionHeuristic = true
+
+[difftool]
+  prompt = false
+
+[difftool "vimdiff"]
+  ; $BASE $LOCAL $REMOTE $MERGED
+  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
+
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = true
+  tool = vimdiff
+
+[mergetool]
+  keepBackup = false
+  prompt = false
+
+[mergetool "vimdiff"]
+  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
+
+[push]
+  default = simple
+  followTags = true
+
+[apply]
+  whitespace = nowarn
+
+[filter "media"]
+  clean = git-media-clean %f
+  smudge = git-media-smudge %f
+
+[fetch]
+  prune = true
+[transfer]
+  fsckobjects = true
+[fetch]
+  fsckobjects = true
+[receive]
+  fsckObjects = true
+
+# URL shorthands
+[url "git@github.com:"]
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "git://github.com/"
+
+[url "git://github.com/"]
+  insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "git://gist.github.com/"
+
+[url "git://gist.github.com/"]
+  insteadOf = "gist:"
+
+[url "git@github.com:ahmedelgabri/"]
+  insteadOf = "me:"
+  pushInsteadOf = "https://github.com/ahmedelgabri/"
+  pushInsteadOf = "http://github.com/ahmedelgabri/"
+  pushInsteadOf = "git://github.com/ahmedelgabri/"
+  pushInsteadOf = "me:"
+
+[include]
+  path = ~/.gitconfig.extra
+
+[credential]
+  helper = osxkeychain
+
+[filter "lfs"]
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+[branch]
+  autosetuprebase = always
+[pull]
+  rebase = true
+
+[ghi]
+  token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w
+[diff "exif"]
+  textconv = exiftool

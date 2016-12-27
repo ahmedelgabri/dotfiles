@@ -20,7 +20,6 @@ brew 'nvm'
 # brew 'ledger'
 # brew 'cmake'
 brew 'asciinema'
-brew 'awscli'
 brew 'bitlbee', restart_service: true
 brew 'cloc'
 brew 'coreutils'
