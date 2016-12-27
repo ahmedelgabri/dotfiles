@@ -37,8 +37,8 @@
 
 [core]
   whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-  excludesfile = ~/.dotfiles/git/gitignore.local
-  attributesfile = ~/.dotfiles/git/gitattributes.local
+  excludesfile = ~/.dotfiles/git/.gitignore
+  attributesfile = ~/.dotfiles/git/.gitattributes
   ; https://news.ycombinator.com/item?id=11388479
   untrackedCache = true
   pager = diff-so-fancy | less --tabs=4 -RFX
@@ -157,8 +157,6 @@
   autosetuprebase = always
 [pull]
   rebase = true
-[init]
-  templatedir = ~/.dotfiles/git/git-template
 
 [ghi]
   token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w
