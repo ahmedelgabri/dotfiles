@@ -56,6 +56,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'wincent/pinnacle'
 Plug 'wincent/loupe'
 Plug 'jaawerth/nrun.vim'
+Plug 'brooth/far.vim'
 
 " Syntax
 Plug 'kewah/vim-stylefmt'          , { 'on':  ['Stylefmt', 'StylefmtVisual'] }
