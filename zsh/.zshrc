@@ -27,7 +27,7 @@ source "`brew --prefix`/etc/grc.bashrc"
 # ALIASES.
 ##############################################################
 
-source $HOME/.dotfiles/zsh/aliases.local
+source $HOME/.dotfiles/zsh/aliases.zsh
 
 ##############################################################
 # FUNCTIONS.

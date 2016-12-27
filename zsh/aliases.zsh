@@ -2,7 +2,7 @@
 # TERMINAL
 alias vi="/usr/local/bin/vim "
 alias vim="nvim "
-alias ev="e ~/.dotfiles/vim/vimrc.local"
+alias ev="e ~/.dotfiles/neovim/.config/nvim/init.vim"
 alias "?"="pwd"
 alias c="clear "
 alias ll="type tree >/dev/null && tree -da -L 1 || l -d .*/ */ "
