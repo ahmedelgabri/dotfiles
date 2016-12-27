@@ -1,10 +1,10 @@
 vim/plugged/
 vim/tmp/
 vim/autoload/plug.vim*
-weechat/*
-!weechat/irc.conf
-!weechat/weechat.conf
-!weechat/plugins.conf
+irc/.weechat/*
+!irc/.weechat/irc.conf
+!irc/.weechat/weechat.conf
+!irc/.weechat/plugins.conf
 mail/mutt/config/aliases
 mail/mutt/cache
 mail/mutt/temp
