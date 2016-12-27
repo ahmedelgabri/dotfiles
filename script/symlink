@@ -53,8 +53,6 @@ for file in ${ZSH_FILES[@]}; do
   ln -sf $HOME/.dotfiles/zsh/"$file".local $HOME/."$file"
 done
 
-ln -sf $HOME/.dotfiles/zsh/prompt_pure_setup.local $HOME/.zprezto/modules/prompt/functions/prompt_pure_setup
-
 ln -sf $HOME/.dotfiles/zsh/hushlogin.local $HOME/.hushlogin
 ln -sf $HOME/.dotfiles/ag/agignore.local $HOME/.agignore
 ln -sf $HOME/.dotfiles/git/gitignore.local $HOME/.gitignore
