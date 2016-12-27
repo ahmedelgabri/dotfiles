@@ -20,20 +20,20 @@ SAVEHIST=$HISTSIZE
 # ENVIRONMENT.
 ##############################################################
 
-source /usr/local/etc/profile.d/z.sh
-source "`brew --prefix`/etc/grc.bashrc"
+command -v z >/dev/null && source "`brew --prefix`/etc/profile.d/z.sh"
+command -v grc >/dev/null && source "`brew --prefix`/etc/grc.bashrc"
 
 ##############################################################
 # ALIASES.
 ##############################################################
 
-source $HOME/.dotfiles/zsh/aliases.zsh
+source ~/.dotfiles/zsh/aliases.zsh
 
 ##############################################################
 # FUNCTIONS.
 ##############################################################
 
-for f in $HOME/.dotfiles/zsh/functions/*.zsh;
+for f in ~/.dotfiles/zsh/functions/*.zsh;
   do
     source "$f"
    done;
@@ -50,11 +50,11 @@ load-nvmrc() {
     nvm use default
   fi
 }
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
 
-source "/usr/local/etc/grc.bashrc"
-source /usr/local/share/zsh/site-functions/_aws
+if command -v nvm >/dev/null; then
+  add-zsh-hook chpwd load-nvmrc
+  load-nvmrc
+fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -118,4 +118,4 @@ fi
 
 
 # local
-source $HOME/.zstuff
+[ -f ~/.zstuff ] && source ~/.zstuff
