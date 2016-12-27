@@ -1,4 +1,3 @@
-# GNU stow ignore .gitignore files by default, and so we modify the default
 # ignore list, taken from
 # http://www.gnu.org/software/stow/manual/html_node/Types-And-Syntax-Of-Ignore-Lists.html,
 # to exclude the gitignore line
