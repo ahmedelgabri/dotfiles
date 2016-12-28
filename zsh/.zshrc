@@ -20,7 +20,7 @@ SAVEHIST=$HISTSIZE
 # ENVIRONMENT.
 ##############################################################
 
-command -v z >/dev/null && source "`brew --prefix`/etc/profile.d/z.sh"
+source "`brew --prefix`/etc/profile.d/z.sh"
 command -v grc >/dev/null && source "`brew --prefix`/etc/grc.bashrc"
 
 ##############################################################
