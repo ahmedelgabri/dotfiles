@@ -82,7 +82,10 @@
 
 [difftool]
   prompt = false
-
+[diff "exif"]
+  textconv = exiftool
+[diff "plist"]
+	textconv = plutil -convert xml1 -o -
 [difftool "vimdiff"]
   ; $BASE $LOCAL $REMOTE $MERGED
   cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
@@ -160,5 +163,3 @@
 
 [ghi]
   token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w
-[diff "exif"]
-  textconv = exiftool

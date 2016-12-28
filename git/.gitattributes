@@ -5,3 +5,4 @@
 *.jpeg diff=exif
 *.gif diff=exif
 *.webp diff=exif
+*.plist diff=plist
