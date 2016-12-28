@@ -1,7 +1,6 @@
 # vim:ft=zsh:
 # TERMINAL
 alias vi="/usr/local/bin/vim "
-alias vim="nvim "
 alias ev="e ~/.dotfiles/neovim/.config/nvim/init.vim"
 alias "?"="pwd"
 alias c="clear "
@@ -17,21 +16,25 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
-alias t='task'
 alias formatJSON='python -m json.tool'
 alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
-alias n="npm run "
-alias y="yarn run "
 alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
-alias curl='colourify curl '
 
 # DEV
 alias npmls="npm list --depth=0 "
 alias apache="sudo apachectl "
 
+# Conditional aliases
 # https://gist.github.com/sos4nt/3187620#gistcomment-1452131
 [[ $TERM == *"tmux"* ]] && alias ssh="TERM=xterm-256color ssh"
 [[ $TERM == *"tmux"* ]] && alias vagrant="TERM=xterm-256color vagrant"
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
+
+command -v nvim >/dev/null && alias vim="nvim "
+command -v task >/dev/null && alias t='task'
+command -v npm >/dev/null && alias n="npm run "
+command -v yarn >/dev/null && alias y="yarn run "
+command -v colourify >/dev/null && alias curl='colourify curl '
+
