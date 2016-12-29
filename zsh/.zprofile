@@ -57,7 +57,6 @@ path=(
   /usr/local/{bin,sbin}
   "/usr/local/opt/coreutils/libexec/gnubin"
   /usr/local/Cellar/git
-  ${HOME}/.tmuxifier/bin
   ${HOME}/.dotfiles/bin
   $path
 )

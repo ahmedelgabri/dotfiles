@@ -26,7 +26,6 @@ zstyle ':prezto:load' zfunction 'zargs' 'zmv'
 # The order matters.
 zstyle ':prezto:load' pmodule \
   'environment' \
-  'terminal' \
   'editor' \
   'history' \
   'directory' \
