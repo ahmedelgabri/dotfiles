@@ -21,6 +21,7 @@ alias ff='ag --nobreak --nonumbers --noheading . | fzf'
 alias dots="cd ~/.dotfiles"
 alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
+alias cask="brew cask "
 
 # DEV
 alias npmls="npm list --depth=0 "

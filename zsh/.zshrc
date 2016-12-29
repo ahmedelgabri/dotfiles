@@ -20,7 +20,7 @@ SAVEHIST=$HISTSIZE
 # ENVIRONMENT.
 ##############################################################
 
-source "`brew --prefix`/etc/profile.d/z.sh"
+[ -s "`brew --prefix`/etc/profile.d/z.sh" ] && source "`brew --prefix`/etc/profile.d/z.sh"
 command -v grc >/dev/null && source "`brew --prefix`/etc/grc.bashrc"
 
 ##############################################################
@@ -33,10 +33,7 @@ source ~/.dotfiles/zsh/aliases.zsh
 # FUNCTIONS.
 ##############################################################
 
-for f in ~/.dotfiles/zsh/functions/*.zsh;
-  do
-    source "$f"
-   done;
+for func (~/.dotfiles/zsh/functions/*.zsh) source $func
 
 ##############################################################
 ## Fix NPM completion https://github.com/npm/npm/issues/1976

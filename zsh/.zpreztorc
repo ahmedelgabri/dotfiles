@@ -38,7 +38,6 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'prompt' \
   'gpg' \
-  'homebrew' \
   'node' \
   'python'
 
