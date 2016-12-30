@@ -23,6 +23,15 @@ alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
 alias cask="brew cask "
 
+# zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
+alias -s js=$EDITOR
+alias -s jsx=$EDITOR
+alias -s json=$EDITOR
+alias -s css=$EDITOR
+alias -s scss=$EDITOR
+alias -s svg=$EDITOR
+alias -s html=$EDITOR
+
 # DEV
 alias npmls="npm list --depth=0 "
 alias apache="sudo apachectl "
