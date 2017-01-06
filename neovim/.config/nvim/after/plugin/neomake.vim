@@ -8,9 +8,9 @@ let g:neomake_html_enabled_makers = ['tidy']
 
 " Stylelint on demand
 if findfile('.stylelintrc', '.;') !=# ''
-  let g:neomake_css_enabled_makers = ['stylelint']
-  let g:neomake_scss_enabled_makers = g:neomake_css_enabled_makers
-  let g:neomake_scss_stylelint_maker = {
+  autocmd FileType css,sass,scss let b:neomake_scss_enabled_makers = b:neomake_css_enabled_makers
+  autocmd FileType css,sass,scss let b:nomake_css_enabled_makerse = ['stylelint']
+  autocmd FileType css,sass,scss let b:neomake_scss_stylelint_maker = {
       \ 'exe': nrun#Which('stylelint'),
       \ 'args': ['--syntax', 'scss'],
       \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
@@ -19,30 +19,30 @@ if findfile('.stylelintrc', '.;') !=# ''
 endif
 
 " JavaScript & JSX stuff
-let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
+autocmd FileType javascript let b:neomake_javascript_enabled_makers = ['standard']
+autocmd FileType javascript let b:neomake_jsx_enabled_makers = b:neomake_javascript_enabled_makers
 
 " ESLint on demand
 if findfile('.eslintrc', '.;') !=# '' || findfile('.eslintrc.js', '.;') !=# ''
-  let g:neomake_javascript_enabled_makers = ['eslint']
-  let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
-  let g:neomake_javascript_eslint_exe = nrun#Which('eslint')
-  let g:neomake_jsx_eslint_exe = g:neomake_javascript_eslint_exe
+  autocmd FileType javascript let b:neomake_javascript_enabled_makers = ['eslint']
+  autocmd FileType javascript let b:neomake_jsx_enabled_makers = b:neomake_javascript_enabled_makers
+  autocmd FileType javascript let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
+  autocmd FileType javascript let b:neomake_jsx_eslint_exe = b:neomake_javascript_eslint_exe
 endif
 
 " Flow on demand
 if findfile('.flowconfig', '.;') !=# ''
-  let g:flow_path = nrun#Which('flow')
-  let g:neomake_javascript_flow_maker = {
+  autocmd FileType javascript let b:flow_path = nrun#Which('flow')
+  autocmd FileType javascript let b:neomake_javascript_flow_maker = {
       \ 'exe': 'sh',
       \ 'args': ['-c', g:flow_path.' --json --strip-root | flow-vim-quickfix'],
       \ 'errorformat': '%E%f:%l:%c\,%n: %m',
       \ 'cwd': '%:p:h'
       \ }
 
-  let g:neomake_jsx_flow_maker = g:neomake_javascript_flow_maker
-  let g:neomake_javascript_enabled_makers = ['flow' ] + g:neomake_javascript_enabled_makers
-  let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
+  autocmd FileType javascript let b:neomake_jsx_flow_maker = b:neomake_javascript_flow_maker
+  autocmd FileType javascript let b:neomake_javascript_enabled_makers = ['flow' ] + b:neomake_javascript_enabled_makers
+  autocmd FileType javascript let b:neomake_jsx_enabled_makers = b:neomake_javascript_enabled_makers
 endif
 
 autocmd! BufWritePost * Neomake
