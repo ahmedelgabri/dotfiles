@@ -89,6 +89,10 @@ Plug 'lambdalisue/vim-gista'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'             , { 'on': 'GV' }
 
+" Writing
+Plug 'junegunn/goyo.vim'           , { 'on': ['Goyo']}
+Plug 'junegunn/limelight.vim'      , { 'on': ['Limelight'] }
+
 call plug#end()
 
 syntax enable
