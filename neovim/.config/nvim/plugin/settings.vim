@@ -83,8 +83,10 @@ endif
 set complete+=kspell
 
 " Disable unsafe commands.
+" Only run autocommands owned by me
 " http://andrew.stwrt.ca/posts/project-specific-vimrc/
 set secure
+" set exrc   " Enable use of directory-specific .vimrc
 
 if has('virtualedit')
   set virtualedit=block               " allow cursor to move where there is no text in visual block mode
