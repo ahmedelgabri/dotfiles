@@ -47,14 +47,21 @@ let g:airline_mode_map = {
       \}
 let g:airline_powerline_fonts = 1
 let g:airline_detect_paste = 1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+let g:airline_detect_crypt=1
+let g:airline_detect_spell=1
+let g:airline_inactive_collapse=1
+let g:airline_skip_empty_sections = 1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.branch = ''
-let g:airline_symbols.maxlinenr = '☰'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
 let g:airline_skip_empty_sections = 1
@@ -79,12 +86,12 @@ let g:airline#extensions#obsession#enabled = 1
 function! AirlineInit()
   call airline#parts#define_raw('modified', '%{&modified ? " •" : ""}')
   call airline#parts#define_accent('modified', 'red')
-  let g:airline_section_c = airline#section#create(['%f', 'modified'])
 
+  let g:airline_section_c = airline#section#create(['%f', 'modified'])
   let g:airline_section_x = airline#section#create(['%{gutentags#statusline("[Generating\ tags...]")} %{FileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
+  " let g:airline_section_z = airline#section#create(['%3p%%', 'linenr', 'maxlinenr', '%3v'])
 endfunction
 
 call airline#parts#define_accent('mode', 'none')
-" call airline#parts#define_accent('maxlinenr', 'none')
 
 autocmd User AirlineAfterInit call AirlineInit()
