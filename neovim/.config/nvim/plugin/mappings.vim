@@ -41,10 +41,10 @@ nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 nnoremap gv  :GV<CR> " tig like git explorer
 vnoremap gv  :GV<CR> " tig like git explorer
-nnoremap gb  :Gbrowse<CR> " Open current file on github.com
-vnoremap gb  :Gbrowse<CR> " Make it work in Visual mode to open with highlighted linenumbers
-nnoremap gs  :Gstatus<CR>
-vnoremap gs  :Gstatus<CR>
+nnoremap gb  :Gita browse --scheme=exact<CR> " Open current file on github.com
+vnoremap gb  :Gita browse --scheme=exact<CR> " Make it work in Visual mode to open with highlighted linenumbers
+nnoremap gs  :Gita status<CR>
+vnoremap gs  :Gita status<CR>
 
 " Quickly move current line, also accepts counts 2<leader>j
 nnoremap <leader>k  :<c-u>execute 'move -1-'. v:count1<cr>

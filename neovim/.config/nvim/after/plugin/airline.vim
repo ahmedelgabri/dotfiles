@@ -78,7 +78,6 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#wordcount#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#neomake#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#obsession#enabled = 1
@@ -87,6 +86,7 @@ function! AirlineInit()
   call airline#parts#define_raw('modified', '%{&modified ? " •" : ""}')
   call airline#parts#define_accent('modified', 'red')
 
+  let g:airline_section_b = airline#section#create(['hunks', '%{gita#statusline#preset("status")}', ' ⎇ %{gita#statusline#format("%lb")}', '%{gita#statusline#preset("traffic_fancy")}'])
   let g:airline_section_c = airline#section#create(['%f', 'modified'])
   let g:airline_section_x = airline#section#create(['%{gutentags#statusline("[Generating\ tags...]")} %{FileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
   " let g:airline_section_z = airline#section#create(['%3p%%', 'linenr', 'maxlinenr', '%3v'])
