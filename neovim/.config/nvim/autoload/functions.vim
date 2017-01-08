@@ -3,24 +3,24 @@ function! functions#trim(txt)
 endfunction
 
 function! functions#ZoomToggle() abort
-    if exists('t:zoomed') && t:zoomed
-        exec t:zoom_winrestcmd
-        let t:zoomed = 0
-    else
-        let t:zoom_winrestcmd = winrestcmd()
-        resize
-        vertical resize
-        let t:zoomed = 1
-    endif
+  if exists('t:zoomed') && t:zoomed
+    exec t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+  endif
 endfunction
 
 " Show highlighting groups for current word
 " https://twitter.com/kylegferg/status/697546733602136065
 function! functions#SynStack()
-    if !exists("*synstack")
-        return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
 
@@ -34,13 +34,13 @@ endfunction
 
 " https://github.com/garybernhardt/dotfiles/blob/68554d69652cc62d43e659f2c6b9082b9938c72e/.vimrc#L182-L194
 function! functions#RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
 endfunction
 
 
@@ -134,3 +134,23 @@ function! functions#mkview() abort
     mkview
   endif
 endfunction
+
+function! functions#ToggleTextLimit(limit)
+  if &colorcolumn == l:limit
+    let &colorcolumn='+' . join(range(0, 254), ',+')
+  else
+    let &colorcolumn = l:limit
+  endif
+endfunction
+
+let g:GabriQuitOnQBlacklist = ['preview', 'ag', 'qf', 'gita-status', 'fzf', 'netrw', 'help']
+function! functions#should_quit_on_q()
+  return index(g:GabriQuitOnQBlacklist, &filetype) == -1
+endfunction
+
+let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify']
+function! functions#should_turn_off_colorcolumn()
+  return index(g:GabriNoColorcolumn, &filetype) == -1
+endfunction
+
+

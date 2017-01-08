@@ -11,6 +11,8 @@ command! C nohlsearch
 command! Light set background=light
 command! Dark set background=dark
 
+command! Wrap set wrap linebreak formatoptions+=t
+
 " Delete the current file and clear the buffer
 command! Del :call delete(@%) | bdelete!
 

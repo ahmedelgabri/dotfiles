@@ -34,19 +34,8 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 
 set nowrap                            " no wrap
 
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-silent! match OverLength /\%>100v.\+/
-" function! ToggleTextLimit()
-"   if &colorcolumn == '120'
-"     let &colorcolumn='+' . join(range(0, 254), ',+')
-"   else
-"     set textwidth=120
-"     set colorcolumn=120
-"   endif
-" endfunction
-" autocmd InsertEnter,InsertLeave * call ToggleTextLimit()
-" autocmd InsertEnter,InsertLeave * silent! match OverLength /\%>120v.\+/
-" autocmd FileType help,qf setl colorcolumn=
+set textwidth=100
+" set colorcolumn=100
 
 syntax sync minlines=256 " start highlighting from 256 lines backwards
 set synmaxcol=300        " do not highlith very long lines
@@ -120,7 +109,7 @@ set ignorecase smartcase
 " set timeout timeoutlen=500 ttimeoutlen=100
 set timeoutlen=1000 ttimeoutlen=0
 
-if v:version > 703 || v:version == 703 && has('patch541')
+if !has('nvim') && (v:version > 703 || v:version == 703 && has('patch541'))
   set formatoptions+=j                " remove comment leader when joining comment lines
 endif
 set formatoptions+=n                  " smart auto-indenting inside numbered lists

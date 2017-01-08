@@ -1,4 +1,3 @@
-" make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
-match OverLength /\%>80v.\+/
+setl textwidth=80
+setl colorcolumn=80
 
-setl textwidth=79

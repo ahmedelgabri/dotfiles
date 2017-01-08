@@ -1,10 +1,10 @@
-augroup ahmedAutoCmds
+augroup MyAutoCmds
   autocmd!
   " Automatically make splits equal in size
   autocmd VimResized * wincmd =
 
   " Close preview buffer with q
-  autocmd FileType preview,ag,qf nmap <buffer> <silent>  q :q<cr>
+  autocmd FileType * if functions#should_quit_on_q() | nmap <buffer> <silent>  q :q<cr> | endif
 
   " https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/plugin/autocmds.vim#L27-L40
   if has('mksession')
@@ -24,6 +24,10 @@ augroup ahmedAutoCmds
 
   autocmd BufWritePre * call functions#Preserve("%s/\\s\\+$//e")
   autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
+
+  autocmd FileType * if functions#should_turn_off_colorcolumn() | silent! match OverLength /\%>100v.\+/ | endif
+  " autocmd InsertEnter,InsertLeave * call functions#ToggleTextLimit(100)
+  " autocmd FileType * if functions#should_turn_off_colorcolumn() | setl colorcolumn= | endif
 augroup END
 
 aug omnicomplete

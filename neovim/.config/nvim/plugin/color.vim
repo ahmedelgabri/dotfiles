@@ -20,3 +20,6 @@ hi TablineSel cterm=None gui=None
 " Italics
 hi Comment cterm=italic gui=italic
 
+" Highlight long lines
+hi OverLength ctermbg=red ctermfg=white guibg=#592929
+

@@ -6,7 +6,7 @@ function! s:SetUpLoupeHighlight()
 endfunction
 
 if has('autocmd')
-  augroup WincentLoupe
+  augroup MyLoupe
     autocmd!
     autocmd ColorScheme * call s:SetUpLoupeHighlight()
   augroup END

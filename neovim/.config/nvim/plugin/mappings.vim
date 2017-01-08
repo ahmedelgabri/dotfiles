@@ -63,12 +63,13 @@ nnoremap <leader>tf :TernRefs<CR>
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 inoremap jj <ESC>
-" nnoremap \ :CtrlSF<SPACE>
 nnoremap \ :Grepper -side -tool rg -query<SPACE>
+nnoremap \\ :Grepper -side -tool git -query<SPACE>
 " nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
-nnoremap <Leader>bd :Bdelete<CR>
+nnoremap <Leader>bd :Sayonara!<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
+nnoremap <leader>l <C-^>
 " set text wrapping toggles
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 nnoremap -- :UndotreeToggle<CR>
