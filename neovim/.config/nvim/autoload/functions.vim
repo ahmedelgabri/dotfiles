@@ -148,7 +148,7 @@ function! functions#should_quit_on_q()
   return index(g:GabriQuitOnQBlacklist, &filetype) == -1
 endfunction
 
-let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify']
+let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide']
 function! functions#should_turn_off_colorcolumn()
   return index(g:GabriNoColorcolumn, &filetype) == -1
 endfunction

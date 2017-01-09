@@ -28,6 +28,7 @@ augroup MyAutoCmds
   autocmd FileType * if functions#should_turn_off_colorcolumn() | silent! match OverLength /\%>100v.\+/ | endif
   " autocmd InsertEnter,InsertLeave * call functions#ToggleTextLimit(100)
   " autocmd FileType * if functions#should_turn_off_colorcolumn() | setl colorcolumn= | endif
+  autocmd FileType crontab setlocal bkc=yes
 augroup END
 
 aug omnicomplete

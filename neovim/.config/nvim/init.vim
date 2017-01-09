@@ -58,6 +58,7 @@ Plug 'wincent/pinnacle' " this is only used in plugins/after/loupe.vim is it wor
 Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus' , { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
+Plug 'kepbod/quick-scope'
 
 if executable('tmux')
   Plug 'wellle/tmux-complete.vim'
@@ -114,6 +115,8 @@ endif
 "================================================================================
 " See after/plugin/deoplete.vim
 let g:deoplete#enable_at_startup = 1
+
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Tab completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"

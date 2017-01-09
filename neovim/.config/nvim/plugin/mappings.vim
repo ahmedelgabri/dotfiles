@@ -47,7 +47,7 @@ nnoremap gs  :Gita status<CR>
 vnoremap gs  :Gita status<CR>
 
 " Quickly move current line, also accepts counts 2<leader>j
-nnoremap <leader>k  :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 
 nnoremap <leader>q :quit<CR>
@@ -69,7 +69,7 @@ nnoremap \\ :Grepper -side -tool git -query<SPACE>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
 nnoremap <Leader>bd :Sayonara!<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
-nnoremap <leader>l <C-^>
+nnoremap <M-Tab> <C-^>
 " set text wrapping toggles
 nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 nnoremap -- :UndotreeToggle<CR>
