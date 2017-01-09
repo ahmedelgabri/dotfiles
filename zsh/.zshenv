@@ -43,7 +43,7 @@ export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
 export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_NO_INSECURE_REDIRECT=1
+# export HOMEBREW_NO_INSECURE_REDIRECT=1
 # export HOMEBREW_CASK_OPTS=--require-sha
 
 ##############################################################
