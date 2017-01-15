@@ -90,8 +90,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0ng/vim-hybrid'
 
 " Git
-" Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
 Plug 'lambdalisue/vim-gita'
 Plug 'tpope/vim-fugitive' | Plug 'junegunn/gv.vim'                 , { 'on': 'GV' }
