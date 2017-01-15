@@ -67,7 +67,7 @@ nnoremap \ :Grepper -side -tool rg -query<SPACE>
 nnoremap \\ :Grepper -side -tool git -query<SPACE>
 " nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
-nnoremap <Leader>bd :Sayonara!<CR>
+nnoremap <M-d> :Sayonara!<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 nnoremap <M-Tab> <C-^>
 " set text wrapping toggles
