@@ -20,7 +20,7 @@ alias formatJSON='python -m json.tool'
 alias dots="cd ~/.dotfiles"
 alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
-alias cask="brew cask "
+alias cask="brew cask"
 
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
 alias -s js=$EDITOR

@@ -35,7 +35,7 @@ export PROJECTS="$HOME/Sites/dev"
 export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --margin 3'
 export FZF_DEFAULT_COMMAND='rg --no-messages --files --hidden --follow --glob "!.git/*"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview "(([[ "{}" =~ \.twig$ ]] &&  highlight -S html -O ansi -l {} 2> /dev/null || highlight -O ansi -l {} 2> /dev/null) || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview,alt-k:preview-page-up,alt-j:preview-page-down"'
+export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview,alt-k:preview-page-up,alt-j:preview-page-down"'
 export FZF_CTRL_R_OPTS="--no-mouse --preview 'echo {}' --preview-window down:5:hidden --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
