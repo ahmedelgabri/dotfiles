@@ -1,3 +1,7 @@
+fzf-down() {
+  fzf --height 50% "$@"
+}
+
 # # https://github.com/junegunn/fzf/wiki/Examples#z
 # fuzzy z
 unalias z 2> /dev/null
@@ -52,15 +56,14 @@ fshow() {
 # fco - checkout git branch/tag
 fco() {
   local tags branches target
-  tags=$(
-    git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+  tags=$(git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
   branches=$(
     git branch --all | grep -v HEAD             |
     sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
     sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
   target=$(
-    (echo "$tags"; echo "$branches") |
-    fzf-tmux -- --no-hscroll --ansi +m -d "\t" -n 2 -1 -q "$*") || return
+    (echo "$tags"; echo "$branches") | sed '/^$/d' |
+    fzf-down --no-hscroll --reverse --ansi +m -d "\t" -n 2 -q "$*") || return
   git checkout $(echo "$target" | awk '{print $2}')
 }
 
