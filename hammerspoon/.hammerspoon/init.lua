@@ -2,7 +2,7 @@
 local modalKey = {"alt"}
 local focusKeys = {
   b='Google Chrome',
-  c='Google Chrome Canary',
+  g='Google Chrome Canary',
   s='Slack',
   i='iTerm',
   t='Tweetbot',
