@@ -88,6 +88,7 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0ng/vim-hybrid'
+Plug 'atelierbram/vim-colors_atelier-schemes'
 
 " Git
 Plug 'airblade/vim-gitgutter'

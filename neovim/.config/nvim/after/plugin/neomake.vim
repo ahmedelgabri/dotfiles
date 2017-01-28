@@ -9,7 +9,7 @@ let g:neomake_html_enabled_makers = ['tidy']
 " Stylelint on demand
 if findfile('.stylelintrc', '.;') !=# ''
   autocmd FileType css,sass,scss let b:neomake_scss_enabled_makers = b:neomake_css_enabled_makers
-  autocmd FileType css,sass,scss let b:nomake_css_enabled_makerse = ['stylelint']
+  autocmd FileType css,sass,scss let b:neomake_css_enabled_makerse = ['stylelint']
   autocmd FileType css,sass,scss let b:neomake_scss_stylelint_maker = {
       \ 'exe': nrun#Which('stylelint'),
       \ 'args': ['--syntax', 'scss'],
