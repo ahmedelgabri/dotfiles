@@ -29,14 +29,26 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un
 # export TERM=xterm-256color-italic
 export GITHUB_USER="ahmedelgabri"
 export PROJECTS="$HOME/Sites/dev"
-
 # Make sure all the repos I clone uses my template, not sure if this is a good idea though?
 # export GIT_TEMPLATE_DIR=$HOME/.dotfiles/git/git-template
-export FZF_DEFAULT_OPTS='--reverse --extended --tabstop=2 --cycle --margin 3'
+
+preview-file() {
+  local mime="$(file --mime "$1")"
+  if [[ "$mime" =~ directory ]]; then
+    tree -C "$1"
+  elif [[ ! "$mime" =~ binary ]]; then
+    highlight -O ansi -l "$1" 2> /dev/null || cat "$1"
+  else
+    echo "$1 is a binary file"
+  fi
+}
+# export -f preview-file
+
+export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3'
 export FZF_DEFAULT_COMMAND='rg --no-messages --files --hidden --follow --glob "!.git/*"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview,alt-k:preview-page-up,alt-j:preview-page-down"'
-export FZF_CTRL_R_OPTS="--no-mouse --preview 'echo {}' --preview-window down:5:hidden --bind '?:toggle-preview'"
+export FZF_CTRL_T_OPTS="--preview 'preview-file {} | head -200' --bind '?:toggle-preview'"
+export FZF_CTRL_R_OPTS="--sort --preview 'echo {}' --preview-window down:5:hidden --bind '?:toggle-preview' --bind 'ctrl-y:execute(echo -n {2..} | pbcopy)' --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ
