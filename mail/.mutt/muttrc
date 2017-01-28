@@ -36,6 +36,7 @@ set sidebar_width=30
 set sidebar_divider_char = " | "
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
+set mail_check_stats_interval = 10
 set sidebar_short_path
 set sidebar_delim_chars="/"
 set sidebar_folder_indent
@@ -59,8 +60,7 @@ set beep_new             # bell on new mails
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 unset imap_passive # Allow Mutt to open new imap connection automatically.
-set imap_keepalive = 300 # Keep IMAP connection alive by polling intermittently (time in seconds).
-set mail_check = 120 # How often to check for new mail (time in seconds).
+# set imap_keepalive = 300 # Keep IMAP connection alive by polling intermittently (time in seconds).
 
 # Header Options -------------------------------------
 ignore *                                # ignore all headers
@@ -74,7 +74,8 @@ hdr_order from: to: cc: date: subject:  # and in this order
 
 # Index View Options ---------------------------------
 set date_format = "%d/%m/%y at %H:%M"
-set index_format = "[%Z] (%D) %-20.50F %s"
+# set index_format = "[%Z] (%D) %-20.50F %s"
+set index_format    = "%3C [%Z] %D %-20.20F || %s %?g?(%g)?"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
 set to_chars    = ' +>-<L' # This should be ' »›-‹L' to match Gmail, but $to_chars breaks on unicode.
@@ -169,7 +170,7 @@ set status_chars   = " *%A"
 # set status_format  = "Folder: %f : %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %>-%?p?( %p postponed )? : "
 set status_on_top = yes
 # set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
-set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p 📤 )?───"
+set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
 
 # Color ---------------------------------------------------------
 source ~/.mutt/config/aliases.mutt

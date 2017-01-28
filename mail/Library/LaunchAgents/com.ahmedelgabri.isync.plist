@@ -6,14 +6,16 @@ Copy/move/symlink this file to ~/Library/LaunchAgents, and then load it with
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
- <key>Label</key>
- <string>com.ahmedelgabri.isync</string>
- <key>Program</key>
- <string>/Users/ahmed/.dotfiles/bin/mail-sync</string>
- <key>RunAtLoad</key>
- <true/>
- <key>StartInterval</key>
- <integer>120</integer>
-</dict>
+  <dict>
+    <key>Label</key>
+    <string>com.ahmedelgabri.isync</string>
+    <key>Program</key>
+    <string>/Users/ahmed/.dotfiles/bin/mail-sync</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StartInterval</key>
+    <integer>120</integer>
+  </dict>
 </plist>

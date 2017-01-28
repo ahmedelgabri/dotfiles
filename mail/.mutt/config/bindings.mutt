@@ -45,6 +45,7 @@ macro index,pager !  "<save-message>=!.Spam<enter><enter>" "Report spam"
 # macro index,pager d "<save-message>=!.Trash<enter>" "Trash"
 macro index,pager y "<save-message>=!.Archive<enter>" "Archive conversation"
 macro index,pager Y "<save-thread>=!.Archive<enter>" "Archive conversation"
+macro attach D "<save-entry><bol>~/.mutt/attachments/<eol><enter>" "Save to ~/.mutt/attachments"
 
 # "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
 # info.
