@@ -5,6 +5,7 @@ hi NeomakeWarningMsg ctermfg=003 ctermbg=None guifg=yellow guibg=NONE
 let g:neomake_error_sign = { 'text': '✗', 'texthl': 'NeomakeErrorMsg', }
 let g:neomake_warning_sign = { 'text': '!', 'texthl': 'NeomakeWarningMsg', }
 let g:neomake_html_enabled_makers = ['tidy']
+let g:neomake_highlight_lines = 1
 
 " Stylelint on demand
 if findfile('.stylelintrc', '.;') !=# ''
