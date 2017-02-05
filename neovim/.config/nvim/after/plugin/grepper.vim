@@ -1,6 +1,6 @@
 xmap gs <plug>(GrepperOperator)
-
 vmap gs <Plug>(GrepperOperator)
+
 command! Todo :Grepper
       \ -side
       \ -noprompt
