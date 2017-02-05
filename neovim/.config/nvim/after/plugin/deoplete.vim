@@ -7,7 +7,6 @@ if has('nvim')
   let g:deoplete#enable_camel_case = 1
   let g:deoplete#auto_completion_start_length = 2
   let g:deoplete#file#enable_buffer_path = 1
-  " let g:deoplete#max_list = 10
 
   " Sort results alphabetically
   call deoplete#custom#set('_', 'sorters', ['sorter_word'])
@@ -15,10 +14,10 @@ if has('nvim')
   " chnage the ranking of utlisnips
   call deoplete#custom#set('ultisnips', 'rank', 1000)
 
-  let g:deoplete#sources_           = []
-  let g:deoplete#sources_md         = ['buffer','dictionary', 'file', 'member']
-  let g:deoplete#sources_vim        = ['buffer', 'member', 'file', 'ultisnips']
-  let g:deoplete#sources_txt        = ['buffer','dictionary', 'file', 'member']
-  let g:deoplete#sources_mail       = ['buffer','dictionary', 'file', 'member']
-  let g:deoplete#sources#flow#flow_bin = nrun#Which('flow')
+  let g:deoplete#sources            = {}
+  let g:deoplete#sources._          = ['buffer']
+  let g:deoplete#sources.md         = ['buffer', 'dictionary', 'file', 'member']
+  let g:deoplete#sources.vim        = ['buffer', 'member', 'file', 'ultisnips']
+  let g:deoplete#sources.txt        = ['buffer', 'dictionary', 'file', 'member']
+  let g:deoplete#sources.mail       = ['buffer', 'dictionary', 'file', 'member']
 endif
