@@ -43,16 +43,16 @@ macro index,pager gt "<change-folder>!.Sent<enter>" "go to Sent Mail"
 macro index,pager gd "<change-folder>!.Drafts<enter>" "go to drafts"
 macro index,pager !  "<save-message>=!.Spam<enter><enter>" "Report spam"
 # macro index,pager d "<save-message>=!.Trash<enter>" "Trash"
-macro index,pager y "<save-message>=!.Archive<enter>" "Archive conversation"
-macro index,pager Y "<save-thread>=!.Archive<enter>" "Archive conversation"
+# macro index,pager y "<save-message>=!.Archive<enter>" "Archive conversation"
+# macro index,pager Y "<save-thread>=!.Archive<enter>" "Archive conversation"
 macro attach D "<save-entry><bol>~/.mutt/attachments/<eol><enter>" "Save to ~/.mutt/attachments"
 
 # "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
 # info.
-macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
-macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
-macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
-macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
+# macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
+# macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
+# macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
+# macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
 
 # Default direction is "down".
 source ~/.mutt/config/next.mutt
