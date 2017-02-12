@@ -49,6 +49,7 @@
   cm = commit
   st = status -sb
   br = branch --sort=-committerdate
+  rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   d = diff --patch-with-stat
   dc = diff --staged --patch-with-stat
   lgnm = log --graph --no-merges --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
