@@ -43,7 +43,7 @@ alias apache="sudo apachectl "
 
 command -v nvim >/dev/null && alias vim="nvim "
 command -v task >/dev/null && alias t='task'
-command -v npm >/dev/null && alias n="npm run "
+command -v npm >/dev/null && alias n="npm run -s "
 command -v yarn >/dev/null && alias y="yarn run "
 command -v colourify >/dev/null && alias curl='colourify curl '
 
