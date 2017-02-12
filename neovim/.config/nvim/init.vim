@@ -38,7 +38,7 @@ Plug 'junegunn/vim-easy-align'         , { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'kshenoy/vim-signature'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'mattn/emmet-vim'                 , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig'] }
+Plug 'mattn/emmet-vim'                 , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
 Plug 'mbbill/undotree'                 , { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper'
 Plug 'mhinz/vim-sayonara'              , { 'on': 'Sayonara' }
@@ -71,8 +71,8 @@ Plug 'stephenway/postcss.vim'          , { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'   , { 'on': [] }
-" Plug 'w0rp/ale'
-Plug 'benekastah/neomake'              , { 'do': 'npm i -g flow-vim-quickfix' }
+Plug 'w0rp/ale'
+" Plug 'benekastah/neomake'              , { 'do': 'npm i -g flow-vim-quickfix' }
 Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat' }
 
 " Themes, UI & eye cnady

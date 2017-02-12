@@ -107,8 +107,17 @@ case ${1}:
 endsnippet
 
 # React
+snippet comp "React component (stateless)" b
+const ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} = (props) => {
+		return (
+			$0
+		)
+}
 
-snippet comp "React component (smart)" b
+export default `!p snip.rv=formatVariableName(t[1])`
+endsnippet
+
+snippet scomp "React component (stateful)" b
 export default class ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} extends Component {
 	constructor(props) {
 		super(props);${2}

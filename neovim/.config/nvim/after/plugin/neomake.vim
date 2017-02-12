@@ -46,4 +46,4 @@ if findfile('.flowconfig', '.;') !=# ''
   autocmd FileType javascript let b:neomake_jsx_enabled_makers = b:neomake_javascript_enabled_makers
 endif
 
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake

@@ -19,4 +19,9 @@ if has('nvim')
   let g:deoplete#sources_vim        = ['buffer', 'member', 'file', 'ultisnips']
   let g:deoplete#sources_txt        = ['buffer', 'dictionary', 'file', 'member']
   let g:deoplete#sources_mail       = ['buffer', 'dictionary', 'file', 'member']
+
+  if !exists('g:loaded_deoplete_ternjs')
+    let g:deoplete#omni_patterns = {}
+    let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+  endif
 endif

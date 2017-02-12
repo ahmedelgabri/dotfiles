@@ -126,7 +126,7 @@ if has('nvim')
   autocmd BufEnter term://* startinsert
 endif
 
-nnoremap <silent> <leader>z :call functions#ZoomToggle<CR>
+nnoremap <silent> <leader>z :call functions#ZoomToggle()<CR>
 nmap <c-g> :call functions#SynStack()<CR>
 
 vnoremap * :<c-u>call functions#VSetSearch()<cr>//<cr><c-o>
