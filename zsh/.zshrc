@@ -24,35 +24,34 @@ fi
 
 source ~/.zplug/init.zsh
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
-# Make sure to use my fork
-export _ZPLUG_PREZTO='ahmedelgabri/prezto'
+local -a zim_mods
+zim_mods=(
+  'environment'
+  'input'
+  'history'
+  'directory'
+  'spectrum'
+  'utility'
+  'prompt'
+  'syntax-highlighting'
+  'history-substring-search'
+  'completion'
+)
 
-zplug 'modules/environment', from:prezto
-zplug 'modules/editor', from:prezto
-# zplug 'zimframework/zim', from:github, use:'modules/input'
-zplug 'zimframework/zim', from:github, use:'modules/history'
-zplug 'zimframework/zim', from:github, use:'modules/directory'
-zplug 'zimframework/zim', from:github, use:'modules/spectrum'
-zplug 'modules/osx', from:prezto
-zplug 'zimframework/zim', from:github, use:'modules/utility'
-zplug 'modules/completion', from:prezto
-zplug 'zimframework/zim', from:github, use:'modules/archive'
-zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-zplug 'zsh-users/zsh-history-substring-search', on:'zsh-users/zsh-syntax-highlighting'
-zplug 'modules/prompt', from:prezto
-# zplug 'ahmedelgabri/pure', as:theme
+zplug "zimframework/zim", \
+    depth:1, \
+    use:"modules/{${(j:,:)zim_mods}}/init.zsh"
 
-source ./.zpreztorc
+zplug "zimframework/zim", \
+    depth:1, \
+    use:"modules/{${(j:,:)zim_mods}}/functions/*", \
+    lazy:1
 
-zplug 'junegunn/fzf', \
-      as:command, \
-      use:'bin/{fzf,fzf-tmux}', \
-      hook-build:'./install'
-
-zplug 'knu/z', use:'z.sh', defer:1
-
+zplug "modules/osx", depth:1, from:prezto
+zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
+zplug "knu/z", use:"z.sh", depth:1, defer:1
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -64,14 +63,6 @@ fi
 zplug load --verbose
 
 ##############################################################
-# Prezto module overrides.
-##############################################################
-# Make some commands not show up in history
-HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
-HISTSIZE=100000
-SAVEHIST=$HISTSIZE
-
-##############################################################
 # CONFIG.
 ##############################################################
 
@@ -79,28 +70,26 @@ for config (~/.dotfiles/zsh/config/*.zsh) source $config
 for func (~/.dotfiles/zsh/config/functions/*.zsh) source $func
 
 ##############################################################
+# ENV OVERRIDES
+##############################################################
+# Make some commands not show up in history
+HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+
+# Zim settings
+zprompt_theme='pure'
+zcompdump_file=".zcompdump-${HOST}-${ZSH_VERSION}"
+ztermtitle='%n@%m: %s'
+zdouble_dot_expand='true'
+zhighlighters=(main brackets pattern cursor root)
+
+##############################################################
 # TOOLS.
 ##############################################################
 
-command -v grc >/dev/null && source "`brew --prefix`/etc/grc.bashrc"
+(( $+commands[grc] )) && source "`brew --prefix`/etc/grc.bashrc"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
-if [[ -n "$key_info" ]]; then
-  # Emacs
-  bindkey -M emacs "$key_info[Control]P" history-substring-search-up
-  bindkey -M emacs "$key_info[Control]N" history-substring-search-down
-
-  # Vi
-  bindkey -M vicmd "k" history-substring-search-up
-  bindkey -M vicmd "j" history-substring-search-down
-
-  # Emacs and Vi
-  for keymap in 'emacs' 'viins'; do
-    bindkey -M "$keymap" "$key_info[Up]" history-substring-search-up
-    bindkey -M "$keymap" "$key_info[Down]" history-substring-search-down
-  done
-fi
 
 ##############################################################
 # LOCAL.

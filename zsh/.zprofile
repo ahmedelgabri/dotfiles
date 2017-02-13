@@ -19,7 +19,7 @@ fi
 #
 
 # Set neovim as EDITOR if it's available, otherwise use vim
-command -v nvim >/dev/null && export EDITOR=nvim || export EDITOR=vim
+(( $+commands[nvim] )) && export EDITOR=nvim || export EDITOR=vim
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export PAGER='less'

@@ -67,9 +67,9 @@ alias apache="sudo apachectl "
 [[ $TERM == *"tmux"* ]] && alias vagrant="TERM=xterm-256color vagrant"
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
-command -v nvim >/dev/null && alias vim="nvim "
-command -v task >/dev/null && alias t='task'
-command -v npm >/dev/null && alias n="npm run -s "
-command -v yarn >/dev/null && alias y="yarn run "
-command -v colourify >/dev/null && alias curl='colourify curl '
+(( $+commands[nvim] )) && alias vim="nvim "
+(( $+commands[task] )) && alias t='task'
+(( $+commands[npm] )) && alias n="npm run -s "
+(( $+commands[yarn] )) && alias y="yarn run "
+(( $+commands[colourify] )) && alias curl='colourify curl '
 
