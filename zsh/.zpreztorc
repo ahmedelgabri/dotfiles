@@ -24,19 +24,19 @@ zstyle ':prezto:load' zfunction 'zargs' 'zmv'
 
 # Set the Prezto modules to load (browse modules).
 # The order matters.
-zstyle ':prezto:load' pmodule \
-  'environment' \
-  'editor' \
-  'history' \
-  'directory' \
-  'spectrum' \
-  'osx' \
-  'utility' \
-  'completion' \
-  'archive' \
-  'syntax-highlighting' \
-  'history-substring-search' \
-  'prompt'
+# zstyle ':prezto:load' pmodule \
+#   'environment' \
+#   'editor' \
+#   'history' \
+#   'directory' \
+#   'spectrum' \
+#   'osx' \
+#   'utility' \
+#   'completion' \
+#   'archive' \
+#   'syntax-highlighting' \
+#   'history-substring-search' \
+#   'prompt'
 
 ###############################################################################
 # Editor
@@ -107,17 +107,7 @@ zstyle ':prezto:module:prompt' theme 'pure'
 ###############################################################################
 # Syntax Highlighting
 ###############################################################################
- zstyle ':prezto:module:syntax-highlighting' color 'yes'
-
-
-# Set syntax highlighters.
-# By default, only the main highlighter is enabled.
- zstyle ':prezto:module:syntax-highlighting' highlighters \
-   'main' \
-   'brackets' \
-   'pattern' \
-   'cursor' \
-   'root'
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
 
 ###############################################################################
 # Terminal

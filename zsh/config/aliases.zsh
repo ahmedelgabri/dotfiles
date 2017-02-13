@@ -1,4 +1,5 @@
 # vim:ft=zsh:
+
 # TERMINAL
 alias vi="/usr/local/bin/vim "
 alias ev="e ~/.dotfiles/neovim/.config/nvim/init.vim"
