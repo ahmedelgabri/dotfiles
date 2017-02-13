@@ -18,7 +18,7 @@ setopt autoparamslash  # tab completing directory appends a slash
 setopt noflowcontrol   # disable start (C-s) and stop (C-q) characters
 setopt interactivecomments  # allow comments, even in interactive shells
 setopt printexitvalue       # for non-zero exit status
-
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 
 # Better spell checking & auto correction prompt
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "

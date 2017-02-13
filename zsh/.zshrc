@@ -31,16 +31,18 @@ export _ZPLUG_PREZTO='ahmedelgabri/prezto'
 
 zplug 'modules/environment', from:prezto
 zplug 'modules/editor', from:prezto
-zplug 'modules/history', from:prezto
-zplug 'modules/directory', from:prezto
-zplug 'modules/spectrum', from:prezto
+# zplug 'zimframework/zim', from:github, use:'modules/input'
+zplug 'zimframework/zim', from:github, use:'modules/history'
+zplug 'zimframework/zim', from:github, use:'modules/directory'
+zplug 'zimframework/zim', from:github, use:'modules/spectrum'
 zplug 'modules/osx', from:prezto
-zplug 'modules/utility', from:prezto
+zplug 'zimframework/zim', from:github, use:'modules/utility'
 zplug 'modules/completion', from:prezto
-zplug 'modules/archive', from:prezto
+zplug 'zimframework/zim', from:github, use:'modules/archive'
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug 'zsh-users/zsh-history-substring-search', on:'zsh-users/zsh-syntax-highlighting'
 zplug 'modules/prompt', from:prezto
+# zplug 'ahmedelgabri/pure', as:theme
 
 source ./.zpreztorc
 
@@ -82,6 +84,23 @@ for func (~/.dotfiles/zsh/config/functions/*.zsh) source $func
 
 command -v grc >/dev/null && source "`brew --prefix`/etc/grc.bashrc"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+if [[ -n "$key_info" ]]; then
+  # Emacs
+  bindkey -M emacs "$key_info[Control]P" history-substring-search-up
+  bindkey -M emacs "$key_info[Control]N" history-substring-search-down
+
+  # Vi
+  bindkey -M vicmd "k" history-substring-search-up
+  bindkey -M vicmd "j" history-substring-search-down
+
+  # Emacs and Vi
+  for keymap in 'emacs' 'viins'; do
+    bindkey -M "$keymap" "$key_info[Up]" history-substring-search-up
+    bindkey -M "$keymap" "$key_info[Down]" history-substring-search-down
+  done
+fi
 
 ##############################################################
 # LOCAL.
