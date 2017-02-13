@@ -11,11 +11,9 @@
 # zPlug.
 ##############################################################
 
-export ZPLUG_HOME=$HOME/.zplug
-
-if [[ ! -f $ZPLUG_HOME/init.zsh ]]; then
+if [[ ! -f ~/.zplug/init.zsh ]]; then
   if (( $+commands[git] )); then
-    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+    git clone https://github.com/zplug/zplug ~/.zplug
   else
     echo 'git not found' >&2
     exit 1
@@ -25,33 +23,35 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
-
-local -a zim_mods
-zim_mods=(
-  'environment'
-  'input'
-  'history'
-  'directory'
-  'spectrum'
-  'utility'
-  'prompt'
-  'syntax-highlighting'
-  'history-substring-search'
-  'completion'
-)
-
-zplug "zimframework/zim", \
-    depth:1, \
-    use:"modules/{${(j:,:)zim_mods}}/init.zsh"
-
-zplug "zimframework/zim", \
-    depth:1, \
-    use:"modules/{${(j:,:)zim_mods}}/functions/*", \
-    lazy:1
-
+export NVM_LAZY_LOAD=true
+# export NVM_AUTO_USE=true
+zplug "lukechilds/zsh-nvm"
+zplug "zimframework/zim", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
 zplug "modules/osx", depth:1, from:prezto
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
 zplug "knu/z", use:"z.sh", depth:1, defer:1
+zplug "lukechilds/zsh-better-npm-completion", defer:1
+
+# Zim settings
+zmodules=(
+  directory
+  environment
+  history
+  meta
+  input
+  utility
+  spectrum
+  syntax-highlighting
+  history-substring-search
+  prompt
+  completion
+)
+
+zprompt_theme="pure"
+ztermtitle="%n@%m: %s"
+zdouble_dot_expand="true"
+zhighlighters=(main brackets pattern cursor root)
+
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -60,7 +60,8 @@ if ! zplug check --verbose; then
   fi
 fi
 
-zplug load --verbose
+# zplug load --verbose
+zplug load
 
 ##############################################################
 # CONFIG.
@@ -77,12 +78,26 @@ HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
 HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 
-# Zim settings
-zprompt_theme='pure'
-zcompdump_file=".zcompdump-${HOST}-${ZSH_VERSION}"
-ztermtitle='%n@%m: %s'
-zdouble_dot_expand='true'
-zhighlighters=(main brackets pattern cursor root)
+##############################################################
+# Custom/Plugins
+###############################################################
+export GITHUB_USER="ahmedelgabri"
+export PROJECTS="$HOME/Sites/dev"
+
+export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3'
+export FZF_DEFAULT_COMMAND='rg --no-messages --files --hidden --follow --glob "!.git/*"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+if [ -x ~/.vim/plugged/fzf.vim/bin/preview.rb ]; then
+  export FZF_CTRL_T_OPTS="--preview '~/.vim/plugged/fzf.vim/bin/preview.rb {} | head -200'"
+fi
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
+export HOMEBREW_INSTALL_BADGE="🍕"
+export HOMEBREW_NO_ANALYTICS=1
+# export HOMEBREW_NO_INSECURE_REDIRECT=1
+# export HOMEBREW_CASK_OPTS=--require-sha
 
 ##############################################################
 # TOOLS.
@@ -97,4 +112,5 @@ zhighlighters=(main brackets pattern cursor root)
 
 [ -f ~/.zstuff ] && source ~/.zstuff
 
-
+# For some odd reason this must be the last thing in .zshrc to work?!
+export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ

@@ -6,6 +6,17 @@
 ##############################################################
 # DEFINES ENVIRONMENT VARIABLES.
 ##############################################################
+
+setopt autoparamslash  # tab completing directory appends a slash
+setopt noflowcontrol   # disable start (C-s) and stop (C-q) characters
+setopt interactivecomments  # allow comments, even in interactive shells
+setopt printexitvalue       # for non-zero exit status
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt CORRECT
+
+# Better spell checking & auto correction prompt
+export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
+
 #
 # Browser
 #
@@ -39,7 +50,10 @@ KEYTIMEOUT=1
 ##############################################################
 # PATH.
 ##############################################################
-fpath=('/usr/local/share/zsh/site-functions' $fpath)
+fpath=(
+  '/usr/local/share/zsh/site-functions'
+  $fpath
+)
 
 # GNU Coreutils
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
