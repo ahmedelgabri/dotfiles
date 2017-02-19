@@ -3,6 +3,7 @@ all: homebrew node python iterm
 install:
 		@./script/install
 
+# This is used inside `scripts/install` symlink_files function
 symlink:
 		@stow --ignore ".DS_Store" --target="$(HOME)" --dir="$(HOME)/.dotfiles" \
 			misc \

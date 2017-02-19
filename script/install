@@ -76,8 +76,7 @@ take_backup() {
     $HOME/.gitattributes
     $HOME/.zshrc
     $HOME/.zshenv
-    $HOME/.zpreztorc
-    $HOME/.zprofile
+    $HOME/.zlogin
     $HOME/.vimrc
     $HOME/.gvimrc
     $HOME/.gemrc
@@ -118,9 +117,9 @@ take_backup() {
 
 symlink_files() {
   log_success "Create some required folders..."
-  mkdir -p $HOME/.config && \
-  mkdir -p $HOME/.dotfiles/neovim/.config/nvim/tmp/{swap,undo,view} && \
-  mkdir -p $HOME/.mail/{personal,work}
+  mkdir -p $HOME/.config \
+  $HOME/.dotfiles/neovim/.config/nvim/tmp/{swap,undo,view} \
+  $HOME/.mail/{personal,work}
 
   if [[ -d "$DOTFILES_DIR" ]]; then
     log_success "Symlinking files/folders..."
@@ -190,7 +189,7 @@ change_shell
 
 if [ $? -eq 0 ]; then
   log_success "Done."
-  log_success "Change your zsh to the brew installed one. and run Make all"
+  log_success "Change your zsh to the brew installed one. and run \"make all\""
   log_success "Don't forget to generate SSH keys, symlink files from box & source .macos"
 else
   log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"
