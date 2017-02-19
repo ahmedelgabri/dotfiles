@@ -2,18 +2,15 @@
 
 npm i -g create-react-app \
 firebase-tools \
-flow-bin \
-flow-vim-quickfix \
-hpm-cli \
 jscpd \
 jsinspect \
+netlify-cli \
 ngrok \
 now \
 now-serve \
 npm \
 npms-cli \
 parker \
-parrotsay \
 serve \
 spoof \
 standard \
