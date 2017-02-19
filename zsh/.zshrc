@@ -31,6 +31,7 @@ zplug "modules/osx", depth:1, from:prezto
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
 zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
+zplug "b4b4r07/emoji-cli"
 
 # Zim settings
 zmodules=(
@@ -48,7 +49,7 @@ zmodules=(
 )
 
 zprompt_theme="pure"
-ztermtitle="%n@%m: %s"
+ztermtitle="%n@%m:%~"
 zdouble_dot_expand="true"
 zhighlighters=(main brackets pattern cursor root)
 
