@@ -72,7 +72,6 @@ Plug 'stephenway/postcss.vim'          , { 'for': ['css'] }
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'   , { 'on': [] }
 Plug 'w0rp/ale'
-" Plug 'benekastah/neomake'              , { 'do': 'npm i -g flow-vim-quickfix' }
 Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat' }
 
 " Themes, UI & eye cnady
