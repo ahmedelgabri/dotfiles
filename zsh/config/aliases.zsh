@@ -1,4 +1,29 @@
 # vim:ft=zsh:
+
+# Useful
+alias cp="${aliases[cp]:-cp} -i"
+alias e='${(z)VISUAL:-${(z)EDITOR}}'
+alias ln="${aliases[ln]:-ln} -i"
+alias mkdir="${aliases[mkdir]:-mkdir} -p"
+alias mv="${aliases[mv]:-mv} -i"
+alias rm="${aliases[rm]:-rm} -i"
+alias type='type -a'
+
+# File Download
+if (( $+commands[curl] )); then
+  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
+elif (( $+commands[wget] )); then
+  alias get='wget --continue --progress=bar --timestamping'
+fi
+
+if (( $+commands[htop] )); then
+  alias top=htop
+fi
+
+# Resource Usage
+alias df='df -kh'
+alias du='du -kh'
+
 # TERMINAL
 alias vi="/usr/local/bin/vim "
 alias ev="e ~/.dotfiles/neovim/.config/nvim/init.vim"
@@ -21,6 +46,7 @@ alias dots="cd ~/.dotfiles"
 alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
 alias cask="brew cask"
+alias http-serve='python -m SimpleHTTPServer'
 
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
 alias -s js=$EDITOR
@@ -41,9 +67,9 @@ alias apache="sudo apachectl "
 [[ $TERM == *"tmux"* ]] && alias vagrant="TERM=xterm-256color vagrant"
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
-command -v nvim >/dev/null && alias vim="nvim "
-command -v task >/dev/null && alias t='task'
-command -v npm >/dev/null && alias n="npm run -s "
-command -v yarn >/dev/null && alias y="yarn run "
-command -v colourify >/dev/null && alias curl='colourify curl '
+(( $+commands[nvim] )) && alias vim="nvim "
+(( $+commands[task] )) && alias t='task'
+(( $+commands[npm] )) && alias n="npm run -s "
+(( $+commands[yarn] )) && alias y="yarn run "
+(( $+commands[colourify] )) && alias curl='colourify curl '
 

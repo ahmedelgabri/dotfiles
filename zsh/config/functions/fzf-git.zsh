@@ -66,5 +66,6 @@ bind-git-helper() {
   done
 }
 
-bind-git-helper f b s r h
+# @FIXME: t r & h are already bound to something else
+bind-git-helper f b t r h
 unset -f bind-git-helper
