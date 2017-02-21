@@ -63,6 +63,7 @@ let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
 let g:airline_skip_empty_sections = 1
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline#extensions#default#layout = [
       \ [ 'a', 'b', 'c' ],
       \ [ 'error', 'warning', 'x', 'y', 'z' ]
