@@ -36,6 +36,7 @@
   diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
 
 [core]
+  editor = $EDITOR
   whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
   excludesfile = ~/.dotfiles/git/.gitignore
   attributesfile = ~/.dotfiles/git/.gitattributes
@@ -57,22 +58,18 @@
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%an> %Creset%ae %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = log -u --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %Creset%ae %C(magenta)%d\" --date=short
   gr = grep -Ii
-  setr = remote set-url
-  rmr = remote remove
   # untrack = update-index --assume-unchanged
+  recentbranches = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'
   untrack = rm --cached <file>
   track = push origin -u HEAD
   latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
   blm = blame -wMC
   this = !git init && git add . && git commit -m \"initial commit\"
-  ; amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
   who = shortlog -sne
   doctor = remote -v show origin
   grr = grep --break --heading --line-number
   ll = log --cc
   lastchange = log -p --follow -n 1
-  ctags = !.git/hooks/ctags
-  aliases = config --get-regexp alias
   stashes = stash list
 
 [diff]
