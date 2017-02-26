@@ -100,6 +100,8 @@ export HOMEBREW_NO_ANALYTICS=1
 # export HOMEBREW_NO_INSECURE_REDIRECT=1
 # export HOMEBREW_CASK_OPTS=--require-sha
 
+export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ
+
 ##############################################################
 # TOOLS.
 ##############################################################
@@ -113,5 +115,3 @@ export HOMEBREW_NO_ANALYTICS=1
 
 [ -f ~/.zstuff ] && source ~/.zstuff
 
-# For some odd reason this must be the last thing in .zshrc to work?!
-export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ
