@@ -100,7 +100,7 @@ export HOMEBREW_NO_ANALYTICS=1
 # export HOMEBREW_NO_INSECURE_REDIRECT=1
 # export HOMEBREW_CASK_OPTS=--require-sha
 
-export PURE_PROMPT_SYMBOL="ϟ" # λ ▴ ⚡ ϟ
+export PURE_PROMPT_SYMBOL="λ" # λ ▴ ϟ ▲
 
 ##############################################################
 # TOOLS.
