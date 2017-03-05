@@ -37,7 +37,6 @@ brew 'fortune'
 brew 'fpp'
 brew 'isync', args: ['with-berkeley-db']
 brew 'gawk'
-brew 'ghi'
 brew 'gnu-sed'
 brew 'gnupg2'
 brew 'gpg-agent'
