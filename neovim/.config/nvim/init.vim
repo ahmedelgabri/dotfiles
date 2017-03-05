@@ -89,6 +89,8 @@ Plug 'liuchengxu/space-vim-dark'
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
 Plug 'lambdalisue/vim-gita'
+" for now, until Plug lambdalisue/gina.vim is ready to switch to
+let g:gita#suppress_warning = 1
 Plug 'junegunn/gv.vim', { 'on': 'GV' }
   \| Plug 'tpope/vim-fugitive'
   \| Plug 'tpope/vim-rhubarb'
