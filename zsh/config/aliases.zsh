@@ -70,6 +70,5 @@ alias apache="sudo apachectl "
 (( $+commands[nvim] )) && alias vim="nvim "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[npm] )) && alias n="npm run -s "
-(( $+commands[yarn] )) && alias y="yarn run "
 (( $+commands[colourify] )) && alias curl='colourify curl '
 
