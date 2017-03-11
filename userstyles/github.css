@@ -1,0 +1,15 @@
+/* 8 spacess is not right... */
+
+.tab-size[data-tab-size="8"] {
+  position: relative;
+  tab-size: 2;
+}
+
+.tab-size[data-tab-size="8"]:before {
+  content: "🚨 " attr(data-tab-size) " spaces file!";
+  position: absolute;
+  right: 0;
+  padding: 1em;
+  color: white;
+  background: rgba(255, 0, 0, .5);
+}
