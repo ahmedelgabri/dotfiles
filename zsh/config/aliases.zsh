@@ -47,6 +47,7 @@ alias work='mx lightspeed lightspeed'
 alias play='mx 🤔'
 alias cask="brew cask"
 alias http-serve='python -m SimpleHTTPServer'
+alias stow=""
 
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
 alias -s js=$EDITOR
@@ -72,4 +73,4 @@ alias apache="sudo apachectl "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[npm] )) && alias n="npm run -s "
 (( $+commands[colourify] )) && alias curl='colourify curl '
-
+(( $+commands[stow] )) && alias stow='stow --gnore ".DS_Store"'
