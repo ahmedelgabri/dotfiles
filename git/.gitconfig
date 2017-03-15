@@ -71,6 +71,7 @@
   ll = log --cc
   lastchange = log -p --follow -n 1
   stashes = stash list
+  recap ="!sh -c \"git log --since='00:00:00' --no-merges --oneline --author=$(git config --get user.email)\" -"
 
 [diff]
   # Detect copies as well as renames
