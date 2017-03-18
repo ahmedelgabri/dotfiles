@@ -135,14 +135,6 @@ function! functions#mkview() abort
   endif
 endfunction
 
-function! functions#ToggleTextLimit(limit)
-  if &colorcolumn == l:limit
-    let &colorcolumn='+' . join(range(0, 254), ',+')
-  else
-    let &colorcolumn = l:limit
-  endif
-endfunction
-
 let g:GabriQuitOnQBlacklist = ['preview', 'ag', 'qf', 'gita-status', 'fzf', 'netrw', 'help']
 function! functions#should_quit_on_q()
   return index(g:GabriQuitOnQBlacklist, &filetype) == -1
@@ -152,5 +144,3 @@ let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify'
 function! functions#should_turn_off_colorcolumn()
   return index(g:GabriNoColorcolumn, &filetype) == -1
 endfunction
-
-
