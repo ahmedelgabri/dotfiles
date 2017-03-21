@@ -41,10 +41,10 @@ nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 nnoremap gv  :GV<CR> " tig like git explorer
 vnoremap gv  :GV<CR> " tig like git explorer
-nnoremap gb  :Gita browse --scheme=exact<CR> " Open current file on github.com
-vnoremap gb  :Gita browse --scheme=exact<CR> " Make it work in Visual mode to open with highlighted linenumbers
-nnoremap gs  :Gita status<CR>
-vnoremap gs  :Gita status<CR>
+nnoremap gb  :Gina browse :%<CR> " Open current file on github.com
+vnoremap gb  :Gina browse :%<CR> " Make it work in Visual mode to open with highlighted linenumbers
+nnoremap gs  :Gina status<CR>
+vnoremap gs  :Gina status<CR>
 
 " Quickly move current line, also accepts counts 2<leader>j
 nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
@@ -143,3 +143,17 @@ map <silent> <Leader>hu :call functions#HtmlUnEscape()<CR>
 " maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 nmap <silent> gof :call functions#OpenFileFolder()<CR>
 
+" https://github.com/junegunn/vim-plug/issues/435
+function! s:plug_doc()
+  let name = matchstr(getline('.'), '^- \zs\S\+\ze:')
+  if has_key(g:plugs, name)
+    for doc in split(globpath(g:plugs[name].dir, 'doc/*.txt'), '\n')
+      execute 'tabe' doc
+    endfor
+  endif
+endfunction
+
+augroup PlugExtra
+  autocmd!
+  autocmd FileType vim-plug nnoremap <buffer> <silent> H :call <sid>plug_doc()<cr>
+augroup END

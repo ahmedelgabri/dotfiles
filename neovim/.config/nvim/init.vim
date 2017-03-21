@@ -76,6 +76,7 @@ Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
+Plug 'tomasiser/vim-code-dark'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'romainl/flattened' " Solarized, without the bullshit.
@@ -88,12 +89,7 @@ Plug 'liuchengxu/space-vim-dark'
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
-Plug 'lambdalisue/vim-gita'
-" for now, until Plug lambdalisue/gina.vim is ready to switch to
-let g:gita#suppress_warning = 1
-Plug 'junegunn/gv.vim', { 'on': 'GV' }
-  \| Plug 'tpope/vim-fugitive'
-  \| Plug 'tpope/vim-rhubarb'
+Plug 'lambdalisue/gina.vim'
 
 " Writing
 Plug 'junegunn/goyo.vim'               , { 'on': ['Goyo']}

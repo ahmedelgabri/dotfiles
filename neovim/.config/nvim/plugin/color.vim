@@ -6,11 +6,12 @@ set background=dark
 let g:gruvbox_italic=1
 
 let hour = strftime("%H")
-if hour >= 6 && hour < 18
-  colorscheme onedark
-else
-  colorscheme deep-space
-endif
+colorscheme codedark
+" if hour >= 6 && hour < 18
+"   colorscheme onedark
+" else
+"   colorscheme deep-space
+" endif
 
 " I hate bold tabline
 hi Tabline cterm=None gui=None

@@ -18,10 +18,6 @@ if !has('nvim')
   endif
 endif
 
-set showtabline=2
-set laststatus=2
-set tabline="%1T"
-
 " set highlight+=@:ColorColumn          " ~/@ at end of window, 'showbreak'
 " set highlight+=N:DiffText             " make current line number stand out a little
 " set highlight+=c:LineNr               " blend vertical separators with line numbers

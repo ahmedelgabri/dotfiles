@@ -27,6 +27,10 @@ augroup MyAutoCmds
 
   " autocmd FileType * if functions#should_turn_off_colorcolumn() | silent! match OverLength /\%>100v.\+/ | endif
   autocmd FileType crontab setlocal bkc=yes
+  if executable('prettier-standard')
+    autocmd FileType javascript,javascript.jsx,jsx set formatprg=prettier-standard
+    " autocmd BufWritePre *.js :normal gggqG
+  endif
 augroup END
 
 aug omnicomplete
