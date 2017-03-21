@@ -50,7 +50,7 @@ alias http-serve='python -m SimpleHTTPServer'
 alias stow=""
 
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
-alias -s js=$EDITOR
+# alias -s js=$EDITOR
 alias -s jsx=$EDITOR
 alias -s json=$EDITOR
 alias -s css=$EDITOR
