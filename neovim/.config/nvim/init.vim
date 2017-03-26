@@ -26,6 +26,7 @@ call plug#begin('~/.vim/plugged')
 if has('nvim')
   Plug 'Shougo/deoplete.nvim'          , { 'do': ':UpdateRemotePlugins' }
   Plug 'carlitux/deoplete-ternjs'      , { 'do': 'npm i -g tern' }
+  Plug 'steelsojka/deoplete-flow'
 else
   Plug 'maralla/completor.vim'         , { 'do': 'make js' }
 endif

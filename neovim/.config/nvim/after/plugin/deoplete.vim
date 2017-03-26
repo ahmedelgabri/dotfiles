@@ -7,6 +7,7 @@ if has('nvim')
   let g:deoplete#enable_camel_case = 1
   let g:deoplete#auto_completion_start_length = 2
   let g:deoplete#file#enable_buffer_path = 1
+  let g:deoplete#sources#flow#flow_bin = nrun#Which('flow')
 
   " Sort results alphabetically
   call deoplete#custom#set('_', 'sorters', ['sorter_word'])
