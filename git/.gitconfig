@@ -52,9 +52,10 @@
   br = branch --sort=-committerdate
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   d = diff --patch-with-stat
-  dc = diff --staged --patch-with-stat
-  lgnm = log --graph --no-merges --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
-  lg = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
+  dc = d --staged
+  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %C(magenta)%d\" --date=short
+  lnm = l --no-merges
+  last = l -1
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%an> %Creset%ae %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = log -u --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%an %Creset%ae %C(magenta)%d\" --date=short
   gr = grep -Ii
@@ -84,7 +85,7 @@
 [diff "exif"]
   textconv = exiftool
 [diff "plist"]
-	textconv = plutil -convert xml1 -o -
+  textconv = plutil -convert xml1 -o -
 [difftool "vimdiff"]
   ; $BASE $LOCAL $REMOTE $MERGED
   cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
