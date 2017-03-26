@@ -52,6 +52,6 @@ if [ "$TERM_PROGRAM" = 'iTerm.app' ]; then
     iterm-emit '1337;CurrentDir=%s' "$cwd"
   }
 
-  [[ -z $chpwd_functions ]] && chpwd_functions=()
-  chpwd_functions=($chpwd_functions iterm-send-cwd)
+  # [[ -z $chpwd_functions ]] && chpwd_functions=()
+  # chpwd_functions=($chpwd_functions iterm-send-cwd)
 fi
