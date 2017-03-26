@@ -76,10 +76,10 @@ Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
-Plug 'tomasiser/vim-code-dark'
 Plug 'joshdick/onedark.vim'
+Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
-Plug 'romainl/flattened' " Solarized, without the bullshit.
+Plug 'lifepillar/vim-solarized8'
 Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'vim-airline/vim-airline'
   \ | Plug 'vim-airline/vim-airline-themes'

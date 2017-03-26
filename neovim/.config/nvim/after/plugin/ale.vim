@@ -8,3 +8,9 @@ let g:ale_javascript_standard_executable = nrun#Which('standard')
 let g:ale_javascript_eslint_executable = nrun#Which('eslint')
 let g:ale_javascript_flow_executable = nrun#Which('flow')
 let g:ale_css_stylelint_executable = nrun#Which('stylelint')
+
+if g:colors_name == 'codedark'
+  highlight link ALEErrorSign ErrorMsg
+  highlight link ALEWarningSign WarningMsg
+  highlight Error guibg=None ctermbg=None
+endif
