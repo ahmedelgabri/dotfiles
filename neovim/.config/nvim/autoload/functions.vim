@@ -135,7 +135,7 @@ function! functions#mkview() abort
   endif
 endfunction
 
-let g:GabriQuitOnQBlacklist = ['preview', 'ag', 'qf', 'gita-status', 'fzf', 'netrw', 'help']
+let g:GabriQuitOnQBlacklist = ['preview', 'qf', 'fzf', 'netrw', 'help']
 function! functions#should_quit_on_q()
   return index(g:GabriQuitOnQBlacklist, &filetype) == -1
 endfunction

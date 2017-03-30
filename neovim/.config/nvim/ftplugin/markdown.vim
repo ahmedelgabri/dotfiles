@@ -7,4 +7,3 @@ setl nolist
 setl wrap
 setl lbr
 setl synmaxcol=999999
-
