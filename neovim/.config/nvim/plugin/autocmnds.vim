@@ -27,15 +27,16 @@ augroup MyAutoCmds
 
   " autocmd FileType * if functions#should_turn_off_colorcolumn() | silent! match OverLength /\%>100v.\+/ | endif
   autocmd FileType crontab setlocal bkc=yes
-  " auto format on save
-  " autocmd BufWritePre * Neoformat
 augroup END
 
 aug omnicomplete
   autocmd!
   autocmd FileType css,scss,sass,stylus,less setl omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,htmldjango,jinja2 setl omnifunc=emmet#completeTag
-  autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
+  autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=javascriptcomplete#CompleteJS
+  if exists('g:plugs["tern_for_vim"]')
+    autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
+  endif
   autocmd FileType python setl omnifunc=pythoncomplete#Complete
   autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
   autocmd FileType xml setl omnifunc=xmlcomplete#CompleteTags
