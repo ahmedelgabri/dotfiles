@@ -23,14 +23,18 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-flow.vim'
+" Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+" Plug 'prabirshrestha/asyncomplete-buffer.vim'
+" Plug 'maralla/completor.vim'         , { 'do': 'make js' }
 if has('nvim')
   Plug 'Shougo/deoplete.nvim'          , { 'do': ':UpdateRemotePlugins' }
   Plug 'carlitux/deoplete-ternjs'      , { 'do': 'npm i -g tern' }
   Plug 'steelsojka/deoplete-flow'
-else
-  Plug 'maralla/completor.vim'         , { 'do': 'make js' }
 endif
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
@@ -57,6 +61,8 @@ Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus' , { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
+Plug 'metakirby5/codi.vim'
+Plug 'Shougo/echodoc.vim'
 
 if executable('tmux')
   Plug 'wellle/tmux-complete.vim'
@@ -112,10 +118,37 @@ endif
 " See after/plugin/deoplete.vim
 let g:deoplete#enable_at_startup = 1
 
+let g:echodoc_enable_at_startup=1
+
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Tab completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+" call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
+"     \ 'name': 'flow',
+"     \ 'whitelist': ['javascript', 'javascript.jsx'],
+"     \ 'completor': function('asyncomplete#sources#flow#completor'),
+"     \ 'config': {
+"     \    'flowbin_path': nrun#Which('flow')
+"     \  },
+"     \ }))
+
+" let g:UltiSnipsExpandTrigger="<c-e>"
+" call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+"     \ 'name': 'ultisnips',
+"     \ 'whitelist': ['*'],
+"     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+"     \ }))
+"
+" call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+"     \ 'name': 'buffer',
+"     \ 'whitelist': ['*'],
+"     \ 'blacklist': ['go'],
+"     \ 'completor': function('asyncomplete#sources#buffer#completor'),
+"     \ }))
 
 " Overrrides
 " =================
