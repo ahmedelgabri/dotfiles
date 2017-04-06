@@ -146,14 +146,15 @@ cask 'webpquicklook'
 cask 'whatsapp'
 # cask 'gpgtools'
 
-# mas 'Day One', id: 1055511498
-# mas 'Transmit', id: 403388562
-# mas 'Wunderlist', id: 410628904
-# mas 'Guidance', id: 412759995
-# mas 'The Unarchiver', id: 425424353
 # mas '1Password', id: 443987910
-# mas 'Dash', id: 449589707
-# mas 'Xcode', id: 497799835
-# mas 'Tweetbot', id: 557168941
+# mas 'Day One', id: 1055511498
+# mas 'Guidance', id: 412759995
+# mas 'Image2Icon', id: 992115977
+# mas 'Irvue', id: 1039633667
 # mas 'Sip', id: 507257563
+# mas 'The Unarchiver', id: 425424353
+# mas 'Transmit', id: 403388562
+# mas 'Tweetbot', id: 557168941
 # mas 'Wire', id: 931134707
+# mas 'Wunderlist', id: 410628904
+# mas 'Xcode', id: 497799835
