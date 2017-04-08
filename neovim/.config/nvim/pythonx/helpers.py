@@ -20,25 +20,29 @@ def _convert_camel_case(string):
 def _clean_basename(basename):
   return re.sub('(_spec|-test)$', '', basename or 'ModuleName')
 
-# If path ends in `index.jsx`, this function will return the PascalCased
-# directory name. Otherwise, it returns the PascalCased filename. This allows
-# me to use my snippets with modules that are like `/path/to/module_name.jsx`
-# and modules that are like `/path/to/ModuleName/index.jsx`.
+'''
+If path ends in `index.jsx`, this function will return the PascalCased directory
+name. Otherwise, it returns the PascalCased filename. This allows me to use my
+snippets with modules that are like `/path/to/module_name.jsx` and modules that
+are like `/path/to/ModuleName/index.jsx`.
+'''
 def path_to_component_name(path, case_fn):
   dirname, filename = os.path.split(path)
   basename = os.path.splitext(filename)[0]
-  if basename in ['index', 'index-test']:
+  if basename in ['index']:
     # Pop the last directory name off the dirname
     return case_fn(_clean_basename(os.path.basename(dirname)))
   else:
     return case_fn(_clean_basename(basename))
 
-def complete(t, opts):
-  if t:
-    opts = [ m[len(t):] for m in opts if m.startswith(t) ]
+def complete(text, opts):
+  if text:
+    opts = [m[len(text):] for m in opts if m.startswith(text)]
     if len(opts) == 1:
       return opts[0]
-  return '(' + '|'.join(opts) + ')'
+    if len(opts) > 0:
+      return '(' + '|'.join(opts) + ')'
+    return ''
 
 
 def formatTag(argument):
@@ -77,14 +81,3 @@ def formatVariableName(path):
   else:
     return re.sub(r'[_\-]', '', lastPart)
 
-
-# https://github.com/wincent/wincent/blob/9b938b4d879a2/roles/dotfiles/files/.vim/ultisnips/javascript.snippets#L38-L46
-def react_es6(current_buffer):
-  """
-  Checks the current buffer to see whether React ES6 syntax should be used.
-  """
-  buffer = current_buffer
-  for line in buffer:
-    if re.search('React.createClass', line):
-      return False;
-    return True;

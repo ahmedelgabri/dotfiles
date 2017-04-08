@@ -139,49 +139,45 @@ constructor(props) {
 endsnippet
 
 snippet cdm "componentDidMount" b
-componentDidMount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+componentDidMount() {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet cdu "componentDidUpdate" b
-componentDidUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(prevProps, prevState) {
+componentDidUpdate(prevProps, prevState) {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet cwm "componentWillMount" b
-componentWillMount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+componentWillMount() {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet cwrp "componentWillReceiveProps" b
-componentWillReceiveProps`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps) {
+componentWillReceiveProps(nextProps) {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet cwum "componentWillUnmount" b
-componentWillUnmount`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`() {
+componentWillUnmount() {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet cwu "componentWillUpdate" b
-componentWillUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps, nextState) {
+componentWillUpdate(nextProps, nextState) {
 	$0
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
-endsnippet
-
-snippet Pt "PropTypes" w
-PropTypes.$1`!p snip.rv=complete(t[1], ['array', 'bool', 'func', 'number', 'object', 'string', 'node', 'element', 'instanceOf', 'oneOf([])', 'oneOfType([])', 'arrayOf()', 'objectOf()', 'shape({})', 'any'])`,$0
+}
 endsnippet
 
 snippet scu "shouldComponentUpdate" b
-shouldComponentUpdate`!p snip.rv = '' if react_es6(snip.buffer) else ': function'`(nextProps, nextState) {
+shouldComponentUpdate(nextProps, nextState) {
 	return ${1:true};
-}`!p snip.rv = '' if react_es6(snip.buffer) else ','`
+}
 endsnippet
 
 snippet <> "<Component>" b
