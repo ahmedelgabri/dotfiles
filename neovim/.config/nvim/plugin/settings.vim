@@ -83,10 +83,10 @@ set completeopt-=preview
 
 " highlight current line (Check auto groups too)
 " https://github.com/mhinz/vim-galore#smarter-cursorline
-set cursorline
+set nocursorline
 set nocursorcolumn       " do not highlight column
-autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline
+" autocmd InsertLeave,WinEnter * set cursorline
+" autocmd InsertEnter,WinLeave * set nocursorline
 
 set lazyredraw                        " don't bother updating screen during macro playback
 

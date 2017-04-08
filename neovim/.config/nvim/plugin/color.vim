@@ -4,6 +4,7 @@ end
 
 set background=dark
 let g:gruvbox_italic=1
+let g:gruvbox_contrast_dark='hard'
 
 let hour = strftime("%H")
 colorscheme codedark

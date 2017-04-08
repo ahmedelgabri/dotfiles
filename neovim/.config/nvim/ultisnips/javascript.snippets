@@ -47,16 +47,16 @@ for (let ${1:key} in ${2:object}) {
 }
 endsnippet
 
-
 # Modules
 
-snippet "req(u|ui|uir|uire)?" "require()" !brA
+# Only expand if the on an empty line
+snippet "^req" "require()" "not snip.buffer[snip.column+2].strip()" !brAe
 const `!p snip.rv=formatVariableName(t[2])` = require('${2}')
 $0
 endsnippet
 
-
-snippet "imp(ort)?" "import x form y" !brA
+# Only expand if the on an empty line
+snippet "^imp" "import x form y" "not snip.buffer[snip.column+2].strip()" !brAe
 import `!p snip.rv=formatVariableName(t[1])` from '${1}'
 $0
 endsnippet
