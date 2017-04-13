@@ -78,8 +78,8 @@ Plug 'stephenway/postcss.vim'          , { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'   , { 'on': [] }
-Plug 'w0rp/ale'
-Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat' }
+Plug 'w0rp/ale'                        , { 'do': 'npm i -g stylelint' }
+Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat', 'npm i -g prettier stylefmt' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
