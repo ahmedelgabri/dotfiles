@@ -1,4 +1,5 @@
 set conceallevel=2
+set concealcursor=n
 " Not perfect but I only use it for JavaScript functions, maybe used somewhere
 " else?
 hi! link Conceal javaScriptFunction

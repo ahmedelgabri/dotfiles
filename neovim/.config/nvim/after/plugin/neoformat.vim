@@ -17,6 +17,7 @@ let g:neoformat_javascript_prettier = {
 let g:neoformat_enabled_css = ['stylefmt']
 let g:neoformat_enabled_scss = ['stylefmt']
 let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_only_msg_on_error = 1
 
 if nrun#Which('flow')
   let g:neoformat_enabled_javascript += ['flow']
