@@ -97,7 +97,7 @@
 
 [merge]
   # https://git-scm.com/docs/git-config#git-config-mergeff
-  ff = only
+  # ff = only
   # Include summaries of merged commits in newly created merge commit messages
   log = true
   tool = vimdiff
