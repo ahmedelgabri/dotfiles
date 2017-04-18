@@ -5,14 +5,14 @@ if (( $+commands[yarn] )); then
 fi
 
 function y {
-if (( $+commands[yarn] )); then
-  if [[ $# > 0 ]]; then
-    yarn "$@"
+  if (( $+commands[yarn] )); then
+    if [[ $# > 0 ]]; then
+      yarn "$@"
+    else
+      yarn
+    fi
   else
-    yarn
+    echo "Yarn is not in your path, make sure you install it or fix your path"
+    exit 1
   fi
-else
-  echo "Yarn is not in your path, make sure you install it or fix your path"
-  exit 1
-fi
 }
