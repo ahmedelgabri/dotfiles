@@ -31,6 +31,7 @@ zplug "modules/osx", depth:1, from:prezto
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
 zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
+zplug "maxmellon/yarn_completion", defer:1
 zplug "b4b4r07/emoji-cli"
 
 # Zim settings

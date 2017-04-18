@@ -1,9 +1,13 @@
-# I'm lazy to run `yarn` & `yarn run <script>`
+# I'm lazy to type `yarn`, `yarn run <script>`, etc...
+
+if (( $+commands[yarn] )); then
+  compdef y=yarn
+fi
 
 function y {
   if (( $+commands[yarn] )); then
     if [[ $# > 0 ]]; then
-      yarn run "$@"
+      yarn "$@"
     else
       yarn
     fi
