@@ -72,6 +72,12 @@
   ll = log --cc
   lastchange = log -p --follow -n 1
   stashes = stash list
+  undo = reset --soft HEAD^
+  prune = fetch --prune
+  stash-all = stash save --include-untracked
+
+[branch]
+  autosetuprebase = always
 
 [diff]
   # Detect copies as well as renames
@@ -86,13 +92,17 @@
 [diff "plist"]
   textconv = plutil -convert xml1 -o -
 [difftool "vimdiff"]
-  ; $BASE $LOCAL $REMOTE $MERGED
+  # $BASE $LOCAL $REMOTE $MERGED
   cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
 
 [merge]
+  # https://git-scm.com/docs/git-config#git-config-mergeff
+  ff = only
   # Include summaries of merged commits in newly created merge commit messages
   log = true
   tool = vimdiff
+  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+  conflictstyle = diff3
 
 [mergetool]
   keepBackup = false
@@ -101,9 +111,16 @@
 [mergetool "vimdiff"]
   cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
 
+[pull]
+  rebase = true
+
 [push]
   default = simple
   followTags = true
+
+[status]
+  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
+  showUntrackedFiles = all
 
 [apply]
   whitespace = nowarn
@@ -114,10 +131,12 @@
 
 [fetch]
   prune = true
+
+# https://git-scm.com/docs/git-config#git-config-transferfsckObjects
 [transfer]
-  fsckobjects = true
+  fsckObjects = true
 [fetch]
-  fsckobjects = true
+  fsckObjects = true
 [receive]
   fsckObjects = true
 
@@ -155,10 +174,3 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
-[branch]
-  autosetuprebase = always
-[pull]
-  rebase = true
-
-[ghi]
-  token = !security find-internet-password -a ahmedelgabri -s github.com -l 'ghi token' -w
