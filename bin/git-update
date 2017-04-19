@@ -8,9 +8,10 @@
 #/    git update develop - this will do the same but with the develop branch
 #/
 
-BRANCH="master"
-if [ ! -z "$1" ]; then
+if [ -n "$1" ]; then
   BRANCH="$1"
+else
+  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 fi
 
 git stash save && \

@@ -59,7 +59,6 @@
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = l -u
   gr = grep -Ii
-  # untrack = update-index --assume-unchanged
   recentbranches = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'
   untrack = rm --cached <file>
   track = push origin -u HEAD
@@ -75,6 +74,7 @@
   undo = reset --soft HEAD^
   prune = fetch --prune
   stash-all = stash save --include-untracked
+  amend = commit --amend -C HEAD
 
 [branch]
   autosetuprebase = always
@@ -102,7 +102,7 @@
   log = true
   tool = vimdiff
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
-  conflictstyle = diff3
+  ; conflictstyle = diff3
 
 [mergetool]
   keepBackup = false
