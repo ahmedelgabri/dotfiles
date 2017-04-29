@@ -64,7 +64,6 @@ Plug 'beloglazov/vim-online-thesaurus' , { 'on': ['Thesaurus', 'OnlineThesaurusC
 Plug 'kepbod/quick-scope'
 Plug 'metakirby5/codi.vim'
 Plug 'Shougo/echodoc.vim'
-Plug 'chr4/sslsecure.vim'
 
 if executable('tmux')
   Plug 'wellle/tmux-complete.vim'
