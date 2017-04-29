@@ -144,3 +144,17 @@ let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify'
 function! functions#should_turn_off_colorcolumn()
   return index(g:GabriNoColorcolumn, &filetype) == -1
 endfunction
+
+
+fun! functions#ProfileStart(...)
+  if a:0 && a:1 != 1
+    let profile_file = a:1
+  else
+    let profile_file = '/tmp/vim.'.getpid().'.'.reltimestr(reltime())[-4:].'profile.txt'
+    echom "Profiling into" profile_file
+    let @* = profile_file
+  endif
+  exec 'profile start '.profile_file
+  profile! file **
+  profile  func *
+endfun

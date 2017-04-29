@@ -76,6 +76,8 @@ def formatVariableName(path):
     return 'React, { Component }'
   elif lastPart == 'react-dom':
     return 'ReactDOM';
+  elif lastPart == 'prop-types':
+    return 'PropTypes';
   elif lastPart == 'jquery':
     return '$'
   else:

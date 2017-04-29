@@ -25,4 +25,4 @@ endif
 
 
 " auto format on save
-autocmd BufWritePre * Neoformat
+autocmd BufWritePre *.js Neoformat

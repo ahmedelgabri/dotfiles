@@ -17,7 +17,7 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -28,11 +28,12 @@ call plug#begin('~/.vim/plugged')
 " Plug 'prabirshrestha/asyncomplete-flow.vim'
 " Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 " Plug 'prabirshrestha/asyncomplete-buffer.vim'
+" Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
 " Plug 'maralla/completor.vim'         , { 'do': 'make js' }
 if has('nvim')
   Plug 'Shougo/deoplete.nvim'          , { 'do': ':UpdateRemotePlugins' }
-  Plug 'carlitux/deoplete-ternjs'      , { 'do': 'npm i -g tern' }
-  Plug 'steelsojka/deoplete-flow'
+  Plug 'carlitux/deoplete-ternjs'      , { 'do': 'npm i -g tern', 'for': ['javascript'] }
+  Plug 'steelsojka/deoplete-flow'      , { 'for': 'javascript' }
 endif
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
@@ -63,6 +64,7 @@ Plug 'beloglazov/vim-online-thesaurus' , { 'on': ['Thesaurus', 'OnlineThesaurusC
 Plug 'kepbod/quick-scope'
 Plug 'metakirby5/codi.vim'
 Plug 'Shougo/echodoc.vim'
+Plug 'chr4/sslsecure.vim'
 
 if executable('tmux')
   Plug 'wellle/tmux-complete.vim'
@@ -79,7 +81,7 @@ Plug 'stephenway/postcss.vim'          , { 'for': ['css'] }
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim'   , { 'on': [] }
 Plug 'w0rp/ale'                        , { 'do': 'npm i -g stylelint' }
-Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat', 'npm i -g prettier stylefmt' }
+Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
@@ -122,19 +124,13 @@ let g:echodoc_enable_at_startup=1
 
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
-" Tab completion.
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+let g:completor_filetype_map = {'javascript.jsx': 'javascript'}
+let g:completor_completion_delay = 10
 
-" call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
-"     \ 'name': 'flow',
-"     \ 'whitelist': ['javascript', 'javascript.jsx'],
-"     \ 'completor': function('asyncomplete#sources#flow#completor'),
-"     \ 'config': {
-"     \    'flowbin_path': nrun#Which('flow')
-"     \  },
-"     \ }))
+" Tab completion.
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
 " let g:UltiSnipsExpandTrigger="<c-e>"
 " call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
@@ -142,13 +138,39 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 "     \ 'whitelist': ['*'],
 "     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
 "     \ }))
-"
+
 " call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
 "     \ 'name': 'buffer',
 "     \ 'whitelist': ['*'],
 "     \ 'blacklist': ['go'],
 "     \ 'completor': function('asyncomplete#sources#buffer#completor'),
 "     \ }))
+
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
+"     \ 'name': 'flow',
+"     \ 'whitelist': ['javascript', 'javascript.jsx'],
+"     \ 'completor': function('asyncomplete#sources#flow#completor'),
+"     \ 'config': {
+"     \    'prefer_local': 1,
+"     \    'flowbin_path': nrun#Which('flow')
+"     \  },
+"     \ }))
+
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
+"     \ 'name': 'necosyntax',
+"     \ 'whitelist': ['*'],
+"     \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
+"     \ }))
+
+" Profiling. {{{
+" Start profiling. Optional arg: logfile path.
+if len(get(g:, 'profile', ''))
+  call functions#ProfileStart(g:profile)
+endif
+if 0
+  call functions#ProfileStart()
+endif
+" }}}
 
 " Overrrides
 " =================
