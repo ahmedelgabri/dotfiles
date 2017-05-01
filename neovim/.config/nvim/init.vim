@@ -101,7 +101,10 @@ Plug 'liuchengxu/space-vim-dark'
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
-Plug 'lambdalisue/gina.vim'
+Plug 'lambdalisue/gina.vim' " not sure about this yet
+Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-rhubarb'
+
 
 " Writing
 Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}

@@ -39,10 +39,8 @@ nnoremap <Down> :resize +2<CR>
 
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
-nnoremap gv  :GV<CR> " tig like git explorer
-vnoremap gv  :GV<CR> " tig like git explorer
-nnoremap gb  :Gina browse :%<CR> " Open current file on github.com
-vnoremap gb  :Gina browse :%<CR> " Make it work in Visual mode to open with highlighted linenumbers
+nnoremap gb  :Gina browse :% --exact<CR> " Open current file on github.com
+vnoremap gb  :Gina browse :% --exact<CR> " Make it work in Visual mode to open with highlighted linenumbers
 nnoremap gs  :Gina status<CR>
 vnoremap gs  :Gina status<CR>
 
