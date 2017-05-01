@@ -1,6 +1,7 @@
 vim/.vim/
 vim/.vimrc
 neovim/.config/nvim/plugged/
+neovim/.config/nvim/dein/
 neovim/.config/nvim/tmp/
 neovim/.config/nvim/autoload/plug.vim*
 irc/.weechat/*
