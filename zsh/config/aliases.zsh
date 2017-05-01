@@ -73,4 +73,4 @@ alias apache="sudo apachectl "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[npm] )) && alias n="npm run -s "
 (( $+commands[colourify] )) && alias curl='colourify curl '
-(( $+commands[stow] )) && alias stow='stow --gnore ".DS_Store"'
+(( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
