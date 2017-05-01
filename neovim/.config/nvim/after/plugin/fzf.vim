@@ -1,7 +1,7 @@
 " FZF
 let g:fzf_files_options = $FZF_CTRL_T_OPTS
 let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_commits_log_options = substitute(system("git config --get alias.lg | awk '{$1=\"\"; print $0;}'"), '\n\+$', '', '')
+let g:fzf_commits_log_options = substitute(system("git config --get alias.l | awk '{$1=\"\"; print $0;}'"), '\n\+$', '', '')
 let g:fzf_history_dir = '~/.fzf-history'
 
 command! Plugs call fzf#run({
