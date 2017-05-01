@@ -29,28 +29,32 @@ call plug#begin('~/.vim/plugged')
 " Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 " Plug 'prabirshrestha/asyncomplete-buffer.vim'
 " Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-" Plug 'maralla/completor.vim'         , { 'do': 'make js' }
+" Plug 'maralla/completor.vim', { 'do': 'make js' }
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim'          , { 'do': ':UpdateRemotePlugins' }
-  Plug 'carlitux/deoplete-ternjs'      , { 'do': 'npm i -g tern', 'for': ['javascript'] }
-  Plug 'steelsojka/deoplete-flow'      , { 'for': 'javascript' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern', 'for': ['javascript'] }
+  Plug 'steelsojka/deoplete-flow', { 'for': 'javascript' }
 endif
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
-Plug 'junegunn/fzf'                    , { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'         , { 'on': ['<Plug>(EasyAlign)'] }
+if executable('fzf')
+  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+else
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
+endif
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'kshenoy/vim-signature'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'mattn/emmet-vim'                 , { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
-Plug 'mbbill/undotree'                 , { 'on': ['UndotreeToggle'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
+Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper'
-Plug 'mhinz/vim-sayonara'              , { 'on': 'Sayonara' }
-Plug 'scrooloose/nerdtree'             , { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'ternjs/tern_for_vim'             , { 'for': ['javascript'], 'do': 'npm i', 'on': [] }
+Plug 'ternjs/tern_for_vim', { 'for': ['javascript'], 'do': 'npm i', 'on': [] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
@@ -60,7 +64,7 @@ Plug 'wincent/loupe'
 Plug 'wincent/pinnacle' " this is only used in plugins/after/loupe.vim is it worth it?
 Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
-Plug 'beloglazov/vim-online-thesaurus' , { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
+Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
 Plug 'metakirby5/codi.vim'
 Plug 'Shougo/echodoc.vim'
@@ -71,16 +75,16 @@ if executable('tmux')
 endif
 
 " Syntax
-" Plug 'the-lambda-church/merlin'    , { 'for': ['ocaml', 'reason'] }
-Plug 'ap/vim-css-color'                , { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
-Plug 'moll/vim-node'                   , { 'for': ['javascript'] }
+" Plug 'the-lambda-church/merlin', { 'for': ['ocaml', 'reason'] }
+Plug 'ap/vim-css-color', { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
+Plug 'moll/vim-node', { 'for': ['javascript'] }
 Plug 'sheerun/vim-polyglot'
-Plug 'stephenway/postcss.vim'          , { 'for': ['css'] }
+Plug 'stephenway/postcss.vim', { 'for': ['css'] }
 
 " Linters & Code quality
-Plug 'editorconfig/editorconfig-vim'   , { 'on': [] }
-Plug 'w0rp/ale'                        , { 'do': 'npm i -g stylelint' }
-Plug 'sbdchd/neoformat'                , { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt' }
+Plug 'editorconfig/editorconfig-vim', { 'on': [] }
+Plug 'w0rp/ale', { 'do': 'npm i -g stylelint' }
+Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
@@ -100,8 +104,8 @@ Plug 'lambdalisue/vim-gista'
 Plug 'lambdalisue/gina.vim'
 
 " Writing
-Plug 'junegunn/goyo.vim'               , { 'on': ['Goyo']}
-Plug 'junegunn/limelight.vim'          , { 'on': ['Limelight'] }
+Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}
+Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
 
