@@ -21,7 +21,8 @@ symlink:
 			terminfo \
 			tmux \
 			vim \
-			zsh
+			zsh \
+			newsbeuter
 
 homebrew:
 		@brew bundle --file="$(HOME)/.dotfiles/homebrew/Brewfile"

@@ -1,0 +1,93 @@
+article-sort-order  desc
+browser "open -g -a 'Google Chrome Canary' %u"
+confirm-exit        no
+max-items           100
+auto-reload no
+# reload-threads      3
+reload-time 30
+cleanup-on-quit yes
+refresh-on-startup yes
+prepopulate-query-feeds yes
+feed-sort-order unreadarticlecount-desc
+save-path           ~/.newsbeuter/saved_articles
+show-read-articles  no
+show-read-feeds     no
+notify-always yes
+# mark-as-read-on-hover yes
+always-display-description true
+text-width 120
+color listfocus   red default blink
+color info          red default bold
+# highlight all "Linux" yellow black blink
+# download-full-page yes
+# bookmark-cmd /home/cirrus/scripts/newsbeuter_bookmarks_surfraw.sh
+# notify-program      "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
+##
+##-------- macros {{{
+##------------------------------------------------------
+## Note: macro prefix key ( default: , )
+
+## open in cli web browser
+## macro o set browser "$BROWSERCLI %u"; open-in-browser ; set browser "$BROWSER %u"
+#macro o set browser "tmux split-window && tmux send-keys '$BROWSERCLI %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
+
+## read reddit comments with rtv (reddit terminal viewer)
+## macro r set browser "rtv -l %u"; open-in-browser ; set browser "$BROWSER %u"
+#macro r set browser "tmux split-window && tmux send-keys 'rtv -l %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
+
+## add video or audio to play queue using mpv (requires: task-spooler, mpv, youtube-dl)
+#macro p set browser "tsp mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
+
+## copy url to clipboard "yank"
+#macro y set browser "echo -n %u | xclip -selection clipboard"; open-in-browser ; set browser "$BROWSER %u"
+
+
+## read saved files
+## ranger: https://www.youtube.com/watch?v=qooLR8NmYKs
+#macro s set browser "tmux split-window && tmux send-keys 'ranger ~/.newsbeuter/saved_articles && tmux kill-pane\n'" ; open-in-browser ; set browser "$BROWSER %u"
+
+## }}}
+##
+
+# formatting and colorization ------------------------------------------
+
+# articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+
+# highlight feedlist "^ *[0-9]+ *N " color156 default
+# highlight articlelist "^ *[0-9]+ *N " color156 default
+
+# highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
+# highlight article "^Podcast Download URL:.*" color71 default
+# highlight article "^Links:" white color240 underline
+# highlight article "\\[[0-9][0-9]*\\]" color72 default bold
+# highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
+# highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
+# highlight article ":.*\\(link\\)$" color74 default
+# highlight article ":.*\\(image\\)$" color74 default
+# highlight article ":.*\\(embedded flash\\)$" color74 default
+
+# color listnormal color246 color234
+# color listnormal_unread color244 color234 bold
+# color listfocus color166 color235
+# color info color38 color235
+# color background color244 color234
+# color article color244 color234
+
+# feedlist-format "%-65t %?d?- %-65d&? %> %u"
+# articlelist-format "%-4i %f %t"
+# feedlist-title-format "%N %V %> %u feeds with new articles"
+# articlelist-title-format "%T"
+# html-renderer "w3m -dump -T text/HTML -cols 72"
+# highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
+# notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+
+# Key bindings ----------------------------------
+bind-key j next
+bind-key k prev
+bind-key J next-feed
+bind-key K prev-feed
+bind-key j down article
+bind-key k up article
+bind-key J next article
+bind-key K prev article
+bind-key O open-in-browser-and-mark-read

@@ -86,6 +86,7 @@ take_backup() {
     $HOME/.vim
     $HOME/Library/Preferences/com.googlecode.iterm2.plist
     $HOME/.config/nvim
+    $HOME/.config/newsbeuter
     $HOME/.mutt
     $HOME/.hammerspoon
     $HOME/.grc
