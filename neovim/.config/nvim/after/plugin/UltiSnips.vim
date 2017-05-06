@@ -7,11 +7,11 @@ function! g:UltiSnips_Complete()
   call UltiSnips#ExpandSnippet()
   if g:ulti_expand_res == 0
     if pumvisible()
-      return '\<C-n>'
+      return "\<C-n>"
     else
       call UltiSnips#JumpForwards()
       if g:ulti_jump_forwards_res == 0
-        return '\<TAB>'
+        return "\<TAB>"
       endif
     endif
   endif
@@ -21,7 +21,7 @@ endfunction
 function! g:UltiSnips_Reverse()
   call UltiSnips#JumpBackwards()
   if g:ulti_jump_backwards_res == 0
-    return '\<C-P>'
+    return "\<C-P>"
   endif
 
   return ''
