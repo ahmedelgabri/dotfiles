@@ -3,14 +3,25 @@ set -e
 
 SESSION='_shared'
 
+open_or_log () {
+  if type "$1" > /dev/null; then
+    tmux send-keys "$1" C-m
+  else
+    echo "You need to install $1..."
+  fi
+}
+
 create_session () {
   tmux new-session -d -s "$SESSION" -n 'mail'
-  tmux send-keys mutt C-m
+  open_or_log mutt
+
+  tmux new-window -n 'rss'
+  open_or_log newsbeuter
 
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window
   tmux set-option allow-rename off
-  tmux send-keys weechat C-m
+  open_or_log weechat
 
   local logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then
