@@ -6,9 +6,9 @@ set background=dark
 let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark='hard'
 
-let hour = strftime("%H")
+let s:hour = strftime('%H')
 colorscheme codedark
-" if hour >= 6 && hour < 18
+" if s:hour >= 6 && s:hour < 18
 "   colorscheme onedark
 " else
 "   colorscheme deep-space

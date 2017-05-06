@@ -17,7 +17,7 @@ endfunction
 " Show highlighting groups for current word
 " https://twitter.com/kylegferg/status/697546733602136065
 function! functions#SynStack()
-  if !exists("*synstack")
+  if !exists('*synstack')
     return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
@@ -26,19 +26,19 @@ endfunc
 
 " Visual Mode */# from Scrooloose
 function! functions#VSetSearch()
-  let temp = @@
+  let l:temp = @@
   norm! gvy
   let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
-  let @@ = temp
+  let @@ = l:temp
 endfunction
 
 " https://github.com/garybernhardt/dotfiles/blob/68554d69652cc62d43e659f2c6b9082b9938c72e/.vimrc#L182-L194
 function! functions#RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
+  let l:old_name = expand('%')
+  let l:new_name = input('New file name: ', expand('%'), 'file')
+  if l:new_name !=# '' && l:new_name !=# l:old_name
+    exec ':saveas ' . l:new_name
+    exec ':silent !rm ' . l:old_name
     redraw!
   endif
 endfunction
@@ -60,11 +60,11 @@ endfunction
 
 
 function! functions#ClearRegisters()
-  let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
-  let i=0
-  while (i<strlen(regs))
-    exec 'let @'.regs[i].'=""'
-    let i=i+1
+  let l:regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
+  let l:i=0
+  while (l:i<strlen(l:regs))
+    exec 'let @'.l:regs[l:i].'=""'
+    let l:i=l:i+1
   endwhile
 endfunction
 
@@ -96,20 +96,20 @@ endfunction
 " When switching colorscheme in terminal vim change the profile in iTerm as well.
 function! functions#change_iterm2_profile()
   " let dual_colorschemes = ['onedark', 'gruvbox']
-  let is_iTerm = exists('$TERM_PROGRAM') && $TERM_PROGRAM =~# 'iTerm.app'
-  if is_iTerm
+  let l:is_iTerm = exists('$TERM_PROGRAM') && $TERM_PROGRAM =~# 'iTerm.app'
+  if l:is_iTerm
     if exists('g:colors_name')
-      let profile = g:colors_name
+      let l:profile = g:colors_name
       " if index(dual_colorschemes, g:colors_name) >= 0
       "   let profile .= '_'.&background
       "   echo profile
       " endif
-      let escape = '\033]50;SetProfile='.profile.'\x7'
+      let l:escape = '\033]50;SetProfile='.l:profile.'\x7'
       if exists('$TMUX')
-        let escape = '\033Ptmux;'.substitute(escape, '\\033', '\\033\\033', 'g').'\033\\'
+        let l:escape = '\033Ptmux;'.substitute(l:escape, '\\033', '\\033\\033', 'g').'\033\\'
       endif
       " for some reason it always sets BG to light?
-      silent call system("printf '".escape."' > /dev/tty")
+      silent call system("printf '".l:escape."' > /dev/tty")
     endif
   endif
 endfunction
@@ -119,7 +119,7 @@ endfunction
 let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
 function! functions#should_mkview() abort
   return
-        \ &buftype == '' &&
+        \ &buftype ==# '' &&
         \ index(g:GabriMkviewFiletypeBlacklist, &filetype) == -1 &&
         \ !exists('$SUDO_USER') " Don't create root-owned files.
 endfunction
@@ -148,13 +148,13 @@ endfunction
 
 fun! functions#ProfileStart(...)
   if a:0 && a:1 != 1
-    let profile_file = a:1
+    let l:profile_file = a:1
   else
-    let profile_file = '/tmp/vim.'.getpid().'.'.reltimestr(reltime())[-4:].'profile.txt'
-    echom "Profiling into" profile_file
-    let @* = profile_file
+    let l:profile_file = '/tmp/vim.'.getpid().'.'.reltimestr(reltime())[-4:].'profile.txt'
+    echom 'Profiling into' l:profile_file
+    let @* = l:profile_file
   endif
-  exec 'profile start '.profile_file
+  exec 'profile start '.l:profile_file
   profile! file **
   profile  func *
 endfun

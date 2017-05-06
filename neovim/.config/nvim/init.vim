@@ -117,7 +117,7 @@ filetype plugin indent on
 "
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 " https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim#L88
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) ==# ''
   runtime! macros/matchit.vim
 endif
 

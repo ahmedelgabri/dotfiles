@@ -119,7 +119,7 @@ take_backup() {
 symlink_files() {
   log_success "Create some required folders..."
   mkdir -p $HOME/.config \
-  $HOME/.dotfiles/neovim/.config/nvim/tmp/{swap,undo,view} \
+  $HOME/.dotfiles/neovim/.config/nvim/tmp/{backup,swap,undo,view} \
   $HOME/.mail/{personal,work}
 
   if [[ -d "$DOTFILES_DIR" ]]; then

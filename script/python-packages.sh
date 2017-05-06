@@ -9,6 +9,7 @@ PACKAGES=(
   virtualenvwrapper
   markdown
   neovim
+  vim-vint
 )
 
 mkdir ~/.venv && pip install ${PACKAGES[@]}

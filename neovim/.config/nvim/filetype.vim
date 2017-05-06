@@ -1,5 +1,5 @@
 " Setting filetypes with high prio, see |new-filetype|
-if exists("did_load_filetypes")
+if exists('did_load_filetypes')
   finish
 endif
 

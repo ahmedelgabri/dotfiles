@@ -5,7 +5,7 @@ let g:tern#filetypes = [
       \ 'javascript.jsx',
       \ 'vue',
       \ ]
-if g:tern_path != 'tern not found'
+if g:tern_path !=# 'tern not found'
   let g:deoplete#sources#ternjs#tern_bin = g:tern_path
 endif
 

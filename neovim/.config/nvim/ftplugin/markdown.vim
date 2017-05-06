@@ -5,5 +5,5 @@ setl tabstop=4
 setl linebreak
 setl nolist
 setl wrap
-setl lbr
+setl linebreak
 setl synmaxcol=999999

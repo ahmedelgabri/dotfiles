@@ -1,22 +1,22 @@
 function! FileSize()
-  let bytes = getfsize(expand('%:p'))
-  if (bytes >= 1024)
-    let kbytes = bytes / 1024
+  let l:bytes = getfsize(expand('%:p'))
+  if (l:bytes >= 1024)
+    let l:kbytes = l:bytes / 1024
   endif
-  if (exists('kbytes') && kbytes >= 1000)
-    let mbytes = kbytes / 1000
+  if (exists('kbytes') && l:kbytes >= 1000)
+    let l:mbytes = l:kbytes / 1000
   endif
 
-  if bytes <= 0
+  if l:bytes <= 0
     return '[empty file] '
   endif
 
   if (exists('mbytes'))
-    return mbytes . 'MB '
+    return l:mbytes . 'MB '
   elseif (exists('kbytes'))
-    return kbytes . 'KB '
+    return l:kbytes . 'KB '
   else
-    return bytes . 'B '
+    return l:bytes . 'B '
   endif
 endfunction
 

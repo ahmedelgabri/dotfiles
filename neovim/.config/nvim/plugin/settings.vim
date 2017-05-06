@@ -181,36 +181,36 @@ set shortmess+=t                      " truncate file messages at start
 
 if has('nvim')
   " dark0 + gray
-  let g:terminal_color_0 = "#282828"
-  let g:terminal_color_8 = "#928374"
+  let g:terminal_color_0 = '#282828'
+  let g:terminal_color_8 = '#928374'
 
   " neurtral_red + bright_red
-  let g:terminal_color_1 = "#cc241d"
-  let g:terminal_color_9 = "#fb4934"
+  let g:terminal_color_1 = '#cc241d'
+  let g:terminal_color_9 = '#fb4934'
 
   " neutral_green + bright_green
-  let g:terminal_color_2 = "#98971a"
-  let g:terminal_color_10 = "#b8bb26"
+  let g:terminal_color_2 = '#98971a'
+  let g:terminal_color_10 = '#b8bb26'
 
   " neutral_yellow + bright_yellow
-  let g:terminal_color_3 = "#d79921"
-  let g:terminal_color_11 = "#fabd2f"
+  let g:terminal_color_3 = '#d79921'
+  let g:terminal_color_11 = '#fabd2f'
 
   " neutral_blue + bright_blue
-  let g:terminal_color_4 = "#458588"
-  let g:terminal_color_12 = "#83a598"
+  let g:terminal_color_4 = '#458588'
+  let g:terminal_color_12 = '#83a598'
 
   " neutral_purple + bright_purple
-  let g:terminal_color_5 = "#b16286"
-  let g:terminal_color_13 = "#d3869b"
+  let g:terminal_color_5 = '#b16286'
+  let g:terminal_color_13 = '#d3869b'
 
   " neutral_aqua + faded_aqua
-  let g:terminal_color_6 = "#689d6a"
-  let g:terminal_color_14 = "#8ec07c"
+  let g:terminal_color_6 = '#689d6a'
+  let g:terminal_color_14 = '#8ec07c'
 
   " light4 + light1
-  let g:terminal_color_7 = "#a89984"
-  let g:terminal_color_15 = "#ebdbb2"
+  let g:terminal_color_7 = '#a89984'
+  let g:terminal_color_15 = '#ebdbb2'
 endif
 
 if has('nvim')
@@ -219,18 +219,18 @@ if has('nvim')
 endif
 
 " Configure fold status text
-if has("folding")
+if has('folding')
   highlight Folded ctermbg=254
 
   function! NeatFoldText()
-    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
-    let lines_count = v:foldend - v:foldstart + 1
-    let lines_count_text = '| ' . printf("%10s", lines_count . ' lines') . ' |'
-    let foldchar = matchstr(&fillchars, 'fold:\zs.')
-    let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
-    let foldtextend = lines_count_text . repeat(foldchar, 8)
-    let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
-    return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
+    let l:line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+    let l:lines_count = v:foldend - v:foldstart + 1
+    let l:lines_count_text = '| ' . printf('%10s', l:lines_count . ' lines') . ' |'
+    let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
+    let l:foldtextstart = strpart('+' . repeat(l:foldchar, v:foldlevel*2) . l:line, 0, (winwidth(0)*2)/3)
+    let l:foldtextend = l:lines_count_text . repeat(l:foldchar, 8)
+    let l:foldtextlength = strlen(substitute(l:foldtextstart . l:foldtextend, '.', 'x', 'g')) + &foldcolumn
+    return l:foldtextstart . repeat(l:foldchar, winwidth(0)-l:foldtextlength) . l:foldtextend
   endfunction
   set foldtext=NeatFoldText()
 

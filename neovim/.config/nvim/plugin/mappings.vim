@@ -138,10 +138,10 @@ nmap <silent> gof :call functions#OpenFileFolder()<CR>
 
 " https://github.com/junegunn/vim-plug/issues/435
 function! s:plug_doc()
-  let name = matchstr(getline('.'), '^- \zs\S\+\ze:')
-  if has_key(g:plugs, name)
-    for doc in split(globpath(g:plugs[name].dir, 'doc/*.txt'), '\n')
-      execute 'tabe' doc
+  let l:name = matchstr(getline('.'), '^- \zs\S\+\ze:')
+  if has_key(g:plugs, l:name)
+    for l:doc in split(globpath(g:plugs[l:name].dir, 'doc/*.txt'), '\n')
+      execute 'tabe' l:doc
     endfor
   endif
 endfunction
@@ -157,7 +157,7 @@ augroup END
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 function! ExecuteMacroOverVisualRange()
-  echo "@".getcmdline()
+  echo '@'.getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 

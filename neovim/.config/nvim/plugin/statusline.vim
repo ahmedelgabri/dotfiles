@@ -11,10 +11,11 @@ set tabline="%1T"
 " USE FUGITIVE.VIM TO RETURN THE GIT HEAD INFORMATION
 function! GitInfo()
   let l:gitbranch = fugitive#head()
-  if l:gitbranch != ''
+  if l:gitbranch !=# ''
     return '⎇ ' .fugitive#head()
   else
     return '⎇ '
+  endif
 endfunction
 
 " SET A LOCK IF THE DOCUMENT IS READ ONLY AND NOT MODIFIABLE
@@ -27,6 +28,7 @@ function! ReadOnly()
     return ''
   else
     return ''
+  endif
 endfunction
 
 " SET SYMBOLS IF DOCUMENT HAS BEEM MODIFIED (○○) OR NOT MODIFIED (●●)
@@ -35,6 +37,7 @@ function! Modified()
     return ' •'
   else
     return ''
+  endif
 endfunction
 
 " GET THE FILE SIZE OF THE CURRENT FILE
