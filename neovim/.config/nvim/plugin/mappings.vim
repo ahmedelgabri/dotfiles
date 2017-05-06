@@ -1,6 +1,5 @@
-" leader is <space>
-let mapleader = ' '
-nnoremap <space> <nop>
+" leader is space, only works with double quotes around it?!
+let mapleader="\<Space>"
 
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " Keep search matches in the middle of the window.
@@ -13,8 +12,10 @@ nnoremap N Nzzzv
 nnoremap gV `[v`]
 
 " Treat overflowing lines as having line breaks.
-map j gj
-map k gk
+map <expr> j v:count ? 'j' : 'gj'
+map <expr> k v:count ? 'k' : 'gk'
+" map j gj
+" map k gk
 
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -106,12 +107,6 @@ nnoremap Q @q
 " Make dot work in visual mode
 vmap . :norm.<CR>
 
-" Enable very magic. :h magic
-" nnoremap / /\v
-" vnoremap / /\v
-" cnoremap %s/ %s/\v
-" cnoremap s/ s/\v
-
 " For neovim terminal :term
 if has('nvim')
   " nnoremap <leader>t  :vsplit +terminal<cr>
@@ -155,3 +150,17 @@ augroup PlugExtra
   autocmd!
   autocmd FileType vim-plug nnoremap <buffer> <silent> H :call <sid>plug_doc()<cr>
 augroup END
+
+
+" Allows you to visually select a section and then hit @ to run a macro on all lines
+" https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+" Make the dot command work as expected in visual mode (via
+" https://www.reddit.com/r/vim/comments/3y2mgt/do_you_have_any_minor_customizationsmappings_that/cya0x04)
+vnoremap . :norm.<CR>

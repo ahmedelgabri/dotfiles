@@ -238,6 +238,10 @@ if has("folding")
   set foldlevelstart=99               " start unfolded
 endif
 
+if empty(glob('~/.vim/tmp'))
+  call system('mkdir -p ~/.vim/tmp/{view,backup,swap,undo}')
+endif
+
 if has('mksession')
   set viewdir=~/.vim/tmp/view       " override ~/.vim/view default
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
