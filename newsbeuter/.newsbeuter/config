@@ -1,27 +1,33 @@
+# vim:ft=config:
+
 article-sort-order  desc
+feed-sort-order date-desc
 browser "open -g -a 'Google Chrome Canary' %u"
-confirm-exit        no
-max-items           100
+max-items 100
 auto-reload no
-# reload-threads      3
+reload-threads 3
 reload-time 30
-cleanup-on-quit yes
-refresh-on-startup yes
+refresh-on-startup no
 prepopulate-query-feeds yes
-feed-sort-order unreadarticlecount-desc
-save-path           ~/.newsbeuter/saved_articles
-show-read-articles  no
-show-read-feeds     no
+save-path ~/.newsbeuter/saved_articles
+# show-read-articles no
+show-read-feeds no
 notify-always yes
-# mark-as-read-on-hover yes
+notify-screen yes
 always-display-description true
 text-width 120
-color listfocus   red default blink
-color info          red default bold
-# highlight all "Linux" yellow black blink
+
+feedlist-format "%-4i %S %-65t %u %?d?- %-65d&? %> %T"
+articlelist-format "%-4i %D %f %t"
+feedlist-title-format "%N %V %> %u feeds with new articles"
+articlelist-title-format "%T (%u unread, %t total) - %U"
+notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+html-renderer "elinks -dump -force-html"
+
 # download-full-page yes
 # bookmark-cmd /home/cirrus/scripts/newsbeuter_bookmarks_surfraw.sh
-# notify-program      "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
+# notify-program "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
+
 ##
 ##-------- macros {{{
 ##------------------------------------------------------
@@ -50,36 +56,33 @@ color info          red default bold
 ##
 
 # formatting and colorization ------------------------------------------
+#
+color listfocus   red default blink
+color info          red default bold
 
-# articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
 
-# highlight feedlist "^ *[0-9]+ *N " color156 default
-# highlight articlelist "^ *[0-9]+ *N " color156 default
+highlight feedlist "^ *[0-9]+ *N " color156 default
+highlight articlelist "^ *[0-9]+ *N " color156 default
 
-# highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
-# highlight article "^Podcast Download URL:.*" color71 default
-# highlight article "^Links:" white color240 underline
-# highlight article "\\[[0-9][0-9]*\\]" color72 default bold
-# highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
-# highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
-# highlight article ":.*\\(link\\)$" color74 default
-# highlight article ":.*\\(image\\)$" color74 default
-# highlight article ":.*\\(embedded flash\\)$" color74 default
+highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
+highlight article "^Podcast Download URL:.*" color71 default
+highlight article "^Links:" white color240 underline
+highlight article "\\[[0-9][0-9]*\\]" color72 default bold
+highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
+highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
+highlight article ":.*\\(link\\)$" color74 default
+highlight article ":.*\\(image\\)$" color74 default
+highlight article ":.*\\(embedded flash\\)$" color74 default
+highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
+# highlight all "Linux" yellow black blink
 
-# color listnormal color246 color234
-# color listnormal_unread color244 color234 bold
-# color listfocus color166 color235
-# color info color38 color235
-# color background color244 color234
-# color article color244 color234
-
-# feedlist-format "%-65t %?d?- %-65d&? %> %u"
-# articlelist-format "%-4i %f %t"
-# feedlist-title-format "%N %V %> %u feeds with new articles"
-# articlelist-title-format "%T"
-# html-renderer "w3m -dump -T text/HTML -cols 72"
-# highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
-# notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+color listnormal color246 color234
+color listnormal_unread color244 color234
+color listfocus color166 color235
+color info color38 color235
+color background color244 color234
+color article color244 color234
 
 # Key bindings ----------------------------------
 bind-key j next
