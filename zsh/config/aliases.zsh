@@ -47,7 +47,11 @@ alias work='mx lightspeed lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias http-serve='python -m SimpleHTTPServer'
-alias stow=""
+alias :e=e
+alias :qa=exit
+alias :wq=exit
+[[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
+[[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
 
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
 # alias -s js=$EDITOR

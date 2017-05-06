@@ -1,6 +1,8 @@
 # See /usr/local/etc/lbdb.rc for base configuration.
 
-METHODS="m_inmail m_muttalias m_osx_addressbook"
+# The OSX addressbook has issues with encoding, I think because of emojis & Arabic names?
+# METHODS="m_inmail m_muttalias m_osx_addressbook"
+METHODS="m_inmail m_muttalias"
 MUTT_DIRECTORY="$HOME/.mutt"
 MUTTALIAS_FILES="config/aliases.mutt"
 
