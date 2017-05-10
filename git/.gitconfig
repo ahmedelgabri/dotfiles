@@ -1,6 +1,13 @@
 ; vim: ft=gitconfig
+
 [user]
   name = Ahmed El Gabri
+
+[include]
+  path = ~/.gitconfig.extra
+
+[includeIf "gitdir:Sites/dev/lightspeed/"]
+  path = ~/.gitconfig.work
 
 [color]
   ui = true
@@ -163,9 +170,6 @@
   pushInsteadOf = "http://github.com/ahmedelgabri/"
   pushInsteadOf = "git://github.com/ahmedelgabri/"
   pushInsteadOf = "me:"
-
-[include]
-  path = ~/.gitconfig.extra
 
 [credential]
   helper = osxkeychain
