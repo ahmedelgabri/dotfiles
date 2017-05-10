@@ -133,7 +133,7 @@ symlink_files() {
 install_apps(){
   if [[ -d "$DOTFILES_DIR" ]]; then
     log_success "Installing apps & tools, this will take a while..."
-    cd "$DOTFILES_DIR" && make all
+    cd "$DOTFILES_DIR" && make
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
@@ -190,7 +190,7 @@ change_shell
 
 if [ $? -eq 0 ]; then
   log_success "Done."
-  log_success "Change your zsh to the brew installed one. and run \"make all\""
+  log_success "Change your zsh to the brew installed one. and run \"make\""
   log_success "Don't forget to generate SSH keys, symlink files from box & source .macos"
 else
   log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"

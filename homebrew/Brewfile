@@ -1,4 +1,5 @@
 # vim:ft=ruby:
+
 cask_args appdir: '~/Applications'
 
 tap 'homebrew/bundle'
@@ -35,6 +36,7 @@ brew 'figlet'
 brew 'findutils'
 brew 'fortune'
 brew 'fpp'
+# brew 'fzf'
 brew 'isync', args: ['with-berkeley-db']
 brew 'gawk'
 brew 'git-standup'
@@ -110,6 +112,7 @@ cask 'font-iosevka'
 cask 'font-source-code-pro'
 cask 'google-chrome'
 cask 'google-chrome-canary'
+# cask 'gpgtools'
 cask 'hammerspoon'
 cask 'hyper'
 cask 'imagealpha'
@@ -146,7 +149,6 @@ cask 'vlc'
 cask 'webkit-nightly'
 cask 'webpquicklook'
 cask 'whatsapp'
-# cask 'gpgtools'
 
 # mas '1Password', id: 443987910
 # mas 'Day One', id: 1055511498

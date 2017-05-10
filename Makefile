@@ -41,4 +41,4 @@ iterm:
 macos:
 		@source $(HOME)/.dotfiles/macos/.macos
 
-.PHONY: symlink homebrew node python iterm macos
+.PHONY: all symlink homebrew node python iterm macos
