@@ -1,23 +1,22 @@
 # vim:ft=config:
 
-article-sort-order  desc
-feed-sort-order date-desc
-browser "open -g -a 'Google Chrome Canary' %u"
-max-items 100
-auto-reload no
-reload-threads 3
-reload-time 30
-refresh-on-startup no
-prepopulate-query-feeds yes
-save-path ~/.newsbeuter/saved_articles
 # show-read-articles no
-show-read-feeds no
+always-display-description true
+article-sort-order  desc
+browser "open -g -a 'Google Chrome Canary' %u"
+feed-sort-order date-desc
+max-items 100
 notify-always yes
 notify-screen yes
-always-display-description true
+prepopulate-query-feeds yes
+refresh-on-startup no
+reload-threads 3
+reload-time 20
+save-path ~/.newsbeuter/saved_articles
+show-read-feeds no
 text-width 120
 
-feedlist-format "%-4i %S %-65t %u %?d?- %-65d&? %> %T"
+feedlist-format "%S %-65t %u %?d?- %-65d&? %> %T"
 articlelist-format "%-4i %D %f %t"
 feedlist-title-format "%N %V %> %u feeds with new articles"
 articlelist-title-format "%T (%u unread, %t total) - %U"
@@ -79,7 +78,7 @@ highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
 
 color listnormal color246 color234
 color listnormal_unread color244 color234
-color listfocus color166 color235
+# color listfocus color166 color235
 color info color38 color235
 color background color244 color234
 color article color244 color234
@@ -94,3 +93,6 @@ bind-key k up article
 bind-key J next article
 bind-key K prev article
 bind-key O open-in-browser-and-mark-read
+
+# ignore-article "*" "title =~ \"Sponsor\""
+# ignore-article "*" "title =~ \"Sponsored\""
