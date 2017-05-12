@@ -5,28 +5,27 @@
 # Turns a github.com URL
 #  into a git.io URL
 #
-# Copies the git.io URL to your clipboard if xclip is available.
+# Copies the git.io URL to your clipboard if pbcopy is available.
 # Thanks to @przemoc https://gist.github.com/przemoc/1275673
 
 URL="$1"
 CODE="$2"
 
 if ! expr "${URL}" : "\(\(https\?://\)\?\(gist\.\)\?github.com/\)" >/dev/null; then
-	echo "* github.com URLs only" >&2
-	exit 1
+  echo "* github.com URLs only" >&2
+  exit 1
 fi
 
 if ! expr "${URL}" : "http" >/dev/null; then
-	URL="https://${URL}"
+  URL="https://${URL}"
 fi
 
-OUT="$(\
-	curl -si http://git.io -F "url=${URL}" ${CODE:+-F "code=${CODE}"} | \
-	sed '/^Status: /{s///;/^201/d;q};/^Location: /!d;s///'
-	)"
+OUT="$(curl -si https://git.io -F "url=${URL}" ${CODE:+-F "code=${CODE}"} | sed '/^Status: /{s///;/^201/d;q};/^Location: /!d;s///')"
+
 if expr "${OUT}" : "[0-9]\+" >/dev/null; then
-	echo "${OUT}" >&2
-	exit 1
+  echo "${OUT}" >&2
+  exit 1
 fi
+
 echo "${OUT}"
-which xclip >/dev/null && echo "${OUT}" | xclip -selection clipboard
+which pbcopy >/dev/null && echo "${OUT}" | pbcopy "${OUT}"
