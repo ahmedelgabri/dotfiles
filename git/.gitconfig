@@ -60,16 +60,17 @@
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   d = diff --patch-with-stat
   dc = d --staged
-  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  l = log --graph --all --simplify-by-decoration --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   lnm = l --no-merges
   last = l -1
+  ten = l -n 10
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = l -u
   gr = grep -Ii
-  recentbranches = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'
-  untrack = rm --cached <file>
+  patch = !git --no-pager diff --no-color
+  recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
+  recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
   track = push origin -u HEAD
-  latest = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
   blm = blame -wMC
   this = !git init && git add . && git commit -m \"initial commit\"
   who = shortlog -sne
@@ -84,11 +85,13 @@
   amend = commit --amend -C HEAD
 
 [branch]
+  autosetupmerge = always
   autosetuprebase = always
 
 [diff]
   # Detect copies as well as renames
   renames = copies
+  algorithm = histogram
   tool = vimdiff
   compactionHeuristic = true
 
@@ -111,6 +114,9 @@
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
   ; conflictstyle = diff3
 
+[log]
+  decorate = short
+
 [mergetool]
   keepBackup = false
   prompt = false
@@ -126,8 +132,7 @@
   followTags = true
 
 [status]
-  # https://git-scm.com/docs/git-config#git-config-statusshowUntrackedFiles
-  showUntrackedFiles = all
+  submodulesummary = true
 
 [apply]
   whitespace = nowarn
