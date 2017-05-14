@@ -4,6 +4,8 @@ install:
 		@./script/install
 
 # This is used inside `scripts/install` symlink_files function
+# NOTE: irc/.weechat is not handled with stow, it's handled directly inise bin/mx-init
+# using `--dir` flag
 symlink:
 		@stow --ignore ".DS_Store" --target="$(HOME)" --dir="$(HOME)/.dotfiles" \
 			misc \
@@ -12,7 +14,6 @@ symlink:
 			git \
 			grc \
 			hammerspoon \
-			irc \
 			iterm2 \
 			mail \
 			neovim \
