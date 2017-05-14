@@ -2,7 +2,7 @@
 
 # show-read-articles no
 always-display-description true
-article-sort-order  desc
+article-sort-order date-asc
 browser "open -g -a 'Google Chrome Canary' %u"
 feed-sort-order date-desc
 max-items 100
@@ -10,8 +10,9 @@ notify-always yes
 notify-screen yes
 prepopulate-query-feeds yes
 refresh-on-startup no
+auto-reload yes
 reload-threads 3
-reload-time 20
+reload-time 15
 save-path ~/.newsbeuter/saved_articles
 show-read-feeds no
 text-width 120
