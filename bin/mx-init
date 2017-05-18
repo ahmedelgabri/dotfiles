@@ -5,7 +5,7 @@ SESSION='_shared'
 
 open_or_log () {
   if type "$1" > /dev/null; then
-    tmux send-keys "$1" C-m
+    tmux send-keys "$1 $2" C-m
   else
     echo "You need to install $1..."
   fi
@@ -21,7 +21,7 @@ create_session () {
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window
   tmux set-option allow-rename off
-  open_or_log "weechat --dir ~/.dotfiles/irc/.weechat"
+  open_or_log weechat "--dir ~/.dotfiles/irc/.weechat"
 
   local logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then
