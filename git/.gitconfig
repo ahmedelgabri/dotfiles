@@ -60,7 +60,8 @@
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   d = diff --patch-with-stat
   dc = d --staged
-  l = log --graph --all --simplify-by-decoration --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  la = l --all --simplify-by-decoration
   lnm = l --no-merges
   last = l -1
   ten = l -n 10
