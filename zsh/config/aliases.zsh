@@ -75,6 +75,5 @@ alias apache="sudo apachectl "
 (( $+commands[nvim] )) && alias vim="nvim "
 (( $+commands[emacs] )) && alias vim="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
-(( $+commands[npm] )) && alias n="npm run -s "
 (( $+commands[colourify] )) && alias curl='colourify curl '
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
