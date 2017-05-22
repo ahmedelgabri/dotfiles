@@ -70,6 +70,7 @@ Session.vim
 *.vim-rplugin~
 .netrwhist
 undodir/
+.gutctags
 
 # Stuff     #
 #############

@@ -89,6 +89,9 @@
   autosetupmerge = always
   autosetuprebase = always
 
+[branch "master"]
+  rebase = true
+
 [diff]
   # Detect copies as well as renames
   renames = copies
