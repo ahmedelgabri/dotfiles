@@ -44,6 +44,5 @@ aug END
 " Those are heavy plugins that I lazy load them so startup time can be fast still
 augroup lazyLoadPlugins
   autocmd!
-  autocmd CursorHold, CursorHoldI * call plug#load('tern') | autocmd! lazyLoadPlugins
-  autocmd CursorHold, CursorHoldI * call plug#load('editorconfig') | autocmd! lazyLoadPlugins
+  autocmd CursorHold, CursorHoldI * call plug#load('tern', 'editorconfig') | autocmd! lazyLoadPlugins
 augroup END
