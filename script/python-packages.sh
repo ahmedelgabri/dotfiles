@@ -12,4 +12,4 @@ PACKAGES=(
   vim-vint
 )
 
-mkdir ~/.venv && pip install ${PACKAGES[@]}
+mkdir ~/.venv && pip install ${PACKAGES[@]} && pip3 install neovim
