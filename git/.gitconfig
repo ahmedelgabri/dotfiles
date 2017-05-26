@@ -60,6 +60,8 @@
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   d = diff --patch-with-stat
   dc = d --staged
+  ; https://twitter.com/csswizardry/status/867676530780065792
+  dm = d --word-diff-regex=.
   l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   la = l --all --simplify-by-decoration
   lnm = l --no-merges
