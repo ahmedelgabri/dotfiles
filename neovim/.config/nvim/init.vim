@@ -29,12 +29,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 " Plug 'prabirshrestha/asyncomplete-buffer.vim'
 " Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-" Plug 'maralla/completor.vim', { 'do': 'make js' }
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern', 'for': ['javascript'] }
-  Plug 'steelsojka/deoplete-flow', { 'for': 'javascript' }
-endif
+Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
@@ -50,7 +45,6 @@ Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript'], 'do': 'npm i', 'on': [] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
@@ -66,12 +60,12 @@ Plug 'kepbod/quick-scope'
 Plug 'google/vim-searchindex'
 
 if executable('tmux')
-  Plug 'wellle/tmux-complete.vim'
   Plug 'christoomey/vim-tmux-navigator'
 endif
 
 " Syntax
 " Plug 'the-lambda-church/merlin', { 'for': ['ocaml', 'reason'] }
+Plug 'reasonml/vim-reason', { 'for': ['reason'] }
 Plug 'moll/vim-node', { 'for': ['javascript'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
@@ -119,15 +113,9 @@ endif
 
 " Plugins settings
 "================================================================================
-" See after/plugin/deoplete.vim
-let g:deoplete#enable_at_startup = 1
-
-let g:echodoc_enable_at_startup=1
-
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:completor_filetype_map = {'javascript.jsx': 'javascript'}
-let g:completor_completion_delay = 10
 
 " Tab completion.
 " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
