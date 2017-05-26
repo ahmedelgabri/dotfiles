@@ -43,10 +43,15 @@ log_success() {
 install_homebrew() {
   # Check for Homebrew,
   # Install if we don't have it
+  # Homebrew will also handle Command line tools installation
+  # https://github.com/Homebrew/brew/blob/8ea778f7c7ea790694485030d105a92a9416ef33/Library/Homebrew/extend/os/mac/development_tools.rb#L25-L43
+
   if ! command -v brew >/dev/null; then
     log_success "Installing Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install stow
+
+    # xcodebuild -license accept # To accept Xcode EULA
   fi
 }
 
@@ -177,9 +182,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 cd $HOME
-# softwareupdate --verbose --install --all
-xcode-select --install
-# xcodebuild -license accept # To accept Xcode EULA
+softwareupdate --verbose --install --all
 
 install_homebrew
 install_dotfiles
