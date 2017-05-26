@@ -1,4 +1,4 @@
-all: homebrew node python iterm
+all: homebrew node python iterm neovim
 
 install:
 		@./script/install
@@ -23,6 +23,7 @@ symlink:
 			tmux \
 			vim \
 			zsh \
+			tig \
 			newsbeuter
 
 homebrew:
@@ -39,7 +40,10 @@ python:
 iterm:
 		@sh ./iterm2/themes.sh
 
+neovim:
+		@pip3 install neovim && gem install neovim
+
 macos:
 		@source $(HOME)/.dotfiles/macos/.macos
 
-.PHONY: all symlink homebrew node python iterm macos
+.PHONY: all symlink homebrew node python iterm macos neovim
