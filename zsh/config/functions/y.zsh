@@ -9,7 +9,7 @@ function y {
     if [[ $# > 0 ]]; then
       yarn "$@"
     else
-      yarn
+      yarn --link-duplicates
     fi
   else
     echo "Yarn is not in your path, make sure you install it or fix your path"
