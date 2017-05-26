@@ -46,7 +46,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
-Plug 'mhinz/vim-grepper'
+Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
@@ -62,8 +62,7 @@ Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
-Plug 'metakirby5/codi.vim'
-Plug 'Shougo/echodoc.vim'
+" Plug 'vimwiki/vimwiki'
 Plug 'google/vim-searchindex'
 
 if executable('tmux')
@@ -73,8 +72,8 @@ endif
 
 " Syntax
 " Plug 'the-lambda-church/merlin', { 'for': ['ocaml', 'reason'] }
-Plug 'ap/vim-css-color', { 'for': ['css', 'sass', 'scss', 'less', 'stylus'] }
 Plug 'moll/vim-node', { 'for': ['javascript'] }
+Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
 Plug 'stephenway/postcss.vim', { 'for': ['css'] }
 
