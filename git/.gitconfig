@@ -115,10 +115,10 @@
   # https://git-scm.com/docs/git-config#git-config-mergeff
   # ff = only
   # Include summaries of merged commits in newly created merge commit messages
-  log = true
+  log = 1000
   tool = vimdiff
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
-  ; conflictstyle = diff3
+  conflictstyle = diff3
 
 [log]
   decorate = short
@@ -189,3 +189,5 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
+[rebase]
+  autosquash = true
