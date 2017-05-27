@@ -173,7 +173,6 @@ http://www.webperformancetoday.com/feed/ "Blogs"
 http://www.whatmakesthemclick.net/feed/ "Blogs"
 http://yeoman.io/blog/atom.xml "Blogs"
 http://zerosixthree.se/feed/ "Blogs"
-https://blog.twitter.com/api/blog.rss?name=engineering "Blogs" engineering
 https://engineering.gosquared.com/feed "Blogs"
 https://gdstechnology.blog.gov.uk/feed/atom/ "Blogs"
 https://jonsuh.com/blog/feed.xml "Blogs"
@@ -270,6 +269,7 @@ https://engineering.heroku.com/feed.xml "Engineering"
 https://engineering.instagram.com/feed "Engineering"
 https://engineering.linkedin.com/blog.rss "Engineering"
 https://medium.com/feed/@Pinterest_Engineering "Engineering"
+https://blog.twitter.com/api/blog.rss?name=engineering "~twitter Engineering" "Engineering"
 
 # Fancy ========================================
 http://feeds.feedburner.com/gregorywood "Fancy"
@@ -416,6 +416,7 @@ http://feeds.feedburner.com/FunctioningForm "UX"
 http://feeds.feedburner.com/Everydayux "UX"
 http://feeds.feedburner.com/UxMyths "UX"
 http://planet.firefox.com/ux/atom.xml "UX"
+https://www.justinobeirne.com/rss?format=rss "UX"
 
 # xmas ======================================
 http://feeds.feedburner.com/24ways?format=xml "xmas"
