@@ -111,12 +111,20 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) =
   runtime! macros/matchit.vim
 endif
 
+" Global paths for some executables that are needed for a couple of plugins
+" Neoformat, ale, etc...
+"================================================================================
+
+let g:current_flow_path = nrun#Which('flow')
+let g:current_eslint_path = nrun#Which('eslint')
+let g:current_prettier_path = nrun#Which('prettier')
+let g:current_stylefmt_path = nrun#Which('stylefmt')
+let g:current_stylelint_path = nrun#Which('stylelint')
+
 " Plugins settings
 "================================================================================
+" this needs to be here ¯\_(ツ)_/¯
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-let g:completor_filetype_map = {'javascript.jsx': 'javascript'}
-let g:flow#flowpath = nrun#Which('flow')
 
 " Tab completion.
 " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -154,6 +162,8 @@ let g:flow#flowpath = nrun#Which('flow')
 "     \ }))
 
 " Profiling. {{{
+"================================================================================
+
 " Start profiling. Optional arg: logfile path.
 if len(get(g:, 'profile', ''))
   call functions#ProfileStart(g:profile)
@@ -164,14 +174,14 @@ endif
 " }}}
 
 " Overrrides
-" =================
+"================================================================================
 let s:vimrc_local = $HOME . '/.vimrc.local'
 if filereadable(s:vimrc_local)
   execute 'source ' . s:vimrc_local
 endif
 
 " Project specific override
-" =========================
+"================================================================================
 let s:vimrc_project = $PWD . '/.local.vim'
 if filereadable(s:vimrc_project)
   execute 'source ' . s:vimrc_project
