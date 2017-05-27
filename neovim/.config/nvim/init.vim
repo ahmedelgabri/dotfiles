@@ -64,9 +64,9 @@ if executable('tmux')
 endif
 
 " Syntax
-" Plug 'the-lambda-church/merlin', { 'for': ['ocaml', 'reason'] }
 Plug 'reasonml/vim-reason', { 'for': ['reason'] }
-Plug 'moll/vim-node', { 'for': ['javascript'] }
+Plug 'moll/vim-node', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
 Plug 'stephenway/postcss.vim', { 'for': ['css'] }
@@ -116,6 +116,7 @@ endif
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:completor_filetype_map = {'javascript.jsx': 'javascript'}
+let g:flow#flowpath = nrun#Which('flow')
 
 " Tab completion.
 " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
