@@ -41,7 +41,7 @@ iterm:
 		@sh ./iterm2/themes.sh
 
 neovim:
-		@pip3 install neovim && gem install neovim
+		@gem install neovim
 
 macos:
 		@source $(HOME)/.dotfiles/macos/.macos

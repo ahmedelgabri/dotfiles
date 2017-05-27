@@ -10,6 +10,7 @@ PACKAGES=(
   markdown
   neovim
   vim-vint
+  jedi
 )
 
-mkdir ~/.venv && pip install ${PACKAGES[@]} && pip3 install neovim
+mkdir ~/.venv && pip install ${PACKAGES[@]} && pip3 install ${PACKAGES[@]}
