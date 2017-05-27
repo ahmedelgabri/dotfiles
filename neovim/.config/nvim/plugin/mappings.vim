@@ -53,11 +53,6 @@ nnoremap <leader>q :quit<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>x :xit<CR>
 
-nnoremap <leader>tc :TernDocBrowse<CR>
-nnoremap <leader>tr :TernRename<CR>
-nnoremap <leader>td :TernDefSplit<CR>
-nnoremap <leader>tf :TernRefs<CR>
-
 " https://github.com/mhinz/vim-galore#quickly-edit-your-macros
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
