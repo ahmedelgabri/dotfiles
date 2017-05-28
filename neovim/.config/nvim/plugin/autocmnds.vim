@@ -22,7 +22,7 @@ augroup MyAutoCmds
     autocmd BufWinEnter * if line("'\"") > 1 && line("'\"") <= line('$') | execute "normal! g`\"" | endif
   endif
 
-  autocmd BufWritePre * call functions#Preserve("%s/\\s\\+$//e")
+  autocmd BufWritePre * if functions#should_strip_whitespace() | call functions#Preserve("%s/\\s\\+$//e") | endif
   " autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
 
   autocmd FileType crontab setlocal bkc=yes

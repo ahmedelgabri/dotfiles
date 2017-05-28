@@ -1,28 +1,9 @@
-function! FileSize()
-  let l:bytes = getfsize(expand('%:p'))
-  if (l:bytes >= 1024)
-    let l:kbytes = l:bytes / 1024
-  endif
-  if (exists('kbytes') && l:kbytes >= 1000)
-    let l:mbytes = l:kbytes / 1000
-  endif
-
-  if l:bytes <= 0
-    return '[empty file] '
-  endif
-
-  if (exists('mbytes'))
-    return l:mbytes . 'MB '
-  elseif (exists('kbytes'))
-    return l:kbytes . 'KB '
-  else
-    return l:bytes . 'B '
-  endif
-endfunction
+scriptencoding utf-8
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+
 let g:airline_mode_map = {
       \'__' : '-',
       \ 'n'  : 'N',
@@ -66,7 +47,7 @@ let g:airline_skip_empty_sections = 1
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline#extensions#default#layout = [
       \ [ 'a', 'b', 'c' ],
-      \ [ 'error', 'warning', 'x', 'y', 'z' ]
+      \ [ 'x', 'y', 'error', 'warning' , 'z']
       \ ]
 
 let g:airline#extensions#tabline#enabled = 1
@@ -76,7 +57,6 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#wordcount#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#neomake#enabled = 1
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#obsession#enabled = 1
@@ -84,17 +64,26 @@ let g:airline_exclude_filetypes = [
       \ 'GrepperSide'
       \ ]
 
-function! AirlineInit()
-  call airline#parts#define_raw('modified', '%{&modified ? " •" : ""}')
-  call airline#parts#define_accent('modified', 'red')
+call airline#parts#define_function('modified', 'statusline#modified')
+call airline#parts#define_condition('modified', 'exists("*statusline#modified")')
+call airline#parts#define_accent('modified', 'red')
 
-  " let g:airline_section_b = airline#section#create(['hunks', '%{gita#statusline#preset("status")}', ' ⎇ %{gita#statusline#format("%lb")}', '%{gita#statusline#preset("traffic_fancy")}'])
-  let g:airline_section_b = airline#section#create(['hunks', '%{gina#component#status#preset("fancy")}', ' ⎇ %{gina#component#repo#branch()}', ' %{gina#component#traffic#preset("fancy")}'])
-  let g:airline_section_c = airline#section#create(['%f', 'modified'])
-  let g:airline_section_x = airline#section#create(['%{gutentags#statusline("[Generating\ tags...]")} %{FileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
-  " let g:airline_section_z = airline#section#create(['%3p%%', 'linenr', 'maxlinenr', '%3v'])
-endfunction
+call airline#parts#define_function('ALE', 'ALEGetStatusLine')
+call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
+
+call airline#parts#define_raw('TAGS', '%{gutentags#statusline("⧖ ")}')
+call airline#parts#define_accent('TAGS', 'yellow')
 
 call airline#parts#define_accent('mode', 'none')
+
+function! AirlineInit()
+  let g:airline_section_error = airline#section#create_right(['ALE'])
+  let g:airline_section_warning = airline#section#create_right(['whitespace'])
+  let g:airline_section_b = airline#section#create(['hunks', '%{gina#component#status#preset("fancy")}', ' ⎇ %{gina#component#repo#branch()}', ' %{gina#component#traffic#preset("fancy")}'])
+  let g:airline_section_c = airline#section#create(['%f', 'modified'])
+  let g:airline_section_x = airline#section#create(['TAGS', ' %{statusline#fileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
+  let g:airline_section_z = airline#section#create(['obsession', '%{statusline#rhs()}'])
+endfunction
+
 
 autocmd User AirlineAfterInit call AirlineInit()

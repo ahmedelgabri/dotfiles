@@ -135,14 +135,23 @@ function! functions#mkview() abort
   endif
 endfunction
 
+function! functions#hasFileType(list)
+  return index(a:list, &filetype) == -1
+endfunction
+
 let g:GabriQuitOnQBlacklist = ['preview', 'qf', 'fzf', 'netrw', 'help']
 function! functions#should_quit_on_q()
-  return index(g:GabriQuitOnQBlacklist, &filetype) == -1
+  return functions#hasFileType(g:GabriQuitOnQBlacklist)
 endfunction
 
 let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt']
 function! functions#should_turn_off_colorcolumn()
-  return index(g:GabriNoColorcolumn, &filetype) == -1
+  return functions#hasFileType(g:GabriNoColorcolumn)
+endfunction
+
+let g:GabriKeepWhitespace = ['markdown']
+function! functions#should_strip_whitespace()
+  return functions#hasFileType(g:GabriKeepWhitespace)
 endfunction
 
 
@@ -158,3 +167,15 @@ fun! functions#ProfileStart(...)
   profile! file **
   profile  func *
 endfun
+
+
+function! functions#NeatFoldText()
+  let l:line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+  let l:lines_count = v:foldend - v:foldstart + 1
+  let l:lines_count_text = '| ' . printf('%10s', l:lines_count . ' lines') . ' |'
+  let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
+  let l:foldtextstart = strpart('+' . repeat(l:foldchar, v:foldlevel*2) . l:line, 0, (winwidth(0)*2)/3)
+  let l:foldtextend = l:lines_count_text . repeat(l:foldchar, 8)
+  let l:foldtextlength = strlen(substitute(l:foldtextstart . l:foldtextend, '.', 'x', 'g')) + &foldcolumn
+  return l:foldtextstart . repeat(l:foldchar, winwidth(0)-l:foldtextlength) . l:foldtextend
+endfunction
