@@ -57,9 +57,6 @@ html-renderer "elinks -dump -force-html"
 
 # formatting and colorization ------------------------------------------
 #
-color listfocus   red default blink
-color info          red default bold
-
 articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
 
 highlight feedlist "^ *[0-9]+ *N " color156 default
@@ -77,10 +74,12 @@ highlight article ":.*\\(embedded flash\\)$" color74 default
 highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
 # highlight all "Linux" yellow black blink
 
+color info color38 color235
 color listnormal color246 color234
 color listnormal_unread color244 color234
+color listfocus_unread red default blink
+color listfocus   red default blink
 # color listfocus color166 color235
-color info color38 color235
 color background color244 color234
 color article color244 color234
 
