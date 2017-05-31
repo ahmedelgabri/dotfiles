@@ -118,7 +118,7 @@
   log = 1000
   tool = vimdiff
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
-  conflictstyle = diff3
+  ; conflictstyle = diff3
 
 [log]
   decorate = short
