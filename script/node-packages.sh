@@ -5,15 +5,13 @@ firebase-tools \
 jscpd \
 jsinspect \
 netlify-cli \
-ngrok \
 now \
-now-serve \
+npx \
 npm \
-npms-cli \
 parker \
+prettier \
 serve \
 spoof \
-standard \
 stylefmt \
 stylelint \
 surge \
