@@ -32,15 +32,16 @@ set sort_aux=reverse-last-date-received
 
 # Sidebar -------------------------------------------------------------------------------------------------------
 # set sidebar_visible
-set sidebar_width=30
-set sidebar_divider_char = " | "
-set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
-set mail_check_stats_interval = 10
-set sidebar_short_path
-set sidebar_delim_chars="/"
-set sidebar_folder_indent
-set sidebar_indent_string="  "
+set mail_check_stats_interval = 1
+set sidebar_width=30
+set sidebar_divider_char='│'
+# set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set sidebar_format = "%B %?N?(%N)?%*"
+set sidebar_short_path                  # Shorten mailbox names
+set sidebar_delim_chars="./"            # Delete everything up to the last specified character(s)
+set sidebar_folder_indent               # Indent folders whose names we've shortened
+set sidebar_indent_string=" "           # Indent with one space
 # # Mailboxes to show in sidebar
 set imap_check_subscribed=yes
 
@@ -61,6 +62,7 @@ set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 unset imap_passive # Allow Mutt to open new imap connection automatically.
 # set imap_keepalive = 300 # Keep IMAP connection alive by polling intermittently (time in seconds).
+set resolve = no # Don't auto-advance to the next message after every single op.
 
 # Header Options -------------------------------------
 ignore *                                # ignore all headers
