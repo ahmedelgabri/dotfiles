@@ -1,4 +1,5 @@
 # vim:ft=muttrc:
+bind index,pager g noop
 
 bind attach <return> view-mailcap
 bind compose p postpone-message
@@ -49,10 +50,10 @@ macro attach D "<save-entry><bol>~/.mutt/attachments/<eol><enter>" "Save to ~/.m
 
 # "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
 # info.
-# macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
-# macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
-# macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
-# macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
+macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
+macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
+macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
+macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
 
 # Default direction is "down".
 source ~/.mutt/config/next.mutt
@@ -71,7 +72,6 @@ macro index *u "<untag-pattern>~T<enter><tag-pattern>~U<enter>" "select unread"
 macro pager t "<exit><tag-thread>" "tag thread"
 
 macro pager \Cu "<enter-command>set pipe_decode = yes<enter>|urlview<enter><enter-command>set pipe_decode = no<enter>" "view URLs"
-# macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
 macro pager m "<save-message>?<toggle-mailboxes>" "move to..."
 macro index m ";<save-message>?<toggle-mailboxes>" "move to..."
@@ -89,15 +89,3 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 macro pager ,@aoh= "<enter-command>unalternative_order *; alternative_order text/html text/plain text/enriched; macro pager A ,@aot= 'toggle alternative order'<enter><exit><display-message>"
 macro pager ,@aot= "<enter-command>unalternative_order *; alternative_order text/plain text/enriched text/html; macro pager A ,@aoh= 'toggle alternative order'<enter><exit><display-message>"
 macro pager A ,@aoh= "toggle alternative order"
-
-# macro index,pager S "<enter-command>unset wait_key<enter><shell-escape>~/.mutt/mutt-notmuch-py/mutt-notmuch-py --history-path=~/.mutt/tmp/notmuch.history ~/.mail/Temporary/Search<enter><enter-command>mailboxes '+Temporary/Search'<enter><change-folder-readonly>+Temporary/Search<enter>" "search mail (using notmuch)"
-
-# Sync email
-macro index sA "<shell-escape>mbsync -a<enter>"           "sync all mail"
-
-
-# More powerful search is `limiting` using `l`
-# Limit queries work exactly like search queries, so you can do powerful stuff like ~f arthur ~C honza ~s api
-# (“limit to messages from ‘arthur’, to or cced to ‘honza’, containing ‘api’ in the subject”).
-
-# macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
