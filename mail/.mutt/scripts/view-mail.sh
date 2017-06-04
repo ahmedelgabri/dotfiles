@@ -10,11 +10,11 @@ cp "$TMPFILE" "$DIR/preview"
 TMPFILE="$DIR/preview"
 
 if [ -z "$TMUX" ]; then
-  view "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
+  $EDITOR "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
 elif [ "$COLUMNS" -gt 180 ]; then
   tmux split-window -p 50 -h \
-    view "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
+    $EDITOR "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
 else
   tmux split-window -p 50 -v \
-    view "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
+    $EDITOR "+set encoding=$ENCODING" '+set filetype=mail' '+set nofoldenable' '+set nomodifiable' "$TMPFILE"
 fi

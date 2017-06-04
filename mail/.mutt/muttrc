@@ -1,15 +1,16 @@
 # Paths
 set alias_file       = ~/.mutt/config/aliases.mutt # where to store aliases
-set display_filter   = '~/.mutt/scripts/add-address.sh'
+# set display_filter   = '~/.mutt/scripts/add-address.sh'
 set header_cache     = ~/.mutt/cache/headers # where to store headers
 set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
 set certificate_file = ~/.mutt/certificates  # where to store certs
 set mailcap_path     = ~/.mutt/config/mailcap       # entries for filetypes
 set tmpdir           = ~/.mutt/temp          # where to keep temp files
+# Requires terminal-notifier & I don't like noise...
+# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
 # Connection options
-set ssl_force_tls = yes
-unset ssl_starttls
+set ssl_force_tls
 
 # account config
 set realname = "Ahmed El Gabri"
@@ -17,14 +18,7 @@ set realname = "Ahmed El Gabri"
 # set sendmail_wait = 0
 unset record # don't save messages, gmail already does this.
 set folder = "~/.mail"
-set fast_reply
-set include
 set editor = "nvim +/^$ +nohlsearch"
-
-# Pre-fills the "From" address when replying to emails, based on the email account that received the original mail.
-# Useful in case of multiple accounts or multiple aliases
-set reverse_name
-set envelope_from
 
 # sorting -------------------------------------------------------------------------------------------------------------
 set sort=threads
@@ -36,55 +30,45 @@ set mail_check_stats
 set mail_check_stats_interval = 1
 set sidebar_width=30
 set sidebar_divider_char='│'
-# set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+# set sidebar_format = "%B%?n?*?"
 set sidebar_format = "%B %?N?(%N)?%*"
 set sidebar_short_path                  # Shorten mailbox names
 set sidebar_delim_chars="./"            # Delete everything up to the last specified character(s)
 set sidebar_folder_indent               # Indent folders whose names we've shortened
 set sidebar_indent_string=" "           # Indent with one space
-# # Mailboxes to show in sidebar
-set imap_check_subscribed=yes
+# Mailboxes to show in sidebar
+set imap_check_subscribed
 
 # Basic Options --------------------------------------
 set sleep_time = 0
 set send_charset="utf-8"
 set wait_key = no        # shut up, mutt
 set mbox_type = Maildir  # mailbox type
-set timeout = 3          # idle time before scanning
+set time_inc = 250
+set timeout = 60
+set ts_enabled
 set mail_check = 0       # minimum time between scans
-unset move               # gmail does that
 set delete               # don't ask, just do
-unset confirmappend      # don't ask, just do!
 set quit                 # don't ask, just do!!
-unset mark_old           # read/new is good enough for me
+set mark_old = no           # read/new is good enough for me
 set beep_new             # bell on new mails
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
-unset imap_passive # Allow Mutt to open new imap connection automatically.
-# set imap_keepalive = 300 # Keep IMAP connection alive by polling intermittently (time in seconds).
 
-# Header Options -------------------------------------
-ignore *                                # ignore all headers
-unignore from: to: cc: date: subject:   # show only these
-unhdr_order *                           # some distros order things by default
-hdr_order from: to: cc: date: subject:  # and in this order
-# unignore from: date subject to cc
-# unignore x-mailing-list: posted-to:
-# unignore x-mailer:
-
+# Default is: "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
+# set attach_format = '%u%D%I %t%4n %T%.40d%> [%.12m/%.12M, %.6e%?C?, %C?, %s] '
+# set folder_format = '%4C %t %f'
 
 # Index View Options ---------------------------------
 set date_format = "%d/%m/%y at %H:%M"
-# set index_format = "[%Z] (%D) %-20.50F %s"
-set index_format    = "%3C [%Z] %D %-20.20F || %s %?g?(%g)?"
+# Default: %4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s
+set index_format = "%4C %Z %M %[%b %d %R] %-30.30L (%?l?%4l&%4c?) %s"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
 set collapse_all
-set to_chars    = ' +>-<L' # This should be ' »›-‹L' to match Gmail, but $to_chars breaks on unicode.
-set uncollapse_jump                        # don't collapse on an unread message
-set sort_re                                # thread based on regex
-set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
-# set move = no  #Stop asking to "move read messages to mbox"!
+set to_chars    = '»›-‹L'                  # to match Gmail
+# set uncollapse_jump                        # don't collapse on an unread message
+set move = no  #Stop asking to "move read messages to mbox"!
 
 # Pager View Options ---------------------------------
 set pager_index_lines = 10 # number of index lines to show
@@ -92,20 +76,18 @@ set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus
 set tilde                  # show tildes like in vim
-unset markers              # no ugly plus signs
+set markers = no              # No wrapped line markers.
 set pager_format="%4C %Z %[!%b %e at %I:%M %p]  %.20n  %s%* -- (%P)"
 
-set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
-alternative_order text/plain text/enriched text/html
+auto_view text/html text/calendar
+alternative_order text/calendar text/plain text/enriched text/html text/*
 
 # Compose View Options -------------------------------
-set envelope_from                    # which from?
+# set envelope_from                    # which from?
 set sig_dashes                       # dashes before sig
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
-set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
-unset mime_forward                   # forward attachments as part of body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
 set forward_decode                   # decode when forwarding
 set attribution = "On %d, %n wrote:" # format of quoting header
@@ -114,12 +96,9 @@ set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
 
-# set query_command = "reattach-to-user-namespace lbdbq %s 2>/dev/null"
-set query_command = "reattach-to-user-namespace lbdbq %s"
+set query_command = "reattach-to-user-namespace lbdbq %s 2> /dev/null"
 set sort_alias    = alias
-set reverse_alias = yes
-set reverse_name  = yes
-source $alias_file
+set reverse_alias
 
 # gpg
 # source $MAILCONF/gpg.muttrc
@@ -129,50 +108,19 @@ source $alias_file
 # set crypt_autosign = no
 # set crypt_replyencrypt = no
 
-auto_view text/html text/calendar
-alternative_order text/calendar text/plain text/enriched text/html text/*
-
 # Status Bar {{{
-set status_chars   = " *%A"
+set status_chars = '—+#~'
+set status_on_top
 
 ## status_format - format of summary on the current folder in the index
-## meta strings:
-##  -----f-h---lmn-p-rst-v----  lower case letters (10)
-##  ------------M----------X--  upper case letters (02)
-## %d      the number of messages with the flag 'delete'  (v64)
-## %f      the full pathname of the current mailbox
-## %h      local hostname
-## %l      size (in bytes) of the current mailbox
-## %m      the number of messages in the mailbox
-## %M      the number of messages shown (i.e., which match the current limit)
-## %n      number of new messages in the mailbox
-## %p      number of postponed messages
-## %s      current sorting mode
-## %r      modified/read-only/won't-write/attach-message indicator-status_chars
-## %t      number of tagged messages
-## %v      Mutt version string
-## %>X     right justify the rest of the string and pad with "X"
-## %|X     pad to the end of the line with "X"
+# https://www.neomutt.org/guide/reference.html#status-format
 ##
 ## %?<sequence_char>?<optional_string>? optionally print string, if>0
-##
-## Examples:
-#	set status_format="%v: %f (%s) [%?M/?%m]  [flags:%?t tagged,?%n new%?p post?]"
-#	set status_format="%v: %f (%s) [%?M/?%m]  [flags:%?t tagged,?%n new]"
-#	set status_format="%v: %f (%s) [%M/%m]\n[flags:n=%n,D=%d,t=%t,!=%F]"
-#	set status_format="%v: %f (%s) [%M/%m]  [flags:n=%n,t=%t]"
-#	set status_format="%v:    (%s) [%M/%m]  [flags:n=%n,t=%t]"
-#	set status_format="%v:    (%s) [%M/%m]  [flags:n:%n,t:%t,p:%p]"
-#	set status_format="%v:    (%s) [%M/%m]  [flags:%?02n new?,t:%t]"
-#	set status_format="%v: %f (%s) [%M/%m]  [flags:%n new,%?t tagged?]"
-#	set status_format="%v: %f (%s) [%M/%m;%l bytes]  [N=%n,*=%t,post=%p]"
-#	set status_format="%v: %f (%s) [%M/%m] [N=%n,*=%t,post=%p,new=%b]"
-#	set status_format=" Msgs=%M(%m) [N=%n,O=%o,*=%t,p=%p] %> %r (%P) %h:%f [%l] (%s/%S) (%v) "
-# set status_format  = "Folder: %f : %r%n new (%m messages)%?d? (%d to delete)?%?t? (%t tagged)? %>-%?p?( %p postponed )? : "
-# set status_format  = "Folder: %f : %r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? %>-%?p?( %p postponed )? : "
-set status_on_top = yes
-set status_format = "───[ 📮 %f ]───[%r%m ✉️%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p 📤 )?───"
-# set status_format = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+## Default: -%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---
+set status_format = "%f%r—[%?M?%M/?%m messages, %?n?%n new, ?%?d?%d deleted, ?%?F?%F important, ?%?t?%t selected, ?%?p?%p drafts, ?%l]———(%s/%S)—%>—(%P)———"
+
+# Default is: Mutt with %?m?%m messages&no messages?%?n? [%n NEW]?
+set ts_status_format = 'mutt %m messages%?n?, %n new?'
 
 # Color ---------------------------------------------------------
 source ~/.mutt/config/aliases.mutt
