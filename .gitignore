@@ -15,3 +15,4 @@ mail/.mutt/certificates
 mail/.mutt/secure-ca.cert
 *.itermcolors
 scratch
+newsbeuter/.newsbeuter/history.*
