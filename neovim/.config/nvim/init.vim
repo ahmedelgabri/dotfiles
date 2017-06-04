@@ -45,7 +45,7 @@ Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-obsession'
+" Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
@@ -55,8 +55,8 @@ Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
-" Plug 'vimwiki/vimwiki'
 Plug 'google/vim-searchindex'
+Plug 'tpope/vim-projectionist'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -68,11 +68,12 @@ Plug 'moll/vim-node', { 'for': ['javascript', 'javascript.jsx'] }
 " Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['css']
 Plug 'stephenway/postcss.vim', { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
-Plug 'w0rp/ale', { 'do': 'npm i -g stylelint' }
+Plug 'w0rp/ale', { 'do': 'npm i -g stylelint eslint' }
 Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt' }
 
 " Themes, UI & eye cnady
@@ -156,6 +157,7 @@ inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ult
 
 " Profiling. {{{
 "================================================================================
+" let g:gutentags_define_advanced_commands = 1
 
 " Start profiling. Optional arg: logfile path.
 if len(get(g:, 'profile', ''))
