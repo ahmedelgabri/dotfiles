@@ -23,7 +23,6 @@ set tabstop=2                         " spaces per tab
 set softtabstop=2
 set shiftround                        " always indent by multiple of shiftwidth
 set shiftwidth=2                      " spaces per tab (when shifting)
-
 set nowrap                            " no wrap
 
 set textwidth=100
