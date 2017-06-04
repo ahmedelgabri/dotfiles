@@ -10,10 +10,8 @@ irc/.weechat/*
 !irc/.weechat/plugins.conf
 mail/.mutt/config/aliases
 mail/.mutt/cache
-mail/.mutt/temp
+mail/.mutt/tmp
 mail/.mutt/certificates
-mail/.mutt/accounts/work
-mail/.mutt/accounts/personal
 mail/.mutt/secure-ca.cert
 *.itermcolors
 scratch

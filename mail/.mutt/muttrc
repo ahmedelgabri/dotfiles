@@ -5,7 +5,7 @@ set header_cache     = ~/.mutt/cache/headers # where to store headers
 set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
 set certificate_file = ~/.mutt/certificates  # where to store certs
 set mailcap_path     = ~/.mutt/config/mailcap       # entries for filetypes
-set tmpdir           = ~/.mutt/temp          # where to keep temp files
+set tmpdir           = ~/.mutt/tmp          # where to keep tmp files
 # Requires terminal-notifier & I don't like noise...
 # set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
@@ -54,6 +54,7 @@ set mark_old = no           # read/new is good enough for me
 set beep_new             # bell on new mails
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
+set resolve = no
 
 # Default is: "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] "
 # set attach_format = '%u%D%I %t%4n %T%.40d%> [%.12m/%.12M, %.6e%?C?, %C?, %s] '
@@ -62,7 +63,8 @@ set thorough_search      # strip headers and eval mimes before searching
 # Index View Options ---------------------------------
 set date_format = "%d/%m/%y at %H:%M"
 # Default: %4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s
-set index_format = "%4C %Z %?M?⋯& ? %[%b %d %R] %-30.30L %s%> %<M?%M Msgs &%<l?%l Lines&%c Bytes>>"
+# set index_format = "%4C %Z %?M?⋯ & ? %[%b %d %R] %-30.30L (%?l?%4l&%4c?) %s"
+set index_format = "%4C %Z %?M?⋯& ? %[%b %d %R] %-30.30L [%<M?%M Msgs&%c>] %s%> %Y %y"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
 set collapse_all

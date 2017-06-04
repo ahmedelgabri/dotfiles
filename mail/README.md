@@ -14,7 +14,7 @@ After linking the dotfiles with `stow mail` in the
 ## Authentication
 
 Each account must authenticate with an IMAP server and an SMTP server. The
-passwords, four in my case, can be stored in the [OS X keychain][keychain]. The
+passwords, need be stored in the [OS X keychain][keychain]. The
 IMAP items should be named as in the `PassCmd` directive in the
 [`.mbsyncrc`](.mbsyncrc) file. The SMTP items should be named as
 `smtp://smtp.theserver.tld`. In both cases the account should be the login
@@ -23,21 +23,19 @@ account of the server.
 For Gmail accounts with two-factor authentication enabled, use an
 application-specific password.
 
-## Directories
+In order for all this to work, a few items have to be stored in the macOS keychain:
 
-Make the directories for each account:
+Create a "generic"(A.K.A. "application") keychain item (that is, without protocols, only hostnames):
 
-```shell
-$ mkdir -p ~/.mail/{account1,account2}
-$ mkdir -p ~/.mutt/tmp
-```
+For sending mail:
+- An item with (for Gmail):
+    - "Keychain Item Name": smtp.gmail.com (corresponds to the "host" field in ~/.msmtprc).
+    - "Account Name": username+mutt@example.com (corresponds to the "user" field in ~/.msmtprc).
+- An item with (for Gmail):
+    - "Keychain Item Name": imap.gmail.com (corresponds to the "Host" field in ~/.mbsyncrc).
+    - "Account Name": username+mutt@example.com (corresponds to the "PassCmd" field in ~/.mbsyncrc).
 
-Where `account1` and `account2` are the names defined in the `Path` directives
-in the `.mbsyncrc` file.
-
-## Indexing
-
-To search in mutt with `<Esc>X`, the `notmuch` index needs to be built.
+**Repeat this for each account you want to add.**
 
 ## Synchronising periodically
 
