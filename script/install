@@ -6,7 +6,6 @@
 # =======================================================================
 
 DOTFILES_DIR="$HOME/.dotfiles"
-BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
 
 tput sgr0
 RED=$(tput setaf 1)
@@ -73,59 +72,71 @@ install_dotfiles() {
 
 take_backup() {
   log_success "Taking backups for old files..."
-  # @TODO: Look into how to automate this list
-  local FILES=(
-    $HOME/.ignore
-    $HOME/.gitignore
-    $HOME/.gitconfig
-    $HOME/.gitattributes
-    $HOME/.zshrc
-    $HOME/.zshenv
-    $HOME/.zlogin
-    $HOME/.vimrc
-    $HOME/.gvimrc
-    $HOME/.gemrc
-    $HOME/.pyrc.py
-    $HOME/.pip.conf
-    $HOME/.hushlogin
-    $HOME/.vim
-    $HOME/Library/Preferences/com.googlecode.iterm2.plist
-    $HOME/.config/nvim
-    $HOME/.config/newsbeuter
-    $HOME/.mutt
-    $HOME/.hammerspoon
-    $HOME/.grc
-    $HOME/.terminfo
-    $HOME/.tmux.conf
-    $HOME/.urlview
-    $HOME/.notmuch-config
-    $HOME/.msmtprc
-    $HOME/.mbsyncrc
-    $HOME/.lbdbrc
-    $HOME/.editorconfig
-    $HOME/.hushlogin
-    $HOME/.curlrc
-    $HOME/.ctags
-  )
 
+  local BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
   mkdir -p $BAKCUP_DIR
 
+  # @TODO: Look into how to automate this list
+  local FILES=(
+    .config/newsbeuter
+    .config/nvim
+    .ctags
+    .curlrc
+    .editorconfig
+    .gemrc
+    .gitattributes
+    .gitconfig
+    .gitignore
+    .grc
+    .gvimrc
+    .hammerspoon
+    .hushlogin
+    .hushlogin
+    .ignore
+    .lbdbrc
+    .mbsyncrc
+    .msmtprc
+    .mutt
+    .notmuch-config
+    .pip.conf
+    .pyrc.py
+    .terminfo
+    .tern-config
+    .tigrc
+    .tmux.conf
+    .urlview
+    .vim
+    .vimrc
+    .zlogin
+    .zshenv
+    .zshrc
+    Library/Preferences/com.googlecode.iterm2.plist
+  )
+
   for file in ${FILES[@]}; do
-    if [[ -d "$file" ]]; then
-      echo "Backing up directory: $file"
-      mv "$file" "$BAKCUP_DIR"
-    elif [[ -f "$file" ]]; then
-      echo "Backing up file: $file"
-      mv "$file" "$BAKCUP_DIR"
+    local ITEM="$HOME/$file"
+
+    if [[ -d "$ITEM" ]]; then
+      echo "Backing up directory: $ITEM"
+      mv "$ITEM" "$BAKCUP_DIR"
+    elif [[ -f "$ITEM" ]]; then
+      echo "Backing up file: $ITEM"
+      mv "$ITEM" "$BAKCUP_DIR"
+    else
+      echo "$ITEM is not a file or a directory..."
     fi
   done
 }
 
 symlink_files() {
   log_success "Create some required folders..."
-  mkdir -p $HOME/.config \
-  $HOME/.dotfiles/neovim/.config/nvim/tmp/{backup,swap,undo,view} \
-  $HOME/.mail/{personal,work}
+
+  if [[ ! -d "$HOME/.config" ]]; then
+    mkdir $HOME/.config
+  fi
+
+  mkdir -p $HOME/.dotfiles/neovim/.config/nvim/tmp/{backup,swap,undo,view}
+  mkdir -p $HOME/.mail/{Personal,Work}
 
   if [[ -d "$DOTFILES_DIR" ]]; then
     log_success "Symlinking files/folders..."
