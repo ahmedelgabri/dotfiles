@@ -27,14 +27,14 @@ create_session () {
   if [ -d "$logpath" ]; then
     tmux new-window -n 'log' -c "$logpath"
     tmux send-keys "$EDITOR" C-m
-    tmux split-window -h -c "$logpath"
+    tmux split-window -h -p 20 -c "$logpath"
   fi
 
   local confpath=/Users/"$USER"/.dotfiles
   if [ -d "$confpath" ]; then
     tmux new-window -n 'dotfiles' -c "$confpath"
     tmux send-keys "$EDITOR" C-m
-    tmux split-window -h -c "$confpath"
+    tmux split-window -h -p 20 -c "$confpath"
   fi
 }
 
