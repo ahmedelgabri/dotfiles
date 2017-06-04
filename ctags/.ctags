@@ -9,33 +9,37 @@
 --exclude=tmp
 --exclude=*.pyc
 --exclude=*.pyo
+--exclude=*.min.*
 
---langdef=javascript
---langmap=javascript:.js
---regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/,object/
---regex-JavaScript=/([A-Za-z0-9._$()]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/,function/
---regex-JavaScript=/function[ \t]+([A-Za-z0-9._$]+)[ \t]*\(([^)])\)/\1/,function/
---regex-JavaScript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\[/\1/,array/
---regex-JavaScript=/([^= ]+)[ \t]*=[ \t]*[^"]'[^']*/\1/,string/
---regex-JavaScript=/([^= ]+)[ \t]*=[ \t]*[^']"[^"]*/\1/,string/
---regex-JavaScript=/([A-Za-z0-9._$\(\)]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/m,method/
---regex-JavaScript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9._\-\#\'\"]+)[ \t]*/\1/p,property/
---regex-JavaScript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9\'\"._\-\#\(]+)[ \t]*\{/\1/p,property/
---regex-JavaScript=/var ([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#\[\{]+)[,|;]/\1/v,variable/
---regex-JavaScript=/([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#]+)extend\(/\1/c,class/
+--langdef=js
+--langmap=js:.js
+--langmap=js:+.jsx
 
---langdef=markdown
---langmap=markdown:.md.markdown.mdown.mkd.mkdn
---regex-markdown=/^#[ \t]+(.*)/\1/h,heading1/
---regex-markdown=/^##[ \t]+(.*)/\1/h,heading2/
---regex-markdown=/^###[ \t]+(.*)/\1/h,heading3/
+--regex-js=/[ \t.]([A-Z][A-Z0-9._$]+)[ \t]*[=:][ \t]*([0-9"'\[\{]|null)/\1/n,constant/
+
+--regex-js=/\.([A-Za-z0-9._$]+)[ \t]*=[ \t]*\{/\1/o,object/
+--regex-js=/['"]*([A-Za-z0-9_$]+)['"]*[ \t]*:[ \t]*\{/\1/o,object/
+--regex-js=/([A-Za-z0-9._$]+)\[["']([A-Za-z0-9_$]+)["']\][ \t]*=[ \t]*\{/\1\.\2/o,object/
+
+--regex-js=/([A-Za-z0-9._$]+)[ \t]*=[ \t]*\(function\(\)/\1/c,class/
+--regex-js=/['"]*([A-Za-z0-9_$]+)['"]*:[ \t]*\(function\(\)/\1/c,class/
+--regex-js=/class[ \t]+([A-Za-z0-9._$]+)[ \t]*/\1/c,class/
+--regex-js=/([A-Za-z$][A-Za-z0-9_$()]+)[ \t]*=[ \t]*[Rr]eact.createClass[ \t]*\(/\1/c,class/
+--regex-js=/([A-Z][A-Za-z0-9_$]+)[ \t]*=[ \t]*[A-Za-z0-9_$]*[ \t]*[{(]/\1/c,class/
+--regex-js=/([A-Z][A-Za-z0-9_$]+)[ \t]*:[ \t]*[A-Za-z0-9_$]*[ \t]*[{(]/\1/c,class/
+
+--regex-js=/([A-Za-z$][A-Za-z0-9_$]+)[ \t]*=[ \t]*function[ \t]*\(/\1/f,function/
+
+--regex-js=/(function)*[ \t]*([A-Za-z$_][A-Za-z0-9_$]+)[ \t]*\([^)]*\)[ \t]*\{/\2/f,function/
+--regex-js=/['"]*([A-Za-z$][A-Za-z0-9_$]+)['"]*:[ \t]*function[ \t]*\(/\1/m,method/
+--regex-js=/([A-Za-z0-9_$]+)\[["']([A-Za-z0-9_$]+)["']\][ \t]*=[ \t]*function[ \t]*\(/\2/m,method/
 
 --langdef=php
 --langmap=php:.php
 --regex-php=/^[ \t]*const[ \t]*([a-zA-Z]+[^=]*=.*);/\1/c,Class/i
 --regex-php=/^[ \t]*((var|protected|private|public|static).*);/\1/p,Properties/i
 --regex-php=/^([_a-zA-Z \t]*)function (.*)/\2/f,Functions/i
---regex-php=/^([_a-zA-Z \t]*)protected.+function (.*)/\2/m,Protected Methods/i
+--regex-php=/^([_a-zA-Z \t]*)protected.+function (.*)/\2/m,Private Methods/i
 --regex-php=/^([_a-zA-Z \t]*)private.+function (.*)/\2/m,Private Methods/i
---regex-php=/^([_a-zA-Z \t]*)public.+function (.*)/\2/m,Public Methods/i
---regex-php=/^[ \t]*class[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/c,class, classes/
+--regex-php=/^([_a-zA-Z \t]*)public.+function (.*)/\2/,Public Methods/i
+--regex-php=/^[ \t]*class[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/c,Class, classes/
