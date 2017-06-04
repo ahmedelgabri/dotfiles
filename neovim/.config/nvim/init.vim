@@ -23,13 +23,12 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-flow.vim'
-" Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-" Plug 'prabirshrestha/asyncomplete-buffer.vim'
-" Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-Plug 'maralla/completor.vim', { 'do': 'make js' }
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
+Plug 'davidhalter/jedi', { 'for': ['python'] }
+Plug 'Shougo/neco-vim', { 'for': ['vim'] }
+Plug 'roxma/ncm-flow', { 'for': ['javascript', 'javascript.jsx'] }
+" Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
@@ -66,7 +65,7 @@ endif
 " Syntax
 Plug 'reasonml/vim-reason', { 'for': ['reason'] }
 Plug 'moll/vim-node', { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
+" Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
 Plug 'stephenway/postcss.vim', { 'for': ['css'] }
@@ -126,40 +125,34 @@ let g:current_stylelint_path = nrun#Which('stylelint')
 " this needs to be here ¯\_(ツ)_/¯
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
-" Tab completion.
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+let g:cm_complete_delay = 30
+let g:cm_sources_override = {
+      \ 'cm-tags': {'enable':0}
+      \ }
 
-" let g:UltiSnipsExpandTrigger="<c-e>"
-" call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-"     \ 'name': 'ultisnips',
-"     \ 'whitelist': ['*'],
-"     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-"     \ }))
+" Some crazy magic to make nvim-completion-manager & UltiSnips work nicely together using `<Tab>`
+" It doesn't work when added to plugin/after/ultisnips.vim so for now it's here
+" https://github.com/roxma/nvim-completion-manager/issues/12#issuecomment-284196219
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
+let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
+let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
+let g:UltiSnipsRemoveSelectModeMappings = 0
 
-" call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-"     \ 'name': 'buffer',
-"     \ 'whitelist': ['*'],
-"     \ 'blacklist': ['go'],
-"     \ 'completor': function('asyncomplete#sources#buffer#completor'),
-"     \ }))
+vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
+inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
+imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
+xmap <Tab> <Plug>(ultisnips_expand)
+smap <Tab> <Plug>(ultisnips_expand)
 
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
-"     \ 'name': 'flow',
-"     \ 'whitelist': ['javascript', 'javascript.jsx'],
-"     \ 'completor': function('asyncomplete#sources#flow#completor'),
-"     \ 'config': {
-"     \    'prefer_local': 1,
-"     \    'flowbin_path': nrun#Which('flow')
-"     \  },
-"     \ }))
+vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
+inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
+imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
+xmap <S-Tab> <Plug>(ultisnips_backward)
+smap <S-Tab> <Plug>(ultisnips_backward)
 
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
-"     \ 'name': 'necosyntax',
-"     \ 'whitelist': ['*'],
-"     \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
-"     \ }))
+" optional
+inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 
 " Profiling. {{{
 "================================================================================
