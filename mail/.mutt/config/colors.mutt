@@ -36,8 +36,8 @@ color signature cyan default
 
 color index color0 default ~A # All
 color index color2 default ~U # New
-color index color19 color0 "~D" # Deleted messages
-color index brightcolor11 color0 "~T" # "Tagged" (selected) messages.
+color index color8 color0 ~D # Deleted messages
+color index brightcolor11 color0 ~T # "Tagged" (selected) messages.
 color index_number color235 color0
 color index_collapsed blue color0
 color error brightcolor1 color0
