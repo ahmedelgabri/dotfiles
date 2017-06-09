@@ -74,13 +74,12 @@ highlight article ":.*\\(embedded flash\\)$" color74 default
 highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
 # highlight all "Linux" yellow black blink
 
-color info color38 color235
-color listnormal color246 color234
-color listnormal_unread color244 color234
-color listfocus_unread red default blink
-color listfocus   red default blink
+color info color38 default
+color listnormal color246 default
+color listnormal_unread color244 default
+color listfocus_unread color7 color27
+color listfocus color7 color27
 # color listfocus color166 color235
-color background color244 color234
 color article color244 color234
 
 # Key bindings ----------------------------------
