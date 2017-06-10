@@ -16,6 +16,9 @@ map <expr> j v:count ? 'j' : 'gj'
 map <expr> k v:count ? 'k' : 'gk'
 " map j gj
 " map k gk
+"
+" Make `Y` behave like `C` and `D` (to the end of line)
+nnoremap Y y$
 
 map <C-h> <C-w>h
 map <C-j> <C-w>j
@@ -50,8 +53,6 @@ nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 
 nnoremap <leader>q :quit<CR>
-nnoremap <leader>w :w<CR>
-nnoremap <leader>x :xit<CR>
 
 " https://github.com/mhinz/vim-galore#quickly-edit-your-macros
 nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
@@ -79,9 +80,6 @@ nnoremap <Leader>p :e#<CR>
 " https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 xnoremap <  <gv
 xnoremap >  >gv
-
-" Save read only files
-cmap w!! w !sudo tee % >/dev/null
 
 " new file in current directory
 nnoremap <Leader>n :e <C-R>=expand("%:p:h") . "/" <CR>

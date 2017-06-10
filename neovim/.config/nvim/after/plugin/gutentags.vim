@@ -1,4 +1,3 @@
-let g:gutentags_ctags_extra_args = ['--options=~/.ctags']
 let g:gutentags_exclude_project_root = ['/usr/local', $HOME, $HOME.'/Desktop']
 let g:gutentags_file_list_command = {
       \ 'markers': {

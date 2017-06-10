@@ -45,7 +45,6 @@ Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
@@ -56,7 +55,6 @@ Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
 Plug 'google/vim-searchindex'
-Plug 'tpope/vim-projectionist'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
