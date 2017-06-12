@@ -23,6 +23,7 @@
   old = red strike
   new = green italic
   whitespace = red reverse
+  commit = 227 bold
 
 [color "status"]
   added = yellow
@@ -30,10 +31,10 @@
   untracked = red
 
 [color "diff-highlight"]
-  oldNormal = "red bold"
-  oldHighlight = "red bold 52"
-  newNormal = "green bold"
-  newHighlight = "green bold 22"
+  oldNormal = red strike
+  oldHighlight = red 52 strike
+  newNormal = green italic
+  newHighlight = green 22 italic
 
 [pager]
   show = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
