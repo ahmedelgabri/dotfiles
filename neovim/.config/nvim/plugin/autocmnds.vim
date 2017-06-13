@@ -33,13 +33,10 @@ aug omnicomplete
   if exists('g:plugs["emmet-vim"]')
     autocmd FileType html,htmldjango,jinja2 setl omnifunc=emmet#completeTag
   endif
-  if exists('g:plugs["tern_for_vim"]')
-    autocmd FileType javascript,javascript.jsx,jsx setl omnifunc=tern#Complete
-  endif
 aug END
 
 " Those are heavy plugins that I lazy load them so startup time can be fast still
 augroup lazyLoadPlugins
   autocmd!
-  autocmd CursorHold, CursorHoldI * call plug#load('tern', 'editorconfig') | autocmd! lazyLoadPlugins
+  autocmd CursorHold, CursorHoldI * call plug#load('editorconfig') | autocmd! lazyLoadPlugins
 augroup END

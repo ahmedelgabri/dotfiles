@@ -23,20 +23,30 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-flow.vim'
+" Plug 'prabirshrestha/asyncomplete-buffer.vim'
+" Plug 'prabirshrestha/asyncomplete-emoji.vim'
+" Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+" Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
-Plug 'davidhalter/jedi', { 'for': ['python'] }
+" Plug 'roxma/ncm-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'Shougo/neco-vim', { 'for': ['vim'] }
-Plug 'roxma/ncm-flow', { 'for': ['javascript', 'javascript.jsx'] }
+" Plug 'jsfaint/gen_tags.vim'
+" let g:loaded_gentags#gtags = 1 " disable gtags
+" let g:gen_tags#ctags_auto_gen = 1
+" let g:gen_tags#verbose = 1
 " Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' } | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
+  \| Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
-Plug 'kshenoy/vim-signature'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
@@ -54,20 +64,15 @@ Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
-Plug 'google/vim-searchindex'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
 endif
 
 " Syntax
-Plug 'reasonml/vim-reason', { 'for': ['reason'] }
-Plug 'moll/vim-node', { 'for': ['javascript', 'javascript.jsx'] }
 " Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['css']
-Plug 'stephenway/postcss.vim', { 'for': ['css'] }
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
@@ -80,19 +85,15 @@ Plug 'joshdick/onedark.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
-Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'vim-airline/vim-airline'
   \ | Plug 'vim-airline/vim-airline-themes'
 Plug 'w0ng/vim-hybrid'
-Plug 'liuchengxu/space-vim-dark'
 
 " Git
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
-Plug 'lambdalisue/gina.vim' " not sure about this yet
 Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-rhubarb'
-
+Plug 'tpope/vim-rhubarb'
 
 " Writing
 Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}
@@ -105,7 +106,8 @@ filetype plugin indent on
 "
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 " https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim#L88
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) ==# ''
+" neovim loads it automatically see `:h matchit`
+if !has('nvim') && !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) ==# ''
   runtime! macros/matchit.vim
 endif
 
@@ -118,6 +120,7 @@ let g:current_eslint_path = nrun#Which('eslint')
 let g:current_prettier_path = nrun#Which('prettier')
 let g:current_stylefmt_path = nrun#Which('stylefmt')
 let g:current_stylelint_path = nrun#Which('stylelint')
+let g:current_tern_path = nrun#Which('tern')
 
 " Plugins settings
 "================================================================================
@@ -153,9 +156,42 @@ smap <S-Tab> <Plug>(ultisnips_backward)
 " optional
 inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 
+
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
+"     \ 'name': 'flow',
+"     \ 'whitelist': ['javascript', 'javascript.jsx'],
+"     \ 'completor': function('asyncomplete#sources#flow#completor'),
+"     \ 'config': {
+"     \    'prefer_local': 1,
+"     \    'flowbin_path': g:current_flow_path,
+"     \  },
+"     \ }))
+" call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+"   \ 'name': 'omni',
+"   \ 'whitelist': ['*'],
+"   \ 'blacklist': ['javascript', 'javascript.jsx'],
+"   \ 'completor': function('asyncomplete#sources#omni#completor')
+"   \  }))
+" call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+"     \ 'name': 'buffer',
+"     \ 'whitelist': ['*'],
+"     \ 'blacklist': ['go', 'javascript', 'javascript.jsx'],
+"     \ 'completor': function('asyncomplete#sources#buffer#completor'),
+"     \ }))
+" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#emoji#get_source_options({
+"     \ 'name': 'emoji',
+"     \ 'whitelist': ['*'],
+"     \ 'completor': function('asyncomplete#sources#emoji#completor'),
+"     \ }))
+" call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+"     \ 'name': 'ultisnips',
+"     \ 'whitelist': ['*'],
+"     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+"     \ }))
 " Profiling. {{{
 "================================================================================
 " let g:gutentags_define_advanced_commands = 1
+" let g:gutentags_trace = 1
 
 " Start profiling. Optional arg: logfile path.
 if len(get(g:, 'profile', ''))
@@ -180,4 +216,11 @@ if filereadable(s:vimrc_project)
   execute 'source ' . s:vimrc_project
 endif
 
-
+" After this file is sourced, plug-in code will be evaluated.
+" See ~/.vim/after for files evaluated after that.
+" See `:scriptnames` for a list of all scripts, in evaluation order.
+" Launch Vim with `vim --startuptime vim.log` for profiling info.
+"
+" To see all leader mappings, including those from plug-ins:
+"
+"   vim -c 'set t_te=' -c 'set t_ti=' -c 'map <space>' -c q | sort

@@ -71,17 +71,12 @@ call airline#parts#define_accent('modified', 'red')
 call airline#parts#define_function('ALE', 'ALEGetStatusLine')
 call airline#parts#define_condition('ALE', 'exists("*ALEGetStatusLine")')
 
-call airline#parts#define_raw('TAGS', '%{gutentags#statusline("⧖ ")}')
-call airline#parts#define_accent('TAGS', 'yellow')
-
 call airline#parts#define_accent('mode', 'none')
 
 function! AirlineInit()
   let g:airline_section_error = airline#section#create_right(['ALE'])
   let g:airline_section_warning = airline#section#create_right(['whitespace'])
-  let g:airline_section_b = airline#section#create(['hunks', '%{gina#component#status#preset("fancy")}', ' ⎇ %{gina#component#repo#branch()}', ' %{gina#component#traffic#preset("fancy")}'])
   let g:airline_section_c = airline#section#create(['%f', 'modified'])
-  let g:airline_section_x = airline#section#create(['TAGS', ' %{statusline#fileSize()}', get(g:, 'airline_section_x', g:airline_section_x)])
   let g:airline_section_z = airline#section#create(['obsession', '%{statusline#rhs()}'])
 endfunction
 

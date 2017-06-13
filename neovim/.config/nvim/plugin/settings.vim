@@ -28,9 +28,9 @@ set nowrap                            " no wrap
 set textwidth=100
 set colorcolumn=+1
 
-syntax sync minlines=256 " start highlighting from 256 lines backwards
-set synmaxcol=300        " do not highlith very long lines
-" set re=1                 " use explicit old regexpengine, seems to be more faster
+syntax sync minlines=256              " start highlighting from 256 lines backwards
+set synmaxcol=300                     " do not highlith very long lines
+" set re=1                              " use explicit old regexpengine, seems to be more faster
 
 set number                            " show line numbers in gutter
 
@@ -138,16 +138,11 @@ set nojoinspaces                      " don't autoinsert two spaces after '.', '
 
 
 if has('windows')
-  set fillchars=diff:⣿,vert:┃              " BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  set fillchars=diff:⣿,vert:┃         " BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
 endif
 
 if has('linebreak')
-  set linebreak
-  let &showbreak='↳ '                 " DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
-  set breakindent                     " indent wrapped lines to match start
-  if exists('&breakindentopt')
-    set breakindentopt=shift:2        " emphasize broken lines by indenting them
-  endif
+  let &showbreak='↳  '                " DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
 endif
 
 
@@ -244,6 +239,10 @@ if exists('$SUDO_USER')
 else
   set directory=~/.vim/tmp/swap//    " keep swap files out of the way
   set directory+=.
+endif
+
+if exists('&swapsync')
+  set swapsync=                       " let OS sync swapfiles lazily
 endif
 
 set updatecount=80                    " update swapfiles every 80 typed chars
