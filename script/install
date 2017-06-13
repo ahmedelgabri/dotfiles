@@ -5,17 +5,17 @@
 # = Helpers & setting some variables
 # =======================================================================
 
-DOTFILES_DIR="$HOME/.dotfiles"
+local DOTFILES_DIR="$HOME/.dotfiles"
 
 tput sgr0
-RED=$(tput setaf 1)
-ORANGE=$(tput setaf 3)
-GREEN=$(tput setaf 2)
-PURPLE=$(tput setaf 5)
-BLUE=$(tput setaf 4)
-WHITE=$(tput setaf 7)
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
+local RED=$(tput setaf 1)
+local ORANGE=$(tput setaf 3)
+local GREEN=$(tput setaf 2)
+local PURPLE=$(tput setaf 5)
+local BLUE=$(tput setaf 4)
+local WHITE=$(tput setaf 7)
+local BOLD=$(tput bold)
+local RESET=$(tput sgr0)
 
 log_error() {
   local MSG="$1"
@@ -55,12 +55,11 @@ install_homebrew() {
 }
 
 install_dotfiles() {
-  if [[ ! -d "$DOTFILES_DIR" ]]; then
+  if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
-    mkdir "$DOTFILES_DIR"
     git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
   else
-    cd $DOTFILES_DIR && \
+    cd "$DOTFILES_DIR" && \
     git stash && \
     git checkout master && \
     git reset --hard origin/master && \
@@ -73,57 +72,54 @@ install_dotfiles() {
 take_backup() {
   log_success "Taking backups for old files..."
 
-  local BAKCUP_DIR=$HOME/.dotbackup/$(date "+%Y-%m-%d_%H:%M")
-  mkdir -p $BAKCUP_DIR
+  local BAKCUP_DIR="$HOME/.dotbackup/$(date "+%Y.%m.%d_%H.%M")"
+  mkdir -p "$BAKCUP_DIR"
 
   # @TODO: Look into how to automate this list
   local FILES=(
-    .config/newsbeuter
-    .config/nvim
-    .ctags
-    .curlrc
-    .editorconfig
-    .gemrc
-    .gitattributes
-    .gitconfig
-    .gitignore
-    .grc
-    .gvimrc
-    .hammerspoon
-    .hushlogin
-    .hushlogin
-    .ignore
-    .lbdbrc
-    .mbsyncrc
-    .msmtprc
-    .mutt
-    .notmuch-config
-    .pip.conf
-    .pyrc.py
-    .terminfo
-    .tern-config
-    .tigrc
-    .tmux.conf
-    .urlview
-    .vim
-    .vimrc
-    .zlogin
-    .zshenv
-    .zshrc
-    Library/Preferences/com.googlecode.iterm2.plist
+    ".config/newsbeuter"
+    ".config/nvim"
+    ".ctags"
+    ".curlrc"
+    ".editorconfig"
+    ".gemrc"
+    ".gitattributes"
+    ".gitconfig"
+    ".gitignore"
+    ".grc"
+    ".gvimrc"
+    ".hammerspoon"
+    ".hushlogin"
+    ".hushlogin"
+    ".ignore"
+    ".lbdbrc"
+    ".mbsyncrc"
+    ".msmtprc"
+    ".mutt"
+    ".notmuch-config"
+    ".pip.conf"
+    ".pyrc.py"
+    ".terminfo"
+    ".tern-config"
+    ".tigrc"
+    ".tmux.conf"
+    ".urlview"
+    ".vim"
+    ".vimrc"
+    ".zlogin"
+    ".zshenv"
+    ".zshrc"
+    "Library/Preferences/com.googlecode.iterm2.plist"
   )
 
-  for file in ${FILES[@]}; do
+  for file in "${FILES[@]}"; do
     local ITEM="$HOME/$file"
 
-    if [[ -d "$ITEM" ]]; then
-      echo "Backing up directory: $ITEM"
+    # [[]] doesn't require quotes around single variables in fact it fails with double quotes around variables
+    # https://stackoverflow.com/a/4665080/213124
+    if [[ -e $ITEM ]]; then
+      echo "Backing up: $ITEM"
       mv "$ITEM" "$BAKCUP_DIR"
-    elif [[ -f "$ITEM" ]]; then
-      echo "Backing up file: $ITEM"
-      mv "$ITEM" "$BAKCUP_DIR"
-    else
-      echo "$ITEM is not a file or a directory..."
     fi
   done
 }
@@ -138,7 +134,7 @@ symlink_files() {
   mkdir -p $HOME/.dotfiles/neovim/.config/nvim/tmp/{backup,swap,undo,view}
   mkdir -p $HOME/.mail/{Personal,Work}
 
-  if [[ -d "$DOTFILES_DIR" ]]; then
+  if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
     cd "$DOTFILES_DIR" && make symlink
   else
@@ -147,7 +143,7 @@ symlink_files() {
 }
 
 install_apps(){
-  if [[ -d "$DOTFILES_DIR" ]]; then
+  if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
     cd "$DOTFILES_DIR" && make
   else
@@ -192,7 +188,7 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-cd $HOME
+cd "$HOME"
 softwareupdate --verbose --install --all
 
 install_homebrew
