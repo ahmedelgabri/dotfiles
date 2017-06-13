@@ -38,7 +38,7 @@ python:
 		@sh ./script/python-packages.sh
 
 iterm:
-		@sh ./iterm2/themes.sh
+		@sh ./script/iterm.sh
 
 neovim:
 		@gem install neovim
