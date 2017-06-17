@@ -34,10 +34,6 @@ Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
 " Plug 'roxma/ncm-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'Shougo/neco-vim', { 'for': ['vim'] }
-" Plug 'jsfaint/gen_tags.vim'
-" let g:loaded_gentags#gtags = 1 " disable gtags
-" let g:gen_tags#ctags_auto_gen = 1
-" let g:gen_tags#verbose = 1
 " Plug 'maralla/completor.vim', { 'do': 'make js' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'

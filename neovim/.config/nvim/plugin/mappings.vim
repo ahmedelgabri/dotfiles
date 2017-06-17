@@ -11,11 +11,17 @@ nnoremap N Nzzzv
 " highlight last inserted text
 nnoremap gV `[v`]
 
-" Treat overflowing lines as having line breaks.
-map <expr> j v:count ? 'j' : 'gj'
-map <expr> k v:count ? 'k' : 'gk'
-" map j gj
-" map k gk
+" Move by 'display lines' rather than 'logical lines' if no v:count was
+" provided.  When a v:count is provided, move by logical lines.
+nnoremap <expr> j v:count ? 'j' : 'gj'
+xnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
+xnoremap <expr> k v:count ? 'k' : 'gk'
+" Ensure 'logical line' movement remains accessible.
+nnoremap <silent> gj j
+xnoremap <silent> gj j
+nnoremap <silent> gk k
+xnoremap <silent> gk k
 "
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
@@ -54,9 +60,6 @@ nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 
 nnoremap <leader>q :quit<CR>
-
-" https://github.com/mhinz/vim-galore#quickly-edit-your-macros
-nnoremap <leader>m  :<c-u><c-r>='let @'. v:register .' = '. string(getreg(v:register))<cr><c-f><left>
 
 inoremap jj <ESC>
 nnoremap \ :Grepper -side -tool rg -query<SPACE>
