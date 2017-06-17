@@ -4,7 +4,7 @@
   name = Ahmed El Gabri
 
 [include]
-  path = ~/.gitconfig.extra
+  path = ~/.gitconfig.local
 
 [color]
   ui = true
