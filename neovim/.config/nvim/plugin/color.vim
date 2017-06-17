@@ -29,4 +29,8 @@ hi OverLength ctermbg=red ctermfg=white guibg=#592929
 
 if has('nvim') && g:colors_name ==# 'codedark'
   highlight! link Error ErrorMsg
+  highlight! link ALEError ErrorMsg
+  highlight! link ALEErrorSign ErrorMsg
+  highlight! link ALEWarning GitGutterChange
+  highlight! link ALEWarningSign GitGutterChange
 endif
