@@ -6,9 +6,6 @@
 [include]
   path = ~/.gitconfig.extra
 
-[includeIf "gitdir:Sites/dev/lightspeed/"]
-  path = ~/.gitconfig.work
-
 [color]
   ui = true
 
