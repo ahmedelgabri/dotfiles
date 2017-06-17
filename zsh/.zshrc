@@ -129,5 +129,5 @@ export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
 # LOCAL.
 ##############################################################
 
-[ -f ~/.zstuff ] && source ~/.zstuff
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
