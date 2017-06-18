@@ -1,3 +1,4 @@
+scriptencoding utf-8
 " vim: ft=vim
 "
 "             __
@@ -23,18 +24,14 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-flow.vim'
-" Plug 'prabirshrestha/asyncomplete-buffer.vim'
-" Plug 'prabirshrestha/asyncomplete-emoji.vim'
-" Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-" Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
-" Plug 'roxma/ncm-flow', { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'Shougo/neco-vim', { 'for': ['vim'] }
-" Plug 'maralla/completor.vim', { 'do': 'make js' }
+if empty(glob(getcwd() .'/.flowconfig'))
+  Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
+else
+  Plug 'roxma/ncm-flow'
+endif
+Plug 'Shougo/neco-vim'
+
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
@@ -123,15 +120,11 @@ let g:current_tern_path = nrun#Which('tern')
 " this needs to be here ¯\_(ツ)_/¯
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
-let g:cm_complete_delay = 30
-let g:cm_sources_override = {
-      \ 'cm-tags': {'enable':0}
-      \ }
-
 " Some crazy magic to make nvim-completion-manager & UltiSnips work nicely together using `<Tab>`
 " It doesn't work when added to plugin/after/ultisnips.vim so for now it's here
 " https://github.com/roxma/nvim-completion-manager/issues/12#issuecomment-284196219
-let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+" @TODO: Move this to autoload
+let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
 let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
 let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
 let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
@@ -152,42 +145,8 @@ smap <S-Tab> <Plug>(ultisnips_backward)
 " optional
 inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 
-
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#flow#get_source_options({
-"     \ 'name': 'flow',
-"     \ 'whitelist': ['javascript', 'javascript.jsx'],
-"     \ 'completor': function('asyncomplete#sources#flow#completor'),
-"     \ 'config': {
-"     \    'prefer_local': 1,
-"     \    'flowbin_path': g:current_flow_path,
-"     \  },
-"     \ }))
-" call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-"   \ 'name': 'omni',
-"   \ 'whitelist': ['*'],
-"   \ 'blacklist': ['javascript', 'javascript.jsx'],
-"   \ 'completor': function('asyncomplete#sources#omni#completor')
-"   \  }))
-" call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-"     \ 'name': 'buffer',
-"     \ 'whitelist': ['*'],
-"     \ 'blacklist': ['go', 'javascript', 'javascript.jsx'],
-"     \ 'completor': function('asyncomplete#sources#buffer#completor'),
-"     \ }))
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#emoji#get_source_options({
-"     \ 'name': 'emoji',
-"     \ 'whitelist': ['*'],
-"     \ 'completor': function('asyncomplete#sources#emoji#completor'),
-"     \ }))
-" call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-"     \ 'name': 'ultisnips',
-"     \ 'whitelist': ['*'],
-"     \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-"     \ }))
 " Profiling. {{{
 "================================================================================
-" let g:gutentags_define_advanced_commands = 1
-" let g:gutentags_trace = 1
 
 " Start profiling. Optional arg: logfile path.
 if len(get(g:, 'profile', ''))
