@@ -62,6 +62,7 @@ dump/
 *.un~
 tags
 .tags
+tags.*
 .tags.*
 .local.vim
 Session.vim
