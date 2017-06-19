@@ -119,9 +119,6 @@ endif
 nnoremap <silent> <leader>z :call functions#ZoomToggle()<CR>
 nmap <c-g> :call functions#SynStack()<CR>
 
-vnoremap * :<c-u>call functions#VSetSearch()<cr>//<cr><c-o>
-vnoremap # :<c-u>call functions#VSetSearch()<cr>??<cr><c-o>
-
 map <leader>r :call functions#RenameFile()<cr>
 
 nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>

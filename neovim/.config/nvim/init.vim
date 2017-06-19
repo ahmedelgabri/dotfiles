@@ -57,6 +57,7 @@ Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
+Plug 'nelstrom/vim-visual-star-search'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -74,7 +75,7 @@ Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt'
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
-Plug 'joshdick/onedark.vim'
+Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'

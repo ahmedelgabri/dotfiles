@@ -20,17 +20,8 @@ function! functions#SynStack()
   if !exists('*synstack')
     return
   endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  echo map(synstack(line('.'), col('.')), "synIDattr(v:val, 'name')")
 endfunc
-
-
-" Visual Mode */# from Scrooloose
-function! functions#VSetSearch()
-  let l:temp = @@
-  norm! gvy
-  let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
-  let @@ = l:temp
-endfunction
 
 " https://github.com/garybernhardt/dotfiles/blob/68554d69652cc62d43e659f2c6b9082b9938c72e/.vimrc#L182-L194
 function! functions#RenameFile()
