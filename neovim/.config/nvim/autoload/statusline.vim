@@ -35,17 +35,22 @@ function! statusline#rhs() abort
   return l:rhs
 endfunction
 
-function! statusline#getAleStatus()
-  if exists('*ALEGetStatusLine')
-    let l:f = ALEGetStatusLine()
-    if l:f =~ get(g:, 'ale_sign_error', g:ale_sign_error)
-      echo 'ERROR'
-    elseif l:f =~ get(g:, 'ale_sign_warning', g:ale_sign_warning)
-      echo 'WARN'
-    else
-      echo l:f
-    endif
+" For a more fancy ale statusline
+function! statusline#ALEGetStatus()
+  let l:res = ale#statusline#Status()
+  let l:e_w = split(l:res)
+  let l:e_sign = get(g:, 'ale_sign_error', g:ale_sign_error)
+  let l:w_sign = get(g:, 'ale_sign_warning', g:ale_sign_warning)
+  " Not working, unicode issue?
+  " echo index(l:e_w, l:e_sign)
+  if index(l:e_w, l:w_sign) >= 0
+    exec 'highlight ale_statusline guibg=orange guifg=black'
+  elseif index(l:e_w, l:w_sign) < 0 && index(l:e_w, 'ok') < 0
+    exec 'highlight ale_statusline guifg=white guibg=red'
+  else
+    exec 'highlight ale_statusline guibg=green guifg=white'
   endif
+  return l:res . ' '
 endfunction
 
 function! statusline#fileSize()

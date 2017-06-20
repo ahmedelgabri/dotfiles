@@ -65,14 +65,13 @@ if executable('tmux')
 endif
 
 " Syntax
-" Plug 'flowtype/vim-flow', { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
 Plug 'w0rp/ale', { 'do': 'npm i -g stylelint eslint' }
-Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier stylefmt' }
+Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'

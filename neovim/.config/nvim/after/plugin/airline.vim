@@ -51,16 +51,8 @@ let g:airline#extensions#default#layout = [
       \ [ 'x', 'y', 'error', 'warning' , 'z']
       \ ]
 
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#show_tab_type = 0
-" let g:airline#extensions#tabline#buffer_nr_show = 0
-" let g:airline#extensions#tabline#fnamemod = ':t'
-" let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#wordcount#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline#extensions#hunks#enabled = 1
-let g:airline#extensions#obsession#enabled = 1
+let g:airline#extensions#hunks#enabled = 0
 let g:airline_exclude_filetypes = [
       \ 'GrepperSide'
       \ ]
