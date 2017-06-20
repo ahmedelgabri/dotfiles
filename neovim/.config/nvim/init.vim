@@ -25,12 +25,13 @@ call plug#begin('~/.vim/plugged')
 
 " General
 Plug 'roxma/nvim-completion-manager'
-if empty(glob(getcwd() .'/.flowconfig'))
-  Plug 'roxma/nvim-cm-tern', { 'do': 'npm install'}
-else
-  Plug 'roxma/ncm-flow'
-endif
+" https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
+" Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
+Plug 'roxma/nvim-cm-tern', empty(glob(getcwd() .'/.flowconfig')) ? { 'do': 'npm i' } : { 'on': [], 'do': 'npm i' }
+Plug 'roxma/ncm-flow', !empty(glob(getcwd() .'/.flowconfig')) ? {} : { 'on': [] }
 Plug 'Shougo/neco-vim'
+Plug 'rhysd/github-complete.vim'
+let g:github_complete_github_api_token=$GITHUB_TOKEN
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
@@ -55,9 +56,9 @@ Plug 'wincent/loupe'
 Plug 'wincent/pinnacle' " this is only used in plugins/after/loupe.vim is it worth it?
 Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
-Plug 'beloglazov/vim-online-thesaurus', { 'on': ['Thesaurus', 'OnlineThesaurusCurrentWord'] }
 Plug 'kepbod/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
+Plug 'tpope/tpope-vim-abolish'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
