@@ -53,14 +53,14 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'wincent/loupe'
-Plug 'wincent/pinnacle' " this is only used in plugins/after/loupe.vim is it worth it?
+Plug 'wincent/pinnacle'
 Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'kepbod/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
-Plug 'dhruvasagar/vim-table-mode'
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -84,7 +84,6 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'vim-airline/vim-airline'
-  \ | Plug 'vim-airline/vim-airline-themes'
 Plug 'w0ng/vim-hybrid'
 
 " Git

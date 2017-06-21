@@ -46,9 +46,9 @@ function! statusline#ALEGetStatus()
   if index(l:e_w, l:w_sign) >= 0
     exec 'highlight ale_statusline guibg=orange guifg=black'
   elseif index(l:e_w, l:w_sign) < 0 && index(l:e_w, 'ok') < 0
-    exec 'highlight ale_statusline guifg=white guibg=red'
+    exec 'highlight ale_statusline guifg=black guibg=red'
   else
-    exec 'highlight ale_statusline guibg=green guifg=white'
+    exec 'highlight ale_statusline guifg=green guibg=None'
   endif
   return l:res . ' '
 endfunction
@@ -81,7 +81,7 @@ function! statusline#gitInfo()
   if l:gitbranch !=# ''
     return '⎇ ' .fugitive#head()
   else
-    return '⎇ '
+    return ''
   endif
 endfunction
 
@@ -99,7 +99,7 @@ endfunction
 
 function! statusline#modified()
   if &modified
-    return ' •'
+    return '⎔'
   else
     return ''
   endif
@@ -128,13 +128,15 @@ let s:dictmode= {'n': ['N', 'green'],
       \ 't': ['Terminal', 'orange']}
 
 " DEFINE COLORS FOR STATUSBAR
-let s:dictstatuscolor={'red': 'hi StatusLine guifg=#ab4642',
-      \ 'orange': 'hi StatusLine guifg=#dc9656',
-      \ 'yellow': 'hi StatusLine guifg=#f7ca88',
-      \ 'green': 'hi StatusLine guifg=#a1b56c',
-      \ 'blue': 'hi StatusLine guifg=#7cafc2',
-      \ 'purple': 'hi StatusLine guifg=#ba8baf',
-      \ 'brown': 'hi StatusLine guifg=#a16946',}
+let s:dictstatuscolor={
+      \ 'red': 'hi! StatusLine guibg=#ab4642 guifg=None',
+      \ 'orange': 'hi! StatusLine guibg=#dc9656 guifg=None',
+      \ 'yellow': 'hi! StatusLine guibg=#f7ca88 guifg=None',
+      \ 'green': 'hi! StatusLine guibg=#a1b56c guifg=None',
+      \ 'blue': 'hi! StatusLine guibg=#7cafc2 guifg=None',
+      \ 'purple': 'hi! StatusLine guibg=#ba8baf guifg=None',
+      \ 'brown': 'hi! StatusLine guibg=#a16946 guifg=None'
+      \}
 
 " GET CURRENT MODE FROM DICTIONARY AND RETURN IT
 " IF MODE IS NOT IN DICTIONARY RETURN THE ABBREVIATION
