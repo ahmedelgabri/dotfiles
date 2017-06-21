@@ -59,6 +59,8 @@ Plug 'mhinz/vim-startify'
 Plug 'kepbod/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
+Plug 'kshenoy/vim-signature'
+Plug 'dhruvasagar/vim-table-mode'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
@@ -67,6 +69,8 @@ endif
 " Syntax
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
+Plug 'rhysd/npm-filetypes.vim'
+Plug 'jez/vim-github-hub'
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }

@@ -9,6 +9,3 @@ let g:ale_linters = {'javascript': ['eslint', 'flow']}
 let g:ale_linter_aliases = {'reason': 'ocaml'}
 let g:ale_javascript_eslint_executable = g:current_eslint_path
 let g:ale_javascript_flow_executable = g:current_flow_path
-let g:ale_css_stylelint_executable = g:current_stylelint_path
-
-
