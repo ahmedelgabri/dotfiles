@@ -42,7 +42,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'htmldjango', 'jinja', 'jinja2', 'twig', 'javascript.jsx'] }
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
@@ -83,7 +82,7 @@ Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
 Plug 'w0ng/vim-hybrid'
 
 " Git

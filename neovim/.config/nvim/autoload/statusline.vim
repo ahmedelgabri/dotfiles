@@ -107,35 +107,35 @@ endfunction
 
 
 " DEFINE MODE DICTIONARY
-let s:dictmode= {'n': ['N', 'green'],
-      \ 'no': ['N-Operator Pending', 'green'],
-      \ 'v': ['V', 'purple'],
-      \ 'V': ['V·Line', 'purple'],
-      \ '': ['V·Block', 'purple'],
-      \ 's': ['Select', 'yellow'],
-      \ 'S': ['S·Line', 'yellow'],
-      \ '^S': ['S·Block', 'yellow'],
-      \ 'i': ['I', 'blue'],
-      \ 'R': ['R', 'red'],
-      \ 'Rv': ['V·Replace', 'red'],
-      \ 'c': ['Command', 'orange'],
-      \ 'cv': ['Vim Ex', 'brown'],
-      \ 'ce': ['Ex', 'brown'],
-      \ 'r': ['Propmt', 'brown'],
-      \ 'rm': ['More', 'brown'],
-      \ 'r?': ['Confirm', 'brown'],
-      \ '!': ['Shell', 'orange'],
-      \ 't': ['Terminal', 'orange']}
+let s:dictmode= {'n': ['N', '4'],
+      \ 'no': ['N-Operator Pending', '4'],
+      \ 'v': ['V', '6'],
+      \ 'V': ['V·Line', '6'],
+      \ '': ['V·Block', '6'],
+      \ 's': ['Select', '3'],
+      \ 'S': ['S·Line', '3'],
+      \ '^S': ['S·Block', '3'],
+      \ 'i': ['I', '5'],
+      \ 'R': ['R', '1'],
+      \ 'Rv': ['V·Replace', '1'],
+      \ 'c': ['Command', '2'],
+      \ 'cv': ['Vim Ex', '7'],
+      \ 'ce': ['Ex', '7'],
+      \ 'r': ['Propmt', '7'],
+      \ 'rm': ['More', '7'],
+      \ 'r?': ['Confirm', '7'],
+      \ '!': ['Shell', '2'],
+      \ 't': ['Terminal', '2']}
 
 " DEFINE COLORS FOR STATUSBAR
 let s:dictstatuscolor={
-      \ 'red': 'hi! StatusLine guibg=#ab4642 guifg=None',
-      \ 'orange': 'hi! StatusLine guibg=#dc9656 guifg=None',
-      \ 'yellow': 'hi! StatusLine guibg=#f7ca88 guifg=None',
-      \ 'green': 'hi! StatusLine guibg=#a1b56c guifg=None',
-      \ 'blue': 'hi! StatusLine guibg=#7cafc2 guifg=None',
-      \ 'purple': 'hi! StatusLine guibg=#ba8baf guifg=None',
-      \ 'brown': 'hi! StatusLine guibg=#a16946 guifg=None'
+      \ '1': 'hi! StatusLine guibg=#ab4642 guifg=None',
+      \ '2': 'hi! StatusLine guibg=#dc9656 guifg=None',
+      \ '3': 'hi! StatusLine guibg=#f7ca88 guifg=None',
+      \ '4': 'hi! StatusLine '.pinnacle#extract_highlight('Visual').' guifg=' .pinnacle#extract_fg('Normal'),
+      \ '5': 'hi! StatusLine guibg='. pinnacle#extract_fg('Function') .' guifg=' .pinnacle#extract_fg('NonText') ,
+      \ '6': 'hi! StatusLine guibg=#ba8baf guifg=None',
+      \ '7': 'hi! StatusLine guibg=#a16946 guifg=None'
       \}
 
 " GET CURRENT MODE FROM DICTIONARY AND RETURN IT
@@ -147,6 +147,7 @@ function! statusline#getMode()
   let l:modecolor = l:modelist[1]
   let l:modename = l:modelist[0]
   let l:modeexe = get(s:dictstatuscolor, l:modecolor, 'red')
+  " echo modeexe
   exec l:modeexe
   return l:modename
 endfunction
