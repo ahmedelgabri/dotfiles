@@ -73,7 +73,7 @@ alias apache="sudo apachectl "
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
 (( $+commands[nvim] )) && alias vim="nvim "
-(( $+commands[emacs] )) && alias vim="TERM=xterm-256color emacs "
+(( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[colourify] )) && alias curl='colourify curl '
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'

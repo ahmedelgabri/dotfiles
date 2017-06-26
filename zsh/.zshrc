@@ -107,12 +107,8 @@ export HOMEBREW_NO_ANALYTICS=1
 
 SYMBOLS=(
 "λ"
-# "▴"
 "ϟ"
 "▲"
-"⬢"
-"⟐"
-""
 "∽"
 )
 
