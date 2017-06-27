@@ -82,7 +82,6 @@ Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
-" Plug 'vim-airline/vim-airline'
 Plug 'w0ng/vim-hybrid'
 
 " Git

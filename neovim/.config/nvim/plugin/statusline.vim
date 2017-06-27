@@ -22,7 +22,12 @@ set statusline+=\ %{statusline#modified()}
 set statusline+=\ %{statusline#readOnly()}\ %w
 set statusline+=%*
 set statusline+=%9*\ %=
-set statusline+=%#ale_statusline#\ %{statusline#ALEGetStatus()}
+set statusline+=%#GitGutterDelete#
+set statusline+=%{statusline#ALEGetError()}
+set statusline+=\ %#GitGutterChange#
+set statusline+=%{statusline#ALEGetWarning()}
+set statusline+=\ %#GitGutterAdd#
+set statusline+=%{statusline#ALEGetOk()}
 set statusline+=%4*\ %y
 set statusline+=%4*\ %{statusline#fileSize()}
 set statusline+=%4*%{statusline#rhs()}

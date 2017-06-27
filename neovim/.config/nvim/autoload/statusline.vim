@@ -36,21 +36,43 @@ function! statusline#rhs() abort
 endfunction
 
 " For a more fancy ale statusline
-function! statusline#ALEGetStatus()
+function! statusline#ALEGetOk()
   let l:res = ale#statusline#Status()
-  let l:e_w = split(l:res)
-  let l:e_sign = get(g:, 'ale_sign_error', g:ale_sign_error)
-  let l:w_sign = get(g:, 'ale_sign_warning', g:ale_sign_warning)
-  " Not working, unicode issue?
-  " echo index(l:e_w, l:e_sign)
-  if index(l:e_w, l:w_sign) >= 0
-    exec 'highlight ale_statusline guibg=orange guifg=black'
-  elseif index(l:e_w, l:w_sign) < 0 && index(l:e_w, 'ok') < 0
-    exec 'highlight ale_statusline guifg=black guibg=red'
+  if l:res ==# 'OK'
+    return '•'
   else
-    exec 'highlight ale_statusline guifg=green guibg=None'
+    return ''
   endif
-  return l:res . ' '
+endfunction
+
+function! statusline#ALEGetError()
+  let l:res = ale#statusline#Status()
+  if l:res ==# 'OK'
+    return ''
+  else
+    let l:e_w = split(l:res)
+    if len(l:e_w) == 2 || match(l:e_w, 'E') > -1
+      return '•' . matchstr(l:e_w[0], '\d\+')
+    else
+      return ''
+    endif
+  endif
+endfunction
+
+function! statusline#ALEGetWarning()
+  let l:res = ale#statusline#Status()
+  if l:res ==# 'OK'
+    return ''
+  else
+    let l:e_w = split(l:res)
+    if len(l:e_w) == 2
+      return '•' . matchstr(l:e_w[1], '\d\+')
+    elseif match(l:e_w, 'W') > -1
+      return '•' . matchstr(l:e_w[0], '\d\+')
+    else
+      return ''
+    endif
+  endif
 endfunction
 
 function! statusline#fileSize()
