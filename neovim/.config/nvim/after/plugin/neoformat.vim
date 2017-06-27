@@ -21,7 +21,7 @@ let g:neoformat_scss_prettier = g:neoformat_css_prettier
 let s:NEOFORMAT_ENABLED = ['prettier']
 let g:neoformat_enabled_css = s:NEOFORMAT_ENABLED
 let g:neoformat_enabled_scss = s:NEOFORMAT_ENABLED
-" let g:neoformat_enabled_json = s:NEOFORMAT_ENABLED
+let g:neoformat_enabled_json = s:NEOFORMAT_ENABLED
 let g:neoformat_enabled_javascript = s:NEOFORMAT_ENABLED
 
 let g:neoformat_only_msg_on_error = 1
