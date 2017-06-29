@@ -59,6 +59,7 @@ fpath=(
 
 # GNU Coreutils
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+(( $+commands[nvim] )) && export MANPAGER="nvim -c 'set ft=man' -"
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
