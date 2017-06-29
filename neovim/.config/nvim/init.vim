@@ -30,8 +30,7 @@ Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/nvim-cm-tern', empty(glob(getcwd() .'/.flowconfig')) ? { 'do': 'npm i' } : { 'on': [], 'do': 'npm i' }
 Plug 'roxma/ncm-flow', !empty(glob(getcwd() .'/.flowconfig')) ? {} : { 'on': [] }
 Plug 'Shougo/neco-vim'
-Plug 'rhysd/github-complete.vim'
-let g:github_complete_github_api_token=$GITHUB_TOKEN
+Plug 'roxma/ncm-github'
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
@@ -111,11 +110,7 @@ endif
 "================================================================================
 
 let g:current_flow_path = nrun#Which('flow')
-let g:current_eslint_path = nrun#Which('eslint')
 let g:current_prettier_path = nrun#Which('prettier')
-let g:current_stylefmt_path = nrun#Which('stylefmt')
-let g:current_stylelint_path = nrun#Which('stylelint')
-let g:current_tern_path = nrun#Which('tern')
 
 " Plugins settings
 "================================================================================

@@ -17,12 +17,3 @@ au User CmSetup call cm#register_source({'name' : 'cm-css',
       \ 'cm_refresh_patterns':['\w{2,}$',':\s+\w*$'],
       \ 'cm_refresh': {'omnifunc': 'csscomplete#CompleteCSS'},
       \ })
-
-au User CmSetup call cm#register_source({'name' : 'cm-github',
-      \ 'priority': 9,
-      \ 'scopes': ['gitcommit'],
-      \ 'abbreviation': 'Github',
-      \ 'cm_refresh_patterns':[':\w*$', '#\d*$', '\[[\w\.\-]*]\($', '\%(@\|\<github\.com/\zs\)[[a-zA-Z0-9]-_]\+$', '[[a-zA-Z0-9]-_]\+/[[a-zA-Z0-9]-_]\+$'],
-      \ 'cm_refresh': {'omnifunc': 'github_complete#complete'},
-      \ })
-

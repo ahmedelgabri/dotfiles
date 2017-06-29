@@ -1,18 +1,18 @@
 let g:neoformat_javascript_prettier = {
       \ 'exe': g:current_prettier_path,
-      \  'args': ['--stdin', g:current_flow_path ==# 'flow not found' ? '' : '--parser flow', '--no-semi', '--single-quote', '--trailing-comma es5'],
+      \ 'args': ['--stdin', '--parser ' . g:current_flow_path ==# 'flow not found' ?  'babylon' : 'flow', '--no-semi', '--single-quote', '--trailing-comma es5'],
       \ 'stdin': 1,
       \ }
 
 let g:neoformat_json_prettier = {
       \ 'exe': g:current_prettier_path,
-      \  'args': ['--stdin', '--parser json'],
+      \ 'args': ['--stdin', '--parser json'],
       \ 'stdin': 1,
       \ }
 
 let g:neoformat_css_prettier = {
       \ 'exe': g:current_prettier_path,
-      \  'args': ['--stdin', '--parser postcss'],
+      \ 'args': ['--stdin', '--parser postcss'],
       \ 'stdin': 1,
       \ }
 
