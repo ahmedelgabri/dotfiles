@@ -77,6 +77,7 @@ path=(
   ${HOME}/.dotfiles/bin
   $path
   ./node_modules/.bin
+  ${HOME}/.cargo/bin
 )
 
 #
