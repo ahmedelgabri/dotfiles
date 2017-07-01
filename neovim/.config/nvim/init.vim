@@ -49,6 +49,7 @@ Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-speeddating'
 Plug 'wellle/targets.vim'
 Plug 'wincent/loupe'
 Plug 'wincent/pinnacle'
