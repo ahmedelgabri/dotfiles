@@ -60,9 +60,18 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
+Plug 'itchyny/calendar.vim', { 'on': 'Calendar' }
+let g:calendar_google_calendar = 1
+let g:calendar_first_day='monday'
+let g:calendar_date_endian='little'
+let g:calendar_date_separator='/'
+let g:calendar_date_month_name=1
+let g:calendar_views=['year', 'month', 'week', 'day', 'event', 'agenda']
+let g:calendar_cyclic_view=1
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
+  let g:tmux_navigator_disable_when_zoomed = 1
 endif
 
 " Syntax

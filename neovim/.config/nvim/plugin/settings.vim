@@ -1,3 +1,7 @@
+scriptencoding utf-8
+
+set fileencoding=utf-8
+
 if !has('nvim')
   set nocompatible
   set encoding=utf-8
