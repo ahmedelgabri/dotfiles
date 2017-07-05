@@ -21,6 +21,7 @@ brew 'nvm'
 # brew 'ledger'
 # brew 'cmake'
 brew 'asciinema'
+brew 'battery'#, args: ['HEAD']
 brew 'bitlbee', restart_service: true
 brew 'cloc'
 brew 'coreutils'
