@@ -9,7 +9,6 @@ tap 'homebrew/dupes'
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
 tap 'caskroom/versions'
-tap 'neovim/neovim'
 tap 'universal-ctags/universal-ctags'
 tap 'neomutt/neomutt'
 
