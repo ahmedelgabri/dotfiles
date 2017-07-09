@@ -1,10 +1,9 @@
+set encoding=utf-8
 scriptencoding utf-8
-
 set fileencoding=utf-8
 
 if !has('nvim')
   set nocompatible
-  set encoding=utf-8
   set autoindent                        " maintain indent of current line
   set backspace=indent,start,eol        " allow unrestricted backspacing in insert mode
   " Display as much as possibe of a window's last line.
