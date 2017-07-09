@@ -11,8 +11,9 @@ PACKAGES=(
 "neovim"
 "vim-vint"
 "jedi"
+"jupyter"
 )
 
-mkdir ~/.venv && pip install "${PACKAGES[@]}" && pip3 install "${PACKAGES[@]}"
+mkdir ~/.venv && pip3 install "${PACKAGES[@]}" && pip install "${PACKAGES[@]}"
 
 unset -v PACKAGES
