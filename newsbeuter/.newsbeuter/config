@@ -17,8 +17,8 @@ save-path ~/.newsbeuter/saved_articles
 show-read-feeds no
 text-width 120
 
-feedlist-format "%S %-65t %u %?d?- %-65d&? %> %T"
-articlelist-format "%-4i %D %f %t"
+feedlist-format "%S %-80t %u %?d?- %-80d&? %> %T"
+articlelist-format "%-80i %D %f %t"
 feedlist-title-format "%N %V %> %u feeds with new articles"
 articlelist-title-format "%T (%u unread, %t total) - %U"
 notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
