@@ -24,13 +24,15 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " General
-Plug 'roxma/nvim-completion-manager'
-" https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
-" Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
-Plug 'roxma/nvim-cm-tern', empty(glob(getcwd() .'/.flowconfig')) ? { 'do': 'npm i' } : { 'on': [], 'do': 'npm i' }
-Plug 'roxma/ncm-flow', !empty(glob(getcwd() .'/.flowconfig')) ? {} : { 'on': [] }
-Plug 'Shougo/neco-vim'
-Plug 'roxma/ncm-github'
+if has('nvim')
+  Plug 'roxma/nvim-completion-manager'
+  " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
+  " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
+  Plug 'roxma/nvim-cm-tern', empty(glob(getcwd() .'/.flowconfig')) ? { 'do': 'npm i' } : { 'on': [], 'do': 'npm i' }
+  Plug 'roxma/ncm-flow', !empty(glob(getcwd() .'/.flowconfig')) ? {} : { 'on': [] }
+  Plug 'Shougo/neco-vim'
+  Plug 'roxma/ncm-github'
+endif
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
@@ -60,14 +62,13 @@ Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
-Plug 'itchyny/calendar.vim', { 'on': 'Calendar' }
-let g:calendar_google_calendar = 1
-let g:calendar_first_day='monday'
-let g:calendar_date_endian='little'
-let g:calendar_date_separator='/'
-let g:calendar_date_month_name=1
-let g:calendar_views=['year', 'month', 'week', 'day', 'event', 'agenda']
-let g:calendar_cyclic_view=1
+Plug 'tpope/vim-projectionist'
+Plug 'Valloric/MatchTagAlways', { 'for': ['html', 'xml', 'jinja2'] }
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xml' : 1,
+    \ 'jinja2' : 1,
+    \}
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
