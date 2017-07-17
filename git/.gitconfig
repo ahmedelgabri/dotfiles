@@ -62,12 +62,12 @@
   dc = d --staged
   ; https://twitter.com/csswizardry/status/867676530780065792
   dm = d --word-diff-regex=.
-  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   la = l --all --simplify-by-decoration
   lnm = l --no-merges
   last = l -1
   ten = l -n 10
-  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(yellow)<%G?> %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
+  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = l -u
   gr = grep -Ii
   patch = !git --no-pager diff --no-color
