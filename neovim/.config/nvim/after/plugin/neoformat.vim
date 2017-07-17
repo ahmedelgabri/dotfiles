@@ -27,4 +27,4 @@ let g:neoformat_enabled_javascript = s:NEOFORMAT_ENABLED
 let g:neoformat_only_msg_on_error = 1
 
 " auto format on save
-autocmd BufWritePre *.{js,jsx,json,css,scss} Neoformat
+autocmd BufWritePre *.{js,jsx,css,scss} Neoformat
