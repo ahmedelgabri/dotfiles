@@ -96,6 +96,7 @@ Plug 'w0ng/vim-hybrid'
 
 " Git
 Plug 'airblade/vim-gitgutter'
+Plug 'gregsexton/gitv'
 Plug 'lambdalisue/vim-gista'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
@@ -132,7 +133,7 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " It doesn't work when added to plugin/after/ultisnips.vim so for now it's here
 " https://github.com/roxma/nvim-completion-manager/issues/12#issuecomment-284196219
 " @TODO: Move this to autoload
-let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
 let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
 let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
 let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
