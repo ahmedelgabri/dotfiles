@@ -42,30 +42,30 @@ draw_bold_text_with_bright_colors: false
 font:
   # The normal (roman) font face to use.
   normal:
-    family: Iosevka
+    family: SF Mono
     # Style can be specified to pick a specific face.
-    style: Light
+    # style: Light
 
   # The bold font face
   bold:
-    family: Iosevka
+    family: SF Mono
     # Style can be specified to pick a specific face.
     style: Bold
 
   # The italic font face
   italic:
-    family: Iosevka
+    family: SF Mono
     # Style can be specified to pick a specific face.
     style: Italic
 
   # Point size of the font
-  size: 14.0
+  size: 12.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
   offset:
     x: 0.0
-    y: 0.0
+    y: 1.0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increase the x offset to move the glyph to
@@ -87,51 +87,40 @@ render_timer: false
 custom_cursor_colors: true
 
 # More colors https://github.com/jwilm/alacritty/wiki/Color-schemes
-# Colors (Tomorrow Night Bright)
+# Base16 OneDark 256 - alacritty color config
+# Lalit Magant (http://github.com/tilal6991)
 colors:
   # Default colors
   primary:
-    background: '0x000000'
-    foreground: '0xeaeaea'
+    background: '0x282c34'
+    foreground: '0xabb2bf'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
-    text: '0x000000'
-    cursor: '0xffffff'
+    text: '0x282c34'
+    cursor: '0xabb2bf'
 
   # Normal colors
   normal:
-    black:   '0x000000'
-    red:     '0xd54e53'
-    green:   '0xb9ca4a'
-    yellow:  '0xe6c547'
-    blue:    '0x7aa6da'
-    magenta: '0xc397d8'
-    cyan:    '0x70c0ba'
-    white:   '0xffffff'
+    black:   '0x282c34'
+    red:     '0xe06c75'
+    green:   '0x98c379'
+    yellow:  '0xe5c07b'
+    blue:    '0x61afef'
+    magenta: '0xc678dd'
+    cyan:    '0x56b6c2'
+    white:   '0xabb2bf'
 
   # Bright colors
   bright:
-    black:   '0x666666'
-    red:     '0xff3334'
-    green:   '0x9ec400'
-    yellow:  '0xe7c547'
-    blue:    '0x7aa6da'
-    magenta: '0xb77ee0'
-    cyan:    '0x54ced6'
-    white:   '0xffffff'
-
-  # Dim colors (Optional)
-  dim:
-￼   black:   '0x333333'
-￼   red:     '0xf2777a'
-￼   green:   '0x99cc99'
-￼   yellow:  '0xffcc66'
-￼   blue:    '0x6699cc'
-￼   magenta: '0xcc99cc'
-￼   cyan:    '0x66cccc'
-￼   white:   '0xdddddd'
-
+    black:   '0x545862'
+    red:     '0xe06c75'
+    green:   '0x98c379'
+    yellow:  '0xe5c07b'
+    blue:    '0x61afef'
+    magenta: '0xc678dd'
+    cyan:    '0x56b6c2'
+    white:   '0xabb2bf'
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once
