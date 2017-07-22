@@ -16,3 +16,5 @@ mail/.mutt/secure-ca.cert
 *.itermcolors
 scratch
 newsbeuter/.newsbeuter/history.*
+newsbeuter/.newsbeuter/cache.*
+
