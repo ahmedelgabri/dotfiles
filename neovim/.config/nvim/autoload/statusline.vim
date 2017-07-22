@@ -75,6 +75,27 @@ function! statusline#ALEGetWarning()
   endif
 endfunction
 
+" Modified from here
+" https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
+function! statusline#GetHunks()
+  let l:symbols = ['+', '-', '~']
+  let [l:added, l:modified, l:removed] = GitGutterGetHunkSummary()
+  let l:stats = [l:added, l:removed, l:modified]  " reorder
+  let l:hunkline = ''
+
+  for l:i in range(3)
+    if l:stats[l:i] > 0
+      let l:hunkline .= printf('%s%s ', l:symbols[l:i], l:stats[l:i])
+    endif
+  endfor
+
+  if !empty(l:hunkline)
+    let l:hunkline = printf('[%s]', l:hunkline[:-2])
+  endif
+
+  return l:hunkline
+endfunction
+
 function! statusline#fileSize()
   let l:bytes = getfsize(expand('%:p'))
   if (l:bytes >= 1024)

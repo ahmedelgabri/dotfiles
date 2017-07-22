@@ -11,6 +11,7 @@ set statusline=
 set statusline+=%0*
 set statusline+=\ %{statusline#getMode()}
 set statusline+=\ %<
+set statusline+=%6*\ %{statusline#GetHunks()}
 set statusline+=%6*\ %{statusline#gitInfo()}
 set statusline+=\ %4*
 set statusline+=\ %{statusline#fileprefix()}
