@@ -10,7 +10,7 @@ let g:one_allow_italics = 1
 let g:gruvbox_italic=1
 
 let s:hour = strftime('%H')
-colorscheme codedark
+colorscheme one
 
 " Italics
 hi Comment cterm=italic gui=italic
