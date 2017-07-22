@@ -1,7 +1,3 @@
-fzf-down() {
-  fzf --height 50% "$@"
-}
-
 # # https://github.com/junegunn/fzf/wiki/Examples#z
 # fuzzy z
 unalias z 2> /dev/null
@@ -20,59 +16,48 @@ zz() {
 
 # c - browse chrome canary history
 ch() {
-  local cols sep
-  export cols=$(( COLUMNS / 3 ))
-  export sep='{::}'
+  local cols sep google_history open
+  cols=$(( COLUMNS / 3 ))
+  sep='{::}'
 
-  \cp -f ~/Library/Application\ Support/Google/Chrome\ Canary/Default/History /tmp/h
+  if [ "$(uname)" = "Darwin" ]; then
+    google_history="$HOME/Library/Application Support/Google/Chrome Canary/Default/History"
+    open=open
+  else
+    google_history="$HOME/.config/google-chrome/Default/History"
+    open=xdg-open
+  fi
+  cp -f "$google_history" /tmp/h
   sqlite3 -separator $sep /tmp/h \
-    "select title, url from urls order by last_visit_time desc" |
-  ruby -ne '
-    cols = ENV["cols"].to_i
-    title, url = $_.split(ENV["sep"])
-    len = 0
-    puts "\x1b[36m" + title.each_char.take_while { |e|
-      if len < cols
-        len += e =~ /\p{Han}|\p{Katakana}|\p{Hiragana}|\p{Hangul}/ ? 2 : 1
-      end
-    }.join + " " * (2 + cols - len) + "\x1b[m" + url' |
-  fzf --ansi --multi --no-hscroll --tiebreak=index |
-  sed 's#.*\(https*://\)#\1#' | xargs open
-
-}
-
-# fshow - git commit browser
-fshow() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --header "Press CTRL-S to toggle sort" \
-      --preview "echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
-                 xargs -I % sh -c 'git show --color=always % | head -200 '" \
-      --bind "enter:execute:echo {} | grep -o '[a-f0-9]\{7\}' | head -1 |
-              xargs -I % sh -c 'vim fugitive://\$(git rev-parse --show-toplevel)/.git//% < /dev/tty'"
+    "select substr(title, 1, $cols), url
+     from urls order by last_visit_time desc" |
+  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+  fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
 }
 
 # fco - checkout git branch/tag
 fco() {
   local tags branches target
-  tags=$(git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+  tags=$(
+    git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
   branches=$(
     git branch --all | grep -v HEAD             |
     sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
     sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
   target=$(
-    (echo "$tags"; echo "$branches") | sed '/^$/d' |
-    fzf-down --no-hscroll --reverse --ansi +m -d "\t" -n 2 -q "$*") || return
+    (echo "$tags"; echo "$branches") |
+    fzf-tmux -l30 -- --no-hscroll --ansi +m -d "\t" -n 2) || return
   git checkout $(echo "$target" | awk '{print $2}')
 }
 
-# Swicth Tmux sessions
+# fs [FUZZY PATTERN] - Select selected tmux session
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
 unalias fs 2> /dev/null
 fs() {
   local session
   session=$(tmux list-sessions -F "#{session_name}" | \
-    fzf-tmux --query="$1" --select-1 --exit-0) &&
+    fzf --query="$1" --select-1 --exit-0) &&
   tmux switch-client -t "$session"
 }
 
@@ -83,12 +68,19 @@ fgl() (
 )
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-#   - Open editor normally if you pass a filepath
+#   - CTRL-O to open with `open` command,
+#   - CTRL-E or Enter key to open with the $EDITOR
 fe() {
-  local file
-  file=$(fzf-tmux --query="$1" --select-1 --exit-0)
-  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+  local out file key
+  IFS=$'\n' out=($(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e))
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
 }
 
+vs(){
+  #List all vagrant boxes available in the system including its status, and try to access the selected one via ssh
+  cd $(cat ~/.vagrant.d/data/machine-index/index | jq '.machines[] | {name, vagrantfile_path, state}' | jq '.name + "," + .state  + "," + .vagrantfile_path'| sed 's/^"\(.*\)"$/\1/'| column -s, -t | sort -rk 2 | fzf | awk '{print $3}'); vagrant ssh
+}
