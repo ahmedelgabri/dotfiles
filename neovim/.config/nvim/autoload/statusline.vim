@@ -77,9 +77,9 @@ endfunction
 
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
-function! statusline#GetHunks()
+function! statusline#GetHunks(plugin)
   let l:symbols = ['+', '-', '~']
-  let [l:added, l:modified, l:removed] = GitGutterGetHunkSummary()
+  let [l:added, l:modified, l:removed] = a:plugin
   let l:stats = [l:added, l:removed, l:modified]  " reorder
   let l:hunkline = ''
 
@@ -119,10 +119,10 @@ function! statusline#fileSize()
 endfunction
 
 
-function! statusline#gitInfo()
-  let l:gitbranch = fugitive#head()
+function! statusline#gitInfo(plugin)
+  let l:gitbranch = a:plugin
   if l:gitbranch !=# ''
-    return '⎇ ' .fugitive#head()
+    return '⎇ ' .l:gitbranch
   else
     return ''
   endif
@@ -148,6 +148,15 @@ function! statusline#modified()
   endif
 endfunction
 
+function! statusline#fileprefix()
+  let l:basename=expand('%:h')
+  if l:basename == '' || l:basename == '.'
+    return ''
+  else
+    " Make sure we show $HOME as ~.
+    return substitute(l:basename . '/', '\C^' . $HOME, '~', '')
+  endif
+endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {'n': ['N', '4'],
@@ -193,15 +202,5 @@ function! statusline#getMode()
   " echo modeexe
   exec l:modeexe
   return l:modename
-endfunction
-
-function! statusline#fileprefix()
-  let l:basename=expand('%:h')
-  if l:basename == '' || l:basename == '.'
-    return ''
-  else
-    " Make sure we show $HOME as ~.
-    return substitute(l:basename . '/', '\C^' . $HOME, '~', '')
-  endif
 endfunction
 

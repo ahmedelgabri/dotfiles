@@ -98,8 +98,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'airblade/vim-gitgutter'
 Plug 'gregsexton/gitv'
 Plug 'lambdalisue/vim-gista'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
+Plug 'lambdalisue/gina.vim'
 
 " Writing
 Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}

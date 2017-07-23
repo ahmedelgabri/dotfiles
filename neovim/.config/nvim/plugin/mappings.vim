@@ -51,11 +51,11 @@ nnoremap <Down> :resize +2<CR>
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 " Open current file on github.com
-nnoremap gb  :Gbrowse<CR>
-" Make it work in Visual mode to open with highlighted linenumbers
-vnoremap gb  :Gbrowse<CR>
-nnoremap gs  :Gstatus<CR>
-vnoremap gs  :Gstatus<CR>
+nnoremap gb  :Gina browse :% --exact<CR> " Open current file on github.com
+vnoremap gb  :Gina browse :% --exact<CR> " Make it work in Visual mode to open with highlighted linenumbers
+nnoremap gs  :Gina status<CR>
+vnoremap gs  :Gina status<CR>
+
 " Quickly move current line, also accepts counts 2<leader>j
 nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
