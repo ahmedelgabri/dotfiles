@@ -10,6 +10,7 @@ ITERM_THEMES=(
 "https://raw.githubusercontent.com/anunez/one-dark-iterm/master/one-dark.itermcolors"
 "https://raw.githubusercontent.com/oskarkrawczyk/honukai-iterm-zsh/master/honukai.itermcolors"
 "https://raw.githubusercontent.com/joshdick/onedark.vim/master/term/One%20Dark.terminal"
+"https://raw.githubusercontent.com/chibicode/one-light-terminal/master/one-light-terminal.itermcolors"
 "https://raw.githubusercontent.com/tyrannicaltoucan/vim-deep-space/master/term/deep-space.itermcolors"
 )
 
