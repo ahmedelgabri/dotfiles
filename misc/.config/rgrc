@@ -1,0 +1,6 @@
+# This file is dependant on zsh/config/functions/rg.zsh
+# Always prettify and cue the wrapper to use a pager
+-p
+
+# Always search hidden files/folders
+--hidden
