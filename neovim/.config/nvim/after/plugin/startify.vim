@@ -4,7 +4,7 @@ let g:startify_skiplist = [
       \ 'COMMIT_EDITMSG',
       \ '^/tmp',
       \ escape(fnamemodify(resolve($VIMRUNTIME), ':p'), '\') .'doc',
-      \ 'bundle/.*/doc',
+      \ 'plugged/.*/doc',
       \ ]
 
 let g:startify_padding_left = 5
