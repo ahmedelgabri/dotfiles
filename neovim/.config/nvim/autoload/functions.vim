@@ -126,22 +126,22 @@ function! functions#mkview() abort
   endif
 endfunction
 
-function! functions#hasFileType(list)
-  return index(a:list, &filetype) == -1
+function! functions#hasFileType(list) abort
+  return index(a:list, &filetype) != -1
 endfunction
 
-let g:GabriQuitOnQBlacklist = ['preview', 'qf', 'fzf', 'netrw', 'help']
-function! functions#should_quit_on_q()
-  return functions#hasFileType(g:GabriQuitOnQBlacklist)
+let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help']
+function! functions#should_quit_on_q() abort
+  return functions#hasFileType(g:GabriQuitOnQ)
 endfunction
 
 let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt']
-function! functions#should_turn_off_colorcolumn()
+function! functions#should_turn_off_colorcolumn() abort
   return functions#hasFileType(g:GabriNoColorcolumn)
 endfunction
 
 let g:GabriKeepWhitespace = ['markdown']
-function! functions#should_strip_whitespace()
+function! functions#should_strip_whitespace() abort
   return functions#hasFileType(g:GabriKeepWhitespace)
 endfunction
 
