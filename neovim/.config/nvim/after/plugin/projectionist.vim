@@ -4,12 +4,21 @@ let g:projectionist_heuristics = {
       \       'alternate': [
       \         '{dirname}/{basename}.test.js',
       \         '{dirname}/{basename}.spec.js',
+      \         '{dirname}/{dirname}.test.js',
+      \         '{dirname}/{dirname}.spec.js',
       \         '{dirname}/__tests__/{basename}.test.js',
       \         '{dirname}/__tests__/{basename}.spec.js',
       \       ],
       \       'type': 'source'
       \     },
       \     '*.test.js': {
+      \       'alternate': [
+      \         '{basename}.js',
+      \         '{basename}/index.js'
+      \        ],
+      \       'type': 'test',
+      \     },
+      \     '*.spec.js': {
       \       'alternate': [
       \         '{basename}.js',
       \         '{basename}/index.js'
