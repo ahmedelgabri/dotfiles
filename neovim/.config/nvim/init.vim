@@ -83,8 +83,7 @@ Plug 'jez/vim-github-hub'
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
-Plug 'w0rp/ale', { 'do': 'npm i -g stylelint eslint' }
-Plug 'sbdchd/neoformat', { 'on': 'Neoformat', 'do': 'npm i -g prettier' }
+Plug 'w0rp/ale', { 'do': 'npm i -g prettier stylelint eslint' }
 
 " Themes, UI & eye cnady
 Plug 'ahmedelgabri/one-dark.vim'
@@ -96,7 +95,6 @@ Plug 'w0ng/vim-hybrid'
 
 " Git
 Plug 'airblade/vim-gitgutter'
-Plug 'gregsexton/gitv'
 Plug 'lambdalisue/vim-gista'
 Plug 'lambdalisue/gina.vim'
 
