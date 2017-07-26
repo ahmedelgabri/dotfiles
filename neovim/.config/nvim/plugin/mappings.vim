@@ -63,7 +63,7 @@ nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 nnoremap <leader>q :quit<CR>
 
 inoremap jj <ESC>
-nnoremap \ :Grepper -side -tool rg -query<SPACE>
+nnoremap \ :Grepper -side -tool rg -query --hidden<SPACE>
 " nnoremap \\ :Grepper -side -tool git -query<SPACE>
 " nnoremap <silent> <leader>d :20Lex<CR>
 nnoremap <silent> <leader>d :NERDTreeFind<CR>
@@ -80,7 +80,7 @@ nnoremap <expr><silent> <Bar> v:count == 0 ? "<C-W>v<C-W><Right>" : ":<C-U>norma
 nnoremap <expr><silent> _     v:count == 0 ? "<C-W>s<C-W><Down>"  : ":<C-U>normal! ".v:count."_<CR>"
 
 " open prev file
-nnoremap <BS> :e#<CR>
+nnoremap <leader># :e#<CR>
 
 " https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 xnoremap <  <gv

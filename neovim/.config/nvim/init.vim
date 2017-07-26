@@ -63,12 +63,6 @@ Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 Plug 'tpope/vim-projectionist'
-Plug 'Valloric/MatchTagAlways', { 'for': ['html', 'xml', 'jinja2'] }
-let g:mta_filetypes = {
-    \ 'html' : 1,
-    \ 'xml' : 1,
-    \ 'jinja2' : 1,
-    \}
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
