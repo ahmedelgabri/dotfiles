@@ -72,6 +72,7 @@ alias apache="sudo apachectl "
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
 (( $+commands[nvim] )) && alias vim="nvim "
+(( $+commands[rg] )) && alias rg="rg --hidden "
 (( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[colourify] )) && alias curl='colourify curl '
