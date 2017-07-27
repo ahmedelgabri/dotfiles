@@ -85,7 +85,7 @@ brew 'urlview'
 brew 'vim', args: ['with-lua', 'with-python3', 'with-override-system-vi']
 brew 'weechat', args: ['with-perl', 'with-python', 'with-ruby', 'with-lua', 'with-curl']
 brew 'wget'
-brew 'yarn'
+brew 'yarn', args: ['ignore-dependencies']
 brew 'zsh'
 
 cask 'alfred'
