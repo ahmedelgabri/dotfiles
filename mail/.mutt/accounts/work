@@ -23,7 +23,7 @@ mailboxes "+Work/Work" \
 macro index,pager gp '<enter-command>source ~/.mutt/accounts/personal<enter><change-folder>!<enter>'
 macro index SI "<shell-escape>mbsync work-download<enter>" "sync inbox"
 macro index,pager y "<save-message>=Work/Work.Archive<enter>" "Archive conversation"
-macro index,pager Y "<save-thread>=Work/Work.Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><tag-prefix><save-message>=Work/Work.Archive<enter>" "Archive thread"
 
 color status red default
 color sidebar_highlight black red
