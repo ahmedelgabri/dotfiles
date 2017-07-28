@@ -58,7 +58,7 @@ brew 'lbdb'
 brew 'msmtp'
 brew 'ncdu'
 brew 'neofetch'
-brew 'neomutt/neomutt/neomutt', args: ['with-sidebar-patch', 'with-notmuch-patch']
+brew 'neomutt/neomutt/neomutt', args: ['with-notmuch-patch']
 brew 'neovim', args: ['HEAD']
 brew 'newsbeuter'
 brew 'offlineimap'
