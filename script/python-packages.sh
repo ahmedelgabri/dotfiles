@@ -14,6 +14,6 @@ PACKAGES=(
 "jupyter"
 )
 
-mkdir ~/.venv && pip3 install "${PACKAGES[@]}" && pip install "${PACKAGES[@]}"
+mkdir ~/.venv && pip3 install "${PACKAGES[@]}" && pip2 install "${PACKAGES[@]}"
 
 unset -v PACKAGES
