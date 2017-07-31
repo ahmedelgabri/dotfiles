@@ -42,7 +42,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
   \| Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
-Plug 'ludovicchabant/vim-gutentags'
+Plug 'jsfaint/gen_tags.vim'
+let g:loaded_gentags#gtags = 1
+let g:gen_tags#ctags_auto_gen = 1
+let g:gen_tags#ctags_use_cache_dir = 0
+" let g:gen_tags#verbose = 1
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
