@@ -33,13 +33,6 @@ set colorcolumn=+1
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
 set synmaxcol=300                     " do not highlith very long lines
-" set re=1                              " use explicit old regexpengine, seems to be more faster
-
-set number                            " show line numbers in gutter
-
-if exists('+relativenumber')
-  set relativenumber                  " show relative numbers in gutter
-endif
 
 if has('showcmd')
   set showcmd                         " extra info at end of command line
