@@ -26,7 +26,7 @@ alias du='du -kh'
 
 # TERMINAL
 alias vi="/usr/local/bin/vim "
-alias ev="e ~/.dotfiles/neovim/.config/nvim/init.vim"
+alias ev="e ~/.vimrc"
 alias "?"="pwd"
 alias c="clear "
 alias ll="type tree >/dev/null && tree -da -L 1 || l -d .*/ */ "

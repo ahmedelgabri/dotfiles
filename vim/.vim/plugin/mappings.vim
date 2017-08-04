@@ -27,11 +27,6 @@ xnoremap <silent> gk k
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
 
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-
 " Disable arrow keys (hardcore)
 map  <up>    <nop>
 imap <up>    <nop>

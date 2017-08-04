@@ -6,4 +6,3 @@ let g:NERDTreeIgnore = ['\.tags$','^tags$', '.DS_Store']
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeChDirMode=2
 let g:NERDTreeMinimalUI=1
-

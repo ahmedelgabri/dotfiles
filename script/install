@@ -133,7 +133,6 @@ symlink_files() {
     mkdir $HOME/.config
   fi
 
-  mkdir -p $HOME/.dotfiles/neovim/.config/nvim/tmp/{backup,swap,undo,view}
   mkdir -p $HOME/.mail/{Personal,Work}
 
   if [[ -d $DOTFILES_DIR ]]; then

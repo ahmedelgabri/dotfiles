@@ -1,8 +1,6 @@
-vim/.vim/
-vim/.vimrc
-neovim/.config/nvim/plugged/
-neovim/.config/nvim/tmp/
-neovim/.config/nvim/autoload/plug.vim*
+vim/.vim/plugged/
+vim/.vim/tmp/
+vim/.vim/autoload/plug.vim*
 irc/.weechat/*
 !irc/.weechat/buflist.conf
 !irc/.weechat/irc.conf
