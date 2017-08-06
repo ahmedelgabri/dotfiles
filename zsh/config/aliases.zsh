@@ -20,6 +20,15 @@ if (( $+commands[htop] )); then
   alias top=htop
 fi
 
+
+if (( $+commands[exa] )); then
+  alias ll="exa --tree"
+elif (( $+commands[tree] )); then
+  alias ll="type tree >/dev/null && tree -da -L 1 || l -d .*/ */ "
+else
+  alias ll="echo 'You have to install exa or tree'"
+fi
+
 # Resource Usage
 alias df='df -kh'
 alias du='du -kh'
@@ -29,8 +38,6 @@ alias vi="/usr/local/bin/vim "
 alias ev="e ~/.vimrc"
 alias "?"="pwd"
 alias c="clear "
-alias ll="type tree >/dev/null && tree -da -L 1 || l -d .*/ */ "
-alias lc="ls -AlCF "
 alias KABOOM="nvm use default && ((npm cache verify; npm update -g) & (brew update && brew reinstall --HEAD neovim && brew upgrade && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor)); source ~/.zshrc"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
