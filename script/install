@@ -203,6 +203,7 @@ if [ $? -eq 0 ]; then
   log_success "Done."
   # log_success "Change your zsh to the brew installed one. and run \"make\""
   log_success "Don't forget to generate SSH keys, symlink files from box & source .macos"
+  log_success "!!!!! Run transcrypt -c <CIPHER> -p '<PASSWORD' to decrypt encrypted files !!!!!!"
 else
   log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"
 fi
