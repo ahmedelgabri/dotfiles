@@ -14,6 +14,12 @@ setopt printexitvalue       # for non-zero exit status
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 setopt CORRECT
 
+if [ -n "$TMUX" ]; then
+  export TERM=tmux-256color
+else
+  export TERM=xterm-256color
+fi
+
 # Better spell checking & auto correction prompt
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
 
@@ -60,7 +66,12 @@ fpath=(
 
 # GNU Coreutils
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-(( $+commands[nvim] )) && export MANPAGER="nvim -c 'set ft=man' -"
+case $EDITOR in
+    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
+     vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
+       *) export MANPAGER='less' ;;
+esac
+# export MANWIDTH=80
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
@@ -107,3 +118,32 @@ if [[ ! -d "$TMPDIR" ]]; then
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
+
+
+##############################################################
+# Custom/Plugins
+###############################################################
+export GITHUB_USER="ahmedelgabri"
+export PROJECTS="$HOME/Sites/dev"
+
+export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3'
+export FZF_DEFAULT_COMMAND='rg --no-messages --files --hidden --follow --glob "!.git/*"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
+export HOMEBREW_INSTALL_BADGE="🍕"
+export HOMEBREW_NO_ANALYTICS=1
+# export HOMEBREW_NO_INSECURE_REDIRECT=1
+# export HOMEBREW_CASK_OPTS=--require-sha
+
+SYMBOLS=(
+"λ"
+"ϟ"
+"▲"
+"∽"
+)
+
+export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
