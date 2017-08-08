@@ -37,7 +37,7 @@ brew 'figlet'
 brew 'findutils'
 brew 'fortune'
 brew 'fpp'
-# brew 'fzf'
+brew 'fzf'
 brew 'isync', args: ['with-berkeley-db']
 brew 'gawk'
 brew 'git-standup'

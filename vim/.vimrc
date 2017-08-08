@@ -38,8 +38,10 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install --all' }
-  \| Plug 'junegunn/fzf.vim'
+if !empty(glob('/usr/local/opt/fzf'))
+  set runtimepath+=/usr/local/opt/fzf
+  Plug 'junegunn/fzf.vim'
+endif
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'jsfaint/gen_tags.vim'
