@@ -21,15 +21,20 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.vim/plugged')
+" https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
+function! PlugCond(cond, ...)
+  let l:opts = get(a:000, 0, {})
+  return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
+endfunction
 
+call plug#begin('~/.vim/plugged')
 " General
 if has('nvim')
   Plug 'roxma/nvim-completion-manager'
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
   " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
-  Plug 'roxma/nvim-cm-tern', empty(glob(getcwd() .'/.flowconfig')) ? { 'do': 'npm i' } : { 'on': [], 'do': 'npm i' }
-  Plug 'roxma/ncm-flow', !empty(glob(getcwd() .'/.flowconfig')) ? {} : { 'on': [] }
+  Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'npm i' })
+  Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
   Plug 'Shougo/neco-vim'
   Plug 'roxma/ncm-github'
 endif
