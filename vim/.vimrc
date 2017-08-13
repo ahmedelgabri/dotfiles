@@ -52,8 +52,8 @@ let g:gen_tags#ctags_use_cache_dir = 0
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-  \| Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'Shougo/unite.vim'
+  \| Plug 'Shougo/vimfiler.vim', { 'on': ['VimFiler', 'VimFilerExplorer'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
