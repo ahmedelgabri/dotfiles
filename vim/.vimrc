@@ -63,7 +63,6 @@ Plug 'wincent/loupe'
 Plug 'wincent/pinnacle'
 Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
-Plug 'kepbod/quick-scope'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
@@ -138,8 +137,6 @@ let g:current_prettier_path = nrun#Which('prettier')
 
 " Plugins settings
 "================================================================================
-" this needs to be here ¯\_(ツ)_/¯
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Some crazy magic to make nvim-completion-manager & UltiSnips work nicely together using `<Tab>`
 " It doesn't work when added to plugin/after/ultisnips.vim so for now it's here

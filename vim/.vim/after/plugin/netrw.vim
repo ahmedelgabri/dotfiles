@@ -17,3 +17,5 @@ let g:netrw_hide = 1
 " (reproduce bug by opening netrw, :e ., :q)
 let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
+
+nnoremap <silent> <leader>d :20Lex<CR>

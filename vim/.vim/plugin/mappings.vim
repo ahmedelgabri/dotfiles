@@ -1,3 +1,5 @@
+" Plugin mappings are inside plugin/after/<plugin name>.vim files
+"
 " leader is space, only works with double quotes around it?!
 let mapleader="\<Space>"
 let maplocalleader=','
@@ -45,12 +47,6 @@ nnoremap <Down> :resize +2<CR>
 
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
-" Open current file on github.com
-nnoremap gb  :Gina browse :% --exact<CR> " Open current file on github.com
-vnoremap gb  :Gina browse :% --exact<CR> " Make it work in Visual mode to open with highlighted linenumbers
-nnoremap gs  :Gina status<CR>
-vnoremap gs  :Gina status<CR>
-
 " Quickly move current line, also accepts counts 2<leader>j
 nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
@@ -58,15 +54,8 @@ nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
 nnoremap <leader>q :quit<CR>
 
 inoremap jj <ESC>
-nnoremap \ :Grepper -side -tool rg -query --hidden<SPACE>
-" nnoremap \\ :Grepper -side -tool git -query<SPACE>
-" nnoremap <silent> <leader>d :20Lex<CR>
-nnoremap <M-d> :Sayonara!<CR>
 nnoremap <Leader><TAB> <C-w><C-w>
 nnoremap <M-Tab> <C-^>
-" set text wrapping toggles
-nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-nnoremap -- :UndotreeToggle<CR>
 nnoremap <leader>= <C-w>t<C-w>K<CR>
 nnoremap <leader>\ <C-w>t<C-w>H<CR>
 " Use | and _ to split windows (while preserving original behaviour of [count]bar and [count]_).

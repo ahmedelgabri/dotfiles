@@ -1,7 +1,5 @@
 scriptencoding utf-8
 
-" Disable netrw.vim
-let g:loaded_netrwPlugin = 1
 let g:vimfiler_as_default_explorer = 1
 
 " Enable file operation commands.

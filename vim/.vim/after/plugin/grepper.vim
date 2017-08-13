@@ -1,6 +1,3 @@
-xmap gs <plug>(GrepperOperator)
-vmap gs <Plug>(GrepperOperator)
-
 command! Todo :Grepper
       \ -side
       \ -noprompt
@@ -11,3 +8,8 @@ autocmd FileType GrepperSide
       \  silent execute 'keeppatterns v#'.b:grepper_side.'#>'
       \| silent normal! ggn
       \| setl wrap
+
+xmap gs <plug>(GrepperOperator)
+vmap gs <Plug>(GrepperOperator)
+nnoremap \ :Grepper -side -tool rg -query --hidden<SPACE>
+" nnoremap \\ :Grepper -side -tool git -query<SPACE>
