@@ -30,6 +30,7 @@ homebrew:
 		@brew bundle --file="$(HOME)/.dotfiles/homebrew/Brewfile"
 		@brew cleanup
 		@brew doctor
+		@/usr/local/opt/fzf/install --all
 
 node:
 		@sh ./script/node-packages.sh
