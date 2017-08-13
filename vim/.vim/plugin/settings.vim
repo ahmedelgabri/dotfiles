@@ -257,13 +257,22 @@ if exists('$SUDO_USER')               " don't create root-owned files
   endif
 else
   if has('nvim')
-    set shada='1000,<500,:500,/500,n~/.vim/tmp/main.shada
+    " default in nvim: !,'100,<50,s10,h
+    set shada=!,'1000,<500,:10000,/10000,s10,h,n~/.vim/tmp/main.shada
     autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+    set viminfo=!,'1000,<500,:10000,/10000,s10,h,n~/.vim/tmp/viminfo
   else
-    set viminfo='1000,<500,:500,/500,n~/.vim/tmp/viminfo
   endif
 endif
 
 if has('nvim')
   set inccommand=nosplit                " incremental command live feedback"
+endif
+
+if exists('&guioptions')
+  " cursor behavior:
+  "   - no blinking in normal/visual mode
+  "   - blinking in insert-mode
+  " highlight Cursor guifg=Red guibg=Red
+  set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100
 endif
