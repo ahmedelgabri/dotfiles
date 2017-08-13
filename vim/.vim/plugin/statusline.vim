@@ -33,9 +33,9 @@ set statusline+=%4*\ %{statusline#fileSize()}
 set statusline+=%4*%{statusline#rhs()}
 set statusline+=%*
 
-execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
-execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
-execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
+" execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
+" execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
+" execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
 execute 'highlight! User4 ' . pinnacle#extract_highlight('WhiteSpace')
 " execute 'highlight! User5 ' . pinnacle#extract_highlight('PmenuSel')
 " execute 'highlight! User6 ' . pinnacle#extract_highlight('PmenuSel')
@@ -51,15 +51,3 @@ augroup ahmedStatusLine
     autocmd BufWinEnter,BufWritePost,FileWritePost,WinEnter,InsertEnter,InsertLeave,CmdWinEnter,CmdWinLeave,ColorScheme * call statusline#getMode()
   endif
 augroup END
-
-" augroup moonflyStatusLine
-"     autocmd!
-"     autocmd VimEnter,WinEnter,BufWinEnter,InsertLeave * call s:StatusLine()
-"     autocmd WinLeave,FilterWritePost * call s:StatusLine()
-"     autocmd InsertEnter * call s:StatusLine()
-"     autocmd CursorMoved,CursorHold * call s:StatusLine()
-"     if has('nvim')
-"         autocmd TermOpen * call s:StatusLine()
-"     endif
-" augroup END
-"

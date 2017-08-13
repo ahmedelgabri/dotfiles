@@ -159,7 +159,8 @@ function! statusline#fileprefix()
 endfunction
 
 " DEFINE MODE DICTIONARY
-let s:dictmode= {'n': ['N', '4'],
+let s:dictmode= {
+      \ 'n': ['N', '4'],
       \ 'no': ['N-Operator Pending', '4'],
       \ 'v': ['V', '6'],
       \ 'V': ['V·Line', '6'],
@@ -177,18 +178,21 @@ let s:dictmode= {'n': ['N', '4'],
       \ 'rm': ['More', '7'],
       \ 'r?': ['Confirm', '7'],
       \ '!': ['Shell', '2'],
-      \ 't': ['Terminal', '2']}
+      \ 't': ['Terminal', '2']
+      \ }
 
 " DEFINE COLORS FOR STATUSBAR
+" @TODO: Fix cterm.
 let s:dictstatuscolor={
-      \ '1': 'hi! StatusLine guibg=#ab4642 guifg=None',
-      \ '2': 'hi! StatusLine guibg=#dc9656 guifg=None',
-      \ '3': 'hi! StatusLine guibg=#f7ca88 guifg=None',
-      \ '4': 'hi! StatusLine '.pinnacle#extract_highlight('Visual').' guifg=' .pinnacle#extract_fg('Normal'),
-      \ '5': 'hi! StatusLine guibg='. pinnacle#extract_fg('Function') .' guifg=' .pinnacle#extract_fg('NonText') ,
-      \ '6': 'hi! StatusLine guibg=#ba8baf guifg=None',
-      \ '7': 'hi! StatusLine guibg=#a16946 guifg=None'
+      \ '1': pinnacle#highlight({ 'bg': '#ab4642' }),
+      \ '2': pinnacle#highlight({ 'bg': '#dc9656', 'fg': 'NONE' }),
+      \ '3': pinnacle#highlight({ 'bg': '#f7ca88', 'fg': 'NONE' }),
+      \ '4': pinnacle#extract_highlight('PmenuSel'),
+      \ '5': pinnacle#extract_highlight('TabLineSel'),
+      \ '6': pinnacle#highlight({ 'bg': '#ba8baf' }),
+      \ '7': pinnacle#highlight({ 'bg': '#a16946', 'fg': 'NONE' }),
       \}
+
 
 " GET CURRENT MODE FROM DICTIONARY AND RETURN IT
 " IF MODE IS NOT IN DICTIONARY RETURN THE ABBREVIATION
@@ -199,8 +203,8 @@ function! statusline#getMode()
   let l:modecolor = l:modelist[1]
   let l:modename = l:modelist[0]
   let l:modeexe = get(s:dictstatuscolor, l:modecolor, 'red')
-  " echo modeexe
-  exec l:modeexe
+  " echo l:modeexe
+  exec 'hi! StatusLine term=NONE gui=NONE ' . l:modeexe
   return l:modename
 endfunction
 

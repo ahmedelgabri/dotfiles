@@ -22,9 +22,9 @@ hi Comment cterm=italic gui=italic
 " endif
 
 " I hate bold tabline
-hi Tabline cterm=None gui=None
-hi TablineFill cterm=None gui=None
-hi TablineSel cterm=None gui=None
+hi Tabline cterm=NONE gui=NONE
+hi TablineFill cterm=NONE gui=NONE
+hi TablineSel cterm=NONE gui=NONE
 
 " Highlight long lines
 hi OverLength ctermbg=red ctermfg=white guibg=#592929
