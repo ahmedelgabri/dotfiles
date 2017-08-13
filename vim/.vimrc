@@ -39,8 +39,8 @@ Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
 if !empty(glob('/usr/local/opt/fzf'))
-  set runtimepath+=/usr/local/opt/fzf
-  Plug 'junegunn/fzf.vim'
+  " set runtimepath+=/usr/local/opt/fzf
+  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 endif
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
@@ -81,6 +81,20 @@ Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
 Plug 'rhysd/npm-filetypes.vim'
 Plug 'jez/vim-github-hub'
+Plug 'Valloric/MatchTagAlways'
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'jinja2' : 1,
+    \ 'twig' : 1,
+    \ 'javascript' : 1,
+    \ 'javascript.jsx' : 1,
+    \}
+Plug 'alvan/vim-closetag'
+let g:closetag_filenames = '*.html,*.xhtml,*.jsx,*.js,*.twig'
+let g:closetag_emptyTags_caseSensitive = 1
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
