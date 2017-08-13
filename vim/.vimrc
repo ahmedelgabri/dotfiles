@@ -69,6 +69,7 @@ Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 Plug 'tpope/vim-projectionist'
+Plug 'ap/vim-buftabline'
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
