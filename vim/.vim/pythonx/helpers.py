@@ -69,17 +69,28 @@ def jsDoc(tabStop):
 
 
 def formatVariableName(path):
-  lastPart = path.split('/')[-1]
-  if lastPart == 'lodash':
-    return '_'
-  elif lastPart == 'react':
-    return 'React, { Component }'
-  elif lastPart == 'react-dom':
-    return 'ReactDOM';
-  elif lastPart == 'prop-types':
-    return 'PropTypes';
-  elif lastPart == 'jquery':
-    return '$'
+  path = path.split('/')
+  lastPart = path[-1]
+
+  try:
+    firstPart = path[-2]
+  except IndexError:
+    firstPart = ''
+
+  dict  = {
+    'lodash': '_',
+    'ramda': 'R',
+    'react': 'React, { Component }',
+    'react-dom': 'ReactDOM',
+    'prop-types': 'PropTypes',
+    'jquery': '$',
+    'classnames': 'cn'
+  }
+
+  if firstPart == 'lodash':
+    return lastPart
+  elif lastPart in dict:
+    return dict[lastPart]
   else:
     return re.sub(r'[_\-]', '', lastPart)
 

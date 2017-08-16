@@ -49,16 +49,14 @@ endsnippet
 
 # Modules
 
-# Only expand if the on an empty line
-snippet "^req" "require()" "not snip.buffer[snip.column+2].strip()" !brAe
+# Only expand if on an empty line
+snippet "^req" "require()" brA
 const `!p snip.rv=formatVariableName(t[2])` = require('${2}')
-$0
 endsnippet
 
-# Only expand if the on an empty line
-snippet "^imp" "import x form y" "not snip.buffer[snip.column+2].strip()" !brAe
+# Only expand if on an empty line
+snippet "^imp" "import x form y" brA
 import `!p snip.rv=formatVariableName(t[1])` from '${1}'
-$0
 endsnippet
 
 
