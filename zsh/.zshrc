@@ -49,7 +49,6 @@ zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
 zplug "maxmellon/yarn_completion", defer:1
 zplug "zsh-users/zsh-autosuggestions", defer:1
-zplug "b4b4r07/emoji-cli"
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
