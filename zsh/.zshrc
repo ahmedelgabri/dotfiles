@@ -47,7 +47,7 @@ zplug "modules/osx", depth:1, from:prezto
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
 zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
-zplug "maxmellon/yarn_completion", defer:1
+zplug "zsh-users/zsh-completions", defer:1
 zplug "zsh-users/zsh-autosuggestions", defer:1
 
 if ! zplug check --verbose; then
