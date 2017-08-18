@@ -14,9 +14,6 @@ command! Dark set background=dark
 " Delete the current file and clear the buffer
 command! Del :call delete(@%) | bdelete!
 
-" Force write readonly files using sudo
-command! WS w !sudo tee %
-
 command! FormatJSON %!python -m json.tool
 
 command! ClearRegisters call functions#ClearRegisters()
