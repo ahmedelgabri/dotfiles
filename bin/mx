@@ -28,6 +28,8 @@ if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
   mx-init
 fi
 
+MX_START="./.mx-start"
+
 get_session () {
   if [ -z "$1" ]; then
     # tmux 1.9a+ doesn't like .'s in session names
@@ -56,8 +58,8 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
     tmux new-session -d -s "$SESSION"
     tmux select-window -t "$SESSION"
     # Sometimes I need to setup some project specific stuff & run some commands
-    if [ -f "./start" ]; then
-      tmux send-keys './start' C-m
+    if [ -x "$MX_START" ]; then
+      tmux send-keys "$MX_START" C-m
     fi
   fi
 
