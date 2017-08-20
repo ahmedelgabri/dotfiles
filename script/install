@@ -1,6 +1,8 @@
 #!/bin/bash
 # curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
 
+set -u
+
 # =======================================================================
 # = Helpers & setting some variables
 # =======================================================================
@@ -92,7 +94,6 @@ take_backup() {
     ".gvimrc"
     ".hammerspoon"
     ".hushlogin"
-    ".hushlogin"
     ".ignore"
     ".lbdbrc"
     ".mbsyncrc"
@@ -109,6 +110,7 @@ take_backup() {
     ".vim"
     ".vimrc"
     ".zlogin"
+    ".zprofile"
     ".zshenv"
     ".zshrc"
     "Library/Preferences/com.googlecode.iterm2.plist"
