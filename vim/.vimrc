@@ -1,6 +1,6 @@
-scriptencoding utf-8
 " vim: ft=vim
-"
+scriptencoding utf-8
+
 "             __
 "     __  __ /\_\    ___ ___   _ __   ___
 "    /\ \/\ \\/\ \ /' __` __`\/\`'__\/'___\
@@ -97,9 +97,6 @@ let g:mta_filetypes = {
     \ 'javascript' : 1,
     \ 'javascript.jsx' : 1,
     \}
-Plug 'alvan/vim-closetag'
-let g:closetag_filenames = '*.html,*.xhtml,*.jsx,*.js,*.twig'
-let g:closetag_emptyTags_caseSensitive = 1
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }

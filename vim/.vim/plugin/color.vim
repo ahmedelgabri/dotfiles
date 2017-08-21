@@ -9,12 +9,12 @@ let g:gruvbox_invert_selection=0
 let g:one_allow_italics = 1
 let g:gruvbox_italic=1
 
-let s:hour = strftime('%H')
 colorscheme one
 
 " Italics
 hi Comment cterm=italic gui=italic
 
+" let s:hour = strftime('%H')
 " if s:hour >= 6 && s:hour < 18
 "   colorscheme onedark
 " else

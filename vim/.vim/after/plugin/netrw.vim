@@ -3,8 +3,7 @@ let g:netrw_banner = 0
 " Next lines are taken from here https://github.com/h3xx/dotfiles/blob/master/vim/.vimrc#L543-L582
 " horizontally split the window when opening a file via <cr>
 let g:netrw_browse_split = 4
-" preview window shown in a vertically split window.
-let g:netrw_preview = 1
+let g:netrw_sizestyle = 'H'
 " split files below, right
 let g:netrw_alto = 1
 let g:netrw_altv = 1

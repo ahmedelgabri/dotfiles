@@ -5,3 +5,7 @@ let g:vim_markdown_frontmatter=1
 let g:goyo_height = '95%'
 let g:goyo_width = '120'
 map <Leader>g :Goyo<CR>
+
+" Goyo & Limelight
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight! | set background=dark

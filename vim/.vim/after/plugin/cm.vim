@@ -4,9 +4,9 @@ let g:cm_sources_override = {
       \ 'cm-bufkeyword' : {'abbreviation' : 'key'},
       \ 'cm-ultisnips' : {'abbreviation' : 'snip'},
       \ 'flow': {
-      \   'scopes': ['javascript', 'javascript.jsx'],
-      \   'abbreviation': 'flow'
-      \ }
+      \     'scopes': ['javascript', 'javascript.jsx'],
+      \     'abbreviation': 'flow'
+      \   }
       \ }
 
 au User CmSetup call cm#register_source({'name' : 'cm-css',
