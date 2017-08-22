@@ -29,6 +29,14 @@ endfunction
 
 call plug#begin('~/.vim/plugged')
 " General
+if !has('nvim')
+  Plug 'tpope/vim-sensible'
+  if &term =~# '^tmux'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  endif
+endif
+
 if has('nvim')
   Plug 'roxma/nvim-completion-manager'
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
@@ -120,16 +128,6 @@ Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}
 Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
-
-syntax enable
-filetype plugin indent on
-"
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-" https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim#L88
-" neovim loads it automatically see `:h matchit`
-if !has('nvim') && !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &runtimepath) ==# ''
-  runtime! macros/matchit.vim
-endif
 
 " Global paths for some executables that are needed for a couple of plugins
 " Neoformat, ale, etc...

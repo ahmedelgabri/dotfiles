@@ -2,21 +2,6 @@ set encoding=utf-8
 scriptencoding utf-8
 set fileencoding=utf-8
 
-if !has('nvim')
-  set nocompatible
-  set autoindent                        " maintain indent of current line
-  set backspace=indent,start,eol        " allow unrestricted backspacing in insert mode
-  " Display as much as possibe of a window's last line.
-  set display+=lastline
-  set laststatus=2
-  set ttyfast
-  set wildmenu
-  if &term =~# '^tmux'
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  endif
-endif
-
 " set highlight+=@:ColorColumn          " ~/@ at end of window, 'showbreak'
 " set highlight+=N:DiffText             " make current line number stand out a little
 " set highlight+=c:LineNr               " blend vertical separators with line numbers
