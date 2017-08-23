@@ -86,7 +86,7 @@ nnoremap <S-tab> :bprevious<CR>
 nnoremap Q @q
 
 " Make dot work in visual mode
-vmap . :norm.<CR>
+vnoremap . :norm.<CR>
 
 " For neovim terminal :term
 if has('nvim')
@@ -101,18 +101,18 @@ if has('nvim')
 endif
 
 nnoremap <silent> <leader>z :call functions#ZoomToggle()<CR>
-nmap <c-g> :call functions#SynStack()<CR>
+nnoremap <c-g> :call functions#SynStack()<CR>
 
-map <leader>r :call functions#RenameFile()<cr>
+nnoremap <leader>r :call functions#RenameFile()<cr>
 
 nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>
 nnoremap _= :call functions#Preserve("normal gg=G")<CR>
 
-map <silent> <Leader>he :call functions#HtmlEscape()<CR>
 map <silent> <Leader>hu :call functions#HtmlUnEscape()<CR>
+map <silent> <Leader>he :call functions#HtmlEscape()<CR>
 
 " maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
-nmap <silent> gof :call functions#OpenFileFolder()<CR>
+nnoremap <silent> gof :call functions#OpenFileFolder()<CR>
 
 " https://github.com/junegunn/vim-plug/issues/435
 function! s:plug_doc()

@@ -170,3 +170,13 @@ function! functions#NeatFoldText()
   let l:foldtextlength = strlen(substitute(l:foldtextstart . l:foldtextend, '.', 'x', 'g')) + &foldcolumn
   return l:foldtextstart . repeat(l:foldchar, winwidth(0)-l:foldtextlength) . l:foldtextend
 endfunction
+
+
+function! functions#jsonFormat()
+  if executable('jq')
+    %!jq '.' 
+  else
+    %!python -m json.tool 
+  endif
+endfunction
+
