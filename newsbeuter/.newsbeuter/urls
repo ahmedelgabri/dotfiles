@@ -188,6 +188,8 @@ http://haseebq.com/feed/ "Blogs"
 https://temochka.com/feed.xml "Blogs"
 https://jamesfriend.com.au/rss.xml "Blogs"
 https://www.twanvl.nl/feed "Blogs"
+https://matthias-endler.de/rss.xml "Blogs"
+http://zzamboni.org/post/index.xml "Blogs"
 
 # Browsers ======================================
 http://hacks.mozilla.org/feed/ "Browsers"
@@ -335,8 +337,8 @@ http://www.pocketjavascript.com/blog?format=RSS "JavaScript"
 https://blog.domenic.me/atom.xml "JavaScript"
 https://blog.rotenberg.io/feed/ "JavaScript"
 https://glebbahmutov.com/blog/atom.xml "JavaScript"
-https://jslive.com/rss "JavaScript"
 https://www.javascript.com/feed/rss "JavaScript"
+https://www.webreflection.co.uk/blog/feed.atom "JavaScript"
 
 # logo ========================================
 http://feeds.feedburner.com/IdentityDesigned "logo"
