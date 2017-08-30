@@ -1,4 +1,5 @@
 " Plugin mappings are inside plugin/after/<plugin name>.vim files
+
 "
 " leader is space, only works with double quotes around it?!
 let mapleader="\<Space>"
@@ -72,15 +73,15 @@ xnoremap >  >gv
 " new file in current directory
 nnoremap <Leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 
+nnoremap <Leader>l :set nu! rnu!<cr>
+nnoremap <Leader>p :t.<left><left>
 
 " Tab and Shift + Tab Circular buffer navigation
 nnoremap <tab>   :bnext<CR>
 nnoremap <S-tab> :bprevious<CR>
 
-
-" use tab to toggle folds
-" nnoremap <Enter> za
-
+" use <Enter> to toggle folds
+nnoremap <Enter> za
 
 " qq to record, Q to replay
 nnoremap Q @q
