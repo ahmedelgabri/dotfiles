@@ -43,8 +43,8 @@ if has('nvim')
   " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
   Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'npm i' })
   Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
+  Plug 'katsika/ncm-lbdb'
   Plug 'Shougo/neco-vim'
-  Plug 'roxma/ncm-github'
 endif
 
 Plug 'jiangmiao/auto-pairs'
