@@ -130,7 +130,7 @@ function! functions#hasFileType(list) abort
   return index(a:list, &filetype) != -1
 endfunction
 
-let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help']
+let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit']
 function! functions#should_quit_on_q() abort
   return functions#hasFileType(g:GabriQuitOnQ)
 endfunction
