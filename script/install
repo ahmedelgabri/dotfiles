@@ -58,7 +58,7 @@ install_homebrew() {
   fi
 }
 
-install_dotfiles() {
+clone_dotfiles() {
   if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
     git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
@@ -148,7 +148,7 @@ symlink_files() {
 install_apps(){
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
-    cd "$DOTFILES_DIR" && make
+    cd "$DOTFILES_DIR" && make homebrew
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
@@ -195,18 +195,22 @@ cd "$HOME"
 softwareupdate --verbose --install --all
 
 install_homebrew
-install_dotfiles
+clone_dotfiles
 take_backup
 symlink_files
 install_apps
 change_shell
 
 if [ $? -eq 0 ]; then
+  log_success "=========================================================================================================================="
   log_success "Done."
-  # log_success "Change your zsh to the brew installed one. and run \"make\""
-  log_success "Don't forget to generate SSH keys, symlink files from box & source .macos"
+  log_success "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps"
+  log_success "Don't forget to generate SSH keys & symlink files from box"
   log_success "!!!!! Run transcrypt -c <CIPHER> -p '<PASSWORD' to decrypt encrypted files !!!!!!"
+  log_success "=========================================================================================================================="
 else
+  log_error "=========================================================================================================================="
   log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"
+  log_error "=========================================================================================================================="
 fi
 
