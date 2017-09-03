@@ -15,4 +15,5 @@ mail/.mutt/secure-ca.cert
 scratch
 newsbeuter/.newsbeuter/history.*
 newsbeuter/.newsbeuter/cache.*
-
+hammerspoon/.hammerspoon/Spoons/*
+!hammerspoon/.hammerspoon/Spoons/SpoonInstall.spoon
