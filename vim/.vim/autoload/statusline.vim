@@ -122,7 +122,7 @@ endfunction
 function! statusline#gitInfo(plugin)
   let l:gitbranch = a:plugin
   if l:gitbranch !=# ''
-    return '⎇ ' .l:gitbranch
+    return '⎇  ' . l:gitbranch
   else
     return ''
   endif

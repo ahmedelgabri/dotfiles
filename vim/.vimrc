@@ -52,7 +52,6 @@ Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
 if !empty(glob('/usr/local/opt/fzf'))
-  " set runtimepath+=/usr/local/opt/fzf
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 endif
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
@@ -111,7 +110,6 @@ Plug 'editorconfig/editorconfig-vim', { 'on': [] }
 Plug 'w0rp/ale', { 'do': 'npm i -g prettier stylelint eslint' }
 
 " Themes, UI & eye cnady
-Plug 'ahmedelgabri/one-dark.vim'
 Plug 'rakr/vim-one'
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'

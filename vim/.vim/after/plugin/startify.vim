@@ -11,9 +11,10 @@ let g:startify_padding_left = 5
 let g:startify_relative_path = 1
 let g:startify_fortune_use_unicode = 1
 let g:startify_change_to_vcs_root = 1
-" let g:startify_session_autoload = 1
 let g:startify_update_oldfiles = 1
 let g:startify_use_env = 1
+let g:startify_files_number = 6
+
 
 hi! link StartifyHeader Normal
 hi! link StartifyFile Directory
