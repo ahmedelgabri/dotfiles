@@ -83,6 +83,7 @@ brew 'wget'
 brew 'yarn', args: ['ignore-dependencies']
 brew 'zsh'
 
+cask '1password-cli'
 cask 'alfred'
 cask 'appcleaner'
 cask 'arq'
