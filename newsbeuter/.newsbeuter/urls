@@ -341,6 +341,9 @@ https://www.webreflection.co.uk/blog/feed.atom "JavaScript"
 http://jasonformat.com/rss/ "~Jason Miller @_developit (Preact)" "JavaScript"
 https://benmccormick.org/rss/ "JavaScript"
 
+# ClojureScript ========================================
+http://swannodette.github.com/atom.xml "ClojureScript"
+
 # logo ========================================
 http://feeds.feedburner.com/IdentityDesigned "logo"
 
