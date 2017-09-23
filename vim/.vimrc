@@ -52,7 +52,8 @@ Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
 Plug 'jaawerth/nrun.vim'
 if !empty(glob('/usr/local/opt/fzf'))
-  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+  Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf.vim'
 endif
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
@@ -115,6 +116,8 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'
+Plug 'hauleth/blame.vim'
+Plug 'AlessandroYorba/Despacio'
 
 " Git
 Plug 'airblade/vim-gitgutter'
