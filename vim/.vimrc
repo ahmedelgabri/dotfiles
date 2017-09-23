@@ -82,6 +82,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 Plug 'tpope/vim-projectionist'
 Plug 'ap/vim-buftabline'
+Plug 'majutsushi/tagbar', { 'on': ['Tagbar'] }
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
