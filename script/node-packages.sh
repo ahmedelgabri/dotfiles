@@ -1,22 +1,19 @@
 #!/bin/bash
 
 NPM_PACKAGES=(
-"create-react-app"
 "jscpd"
+"jsctags"
 "jsinspect"
 "netlify-cli"
 "now"
-"npx"
 "parker"
+"prettier"
 "serve"
-"spoof"
-"stylefmt"
 "surge"
 "svgo"
 "tern"
-"tslide"
 )
 
-npm i -g "${PACKAGES[@]}"
+yarn global add --prefix "~/.yarn" "${PACKAGES[@]}"
 
 unset -v NPM_PACKAGES
