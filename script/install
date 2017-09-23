@@ -54,7 +54,8 @@ install_homebrew() {
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install stow
 
-    # xcodebuild -license accept # To accept Xcode EULA
+    # To accept Xcode EULA
+    xcodebuild -license accept
   fi
 }
 

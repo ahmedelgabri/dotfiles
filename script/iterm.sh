@@ -12,6 +12,11 @@ ITERM_THEMES=(
 "https://raw.githubusercontent.com/joshdick/onedark.vim/master/term/One%20Dark.terminal"
 "https://raw.githubusercontent.com/chibicode/one-light-terminal/master/one-light-terminal.itermcolors"
 "https://raw.githubusercontent.com/tyrannicaltoucan/vim-deep-space/master/term/deep-space.itermcolors"
+"https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio.itermcolors"
+"https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Midnight.itermcolors"
+"https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Sunset.itermcolors"
+"https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Pitch.itermcolors"
+"https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Twilight.itermcolors"
 )
 
 for app in $(find $HOME/Applications -name 'iTerm.app'); do
