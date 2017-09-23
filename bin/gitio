@@ -11,7 +11,7 @@
 URL="$1"
 CODE="$2"
 
-if ! expr "${URL}" : "\(\(https\?://\)\?\(gist\.\)\?github.com/\)" >/dev/null; then
+if ! expr "${URL}" : "\(\(https\?://\)\?\(gist\.\)\?\(github\|githubusercontent\).com/\)" >/dev/null; then
   echo "* github.com URLs only" >&2
   exit 1
 fi
