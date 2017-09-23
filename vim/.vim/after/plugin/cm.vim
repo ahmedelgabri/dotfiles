@@ -1,4 +1,3 @@
-let g:flow#flowpath = g:current_flow_path
 let g:cm_matcher = {'module': 'cm_matchers.substr_matcher', 'case': 'smartcase'}
 let g:cm_sources_override = {
       \ 'cm-tags': {'enable': 0},

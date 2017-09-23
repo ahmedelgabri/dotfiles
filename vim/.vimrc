@@ -50,7 +50,6 @@ endif
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'duggiefresh/vim-easydir'
-Plug 'jaawerth/nrun.vim'
 if !empty(glob('/usr/local/opt/fzf'))
   Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
@@ -108,7 +107,7 @@ let g:mta_filetypes = {
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
-Plug 'w0rp/ale', { 'do': 'yarn global add prettier stylelint eslint' }
+Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 
 " Themes, UI & eye cnady
 Plug 'rakr/vim-one'
@@ -129,13 +128,6 @@ Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}
 Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
-
-" Global paths for some executables that are needed for a couple of plugins
-" Neoformat, ale, etc...
-"================================================================================
-
-let g:current_flow_path = nrun#Which('flow')
-let g:current_prettier_path = nrun#Which('prettier')
 
 " Plugins settings
 "================================================================================
