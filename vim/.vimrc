@@ -41,7 +41,7 @@ if has('nvim')
   Plug 'roxma/nvim-completion-manager'
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
   " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
-  Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'npm i' })
+  Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'yarn' })
   Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
   Plug 'katsika/ncm-lbdb'
   Plug 'Shougo/neco-vim'
@@ -107,7 +107,7 @@ let g:mta_filetypes = {
 
 " Linters & Code quality
 Plug 'editorconfig/editorconfig-vim', { 'on': [] }
-Plug 'w0rp/ale', { 'do': 'npm i -g prettier stylelint eslint' }
+Plug 'w0rp/ale', { 'do': 'yarn global add prettier stylelint eslint' }
 
 " Themes, UI & eye cnady
 Plug 'rakr/vim-one'
