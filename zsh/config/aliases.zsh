@@ -37,7 +37,7 @@ alias du='du -kh'
 alias ev="e ~/.vimrc"
 alias "?"="pwd"
 alias c="clear "
-alias KABOOM="nvm use default && ((npm cache verify; npm update -g) & (brew update && brew reinstall --HEAD neovim && brew upgrade && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor)); source ~/.zshrc"
+alias KABOOM="((yarn global upgrade --latest) & (brew update && brew reinstall --HEAD neovim && brew upgrade && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor)); source ~/.zshrc"
 alias showhidden="defaults write com.apple.finder AppleShowAllFiles true && killall Finder"
 alias hidehidden="defaults write com.apple.finder AppleShowAllFiles false && killall Finder"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"

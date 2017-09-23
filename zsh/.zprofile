@@ -88,6 +88,7 @@ path=(
   $(brew --prefix)/opt/python/libexec/bin
   $(brew --prefix)/Cellar/git
   ${HOME}/.dotfiles/bin
+  ${HOME}/.yarn/bin
   ${HOME}/.cargo/bin
   $path
   ./node_modules/.bin
