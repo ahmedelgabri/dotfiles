@@ -79,3 +79,4 @@ npm-debug.log*
 *.pyc
 *.map
 .mx-start
+.envrc

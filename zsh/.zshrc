@@ -23,8 +23,7 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
-NVM_LAZY_LOAD=true
-# NVM_AUTO_USE=true
+NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 
 zplug "zimframework/zim", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
@@ -95,4 +94,17 @@ SAVEHIST=$HISTSIZE
 ##############################################################
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+##############################################################
+# direnv.
+##############################################################
+
+if [ $(command -v direnv) ]; then
+  export NODE_VERSIONS="$HOME/.nvm/versions/node"
+  export NODE_VERSION_PREFIX="v"
+
+  eval "$(direnv hook zsh)"
+fi
+
+
 

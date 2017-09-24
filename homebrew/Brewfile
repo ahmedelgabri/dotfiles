@@ -17,7 +17,6 @@ tap 'fribmendes/homebrew-battery' # original tap doesn't support --HEAD
 brew 'git'
 brew 'python'
 brew 'python3'
-# brew 'nvm'
 # brew 'ledger'
 brew 'asciinema'
 brew 'battery', args: ['HEAD']
@@ -27,6 +26,7 @@ brew 'coreutils'
 brew 'cowsay'
 brew 'curl'
 brew 'diff-so-fancy'
+brew 'direnv'
 brew 'editorconfig'
 brew 'elinks'
 brew 'elm'
@@ -80,7 +80,7 @@ brew 'urlview'
 brew 'vim', args: ['with-lua', 'with-python3', 'with-override-system-vi']
 brew 'weechat', args: ['with-perl', 'with-python', 'with-ruby', 'with-lua', 'with-curl']
 brew 'wget'
-brew 'yarn', args: ['ignore-dependencies']
+brew 'yarn'
 brew 'zsh'
 
 cask '1password-cli'
