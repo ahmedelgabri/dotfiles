@@ -56,7 +56,7 @@ brew 'msmtp'
 brew 'ncdu'
 brew 'neofetch'
 brew 'neomutt/neomutt/neomutt', args: ['with-notmuch-patch']
-brew 'neovim', args: ['HEAD']
+brew 'neovim'
 brew 'newsbeuter'
 brew 'offlineimap'
 brew 'openssl'
