@@ -88,10 +88,10 @@ path=(
   $(brew --prefix)/opt/python/libexec/bin
   $(brew --prefix)/Cellar/git
   ${HOME}/.dotfiles/bin
-  ${HOME}/.yarn/bin
   ${HOME}/.cargo/bin
   $path
   ./node_modules/.bin
+  ${HOME}/.yarn/bin
 )
 
 #
@@ -133,6 +133,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
 
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
