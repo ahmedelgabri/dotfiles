@@ -1,6 +1,14 @@
 " vim: ft=vim
 scriptencoding utf-8
 
+" This must be here becasue it makes loading vim VERY SLOW otherwise
+let g:python_host_skip_check = 1
+let g:python3_host_skip_check = 1
+let g:python_host_prog = '/usr/local/opt/python/libexec/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+" let g:loaded_python_provider = 1
+" let g:loaded_python3_provider = 1
+
 "             __
 "     __  __ /\_\    ___ ___   _ __   ___
 "    /\ \/\ \\/\ \ /' __` __`\/\`'__\/'___\
@@ -60,6 +68,7 @@ Plug 'jsfaint/gen_tags.vim'
 let g:loaded_gentags#gtags = 1
 let g:gen_tags#ctags_auto_gen = 1
 let g:gen_tags#ctags_use_cache_dir = 0
+let g:gen_tags#blacklist = ['$HOME']
 " let g:gen_tags#verbose = 1
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
@@ -111,13 +120,14 @@ Plug 'editorconfig/editorconfig-vim', { 'on': [] }
 Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 
 " Themes, UI & eye cnady
-Plug 'rakr/vim-one'
+Plug 'rakr/vim-one' " very slow!
 Plug 'tomasiser/vim-code-dark'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'
 Plug 'hauleth/blame.vim'
 Plug 'AlessandroYorba/Despacio'
+Plug 'whatyouhide/vim-gotham'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -161,6 +171,7 @@ inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ult
 " Profiling. {{{
 "================================================================================
 
+" let g:profile=1
 " Start profiling. Optional arg: logfile path.
 if len(get(g:, 'profile', ''))
   call functions#ProfileStart(g:profile)

@@ -57,12 +57,9 @@ set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~
 set completeopt+=menuone
 set completeopt-=preview
 
-" highlight current line (Check auto groups too)
-" https://github.com/mhinz/vim-galore#smarter-cursorline
-set cursorline
 set nocursorcolumn       " do not highlight column
-autocmd InsertLeave,WinEnter * set cursorline
-autocmd InsertEnter,WinLeave * set nocursorline
+autocmd InsertLeave,WinEnter * set nocursorline
+autocmd InsertEnter,WinLeave * set cursorline
 
 set lazyredraw                        " don't bother updating screen during macro playback
 
@@ -182,11 +179,6 @@ if has('nvim')
   " light4 + light1
   let g:terminal_color_7 = '#a89984'
   let g:terminal_color_15 = '#ebdbb2'
-endif
-
-if has('nvim')
-  let g:python_host_prog = '/usr/local/bin/python'
-  let g:python3_host_prog = '/usr/local/bin/python3'
 endif
 
 " Configure fold status text
