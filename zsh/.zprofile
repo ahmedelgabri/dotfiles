@@ -145,7 +145,7 @@ SYMBOLS=(
 "λ"
 "ϟ"
 "▲"
-"∽"
+"∴"
 )
 
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
