@@ -26,10 +26,13 @@ augroup MyAutoCmds
   " autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
 
   autocmd FileType crontab setlocal bkc=yes
-augroup END
 
-" Those are heavy plugins that I lazy load them so startup time can be fast still
-augroup lazyLoadPlugins
-  autocmd!
-  autocmd CursorHold, CursorHoldI * call plug#load('editorconfig') | autocmd! lazyLoadPlugins
+  if has('nvim')
+    " Sync with corresponding non-nvim settings in ~/.vim/plugin/settings.vim:
+    autocmd ColorScheme codedark highlight! link Error ErrorMsg
+    autocmd ColorScheme codedark highlight! link ALEError ErrorMsg
+    autocmd ColorScheme codedark highlight! link ALEErrorSign ErrorMsg
+    autocmd ColorScheme codedark highlight! link ALEWarning GitGutterChange
+    autocmd ColorScheme codedark highlight! link ALEWarningSign GitGutterChange
+  endif
 augroup END

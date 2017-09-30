@@ -26,9 +26,16 @@ nnoremap <silent> gj j
 xnoremap <silent> gj j
 nnoremap <silent> gk k
 xnoremap <silent> gk k
-"
+
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
+
+" https://twitter.com/vimgifs/status/913390282242232320
+" :h i_CTRL-G_u
+inoremap . .<c-g>u
+inoremap ? ?<c-g>u
+inoremap ! !<c-g>u
+inoremap , ,<c-g>u
 
 " Disable arrow keys (hardcore)
 map  <up>    <nop>

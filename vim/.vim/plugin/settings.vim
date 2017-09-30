@@ -2,10 +2,6 @@ set encoding=utf-8
 scriptencoding utf-8
 set fileencoding=utf-8
 
-" set highlight+=@:ColorColumn          " ~/@ at end of window, 'showbreak'
-" set highlight+=N:DiffText             " make current line number stand out a little
-" set highlight+=c:LineNr               " blend vertical separators with line numbers
-
 set expandtab                         " always use spaces instead of tabs
 set tabstop=2                         " spaces per tab
 set softtabstop=2
@@ -235,10 +231,10 @@ if exists('$SUDO_USER')               " don't create root-owned files
 else
   if has('nvim')
     " default in nvim: !,'100,<50,s10,h
-    set shada=!,'1000,<500,:10000,/10000,s10,h,n~/.vim/tmp/main.shada
+    set shada=!,'100,<500,:10000,/10000,s10,h,n~/.vim/tmp/main.shada
     autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
-    set viminfo=!,'1000,<500,:10000,/10000,s10,h,n~/.vim/tmp/viminfo
   else
+    set viminfo=!,'100,<500,:10000,/10000,s10,h,n~/.vim/tmp/viminfo
   endif
 endif
 

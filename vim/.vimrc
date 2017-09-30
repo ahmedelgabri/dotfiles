@@ -45,6 +45,7 @@ if !has('nvim')
   endif
 endif
 
+Plug 'tweekmonster/startuptime.vim', { 'on': ['StartupTime'] }
 if has('nvim')
   Plug 'roxma/nvim-completion-manager'
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
@@ -99,9 +100,117 @@ if executable('tmux')
 endif
 
 " Syntax
+Plug 'tpope/vim-sleuth'
 Plug 'ap/vim-css-color'
 Plug 'sheerun/vim-polyglot'
-Plug 'rhysd/npm-filetypes.vim'
+" These are enabled, the rest is disabled. Maybe I should install them separately instead
+" https://github.com/sheerun/vim-polyglot#language-packs
+" https://github.com/jackfranklin/dotfiles/blob/6c0ba96b20f70d63a8dbb2652d8ebe2241355552/vim/vimrc#L3-L22
+" \ 'ansible', Needed for Jinja2?!
+" \ 'clojure',
+" \ 'coffee-script',
+" \ 'dockerfile',
+" \ 'elm',
+" \ 'git',
+" \ 'go',
+" \ 'graphql',
+" \ 'html5',
+" \ 'javascript',
+" \ 'json',
+" \ 'jsx',
+" \ 'lua',
+" \ 'markdown',
+" \ 'ocaml',
+" \ 'php',
+" \ 'python-compiler',
+" \ 'python',
+" \ 'ruby',
+" \ 'scss',
+" \ 'tmux',
+" \ 'twig',
+" \ 'yaml',
+let g:polyglot_disabled = [
+    \ 'apiblueprint',
+    \ 'applescript',
+    \ 'arduino',
+    \ 'asciidoc',
+    \ 'blade',
+    \ 'c++11',
+    \ 'c/c++',
+    \ 'caddyfile',
+    \ 'cjsx',
+    \ 'cql',
+    \ 'cryptol',
+    \ 'crystal',
+    \ 'css',
+    \ 'cucumber',
+    \ 'dart',
+    \ 'elixir',
+    \ 'emberscript',
+    \ 'emblem',
+    \ 'erlang',
+    \ 'fish',
+    \ 'glsl',
+    \ 'gnuplot',
+    \ 'groovy',
+    \ 'haml',
+    \ 'handlebars',
+    \ 'haskell',
+    \ 'haxe',
+    \ 'i3',
+    \ 'jasmine',
+    \ 'jst',
+    \ 'julia',
+    \ 'kotlin',
+    \ 'latex',
+    \ 'less',
+    \ 'liquid',
+    \ 'livescript',
+    \ 'mako',
+    \ 'mathematica',
+    \ 'nim',
+    \ 'nix',
+    \ 'nginx',
+    \ 'objc',
+    \ 'octave',
+    \ 'opencl',
+    \ 'perl',
+    \ 'pgsql',
+    \ 'plantuml',
+    \ 'powershell',
+    \ 'protobuf',
+    \ 'pug',
+    \ 'puppet',
+    \ 'purescript',
+    \ 'qml',
+    \ 'r-lang',
+    \ 'racket',
+    \ 'ragel',
+    \ 'raml',
+    \ 'rspec',
+    \ 'rust',
+    \ 'sbt',
+    \ 'scala',
+    \ 'slim',
+    \ 'solidity',
+    \ 'stylus',
+    \ 'swift',
+    \ 'sxhkd',
+    \ 'systemd',
+    \ 'terraform',
+    \ 'textile',
+    \ 'thrift',
+    \ 'tomdoc',
+    \ 'toml',
+    \ 'typescript',
+    \ 'vala',
+    \ 'vbnet',
+    \ 'vcl',
+    \ 'vm',
+    \ 'vue',
+    \ 'xls',
+    \ 'yard'
+    \ ]
 Plug 'jez/vim-github-hub'
 Plug 'Valloric/MatchTagAlways'
 let g:mta_filetypes = {
@@ -122,6 +231,7 @@ Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 " Themes, UI & eye cnady
 Plug 'rakr/vim-one' " very slow!
 Plug 'tomasiser/vim-code-dark'
+Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'

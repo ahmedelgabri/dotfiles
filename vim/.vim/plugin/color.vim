@@ -9,7 +9,7 @@ let g:gruvbox_invert_selection=0
 let g:one_allow_italics = 1
 let g:gruvbox_italic=1
 
-colorscheme one
+colorscheme codedark
 
 " Italics
 hi Comment cterm=italic gui=italic
@@ -29,11 +29,3 @@ hi TablineSel cterm=NONE gui=NONE
 " Highlight long lines
 hi OverLength ctermbg=red ctermfg=white guibg=#592929
 
-
-if has('nvim') && g:colors_name ==# 'codedark'
-  highlight! link Error ErrorMsg
-  highlight! link ALEError ErrorMsg
-  highlight! link ALEErrorSign ErrorMsg
-  highlight! link ALEWarning GitGutterChange
-  highlight! link ALEWarningSign GitGutterChange
-endif

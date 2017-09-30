@@ -198,6 +198,10 @@ let s:dictstatuscolor={
 " IF MODE IS NOT IN DICTIONARY RETURN THE ABBREVIATION
 " GetMode() GETS THE MODE FROM THE ARRAY THEN RETURNS THE NAME
 function! statusline#getMode()
+  " @TODO: Fix me!
+  if !has('nvim')
+    return mode()
+  endif
   let l:modenow = mode()
   let l:modelist = get(s:dictmode, l:modenow, [l:modenow, 'red'])
   let l:modecolor = l:modelist[1]
