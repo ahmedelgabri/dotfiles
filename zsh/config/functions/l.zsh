@@ -5,8 +5,8 @@ l(){
     if [[ "$1" == '--help' ]]; then
       exa --help
     else
-      # --all --long --group --header --links --classify --color-scale --group-directories-first --sort=type
-      exa -alghHF --color-scale --group-directories-first --sort=type "$@"
+      # --all --long --group --header --links --classify
+      exa -alghHF --git --color-scale --group-directories-first --sort=type "$@"
     fi
   else
     # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
