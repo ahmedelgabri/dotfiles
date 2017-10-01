@@ -119,12 +119,14 @@ function! statusline#fileSize()
 endfunction
 
 
-function! statusline#gitInfo(plugin)
-  let l:gitbranch = a:plugin
-  if l:gitbranch !=# ''
-    return '⎇  ' . l:gitbranch
-  else
+function! statusline#gitInfo()
+  let l:gitbranch = gina#component#repo#preset('fancy')
+  " For some odd reason, when it's empty it will return [] with a space before.
+  if l:gitbranch ==# ' []' || l:gitbranch ==# ''
     return ''
+  else
+    let l:extra = gina#component#traffic#preset('fancy')
+    return l:extra . ' ⎇  ' . l:gitbranch
   endif
 endfunction
 

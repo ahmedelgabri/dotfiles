@@ -15,10 +15,7 @@ if !empty(glob(getcwd() .'/.prettierrc')) || !empty(glob(getcwd() .'/prettier.co
   let g:ale_javascript_prettier_use_local_config = 1
 else
   let s:PARSER = empty(glob(getcwd() .'/.flowconfig')) ?  'babylon' : 'flow'
-  let g:PRETTIER_OPTS='--parser ' . s:PARSER . ' --single-quote --trailing-comma all'
-
-  let g:ale_javascript_prettier_options = g:PRETTIER_OPTS
-  let b:ale_javascript_prettier_options = g:ale_javascript_prettier_options. ' --no-semi'
+  let g:ale_javascript_prettier_options = '--parser ' . s:PARSER . ' --single-quote --trailing-comma all --no-semi'
 endif
 
 let g:ale_linter_aliases = {'reason': 'ocaml'}

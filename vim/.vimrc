@@ -69,7 +69,6 @@ Plug 'jsfaint/gen_tags.vim'
 let g:loaded_gentags#gtags = 1
 let g:gen_tags#ctags_auto_gen = 1
 let g:gen_tags#ctags_use_cache_dir = 0
-let g:gen_tags#blacklist = ['$HOME']
 " let g:gen_tags#verbose = 1
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
@@ -93,6 +92,8 @@ Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 Plug 'tpope/vim-projectionist'
 Plug 'ap/vim-buftabline'
 Plug 'majutsushi/tagbar', { 'on': ['Tagbar'] }
+Plug 'justinmk/vim-sneak'
+let g:sneak#label = 1
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
