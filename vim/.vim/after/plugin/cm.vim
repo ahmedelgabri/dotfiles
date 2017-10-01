@@ -1,3 +1,5 @@
+call functions#setupCompletion()
+
 let g:cm_matcher = {'module': 'cm_matchers.substr_matcher', 'case': 'smartcase'}
 let g:cm_sources_override = {
       \ 'cm-tags': {'enable': 0},
@@ -17,3 +19,4 @@ au User CmSetup call cm#register_source({'name' : 'cm-css',
       \ 'cm_refresh_patterns':['\w{2,}$',':\s+\w*$'],
       \ 'cm_refresh': {'omnifunc': 'csscomplete#CompleteCSS'},
       \ })
+

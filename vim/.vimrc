@@ -251,34 +251,6 @@ Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
 
-" Plugins settings
-"================================================================================
-
-" Some crazy magic to make nvim-completion-manager & UltiSnips work nicely together using `<Tab>`
-" It doesn't work when added to plugin/after/ultisnips.vim so for now it's here
-" https://github.com/roxma/nvim-completion-manager/issues/12#issuecomment-284196219
-" @TODO: Move this to autoload
-let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
-let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
-let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
-let g:UltiSnipsRemoveSelectModeMappings = 0
-
-vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
-inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
-imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
-xmap <Tab> <Plug>(ultisnips_expand)
-smap <Tab> <Plug>(ultisnips_expand)
-
-vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
-xmap <S-Tab> <Plug>(ultisnips_backward)
-smap <S-Tab> <Plug>(ultisnips_backward)
-
-" optional
-inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
-
 " Profiling. {{{
 "================================================================================
 
