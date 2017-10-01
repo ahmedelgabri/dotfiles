@@ -45,7 +45,6 @@ if !has('nvim')
   endif
 endif
 
-Plug 'tweekmonster/startuptime.vim', { 'on': ['StartupTime'] }
 if has('nvim')
   Plug 'roxma/nvim-completion-manager'
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
@@ -250,19 +249,6 @@ Plug 'junegunn/goyo.vim', { 'on': ['Goyo']}
 Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
-
-" Profiling. {{{
-"================================================================================
-
-" let g:profile=1
-" Start profiling. Optional arg: logfile path.
-if len(get(g:, 'profile', ''))
-  call functions#ProfileStart(g:profile)
-endif
-if 0
-  call functions#ProfileStart()
-endif
-" }}}
 
 " Overrrides
 "================================================================================

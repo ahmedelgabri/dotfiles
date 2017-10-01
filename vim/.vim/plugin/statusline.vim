@@ -36,7 +36,7 @@ set statusline+=%*
 " execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
 " execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
 " execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
-execute 'highlight! User4 ' . pinnacle#extract_highlight('WhiteSpace')
+execute 'highlight! User4 ' . pinnacle#extract_highlight('NonText')
 " execute 'highlight! User5 ' . pinnacle#extract_highlight('PmenuSel')
 " execute 'highlight! User6 ' . pinnacle#extract_highlight('PmenuSel')
 " execute 'highlight! User7 ' . pinnacle#extract_highlight('PmenuSel')
