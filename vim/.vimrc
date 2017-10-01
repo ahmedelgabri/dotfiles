@@ -94,6 +94,10 @@ Plug 'majutsushi/tagbar', { 'on': ['Tagbar'] }
 Plug 'justinmk/vim-sneak'
 let g:sneak#label = 1
 
+Plug 'blueyed/vim-diminactive'
+let g:diminactive_use_syntax = 1
+let g:diminactive_enable_focus = 1
+
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
   let g:tmux_navigator_save_on_switch = 1

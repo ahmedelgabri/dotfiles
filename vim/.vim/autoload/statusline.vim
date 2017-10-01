@@ -162,25 +162,25 @@ endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {
-      \ 'n': ['N', '4'],
-      \ 'no': ['N-Operator Pending', '4'],
-      \ 'v': ['V', '6'],
+      \ 'n': ['n', '4'],
+      \ 'no': ['n-Operator Pending', '4'],
+      \ 'v': ['v', '6'],
       \ 'V': ['V·Line', '6'],
       \ '': ['V·Block', '6'],
-      \ 's': ['Select', '3'],
+      \ 's': ['select', '3'],
       \ 'S': ['S·Line', '3'],
       \ '^S': ['S·Block', '3'],
-      \ 'i': ['I', '5'],
-      \ 'R': ['R', '1'],
+      \ 'i': ['i', '5'],
+      \ 'R': ['r', '1'],
       \ 'Rv': ['V·Replace', '1'],
-      \ 'c': ['Command', '2'],
+      \ 'c': ['command', '2'],
       \ 'cv': ['Vim Ex', '7'],
       \ 'ce': ['Ex', '7'],
       \ 'r': ['Propmt', '7'],
       \ 'rm': ['More', '7'],
       \ 'r?': ['Confirm', '7'],
-      \ '!': ['Shell', '2'],
-      \ 't': ['Terminal', '2']
+      \ '!': ['shell', '2'],
+      \ 't': ['terminal', '2']
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
@@ -200,10 +200,6 @@ let s:dictstatuscolor={
 " IF MODE IS NOT IN DICTIONARY RETURN THE ABBREVIATION
 " GetMode() GETS THE MODE FROM THE ARRAY THEN RETURNS THE NAME
 function! statusline#getMode()
-  " @TODO: Fix me!
-  if !has('nvim')
-    return mode()
-  endif
   let l:modenow = mode()
   let l:modelist = get(s:dictmode, l:modenow, [l:modenow, 'red'])
   let l:modecolor = l:modelist[1]
