@@ -48,10 +48,10 @@ map  <right> <nop>
 imap <right> <nop>
 
 " Make arrowkey do something usefull, resize the viewports accordingly
-nnoremap <Left> :vertical resize -2<CR>
-nnoremap <Right> :vertical resize +2<CR>
-nnoremap <Up> :resize -2<CR>
-nnoremap <Down> :resize +2<CR>
+nnoremap <Right> :vertical resize -2<CR>
+nnoremap <Left> :vertical resize +2<CR>
+nnoremap <Down> :resize -2<CR>
+nnoremap <Up> :resize +2<CR>
 
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
