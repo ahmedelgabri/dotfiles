@@ -2,5 +2,5 @@
 
 /usr/local/opt/coreutils/libexec/gnubin/timeout 2m /usr/local/bin/mbsync -q -a
 /usr/local/bin/notmuch new
-find $HOME/.mail/Personal/Personal -type f -mtime -30d -print -exec sh -c 'cat {} | lbdb-fetchaddr' \;
-find $HOME/.mail/Work/Work -type f -mtime -30d -print -exec sh -c 'cat {} | lbdb-fetchaddr' \;
+find $HOME/.mail/Personal/Personal -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \;
+find $HOME/.mail/Work/Work -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \;
