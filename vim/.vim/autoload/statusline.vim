@@ -169,7 +169,7 @@ let s:dictmode= {
       \ '': ['V·Block', '6'],
       \ 's': ['select', '3'],
       \ 'S': ['S·Line', '3'],
-      \ '^S': ['S·Block', '3'],
+      \ '': ['S·Block', '3'],
       \ 'i': ['i', '5'],
       \ 'R': ['r', '1'],
       \ 'Rv': ['V·Replace', '1'],
@@ -201,11 +201,10 @@ let s:dictstatuscolor={
 " GetMode() GETS THE MODE FROM THE ARRAY THEN RETURNS THE NAME
 function! statusline#getMode()
   let l:modenow = mode()
-  let l:modelist = get(s:dictmode, l:modenow, [l:modenow, 'red'])
+  let l:modelist = get(s:dictmode, l:modenow, [l:modenow, '1'])
   let l:modecolor = l:modelist[1]
   let l:modename = l:modelist[0]
-  let l:modeexe = get(s:dictstatuscolor, l:modecolor, 'red')
-  " echo l:modeexe
+  let l:modeexe = get(s:dictstatuscolor, l:modecolor, '1')
   exec 'hi! StatusLine term=NONE gui=NONE ' . l:modeexe
   return l:modename
 endfunction
