@@ -9,14 +9,11 @@ let g:ale_sign_error = '⨉'
 let g:ale_sign_warning = '●'
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
 let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_javascript_prettier_use_local_config = 1
 
-" If local config file is availabe use it, otherwise use custom config
-if !empty(glob(getcwd() .'/.prettierrc')) || !empty(glob(getcwd() .'/prettier.config.js'))
-  let g:ale_javascript_prettier_use_local_config = 1
-else
-  let s:PARSER = empty(glob(getcwd() .'/.flowconfig')) ?  'babylon' : 'flow'
-  let g:ale_javascript_prettier_options = '--parser ' . s:PARSER . ' --single-quote --trailing-comma all --no-semi'
-endif
+let s:flowconfig = findfile('.flowconfig', expand('%:p').';')
+let s:PARSER = filereadable(s:flowconfig) ?  'flow' : 'babylon'
+let g:ale_javascript_prettier_options = '--parser ' . s:PARSER . ' --single-quote --trailing-comma all --no-semi --config-precedence prefer-file'
 
 let g:ale_linter_aliases = {'reason': 'ocaml'}
 
