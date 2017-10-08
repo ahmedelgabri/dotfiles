@@ -17,8 +17,9 @@ set statusline+=\ %4*
 set statusline+=\ %{statusline#fileprefix()}
 set statusline+=%6*
 set statusline+=%t
-set statusline+=%#errormsg#
+set statusline+=%7*
 set statusline+=\ %{statusline#modified()}
+set statusline+=%5*
 set statusline+=\ %{statusline#readOnly()}\ %w
 set statusline+=%*
 set statusline+=%9*\ %=
@@ -37,9 +38,8 @@ set statusline+=%*
 " execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
 " execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
 execute 'highlight! User4 ' . pinnacle#extract_highlight('NonText')
-" execute 'highlight! User5 ' . pinnacle#extract_highlight('PmenuSel')
-" execute 'highlight! User6 ' . pinnacle#extract_highlight('PmenuSel')
-" execute 'highlight! User7 ' . pinnacle#extract_highlight('PmenuSel')
+execute 'highlight! User5 ctermfg=red guifg=red'
+execute 'highlight! User7 ctermfg=cyan guifg=cyan'
 " execute 'highlight! User8 ' . pinnacle#extract_highlight('PmenuSel')
 " execute 'highlight! User9 ' . pinnacle#extract_highlight('PmenuSel')
 

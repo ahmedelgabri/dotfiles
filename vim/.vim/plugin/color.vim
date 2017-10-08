@@ -2,17 +2,14 @@ if has('termguicolors')
   set termguicolors
 end
 
-set background=dark
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection=0
+let g:gruvbox_italicize_comments=1
 
 let g:one_allow_italics = 1
-let g:gruvbox_italic=1
 
+set background=dark
 colorscheme codedark
-
-" Italics
-hi Comment cterm=italic gui=italic
 
 " let s:hour = strftime('%H')
 " if s:hour >= 6 && s:hour < 18
@@ -20,12 +17,3 @@ hi Comment cterm=italic gui=italic
 " else
 "   colorscheme deep-space
 " endif
-
-" I hate bold tabline
-hi Tabline cterm=NONE gui=NONE
-hi TablineFill cterm=NONE gui=NONE
-hi TablineSel cterm=NONE gui=NONE
-
-" Highlight long lines
-hi OverLength ctermbg=red ctermfg=white guibg=#592929
-

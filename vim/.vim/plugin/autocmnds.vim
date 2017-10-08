@@ -28,11 +28,22 @@ augroup MyAutoCmds
   autocmd FileType crontab setlocal bkc=yes
 
   if has('nvim')
-    " Sync with corresponding non-nvim settings in ~/.vim/plugin/settings.vim:
-    autocmd ColorScheme codedark highlight! link Error ErrorMsg
-    autocmd ColorScheme codedark highlight! link ALEError ErrorMsg
-    autocmd ColorScheme codedark highlight! link ALEErrorSign ErrorMsg
-    autocmd ColorScheme codedark highlight! link ALEWarning GitGutterChange
-    autocmd ColorScheme codedark highlight! link ALEWarningSign GitGutterChange
+    " autocmd ColorScheme * hi! link LineNr VertSplit
+    autocmd ColorScheme * hi! LineNr ctermbg=bg ctermfg=bg guibg=bg guifg=bg 
+    " still doesn't make the ~ goes away
+    autocmd ColorScheme * hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg 
+    autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
+    autocmd ColorScheme * hi! TablineFill cterm=NONE gui=NONE
+    autocmd ColorScheme * hi! TablineSel cterm=NONE gui=NONE
+    autocmd ColorScheme * hi! CursorLineNr ctermbg=NONE guibg=NONE
+    autocmd ColorScheme * hi! Comment cterm=italic gui=italic
+    " Highlight long lines
+    " autocmd ColorScheme * hi! OverLength ctermbg=red ctermfg=white guibg=#592929
+
+    autocmd ColorScheme codedark hi! link Error ErrorMsg
+    autocmd ColorScheme codedark hi! link ALEError ErrorMsg
+    autocmd ColorScheme codedark hi! link ALEErrorSign ErrorMsg
+    autocmd ColorScheme codedark hi! link ALEWarning GitGutterChange
+    autocmd ColorScheme codedark hi! link ALEWarningSign GitGutterChange
   endif
 augroup END

@@ -144,7 +144,7 @@ endfunction
 
 function! statusline#modified()
   if &modified
-    return '●'
+    return '⇲'
   else
     return ''
   endif
