@@ -90,7 +90,7 @@ function! statusline#GetHunks(plugin)
   endfor
 
   if !empty(l:hunkline)
-    let l:hunkline = printf('[%s]', l:hunkline[:-2])
+    let l:hunkline = '%6* ['. l:hunkline[:-2] .']%*'
   endif
 
   return l:hunkline
@@ -143,11 +143,7 @@ function! statusline#readOnly()
 endfunction
 
 function! statusline#modified()
-  if &modified
-    return '⇲'
-  else
-    return ''
-  endif
+  return &modified ? '%#WarningMsg#' : '%6*'
 endfunction
 
 function! statusline#fileprefix()

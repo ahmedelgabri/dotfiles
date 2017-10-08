@@ -7,32 +7,45 @@ set laststatus=2    " LAST WINDOW WILL ALWAYS HAVE A STATUS LINE
 "------------------------------------------------------------------------------
 " STATUS LINE CUSTOMIZATION
 "------------------------------------------------------------------------------
-set statusline=
-set statusline+=%0*
-set statusline+=\ %{statusline#getMode()}
-set statusline+=\ %<
-set statusline+=%6*\ %{statusline#GetHunks(GitGutterGetHunkSummary())}
-set statusline+=%6*\ %{statusline#gitInfo()}
-set statusline+=\ %4*
-set statusline+=\ %{statusline#fileprefix()}
-set statusline+=%6*
-set statusline+=%t
-set statusline+=%7*
-set statusline+=\ %{statusline#modified()}
-set statusline+=%5*
-set statusline+=\ %{statusline#readOnly()}\ %w
-set statusline+=%*
-set statusline+=%9*\ %=
-set statusline+=%#GitGutterDelete#
-set statusline+=%{statusline#ALEGetError()}
-set statusline+=\ %#GitGutterChange#
-set statusline+=%{statusline#ALEGetWarning()}
-set statusline+=\ %#GitGutterAdd#
-set statusline+=%{statusline#ALEGetOk()}
-set statusline+=%4*\ %y
-set statusline+=%4*\ %{statusline#fileSize()}
-set statusline+=%4*%{statusline#rhs()}
-set statusline+=%*
+set statusline=%!StatusLine()
+
+function! StatusLine()
+  let l:line='%* %{statusline#getMode()} %*'
+  let l:line.='%<'
+  let l:line.='%#ErrorMsg#%{&paste ? " ⍴ " : ""}%*'
+  let l:line.='%#WarningMsg#%{&spell ? " ✎ " : ""}%*'
+  let l:line.=statusline#GetHunks(GitGutterGetHunkSummary())
+  let l:line.='%6* %{statusline#gitInfo()} '
+  let l:line.='%4* %{statusline#fileprefix()}%*'
+  let l:line.=statusline#modified()
+  let l:line.='%t'
+  let l:line.='%5*'
+  let l:line.=' %{statusline#readOnly()} %w%*'
+  let l:line.='%9* %=%*'
+
+  if get(b:, 'show_highlight')
+    let l:id = synID(line('.'), col('.'), 1)
+    let l:line .='%#WarningMsg#['
+          \ . '%{synIDattr('.l:id.',"name")} as '
+          \ . '%{synIDattr(synIDtrans('.l:id.'),"name")}'
+          \ . '] %*'
+  endif
+
+  let l:line.='%#GitGutterDelete#'
+  let l:line.='%{statusline#ALEGetError()}'
+  let l:line.='%#GitGutterChange#'
+  let l:line.=' %{statusline#ALEGetWarning()}'
+  let l:line.='%#GitGutterAdd#'
+  let l:line.=' %{statusline#ALEGetOk()}'
+  let l:line.='%#WarningMsg#%{&ff != "unix" ? " ".&ff." ":""} %*'
+  let l:line.='%#warningmsg#%{&fenc != "utf-8" && &fenc != "" ? " ".&fenc." " :""} %*'
+  let l:line.='%4* %y'
+  let l:line.='%4* %{statusline#fileSize()}'
+  let l:line.='%4*%{statusline#rhs()}'
+  let l:line.='%*'
+
+  return l:line
+endfunction
 
 " execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
 " execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
