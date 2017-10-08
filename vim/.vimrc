@@ -254,6 +254,8 @@ Plug 'junegunn/limelight.vim', { 'on': ['Limelight'] }
 
 call plug#end()
 
+call functions#setupCompletion()
+
 " Overrrides
 "================================================================================
 let s:vimrc_local = $HOME . '/.vimrc.local'
