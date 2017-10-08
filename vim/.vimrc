@@ -263,10 +263,13 @@ endif
 
 " Project specific override
 "================================================================================
-let s:vimrc_project = $PWD . '/.local.vim'
-if filereadable(s:vimrc_project)
-  execute 'source ' . s:vimrc_project
-endif
+augroup vimrc
+  autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
+
+  if has('nvim')
+    autocmd DirChanged * call functions#sourceProjectConfig()
+  endif
+augroup END
 
 " After this file is sourced, plug-in code will be evaluated.
 " See ~/.vim/after for files evaluated after that.

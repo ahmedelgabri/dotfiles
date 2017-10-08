@@ -206,3 +206,13 @@ function! functions#setupCompletion() abort
   inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 endfunction
 
+
+" Project specific override
+" Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
+function! functions#sourceProjectConfig() abort
+  let l:projectfile = findfile('.local.vim', expand('%:p').';')
+  if filereadable(l:projectfile)
+    execute 'source' l:projectfile
+  endif
+endfunction
+
