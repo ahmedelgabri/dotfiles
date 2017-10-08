@@ -11,7 +11,7 @@ tap 'caskroom/fonts'
 tap 'caskroom/versions'
 tap 'universal-ctags/universal-ctags'
 tap 'neomutt/neomutt'
-tap 'fribmendes/homebrew-battery' # original tap doesn't support --HEAD
+tap 'ahmedelgabri/homebrew-battery'
 
 
 brew 'git'
