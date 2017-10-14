@@ -158,25 +158,25 @@ endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {
-      \ 'n': ['n', '4'],
-      \ 'no': ['n-Operator Pending', '4'],
-      \ 'v': ['v', '6'],
+      \ 'n': ['N', '4'],
+      \ 'no': ['N-Operator Pending', '4'],
+      \ 'v': ['V', '6'],
       \ 'V': ['V·Line', '6'],
       \ '': ['V·Block', '6'],
-      \ 's': ['select', '3'],
+      \ 's': ['Select', '3'],
       \ 'S': ['S·Line', '3'],
       \ '': ['S·Block', '3'],
-      \ 'i': ['i', '5'],
-      \ 'R': ['r', '1'],
+      \ 'i': ['I', '5'],
+      \ 'R': ['R', '1'],
       \ 'Rv': ['V·Replace', '1'],
-      \ 'c': ['command', '2'],
+      \ 'c': ['Command', '2'],
       \ 'cv': ['Vim Ex', '7'],
       \ 'ce': ['Ex', '7'],
       \ 'r': ['Propmt', '7'],
       \ 'rm': ['More', '7'],
       \ 'r?': ['Confirm', '7'],
-      \ '!': ['shell', '2'],
-      \ 't': ['terminal', '2']
+      \ '!': ['Shell', '2'],
+      \ 't': ['Terminal', '2']
       \ }
 
 " DEFINE COLORS FOR STATUSBAR

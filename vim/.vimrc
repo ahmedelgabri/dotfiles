@@ -67,7 +67,7 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'jsfaint/gen_tags.vim'
 let g:loaded_gentags#gtags = 1
 let g:gen_tags#ctags_auto_gen = 1
-let g:gen_tags#ctags_use_cache_dir = 0
+let g:gen_tags#use_cache_dir = 0
 " let g:gen_tags#verbose = 1
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
@@ -106,6 +106,7 @@ endif
 " Syntax
 Plug 'tpope/vim-sleuth'
 Plug 'ap/vim-css-color'
+Plug 'ahmedelgabri/vim-twig'
 Plug 'sheerun/vim-polyglot'
 " These are enabled, the rest is disabled. Maybe I should install them separately instead
 " https://github.com/sheerun/vim-polyglot#language-packs
@@ -207,6 +208,7 @@ let g:polyglot_disabled = [
     \ 'tomdoc',
     \ 'toml',
     \ 'typescript',
+    \ 'twig',
     \ 'vala',
     \ 'vbnet',
     \ 'vcl',
@@ -266,6 +268,7 @@ endif
 " Project specific override
 "================================================================================
 augroup vimrc
+  autocmd!
   autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
 
   if has('nvim')

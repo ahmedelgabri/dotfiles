@@ -212,7 +212,7 @@ endfunction
 function! functions#sourceProjectConfig() abort
   let l:projectfile = findfile('.local.vim', expand('%:p').';')
   if filereadable(l:projectfile)
-    execute 'source' l:projectfile
+    silent execute 'source' l:projectfile
   endif
 endfunction
 
