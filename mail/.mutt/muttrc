@@ -46,6 +46,9 @@ set wait_key = no        # shut up, mutt
 set mbox_type = Maildir  # mailbox type
 set time_inc = 250
 set timeout = 60
+timeout-hook 'exec sync-mailbox'
+startup-hook 'exec sync-mailbox'
+shutdown-hook 'exec sync-mailbox'
 set ts_enabled
 set mail_check = 0       # minimum time between scans
 set delete               # don't ask, just do
