@@ -2,7 +2,7 @@
 
 For setting up development environment on new Mac. The config is managed by [GNU stow](https://www.gnu.org/software/stow/)
 
-![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.gif)
+![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
 
 
 ## Installation
