@@ -9,6 +9,7 @@ NPM_PACKAGES=(
 "parker"
 "prettier"
 "serve"
+"source-map-explorer"
 "surge"
 "svgo"
 "tern"
