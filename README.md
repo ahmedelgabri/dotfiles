@@ -9,7 +9,7 @@ For setting up development environment on new Mac. The config is managed by [GNU
 These are the main configs:
 
 - [Homebrew](https://brew.sh/) to manage installing most of the dependencies, including apps using [Cask](https://github.com/caskroom/homebrew-cask)
-- [Mutt](http://www.mutt.org/) for reading emails
+- [NeoMutt](https://www.neomutt.org/) _improved [Mutt](http://www.mutt.org/)_ for reading emails
 - [tmux](http://tmux.sourceforge.net/) 2.3 or later
 - [Neovim](https://neovim.io) or [Vim](http://www.vim.org/) 8.0 or later with Ruby and Python support
 - [Zsh](http://www.zsh.org/)
