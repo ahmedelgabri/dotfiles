@@ -52,6 +52,7 @@ if has('nvim')
   Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'yarn' })
   Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
   Plug 'katsika/ncm-lbdb'
+  Plug 'roxma/ncm-github'
   Plug 'Shougo/neco-vim'
 endif
 
