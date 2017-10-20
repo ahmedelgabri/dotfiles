@@ -13,7 +13,7 @@ open_or_log () {
 
 create_session () {
   tmux new-session -d -s "$SESSION" -n 'mail'
-  open_or_log mutt
+  open_or_log neomutt
 
   tmux new-window -n 'rss'
   open_or_log newsbeuter
