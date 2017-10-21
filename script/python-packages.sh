@@ -10,6 +10,7 @@ PACKAGES=(
 # "markdown"
 "neovim"
 "vim-vint"
+"websocket-client"
 )
 
 # mkdir ~/.venv 
