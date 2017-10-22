@@ -31,6 +31,7 @@ Account Personal
 MaildirStore Personal-local
 Path ~/.mail/Personal/ # The trailing "/" is important
 Inbox ~/.mail/Personal/Personal
+SubFolders Verbatim
 
 Channel Personal-inbox
 Master :Personal-remote:INBOX
@@ -71,6 +72,7 @@ Group personal
 Channel Personal-inbox
 Channel Personal-archive
 Channel Personal-drafts
+Channel Personal-starred
 Channel Personal-sent
 Channel Personal-spam
 Channel Personal-trash
@@ -103,6 +105,7 @@ Account Work
 MaildirStore Work-local
 Path ~/.mail/Work/ # The trailing "/" is important
 Inbox ~/.mail/Work/Work
+SubFolders Verbatim
 
 Channel Work-inbox
 Master :Work-remote:INBOX
@@ -143,6 +146,7 @@ Group work
 Channel Work-inbox
 Channel Work-archive
 Channel Work-drafts
+Channel Work-starred
 Channel Work-sent
 Channel Work-spam
 Channel Work-trash
