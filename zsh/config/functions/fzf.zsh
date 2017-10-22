@@ -84,3 +84,22 @@ vs(){
   #List all vagrant boxes available in the system including its status, and try to access the selected one via ssh
   cd $(cat ~/.vagrant.d/data/machine-index/index | jq '.machines[] | {name, vagrantfile_path, state}' | jq '.name + "," + .state  + "," + .vagrantfile_path'| sed 's/^"\(.*\)"$/\1/'| column -s, -t | sort -rk 2 | fzf | awk '{print $3}'); vagrant ssh
 }
+
+# fd - "find directory"
+# From: https://github.com/junegunn/fzf/wiki/examples#changing-directory
+function fd() {
+  local DIR
+  DIR=$(bfs ${1:-.} -type d -nohidden 2> /dev/null | fzf +m) && cd "$DIR"
+}
+
+# fda -"find directory [all, including hidden directories"
+function fda() {
+  local DIR
+  DIR=$(bfs ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$DIR"
+}
+
+# fh - "find [in] history"
+# From: https://github.com/junegunn/fzf/wiki/examples#command-history
+function fh() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
