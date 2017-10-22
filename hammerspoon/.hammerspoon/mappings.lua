@@ -26,7 +26,7 @@ hs.hotkey.bind({}, '§', function()
   hs.eventtap.keyStroke({}, 'ESCAPE')
 end)
 
-hs.hotkey.bind({}, 'f3', (function()
+hs.hotkey.bind({}, 'f10', (function()
   hs.alert('Hammerspoon console')
   hs.openConsole()
 end))
