@@ -161,14 +161,12 @@ endfun
 
 
 function! functions#NeatFoldText()
-  let l:line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
-  let l:lines_count = v:foldend - v:foldstart + 1
-  let l:lines_count_text = '| ' . printf('%10s', l:lines_count . ' lines') . ' |'
+  let l:raquo='»'
   let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
-  let l:foldtextstart = strpart('+' . repeat(l:foldchar, v:foldlevel*2) . l:line, 0, (winwidth(0)*2)/3)
-  let l:foldtextend = l:lines_count_text . repeat(l:foldchar, 8)
-  let l:foldtextlength = strlen(substitute(l:foldtextstart . l:foldtextend, '.', 'x', 'g')) + &foldcolumn
-  return l:foldtextstart . repeat(l:foldchar, winwidth(0)-l:foldtextlength) . l:foldtextend
+  let l:lines=(v:foldend - v:foldstart + 1) . ' lines'
+  let l:first=substitute(getline(v:foldstart), '\v *', '', '')
+  let l:dashes=substitute(v:folddashes, '-', l:foldchar, 'g')
+  return l:raquo . l:dashes . l:foldchar . l:foldchar . l:lines . ': ' . l:first
 endfunction
 
 

@@ -110,9 +110,17 @@ set listchars+=precedes:«             " LEFT-POINTING DOUBLE ANGLE QUOTATION MA
 set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set nojoinspaces                      " don't autoinsert two spaces after '.', '?', '!' for join command
 
-
 if has('windows')
-  set fillchars=diff:⣿,vert:┃         " BOX DRAWINGS HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  set fillchars=diff:⣿                " BOX DRAWINGS 
+  set fillchars+=vert:┃               " HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  set fillchars+=fold:·
+endif
+
+" Configure fold status text
+if has('folding')
+  set foldtext=functions#NeatFoldText()
+  set foldmethod=indent               " not as cool as syntax, but faster
+  set foldlevelstart=99               " start unfolded
 endif
 
 if has('linebreak')
@@ -175,15 +183,6 @@ if has('nvim')
   " light4 + light1
   let g:terminal_color_7 = '#a89984'
   let g:terminal_color_15 = '#ebdbb2'
-endif
-
-" Configure fold status text
-if has('folding')
-  highlight Folded ctermbg=254
-
-  set foldtext=functions#NeatFoldText()
-  set foldmethod=indent               " not as cool as syntax, but faster
-  set foldlevelstart=99               " start unfolded
 endif
 
 if has('mksession')
