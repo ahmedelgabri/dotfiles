@@ -15,7 +15,10 @@ let s:flowconfig = findfile('.flowconfig', expand('%:p').';')
 let s:PARSER = filereadable(s:flowconfig) ?  'flow' : 'babylon'
 let g:ale_javascript_prettier_options = '--parser ' . s:PARSER . ' --single-quote --trailing-comma all --no-semi --config-precedence prefer-file'
 
-let g:ale_linter_aliases = {'reason': 'ocaml'}
+let g:ale_linter_aliases = {
+      \ 'reason': 'ocaml',
+      \ 'mail': 'markdown'
+      \}
 
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'flow'],
