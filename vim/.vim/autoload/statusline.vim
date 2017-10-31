@@ -36,43 +36,21 @@ function! statusline#rhs() abort
 endfunction
 
 " For a more fancy ale statusline
-function! statusline#ALEGetOk()
-  let l:res = ale#statusline#Status()
-  if l:res ==# 'OK'
-    return '•'
-  else
-    return ''
-  endif
-endfunction
+" https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
+function! statusline#LinterStatus() abort
+  let l:symbol = '●'
+  let l:counts = ale#statusline#Count(bufnr(''))
 
-function! statusline#ALEGetError()
-  let l:res = ale#statusline#Status()
-  if l:res ==# 'OK'
-    return ''
-  else
-    let l:e_w = split(l:res)
-    if len(l:e_w) == 2 || match(l:e_w, 'E') > -1
-      return '•' . matchstr(l:e_w[0], '\d\+')
-    else
-      return ''
-    endif
-  endif
-endfunction
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
 
-function! statusline#ALEGetWarning()
-  let l:res = ale#statusline#Status()
-  if l:res ==# 'OK'
-    return ''
-  else
-    let l:e_w = split(l:res)
-    if len(l:e_w) == 2
-      return '•' . matchstr(l:e_w[1], '\d\+')
-    elseif match(l:e_w, 'W') > -1
-      return '•' . matchstr(l:e_w[0], '\d\+')
-    else
-      return ''
-    endif
-  endif
+  return l:counts.total == 0 ? printf('%%#GitGutterAdd#%s%%*', l:symbol) : printf(
+        \   '%%#GitGutterDelete#%d %s %%#GitGutterChange#%d %s %%*',
+        \   l:all_errors,
+        \   l:symbol,
+        \   l:all_non_errors,
+        \   l:symbol
+        \)
 endfunction
 
 " Modified from here

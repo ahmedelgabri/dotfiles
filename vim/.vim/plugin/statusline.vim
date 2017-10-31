@@ -31,12 +31,7 @@ function! StatusLine()
           \ . '] %*'
   endif
 
-  let l:line.='%#GitGutterDelete#'
-  let l:line.='%{statusline#ALEGetError()}'
-  let l:line.='%#GitGutterChange#'
-  let l:line.=' %{statusline#ALEGetWarning()}'
-  let l:line.='%#GitGutterAdd#'
-  let l:line.=' %{statusline#ALEGetOk()}'
+  let l:line.=statusline#LinterStatus()
   let l:line.='%#WarningMsg#%{&ff != "unix" ? " ".&ff." ":""} %*'
   let l:line.='%#warningmsg#%{&fenc != "utf-8" && &fenc != "" ? " ".&fenc." " :""} %*'
   let l:line.='%4* %y'
