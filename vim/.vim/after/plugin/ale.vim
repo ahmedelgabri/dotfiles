@@ -5,6 +5,12 @@ if !exists(':ALEInfo')
 endif
 
 let g:ale_fix_on_save = 1
+
+" Don't auto fix (format) files inside `node_modules`, `forks` directory or minified files
+if (!empty(matchstr(expand('%:p'), '\(node_modules\|Sites/forks\|\.min\.\(js\|css\)$\)')))
+  let b:ale_fix_on_save = 0
+endif
+
 let g:ale_sign_error = '●'
 let g:ale_sign_warning = '●'
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
@@ -16,7 +22,6 @@ let s:PARSER = filereadable(s:flowconfig) ?  'flow' : 'babylon'
 let g:ale_javascript_prettier_options = '--parser ' . s:PARSER . ' --single-quote --trailing-comma all --no-semi --config-precedence prefer-file'
 
 let g:ale_linter_aliases = {
-      \ 'reason': 'ocaml',
       \ 'mail': 'markdown'
       \}
 
@@ -27,13 +32,16 @@ let g:ale_linters = {
       \}
 
 let g:ale_fixers = {
-  \   'javascript': [
-  \       'prettier',
-  \   ],
-  \   'css': [
-  \       'prettier',
-  \   ],
-  \   'scss': [
-  \       'prettier',
-  \   ],
-  \}
+      \   'javascript': [
+      \       'prettier',
+      \   ],
+      \   'css': [
+      \       'prettier',
+      \   ],
+      \   'scss': [
+      \       'prettier',
+      \   ],
+      \   'reason': [
+      \       'refmt',
+      \   ],
+      \}
