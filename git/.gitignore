@@ -54,6 +54,7 @@ node_modules/
 .bundle/
 elm-stuff/
 log/
+logs/
 tmp/
 dump/
 

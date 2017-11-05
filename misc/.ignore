@@ -6,13 +6,17 @@ vendor
 doc
 rdoc
 coverage
+node_modules
+logs
+log
+tmp
+cache
 
-*.min.*
 *.pyc
-*.map
 *.pdf
 *.png
 *.jpg
 *.jpeg
 *.gif
 *.spl
+.DS_Store
