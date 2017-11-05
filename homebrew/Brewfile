@@ -1,161 +1,152 @@
 # vim:ft=ruby:
 
-cask_args appdir: '~/Applications'
+cask_args appdir: '/Applications'
 
-tap 'homebrew/bundle'
-tap 'homebrew/services'
-tap 'homebrew/versions'
-tap 'homebrew/dupes'
-tap 'caskroom/cask'
-tap 'caskroom/fonts'
-tap 'caskroom/versions'
-tap 'universal-ctags/universal-ctags'
-tap 'neomutt/neomutt'
-tap 'tavianator/tap'
-tap 'ahmedelgabri/homebrew-battery'
+tap "homebrew/bundle"
+tap "homebrew/services"
+tap "homebrew/versions"
+tap "homebrew/dupes"
+tap "caskroom/cask"
+tap "caskroom/fonts"
+tap "caskroom/versions"
+tap "universal-ctags/universal-ctags"
+tap "neomutt/neomutt"
+tap "tavianator/tap"
+tap "ahmedelgabri/homebrew-battery"
 
+brew "git"
+brew "python"
+brew "python3"
+# brew "ledger"
+brew "asciinema"
+brew "ahmedelgabri/battery/battery", args: ["HEAD"]
+brew "bitlbee", restart_service: true
+brew "cloc"
+brew "coreutils"
+brew "cowsay"
+brew "curl"
+brew "diff-so-fancy"
+brew "direnv"
+brew "editorconfig"
+brew "elinks"
+brew "elm"
+brew "exa"
+brew "exiftool"
+brew "figlet"
+brew "findutils"
+brew "fortune"
+brew "fzf"
+brew "isync", args: ["with-berkeley-db"]
+brew "gawk"
+brew "git-standup"
+brew "gnu-sed", args: ["with-default-names"]
+brew "gnupg2"
+brew "gpg-agent"
+brew "grc"
+brew "heroku"
+brew "highlight"
+brew "htop"
+brew "httpie"
+brew "hub"
+brew "jq"
+brew "jrnl"
+brew "keybase"
+brew "lbdb"
+brew "msmtp"
+brew "ncdu"
+brew "neofetch"
+brew "neomutt/neomutt/neomutt", args: ["with-notmuch-patch"]
+brew "neovim"
+brew "newsbeuter"
+brew "offlineimap"
+brew "openssl"
+brew "pandoc"
+brew "pinentry-mac"
+brew "ponysay"
+brew "proselint"
+brew "ranger"
+brew "reattach-to-user-namespace"
+brew "ripgrep"
+brew "ruby"
+brew "task"
+brew "tavianator/tap/bfs"
+brew "the_silver_searcher"
+brew "tidy-html5"
+brew "tig"
+brew "tldr"
+brew "tmux", args: ["HEAD"]
+brew "transcrypt"
+brew "tree"
+brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
+brew "urlview"
+brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
+brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
+brew "wget"
+brew "yarn"
+brew "zsh"
 
-brew 'git'
-brew 'python'
-brew 'python3'
-# brew 'ledger'
-brew 'asciinema'
-brew 'battery', args: ['HEAD']
-brew 'bitlbee', restart_service: true
-brew 'cloc'
-brew 'coreutils'
-brew 'cowsay'
-brew 'curl'
-brew 'diff-so-fancy'
-brew 'direnv'
-brew 'editorconfig'
-brew 'elinks'
-brew 'elm'
-brew 'exa'
-brew 'exiftool'
-brew 'figlet'
-brew 'findutils'
-brew 'fortune'
-brew 'fzf'
-brew 'isync', args: ['with-berkeley-db']
-brew 'gawk'
-brew 'git-standup'
-brew 'gnu-sed', args: ['with-default-names']
-brew 'gnupg2'
-brew 'gpg-agent'
-brew 'grc'
-brew 'heroku'
-brew 'highlight'
-brew 'htop'
-brew 'httpie'
-brew 'hub'
-brew 'jq'
-brew 'jrnl'
-brew 'keybase'
-brew 'lbdb'
-brew 'msmtp'
-brew 'ncdu'
-brew 'neofetch'
-brew 'neomutt/neomutt/neomutt', args: ['with-notmuch-patch']
-brew 'neovim'
-brew 'newsbeuter'
-brew 'offlineimap'
-brew 'openssl'
-brew 'pandoc'
-brew 'pinentry-mac'
-brew 'ponysay'
-brew 'proselint'
-brew 'ranger'
-brew 'reattach-to-user-namespace'
-brew 'ripgrep'
-brew 'ruby'
-brew 'task'
-brew 'tavianator/tap/bfs'
-brew 'the_silver_searcher'
-brew 'tidy-html5'
-brew 'tig'
-brew 'tldr'
-brew 'tmux', args: ['HEAD']
-brew 'transcrypt'
-brew 'tree'
-brew 'universal-ctags/universal-ctags/universal-ctags', args: ['HEAD']
-brew 'urlview'
-brew 'vim', args: ['with-lua', 'with-python3', 'with-override-system-vi']
-brew 'weechat', args: ['with-perl', 'with-python', 'with-ruby', 'with-lua', 'with-curl']
-brew 'wget'
-brew 'yarn'
-brew 'zsh'
+cask "1password-cli"
+cask "alfred"
+cask "appcleaner"
+cask "arq"
+cask "caskroom/versions/atom-beta"
+cask "betterzipql"
+cask "box-sync"
+cask "dayone-cli"
+cask "firefox"
+cask "caskroom/versions/firefox-beta"
+cask "caskroom/versions/firefoxdeveloperedition"
+cask "caskroom/versions/firefoxnightly"
+cask "flux"
+cask "caskroom/fonts/font-droid-sans-mono-for-powerline"
+cask "caskroom/fonts/font-fantasque-sans-mono"
+cask "caskroom/fonts/font-fira-code"
+cask "caskroom/fonts/font-fira-mono-for-powerline"
+cask "caskroom/fonts/font-hasklig"
+cask "caskroom/fonts/font-inconsolata-g-for-powerline"
+cask "caskroom/fonts/font-iosevka"
+cask "caskroom/fonts/font-meslo-for-powerline"
+cask "caskroom/fonts/font-source-code-pro"
+cask "google-chrome"
+cask "caskroom/versions/google-chrome-canary"
+# cask "gpgtools"
+cask "hammerspoon"
+cask "imagealpha"
+cask "imageoptim"
+cask "caskroom/versions/iterm2-nightly"
+cask "java"
+# cask "keepingyouawake"
+cask "licecap"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "rescuetime"
+cask "sequel-pro"
+cask "sketch"
+cask "sketch-toolbox"
+cask "skype"
+cask "soda-player"
+cask "transmission"
+cask "transmit"
+cask "caskroom/versions/visual-studio-code-insiders"
+cask "vlc"
+cask "caskroom/versions/webkit-nightly"
+cask "webpquicklook"
+cask "whatsapp"
 
-cask '1password-cli'
-cask 'alfred'
-cask 'appcleaner'
-cask 'arq'
-cask 'atom-beta'
-cask 'betterzipql'
-cask 'box-sync'
-cask 'dayone-cli'
-cask 'docker'
-cask 'firefox'
-cask 'firefox-beta'
-cask 'firefoxdeveloperedition'
-cask 'firefoxnightly'
-cask 'flux'
-cask 'font-droid-sans-mono-for-powerline'
-cask 'font-fantasque-sans-mono'
-cask 'font-fira-code'
-cask 'font-fira-mono-for-powerline'
-cask 'font-inconsolata-dz-for-powerline'
-cask 'font-inconsolata-g-for-powerline'
-cask 'font-meslo-for-powerline'
-cask 'font-iosevka'
-cask 'font-source-code-pro'
-cask 'google-chrome'
-cask 'google-chrome-canary'
-# cask 'gpgtools'
-cask 'hammerspoon'
-cask 'hyper'
-cask 'imagealpha'
-cask 'imageoptim'
-cask 'iterm2-nightly'
-cask 'java'
-# cask 'keepingyouawake'
-cask 'licecap'
-cask 'opera'
-cask 'opera-beta'
-cask 'opera-developer'
-cask 'qlcolorcode'
-cask 'qlimagesize'
-cask 'qlmarkdown'
-cask 'qlprettypatch'
-cask 'qlstephen'
-cask 'qlvideo'
-cask 'quicklook-csv'
-cask 'quicklook-json'
-cask 'rescuetime'
-cask 'sequel-pro'
-cask 'sketch'
-cask 'sketch-toolbox'
-cask 'skype'
-cask 'soda-player'
-cask 'teamviewer'
-cask 'telegram'
-cask 'transmission'
-cask 'transmit'
-cask 'vagrant'
-cask 'virtualbox'
-cask 'visual-studio-code-insiders'
-cask 'vlc'
-cask 'webkit-nightly'
-cask 'webpquicklook'
-cask 'whatsapp'
-
-# mas '1Password', id: 443987910
-# mas 'Day One', id: 1055511498
-# mas 'Guidance', id: 412759995
-# mas 'Image2Icon', id: 992115977
-# mas 'Irvue', id: 1039633667
-# mas 'Sip', id: 507257563
-# mas 'The Unarchiver', id: 425424353
-# mas 'Transmit', id: 403388562
-# mas 'Tweetbot', id: 557168941
-# mas 'Xcode', id: 497799835
+# mas "1Password", id: 443987910
+# mas "Bear", id: 1091189122
+# mas "Day One", id: 1055511498
+# mas "Guidance", id: 412759995
+# mas "Irvue", id: 1039633667
+# mas "Keynote", id: 409183694
+# mas "Sip", id: 507257563
+# mas "The Unarchiver", id: 425424353
+# mas "Transmit", id: 403388562
+# mas "Tweetbot", id: 557168941
+# mas "Xcode", id: 497799835
