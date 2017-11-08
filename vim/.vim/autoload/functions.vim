@@ -142,7 +142,7 @@ endfunction
 
 let g:GabriKeepWhitespace = ['markdown']
 function! functions#should_strip_whitespace() abort
-  return functions#hasFileType(g:GabriKeepWhitespace)
+  return index(g:GabriKeepWhitespace, &filetype) == -1
 endfunction
 
 
