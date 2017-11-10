@@ -151,6 +151,7 @@ endif
 Plug 'tpope/vim-sleuth'
 Plug 'ap/vim-css-color'
 Plug 'ahmedelgabri/vim-twig'
+Plug 'reasonml-editor/vim-reason-plus'
 Plug 'sheerun/vim-polyglot'
 " These are enabled, the rest is disabled. Maybe I should install them separately instead
 " https://github.com/sheerun/vim-polyglot#language-packs
@@ -169,7 +170,6 @@ Plug 'sheerun/vim-polyglot'
 " \ 'jsx',
 " \ 'lua',
 " \ 'markdown',
-" \ 'ocaml',
 " \ 'php',
 " \ 'python-compiler',
 " \ 'python',
@@ -221,6 +221,7 @@ let g:polyglot_disabled = [
     \ 'nix',
     \ 'nginx',
     \ 'objc',
+    \ 'ocaml',
     \ 'octave',
     \ 'opencl',
     \ 'perl',
