@@ -4,7 +4,7 @@
   name = Ahmed El Gabri
 
 [include]
-  path = ~/.gitconfig.local
+  path = ~/.gitconfig.private
 
 [color]
   ui = true
@@ -49,7 +49,7 @@
   untrackedCache = true
   pager = diff-so-fancy | less --tabs=4 -RFX
   ; # conflicts with Markdown
-	commentChar = %
+  commentChar = %
 
 [alias]
   co = checkout

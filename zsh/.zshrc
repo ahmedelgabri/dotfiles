@@ -93,7 +93,7 @@ SAVEHIST=$HISTSIZE
 # LOCAL.
 ##############################################################
 
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+[ -f ~/.zshrc.private ] && source ~/.zshrc.private
 
 ##############################################################
 # direnv.

@@ -3,9 +3,9 @@
 # Source account-specific settings when moving around folders
 # This allows us to change SMTP servers, for example, when inside different accounts
 
-folder-hook +Personal/ source ~/.mutt/accounts/personal.local
-folder-hook +Work/  source ~/.mutt/accounts/work.local
+folder-hook +Personal/ source ~/.mutt/accounts/personal.private
+folder-hook +Work/  source ~/.mutt/accounts/work.private
 
 # Source this file initially, so it acts like a default account
-source ~/.mutt/accounts/personal.local
+source ~/.mutt/accounts/personal.private
 
