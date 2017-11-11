@@ -47,7 +47,6 @@ export PAGER='less'
 
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
-export LC_CTYPE=$LANG
 
 # 10ms for key sequences
 KEYTIMEOUT=1
