@@ -16,6 +16,12 @@ snippet todo "Add a todo with date and github user" b
 $0
 endsnippet
 
+snippet vimfold "fold comment" b
+${1:Fold title} {{{
+	${0:${VISUAL}}
+}}}
+endsnippet
+
 snippet :d "Jan 25, 2011"
 `date "+%b %e, %Y"`
 endsnippet
