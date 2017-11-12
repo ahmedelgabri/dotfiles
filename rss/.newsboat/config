@@ -21,11 +21,12 @@
   show-read-feeds no
   text-width 120
 
-  feedlist-title-format "%N %V %> %u feeds with new articles"
+  feedlist-title-format "—[%u feeds with new articles]——%>——(%N %V)—"
   feedlist-format "%S %-80t %?d?- %-80d&? %> %U/%c"
-  articlelist-title-format "%T (%u unread, %t total) - %U"
-  articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+  articlelist-title-format "—[%T]——(%u unread, %t total)——%>——(%U)—"
+  articlelist-format " %D %?T?%-40T ?%t %> %D"
   notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+  datetime-format "%b %d %H:%M"
   html-renderer "elinks -dump -force-html"
 # }}}
 
@@ -74,7 +75,7 @@
   highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
   # highlight all "Linux" yellow black blink
 
-  color info color38 default
+  color info blue default
   color listnormal color246 default
   color listnormal_unread color244 default
   color listfocus_unread color7 color27

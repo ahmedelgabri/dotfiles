@@ -1,8 +1,8 @@
 # vim:ft=config:
 
 # Querys ------------------- {{{
-  "query:⌁ Unread:unread = \"yes\""
-  "query:⌁ Starred:flags # \"s\"" "Starred"
+  "query:⌁ Unread Articles:unread = \"yes\""
+  "query:⌁ Bookmarked Articles:flags # \"s\"" "Starred"
   "query:⌁ Blogs:tags # \"Blogs\"" "Blogs"
   "query:⌁ Browsers:tags # \"Browsers\"" "Browsers"
   "query:⌁ Comics:tags # \"Comics\"" "Comics"

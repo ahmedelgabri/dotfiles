@@ -9,7 +9,7 @@ color sidebar_divider color0 color0
 
 # color attachment brightblack default
 color hdrdefault cyan default
-color indicator white color26
+color indicator white color27
 color markers blue default
 color tilde blue default
 color tree color8 default # Arrow in threads.
