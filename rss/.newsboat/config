@@ -1,34 +1,38 @@
 # vim:ft=config:
 
-# show-read-articles no
-always-display-description true
-article-sort-order date-asc
-browser "open -g -a 'Google Chrome Canary' %u"
-feed-sort-order date-desc
-max-items 100
-notify-always yes
-notify-screen yes
-prepopulate-query-feeds yes
-refresh-on-startup no
-auto-reload yes
-reload-threads 3
-reload-time 15
-save-path ~/.newsboat/saved_articles
-show-read-feeds no
-text-width 120
+# Main config {{{
+  # show-read-articles no
+  always-display-description true
+  article-sort-order date-asc
+  browser "open -g -a 'Google Chrome Canary' %u"
+  feed-sort-order date-desc
+  max-items 100
+  notify-always yes
+  notify-screen yes
+  prepopulate-query-feeds yes
+  refresh-on-startup no
+  auto-reload yes
+  reload-threads 3
+  reload-time 15
+  save-path ~/.newsboat/bookmarks.txt
+  bookmark-cmd ~/.newsboat/bookmark.sh
+  bookmark-interactive no
+  bookmark-autopilot yes
+  show-read-feeds no
+  text-width 120
 
-feedlist-format "%S %-80t %u %?d?- %-80d&? %> %T"
-articlelist-format "%-80i %D %f %t"
-feedlist-title-format "%N %V %> %u feeds with new articles"
-articlelist-title-format "%T (%u unread, %t total) - %U"
-notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
-html-renderer "elinks -dump -force-html"
+  feedlist-title-format "%N %V %> %u feeds with new articles"
+  feedlist-format "%S %-80t %?d?- %-80d&? %> %U/%c"
+  articlelist-title-format "%T (%u unread, %t total) - %U"
+  articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+  notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
+  html-renderer "elinks -dump -force-html"
+# }}}
 
 # download-full-page yes
 # bookmark-cmd /home/cirrus/scripts/newsbeuter_bookmarks_surfraw.sh
 # notify-program "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
 
-##
 ##-------- macros {{{
 ##------------------------------------------------------
 ## Note: macro prefix key ( default: , )
@@ -53,45 +57,43 @@ html-renderer "elinks -dump -force-html"
 #macro s set browser "tmux split-window && tmux send-keys 'ranger ~/.newsbeuter/saved_articles && tmux kill-pane\n'" ; open-in-browser ; set browser "$BROWSER %u"
 
 ## }}}
-##
 
-# formatting and colorization ------------------------------------------
-#
-articlelist-format "%4i %f %D %?T?|%-17T| ?%t"
+# formatting and colorization ------------------------------------------ {{{
+  highlight feedlist "^ *[0-9]+ *N " color156 default
+  highlight articlelist "^ *[0-9]+ *N " color156 default
 
-highlight feedlist "^ *[0-9]+ *N " color156 default
-highlight articlelist "^ *[0-9]+ *N " color156 default
+  highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
+  highlight article "^Podcast Download URL:.*" color71 default
+  highlight article "^Links:" white color240 underline
+  highlight article "\\[[0-9][0-9]*\\]" color72 default bold
+  highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
+  highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
+  highlight article ":.*\\(link\\)$" color74 default
+  highlight article ":.*\\(image\\)$" color74 default
+  highlight article ":.*\\(embedded flash\\)$" color74 default
+  highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
+  # highlight all "Linux" yellow black blink
 
-highlight article "^(Feed|Title|Author|Link|Date|Linux):.*" color75 default
-highlight article "^Podcast Download URL:.*" color71 default
-highlight article "^Links:" white color240 underline
-highlight article "\\[[0-9][0-9]*\\]" color72 default bold
-highlight article "\\[image [0-9][0-9]*\\]" color72 default bold
-highlight article "\\[embedded flash: [0-9][0-9]*\\]" color72 default bold
-highlight article ":.*\\(link\\)$" color74 default
-highlight article ":.*\\(image\\)$" color74 default
-highlight article ":.*\\(embedded flash\\)$" color74 default
-highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
-# highlight all "Linux" yellow black blink
+  color info color38 default
+  color listnormal color246 default
+  color listnormal_unread color244 default
+  color listfocus_unread color7 color27
+  color listfocus color7 color27
+  # color listfocus color166 color235
+  color article color244 color234
+# }}}
 
-color info color38 default
-color listnormal color246 default
-color listnormal_unread color244 default
-color listfocus_unread color7 color27
-color listfocus color7 color27
-# color listfocus color166 color235
-color article color244 color234
-
-# Key bindings ----------------------------------
-bind-key j next
-bind-key k prev
-bind-key J next-feed
-bind-key K prev-feed
-bind-key j down article
-bind-key k up article
-bind-key J next article
-bind-key K prev article
-bind-key O open-in-browser-and-mark-read
+# Key bindings ---------------------------------- {{{
+  bind-key j down feedlist
+  bind-key k up feedlist
+  bind-key j next articlelist
+  bind-key k prev articlelist
+  bind-key J next-feed articlelist
+  bind-key K prev-feed articlelist
+  bind-key j down article
+  bind-key k up article
+  bind-key O open-in-browser-and-mark-read
+# }}}
 
 # ignore-article "*" "title =~ \"Sponsor\""
 # ignore-article "*" "title =~ \"Sponsored\""
