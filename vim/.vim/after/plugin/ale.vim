@@ -36,32 +36,23 @@ let g:ale_fixers = {
       \   ],
       \}
 
-" Don't auto fix (format) files inside `node_modules`, `forks` directory or minified files
-if (!empty(matchstr(expand('%:p'), '\(node_modules\|\.min\.\(js\|css\)$|jquery.*\)')))
-  let b:ale_enabled = 0
-  let b:ale_fix_on_save = 0
-endif
-
-if (!empty(matchstr(expand('%:p'), 'Sites/forks')))
-  let b:ale_fix_on_save = 0
-endif
-
-" This is not working properly right now: see https://github.com/w0rp/ale/issues/1095
-" let g:ale_pattern_options = {
-"       \   '\.min\.(js\|css)$': {
-"       \       'ale_enabled': 0,
-"       \       'ale_fixers': { 'javascript': [], 'javascript.jsx': [], 'css': [] },
-"       \   },
-"       \   'jquery.*': {
-"       \       'ale_enabled': 0,
-"       \       'ale_fixers': { 'javascript': [], 'javascript.jsx': [] },
-"       \   },
-"       \   'node_modules/.*': {
-"       \       'ale_enabled': 0,
-"       \       'ale_fixers': { 'javascript': [], 'javascript.jsx': [], 'css': [], 'scss': [] },
-"       \   },
-"       \   'Sites/forks/.*': {
-"       \       'ale_fixers': { 'javascript': [], 'javascript.jsx': [], 'css': [], 'scss': [] },
-"       \   },
-"       \}
+" Don't auto fix (format) files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
+let g:ale_pattern_options_enabled = 1
+let g:ale_pattern_options = {
+      \   '\.min\.(js\|css)$': {
+      \       'ale_linters': [],
+      \       'ale_fixers': []
+      \   },
+      \   'jquery.*': {
+      \       'ale_linters': [],
+      \       'ale_fixers': []
+      \   },
+      \   'node_modules/.*': {
+      \       'ale_linters': [],
+      \       'ale_fixers': []
+      \   },
+      \   'Sites/forks/.*': {
+      \       'ale_fixers': []
+      \   },
+      \}
 
