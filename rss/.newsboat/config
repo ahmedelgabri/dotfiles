@@ -13,7 +13,7 @@ refresh-on-startup no
 auto-reload yes
 reload-threads 3
 reload-time 15
-save-path ~/.newsbeuter/saved_articles
+save-path ~/.newsboat/saved_articles
 show-read-feeds no
 text-width 120
 

@@ -15,7 +15,7 @@ These are the main configs:
 - [Zsh](http://www.zsh.org/)
 - [Git](http://git-scm.com/)
 - [iTerm2](http://www.iterm2.com/)
-- [newsbeuter](http://newsbeuter.org/) for RSS
+- [newsboat](http://newsboat.org/) for RSS
 - [weechat](https://weechat.org/) IRC client
 - [hammerspoon](http://www.hammerspoon.org/)
 - [Python](https://www.python.org/)

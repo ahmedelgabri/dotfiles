@@ -13,7 +13,7 @@ mail/.mutt/certificates
 mail/.mutt/secure-ca.cert
 *.itermcolors
 scratch
-newsbeuter/.newsbeuter/history.*
-newsbeuter/.newsbeuter/cache.*
+rss/.newsboat/history.*
+rss/.newsboat/cache.*
 hammerspoon/.hammerspoon/Spoons/*
 !hammerspoon/.hammerspoon/Spoons/SpoonInstall.spoon

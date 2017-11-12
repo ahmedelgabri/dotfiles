@@ -82,7 +82,7 @@ take_backup() {
 
   # @TODO: Look into how to automate this list
   local FILES=(
-    ".config/newsbeuter"
+    ".config/newsboat"
     ".config/nvim"
     ".ctags"
     ".curlrc"

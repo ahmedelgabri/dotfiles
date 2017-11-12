@@ -16,7 +16,7 @@ create_session () {
   open_or_log neomutt
 
   tmux new-window -n 'rss'
-  open_or_log newsbeuter
+  open_or_log newsboat
 
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window

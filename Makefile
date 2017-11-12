@@ -28,7 +28,7 @@ symlink:
 			vim \
 			zsh \
 			tig \
-			newsbeuter
+			rss
 
 homebrew:
 		@brew bundle --file="$(DEST)/homebrew/Brewfile"

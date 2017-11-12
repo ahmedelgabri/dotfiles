@@ -57,7 +57,7 @@ brew "ncdu"
 brew "neofetch"
 brew "neomutt/neomutt/neomutt", args: ["with-notmuch-patch"]
 brew "neovim"
-brew "newsbeuter"
+brew "newsboat"
 brew "offlineimap"
 brew "openssl"
 brew "pandoc"
