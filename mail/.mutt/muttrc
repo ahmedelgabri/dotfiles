@@ -1,11 +1,11 @@
 # Paths
-set alias_file       = ./config/aliases.private # where to store aliases
+set alias_file       = ~/.mutt/config/aliases.private # where to store aliases
 # set display_filter   = '~/.mutt/scripts/add-address.sh'
-set header_cache     = ./cache/headers # where to store headers
-set message_cachedir = ./cache/bodies  # where to store bodies
-set certificate_file = ./certificates  # where to store certs
-set mailcap_path     = ./config/mailcap       # entries for filetypes
-set tmpdir           = ./tmp          # where to keep tmp files
+set header_cache     = ~/.mutt/cache/headers # where to store headers
+set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
+set certificate_file = ~/.mutt/certificates  # where to store certs
+set mailcap_path     = ~/.mutt/config/mailcap       # entries for filetypes
+set tmpdir           = ~/.mutt/tmp          # where to keep tmp files
 # Requires terminal-notifier & I don't like noise...
 # set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
