@@ -47,13 +47,9 @@ inoremap ! !<c-g>u
 inoremap , ,<c-g>u
 
 " Disable arrow keys (hardcore)
-map  <up>    <nop>
 imap <up>    <nop>
-map  <down>  <nop>
 imap <down>  <nop>
-map  <left>  <nop>
 imap <left>  <nop>
-map  <right> <nop>
 imap <right> <nop>
 
 " Make arrowkey do something usefull, resize the viewports accordingly
@@ -64,8 +60,6 @@ nnoremap <Up> :resize +2<CR>
 
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
-nnoremap <leader>q :quit<CR>
-
 inoremap jj <ESC>
 nnoremap <Leader><TAB> <C-w><C-w>
 nnoremap <M-Tab> <C-^>
@@ -74,9 +68,6 @@ nnoremap <leader>\ <C-w>t<C-w>H<CR>
 " Use | and _ to split windows (while preserving original behaviour of [count]bar and [count]_).
 nnoremap <expr><silent> <Bar> v:count == 0 ? "<C-W>v<C-W><Right>" : ":<C-U>normal! 0".v:count."<Bar><CR>"
 nnoremap <expr><silent> _     v:count == 0 ? "<C-W>s<C-W><Down>"  : ":<C-U>normal! ".v:count."_<CR>"
-
-" open prev file
-nnoremap <leader># :e#<CR>
 
 " https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 xnoremap <  <gv

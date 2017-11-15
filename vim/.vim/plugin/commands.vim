@@ -13,6 +13,5 @@ command! Dark set background=dark
 
 " Delete the current file and clear the buffer
 command! Del :call delete(@%) | bdelete!
-command! FormatJSON call functions#jsonFormat()
 command! ClearRegisters call functions#ClearRegisters()
 

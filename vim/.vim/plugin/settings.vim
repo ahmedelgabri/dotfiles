@@ -24,11 +24,7 @@ set noshowmode                        " Don't Display the mode you're in. since 
 " show a navigable menu for tab completion
 set wildmode=longest,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
-set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
-set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg
-set wildignore+=*/.DS_Store,*/tmp/*
+set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
 
 " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 set spelllang=en_us
@@ -111,7 +107,7 @@ set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set nojoinspaces                      " don't autoinsert two spaces after '.', '?', '!' for join command
 
 if has('windows')
-  set fillchars=diff:⣿                " BOX DRAWINGS 
+  set fillchars=diff:⣿                " BOX DRAWINGS
   set fillchars+=vert:┃               " HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
   set fillchars+=fold:·
 endif

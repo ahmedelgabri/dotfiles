@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 function! functions#trim(txt)
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 endfunction
@@ -35,18 +37,17 @@ function! functions#RenameFile()
 endfunction
 
 
-" strips trailing whitespace at the end of files. this
-" is called on buffer write in the autogroup above.
+" strips trailing whitespace at the end of files.
 function! functions#Preserve(command)
   " Preparation: save last search, and cursor position.
-  let l:pos=getcurpos()
+  let l:pos=winsaveview()
   let l:search=@/
   " Do the business:
   keepjumps execute a:command
   " Clean up: restore previous search history, and cursor position
   let @/=l:search
   nohlsearch
-  call setpos('.', l:pos)
+  call winrestview(l:pos)
 endfunction
 
 
@@ -167,15 +168,6 @@ function! functions#NeatFoldText()
   let l:first=substitute(getline(v:foldstart), '\v *', '', '')
   let l:dashes=substitute(v:folddashes, '-', l:foldchar, 'g')
   return l:raquo . l:dashes . l:foldchar . l:foldchar . l:lines . ': ' . l:first
-endfunction
-
-
-function! functions#jsonFormat()
-  if executable('jq')
-    %!jq '.' 
-  else
-    %!python -m json.tool 
-  endif
 endfunction
 
 function! functions#setupCompletion() abort

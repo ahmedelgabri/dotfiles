@@ -25,13 +25,11 @@ augroup MyAutoCmds
   autocmd BufWritePre * if functions#should_strip_whitespace() | call functions#Preserve("%s/\\s\\+$//e") | endif
   " autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
 
-  autocmd FileType crontab setlocal bkc=yes
-
   if has('nvim')
     " autocmd ColorScheme * hi! link LineNr VertSplit
-    autocmd ColorScheme * hi! LineNr ctermbg=bg ctermfg=bg guibg=bg guifg=bg 
+    autocmd ColorScheme * hi! LineNr ctermbg=bg ctermfg=bg guibg=bg guifg=bg
     " still doesn't make the ~ goes away
-    autocmd ColorScheme * hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg 
+    autocmd ColorScheme * hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
     autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
     autocmd ColorScheme * hi! TablineFill cterm=NONE gui=NONE
     autocmd ColorScheme * hi! TablineSel cterm=NONE gui=NONE
