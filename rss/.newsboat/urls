@@ -26,6 +26,7 @@
   "query:⌁ Unix:tags # \"Unix\"" "Unix"
   "query:⌁ Usability:tags # \"Usability\"" "Usability"
   "query:⌁ xmas:tags # \"xmas\"" "xmas"
+  "query:⌁ Football:tags # \"football\"" "football"
 # }}}
 
 # Blog ======================================{{{
@@ -161,6 +162,7 @@
   https://www.stefanjudis.com/rss.xml "Blogs"
   https://reactjs.org/feed.xml "Blogs"
   https://codewords.recurse.com/feed.xml "Blogs"
+  https://nolanlawson.com/feed/ "Blogs"
 # }}}
 
 # Browsers ====================================== {{{
@@ -370,4 +372,8 @@
 # xmas ====================================== {{{
   http://feeds.feedburner.com/24ways?format=xml "xmas"
   https://calendar.perfplanet.com/feed/ "xmas"
+# }}}
+
+# Football {{{
+  https://www.theplayerstribune.com/sports/soccer/feed/ "football"
 # }}}
