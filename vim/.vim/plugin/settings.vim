@@ -131,8 +131,6 @@ endif
 " show where you are
 set ruler
 
-set smartindent
-
 set hidden
 
 " Make tilde command behave like an operator.
