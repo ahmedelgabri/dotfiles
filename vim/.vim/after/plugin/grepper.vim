@@ -11,5 +11,5 @@ autocmd FileType GrepperSide
 
 xmap gs <plug>(GrepperOperator)
 vmap gs <Plug>(GrepperOperator)
-nnoremap \ :Grepper -side -tool rg -query --hidden<SPACE>
+nnoremap \ :packadd vim-grepper<cr> <BAR> :Grepper -side -tool rg -query --hidden<SPACE>
 " nnoremap \\ :Grepper -side -tool git -query<SPACE>

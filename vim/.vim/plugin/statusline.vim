@@ -42,14 +42,16 @@ function! StatusLine()
   return l:line
 endfunction
 
-" execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
-" execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
-" execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
-execute 'highlight! User4 ' . pinnacle#extract_highlight('NonText')
-execute 'highlight! User5 ctermfg=red guifg=red'
-execute 'highlight! User7 ctermfg=cyan guifg=cyan'
-" execute 'highlight! User8 ' . pinnacle#extract_highlight('PmenuSel')
-" execute 'highlight! User9 ' . pinnacle#extract_highlight('PmenuSel')
+if exists('pinnacle#extract_highlight')
+  " execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
+  " execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
+  " execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
+  execute 'highlight! User4 ' . pinnacle#extract_highlight('NonText')
+  execute 'highlight! User5 ctermfg=red guifg=red'
+  execute 'highlight! User7 ctermfg=cyan guifg=cyan'
+  " execute 'highlight! User8 ' . pinnacle#extract_highlight('PmenuSel')
+  " execute 'highlight! User9 ' . pinnacle#extract_highlight('PmenuSel')
+endif
 
 augroup ahmedStatusLine
   autocmd!

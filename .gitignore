@@ -1,4 +1,5 @@
 vim/.vim/plugged/
+vim/.vim/pack/*
 vim/.vim/tmp/
 vim/.vim/autoload/plug.vim*
 irc/.weechat/*
