@@ -77,7 +77,7 @@ macro pager I <clear-flag>N "mark as read"
 macro index I ";<clear-flag>N" "mark as read"
 
 # Ctrl-R to mark all as read
-macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+macro index \Cr "T~U<enter><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
 # Macro to toggle alternates (plain <-> html), based on:
 # https://groups.google.com/d/msg/comp.mail.mutt/9I702oMwQQE/JqdLnp3j9WAJ
