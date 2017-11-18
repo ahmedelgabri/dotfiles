@@ -37,14 +37,6 @@
 ehthumbs.db
 Thumbs.db
 
-# Sublime workspace files #
-###########################
-*.sublime-project
-*.sublime-workspace
-.tern-port
-.tern-project
-sublime/User/Package Control.merged-ca-bundle
-
 # Folders #
 ###########
 .sass-cache/
@@ -58,13 +50,16 @@ logs/
 tmp/
 dump/
 
-# vim       #
-#############
+# Editors       #
+#################
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+sublime/User/Package Control.merged-ca-bundle
+
 *.un~
 tags
-.tags
 tags.*
-.tags.*
 .local.vim
 Session.vim
 *.swp
@@ -72,12 +67,14 @@ Session.vim
 *.vim-rplugin~
 .netrwhist
 undodir/
-.gutctags
 
-# Stuff     #
+# Misc      #
 #############
 npm-debug.log*
 *.pyc
 *.map
 .mx-start
 .envrc
+.tern-port
+.tern-project
+
