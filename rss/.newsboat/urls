@@ -1,4 +1,4 @@
-# vim:ft=config:
+# vim:ft=config foldmethod=marker:
 
 # Querys ------------------- {{{
   "query:⌁ Unread Articles:unread = \"yes\""
