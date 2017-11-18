@@ -1,149 +1,185 @@
 scriptencoding utf-8
 
-let s:VIM_PLUG=expand($VIMHOME.'/autoload/plug.vim')
-let s:VIM_PLUG_FOLDER=expand($VIMHOME.'/plugged')
+let s:VIM_MINPAC_FOLDER = expand($VIMHOME . '/pack/minpac')
+let s:CURRENT_FILE = expand('<sfile>')
 
-function! plugins#installVimPlug() abort
-  " Automatic installation
-  " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
-  execute 'silent !curl -fLo '.s:VIM_PLUG.' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  augroup MyVimPlug
-    autocmd!
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  augroup END
-endfunction
-
-" https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
-function! plugins#If(cond, ...)
-  let l:opts = get(a:000, 0, {})
-  return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
+function! plugins#installMinpac() abort
+  execute 'silent !git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
 function! plugins#loadPlugins() abort
-  call plug#begin(s:VIM_PLUG_FOLDER)
-  " General {{{
-  Plug 'https://github.com/andymass/vim-matchup'
-  Plug 'https://github.com/tpope/vim-sensible', plugins#If(!has('nvim'))
-  if !has('nvim') " For vim
-    if exists('&belloff')
-      " never ring the bell for any reason
-      set belloff=all
-    endif
-    if has('showcmd')
-      " extra info at end of command line
-      set showcmd
-    endif
-    if &term =~# '^tmux'
-      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-    endif
+  silent! packadd minpac
+
+  if !exists('*minpac#init')
+    finish
   endif
 
-  Plug 'https://github.com/SirVer/ultisnips'
-  Plug 'https://github.com/jiangmiao/auto-pairs'
-  if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
-    set runtimepath+=~/.zplugin/plugins/junegunn---fzf
-    Plug 'https://github.com/junegunn/fzf.vim'
+  command! -bar PackUpdate call plugins#init() | call minpac#update()
+  command! -bar PackClean  call plugins#init() | call minpac#clean()
+
+  call minpac#init({ 'verbose': 3 })
+  call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
+
+  " General {{{
+  call minpac#add('https://github.com/andymass/vim-matchup')
+  if !has('nvim')
+    call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
+    silent! packadd vim-sensible
+    if !has('nvim') " For vim
+      if exists('&belloff')
+        " never ring the bell for any reason
+        set belloff=all
+      endif
+      if has('showcmd')
+        " extra info at end of command line
+        set showcmd
+      endif
+      if &term =~# '^tmux'
+        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+      endif
+    endif
   endif
-  Plug 'https://github.com/mbbill/undotree', { 'on': ['UndotreeToggle'] }
-  Plug 'https://github.com/mhinz/vim-grepper', { 'on': ['Grepper'] }
-  Plug 'https://github.com/mhinz/vim-sayonara', { 'on': 'Sayonara' }
-  Plug 'https://github.com/mhinz/vim-startify'
-  Plug 'https://github.com/Shougo/unite.vim'
-        \| Plug 'https://github.com/Shougo/vimfiler.vim', { 'on': ['VimFiler', 'VimFilerExplorer'] }
-  Plug 'https://github.com/tpope/tpope-vim-abolish'
-  Plug 'https://github.com/tpope/vim-apathy'
-  Plug 'https://github.com/tpope/vim-commentary'
-  Plug 'https://github.com/tpope/vim-eunuch'
-  Plug 'https://github.com/tpope/vim-repeat'
-  Plug 'https://github.com/tpope/vim-speeddating'
-  Plug 'https://github.com/tpope/vim-surround'
+  call minpac#add('https://github.com/jiangmiao/auto-pairs')
+  call minpac#add('https://github.com/SirVer/ultisnips')
+
+  call minpac#add('https://github.com/junegunn/fzf.vim', { 'type': 'opt' })
+  if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
+    set runtimepath^=~/.zplugin/plugins/junegunn---fzf
+    silent! packadd fzf.vim
+  endif
+  call minpac#add('https://github.com/Shougo/unite.vim')
+  call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
+  call minpac#add('https://github.com/junegunn/vim-peekaboo')
+  call minpac#add('https://github.com/junegunn/vim-easy-align')
+  call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
+  call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
+  call minpac#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
+  call minpac#add('https://github.com/mhinz/vim-startify')
+  call minpac#add('https://github.com/nelstrom/vim-visual-star-search')
+  call minpac#add('https://github.com/tpope/tpope-vim-abolish')
+  call minpac#add('https://github.com/tpope/vim-characterize')
+  call minpac#add('https://github.com/tpope/vim-apathy')
+  call minpac#add('https://github.com/tpope/vim-commentary')
+  call minpac#add('https://github.com/tpope/vim-eunuch')
+  call minpac#add('https://github.com/tpope/vim-repeat')
+  call minpac#add('https://github.com/tpope/vim-speeddating')
+  call minpac#add('https://github.com/tpope/vim-surround')
   let g:surround_indent = 0
   let g:surround_no_insert_mappings = 1
 
-  Plug 'https://github.com/junegunn/vim-easy-align'
-  Plug 'https://github.com/junegunn/vim-peekaboo'
-  Plug 'https://github.com/wincent/loupe'
-  Plug 'https://github.com/wincent/terminus'
-  Plug 'https://github.com/wellle/targets.vim'
-  Plug 'https://github.com/nelstrom/vim-visual-star-search'
-  Plug 'https://github.com/christoomey/vim-tmux-navigator', plugins#If(executable('tmux') && !empty($TMUX))
-  let g:tmux_navigator_disable_when_zoomed = 1
+  call minpac#add('https://github.com/wellle/targets.vim')
+  call minpac#add('https://github.com/wincent/loupe')
+  call minpac#add('https://github.com/wincent/terminus')
 
-  if executable('trans')
-    Plug 'https://github.com/VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
+  call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
+  if executable('tmux') && !empty($TMUX)
+    silent! packadd vim-tmux-navigator
+    let g:tmux_navigator_disable_when_zoomed = 1
   endif
-  Plug 'https://github.com/vimwiki/vimwiki', { 'branch': 'dev' }
+
+  call minpac#add('https://github.com/VincentCordobes/vim-translate', {'type': 'opt'})
+  if executable('trans')
+    command! -nargs=* Translate :silent! packadd vim-translate | Translate
+    command! -nargs=* TranslateReplace :silent! packadd vim-translate | TranslateReplace
+    command! -nargs=* TranslateClear :silent! packadd vim-translate | TranslateClear
+  endif
+  call minpac#add('https://github.com/vimwiki/vimwiki', { 'branch': 'dev' })
   " }}}
 
-  " Autocomplete {{{
-  Plug 'https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
-  Plug 'https://github.com/othree/csscomplete.vim'
+  " Autocompletion {{{
+  call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': '!bash ./install.sh' })
+  call minpac#add('https://github.com/othree/csscomplete.vim')
+  call minpac#add('https://github.com/ncm2/ncm2', { 'type': 'opt' })
+  call minpac#add('https://github.com/roxma/nvim-yarp', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-path', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-tmux', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-bufword', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-github', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-cssomni', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-html-subscope', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-ultisnips', { 'type': 'opt' })
+  call minpac#add('https://github.com/jsfaint/ncm2-vim', { 'type': 'opt' })
+  call minpac#add('https://github.com/Shougo/neco-vim', { 'type': 'opt' })
+  call minpac#add('https://github.com/ncm2/ncm2-tern', { 'type': 'opt', 'do': '!yarn global add tern && yarn' })
+
   if has('nvim') && has('python3')
-    Plug 'https://github.com/ncm2/ncm2'
-    Plug 'https://github.com/roxma/nvim-yarp'
-    Plug 'https://github.com/ncm2/ncm2-path'
-    Plug 'https://github.com/ncm2/ncm2-tmux'
-    Plug 'https://github.com/ncm2/ncm2-bufword'
-    Plug 'https://github.com/ncm2/ncm2-github'
-    Plug 'https://github.com/ncm2/ncm2-cssomni'
-    Plug 'https://github.com/ncm2/ncm2-html-subscope'
-    Plug 'https://github.com/ncm2/ncm2-markdown-subscope'
-    Plug 'https://github.com/ncm2/ncm2-ultisnips'
-    Plug 'https://github.com/jsfaint/ncm2-vim' | Plug 'https://github.com/Shougo/neco-vim'
-    Plug 'https://github.com/ncm2/ncm2-tern', plugins#If(!executable('flow') && !executable('tsc'), { 'do': 'yarn global add tern && yarn' })
+    silent! packadd ncm2
+    silent! packadd nvim-yarp
+    silent! packadd ncm2-path
+    silent! packadd ncm2-tmux
+    silent! packadd ncm2-bufword
+    silent! packadd ncm2-github
+    silent! packadd ncm2-cssomni
+    silent! packadd ncm2-html-subscope
+    silent! packadd ncm2-markdown-subscope
+    silent! packadd ncm2-utlisnips
+    silent! packadd ncm2-vim
+    silent! packadd neco-vim
+    if !executable('flow') && !executable('tsc')
+      silent! packadd ncm2-tern
+    endif
   endif
   " }}}
 
   " Syntax {{{
-  Plug 'https://github.com/chrisbra/Colorizer'
+  call minpac#add('https://github.com/chrisbra/Colorizer')
   let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig'
 
-  Plug 'https://github.com/reasonml-editor/vim-reason-plus'
-  Plug 'https://github.com/jez/vim-github-hub'
-  Plug 'https://github.com/sheerun/vim-polyglot'
+  call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
+  call minpac#add('https://github.com/jez/vim-github-hub')
+  call minpac#add('https://github.com/sheerun/vim-polyglot')
   let g:polyglot_disabled = ['javascript', 'jsx', 'markdown']
 
-  Plug 'https://github.com/chemzqm/vim-jsx-improve'
-  Plug 'https://github.com/direnv/direnv.vim'
-  " Linters & Code quality {{{
-  Plug 'https://github.com/w0rp/ale', { 'do': 'yarn global add prettier' }
-  " }}}
+  call minpac#add('https://github.com/neoclide/vim-jsx-improve')
+  call minpac#add('https://github.com/direnv/direnv.vim')
 
-  " Themes, UI & eye candy {{{
-  Plug 'https://github.com/tomasiser/vim-code-dark'
-  Plug 'https://github.com/tyrannicaltoucan/vim-deep-space'
-  Plug 'https://github.com/morhetz/gruvbox'
-  Plug 'https://github.com/icymind/NeoSolarized'
-  Plug 'https://github.com/rakr/vim-two-firewatch'
-  Plug 'https://github.com/logico-dev/typewriter'
-  Plug 'https://github.com/agreco/vim-citylights'
-  " minimal
-  Plug 'https://github.com/andreypopp/vim-colors-plain'
-  " Plug 'https://github.com/NerdyPepper/vim-colors-plain'
-  Plug 'https://github.com/owickstrom/vim-colors-paramount'
+  " Linters & Code quality {{{
+  call minpac#add('https://github.com/w0rp/ale', { 'do': '!yarn global add prettier' })
   " }}}
 
   " Git {{{
-  Plug 'https://github.com/mhinz/vim-signify'
-  Plug 'https://github.com/lambdalisue/vim-gista'
-  Plug 'https://github.com/tpope/vim-fugitive'
-  Plug 'https://github.com/tpope/vim-rhubarb'
+  call minpac#add('https://github.com/mhinz/vim-signify')
+  call minpac#add('https://github.com/lambdalisue/vim-gista')
+  call minpac#add('https://github.com/tpope/vim-fugitive')
+  call minpac#add('https://github.com/tpope/vim-rhubarb')
   " }}}
 
   " Writing {{{
-  Plug 'https://github.com/junegunn/goyo.vim', { 'on': ['Goyo']}
-  Plug 'https://github.com/junegunn/limelight.vim', { 'on': ['Limelight'] }
+  call minpac#add('https://github.com/junegunn/goyo.vim', { 'type': 'opt' })
+  command! -nargs=* Goyo :silent! packadd goyo.vim | Goyo
+
+  call minpac#add('https://github.com/junegunn/limelight.vim', { 'type': 'opt' })
+  command! -nargs=* Limelight :silent! packadd limelight.vim | Limelight
   " }}}
 
-  Plug 'https://github.com/wakatime/vim-wakatime', plugins#If(getcwd() =~ 'lightspeed')
-  call plug#end()
+  " Themes, UI & eye cnady {{{
+  call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
+  call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
+  call minpac#add('https://github.com/morhetz/gruvbox', { 'type': 'opt' })
+  call minpac#add('https://github.com/icymind/NeoSolarized', { 'type': 'opt' })
+  call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
+  call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
+  call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
+  " minimal
+  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt'  })
+  " call minpac#add('https://github.com/nerdypepper/vim-colors-plain', { 'type': 'opt'  })
+  call minpac#add('https://github.com/owickstrom/vim-colors-paramount', { 'type': 'opt'  })
+  " }}}
+
+  call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
+  if getcwd() =~ 'lightspeed'
+    silent! packadd vim-wakatime
+  endif
 endfunction
 
 if !exists('*plugins#init')
   function! plugins#init() abort
-    if empty(glob(s:VIM_PLUG)) || (!empty(glob(s:VIM_PLUG)) && empty(glob(s:VIM_PLUG_FOLDER)))
-      call plugins#installVimPlug() | call plugins#loadPlugins()
+    exec 'source ' . s:CURRENT_FILE
+
+    if empty(glob(s:VIM_MINPAC_FOLDER))
+      call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update()
     else
       call plugins#loadPlugins()
     endif
