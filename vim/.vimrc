@@ -7,8 +7,9 @@ scriptencoding utf-8
 " \/_/ \/__/    \/_/\/_/\/_/\/_/\/_/ \/____/
 "
 "
-
 "================================================================================
+
+" Python {{{
 " This must be here becasue it makes loading vim VERY SLOW otherwise
 if has('nvim')
   let g:python_host_skip_check = 1
@@ -22,20 +23,20 @@ if has('nvim')
   " let g:loaded_python_provider = 1
   " let g:loaded_python3_provider = 1
 endif
+" }}}
 
 source ~/.dotfiles/vim/.vim/packages.vim
 
 call functions#setupCompletion()
 
-" Overrides
-"================================================================================
+" Overrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
 if filereadable(s:vimrc_local)
   execute 'source ' . s:vimrc_local
 endif
+" }}}
 
-" Project specific override
-"================================================================================
+" Project specific override {{{
 augroup vimrc
   autocmd!
   autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
@@ -44,6 +45,7 @@ augroup vimrc
     autocmd DirChanged * call functions#sourceProjectConfig()
   endif
 augroup END
+" }}}
 
 " After this file is sourced, plug-in code will be evaluated.
 " See ~/.vim/after for files evaluated after that.

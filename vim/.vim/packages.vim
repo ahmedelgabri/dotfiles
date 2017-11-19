@@ -268,4 +268,3 @@ call minpac#add('AlessandroYorba/Despacio', { 'type': 'opt' })
 call minpac#add('whatyouhide/vim-gotham', { 'type': 'opt' })
 " }}}
 
-
