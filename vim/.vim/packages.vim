@@ -1,17 +1,20 @@
+set packpath^=~/.vim
+command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
+command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+
+" Automatic installation {{{
 if empty(glob('~/.vim/pack/minpac'))
   !git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac
-  autocmd VimEnter * call minpac#update() | source $MYVIMRC
+  " TODO: this is not seamless enough, shows lots of errors
+  autocmd VimEnter * silent call minpac#update() | source $MYVIMRC
 endif
+" }}}
 
-set packpath^=~/.vim
-packadd minpac
+silent! packadd minpac
 
 if !exists('*minpac#init')
   finish
 endif
-
-command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
-command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
 call minpac#init({ 'verbose': 3 })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
@@ -40,8 +43,8 @@ endif
 " }}}
 
 " General {{{
+call minpac#add('tpope/vim-sensible', { 'type': 'opt' })
 if !has('nvim')
-  call minpac#add('tpope/vim-sensible', { 'type': 'opt' })
   packadd vim-sensible
   if &term =~# '^tmux'
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
