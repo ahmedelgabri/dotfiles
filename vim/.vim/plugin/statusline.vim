@@ -9,7 +9,7 @@ set laststatus=2    " LAST WINDOW WILL ALWAYS HAVE A STATUS LINE
 "------------------------------------------------------------------------------
 set statusline=%!StatusLine()
 
-function! StatusLine()
+function! StatusLine() abort
   let l:line='%* %{statusline#getMode()} %*'
   let l:line.='%<'
   let l:line.='%#ErrorMsg#%{&paste ? " ⍴ " : ""}%*'
@@ -42,16 +42,14 @@ function! StatusLine()
   return l:line
 endfunction
 
-if exists('pinnacle#extract_highlight')
-  " execute 'highlight! User1 ' . pinnacle#extract_highlight('Function')
-  " execute 'highlight! User2 ' . pinnacle#extract_highlight('NonText')
-  " execute 'highlight! User3 ' . pinnacle#extract_highlight('Todo')
-  execute 'highlight! User4 ' . pinnacle#extract_highlight('NonText')
-  execute 'highlight! User5 ctermfg=red guifg=red'
-  execute 'highlight! User7 ctermfg=cyan guifg=cyan'
-  " execute 'highlight! User8 ' . pinnacle#extract_highlight('PmenuSel')
-  " execute 'highlight! User9 ' . pinnacle#extract_highlight('PmenuSel')
-endif
+" execute 'highlight! link User1 Function'
+" execute 'highlight! link User2 NonText'
+" execute 'highlight! link User3 Todo'
+execute 'highlight! link User4 NonText'
+execute 'highlight! User5 ctermfg=red guifg=red'
+execute 'highlight! User7 ctermfg=cyan guifg=cyan'
+" execute 'highlight! link User8 PmenuSel'
+" execute 'highlight! link User9 PmenuSel'
 
 augroup ahmedStatusLine
   autocmd!

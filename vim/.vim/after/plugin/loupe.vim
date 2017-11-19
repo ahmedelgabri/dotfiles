@@ -1,8 +1,8 @@
 function! s:SetUpLoupeHighlight()
-  execute 'highlight! QuickFixLine ' . pinnacle#extract_highlight('PmenuSel')
+  execute 'highlight! link QuickFixLine PmenuSel'
 
   highlight! clear Search
-  execute 'highlight! Search ' . pinnacle#embolden('Underlined')
+  execute 'highlight! link Search Underlined'
 endfunction
 
 if has('autocmd')
