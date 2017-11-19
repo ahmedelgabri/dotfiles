@@ -14,7 +14,7 @@ endif
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
 command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
-call minpac#init()
+call minpac#init({ 'verbose': 3 })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 
 " Autocompletion {{{
@@ -60,11 +60,10 @@ if !has('nvim')
     endif
   endif
 endif
-call minpac#add('jiangmiao/auto-pairs')
 call minpac#add('SirVer/ultisnips')
 call minpac#add('duggiefresh/vim-easydir')
 if !empty(glob('/usr/local/opt/fzf'))
-  set runtimepath^=/usr/local/opt/fzf
+  set runtimepath+=/usr/local/opt/fzf
   call minpac#add('junegunn/fzf.vim', {'type': 'opt'})
   packadd fzf.vim
 endif
