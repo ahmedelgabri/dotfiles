@@ -1,18 +1,20 @@
-let s:VIM_MINPAC_FOLDER = g:VIM_CONFIG_FOLDER . '/pack/minpack'
+command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
+command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+
+let s:VIM_MINPAC_FOLDER = g:VIM_CONFIG_FOLDER . '/pack/minpac'
+
 " Automatic installation {{{
 if empty(glob(s:VIM_MINPAC_FOLDER))
-  silent !git clone https://github.com/k-takata/minpac.git s:VIM_MINPAC_FOLDER.'/pack/minpac/opt/minpac'
+  execute 'silent !git clone https://github.com/k-takata/minpac.git '.s:VIM_MINPAC_FOLDER.'/opt/minpac'
   autocmd VimEnter * call minpac#update() | source $MYVIMRC
 endif
+" }}}
 
 silent! packadd minpac
 
 if !exists('*minpac#init')
   finish
 endif
-
-command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
-command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
 call minpac#init({ 'verbose': 3 })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
@@ -24,9 +26,9 @@ call minpac#add('roxma/nvim-cm-tern', { 'type': 'opt', 'do': '!yarn' })
 " These don't work
 " call minpac#add('katsika/ncm-lbdb', { 'type': 'opt' })
 call minpac#add('Shougo/neco-vim', { 'type': 'opt' })
-call minpack#add('othree/csscomplete.vim', { 'type': 'opt'})
-" call minpack#add('fszymanski/deoplete-emoji', { 'type': 'opt' })
-call minpack#add('llwu/deoplete-emoji', { 'type': 'opt', 'branch': 'feature/more_emojis' })
+call minpac#add('othree/csscomplete.vim', { 'type': 'opt'})
+" call minpac#add('fszymanski/deoplete-emoji', { 'type': 'opt' })
+call minpac#add('llwu/deoplete-emoji', { 'type': 'opt', 'branch': 'feature/more_emojis' })
 
 if has('nvim')
   packadd nvim-completion-manager
@@ -42,8 +44,8 @@ endif
 " }}}
 
 " General {{{
+call minpac#add('tpope/vim-sensible', { 'type': 'opt' })
 if !has('nvim')
-  call minpac#add('tpope/vim-sensible', { 'type': 'opt' })
   packadd vim-sensible
   if !has('nvim') " For vim
     if exists('&belloff')
@@ -90,7 +92,7 @@ call minpac#add('ap/vim-buftabline')
 call minpac#add('justinmk/vim-sneak')
 " Nice idea, bad CPU performance still not stable
 " check it later
-" call minpack#add('andymass/vim-matchup')
+" call minpac#add('andymass/vim-matchup')
 " let g:matchup_transmute_enabled = 1
 " let g:matchup_matchparen_deferred = 1
 if executable('tmux')
