@@ -1,10 +1,10 @@
 if empty(glob('~/.vim/pack/minpac'))
-  silent !git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac
+  !git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac
   autocmd VimEnter * call minpac#update() | source $MYVIMRC
 endif
 
 set packpath^=~/.vim
-silent! packadd minpac
+packadd minpac
 
 if !exists('*minpac#init')
   finish
@@ -13,7 +13,7 @@ endif
 command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
 command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
-call minpac#init()
+call minpac#init({ 'verbose': 3 })
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 
 " Autocompletion {{{
@@ -48,11 +48,10 @@ if !has('nvim')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   endif
 endif
-call minpac#add('jiangmiao/auto-pairs')
 call minpac#add('SirVer/ultisnips')
 call minpac#add('duggiefresh/vim-easydir')
 if !empty(glob('/usr/local/opt/fzf'))
-  set runtimepath^=/usr/local/opt/fzf
+  set runtimepath+=/usr/local/opt/fzf
   call minpac#add('junegunn/fzf.vim', {'type': 'opt'})
   packadd fzf.vim
 endif
@@ -81,6 +80,10 @@ call minpac#add('mhinz/vim-startify')
 call minpac#add('nelstrom/vim-visual-star-search')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('kshenoy/vim-signature')
+call minpac#add('bkad/CamelCaseMotion')
+call minpac#add('andymass/vim-matchup')
+let g:matchup_transmute_enabled = 1
+let g:matchup_matchparen_deferred = 1
 call minpac#add('dhruvasagar/vim-table-mode', { 'type': 'opt' })
 command! -nargs=* TableModeEnable :packadd vim-table-mode | TableModeEnable
 

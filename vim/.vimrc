@@ -9,6 +9,10 @@ scriptencoding utf-8
 "
 
 "================================================================================
+if !empty(glob('~/.vim/pack/minpac/start/vim-matchup'))
+  let &runtimepath  = '~/.vim/pack/minpac/start/vim-matchup,' . &runtimepath
+  let &runtimepath .= ',~/.vim/pack/minpac/start/vim-matchup/after'
+endif
 
 " This must be here becasue it makes loading vim VERY SLOW otherwise
 if has('nvim')
