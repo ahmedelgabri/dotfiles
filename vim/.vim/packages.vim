@@ -81,9 +81,11 @@ call minpac#add('nelstrom/vim-visual-star-search')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('bkad/CamelCaseMotion')
-call minpac#add('andymass/vim-matchup')
-let g:matchup_transmute_enabled = 1
-let g:matchup_matchparen_deferred = 1
+" Nice idea, bad CPU performance still not stable
+" check it later
+" call minpac#add('andymass/vim-matchup')
+" let g:matchup_transmute_enabled = 1
+" let g:matchup_matchparen_deferred = 1
 call minpac#add('dhruvasagar/vim-table-mode', { 'type': 'opt' })
 command! -nargs=* TableModeEnable :packadd vim-table-mode | TableModeEnable
 
@@ -111,6 +113,18 @@ call minpac#add('tpope/vim-sleuth')
 call minpac#add('ap/vim-css-color')
 call minpac#add('ahmedelgabri/vim-twig')
 call minpac#add('reasonml-editor/vim-reason-plus')
+call minpac#add('jez/vim-github-hub')
+call minpac#add('Valloric/MatchTagAlways')
+let g:mta_filetypes = {
+      \ 'html' : 1,
+      \ 'xhtml' : 1,
+      \ 'xml' : 1,
+      \ 'jinja' : 1,
+      \ 'jinja2' : 1,
+      \ 'twig' : 1,
+      \ 'javascript' : 1,
+      \ 'javascript.jsx' : 1,
+      \}
 call minpac#add('sheerun/vim-polyglot')
 " These are enabled, the rest is disabled. Maybe I should install them separately instead
 " https://github.com/sheerun/vim-polyglot#language-packs
@@ -221,7 +235,6 @@ let g:polyglot_disabled = [
       \ 'xls',
       \ 'yard'
       \ ]
-call minpac#add('jez/vim-github-hub')
 " }}}
 
 " Linters & Code quality {{{
