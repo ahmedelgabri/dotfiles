@@ -80,6 +80,7 @@ typeset -gU cdpath fpath mailpath path
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  /usr/local/opt/curl/bin
   /usr/local/{bin,sbin}
   $(brew --prefix)/opt/coreutils/libexec/gnubin
   $(brew --prefix)/opt/python/libexec/bin
