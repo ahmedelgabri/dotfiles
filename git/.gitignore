@@ -77,4 +77,5 @@ npm-debug.log*
 .envrc
 .tern-port
 .tern-project
+.ignore
 
