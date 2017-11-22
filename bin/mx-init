@@ -7,7 +7,7 @@ open_or_log () {
   if type "$1" > /dev/null; then
     tmux send-keys "$1 $2" C-m
   else
-    echo "You need to install $1..."
+    tmux send-keys "echo \"You need to install $1...\"" C-m
   fi
 }
 
