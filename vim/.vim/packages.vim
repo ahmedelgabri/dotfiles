@@ -97,7 +97,6 @@ endif
 " Syntax {{{
 Plug 'tpope/vim-sleuth'
 Plug 'ap/vim-css-color'
-Plug 'ahmedelgabri/vim-twig'
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'jez/vim-github-hub'
 Plug 'sheerun/vim-polyglot'
@@ -201,7 +200,6 @@ let g:polyglot_disabled = [
       \ 'tomdoc',
       \ 'toml',
       \ 'typescript',
-      \ 'twig',
       \ 'vala',
       \ 'vbnet',
       \ 'vcl',
