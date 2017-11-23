@@ -7,17 +7,17 @@ set -u
 # = Helpers & setting some variables
 # =======================================================================
 
-local DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_DIR="$HOME/.dotfiles"
 
 tput sgr0
-local RED=$(tput setaf 1)
-local ORANGE=$(tput setaf 3)
-local GREEN=$(tput setaf 2)
-local PURPLE=$(tput setaf 5)
-local BLUE=$(tput setaf 4)
-local WHITE=$(tput setaf 7)
-local BOLD=$(tput bold)
-local RESET=$(tput sgr0)
+RED=$(tput setaf 1)
+ORANGE=$(tput setaf 3)
+GREEN=$(tput setaf 2)
+PURPLE=$(tput setaf 5)
+BLUE=$(tput setaf 4)
+WHITE=$(tput setaf 7)
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
 
 log_error() {
   local MSG="$1"
@@ -44,18 +44,10 @@ log_success() {
 # =======================================================================
 
 install_homebrew() {
-  # Check for Homebrew,
-  # Install if we don't have it
-  # Homebrew will also handle Command line tools installation
-  # https://github.com/Homebrew/brew/blob/8ea778f7c7ea790694485030d105a92a9416ef33/Library/Homebrew/extend/os/mac/development_tools.rb#L25-L43
-
   if ! command -v brew >/dev/null; then
     log_success "Installing Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install stow
-
-    # To accept Xcode EULA
-    xcodebuild -license accept
   fi
 }
 
@@ -165,6 +157,15 @@ change_shell() {
 # = Run!
 # =======================================================================
 
+# Ask for the administrator password upfront.
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until the script has finished.
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+cd "$HOME"
+xcode-select --install
+
 cat <<EOF
 $BLUE
                             _       _    __ _ _
@@ -186,14 +187,6 @@ $BLUE
 $RESET
 EOF
 
-# Ask for the administrator password upfront.
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-cd "$HOME"
-softwareupdate --verbose --install --all
 
 install_homebrew
 clone_dotfiles
