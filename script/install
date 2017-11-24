@@ -47,7 +47,7 @@ install_homebrew() {
   if ! command -v brew >/dev/null; then
     log_success "Installing Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install stow
+    brew install stow transcrypt
   fi
 }
 
@@ -55,6 +55,13 @@ clone_dotfiles() {
   if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
     git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
+    cd "$DOTFILES_DIR"
+    read -p 'CIPHER: ' cipher
+    # Clean Sierra install doesn't support `read -s`?
+    # read -sp 'Password: ' passvar
+    echo -n "PASSWORD: "; stty -echo; read passwd; stty echo; echo
+    /usr/local/bin/transcrypt -c $cipher -p $passwd
+    cd "$HOME"
   else
     cd "$DOTFILES_DIR" && \
     git stash && \
@@ -164,7 +171,12 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 cd "$HOME"
-xcode-select --install
+if type xcode-select >&- && xpath=$( xcode-select --print-path ) && test -d "${xpath}" && test -x "${xpath}"; then
+   log_success "Command line tools are installed, moving on..."
+else
+  log_success "Installing Command line tools..."
+  xcode-select --install
+fi
 
 cat <<EOF
 $BLUE
@@ -176,6 +188,12 @@ $BLUE
                       (_)__,_|\___/ \__|_| |_|_|\___||___/
 
 
+$RESET
+EOF
+
+if [ -d .git ]; then
+cat <<EOF
+$BLUE
                       $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
                       $RESET$BLUE
                       $RESET   $(git log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
@@ -186,7 +204,7 @@ $BLUE
                       $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
 $RESET
 EOF
-
+fi;
 
 install_homebrew
 clone_dotfiles
@@ -200,7 +218,6 @@ if [ $? -eq 0 ]; then
   log_success "Done."
   log_success "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps"
   log_success "Don't forget to generate SSH keys & symlink files from box"
-  log_success "!!!!! Run transcrypt -c <CIPHER> -p '<PASSWORD' to decrypt encrypted files !!!!!!"
   log_success "=========================================================================================================================="
 else
   log_error "=========================================================================================================================="
