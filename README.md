@@ -24,7 +24,7 @@ These are the main configs:
 ## Installation
 
 ```sh
-$ curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
+$ curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
 ```
 or
 
