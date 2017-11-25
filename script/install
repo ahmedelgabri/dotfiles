@@ -51,6 +51,23 @@ install_homebrew() {
   fi
 }
 
+package_manager(){
+  if [ "$(uname)" == "Darwin" ]; then
+    # This is handled by homebrew....?
+    # if type xcode-select >&- && xpath=$( xcode-select --print-path ) && test -d "${xpath}" && test -x
+    # "${xpath}"; then
+    #    log_success "Command line tools are installed, moving on..."
+    # else
+    #   log_success "Installing Command line tools..."
+    #   xcode-select --install
+    # fi
+    install_homebrew
+  else
+    # Do something linux specifc apt-get, yum, etc...
+    echo "Linux package manager stuff here..."
+  fi
+}
+
 clone_dotfiles() {
   if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
@@ -148,16 +165,38 @@ symlink_files() {
 install_apps(){
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
-    cd "$DOTFILES_DIR" && make homebrew
+    if [ "$(uname)" == "Darwin" ]; then
+      cd "$DOTFILES_DIR" && make homebrew
+    else
+      # install linux packages
+      echo "Install Linux packages here..."
+    fi
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
 }
 
 change_shell() {
-  log_success "Switching shell to (homebrew) zsh..."
-  echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells > /dev/null
-  chsh -s "/usr/local/bin/zsh" "$(whoami)"
+  log_success "Switching shell to zsh..."
+  local ZSH_PATH=$(which zsh)
+
+  if [ -x "/usr/local/bin/zsh" ]; then
+    ZSH_PATH="/usr/local/bin/zsh"
+  else
+    echo "Using system (outdated) zsh...."
+  fi
+
+  echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
+  chsh -s "$ZSH_PATH" "$(whoami)"
+}
+
+run() {
+  package_manager
+  clone_dotfiles
+  take_backup
+  symlink_files
+  install_apps
+  change_shell
 }
 
 # =======================================================================
@@ -171,13 +210,6 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 cd "$HOME"
-if type xcode-select >&- && xpath=$( xcode-select --print-path ) && test -d "${xpath}" && test -x "${xpath}"; then
-   log_success "Command line tools are installed, moving on..."
-else
-  log_success "Installing Command line tools..."
-  xcode-select --install
-fi
-
 cat <<EOF
 $BLUE
                             _       _    __ _ _
@@ -206,12 +238,7 @@ $RESET
 EOF
 fi;
 
-install_homebrew
-clone_dotfiles
-take_backup
-symlink_files
-install_apps
-change_shell
+run
 
 if [ $? -eq 0 ]; then
   log_success "=========================================================================================================================="
