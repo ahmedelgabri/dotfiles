@@ -83,7 +83,6 @@
   lastchange = log -p --follow -n 1
   stashes = stash list
   undo = reset --soft HEAD^
-  prune = fetch --prune
   stash-all = stash save --include-untracked
   amend = commit --amend -C HEAD
 
@@ -119,6 +118,9 @@
   tool = vimdiff
   # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
   conflictstyle = diff3
+
+[tag]
+  forceSignAnnotated = true
 
 [log]
   decorate = short
@@ -189,5 +191,6 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
+
 [rebase]
   autosquash = true
