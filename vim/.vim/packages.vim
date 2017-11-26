@@ -23,9 +23,13 @@ if has('nvim')
   " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
   Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'yarn' })
   Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
-  Plug 'katsika/ncm-lbdb'
-  Plug 'roxma/ncm-github'
+  Plug 'othree/csscomplete.vim'
+  " These don't work
+  " Plug 'katsika/ncm-lbdb'
+  " Plug 'roxma/ncm-github'
   Plug 'Shougo/neco-vim'
+  " Plug 'fszymanski/deoplete-emoji'
+  Plug 'llwu/deoplete-emoji', { 'branch': 'feature/more_emojis' }
 endif
 " }}}
 
@@ -222,8 +226,6 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'
-Plug 'hauleth/blame.vim'
-Plug 'AlessandroYorba/Despacio'
 Plug 'whatyouhide/vim-gotham'
 " }}}
 
