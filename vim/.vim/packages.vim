@@ -215,7 +215,7 @@ let g:polyglot_disabled = [
 " }}}
 
 " Linters & Code quality {{{
-Plug 'editorconfig/editorconfig-vim', { 'on': [] }
+Plug 'editorconfig/editorconfig-vim'
 Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 " }}}
 
