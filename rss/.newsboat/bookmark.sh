@@ -10,4 +10,4 @@ url=$(echo "${url}" | perl -p -e 's/(\?|\&)?utm_[a-z]+=[^\&]+//g;' -e 's/(#|\&)?
 title="$2"
 description="$3"
 
-grep -q "${url}\t${title}\t${description}" ~/.newsbeuter/bookmarks.txt || echo "${url}\t${title}\t${description}" >> ~/.newsbeuter/bookmarks.txt
+grep -q "${url}\t${title}\t${description}" ~/.newsboat/bookmarks.txt || echo "${url}\t${title}\t${description}" >> ~/.newsboat/bookmarks.txt

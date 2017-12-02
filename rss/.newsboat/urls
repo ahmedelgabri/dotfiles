@@ -30,17 +30,16 @@
 # }}}
 
 # Blog ======================================{{{
-  http://acko.net/atom.xml "Blogs"
-  http://benhowdle.im/feed.xml "Blogs"
-  http://blog.codepen.io/feed/ "Blogs"
+  https://brendaneich.com/feed/ "Blogs" "JavaScript"
+  http://acko.net/atom.xml "Blogs" "Programming" "Creative" "Data"
+  http://benhowdle.im/feed.xml "Blogs" "Web" "JavaScript"
   http://blog.dmfranc.com/rss "Blogs"
-  http://blog.kenneth.io/atom.xml "Blogs"
-  http://blog.klipse.tech//feed.xml "Blogs"
-  http://blog.millermedeiros.com/feed/ "Blogs"
+  http://blog.kenneth.io/atom.xml "Blogs" "Web" "JavaScript"
+  http://blog.klipse.tech/feed.xml "Blogs" "Programming" "FP" "ClojureScript"
+  http://blog.millermedeiros.com/feed/ "Blogs" "Web" "JavaScript"
   http://brandur.org/articles.atom "Blogs"
-  http://bricss.net/rss "Blogs"
-  http://caolan.org/posts/rss.xml "Blogs"
-  http://christianheilmann.com/feed/ "Blogs"
+  http://bricss.net/rss "Blogs" "CSS" "Web"
+  http://christianheilmann.com/feed/ "Blogs" "Web" "CSS"
   http://clearleft.com/thinks/rss.xml "Blogs"
   http://code.flickr.com/blog/feed/ "Blogs"
   http://code.flickr.net/feed/ "Blogs"
@@ -48,8 +47,6 @@
   http://codular.com/feed.xml "Blogs"
   http://cwebbdesign.tumblr.com/rss "Blogs"
   http://daverupert.com/atom.xml "Blogs"
-  http://davidwalsh.name/feed "Blogs"
-  http://davidwalsh.name/feed "Blogs"
   http://dbushell.com/rss/ "Blogs"
   http://ddrscott.github.io/atom.xml "Blogs"
   http://dev.hubspot.com/blog/rss.xml "Blogs"
@@ -156,14 +153,15 @@
   https://www.twanvl.nl/feed "Blogs"
   https://matthias-endler.de/rss.xml "Blogs"
   http://zzamboni.org/post/index.xml "Blogs"
-  http://nikgrozev.com/feed.xml "Blogs"
-  https://kate.io/feed.xml "Blogs"
-  http://www.integralist.co.uk/posts/index.xml "Blogs"
-  https://www.stefanjudis.com/rss.xml "Blogs"
-  https://reactjs.org/feed.xml "Blogs"
+  http://nikgrozev.com/feed.xml "Blogs" "General" "Programming"
+  https://kate.io/feed.xml "Blogs" "Programming"
+  http://www.integralist.co.uk/posts/index.xml "Blogs" "General" "Programming"
+  https://www.stefanjudis.com/rss.xml "Blogs" "Web"
+  https://reactjs.org/feed.xml "Blogs" "JavaScript" "Frameworks"
   https://codewords.recurse.com/feed.xml "Blogs"
-  https://nolanlawson.com/feed/ "Blogs"
-  https://www.joelonsoftware.com/feed/ "Blog"
+  https://nolanlawson.com/feed/ "Blogs" "JavaScript" "Web"
+  https://www.joelonsoftware.com/feed/ "Blog" "General"
+  https://wickstrom.tech/feed.xml "Blog" "FP" "Haskell"
 # }}}
 
 # Browsers ====================================== {{{
@@ -246,7 +244,6 @@
 
 # Fancy ======================================== {{{
   http://tobiasahlin.com/feed/ "Fancy"
-  http://feeds.feedburner.com/jackcheng "Fancy"
 # }}}
 
 # ME =========================================== {{{

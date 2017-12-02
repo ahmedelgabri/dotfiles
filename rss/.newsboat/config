@@ -93,6 +93,7 @@
   bind-key K prev-feed articlelist
   bind-key j down article
   bind-key k up article
+  bind-key B bookmark article
   bind-key O open-in-browser-and-mark-read
 # }}}
 
