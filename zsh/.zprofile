@@ -92,6 +92,14 @@ path=(
   ${HOME}/.yarn/bin
 )
 
+if command -v python >/dev/null; then
+  path+=($(python -m site --user-base)/bin)
+fi
+
+if command -v python3 &>/dev/null; then
+  path+=($(python3 -m site --user-base)/bin)
+fi
+
 #
 # Less
 #
