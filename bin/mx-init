@@ -18,6 +18,9 @@ create_session () {
   tmux new-window -n 'rss'
   open_or_log newsboat
 
+  tmux new-window -n 'reddit'
+  open_or_log rtv
+
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window
   tmux set-option allow-rename off
