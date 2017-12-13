@@ -3,18 +3,32 @@ if !exists(':LanguageClientStart')
 endif
 
 let g:LanguageClient_autoStart = 1
-let g:LanguageClient_serverCommands = {
-      \ 'javascript': ['javascript-typescript-stdio'],
-      \ 'javascript.jsx': ['javascript-typescript-stdio'],
-      \ 'html': ['html-languageserver', '--stdio'],
-      \ 'html.twig': ['html-languageserver', '--stdio'],
-      \ 'htmldjango.twig': ['html-languageserver', '--stdio'],
-      \ 'css': ['css-languageserver', '--stdio'],
-      \ 'scss': ['css-languageserver', '--stdio'],
-      \ 'reason': ['ocaml-language-server', '--stdio'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ }
+let g:LanguageClient_diagnosticsEnable = 0
+let g:LanguageClient_serverCommands = {}
+
+if executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+  let g:LanguageClient_serverCommands['javascript.jsx'] = ['javascript-typescript-stdio']
+endif
+if executable('html-languageserver')
+  let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands['html.twig'] = ['html-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands['htmldjango.twig'] = ['html-languageserver', '--stdio']
+endif
+if executable('css-languageserver')
+  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands.scss = ['css-languageserver', '--stdio']
+endif
+if executable('ocaml-language-server')
+  let g:LanguageClient_serverCommands.reason = ['ocaml-language-server', '--stdio']
+  let g:LanguageClient_serverCommands.ocaml = ['ocaml-language-server', '--stdio']
+endif
+if executable('rustup')
+  let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
+endif
+if executable('pyls')
+  let g:LanguageClient_serverCommands.python = ['pyls']
+endif
 
 let g:LanguageClient_diagnosticsDisplay = {
       \   1: {
@@ -43,3 +57,7 @@ let g:LanguageClient_diagnosticsDisplay = {
       \   },
       \ }
 
+aug LanguageClientConfig
+  autocmd!
+  au FileType javascript let g:LanguageClient_diagnosticsEnable = 0
+aug END

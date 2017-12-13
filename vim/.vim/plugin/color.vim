@@ -9,7 +9,10 @@ let g:gruvbox_italicize_comments=1
 let g:one_allow_italics = 1
 
 set background=dark
-colorscheme codedark
+try
+  colorscheme codedark
+catch
+endtry
 
 " let s:hour = strftime('%H')
 " if s:hour >= 6 && s:hour < 18

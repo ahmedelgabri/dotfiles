@@ -242,3 +242,7 @@ if exists('&guioptions')
   " highlight Cursor guifg=Red guibg=Red
   set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100
 endif
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+endif

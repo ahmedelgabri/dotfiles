@@ -95,12 +95,11 @@ vnoremap . :norm.<CR>
 " For neovim terminal :term
 if has('nvim')
   " nnoremap <leader>t  :vsplit +terminal<cr>
-  " ignore when inisde FZF buffer
   tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
-  tnoremap <a-h>      <c-\><c-n><c-w>h
-  tnoremap <a-j>      <c-\><c-n><c-w>j
-  tnoremap <a-k>      <c-\><c-n><c-w>k
-  tnoremap <a-l>      <c-\><c-n><c-w>l
+  tnoremap <M-h> <c-\><c-n><c-w>h
+  tnoremap <M-j> <c-\><c-n><c-w>j
+  tnoremap <M-k> <c-\><c-n><c-w>k
+  tnoremap <M-l> <c-\><c-n><c-w>l
   autocmd BufEnter term://* startinsert
 endif
 

@@ -79,7 +79,6 @@ Plug 'tpope/vim-projectionist'
 Plug 'ap/vim-buftabline'
 Plug 'majutsushi/tagbar', { 'on': ['Tagbar'] }
 Plug 'justinmk/vim-sneak'
-let g:sneak#label = 1
 
 Plug 'bkad/CamelCaseMotion'
 " Nice idea, bad CPU performance still not stable
@@ -193,6 +192,7 @@ let g:polyglot_disabled = [
       \ 'sbt',
       \ 'scala',
       \ 'slim',
+      \ 'slime',
       \ 'solidity',
       \ 'stylus',
       \ 'swift',
