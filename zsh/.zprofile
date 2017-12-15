@@ -146,6 +146,9 @@ export HOMEBREW_INSTALL_BADGE="🍕"
 export HOMEBREW_NO_ANALYTICS=1
 # export HOMEBREW_NO_INSECURE_REDIRECT=1
 # export HOMEBREW_CASK_OPTS=--require-sha
+export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
+# cd ~df
+hash -d df=~/.dotfiles
 
 SYMBOLS=(
 "λ"
