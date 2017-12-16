@@ -74,6 +74,16 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=default,fg=blue,bold'
 for config (~/.dotfiles/zsh/config/*.zsh) source $config
 for func (~/.dotfiles/zsh/config/functions/*.zsh) source $func
 
+function auto-ls-after-cd() {
+  emulate -L zsh
+  # Only in response to a user-initiated `cd`, not indirectly (eg. via another
+  # function).
+  if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
+    l
+  fi
+}
+add-zsh-hook chpwd auto-ls-after-cd
+
 ##############################################################
 # ENV OVERRIDES
 ##############################################################
@@ -115,6 +125,3 @@ if [ $(command -v direnv) ]; then
 
   eval "$(direnv hook zsh)"
 fi
-
-
-
