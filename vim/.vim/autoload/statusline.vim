@@ -159,13 +159,13 @@ let s:dictmode= {
 " DEFINE COLORS FOR STATUSBAR
 " @TODO: Fix cterm.
 let s:dictstatuscolor={
-      \ '1': pinnacle#highlight({ 'bg': '#ab4642' }),
-      \ '2': pinnacle#highlight({ 'bg': '#dc9656', 'fg': 'NONE' }),
-      \ '3': pinnacle#highlight({ 'bg': '#f7ca88', 'fg': 'NONE' }),
-      \ '4': pinnacle#extract_highlight('PmenuSel'),
-      \ '5': pinnacle#extract_highlight('TabLineSel'),
-      \ '6': pinnacle#highlight({ 'bg': '#ba8baf' }),
-      \ '7': pinnacle#highlight({ 'bg': '#a16946', 'fg': 'NONE' }),
+      \ '1': 'highlight! StatusLine term=NONE gui=NONE guibg=#ab4642',
+      \ '2': 'highlight! StatusLine term=NONE gui=NONE guibg=#dc9656 guifg=NONE',
+      \ '3': 'highlight! StatusLine term=NONE gui=NONE guibg=#f7ca88 guifg=NONE',
+      \ '4': 'highlight! link StatusLine PmenuSel',
+      \ '5': 'highlight! link StatusLine TabLineSel',
+      \ '6': 'highlight! StatusLine term=NONE gui=NONE guibg=#ba8baf',
+      \ '7': 'highlight! StatusLine term=NONE gui=NONE guibg=#a16946 guifg=NONE',
       \}
 
 
@@ -177,8 +177,7 @@ function! statusline#getMode()
   let l:modelist = get(s:dictmode, l:modenow, [l:modenow, '1'])
   let l:modecolor = l:modelist[1]
   let l:modename = l:modelist[0]
-  let l:modeexe = get(s:dictstatuscolor, l:modecolor, '1')
-  exec 'hi! StatusLine term=NONE gui=NONE ' . l:modeexe
+  let l:modehighlight = get(s:dictstatuscolor, l:modecolor, '1')
+  exec l:modehighlight
   return l:modename
 endfunction
-
