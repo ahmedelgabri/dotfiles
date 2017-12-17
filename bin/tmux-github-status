@@ -1,34 +1,17 @@
 #!/bin/bash
-CURRENT_STATUS="$(tmux show-options | grep status-left-fg | grep -Eio '(red|green|yellow)')"
-STATUS_URL="https://status.github.com/api"
-GITHUB_STATUS=$(curl -sS $STATUS_URL/status.json | jq -r '.status')
-
-echo "$GITHUB_STATUS"
+GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.status')
 
 case $GITHUB_STATUS in
   ma*)
-    INDICATOR=" ⬤"
-    NEW_STATUS="red"
+    SIGNAL="#[fg=red]*"
     ;;
   mi*)
-    INDICATOR=" ⬤"
-    NEW_STATUS="yellow"
+    SIGNAL="#[fg=yellow]***"
     ;;
   *)
-    INDICATOR="  "
-    NEW_STATUS="green"
+    SIGNAL="*****"
     ;;
 esac
 
-tmux set-option status-left "$INDICATOR"
-tmux set-option status-left-fg $NEW_STATUS
+echo "$SIGNAL"
 
-if [ "$NEW_STATUS" != "$CURRENT_STATUS" ]; then
-  MESSAGE="$(curl -sS $STATUS_URL/last-message.json | jq -r '.body')"
-  tmux set-option message-bg $NEW_STATUS
-  tmux display-message " $MESSAGE"
-  # make sure message exits first
-  sleep 4
-  tmux set-option -u message-bg
-  tmux set-option -u message-fg
-fi
