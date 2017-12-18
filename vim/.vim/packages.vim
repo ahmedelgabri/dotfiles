@@ -97,7 +97,6 @@ endif
 " }}}
 
 " Syntax {{{
-Plug 'tpope/vim-sleuth'
 Plug 'ap/vim-css-color'
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'jez/vim-github-hub'
@@ -214,7 +213,8 @@ let g:polyglot_disabled = [
 " }}}
 
 " Linters & Code quality {{{
-Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-sleuth', PlugCond(empty(glob(getcwd() .'/.editorconfig')))
+Plug 'editorconfig/editorconfig-vim', PlugCond(!empty(glob(getcwd() .'/.editorconfig')))
 Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 " }}}
 
