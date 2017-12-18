@@ -26,7 +26,7 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 
-zplug "zimfw/zimfw", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_ROOT/repos/zimfw/zimfw ~/.zim"
+zplug "zimfw/zimfw", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_REPOS/zimfw/zimfw ~/.zim"
 # Zim settings
 zmodules=(
   directory
@@ -36,6 +36,7 @@ zmodules=(
   input
   utility
   spectrum
+  autosuggestions
   syntax-highlighting
   history-substring-search
   prompt
@@ -43,11 +44,9 @@ zmodules=(
 )
 
 zplug "modules/osx", depth:1, from:prezto
-zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh"
+zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
 zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
-zplug "zsh-users/zsh-completions", defer:1
-zplug "zsh-users/zsh-autosuggestions", defer:1
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
