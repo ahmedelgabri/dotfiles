@@ -4,7 +4,7 @@ if !exists(':Startify')
   finish
 endif
 
-let g:startify_custom_header = startify#fortune#cowsay('═','║','╔','╗','╝','╚')
+let g:startify_custom_header = 'map(startify#fortune#boxed(), "\"   \".v:val")'
 
 let g:startify_skiplist = [
       \ 'COMMIT_EDITMSG',

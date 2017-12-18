@@ -80,7 +80,7 @@ def formatVariableName(path):
   dict  = {
     'lodash': '_',
     'ramda': 'R',
-    'react': 'React, { Component }',
+    'react': '* as React',
     'react-dom': 'ReactDOM',
     'prop-types': 'PropTypes',
     'jquery': '$',
@@ -93,4 +93,3 @@ def formatVariableName(path):
     return dict[lastPart]
   else:
     return re.sub(r'[_\-]', '', lastPart)
-
