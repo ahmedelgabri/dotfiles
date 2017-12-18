@@ -26,7 +26,7 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 
-zplug "zimframework/zim", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_ROOT/repos/zimframework/zim ~/.zim"
+zplug "zimfw/zimfw", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_ROOT/repos/zimfw/zimfw ~/.zim"
 # Zim settings
 zmodules=(
   directory
