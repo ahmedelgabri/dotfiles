@@ -106,7 +106,7 @@ set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
 
-set query_command = "reattach-to-user-namespace lbdbq %s 2> /dev/null"
+set query_command = "lbdbq %s 2> /dev/null"
 set sort_alias    = alias
 set reverse_alias
 
