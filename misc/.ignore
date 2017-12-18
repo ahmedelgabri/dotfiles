@@ -11,6 +11,7 @@ logs
 log
 tmp
 cache
+.cache
 
 *.pyc
 *.pdf
