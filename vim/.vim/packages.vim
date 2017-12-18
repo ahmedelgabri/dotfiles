@@ -226,6 +226,9 @@ Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'
 Plug 'whatyouhide/vim-gotham'
+Plug 'fcpg/vim-farout'
+Plug 'ayu-theme/ayu-vim'
+Plug 'atelierbram/Base2Tone-vim'
 " }}}
 
 " Git {{{
