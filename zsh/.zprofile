@@ -70,6 +70,8 @@ case $EDITOR in
 esac
 export MANWIDTH=120
 
+export BREW_ROOT=$(brew --prefix)
+
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
 
@@ -82,9 +84,9 @@ typeset -gU cdpath fpath mailpath path
 path=(
   /usr/local/opt/curl/bin
   /usr/local/{bin,sbin}
-  $(brew --prefix)/opt/coreutils/libexec/gnubin
-  $(brew --prefix)/opt/python/libexec/bin
-  $(brew --prefix)/Cellar/git
+  ${BREW_ROOT}/opt/coreutils/libexec/gnubin
+  ${BREW_ROOT}/opt/python/libexec/bin
+  ${BREW_ROOT}/Cellar/git
   ${HOME}/.dotfiles/bin
   ${HOME}/.cargo/bin
   $path
