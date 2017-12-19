@@ -3,13 +3,13 @@ GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.sta
 
 case $GITHUB_STATUS in
   ma*)
-    SIGNAL="#[fg=red]*"
+    SIGNAL="#[fg=red]⨉"
     ;;
   mi*)
-    SIGNAL="#[fg=yellow]***"
+    SIGNAL="#[fg=yellow]~"
     ;;
   *)
-    SIGNAL="*****"
+    SIGNAL="✓"
     ;;
 esac
 
