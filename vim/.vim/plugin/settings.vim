@@ -11,6 +11,7 @@ set nowrap                            " no wrap
 
 set textwidth=100
 set colorcolumn=+1
+set signcolumn=yes
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
 set synmaxcol=300                     " do not highlith very long lines
