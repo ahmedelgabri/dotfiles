@@ -38,36 +38,48 @@ endfunction
 " For a more fancy ale statusline
 " https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
 function! statusline#LinterStatus() abort
-  let l:symbol = '●'
+  let l:error_symbol = '⨉'
+  let l:style_symbol = '●'
   let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
+  let l:ale_linter_status = ''
 
-  return l:counts.total == 0 ? printf('%%#GitGutterAdd#%s%%*', l:symbol) : printf(
-        \   '%%#GitGutterDelete#%d %s %%#GitGutterChange#%d %s %%*',
-        \   l:all_errors,
-        \   l:symbol,
-        \   l:all_non_errors,
-        \   l:symbol
-        \)
+  if l:counts.total == 0
+    return printf('%%#GitGutterAdd#%s%%*', l:style_symbol)
+  endif
+
+  if l:counts.error
+    let l:ale_linter_status .= printf('%%#GitGutterDelete#%d %s %%*', l:counts.error, l:error_symbol)
+  endif
+  if l:counts.warning
+    let l:ale_linter_status .= printf('%%#GitGutterChange#%d %s %%*', l:counts.warning, l:error_symbol)
+  endif
+  if l:counts.style_error
+    let l:ale_linter_status .= printf('%%#GitGutterDelete#%d %s %%*', l:counts.style_error, l:style_symbol)
+  endif
+  if l:counts.style_warning
+    let l:ale_linter_status .= printf('%%#GitGutterChange#%d %s %%*', l:counts.style_warning, l:style_symbol)
+  endif
+
+  return l:ale_linter_status
 endfunction
 
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
 function! statusline#GetHunks(plugin)
   let l:symbols = ['+', '-', '~']
+  let l:colors = ['%%#GitGutterAdd#', '%%#GitGutterDelete#', '%%#GitGutterChange#']
   let [l:added, l:modified, l:removed] = a:plugin
   let l:stats = [l:added, l:removed, l:modified]  " reorder
   let l:hunkline = ''
 
   for l:i in range(3)
     if l:stats[l:i] > 0
-      let l:hunkline .= printf('%s%s ', l:symbols[l:i], l:stats[l:i])
+      let l:hunkline .= printf(l:colors[l:i].'%s%s%s%%*', l:i ? ' ' : '', l:symbols[l:i], l:stats[l:i])
     endif
   endfor
 
   if !empty(l:hunkline)
-    let l:hunkline = '%6* ['. l:hunkline[:-2] .']%*'
+    let l:hunkline = '%4* [%*'. l:hunkline .'%4*]%*'
   endif
 
   return l:hunkline
