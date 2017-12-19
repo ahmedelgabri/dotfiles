@@ -1,23 +1,23 @@
-snippet html
+snippet html5
 <!DOCTYPE html>
 <title>${1:Title}</title>
 <meta name="viewport" content="initial-scale=1, width=device-width">
 <link rel="stylesheet" href="${2:./style.css}">
 $0
-<script src="${3:./script.js}"></script>
+<script src="${3:./bundle.js}"></script>
 endsnippet
 
-snippet html5
+snippet html
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+		<title>${1:Title}</title>
 		<meta name="viewport" content="initial-scale=1, width=device-width">
-		<link rel="stylesheet" href="${1:style.css}">
+		<link rel="stylesheet" href="${2:style.css}">
 	</head>
 	<body>
 		$0
-		<script src="${2:script.js}"></script>
+		<script src="${3:bundle.js}"></script>
 	</body>
 </html>
 endsnippet

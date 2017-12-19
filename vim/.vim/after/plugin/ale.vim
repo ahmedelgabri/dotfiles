@@ -16,7 +16,8 @@ let g:ale_javascript_prettier_options = '--single-quote --no-editorconfig --prin
 
 " Don't auto fix (format) files inside `node_modules`, `forks` directory or minified files, or jquery files :shrug:
 let g:ale_linter_aliases = {
-      \ 'mail': 'markdown'
+      \ 'mail': 'markdown',
+      \ 'html': ['html', 'javascript', 'css']
       \}
 
 let g:ale_linters = {
