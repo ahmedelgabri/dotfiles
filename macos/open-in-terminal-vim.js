@@ -4,27 +4,27 @@
 // 4. Set all JS files to open via this app.
 // 5. Profit.
 function run(input, parameters) {
-  var iTerm = Application('iTerm2');
-  iTerm.activate();
-  var windows = iTerm.windows();
-  var window;
-  var tab;
+  var iTerm = Application('iTerm2')
+  iTerm.activate()
+  var windows = iTerm.windows()
+  var window
+  var tab
   if (windows.length) {
-    window = iTerm.currentWindow();
-    tab = window.createTabWithDefaultProfile();
+    window = iTerm.currentWindow()
+    tab = window.createTabWithDefaultProfile()
   } else {
-    window = iTerm.createWindowWithDefaultProfile();
-    tab = window.currentTab();
+    window = iTerm.createWindowWithDefaultProfile()
+    tab = window.currentTab()
   }
-  var session = tab.currentSession();
-  var files = [];
+  var session = tab.currentSession()
+  var files = []
   for (var i = 0; i < input.length; i++) {
-    files.push(quotedForm(input[i]));
+    files.push(quotedForm(input[i]))
   }
-  session.write({text: 'nvim ' + files.join(' ')});
+  session.write({ text: 'nvim ' + files.join(' ') })
 }
 
 function quotedForm(path) {
-  var string = path.toString();
-  return "'" + string.replace("'", '"' + "'" + '"') + "'";
+  var string = path.toString()
+  return "'" + string.replace("'", '"' + "'" + '"') + "'"
 }
