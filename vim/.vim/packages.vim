@@ -213,8 +213,6 @@ let g:polyglot_disabled = [
 " }}}
 
 " Linters & Code quality {{{
-Plug 'tpope/vim-sleuth', PlugCond(empty(glob(getcwd() .'/.editorconfig')))
-Plug 'editorconfig/editorconfig-vim', PlugCond(!empty(glob(getcwd() .'/.editorconfig')))
 Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
 " }}}
 
