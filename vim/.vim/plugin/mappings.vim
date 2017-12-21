@@ -2,8 +2,8 @@
 
 "
 " leader is space, only works with double quotes around it?!
-let mapleader="\<Space>"
-let maplocalleader=','
+let g:mapleader="\<Space>"
+let g:maplocalleader=','
 
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " Keep search matches in the middle of the window.
@@ -100,13 +100,26 @@ if has('nvim')
   tnoremap <M-j> <c-\><c-n><c-w>j
   tnoremap <M-k> <c-\><c-n><c-w>k
   tnoremap <M-l> <c-\><c-n><c-w>l
-  autocmd BufEnter term://* startinsert
+  augroup MyTerm
+    autocmd!
+    autocmd BufEnter term://* startinsert
+  augroup END
 endif
 
 nnoremap <silent> <leader>z :call functions#ZoomToggle()<CR>
 nnoremap <c-g> :call functions#SynStack()<CR>
 
-nnoremap <leader>r :call functions#RenameFile()<cr>
+if exists(':Move')
+  nnoremap <leader>r :Move %<cr>
+endif
+
+if exists('g:loaded_fugitive')
+  " Open current file on github.com
+  nnoremap gb  :Gbrowse<cr>
+  vnoremap gb  :Gbrowse<cr>
+  nnoremap gs  :Gstatus<cr>
+  vnoremap gs  :Gstatus<cr>
+endif
 
 nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>
 nnoremap _= :call functions#Preserve("normal gg=G")<CR>
@@ -116,22 +129,6 @@ map <silent> <Leader>he :call functions#HtmlEscape()<CR>
 
 " maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 nnoremap <silent> gof :call functions#OpenFileFolder()<CR>
-
-" https://github.com/junegunn/vim-plug/issues/435
-function! s:plug_doc()
-  let l:name = matchstr(getline('.'), '^- \zs\S\+\ze:')
-  if has_key(g:plugs, l:name)
-    for l:doc in split(globpath(g:plugs[l:name].dir, 'doc/*.txt'), '\n')
-      execute 'tabe' l:doc
-    endfor
-  endif
-endfunction
-
-augroup PlugExtra
-  autocmd!
-  autocmd FileType vim-plug nnoremap <buffer> <silent> H :call <sid>plug_doc()<cr>
-augroup END
-
 
 " Allows you to visually select a section and then hit @ to run a macro on all lines
 " https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6

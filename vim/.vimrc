@@ -38,7 +38,7 @@ endif
 " }}}
 
 " Project specific override {{{
-augroup vimrc
+augroup MyVimrc
   autocmd!
   autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
 

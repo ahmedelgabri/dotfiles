@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! functions#trim(txt)
+function! functions#trim(txt) abort
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 endfunction
 
@@ -18,27 +18,15 @@ endfunction
 
 " Show highlighting groups for current word
 " https://twitter.com/kylegferg/status/697546733602136065
-function! functions#SynStack()
+function! functions#SynStack() abort
   if !exists('*synstack')
     return
   endif
   echo map(synstack(line('.'), col('.')), "synIDattr(v:val, 'name')")
 endfunc
 
-" https://github.com/garybernhardt/dotfiles/blob/68554d69652cc62d43e659f2c6b9082b9938c72e/.vimrc#L182-L194
-function! functions#RenameFile()
-  let l:old_name = expand('%')
-  let l:new_name = input('New file name: ', expand('%'), 'file')
-  if l:new_name !=# '' && l:new_name !=# l:old_name
-    exec ':saveas ' . l:new_name
-    exec ':silent !rm ' . l:old_name
-    redraw!
-  endif
-endfunction
-
-
 " strips trailing whitespace at the end of files.
-function! functions#Preserve(command)
+function! functions#Preserve(command) abort
   " Preparation: save last search, and cursor position.
   let l:pos=winsaveview()
   let l:search=@/
@@ -51,7 +39,7 @@ function! functions#Preserve(command)
 endfunction
 
 
-function! functions#ClearRegisters()
+function! functions#ClearRegisters() abort
   let l:regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
   let l:i=0
   while (l:i<strlen(l:regs))
@@ -61,32 +49,32 @@ function! functions#ClearRegisters()
 endfunction
 
 
-function! functions#setupWrapping()
+function! functions#setupWrapping() abort
   set wrap
   set wrapmargin=2
   set textwidth=80
 endfunction
 
 " via: http://vim.wikia.com/wiki/HTML_entities
-function! functions#HtmlEscape()
+function! functions#HtmlEscape() abort
   silent s/&/\&amp;/eg
   silent s/</\&lt;/eg
   silent s/>/\&gt;/eg
 endfunction
 
-function! functions#HtmlUnEscape()
+function! functions#HtmlUnEscape() abort
   silent s/&lt;/</eg
   silent s/&gt;/>/eg
   silent s/&amp;/\&/eg
 endfunction
 
-function! functions#OpenFileFolder()
+function! functions#OpenFileFolder() abort
   silent call system('open '.expand('%:p:h:~'))
 endfunction
 
 " https://github.com/vheon/home/blob/b4535fdfd0cb2df93284f69d676d587b3e2b2a21/.vim/vimrc#L318-L339
 " When switching colorscheme in terminal vim change the profile in iTerm as well.
-function! functions#change_iterm2_profile()
+function! functions#change_iterm2_profile() abort
   " let dual_colorschemes = ['onedark', 'gruvbox']
   let l:is_iTerm = exists('$TERM_PROGRAM') && $TERM_PROGRAM =~# 'iTerm.app'
   if l:is_iTerm
@@ -161,7 +149,7 @@ fun! functions#ProfileStart(...)
 endfun
 
 
-function! functions#NeatFoldText()
+function! functions#NeatFoldText() abort
   let l:raquo='»'
   let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
   let l:lines=(v:foldend - v:foldstart + 1) . ' lines'

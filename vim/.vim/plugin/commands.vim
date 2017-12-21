@@ -12,6 +12,11 @@ command! Light set background=light
 command! Dark set background=dark
 
 " Delete the current file and clear the buffer
-command! Del :call delete(@%) | bdelete!
+if exists(':Delete')
+  command! Del :Delete
+else
+  command! Del :call delete(@%) | bdelete!
+endif
+
 command! ClearRegisters call functions#ClearRegisters()
 

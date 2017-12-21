@@ -16,10 +16,6 @@ set signcolumn=yes
 syntax sync minlines=256              " start highlighting from 256 lines backwards
 set synmaxcol=300                     " do not highlith very long lines
 
-if has('showcmd')
-  set showcmd                         " extra info at end of command line
-endif
-
 set noshowmode                        " Don't Display the mode you're in. since it's already shown on the statusline
 
 " show a navigable menu for tab completion
@@ -51,8 +47,11 @@ set completeopt+=menuone
 set completeopt-=preview
 
 set nocursorcolumn       " do not highlight column
-autocmd InsertLeave,WinEnter * set nocursorline
-autocmd InsertEnter,WinLeave * set cursorline
+augroup MySettingsCursorLine
+  autocmd!
+  autocmd InsertLeave,WinEnter * set nocursorline
+  autocmd InsertEnter,WinLeave * set cursorline
+augroup END
 
 set lazyredraw                        " don't bother updating screen during macro playback
 
@@ -82,9 +81,6 @@ set visualbell
 
 " No flashing.
 set noerrorbells
-
-" reload files when changed on disk, i.e. via `git checkout`
-set autoread
 
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=5
@@ -122,11 +118,6 @@ endif
 
 if has('linebreak')
   let &showbreak='↳  '                " DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
-endif
-
-
-if exists('&belloff')
-  set belloff=all                     " never ring the bell for any reason
 endif
 
 " show where you are
@@ -226,7 +217,10 @@ else
   if has('nvim')
     " default in nvim: !,'100,<50,s10,h
     set shada=!,'100,<500,:10000,/10000,s10,h,n~/.vim/tmp/main.shada
-    autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+    augroup MyNeovimShada
+      autocmd!
+      autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+    augroup END
   else
     set viminfo=!,'100,<500,:10000,/10000,s10,h,n~/.vim/tmp/viminfo
   endif
@@ -246,4 +240,5 @@ endif
 
 if executable('rg')
   set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
 endif

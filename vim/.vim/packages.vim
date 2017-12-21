@@ -4,7 +4,10 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup MyVimPlug
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
 endif
 " }}}
 
@@ -34,8 +37,16 @@ endif
 " }}}
 
 " General {{{
-if !has('nvim')
+if !has('nvim') " For vim
   Plug 'tpope/vim-sensible'
+  if exists('&belloff')
+    " never ring the bell for any reason
+    set belloff=all
+  endif
+  if has('showcmd')
+    " extra info at end of command line
+    set showcmd
+  endif
   if &term =~# '^tmux'
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -49,7 +60,6 @@ if !empty(glob('/usr/local/opt/fzf'))
   set runtimepath+=/usr/local/opt/fzf
   Plug 'junegunn/fzf.vim'
 endif
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'jsfaint/gen_tags.vim'
 let g:loaded_gentags#gtags = 1
@@ -64,6 +74,7 @@ Plug 'Shougo/unite.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
 Plug 'wellle/targets.vim'
@@ -73,22 +84,13 @@ Plug 'mhinz/vim-startify'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
 Plug 'kshenoy/vim-signature'
-Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeEnable' }
 Plug 'tpope/vim-projectionist'
-Plug 'ap/vim-buftabline'
-Plug 'majutsushi/tagbar', { 'on': ['Tagbar'] }
 Plug 'justinmk/vim-sneak'
-
-Plug 'bkad/CamelCaseMotion'
 " Nice idea, bad CPU performance still not stable
 " check it later
 " Plug 'andymass/vim-matchup'
 " let g:matchup_transmute_enabled = 1
 " let g:matchup_matchparen_deferred = 1
-
-Plug 'blueyed/vim-diminactive'
-let g:diminactive_use_syntax = 1
-let g:diminactive_enable_focus = 1
 
 if executable('tmux') && !empty($TMUX)
   Plug 'christoomey/vim-tmux-navigator'
@@ -232,7 +234,8 @@ Plug 'atelierbram/Base2Tone-vim'
 " Git {{{
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gista'
-Plug 'lambdalisue/gina.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 " }}}
 
 " Writing {{{

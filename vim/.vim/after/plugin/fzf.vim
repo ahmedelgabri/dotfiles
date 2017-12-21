@@ -34,5 +34,7 @@ function! s:fzf_statusline()
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
 
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-
+augroup MyFZF
+  autocmd!
+  autocmd! User FzfStatusLine call <SID>fzf_statusline()
+augroup END

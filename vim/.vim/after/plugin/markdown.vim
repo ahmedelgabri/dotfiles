@@ -7,7 +7,7 @@ let g:goyo_width = '120'
 nmap <Leader>g :Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization
-function! s:goyo_enter()
+function! s:goyo_enter() abort
   Limelight
   " set background=light
   " let s:guibg = synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
@@ -21,11 +21,14 @@ function! s:goyo_enter()
   endif
   let b:quitting = 0
   let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
+  augroup MyGoyoEnter
+    autocmd!
+    autocmd QuitPre <buffer> let b:quitting = 1
+  augroup END
   cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
 endfunction
 
-function! s:goyo_leave()
+function! s:goyo_leave() abort
   Limelight!
   " set background=dark
   if exists('$TMUX')
@@ -45,5 +48,8 @@ function! s:goyo_leave()
   endif
 endfunction
 
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
+augroup MyMarkdownGoyo
+  autocmd!
+  autocmd User GoyoEnter call <SID>goyo_enter()
+  autocmd User GoyoLeave call <SID>goyo_leave()
+augroup END

@@ -1,6 +1,5 @@
 scriptencoding utf-8
 
-set laststatus=2    " LAST WINDOW WILL ALWAYS HAVE A STATUS LINE
 " set showtabline=2
 " set tabline="%1T"
 
@@ -17,8 +16,9 @@ function! StatusLine() abort
   let l:line.=statusline#GetHunks(GitGutterGetHunkSummary())
   let l:line.='%6* %{statusline#gitInfo()} '
   let l:line.='%4* %{statusline#fileprefix()}%*'
+  let l:line.='%6*%t'
   let l:line.=statusline#modified()
-  let l:line.='%t'
+  let l:line.=' %m'
   let l:line.='%5*'
   let l:line.=' %{statusline#readOnly()} %w%*'
   let l:line.='%9* %=%*'
@@ -51,7 +51,7 @@ execute 'highlight! User7 ctermfg=cyan guifg=cyan'
 " execute 'highlight! link User8 PmenuSel'
 " execute 'highlight! link User9 PmenuSel'
 
-augroup ahmedStatusLine
+augroup MyStatusLine
   autocmd!
   if exists('#TextChangedI')
     autocmd BufWinEnter,BufWritePost,FileWritePost,TextChanged,TextChangedI,WinEnter,InsertEnter,InsertLeave,CmdWinEnter,CmdWinLeave,ColorScheme * call statusline#getMode()

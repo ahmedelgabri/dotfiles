@@ -25,6 +25,10 @@ augroup MyAutoCmds
   autocmd BufWritePre * if functions#should_strip_whitespace() | call functions#Preserve("%s/\\s\\+$//e") | endif
   " autocmd VimEnter,ColorScheme * call functions#change_iterm2_profile()
 
+  " taken from https://github.com/jeffkreeftmeijer/vim-numbertoggle/blob/cfaecb9e22b45373bb4940010ce63a89073f6d8b/plugin/number_toggle.vim
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
+
   if has('nvim')
     " autocmd ColorScheme * hi! link LineNr VertSplit
     autocmd ColorScheme * hi! LineNr ctermbg=bg ctermfg=bg guibg=bg guifg=bg

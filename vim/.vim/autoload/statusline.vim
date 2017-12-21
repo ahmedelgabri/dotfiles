@@ -65,27 +65,26 @@ endfunction
 
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
-function! statusline#GetHunks(plugin)
+function! statusline#GetHunks(plugin) abort
   let l:symbols = ['+', '-', '~']
-  let l:colors = ['%%#GitGutterAdd#', '%%#GitGutterDelete#', '%%#GitGutterChange#']
   let [l:added, l:modified, l:removed] = a:plugin
   let l:stats = [l:added, l:removed, l:modified]  " reorder
   let l:hunkline = ''
 
   for l:i in range(3)
     if l:stats[l:i] > 0
-      let l:hunkline .= printf(l:colors[l:i].'%s%s%s%%*', l:i ? ' ' : '', l:symbols[l:i], l:stats[l:i])
+      let l:hunkline .= printf('%s%s ', l:symbols[l:i], l:stats[l:i])
     endif
   endfor
 
   if !empty(l:hunkline)
-    let l:hunkline = '%4* [%*'. l:hunkline .'%4*]%*'
+    let l:hunkline = '%4* ['. l:hunkline[:-2] .']%*'
   endif
 
   return l:hunkline
 endfunction
 
-function! statusline#fileSize()
+function! statusline#fileSize() abort
   let l:bytes = getfsize(expand('%:p'))
   if (l:bytes >= 1024)
     let l:kbytes = l:bytes / 1024
@@ -108,18 +107,17 @@ function! statusline#fileSize()
 endfunction
 
 
-function! statusline#gitInfo()
-  let l:gitbranch = gina#component#repo#preset('fancy')
+function! statusline#gitInfo() abort
+  let l:gitbranch = fugitive#head(10)
   " For some odd reason, when it's empty it will return [] with a space before.
-  if l:gitbranch ==# ' []' || l:gitbranch ==# ''
+  if l:gitbranch ==# ''
     return ''
   else
-    let l:extra = gina#component#traffic#preset('fancy')
-    return l:extra . ' ⎇  ' . l:gitbranch
+    return '⎇  ' . l:gitbranch
   endif
 endfunction
 
-function! statusline#readOnly()
+function! statusline#readOnly() abort
   if !&modifiable && &readonly
     return ' RO'
   elseif &modifiable && &readonly
@@ -131,11 +129,11 @@ function! statusline#readOnly()
   endif
 endfunction
 
-function! statusline#modified()
+function! statusline#modified() abort
   return &modified ? '%#WarningMsg#' : '%6*'
 endfunction
 
-function! statusline#fileprefix()
+function! statusline#fileprefix() abort
   let l:basename=expand('%:h')
   if l:basename == '' || l:basename == '.'
     return ''
@@ -184,7 +182,7 @@ let s:dictstatuscolor={
 " GET CURRENT MODE FROM DICTIONARY AND RETURN IT
 " IF MODE IS NOT IN DICTIONARY RETURN THE ABBREVIATION
 " GetMode() GETS THE MODE FROM THE ARRAY THEN RETURNS THE NAME
-function! statusline#getMode()
+function! statusline#getMode() abort
   let l:modenow = mode()
   let l:modelist = get(s:dictmode, l:modenow, [l:modenow, '1'])
   let l:modecolor = l:modelist[1]

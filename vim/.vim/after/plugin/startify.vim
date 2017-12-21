@@ -29,5 +29,7 @@ hi! link StartifySlash StartifyPath
 hi! link StartifyBracket StartifyPath
 hi! link StartifyNumber Title
 
-autocmd User Startified setlocal cursorline
-
+augroup MyStartify
+  autocmd!
+  autocmd User Startified setlocal cursorline
+augroup END
