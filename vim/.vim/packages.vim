@@ -35,6 +35,7 @@ endif
 " General {{{
 if !has('nvim') " For vim
   Plug 'tpope/vim-sensible'
+  Plug 'wincent/terminus'
   if exists('&belloff')
     " never ring the bell for any reason
     set belloff=all
@@ -75,11 +76,9 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
 Plug 'wellle/targets.vim'
 Plug 'wincent/loupe'
-Plug 'wincent/terminus'
 Plug 'mhinz/vim-startify'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'tpope/tpope-vim-abolish'
-Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-projectionist'
 Plug 'justinmk/vim-sneak'
 " Nice idea, bad CPU performance still not stable

@@ -58,6 +58,7 @@ set lazyredraw                        " don't bother updating screen during macr
 " highlight matching [{()}]
 set showmatch
 set title
+set mouse=a
 
 " More natural splitting
 set splitbelow
