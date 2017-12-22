@@ -12,7 +12,7 @@ endif
 " }}}
 
 " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
-function! PlugCond(cond, ...)
+function! If(cond, ...)
   let l:opts = get(a:000, 0, {})
   return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
 endfunction
@@ -22,7 +22,7 @@ call plug#begin('~/.vim/plugged')
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
   Plug 'roxma/nvim-completion-manager'
-  Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'yarn' })
+  Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn' })
   Plug 'othree/csscomplete.vim'
   " These don't work
   " Plug 'katsika/ncm-lbdb'
@@ -33,9 +33,9 @@ endif
 " }}}
 
 " General {{{
+Plug 'tpope/vim-sensible', If(!has('nvim'))
+Plug 'wincent/terminus', If(!has('nvim'))
 if !has('nvim') " For vim
-  Plug 'tpope/vim-sensible'
-  Plug 'wincent/terminus'
   if exists('&belloff')
     " never ring the bell for any reason
     set belloff=all
@@ -87,10 +87,8 @@ Plug 'justinmk/vim-sneak'
 " let g:matchup_transmute_enabled = 1
 " let g:matchup_matchparen_deferred = 1
 
-if executable('tmux') && !empty($TMUX)
-  Plug 'christoomey/vim-tmux-navigator'
-  let g:tmux_navigator_save_on_switch = 1
-endif
+Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
+let g:tmux_navigator_save_on_switch = 1
 " }}}
 
 " Syntax {{{
