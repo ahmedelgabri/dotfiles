@@ -5,7 +5,7 @@ endif
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {}
 
-if executable('flow-language-server') && !empty(glob(getcwd() .'/.flowconfig'))
+if executable('flow-language-server')
   let g:LanguageClient_serverCommands.javascript = ['flow-language-server', '--stdio']
   let g:LanguageClient_serverCommands['javascript.jsx'] = ['flow-language-server', '--stdio']
 endif

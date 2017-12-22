@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 set conceallevel=2
 set concealcursor=n
 " Not perfect but I only use it for JavaScript functions, maybe used somewhere
