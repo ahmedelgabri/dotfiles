@@ -22,14 +22,10 @@ call plug#begin('~/.vim/plugged')
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
   Plug 'roxma/nvim-completion-manager'
-  " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
-  " Maybe I should do this instead https://github.com/junegunn/vim-plug/wiki/faq#loading-plugins-manually
   Plug 'roxma/nvim-cm-tern', PlugCond(empty(glob(getcwd() .'/.flowconfig')), { 'do': 'yarn' })
-  Plug 'roxma/ncm-flow', PlugCond(!empty(glob(getcwd() .'/.flowconfig')))
   Plug 'othree/csscomplete.vim'
   " These don't work
   " Plug 'katsika/ncm-lbdb'
-  " Plug 'roxma/ncm-github'
   Plug 'Shougo/neco-vim'
   " Plug 'fszymanski/deoplete-emoji'
   Plug 'llwu/deoplete-emoji', { 'branch': 'feature/more_emojis' }
