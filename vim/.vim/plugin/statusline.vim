@@ -18,7 +18,6 @@ function! StatusLine() abort
   let l:line.='%4* %{statusline#fileprefix()}%*'
   let l:line.='%6*%t'
   let l:line.=statusline#modified()
-  let l:line.=' %m'
   let l:line.='%5*'
   let l:line.=' %{statusline#readOnly()} %w%*'
   let l:line.='%9* %=%*'

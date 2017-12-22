@@ -130,7 +130,7 @@ function! statusline#readOnly() abort
 endfunction
 
 function! statusline#modified() abort
-  return &modified ? '%#WarningMsg#' : '%6*'
+  return &modified ? '%#WarningMsg# [+]' : '%6*'
 endfunction
 
 function! statusline#fileprefix() abort
