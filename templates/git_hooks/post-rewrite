@@ -1,0 +1,5 @@
+#!/bin/sh
+HOOKS_DIR="$(command git config --get core.hooksPath || echo "~/.dotfiles/templates/git_hooks")"
+case "$1" in
+  rebase) exec "$HOOKS_DIR/post-merge" ;;
+esac
