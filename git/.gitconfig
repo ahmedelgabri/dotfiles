@@ -50,6 +50,7 @@
   pager = diff-so-fancy | less --tabs=4 -RFX
   ; # conflicts with Markdown
   commentChar = %
+	hooksPath = ~/.dotfiles/templates/git_hooks
 
 [alias]
   co = checkout
@@ -65,17 +66,13 @@
   l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   la = l --all --simplify-by-decoration
   lnm = l --no-merges
-  last = l -1
-  ten = l -n 10
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   fl = l -u
-  gr = grep -Ii
   patch = !git --no-pager diff --no-color
   recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
   recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
   track = push origin -u HEAD
   blm = blame -wMC
-  this = !git init && git add . && git commit -m \"initial commit\"
   who = shortlog -sne
   doctor = remote -v show origin
   grr = grep --break --heading --line-number
