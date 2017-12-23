@@ -1,5 +1,5 @@
 #!/bin/sh
 set -e
 trap 'rm -f "$GIT_DIR/$$.tags"' EXIT
-git ls-files | ctags --tag-relative -L - -f"$GIT_DIR/$$.tags"
+git ls-files | ctags -L - -f"$GIT_DIR/$$.tags"
 mv "$GIT_DIR/$$.tags" "$GIT_DIR/tags"
