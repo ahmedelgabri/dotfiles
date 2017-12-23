@@ -34,7 +34,6 @@ endif
 
 " General {{{
 Plug 'tpope/vim-sensible', If(!has('nvim'))
-Plug 'wincent/terminus', If(!has('nvim'))
 if !has('nvim') " For vim
   if exists('&belloff')
     " never ring the bell for any reason
@@ -58,11 +57,6 @@ if !empty(glob('/usr/local/opt/fzf'))
   Plug 'junegunn/fzf.vim'
 endif
 Plug 'junegunn/vim-peekaboo'
-Plug 'jsfaint/gen_tags.vim'
-let g:loaded_gentags#gtags = 1
-let g:gen_tags#ctags_auto_gen = 1
-let g:gen_tags#use_cache_dir = 0
-" let g:gen_tags#verbose = 1
 Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
 Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
@@ -74,12 +68,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/tpope-vim-abolish'
+Plug 'tpope/vim-projectionist'
+Plug 'wincent/terminus'
 Plug 'wellle/targets.vim'
 Plug 'wincent/loupe'
 Plug 'mhinz/vim-startify'
 Plug 'nelstrom/vim-visual-star-search'
-Plug 'tpope/tpope-vim-abolish'
-Plug 'tpope/vim-projectionist'
 Plug 'justinmk/vim-sneak'
 " Nice idea, bad CPU performance still not stable
 " check it later
