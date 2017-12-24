@@ -2,9 +2,15 @@
 
 [user]
   name = Ahmed El Gabri
+  email = ahmed@gabri.me
+  signingkey = 0xAC977998CD4ACABB
 
-[include]
-  path = ~/.gitconfig.private
+[commit]
+  gpgsign = true
+  verbose = true
+
+[gpg]
+  program = /usr/local/bin/gpg
 
 [color]
   ui = true
@@ -50,7 +56,7 @@
   pager = diff-so-fancy | less --tabs=4 -RFX
   ; # conflicts with Markdown
   commentChar = %
-	hooksPath = ~/.dotfiles/templates/git_hooks
+  hooksPath = ~/.dotfiles/templates/git_hooks
 
 [alias]
   co = checkout
@@ -82,6 +88,7 @@
   undo = reset --soft HEAD^
   stash-all = stash save --include-untracked
   amend = commit --amend -C HEAD
+  ctags = !.git/hooks/ctags
 
 [branch]
   autosetupmerge = always
@@ -191,5 +198,3 @@
 
 [rebase]
   autosquash = true
-[commit]
-	verbose = true
