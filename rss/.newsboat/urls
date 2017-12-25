@@ -161,6 +161,7 @@
   https://nolanlawson.com/feed/ "Blogs" "JavaScript" "Web"
   https://www.joelonsoftware.com/feed/ "Blog" "General"
   https://wickstrom.tech/feed.xml "Blog" "FP" "Haskell"
+  http://www.kalzumeus.com/feed/articles/ "Blog"
 # }}}
 
 # Browsers ====================================== {{{
