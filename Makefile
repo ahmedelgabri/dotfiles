@@ -5,7 +5,7 @@ SCRIPTS = "$(DEST)/script"
 all: node python iterm neovim macos
 
 install:
-		@./script/install
+		@$(SCRIPTS)/install
 
 # This is used inside `scripts/install` symlink_files function
 # NOTE: irc/.weechat is not handled with stow, it's handled directly inside bin/mx-init using `--dir` flag
@@ -37,16 +37,20 @@ homebrew:
 		@/usr/local/opt/fzf/install --all
 
 node:
-		@sh $(SCRIPTS)/node-packages.sh
+		@sh $(SCRIPTS)/node-packages
 
 python:
-		@sh $(SCRIPTS)/python-packages.sh
+		@sh $(SCRIPTS)/python-packages
 
 iterm:
-		@sh $(SCRIPTS)/iterm.sh
+		@sh $(SCRIPTS)/iterm
 
+# Neovim providers (optional)
 neovim:
 		@gem install neovim
+		@pip2 install --user neovim
+		@pip3 install --user neovim
+		@yarn global add --prefix "~/.yarn" neovim
 
 macos:
 		@source $(DEST)/macos/.macos

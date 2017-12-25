@@ -4,7 +4,6 @@ PACKAGES=(
 "--upgrade setuptools"
 "--upgrade pip"
 # "markdown"
-"neovim"
 "vim-vint"
 "websocket-client"
 "pipenv"
