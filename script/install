@@ -233,10 +233,9 @@ fi;
 
 run
 
-HAS_ERROR=$?
 FAILED_COMMAND=$(fc -ln -1)
 
-if [ "$HAS_ERROR" -eq 0 ]; then
+if [ $? -eq 0 ]; then
   log_success "=========================================================================================================================="
   log_success "Done."
   log_success "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps"
