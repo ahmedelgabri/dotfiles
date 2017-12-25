@@ -1,5 +1,4 @@
 #!/bin/bash
-# curl -sS https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | sh
 
 set -u
 
@@ -19,24 +18,31 @@ WHITE=$(tput setaf 7)
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 
+log() {
+  local LABEL="[$1]"
+  local COLOR="$2"
+  shift
+  shift
+  local MSG=("$@")
+  printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols)-${#LABEL})) | tr ' ' '='
+  for M in "${MSG[@]}"; do
+    let COL=$(tput cols)-2-${#M}
+    printf "%s%${COL}s${RESET}" "$COLOR* $M"
+  done
+  printf "${COLOR}%*s${RESET}\n" $(tput cols) | tr ' ' '='
+}
+
 log_error() {
-  local MSG="$1"
-  let COL=$(tput cols)-2-${#MSG}+${#RESET}
-
-  printf "${RED}%*s${RESET}" $(tput cols) | tr ' ' '='
-  printf "%s%${COL}s" "$RED= $MSG" "[FAIL]$RESET"
-  printf "${RED}%*s${RESET}" $(tput cols) | tr ' ' '='
-
+  log "FAIL" "$RED" "$@"
   exit 1
 }
 
-log_success() {
-  local MSG="$1"
-  let COL=$(tput cols)-2-${#MSG}+${#RESET}
+log_info() {
+  log "INFO" "$ORANGE" "$@"
+}
 
-  printf "${GREEN}%*s${RESET}" $(tput cols) | tr ' ' '='
-  printf "%s%${COL}s" "$GREEN= $MSG" "[OK]$RESET"
-  printf "${GREEN}%*s${RESET}" $(tput cols) | tr ' ' '='
+log_success() {
+  log "OK" "$GREEN" "$@"
 }
 
 # =======================================================================
@@ -149,7 +155,8 @@ symlink_files() {
 
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
-    cd "$DOTFILES_DIR" && make symlink
+      # I want all the make steps to run even if a cask or a brew errored out
+    cd "$DOTFILES_DIR" && make --ignore-errors symlink
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
@@ -159,7 +166,8 @@ install_apps(){
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
     if [ "$(uname)" == "Darwin" ]; then
-      cd "$DOTFILES_DIR" && make homebrew
+      # I want all the make steps to run even if a cask or a brew errored out
+      cd "$DOTFILES_DIR" && make --ignore-errors homebrew
     else
       # install linux packages
       echo "Install Linux packages here..."
@@ -170,17 +178,23 @@ install_apps(){
 }
 
 change_shell() {
-  log_success "Switching shell to zsh..."
-  local ZSH_PATH=$(which zsh)
+  local BREW_ZSH_PATH="/usr/local/bin/zsh"
 
-  if [ -x "/usr/local/bin/zsh" ]; then
-    ZSH_PATH="/usr/local/bin/zsh"
+  if ! grep -q "$BREW_ZSH_PATH" /etc/shells; then
+    log_success "Switching shell to zsh..."
+    local ZSH_PATH=$(which zsh)
+
+    if [ -x "$BREW_ZSH_PATH" ]; then
+      ZSH_PATH="$BREW_ZSH_PATH"
+    else
+      log_info "Using system (outdated) zsh...."
+    fi
+
+    echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
+    chsh -s "$ZSH_PATH" "$(whoami)"
   else
-    echo "Using system (outdated) zsh...."
+    log_info "No need to switch shell, you are using Homebrew zsh already"
   fi
-
-  echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
-  chsh -s "$ZSH_PATH" "$(whoami)"
 }
 
 run() {
@@ -236,14 +250,9 @@ run
 FAILED_COMMAND=$(fc -ln -1)
 
 if [ $? -eq 0 ]; then
-  log_success "=========================================================================================================================="
   log_success "Done."
-  log_success "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps"
-  log_success "Don't forget to generate SSH keys & symlink files from box"
-  log_success "=========================================================================================================================="
+  log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" "Don't forget to generate SSH keys & symlink files from box"
 else
-  log_error "=========================================================================================================================="
   log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
-  log_error "=========================================================================================================================="
 fi
 
