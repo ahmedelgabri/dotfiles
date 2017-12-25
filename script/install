@@ -47,7 +47,7 @@ install_homebrew() {
   if ! command -v brew >/dev/null; then
     log_success "Installing Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install stow transcrypt
+    brew install stow
   fi
 }
 
@@ -72,13 +72,6 @@ clone_dotfiles() {
   if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
     git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
-    cd "$DOTFILES_DIR"
-    read -p 'CIPHER: ' cipher
-    # Clean Sierra install doesn't support `read -s`?
-    # read -sp 'Password: ' passvar
-    echo -n "PASSWORD: "; stty -echo; read passwd; stty echo; echo
-    /usr/local/bin/transcrypt -c $cipher -p $passwd
-    cd "$HOME"
   else
     cd "$DOTFILES_DIR" && \
     git stash && \
