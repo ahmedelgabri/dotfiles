@@ -240,7 +240,10 @@ fi;
 
 run
 
-if [ $? -eq 0 ]; then
+HAS_ERROR=$?
+FAILED_COMMAND=$(fc -ln -1)
+
+if [ "$HAS_ERROR" -eq 0 ]; then
   log_success "=========================================================================================================================="
   log_success "Done."
   log_success "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps"
@@ -248,7 +251,7 @@ if [ $? -eq 0 ]; then
   log_success "=========================================================================================================================="
 else
   log_error "=========================================================================================================================="
-  log_error "Something went wrong, [ Failed on: $(fc -ln -1) ]"
+  log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
   log_error "=========================================================================================================================="
 fi
 
