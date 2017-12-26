@@ -1,3 +1,7 @@
+if !exists(':Gista')
+  finish
+endif
+
 " Github Auth for Gists
 let g:gista#client#default_username = $GITHUB_USER
 let g:gista#command#post#allow_empty_description = 1

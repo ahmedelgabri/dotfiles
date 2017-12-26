@@ -4,8 +4,43 @@ if !exists(':Startify')
   finish
 endif
 
-let g:startify_custom_header = 'map(startify#fortune#boxed(), "\"   \".v:val")'
+if has('nvim')
+  let s:ascii = [
+        \ '           _     ',
+        \ '  __ _  __(_)_ _ ',
+        \ ' /  \ |/ / /  / \',
+        \ '/_/_/___/_/_/_/_/',
+        \ '']
+else
+  let s:ascii = [
+        \ '       _     ',
+        \ ' _  __(_)_ _ ',
+        \ '| |/ / /  / \',
+        \ '|___/_/_/_/_/',
+        \ '']
+endif
 
+let g:startify_ascii = [
+      \ '',
+      \ '        ,/     ',
+      \ "      ,'/      ",
+      \ "    ,' /       ". s:ascii[0],
+      \ "  ,'  /_____,  ". s:ascii[1],
+      \ ".'____    ,'   ". s:ascii[2],
+      \ "     /  ,'     ". s:ascii[3],
+      \ "    / ,'       ",
+      \ "   /,'         ",
+      \ "  /'           ",
+      \ ''
+      \ ]
+
+let g:startify_custom_header = 'map(g:startify_ascii + startify#fortune#boxed(), "repeat(\" \", 5).v:val")'
+let g:startify_list_order = [
+      \ ['   Sessions:'], 'sessions',
+      \ ['   Files:'], 'dir',
+      \ ['   MRU'], 'files',
+      \ ['   Bookmarks:'], 'bookmarks',
+      \ ]
 let g:startify_skiplist = [
       \ 'COMMIT_EDITMSG',
       \ '^/tmp',
@@ -20,7 +55,8 @@ let g:startify_change_to_vcs_root = 1
 let g:startify_update_oldfiles = 1
 let g:startify_use_env = 1
 let g:startify_files_number = 6
-
+let g:startify_session_persistence = 1
+let g:startify_session_delete_buffers = 1
 
 hi! link StartifyHeader Normal
 hi! link StartifyFile Directory
