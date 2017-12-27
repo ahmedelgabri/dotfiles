@@ -18,7 +18,6 @@ rss/.newsboat/cache.*
 hammerspoon/.hammerspoon/Spoons/*
 !hammerspoon/.hammerspoon/Spoons/SpoonInstall.spoon
 !misc/.ignore
-*.zwc
 *.old
 .zcompdump
 .zhistory

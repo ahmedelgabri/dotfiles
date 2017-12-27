@@ -78,4 +78,5 @@ npm-debug.log*
 .tern-port
 .tern-project
 .ignore
+*.zwc
 
