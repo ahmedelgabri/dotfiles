@@ -32,9 +32,9 @@ xnoremap <silent> gk k
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
-" Quickly move current line, also accepts counts 2<leader>j
-nnoremap <leader>k :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap <leader>j :<c-u>execute 'move +'. v:count1<cr>
+" Move VISUAL LINE selection within buffer.
+xnoremap <silent> K :call functions#move_up()<CR>
+xnoremap <silent> J :call functions#move_down()<CR>
 
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
