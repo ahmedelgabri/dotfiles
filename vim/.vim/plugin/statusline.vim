@@ -9,15 +9,16 @@ scriptencoding utf-8
 set statusline=%!StatusLine()
 
 function! StatusLine() abort
-  let l:line='%* %{statusline#getMode()} %*'
-  let l:line.='%<'
+  let l:line='%4* %{statusline#getMode()} %*'
   let l:line.='%#ErrorMsg#%{&paste ? " ⍴ " : ""}%*'
   let l:line.='%#WarningMsg#%{&spell ? " ✎ " : ""}%*'
-  let l:line.=statusline#GetHunks(GitGutterGetHunkSummary())
-  let l:line.='%6* %{statusline#gitInfo()} '
+  let l:line.='%6* %{statusline#gitInfo()}'
+  let l:line.='%<'
   let l:line.='%4* %{statusline#fileprefix()}%*'
   let l:line.='%6*%t'
   let l:line.=statusline#modified()
+  let l:line.=statusline#GetHunks(GitGutterGetHunkSummary())
+
   let l:line.='%5*'
   let l:line.=' %{statusline#readOnly()} %w%*'
   let l:line.='%9* %=%*'
