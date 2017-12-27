@@ -143,7 +143,6 @@ export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap 
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
 
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
 export HOMEBREW_INSTALL_BADGE="🍕"
 export HOMEBREW_NO_ANALYTICS=1
 # export HOMEBREW_NO_INSECURE_REDIRECT=1

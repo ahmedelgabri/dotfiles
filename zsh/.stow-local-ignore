@@ -18,8 +18,7 @@ _darcs
 \.git
 \.gitignore
 
-config # ignore zsh config folder
-aliases.zsh # ignore aliases file
+zshrc.d # ignore zsh config folder
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files

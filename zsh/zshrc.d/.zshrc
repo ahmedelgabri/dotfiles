@@ -26,7 +26,8 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 
-zplug "zimfw/zimfw", depth:1, use:"init.zsh", hook-build:"ln -sf $ZPLUG_REPOS/zimfw/zimfw ~/.zim"
+ZIM_HOME="$ZPLUG_REPOS/zimfw/zimfw"
+zplug "zimfw/zimfw", depth:1
 # Zim settings
 zmodules=(
   directory
@@ -35,7 +36,7 @@ zmodules=(
   meta
   input
   utility
-  spectrum
+  # custom
   autosuggestions
   syntax-highlighting
   history-substring-search
@@ -47,6 +48,8 @@ zplug "modules/osx", depth:1, from:prezto
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
 zplug "knu/z", use:"z.sh", depth:1, defer:1
 zplug "lukechilds/zsh-better-npm-completion", defer:1
+zplug "molovo/tipz", defer:1
+zplug "zdharma/fast-syntax-highlighting", defer:1
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -61,17 +64,15 @@ zplug load
 zprompt_theme="pure"
 ztermtitle="%n@%m:%~"
 zdouble_dot_expand="true"
-zhighlighters=(main brackets pattern cursor root)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=red,bold'
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=default,fg=blue,bold'
+TIPZ_TEXT='Alias tip:'
 
 ##############################################################
 # CONFIG.
 ##############################################################
 
-for config (~/.dotfiles/zsh/config/*.zsh) source $config
-for func (~/.dotfiles/zsh/config/functions/*.zsh) source $func
+for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
+for func (~/.dotfiles/zsh/zshrc.d/config/functions/*.zsh) source $func
 
 function auto-ls-after-cd() {
   emulate -L zsh
