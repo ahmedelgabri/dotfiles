@@ -14,20 +14,16 @@ symlink:
 		@stow --ignore ".DS_Store" --target="$(HOME)" --dir="$(DEST)" \
 			misc \
 			ctags \
-			curl \
 			git \
 			grc \
 			hammerspoon \
 			iterm2 \
 			mail \
 			neovim \
-			python \
-			ruby \
 			terminfo \
 			tmux \
 			vim \
 			zsh \
-			tig \
 			rss
 
 homebrew:
