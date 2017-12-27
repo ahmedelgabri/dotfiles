@@ -1,5 +1,5 @@
 #!/bin/sh
-HOOKS_DIR="$(command git config --get core.hooksPath || echo "~/.dotfiles/templates/git_hooks")"
+HOOKS_DIR="$(command git config --get core.hooksPath || echo "~/.dotfiles/git/hooks")"
 exec "$HOOKS_DIR/ctags" >/dev/null 2>&1 &
 [ -f "$GIT_DIR/hooks/post-merge" ] && exec "$GIT_DIR/hooks/post-merge" $@
 exit 0

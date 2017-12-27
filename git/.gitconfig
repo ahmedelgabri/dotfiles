@@ -56,7 +56,7 @@
   pager = diff-so-fancy | less --tabs=4 -RFX
   ; # conflicts with Markdown
   commentChar = %
-  hooksPath = ~/.dotfiles/templates/git_hooks
+  hooksPath = ~/.dotfiles/git/hooks
 
 [alias]
   co = checkout
