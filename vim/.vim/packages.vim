@@ -1,7 +1,8 @@
+let s:VIM_PLUG_FOLDER = g:VIM_CONFIG_FOLDER . '/plugged'
 " Automatic installation {{{
 " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
 
-if empty(glob('~/.vim/autoload/plug.vim'))
+if empty(glob(g:VIM_CONFIG_FOLDER . '/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup MyVimPlug
@@ -17,7 +18,7 @@ function! If(cond, ...)
   return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
 endfunction
 
-call plug#begin('~/.vim/plugged')
+call plug#begin(s:VIM_PLUG_FOLDER)
 " Autocomplete {{{
 if has('nvim')
   Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
