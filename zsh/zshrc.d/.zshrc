@@ -74,16 +74,6 @@ TIPZ_TEXT='Alias tip:'
 for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
 for func (~/.dotfiles/zsh/zshrc.d/config/functions/*.zsh) source $func
 
-function auto-ls-after-cd() {
-  emulate -L zsh
-  # Only in response to a user-initiated `cd`, not indirectly (eg. via another
-  # function).
-  if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
-    l
-  fi
-}
-add-zsh-hook chpwd auto-ls-after-cd
-
 ##############################################################
 # ENV OVERRIDES
 ##############################################################
