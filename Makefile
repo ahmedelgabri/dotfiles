@@ -19,7 +19,6 @@ symlink:
 			hammerspoon \
 			iterm2 \
 			mail \
-			neovim \
 			terminfo \
 			tmux \
 			vim \
