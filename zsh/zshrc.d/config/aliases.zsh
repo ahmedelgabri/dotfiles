@@ -55,8 +55,6 @@ alias work='mx lightspeed lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias http-serve='python -m SimpleHTTPServer'
-alias :qa=exit
-alias :wq=exit
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
 (( $+commands[direnv] )) && alias tmux='direnv exec / tmux'
