@@ -5,9 +5,10 @@
 # Usage:
 #   $ weather
 #   $ weather <city>
+# Check curl wttr.in/:help for more info
 
 weather () {
-  curl -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-Amsterdam}"?0q
+  curl -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-Amsterdam}"?0qm
 }
 
 weather "$@"
