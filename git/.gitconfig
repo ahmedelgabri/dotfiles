@@ -4,6 +4,7 @@
   name = Ahmed El Gabri
   email = ahmed@gabri.me
   signingkey = 0xAC977998CD4ACABB
+  useconfigonly = true
 
 [commit]
   gpgsign = true
