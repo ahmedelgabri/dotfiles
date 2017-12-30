@@ -29,7 +29,7 @@ log() {
     let COL=$(tput cols)-2-${#M}
     printf "%s%${COL}s${RESET}" "$COLOR* $M"
   done
-  printf "${COLOR}%*s${RESET}\n" $(tput cols) | tr ' ' '='
+  printf "${COLOR}%*s${RESET}\n\n\n" $(tput cols) | tr ' ' '='
 }
 
 log_error() {
