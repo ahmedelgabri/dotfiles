@@ -45,6 +45,94 @@ log_success() {
   log "OK" "$GREEN" "$@"
 }
 
+
+get_permission() {
+  # Ask for the administrator password upfront.
+  sudo -v
+
+  # Keep-alive: update existing `sudo` time stamp until the script has finished.
+  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+}
+
+
+print_main_banner() {
+  cd "$HOME"
+cat <<EOF
+$BLUE
+                            _       _    __ _ _
+                           | |     | |  / _(_) |
+                         __| | ___ | |_| |_ _| | ___  ___
+                        / _. |/ _ \| __|  _| | |/ _ \/ __|
+                       | (_| | (_) | |_| | | | |  __/\__ \ $()
+                      (_)__,_|\___/ \__|_| |_|_|\___||___/
+
+
+$RESET
+EOF
+
+if [ -d .git ]; then
+cat <<EOF
+$BLUE
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+                      $RESET$BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(red)date:    %ad' --date=short) $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(cyan)author:  %an') $BLUE
+                      $RESET   $(git log -n 1 --pretty=format:'%C(green)message: %s') $BLUE
+                      $RESET$BLUE
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+$RESET
+EOF
+fi;
+}
+
+print_prompt() {
+  echo "What do you want to do?"
+  PS3="Enter your choice (must be a number): "
+  options=("All" "Install package manager" "Clone dotfiles" "Backup old files" "Symlink files" "Install Apps" "Change shell" "Quit")
+  select opt in "${options[@]}"
+  do
+    case $opt in
+      "All")
+        all
+        break
+        ;;
+      "Install package manager")
+        package_manager
+        break
+        ;;
+      "Clone dotfiles")
+        clone_dotfiles
+        break
+        ;;
+      "Backup old files")
+        take_backup
+        break
+        ;;
+      "Symlink files")
+        symlink_files
+        break
+        ;;
+      "Install Apps")
+        install_apps
+        break
+        ;;
+      "Change shell")
+        get_permission
+        change_shell
+        break
+        ;;
+      "Quit")
+        break
+        ;;
+      *)
+        echo "Invalid option"
+        break
+        ;;
+    esac
+  done
+}
+
 # =======================================================================
 # = Main functions
 # =======================================================================
@@ -147,10 +235,6 @@ take_backup() {
 symlink_files() {
   log_success "Create some required folders..."
 
-  if [[ ! -d "$HOME/.config" ]]; then
-    mkdir $HOME/.config
-  fi
-
   mkdir -p $HOME/.mail/{Personal,Work}
 
   if [[ -d $DOTFILES_DIR ]]; then
@@ -197,62 +281,33 @@ change_shell() {
   fi
 }
 
-run() {
+all() {
+  get_permission
   package_manager
   clone_dotfiles
   take_backup
   symlink_files
   install_apps
   change_shell
+
+  FAILED_COMMAND=$(fc -ln -1)
+
+  if [ $? -eq 0 ]; then
+    log_success "Done."
+    log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" "Don't forget to generate SSH keys & symlink files from box"
+  else
+    log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
+  fi
+}
+
+run() {
+  print_main_banner
+  print_prompt
 }
 
 # =======================================================================
 # = Run!
 # =======================================================================
 
-# Ask for the administrator password upfront.
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-cd "$HOME"
-cat <<EOF
-$BLUE
-                            _       _    __ _ _
-                           | |     | |  / _(_) |
-                         __| | ___ | |_| |_ _| | ___  ___
-                        / _. |/ _ \| __|  _| | |/ _ \/ __|
-                       | (_| | (_) | |_| | | | |  __/\__ \ $()
-                      (_)__,_|\___/ \__|_| |_|_|\___||___/
-
-
-$RESET
-EOF
-
-if [ -d .git ]; then
-cat <<EOF
-$BLUE
-                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
-                      $RESET$BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(red)date:    %ad' --date=short) $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(cyan)author:  %an') $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(green)message: %s') $BLUE
-                      $RESET$BLUE
-                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
-$RESET
-EOF
-fi;
-
 run
-
-FAILED_COMMAND=$(fc -ln -1)
-
-if [ $? -eq 0 ]; then
-  log_success "Done."
-  log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" "Don't forget to generate SSH keys & symlink files from box"
-else
-  log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
-fi
 
