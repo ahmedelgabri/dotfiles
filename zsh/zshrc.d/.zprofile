@@ -159,3 +159,9 @@ SYMBOLS=(
 )
 
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
+
+
+##############################################################
+# Python
+###############################################################
+export PYTHONSTARTUP=$HOME/.pyrc.py
