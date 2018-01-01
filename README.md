@@ -36,17 +36,6 @@ or
 $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && make install
 ```
 
-### After installation
-
-Change shell to `zsh`
-
-Add the homebrew installed zsh to /etc/shells (so that chsh will consider it a "safe" shell):
-
-```zsh
-$ echo "$(which zsh)" | sudo tee -a /etc/shells > /dev/null
-$ chsh -s "$(which zsh)" "$(whoami)"
-```
-
 ### Authors
 
 [Ahmed El Gabri](https://twitter.com/AhmedElGabri)
