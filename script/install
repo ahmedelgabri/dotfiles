@@ -294,7 +294,9 @@ all() {
 
   if [ $? -eq 0 ]; then
     log_success "Done."
-    log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" "Don't forget to generate SSH keys & symlink files from box"
+    log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" \
+      "Don't forget to generate SSH keys & import gpg keys" \
+      "HOMEBREW_GITHUB_API_TOKEN & GITHUB_TOKEN are needed for homebrew & hub cli"
   else
     log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
   fi
