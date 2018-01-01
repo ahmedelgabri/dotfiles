@@ -8,26 +8,30 @@
 # zmodload zsh/zprof
 
 ##############################################################
-# zPlug.
+# zPlugin
 ##############################################################
 
-if [[ ! -f ~/.zplug/init.zsh ]]; then
-  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+if [[ ! -f ~/.zplugin/bin/zplugin.zsh ]]; then
+  if (( $+commands[git] )); then
+    git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin
+  else
+    echo 'git not found' >&2
+    exit 1
+  fi
 fi
 
-source ~/.zplug/init.zsh
-
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
+source ~/.zplugin/bin/zplugin.zsh
+autoload -Uz compinit && compinit -i
 
 NVM_NO_USE=true
-zplug "lukechilds/zsh-nvm"
-zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
-zplug "knu/z", use:"z.sh", depth:1
-zplug "lukechilds/zsh-better-npm-completion"
-zplug "molovo/tipz"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zdharma/fast-syntax-highlighting"
-zplug "zsh-users/zsh-history-substring-search"
+zplugin load "lukechilds/zsh-nvm"
+zplugin ice pick"async.zsh" src"pure.zsh"; zplugin load "ahmedelgabri/pure"
+zplugin ice "knu/z" pick"z.sh"; zplugin load "knu/z"
+zplugin load "lukechilds/zsh-better-npm-completion"
+zplugin load "molovo/tipz"
+zplugin load "zsh-users/zsh-autosuggestions"
+zplugin load "zdharma/fast-syntax-highlighting"
+zplugin load "zsh-users/zsh-history-substring-search"
 # bind UP and DOWN keys
 bindkey "${terminfo[kcuu1]}" history-substring-search-up
 bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -37,17 +41,7 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # Must be the last?
-zplug "zsh-users/zsh-completions"
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
-  fi
-fi
-
-# zplug load --verbose
-zplug load
+zplugin load "zsh-users/zsh-completions"
 
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 TIPZ_TEXT='Alias tip:'
