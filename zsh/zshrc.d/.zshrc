@@ -61,7 +61,6 @@ fi
 # zplug load --verbose
 zplug load
 
-zprompt_theme="pure"
 ztermtitle="%n@%m:%~"
 zdouble_dot_expand="true"
 ZSH_AUTOSUGGEST_USE_ASYNC=true
