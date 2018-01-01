@@ -105,10 +105,10 @@ Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'morhetz/gruvbox'
 Plug 'lifepillar/vim-solarized8'
 Plug 'w0ng/vim-hybrid'
-Plug 'whatyouhide/vim-gotham'
 Plug 'ayu-theme/ayu-vim'
 Plug 'romainl/Apprentice'
 Plug 'AlessandroYorba/Alduin'
+Plug 'rakr/vim-two-firewatch'
 " }}}
 
 " Git {{{
