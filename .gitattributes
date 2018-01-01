@@ -1,3 +1,5 @@
 *.private  filter=crypt diff=crypt
+.npmrc  filter=crypt diff=crypt
+.yarnrc  filter=crypt diff=crypt
 ssh/.ssh/config filter=crypt diff=crypt
 irc/.weechat/weechat.conf filter=crypt diff=crypt
