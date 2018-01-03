@@ -70,37 +70,48 @@ case $EDITOR in
 esac
 export MANWIDTH=120
 
-export BREW_ROOT=$(brew --prefix)
-
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
 
 # Set the the list of directories that cd searches.
-# cdpath=(
-#   $cdpath
-# )
+cdpath=(
+  $cdpath
+)
 
 # Set the list of directories that Zsh searches for programs.
-path=(
+myPath=(
   /usr/local/opt/curl/bin
   /usr/local/{bin,sbin}
-  ${BREW_ROOT}/opt/coreutils/libexec/gnubin
-  ${BREW_ROOT}/opt/python/libexec/bin
-  ${BREW_ROOT}/Cellar/git
+)
+
+if (( $+commands[brew] )) then
+  export BREW_ROOT=$(brew --prefix)
+
+  myPath+=(
+    ${BREW_ROOT}/opt/coreutils/libexec/gnubin
+    ${BREW_ROOT}/opt/python/libexec/bin
+    ${BREW_ROOT}/Cellar/git
+  )
+fi
+
+myPath+=(
   ${HOME}/.dotfiles/bin
-  ${HOME}/.cargo/bin
   $path
   ./node_modules/.bin
   ${HOME}/.yarn/bin
 )
 
-if command -v python >/dev/null; then
-  path+=($(python -m site --user-base)/bin)
+if (( $+commands[python] )) then
+  myPath+=($(python -m site --user-base)/bin)
 fi
 
-if command -v python3 &>/dev/null; then
-  path+=($(python3 -m site --user-base)/bin)
+if (( $+commands[python3] )) then
+  myPath+=($(python3 -m site --user-base)/bin)
 fi
+
+path=(
+  $myPath
+)
 
 #
 # Less
