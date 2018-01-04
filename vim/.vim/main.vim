@@ -28,8 +28,6 @@ endif
 
 execute 'source ' . g:VIM_CONFIG_FOLDER . '/packages.vim'
 
-call functions#setupCompletion()
-
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
 if filereadable(s:vimrc_local)
