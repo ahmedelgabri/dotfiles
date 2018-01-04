@@ -199,3 +199,4 @@
 
 [rebase]
   autosquash = true
+  instructionFormat = [%cn <%ce> %G?] %s
