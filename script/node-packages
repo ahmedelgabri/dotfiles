@@ -19,7 +19,7 @@ NPM_PACKAGES=(
 )
 
 for package in "${NPM_PACKAGES[@]}"; do
-  yarn global add --prefix "~/.yarn" "$package"
+  yarn global add "$package"
 done
 
 

@@ -98,8 +98,13 @@ myPath+=(
   ${HOME}/.dotfiles/bin
   $path
   ./node_modules/.bin
-  ${HOME}/.yarn/bin
 )
+
+if (( $+commands[yarn] )) then
+  # This is not working properly
+  # myPath+=($(yarn global bin))
+  myPath+=($(yarn global dir)/node_modules/.bin)
+fi
 
 if (( $+commands[python] )) then
   myPath+=($(python -m site --user-base)/bin)
