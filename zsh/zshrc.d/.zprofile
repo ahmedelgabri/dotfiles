@@ -85,12 +85,11 @@ myPath=(
 )
 
 if (( $+commands[brew] )) then
-  export BREW_ROOT=$(brew --prefix)
-
+  # $(brew --prefix) is very slow
   myPath+=(
-    ${BREW_ROOT}/opt/coreutils/libexec/gnubin
-    ${BREW_ROOT}/opt/python/libexec/bin
-    ${BREW_ROOT}/Cellar/git
+    /usr/local/opt/coreutils/libexec/gnubin
+    /usr/local/opt/python/libexec/bin
+    /usr/local/Cellar/git
   )
 fi
 
