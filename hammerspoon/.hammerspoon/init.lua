@@ -1,10 +1,11 @@
 -- Ensure the IPC command line client is available
 hs.ipc.cliInstall()
+hs.application.enableSpotlightForNameSearches(true)
 
 require 'mappings'
 require 'window-managment'
-require 'spoons'
-
+require 'layout'
+amphetamine = require 'amphetamine'
 --
 -- Auto-reload config on change.
 --
