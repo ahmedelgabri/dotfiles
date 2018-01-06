@@ -21,7 +21,7 @@ endfunction
 call plug#begin(s:VIM_PLUG_FOLDER)
 " Autocomplete {{{
 if has('nvim')
-  Plug 'autozimu/LanguageClient-neovim', { 'tag': 'binary-*-x86_64-apple-darwin' }
+  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': './install.sh' }
   Plug 'roxma/nvim-completion-manager'
   Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn' })
   Plug 'othree/csscomplete.vim'
