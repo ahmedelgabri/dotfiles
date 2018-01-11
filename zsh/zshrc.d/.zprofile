@@ -105,6 +105,11 @@ if (( $+commands[yarn] )) then
   myPath+=($(yarn global dir)/node_modules/.bin)
 fi
 
+if (( $+commands[go] )) then
+  export GOPATH="$HOME/.go"
+  myPath+=($(go env GOPATH)/bin)
+fi
+
 if (( $+commands[python] )) then
   myPath+=($(python -m site --user-base)/bin)
 fi
