@@ -162,6 +162,8 @@
   https://www.joelonsoftware.com/feed/ "Blog" "General"
   https://wickstrom.tech/feed.xml "Blog" "FP" "Haskell"
   http://www.kalzumeus.com/feed/articles/ "Blog"
+  https://danluu.com/atom.xml "Blog" "Programming"
+  https://blog.safia.rocks/rss "Blog" "Programming" "JavaScript"
 # }}}
 
 # Browsers ====================================== {{{
