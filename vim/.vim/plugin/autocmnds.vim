@@ -3,8 +3,6 @@ augroup MyAutoCmds
   " Automatically make splits equal in size
   autocmd VimResized * wincmd =
 
-  autocmd VimEnter * call functions#setupCompletion()
-
   " Close preview buffer with q
   autocmd FileType * if functions#should_quit_on_q() | nmap <buffer> <silent>  q :q<cr> | endif
 
