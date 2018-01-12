@@ -15,6 +15,7 @@ mail/.mutt/secure-ca.cert
 scratch
 rss/.newsboat/history.*
 rss/.newsboat/cache.*
+rss/.newsboat/queue
 hammerspoon/.hammerspoon/Spoons/*
 !hammerspoon/.hammerspoon/Spoons/SpoonInstall.spoon
 !misc/.ignore

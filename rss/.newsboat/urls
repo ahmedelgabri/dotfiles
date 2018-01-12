@@ -1,6 +1,7 @@
 # vim:ft=config foldmethod=marker:
 
 # Querys ------------------- {{{
+  "query:⌁ Podcasts:unread = \"yes\" and tags # \"Podcasts\"" "Podcasts"
   "query:⌁ Unread Articles:unread = \"yes\""
   "query:⌁ Bookmarked Articles:flags # \"s\"" "Starred"
   "query:⌁ Blogs:tags # \"Blogs\"" "Blogs"
@@ -375,4 +376,8 @@
 
 # Football {{{
   https://www.theplayerstribune.com/sports/soccer/feed/ "football"
+# }}}
+
+# Podcasts {{{
+  https://rss.simplecast.com/podcasts/4151/rss "Podcasts"
 # }}}
