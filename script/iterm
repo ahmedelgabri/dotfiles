@@ -15,6 +15,9 @@ ITERM_THEMES=(
 "https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Pitch.itermcolors"
 "https://raw.githubusercontent.com/AlessandroYorba/Despacio/tree/master/terminal_colors/despacio_Twilight.itermcolors"
 "https://raw.githubusercontent.com/rakr/iterm-two-firewatch/master/two-firewatch-dark.itermcolors"
+"https://raw.githubusercontent.com/ayu-theme/ayu-vim/master/term/ayu-dark.itermcolors"
+"https://raw.githubusercontent.com/ayu-theme/ayu-vim/master/term/ayu-mirage.itermcolors"
+"https://raw.githubusercontent.com/ayu-theme/ayu-vim/master/term/ayu-light.itermcolors"
 )
 
 for app in $(find $HOME/Applications -name 'iTerm.app'); do
