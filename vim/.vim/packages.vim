@@ -34,6 +34,8 @@ endif
 " }}}
 
 " General {{{
+" Must be loaded before vim-sensible
+Plug 'andymass/vim-matchup'
 Plug 'tpope/vim-sensible', If(!has('nvim'))
 if !has('nvim') " For vim
   if exists('&belloff')
@@ -77,11 +79,7 @@ Plug 'wincent/loupe'
 Plug 'mhinz/vim-startify'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'justinmk/vim-sneak'
-" Nice idea, bad CPU performance still not stable
-" check it later
-" Plug 'andymass/vim-matchup'
-" let g:matchup_transmute_enabled = 1
-" let g:matchup_matchparen_deferred = 1
+Plug 'ap/vim-buftabline'
 
 Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
 let g:tmux_navigator_save_on_switch = 1
