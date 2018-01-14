@@ -70,7 +70,7 @@ Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/tpope-vim-abolish'
-Plug 'tpope/vim-projectionist'
+" Plug 'tpope/vim-projectionist' " for some reason, makes fzf extremely slow
 Plug 'wincent/terminus'
 Plug 'wellle/targets.vim'
 Plug 'wincent/loupe'

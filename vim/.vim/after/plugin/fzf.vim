@@ -9,9 +9,12 @@ command! Plugs call fzf#run({
   \ 'options': '--delimiter / --nth -1',
   \ 'sink':    'Explore'})
 
+" color=always makes fzf slow, not a ripgrep issues
+" https://github.com/junegunn/fzf.vim/issues/488#issuecomment-346909854
+" https://github.com/BurntSushi/ripgrep/issues/696
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --hidden --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   'rg --column --hidden --line-number --no-heading --color=never '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
@@ -26,12 +29,11 @@ nnoremap <silent> <Leader>c :Colors<cr>
 nnoremap <silent> <Leader>b :Buffers<cr>
 nnoremap <silent> <Leader>h :Helptags<cr>
 
-function! s:fzf_statusline()
-  " Override statusline as you like
-  hi def link fzf1 airline_a
-  hi def link fzf2 airline_b
-  hi def link fzf3 airline_c
-  setlocal statusline=%#fzf1#\ >\ %#fzf2#fzf\ %#fzf3#V:\ ctrl-v,\ H:\ ctrl-x
+function! s:fzf_statusline() abort
+  " hi! link fzf1 User4
+  " hi! link fzf2 User6
+  " hi! link fzf3 User9
+  setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x
 endfunction
 
 augroup MyFZF
