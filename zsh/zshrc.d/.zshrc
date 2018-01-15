@@ -12,12 +12,7 @@
 ##############################################################
 
 if [[ ! -f ~/.zplug/init.zsh ]]; then
-  if (( $+commands[git] )); then
-    git clone https://github.com/zplug/zplug ~/.zplug
-  else
-    echo 'git not found' >&2
-    exit 1
-  fi
+  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
 
 source ~/.zplug/init.zsh
