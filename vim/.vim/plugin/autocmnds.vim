@@ -36,9 +36,10 @@ augroup MyAutoCmds
     autocmd ColorScheme * hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
     autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
     autocmd ColorScheme * hi! TablineFill cterm=NONE gui=NONE
-    autocmd ColorScheme * hi! TablineSel cterm=NONE gui=NONE
+    autocmd ColorScheme * hi! TablineSel cterm=reverse gui=reverse
     autocmd ColorScheme * hi! CursorLineNr ctermbg=NONE guibg=NONE
     autocmd ColorScheme * hi! Comment cterm=italic gui=italic
+    autocmd ColorScheme * hi! link Conceal NonText
     " Highlight long lines
     " autocmd ColorScheme * hi! OverLength ctermbg=red ctermfg=white guibg=#592929
 

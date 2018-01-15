@@ -1,2 +1,4 @@
 let g:buftabline_indicators=1
-hi! BufTabLineFill ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
+hi! Tabline cterm=NONE gui=NONE
+hi! TablineFill cterm=NONE gui=NONE
+hi! TablineSel cterm=reverse gui=reverse
