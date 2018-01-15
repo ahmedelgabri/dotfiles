@@ -7,3 +7,4 @@ https://haseebq.com/how-to-break-into-tech-job-hunting-and-interviews/	How to Br
 https://techsolidarity.org/resources/security_key_gmail.htm	Why you need a security key for Gmail
 http://www.defmacro.org/2016/12/22/models.html Mental models
 https://danluu.com/monorepo/ Advantages of monolithic version control
+https://0day.work/using-a-yubikey-for-gpg-and-ssh/ Using a Yubikey for GPG and SSH
