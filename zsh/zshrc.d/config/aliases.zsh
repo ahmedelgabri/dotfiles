@@ -45,6 +45,7 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
+alias listPath='echo $PATH | tr -s ":" "\n" '
 if (( $+commands[jq] )) then;
   alias formatJSON='jq .'
 else

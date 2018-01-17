@@ -82,18 +82,9 @@ cdpath=(
 myPath=(
   /usr/local/opt/curl/bin
   /usr/local/{bin,sbin}
-)
-
-if (( $+commands[brew] )) then
-  # $(brew --prefix) is very slow
-  myPath+=(
-    /usr/local/opt/coreutils/libexec/gnubin
-    /usr/local/opt/python/libexec/bin
-    /usr/local/Cellar/git
-  )
-fi
-
-myPath+=(
+  /usr/local/opt/coreutils/libexec/gnubin
+  /usr/local/opt/python/libexec/bin
+  /usr/local/Cellar/git
   ${HOME}/.dotfiles/bin
   $path
   ./node_modules/.bin
