@@ -104,6 +104,7 @@
   algorithm = histogram
   tool = vimdiff
   compactionHeuristic = true
+	colorMoved = zebra
 
 [difftool]
   prompt = false
