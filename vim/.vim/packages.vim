@@ -34,8 +34,6 @@ endif
 " }}}
 
 " General {{{
-" Must be loaded before vim-sensible
-Plug 'andymass/vim-matchup'
 Plug 'tpope/vim-sensible', If(!has('nvim'))
 if !has('nvim') " For vim
   if exists('&belloff')
