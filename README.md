@@ -23,6 +23,8 @@ These are the main configs:
 * [hammerspoon](http://www.hammerspoon.org/)
 * [Python](https://www.python.org/)
 * [Ruby](https://www.ruby-lang.org/)
+* [zim](https://github.com/zimfw/zimfw) _if you have Prezto or Oh My Zsh installed, make sure you
+  uninstall them first_
 
 ## Installation
 
