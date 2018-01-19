@@ -3,7 +3,7 @@ let s:VIM_PLUG_FOLDER = g:VIM_CONFIG_FOLDER . '/plugged'
 " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
 
 if empty(glob(g:VIM_CONFIG_FOLDER . '/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+  silent !curl -fLo ~/.dotfiles/vim/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup MyVimPlug
     autocmd!
@@ -21,7 +21,7 @@ endfunction
 call plug#begin(s:VIM_PLUG_FOLDER)
 " Autocomplete {{{
 if has('nvim')
-  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': './install.sh' }
+  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
   Plug 'roxma/nvim-completion-manager'
   Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn' })
   Plug 'othree/csscomplete.vim'
