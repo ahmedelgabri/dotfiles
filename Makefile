@@ -1,11 +1,12 @@
 # This can be overriden by doing `make DEST=some/path <task>`
-DEST = "$(HOME)/.dotfiles"
-SCRIPTS = "$(DEST)/script"
+DEST="$(HOME)/.dotfiles"
+SCRIPTS="$(DEST)/script"
+INSTALL="$(SCRIPTS)/install"
 
 all: node python iterm neovim macos
 
 install:
-		@$(SCRIPTS)/install
+		@bash $(INSTALL)
 
 # This is used inside `scripts/install` symlink_files function
 # NOTE: irc/.weechat is not handled with stow, it's handled directly inside bin/mx-init using `--dir` flag
