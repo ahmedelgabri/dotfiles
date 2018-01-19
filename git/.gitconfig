@@ -1,17 +1,10 @@
 ; vim: ft=gitconfig
 
 [user]
-  name = Ahmed El Gabri
-  email = ahmed@gabri.me
-  signingkey = 0xAC977998CD4ACABB
   useconfigonly = true
 
 [commit]
-  gpgsign = true
   verbose = true
-
-[gpg]
-  program = /usr/local/bin/gpg
 
 [color]
   ui = true
@@ -183,13 +176,6 @@
 [url "git://gist.github.com/"]
   insteadOf = "gist:"
 
-[url "git@github.com:ahmedelgabri/"]
-  insteadOf = "me:"
-  pushInsteadOf = "https://github.com/ahmedelgabri/"
-  pushInsteadOf = "http://github.com/ahmedelgabri/"
-  pushInsteadOf = "git://github.com/ahmedelgabri/"
-  pushInsteadOf = "me:"
-
 [credential]
   helper = osxkeychain
 
@@ -201,3 +187,7 @@
 [rebase]
   autosquash = true
   instructionFormat = [%cn <%ce> %G?] %s
+
+[include]
+  path = ~/.gitconfig.local
+
