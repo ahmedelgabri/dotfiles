@@ -10,24 +10,32 @@
 ##############################################################
 # zPlug.
 ##############################################################
-
-if [[ ! -f ~/.zplug/init.zsh ]]; then
-  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+if [[ ! -f ~/antigen.zsh ]]; then
+  curl -sL --proto-redir -all,https git.io/antigen > ~/antigen.zsh
 fi
 
-source ~/.zplug/init.zsh
-
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
+source ~/antigen.zsh
 
 NVM_NO_USE=true
-zplug "lukechilds/zsh-nvm"
-zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
-zplug "knu/z", use:"z.sh", depth:1
-zplug "lukechilds/zsh-better-npm-completion"
-zplug "molovo/tipz"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zdharma/fast-syntax-highlighting"
-zplug "zsh-users/zsh-history-substring-search"
+
+antigen bundles <<EOBUNDLES
+lukechilds/zsh-nvm
+zimfw/zimfw
+knu/z
+lukechilds/zsh-better-npm-completion
+molovo/tipz
+zdharma/fast-syntax-highlighting
+zsh-users/zsh-autosuggestions
+zdharma/fast-syntax-highlighting
+zsh-users/zsh-history-substring-search
+EOBUNDLES
+
+antigen bundle mafredri/zsh-async
+antigen theme ahmedelgabri/pure
+# Must be the last?
+antigen bundle "zsh-users/zsh-completions"
+antigen apply
+
 # bind UP and DOWN keys
 bindkey "${terminfo[kcuu1]}" history-substring-search-up
 bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -35,19 +43,6 @@ bindkey "${terminfo[kcud1]}" history-substring-search-down
 # bind UP and DOWN arrow keys (compatibility fallback)
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-# Must be the last?
-zplug "zsh-users/zsh-completions"
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
-  fi
-fi
-
-# zplug load --verbose
-zplug load
 
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 TIPZ_TEXT='Alias tip:'
