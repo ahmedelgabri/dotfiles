@@ -56,7 +56,6 @@ TIPZ_TEXT='Alias tip:'
 # CONFIG.
 ##############################################################
 
-source ~/.dotfiles/zsh/zshrc.d/aliases.zsh
 for func (~/.dotfiles/zsh/zshrc.d/functions/*.zsh) source $func
 
 ##############################################################
