@@ -18,32 +18,26 @@ fi
 source ~/.zplug/init.zsh
 
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
+
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
-
-export ZIM_HOME="$ZPLUG_REPOS/zimfw/zimfw"
-zplug "zimfw/zimfw", depth:1
-# Zim settings
-zmodules=(
-  directory
-  environment
-  history
-  meta
-  input
-  utility
-  # custom
-  autosuggestions
-  syntax-highlighting
-  history-substring-search
-  prompt
-  completion
-)
-
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
-zplug "knu/z", use:"z.sh", depth:1, defer:1
-zplug "lukechilds/zsh-better-npm-completion", defer:1
-zplug "molovo/tipz", defer:1
-zplug "zdharma/fast-syntax-highlighting", defer:1
+zplug "knu/z", use:"z.sh", depth:1
+zplug "lukechilds/zsh-better-npm-completion"
+zplug "molovo/tipz"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zdharma/fast-syntax-highlighting"
+zplug "zsh-users/zsh-history-substring-search"
+# bind UP and DOWN keys
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+# bind UP and DOWN arrow keys (compatibility fallback)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Must be the last?
+zplug "zsh-users/zsh-completions"
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -55,8 +49,6 @@ fi
 # zplug load --verbose
 zplug load
 
-ztermtitle="%n@%m:%~"
-zdouble_dot_expand="true"
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 TIPZ_TEXT='Alias tip:'
 
@@ -64,16 +56,7 @@ TIPZ_TEXT='Alias tip:'
 # CONFIG.
 ##############################################################
 
-for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
-for func (~/.dotfiles/zsh/zshrc.d/config/functions/*.zsh) source $func
-
-##############################################################
-# ENV OVERRIDES
-##############################################################
-# Make some commands not show up in history
-HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
-HISTSIZE=100000
-SAVEHIST=$HISTSIZE
+for func (~/.dotfiles/zsh/zshrc.d/functions/*.zsh) source $func
 
 ##############################################################
 # TOOLS.
@@ -81,6 +64,17 @@ SAVEHIST=$HISTSIZE
 
 (( $+commands[grc] )) && source "`brew --prefix`/etc/grc.bashrc"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+##############################################################
+# direnv.
+##############################################################
+
+if [ $(command -v direnv) ]; then
+  export NODE_VERSIONS="$HOME/.nvm/versions/node"
+  export NODE_VERSION_PREFIX="v"
+
+  eval "$(direnv hook zsh)"
+fi
 
 ##############################################################
 # /etc/motd
@@ -98,13 +92,3 @@ fi
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
-##############################################################
-# direnv.
-##############################################################
-
-if [ $(command -v direnv) ]; then
-  export NODE_VERSIONS="$HOME/.nvm/versions/node"
-  export NODE_VERSION_PREFIX="v"
-
-  eval "$(direnv hook zsh)"
-fi

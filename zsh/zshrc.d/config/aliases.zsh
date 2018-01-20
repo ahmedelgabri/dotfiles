@@ -9,13 +9,6 @@ alias mv="${aliases[mv]:-mv} -i"
 alias rm="${aliases[rm]:-rm} -i"
 alias type='type -a'
 
-# File Download
-if (( $+commands[curl] )); then
-  alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
-elif (( $+commands[wget] )); then
-  alias get='wget --continue --progress=bar --timestamping'
-fi
-
 if (( $+commands[htop] )); then
   alias top=htop
 fi
@@ -29,12 +22,7 @@ else
   alias ll="echo 'You have to install exa or tree'"
 fi
 
-# Resource Usage
-alias df='df -kh'
-alias du='du -kh'
-
 # TERMINAL
-alias ev="e ~/.vimrc"
 alias "?"="pwd"
 alias c="clear "
 alias KABOOM="yarn global upgrade --latest && brew update && brew upgrade && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor"
@@ -55,7 +43,8 @@ alias dots="cd ~/.dotfiles"
 alias work='mx lightspeed lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
-alias http-serve='python -m SimpleHTTPServer'
+alias apache="sudo apachectl "
+
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
 (( $+commands[direnv] )) && alias tmux='direnv exec / tmux'
@@ -67,10 +56,6 @@ alias -s css=$EDITOR
 alias -s scss=$EDITOR
 alias -s svg=$EDITOR
 alias -s html=$EDITOR
-
-# DEV
-alias npmls="npm list --depth=0 "
-alias apache="sudo apachectl "
 
 # Conditional aliases
 # https://gist.github.com/sos4nt/3187620#gistcomment-1452131

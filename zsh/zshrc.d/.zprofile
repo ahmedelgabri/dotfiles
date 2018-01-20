@@ -4,6 +4,12 @@
 #
 
 ##############################################################
+# CONFIG.
+##############################################################
+
+for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
+
+##############################################################
 # DEFINES ENVIRONMENT VARIABLES.
 ##############################################################
 
@@ -78,6 +84,7 @@ cdpath=(
   $cdpath
 )
 
+
 # Set the list of directories that Zsh searches for programs.
 myPath=(
   /usr/local/opt/curl/bin
@@ -88,18 +95,9 @@ myPath=(
   ${HOME}/.dotfiles/bin
   $path
   ./node_modules/.bin
+  ${HOME}.config/yarn/node_modules/.bin
+  ${HOME}/.go/bin
 )
-
-if (( $+commands[yarn] )) then
-  # This is not working properly
-  # myPath+=($(yarn global bin))
-  myPath+=($(yarn global dir)/node_modules/.bin)
-fi
-
-if (( $+commands[go] )) then
-  export GOPATH="$HOME/.go"
-  myPath+=($(go env GOPATH)/bin)
-fi
 
 if (( $+commands[python] )) then
   myPath+=($(python -m site --user-base)/bin)
@@ -168,6 +166,9 @@ SYMBOLS=(
 
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
 
+if (( $+commands[go] )) then
+  export GOPATH="$HOME/.go"
+fi
 
 ##############################################################
 # Python
