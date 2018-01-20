@@ -21,7 +21,7 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 
-ZIM_HOME="$ZPLUG_REPOS/zimfw/zimfw"
+export ZIM_HOME="$ZPLUG_REPOS/zimfw/zimfw"
 zplug "zimfw/zimfw", depth:1
 # Zim settings
 zmodules=(
