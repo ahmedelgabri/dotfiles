@@ -74,6 +74,7 @@ npm-debug.log*
 *.pyc
 *.map
 .mx-start
+.direnv
 .envrc
 .tern-port
 .tern-project
