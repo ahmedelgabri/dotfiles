@@ -38,6 +38,12 @@ or
 $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && make install
 ```
 
+### Notes
+
+- Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all personal related info
+  there
+
+
 ### Authors
 
 [Ahmed El Gabri](https://twitter.com/AhmedElGabri)
