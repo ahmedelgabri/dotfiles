@@ -47,7 +47,6 @@ alias apache="sudo apachectl "
 
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
-(( $+commands[direnv] )) && alias tmux='direnv exec / tmux'
 # zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
 # alias -s js=$EDITOR
 alias -s jsx=$EDITOR
