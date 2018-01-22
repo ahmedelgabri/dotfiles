@@ -4,6 +4,7 @@
   # show-read-articles no
   always-display-description true
   article-sort-order date-asc
+  browser "open -g -a 'Google Chrome Canary' %u"
   feed-sort-order date-desc
   max-items 100
   notify-always yes
@@ -51,7 +52,7 @@
 
 ## add video or audio to play queue using mpv (requires: task-spooler, mpv, youtube-dl)
 #macro p set browser "tsp mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
-macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
+macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "open -g -a 'Google Chrome Canary' %u" ; quit
 
 ## copy url to clipboard "yank"
 #macro y set browser "echo -n %u | xclip -selection clipboard"; open-in-browser ; set browser "$BROWSER %u"
