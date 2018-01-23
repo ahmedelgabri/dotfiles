@@ -12,8 +12,7 @@ let g:vimfiler_marked_file_icon = '*'
 " Restore file when opening vimfiler
 let g:vimfiler_restore_alternate_file = 1
 
-let g:vimfiler_time_format = '%d/%b/%Y %H:%M'
-" let g:vimfiler_expand_jump_to_first_child = 0
+let g:vimfiler_time_format = '%d/%m/%y %H:%M'
 "
 let g:vimfiler_ignore_pattern = ['^\.git$', '^\.DS_Store$']
 
@@ -32,5 +31,5 @@ function! s:my_vimfiler_settings()
     nmap q <buffer> <Plug>(vimfiler_close)
 endfunction
 
-nnoremap <silent> <leader>d :VimFilerExplorer -find -explorer-columns=type:size:time -parent -winwidth=60<CR>
+nnoremap <silent> <leader>d :VimFilerExplorer -find -parent<CR>
 
