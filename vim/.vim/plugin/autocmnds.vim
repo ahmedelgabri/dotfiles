@@ -28,25 +28,4 @@ augroup MyAutoCmds
   " taken from https://github.com/jeffkreeftmeijer/vim-numbertoggle/blob/cfaecb9e22b45373bb4940010ce63a89073f6d8b/plugin/number_toggle.vim
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
-
-  if has('nvim')
-    " autocmd ColorScheme * hi! link LineNr VertSplit
-    autocmd ColorScheme * hi! LineNr ctermbg=bg ctermfg=bg guibg=bg guifg=bg
-    " still doesn't make the ~ goes away
-    autocmd ColorScheme * hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
-    autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
-    autocmd ColorScheme * hi! TablineFill cterm=NONE gui=NONE
-    autocmd ColorScheme * hi! TablineSel cterm=reverse gui=reverse
-    autocmd ColorScheme * hi! CursorLineNr ctermbg=NONE guibg=NONE
-    autocmd ColorScheme * hi! Comment cterm=italic gui=italic
-    autocmd ColorScheme * hi! link Conceal NonText
-    " Highlight long lines
-    " autocmd ColorScheme * hi! OverLength ctermbg=red ctermfg=white guibg=#592929
-
-    autocmd ColorScheme codedark hi! link Error ErrorMsg
-    autocmd ColorScheme codedark hi! link ALEError ErrorMsg
-    autocmd ColorScheme codedark hi! link ALEErrorSign ErrorMsg
-    autocmd ColorScheme codedark hi! link ALEWarning GitGutterChange
-    autocmd ColorScheme codedark hi! link ALEWarningSign GitGutterChange
-  endif
 augroup END

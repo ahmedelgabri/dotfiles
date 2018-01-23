@@ -2,11 +2,11 @@ set encoding=utf-8
 scriptencoding utf-8
 set fileencoding=utf-8
 
-set expandtab                         " always use spaces instead of tabs
 set tabstop=2                         " spaces per tab
 set softtabstop=2
 set shiftround                        " always indent by multiple of shiftwidth
 set shiftwidth=2                      " spaces per tab (when shifting)
+set expandtab                         " always use spaces instead of tabs
 set nowrap                            " no wrap
 
 set textwidth=100
