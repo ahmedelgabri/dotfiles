@@ -3,9 +3,11 @@
 1. Configure git to automatically gpgsign commits. This consists of
    pointing git to your signing key ID, and then enabling commit
    automatic signing.
+
 ```sh
+git config --global user.name <YOUR-NAME>
+git config --global user.email <YOUR-EMAIL>
 git config --global user.signingkey <YOUR-SIGNING-KEY-PUB-ID>
-git config --global commit.gpgsign true
 ```
 
 Don't forget to upload your public key to Github!

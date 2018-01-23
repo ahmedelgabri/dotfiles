@@ -43,6 +43,13 @@ $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.do
 - Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all personal related info
   there
 
+For `gitconfig.local` these info should be in that file
+
+```sh
+git config --global user.name <YOUR-NAME>
+git config --global user.email <YOUR-EMAIL>
+git config --global user.signingkey <YOUR-SIGNING-KEY-PUB-ID>
+```
 
 ### Authors
 

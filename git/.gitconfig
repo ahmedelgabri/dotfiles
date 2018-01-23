@@ -3,8 +3,12 @@
 [user]
   useconfigonly = true
 
+[gpg]
+  program = /usr/local/bin/gpg
+
 [commit]
   verbose = true
+  gpgsign = true
 
 [color]
   ui = true
