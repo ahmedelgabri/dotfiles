@@ -1,0 +1,31 @@
+# vim:ft=muttrc:
+
+unmailboxes *
+set my_user   = "email@example.com"
+set sendmail = "/usr/local/bin/msmtp -a work"
+set from      = "$my_user"
+# set signature = path/to/siganture
+
+set spoolfile = "+Personal/Personal"
+set mbox      = "+Personal/Personal.Archive"
+set postponed = "+Personal/Personal.Drafts"
+set trash     = "+Personal/Personal.Trash" # This is using the 'trash' patch.
+# Some magic from https://github.com/alexpearce/dotfiles/blob/4d287a1b6c01908ddbc33cf84f9765371493652b/mail/.mutt/accounts/personal#L27
+mailboxes "+Personal/Personal" \
+      "+Personal/Personal.Starred" \
+      "+Personal/Personal.Sent" \
+      "+Personal/Personal.Drafts" \
+      "+Personal/Personal.Archive" \
+      "+Personal/Personal.Trash" \
+      "+Personal/Personal.Spam" \
+      `tree ~/.mail -d -I "cur|new|tmp|certs|.notmuch|Inbox|\[Gmail\]" -a -f -i | sed -n -E -e "s|^/Users/ahmed/.mail/?||" -e "/^(Work|Personal)(\/[a-z].+)?$/d" -e "/^(Personal)/{p;}" | sed -E -e 's/(.*)/+"\1"/' | tr '\n' ' '`
+
+macro index,pager gw '<enter-command>source ~/.mutt/accounts/otheraccount<enter><change-folder>!<enter>'
+macro index SI "<shell-escape>mbsync personal-download<enter>" "sync inbox"
+macro index,pager y "<save-message>=Personal/Personal.Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><save-message>=Personal/Personal.Archive<enter>" "Archive thread"
+
+color status blue default
+color sidebar_highlight black blue
+color sidebar_indicator blue color0
+
