@@ -1,0 +1,14 @@
+Host *
+  PasswordAuthentication no
+  ChallengeResponseAuthentication no
+  HashKnownHosts yes
+  AddKeysToAgent yes
+  UseKeyChain yes
+
+Host imi-ams
+    HostName 146.185.136.170
+    Port 2234
+    User root
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/iman
+

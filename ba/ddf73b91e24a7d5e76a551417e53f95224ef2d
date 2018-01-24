@@ -1,0 +1,19 @@
+# vi: set ft=zsh:
+
+export HOMEBREW_GITHUB_API_TOKEN=f813940a401f2a1765714ee3797d8ca8f87b33e7
+export GITHUB_TOKEN=836903ac3daa184f10e01daa3770ff4aa976dd24 # for hub cli
+export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
+
+# cd ~be
+hash -d be=~/Sites/dev/lightspeed/lightspeed/www/backend/
+
+export work=~/Sites/dev/lightspeed
+export backend=~/Sites/dev/lightspeed/lightspeed/www/backend
+export frontend=~/Sites/dev/lightspeed/lightspeed/www/seoshop
+
+# npm
+export NPM_CONFIG_INIT_AUTHOR_NAME="Ahmed El Gabri"
+export NPM_CONFIG_INIT_AUTHOR_EMAIL="ahmed@gabri.me"
+export NPM_CONFIG_INIT_AUTHOR_URL="https://gabri.me"
+export NPM_CONFIG_INIT_LICENSE="ISC"
+export NPM_CONFIG_INIT_VERSION="0.0.0"

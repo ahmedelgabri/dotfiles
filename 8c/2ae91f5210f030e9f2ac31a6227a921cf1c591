@@ -1,0 +1,347 @@
+" Vundle {{{
+"-----------------
+" set up Vundle,
+" https://github.com/gmarik/vundle
+"-----------------
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+"  required!
+Bundle 'gmarik/vundle'
+
+" Other Bundles
+
+Bundle 'scrooloose/nerdtree'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'bling/vim-airline'
+Bundle 'Yggdroot/indentLine'
+Bundle 'majutsushi/tagbar'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'Townk/vim-autoclose'
+Bundle 'chriskempson/vim-tomorrow-theme'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'mattn/emmet-vim'
+Bundle 'mattn/webapi-vim'
+Bundle 'mattn/gist-vim'
+Bundle 'tpope/vim-surround'
+Bundle 'mileszs/ack.vim'
+Bundle 'reedes/vim-colors-pencil'
+
+filetype off
+syntax enable " enable syntax processing
+filetype plugin indent on                                   " load filetype-specific indent files
+" }}}
+
+" Colorscheme {{{
+
+colorscheme pencil
+set background=dark
+"let g:solarized_termtrans=1
+" }}}
+
+" General configs {{{
+
+" UI Configs
+"-----------------
+
+set nocompatible                                             " don't bother with vi compatibility
+set tabstop=4                                                " number of visual spaces per TAB
+set softtabstop=4                                            " insert mode tab and backspace, number of spaces in tab when editing
+set expandtab                                                " expand tabs to spaces
+set number                                                   " show line numbers
+set showcmd                                                  " show command in bottom bar
+
+set wildmenu                                                 " show a navigable menu for tab completion
+set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
+set wildmode=longest,list,full
+
+set cursorline                                               " highlight current line (Check auto groups too)
+:highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+
+set lazyredraw                                               " redraw only when we need to.
+set showmatch                                                " highlight matching [{()}]
+
+" Search
+"-----------------
+set incsearch                                                " search as characters are entered
+set hlsearch                                                 " highlight matches
+" Highlight search results by default
+" nnoremap <F3> :set invhlsearch hlsearch?<CR>
+" turn off search highlight
+" nnoremap <leader><space> :nohlsearch<CR>
+
+" Folding
+"-----------------
+set foldenable                                               " enable folding
+set foldlevelstart=10                                        " open most folds by default
+set foldnestmax=10                                           " 10 nested fold max
+nnoremap <space> za                                          " space open/closes folds
+set foldmethod=indent                                        " fold based on indent level Other acceptable values are marker, manual, expr, syntax, diff.
+                                                             " Run :help foldmethod
+
+
+
+" Movement
+"-----------------
+" highlight last inserted text
+nnoremap gV `[v`]
+
+" Other
+" @TODO: Cleanup.
+"-----------------
+set autoindent
+set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
+set backspace=2                                              " Fix broken backspace in some setups
+set backupcopy=yes                                           " see :help crontab
+set clipboard=unnamed                                        " yank and paste with the system clipboard
+set directory-=.                                             " don't store swapfiles in the current directory
+set encoding=utf-8
+set ignorecase                                               " case-insensitive search
+set laststatus=2                                             " always show statusline
+set list                                                     " show trailing whitespace
+set listchars=tab:▸\ ,eol:¬
+set ruler                                                    " show where you are
+set scrolloff=3                                              " show context above/below cursorline
+set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
+set smartcase                                                " case-sensitive search if any caps
+set expandtab
+set smartindent
+set noswapfile
+set showmode
+set hidden
+set visualbell
+set ttyfast
+set relativenumber
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=85
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
+:set spell                                                 " Spell check
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+" }}}
+
+" Keyboard shortcuts {{{
+
+let mapleader = ','                                        " leader is comma
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+nmap <leader>d :NERDTreeToggle<CR>
+nmap <leader>f :NERDTreeFind<CR>
+map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+inoremap jj <ESC>
+
+" save session
+nnoremap <leader>s :mksession<CR>
+
+" Make dot work in visual mode
+vnoremap . :norm.<CR>
+" }}}
+
+" Plugins {{{
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+" let g:user_emmet_leader_key='<C-Z>'
+
+" Make the nerdtree a bit wider
+let g:NERDTreeWinSize = 30
+let NERDTreeShowHidden=1
+let g:NERDSpaceDelims=1
+
+" CtrlP settings
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+" Airline customization
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_detect_modified=1
+let g:airline_inactive_collapse=1
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline_symbols.branch = '⭠'
+let g:airline_symbols.readonly = '⭤'
+let g:airline_symbols.linenr = '⭡'
+let g:airline_symbols.whitespace = 'Ξ'
+" }}}
+
+" Autogroups {{{
+
+augroup configgroup
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+    autocmd!
+    autocmd VimEnter * highlight clear SignColumn
+    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.css,*.scss,*.sass,*.html,*.hs,*.java,*.md :call <SID>StripTrailingWhitespaces()
+    " #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
+    autocmd Filetype gitcommit setlocal spell textwidth=72
+    " fdoc is yaml
+    autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
+    " md is markdown
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
+    autocmd FileType php setlocal expandtab
+    autocmd FileType php setlocal list
+    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType ruby setlocal tabstop=2
+    autocmd FileType ruby setlocal shiftwidth=2
+    autocmd FileType ruby setlocal softtabstop=2
+    autocmd FileType ruby setlocal commentstring=#\ %s
+    autocmd FileType coffee setlocal tabstop=2
+    autocmd FileType coffee setlocal shiftwidth=2
+    autocmd FileType coffee setlocal softtabstop=2
+    autocmd FileType python setlocal commentstring=#\ %s
+    autocmd BufEnter Makefile setlocal noexpandtab
+    autocmd BufEnter *.sh setlocal tabstop=2
+    autocmd BufEnter *.sh setlocal shiftwidth=2
+    autocmd BufEnter *.sh setlocal softtabstop=2
+augroup END
+" }}}
+
+" Backup {{{
+
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
+" }}}
+
+" Status bar {{{
+
+" Setting font & status bar
+set guifont=droid\ sans\ mono:h14
+set linespace=4             " line height
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+hi User1 ctermfg=51 ctermbg=21  guifg=#eea040 guibg=#222222
+hi User2 ctermfg=51 ctermbg=21 guifg=#dd3333 guibg=#222222
+hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
+hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
+hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
+" }}}
+
+" GUI {{{
+
+" Conditionals upon if a gui is running
+if has('gui_running')
+  let titlestring=system('pwd | sed "s/.*\///"')
+  execute "set titlestring=".titlestring
+
+  " Always show the tab bar in macvim
+  set showtabline=2
+else
+  set mouse=a
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+" }}}
+
+" Custom functions {{{
+
+" Searches Dash for the word under your cursor in vim, using the keyword
+" operator, based on file type. E.g. for JavaScript files, I have it
+" configured to search j:term, which immediately brings up the JS doc
+" for that keyword. Might need some customisation for your own keywords!
+
+function! SearchDash()
+  " Some setup
+  let s:browser = "/usr/bin/open"
+  let s:wordUnderCursor = expand("<cword>")
+
+  " Get the filetype (everything after the first ., for special cases
+  " such as index.html.haml or abc.css.scss.erb)
+  let s:fileType = substitute(expand("%"),"^[^.]*\.","",1)
+
+  " Alternative ways of getting filetype, aborted
+  " let s:fileType = expand("%:e")
+  " let s:searchType = b:current_syntax.":"
+
+  " Match it and set the searchType -- make sure these are the right shortcuts
+  " in Dash! Sort by priority in the match list below if necessary, because
+  " Tilt-enabled projects may have endings like .scss.erb.
+  if match(s:fileType, "js") != -1
+    let s:searchType = "js:"     " can assign this to jQuery, too
+  elseif match(s:fileType, "css") != -1
+    let s:searchType = "css:"
+  elseif match(s:fileType, "html") != -1
+    let s:searchType = "html:"
+  elseif match(s:fileType, "rb") != -1
+    let s:searchType = "rb:"    " can assign this to Rails, too
+  elseif match(s:fileType, "php") != -1
+    let s:searchType = "php:"
+  elseif match(s:fileType, "py") != -1
+    let s:searchType = "python:"
+  else
+    let s:searchType = ""
+  endif
+
+  " Run it
+  let s:url = "dash://".s:searchType.s:wordUnderCursor
+  let s:cmd ="silent ! " . s:browser . " " . s:url
+  execute s:cmd
+  redraw!
+endfunction
+map <leader>dash :call SearchDash()<CR>
+
+function! ClearRegisters()
+    let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
+    let i=0
+    while (i<strlen(regs))
+        exec 'let @'.regs[i].'=""'
+        let i=i+1
+    endwhile
+endfunction
+
+command! ClearRegisters call ClearRegisters()
+
+" toggle between number and relativenumber
+function! ToggleNumber()
+    if(&relativenumber == 1)
+        set norelativenumber
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+
+" strips trailing whitespace at the end of files. this
+" is called on buffer write in the autogroup above.
+function! <SID>StripTrailingWhitespaces()
+    " save last search & cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    call cursor(l, c)
+endfunction
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

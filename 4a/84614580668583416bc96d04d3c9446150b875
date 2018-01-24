@@ -1,0 +1,9 @@
+email=ahmed@gabri.me
+init-license=MIT
+init-author-email=ahmed@gabri.me
+init-author-name=Ahmed El Gabri
+init-author-url=https://gabri.me/
+registry=https://registry.npmjs.org/
+//registry.npmjs.org/:_authToken=ae37fddb-c368-4d42-832f-05ed190ccbb7
+@lightspeed:registry=https://registry.npmjs.org/
+

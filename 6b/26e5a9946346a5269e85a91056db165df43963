@@ -1,0 +1,433 @@
+" NeoBundle
+"================================================================================
+if has('vim_starting')
+  set nocompatible
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Main packages
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" General
+" Too slow, need to investigate.
+"NeoBundle 'marijnh/tern_for_vim', { 'build': { 'mac': 'npm install' } }
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'Shougo/unite.vim', { 'depends': ['Shougo/vimproc.vim'] }
+NeoBundleLazy 'Shougo/vimproc.vim', { 'build': { 'mac': 'make' } }
+NeoBundleLazy 'mattn/emmet-vim', { 'autoload': { 'filetypes': ['html','htmldjango'] } }
+NeoBundle 'ervandew/supertab'
+NeoBundle 'rking/ag.vim'
+NeoBundle 'pbrisbin/vim-mkdir'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+NeoBundleLazy 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
+NeoBundle 'godlygeek/tabular'
+
+" Syntax
+NeoBundleLazy 'digitaltoad/vim-jade', { 'autoload': { 'filetypes': ['jade'] } }
+NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload': { 'filetypes': ['javascript'] } }
+NeoBundleLazy 'kchmck/vim-coffee-script', { 'autoload': { 'filetypes': ['coffee'] } }
+NeoBundle 'moll/vim-node'
+NeoBundle 'mustache/vim-mustache-handlebars'
+NeoBundleLazy 'mxw/vim-jsx', { 'autoload': { 'filetypes': ['jsx'] } }
+NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes': ['html', 'htmldjango'] } }
+NeoBundleLazy 'tpope/vim-markdown', { 'autoload': { 'filetypes': ['markdown'] } }
+NeoBundleLazy 'wavded/vim-stylus', { 'autoload': { 'filetypes': ['stylus'] } }
+NeoBundleLazy 'tpope/vim-git', { 'autoload': { 'filetypes': ['git','gitcommit','gitconfig','gitolite','gitrebase','gitsendemail'] } }
+
+" Linters & Code quality
+NeoBundle 'editorconfig/editorconfig-vim'
+NeoBundle 'scrooloose/syntastic'
+
+" Status bar
+NeoBundle 'bling/vim-airline'
+
+" Colors
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'chriskempson/base16-vim'
+
+" Git
+" NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'mattn/gist-vim', { 'depends': ['mattn/webapi-vim'] }
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'tpope/vim-fugitive'
+
+call neobundle#end()
+NeoBundleCheck
+
+syntax on
+filetype plugin indent on
+
+
+" NeoBundles settings
+"================================================================================
+
+let base16colorspace=256
+set t_Co=256
+set background=dark
+colorscheme solarized
+
+" JavaScript
+let g:javascript_enable_domhtmlcss = 1
+
+" Syntastic
+let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_mode_map = { "mode": "active",
+      \ 'active_filetypes': [],
+      \ 'passive_filetypes': ['html'] }
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '!'
+
+" SuperTab
+let g:SuperTabDefaultCompletionType = "context"
+
+" Ag
+let g:agprg="ag --column"
+
+" Emmet
+let g:user_emmet_install_global = 0
+imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+let g:user_emmet_next_key='<C-n>'
+let g:use_emmet_complete_tag = 1
+
+" Airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n' : 'N',
+      \ 'i' : 'I',
+      \ 'R' : 'R',
+      \ 'c' : 'C',
+      \ 'v' : 'V',
+      \ 'V' : 'V',
+      \ '' : 'V',
+      \ 's' : 'S',
+      \ 'S' : 'S',
+      \ '' : 'S',
+      \ }
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = '¦'
+let g:airline#extensions#tabline#right_alt_sep = '¦'
+let g:airline_detect_modified=1
+let g:airline_inactive_collapse=1
+let g:airline_right_alt_sep = '⮃'
+let g:airline_right_sep = '⮂'
+let g:airline_left_alt_sep= '⮁'
+let g:airline_left_sep = '⮀'
+let g:airline_symbols.branch = '⭠'
+let g:airline_symbols.readonly = '⭤'
+let g:airline_symbols.linenr = '⭡'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tagbar#enabled = 0
+
+" Tagbar
+let g:tagabar_show_linenumbers = -1
+let g:tagbar_singleclick = 1
+let g:tagbar_auto_open = 1
+
+" Github Auth
+let g:github_user = $GITHUB_USER
+" not working cause there is a problem with 2FA & Gist.vim
+"let g:github_token = $GITHUB_TOKEN
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+
+" Tern
+" let g:tern_show_argument_hints = 'on_hold'
+" let g:tern_show_signature_in_pum = 1
+" let g:tern_map_keys=1
+
+" Neocomplete
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#auto_completion_start_length = 1
+let g:neocomplete#sources#buffer#cache_limit_size = 50000
+let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+" Tab completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+augroup omnicomplete
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+
+
+
+" Unite
+let g:unite_enable_start_insert = 1
+let g:unite_force_overwrite_statusline = 0
+let g:unite_prompt = '>>> '
+
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([ '\.git/', '\.sass-cache/' ,'tmp/', 'node_modules/', 'bower_components/'], '\|'))
+
+if executable('ag')
+  let g:unite_source_rec_async_command= 'ag --follow --nocolor --nogroup --hidden -g ""'
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--column --nogroup --nogroup'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+nnoremap <C-P> :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
+
+autocmd FileType unite call s:unite_settings()
+
+function! s:unite_settings()
+  let b:SuperTabDisabled=1
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <buffer> <Tab>   <Plug>(unite_complete)
+  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
+
+" File Explorer
+let g:netrw_liststyle = 3
+let g:netrw_winsize   = 15
+
+" Settings
+"================================================================================
+
+" status bar
+set statusline=%F%m%r%h%w\  "fullpath and status modified sign
+set statusline+=\ %y "filetype
+set statusline+=\ %{fugitive#statusline()}
+set statusline+=%= " this line bumps the line number to RHS
+set statusline+=\ [%l\/%L] "line number and column number
+
+" For gitgutter to fix colors issue with Solarized
+" https://github.com/airblade/vim-gitgutter/issues/164
+highlight clear SignColumn
+
+" UI Configs
+"-----------------
+set tabstop=4                                                " number of visual spaces per TAB
+set softtabstop=4                                            " insert mode tab and backspace, number of spaces in tab when editing
+set expandtab                                                " expand tabs to spaces
+set number                                                   " show line numbers
+set showcmd                                                  " show command in bottom bar
+set showmode                                                 " Display the mode you're in.
+set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
+set wildmenu                                                 " show a navigable menu for tab completion
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*.,*/.DS_Store,*/tmp/*,*.so,*.swp
+set wildmode=longest,list,full
+set complete-=i                                              " Don't look in included files.
+set display+=lastline                                        " Display as much as possibe of a window's last line.
+set cursorline                                               " highlight current line (Check auto groups too)
+set lazyredraw                                               " redraw only when we need to.
+set showmatch                                                " highlight matching [{()}]
+set title
+hi MatchParen cterm=none ctermbg=black ctermfg=yellow
+
+" Search
+"-----------------
+set incsearch                                                " search as characters are entered
+set hlsearch                                                 " highlight matches
+set ignorecase                                               " Ignore case in search.
+set smartcase                                                " But case-sensitive if expression contains a capital letter.
+
+" Folding
+"-----------------
+set foldenable                                               " enable folding
+set foldlevelstart=10                                        " open most folds by default
+set foldnestmax=10                                           " 10 nested fold max
+"nnoremap <space> za                                          " space open/closes folds
+set foldmethod=indent                                        " fold based on indent level Other acceptable values are marker, manual, expr, syntax, diff.
+" Run :help foldmethod
+
+" Movement
+"-----------------
+" highlight last inserted text
+nnoremap gV `[v`]
+
+" Other
+" TODO: Cleanup.
+"-----------------
+set autoindent
+set visualbell                                               " No beeping.
+set noerrorbells
+set history=10000
+set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
+set backspace=2                                              " Fix broken backspace in some setups
+"set backupcopy=yes                                           " see :help crontab
+" Start scrolling slightly before the cursor reaches an edge
+set scrolloff=3
+set sidescrolloff=5
+" Scroll sideways a character at a time, rather than a screen at a time
+set sidescroll=1
+set clipboard=unnamed                                        " yank and paste with the system clipboard
+set encoding=utf-8
+set laststatus=2                                             " always show statusline
+set list                                                     " show trailing whitespace
+set listchars=tab:.\ ,trail:·,nbsp:_
+set ruler                                                    " show where you are
+set scrolloff=3                                              " show context above/below cursorline
+set smartindent
+set noswapfile
+set hidden
+set mouse=a                                                  " Enable mouse support
+set ttyfast
+set number
+set wrap
+set formatoptions=qrn1
+set colorcolumn=81
+set nobackup                                                 " No backups.
+set nowritebackup                                            " No backups.
+set noswapfile                                               " No swap files; more hassle than they're worth.
+set tildeop                                                  " Make tilde command behave like an operator.
+set shortmess=atI                                            " Avoid unnecessary hit-enter prompts.
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+:set spell                                                   " Spell check
+
+hi clear SpellBad
+hi SpellBad cterm=underline
+
+"" Setting font & status bar
+set guifont=Meslo\ LG\ S\ DZ:h12
+
+" Conditionals upon if a gui is running
+if has('gui_running')
+  let titlestring=system('pwd | sed "s/.*\///"')
+  execute "set titlestring=".titlestring
+
+  " Always show the tab bar in macvim
+  set showtabline=2
+else
+  set mouse=a
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Autocommands
+"================================================================================
+
+" md is markdown
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
+autocmd BufWritePre * call Preserve("%s/\\s\\+$//e")
+
+" #2 http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
+" fdoc is yaml
+autocmd BufRead,BufNewFile *.fdoc set filetype=yaml
+autocmd FileType yaml setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+autocmd FileType ruby setlocal commentstring=#\ %s
+autocmd FileType python setlocal commentstring=#\ %s
+autocmd BufEnter Makefile setlocal noexpandtab
+autocmd BufEnter *.sh,.vimrc setlocal tabstop=2 shiftwidth=2 softtabstop=2
+au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
+
+" Key mappings
+"================================================================================
+
+let mapleader = ' '                                        " leader is space
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+map <silent> <leader>sv :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+inoremap jj <ESC>
+nnoremap jj <C-]>
+nnoremap kk <C-t>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>e :e
+nnoremap <Leader>v :vsplit
+nnoremap <Leader>s :split
+nnoremap <Leader>p :Unite -buffer-name=files -start-insert buffer file_rec/async<cr>
+nnoremap <Leader>t :TagbarToggle<cr>
+nnoremap <leader>d :Lex<cr>
+noremap <Leader><TAB> <C-w><C-w>
+
+" save session
+nnoremap <leader>s :mksession<CR>
+
+" Make dot work in visual mode
+vnoremap . :norm.<CR>
+
+
+" Functions
+"================================================================================
+
+function! ClearRegisters()
+  let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
+  let i=0
+  while (i<strlen(regs))
+    exec 'let @'.regs[i].'=""'
+    let i=i+1
+  endwhile
+endfunction
+
+command! ClearRegisters call ClearRegisters()
+
+" toggle between number and relativenumber
+function! ToggleNumber()
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+" strips trailing whitespace at the end of files. this
+" is called on buffer write in the autogroup above.
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
+nmap _= :call Preserve("normal gg=G")<CR>
+
+" word count, taken from
+" http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
+function! WordCount()
+  let s:old_status = v:statusmsg
+  let position = getpos(".")
+  exe ":silent normal g\<c-g>"
+  let stat = v:statusmsg
+  let s:word_count = 0
+  if stat != '--No lines in buffer--'
+    let s:word_count = str2nr(split(v:statusmsg)[11])
+    let v:statusmsg = s:old_status
+  end
+  call setpos('.', position)
+  return s:word_count
+endfunction
+
+

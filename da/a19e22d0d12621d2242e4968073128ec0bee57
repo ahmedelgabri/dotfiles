@@ -1,0 +1,9 @@
+; vim: ft=gitconfig
+
+[user]
+	email = ahmed@gabri.me
+	signingkey = 0xAC977998CD4ACABB
+
+[commit]
+	gpgsign = true
+

@@ -1,0 +1,196 @@
+execute pathogen#infect()
+filetype plugin indent  on
+
+syntax enable
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
+
+" Remap the leader key
+let mapleader = ";"
+
+" Some handy stuff for autocmd
+if has("autocmd")
+  " Auto reload the .vimrc
+  autocmd! bufwritepost .vimrc source %
+
+  " Open nerdtree if there wasn't a file specified
+  autocmd vimenter * if !argc() | NERDTree | endif
+endif
+
+" Make dot work in visual mode
+vnoremap . :norm.<CR>
+
+" Don't close if nerdtree is the last thing
+" let nerdtree_tabs_autoclose=0
+
+" Highlight search results by default
+nnoremap <F3> :set invhlsearch hlsearch?<CR>
+
+" Setting font & status bar
+set guifont=inconsolata:h16
+"set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+hi User1 ctermfg=51 ctermbg=21  guifg=#eea040 guibg=#222222
+hi User2 ctermfg=51 ctermbg=21 guifg=#dd3333 guibg=#222222
+hi User3 ctermfg=51 ctermbg=21 guifg=#ff66ff guibg=#222222
+hi User4 ctermfg=51 ctermbg=21 guifg=#a0ee40 guibg=#222222
+hi User5 ctermfg=51 ctermbg=21 guifg=#eeee40 guibg=#222222
+
+" Make the nerdtree a bit wider
+let g:NERDTreeWinSize = 30
+let NERDTreeShowHidden=1
+
+" Nerdtree doesn't have to show tmp
+let NERDTreeIgnore=['tmp']
+
+" Map nerdtree to <leader>nt
+nnoremap <leader>nt :NERDTreeToggle<cr> :NERDTreeMirror<CR>
+
+" Conditionals upon if a gui is running
+if has('gui_running')
+  let titlestring=system('pwd | sed "s/.*\///"')
+  execute "set titlestring=".titlestring
+
+  " Always show the tab bar in macvim
+  set showtabline=2
+else
+  set mouse=a
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Searches Dash for the word under your cursor in vim, using the keyword
+" operator, based on file type. E.g. for JavaScript files, I have it
+" configured to search j:term, which immediately brings up the JS doc
+" for that keyword. Might need some customisation for your own keywords!
+
+function! SearchDash()
+  " Some setup
+  let s:browser = "/usr/bin/open"
+  let s:wordUnderCursor = expand("<cword>")
+
+  " Get the filetype (everything after the first ., for special cases
+  " such as index.html.haml or abc.css.scss.erb)
+  let s:fileType = substitute(expand("%"),"^[^.]*\.","",1)
+
+  " Alternative ways of getting filetype, aborted
+  " let s:fileType = expand("%:e")
+  " let s:searchType = b:current_syntax.":"
+
+  " Match it and set the searchType -- make sure these are the right shortcuts
+  " in Dash! Sort by priority in the match list below if necessary, because
+  " Tilt-enabled projects may have endings like .scss.erb.
+  if match(s:fileType, "js") != -1
+    let s:searchType = "js:"     " can assign this to jQuery, too
+  elseif match(s:fileType, "css") != -1
+    let s:searchType = "css:"
+  elseif match(s:fileType, "html") != -1
+    let s:searchType = "html:"
+  elseif match(s:fileType, "rb") != -1
+    let s:searchType = "rb:"    " can assign this to Rails, too
+  elseif match(s:fileType, "php") != -1
+    let s:searchType = "php:"
+  elseif match(s:fileType, "py") != -1
+    let s:searchType = "python:"
+  else
+    let s:searchType = ""
+  endif
+
+  " Run it
+  let s:url = "dash://".s:searchType.s:wordUnderCursor
+  let s:cmd ="silent ! " . s:browser . " " . s:url
+  execute s:cmd
+  redraw!
+endfunction
+map <leader>d :call SearchDash()<CR>
+
+" Line numbers
+:set number
+:highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+:set cursorline
+augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
+
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
+" Spell check
+:set spell
+hi clear SpellBad
+hi SpellBad cterm=underline
+
+" Tabs
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+
+" Turn off swap files
+set noswapfile
+set nobackup
+set nowritebackup
+
+
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+set encoding=utf-8
+set nocompatible
+set scrolloff=3
+set autoindent
+set showmode
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+set visualbell
+set cursorline
+set ttyfast
+set ruler
+set foldenable
+set backspace=indent,eol,start
+set laststatus=2
+set relativenumber
+" set undofile
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=85
+set list
+set listchars=tab:▸\ ,eol:¬
+
+function! NumberToggle()
+if(&relativenumber == 1)
+    set number
+else
+    set relativenumber
+endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+:au FocusLost * :set number
+:au FocusGained * :set relativenumber
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber
+
+function! ClearRegisters()
+    let regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
+    let i=0
+    while (i<strlen(regs))
+        exec 'let @'.regs[i].'=""'
+        let i=i+1
+    endwhile
+endfunction
+
+command! ClearRegisters call ClearRegisters()
