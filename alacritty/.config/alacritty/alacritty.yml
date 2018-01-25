@@ -259,7 +259,6 @@ key_bindings:
   - { key: V,        mods: Command, action: Paste                        }
   - { key: C,        mods: Command, action: Copy                         }
   - { key: Q,        mods: Command, action: Quit                         }
-  - { key: W,        mods: Command, action: Quit                         }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }
@@ -362,11 +361,18 @@ key_bindings:
   # My custom keys
   # To find escape sequences run `xxd -c1`
   # Example:
-  #   ▲ xxd -c1
+  #   ▲ xxd -cl
   #     ^[d # this is ALT+D
   #     00000000: 1b  .
   #     00000001: 64  d
   #
   # Which becomes `\x1b\x64`
 
+    # Vim
   - { key: D,        mods: Alt,     chars: "\x1b\x64"                    }
+    # https://github.com/jwilm/alacritty/issues/93#issuecomment-312760361
+  - { key: Key6,     mods: Control, chars: "\x1e"                        }
+
+    # Tmux
+  - { key: W,        mods: Command, chars: "\x01\x78"                    }
+  - { key: T,        mods: Command, chars: "\x01\x63"                    }
