@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+isMirror() {
+  local MIRROR=$(git config --get --bool remote.${1}.mirror)
+  echo $MIRROR
+}
+
+pushAll () {
+  local REMOTES=$(git remote | uniq)
+  local COMMAND=''
+
+  for R in $REMOTES; do
+    local MIRROR=$(isMirror ${R})
+    if [ "$MIRROR" = true ]; then
+      COMMAND+=" && git push --mirror ${R}"
+    fi
+  done
+
+  echo $COMMAND
+}
+
+git push && $pushAll
