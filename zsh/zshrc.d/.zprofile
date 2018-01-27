@@ -95,7 +95,7 @@ myPath=(
   ${HOME}/.dotfiles/bin
   $path
   ./node_modules/.bin
-  ${HOME}/.config/yarn/node_modules/.bin
+  $(yarn global dir)/node_modules/.bin
   ${HOME}/.cargo/bin
   ${HOME}/.go/bin
 )
