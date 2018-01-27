@@ -65,9 +65,13 @@ endfunction
 
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
-function! statusline#GetHunks(plugin) abort
+function! statusline#GetHunks() abort
+  if !exists('*GitGutterGetHunkSummary')
+    return ''
+  endif
+
   let l:symbols = ['+', '-', '~']
-  let [l:added, l:modified, l:removed] = a:plugin
+  let [l:added, l:modified, l:removed] = GitGutterGetHunkSummary()
   let l:stats = [l:added, l:removed, l:modified]  " reorder
   let l:hunkline = ''
 
@@ -108,6 +112,10 @@ endfunction
 
 
 function! statusline#gitInfo() abort
+  if !exists('*fugitive#head')
+    return ''
+  endif
+
   let l:gitbranch = fugitive#head(10)
   " For some odd reason, when it's empty it will return [] with a space before.
   if l:gitbranch ==# ''
