@@ -1,8 +1,8 @@
-let s:VIM_PLUG_FOLDER = g:VIM_CONFIG_FOLDER . '/plugged'
+let s:VIM_PLUG_FOLDER = $VIMHOME . '/plugged'
 " Automatic installation {{{
 " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
 
-if empty(glob(g:VIM_CONFIG_FOLDER . '/autoload/plug.vim'))
+if empty(glob($VIMHOME . '/autoload/plug.vim'))
   silent !curl -fLo ~/.dotfiles/vim/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup MyVimPlug

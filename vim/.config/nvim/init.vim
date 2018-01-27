@@ -1,3 +1,7 @@
-let g:VIM_CONFIG_FOLDER=expand('~/.dotfiles/vim/.vim')
-let &runtimepath .= ','.g:VIM_CONFIG_FOLDER.','.g:VIM_CONFIG_FOLDER.'/after'
-execute 'source'.g:VIM_CONFIG_FOLDER.'/main.vim'
+let s:root=expand('~/.dotfiles/vim/.vim')
+
+if !empty(glob(s:root))
+  let $VIMHOME=s:root
+  let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
+  execute 'source '.$VIMHOME.'/main.vim'
+endif

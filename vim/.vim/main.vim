@@ -8,7 +8,7 @@ scriptencoding utf-8
 "
 "
 "================================================================================
-execute 'set packpath^='.g:VIM_CONFIG_FOLDER
+execute 'set packpath^='.$VIMHOME
 
 " Python {{{
 " This must be here becasue it makes loading vim VERY SLOW otherwise
@@ -26,9 +26,7 @@ if has('nvim')
 endif
 " }}}
 
-execute 'source ' . g:VIM_CONFIG_FOLDER . '/packages.vim'
-
-call functions#setupCompletion()
+execute 'source ' . $VIMHOME . '/packages.vim'
 
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
