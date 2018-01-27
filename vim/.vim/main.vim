@@ -26,7 +26,7 @@ if has('nvim')
 endif
 " }}}
 
-execute 'source ' . $VIMHOME . '/packages.vim'
+call packages#init()
 
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
