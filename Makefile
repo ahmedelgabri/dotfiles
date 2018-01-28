@@ -46,7 +46,7 @@ neovim:
 		@gem install neovim
 		@pip2 install --user neovim
 		@pip3 install --user neovim
-		@yarn global add --prefix "~/.yarn" neovim
+		@yarn global add neovim
 
 macos:
 		@source $(DEST)/macos/.macos
