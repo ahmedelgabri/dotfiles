@@ -9,7 +9,7 @@ INSTALL="$(SCRIPTS)/install"
 all: node python iterm neovim macos
 
 install:
-		@bash $(INSTALL)
+		@bash -c "$$(cat $(INSTALL))"
 
 # This is used inside `scripts/install` symlink_files function
 # NOTE: irc/.weechat is not handled with stow, it's handled directly inside bin/mx-init using `--dir` flag
