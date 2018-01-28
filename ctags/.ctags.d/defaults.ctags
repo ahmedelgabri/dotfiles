@@ -1,0 +1,5 @@
+--recurse=yes
+--tag-relative=yes
+--fields=-k
+--fields=+K
+--fields=+l
