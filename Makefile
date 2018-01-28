@@ -1,3 +1,6 @@
+# use bash
+SHELL:=/bin/bash
+
 # This can be overriden by doing `make DEST=some/path <task>`
 DEST="$(HOME)/.dotfiles"
 SCRIPTS="$(DEST)/script"
