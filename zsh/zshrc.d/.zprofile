@@ -165,7 +165,8 @@ SYMBOLS=(
 "∴"
 )
 
-export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]}]}"
+# Arrays in zsh starts from 1
+export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
 
 if (( $+commands[go] )) then
   export GOPATH="$HOME/.go"
