@@ -1,0 +1,4 @@
+#!/bin/sh
+HOOKS_DIR="$(command git config --get core.hooksPath || echo "~/.dotfiles/git/hooks")"
+exec "$HOOKS_DIR/ctags" >/dev/null 2>&1 &
+exit 0

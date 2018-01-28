@@ -86,7 +86,6 @@
   undo = reset --soft HEAD^
   stash-all = stash save --include-untracked
   amend = commit --amend -C HEAD
-  ctags = !.git/hooks/ctags
 
 [branch]
   autosetupmerge = always
@@ -101,7 +100,7 @@
   algorithm = histogram
   tool = vimdiff
   compactionHeuristic = true
-	colorMoved = zebra
+  colorMoved = zebra
 
 [difftool]
   prompt = false
