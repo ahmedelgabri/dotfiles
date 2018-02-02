@@ -1,8 +1,6 @@
 scriptencoding utf-8
 
 function! bootstrap#init() abort
-  execute 'set packpath^='.$VIMHOME
-
   " Python {{{
   " This must be here becasue it makes loading vim VERY SLOW otherwise
   if has('nvim')

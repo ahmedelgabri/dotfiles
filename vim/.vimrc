@@ -21,6 +21,13 @@ let s:root=expand('~/.dotfiles/vim/.vim')
 
 if !empty(glob(s:root))
   let $VIMHOME=s:root
-  let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
+else
+  let $VIMHOME=expand('~/.vim')
+endif
+
+let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
+execute 'set packpath^='.$VIMHOME
+
+if !empty(glob($VIMHOME.'/autoload/bootstrap.vim'))
   call bootstrap#init()
 endif
