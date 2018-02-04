@@ -18,6 +18,9 @@ setopt PUSHD_SILENT
 # Have pushd with no arguments act like ‘pushd ${HOME}’.
 setopt PUSHD_TO_HOME
 
+# tab completing directory appends a slash
+setopt autoparamslash
+
 #
 # Globbing and fds
 #

@@ -20,6 +20,15 @@ setopt NOTIFY
 # Recognize comments starting with `#`.
 setopt INTERACTIVE_COMMENTS
 
+# disable start (C-s) and stop (C-q) characters
+setopt noflowcontrol
+
+# for non-zero exit status
+setopt printexitvalue
+
+# ??
+setopt CORRECT
+
 # Run all background jobs at a lower priority. This option is set by default.
 unsetopt BG_NICE
 

@@ -10,15 +10,8 @@
 for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
 
 ##############################################################
-# DEFINES ENVIRONMENT VARIABLES.
+# GLOBAL CONFIG (@NOTE: maybe move them to config files)
 ##############################################################
-
-setopt autoparamslash  # tab completing directory appends a slash
-setopt noflowcontrol   # disable start (C-s) and stop (C-q) characters
-setopt interactivecomments  # allow comments, even in interactive shells
-setopt printexitvalue       # for non-zero exit status
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
-setopt CORRECT
 
 if [ -n "$TMUX" ]; then
   export TERM=tmux-256color

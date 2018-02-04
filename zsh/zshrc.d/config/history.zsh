@@ -13,6 +13,9 @@ HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
 # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
 setopt BANG_HIST
 
+# Expire a duplicate event first when trimming history.
+setopt HIST_EXPIRE_DUPS_FIRST
+
 # Save each command’s beginning timestamp (in seconds since the epoch) and the duration (in seconds) to the history file.
 # ‘: <beginning time>:<elapsed seconds>;<command>’.
 setopt EXTENDED_HISTORY
@@ -41,7 +44,6 @@ setopt HIST_SAVE_NO_DUPS
 # Whenever the user enters a line with history expansion, don’t execute the line directly;
 # instead, perform history expansion and reload the line into the editing buffer.
 setopt HIST_VERIFY
-
 
 # Lists the ten most used commands.
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
