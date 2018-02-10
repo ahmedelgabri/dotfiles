@@ -106,6 +106,7 @@ function! packages#init() abort
   Plug 'romainl/Apprentice'
   Plug 'AlessandroYorba/Alduin'
   Plug 'rakr/vim-two-firewatch'
+  Plug 'logico-dev/typewriter'
   " }}}
 
   " Git {{{

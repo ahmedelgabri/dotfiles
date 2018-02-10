@@ -11,11 +11,6 @@ nmap <Leader>g :Goyo<CR>
 " https://github.com/junegunn/goyo.vim/wiki/Customization
 function! s:goyo_enter() abort
   Limelight
-  " set background=light
-  " let s:guibg = synIDattr(synIDtrans(hlID("Normal")), "bg", "gui")
-  " execute("hi! NonText guifg=" . s:guibg)
-  " execute('hi! StatusLine guifg=NONE guibg=NONE gui=NONE')
-  " execute('hi! StatusLineNC guifg=NONE guibg=NONE gui=NONE')
   if exists('$TMUX')
     silent !tmux set status off
     silent !tmux set pane-border-status off
@@ -32,7 +27,6 @@ endfunction
 
 function! s:goyo_leave() abort
   Limelight!
-  " set background=dark
   if exists('$TMUX')
     silent !tmux set status on
     silent !tmux set pane-border-status top
