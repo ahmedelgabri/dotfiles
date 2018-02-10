@@ -16,6 +16,7 @@ NPM_PACKAGES=(
 "svgo"
 "tern"
 "overtime-cli"
+"rtm-cli"
 )
 
 for package in "${NPM_PACKAGES[@]}"; do
