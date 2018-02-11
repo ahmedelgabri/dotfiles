@@ -84,7 +84,6 @@
   lastchange = log -p --follow -n 1
   stashes = stash list
   undo = reset --soft HEAD^
-  stash-all = stash save --include-untracked
   amend = commit --amend -C HEAD
 
 [branch]
@@ -178,6 +177,22 @@
 
 [url "git://gist.github.com/"]
   insteadOf = "gist:"
+
+[url "git@gitlab.com:"]
+    insteadOf = gl:
+    pushInsteadOf = gitlab:
+    pushInsteadOf = git://gitlab.com/
+
+[url "git://gitlab.com/"]
+    insteadOf = gitlab:
+
+[url "git@bitbucket.org:"]
+    insteadOf = bb:
+    pushInsteadOf = bitbucket:
+    pushInsteadOf = git://bitbucket.org/
+
+[url "git://bitbucket.org/"]
+    insteadOf = bitbucket:
 
 [credential]
   helper = osxkeychain
