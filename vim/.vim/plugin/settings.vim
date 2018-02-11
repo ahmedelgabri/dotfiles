@@ -14,7 +14,7 @@ set colorcolumn=+1
 set signcolumn=yes
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
-set synmaxcol=200                     " do not highlight very long lines
+set synmaxcol=300                     " do not highlight very long lines
 
 set noshowmode                        " Don't Display the mode you're in. since it's already shown on the statusline
 
@@ -227,7 +227,6 @@ if exists('&guioptions')
   " cursor behavior:
   "   - no blinking in normal/visual mode
   "   - blinking in insert-mode
-  " highlight Cursor guifg=Red guibg=Red
   set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100
 endif
 

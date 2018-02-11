@@ -3,5 +3,9 @@ if executable('jq')
 else
   setlocal formatprg=python\ -m\ json.tool
 endif
-au BufRead,BufNewFile .{babel,eslint,stylelint,jshint,prettier}rc,.tern-*,*.json set ft=json
+
+augroup FT_JSON
+  au!
+  au BufRead,BufNewFile .{babel,eslint,stylelint,jshint,prettier}rc,.tern-* setl ft=json
+augroup END
 
