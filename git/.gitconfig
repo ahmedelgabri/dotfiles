@@ -57,34 +57,33 @@
   hooksPath = ~/.dotfiles/git/hooks
 
 [alias]
-  co = checkout
+  amend = commit --amend -C HEAD
+  blm = blame -wMC
+  br = branch --sort=-committerdate
   cb = checkout -b
   cm = commit
-  st = status -sb
-  br = branch --sort=-committerdate
-  rb = "!sh -c \"git rebase -i HEAD~$1\" -"
+  co = checkout
   d = diff --patch-with-stat
   dc = d --staged
-  ; https://twitter.com/csswizardry/status/867676530780065792
   dm = d --word-diff-regex=.
+  doctor = remote -v show origin
+  fl = l -u
+  grr = grep --break --heading --line-number
   l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   la = l --all --simplify-by-decoration
-  lnm = l --no-merges
-  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
-  fl = l -u
-  patch = !git --no-pager diff --no-color
-  recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
-  recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
-  track = push origin -u HEAD
-  blm = blame -wMC
-  who = shortlog -sne
-  doctor = remote -v show origin
-  grr = grep --break --heading --line-number
-  ll = log --cc
   lastchange = log -p --follow -n 1
+  ll = log --cc
+  lnm = l --no-merges
+  patch = !git --no-pager diff --no-color
+  rb = "!sh -c \"git rebase -i HEAD~$1\" -"
+  recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
+  recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
+  st = status -sb
   stashes = stash list
+  track = push origin -u HEAD
   undo = reset --soft HEAD^
-  amend = commit --amend -C HEAD
+  who = shortlog -sne
+  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
 
 [branch]
   autosetupmerge = always
