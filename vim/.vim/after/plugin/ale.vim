@@ -10,7 +10,7 @@ let g:ale_sign_warning = g:ale_sign_error
 let g:ale_sign_style_error  = '●'
 let g:ale_sign_style_warning  = g:ale_sign_error
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
-let g:ale_echo_msg_format = '[%linter%] %s'
+let g:ale_echo_msg_format = '[%linter%] [%code%] %s'
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_javascript_prettier_options = '--single-quote --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --config-precedence prefer-file'
 
@@ -34,6 +34,9 @@ let g:ale_fixers = {
       \   'css': [
       \       'prettier',
       \   ],
+      \   'json': [
+      \       'prettier',
+      \   ],
       \   'scss': [
       \       'prettier',
       \   ],
@@ -55,6 +58,9 @@ let g:ale_pattern_options = {
       \   },
       \   'node_modules/.*': {
       \       'ale_linters': [],
+      \       'ale_fixers': []
+      \   },
+      \   'package.json': {
       \       'ale_fixers': []
       \   },
       \   'Sites/forks/.*': {
