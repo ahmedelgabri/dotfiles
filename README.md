@@ -23,8 +23,6 @@ These are the main configs:
 * [hammerspoon](http://www.hammerspoon.org/)
 * [Python](https://www.python.org/)
 * [Ruby](https://www.ruby-lang.org/)
-* [zim](https://github.com/zimfw/zimfw) _if you have Prezto or Oh My Zsh installed, make sure you
-  uninstall them first_
 
 ## Installation
 
@@ -40,7 +38,7 @@ $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.do
 
 ### Notes
 
-- Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all personal related info
+* Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all personal related info
   there
 
 For `gitconfig.local` these info should be in that file
