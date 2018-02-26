@@ -65,9 +65,6 @@ nnoremap <Leader><TAB> <C-w><C-w>
 nnoremap <M-Tab> <C-^>
 nnoremap <leader>= <C-w>t<C-w>K<CR>
 nnoremap <leader>\ <C-w>t<C-w>H<CR>
-" Use | and _ to split windows (while preserving original behaviour of [count]bar and [count]_).
-nnoremap <expr><silent> <Bar> v:count == 0 ? "<C-W>v<C-W><Right>" : ":<C-U>normal! 0".v:count."<Bar><CR>"
-nnoremap <expr><silent> _     v:count == 0 ? "<C-W>s<C-W><Down>"  : ":<C-U>normal! ".v:count."_<CR>"
 
 " https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 xnoremap <  <gv
@@ -142,3 +139,11 @@ endfunction
 " Make the dot command work as expected in visual mode (via
 " https://www.reddit.com/r/vim/comments/3y2mgt/do_you_have_any_minor_customizationsmappings_that/cya0x04)
 vnoremap . :norm.<CR>
+
+" inc & dec numbers
+" :h nrformats
+noremap + <C-a>
+noremap - <C-x>
+" Visual mode too
+xnoremap + g<C-a>
+xnoremap - g<C-x>
