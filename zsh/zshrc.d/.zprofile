@@ -83,7 +83,7 @@ myPath=(
   /usr/local/opt/curl/bin
   /usr/local/{bin,sbin}
   /usr/local/opt/coreutils/libexec/gnubin
-  /usr/local/opt/python/libexec/bin
+  /usr/local/opt/python@2/bin
   /usr/local/Cellar/git
   ${HOME}/.dotfiles/bin
   $path
@@ -93,12 +93,12 @@ myPath=(
   ${HOME}/.go/bin
 )
 
-if (( $+commands[python] )) then
-  myPath+=($(python -m site --user-base)/bin)
+if (( $+commands[python2] )) then
+  myPath+=($(python2 -m site --user-base)/bin)
 fi
 
-if (( $+commands[python3] )) then
-  myPath+=($(python3 -m site --user-base)/bin)
+if (( $+commands[python] )) then
+  myPath+=($(python -m site --user-base)/bin)
 fi
 
 path=(

@@ -16,7 +16,7 @@ tap "ahmedelgabri/homebrew-battery"
 
 brew "git"
 brew "python"
-brew "python3"
+brew "python2" # do I need it anymore?
 # brew "ledger"
 brew "asciinema"
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
