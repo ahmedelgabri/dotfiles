@@ -1,17 +1,18 @@
-# # https://github.com/junegunn/fzf/wiki/Examples#z
+# https://github.com/junegunn/fzf/wiki/Examples
+
 # fuzzy z
-unalias z 2> /dev/null
+unalias z
 z() {
   if [[ -z "$*" ]]; then
-    cd "$(_z_cmd -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+    cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
   else
     _last_z_args="$@"
-    _z_cmd "$@"
+    _z "$@"
   fi
 }
 
 zz() {
-  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q $_last_z_args)"
+  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
 }
 
 # c - browse chrome canary history
@@ -68,38 +69,15 @@ fgl() (
 )
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
-#   - CTRL-O to open with `open` command,
-#   - CTRL-E or Enter key to open with the $EDITOR
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
 fe() {
-  local out file key
-  IFS=$'\n' out=($(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e))
-  key=$(head -1 <<< "$out")
-  file=$(head -2 <<< "$out" | tail -1)
-  if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
-  fi
+  local files
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
 vs(){
   #List all vagrant boxes available in the system including its status, and try to access the selected one via ssh
   cd $(cat ~/.vagrant.d/data/machine-index/index | jq '.machines[] | {name, vagrantfile_path, state}' | jq '.name + "," + .state  + "," + .vagrantfile_path'| sed 's/^"\(.*\)"$/\1/'| column -s, -t | sort -rk 2 | fzf | awk '{print $3}'); vagrant ssh
-}
-
-# fd - "find directory"
-# From: https://github.com/junegunn/fzf/wiki/examples#changing-directory
-function fd() {
-  local DIR
-  DIR=$(bfs ${1:-.} -type d -nohidden 2> /dev/null | fzf +m) && cd "$DIR"
-}
-
-# fda -"find directory [all, including hidden directories"
-function fda() {
-  local DIR
-  DIR=$(bfs ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$DIR"
-}
-
-# fh - "find [in] history"
-# From: https://github.com/junegunn/fzf/wiki/examples#command-history
-function fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
