@@ -6,8 +6,6 @@ set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
 set certificate_file = ~/.mutt/certificates  # where to store certs
 set mailcap_path     = ~/.mutt/config/mailcap       # entries for filetypes
 set tmpdir           = ~/.mutt/tmp          # where to keep tmp files
-# Requires terminal-notifier & I don't like noise...
-# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
 # Connection options
 set ssl_force_tls
@@ -15,25 +13,19 @@ set ssl_force_tls
 # account config
 set realname = "Ahmed El Gabri"
 
-# set sendmail_wait = 0
 unset record # don't save messages, gmail already does this.
 set folder = "~/.mail"
-# set mbox = "+Archive"
-# set postponed ="+Drafts"
-# set trash = "+Trash"
-set editor = "nvim +/^$ +nohlsearch"
+set editor = "$EDITOR +/^$ +nohlsearch"
 
 # sorting -------------------------------------------------------------------------------------------------------------
 set sort=threads
 set sort_aux=reverse-last-date-received
 
 # Sidebar -------------------------------------------------------------------------------------------------------
-# set sidebar_visible
 set mail_check_stats
 set mail_check_stats_interval = 1
 set sidebar_width=30
 set sidebar_divider_char='│'
-# set sidebar_format = "%B%?n?*?"
 set sidebar_format = "%B %?N?(%N)?%*"
 set sidebar_short_path                  # Shorten mailbox names
 set sidebar_delim_chars="./"            # Delete everything up to the last specified character(s)
@@ -75,8 +67,9 @@ set index_format = " %Z %?M?⋯& ? %[%b %d %R] %-30.30L [%<M?%M Msgs&%c>] %s%> %
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
 set collapse_all
+set uncollapse_new = no
+set uncollapse_jump = yes
 set to_chars    = '»›-‹L'                  # to match Gmail
-# set uncollapse_jump                        # don't collapse on an unread message
 set move = no  #Stop asking to "move read messages to mbox"!
 set auto_tag = yes # always apply actions for all tagged emails (no need to use tag-prefix)
 
@@ -109,14 +102,6 @@ set forward_quote                    # include message in forwards
 set query_command = "lbdbq %s 2> /dev/null"
 set sort_alias    = alias
 set reverse_alias
-
-# gpg
-# source $MAILCONF/gpg.muttrc
-# set pgp_use_gpg_agent = yes
-# set pgp_sign_as = <gpg key>
-# set pgp_timeout = 3600
-# set crypt_autosign = no
-# set crypt_replyencrypt = no
 
 # Status Bar {{{
 set status_chars = '—+#~'
