@@ -22,9 +22,9 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 NVM_NO_USE=true
 zplug "lukechilds/zsh-nvm"
 zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
-zplug "knu/z", use:"z.sh", depth:1
+zplug "rupa/z", use:"z.sh"
+zplug "changyuheng/zsh-interactive-cd"
 zplug "lukechilds/zsh-better-npm-completion"
-zplug "molovo/tipz"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zdharma/fast-syntax-highlighting"
 zplug "zsh-users/zsh-history-substring-search"
