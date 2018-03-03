@@ -108,7 +108,7 @@
   textconv = plutil -convert xml1 -o -
 [difftool "vimdiff"]
   # $BASE $LOCAL $REMOTE $MERGED
-  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
+  cmd = $EDITOR -d $LOCAL $REMOTE
 
 [merge]
   # https://git-scm.com/docs/git-config#git-config-mergeff
@@ -130,7 +130,7 @@
   prompt = false
 
 [mergetool "vimdiff"]
-  cmd = $EDITOR -d $LOCAL $REMOTE -c '$wincmd w' -c 'wincmd J'
+  cmd = $EDITOR -d $LOCAL $REMOTE
 
 [pull]
   rebase = true

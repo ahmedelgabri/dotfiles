@@ -121,6 +121,9 @@ set hidden
 " Make tilde command behave like an operator.
 set tildeop
 
+" Make sure diffs are always opened in vertical splits
+set diffopt+=vertical
+
 set shortmess+=A                      " ignore annoying swapfile messages
 set shortmess+=I                      " no splash screen
 set shortmess+=O                      " file-read message overwrites previous
