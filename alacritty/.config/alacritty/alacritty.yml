@@ -31,12 +31,6 @@ window:
   # Setting this to false will result in window without borders and title bar.
   decorations: false
 
-# The FreeType rasterizer needs to know the device DPI for best results
-# (changes require restart)
-dpi:
-  x: 96.0
-  y: 96.0
-
 # Display tabs using this many cells (changes require restart)
 tabspaces: 2
 
@@ -87,15 +81,11 @@ font:
 # Should display the render timer
 render_timer: false
 
-# Background opacity
-background_opacity: 1
-
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
 custom_cursor_colors: true
 
-# Base16 Tomorrow Night 256 - alacritty color config
-# Chris Kempson (http://chriskempson.com)
+# Colors (Tomorrow Night Bright)
 colors:
   # Default colors
   primary:
@@ -129,6 +119,18 @@ colors:
     cyan:    '0x8abeb7'
     white:   '0xc5c8c6'
 
+  # Dim colors (Optional)
+  dim:
+    black:   '0x333333'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xdddddd'
+
+
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once
@@ -155,33 +157,8 @@ visual_bell:
   animation: EaseOutExpo
   duration: 0
 
-selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
-
-dynamic_title: true
-
-hide_cursor_when_typing: false
-
-# Style of the cursor
-#
-# Values for 'cursor_style':
-# - Block
-# - Underline
-# - Beam
-cursor_style: Block
-
-# Live config reload (changes require restart)
-live_config_reload: true
-
-# Shell
-#
-# You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
-# Entries in shell.args are passed unmodified as arguments to the shell.
-#
-shell:
- program: /usr/local/bin/zsh
- args:
-   - --login
+# Background opacity
+background_opacity: 1.0
 
 # Mouse bindings
 #
@@ -219,6 +196,34 @@ mouse:
   #
   # To disable this completely, set `faux_scrollback_lines` to 0.
   faux_scrollback_lines: 1
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+
+dynamic_title: true
+
+hide_cursor_when_typing: false
+
+# Style of the cursor
+#
+# Values for 'cursor_style':
+# - Block
+# - Underline
+# - Beam
+cursor_style: Block
+
+# Live config reload (changes require restart)
+live_config_reload: true
+
+# Shell
+#
+# You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
+# Entries in shell.args are passed unmodified as arguments to the shell.
+#
+shell:
+ program: /usr/local/bin/zsh
+ args:
+   - --login
 
 # Key bindings
 #
@@ -376,3 +381,4 @@ key_bindings:
     # Tmux
   - { key: W,        mods: Command, chars: "\x01\x78"                    }
   - { key: T,        mods: Command, chars: "\x01\x63"                    }
+
