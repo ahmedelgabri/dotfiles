@@ -11,7 +11,7 @@ l(){
   else
     # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
     # List all files, long format, colorized, permissions in octal
-    ls -AlhF --group-directories-first --color=always "$@" | awk '
+    ls -AlhF -alph --group-directories-first --color=always "$@" | awk '
       {
         k=0;
         for (i=0;i<=8;i++)
