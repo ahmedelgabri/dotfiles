@@ -5,9 +5,14 @@ endif
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {}
 
-if executable('flow-language-server')
+if executable('flow') && executable('flow-language-server')
   let g:LanguageClient_serverCommands.javascript = ['flow-language-server', '--stdio']
   let g:LanguageClient_serverCommands['javascript.jsx'] = ['flow-language-server', '--stdio']
+endif
+
+if !(executable('flow') && executable('flow-language-server')) && executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+  let g:LanguageClient_serverCommands['javascript.jsx'] = ['javascript-typescript-stdio']
 endif
 
 if executable('ocaml-language-server')
@@ -17,6 +22,10 @@ endif
 
 if executable('pyls')
   let g:LanguageClient_serverCommands.python = ['pyls']
+endif
+
+if executable('rust')
+  let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
 endif
 
 augroup LanguageClientConfig

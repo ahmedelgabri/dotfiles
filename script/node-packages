@@ -5,6 +5,7 @@ NPM_PACKAGES=(
 "jsctags"
 "jsinspect"
 "flow-language-server"
+"javascript-typescript-langserver"
 "ocaml-language-server"
 "netlify-cli"
 "now"
