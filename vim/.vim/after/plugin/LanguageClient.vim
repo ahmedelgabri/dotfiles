@@ -3,6 +3,7 @@ if !exists(':LanguageClientStart')
 endif
 
 let g:LanguageClient_autoStart = 1
+let g:LanguageClient_loggingLevel='DEBUG'
 let g:LanguageClient_serverCommands = {}
 
 if executable('flow') && executable('flow-language-server')
@@ -25,7 +26,8 @@ if executable('pyls')
 endif
 
 if executable('rust')
-  let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
+  " Requires to run `rustup component add rls-preview rust-analysis rust-src`
+  let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
 endif
 
 augroup LanguageClientConfig

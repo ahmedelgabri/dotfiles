@@ -24,7 +24,7 @@ function! packages#init() abort
   if has('nvim')
     Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
     Plug 'roxma/nvim-completion-manager'
-    Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn' })
+    Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
     Plug 'othree/csscomplete.vim'
     " These don't work
     " Plug 'katsika/ncm-lbdb'
@@ -77,6 +77,7 @@ function! packages#init() abort
   Plug 'wincent/loupe'
   Plug 'mhinz/vim-startify'
   Plug 'nelstrom/vim-visual-star-search'
+  " Plug 'unblevable/quick-scope'
   Plug 'justinmk/vim-sneak'
   Plug 'ap/vim-buftabline'
 
