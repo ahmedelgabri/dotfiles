@@ -7,7 +7,7 @@
 # CONFIG.
 ##############################################################
 
-for config (~/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
+for config (${HOME}/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
 
 ##############################################################
 # GLOBAL CONFIG (@NOTE: maybe move them to config files)
@@ -52,6 +52,9 @@ KEYTIMEOUT=1
 
 export GPG_TTY=$(tty)
 
+(( $+commands[brew] )) && export HOMEBREW_ROOT=$(brew --prefix)
+
+
 ##############################################################
 # PATH.
 ##############################################################
@@ -77,33 +80,38 @@ cdpath=(
   $cdpath
 )
 
-
 # Set the list of directories that Zsh searches for programs.
-myPath=(
-  /usr/local/opt/curl/bin
-  /usr/local/{bin,sbin}
-  /usr/local/opt/coreutils/libexec/gnubin
-  /usr/local/opt/python@2/bin
-  /usr/local/Cellar/git
+path=(
   ${HOME}/.dotfiles/bin
-  $path
   ./node_modules/.bin
-  $(yarn global dir)/node_modules/.bin
-  ${HOME}/.cargo/bin
-  ${HOME}/.go/bin
+  ${HOMEBREW_ROOT:-/usr/local}/{bin,sbin}
+  ${HOMEBREW_ROOT:-/usr/local}/opt/python@2/libexec/bin
+  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin
+  ${HOMEBREW_ROOT:-/usr/local}/opt/curl/bin
+  ${HOMEBREW_ROOT:-/usr/local}/Cellar/git
+  $path
 )
 
+if (( $+commands[yarn] )); then
+  path+=($(yarn global dir)/node_modules/.bin)
+fi
+
 if (( $+commands[python2] )) then
-  myPath+=($(python2 -m site --user-base)/bin)
+  path+=($(python2 -m site --user-base)/bin)
 fi
 
 if (( $+commands[python] )) then
-  myPath+=($(python -m site --user-base)/bin)
+  path+=($(python -m site --user-base)/bin)
 fi
 
-path=(
-  $myPath
-)
+if (( $+commands[cargo] )) then
+  path+=(${HOME}/.cargo/bin)
+fi
+
+if (( $+commands[go] )) then
+  export GOPATH="${HOME}/.go"
+  path+=(${GOPATH}/bin)
+fi
 
 #
 # Less
@@ -143,10 +151,8 @@ export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap 
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
 
-export HOMEBREW_INSTALL_BADGE="🍕"
+export HOMEBREW_INSTALL_BADGE="⚽️"
 export HOMEBREW_NO_ANALYTICS=1
-# export HOMEBREW_NO_INSECURE_REDIRECT=1
-# export HOMEBREW_CASK_OPTS=--require-sha
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 # `cd ~df` or `z ~df`
 # hash -d df=~/.dotfiles
@@ -156,16 +162,15 @@ SYMBOLS=(
 "ϟ"
 "▲"
 "∴"
+"→"
+"»"
+"৸"
 )
 
 # Arrays in zsh starts from 1
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
 
-if (( $+commands[go] )) then
-  export GOPATH="$HOME/.go"
-fi
-
 ##############################################################
 # Python
 ###############################################################
-export PYTHONSTARTUP=$HOME/.pyrc.py
+export PYTHONSTARTUP=${HOME}/.pyrc.py

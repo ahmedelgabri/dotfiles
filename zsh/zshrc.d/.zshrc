@@ -11,11 +11,11 @@
 # zPlug.
 ##############################################################
 
-if [[ ! -f ~/.zplug/init.zsh ]]; then
+if [[ ! -f ${HOME}/.zplug/init.zsh ]]; then
   curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
 
-source ~/.zplug/init.zsh
+source ${HOME}/.zplug/init.zsh
 
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
@@ -56,22 +56,22 @@ TIPZ_TEXT='Alias tip:'
 # CONFIG.
 ##############################################################
 
-source ~/.dotfiles/zsh/zshrc.d/aliases.zsh
-for func (~/.dotfiles/zsh/zshrc.d/functions/*.zsh) source $func
+source ${HOME}/.dotfiles/zsh/zshrc.d/aliases.zsh
+for func (${HOME}/.dotfiles/zsh/zshrc.d/functions/*.zsh) source $func
 
 ##############################################################
 # TOOLS.
 ##############################################################
 
-(( $+commands[grc] )) && source "`brew --prefix`/etc/grc.bashrc"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+(( $+commands[grc] )) && source "${HOMEBREW_ROOT:-/usr/local}/etc/grc.bashrc"
+[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
 
 ##############################################################
 # direnv.
 ##############################################################
 
 if [ $(command -v direnv) ]; then
-  export NODE_VERSIONS="$HOME/.nvm/versions/node"
+  export NODE_VERSIONS="${HOME}/.nvm/versions/node"
   export NODE_VERSION_PREFIX="v"
 
   eval "$(direnv hook zsh)"
@@ -82,8 +82,8 @@ fi
 ##############################################################
 
 if [ -e /etc/motd ]; then
-  if ! cmp -s $HOME/.hushlogin /etc/motd; then
-    tee $HOME/.hushlogin < /etc/motd
+  if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
+    tee ${HOME}/.hushlogin < /etc/motd
   fi
 fi
 
@@ -91,8 +91,8 @@ fi
 # LOCAL.
 ##############################################################
 
-if [ -f ~/.zshrc.local ]; then
-  source ~/.zshrc.local
+if [ -f ${HOME}/.zshrc.local ]; then
+  source ${HOME}/.zshrc.local
 else
   if [[ -z "${HOMEBREW_GITHUB_API_TOKEN}" && -z "${GITHUB_TOKEN}" && -z "${GITHUB_USER}" ]]; then
     echo "These ENV vars are not set: HOMEBREW_GITHUB_API_TOKEN, GITHUB_TOKEN & GITHUB_USER. Add them to ~/.zshrc.local"
