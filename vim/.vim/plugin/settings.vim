@@ -23,11 +23,11 @@ set wildmode=longest,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
 
-" https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
-set spelllang=en_us
-let &spellfile=$VIMHOME.'/spell/en.utf-8.add'
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
+  " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
+  set spelllang=en_us,nl
+  let &spellfile=$VIMHOME.'/spell/en.utf-8.add'
 endif
 
 set complete+=kspell
