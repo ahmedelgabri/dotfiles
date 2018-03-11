@@ -39,5 +39,28 @@ let g:projectionist_heuristics = {
       \        ],
       \       'type': 'test'
       \     },
+      \     'src/*.re': {
+      \       'alternate': [
+      \         '__tests__/{}_test.re',
+      \         'src/{}_test.re',
+      \         'src/{}.rei'
+      \       ],
+      \       'type': 'source'
+      \     },
+      \     'src/*.rei': {
+      \       'alternate': [
+      \         'src/{}.re',
+      \         '__tests__/{}_test.re',
+      \         'src/{}_test.re',
+      \       ],
+      \       'type': 'header'
+      \     },
+      \     '__tests__/*_test.re': {
+      \       'alternate': [
+      \         'src/{}.rei',
+      \         'src/{}.re',
+      \       ],
+      \       'type': 'test'
+      \     }
       \   }
       \ }
