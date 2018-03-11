@@ -85,7 +85,7 @@ path=(
   ${HOME}/.dotfiles/bin
   ./node_modules/.bin
   ${HOMEBREW_ROOT:-/usr/local}/{bin,sbin}
-  ${HOMEBREW_ROOT:-/usr/local}/opt/python@2/libexec/bin
+  ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin
   ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin
   ${HOMEBREW_ROOT:-/usr/local}/opt/curl/bin
   ${HOMEBREW_ROOT:-/usr/local}/Cellar/git
@@ -96,12 +96,12 @@ if (( $+commands[yarn] )); then
   path+=($(yarn global dir)/node_modules/.bin)
 fi
 
-if (( $+commands[python2] )) then
-  path+=($(python2 -m site --user-base)/bin)
-fi
-
 if (( $+commands[python] )) then
   path+=($(python -m site --user-base)/bin)
+fi
+
+if (( $+commands[python3] )) then
+  path+=($(python3 -m site --user-base)/bin)
 fi
 
 if [[ -d "${HOME}/.cargo/bin" ]]; then

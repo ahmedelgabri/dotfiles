@@ -6,11 +6,11 @@ function! bootstrap#init() abort
   if has('nvim')
     let g:python_host_skip_check = 1
     let g:python3_host_skip_check = 1
-    if executable('/usr/local/opt/python@2/bin/python2')
-      let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
+    if executable('python')
+      let g:python_host_prog = '/usr/local/bin/python'
     endif
-    if executable('/usr/local/bin/python')
-      let g:python3_host_prog = '/usr/local/bin/python'
+    if executable('python3')
+      let g:python3_host_prog = '/usr/local/bin/python3'
     endif
     " let g:loaded_python_provider = 1
     " let g:loaded_python3_provider = 1
