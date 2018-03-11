@@ -104,7 +104,7 @@ if (( $+commands[python] )) then
   path+=($(python -m site --user-base)/bin)
 fi
 
-if (( $+commands[cargo] )) then
+if [[ -d "${HOME}/.cargo/bin" ]]; then
   path+=(${HOME}/.cargo/bin)
 fi
 
