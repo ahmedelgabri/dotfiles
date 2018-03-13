@@ -24,3 +24,5 @@ hammerspoon/.hammerspoon/Spoons/*
 .zhistory
 *.local
 log.*.txt
+*.spl
+*.sug
