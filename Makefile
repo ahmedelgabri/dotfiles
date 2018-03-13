@@ -6,7 +6,7 @@ DEST="$(HOME)/.dotfiles"
 SCRIPTS="$(DEST)/script"
 INSTALL="$(SCRIPTS)/install"
 
-all: node python iterm neovim macos
+all: node python iterm neovim rust macos
 
 install:
 		@bash -c "$$(cat $(INSTALL))"
@@ -40,6 +40,9 @@ node:
 
 python:
 		@sh $(SCRIPTS)/python-packages
+
+rust:
+		@curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 iterm:
 		@sh $(SCRIPTS)/iterm
