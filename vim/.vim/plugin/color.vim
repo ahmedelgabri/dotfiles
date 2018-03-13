@@ -34,7 +34,7 @@ if s:hour >= 6 && s:hour < 18
   endtry
 else
   try
-    colorscheme ayu
+    colorscheme deep-space
   catch
   endtry
 endif
