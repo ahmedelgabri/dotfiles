@@ -83,6 +83,7 @@ function! packages#init() abort
 
   Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_save_on_switch = 1
+  Plug 'aquach/vim-http-client', { 'on': ['HTTPClientDoRequest'] }
   " }}}
 
   " Syntax {{{
