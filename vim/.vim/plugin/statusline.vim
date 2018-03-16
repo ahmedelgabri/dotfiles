@@ -9,15 +9,20 @@ scriptencoding utf-8
 set statusline=%!StatusLine()
 
 function! StatusLine() abort
-  let l:line='%4* %{statusline#getMode()} %*'
-  let l:line.='%#ErrorMsg#%{&paste ? " ⍴ " : ""}%*'
-  let l:line.='%#WarningMsg#%{&spell ? " ✎ " : ""}%*'
-  let l:line.='%6* %{statusline#gitInfo()}'
+  let l:line=''
+  let l:line.='%4* %{statusline#getMode()} %*'
+  if &paste
+    let l:line.='%#ErrorMsg#%{" ⍴ "}%*'
+  endif
+  if &spell
+    let l:line='%#WarningMsg#%{" ✎ "}%*'
+  endif
+  let l:line.='%6*%{statusline#gitInfo()}'
+  let l:line.=statusline#GetHunks()
   let l:line.='%<'
   let l:line.='%4* %{statusline#fileprefix()}%*'
   let l:line.='%6*%t'
   let l:line.=statusline#modified()
-  let l:line.=statusline#GetHunks()
 
   let l:line.='%5*'
   let l:line.=' %{statusline#readOnly()} %w%*'
@@ -32,9 +37,13 @@ function! StatusLine() abort
   endif
 
   let l:line.=statusline#LinterStatus()
-  let l:line.='%#WarningMsg#%{&ff != "unix" ? " ".&ff." ":""} %*'
-  let l:line.='%#warningmsg#%{&fenc != "utf-8" && &fenc != "" ? " ".&fenc." " :""} %*'
   let l:line.='%4* %y'
+  if &fileformat !=# 'unix'
+    let l:line.='%4* %{&ff}%*'
+  endif
+  if &fileencoding !=# 'utf-8'
+    let l:line.='%4* %{&fenc}%*'
+  endif
   let l:line.='%4* %{statusline#fileSize()}'
   let l:line.='%4*%{statusline#rhs()}'
   let l:line.='%*'

@@ -112,17 +112,15 @@ endfunction
 
 
 function! statusline#gitInfo() abort
-  if !exists('*fugitive#head')
+  if !exists('g:loaded_gina')
     return ''
   endif
 
-  let l:gitbranch = fugitive#head(10)
-  " For some odd reason, when it's empty it will return [] with a space before.
-  if l:gitbranch ==# ''
-    return ''
-  else
-    return '⎇  ' . l:gitbranch
+  let l:out = gina#component#repo#name()
+  if !empty(l:out) || !empty(expand('%'))
+    let l:out = ' ' . l:out
   endif
+  return l:out
 endfunction
 
 function! statusline#readOnly() abort
