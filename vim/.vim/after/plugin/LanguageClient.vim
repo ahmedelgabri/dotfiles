@@ -25,7 +25,7 @@ if executable('pyls')
   let g:LanguageClient_serverCommands.python = ['pyls']
 endif
 
-if executable('rust')
+if executable('rls')
   " Requires to run `rustup component add rls-preview rust-analysis rust-src`
   let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
 endif
