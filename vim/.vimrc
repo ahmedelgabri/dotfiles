@@ -16,6 +16,10 @@
                       " ||
                      " |""|
                      " '=='
+" Plugins {{{
+" Unload unneeded plugins {{{
+let g:loaded_netrwPlugin   = 1 "$VIMRUNTIME/plugin/netrwPlugin.vim
+" }}}
 
 let s:root=expand('~/.dotfiles/vim/.vim')
 

@@ -32,4 +32,5 @@ function! s:my_vimfiler_settings()
 endfunction
 
 nnoremap <silent> <leader>d :VimFilerExplorer -find -parent<CR>
+nnoremap <silent> - :VimFiler -find -parent<CR>
 
