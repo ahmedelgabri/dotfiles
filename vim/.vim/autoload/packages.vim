@@ -91,6 +91,7 @@ function! packages#init() abort
   Plug 'reasonml-editor/vim-reason-plus'
   Plug 'jez/vim-github-hub'
   Plug 'sheerun/vim-polyglot'
+  Plug 'direnv/direnv.vim'
   " }}}
 
   " Linters & Code quality {{{
