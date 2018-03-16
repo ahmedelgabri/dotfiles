@@ -9,3 +9,4 @@ http://www.defmacro.org/2016/12/22/models.html Mental models
 https://danluu.com/monorepo/ Advantages of monolithic version control
 https://0day.work/using-a-yubikey-for-gpg-and-ssh/ Using a Yubikey for GPG and SSH
 https://noahfrederick.com/log/vim-templates-with-ultisnips-and-projectionist File templates with ultisnips and projectionist
+https://prowebtype.com/ Professional Web Typography
