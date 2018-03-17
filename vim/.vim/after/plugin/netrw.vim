@@ -17,4 +17,5 @@ let g:netrw_hide = 1
 let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' " default
 let g:netrw_bufsettings .= ' buftype=nofile bufhidden=wipe'
 
+let g:mapleader="\<Space>"
 nnoremap <silent> <leader>d :20Lex<CR>

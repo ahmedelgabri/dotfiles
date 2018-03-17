@@ -24,6 +24,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
+let g:mapleader="\<Space>"
 nnoremap <silent> <leader><leader> :Files<cr>
 nnoremap <silent> <Leader>c :Colors<cr>
 nnoremap <silent> <Leader>b :Buffers<cr>
