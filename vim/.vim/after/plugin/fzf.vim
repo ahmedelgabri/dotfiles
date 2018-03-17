@@ -3,6 +3,8 @@ let g:fzf_files_options = $FZF_CTRL_T_OPTS
 let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_commits_log_options = $FZF_VIM_LOG
 let g:fzf_history_dir = '~/.fzf-history'
+let g:fzf_buffers_jump = 1
+let g:fzf_tags_command = 'ctags -R'
 
 command! Plugs call fzf#run({
   \ 'source':  map(sort(keys(g:plugs)), 'g:plug_home."/".v:val'),
