@@ -116,7 +116,7 @@ function! statusline#gitInfo() abort
     return ''
   endif
 
-  let l:out = gina#component#repo#name()
+  let l:out = gina#component#repo#branch()
   if !empty(l:out) || !empty(expand('%'))
     let l:out = ' ' . l:out
   endif
