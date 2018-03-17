@@ -29,8 +29,6 @@ function! packages#init() abort
     " These don't work
     " Plug 'katsika/ncm-lbdb'
     Plug 'Shougo/neco-vim'
-    " Plug 'fszymanski/deoplete-emoji'
-    Plug 'llwu/deoplete-emoji', { 'branch': 'feature/more_emojis' }
   endif
   " }}}
 

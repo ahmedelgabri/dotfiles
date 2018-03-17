@@ -1,1 +1,0 @@
-setl spell

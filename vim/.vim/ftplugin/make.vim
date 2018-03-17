@@ -1,2 +1,0 @@
-" Use tabs
-setl noexpandtab
