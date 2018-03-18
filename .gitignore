@@ -1,3 +1,4 @@
+vim/.vim/pack/*
 vim/.vim/plugged/
 vim/.vim/tmp/
 vim/.vim/autoload/plug.vim*
