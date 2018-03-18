@@ -1,18 +1,17 @@
-function! packages#init() abort
-  let s:VIM_PLUG=expand($VIMHOME.'/autoload/plug.vim')
-  let s:VIM_PLUG_FOLDER=expand($VIMHOME.'/plugged')
+let s:VIM_PLUG=expand($VIMHOME.'/autoload/plug.vim')
+let s:VIM_PLUG_FOLDER=expand($VIMHOME.'/plugged')
+
+function! packages#installVimPlug() abort
   " Automatic installation {{{
   " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
+  execute 'silent !curl -fLo '.s:VIM_PLUG.' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  augroup MyVimPlug
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
+endfunction
 
-  if empty(glob(s:VIM_PLUG))
-    execute 'silent !curl -fLo '.s:VIM_PLUG.' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    augroup MyVimPlug
-      autocmd!
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    augroup END
-  endif
-  " }}}
-
+function! packages#loadPackages() abort
   " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
   function! If(cond, ...)
     let l:opts = get(a:000, 0, {})
@@ -123,3 +122,13 @@ function! packages#init() abort
   " }}}
   call plug#end()
 endfunction
+
+if !exists('*packages#init')
+  function! packages#init() abort
+    if empty(glob(s:VIM_PLUG)) || (!empty(glob(s:VIM_PLUG)) && empty(glob(s:VIM_PLUG_FOLDER)))
+      call packages#installVimPlug() | call packages#loadPackages()
+    else
+      call packages#loadPackages()
+    endif
+  endfunction
+endif
