@@ -1,2 +1,2 @@
-nnoremap <M-d> :packadd vim-sayonara<cr> <BAR> :Sayonara!<cr>
+nnoremap <M-d> :silent! packadd vim-sayonara<cr> <BAR> :Sayonara!<cr>
 
