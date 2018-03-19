@@ -38,6 +38,10 @@ endfunction
 " For a more fancy ale statusline
 " https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
 function! statusline#LinterStatus() abort
+  if !exists('*ale#statusline#Count')
+    return ''
+  endif
+
   let l:error_symbol = '⨉'
   let l:style_symbol = '●'
   let l:counts = ale#statusline#Count(bufnr(''))
@@ -112,11 +116,11 @@ endfunction
 
 
 function! statusline#gitInfo() abort
-  if !exists('g:loaded_gina')
+  if !exists('*fugitive#head')
     return ''
   endif
 
-  let l:out = gina#component#repo#branch()
+  let l:out = fugitive#head(10)
   if !empty(l:out) || !empty(expand('%'))
     let l:out = ' ' . l:out
   endif
@@ -141,7 +145,7 @@ endfunction
 
 function! statusline#fileprefix() abort
   let l:basename=expand('%:h')
-  if l:basename == '' || l:basename == '.'
+  if l:basename ==# '' || l:basename ==# '.'
     return ''
   else
     " Make sure we show $HOME as ~.

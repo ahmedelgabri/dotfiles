@@ -99,7 +99,9 @@ if has('nvim')
   tnoremap <M-l> <c-\><c-n><c-w>l
   augroup MyTerm
     autocmd!
-    autocmd BufEnter term://* startinsert
+    autocmd TermOpen * setl nonumber norelativenumber
+    autocmd TermOpen term://* startinsert
+    autocmd TermClose term://* stopinsert
   augroup END
 endif
 
@@ -108,14 +110,6 @@ nnoremap <c-g> :call functions#SynStack()<CR>
 
 if exists(':Move')
   nnoremap <leader>r :Move %<cr>
-endif
-
-if exists('g:loaded_fugitive')
-  " Open current file on github.com
-  nnoremap gb  :Gbrowse<cr>
-  vnoremap gb  :Gbrowse<cr>
-  nnoremap gs  :Gstatus<cr>
-  vnoremap gs  :Gstatus<cr>
 endif
 
 nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>
