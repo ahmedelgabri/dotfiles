@@ -38,7 +38,7 @@ endfunction
 " For a more fancy ale statusline
 " https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
 function! statusline#LinterStatus() abort
-  if !exists('*ale#statusline#Count')
+  if !exists(':ALEInfo')
     return ''
   endif
 
