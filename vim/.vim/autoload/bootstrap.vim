@@ -17,7 +17,7 @@ function! bootstrap#init() abort
   endif
   " }}}
 
-  call packages#init()
+  call plugins#init()
   call functions#setupCompletion()
 
   " Overrrides {{{
