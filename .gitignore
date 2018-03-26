@@ -27,3 +27,5 @@ log.*.txt
 *.spl
 *.sug
 mpv/.config/mpv/watch_later
+rtv/.config/rtv/*.log
+rtv/.config/rtv/*-token

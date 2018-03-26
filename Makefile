@@ -15,7 +15,7 @@ install:
 # NOTE: irc/.weechat is not handled with stow, it's handled directly inside bin/mx-init using `--dir` flag
 # For some reason stow chokes on ca-bundle.crt since it's an excutable file, will try to figure out later.
 symlink:
-	@stow --ignore ".DS_Store" --target="$(HOME)" --dir="$(DEST)" \
+	@stow --restow --ignore ".DS_Store" --target="$(HOME)" --dir="$(DEST)" \
 		misc \
 		ctags \
 		git \
@@ -27,6 +27,7 @@ symlink:
 		tmux \
 		vim \
 		zsh \
+		rtv \
 		rss
 
 homebrew:
