@@ -34,3 +34,14 @@ augroup LanguageClientConfig
   autocmd!
   autocmd FileType javascript,javascript.jsx let g:LanguageClient_diagnosticsEnable = 0
 augroup END
+
+if !has('nvim')
+  aug VIM_COMPLETION
+    au!
+    autocmd FileType javascript,javascript.jsx setlocal omnifunc=LanguageClient#complete
+    autocmd FileType python setlocal omnifunc=LanguageClient#complete
+    autocmd FileType rust setlocal omnifunc=LanguageClient#complete
+    autocmd FileType ocaml,reason setlocal omnifunc=LanguageClient#complete
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
+  aug END
+end

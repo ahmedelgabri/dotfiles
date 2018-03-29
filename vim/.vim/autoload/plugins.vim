@@ -20,13 +20,11 @@ function! plugins#loadPlugins() abort
 
   call plug#begin(s:VIM_PLUG_FOLDER)
   " Autocomplete {{{
+  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
+  Plug 'othree/csscomplete.vim'
   if has('nvim')
-    Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
     Plug 'roxma/nvim-completion-manager'
     Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
-    Plug 'othree/csscomplete.vim'
-    " These don't work
-    " Plug 'katsika/ncm-lbdb'
     Plug 'Shougo/neco-vim'
   endif
   " }}}
