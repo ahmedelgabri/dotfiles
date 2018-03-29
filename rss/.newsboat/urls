@@ -50,7 +50,6 @@
   http://daverupert.com/atom.xml "Blogs"
   http://dbushell.com/rss/ "Blogs"
   http://ddrscott.github.io/atom.xml "Blogs"
-  http://dev.hubspot.com/blog/rss.xml "Blogs"
   http://developer.apple.com/swift/blog/news.rss "Blogs"
   http://developers.soundcloud.com/blog.rss "Blogs"
   http://devnacho.com/feed.xml "Blogs"
@@ -377,6 +376,8 @@
 # Football {{{
   https://www.theplayerstribune.com/sports/soccer/feed/ "football"
 # }}}
+
+https://grumpy.website/feed.xml "UX"
 
 # Podcasts {{{
   https://rss.simplecast.com/podcasts/4151/rss "Podcasts"
