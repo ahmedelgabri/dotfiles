@@ -5,8 +5,6 @@
 
 ##############################################################
 # CONFIG.
-# @TODO: loading config files here doesn't make custom completions work, I have to look into this
-# later. Might also be affecting completions in general but I don't know.
 # ##############################################################
 
 for config (${HOME}/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
@@ -61,6 +59,7 @@ export GPG_TTY=$(tty)
 # PATH.
 ##############################################################
 fpath=(
+  ${ZDOTDIR:-${HOME}}/completions
   '/usr/local/share/zsh/site-functions'
   $fpath
 )
