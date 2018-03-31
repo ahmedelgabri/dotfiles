@@ -15,7 +15,7 @@ function! StatusLine() abort
     let l:line.='%#ErrorMsg#%{" ⍴ "}%*'
   endif
   if &spell
-    let l:line='%#WarningMsg#%{" ✎ "}%*'
+    let l:line='%#WarningMsg#%{" ✎  "}%*'
   endif
   let l:line.='%6*%{statusline#gitInfo()}'
   let l:line.=statusline#GetHunks()

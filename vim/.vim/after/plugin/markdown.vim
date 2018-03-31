@@ -5,7 +5,7 @@ let g:vim_markdown_json_frontmatter = 1
 let g:vim_markdown_no_extensions_in_markdown = 1
 
 let g:goyo_height = '95%'
-let g:goyo_width = '120'
+let g:goyo_width = '100'
 nmap <Leader>g :Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization

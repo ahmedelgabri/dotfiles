@@ -26,8 +26,9 @@ let g:one_allow_italics = 1
 
 set background=dark
 
+" @TODO: Find a way to make this DST aware
 let s:hour = strftime('%H')
-if s:hour >= 6 && s:hour < 18
+if s:hour >= 8 && s:hour < 20
   try
     colorscheme codedark
   catch
