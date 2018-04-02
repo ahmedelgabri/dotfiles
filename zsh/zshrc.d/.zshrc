@@ -50,7 +50,6 @@ fi
 zplug load
 
 ZSH_AUTOSUGGEST_USE_ASYNC=true
-TIPZ_TEXT='Alias tip:'
 
 ##############################################################
 # CONFIG.
