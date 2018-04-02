@@ -10,3 +10,4 @@ https://danluu.com/monorepo/ Advantages of monolithic version control
 https://0day.work/using-a-yubikey-for-gpg-and-ssh/ Using a Yubikey for GPG and SSH
 https://noahfrederick.com/log/vim-templates-with-ultisnips-and-projectionist File templates with ultisnips and projectionist
 https://prowebtype.com/ Professional Web Typography
+https://christianheilmann.com/2018/04/02/what-comes-after-senior-developer/ What comes after senior developer?

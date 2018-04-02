@@ -164,6 +164,8 @@
   http://www.kalzumeus.com/feed/articles/ "Blog"
   https://danluu.com/atom.xml "Blog" "Programming"
   https://blog.safia.rocks/rss "Blog" "Programming" "JavaScript"
+  http://journal.stuffwithstuff.com/rss.xml "Blog" "Programming"
+  http://feeds.feedburner.com/chrisheilmann "Blog"
 # }}}
 
 # Browsers ====================================== {{{
