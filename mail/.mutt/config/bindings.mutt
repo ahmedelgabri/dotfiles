@@ -16,19 +16,19 @@ bind index,pager <up>     sidebar-prev
 bind index,pager <right>  sidebar-open
 bind index,pager <left>   sidebar-toggle-visible
 bind index,pager c  mail #Compose
-bind index,pager D delete-thread	#Delete
+bind index,pager D delete-thread    #Delete
 bind index,pager N search-opposite
 bind index,pager \Cd next-page
 bind index,pager \Cu previous-page
 bind index,pager b sidebar-toggle-visible
-bind index,pager / vfolder-from-query # Searching with notmuch integration in neomutt
 bind pager <space> next-page
 bind pager G bottom
 bind pager gg top
 bind pager u exit
 bind pager j next-line
 bind pager k previous-line
-bind pager r group-reply	#Reply all
+bind pager r group-reply    #Reply all
+macro index,pager / "<vfolder-from-query>" "Searching all mailboxes with notmuch integration in neomutt"
 
 # Legend:
 #   ! = $spoolfile (INBOX)

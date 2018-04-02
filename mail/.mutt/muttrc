@@ -1,11 +1,11 @@
 # Paths
-set alias_file       = ~/.mutt/config/aliases.private # where to store aliases
-# set display_filter   = '~/.mutt/scripts/add-address.sh'
-set header_cache     = ~/.mutt/cache/headers # where to store headers
-set message_cachedir = ~/.mutt/cache/bodies  # where to store bodies
-set certificate_file = ~/.mutt/certificates  # where to store certs
-set mailcap_path     = ~/.mutt/config/mailcap       # entries for filetypes
-set tmpdir           = ~/.mutt/tmp          # where to keep tmp files
+set alias_file       = "$HOME/.mutt/config/aliases.private" # where to store aliases
+# set display_filter   = "$HOME/.mutt/scripts/add-address.sh"
+set header_cache     = "$HOME/.mutt/cache/headers" # where to store headers
+set message_cachedir = "$HOME/.mutt/cache/bodies"  # where to store bodies
+set certificate_file = "$HOME/.mutt/certificates"  # where to store certs
+set mailcap_path     = "$HOME/.mutt/config/mailcap"       # entries for filetypes
+set tmpdir           = "$HOME/.mutt/tmp"          # where to keep tmp files
 
 # Connection options
 set ssl_force_tls
@@ -14,7 +14,7 @@ set ssl_force_tls
 set realname = "Ahmed El Gabri"
 
 unset record # don't save messages, gmail already does this.
-set folder = "~/.mail"
+set folder = "$HOME/.mail"
 set editor = "$EDITOR +/^$ +nohlsearch"
 
 # sorting -------------------------------------------------------------------------------------------------------------
