@@ -125,6 +125,7 @@ cask "transmission"
 cask "transmit"
 cask "caskroom/versions/visual-studio-code-insiders"
 cask "vlc"
+cask "viscosity"
 cask "webpquicklook"
 cask "whatsapp"
 
