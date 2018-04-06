@@ -68,13 +68,6 @@ let g:startify_skiplist = [
       \ 'plugged/.*/doc',
       \ ]
 
-hi! link StartifyHeader Normal
-hi! link StartifyFile Directory
-hi! link StartifyPath LineNr
-hi! link StartifySlash StartifyPath
-hi! link StartifyBracket StartifyPath
-hi! link StartifyNumber Title
-
 augroup MyStartify
   autocmd!
   autocmd User Startified setlocal cursorline

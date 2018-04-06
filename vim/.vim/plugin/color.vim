@@ -17,6 +17,13 @@ augroup MyCustomColors
         \| hi! link ALEErrorSign ErrorMsg
         \| hi! link ALEWarning GitGutterChange
         \| hi! link ALEWarningSign GitGutterChange
+
+  autocmd ColorScheme codedark hi! link StartifyHeader Normal
+        \| hi! link StartifyFile Directory
+        \| hi! link StartifyPath LineNr
+        \| hi! link StartifySlash StartifyPath
+        \| hi! link StartifyBracket StartifyPath
+        \| hi! link StartifyNumber Title
 augroup END
 
 let g:gruvbox_contrast_dark='hard'
