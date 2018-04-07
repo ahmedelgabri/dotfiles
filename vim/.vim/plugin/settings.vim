@@ -8,7 +8,7 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 set expandtab                         " always use spaces instead of tabs
 
 set nowrap                            " no wrap
-set textwidth=100
+set textwidth=80
 set colorcolumn=+1
 set signcolumn=yes
 
