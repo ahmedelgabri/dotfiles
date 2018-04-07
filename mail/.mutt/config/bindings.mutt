@@ -27,6 +27,8 @@ bind pager gg top
 bind pager u exit
 bind pager j next-line
 bind pager k previous-line
+bind pager j next-entry
+bind pager k previous-entry
 bind pager r group-reply    #Reply all
 macro index,pager / "<vfolder-from-query>" "Searching all mailboxes with notmuch integration in neomutt"
 
@@ -49,15 +51,13 @@ macro browser gd "<exit><change-folder>=Drafts<enter>" "go to drafts"
 macro browser gl "<exit><change-folder>?<toggle-mailboxes>" "go to 'Label'"
 macro attach D "<save-entry><bol>~/.mutt/attachments/<eol><enter>" "Save to ~/.mutt/attachments"
 
-# "Smart" equivalent to `set resolve = yes`: see "{next,previous}.mutt" for
-# info.
-macro index j "<next-undeleted><enter-command>source ~/.mutt/config/next.mutt<enter>" "next undeleted"
-macro index k "<previous-undeleted><enter-command>source ~/.mutt/config/previous.mutt<enter>" "previous undeleted"
-macro pager J "<next-entry><enter-command>source ~/.mutt/config/next.mutt<enter>" "next entry"
-macro pager K "<previous-entry><enter-command>source ~/.mutt/config/previous.mutt<enter>" "next entry"
+macro index ! "<tag-prefix-cond><save-message>!.Spam<enter><enter><next-undeleted><end-cond>" "mark as spam"
+macro index \# "<tag-prefix-cond><save-message>!.Trash<enter><enter><next-undeleted><end-cond>" "trash"
+macro index e "<tag-prefix><save-message>><enter><enter><next-undeleted>" "archive"
 
-# Default direction is "down".
-source ~/.mutt/config/next.mutt
+macro pager ! "<save-message>!.Spam<enter><enter><next-undeleted>" "mark as spam"
+macro pager \# "<save-message>!.Trash<enter><enter><next-undeleted>" "trash"
+macro pager e "<save-message>><enter><enter><next-undeleted>" "archive"
 
 macro pager s "<flag-message>" "star/unstar"
 macro index s ";<flag-message>" "star/unstar"
