@@ -6,6 +6,7 @@ irc/.weechat/*
 !irc/.weechat/irc.conf
 !irc/.weechat/weechat.conf
 !irc/.weechat/plugins.conf
+!irc/.weechat/sec.conf
 mail/.mutt/config/aliases
 mail/.mutt/cache
 mail/.mutt/tmp
