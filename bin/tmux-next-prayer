@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import json
+import sys
+import os
+import time
+from datetime import datetime, timedelta
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
+
+RED = '#[fg=red]' if os.environ['TMUX'] else '\033[1;31;40m'
+
+city = sys.argv[1] if len(sys.argv) > 1 else 'amsterdam'
+country = sys.argv[2] if len(sys.argv) > 2 else 'nl'
+method = sys.argv[3] if len(sys.argv) > 3 else 3
+
+
+def get_data(day_time):
+    url = 'http://api.aladhan.com/v1/timingsByCity/{time}?method={method}'\
+        '&city={city}&country={country}'.format(
+            city=city, country=country, method=method,
+            time=int(time.mktime(day_time.timetuple())))
+
+    response = urlopen(url)
+    data = json.load(response)['data']
+
+    return {
+        'timings': data['timings'],
+        'readable_date': data['date']['readable']
+    }
+
+
+def get_prayer_time(prayer, readable_date, timings):
+    return datetime.strptime('{0} {1}'.format(readable_date, timings[prayer]),
+                             '%d %b %Y %H:%M')
+
+
+def print_prayer(now=datetime.now()):
+    data = get_data(now)
+    timings = data['timings']
+    readable_date = data['readable_date']
+
+    for prayer in ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']:
+        prayer_time = get_prayer_time(prayer, readable_date, timings)
+        if prayer_time >= now:
+            now_timestamp = time.mktime(now.timetuple())
+            prayer_time_timestamp = time.mktime(prayer_time.timetuple())
+            time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
+
+            print('{color}{prayer}: {time}'.format(prayer=prayer,
+                                                   time=timings[prayer],
+                                                   color=''
+                                                   if time_remaning > 30
+                                                   else RED))
+            break
+
+    if get_prayer_time('Isha', readable_date, timings) < now:
+        print_prayer(now + timedelta(days=1))
+
+
+print_prayer()
