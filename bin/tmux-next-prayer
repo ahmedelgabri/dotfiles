@@ -14,6 +14,7 @@ except ImportError:
 
 
 RED = '#[fg=red]' if os.environ['TMUX'] else '\033[1;31;40m'
+prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']
 
 city = sys.argv[1] if len(sys.argv) > 1 else 'amsterdam'
 country = sys.argv[2] if len(sys.argv) > 2 else 'nl'
@@ -45,22 +46,35 @@ def print_prayer(now=datetime.now()):
     timings = data['timings']
     readable_date = data['readable_date']
 
-    for prayer in ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']:
+    if get_prayer_time(prayers[-1], readable_date, timings) < now:
+        now = now + timedelta(days=1)
+        data = get_data(now)
+        prayer = prayers[0]
+
         prayer_time = get_prayer_time(prayer, readable_date, timings)
-        if prayer_time >= now:
-            now_timestamp = time.mktime(now.timetuple())
-            prayer_time_timestamp = time.mktime(prayer_time.timetuple())
-            time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
+        now_timestamp = time.mktime(now.timetuple())
+        prayer_time_timestamp = time.mktime(prayer_time.timetuple())
+        time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
 
-            print('{color}{prayer}: {time}'.format(prayer=prayer,
-                                                   time=timings[prayer],
-                                                   color=''
-                                                   if time_remaning > 30
-                                                   else RED))
-            break
+        print('{color}{prayer}: {time}'.format(prayer=prayer,
+                                               time=timings[prayer],
+                                               color=''))
+        return
+    else:
 
-    if get_prayer_time('Isha', readable_date, timings) < now:
-        print_prayer(now + timedelta(days=1))
+        for prayer in prayers:
+            prayer_time = get_prayer_time(prayer, readable_date, timings)
+            if prayer_time >= now:
+                now_timestamp = time.mktime(now.timetuple())
+                prayer_time_timestamp = time.mktime(prayer_time.timetuple())
+                time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
+
+                print('{color}{prayer}: {time}'.format(prayer=prayer,
+                                                       time=timings[prayer],
+                                                       color=''
+                                                       if time_remaning > 30
+                                                       else RED))
+                break
 
 
 print_prayer()
