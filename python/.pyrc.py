@@ -12,7 +12,7 @@ import sys
 import os
 import readline, rlcompleter
 import atexit
-import pprint
+from pprint import pprint
 from tempfile import mkstemp
 from code import InteractiveConsole
 
@@ -55,7 +55,7 @@ class TermColors(dict):
     def __init__(self):
         if os.environ.get('TERM') in ('xterm-color', 'xterm-256color', 'linux',
                                     'screen', 'screen-256color', 'screen-bce',
-                                    'tmux-256color'):
+                                      'tmux-256color'):
             self.update(dict([(k, self._base % v) for k,v in self.COLOR_TEMPLATES]))
         else:
             self.update(dict([(k, self.NoColor) for k,v in self.COLOR_TEMPLATES]))
@@ -71,7 +71,7 @@ if os.path.exists(HISTFILE):
     readline.read_history_file(HISTFILE)
 
 # Set maximum number of items that will be written to the history file
-readline.set_history_length(300)
+readline.set_history_length(1000)
 
 def savehist():
     readline.write_history_file(HISTFILE)
@@ -96,7 +96,7 @@ def my_displayhook(value):
         except ImportError:
             __builtins__._ = value
 
-        pprint.pprint(value)
+        pprint(value)
 sys.displayhook = my_displayhook
 
 # Welcome message
@@ -162,7 +162,7 @@ Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
 
 # Salt Helpers
 ##############
-if 'SALT_MASTER_CONFIG' in os.environ:
+if 'SALT_CLIENT_CONFIG' in os.environ:
     try:
         import salt.config
         import salt.client
@@ -170,24 +170,33 @@ if 'SALT_MASTER_CONFIG' in os.environ:
     except ImportError:
         pass
     else:
-        __opts_master__ = salt.config.master_config(
-                os.environ['SALT_MASTER_CONFIG'])
+        __opts_client__ = salt.config.client_config(
+                os.environ['SALT_CLIENT_CONFIG'])
 
         # Instantiate LocalClient and RunnerClient
-        SLC = salt.client.LocalClient(__opts_master__)
-        SRUN = salt.runner.Runner(__opts_master__)
+        SLC = salt.client.LocalClient(mopts=__opts_client__)
+        SRUN = salt.runner.Runner(__opts_client__)
 
 if 'SALT_MINION_CONFIG' in os.environ:
     try:
         import salt.config
+        import salt.client
         import salt.loader
         import jinja2
         import yaml
     except ImportError:
         pass
     else:
-        # Create the Salt __opts__ variable
-        __opts__ = salt.config.client_config(os.environ['SALT_MINION_CONFIG'])
+        # # Create the Salt __opts__ variable
+        __opts__ = salt.config.minion_config(
+                os.environ.get('SALT_MINION_CONFIG'))
+
+        # Default to local mode to avoid timeouts if a master is not running.
+        # Can set this to 'remote' manually and re-instantiate if desired.
+        __opts__['file_client'] = 'local'
+
+        # Instantiate the Caller class
+        SCALL = salt.client.Caller(mopts=__opts__)
 
         # Populate grains if it hasn't been done already
         if not 'grains' in __opts__ or not __opts__['grains']:
@@ -196,19 +205,6 @@ if 'SALT_MINION_CONFIG' in os.environ:
         # Populate template variables
         __salt__ = salt.loader.minion_mods(__opts__)
         __grains__ = __opts__['grains']
-        __pillar__ = salt.pillar.get_pillar(
-            __opts__,
-            __grains__,
-            __opts__['id'],
-            __opts__.get('environment'),
-        ).compile_pillar()
-
-        JINJA = lambda x, **y: jinja2.Template(x).render(
-                grains=__grains__,
-                salt=__salt__,
-                opts=__opts__,
-                pillar=__pillar__,
-                **y)
 
 # Start an external editor with \e
 ##################################
