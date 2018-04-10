@@ -25,7 +25,7 @@ fi
 # TERMINAL
 alias "?"="pwd"
 alias c="clear "
-alias KABOOM="yarn global upgrade --latest && brew update && brew upgrade && brew cleanup -s --force && brew prune && brew cask cleanup && brew doctor"
+alias KABOOM="yarn global upgrade --latest; brew update; brew upgrade; brew cleanup -s --force; brew prune; brew cask cleanup; brew doctor"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
