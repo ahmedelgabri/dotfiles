@@ -6,6 +6,8 @@ bind compose p postpone-message
 bind editor <space> noop
 bind editor <Tab> complete-query
 bind generic x tag-entry
+bind index j next-entry
+bind index k previous-entry
 bind index gg       first-entry
 bind index G        last-entry
 bind index r        group-reply
@@ -27,8 +29,6 @@ bind pager gg top
 bind pager u exit
 bind pager j next-line
 bind pager k previous-line
-bind pager j next-entry
-bind pager k previous-entry
 bind pager r group-reply    #Reply all
 macro index,pager / "<vfolder-from-query>" "Searching all mailboxes with notmuch integration in neomutt"
 
