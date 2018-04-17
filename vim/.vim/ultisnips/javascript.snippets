@@ -136,8 +136,20 @@ constructor(props) {
 }
 endsnippet
 
-snippet cdm "componentDidCatch" b
+snippet cdc "componentDidCatch" b
 componentDidCatch() {
+	$0
+}
+endsnippet
+
+snippet dsp "getDrivedStateFromProps" b
+static getDrivedStateFromProps(${1:nextProps}, ${2:prevState}) {
+	$0
+}
+endsnippet
+
+snippet sbu "getSnapshotBeforeUpdate" b
+getSnapshotBeforeUpdate(${1:prevProps}, ${2:prevState}) {
 	$0
 }
 endsnippet
