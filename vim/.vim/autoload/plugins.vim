@@ -72,8 +72,8 @@ function! plugins#loadPlugins() abort
   Plug 'wincent/loupe'
   Plug 'mhinz/vim-startify'
   Plug 'nelstrom/vim-visual-star-search'
-  " Plug 'unblevable/quick-scope'
-  Plug 'justinmk/vim-sneak'
+  Plug 'unblevable/quick-scope'
+  let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
   Plug 'ap/vim-buftabline'
 
   Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
