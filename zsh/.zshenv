@@ -1,1 +1,1 @@
-ZDOTDIR=$HOME/.dotfiles/zsh/zshrc.d
+ZDOTDIR=${DOTFILES:-"$HOME/.dotfiles"}/zsh/zshrc.d

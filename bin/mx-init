@@ -24,7 +24,7 @@ create_session () {
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window
   tmux set-option allow-rename off
-  open_or_log weechat "--dir ~/.dotfiles/irc/.weechat"
+  open_or_log weechat "--dir ${DOTFILES}/irc/.weechat"
 
   local logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then
@@ -33,11 +33,10 @@ create_session () {
     tmux split-window -h -p 15 -c "$logpath"
   fi
 
-  local confpath=/Users/"$USER"/.dotfiles
-  if [ -d "$confpath" ]; then
-    tmux new-window -n 'dotfiles' -c "$confpath"
+  if [ -d "$DOTFILES" ]; then
+    tmux new-window -n 'dotfiles' -c "$DOTFILES"
     tmux send-keys "$EDITOR" C-m
-    tmux split-window -h -p 15 -c "$confpath"
+    tmux split-window -h -p 15 -c "$DOTFILES"
   fi
 }
 

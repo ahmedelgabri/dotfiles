@@ -17,7 +17,7 @@
                      " |""|
                      " '=='
 
-let s:root=expand('~/.dotfiles/vim/.vim')
+let s:root=expand($DOTFILES.'/vim/.vim')
 
 if !empty(glob(s:root))
   let $VIMHOME=s:root

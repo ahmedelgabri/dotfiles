@@ -3,11 +3,13 @@
 # Executes commands at login pre-zshrc.
 #
 
+export DOTFILES=$HOME/.dotfiles
+
 ##############################################################
 # CONFIG.
 # ##############################################################
 
-for config (${HOME}/.dotfiles/zsh/zshrc.d/config/*.zsh) source $config
+for config (${DOTFILES}/zsh/zshrc.d/config/*.zsh) source $config
 
 ##############################################################
 # GLOBAL CONFIG (@NOTE: maybe move them to config files)
@@ -53,7 +55,6 @@ KEYTIMEOUT=1
 export GPG_TTY=$(tty)
 
 (( $+commands[brew] )) && export HOMEBREW_ROOT=$(brew --prefix)
-export DOTFILES=$HOME/.dotfiles
 
 
 ##############################################################
@@ -84,7 +85,7 @@ cdpath=(
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ${HOME}/.dotfiles/bin
+  ${DOTFILES}/bin
   ./node_modules/.bin
   ${HOMEBREW_ROOT:-/usr/local}/{bin,sbin}
   ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin

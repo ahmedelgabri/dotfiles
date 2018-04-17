@@ -59,8 +59,8 @@ fi
 # CONFIG.
 ##############################################################
 
-source ${HOME}/.dotfiles/zsh/zshrc.d/aliases.zsh
-for func (${HOME}/.dotfiles/zsh/zshrc.d/functions/*.zsh) source $func
+source ${DOTFILES}/zsh/zshrc.d/aliases.zsh
+for func (${DOTFILES}/zsh/zshrc.d/functions/*.zsh) source $func
 
 ##############################################################
 # TOOLS.
