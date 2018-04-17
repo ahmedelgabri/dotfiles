@@ -18,9 +18,9 @@ set synmaxcol=300                     " do not highlight very long lines
 set noshowmode                        " Don't Display the mode you're in. since it's already shown on the statusline
 
 " show a navigable menu for tab completion
-set wildmode=longest,list,full
+set wildmode=longest:full,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
-set wildignore+=*.swp,*~,._*,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
+set wildignore+=*.swp,*~,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
 
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
