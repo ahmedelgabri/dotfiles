@@ -46,5 +46,3 @@ else
   catch
   endtry
 endif
-
-hi! link Conceal NonText
