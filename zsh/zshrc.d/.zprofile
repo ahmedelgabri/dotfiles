@@ -53,6 +53,7 @@ KEYTIMEOUT=1
 export GPG_TTY=$(tty)
 
 (( $+commands[brew] )) && export HOMEBREW_ROOT=$(brew --prefix)
+export DOTFILES=$HOME/.dotfiles
 
 
 ##############################################################

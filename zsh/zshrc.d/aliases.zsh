@@ -39,7 +39,7 @@ if (( $+commands[jq] )) then;
 else
   alias formatJSON='python -m json.tool'
 fi
-alias dots="cd ~/.dotfiles"
+alias dots="cd $DOTFILES"
 alias work='mx lightspeed lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
@@ -47,14 +47,6 @@ alias apache="sudo apachectl "
 
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
-# zsh alias suffix! http://grml.org/zsh/zsh-lovers.html#_aliases
-# alias -s js=$EDITOR
-alias -s jsx=$EDITOR
-alias -s json=$EDITOR
-alias -s css=$EDITOR
-alias -s scss=$EDITOR
-alias -s svg=$EDITOR
-alias -s html=$EDITOR
 
 # Conditional aliases
 # https://gist.github.com/sos4nt/3187620#gistcomment-1452131
