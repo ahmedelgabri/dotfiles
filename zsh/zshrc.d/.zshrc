@@ -28,13 +28,6 @@ zplug "lukechilds/zsh-better-npm-completion"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zdharma/fast-syntax-highlighting"
 zplug "zsh-users/zsh-history-substring-search"
-# bind UP and DOWN keys
-bindkey "${terminfo[kcuu1]}" history-substring-search-up
-bindkey "${terminfo[kcud1]}" history-substring-search-down
-
-# bind UP and DOWN arrow keys (compatibility fallback)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 
 # Must be the last?
 zplug "zsh-users/zsh-completions"
@@ -46,10 +39,21 @@ if ! zplug check --verbose; then
   fi
 fi
 
-# zplug load --verbose
-zplug load
+zplug load # --verbose
 
-ZSH_AUTOSUGGEST_USE_ASYNC=true
+if zplug check zsh-users/zsh-autosuggestions; then
+  ZSH_AUTOSUGGEST_USE_ASYNC=true
+fi
+
+if zplug check zsh-users/zsh-history-substring-search; then
+  # bind UP and DOWN keys
+  bindkey "${terminfo[kcuu1]}" history-substring-search-up
+  bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+  # bind UP and DOWN arrow keys (compatibility fallback)
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
 
 ##############################################################
 # CONFIG.
