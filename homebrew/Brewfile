@@ -22,6 +22,7 @@ brew "asciinema"
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
 brew "bitlbee", restart_service: true
 brew "cloc"
+brew "clojure"
 brew "coreutils"
 brew "cowsay"
 brew "curl"
