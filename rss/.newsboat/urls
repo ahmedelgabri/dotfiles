@@ -167,6 +167,7 @@
   http://journal.stuffwithstuff.com/rss.xml "Blog" "Programming"
   http://feeds.feedburner.com/chrisheilmann "Blog"
   https://blog.janestreet.com/feed.xml "Blog" "OCaml" "Programming"
+  https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
 # }}}
 
 # Browsers ====================================== {{{
