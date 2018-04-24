@@ -74,11 +74,9 @@ function! plugins#loadPlugins() abort
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'unblevable/quick-scope'
   let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-  Plug 'ap/vim-buftabline'
 
   Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_save_on_switch = 1
-  Plug 'aquach/vim-http-client', { 'on': ['HTTPClientDoRequest'] }
   " }}}
 
   " Syntax {{{
@@ -105,6 +103,9 @@ function! plugins#loadPlugins() abort
   Plug 'AlessandroYorba/Alduin'
   Plug 'rakr/vim-two-firewatch'
   Plug 'logico-dev/typewriter'
+  Plug 'AlessandroYorba/Despacio'
+  Plug 'agreco/vim-citylights'
+  Plug 'atelierbram/Base2Tone-vim'
   " }}}
 
   " Git {{{
