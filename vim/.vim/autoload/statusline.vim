@@ -92,29 +92,6 @@ function! statusline#GetHunks() abort
   return l:hunkline
 endfunction
 
-function! statusline#fileSize() abort
-  let l:bytes = getfsize(expand('%:p'))
-  if (l:bytes >= 1024)
-    let l:kbytes = l:bytes / 1024
-  endif
-  if (exists('kbytes') && l:kbytes >= 1000)
-    let l:mbytes = l:kbytes / 1000
-  endif
-
-  if l:bytes <= 0
-    return '[empty file] '
-  endif
-
-  if (exists('mbytes'))
-    return l:mbytes . 'MB '
-  elseif (exists('kbytes'))
-    return l:kbytes . 'KB '
-  else
-    return l:bytes . 'B '
-  endif
-endfunction
-
-
 function! statusline#gitInfo() abort
   if !exists('*fugitive#head')
     return ''
@@ -155,16 +132,16 @@ endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {
-      \ 'n': ['N', '4'],
+      \ 'n': ['N.', '4'],
       \ 'no': ['N-Operator Pending', '4'],
-      \ 'v': ['V', '6'],
+      \ 'v': ['V.', '6'],
       \ 'V': ['V·Line', '6'],
       \ '': ['V·Block', '6'],
-      \ 's': ['Select', '3'],
+      \ 's': ['S.', '3'],
       \ 'S': ['S·Line', '3'],
-      \ '': ['S·Block', '3'],
-      \ 'i': ['I', '5'],
-      \ 'R': ['R', '1'],
+      \ '': ['S·Block.', '3'],
+      \ 'i': ['I.', '5'],
+      \ 'R': ['R.', '1'],
       \ 'Rv': ['V·Replace', '1'],
       \ 'c': ['Command', '2'],
       \ 'cv': ['Vim Ex', '7'],
@@ -172,20 +149,21 @@ let s:dictmode= {
       \ 'r': ['Propmt', '7'],
       \ 'rm': ['More', '7'],
       \ 'r?': ['Confirm', '7'],
-      \ '!': ['Shell', '2'],
-      \ 't': ['Terminal', '2']
+      \ '!': ['Sh', '2'],
+      \ 't': ['T', '2']
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
 " @TODO: Fix cterm.
+let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
 let s:dictstatuscolor={
-      \ '1': 'highlight! StatusLine term=NONE gui=NONE guibg=#ab4642',
-      \ '2': 'highlight! StatusLine term=NONE gui=NONE guibg=#dc9656 guifg=NONE',
-      \ '3': 'highlight! StatusLine term=NONE gui=NONE guibg=#f7ca88 guifg=NONE',
-      \ '4': 'highlight! link StatusLine PmenuSel',
-      \ '5': 'highlight! link StatusLine TabLineSel',
-      \ '6': 'highlight! StatusLine term=NONE gui=NONE guibg=#ba8baf',
-      \ '7': 'highlight! StatusLine term=NONE gui=NONE guibg=#a16946 guifg=NONE',
+      \ '1': s:statusline_color,
+      \ '2': s:statusline_color,
+      \ '3': s:statusline_color,
+      \ '4': s:statusline_color,
+      \ '5': s:statusline_color,
+      \ '6': s:statusline_color,
+      \ '7': s:statusline_color,
       \}
 
 
