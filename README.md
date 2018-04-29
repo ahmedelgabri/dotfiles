@@ -3,7 +3,7 @@
 For setting up development environment on new Mac. The config is managed by
 [GNU stow](https://www.gnu.org/software/stow/)
 
-![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/latest.png)
 
 ## What's in it?
 
