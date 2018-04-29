@@ -8,52 +8,54 @@
 # zmodload zsh/zprof
 
 ##############################################################
-# zPlug.
+# ZPLUGIN https://github.com/zdharma/zplugin
 ##############################################################
 
-if [[ ! -f ${HOME}/.zplug/init.zsh ]]; then
-  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-fi
-
-source ${HOME}/.zplug/init.zsh
-
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
-
-NVM_NO_USE=true
-zplug "lukechilds/zsh-nvm"
-zplug "ahmedelgabri/pure", depth:1, use:"{async,pure}.zsh", as:theme
-zplug "rupa/z", use:"z.sh"
-zplug "changyuheng/zsh-interactive-cd"
-zplug "lukechilds/zsh-better-npm-completion"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zdharma/fast-syntax-highlighting"
-zplug "zsh-users/zsh-history-substring-search"
-
-# Must be the last?
-zplug "zsh-users/zsh-completions"
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
+if [[ ! -f ~/.zplugin/bin/zplugin.zsh ]]; then
+  if (( $+commands[git] )); then
+    git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin
+  else
+    echo 'git not found' >&2
+    exit 1
   fi
 fi
 
-zplug load # --verbose
+source ~/.zplugin/bin/zplugin.zsh
 
-if zplug check zsh-users/zsh-autosuggestions; then
-  ZSH_AUTOSUGGEST_USE_ASYNC=true
-fi
+NVM_NO_USE=true
+zplugin load "lukechilds/zsh-nvm"
 
-if zplug check zsh-users/zsh-history-substring-search; then
-  # bind UP and DOWN keys
-  bindkey "${terminfo[kcuu1]}" history-substring-search-up
-  bindkey "${terminfo[kcud1]}" history-substring-search-down
+zplugin ice pick"async.zsh" src"pure.zsh"
+zplugin load "ahmedelgabri/pure"
 
-  # bind UP and DOWN arrow keys (compatibility fallback)
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
-fi
+zplugin ice "rupa/z" pick"z.sh"
+zplugin load "rupa/z"
+
+zplugin load "zsh-users/zsh-history-substring-search"
+
+# https://github.com/zdharma/zplugin#turbo-mode-zsh--53
+zplugin ice wait"1" lucid atload"_zsh_autosuggest_start"
+zplugin load "zsh-users/zsh-autosuggestions"
+
+zplugin ice wait"0" lucid blockf
+zplugin load "zsh-users/zsh-completions"
+
+zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
+zplugin load "zdharma/fast-syntax-highlighting"
+
+##############################################################
+# PLUGINS VARS & SETTINGS
+##############################################################
+
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+
+# bind UP and DOWN keys
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+# bind UP and DOWN arrow keys (compatibility fallback)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 ##############################################################
 # CONFIG.
