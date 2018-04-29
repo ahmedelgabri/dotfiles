@@ -74,6 +74,6 @@ function switchLayout()
 end
 
 
-local layoutWatcher = hs.screen.watcher.new(switchLayout)
+local layoutWatcher = hs.screen.watcher.newWithActiveScreen(switchLayout)
 layoutWatcher:start()
 
