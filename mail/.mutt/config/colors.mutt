@@ -34,7 +34,7 @@ color header blue default .*
 color header magenta default ^(From|To|Cc|Subject):
 color signature cyan default
 
-color index color0 default ~A # All
+color index color238 default ~A # All
 color index color2 default ~U # New
 color index color8 color0 ~D # Deleted messages
 color index brightcolor11 color0 ~T # "Tagged" (selected) messages.
