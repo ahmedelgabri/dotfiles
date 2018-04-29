@@ -59,8 +59,8 @@ fi
 # CONFIG.
 ##############################################################
 
-source ${DOTFILES}/zsh/zshrc.d/aliases.zsh
-for func (${DOTFILES}/zsh/zshrc.d/functions/*.zsh) source $func
+source ${ZDOTDIR}/rc.d/aliases.zsh
+for func (${ZDOTDIR}/rc.d/functions/*.zsh) source $func
 
 ##############################################################
 # TOOLS.
@@ -94,7 +94,7 @@ fi
 # Custom completions init.
 ##############################################################
 
-[ -f ${ZDOTDIR:-${HOME}}/custom_completions_init.zsh ] && source ${ZDOTDIR:-${HOME}}/custom_completions_init.zsh
+[ -f ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh ] && source ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh
 
 ##############################################################
 # LOCAL.

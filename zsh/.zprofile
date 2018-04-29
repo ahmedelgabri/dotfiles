@@ -7,9 +7,9 @@ export DOTFILES=$HOME/.dotfiles
 
 ##############################################################
 # CONFIG.
-# ##############################################################
+##############################################################
 
-for config (${DOTFILES}/zsh/zshrc.d/config/*.zsh) source $config
+for config (${ZDOTDIR}/rc.d/config/*.zsh) source $config
 
 ##############################################################
 # GLOBAL CONFIG (@NOTE: maybe move them to config files)
@@ -41,6 +41,11 @@ fi
 export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export PAGER='less'
+case $EDITOR in
+    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
+     vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
+       *) export MANPAGER='less' ;;
+esac
 
 #
 # Language
@@ -56,27 +61,25 @@ export GPG_TTY=$(tty)
 
 (( $+commands[brew] )) && export HOMEBREW_ROOT=$(brew --prefix)
 
-
 ##############################################################
 # PATH.
+# (N-/): do not register if the directory does not exists
+#  N: NULL_GLOB option (ignore path if the path does not match the glob)
+#  -: follow the symbol links
+#  /: ignore files
 ##############################################################
 fpath=(
-  ${ZDOTDIR:-${HOME}}/completions
-  '/usr/local/share/zsh/site-functions'
+  ${ZDOTDIR:-${HOME}}/completions(N-/)
+  /usr/local/share/zsh/site-functions
   $fpath
 )
 
-# GNU Coreutils
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-case $EDITOR in
-    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
-     vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
-       *) export MANPAGER='less' ;;
-esac
-export MANWIDTH=120
+manpath=(
+  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnuman(N-/)
+  $manpath
+)
 
-# Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath mailpath path
+export MANWIDTH=120
 
 # Set the the list of directories that cd searches.
 cdpath=(
@@ -85,13 +88,13 @@ cdpath=(
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ${DOTFILES}/bin
-  ./node_modules/.bin
-  ${HOMEBREW_ROOT:-/usr/local}/{bin,sbin}
-  ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin
-  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin
-  ${HOMEBREW_ROOT:-/usr/local}/opt/curl/bin
-  ${HOMEBREW_ROOT:-/usr/local}/Cellar/git
+  ${DOTFILES}/bin(N-/)
+  ./node_modules/.bin(N-/)
+  ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
+  /usr/local/{bin,sbin}
+  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
+  ${HOMEBREW_ROOT:-/usr/local}/opt/curl/bin(N-/)
+  ${HOMEBREW_ROOT:-/usr/local}/Cellar/git(N-/)
   $path
 )
 
@@ -99,12 +102,12 @@ if (( $+commands[yarn] )); then
   path+=($(yarn global dir)/node_modules/.bin)
 fi
 
-if (( $+commands[python] )) then
-  path+=($(python -m site --user-base)/bin)
-fi
-
 if (( $+commands[python3] )) then
   path+=($(python3 -m site --user-base)/bin)
+fi
+
+if (( $+commands[python2] )) then
+  path+=($(python2 -m site --user-base)/bin)
 fi
 
 if [[ -d "${HOME}/.cargo/bin" ]]; then

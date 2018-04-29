@@ -18,7 +18,17 @@ _darcs
 \.git
 \.gitignore
 
-zshrc.d # ignore zsh config folder
+rc.d # ignore zsh config folder
+\.zshrc
+\.zlogin
+\.zprofile
+\.zhistory
+\.zcompcache
+\.zcompdump*
+^custom_completions_init.zsh
+\..+.zwc
+\..+.zwc.old
+
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files

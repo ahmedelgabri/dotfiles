@@ -1,1 +1,2 @@
-ZDOTDIR=${DOTFILES:-"$HOME/.dotfiles"}/zsh/zshrc.d
+export ZDOTDIR=${DOTFILES:-"$HOME/.dotfiles"}/zsh
+
