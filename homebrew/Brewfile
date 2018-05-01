@@ -56,6 +56,7 @@ brew "neofetch"
 brew "neomutt/neomutt/neomutt", args: ["with-notmuch-patch", "with-tokyo-cabinet"]
 brew "neovim"
 brew "newsboat"
+brew "node"
 brew "offlineimap"
 brew "openssl"
 brew "pandoc"
