@@ -1,16 +1,19 @@
 #!/bin/bash
 
 PACKAGES=(
-"--upgrade setuptools"
-"--upgrade pip"
-# "markdown"
+"setuptools"
+"pip"
 "vim-vint"
 "websocket-client"
 "pipenv"
 )
 
+FLAGS=''
+
 for package in "${PACKAGES[@]}"; do
-  pip2 install --user "$package" && pip3 install --user "$package"
+  [[ $package == "pip" ]] && FLAGS="--upgrade" || FLAGS="--user"
+
+  pip2 install "$FLAGS" "$package" && pip3 install "$FLAGS" "$package"
 done
 
-unset -v PACKAGES
+unset -v PACKAGES FLAGS
