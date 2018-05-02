@@ -96,7 +96,7 @@ function! plugins#loadPlugins() abort
   Plug 'tomasiser/vim-code-dark'
   Plug 'tyrannicaltoucan/vim-deep-space'
   Plug 'morhetz/gruvbox'
-  Plug 'lifepillar/vim-solarized8'
+  Plug 'icymind/NeoSolarized'
   Plug 'w0ng/vim-hybrid'
   Plug 'ayu-theme/ayu-vim'
   Plug 'romainl/Apprentice'
@@ -106,6 +106,7 @@ function! plugins#loadPlugins() abort
   Plug 'AlessandroYorba/Despacio'
   Plug 'agreco/vim-citylights'
   Plug 'atelierbram/Base2Tone-vim'
+  Plug 'andreypopp/vim-colors-plain'
   " }}}
 
   " Git {{{
