@@ -65,6 +65,43 @@ source ${ZDOTDIR}/rc.d/aliases.zsh
 for func (${ZDOTDIR}/rc.d/functions/*.zsh) source $func
 
 ##############################################################
+# Custom/Plugins
+###############################################################
+
+export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
+export FZF_DEFAULT_COMMAND='\rg --no-messages --hidden --no-ignore-vcs --files --follow --glob "!.git/*" --glob "!node_modules/*"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
+
+export HOMEBREW_INSTALL_BADGE="⚽️"
+export HOMEBREW_NO_ANALYTICS=1
+export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
+# `cd ~df` or `z ~df`
+# hash -d df=~/.dotfiles
+
+SYMBOLS=(
+"λ"
+"ϟ"
+"▲"
+"∴"
+"→"
+"»"
+"৸"
+)
+
+# Arrays in zsh starts from 1
+export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
+
+##############################################################
+# Python
+###############################################################
+
+export PYTHONSTARTUP=${HOME}/.pyrc.py
+
+##############################################################
 # TOOLS.
 ##############################################################
 
