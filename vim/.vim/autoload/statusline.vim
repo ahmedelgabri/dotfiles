@@ -1,38 +1,7 @@
 scriptencoding utf-8
 
 function! statusline#rhs() abort
-  let l:rhs=' '
-  if winwidth(0) > 80
-    let l:column=virtcol('.')
-    let l:width=virtcol('$')
-    let l:line=line('.')
-    let l:height=line('$')
-
-    " Add padding to stop rhs from changing too much as we move the cursor.
-    let l:padding=len(l:height) - len(l:line)
-    if (l:padding)
-      let l:rhs.=repeat(' ', l:padding)
-    endif
-
-    let l:rhs.='␤ '
-    let l:rhs.=l:line
-    let l:rhs.='/'
-    let l:rhs.=l:height
-    let l:rhs.=' ¶ '
-    let l:rhs.=l:column
-    let l:rhs.='/'
-    let l:rhs.=l:width
-    let l:rhs.=' '
-
-    " Add padding to stop rhs from changing too much as we move the cursor.
-    if len(l:column) < 2
-      let l:rhs.=' '
-    endif
-    if len(l:width) < 2
-      let l:rhs.=' '
-    endif
-  endif
-  return l:rhs
+  return winwidth(0) > 80 ? printf('%02d:%02d:%02d', line('.'), col('.'), line('$')) : ''
 endfunction
 
 " For a more fancy ale statusline
