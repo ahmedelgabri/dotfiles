@@ -20,6 +20,7 @@ brew "python2" # do I need it anymore?
 # brew "ledger"
 brew "asciinema"
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
+# brew "bat"
 brew "bitlbee", restart_service: true
 brew "cloc"
 brew "clojure"
@@ -50,6 +51,7 @@ brew "hub"
 brew "jq"
 brew "jrnl"
 brew "lbdb"
+brew "loc"
 brew "msmtp"
 brew "ncdu"
 brew "neofetch"
