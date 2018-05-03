@@ -20,9 +20,15 @@ if [[ ! -f ~/.zplugin/bin/zplugin.zsh ]]; then
   fi
 fi
 
+NVM_NO_USE=true
+
 source ~/.zplugin/bin/zplugin.zsh
 
-NVM_NO_USE=true
+# This is amazing! a TUI to manage plugins
+zplugin light "zdharma/zui"
+zplugin ice wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
+zplugin light "zdharma/zplugin-crasis"
+
 zplugin load "lukechilds/zsh-nvm"
 
 zplugin ice pick"async.zsh" src"pure.zsh"
