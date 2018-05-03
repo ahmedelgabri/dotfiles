@@ -8,7 +8,7 @@ HISTFILE="${ZDOTDIR:-${HOME}}/.zhistory"
 # limit of history entries
 HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
-HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
+HISTORY_IGNORE='(ls|ls *|cd|cd -|-|clear|pwd|exit|* —help|[bf]g *|l[alsh]#( *)#|less *)'
 
 # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
 setopt BANG_HIST
