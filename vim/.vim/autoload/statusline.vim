@@ -123,7 +123,6 @@ let s:dictmode= {
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
-" @TODO: Fix cterm.
 let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
 let s:dictstatuscolor={
       \ '1': s:statusline_color,

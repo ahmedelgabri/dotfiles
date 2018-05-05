@@ -54,7 +54,7 @@ alias apache="sudo apachectl "
 [[ $TERM == *"tmux"* ]] && alias vagrant="TERM=xterm-256color vagrant"
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
-(( $+commands[rg] )) && alias rg="rg --hidden "
+(( $+commands[rg] )) && alias rg="rg --hidden --smart-case " # Default flags for rg
 (( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
 (( $+commands[colourify] )) && alias curl='colourify curl '
