@@ -12,3 +12,4 @@ https://noahfrederick.com/log/vim-templates-with-ultisnips-and-projectionist Fil
 https://prowebtype.com/ Professional Web Typography
 https://christianheilmann.com/2018/04/02/what-comes-after-senior-developer/ What comes after senior developer?
 https://lethain.com/migrations/ Migrations: the sole scalable fix to tech debt.
+https://www.johndcook.com/blog/2009/12/23/why-programmers-are-not-paid-in-proportion-to-their-productivity/ Why programmers are not paid in proportion to their productivity
