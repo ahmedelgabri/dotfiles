@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# helper for `node-build` so I don't have to type the location everytime
+
+getnode() {
+  if [ -n "$1" ]; then
+    if command -v node-build >/dev/null; then
+      node-build "$1" "$HOME/.node-versions/$1"
+    else
+      echo "node-build is not installed: 'brew install node-build'"
+    fi
+  else
+    echo "You must pass a specific node version: x.x.x"
+  fi
+}
+
+getnode "$@"
+
+

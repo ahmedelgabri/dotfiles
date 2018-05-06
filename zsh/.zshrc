@@ -20,16 +20,12 @@ if [[ ! -f ~/.zplugin/bin/zplugin.zsh ]]; then
   fi
 fi
 
-NVM_NO_USE=true
-
 source ~/.zplugin/bin/zplugin.zsh
 
 # This is amazing! a TUI to manage plugins
 zplugin light "zdharma/zui"
 zplugin ice wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
 zplugin light "zdharma/zplugin-crasis"
-
-zplugin load "lukechilds/zsh-nvm"
 
 zplugin ice pick"async.zsh" src"pure.zsh"
 zplugin load "ahmedelgabri/pure"
@@ -140,8 +136,8 @@ export EXA_COLORS="uu=38;5;249:un=38;5;241:gu=38;5;245:gn=38;5;241:da=38;5;245:s
 ##############################################################
 
 if [ $(command -v direnv) ]; then
-  export NODE_VERSIONS="${HOME}/.nvm/versions/node"
-  export NODE_VERSION_PREFIX="v"
+  export NODE_VERSIONS="${HOME}/.node-versions"
+  export NODE_VERSION_PREFIX=""
 
   eval "$(direnv hook zsh)"
 fi
