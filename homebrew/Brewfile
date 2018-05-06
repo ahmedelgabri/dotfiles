@@ -123,6 +123,7 @@ cask "rescuetime"
 cask "sequel-pro"
 cask "sketch"
 cask "skype"
+cask "slack"
 cask "soda-player"
 cask "transmission"
 cask "transmit"
@@ -133,7 +134,6 @@ cask "webpquicklook"
 cask "whatsapp"
 
 # mas "1Password", id: 443987910
-# mas "Bear", id: 1091189122
 # mas "Day One", id: 1055511498
 # mas "Guidance", id: 412759995
 # mas "Irvue", id: 1039633667
