@@ -76,7 +76,7 @@ function! plugins#loadPlugins() abort
   let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
   Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
-  let g:tmux_navigator_save_on_switch = 1
+  let g:tmux_navigator_disable_when_zoomed = 1
   " }}}
 
   " Syntax {{{
@@ -98,12 +98,8 @@ function! plugins#loadPlugins() abort
   Plug 'morhetz/gruvbox'
   Plug 'icymind/NeoSolarized'
   Plug 'w0ng/vim-hybrid'
-  Plug 'ayu-theme/ayu-vim'
-  Plug 'romainl/Apprentice'
-  Plug 'AlessandroYorba/Alduin'
   Plug 'rakr/vim-two-firewatch'
   Plug 'logico-dev/typewriter'
-  Plug 'AlessandroYorba/Despacio'
   Plug 'agreco/vim-citylights'
   Plug 'atelierbram/Base2Tone-vim'
   Plug 'andreypopp/vim-colors-plain'
