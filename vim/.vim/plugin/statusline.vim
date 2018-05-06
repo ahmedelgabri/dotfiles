@@ -7,7 +7,9 @@ function! StatusLine(mode) abort
   let l:line=''
 
   if &filetype ==# 'help'
-    return '%#StatusLineNC# [Help] %f'
+    let l:line.=' %#StatusLineNC# [Help] %f '
+    let l:line.=statusline#showHighligh()
+    return l:line
   endif
 
   if a:mode ==# 'active'
@@ -29,13 +31,7 @@ function! StatusLine(mode) abort
     let l:line.=' %{statusline#readOnly()} %w%*'
     let l:line.='%9* %=%*'
 
-    if get(b:, 'show_highlight')
-      let l:id = synID(line('.'), col('.'), 1)
-      let l:line .='%#WarningMsg#['
-            \ . '%{synIDattr('.l:id.',"name")} as '
-            \ . '%{synIDattr(synIDtrans('.l:id.'),"name")}'
-            \ . '] %*'
-    endif
+    let l:line.=statusline#showHighligh()
 
     let l:line.=statusline#LinterStatus()
     let l:line.='%4* %y'
