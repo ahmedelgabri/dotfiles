@@ -168,6 +168,7 @@
   http://feeds.feedburner.com/chrisheilmann "Blog"
   https://blog.janestreet.com/feed.xml "Blog" "OCaml" "Programming"
   https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
+  https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
 # }}}
 
 # Browsers ====================================== {{{
