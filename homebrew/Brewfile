@@ -70,8 +70,6 @@ brew "ripgrep"
 brew "rtv"
 brew "ruby"
 brew "task"
-brew "tavianator/tap/bfs"
-brew "tidy-html5"
 brew "tig"
 brew "tldr"
 brew "tmux", args: ["HEAD"]
