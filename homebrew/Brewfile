@@ -53,6 +53,7 @@ brew "jrnl"
 brew "lbdb"
 brew "loc"
 brew "msmtp"
+brew "mpv", args: ["with-bundle"]
 brew "ncdu"
 brew "neofetch"
 brew "neomutt/neomutt/neomutt", args: ["with-notmuch-patch", "with-tokyo-cabinet"]
