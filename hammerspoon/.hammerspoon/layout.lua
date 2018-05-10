@@ -60,13 +60,13 @@ function switchLayout()
   local contains = hs.fnutils.contains
 
   if #allScreens == 3 and contains(allScreens, screens.main) and contains(allScreens, screens.thunderbolt) and contains(allScreens, screens.dell) then
-    hs.alert.show(#allScreens .. ' monitors layout activated')
+    -- hs.alert.show(#allScreens .. ' monitors layout activated')
     hs.layout.apply(threeMonitors)
   elseif #allScreens == 2 and contains(allScreens, screens.main) and contains(allScreens, screens.thunderbolt) then
-    hs.alert.show(#allScreens .. ' monitors: ' .. screens.thunderbolt:name() .. ' layout activated')
+    -- hs.alert.show(#allScreens .. ' monitors: ' .. screens.thunderbolt:name() .. ' layout activated')
     hs.layout.apply(twoThunderbot)
   elseif #allScreens == 2 and contains(allScreens, screens.main) and contains(allScreens, screens.dell) then
-    hs.alert.show(#allScreens .. ' monitors: ' .. screens.dell:name() .. ' layout activated')
+    -- hs.alert.show(#allScreens .. ' monitors: ' .. screens.dell:name() .. ' layout activated')
     hs.layout.apply(twoDell)
   else
     return
