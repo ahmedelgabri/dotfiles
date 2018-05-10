@@ -1,8 +1,7 @@
 #!/bin/sh
 
-# Find files that contain conflict markers which are < or > repeated 7 times & for 3 way mergeing
-# also | 7 times
-CONFLICTS="$(git diff --cached --name-only --pickaxe-regex -S'[>|<]{7}')"
+# Look for files that still have conflict markers (>|< repeated 7 times)
+CONFLICTS="$(git diff --diff-filter=d --cached --name-only --pickaxe-regex -S'[>|<]{7}')"
 
 if [ -n "$CONFLICTS" ]; then
   echo "Unresolved merge conflicts in this commit:"
