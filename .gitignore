@@ -13,6 +13,7 @@ mail/.mutt/tmp
 mail/.mutt/certificates
 mail/.mutt/secure-ca.cert
 *.itermcolors
+**/iTerm2/version.txt
 scratch
 rss/.newsboat/history.*
 rss/.newsboat/cache.*
