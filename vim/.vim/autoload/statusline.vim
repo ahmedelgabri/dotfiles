@@ -11,8 +11,8 @@ function! statusline#LinterStatus() abort
     return ''
   endif
 
-  let l:error_symbol = '⨉'
-  let l:style_symbol = '●'
+  let l:error_symbol = functions#GetIcon('linter_error')
+  let l:style_symbol = functions#GetIcon('linter_style')
   let l:counts = ale#statusline#Count(bufnr(''))
   let l:ale_linter_status = ''
 
@@ -68,18 +68,18 @@ function! statusline#gitInfo() abort
 
   let l:out = fugitive#head(10)
   if !empty(l:out) || !empty(expand('%'))
-    let l:out = ' ' . l:out
+    let l:out = functions#GetIcon('branch') . l:out
   endif
   return l:out
 endfunction
 
 function! statusline#readOnly() abort
   if !&modifiable && &readonly
-    return ' RO'
+    return functions#GetIcon('lock') . ' RO'
   elseif &modifiable && &readonly
     return 'RO'
   elseif !&modifiable && !&readonly
-    return ''
+    return functions#GetIcon('lock')
   else
     return ''
   endif
@@ -114,7 +114,7 @@ endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {
-      \ 'n': ['N.', '4'],
+      \ 'n': ['', '4'],
       \ 'no': ['N-Operator Pending', '4'],
       \ 'v': ['V.', '6'],
       \ 'V': ['V·Line', '6'],

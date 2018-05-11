@@ -220,3 +220,26 @@ function! functions#move_down() abort range
   call s:Move("'>+1", l:at_bottom)
 endfunction
 
+function! functions#GetIcon(key) abort
+  let l:NERD_FONT_ICONS = {
+        \'vim': [' ', '%y'],
+        \'javascript': [' ', '%y'],
+        \'javascript.jsx': [' ', '%y'],
+        \'clojure': [' ', '%y'],
+        \'clojurescript': [' ', '%y'],
+        \'rust': [' ', '%y'],
+        \'ruby': [' ', '%y'],
+        \'python': [' ', '%y'],
+        \'markdown': [' ', '%y'],
+        \'paste': [' ', '⍴'],
+        \'spell': [' ', '✎'],
+        \'branch': ['  ', ' '],
+        \'linter_error': [' ', '⨉'],
+        \'linter_style': [' ', '●'],
+        \'lock': [' ', ' '],
+        \}
+
+  let l:icons = get(l:NERD_FONT_ICONS, a:key, [])
+  return has_key(l:NERD_FONT_ICONS, a:key) ? !empty($NERD_FONTS) ? l:icons[0] : l:icons[1] : a:key
+endfunction
+

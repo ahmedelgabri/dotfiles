@@ -2,4 +2,12 @@
 
 TMUX_WIFI=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')
 
-[[ -n $TMUX_WIFI ]] && echo "$TMUX_WIFI" || echo '#[fg=red]⨉#[fg=colour237]'
+ON_ICON=""
+OFF_ICON'⨉'
+TAIL="#[fg=colour237] • "
+
+if [ -n "$NERD_FONTS" ]; then
+  [ -n "$TMUX_WIFI" ] &&  ON_ICON="直 " || echo '睊'
+fi
+
+[ -n "$TMUX_WIFI" ] && echo "$ON_ICON$TMUX_WIFI$TAIL" || echo "#[fg=red]$OFF_ICON$TAIL"

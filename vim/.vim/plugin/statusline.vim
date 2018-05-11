@@ -3,23 +3,17 @@ scriptencoding utf-8
 "------------------------------------------------------------------------------
 " STATUS LINE CUSTOMIZATION
 "------------------------------------------------------------------------------
+
 function! StatusLine(mode) abort
   let l:line=''
 
-  if &filetype ==# 'help'
-    let l:line.=' %#StatusLineNC# [Help] %f '
+  if &filetype ==# 'help' || &filetype ==# 'man'
+    let l:line.=' %#StatusLineNC# ['. &filetype .'] %f '
     let l:line.=statusline#showHighligh()
     return l:line
   endif
 
   if a:mode ==# 'active'
-    let l:line.=' %{statusline#getMode()} %*'
-    if &paste
-      let l:line.='%#ErrorMsg#%{" ⍴ "}%*'
-    endif
-    if &spell
-      let l:line='%#WarningMsg#%{" ✎  "}%*'
-    endif
     let l:line.='%6*%{statusline#gitInfo()}'
     let l:line.=statusline#GetHunks()
     let l:line.='%<'
@@ -33,8 +27,15 @@ function! StatusLine(mode) abort
 
     let l:line.=statusline#showHighligh()
 
+    let l:line.='%{statusline#getMode()} %*'
+    if &paste
+      let l:line.='%#ErrorMsg#%{" '. functions#GetIcon('paste') .' "}%*'
+    endif
+    if &spell
+      let l:line.='%#WarningMsg#%{" '. functions#GetIcon('spell') .' "}%*'
+    endif
     let l:line.=statusline#LinterStatus()
-    let l:line.='%4* %y'
+    let l:line.='%4* '. functions#GetIcon(&filetype)
     if &fileformat !=# 'unix'
       let l:line.='%4* %{&ff}%*'
     endif

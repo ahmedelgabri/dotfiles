@@ -4,6 +4,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export DOTFILES=$HOME/.dotfiles
 export ZDOTDIR=${DOTFILES:-"$HOME/.dotfiles"}/zsh
 export GOPATH="${HOME}/.go"
+export NERD_FONTS=true
 
 [[ -x /usr/local/bin/brew ]] && export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
 
