@@ -174,6 +174,15 @@ function! functions#setupCompletion() abort
   imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
   imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
 
+  " Why do I have \<CR>\<Plug>AutoPairsReturn instead of just <CR>? And why do
+  " I set g:AutoPairsReturn here? Check
+  " https://github.com/jiangmiao/auto-pairs/issues/91#issuecomment-241692588
+  if exists('g:AutoPairsLoaded')
+    let g:AutoPairsMapCR = 0
+  endif
+  imap <expr> <CR> (pumvisible() ? "\<C-y>\<Plug>(expand_or_cr)" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>")
+  imap <expr> <Plug>(expand_or_cr) (cm#completed_is_snippet() ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>")
+
   xmap <Tab> <Plug>(ultisnips_expand)
   smap <Tab> <Plug>(ultisnips_expand)
 
