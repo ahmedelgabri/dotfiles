@@ -114,7 +114,6 @@ endfunction
 
 " DEFINE MODE DICTIONARY
 let s:dictmode= {
-      \ 'n': ['', '4'],
       \ 'no': ['N-Operator Pending', '4'],
       \ 'v': ['V.', '6'],
       \ 'V': ['V·Line', '6'],
@@ -153,10 +152,13 @@ let s:dictstatuscolor={
 " GetMode() GETS THE MODE FROM THE ARRAY THEN RETURNS THE NAME
 function! statusline#getMode() abort
   let l:modenow = mode()
-  let l:modelist = get(s:dictmode, l:modenow, [l:modenow, '1'])
-  let l:modecolor = l:modelist[1]
-  let l:modename = l:modelist[0]
-  let l:modehighlight = get(s:dictstatuscolor, l:modecolor, '1')
-  exec l:modehighlight
-  return l:modename
+  if has_key(s:dictmode, l:modenow)
+    let l:modelist = get(s:dictmode, l:modenow, [l:modenow, '1'])
+    let l:modecolor = l:modelist[1]
+    let l:modename = l:modelist[0]
+    let l:modehighlight = get(s:dictstatuscolor, l:modecolor, '1')
+    exec l:modehighlight
+    return l:modename
+  endif
+  return ''
 endfunction
