@@ -67,7 +67,7 @@ function! statusline#gitInfo() abort
   endif
 
   let l:out = fugitive#head(10)
-  if !empty(l:out) || !empty(expand('%'))
+  if !empty(l:out)
     let l:out = functions#GetIcon('branch') . l:out
   endif
   return l:out
