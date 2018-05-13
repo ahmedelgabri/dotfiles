@@ -77,6 +77,8 @@ function! plugins#loadPlugins() abort
 
   Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_disable_when_zoomed = 1
+
+  Plug 'soywod/vim-translate', { 'on': ['Translate', 'TranslatePreview', 'TranslateTo', 'TranslateToPreview', 'Define'] }
   " }}}
 
   " Syntax {{{
