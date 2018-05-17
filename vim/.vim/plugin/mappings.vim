@@ -62,7 +62,6 @@ nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 inoremap jj <ESC>
 nnoremap <Leader><TAB> <C-w><C-w>
-nnoremap <M-Tab> <C-^>
 nnoremap <leader>= <C-w>t<C-w>K<CR>
 nnoremap <leader>\ <C-w>t<C-w>H<CR>
 
@@ -79,9 +78,6 @@ nnoremap <Leader>p :t.<left><left>
 " Tab and Shift + Tab Circular buffer navigation
 nnoremap <tab>   :bnext<CR>
 nnoremap <S-tab> :bprevious<CR>
-
-" use <Enter> to toggle folds
-" nnoremap <Enter> za
 
 " qq to record, Q to replay
 nnoremap Q @q
