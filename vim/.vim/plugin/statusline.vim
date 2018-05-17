@@ -7,12 +7,14 @@ scriptencoding utf-8
 function! StatusLine(mode) abort
   let l:line=''
 
+  " help or man pages
   if &filetype ==# 'help' || &filetype ==# 'man'
     let l:line.=' %#StatusLineNC# ['. &filetype .'] %f '
     let l:line.=statusline#showHighligh()
     return l:line
   endif
 
+  " active
   if a:mode ==# 'active'
     let l:line.='%6*%{statusline#gitInfo()}'
     let l:line.=statusline#GetHunks()
@@ -44,6 +46,7 @@ function! StatusLine(mode) abort
     endif
     let l:line.='%4* %{statusline#rhs()}%*'
   else
+    " inactive
     let l:line.='%#StatusLineNC#'
     let l:line.='%f'
   endif
@@ -52,16 +55,6 @@ function! StatusLine(mode) abort
 
   return l:line
 endfunction
-
-" execute 'highlight! link User1 Function'
-" execute 'highlight! link User2 NonText'
-" execute 'highlight! link User3 Todo'
-execute printf('highlight! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
-execute 'highlight! User5 ctermfg=red guifg=red'
-execute 'highlight! User7 ctermfg=cyan guifg=cyan'
-" execute 'highlight! link User8 PmenuSel'
-" execute 'highlight! link User9 PmenuSel'
-execute printf('highlight! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
 
 set statusline=%!StatusLine('active')
 augroup MyStatusLine

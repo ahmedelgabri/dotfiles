@@ -9,6 +9,7 @@ augroup MyCustomColors
         \| hi! TablineSel cterm=reverse gui=reverse
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
+
   " Highlight long lines
   " autocmd ColorScheme * hi! OverLength ctermbg=red ctermfg=white guibg=#592929
 
@@ -24,6 +25,16 @@ augroup MyCustomColors
         \| hi! link StartifySlash StartifyPath
         \| hi! link StartifyBracket StartifyPath
         \| hi! link StartifyNumber Title
+
+  " StatusLine
+  autocmd ColorScheme * execute printf('highlight! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
+        \| execute 'highlight! User5 ctermfg=red guifg=red'
+        \| execute 'highlight! User7 ctermfg=cyan guifg=cyan'
+        \| execute printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
+        \| execute printf('highlight! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
+
+  autocmd ColorScheme gruvbox execute printf('highlight! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
+        \| execute printf('highlight! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
 augroup END
 
 let g:gruvbox_contrast_dark='hard'

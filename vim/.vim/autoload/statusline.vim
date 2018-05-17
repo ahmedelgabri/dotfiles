@@ -14,23 +14,26 @@ function! statusline#LinterStatus() abort
   let l:error_symbol = functions#GetIcon('linter_error')
   let l:style_symbol = functions#GetIcon('linter_style')
   let l:counts = ale#statusline#Count(bufnr(''))
+  let [l:DELETE, l:CHANGE, l:ADD] = exists(':GitGutter') && g:colors_name !=# 'plain' ?
+        \ ['%#GitGutterDelete#', '%#GitGutterChange#', '%#GitGutterAdd#']
+        \ : ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
   let l:ale_linter_status = ''
 
   if l:counts.total == 0
-    return printf('%%#GitGutterAdd#%s%%*', l:style_symbol)
+    return printf('%s%s%%*', l:ADD, l:style_symbol)
   endif
 
   if l:counts.error
-    let l:ale_linter_status .= printf('%%#GitGutterDelete#%d %s %%*', l:counts.error, l:error_symbol)
+    let l:ale_linter_status .= printf('%s%d %s %%*', l:DELETE,  l:counts.error, l:error_symbol)
   endif
   if l:counts.warning
-    let l:ale_linter_status .= printf('%%#GitGutterChange#%d %s %%*', l:counts.warning, l:error_symbol)
+    let l:ale_linter_status .= printf('%s%d %s %%*', l:CHANGE, l:counts.warning, l:error_symbol)
   endif
   if l:counts.style_error
-    let l:ale_linter_status .= printf('%%#GitGutterDelete#%d %s %%*', l:counts.style_error, l:style_symbol)
+    let l:ale_linter_status .= printf('%s%d %s %%*', l:DELETE, l:counts.style_error, l:style_symbol)
   endif
   if l:counts.style_warning
-    let l:ale_linter_status .= printf('%%#GitGutterChange#%d %s %%*', l:counts.style_warning, l:style_symbol)
+    let l:ale_linter_status .= printf('%s%d %s %%*', l:CHANGE, l:counts.style_warning, l:style_symbol)
   endif
 
   return l:ale_linter_status
