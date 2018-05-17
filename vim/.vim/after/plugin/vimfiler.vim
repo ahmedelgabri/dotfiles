@@ -32,6 +32,5 @@ function! s:my_vimfiler_settings()
 endfunction
 
 let g:mapleader="\<Space>"
-nnoremap <silent> <leader>d :VimFilerExplorer -find -parent<CR>
-nnoremap <silent> - :VimFiler -find -parent<CR>
+nnoremap <silent> <leader>f :VimFiler -find -parent<CR>
 
