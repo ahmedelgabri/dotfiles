@@ -72,6 +72,7 @@ brew "rename"
 brew "ripgrep"
 brew "rtv"
 brew "ruby"
+# brew "shellcheck" # cargo install shellharden
 brew "task"
 brew "tig"
 brew "tldr"
