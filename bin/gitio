@@ -11,15 +11,6 @@
 URL="$1"
 CODE="$2"
 
-if ! expr "${URL}" : "\(\(https\?://\)\?\(gist\.\)\?\(github\|githubusercontent\).com/\)" >/dev/null; then
-  echo "* github.com URLs only" >&2
-  exit 1
-fi
-
-if ! expr "${URL}" : "http" >/dev/null; then
-  URL="https://${URL}"
-fi
-
 OUT="$(curl -si https://git.io -F "url=${URL}" ${CODE:+-F "code=${CODE}"} | sed '/^Status: /{s///;/^201/d;q};/^Location: /!d;s///')"
 
 if expr "${OUT}" : "[0-9]\+" >/dev/null; then
