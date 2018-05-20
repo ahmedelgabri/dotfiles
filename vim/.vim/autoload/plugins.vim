@@ -2,7 +2,7 @@ let s:VIM_PLUG=expand($VIMHOME.'/autoload/plug.vim')
 let s:VIM_PLUG_FOLDER=expand($VIMHOME.'/plugged')
 
 function! plugins#installVimPlug() abort
-  " Automatic installation {{{
+  " Automatic installation
   " https://github.com/junegunn/vim-plug/wiki/faq#automatic-installation
   execute 'silent !curl -fLo '.s:VIM_PLUG.' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   augroup MyVimPlug
@@ -11,26 +11,16 @@ function! plugins#installVimPlug() abort
   augroup END
 endfunction
 
+" https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
+function! plugins#If(cond, ...)
+  let l:opts = get(a:000, 0, {})
+  return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
+endfunction
+
 function! plugins#loadPlugins() abort
-  " https://github.com/junegunn/vim-plug/wiki/faq#conditional-activation
-  function! If(cond, ...)
-    let l:opts = get(a:000, 0, {})
-    return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
-  endfunction
-
   call plug#begin(s:VIM_PLUG_FOLDER)
-  " Autocomplete {{{
-  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
-  Plug 'othree/csscomplete.vim'
-  if has('nvim')
-    Plug 'roxma/nvim-completion-manager'
-    Plug 'roxma/nvim-cm-tern', If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
-    Plug 'Shougo/neco-vim'
-  endif
-  " }}}
-
   " General {{{
-  Plug 'tpope/vim-sensible', If(!has('nvim'))
+  Plug 'tpope/vim-sensible', plugins#If(!has('nvim'))
   if !has('nvim') " For vim
     if exists('&belloff')
       " never ring the bell for any reason
@@ -75,10 +65,20 @@ function! plugins#loadPlugins() abort
   Plug 'unblevable/quick-scope'
   let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
-  Plug 'christoomey/vim-tmux-navigator', If(executable('tmux') && !empty($TMUX))
+  Plug 'christoomey/vim-tmux-navigator', plugins#If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_disable_when_zoomed = 1
 
   Plug 'VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
+  " }}}
+
+  " Autocomplete {{{
+  Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
+  Plug 'othree/csscomplete.vim'
+  if has('nvim')
+    Plug 'roxma/nvim-completion-manager'
+    Plug 'roxma/nvim-cm-tern', plugins#If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
+    Plug 'Shougo/neco-vim'
+  endif
   " }}}
 
   " Syntax {{{
@@ -94,7 +94,7 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Themes, UI & eye candy {{{
-  Plug 'rakr/vim-one' " very slow?
+  Plug 'rakr/vim-one'
   Plug 'tomasiser/vim-code-dark'
   Plug 'tyrannicaltoucan/vim-deep-space'
   Plug 'morhetz/gruvbox'
