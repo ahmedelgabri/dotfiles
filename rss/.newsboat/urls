@@ -331,7 +331,7 @@
 
 # Python =================================== {{{
   http://jpadilla.com/rss "Python"
-  http://lucumr.pocoo.org/feed.atom "Python"
+  http://lucumr.pocoo.org/feed.atom "Python" "Programming" "Rust" "Blog"
   http://nedbatchelder.com/blog/rss.xml "Python"
   http://wyattbaldwin.com/feed/ "Python"
   http://jhamrick.mit.edu/feed/ "Python"
