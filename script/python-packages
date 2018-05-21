@@ -5,6 +5,7 @@ PACKAGES=(
 "pip"
 "vim-vint"
 "websocket-client"
+"'python-language-server[all]'"
 "pipenv"
 )
 

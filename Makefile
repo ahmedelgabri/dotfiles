@@ -44,6 +44,7 @@ python:
 
 rust:
 	@curl https://sh.rustup.rs -sSf | sh -s -- -y
+	@rustup component add rls-preview rust-analysis rust-src
 
 iterm:
 	@sh $(SCRIPTS)/iterm
