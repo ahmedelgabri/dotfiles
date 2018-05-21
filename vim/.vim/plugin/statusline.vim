@@ -19,9 +19,7 @@ function! StatusLine(mode) abort
     let l:line.='%6*%{statusline#gitInfo()}'
     let l:line.=statusline#GetHunks()
     let l:line.='%<'
-    let l:line.='%4* %{statusline#fileprefix()}%*'
-    let l:line.='%6*%t'
-    let l:line.=statusline#modified()
+    let l:line.=statusline#filepath()
 
     let l:line.='%5*'
     let l:line.=' %{statusline#readOnly()} %w%*'
@@ -37,7 +35,7 @@ function! StatusLine(mode) abort
       let l:line.='%#WarningMsg#%{" '. functions#GetIcon('spell') .' "}%*'
     endif
     let l:line.=statusline#LinterStatus()
-    let l:line.='%4* '. functions#GetIcon(&filetype)
+    let l:line.='%4* '. &filetype " %y will have [] around the test & %Y is uppercase so &filetype gives me what I want
     if &fileformat !=# 'unix'
       let l:line.='%4* %{&ff}%*'
     endif

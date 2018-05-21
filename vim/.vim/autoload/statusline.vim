@@ -4,6 +4,12 @@ function! statusline#rhs() abort
   return winwidth(0) > 80 ? printf('%02d:%02d:%02d', line('.'), col('.'), line('$')) : ''
 endfunction
 
+function! statusline#getDiffColors() abort
+  return exists(':GitGutter') && g:colors_name !=# 'plain' ?
+        \ ['%#GitGutterDelete#', '%#GitGutterChange#', '%#GitGutterAdd#']
+        \ : ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
+endfunction
+
 " For a more fancy ale statusline
 " https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
 function! statusline#LinterStatus() abort
@@ -14,9 +20,7 @@ function! statusline#LinterStatus() abort
   let l:error_symbol = functions#GetIcon('linter_error')
   let l:style_symbol = functions#GetIcon('linter_style')
   let l:counts = ale#statusline#Count(bufnr(''))
-  let [l:DELETE, l:CHANGE, l:ADD] = exists(':GitGutter') && g:colors_name !=# 'plain' ?
-        \ ['%#GitGutterDelete#', '%#GitGutterChange#', '%#GitGutterAdd#']
-        \ : ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
+  let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
   let l:ale_linter_status = ''
 
   if l:counts.total == 0
@@ -88,18 +92,23 @@ function! statusline#readOnly() abort
   endif
 endfunction
 
-function! statusline#modified() abort
-  return &modified ? '%#WarningMsg# [+]' : '%6*'
+function! statusline#fileprefix() abort
 endfunction
 
-function! statusline#fileprefix() abort
-  let l:basename=expand('%:h')
-  if l:basename ==# '' || l:basename ==# '.'
-    return ''
-  else
-    " Make sure we show $HOME as ~.
-    return substitute(l:basename . '/', '\C^' . $HOME, '~', '')
+function! statusline#filepath() abort
+  let l:basename = expand('%:h')
+  let l:filename = expand('%:t')
+  let l:extension = expand('%:e')
+  let l:prefix = (l:basename !=# '' || l:basename !=# '.')
+        \ && !empty(l:extension) ?
+        \ substitute(l:basename . '/', '\C^' . $HOME, '~', '') : ''
+  let l:diffColors = statusline#getDiffColors()
+
+  if &modified
+    return printf('%s %s%s', l:diffColors[0], l:prefix, l:filename)
   endif
+
+  return printf('%%4* %s%%*%%6*%s%%*', l:prefix, l:filename)
 endfunction
 
 function! statusline#showHighligh() abort

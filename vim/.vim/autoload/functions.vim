@@ -231,18 +231,6 @@ endfunction
 
 function! functions#GetIcon(key) abort
   let l:NERD_FONT_ICONS = {
-        \'vim': [' ', '%y'],
-        \'javascript': [' ', '%y'],
-        \'javascript.jsx': [' ', '%y'],
-        \'clojure': [' ', '%y'],
-        \'clojurescript': [' ', '%y'],
-        \'rust': [' ', '%y'],
-        \'ruby': [' ', '%y'],
-        \'python': [' ', '%y'],
-        \'markdown': [' ', '%y'],
-        \'haskell':[' ', '%y'],
-        \'php':[' ', '%y'],
-        \'coffee': [' ', '%y'],
         \'paste': [' ', '⍴'],
         \'spell': [' ', '✎'],
         \'branch': ['  ', ' '],
