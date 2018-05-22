@@ -42,7 +42,7 @@ function! StatusLine(mode) abort
     if &fileencoding !=# 'utf-8'
       let l:line.='%4* %{&fenc}%*'
     endif
-    let l:line.='%4* %{statusline#rhs()}%*'
+    let l:line.='%4* %{statusline#rhs()}%* '
   else
     " inactive
     let l:line.='%#StatusLineNC#'
