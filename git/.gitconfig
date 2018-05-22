@@ -60,7 +60,8 @@
 [alias]
   amend = commit --amend -C HEAD
   blm = blame -wMC
-  br = branch --sort=-committerdate --all --verbose
+  br = branch
+  brs = branch --sort=-committerdate --all --verbose
   cb = checkout -b
   cm = commit
   co = checkout
