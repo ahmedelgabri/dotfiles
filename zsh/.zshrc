@@ -30,7 +30,7 @@ zplugin light "zdharma/zplugin-crasis"
 zplugin ice pick"async.zsh" src"pure.zsh"
 zplugin load "ahmedelgabri/pure"
 
-zplugin ice "rupa/z" pick"z.sh"
+zplugin ice pick"z.sh" "rupa/z"
 zplugin load "rupa/z"
 
 zplugin load "zsh-users/zsh-history-substring-search"
@@ -39,7 +39,7 @@ zplugin load "zsh-users/zsh-history-substring-search"
 zplugin ice wait"1" lucid atload"_zsh_autosuggest_start"
 zplugin load "zsh-users/zsh-autosuggestions"
 
-zplugin ice wait"0" lucid blockf
+zplugin ice wait"0" blockf lucid
 zplugin load "zsh-users/zsh-completions"
 
 zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
@@ -169,4 +169,3 @@ else
     echo "These ENV vars are not set: HOMEBREW_GITHUB_API_TOKEN, GITHUB_TOKEN & GITHUB_USER. Add them to ~/.zshrc.local"
   fi
 fi
-

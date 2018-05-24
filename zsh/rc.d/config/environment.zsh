@@ -26,7 +26,7 @@ setopt noflowcontrol
 # for non-zero exit status
 # setopt printexitvalue
 
-# ??
+# Suggest command corrections
 setopt CORRECT
 
 # Run all background jobs at a lower priority. This option is set by default.

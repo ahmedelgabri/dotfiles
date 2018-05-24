@@ -1,8 +1,12 @@
 # setopt no_global_rcs
 
-export XDG_CONFIG_HOME="$HOME/.config"
-export DOTFILES=$HOME/.dotfiles
-export ZDOTDIR=${DOTFILES:-"$HOME/.dotfiles"}/zsh
+# using prompt expansion and modifiers to get
+# https://github.com/filipekiss/dotfiles/commit/c7288905178be3e6c378cc4dea86c1a80ca60660#r29121191
+# man zshexpn
+# realpath(dirname(absolute path to this file)
+export ZDOTDIR="${${(%):-%N}:A:h}"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export NERD_FONTS=true
 
