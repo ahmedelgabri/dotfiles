@@ -233,7 +233,6 @@ if exists('&guioptions')
 endif
 
 if executable('rg')
-  " Check rg alias for default flags
-  set grepprg=rg\ --hidden\ --smart-case\ --vimgrep\ --glob\ "!.git/*"\ --glob\ "!node_modules/*"\ --glob\ "!tags"
+  set grepprg=rg\ --vimgrep\ --glob\ "!tags"
   set grepformat=%f:%l:%c:%m
 endif

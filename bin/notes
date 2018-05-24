@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if command -v rg >/dev/null; then
-  \rg --hidden "TODO|HACK|FIXME|OPTIMIZE"
+  rg "TODO|HACK|FIXME|OPTIMIZE"
 else
   echo "Install rg (ripgrep)..."
 fi
