@@ -56,6 +56,7 @@ function! plugins#loadPlugins() abort
   Plug 'tpope/vim-speeddating'
   Plug 'tpope/vim-eunuch'
   Plug 'tpope/tpope-vim-abolish'
+  Plug 'junegunn/vim-easy-align'
   " Plug 'tpope/vim-projectionist' " for some reason, makes fzf extremely slow
   Plug 'wincent/terminus'
   Plug 'wellle/targets.vim'
@@ -69,6 +70,7 @@ function! plugins#loadPlugins() abort
   let g:tmux_navigator_disable_when_zoomed = 1
 
   Plug 'VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
+  Plug 'vimwiki/vimwiki'
   " }}}
 
   " Autocomplete {{{
