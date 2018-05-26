@@ -65,7 +65,8 @@ set resolve
 set date_format = "%d/%m/%y at %H:%M"
 # Default: %4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s
 # set index_format = "%4C %Z %?M?⋯ & ? %[%b %d %R] %-30.30L (%?l?%4l&%4c?) %s"
-set index_format = " %Z %?M?⋯& ? %[%b %d %R] %-30.30L [%<M?%M Msgs&%c>] %s%> %Y %y"
+# set index_format = " %Z %?M?⋯& ? %[%b %d %R] %-30.30L [%<M?%M Msgs&%c>] %s%> %Y %y"
+set index_format = "[%Z] %<[y?%<[7d?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%Y %b %d]>  %-30.30F %<M?[%M Msgs] >%<X?[%X attchs] >%s%> %g %4c"
 set sort = threads                         # like gmail
 set sort_aux = reverse-last-date-received  # like gmail
 set collapse_all
