@@ -124,4 +124,3 @@ set ts_status_format = 'mutt %m messages%?n?, %n new?'
 source ./config/aliases.private
 source ./config/colors.mutt
 source ./config/bindings.mutt
-source ./config/hooks.mutt
