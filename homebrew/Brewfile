@@ -56,7 +56,7 @@ brew "msmtp"
 brew "mpv", args: ["with-bundle"]
 brew "ncdu"
 brew "neofetch"
-brew "neomutt/neomutt/neomutt", args: ["with-notmuch-patch", "with-tokyo-cabinet"]
+brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
 brew "neovim"
 brew "newsboat"
 brew "node"
