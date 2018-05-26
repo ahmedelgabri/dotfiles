@@ -9,24 +9,28 @@ image/png; ~/.mutt/scripts/view-attachment.sh %s png
 image/gif; ~/.mutt/scripts/view-attachment.sh %s gif
 
 # PDFs
-text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
-application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
+text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
+application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
 
 # HTML
 
 # Explicitly render in browser with "v" (view attachment):
 text/html; ~/.mutt/scripts/view-attachment.sh %s html; test=test -n "$DISPLAY"
-
-# Try to display implicitly using elinks:
-text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
-
-# Or, alternatively:
-# text/html; w3m -I %{charset} -T text/html; copiousoutput;
-
+# text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
+text/html; w3m %s; nametemplate=%s.html; needsterminal
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
 text/plain; ~/.mutt/scripts/view-mail.sh %s %{charset}; needsterminal
+text/rtf; ~/.mutt/view_attachment.sh %s rtf
 
 # Unidentified files
 application/octet-stream; ~/.mutt/scripts/view-attachment.sh %s "-"
 
 # Better calendar invitations format
 text/calendar; ~/.mutt/scripts/dump-ical.py %s; copiousoutput;
+
+# Video
+video/*; mpv %s > /dev/null;
+
+# Audio
+audio/*; mpv %s >/dev/null;
+

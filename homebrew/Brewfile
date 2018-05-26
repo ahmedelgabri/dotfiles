@@ -30,7 +30,6 @@ brew "curl"
 brew "diff-so-fancy"
 brew "direnv"
 brew "editorconfig"
-brew "elinks"
 brew "exa"
 brew "exiftool"
 brew "fd"
@@ -84,6 +83,7 @@ brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "urlview"
 brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
 brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
+brew "w3m"
 brew "wget"
 brew "yarn"
 brew "zsh"
