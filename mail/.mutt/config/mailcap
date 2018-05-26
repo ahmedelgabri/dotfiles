@@ -15,7 +15,7 @@ application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
 # HTML
 
 # Explicitly render in browser with "v" (view attachment):
-text/html; ~/.mutt/scripts/view-attachment.sh %s html
+text/html; ~/.mutt/scripts/view-attachment.sh %s html; test=test -n "$DISPLAY"
 
 # Try to display implicitly using elinks:
 text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
