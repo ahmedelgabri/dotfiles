@@ -99,16 +99,15 @@ function! statusline#filepath() abort
   let l:basename = expand('%:h')
   let l:filename = expand('%:t')
   let l:extension = expand('%:e')
-  let l:prefix = (l:basename !=# '' || l:basename !=# '.')
-        \ && !empty(l:extension) ?
-        \ substitute(l:basename . '/', '\C^' . $HOME, '~', '') : ''
+  let l:prefix = (l:basename ==# '' || l:basename ==# '.') ?
+        \ '' : substitute(l:basename . '/', '\C^' . $HOME, '~', '')
   let l:diffColors = statusline#getDiffColors()
 
-  if &modified
-    return printf('%s %s%s', l:diffColors[0], l:prefix, l:filename)
+  if empty(l:prefix) && empty(l:filename)
+    return printf('%%4*%%f%%* %s%%m%%*', l:diffColors[2])
+  else
+    return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:diffColors[2] : '%6*', l:filename)
   endif
-
-  return printf('%%4* %s%%*%%6*%s%%*', l:prefix, l:filename)
 endfunction
 
 function! statusline#showHighligh() abort
