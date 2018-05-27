@@ -56,6 +56,6 @@ alias apache="sudo apachectl "
 
 (( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
-(( $+commands[colourify] )) && alias curl='colourify curl '
+(( $+commands[grc] )) && alias curl='grc curl '
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '

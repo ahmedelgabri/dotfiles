@@ -5,12 +5,10 @@ cask_args appdir: '/Applications'
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "homebrew/versions"
-tap "homebrew/dupes"
 tap "caskroom/cask"
 tap "caskroom/fonts"
 tap "caskroom/versions"
 tap "universal-ctags/universal-ctags"
-tap "neomutt/neomutt"
 tap "tavianator/tap"
 tap "ahmedelgabri/homebrew-battery"
 
@@ -20,35 +18,25 @@ brew "python2" # do I need it anymore?
 # brew "ledger"
 brew "asciinema"
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
-# brew "bat"
 brew "bitlbee", restart_service: true
 brew "cloc"
 brew "clojure"
 brew "coreutils"
-brew "cowsay"
 brew "curl"
-brew "diff-so-fancy"
-brew "direnv"
 brew "editorconfig"
-brew "exa"
 brew "exiftool"
-brew "fd"
 brew "figlet"
 brew "findutils"
-brew "fzf"
 brew "isync", args: ["with-berkeley-db"]
 brew "gawk"
-brew "git-standup"
 brew "gnu-sed", args: ["with-default-names"]
 brew "gnupg"
 brew "gpg-agent"
-brew "grc"
 brew "heroku"
 brew "highlight"
 brew "htop"
 brew "httpie"
 brew "hub"
-brew "jq"
 brew "jrnl"
 brew "lbdb"
 brew "loc"
@@ -67,17 +55,12 @@ brew "pandoc"
 brew "pinentry-mac"
 brew "proselint"
 brew "ranger"
-brew "rename"
 brew "ripgrep"
 brew "rtv"
 brew "ruby"
-# brew "shellcheck" # cargo install shellharden
 brew "task"
-brew "tig"
 brew "tldr"
 brew "tmux", args: ["HEAD"]
-brew "transcrypt"
-brew "translate-shell"
 brew "tree"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "urlview"
@@ -139,7 +122,6 @@ cask "viscosity"
 cask "webpquicklook"
 cask "whatsapp"
 
-# mas "1Password", id: 443987910
 # mas "Day One", id: 1055511498
 # mas "Guidance", id: 412759995
 # mas "Irvue", id: 1039633667

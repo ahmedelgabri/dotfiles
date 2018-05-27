@@ -39,8 +39,8 @@ function! plugins#loadPlugins() abort
   Plug 'SirVer/ultisnips'
   Plug 'jiangmiao/auto-pairs'
   Plug 'duggiefresh/vim-easydir'
-  if !empty(glob('/usr/local/opt/fzf'))
-    set runtimepath+=/usr/local/opt/fzf
+  if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
+    set runtimepath+=~/.zplugin/plugins/junegunn---fzf
     Plug 'junegunn/fzf.vim'
   endif
   Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
@@ -70,7 +70,9 @@ function! plugins#loadPlugins() abort
   Plug 'christoomey/vim-tmux-navigator', plugins#If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_disable_when_zoomed = 1
 
-  Plug 'VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
+  if executable('trans')
+    Plug 'VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
+  endif
   Plug 'vimwiki/vimwiki'
   " }}}
 

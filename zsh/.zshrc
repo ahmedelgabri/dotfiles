@@ -1,4 +1,4 @@
-# vim:ft=zsh:
+# vim:ft=zsh:foldmethod=marker:
 
 ##############################################################
 # Profiling.
@@ -22,28 +22,71 @@ fi
 
 source ~/.zplugin/bin/zplugin.zsh
 
-# This is amazing! a TUI to manage plugins
-zplugin light "zdharma/zui"
-zplugin ice wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
-zplugin light "zdharma/zplugin-crasis"
+# Shell {{{
+  zplugin light zdharma/zui
+  zplugin ice depth="1" lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
+  zplugin light zdharma/zplugin-crasis
 
-zplugin ice pick"async.zsh" src"pure.zsh"
-zplugin load "ahmedelgabri/pure"
+  zplugin ice depth="1" pick"async.zsh" src"pure.zsh"
+  zplugin load ahmedelgabri/pure
+# }}}
 
-zplugin ice pick"z.sh" "rupa/z"
-zplugin load "rupa/z"
+# Tools {{{
+  zplugin ice depth="1" as"program" pick"transcrypt"
+  zplugin light elasticdog/transcrypt
 
-zplugin load "zsh-users/zsh-history-substring-search"
+  zplugin ice depth="1" from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
+  zplugin light direnv/direnv
 
-# https://github.com/zdharma/zplugin#turbo-mode-zsh--53
-zplugin ice wait"1" lucid atload"_zsh_autosuggest_start"
-zplugin load "zsh-users/zsh-autosuggestions"
+  zplugin ice depth="1" as"program" atclone"./install --bin" atpull"%atclone" atload'local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
+  zplugin light junegunn/fzf
+# }}}
 
-zplugin ice wait"0" blockf lucid
-zplugin load "zsh-users/zsh-completions"
+# Git {{{
+  zplugin ice as'program' make"install prefix=$ZPFX" pick"$ZPFX/bin/tig"
+  zplugin light jonas/tig
 
-zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
-zplugin load "zdharma/fast-syntax-highlighting"
+  zplugin ice depth="1" as"program" pick"bin/git-dsf"
+  zplugin light zdharma/zsh-diff-so-fancy
+# }}}
+
+# Utilities & enhancements {{{
+  zplugin ice depth="1" as"program" atclone"./install.sh $ZPFX $ZPFX" atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick"$ZPFX/bin/grc*"
+  zplugin light garabik/grc
+
+  zplugin ice depth="1" from"gh-r" as"program" mv"fd*/fd -> fd"
+  zplugin light sharkdp/fd
+
+  zplugin ice depth="1" from"gh-r" as"program" bpick"*osx*" mv"jq* -> jq"
+  zplugin light stedolan/jq
+
+  zplugin ice depth="1" from"gh-r" as"program" bpick"*macos*" mv"exa* -> exa"
+  zplugin light ogham/exa
+
+  zplugin ice depth="1" from"gh-r" as"program" mv"bat*/bat -> bat"
+  zplugin light sharkdp/bat
+
+  zplugin ice as"program" make"install PREFIX=$ZPFX" pick"$ZPFX/bin/trans"
+  zplugin light soimort/translate-shell
+
+  zplugin ice depth="1" as"program" mv"rename"
+  zplugin light ap/rename
+
+  zplugin ice depth="1" pick"z.sh"
+  zplugin light rupa/z
+
+  zplugin light "zsh-users/zsh-history-substring-search"
+
+  # https://github.com/zdharma/zplugin#turbo-mode-zsh--53
+  zplugin ice depth="1" wait"1" lucid atload"_zsh_autosuggest_start"
+  zplugin light zsh-users/zsh-autosuggestions
+
+  zplugin ice depth="1" wait"0" blockf lucid
+  zplugin light zsh-users/zsh-completions
+
+  zplugin ice depth="1" wait"0" lucid atinit"zpcompinit; zpcdreplay"
+  zplugin light zdharma/fast-syntax-highlighting
+# }}}
 
 ##############################################################
 # PLUGINS VARS & SETTINGS
@@ -123,24 +166,6 @@ export PYTHONSTARTUP=${HOME}/.pyrc.py
 # gv a renamed file in Git
 # da a file's date
 export EXA_COLORS="uu=38;5;249:un=38;5;241:gu=38;5;245:gn=38;5;241:da=38;5;245:sn=38;5;7:sb=38;5;7:ur=38;5;3;1:uw=38;5;5;1:ux=38;5;1;1:ue=38;5;1;1:gr=38;5;3:gw=38;5;5:gx=38;5;1:tr=38;5;3:tw=38;5;1:tx=38;5;1:di=38;5;12:ex=38;5;7;1:*.md=38;5;229;4:*.png=38;5;208:*.jpg=38;5;208:*.gif=38;5;208"
-
-##############################################################
-# TOOLS.
-##############################################################
-
-(( $+commands[grc] )) && source "${HOMEBREW_ROOT:-/usr/local}/etc/grc.bashrc"
-[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
-
-##############################################################
-# direnv.
-##############################################################
-
-if [ $(command -v direnv) ]; then
-  export NODE_VERSIONS="${HOME}/.node-versions"
-  export NODE_VERSION_PREFIX=""
-
-  eval "$(direnv hook zsh)"
-fi
 
 ##############################################################
 # /etc/motd
