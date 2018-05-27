@@ -43,25 +43,26 @@ function! plugins#loadPlugins() abort
     set runtimepath+=/usr/local/opt/fzf
     Plug 'junegunn/fzf.vim'
   endif
-  Plug 'junegunn/vim-peekaboo'
   Plug 'mbbill/undotree', { 'on': ['UndotreeToggle'] }
   Plug 'mhinz/vim-grepper', { 'on': ['Grepper'] }
   Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
+  Plug 'mhinz/vim-startify'
   Plug 'Shougo/unite.vim'
         \| Plug 'Shougo/vimfiler.vim', { 'on': ['VimFiler', 'VimFilerExplorer'] }
-  Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-repeat'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-characterize'
-  Plug 'tpope/vim-speeddating'
-  Plug 'tpope/vim-eunuch'
   Plug 'tpope/tpope-vim-abolish'
-  Plug 'junegunn/vim-easy-align'
+  Plug 'tpope/vim-apathy'
+  Plug 'tpope/vim-characterize'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-eunuch'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-speeddating'
+  Plug 'tpope/vim-surround'
   " Plug 'tpope/vim-projectionist' " for some reason, makes fzf extremely slow
+  Plug 'junegunn/vim-easy-align'
+  Plug 'junegunn/vim-peekaboo'
+  Plug 'wincent/loupe'
   Plug 'wincent/terminus'
   Plug 'wellle/targets.vim'
-  Plug 'wincent/loupe'
-  Plug 'mhinz/vim-startify'
   Plug 'nelstrom/vim-visual-star-search'
   Plug 'unblevable/quick-scope'
   let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
