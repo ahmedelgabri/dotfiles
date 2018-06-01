@@ -57,7 +57,6 @@ function! plugins#loadPlugins() abort
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-speeddating'
   Plug 'tpope/vim-surround'
-  " Plug 'tpope/vim-projectionist' " for some reason, makes fzf extremely slow
   Plug 'junegunn/vim-easy-align'
   Plug 'junegunn/vim-peekaboo'
   Plug 'wincent/loupe'
