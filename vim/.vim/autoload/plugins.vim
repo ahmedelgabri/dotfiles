@@ -98,17 +98,17 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Themes, UI & eye candy {{{
-  Plug 'rakr/vim-one'
   Plug 'tomasiser/vim-code-dark'
   Plug 'tyrannicaltoucan/vim-deep-space'
   Plug 'morhetz/gruvbox'
   Plug 'icymind/NeoSolarized'
-  Plug 'w0ng/vim-hybrid'
   Plug 'rakr/vim-two-firewatch'
   Plug 'logico-dev/typewriter'
   Plug 'agreco/vim-citylights'
   Plug 'atelierbram/Base2Tone-vim'
+  " minimal
   Plug 'andreypopp/vim-colors-plain'
+  Plug 'owickstrom/vim-colors-paramount'
   " }}}
 
   " Git {{{

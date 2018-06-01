@@ -46,15 +46,18 @@ let s:hour = strftime('%H')
 let s:month = strftime('%m')
 let s:summerNight = (s:month >= 4 && s:month < 10) && (s:hour <= 21 && s:hour > 7)
 let s:winterNight = s:hour <= 18 && s:hour > 8
+set background=dark
 
 if s:summerNight || s:winterNight
-  set background=dark
+  try
+    colorscheme plain
+  catch
+  endtry
 else
-  set background=light
+  try
+    colorscheme paramount
+  catch
+  endtry
 endif
 
-try
-  colorscheme plain
-catch
-endtry
 
