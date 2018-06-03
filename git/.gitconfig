@@ -113,12 +113,9 @@
   cmd = $EDITOR -d $LOCAL $REMOTE
 
 [merge]
-  # https://git-scm.com/docs/git-config#git-config-mergeff
-  # ff = only
   # Include summaries of merged commits in newly created merge commit messages
   log = 1000
   tool = vimdiff
-  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
   conflictstyle = diff3
 
 [tag]
@@ -153,6 +150,7 @@
 
 [fetch]
   prune = true
+  pruneTags = true
 
 # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
 [transfer]
