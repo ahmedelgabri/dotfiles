@@ -1,4 +1,5 @@
 scriptencoding utf-8
+" @TODO: Cleanup this file
 
 function! functions#trim(txt) abort
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
@@ -115,25 +116,20 @@ function! functions#mkview() abort
   endif
 endfunction
 
-function! functions#hasFileType(list) abort
-  return index(a:list, &filetype) != -1
-endfunction
-
 let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit']
 function! functions#should_quit_on_q() abort
-  return functions#hasFileType(g:GabriQuitOnQ)
+  return index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
 
-let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt']
+let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt', 'gitconfig', 'gitrebase']
 function! functions#should_turn_off_colorcolumn() abort
-  return functions#hasFileType(g:GabriNoColorcolumn)
+  return (index(g:GabriNoColorcolumn, &filetype) >= 0) || &buftype ==# 'terminal' || &readonly
 endfunction
 
 let g:GabriKeepWhitespace = ['markdown']
 function! functions#should_strip_whitespace() abort
   return index(g:GabriKeepWhitespace, &filetype) == -1
 endfunction
-
 
 fun! functions#ProfileStart(...)
   if a:0 && a:1 != 1
@@ -147,7 +143,6 @@ fun! functions#ProfileStart(...)
   profile! file **
   profile  func *
 endfun
-
 
 function! functions#NeatFoldText() abort
   let l:raquo='»'

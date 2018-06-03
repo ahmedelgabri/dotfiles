@@ -8,9 +8,27 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 set expandtab                         " always use spaces instead of tabs
 
 set nowrap                            " no wrap
-set textwidth=80
-set colorcolumn=+1
 set signcolumn=yes
+set textwidth=80
+" set colorcolumn=+1
+
+" This works with project specific `.local.vim` files, need to check why if I move
+" to an autoload function it doesn't work
+augroup MyLongLinesHighlight
+  autocmd!
+  autocmd! BufWinEnter,BufEnter ?* if functions#should_turn_off_colorcolumn()
+          \ | match NONE
+        \ | else
+          \ | highlight link OverLength Error
+          \ | execute 'match OverLength /\%>'. &textwidth .'v.*/'
+        \ | endif
+  autocmd! OptionSet textwidth if functions#should_turn_off_colorcolumn()
+          \ | match NONE
+        \ | else
+          \ | highlight link OverLength Error
+          \ | execute 'match OverLength /\%>'. &textwidth .'v.*/'
+        \ | endif
+augroup END
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
 set synmaxcol=300                     " do not highlight very long lines

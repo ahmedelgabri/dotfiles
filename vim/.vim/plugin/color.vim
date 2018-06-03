@@ -10,9 +10,6 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
 
-  " Highlight long lines
-  " autocmd ColorScheme * hi! OverLength ctermbg=red ctermfg=white guibg=#592929
-
   autocmd ColorScheme codedark,plain hi! link Error ErrorMsg
         \| hi! link ALEError ErrorMsg
         \| hi! link ALEErrorSign ErrorMsg
