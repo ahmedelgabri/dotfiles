@@ -72,6 +72,7 @@
   fl = l -u
   grr = grep --break --heading --line-number
   l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  lme = "!sh -c \"git l --author=\"$NAME\"\""
   la = l --all --simplify-by-decoration
   lastchange = log -p --follow -n 1
   ll = log --cc
