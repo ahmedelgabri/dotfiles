@@ -121,7 +121,7 @@ function! functions#should_quit_on_q() abort
   return index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
 
-let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt', 'gitconfig', 'gitrebase']
+let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'text', 'gitconfig', 'gitrebase']
 function! functions#should_turn_off_colorcolumn() abort
   return &textwidth == 0 || index(g:GabriNoColorcolumn, &filetype) >= 0 || &buftype ==# 'terminal' || &readonly
 endfunction
