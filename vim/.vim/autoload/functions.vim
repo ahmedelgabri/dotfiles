@@ -123,7 +123,7 @@ endfunction
 
 let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'txt', 'gitconfig', 'gitrebase']
 function! functions#should_turn_off_colorcolumn() abort
-  return (index(g:GabriNoColorcolumn, &filetype) >= 0) || &buftype ==# 'terminal' || &readonly
+  return &textwidth == 0 || index(g:GabriNoColorcolumn, &filetype) >= 0 || &buftype ==# 'terminal' || &readonly
 endfunction
 
 let g:GabriKeepWhitespace = ['markdown']
