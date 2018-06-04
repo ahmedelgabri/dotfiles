@@ -173,12 +173,11 @@
 
 # Browsers ====================================== {{{
   http://hacks.mozilla.org/feed/ "Browsers"
-  http://blogs.msdn.com/b/ie/rss.aspx "Browsers"
-  http://www.chromestatus.com/features.xml "Browsers"
-  http://blog.chromium.org/feeds/posts/default "Browsers"
-  http://dev.opera.com/feeds/rss/articles "Browsers"
-  https://webkit.org/feed/ "Browsers"
-  http://chrome.blogspot.com/feeds/posts/default "Browsers"
+  https://developer.microsoft.com/en-us/microsoft-edge/platform/changelog/rss/ "Browsers" "Edge"
+  http://www.chromestatus.com/features.xml "Browsers" "Chrome"
+  http://googlechromereleases.blogspot.com/atom.xml "Browsers" "Chrome"
+  http://blog.chromium.org/feeds/posts/default "Browsers" "Chromium"
+  https://webkit.org/feed/ "Browsers" "Safari"
 # }}}
 
 # Comics ====================================== {{{
