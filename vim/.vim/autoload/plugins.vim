@@ -91,6 +91,8 @@ function! plugins#loadPlugins() abort
   Plug 'jez/vim-github-hub'
   Plug 'sheerun/vim-polyglot'
   Plug 'direnv/direnv.vim'
+  Plug 'luochen1990/rainbow'
+  let g:rainbow_active = 1
   " }}}
 
   " Linters & Code quality {{{
