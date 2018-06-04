@@ -28,7 +28,7 @@ source ~/.zplugin/bin/zplugin.zsh
   zplugin light zdharma/zplugin-crasis
 
   zplugin ice depth="1" pick"async.zsh" src"pure.zsh"
-  zplugin load ahmedelgabri/pure
+  zplugin light ahmedelgabri/pure
 # }}}
 
 # Tools {{{
