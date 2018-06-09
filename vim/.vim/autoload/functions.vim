@@ -121,9 +121,36 @@ function! functions#should_quit_on_q() abort
   return index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
 
-let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown', 'startify', 'GrepperSide', 'text', 'gitconfig', 'gitrebase']
+let g:GabriNoColorcolumn = ['qf', 'fzf', 'netrw', 'help', 'markdown',
+      \'startify', 'GrepperSide', 'text', 'gitconfig', 'gitrebase', 'conf']
 function! functions#should_turn_off_colorcolumn() abort
-  return &textwidth == 0 || index(g:GabriNoColorcolumn, &filetype) >= 0 || &buftype ==# 'terminal' || &readonly
+  return &textwidth == 0
+        \|| index(g:GabriNoColorcolumn, &filetype) >= 0
+        \|| &buftype ==# 'terminal' || &readonly
+endfunction
+
+function! functions#setOverLength()
+  if functions#should_turn_off_colorcolumn()
+    match NONE
+  else
+    " Stolen from https://github.com/whatyouhide/vim-lengthmatters/blob/74e248378544ac97fb139803b39583001c83d4ef/plugin/lengthmatters.vim#L17-L33
+    let s:overlengthCmd = 'highlight OverLength'
+    for l:md in ['cterm', 'term', 'gui']
+      let l:bg = synIDattr(hlID('Comment'), 'fg', l:md)
+      let l:fg = synIDattr(hlID('Normal'), 'bg', l:md)
+
+      if has('gui_running') && l:md !=# 'gui'
+        continue
+      endif
+
+      if !empty(l:bg) | let s:overlengthCmd .= ' ' . l:md . 'bg=' . l:bg | endif
+      if !empty(l:fg) | let s:overlengthCmd .= ' ' . l:md . 'fg=' . l:fg | endif
+    endfor
+    exec s:overlengthCmd
+    " Use tw + 1 so invisble characters are not marked
+    let s:overlengthSize = &textwidth
+    execute 'match OverLength /\%>'. s:overlengthSize .'v.*/'
+  endif
 endfunction
 
 let g:GabriKeepWhitespace = ['markdown']

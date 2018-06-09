@@ -16,18 +16,8 @@ set textwidth=80
 " to an autoload function it doesn't work
 augroup MyLongLinesHighlight
   autocmd!
-  autocmd! BufWinEnter,BufEnter ?* if functions#should_turn_off_colorcolumn()
-          \ | match NONE
-        \ | else
-          \ | highlight link OverLength Error
-          \ | execute 'match OverLength /\%>'. &textwidth .'v.*/'
-        \ | endif
-  autocmd! OptionSet textwidth if functions#should_turn_off_colorcolumn()
-          \ | match NONE
-        \ | else
-          \ | highlight link OverLength Error
-          \ | execute 'match OverLength /\%>'. &textwidth .'v.*/'
-        \ | endif
+  autocmd BufWinEnter,BufEnter ?* call functions#setOverLength()
+  autocmd OptionSet textwidth call functions#setOverLength()
 augroup END
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
