@@ -15,8 +15,10 @@
 --exclude=test
 --exclude=tests
 --exclude=tmp
+--exclude=tags
 --exclude=vendor
 --exclude=*.min.*
 --exclude=*.map
 --exclude=*.swp
 --exclude=*.bak
+--exclude=*.pyc
