@@ -228,8 +228,8 @@ function! functions#GetIcon(key) abort
   let l:NERD_FONT_ICONS = {
         \'paste': [' ', '⍴'],
         \'spell': [' ', '✎'],
-        \'branch': ['  ', ' '],
-        \'linter_error': [' ', '⨉'],
+        \'branch': ['  ', '  '],
+        \'linter_error': [' ', '×'],
         \'linter_style': [' ', '●'],
         \'lock': [' ', ' '],
         \}
