@@ -1,6 +1,12 @@
 scriptencoding utf-8
 
 function! bootstrap#init() abort
+  " Skip vim plugins {{{
+    let g:loaded_rrhelper = 1
+    " Skip loading menu.vim, saves ~100ms
+    let g:did_install_default_menus = 1
+  " }}}
+
   " Python {{{
   " This must be here becasue it makes loading vim VERY SLOW otherwise
   if has('nvim')
