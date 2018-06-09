@@ -18,4 +18,4 @@ let g:vimwiki_list = [{
       \ 'auto_toc': 1,
       \}]
 
-
+call vimwiki#vars#init()

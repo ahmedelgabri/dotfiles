@@ -72,7 +72,7 @@ function! plugins#loadPlugins() abort
   if executable('trans')
     Plug 'VincentCordobes/vim-translate', { 'on': ['Translate', 'TranslateReplace', 'TranslateClear'] }
   endif
-  Plug 'vimwiki/vimwiki'
+  Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
   " }}}
 
   " Autocomplete {{{
