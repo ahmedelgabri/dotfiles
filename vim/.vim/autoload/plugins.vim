@@ -57,6 +57,9 @@ function! plugins#loadPlugins() abort
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-speeddating'
   Plug 'tpope/vim-surround'
+  let g:surround_indent = 0
+  let g:surround_no_insert_mappings = 1
+
   Plug 'junegunn/vim-easy-align'
   Plug 'junegunn/vim-peekaboo'
   Plug 'wincent/loupe'
@@ -86,10 +89,15 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Syntax {{{
-  Plug 'ap/vim-css-color'
+  Plug 'https://github.com/chrisbra/Colorizer'
+  let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig'
+
   Plug 'reasonml-editor/vim-reason-plus'
   Plug 'jez/vim-github-hub'
   Plug 'sheerun/vim-polyglot'
+  let g:polyglot_disabled = ['javascript', 'jsx']
+
+  Plug 'chemzqm/vim-jsx-improve'
   Plug 'direnv/direnv.vim'
   Plug 'luochen1990/rainbow'
   let g:rainbow_active = 1
@@ -97,6 +105,7 @@ function! plugins#loadPlugins() abort
         \'guifgs': ['white', 'darkorange3', 'seagreen3', 'firebrick'],
         \'ctermfgs': ['white', 'lightyellow', 'lightcyan', 'lightmagenta'],
         \}
+
   " Linters & Code quality {{{
   Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
   " }}}
