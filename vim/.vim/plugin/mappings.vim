@@ -139,7 +139,3 @@ noremap - <C-x>
 " Visual mode too
 xnoremap + g<C-a>
 xnoremap - g<C-x>
-
-" Prevents plugins from overriding leader mappings
-" https://www.reddit.com/r/vim/comments/705zpp/tip_nop_as_leader/
-let g:mapleader = '<NOP>'

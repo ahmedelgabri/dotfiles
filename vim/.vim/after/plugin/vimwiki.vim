@@ -2,7 +2,6 @@ if !exists(':VimwikiIndex')
   finish
 endif
 
-let g:mapleader="\<Space>"
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_dir_link = 'index'
 let g:vimwiki_toc_header = 'Table of contents'

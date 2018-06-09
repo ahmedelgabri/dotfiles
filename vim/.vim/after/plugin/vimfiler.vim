@@ -31,6 +31,5 @@ function! s:my_vimfiler_settings()
     nmap q <buffer> <Plug>(vimfiler_close)
 endfunction
 
-let g:mapleader="\<Space>"
 nnoremap <silent> <leader>f :VimFiler -find -parent<CR>
 
