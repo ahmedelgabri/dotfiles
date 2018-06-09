@@ -93,8 +93,10 @@ function! plugins#loadPlugins() abort
   Plug 'direnv/direnv.vim'
   Plug 'luochen1990/rainbow'
   let g:rainbow_active = 1
-  " }}}
-
+  let g:rainbow_conf = {
+        \'guifgs': ['white', 'darkorange3', 'seagreen3', 'firebrick'],
+        \'ctermfgs': ['white', 'lightyellow', 'lightcyan', 'lightmagenta'],
+        \}
   " Linters & Code quality {{{
   Plug 'w0rp/ale', { 'do': 'yarn global add prettier' }
   " }}}
