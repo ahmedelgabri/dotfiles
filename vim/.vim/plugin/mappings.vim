@@ -23,10 +23,12 @@ nnoremap <expr> k v:count ? 'k' : 'gk'
 xnoremap <expr> k v:count ? 'k' : 'gk'
 
 " Ensure 'logical line' movement remains accessible.
-nnoremap <silent> gj j
-xnoremap <silent> gj j
-nnoremap <silent> gk k
-xnoremap <silent> gk k
+" It adds position to jump list if you're jumping more than 5 lines
+" You can jump back and forth with <C-o> and <C-i>
+xnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
+xnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
+nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
+nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
 " Move visual block
 vnoremap <M-j> :m '>+1<CR>gv=gv
