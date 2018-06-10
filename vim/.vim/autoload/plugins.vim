@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 let s:VIM_PLUG=expand($VIMHOME.'/autoload/plug.vim')
 let s:VIM_PLUG_FOLDER=expand($VIMHOME.'/plugged')
 
