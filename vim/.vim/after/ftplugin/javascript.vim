@@ -1,4 +1,3 @@
-" for https://github.com/pangloss/vim-javascript
 setl conceallevel=2
 setl concealcursor=n
 
