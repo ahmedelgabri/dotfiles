@@ -102,6 +102,7 @@ set listchars+=extends:»              " RIGHT-POINTING DOUBLE ANGLE QUOTATION M
 set listchars+=precedes:«             " LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
 set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
 set nojoinspaces                      " don't autoinsert two spaces after '.', '?', '!' for join command
+set concealcursor=n                   " conceal in [n]ormal only
 
 if has('windows')
   set fillchars=diff:⣿                " BOX DRAWINGS
