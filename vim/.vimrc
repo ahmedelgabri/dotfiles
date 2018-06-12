@@ -17,12 +17,12 @@
                      " |""|
                      " '=='
 
-let s:root=expand($DOTFILES.'/vim/.vim')
+let s:root=expand($DOTFILES.'/vim/.vim/')
 
 if !empty(glob(s:root))
   let $VIMHOME=s:root
 else
-  let $VIMHOME=expand('~/.vim')
+  let $VIMHOME=expand('~/.vim/')
 endif
 
 let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
