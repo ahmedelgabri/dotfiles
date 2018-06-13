@@ -1,18 +1,17 @@
 # I'm lazy to type `yarn`, `yarn run <script>`, etc...
 
-if (( $+commands[yarn] )); then
-  compdef y=yarn
-fi
+# Exit if yarn is not installed
+(( $+commands[yarn] )) || return 0
 
-function y {
-  if (( $+commands[yarn] )); then
-    if [[ $# > 0 ]]; then
-      yarn "$@"
-    else
-      yarn --link-duplicates
-    fi
+unalias y 2>/dev/null
+
+function y() {
+  if [[ $# -eq 0 ]]; then
+    yarn --link-duplicates
   else
-    echo "Yarn is not in your path, make sure you install it or fix your path"
-    exit 1
+    yarn "$@"
   fi
 }
+
+# Ensure y is completed like yarn
+compdef y=yarn
