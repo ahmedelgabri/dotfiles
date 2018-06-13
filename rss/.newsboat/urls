@@ -169,6 +169,7 @@
   https://blog.janestreet.com/feed.xml "Blog" "OCaml" "Programming"
   https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
   https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
+  https://bluz71.github.io/feed.xml "Vim" "Zsh"
 # }}}
 
 # Browsers ====================================== {{{
@@ -371,6 +372,7 @@
   https://www.cennydd.com/writing?format=RSS "UX"
   http://feeds.feedburner.com/FunctioningForm "UX"
   https://www.justinobeirne.com/rss?format=rss "UX"
+  https://grumpy.website/feed.xml "UX"
 # }}}
 
 # xmas ====================================== {{{
@@ -381,8 +383,6 @@
 # Football {{{
   https://www.theplayerstribune.com/sports/soccer/feed/ "football"
 # }}}
-
-https://grumpy.website/feed.xml "UX"
 
 # Podcasts {{{
   https://rss.simplecast.com/podcasts/4151/rss "Podcasts"
