@@ -24,21 +24,21 @@ source ~/.zplugin/bin/zplugin.zsh
 
 # Shell {{{
   zplugin light zdharma/zui
-  zplugin ice depth="1" lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
+  zplugin ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
   zplugin light zdharma/zplugin-crasis
 
-  zplugin ice depth="1" pick"async.zsh" src"pure.zsh"
+  zplugin ice pick"async.zsh" src"pure.zsh"
   zplugin light ahmedelgabri/pure
 # }}}
 
 # Tools {{{
-  zplugin ice depth="1" as"program" pick"transcrypt"
+  zplugin ice as"program" pick"transcrypt"
   zplugin light elasticdog/transcrypt
 
-  zplugin ice depth="1" from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
+  zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
   zplugin light direnv/direnv
 
-  zplugin ice depth="1" as"program" atclone"./install --bin" atpull"%atclone" atload'local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
+  zplugin ice as"program" atclone"./install --bin" atpull"%atclone" atload'local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
   zplugin light junegunn/fzf
 # }}}
 
@@ -46,46 +46,51 @@ source ~/.zplugin/bin/zplugin.zsh
   zplugin ice as'program' make"install prefix=$ZPFX" pick"$ZPFX/bin/tig"
   zplugin light jonas/tig
 
-  zplugin ice depth="1" as"program" pick"bin/git-dsf"
+  zplugin ice as"program" pick"bin/git-dsf"
   zplugin light zdharma/zsh-diff-so-fancy
 # }}}
 
 # Utilities & enhancements {{{
-  zplugin ice depth="1" as"program" atclone"./install.sh $ZPFX $ZPFX" atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick"$ZPFX/bin/grc*"
+  zplugin ice as"program" atclone"./install.sh $ZPFX $ZPFX" atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick"$ZPFX/bin/grc*"
   zplugin light garabik/grc
 
-  zplugin ice depth="1" from"gh-r" as"program" mv"fd*/fd -> fd"
+  zplugin ice from"gh-r" as"program" mv"fd*/fd -> fd"
   zplugin light sharkdp/fd
 
-  zplugin ice depth="1" from"gh-r" as"program" bpick"*osx*" mv"jq* -> jq"
+  zplugin ice from"gh-r" as"program" bpick"*osx*" mv"jq* -> jq"
   zplugin light stedolan/jq
 
-  zplugin ice depth="1" from"gh-r" as"program" bpick"*macos*" mv"exa* -> exa"
+  zplugin ice from"gh-r" as"program" bpick"*macos*" mv"exa* -> exa"
   zplugin light ogham/exa
 
-  zplugin ice depth="1" from"gh-r" as"program" mv"bat*/bat -> bat"
+  zplugin ice from"gh-r" as"program" mv"bat*/bat -> bat"
   zplugin light sharkdp/bat
 
   zplugin ice as"program" make"install PREFIX=$ZPFX" pick"$ZPFX/bin/trans"
   zplugin light soimort/translate-shell
 
-  zplugin ice depth="1" as"program" mv"rename"
+  zplugin ice as"program" mv"rename"
   zplugin light ap/rename
 
-  zplugin ice depth="1" pick"z.sh"
+  zplugin ice pick"z.sh"
   zplugin light rupa/z
 
   zplugin light "zsh-users/zsh-history-substring-search"
 
   # https://github.com/zdharma/zplugin#turbo-mode-zsh--53
-  zplugin ice depth="1" wait"1" lucid atload"_zsh_autosuggest_start"
+  zplugin ice wait"1" lucid atload"_zsh_autosuggest_start"
   zplugin light zsh-users/zsh-autosuggestions
 
-  zplugin ice depth="1" wait"0" blockf lucid
+  zplugin ice wait"0" blockf lucid
   zplugin light zsh-users/zsh-completions
 
-  zplugin ice depth="1" wait"0" lucid atinit"zpcompinit; zpcdreplay"
+  zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
   zplugin light zdharma/fast-syntax-highlighting
+# }}}
+
+# UI {{{
+  zplugin ice from"gh-r" bpick"*ss08*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && rm "~/Library/Fonts/$(basename $f)" && mv $f ~/Library/Fonts/ || mv $f ~/Library/Fonts/' atpull"%atclone"
+  zplugin light be5invis/Iosevka
 # }}}
 
 ##############################################################

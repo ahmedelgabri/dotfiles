@@ -9,6 +9,7 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/dev"
+export OS=$(uname)
 # export NERD_FONTS=true
 
 [[ -x /usr/local/bin/brew ]] && export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
