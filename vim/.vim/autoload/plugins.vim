@@ -101,13 +101,6 @@ function! plugins#loadPlugins() abort
 
   Plug 'https://github.com/chemzqm/vim-jsx-improve'
   Plug 'https://github.com/direnv/direnv.vim'
-  Plug 'https://github.com/luochen1990/rainbow'
-  let g:rainbow_active = 1
-  let g:rainbow_conf = {
-        \'guifgs': ['white', 'darkorange3', 'seagreen3', 'firebrick'],
-        \'ctermfgs': ['white', 'lightyellow', 'lightcyan', 'lightmagenta'],
-        \}
-
   " Linters & Code quality {{{
   Plug 'https://github.com/w0rp/ale', { 'do': 'yarn global add prettier' }
   " }}}
