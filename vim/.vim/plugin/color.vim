@@ -9,6 +9,14 @@ augroup MyCustomColors
         \| hi! TablineSel cterm=reverse gui=reverse
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
+        \| hi! clear SignColumn
+        \| hi! GitGutterAdd ctermbg=None guifg=green
+        \| hi! GitGutterChange ctermbg=None guifg=orange
+        \| hi! GitGutterDelete ctermbg=None guifg=red
+        \| hi! GitGutterChangeDelete ctermbg=None guifg=DarkRed
+        \| hi! LineNr ctermbg=None guibg=None
+
+
 
   autocmd ColorScheme codedark,plain hi! link Error ErrorMsg
         \| hi! link ALEError ErrorMsg
