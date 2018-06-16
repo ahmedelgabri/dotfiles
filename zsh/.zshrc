@@ -118,11 +118,13 @@ for func (${ZDOTDIR}/rc.d/functions/*.zsh) source $func
 # Custom/Plugins
 ###############################################################
 export RIPGREP_CONFIG_PATH="$DOTFILES/misc/.rgrc"
+FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
 export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
-export FZF_DEFAULT_COMMAND='rg --no-messages --no-ignore-vcs --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
+export FZF_CTRL_T_COMMAND="$FZF_CMD"
 export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_ALT_C_COMMAND="$FZF_CMD --type d ."
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
 
