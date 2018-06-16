@@ -22,13 +22,12 @@ function g() {
   if [[ $# > 0 ]]; then
     git "$@"
   else
+    echo "Last commit: $(time_since_last_commit) ago"
     git status --short --branch
-    time_since_last_commit
   fi
 }
 
 function time_since_last_commit() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  GIT_INFO_MESSAGE=$(git log -1 --color=always --pretty=format:"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN%Creset" --date=relative)
-  echo "\n$GIT_INFO_MESSAGE"
+  git log -1 --pretty=format:"%ar" | sed 's/\([0-9]*\) \(.\).*/\1\2/'
 }
