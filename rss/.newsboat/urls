@@ -355,6 +355,7 @@
   http://www.minimallyminimal.com/blog/rss.xml "UI"
   http://ignorethecode.net/blog/rss/ "UI"
   http://bjango.com/rss/articles.xml "UI"
+  http://mrmrs.github.io/writing/feed.xml "UI" "CSS" "Front-end"
 # }}}
 
 # Unix ==================================== {{{
