@@ -89,7 +89,7 @@ source ~/.zplugin/bin/zplugin.zsh
 # }}}
 
 # UI {{{
-  zplugin ice from"gh-r" bpick"*ss08*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && rm "~/Library/Fonts/$(basename $f)" && mv $f ~/Library/Fonts/ || mv $f ~/Library/Fonts/' atpull"%atclone"
+  zplugin ice from"gh-r" bpick"*01-iosevka-*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && rm "~/Library/Fonts/$(basename $f)" && mv $f ~/Library/Fonts/ || mv $f ~/Library/Fonts/' atpull"%atclone"
   zplugin light be5invis/Iosevka
 # }}}
 
