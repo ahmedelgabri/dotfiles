@@ -1,6 +1,6 @@
 # vim:ft=config foldmethod=marker:
 
-# Querys ------------------- {{{
+# Querys {{{
   "query:→ Podcasts:unread = \"yes\" and tags # \"Podcasts\"" "Podcasts"
   "query:→ Unread Articles:unread = \"yes\""
   "query:→ Bookmarked Articles:flags # \"s\"" "Starred"
@@ -30,7 +30,7 @@
   "query:→ Football:tags # \"football\"" "football"
 # }}}
 
-# Blog ======================================{{{
+# Blog {{{
   https://brendaneich.com/feed/ "Blogs" "JavaScript"
   http://acko.net/atom.xml "Blogs" "Programming" "Creative" "Data"
   http://benhowdle.im/feed.xml "Blogs" "Web" "JavaScript"
@@ -172,7 +172,7 @@
   https://bluz71.github.io/feed.xml "Vim" "Zsh"
 # }}}
 
-# Browsers ====================================== {{{
+# Browsers {{{
   http://hacks.mozilla.org/feed/ "Browsers"
   https://developer.microsoft.com/en-us/microsoft-edge/platform/changelog/rss/ "Browsers" "Edge"
   http://www.chromestatus.com/features.xml "Browsers" "Chrome"
@@ -181,11 +181,11 @@
   https://webkit.org/feed/ "Browsers" "Safari"
 # }}}
 
-# Comics ====================================== {{{
+# Comics {{{
   http://xkcd.com/rss.xml "Comics"
 # }}}
 
-# CSS ====================================== {{{
+# CSS {{{
   http://cameronmoll.com/index.xml "CSS"
   http://demosthenes.info/feed.php "CSS"
   http://feeds.feedburner.com/CssTricks?format=xml "CSS"
@@ -219,7 +219,7 @@
   https://roy.io/feed/ "CSS"
 # }}}
 
-# Design ================================= {{{
+# Design {{{
   http://blog.capwatkins.com/feed "Design"
   http://feeds.feedburner.com/DesignStaff "Design"
   http://feeds.feedburner.com/MethodandCraft "Design"
@@ -228,7 +228,7 @@
   http://tylergaw.com/rss.xml "Design"
 # }}}
 
-# Engineering ================================ {{{
+# Engineering {{{
   http://blog.xebia.com/feed/ "Engineering"
   http://devblog.coolblue.nl/feed/ "Engineering"
   http://engineering.indeed.com/feed/ "Engineering"
@@ -250,19 +250,19 @@
   https://deliveroo.engineering/feed.xml "Engineering"
 # }}}
 
-# Fancy ======================================== {{{
+# Fancy {{{
   http://tobiasahlin.com/feed/ "Fancy"
 # }}}
 
-# ME =========================================== {{{
+# ME {{{
   https://gabri.me/feed.xml "ME"
 # }}}
 
-# Friends ====================================== {{{
+# Friends {{{
   http://sakr.me/rss "Friends"
 # }}}
 
-# Github ======================================= {{{
+# Github {{{
   https://github.com/whatwg.atom "Github"
   https://github.com/FormidableLabs.atom "Github"
   https://github.com/andyet.atom "Github"
@@ -273,11 +273,11 @@
   https://github.com/gocardless.atom "Github"
 # }}}
 
-# HTML ========================================= {{{
+# HTML {{{
   http://feeds.feedburner.com/html5rocks "HTML"
 # }}}
 
-# JavaScript =================================== {{{
+# JavaScript {{{
   http://benalman.com/feed/news/ "JavaScript"
   http://blog.npmjs.org/rss "JavaScript"
   http://blog.pamelafox.org/feeds/posts/default "JavaScript"
@@ -304,33 +304,34 @@
   https://benmccormick.org/rss/ "JavaScript"
 # }}}
 
-# ClojureScript ======================================== {{{
+# ClojureScript {{{
   http://swannodette.github.com/atom.xml "ClojureScript"
 # }}}
 
-# logo ======================================== {{{
+# logo {{{
   http://feeds.feedburner.com/IdentityDesigned "logo"
 # }}}
 
-# mobileo ===================================== {{{
+# mobileo {{{
   http://www.cloudfour.com/feed/ "mobileo"
   http://mobiforge.com/rss.xml "mobileo"
 # }}}
 
-# Must ======================================== {{{
+# Must {{{
   http://buzzdecafe.github.io/rss.xml "~Ramda author" "Must"
 # }}}
 
-# node.js ==================================== {{{
+# node.js {{{
   http://blog.nodejs.org/feed/ "node.js"
 # }}}
 
-# Performance ================================ {{{
+# Performance {{{
   http://feeds.igvita.com/igvita "Performance"
   https://speedcurve.com/blog/rss/ "Performance"
+  http://wpostats.com/feed.xml "Performance"
 # }}}
 
-# Python =================================== {{{
+# Python {{{
   http://jpadilla.com/rss "Python"
   http://lucumr.pocoo.org/feed.atom "Python" "Programming" "Rust" "Blog"
   http://nedbatchelder.com/blog/rss.xml "Python"
@@ -339,35 +340,35 @@
   http://feeds.feedblitz.com/hackersgonnahack "Python"
 # }}}
 
-# Tech ==================================== {{{
+# Tech {{{
   http://randsinrepose.com/feed/ "Tech"
   https://code.facebook.com/posts/rss "Tech"
   http://martinfowler.com/feed.atom "Tech"
   http://swannodette.github.com/atom.xml "Tech"
 # }}}
 
-# Typography ============================== {{{
+# Typography {{{
   http://www.khaledhosny.org/node/feed "Typography"
   http://blog.typekit.com/feed/ "Typography"
 # }}}
 
-# UI ======================================= {{{
+# UI {{{
   http://www.minimallyminimal.com/blog/rss.xml "UI"
   http://ignorethecode.net/blog/rss/ "UI"
   http://bjango.com/rss/articles.xml "UI"
   http://mrmrs.github.io/writing/feed.xml "UI" "CSS" "Front-end"
 # }}}
 
-# Unix ==================================== {{{
+# Unix {{{
   http://blog.sanctum.geek.nz/feed/ "Unix"
   https://michaelheap.com/category/unix-toolbox/feed/ "Unix"
 # }}}
 
-# usability =============================== {{{
+# usability {{{
   http://feeds.feedburner.com/baymard "usability"
 # }}}
 
-# UX ====================================== {{{
+# UX {{{
   http://feeds2.feedburner.com/konigi "UX"
   http://www.paciellogroup.com/blog/?feed=rss2 "UX"
   https://www.cennydd.com/writing?format=RSS "UX"
@@ -376,7 +377,7 @@
   https://grumpy.website/feed.xml "UX"
 # }}}
 
-# xmas ====================================== {{{
+# xmas {{{
   http://feeds.feedburner.com/24ways?format=xml "xmas"
   https://calendar.perfplanet.com/feed/ "xmas"
 # }}}
