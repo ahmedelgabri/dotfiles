@@ -68,9 +68,6 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/wincent/terminus'
   Plug 'https://github.com/wellle/targets.vim'
   Plug 'https://github.com/nelstrom/vim-visual-star-search'
-  Plug 'https://github.com/unblevable/quick-scope'
-  let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
   Plug 'https://github.com/christoomey/vim-tmux-navigator', plugins#If(executable('tmux') && !empty($TMUX))
   let g:tmux_navigator_disable_when_zoomed = 1
 
