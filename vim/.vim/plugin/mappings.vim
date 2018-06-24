@@ -77,10 +77,6 @@ nnoremap <Leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <Leader>l :set nu! rnu!<cr>
 nnoremap <Leader>p :t.<left><left>
 
-" Tab and Shift + Tab Circular buffer navigation
-nnoremap <tab>   :bnext<CR>
-nnoremap <S-tab> :bprevious<CR>
-
 " qq to record, Q to replay
 nnoremap Q @q
 
