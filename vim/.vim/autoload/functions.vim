@@ -135,6 +135,7 @@ let g:GabriNoColorcolumn = [
       \'conf',
       \'tags',
       \'vimfiler',
+      \'csv'
       \]
 function! functions#should_turn_off_colorcolumn() abort
   return &textwidth == 0
@@ -185,12 +186,11 @@ fun! functions#ProfileStart(...)
 endfun
 
 function! functions#NeatFoldText() abort
-  let l:raquo='»'
   let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
   let l:lines=(v:foldend - v:foldstart + 1) . ' lines'
   let l:first=substitute(getline(v:foldstart), '\v *', '', '')
   let l:dashes=substitute(v:folddashes, '-', l:foldchar, 'g')
-  return l:raquo . l:dashes . l:foldchar . l:foldchar . l:lines . ': ' . l:first
+  return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
 function! functions#setupCompletion() abort

@@ -107,7 +107,7 @@ set concealcursor=n                   " conceal in [n]ormal only
 if has('windows')
   set fillchars=diff:⣿                " BOX DRAWINGS
   set fillchars+=vert:┃               " HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-  set fillchars+=fold:·
+  set fillchars+=fold:─
 endif
 
 " Configure fold status text
