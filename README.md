@@ -9,20 +9,21 @@ For setting up development environment on new Mac. The config is managed by
 
 These are the main configs:
 
-* [Homebrew](https://brew.sh/) to manage installing most of the dependencies, including apps using
-  [Cask](https://github.com/caskroom/homebrew-cask)
-* [NeoMutt](https://www.neomutt.org/) _improved [Mutt](http://www.mutt.org/)_ for reading emails
-* [tmux](http://tmux.sourceforge.net/) 2.3 or later
-* [Neovim](https://neovim.io) or [Vim](http://www.vim.org/) 8.0 or later with Ruby and Python
-  support
-* [Zsh](http://www.zsh.org/)
-* [Git](http://git-scm.com/)
-* [iTerm2](http://www.iterm2.com/)
-* [newsboat](http://newsboat.org/) for RSS
-* [weechat](https://weechat.org/) IRC client
-* [hammerspoon](http://www.hammerspoon.org/)
-* [Python](https://www.python.org/)
-* [Ruby](https://www.ruby-lang.org/)
+- [Homebrew](https://brew.sh/) to manage installing most of the dependencies,
+  including apps using [Cask](https://github.com/caskroom/homebrew-cask)
+- [NeoMutt](https://www.neomutt.org/) _improved [Mutt](http://www.mutt.org/)_
+  for reading emails
+- [tmux](http://tmux.sourceforge.net/) 2.3 or later
+- [Neovim](https://neovim.io) or [Vim](http://www.vim.org/) 8.0 or later with
+  Ruby and Python support
+- [Zsh](http://www.zsh.org/)
+- [Git](http://git-scm.com/)
+- [iTerm2](http://www.iterm2.com/)
+- [newsboat](http://newsboat.org/) for RSS
+- [weechat](https://weechat.org/) IRC client
+- [hammerspoon](http://www.hammerspoon.org/)
+- [Python](https://www.python.org/)
+- [Ruby](https://www.ruby-lang.org/)
 
 ## Installation
 
@@ -38,8 +39,8 @@ $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.do
 
 ### Notes
 
-* Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all personal related info
-  there
+- Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all
+  personal related info there
 
 For `gitconfig.local` these info should be in that file
 
