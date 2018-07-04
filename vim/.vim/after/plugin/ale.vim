@@ -7,6 +7,7 @@ endif
 let g:ale_fix_on_save = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
+let g:ale_list_window_size = 5
 let g:ale_sign_error = functions#GetIcon('linter_error')
 let g:ale_sign_warning = g:ale_sign_error
 let g:ale_sign_style_error  = functions#GetIcon('linter_style')
