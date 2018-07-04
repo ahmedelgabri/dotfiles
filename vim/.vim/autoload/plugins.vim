@@ -114,6 +114,7 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/atelierbram/Base2Tone-vim'
   " minimal
   Plug 'https://github.com/andreypopp/vim-colors-plain'
+  " Plug 'https://github.com/NerdyPepper/vim-colors-plain'
   Plug 'https://github.com/owickstrom/vim-colors-paramount'
   " }}}
 

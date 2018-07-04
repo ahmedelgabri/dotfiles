@@ -60,7 +60,7 @@ if s:summerNight || s:winterNight
   endtry
 else
   try
-    colorscheme paramount
+    colorscheme plain
   catch
   endtry
 endif
