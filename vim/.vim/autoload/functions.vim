@@ -135,7 +135,8 @@ let g:GabriNoColorcolumn = [
       \'conf',
       \'tags',
       \'vimfiler',
-      \'csv'
+      \'dos',
+      \'json'
       \]
 function! functions#should_turn_off_colorcolumn() abort
   return &textwidth == 0
