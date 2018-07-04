@@ -87,4 +87,4 @@ macro pager A ,@aoh= "toggle alternative order"
 
 ## Make quick html view macro
 bind index,pager V  noop  ## Unbinds V from version
-macro index,pager V "<view-attachments><search>html<enter><view-mailcap><exit>"
+macro index,pager V "<view-attachments><search>html<enter><view-mailcap><exit>" "Open html email in browser"
