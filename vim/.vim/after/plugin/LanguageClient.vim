@@ -45,3 +45,10 @@ if !has('nvim')
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
   aug END
 end
+
+aug lang_client_mappings
+  au!
+  au User LanguageClientBufReadPost nnoremap <buffer> K :call LanguageClient#textDocument_hover()<CR>
+  au User LanguageClientBufReadPost nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
+  au User LanguageClientBufReadPost nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+augroup END
