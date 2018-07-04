@@ -94,9 +94,10 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/reasonml-editor/vim-reason-plus'
   Plug 'https://github.com/jez/vim-github-hub'
   Plug 'https://github.com/sheerun/vim-polyglot'
-  let g:polyglot_disabled = ['javascript', 'jsx']
+  let g:polyglot_disabled = ['javascript', 'jsx', 'markdown']
 
   Plug 'https://github.com/chemzqm/vim-jsx-improve'
+  Plug 'https://github.com/mzlogin/vim-markdown-toc'
   Plug 'https://github.com/direnv/direnv.vim'
   " Linters & Code quality {{{
   Plug 'https://github.com/w0rp/ale', { 'do': 'yarn global add prettier' }
