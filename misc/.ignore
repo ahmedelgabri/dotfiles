@@ -20,4 +20,5 @@ cache
 *.jpeg
 *.gif
 *.spl
+*.jar
 .DS_Store
