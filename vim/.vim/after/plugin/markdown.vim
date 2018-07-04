@@ -1,8 +1,19 @@
-let g:vim_markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=json', 'ruby', 'sass', 'scss=sass', 'xml', 'html', 'python', 'stylus=css', 'less=css']
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_json_frontmatter = 1
-let g:vim_markdown_no_extensions_in_markdown = 1
+let g:markdown_fenced_languages = [
+      \'css',
+      \'erb=eruby',
+      \'javascript',
+      \'js=javascript',
+      \'jsx=javascript.jsx',
+      \'json=json',
+      \'ruby',
+      \'sass',
+      \'scss=sass',
+      \'xml',
+      \'html',
+      \'python',
+      \'stylus=css',
+      \'less=css'
+      \]
 
 let g:goyo_height = '95%'
 let g:goyo_width = '100'
