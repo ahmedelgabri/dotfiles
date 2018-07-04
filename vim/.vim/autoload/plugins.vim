@@ -81,7 +81,7 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
   Plug 'https://github.com/othree/csscomplete.vim'
   if has('nvim')
-    Plug 'https://github.com/roxma/nvim-completion-manager'
+    Plug 'https://github.com/deanmorin/nvim-completion-manager', { 'branch': 'python37' }
     Plug 'https://github.com/roxma/nvim-cm-tern', plugins#If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
     Plug 'https://github.com/Shougo/neco-vim'
   endif
