@@ -1,8 +1,10 @@
 -- https://github.com/mhartington/dotfiles/blob/7dafb67c7be40f373e20c3f443216347c20534ea/hammerspoon/init.lua
 local modalKey = {'alt'}
 local focusKeys = {
-  -- [c]hrome
-  c='Google Chrome',
+  -- [g]oogle chrome
+  -- becasue it conflicts with fzf alt+c
+  -- TODO: look into hyper mode?
+  g='Google Chrome',
   -- [b]rowser (main)
   b='Google Chrome Canary',
   -- [s]lack
@@ -10,6 +12,7 @@ local focusKeys = {
   -- [i]term
   i='iTerm',
   -- [k]itty
+  -- CTRL+space='Kitty',
   k='Kitty',
   -- [t]witter/weetbot
   t='Tweetbot',
