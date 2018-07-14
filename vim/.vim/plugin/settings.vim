@@ -51,6 +51,8 @@ endif
 set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 
 set completeopt+=menuone
+set completeopt+=noinsert
+set completeopt-=preview
 
 set lazyredraw                        " don't bother updating screen during macro playback
 

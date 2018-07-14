@@ -195,41 +195,47 @@ function! functions#NeatFoldText() abort
 endfunction
 
 function! functions#setupCompletion() abort
-  " Some crazy magic to make nvim-completion-manager & UltiSnips work nicely together using `<Tab>`
-  " It doesn't work when added to plugin/after/ultisnips.vim so for now it's here
-  " https://github.com/roxma/nvim-completion-manager/issues/12#issuecomment-284196219
-  let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-  let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
-  let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
-  let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
-  let g:UltiSnipsRemoveSelectModeMappings = 0
+  if has('nvim') && has('python3')
+    " enable ncm2 for all buffer
+    autocmd! BufEnter * call ncm2#enable_for_buffer()
+    autocmd! TextChangedI * call ncm2#auto_trigger()
 
-  vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
-  inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
+    let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+    let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
+    let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
+    let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
+    let g:UltiSnipsRemoveSelectModeMappings = 0
 
-  imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
-  imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
+    inoremap <silent> <c-u> <c-r>=ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)")<cr>
 
-  " Why do I have \<CR>\<Plug>AutoPairsReturn instead of just <CR>? And why do
-  " I set g:AutoPairsReturn here? Check
-  " https://github.com/jiangmiao/auto-pairs/issues/91#issuecomment-241692588
-  if exists('g:AutoPairsLoaded')
-    let g:AutoPairsMapCR = 0
+    vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
+    inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
+
+    imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
+    imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
+
+    " Why do I have \<CR>\<Plug>AutoPairsReturn instead of just <CR>? And why do
+    " I set g:AutoPairsReturn here? Check
+    " https://github.com/jiangmiao/auto-pairs/issues/91#issuecomment-241692588
+    if exists('g:AutoPairsLoaded')
+      let g:AutoPairsMapCR = 0
+    endif
+
+    imap <expr> <CR> pumvisible() && empty(v:completed_item) ? "\<C-y>\<Plug>(expand_or_cr)" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
+    imap <expr> <Plug>(expand_or_cr) ncm2_snipmate#expand_or("", 'n') ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
+    " imap <expr> <Plug>(expand_or_cr) ncm2_ultisnips#completed_is_snippet() ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
+
+    xmap <Tab> <Plug>(ultisnips_expand)
+    smap <Tab> <Plug>(ultisnips_expand)
+
+    vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
+    inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
+
+    xmap <S-Tab> <Plug>(ultisnips_backward)
+    smap <S-Tab> <Plug>(ultisnips_backward)
+
+    imap <C-Space> <Plug>(ncm2_manual_trigger)
   endif
-  imap <expr> <CR> (pumvisible() ? "\<C-y>\<Plug>(expand_or_cr)" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>")
-  imap <expr> <Plug>(expand_or_cr) (cm#completed_is_snippet() ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>")
-
-  xmap <Tab> <Plug>(ultisnips_expand)
-  smap <Tab> <Plug>(ultisnips_expand)
-
-  vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-  inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-
-  xmap <S-Tab> <Plug>(ultisnips_backward)
-  smap <S-Tab> <Plug>(ultisnips_backward)
-
-  inoremap <silent> <C-u> <C-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
-  imap <C-Space> <Plug>(cm_force_refresh)
 endfunction
 
 

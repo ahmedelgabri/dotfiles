@@ -80,10 +80,19 @@ function! plugins#loadPlugins() abort
   " Autocomplete {{{
   Plug 'https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash ./install.sh' }
   Plug 'https://github.com/othree/csscomplete.vim'
-  if has('nvim')
-    Plug 'https://github.com/deanmorin/nvim-completion-manager', { 'branch': 'python37' }
-    Plug 'https://github.com/roxma/nvim-cm-tern', plugins#If(!executable('flow'), { 'do': 'yarn global add tern && yarn' })
-    Plug 'https://github.com/Shougo/neco-vim'
+  if has('nvim') && has('python3')
+    Plug 'https://github.com/ncm2/ncm2'
+    Plug 'https://github.com/roxma/nvim-yarp'
+    Plug 'https://github.com/ncm2/ncm2-path'
+    Plug 'https://github.com/ncm2/ncm2-tmux'
+    Plug 'https://github.com/ncm2/ncm2-bufword'
+    Plug 'https://github.com/ncm2/ncm2-github'
+    Plug 'https://github.com/ncm2/ncm2-cssomni'
+    Plug 'https://github.com/ncm2/ncm2-html-subscope'
+    Plug 'https://github.com/ncm2/ncm2-markdown-subscope'
+    Plug 'https://github.com/ncm2/ncm2-ultisnips'
+    Plug 'https://github.com/jsfaint/ncm2-vim' | Plug 'https://github.com/Shougo/neco-vim'
+    Plug 'https://github.com/ncm2/ncm2-tern', plugins#If(!executable('flow') && !executable('tsc'), { 'do': 'yarn global add tern && yarn' })
   endif
   " }}}
 
