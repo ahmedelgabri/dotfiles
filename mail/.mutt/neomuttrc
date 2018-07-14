@@ -1,2 +1,2 @@
 source ./muttrc
-lua-source $DOTFILES/mail/.mutt/accounts/init.lua.private
+lua-source $DOTFILES/mail/.mutt/accounts/init.lua
