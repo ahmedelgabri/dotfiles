@@ -9,6 +9,8 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/dev"
+export PERSONAL_STORAGE="${HOME}/Box Sync"
+export PERSONAL_ENVS="${PERSONAL_STORAGE}/dotfiles/zsh_personal"
 export OS=$(uname)
 # export NERD_FONTS=true
 

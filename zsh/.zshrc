@@ -185,10 +185,18 @@ if [ -e /etc/motd ]; then
 fi
 
 ##############################################################
+# Personal ENV variables
+##############################################################
+
+[ -f ${PERSONAL_ENVS} ] && source ${PERSONAL_ENVS} || echo "Personal ENV variables are not loaded";
+
+##############################################################
 # Custom completions init.
 ##############################################################
 
 [ -f ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh ] && source ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh
+
+(( $+commands[jira] )) && eval "$(jira --completion-script-zsh)"
 
 ##############################################################
 # LOCAL.
