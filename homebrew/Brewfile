@@ -2,15 +2,16 @@
 
 cask_args appdir: '/Applications'
 
-tap "homebrew/bundle"
-tap "homebrew/services"
-tap "homebrew/versions"
+tap "ahmedelgabri/homebrew-battery"
 tap "caskroom/cask"
 tap "caskroom/fonts"
 tap "caskroom/versions"
-tap "universal-ctags/universal-ctags"
+tap "homebrew/bundle"
+tap "homebrew/services"
+tap "homebrew/versions"
+tap "neomutt/homebrew-neomutt"
 tap "tavianator/tap"
-tap "ahmedelgabri/homebrew-battery"
+tap "universal-ctags/universal-ctags"
 
 brew "git"
 brew "python"

@@ -130,6 +130,7 @@ export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d
 
 export HOMEBREW_INSTALL_BADGE="⚽️"
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_FORCE_BREWED_GIT=1
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 # `cd ~df` or `z ~df`
 # hash -d df=~/.dotfiles
