@@ -128,7 +128,7 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Git {{{
-  Plug 'https://github.com/airblade/vim-gitgutter'
+  Plug 'https://github.com/mhinz/vim-signify'
   Plug 'https://github.com/lambdalisue/vim-gista'
   Plug 'https://github.com/tpope/vim-fugitive'
   Plug 'https://github.com/tpope/vim-rhubarb'

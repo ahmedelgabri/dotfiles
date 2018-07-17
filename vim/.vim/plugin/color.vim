@@ -10,19 +10,13 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
-        \| hi! GitGutterAdd ctermbg=None guifg=green
-        \| hi! GitGutterChange ctermbg=None guifg=orange
-        \| hi! GitGutterDelete ctermbg=None guifg=red
-        \| hi! GitGutterChangeDelete ctermbg=None guifg=DarkRed
         \| hi! LineNr ctermbg=None guibg=None
-
-
 
   autocmd ColorScheme codedark,plain hi! link Error ErrorMsg
         \| hi! link ALEError ErrorMsg
         \| hi! link ALEErrorSign ErrorMsg
-        \| hi! link ALEWarning GitGutterChange
-        \| hi! link ALEWarningSign GitGutterChange
+        \| hi! link ALEWarning DiffChange
+        \| hi! link ALEWarningSign DiffChange
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal
         \| hi! link StartifyFile Directory

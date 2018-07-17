@@ -21,9 +21,7 @@ function! statusline#fileSize() abort
 endfunction
 
 function! statusline#getDiffColors() abort
-  return exists(':GitGutter') && g:colors_name !=# 'plain' ?
-        \ ['%#GitGutterDelete#', '%#GitGutterChange#', '%#GitGutterAdd#']
-        \ : ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
+  return ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
 endfunction
 
 " For a more fancy ale statusline
@@ -61,13 +59,13 @@ endfunction
 
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
-function! statusline#GetHunks() abort
-  if !exists('*GitGutterGetHunkSummary')
+function! statusline#GetHunks(list) abort
+  if len(a:list) <= 0
     return ''
   endif
 
   let l:symbols = ['+', '-', '~']
-  let [l:added, l:modified, l:removed] = GitGutterGetHunkSummary()
+  let [l:added, l:modified, l:removed] = a:list
   let l:stats = [l:added, l:removed, l:modified]  " reorder
   let l:hunkline = ''
 
