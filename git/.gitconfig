@@ -205,6 +205,7 @@
 [rebase]
   autosquash = true
   instructionFormat = [%cn <%ce> %G?] %s
+  autoStash = true
 
 [include]
   path = ~/.gitconfig.local
