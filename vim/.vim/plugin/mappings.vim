@@ -43,10 +43,10 @@ nnoremap Y y$
 
 " https://twitter.com/vimgifs/status/913390282242232320
 " :h i_CTRL-G_u
-inoremap . .<c-g>u
-inoremap ? ?<c-g>u
-inoremap ! !<c-g>u
-inoremap , ,<c-g>u
+autocmd! FileType markdown,text inoremap <buffer> . .<c-g>u
+autocmd! FileType markdown,text inoremap <buffer> ? ?<c-g>u
+autocmd! FileType markdown,text inoremap <buffer> ! !<c-g>u
+autocmd! FileType markdown,text inoremap <buffer> , ,<c-g>u
 
 " Disable arrow keys (hardcore)
 imap <up>    <nop>
