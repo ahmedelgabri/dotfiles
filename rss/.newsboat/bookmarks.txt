@@ -16,3 +16,4 @@ https://www.johndcook.com/blog/2009/12/23/why-programmers-are-not-paid-in-propor
 https://kadekillary.work/post/cli-4-ds/ COMMAND LINE TRICKS FOR DATA SCIENTISTS
 https://www.integralist.co.uk/posts/questions-when-interviewing/ Interview Topics
 https://zachholman.com/talk/utc-is-enough-for-everyone-right UTC is enough for everyone ...right?
+https://shapeshed.com/from-osx-to-arch-linux/ From OSX to Arch Linux
