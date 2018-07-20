@@ -67,9 +67,7 @@ fi
 # GLOBAL CONFIG
 ##############################################################
 
-if [ -n "$TMUX" ]; then
-  export TERM=tmux-256color
-else
+if [ ! -n "$TMUX" ]; then
   export TERM=xterm-256color
 fi
 
