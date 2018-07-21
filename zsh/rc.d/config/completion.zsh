@@ -12,9 +12,6 @@ if [[ ${TERM} == 'dumb' ]]; then
   return 1
 fi
 
-# add the completions to the fpath
-fpath=($ZPLUG_REPOS/zsh-users/zsh-completions/zsh-completions.plugin.zsh ${fpath})
-
 # load and initialize the completion system
 autoload -Uz compinit && compinit -C -d "${ZDOTDIR:-${HOME}}/${zcompdump_file:-.zcompdump}"
 
