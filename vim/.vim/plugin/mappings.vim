@@ -109,8 +109,8 @@ endif
 nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>
 nnoremap _= :call functions#Preserve("normal gg=G")<CR>
 
-map <silent> <Leader>hu :call functions#HtmlUnEscape()<CR>
-map <silent> <Leader>he :call functions#HtmlEscape()<CR>
+vmap <silent> <Leader>hu :call functions#HtmlUnEscape()<CR>
+vmap <silent> <Leader>he :call functions#HtmlEscape()<CR>
 
 " maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 nnoremap <silent> gof :call functions#OpenFileFolder()<CR>
