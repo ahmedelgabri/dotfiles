@@ -15,6 +15,14 @@ let g:vimwiki_list = [{
       \ 'syntax': 'markdown',
       \ 'ext': '.md',
       \ 'auto_toc': 1,
+      \ 'nested_syntaxes' : {
+      \ 'bash': 'sh',
+      \ 'html': 'html',
+      \ 'javascript': 'javascript.jsx',
+      \ 'python': 'python',
+      \ 'sh': 'sh',
+      \ 'zsh': 'zsh',
+      \ },
       \}]
 
 call vimwiki#vars#init()

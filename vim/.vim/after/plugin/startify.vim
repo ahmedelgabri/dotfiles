@@ -62,11 +62,13 @@ let g:startify_list_order = [
       \ ['   MRU'], 'files',
       \ ['   Bookmarks:'], 'bookmarks',
       \ ]
+
 let g:startify_skiplist = [
       \ 'COMMIT_EDITMSG',
       \ '^/tmp',
       \ escape(fnamemodify(resolve($VIMRUNTIME), ':p'), '\') .'doc',
       \ 'plugged/.*/doc',
+      \ '.*/vimwiki/.*'
       \ ]
 
 augroup MyStartify
