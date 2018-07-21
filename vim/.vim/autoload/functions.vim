@@ -223,7 +223,7 @@ function! functions#setupCompletion() abort
     endif
 
     imap <expr> <CR> pumvisible() && empty(v:completed_item) ? "\<C-y>\<Plug>(expand_or_cr)" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
-    imap <expr> <Plug>(expand_or_cr) ncm2_snipmate#expand_or("", 'n') ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
+    imap <expr> <Plug>(expand_or_cr) ncm2_ultisnips#expand_or("", 'n') ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
     " imap <expr> <Plug>(expand_or_cr) ncm2_ultisnips#completed_is_snippet() ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
 
     xmap <Tab> <Plug>(ultisnips_expand)
