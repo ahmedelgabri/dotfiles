@@ -27,8 +27,8 @@
   commit = 227 bold
 
 [color "status"]
-  added = yellow
-  changed = green
+  added = green
+  changed = yellow
   untracked = red
 
 [color "diff-highlight"]
