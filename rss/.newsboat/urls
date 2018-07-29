@@ -170,6 +170,7 @@
   https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
   https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
   https://bluz71.github.io/feed.xml "Vim" "Zsh"
+  https://jacky.wtf/feeds/articles.xml "Vim" "Programming"
 # }}}
 
 # Browsers {{{
