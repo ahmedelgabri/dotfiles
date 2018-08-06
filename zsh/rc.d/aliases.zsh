@@ -8,6 +8,7 @@ alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias mv="${aliases[mv]:-mv} -i"
 alias rm="${aliases[rm]:-rm} -i"
 alias type='type -a'
+alias which='which -a'
 
 if (( $+commands[htop] )); then
   alias top=htop
@@ -33,7 +34,6 @@ alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
 alias flushdns="sudo killall -HUP mDNSResponder"
-alias listPath='echo $PATH | tr -s ":" "\n" '
 if (( $+commands[jq] )) then;
   alias formatJSON='jq .'
 else
