@@ -1,14 +1,3 @@
-export XDG_CONFIG_HOME="${HOME}/.config"
-export DOTFILES="${HOME}/.dotfiles"
-export GOPATH="${HOME}/.go"
-export PROJECTS="${HOME}/Sites/dev"
-export PERSONAL_STORAGE="${HOME}/Box Sync"
-export PERSONAL_ENVS="${PERSONAL_STORAGE}/dotfiles/zsh_personal"
-export OSTYPE=$(uname -s)
-# export NERD_FONTS=true
-
-[[ -x /usr/local/bin/brew ]] && export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
-
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath manpath mailpath path
 
