@@ -148,7 +148,7 @@ SYMBOLS=(
 
 # Arrays in zsh starts from 1
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
-[ -n "$NERD_FONTS" ] && export PURE_GIT_BRANCH=" " || export PURE_GIT_BRANCH=" "
+export PURE_GIT_BRANCH=" "
 
 ##############################################################
 # Python

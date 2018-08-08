@@ -6,8 +6,4 @@ ON_ICON=""
 OFF_ICON'⨉'
 TAIL="#[fg=colour237] • "
 
-if [ -n "$NERD_FONTS" ]; then
-  [ -n "$TMUX_WIFI" ] &&  ON_ICON="直 " || echo '睊'
-fi
-
 [ -n "$TMUX_WIFI" ] && echo "$ON_ICON$TMUX_WIFI$TAIL" || echo "#[fg=red]$OFF_ICON$TAIL"

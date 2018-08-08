@@ -273,16 +273,15 @@ function! functions#move_down() abort range
 endfunction
 
 function! functions#GetIcon(key) abort
-  let l:NERD_FONT_ICONS = {
-        \'paste': [' ', '⍴'],
-        \'spell': [' ', '✎'],
-        \'branch': ['  ', '  '],
-        \'linter_error': [' ', '×'],
-        \'linter_style': [' ', '●'],
-        \'lock': [' ', ' '],
+  let l:ICONS = {
+        \'paste': '⍴',
+        \'spell': '✎',
+        \'branch': '  ',
+        \'linter_error': '×',
+        \'linter_style': '●',
+        \'lock': ' ',
         \}
 
-  let l:icons = get(l:NERD_FONT_ICONS, a:key, [])
-  return has_key(l:NERD_FONT_ICONS, a:key) ? !empty($NERD_FONTS) ? l:icons[0] : l:icons[1] : a:key
+  return get(l:ICONS, a:key, a:key)
 endfunction
 

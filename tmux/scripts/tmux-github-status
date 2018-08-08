@@ -1,33 +1,18 @@
 #!/bin/bash
 GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.status')
 
-if [ -n "$NERD_FONTS" ]; then
-  INDICATIOR="  #[fg=colour237]• "
-  case $GITHUB_STATUS in
-    ma*)
-      STATUS="#[fg=red]$INDICATIOR"
-      ;;
-    mi*)
-      STATUS="#[fg=yellow]$INDICATIOR"
-      ;;
-    *)
-      STATUS=""
-      ;;
-  esac
-else
-  INDICATIOR=" #[fg=colour237]• "
-  case $GITHUB_STATUS in
-    ma*)
-      STATUS="#[fg=red]⨉$INDICATOR"
-      ;;
-    mi*)
-      STATUS="#[fg=yellow]~$INDICATIOR"
-      ;;
-    *)
-      STATUS=""
-      ;;
-  esac
-fi
+INDICATIOR=" #[fg=colour237]• "
+case $GITHUB_STATUS in
+  ma*)
+    STATUS="#[fg=red]⨉$INDICATOR"
+    ;;
+  mi*)
+    STATUS="#[fg=yellow]~$INDICATIOR"
+    ;;
+  *)
+    STATUS=""
+    ;;
+esac
 
 echo "$STATUS"
 
