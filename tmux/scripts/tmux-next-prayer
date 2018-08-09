@@ -6,15 +6,25 @@ import sys
 import os
 import time
 from datetime import datetime, timedelta
+from random import choice
 
 try:
-    from urllib.request import urlopen
+    from urllib.request import urlopen, HTTPError, Request
 except ImportError:
-    from urllib2 import urlopen
+    from urllib2 import urlopen, HTTPError
+    from urllib2 import Request
 
 
 RED = '#[fg=red]' if os.environ['TMUX'] else '\033[1;31;40m'
 prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']
+agents = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+    'Mozilla'
+]
 
 # https://aladhan.com/prayer-times-api#GetCalendarByCitys
 city = sys.argv[1] if len(sys.argv) > 1 else 'amsterdam'
@@ -29,7 +39,20 @@ def get_data(day_time):
             city=city, country=country, method=method, tune=tune,
             time=int(time.mktime(day_time.timetuple())))
 
-    response = urlopen(url)
+    try:
+        req = Request(
+            url,
+            data=None,
+            headers={ 'User-Agent': choice(agents) }
+        )
+        response = urlopen(req)
+    except HTTPError as err:
+       if err.code == 403:
+           print(err)
+       else:
+           print("Something happened! Error code", err.code)
+       return
+
     data = json.load(response)['data']
 
     return {
