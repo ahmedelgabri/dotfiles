@@ -77,7 +77,7 @@
   lastchange = log -p --follow -n 1
   ll = log --cc
   lnm = l --no-merges
-  patch = !git --no-pager diff --no-color
+  patch = !git --no-pager diff --no-color | pbcopy | echo "Patch copied to clipboard"
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
   recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
   recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
@@ -87,6 +87,7 @@
   undo = reset --soft HEAD^
   who = shortlog -sne
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
+  unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
 
 [branch]
   autosetupmerge = always
