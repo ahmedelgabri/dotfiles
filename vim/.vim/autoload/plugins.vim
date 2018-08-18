@@ -40,7 +40,6 @@ function! plugins#loadPlugins() abort
 
   Plug 'https://github.com/SirVer/ultisnips'
   Plug 'https://github.com/jiangmiao/auto-pairs'
-  Plug 'https://github.com/duggiefresh/vim-easydir'
   if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
     set runtimepath+=~/.zplugin/plugins/junegunn---fzf
     Plug 'https://github.com/junegunn/fzf.vim'
