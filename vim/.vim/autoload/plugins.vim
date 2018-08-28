@@ -22,6 +22,7 @@ endfunction
 function! plugins#loadPlugins() abort
   call plug#begin(s:VIM_PLUG_FOLDER)
   " General {{{
+  Plug 'https://github.com/andymass/vim-matchup'
   Plug 'https://github.com/tpope/vim-sensible', plugins#If(!has('nvim'))
   if !has('nvim') " For vim
     if exists('&belloff')
@@ -52,7 +53,6 @@ function! plugins#loadPlugins() abort
         \| Plug 'https://github.com/Shougo/vimfiler.vim', { 'on': ['VimFiler', 'VimFilerExplorer'] }
   Plug 'https://github.com/tpope/tpope-vim-abolish'
   Plug 'https://github.com/tpope/vim-apathy'
-  Plug 'https://github.com/tpope/vim-characterize'
   Plug 'https://github.com/tpope/vim-commentary'
   Plug 'https://github.com/tpope/vim-eunuch'
   Plug 'https://github.com/tpope/vim-repeat'
@@ -105,7 +105,6 @@ function! plugins#loadPlugins() abort
   let g:polyglot_disabled = ['javascript', 'jsx', 'markdown']
 
   Plug 'https://github.com/chemzqm/vim-jsx-improve'
-  Plug 'https://github.com/mzlogin/vim-markdown-toc'
   Plug 'https://github.com/direnv/direnv.vim'
   " Linters & Code quality {{{
   Plug 'https://github.com/w0rp/ale', { 'do': 'yarn global add prettier' }
@@ -119,7 +118,6 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/rakr/vim-two-firewatch'
   Plug 'https://github.com/logico-dev/typewriter'
   Plug 'https://github.com/agreco/vim-citylights'
-  Plug 'https://github.com/atelierbram/Base2Tone-vim'
   " minimal
   Plug 'https://github.com/andreypopp/vim-colors-plain'
   " Plug 'https://github.com/NerdyPepper/vim-colors-plain'
@@ -137,6 +135,8 @@ function! plugins#loadPlugins() abort
   Plug 'https://github.com/junegunn/goyo.vim', { 'on': ['Goyo']}
   Plug 'https://github.com/junegunn/limelight.vim', { 'on': ['Limelight'] }
   " }}}
+
+  Plug 'https://github.com/wakatime/vim-wakatime', plugins#If(getcwd() =~ 'lightspeed')
   call plug#end()
 endfunction
 

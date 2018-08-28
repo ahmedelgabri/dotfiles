@@ -3,6 +3,7 @@ if exists('g:ncm2_loaded')
 endif
 
 let g:ncm2#popup_delay = 20
+let g:ncm2#matcher = 'substrfuzzy'
 
 set shortmess+=c
 

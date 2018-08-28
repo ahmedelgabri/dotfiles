@@ -32,6 +32,11 @@ if executable('rls')
   let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
 endif
 
+if executable('hie-wrapper')
+  " Requires https://github.com/haskell/haskell-ide-engine
+  let g:LanguageClient_serverCommands.haskell = ['hie-wrapper']
+endif
+
 augroup LanguageClientConfig
   autocmd!
   autocmd FileType javascript,javascript.jsx let g:LanguageClient_diagnosticsEnable = 0
