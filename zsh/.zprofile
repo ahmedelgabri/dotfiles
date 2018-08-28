@@ -30,6 +30,7 @@ cdpath=(
 # Set the list of directories that Zsh searches for programs.
 path=(
   ${DOTFILES}/bin(N-/)
+  ${HOME}/.local/bin(N-/)
   ./node_modules/.bin
   ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
   /usr/local/{bin,sbin}
