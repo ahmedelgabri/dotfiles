@@ -90,33 +90,20 @@ function! plugins#loadPlugins() abort
   " Autocompletion {{{
   call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': '!bash ./install.sh' })
   call minpac#add('https://github.com/othree/csscomplete.vim')
-  call minpac#add('https://github.com/ncm2/ncm2', { 'type': 'opt' })
-  call minpac#add('https://github.com/roxma/nvim-yarp', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-path', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-tmux', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-bufword', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-github', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-cssomni', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-html-subscope', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-ultisnips', { 'type': 'opt' })
-  call minpac#add('https://github.com/jsfaint/ncm2-vim', { 'type': 'opt' })
-  call minpac#add('https://github.com/Shougo/neco-vim', { 'type': 'opt' })
-  call minpac#add('https://github.com/ncm2/ncm2-tern', { 'type': 'opt', 'do': '!yarn global add tern && yarn' })
-
   if has('nvim') && has('python3')
-    silent! packadd ncm2
-    silent! packadd nvim-yarp
-    silent! packadd ncm2-path
-    silent! packadd ncm2-tmux
-    silent! packadd ncm2-bufword
-    silent! packadd ncm2-github
-    silent! packadd ncm2-cssomni
-    silent! packadd ncm2-html-subscope
-    silent! packadd ncm2-markdown-subscope
-    silent! packadd ncm2-utlisnips
-    silent! packadd ncm2-vim
-    silent! packadd neco-vim
+    call minpac#add('https://github.com/ncm2/ncm2')
+    call minpac#add('https://github.com/roxma/nvim-yarp')
+    call minpac#add('https://github.com/ncm2/ncm2-path')
+    call minpac#add('https://github.com/ncm2/ncm2-tmux')
+    call minpac#add('https://github.com/ncm2/ncm2-bufword')
+    call minpac#add('https://github.com/ncm2/ncm2-github')
+    call minpac#add('https://github.com/ncm2/ncm2-cssomni')
+    call minpac#add('https://github.com/ncm2/ncm2-html-subscope')
+    call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope')
+    call minpac#add('https://github.com/ncm2/ncm2-ultisnips')
+    call minpac#add('https://github.com/jsfaint/ncm2-vim')
+    call minpac#add('https://github.com/Shougo/neco-vim')
+    call minpac#add('https://github.com/ncm2/ncm2-tern', { 'type': 'opt', 'do': '!yarn global add tern && yarn' })
     if !executable('flow') && !executable('tsc')
       silent! packadd ncm2-tern
     endif
