@@ -14,5 +14,5 @@ augroup END
 
 xmap gs <plug>(GrepperOperator)
 vmap gs <Plug>(GrepperOperator)
-nnoremap \ :silent! packadd vim-grepper<cr> <BAR> :Grepper -side -tool rg -query --hidden<SPACE>
+nnoremap \ :silent! packadd vim-grepper<CR><BAR>:Grepper -side -tool rg -query --hidden<SPACE>
 " nnoremap \\ :Grepper -side -tool git -query<SPACE>

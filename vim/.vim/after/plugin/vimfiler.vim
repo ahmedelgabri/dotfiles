@@ -36,4 +36,8 @@ function! s:my_vimfiler_settings()
     nmap q <buffer> <Plug>(vimfiler_close)
 endfunction
 
+command! -nargs=* VimFiler :silent! packadd vimfiler.vim | VimFiler
+command! -nargs=* VimFilerExplorer :silent! packadd vimfiler.vim | VimFilerExplorer
+
 nnoremap <silent> <leader>f :VimFilerExplorer -find -parent<CR>
+
