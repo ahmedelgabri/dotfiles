@@ -74,6 +74,7 @@ brew "zsh"
 brew "ghc"
 brew "cabal-install"
 brew "haskell-stack"
+brew "graphviz"
 
 cask "1password-cli"
 cask "alfred"

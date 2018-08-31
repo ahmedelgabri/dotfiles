@@ -18,6 +18,7 @@ NPM_PACKAGES=(
 "tern"
 "overtime-cli"
 "rtm-cli"
+"dependency-cruiser"
 )
 
 for package in "${NPM_PACKAGES[@]}"; do
