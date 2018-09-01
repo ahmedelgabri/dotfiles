@@ -94,6 +94,11 @@ source ~/.zplugin/bin/zplugin.zsh
   zplugin light be5invis/Iosevka
 # }}}
 
+
+if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
+  kitty + complete setup zsh | source /dev/stdin
+fi
+
 ##############################################################
 # PLUGINS VARS & SETTINGS
 ##############################################################
