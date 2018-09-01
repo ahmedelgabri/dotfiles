@@ -19,7 +19,7 @@ setopt PUSHD_SILENT
 setopt PUSHD_TO_HOME
 
 # tab completing directory appends a slash
-setopt autoparamslash
+setopt AUTOPARAMSLASH
 
 #
 # Globbing and fds
