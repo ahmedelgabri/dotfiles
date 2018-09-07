@@ -14,7 +14,7 @@ function! plugins#loadPlugins() abort
     finish
   endif
 
-  command! -bar PackUpdate call plugins#init() | call minpac#update()
+  command! -bar PackUpdate call plugins#init() | call minpac#update() | call minpac#status()
   command! -bar PackClean  call plugins#init() | call minpac#clean()
 
   call minpac#init({ 'verbose': 3 })
