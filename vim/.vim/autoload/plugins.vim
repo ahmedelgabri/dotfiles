@@ -14,8 +14,9 @@ function! plugins#loadPlugins() abort
     finish
   endif
 
-  command! -bar PackUpdate call plugins#init() | call minpac#update() | call minpac#status()
-  command! -bar PackClean  call plugins#init() | call minpac#clean()
+  command! -bar PackUpdate call plugins#init() | call minpac#update('', {'do': 'call minpac#status()'})
+  command! -bar PackStatus call plugins#init() | call minpac#status()
+  command! -bar PackClean call plugins#init() | call minpac#clean()
 
   call minpac#init({ 'verbose': 3 })
   call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
@@ -92,7 +93,7 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Autocompletion {{{
-  call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': '!bash ./install.sh' })
+  call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': {-> system('bash install.sh')} })
   call minpac#add('https://github.com/othree/csscomplete.vim')
   if has('nvim') && has('python3')
     call minpac#add('https://github.com/ncm2/ncm2')
@@ -170,7 +171,7 @@ if !exists('*plugins#init')
     exec 'source ' . s:CURRENT_FILE
 
     if empty(glob(s:VIM_MINPAC_FOLDER))
-      call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update()
+      call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update('', {'do': 'quit'})
     else
       call plugins#loadPlugins()
     endif
