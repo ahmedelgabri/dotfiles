@@ -106,9 +106,6 @@ function! statusline#readOnly() abort
   endif
 endfunction
 
-function! statusline#fileprefix() abort
-endfunction
-
 function! statusline#filepath() abort
   let l:basename = expand('%:h')
   let l:filename = expand('%:t')
@@ -118,7 +115,7 @@ function! statusline#filepath() abort
   let l:diffColors = statusline#getDiffColors()
 
   if empty(l:prefix) && empty(l:filename)
-    return printf('%%4*%%f%%* %s%%m%%*', l:diffColors[2])
+    return printf('%%4* %%f%%* %s%%m%%*', l:diffColors[2])
   else
     return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:diffColors[2] : '%6*', l:filename)
   endif
