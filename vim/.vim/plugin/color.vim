@@ -10,7 +10,7 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
-        \| hi! LineNr ctermbg=None guibg=None
+        \| hi! LineNr ctermbg=NONE guibg=NONE
 
   autocmd ColorScheme codedark,plain hi! link Error ErrorMsg
         \| hi! link ALEError ErrorMsg

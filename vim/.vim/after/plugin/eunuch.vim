@@ -18,7 +18,7 @@ augroup eunuch_easydir
   au BufWritePre,FileWritePre * call <SID>create_and_save_directory()
 augroup END
 
-function <SID>create_and_save_directory()
+function! <SID>create_and_save_directory()
   let s:directory = expand('<afile>:p:h')
   if s:directory !~# '^\(scp\|ftp\|dav\|fetch\|ftp\|http\|rcp\|rsync\|sftp\|file\):'
   \ && !isdirectory(s:directory)

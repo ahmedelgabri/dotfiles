@@ -22,8 +22,12 @@ function! plugins#loadPlugins() abort
 
   " General {{{
   call minpac#add('https://github.com/andymass/vim-matchup')
+  call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
   if !has('nvim')
-    call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
+    " Must explicitly load this before vim-sensible, becasue vim-sensible will
+    " load match-it which we don't want. order is important.
+    " https://github.com/andymass/vim-matchup#matchit
+    silent! packadd vim-matchup
     silent! packadd vim-sensible
     if !has('nvim') " For vim
       if exists('&belloff')

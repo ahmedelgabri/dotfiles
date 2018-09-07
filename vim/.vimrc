@@ -18,12 +18,7 @@
                      " '=='
 
 let s:root=expand($DOTFILES.'/vim/.vim/')
-
-if !empty(glob(s:root))
-  let $VIMHOME=s:root
-else
-  let $VIMHOME=expand('~/.vim/')
-endif
+let $VIMHOME= empty(glob(s:root)) ? expand('~/.vim/') : s:root
 
 let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
 execute 'set packpath^='.$VIMHOME
