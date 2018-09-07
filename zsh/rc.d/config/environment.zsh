@@ -90,19 +90,7 @@ case $EDITOR in
      vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
        *) export MANPAGER='less' ;;
 esac
-export MANWIDTH=120
-
-#
-# Language
-#
-
-export LANG=en_US.UTF-8
-export LC_ALL=$LANG
-
-# 10ms for key sequences
-KEYTIMEOUT=1
-
-export GPG_TTY=$(tty)
+export MANWIDTH=120¬
 
 #
 # Less

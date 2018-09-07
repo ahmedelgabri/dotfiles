@@ -1,6 +1,9 @@
 # set -x
 # setopt NO_GLOBAL_RCS
 
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+
 # using prompt expansion and modifiers to get
 # https://github.com/filipekiss/dotfiles/commit/c7288905178be3e6c378cc4dea86c1a80ca60660#r29121191
 # man zshexpn

@@ -1,3 +1,5 @@
+export GPG_TTY=$(tty)
+
 # In order for gpg to find gpg-agent, gpg-agent must be running, and there must be an env
 # variable pointing GPG to the gpg-agent socket. This little script, which must be sourced
 # in your shell's init script (ie, .bash_profile, .zshrc, whatever), will either start
