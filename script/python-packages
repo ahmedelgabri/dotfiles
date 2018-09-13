@@ -8,14 +8,14 @@ PACKAGES=(
 "'python-language-server[all]'"
 "pipenv"
 "vobject" # for mutt & dump-ical.py script
+"black"
 )
 
 FLAGS=''
 
 for package in "${PACKAGES[@]}"; do
-  [[ $package == "pip" ]] && FLAGS="--upgrade" || FLAGS="--user"
-
-  pip2 install "$FLAGS" "$package" && pip3 install "$FLAGS" "$package"
+  [[ $package == "pip" ]] && FLAGS="--upgrade" || FLAGS="--user --upgrade"
+  [[ $package == "black" ]] && pip3 install "$FLAGS" "$package" || pip2 install "$FLAGS" "$package" && pip3 install "$FLAGS" "$package"
 done
 
 unset -v PACKAGES FLAGS

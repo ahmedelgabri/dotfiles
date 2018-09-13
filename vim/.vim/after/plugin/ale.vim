@@ -48,6 +48,9 @@ let g:ale_fixers = {
       \   'reason': [
       \       'refmt',
       \   ],
+      \   'python': [
+      \       'black',
+      \   ],
       \}
 
 " Don't auto fix (format) files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)

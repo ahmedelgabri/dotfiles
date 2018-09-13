@@ -18,7 +18,7 @@ def get_invitation_from_path(path):
 
 
 def person_string(c):
-    return "{} {}".format(c.params['CN'][0], "<%s>" % c.value.split(':')[1])
+    return "{} {}".format(c.params["CN"][0], "<%s>" % c.value.split(":")[1])
 
 
 def when_str_of_start_end(s, e):
@@ -36,21 +36,21 @@ def when_str_of_start_end(s, e):
 
 def pretty_print_invitation(invitation):
     event = invitation.vevent.contents
-    title = event['summary'][0].value
-    org = event['organizer'][0] if 'organizer' in event else None
-    invitees = event['attendee'] if 'attendee' in event else None
-    start = event['dtstart'][0].value
-    end = event['dtend'][0].value
-    location = event['location'][0].value if 'location' in event else None
-    description = event['description'][0].value if 'description' in event else ''
-    sequence = event['sequence'][0].value if 'sequence' in event else None
-    rrule = event['rrule'][0].value if 'rrule' in event else None
-    print("="*70)
+    title = event["summary"][0].value
+    org = event["organizer"][0] if "organizer" in event else None
+    invitees = event["attendee"] if "attendee" in event else None
+    start = event["dtstart"][0].value
+    end = event["dtend"][0].value
+    location = event["location"][0].value if "location" in event else None
+    description = event["description"][0].value if "description" in event else ""
+    sequence = event["sequence"][0].value if "sequence" in event else None
+    rrule = event["rrule"][0].value if "rrule" in event else None
+    print("=" * 70)
     if sequence is not None and int(sequence) > 0:
         print("MEETING UPDATE".center(70))
     else:
         print("MEETING INVITATION".center(70))
-    print("="*70)
+    print("=" * 70)
     print("Event:\n\t{}".format(title))
     if org:
         print("Organiser:\n\t{}".format(person_string(org)))
@@ -67,7 +67,7 @@ def pretty_print_invitation(invitation):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or sys.argv[1].startswith('-'):
+    if len(sys.argv) != 2 or sys.argv[1].startswith("-"):
         sys.stderr.write("Usage: %s <filename.ics>\n".format(sys.argv[0]))
         sys.exit(2)
     inv = get_invitation_from_path(sys.argv[1])
