@@ -1,0 +1,2 @@
+setlocal foldmethod=marker
+

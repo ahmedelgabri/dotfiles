@@ -1,4 +1,4 @@
-# vim:ft=zsh:foldmethod=marker:
+# vim:ft=zsh:
 
 ##############################################################
 # Profiling.

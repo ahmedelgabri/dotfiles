@@ -48,10 +48,9 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  call minpac#add('https://github.com/junegunn/fzf.vim', { 'type': 'opt' })
   if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
+    call minpac#add('https://github.com/junegunn/fzf.vim')
     set runtimepath^=~/.zplugin/plugins/junegunn---fzf
-    silent! packadd fzf.vim
   endif
   call minpac#add('https://github.com/Shougo/unite.vim')
   call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
@@ -77,14 +76,14 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/wincent/loupe')
   call minpac#add('https://github.com/wincent/terminus')
 
-  call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   if executable('tmux') && !empty($TMUX)
+    call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
     silent! packadd vim-tmux-navigator
     let g:tmux_navigator_disable_when_zoomed = 1
   endif
 
-  call minpac#add('https://github.com/VincentCordobes/vim-translate', {'type': 'opt'})
   if executable('trans')
+    call minpac#add('https://github.com/VincentCordobes/vim-translate', {'type': 'opt'})
     command! -nargs=* Translate :silent! packadd vim-translate | Translate
     command! -nargs=* TranslateReplace :silent! packadd vim-translate | TranslateReplace
     command! -nargs=* TranslateClear :silent! packadd vim-translate | TranslateClear
@@ -108,8 +107,8 @@ function! plugins#loadPlugins() abort
     call minpac#add('https://github.com/ncm2/ncm2-ultisnips')
     call minpac#add('https://github.com/jsfaint/ncm2-vim')
     call minpac#add('https://github.com/Shougo/neco-vim')
-    call minpac#add('https://github.com/ncm2/ncm2-tern', { 'type': 'opt', 'do': '!yarn global add tern && yarn' })
     if !executable('flow') && !executable('tsc')
+      call minpac#add('https://github.com/ncm2/ncm2-tern', { 'type': 'opt', 'do': '!yarn global add tern && yarn' })
       silent! packadd ncm2-tern
     endif
   endif
@@ -125,7 +124,9 @@ function! plugins#loadPlugins() abort
   let g:polyglot_disabled = ['javascript', 'jsx', 'markdown']
 
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')
-  call minpac#add('https://github.com/direnv/direnv.vim')
+  if executable('trans')
+    call minpac#add('https://github.com/direnv/direnv.vim')
+  endif
 
   " Linters & Code quality {{{
   call minpac#add('https://github.com/w0rp/ale', { 'do': '!yarn global add prettier' })
@@ -160,8 +161,8 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/owickstrom/vim-colors-paramount', { 'type': 'opt'  })
   " }}}
 
-  call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
   if getcwd() =~ 'lightspeed'
+    call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
     silent! packadd vim-wakatime
   endif
 endfunction

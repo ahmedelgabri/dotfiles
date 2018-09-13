@@ -198,8 +198,11 @@ endfunction
 function! functions#setupCompletion() abort
   if has('nvim') && has('python3')
     " enable ncm2 for all buffer
-    autocmd! BufEnter * call ncm2#enable_for_buffer()
-    autocmd! TextChangedI * call ncm2#auto_trigger()
+    augroup COMPLETION_SETUP
+      au!
+      autocmd BufEnter * call ncm2#enable_for_buffer()
+      autocmd TextChangedI * call ncm2#auto_trigger()
+    augroup END
 
     let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
     let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
