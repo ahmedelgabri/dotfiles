@@ -171,6 +171,8 @@
   https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
   https://bluz71.github.io/feed.xml "Vim" "Zsh"
   https://jacky.wtf/feeds/articles.xml "Vim" "Programming"
+  http://feeds.haacked.com/haacked "Blog" "Leadership"
+  https://infrequently.org/feed/ "Blog" "Web"
 # }}}
 
 # Browsers {{{
