@@ -37,10 +37,10 @@ if executable('hie-wrapper')
   let g:LanguageClient_serverCommands.haskell = ['hie-wrapper']
 endif
 
-augroup LanguageClientConfig
-  autocmd!
-  autocmd FileType javascript,javascript.jsx let g:LanguageClient_diagnosticsEnable = 0
-augroup END
+" augroup LanguageClientConfig
+"   autocmd!
+"   autocmd FileType javascript,javascript.jsx let g:LanguageClient_diagnosticsEnable = 0
+" augroup END
 
 if !has('nvim')
   aug VIM_COMPLETION
