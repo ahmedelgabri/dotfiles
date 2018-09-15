@@ -19,7 +19,6 @@ _darcs
 \.git
 \.gitignore
 
-\.vim
 README.md
 
 .+~          # emacs backup files

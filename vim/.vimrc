@@ -17,12 +17,11 @@
                      " |""|
                      " '=='
 
-let s:root=expand($DOTFILES.'/vim/.vim/')
-let $VIMHOME= empty(glob(s:root)) ? expand('~/.vim/') : s:root
+let $VIMHOME= has('nvim') ? expand('~/.config/nvim') : expand('~/.vim')
 
 let &runtimepath .= ','.$VIMHOME.','.$VIMHOME.'/after'
 execute 'set packpath^='.$VIMHOME
 
-if !empty(glob($VIMHOME.'/autoload/bootstrap.vim'))
+if !exists('*bootstrap#init')
   call bootstrap#init()
 endif
