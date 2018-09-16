@@ -44,6 +44,7 @@ alias work='mx lightspeed lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias apache="sudo apachectl "
+alias r="ranger" # overrides built-in r command
 
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
