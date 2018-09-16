@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if ! command -v vlc >/dev/null; then
-  vlc `cat ~/.newsboat/queue`
+  vlc `command cat ~/.newsboat/queue`
 else
-  open $(cat ~/.newsboat/queue | awk '{ print $1; }')
+  open $(command cat ~/.newsboat/queue | awk '{ print $1; }')
 fi
-cat /dev/null > ~/.newsboat/queue
+command cat /dev/null > ~/.newsboat/queue
