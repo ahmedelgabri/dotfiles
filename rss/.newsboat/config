@@ -20,6 +20,7 @@
   bookmark-autopilot yes
   show-read-feeds no
   text-width 120
+  external-url-viewer "urlview"
 
   feedlist-title-format "—[%u feeds with new articles]——%>——(%N %V)—"
   feedlist-format "%S %-80t %?d?- %-80d&? %> %U/%c"
@@ -31,7 +32,7 @@
 
   # Podcasts config
   download-path "~/Downloads/podcasts/%n"
-  player "vlc"
+  player "mpv"
 # }}}
 
 # download-full-page yes
@@ -39,28 +40,10 @@
 # notify-program "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
 
 ##-------- macros {{{
-##------------------------------------------------------
 ## Note: macro prefix key ( default: , )
-
-## open in cli web browser
-## macro o set browser "$BROWSERCLI %u"; open-in-browser ; set browser "$BROWSER %u"
-#macro o set browser "tmux split-window && tmux send-keys '$BROWSERCLI %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
-
-## read reddit comments with rtv (reddit terminal viewer)
-## macro r set browser "rtv -l %u"; open-in-browser ; set browser "$BROWSER %u"
-#macro r set browser "tmux split-window && tmux send-keys 'rtv -l %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
-
 ## add video or audio to play queue using mpv (requires: task-spooler, mpv, youtube-dl)
 #macro p set browser "tsp mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
 macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "open -g -a 'Google Chrome Canary' %u" ; quit
-
-## copy url to clipboard "yank"
-#macro y set browser "echo -n %u | xclip -selection clipboard"; open-in-browser ; set browser "$BROWSER %u"
-
-
-## read saved files
-## ranger: https://www.youtube.com/watch?v=qooLR8NmYKs
-#macro s set browser "tmux split-window && tmux send-keys 'ranger ~/.newsbeuter/saved_articles && tmux kill-pane\n'" ; open-in-browser ; set browser "$BROWSER %u"
 
 ## }}}
 
@@ -100,6 +83,7 @@ macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; 
   bind-key k up article
   bind-key B bookmark article
   bind-key O open-in-browser-and-mark-read
+  bind-key U show-urls
 # }}}
 
 # ignore-article "*" "title =~ \"Sponsor\""
