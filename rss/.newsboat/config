@@ -28,23 +28,24 @@
   articlelist-format "%?t?%-100t ?%T"
   notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
   datetime-format "%b %d %H:%M"
-  html-renderer "elinks -dump -force-html"
+  html-renderer "w3m -dump -T text/html"
 
   # Podcasts config
   download-path "~/Downloads/podcasts/%n"
   player "mpv"
 # }}}
 
-# download-full-page yes
-# bookmark-cmd /home/cirrus/scripts/newsbeuter_bookmarks_surfraw.sh
-# notify-program "/usr/bin/notify-send -h string:bgcolor:#000000 -h string:fgcolor:#46db18 -i ~/.icons/48arch.png 'Newsbeuter' -h string:fgcolor:#db18c9"
-
 ##-------- macros {{{
 ## Note: macro prefix key ( default: , )
-## add video or audio to play queue using mpv (requires: task-spooler, mpv, youtube-dl)
-#macro p set browser "tsp mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
-macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "open -g -a 'Google Chrome Canary' %u" ; quit
+## add video or audio to play queue using mpv (requires: mpv, youtube-dl)
+macro p set browser "mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
 
+# Play podcast
+macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
+
+# read reddit comments with rtv (reddit terminal viewer)
+# macro r set browser "rtv -l %u"; open-in-browser ; set browser "$BROWSER %u"
+macro r set browser "tmux split-window && tmux send-keys 'rtv -l %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
 ## }}}
 
 # formatting and colorization ------------------------------------------ {{{
