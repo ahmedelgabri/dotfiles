@@ -6,7 +6,6 @@ set header_cache_backend=tokyocabinet
 set read_inc=1000
 set message_cachedir = "$HOME/.mutt/cache/message/"
 set certificate_file = "$HOME/.mutt/certificates"
-set mailcap_path     = "$HOME/.mutt/config/mailcap"
 set tmpdir           = "$HOME/.mutt/tmp/"
 
 # Connection options

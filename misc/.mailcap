@@ -18,6 +18,39 @@
 # - Add ``copiousoutput`` for commands that dump text to stdout
 
 ###############################################################################
+# Documents, mainly used for Neomutt attachments
+###############################################################################
+
+# MS Word documents
+# application/msword; ~/.mutt/scripts/view-attachment.sh %s "-" '/Applications/TextEdit.app'
+
+# Images
+# image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/png; ~/.mutt/scripts/view-attachment.sh %s png
+
+# PDFs
+text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
+application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
+
+# HTML
+
+# Explicitly render in browser with "v" (view attachment):
+text/html; ~/.mutt/scripts/view-attachment.sh %s html; test=test -n "$DISPLAY"
+# text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
+text/html; w3m %s; nametemplate=%s.html; needsterminal
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/plain; ~/.mutt/scripts/view-mail.sh %s %{charset}; needsterminal
+text/rtf; ~/.mutt/view_attachment.sh %s rtf
+
+# Unidentified files
+application/octet-stream; ~/.mutt/scripts/view-attachment.sh %s "-"
+
+# Better calendar invitations format
+text/calendar; ~/.mutt/scripts/dump-ical.py %s; copiousoutput;
+
+###############################################################################
 # Commands below this point will open media in a separate window without
 # pausing execution of RTV.
 ###############################################################################
@@ -26,12 +59,11 @@
 # Note that rtv returns a list of urls for imgur albums, so we don't put quotes
 # around the `%s`
 # image/x-imgur-album; feh -g 640x480 %s; test=test -n "$DISPLAY"
-# image/gif; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
+image/gif; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
 # image/*; feh -g 640x480 '%s'; test=test -n "$DISPLAY"
 
 # Youtube videos are assigned a custom mime-type, which can be streamed with
 # vlc or youtube-dl.
-video/x-youtube; vlc '%s'; test=test -n "$DISPLAY"
 video/x-youtube; mpv --ytdl-format=best '%s'; test=test -n "$DISPLAY"
 
 # Mpv is a simple and effective video streamer
