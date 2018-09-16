@@ -41,7 +41,8 @@
 macro p set browser "mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
 
 # Play podcast
-macro e enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
+# macro e open ; enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
+macro e pipe-to "grep -o 'http.*mp3' | xargs -n1 mpv" ; toggle-article-read "read"
 
 # read reddit comments with rtv (reddit terminal viewer)
 # macro r set browser "rtv -l %u"; open-in-browser ; set browser "$BROWSER %u"
