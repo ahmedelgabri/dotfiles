@@ -195,51 +195,44 @@ function! functions#NeatFoldText() abort
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
-function! functions#setupCompletion() abort
-  if has('nvim') && has('python3')
-    " enable ncm2 for all buffer
-    augroup COMPLETION_SETUP
-      au!
-      autocmd BufEnter * call ncm2#enable_for_buffer()
-      autocmd TextChangedI * call ncm2#auto_trigger()
-    augroup END
-
-    let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-    let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
-    let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
-    let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
-    let g:UltiSnipsRemoveSelectModeMappings = 0
-
-    inoremap <silent> <c-u> <c-r>=ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)")<cr>
-
-    vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
-    inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res?'':"\<Tab>"
-
-    imap <silent> <expr> <Tab> (pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)")
-    imap <silent> <expr> <S-Tab> (pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)")
-
-    " Why do I have \<CR>\<Plug>AutoPairsReturn instead of just <CR>? And why do
-    " I set g:AutoPairsReturn here? Check
-    " https://github.com/jiangmiao/auto-pairs/issues/91#issuecomment-241692588
-    if exists('g:AutoPairsLoaded')
-      let g:AutoPairsMapCR = 0
-    endif
-
-    imap <expr> <CR> pumvisible() && empty(v:completed_item) ? "\<C-y>\<Plug>(expand_or_cr)" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
-    imap <expr> <Plug>(expand_or_cr) ncm2_ultisnips#expand_or("", 'n') ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
-    " imap <expr> <Plug>(expand_or_cr) ncm2_ultisnips#completed_is_snippet() ? "\<C-u>" : exists('g:AutoPairsLoaded') ? "\<CR>\<Plug>AutoPairsReturn" : "\<CR>"
-
-    xmap <Tab> <Plug>(ultisnips_expand)
-    smap <Tab> <Plug>(ultisnips_expand)
-
-    vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-    inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res?'':"\<S-Tab>"
-
-    xmap <S-Tab> <Plug>(ultisnips_backward)
-    smap <S-Tab> <Plug>(ultisnips_backward)
-
-    imap <C-Space> <Plug>(ncm2_manual_trigger)
+function! s:show_documentation() abort
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
   endif
+endfunction
+
+function! functions#setupCompletion() abort
+  let g:UltiSnipsExpandTrigger      = "<c-u>"
+  let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+  let g:UltiSnipsJumpBackwardTrigger    = "<c-k>"
+
+  let g:coc_snippet_next = '<c-j>'
+  let g:coc_snippet_prev = '<c-k>'
+
+  inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<c-j>"
+  inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<c-k>"
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  " imap <silent> <C-x><C-o> <Plug>(coc-complete-custom)
+  imap <silent> <C-x><C-u> <Plug>(coc-complete-custom)
+  " Use `[c` and `]c` for navigate diagnostics
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+  " Remap keys for gotos
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+  " Use K for show documentation in preview window
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  " Show signature help while editing
+  autocmd! CursorHoldI,CursorMovedI * silent! call CocAction('showSignatureHelp')
 endfunction
 
 
