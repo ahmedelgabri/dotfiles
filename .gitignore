@@ -32,3 +32,6 @@ log.*.txt
 mpv/.config/mpv/watch_later
 rtv/.config/rtv/*.log
 rtv/.config/rtv/*-token
+ranger/bookmarks
+ranger/history
+ranger/tagged
