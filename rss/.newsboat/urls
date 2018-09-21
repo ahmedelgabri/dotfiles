@@ -1,9 +1,10 @@
 # vim:ft=config foldmethod=marker:
 
 # Querys {{{
-  "query:→ Podcasts:unread = \"yes\" and tags # \"Podcasts\"" "Podcasts"
   "query:→ Unread Articles:unread = \"yes\""
   "query:→ Bookmarked Articles:flags # \"s\"" "Starred"
+  "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
+  "query:→ YouTube:tags # \"YouTube\"" "YouTube"
   "query:→ Blogs:tags # \"Blogs\"" "Blogs"
   "query:→ Browsers:tags # \"Browsers\"" "Browsers"
   "query:→ Comics:tags # \"Comics\"" "Comics"
@@ -173,6 +174,8 @@
   https://jacky.wtf/feeds/articles.xml "Vim" "Programming"
   http://feeds.haacked.com/haacked "Blog" "Leadership"
   https://infrequently.org/feed/ "Blog" "Web"
+  http://tonsky.me/blog/atom.xml "Blog" "Programming"
+  https://rakhim.org/index.xml "Blog" "Programming"
 # }}}
 
 # Browsers {{{
@@ -392,4 +395,12 @@
 
 # Podcasts {{{
   https://rss.simplecast.com/podcasts/4151/rss "Podcasts"
+# }}}
+
+# YouTube {{{
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "vim"
+  https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
+  https://www.youtube.com/feeds/videos.xml?user=Tsoding "YouTube" "CLI" "Haskell"
+  https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "YouTube" "CLI"
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCO1cgjhGzsSYb1rsB4bFe4Q "YouTube" "JavaScript" "Programming"
 # }}}

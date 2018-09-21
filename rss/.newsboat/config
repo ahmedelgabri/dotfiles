@@ -14,7 +14,7 @@
   auto-reload yes
   reload-threads 3
   reload-time 15
-  save-path ~/.newsboat/bookmarks.txt
+  save-path "~/Box\ Sync/saved-articles"
   bookmark-cmd ~/.newsboat/bookmark.sh
   bookmark-interactive no
   bookmark-autopilot yes
@@ -38,15 +38,18 @@
 ##-------- macros {{{
 ## Note: macro prefix key ( default: , )
 ## add video or audio to play queue using mpv (requires: mpv, youtube-dl)
-macro p set browser "mpv --ontop --no-border --force-window --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
+macro p set browser "mpv --ontop --no-border --force-window --speed=1.5 --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
 
 # Play podcast
 # macro e open ; enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit
-macro e pipe-to "grep -o 'http.*mp3' | xargs -n1 mpv" ; toggle-article-read "read"
+macro e pipe-to "grep -o 'http.*mp3' | xargs -n1 mpv --speed=1.5" ; toggle-article-read "read"
 
 # read reddit comments with rtv (reddit terminal viewer)
 # macro r set browser "rtv -l %u"; open-in-browser ; set browser "$BROWSER %u"
 macro r set browser "tmux split-window && tmux send-keys 'rtv -l %u && tmux kill-pane\n'"; open-in-browser ; set browser "$BROWSER %u"
+
+# copy url to clipboard "yank"
+macro y set browser "echo %u | pbcopy"; open-in-browser ; set browser "$BROWSER %u"
 ## }}}
 
 # formatting and colorization ------------------------------------------ {{{
