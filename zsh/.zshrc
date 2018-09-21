@@ -124,7 +124,7 @@ for func (${ZDOTDIR}/rc.d/functions/*.zsh) source $func
 # Custom/Plugins
 ###############################################################
 export RIPGREP_CONFIG_PATH="$DOTFILES/misc/.rgrc"
-FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
+export FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
 export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
 export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
 export FZF_CTRL_T_COMMAND="$FZF_CMD"

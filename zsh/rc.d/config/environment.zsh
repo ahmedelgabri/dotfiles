@@ -61,7 +61,8 @@ fi
 # GLOBAL CONFIG
 ##############################################################
 
-if [ ! -n "$TMUX" ]; then
+
+if [[ ! -n "$TMUX" && "$TERM" == kitty* ]]; then
   export TERM=xterm-256color
 fi
 
