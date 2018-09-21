@@ -19,7 +19,6 @@ let g:ale_javascript_prettier_options = '--config-precedence prefer-file --singl
 " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
 au! OptionSet textwidth let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi'
 
-" Don't auto fix (format) files inside `node_modules`, `forks` directory or minified files, or jquery files :shrug:
 let g:ale_linter_aliases = {
       \ 'mail': 'markdown',
       \ 'html': ['html', 'css']
