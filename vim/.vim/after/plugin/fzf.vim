@@ -11,7 +11,7 @@ let g:fzf_tags_command = 'ctags -R'
 " https://github.com/BurntSushi/ripgrep/issues/696
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=never '.shellescape(<q-args>), 1,
+  \   'rg --column --line-number --no-heading --color=never'.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
@@ -27,7 +27,7 @@ nnoremap <silent> <Leader>b :Buffers<cr>
 nnoremap <silent> <Leader>h :Helptags<cr>
 
 function! s:fzf_statusline() abort
-  setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x
+  setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t
 endfunction
 
 augroup MyFZF
