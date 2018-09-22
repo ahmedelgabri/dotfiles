@@ -13,68 +13,82 @@ tap "neomutt/homebrew-neomutt"
 tap "tavianator/tap"
 tap "universal-ctags/universal-ctags"
 
+# Core
+brew "openssl"
 brew "git"
 brew "python"
-brew "python2" # do I need it anymore?
-# brew "ledger"
-brew "asciinema"
-brew "ahmedelgabri/battery/battery", args: ["HEAD"]
-brew "bitlbee", restart_service: true
-brew "cloc"
-brew "clojure"
-brew "coreutils"
-brew "curl"
-brew "editorconfig"
-brew "exiftool"
-brew "figlet"
-brew "findutils"
-brew "isync", args: ["with-berkeley-db"]
+brew "python@2" # do I need it anymore?
 brew "gawk"
 brew "gnu-sed", args: ["with-default-names"]
-brew "gnupg"
+brew "coreutils"
+brew "findutils"
+brew "curl"
+brew "wget"
+brew "pinentry-mac"
 brew "gpg-agent"
-brew "heroku"
-brew "highlight"
-brew "htop"
-brew "httpie"
-brew "hub"
-brew "jrnl"
-brew "lbdb"
-brew "loc"
-brew "msmtp"
-brew "mpv", args: ["with-bundle"]
-brew "ncdu"
-brew "neofetch"
-brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
-brew "neovim"
-brew "newsboat"
+brew "gnupg"
+brew "zsh"
+
+# Languages
 brew "node"
 brew "node-build"
-brew "offlineimap"
-brew "openssl"
-brew "pandoc"
-brew "pinentry-mac"
-brew "proselint"
-brew "ranger"
-brew "ripgrep"
-brew "rtv"
-brew "ruby"
-brew "task"
-brew "tldr"
-brew "tmux", args: ["HEAD"]
-brew "tree"
-brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
-brew "urlview"
-brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
-brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
-brew "w3m"
-brew "wget"
 brew "yarn"
-brew "zsh"
+brew "ruby"
+brew "clojure"
 brew "ghc"
 brew "cabal-install"
 brew "haskell-stack"
+brew "pipenv"
+# I install rust from https://www.rust-lang.org/en-US/install.html
+# check Makefile
+
+# Core utils
+brew "hub"
+brew "highlight"
+brew "htop"
+brew "ncdu"
+brew "ripgrep"
+brew "pandoc"
+brew "urlview"
+brew "w3m"
+brew "cloc"
+brew "loc"
+brew "tokei"
+brew "ranger"
+brew "tree"
+brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
+
+# Core apps
+brew "neovim"
+brew "newsboat"
+# Mail
+brew "isync", args: ["with-berkeley-db"]
+brew "lbdb"
+brew "msmtp"
+brew "offlineimap"
+brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
+# End Mail
+brew "mpv", args: ["with-bundle"]
+brew "rtv"
+brew "tmux", args: ["HEAD"]
+brew "ahmedelgabri/battery/battery", args: ["HEAD"]
+brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
+brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
+brew "bitlbee", restart_service: true
+
+# Nice to have
+# brew "ledger"
 brew "graphviz"
+brew "asciinema"
+brew "editorconfig"
+brew "exiftool"
+brew "figlet"
+brew "heroku"
+brew "httpie"
+brew "neofetch"
+brew "proselint"
+brew "task"
+brew "tldr"
 
 cask "1password-cli"
 cask "alfred"
@@ -101,7 +115,6 @@ cask "google-chrome"
 cask "caskroom/versions/google-chrome-canary"
 # cask "gpgtools"
 cask "hammerspoon"
-cask "imagealpha"
 cask "imageoptim"
 cask "caskroom/versions/iterm2-nightly"
 cask "launchcontrol"
@@ -118,7 +131,6 @@ cask "rescuetime"
 cask "sequel-pro"
 cask "sketch"
 cask "skype"
-cask "slack"
 cask "soda-player"
 cask "transmission"
 cask "transmit"
