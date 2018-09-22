@@ -3,7 +3,7 @@
 #
 
 # sets the location of the history file
-HISTFILE="${ZDOTDIR:-${HOME}}/.zhistory"
+HISTFILE="${HOME}/.zhistory"
 
 # limit of history entries
 HISTSIZE=1000000
