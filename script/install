@@ -240,7 +240,7 @@ symlink_files() {
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
       # I want all the make steps to run even if a cask or a brew errored out
-    cd "$DOTFILES_DIR" && make --ignore-errors symlink
+    cd "$DOTFILES_DIR" && make symlink
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
