@@ -1,9 +1,9 @@
 # use bash
 SHELL:=/bin/bash
 
-# This can be overriden by doing `make DEST=some/path <task>`
-DEST="$(HOME)/.dotfiles"
-SCRIPTS="$(DEST)/script"
+# This can be overriden by doing `make DOTFILES=some/path <task>`
+DOTFILES="$(HOME)/.dotfiles"
+SCRIPTS="$(DOTFILES)/script"
 INSTALL="$(SCRIPTS)/install"
 
 all: node python iterm neovim rust macos
@@ -15,23 +15,31 @@ install:
 # NOTE: irc/.weechat is not handled with stow, it's handled directly inside bin/mx-init using `--dir` flag
 # For some reason stow chokes on ca-bundle.crt since it's an excutable file, will try to figure out later.
 symlink:
-	@stow --restow --verbose --ignore ".DS_Store" --target="$(HOME)" --dir="$(DEST)" \
+	@stow --restow -vv --ignore ".DS_Store" --target="$(HOME)" --dir="$(DOTFILES)" \
+		alacritty \
 		ctags \
 		git \
+		gpg \
 		grc \
 		hammerspoon \
+		irc \
 		iterm2 \
+		kitty \
 		mail \
 		misc \
+		mpv \
+		python \
+		ranger \
 		rss \
 		rtv \
+		ssh \
 		terminfo \
 		tmux \
 		vim \
 		zsh
 
 homebrew:
-	@brew bundle --file="$(DEST)/homebrew/Brewfile"
+	@brew bundle --file="$(DOTFILES)/homebrew/Brewfile"
 	@brew cleanup
 	@brew doctor
 	@/usr/local/opt/fzf/install --all
@@ -57,6 +65,6 @@ neovim:
 	@yarn global add neovim
 
 macos:
-	@source $(DEST)/macos/.macos
+	@source $(DOTFILES)/macos/.macos
 
 .PHONY: all symlink homebrew node python iterm macos neovim
