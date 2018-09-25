@@ -6,7 +6,7 @@
   "coc.preferences.timeout": 200,
   "coc.source.neosnippet.enable": false,
   "coc.source.emoji.filetypes": ["markdown", "gitcommit", "markdown.ghpull"],
-  "coc.source.emoji.triggerCharacters": [":"],
+  "coc.preferences.customSources": ["word","include"],
   /* "tslint.enable": false, */
   "tsserver.enable": false,
   "coc.preferences.diagnostic.errorSign": "×",
