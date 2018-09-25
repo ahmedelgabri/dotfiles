@@ -31,7 +31,7 @@ brew "zsh"
 
 # Languages
 brew "node"
-brew "node-build"
+brew "node-build", args: ["HEAD"]
 brew "yarn"
 brew "ruby"
 brew "clojure"
