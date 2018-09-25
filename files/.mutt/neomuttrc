@@ -1,0 +1,2 @@
+source ./muttrc
+lua-source $HOME/.mutt/accounts/init.lua

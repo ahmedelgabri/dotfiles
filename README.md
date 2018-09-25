@@ -39,16 +39,41 @@ $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.do
 
 ### Notes
 
-- Make sure you create `.zshrc.local` & `.gitconfig.local` files and add all
-  personal related info there
+#### ZSH setup
 
-For `gitconfig.local` these info should be in that file
+These env variables are needed inside `~/.zshrc.local`
+
+```zsh
+export NAME
+export GITHUB_USER
+export HOMEBREW_GITHUB_API_TOKEN
+export GITHUB_TOKEN
+export JIRA_API_TOKEN # Optional
+
+export WORK=<PATH TO WORK FOLDER>
+# anything else that shouldn't be publicly shared
+```
+
+#### A quick outline of what must be done to get gpg & git working.
+
+Configure git to automatically gpgsign commits. This consists of pointing git to
+your signing key ID, and then enabling commit automatic signing.
+
+This info should be in `gitconfig.local`
 
 ```sh
 git config --global user.name <YOUR-NAME>
 git config --global user.email <YOUR-EMAIL>
 git config --global user.signingkey <YOUR-SIGNING-KEY-PUB-ID>
 ```
+
+Don't forget to upload your public key to Github!
+https://github.com/blog/2144-gpg-signature-verification Note: There needs to be
+a three-way match on your email for Github to show the commit as 'verified': The
+commit email, github email, & the email associated with the public key
+
+Learn about creating a GPG key and the knowledge behind these commands here:
+https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
 
 ### Authors
 
