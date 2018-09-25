@@ -10,13 +10,8 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
-        \| hi! LineNr ctermbg=NONE guibg=NONE
 
-  autocmd ColorScheme codedark,plain hi! link Error ErrorMsg
-        \| hi! link ALEError ErrorMsg
-        \| hi! link ALEErrorSign ErrorMsg
-        \| hi! link ALEWarning DiffChange
-        \| hi! link ALEWarningSign DiffChange
+  autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('VisualNOS'),'bg', 'gui'), synIDattr(hlID('VisualNOS'),'bg', 'cterm'))
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal
         \| hi! link StartifyFile Directory
@@ -24,16 +19,21 @@ augroup MyCustomColors
         \| hi! link StartifySlash StartifyPath
         \| hi! link StartifyBracket StartifyPath
         \| hi! link StartifyNumber Title
+        \| hi! link Error ErrorMsg
+        \| hi! link ALEError ErrorMsg
+        \| hi! link ALEErrorSign ErrorMsg
+        \| hi! link ALEWarning DiffChange
+        \| hi! link ALEWarningSign DiffChange
 
   " StatusLine
-  autocmd ColorScheme * execute printf('highlight! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
-        \| execute 'highlight! User5 ctermfg=red guifg=red'
-        \| execute 'highlight! User7 ctermfg=cyan guifg=cyan'
-        \| execute printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
-        \| execute printf('highlight! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
+  autocmd ColorScheme * execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
+        \| execute 'hi! User5 ctermfg=red guifg=red'
+        \| execute 'hi! User7 ctermfg=cyan guifg=cyan'
+        \| execute printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
+        \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
 
-  autocmd ColorScheme gruvbox execute printf('highlight! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
-        \| execute printf('highlight! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
+  autocmd ColorScheme gruvbox execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
+        \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('GruvboxBg2'),'fg', 'gui'), synIDattr(hlID('GruvboxBg2'),'fg', 'cterm'))
 augroup END
 
 let g:gruvbox_contrast_dark='hard'
@@ -58,5 +58,3 @@ else
   catch
   endtry
 endif
-
-
