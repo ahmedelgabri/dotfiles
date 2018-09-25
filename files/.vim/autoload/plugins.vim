@@ -138,7 +138,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
   call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
   " minimal
-  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt'  })
+  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   " call minpac#add('https://github.com/nerdypepper/vim-colors-plain', { 'type': 'opt'  })
   call minpac#add('https://github.com/owickstrom/vim-colors-paramount', { 'type': 'opt'  })
   " }}}
