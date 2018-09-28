@@ -18,3 +18,5 @@ https://www.integralist.co.uk/posts/questions-when-interviewing/ Interview Topic
 https://zachholman.com/talk/utc-is-enough-for-everyone-right UTC is enough for everyone ...right?
 https://shapeshed.com/from-osx-to-arch-linux/ From OSX to Arch Linux
 http://craftinginterpreters.com/ Crafting Interpreters
+https://www.mikecr.it/ramblings/functional-css/ In defense of Functional CSS
+https://johnpolacek.github.io/the-case-for-atomic-css/ The Case for Atomic CSS
