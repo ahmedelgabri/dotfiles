@@ -35,3 +35,5 @@ files/.config/rtv/*-token
 files/.config/ranger/bookmarks
 files/.config/ranger/history
 files/.config/ranger/tagged
+files/.mail/.notmuch/
+!files/.mail/.notmuch/hooks
