@@ -241,7 +241,11 @@ take_backup() {
 symlink_files() {
   log_success "Create some required folders..."
 
-  mkdir -p $HOME/.mail/{Personal,Work}
+  # Stow is too smart for its own good. If these files are not created outside, it
+  # will manage the while folder which means I will get everything in my dotfiles
+  # repo git history. Too much noise & not really scalable, the fix? create the
+  # folders manually.
+  mkdir -p $HOME/.mail/{Personal,Work,.notmuch} $HOME/.ssh $HOME/.gnupg $HOME/.config $HOME/Library/LaunchAgents
 
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
