@@ -1,0 +1,6 @@
+; vim: ft=gitconfig
+
+[user]
+  name =
+  email =
+  signingkey =

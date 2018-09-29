@@ -25,7 +25,6 @@ files/.hammerspoon/Spoons/*
 .zcompdump
 .zcompcache
 .zhistory
-*.local
 log.*.txt
 *.spl
 *.sug

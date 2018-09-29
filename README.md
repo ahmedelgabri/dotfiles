@@ -33,7 +33,7 @@ These are the main configs:
 2. Run one of these commands
 
 ```bash
-$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)"
+$ bash <(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)
 ```
 
 or
@@ -44,32 +44,18 @@ $ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.do
 
 ### Notes
 
-#### ZSH setup
-
-These env variables are needed inside `~/.zshrc.local`
-
-```zsh
-export NAME
-export GITHUB_USER
-export HOMEBREW_GITHUB_API_TOKEN
-export GITHUB_TOKEN
-export JIRA_API_TOKEN # Optional
-
-export WORK=<PATH TO WORK FOLDER>
-# anything else that shouldn't be publicly shared
-```
-
-#### A quick outline of what must be done to get gpg & git working.
-
-Configure git to automatically gpgsign commits. This consists of pointing git to
-your signing key ID, and then enabling commit automatic signing.
-
-This info should be in `gitconfig.local`
+- For ZSH you have to update `~/.zshrc.local` which should be copied
+  automatically, if not, you can run the following command.
 
 ```sh
-git config --global user.name <YOUR-NAME>
-git config --global user.email <YOUR-EMAIL>
-git config --global user.signingkey <YOUR-SIGNING-KEY-PUB-ID>
+$ cp files/.zshrc.local.example ~/.zshrc.local
+```
+
+- For git you have to update `~/.gitconfig.local` which should be copied
+  automatically, if not, you can run the following command.
+
+```sh
+$ cp files/.gitconfig.local.example ~/.gitconfig.local
 ```
 
 Don't forget to upload your public key to Github!
