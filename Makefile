@@ -6,7 +6,7 @@ DOTFILES="$(HOME)/.dotfiles"
 SCRIPTS="$(DOTFILES)/script"
 INSTALL="$(SCRIPTS)/install"
 
-all: node python iterm neovim rust macos
+all: node python neovim rust macos
 
 install:
 	bash <(cat $(INSTALL))
@@ -33,9 +33,6 @@ python:
 rust:
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 	rustup component add rls-preview rust-analysis rust-src
-
-iterm:
-	-sh $(SCRIPTS)/iterm
 
 # Neovim providers (optional)
 neovim:
