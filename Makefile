@@ -21,6 +21,9 @@ homebrew:
 	brew cleanup
 	brew doctor
 
+homebrew-work:
+	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.work"
+
 node:
 	sh $(SCRIPTS)/node-packages
 
@@ -44,4 +47,4 @@ neovim:
 macos:
 	source $(DOTFILES)/extra/macos/.macos
 
-.PHONY: all symlink homebrew node python iterm macos neovim
+.PHONY: all symlink homebrew homebrew-work node python macos neovim

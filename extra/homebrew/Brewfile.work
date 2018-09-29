@@ -1,0 +1,10 @@
+# vim:ft=ruby:
+
+cask_args appdir: '/Applications'
+
+brew "php@5.6"
+
+cask "zoomus"
+cask "vagrant"
+cask "docker"
+cask "virtualbox"
