@@ -88,6 +88,7 @@ brew "neofetch"
 brew "proselint"
 brew "task"
 brew "tldr"
+brew "grc"
 
 cask "1password-cli"
 cask "alfred"

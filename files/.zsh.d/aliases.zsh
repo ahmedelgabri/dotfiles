@@ -57,7 +57,6 @@ alias r="ranger" # overrides built-in r command
 
 (( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[task] )) && alias t='task'
-(( $+commands[grc] )) && alias curl='grc curl '
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"

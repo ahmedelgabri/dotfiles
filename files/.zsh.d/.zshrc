@@ -51,8 +51,8 @@ source ~/.zplugin/bin/zplugin.zsh
 # }}}
 
 # Utilities & enhancements {{{
-  zplugin ice as"program" atclone"./install.sh $ZPFX $ZPFX" atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick"$ZPFX/bin/grc*"
-  zplugin light garabik/grc
+  # Program installed by homebrew
+  zplugin snippet 'https://raw.githubusercontent.com/garabik/grc/master/grc.zsh'
 
   zplugin ice from"gh-r" as"program" mv"fd*/fd -> fd"
   zplugin light sharkdp/fd
