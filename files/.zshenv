@@ -11,6 +11,7 @@ export LC_ALL=$LANG
 # export ZDOTDIR="${${(%):-%N}:A:h}"
 export ZDOTDIR="${HOME}/.zsh.d"
 export OSTYPE=$(uname -s)
+export HOSTNAME=$(hostname)
 export XDG_CONFIG_HOME="${HOME}/.config"
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
