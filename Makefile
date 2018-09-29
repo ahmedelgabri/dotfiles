@@ -9,7 +9,7 @@ INSTALL="$(SCRIPTS)/install"
 all: node python iterm neovim rust macos
 
 install:
-	bash -c "$$(cat $(INSTALL))"
+	bash <(cat $(INSTALL))
 
 # This is used inside `scripts/install` symlink_files function
 # The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124
@@ -20,7 +20,6 @@ homebrew:
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile"
 	brew cleanup
 	brew doctor
-	-/usr/local/opt/fzf/install --all
 
 node:
 	sh $(SCRIPTS)/node-packages
