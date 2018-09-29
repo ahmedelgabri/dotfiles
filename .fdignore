@@ -1,5 +1,6 @@
 plugged
 minpac
+nvim
 *.un~
 *.zwc
 *.zwc.old
