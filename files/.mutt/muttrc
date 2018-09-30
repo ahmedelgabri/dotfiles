@@ -12,7 +12,7 @@ set tmpdir           = "$HOME/.mutt/tmp/"
 set ssl_force_tls
 
 # account config
-set realname = "Ahmed El Gabri"
+set realname = $NAME
 
 unset record # don't save messages, gmail already does this.
 set folder = "$HOME/.mail"
