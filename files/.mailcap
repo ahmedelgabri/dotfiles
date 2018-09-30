@@ -22,25 +22,26 @@
 ###############################################################################
 
 # MS Word documents
-# application/msword; ~/.mutt/scripts/view-attachment.sh %s "-" '/Applications/TextEdit.app'
+# application/msword; ~/.mutt/scripts/view_attachment.sh %s "-" com.apple.TextEdit
 
 # Images
-# image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/png; ~/.mutt/scripts/view-attachment.sh %s png
+image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+image/png; ~/.mutt/scripts/view-attachment.sh %s png
 
 # PDFs
-text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
-application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf; test=test -n "$DISPLAY"
+text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
+application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
 
 # HTML
 
 # Explicitly render in browser with "v" (view attachment):
-text/html; ~/.mutt/scripts/view-attachment.sh %s html; test=test -n "$DISPLAY"
-# text/html; elinks -dump %s -dump-charset %{charset} -force-html; nametemplate=%s.html; copiousoutput
+text/html; CHARSET=%{charset} ~/.mutt/scripts/view-attachment.sh %s html
+
 text/html; w3m %s; nametemplate=%s.html; needsterminal
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
+# text/html; w3m -I %{charset} -T text/html; copiousoutput;
+
 text/plain; ~/.mutt/scripts/view-mail.sh %s %{charset}; needsterminal
 text/rtf; ~/.mutt/view_attachment.sh %s rtf
 
@@ -64,10 +65,10 @@ image/gif; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
 
 # Youtube videos are assigned a custom mime-type, which can be streamed with
 # vlc or youtube-dl.
-video/x-youtube; mpv --ytdl-format=best '%s'; test=test -n "$DISPLAY"
+video/x-youtube; mpv --ytdl-format=best --no-resume-playback '%s'; test=test -n "$DISPLAY"
 
 # Mpv is a simple and effective video streamer
-video/*; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
+video/*; mpv '%s' --autofit --no-resume-playback 640x480 --loop=inf; test=test -n "$DISPLAY"
 
 ###############################################################################
 # Commands below this point will attempt to display media directly in the
@@ -94,8 +95,8 @@ video/*; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
 # image/*; curl -s '%s' | convert - jpg:/tmp/rtv.jpg && img2txt -f utf8 /tmp/rtv.jpg; needsterminal; copiousoutput
 
 # Full motion videos - requires a framebuffer to view
-video/x-youtube; mpv -vo drm -quiet '%s'; needsterminal
-video/*; mpv -vo drm -quiet '%s'; needsterminal
+video/x-youtube; mpv -quiet --no-resume-playback '%s'; needsterminal
+video/*; mpv -quiet --no-resume-playback '%s'; needsterminal
 
 # Ascii videos
 # video/x-youtube; youtube-dl -q -o - '%s' | mplayer -cache 8192 -vo caca -quiet -; needsterminal
