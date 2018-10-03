@@ -20,3 +20,4 @@ https://shapeshed.com/from-osx-to-arch-linux/ From OSX to Arch Linux
 http://craftinginterpreters.com/ Crafting Interpreters
 https://www.mikecr.it/ramblings/functional-css/ In defense of Functional CSS
 https://johnpolacek.github.io/the-case-for-atomic-css/ The Case for Atomic CSS
+https://jvns.ca/blog/2018/09/30/some-possible-career-goals/ Some possible career goals
