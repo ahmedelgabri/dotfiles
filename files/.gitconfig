@@ -71,6 +71,10 @@
   doctor = remote -v show origin
   fl = l -u
   grr = grep --break --heading --line-number
+  hide = update-index --assume-unchanged
+  unhide = update-index --no-assume-unchanged
+  unhide-all = update-index --really-refresh
+  hidden = !git ls-files -v | grep \"^[a-z]\"
   l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
   lme = "!sh -c \"git l $@ --author=\"$NAME\"\""
   la = l --all --simplify-by-decoration
@@ -210,4 +214,3 @@
 
 [include]
   path = ~/.gitconfig.local
-
