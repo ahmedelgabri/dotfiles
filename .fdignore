@@ -4,3 +4,4 @@ nvim
 *.un~
 *.zwc
 *.zwc.old
+.zplugin

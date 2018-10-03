@@ -11,16 +11,20 @@
 # ZPLUGIN https://github.com/zdharma/zplugin
 ##############################################################
 
-if [[ ! -f ~/.zplugin/bin/zplugin.zsh ]]; then
+ZPLUGIN="${ZDOTDIR:-$HOME}/.zplugin/bin/zplugin.zsh"
+
+if [[ ! -f "$ZPLUGIN" ]]; then
   if (( $+commands[git] )); then
-    git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
   else
     echo 'git not found' >&2
     exit 1
   fi
 fi
 
-source ~/.zplugin/bin/zplugin.zsh
+source "$ZPLUGIN"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
 
 # Shell {{{
   zplugin light zdharma/zui
@@ -38,7 +42,7 @@ source ~/.zplugin/bin/zplugin.zsh
   zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
   zplugin light direnv/direnv
 
-  zplugin ice as"program" atclone"./install --bin" atpull"%atclone" atload'local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
+  zplugin ice as"program" atclone"./install --bin" atpull"%atclone" atload'export FZF_PATH="${ZDOTDIR:-$HOME}/.zplugin/plugins/junegunn---fzf"; local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
   zplugin light junegunn/fzf
 # }}}
 
@@ -90,10 +94,19 @@ source ~/.zplugin/bin/zplugin.zsh
 
 # UI {{{
   zplugin ice from"gh-r" bpick"*02-iosevka-term*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && mv -f $f ~/Library/Fonts/' atpull"%atclone"
-  # zplugin ice from"gh-r" bpick"*01-iosevka-*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && mv -f $f ~/Library/Fonts/' atpull"%atclone"
   zplugin light be5invis/Iosevka
 # }}}
 
+# Local plugins/completions/etc... {{{
+  zplugin light %HOME/Box\ Sync/dotfiles
+
+  zplugin ice lucid atinit'local i; for i in *.zsh; do source $i; done'
+  zplugin light %HOME/.zsh.d/functions
+
+  zplugin light %HOME/.zsh.d/aliases
+
+  zplugin creinstall -q %HOME/.zsh.d/completions
+# }}}
 
 if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
   kitty + complete setup zsh | source /dev/stdin
@@ -112,13 +125,6 @@ bindkey "${terminfo[kcud1]}" history-substring-search-down
 # bind UP and DOWN arrow keys (compatibility fallback)
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-##############################################################
-# CONFIG.
-##############################################################
-
-source ${ZDOTDIR}/aliases.zsh
-for func (${ZDOTDIR}/functions/*.zsh) source $func
 
 ##############################################################
 # Custom/Plugins
@@ -192,16 +198,8 @@ if [ -e /etc/motd ]; then
 fi
 
 ##############################################################
-# Personal ENV variables
-##############################################################
-
-[ -f ${PERSONAL_ENVS} ] && source ${PERSONAL_ENVS} || echo "Personal ENV variables are not loaded";
-
-##############################################################
 # Custom completions init.
 ##############################################################
-
-[ -f ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh ] && source ${ZDOTDIR:-${HOME}}/rc.d/completions/init.zsh
 
 (( $+commands[jira] )) && eval "$(jira --completion-script-zsh)"
 

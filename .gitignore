@@ -36,3 +36,4 @@ files/.config/ranger/history
 files/.config/ranger/tagged
 files/.mail/.notmuch/
 !files/.mail/.notmuch/hooks
+.zplugin

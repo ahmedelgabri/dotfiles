@@ -17,7 +17,6 @@ export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/dev"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
-export PERSONAL_ENVS="${PERSONAL_STORAGE}/dotfiles/zsh_personal"
 export NOTE_DIR="${PERSONAL_STORAGE}/notes"
 
 [[ -x /usr/local/bin/brew ]] && export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
