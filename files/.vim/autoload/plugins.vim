@@ -48,9 +48,9 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  if !empty(glob('~/.zplugin/plugins/junegunn---fzf'))
+  if !empty(glob($FZF_PATH))
     call minpac#add('https://github.com/junegunn/fzf.vim')
-    set runtimepath^=~/.zplugin/plugins/junegunn---fzf
+    set runtimepath^=$FZF_PATH
   endif
   call minpac#add('https://github.com/Shougo/unite.vim')
   call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
@@ -147,6 +147,8 @@ function! plugins#loadPlugins() abort
     call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
     silent! packadd vim-wakatime
   endif
+
+  call minpac#add('https://github.com/GabrieleLippi/ydkjs-vim')
 endfunction
 
 if !exists('*plugins#init')
