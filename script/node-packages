@@ -19,6 +19,7 @@ NPM_PACKAGES=(
 "overtime-cli"
 "rtm-cli"
 "dependency-cruiser"
+"reason-cli@latest-macos"
 )
 
 for package in "${NPM_PACKAGES[@]}"; do
