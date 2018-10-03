@@ -25,10 +25,10 @@
 # application/msword; ~/.mutt/scripts/view_attachment.sh %s "-" com.apple.TextEdit
 
 # Images
-image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
-image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-image/png; ~/.mutt/scripts/view-attachment.sh %s png
+# image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
+# image/png; ~/.mutt/scripts/view-attachment.sh %s png
 
 # PDFs
 text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
