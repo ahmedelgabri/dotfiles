@@ -76,10 +76,12 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/wincent/loupe')
   call minpac#add('https://github.com/wincent/terminus')
 
-  if executable('tmux') && !empty($TMUX)
+  if executable('tmux')
     call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
-    silent! packadd vim-tmux-navigator
-    let g:tmux_navigator_disable_when_zoomed = 1
+    if !empty($TMUX)
+      silent! packadd vim-tmux-navigator
+      let g:tmux_navigator_disable_when_zoomed = 1
+    endif
   endif
 
   if executable('trans')
@@ -106,7 +108,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/neoclide/jsonc.vim')
 
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')
-  if executable('trans')
+  if executable('direnv')
     call minpac#add('https://github.com/direnv/direnv.vim')
   endif
 
@@ -143,8 +145,8 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/owickstrom/vim-colors-paramount', { 'type': 'opt'  })
   " }}}
 
+  call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
   if getcwd() =~ 'lightspeed'
-    call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
     silent! packadd vim-wakatime
   endif
 
