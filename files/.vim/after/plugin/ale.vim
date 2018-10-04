@@ -37,6 +37,8 @@ let g:ale_fixers = {
       \   'css': [ 'prettier' ],
       \   'json': [ 'prettier' ],
       \   'scss': [ 'prettier' ],
+      \   'yaml': [ 'prettier' ],
+      \   'graphql': [ 'prettier' ],
       \   'reason': [ 'refmt' ],
       \   'python': [ 'black' ],
       \}
