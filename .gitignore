@@ -22,7 +22,7 @@ files/.hammerspoon/Spoons/*
 !files/.hammerspoon/Spoons/SpoonInstall.spoon
 !files/.ignore
 *.old
-.zcompdump
+.zcompdump*
 .zcompcache
 .zhistory
 log.*.txt
