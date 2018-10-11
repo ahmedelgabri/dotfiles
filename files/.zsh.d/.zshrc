@@ -81,19 +81,21 @@ autoload -Uz _zplugin
 
   zplugin light "zsh-users/zsh-history-substring-search"
 
-  # https://github.com/zdharma/zplugin#turbo-mode-zsh--53
-  zplugin ice wait"1" lucid atload"_zsh_autosuggest_start"
-  zplugin light zsh-users/zsh-autosuggestions
-
   zplugin ice wait"0" blockf lucid
   zplugin light zsh-users/zsh-completions
+
+  zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
+  zplugin light zsh-users/zsh-autosuggestions
 
   zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
   zplugin light zdharma/fast-syntax-highlighting
 # }}}
 
 # UI {{{
-  zplugin ice from"gh-r" bpick"*02-iosevka-term*" atclone'local f; for f (ttf/*.ttf); [ -f "~/Library/Fonts/$(basename $f)" ] && mv -f $f ~/Library/Fonts/' atpull"%atclone"
+  zplugin ice id-as"be5invis/Iosevka" from"gh-r" bpick"*01-iosevka*" atclone'local f; for f (ttf/*.ttf); mv -f $f ~/Library/Fonts/' atpull"%atclone"
+  zplugin light be5invis/Iosevka
+
+  zplugin ice id-as"be5invis/Iosevka-term" from"gh-r" bpick"*02-iosevka-term*" atclone'local f; for f (ttf/*.ttf); mv -f $f ~/Library/Fonts/' atpull"%atclone"
   zplugin light be5invis/Iosevka
 # }}}
 

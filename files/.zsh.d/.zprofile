@@ -32,9 +32,10 @@ path=(
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
   ./node_modules/.bin
+  /usr/local/opt/openssl/bin(N-/)
+  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
   /usr/local/{bin,sbin}
-  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
   # Until yarn fixes itself & link binaries to `/usr/local/bin`
   ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
   ${HOME}/.cargo/bin(N-/)
@@ -47,4 +48,3 @@ path=(
 )
 
 for config (${ZDOTDIR}/config/*.zsh) source $config
-
