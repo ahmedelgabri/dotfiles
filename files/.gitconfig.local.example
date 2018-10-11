@@ -4,3 +4,6 @@
   name =
   email =
   signingkey =
+
+[includeIf "gitdir:~/path/to/work/dir/"]
+  path = ~/path/to/work/dir/.gitconfig
