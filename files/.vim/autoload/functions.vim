@@ -73,28 +73,6 @@ function! functions#OpenFileFolder() abort
   silent call system('open '.expand('%:p:h:~'))
 endfunction
 
-" https://github.com/vheon/home/blob/b4535fdfd0cb2df93284f69d676d587b3e2b2a21/.vim/vimrc#L318-L339
-" When switching colorscheme in terminal vim change the profile in iTerm as well.
-function! functions#change_iterm2_profile() abort
-  " let dual_colorschemes = ['onedark', 'gruvbox']
-  let l:is_iTerm = exists('$TERM_PROGRAM') && $TERM_PROGRAM =~# 'iTerm.app'
-  if l:is_iTerm
-    if exists('g:colors_name')
-      let l:profile = g:colors_name
-      " if index(dual_colorschemes, g:colors_name) >= 0
-      "   let profile .= '_'.&background
-      "   echo profile
-      " endif
-      let l:escape = '\033]50;SetProfile='.l:profile.'\x7'
-      if exists('$TMUX')
-        let l:escape = '\033Ptmux;'.substitute(l:escape, '\\033', '\\033\\033', 'g').'\033\\'
-      endif
-      " for some reason it always sets BG to light?
-      silent call system("printf '".l:escape."' > /dev/tty")
-    endif
-  endif
-endfunction
-
 " Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
 " from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
 let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
@@ -280,4 +258,3 @@ function! functions#GetIcon(key) abort
 
   return get(l:ICONS, a:key, a:key)
 endfunction
-
