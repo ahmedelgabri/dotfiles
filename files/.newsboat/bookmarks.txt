@@ -21,3 +21,5 @@ http://craftinginterpreters.com/ Crafting Interpreters
 https://www.mikecr.it/ramblings/functional-css/ In defense of Functional CSS
 https://johnpolacek.github.io/the-case-for-atomic-css/ The Case for Atomic CSS
 https://jvns.ca/blog/2018/09/30/some-possible-career-goals/ Some possible career goals
+https://www.kitchensoap.com/2012/10/25/on-being-a-senior-engineer/ On Being A Senior Engineer
+https://jvns.ca/blog/senior-engineer/ What's a senior engineer's job?

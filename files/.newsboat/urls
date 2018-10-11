@@ -176,6 +176,7 @@
   https://infrequently.org/feed/ "Blog" "Web"
   http://tonsky.me/blog/atom.xml "Blog" "Programming"
   https://rakhim.org/index.xml "Blog" "Programming"
+  https://www.kitchensoap.com/feed/ "Blog" "Engineering" "Career"
 # }}}
 
 # Browsers {{{
