@@ -10,6 +10,7 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
+        \| hi! link VertSplit LineNr
 
   autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('VisualNOS'),'bg', 'gui'), synIDattr(hlID('VisualNOS'),'bg', 'cterm'))
 
