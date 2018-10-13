@@ -150,25 +150,30 @@ function! statusline#showHighligh() abort
 endfunction
 
 " DEFINE MODE DICTIONARY
+" :h mode() to see all modes
 let s:dictmode= {
-      \ 'no': ['N-Operator Pending', '4'],
-      \ 'v': ['V.', '6'],
-      \ 'V': ['V·Line', '6'],
-      \ '': ['V·Block', '6'],
-      \ 's': ['S.', '3'],
-      \ 'S': ['S·Line', '3'],
-      \ '': ['S·Block.', '3'],
-      \ 'i': ['I.', '5'],
-      \ 'R': ['R.', '1'],
-      \ 'Rv': ['V·Replace', '1'],
-      \ 'c': ['Command', '2'],
-      \ 'cv': ['Vim Ex', '7'],
-      \ 'ce': ['Ex', '7'],
-      \ 'r': ['Propmt', '7'],
-      \ 'rm': ['More', '7'],
-      \ 'r?': ['Confirm', '7'],
-      \ '!': ['Sh', '2'],
-      \ 't': ['T', '2']
+      \ 'no'     : ['N-Operator Pending' , '4'],
+      \ 'v'      : ['V.'                 , '6'],
+      \ 'V'      : ['V·Line'             , '6'],
+      \ "\<C-V>" : ['V·Block'            , '6'],
+      \ 's'      : ['S.'                 , '3'],
+      \ 'S'      : ['S·Line'             , '3'],
+      \ "\<C-S>" : ['S·Block.'           , '3'],
+      \ 'i'      : ['I.'                 , '5'],
+      \ 'ic'     : ['I·Compl'            , '5'],
+      \ 'ix'     : ['I·X-Compl'          , '5'],
+      \ 'R'      : ['R.'                 , '1'],
+      \ 'Rc'     : ['Compl·Replace'      , '1'],
+      \ 'Rx'     : ['V·Replace'          , '1'],
+      \ 'Rv'     : ['X-Compl·Replace'    , '1'],
+      \ 'c'      : ['Command'            , '2'],
+      \ 'cv'     : ['Vim Ex'             , '7'],
+      \ 'ce'     : ['Ex'                 , '7'],
+      \ 'r'      : ['Propmt'             , '7'],
+      \ 'rm'     : ['More'               , '7'],
+      \ 'r?'     : ['Confirm'            , '7'],
+      \ '!'      : ['Sh'                 , '2'],
+      \ 't'      : ['T.'                 , '2']
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
