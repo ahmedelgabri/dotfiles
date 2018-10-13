@@ -25,7 +25,7 @@
   feedlist-title-format "—[%u feeds with new articles]——%>——(%N %V)—"
   feedlist-format "%S %-80t %?d?- %-80d&? %> %U/%c"
   articlelist-title-format "—[%T]——(%u unread, %t total)——%>——(%U)—"
-  articlelist-format "%?t?%-100t ?%T"
+  articlelist-format "%?T?%-60T ?%t"
   notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
   datetime-format "%b %d %H:%M"
   html-renderer "w3m -dump -T text/html"
