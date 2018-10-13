@@ -90,7 +90,6 @@ function! plugins#loadPlugins() abort
     command! -nargs=* TranslateReplace :silent! packadd vim-translate | TranslateReplace
     command! -nargs=* TranslateClear :silent! packadd vim-translate | TranslateClear
   endif
-  call minpac#add('https://github.com/vimwiki/vimwiki', { 'branch': 'dev' })
   " }}}
 
   " Autocompletion {{{
@@ -99,7 +98,7 @@ function! plugins#loadPlugins() abort
 
   " Syntax {{{
   call minpac#add('https://github.com/chrisbra/Colorizer')
-  let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig'
+  let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig,conf'
 
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
@@ -135,14 +134,12 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
   call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
   call minpac#add('https://github.com/morhetz/gruvbox', { 'type': 'opt' })
-  call minpac#add('https://github.com/icymind/NeoSolarized', { 'type': 'opt' })
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
   call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
   " minimal
   call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   " call minpac#add('https://github.com/nerdypepper/vim-colors-plain', { 'type': 'opt'  })
-  call minpac#add('https://github.com/owickstrom/vim-colors-paramount', { 'type': 'opt'  })
   " }}}
 
   call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
