@@ -57,7 +57,7 @@ get_permission() {
 
 print_main_banner() {
   cd "$HOME"
-cat <<EOF
+command cat <<EOF
 $BLUE
                             _       _    __ _ _
                            | |     | |  / _(_) |
@@ -70,17 +70,17 @@ $BLUE
 $RESET
 EOF
 
-if [ -d .git ]; then
-cat <<EOF
+if [ -d "$DOTFILES_DIR/.git" ]; then
+command cat <<EOF
 $BLUE
-                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
                       $RESET$BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(red)date:    %ad' --date=short) $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(cyan)author:  %an') $BLUE
-                      $RESET   $(git log -n 1 --pretty=format:'%C(green)message: %s') $BLUE
+                      $RESET   $(git --git-dir "$DOTFILES_DIR/.git" --work-tree "$DOTFILES_DIR" log -n 1 --pretty=format:'%C(yellow)commit:  %h') $BLUE
+                      $RESET   $(git --git-dir "$DOTFILES_DIR/.git" --work-tree "$DOTFILES_DIR" log -n 1 --pretty=format:'%C(red)date:    %ad' --date=short) $BLUE
+                      $RESET   $(git --git-dir "$DOTFILES_DIR/.git" --work-tree "$DOTFILES_DIR" log -n 1 --pretty=format:'%C(cyan)author:  %an') $BLUE
+                      $RESET   $(git --git-dir "$DOTFILES_DIR/.git" --work-tree "$DOTFILES_DIR" log -n 1 --pretty=format:'%C(green)message: %s') $BLUE
                       $RESET$BLUE
-                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
+                      $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
 $RESET
 EOF
 fi;
@@ -245,12 +245,15 @@ symlink_files() {
   # will manage the while folder which means I will get everything in my dotfiles
   # repo git history. Too much noise & not really scalable, the fix? create the
   # folders manually.
-  mkdir -p $HOME/.mail/{Personal,Work,.notmuch} $HOME/.ssh $HOME/.gnupg $HOME/.config $HOME/Library/LaunchAgents
+  mkdir -p $HOME/.mail/{Personal,Work,.notmuch} $HOME/.{ssh,gnupg,config} $HOME/Library/LaunchAgents
 
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
       # I want all the make steps to run even if a cask or a brew errored out
-    cd "$DOTFILES_DIR" && make symlink
+    cd "$DOTFILES_DIR" && \
+    cp files/.gitconfig.local.example $HOME/.gitconfig.local && \
+    cp files/.zshrc.local.example $HOME/.zshrc.local && \
+    make symlink
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
@@ -304,9 +307,9 @@ all() {
 
   if [ $? -eq 0 ]; then
     log_success "Done."
-    log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages, iterm2 themes & neovim deps" \
+    log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages & neovim deps" \
       "Don't forget to generate SSH keys & import gpg keys" \
-      "HOMEBREW_GITHUB_API_TOKEN & GITHUB_TOKEN are needed for homebrew & hub cli"
+    command vim -u NONE $HOME/.{gitconfig,zshrc}.local
   else
     log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
   fi
