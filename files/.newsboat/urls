@@ -11,14 +11,14 @@
   "query:→ CSS:tags # \"CSS\"" "CSS"
   "query:→ Design:tags # \"Design\"" "Design"
   "query:→ Engineering:tags # \"Engineering\"" "Engineering"
-  "query:→ Fancy:tags # \"Fancy\"" "Fancy"
   "query:→ Friends:tags # \"Friends\"" "Friends"
   "query:→ Github:tags # \"Github\"" "Github"
   "query:→ HTML:tags # \"HTML\"" "HTML"
   "query:→ JavaScript:tags # \"JavaScript\"" "JavaScript"
-  "query:→ ClojureScript:tags # \"ClojureScript\"" "ClojureScript"
+  # "query:→ Clojure:tags # \"Clojure\" and \"ClojureScript\"" "Clojure"
+  "query:→ Clojure:tags # \"Clojure\"" "Clojure"
   "query:→ logo:tags # \"logo\"" "logo"
-  "query:→ mobileo:tags # \"mobileo\"" "mobileo"
+  "query:→ Mobile:tags # \"Mobile\"" "Mobile"
   "query:→ Must:tags # \"Must\"" "Must"
   "query:→ node.js:tags # \"node.js\"" "node"
   "query:→ Performance:tags # \"Performance\"" "Performance"
@@ -177,6 +177,8 @@
   http://tonsky.me/blog/atom.xml "Blog" "Programming"
   https://rakhim.org/index.xml "Blog" "Programming"
   https://www.kitchensoap.com/feed/ "Blog" "Engineering" "Career"
+  http://katemats.com/feed/ "Blog" "Leadership" "Career"
+  http://buzzdecafe.github.io/rss.xml "~Ramda author" "JavaScript" "FP"
 # }}}
 
 # Browsers {{{
@@ -193,46 +195,24 @@
 # }}}
 
 # CSS {{{
-  http://cameronmoll.com/index.xml "CSS"
-  http://demosthenes.info/feed.php "CSS"
-  http://feeds.feedburner.com/CssTricks?format=xml "CSS"
-  http://feeds.feedburner.com/InformationArchitectsJapan "CSS"
-  http://feeds.feedburner.com/TheVanBlog "CSS"
-  http://feeds.feedburner.com/WebDesignerNotebook "CSS"
   http://feeds.feedburner.com/csswizardry "CSS"
-  http://feeds.feedburner.com/hicksdesign "CSS"
-  http://feeds.feedburner.com/leaverou "CSS"
-  http://feeds.feedburner.com/prhayes "CSS"
-  http://feeds.feedburner.com/sohtanaka?format=xml "CSS"
-  http://feeds2.feedburner.com/LeeMunroeBlog "CSS"
-  http://feeds2.feedburner.com/elliotjaystocks "CSS"
-  http://forabeautifulweb.com/feeds/blog_rss "CSS"
   http://iamvdo.me/en/rss "CSS"
   http://kilianvalkhof.com/feed/ "CSS"
-  http://meiert.com/en/feed/ "CSS"
   http://meyerweb.com/eric/thoughts/rss2/full "CSS"
   http://nicolasgallagher.com/feed/ "CSS"
   http://simurai.com/rss "CSS"
   http://snook.ca/jonathan/index.rdf "CSS"
-  http://www.456bereastreet.com/feed.xml "CSS"
-  http://www.romancortes.com/blog/feed/ "CSS"
-  http://www.stopdesign.com/index.xml "CSS"
   http://www.stubbornella.org/content/feed/ "CSS"
   http://www.thecssninja.com/feed "CSS"
   http://www.useragentman.com/blog/feed/ "CSS"
   http://www.xanthir.com/blog/atom/ "CSS"
-  http://www.zeldman.com/rss/ "CSS"
-  http://zomigi.com/feed/ "CSS"
-  https://roy.io/feed/ "CSS"
 # }}}
 
 # Design {{{
   http://blog.capwatkins.com/feed "Design"
-  http://feeds.feedburner.com/DesignStaff "Design"
-  http://feeds.feedburner.com/MethodandCraft "Design"
-  http://feeds.feedburner.com/thehotseat "Design"
   http://feeds2.feedburner.com/retinart/ "Design"
   http://tylergaw.com/rss.xml "Design"
+  http://tobiasahlin.com/feed/ "Design"
 # }}}
 
 # Engineering {{{
@@ -257,10 +237,6 @@
   https://deliveroo.engineering/feed.xml "Engineering"
 # }}}
 
-# Fancy {{{
-  http://tobiasahlin.com/feed/ "Fancy"
-# }}}
-
 # ME {{{
   https://gabri.me/feed.xml "ME"
 # }}}
@@ -271,25 +247,12 @@
 
 # Github {{{
   https://github.com/whatwg.atom "Github"
-  https://github.com/FormidableLabs.atom "Github"
-  https://github.com/andyet.atom "Github"
-  https://github.com/filamentgroup.atom "Github"
   https://github.com/facebook.atom "Github"
-  https://github.com/css-modules.atom "Github"
-  https://github.com/segmentio.atom "Github"
-  https://github.com/gocardless.atom "Github"
-# }}}
-
-# HTML {{{
-  http://feeds.feedburner.com/html5rocks "HTML"
 # }}}
 
 # JavaScript {{{
-  http://benalman.com/feed/news/ "JavaScript"
   http://blog.npmjs.org/rss "JavaScript"
   http://blog.pamelafox.org/feeds/posts/default "JavaScript"
-  http://feeds.feedburner.com/AlexSexton "JavaScript"
-  http://feeds.feedburner.com/hificms "JavaScript"
   http://feeds.feedburner.com/jlongster "JavaScript"
   http://feeds.feedburner.com/metafizzy "JavaScript"
   http://feeds.feedburner.com/remysharp "JavaScript"
@@ -298,34 +261,23 @@
   http://paulirish.com/feed/ "JavaScript"
   http://perfectionkills.com/feed.xml "JavaScript"
   http://raganwald.com/atom.xml "JavaScript"
-  http://rss.badassjs.com/ "JavaScript"
-  http://www.allenpike.com/feed/ "JavaScript"
   http://www.phpied.com/feed/ "JavaScript"
-  http://www.pocketjavascript.com/blog?format=RSS "JavaScript"
-  https://blog.domenic.me/atom.xml "JavaScript"
-  https://blog.rotenberg.io/feed/ "JavaScript"
   https://glebbahmutov.com/blog/atom.xml "JavaScript"
-  https://www.javascript.com/feed/rss "JavaScript"
   https://www.webreflection.co.uk/blog/feed.atom "JavaScript"
   http://jasonformat.com/rss/ "~Jason Miller @_developit (Preact)" "JavaScript"
-  https://benmccormick.org/rss/ "JavaScript"
 # }}}
 
-# ClojureScript {{{
-  http://swannodette.github.com/atom.xml "ClojureScript"
+# Clojure {{{
+  http://swannodette.github.com/atom.xml "Clojure" "ClojureScript"
 # }}}
 
 # logo {{{
   http://feeds.feedburner.com/IdentityDesigned "logo"
 # }}}
 
-# mobileo {{{
-  http://www.cloudfour.com/feed/ "mobileo"
-  http://mobiforge.com/rss.xml "mobileo"
-# }}}
-
-# Must {{{
-  http://buzzdecafe.github.io/rss.xml "~Ramda author" "Must"
+# Mobile {{{
+  http://www.cloudfour.com/feed/ "Mobile"
+  http://mobiforge.com/rss.xml "Mobile"
 # }}}
 
 # node.js {{{
