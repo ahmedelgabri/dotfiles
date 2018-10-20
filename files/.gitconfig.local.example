@@ -6,4 +6,6 @@
   signingkey =
 
 [includeIf "gitdir:~/path/to/work/dir/"]
+  # if you add an email here make sure this email is added to your GPG key,
+  # otherwise your commits will not be signed on GitHub
   path = ~/path/to/work/dir/.gitconfig
