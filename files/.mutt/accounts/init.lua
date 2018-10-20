@@ -43,6 +43,7 @@ function listvalues(s)
 end
 
 function _switch_account(opt)
+  local notmuch_path = opt.account_name.."/**"
   local prefix = opt.account_name.."/"..opt.account_name
   local folder_prefix = "+"..prefix
   local email_env = string.upper(opt.account_name) .. EMAIL_ENV_SUFFIX
@@ -62,6 +63,7 @@ function _switch_account(opt)
     mutt.enter('macro browser gs "<exit><change-folder>=' ..prefix.. '.Starred<enter>" "go to Starred"')
     mutt.enter('macro browser gt "<exit><change-folder>=' ..prefix.. '.Sent<enter>" "go to Sent"')
     mutt.enter('macro browser gd "<exit><change-folder>=' ..prefix.. '.Drafts<enter>" "go to Drafts"')
+    mutt.enter('macro index,pager / "<vfolder-from-query>path:' ..notmuch_path.. ' " "Searching ' ..opt.account_name.. 'mailbox with notmuch integration in neomutt"')
 
     mutt.enter("unmailboxes *")
     if alternates ~= nil then
@@ -132,5 +134,3 @@ init_accounts()
 -- # create a application/pgp signed (old-style) message
 -- # set pgp_clearsign_command="/usr/bin/gpg-2comp --comment ''  --no-verbose --batch  --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
 -- set pgp_clearsign_command="/usr/local/bin/gpg   --charset utf-8 --no-verbose --batch --quiet   --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
-
-

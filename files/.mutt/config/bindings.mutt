@@ -30,7 +30,7 @@ bind pager u exit
 bind pager j next-line
 bind pager k previous-line
 bind pager r group-reply    #Reply all
-macro index,pager / "<vfolder-from-query>" "Searching all mailboxes with notmuch integration in neomutt"
+# macro index,pager / "<vfolder-from-query>path:" "Searching all mailboxes with notmuch integration in neomutt"
 
 # Legend:
 #   ! = $spoolfile (INBOX)
