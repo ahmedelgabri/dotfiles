@@ -1,12 +1,12 @@
 # vim:ft=zsh:
 
 # Useful
-alias cp="${aliases[cp]:-cp} -i"
-alias e="${(z)VISUAL:-${(z)EDITOR}}"
-alias ln="${aliases[ln]:-ln} -i"
-alias mkdir="${aliases[mkdir]:-mkdir} -p"
-alias mv="${aliases[mv]:-mv} -i"
+alias cp="${aliases[cp]:-cp} -iv"
+alias ln="${aliases[ln]:-ln} -iv"
+alias mv="${aliases[mv]:-mv} -iv"
 alias rm="${aliases[rm]:-rm} -i"
+alias mkdir="${aliases[mkdir]:-mkdir} -p"
+alias e="${(z)VISUAL:-${(z)EDITOR}}"
 alias type='type -a'
 alias which='which -a'
 
