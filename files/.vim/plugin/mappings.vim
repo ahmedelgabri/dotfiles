@@ -22,14 +22,6 @@ xnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 xnoremap <expr> k v:count ? 'k' : 'gk'
 
-" Ensure 'logical line' movement remains accessible.
-" It adds position to jump list if you're jumping more than 5 lines
-" You can jump back and forth with <C-o> and <C-i>
-xnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
-xnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
-nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-
 " Move visual block
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
@@ -59,8 +51,6 @@ nnoremap <Right> :vertical resize -2<CR>
 nnoremap <Left> :vertical resize +2<CR>
 nnoremap <Down> :resize -2<CR>
 nnoremap <Up> :resize +2<CR>
-
-nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
 inoremap jj <ESC>
 nnoremap <Leader><TAB> <C-w><C-w>

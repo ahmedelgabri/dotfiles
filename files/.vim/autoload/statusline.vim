@@ -1,7 +1,7 @@
 scriptencoding utf-8
 
 function! statusline#rhs() abort
-  return winwidth(0) > 80 ? printf('%02d %02d %02d', line('.'), col('.'), line('$')) : ''
+  return winwidth(0) > 80 ? printf('%02d/%02d:%02d', line('.'), line('$'), col('.')) : ''
 endfunction
 
 function! statusline#fileSize() abort
