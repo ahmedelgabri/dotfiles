@@ -55,7 +55,6 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/Shougo/unite.vim')
   call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
   call minpac#add('https://github.com/junegunn/vim-peekaboo')
-  call minpac#add('https://github.com/junegunn/vim-easy-align')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
@@ -75,6 +74,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/wellle/targets.vim')
   call minpac#add('https://github.com/wincent/loupe')
   call minpac#add('https://github.com/wincent/terminus')
+  call minpac#add('https://github.com/tommcdo/vim-lion')
 
   if executable('tmux')
     call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
