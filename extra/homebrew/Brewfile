@@ -68,7 +68,7 @@ brew "msmtp"
 brew "offlineimap"
 brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
 # End Mail
-brew "mpv", args: ["with-bundle"]
+brew "mpv", args: ["with-bundle", "with-rubberband"]
 brew "rtv"
 brew "tmux", args: ["HEAD"]
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
