@@ -74,7 +74,6 @@ brew "tmux", args: ["HEAD"]
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
 brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
 brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
-brew "bitlbee", restart_service: true
 
 # Nice to have
 # brew "ledger"
