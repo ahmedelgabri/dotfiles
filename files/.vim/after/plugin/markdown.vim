@@ -15,16 +15,17 @@ let g:markdown_fenced_languages = [
       \'less=css'
       \]
 
-let g:goyo_height = '95%'
-let g:goyo_width = '100'
-nmap <Leader>g :Goyo<CR>
+let g:goyo_width = '120'
+let g:limelight_conceal_ctermfg=240
+let g:limelight_conceal_guifg = '#777777'
+nmap <Leader>g :silent! packadd goyo.vim<CR><BAR>:Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization
 function! s:goyo_enter() abort
   Limelight
   if exists('$TMUX')
-    silent !tmux set status off
-    silent !tmux set pane-border-status off
+    silent !tmux set -g status off
+    silent !tmux set -g pane-border-status off
     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
   endif
   let b:quitting = 0
@@ -39,8 +40,8 @@ endfunction
 function! s:goyo_leave() abort
   Limelight!
   if exists('$TMUX')
-    silent !tmux set status on
-    silent !tmux set pane-border-status top
+    silent !tmux set -g status on
+    silent !tmux set -g pane-border-status top
     silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
   endif
   " Quit Vim if this is the only remaining buffer

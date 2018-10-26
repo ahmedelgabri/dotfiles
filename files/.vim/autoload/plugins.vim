@@ -124,8 +124,6 @@ function! plugins#loadPlugins() abort
 
   " Writing {{{
   call minpac#add('https://github.com/junegunn/goyo.vim', { 'type': 'opt' })
-  command! -nargs=* Goyo :silent! packadd goyo.vim | Goyo
-
   call minpac#add('https://github.com/junegunn/limelight.vim', { 'type': 'opt' })
   command! -nargs=* Limelight :silent! packadd limelight.vim | Limelight
   " }}}
