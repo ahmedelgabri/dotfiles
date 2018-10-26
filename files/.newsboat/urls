@@ -179,6 +179,7 @@
   https://www.kitchensoap.com/feed/ "Blog" "Engineering" "Career"
   http://katemats.com/feed/ "Blog" "Leadership" "Career"
   http://buzzdecafe.github.io/rss.xml "~Ramda author" "JavaScript" "FP"
+  https://twobithistory.org/feed.xml "Blog" "Programming" "Computer Science" "History"
 # }}}
 
 # Browsers {{{
@@ -356,4 +357,5 @@
   https://www.youtube.com/feeds/videos.xml?user=Tsoding "YouTube" "CLI" "Haskell"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?channel_id=UCO1cgjhGzsSYb1rsB4bFe4Q "YouTube" "JavaScript" "Programming"
+  https://www.youtube.com/feeds/videos.xml?channel_id=UC1UxEQuBvfLJgWR5tk_XIXA "YouTube" "Clojure" "Programming"
 # }}}
