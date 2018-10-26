@@ -2,6 +2,7 @@
 
 {
   "coc.preferences.autoTrigger": "always",
+  "coc.preferences.noselect": false,
   /* "coc.preferences.triggerAfterInsertEnter": false, */
   "coc.preferences.timeout": 200,
   "coc.source.neosnippet.enable": false,
