@@ -94,7 +94,22 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Autocompletion {{{
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': { -> coc#util#install()}})
+  call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': {-> system('bash install.sh')} })
+  call minpac#add('https://github.com/othree/csscomplete.vim')
+  if has('nvim') && has('python3')
+    call minpac#add('https://github.com/ncm2/ncm2')
+    call minpac#add('https://github.com/roxma/nvim-yarp')
+    call minpac#add('https://github.com/ncm2/ncm2-path')
+    call minpac#add('https://github.com/ncm2/ncm2-tmux')
+    call minpac#add('https://github.com/ncm2/ncm2-bufword')
+    call minpac#add('https://github.com/ncm2/ncm2-github')
+    call minpac#add('https://github.com/ncm2/ncm2-cssomni')
+    call minpac#add('https://github.com/ncm2/ncm2-html-subscope')
+    call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope')
+    call minpac#add('https://github.com/ncm2/ncm2-ultisnips')
+    call minpac#add('https://github.com/jsfaint/ncm2-vim')
+    call minpac#add('https://github.com/Shougo/neco-vim')
+  endif
   " }}}
 
   " Syntax {{{

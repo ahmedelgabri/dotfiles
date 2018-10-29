@@ -182,35 +182,37 @@ function! s:show_documentation() abort
 endfunction
 
 function! functions#setupCompletion() abort
-  let g:UltiSnipsExpandTrigger      = "<c-u>"
-  let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-  let g:UltiSnipsJumpBackwardTrigger    = "<c-k>"
+  if has('nvim') && has('python3')
+    " enable ncm2
+    augroup COMPLETION_SETUP
+      au!
+      autocmd BufEnter * call ncm2#enable_for_buffer()
+      autocmd TextChangedI * call ncm2#auto_trigger()
+    augroup END
 
-  let g:coc_snippet_next = '<c-j>'
-  let g:coc_snippet_prev = '<c-k>'
+    set completeopt+=noselect
 
-  inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<c-j>"
-  inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<c-k>"
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  inoremap <silent><expr> <c-space> coc#refresh()
+    let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+    let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
+    let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
+    let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
+    let g:UltiSnipsRemoveSelectModeMappings = 0
 
-  " imap <silent> <C-x><C-o> <Plug>(coc-complete-custom)
-  imap <silent> <C-x><C-u> <Plug>(coc-complete-custom)
-  " Use `[c` and `]c` for navigate diagnostics
-  nmap <silent> [c <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+    inoremap <silent> <expr> <CR> ((pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : (!empty(v:completed_item) ? ncm2_ultisnips#expand_or("\<cr>", 'n') : "\<CR>" ))
+    imap <C-Space> <Plug>(ncm2_manual_trigger)
 
-  " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
+    imap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)"
+    vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res ? '' : "\<Tab>"
+    inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res ? '' : "\<Tab>"
+    xmap <Tab> <Plug>(ultisnips_expand)
+    smap <Tab> <Plug>(ultisnips_expand)
 
-  " Use K for show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  " Show signature help while editing
-  autocmd! CursorHoldI,CursorMovedI * silent! call CocAction('showSignatureHelp')
+    imap <silent> <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)"
+    vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res ? '' : "\<S-Tab>"
+    inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res ? '' : "\<S-Tab>"
+    xmap <S-Tab> <Plug>(ultisnips_backward)
+    smap <S-Tab> <Plug>(ultisnips_backward)
+  endif
 endfunction
 
 

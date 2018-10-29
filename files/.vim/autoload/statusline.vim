@@ -53,25 +53,6 @@ function! statusline#LinterStatus() abort
   return join(l:status, ' ')
 endfunction
 
-function! statusline#statusDiagnostic() abort
-  let l:info = get(b:, 'coc_diagnostic_info', {})
-
-  if empty(l:info) | return '' | endif
-
-  let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
-  let l:msgs = []
-
-  if get(l:info, 'error', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , functions#GetIcon('linter_error')))
-  endif
-
-  if get(info, 'warning', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['warning'] , functions#GetIcon('linter_style')))
-  endif
-
-  return join(l:msgs, ' ')
-endfunction
-
 " Modified from here
 " https://github.com/mhinz/vim-signify/blob/748cb0ddab1b7e64bb81165c733a7b752b3d36e4/doc/signify.txt#L565-L582
 function! statusline#GetHunks(list) abort
