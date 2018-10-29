@@ -55,6 +55,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/Shougo/unite.vim')
   call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
   call minpac#add('https://github.com/junegunn/vim-peekaboo')
+  call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
@@ -103,8 +104,8 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
-  let g:polyglot_disabled = ['javascript', 'jsx', 'markdown']
-  call minpac#add('https://github.com/neoclide/jsonc.vim')
+  call minpac#add('https://github.com/jxnblk/vim-mdx-js')
+  let g:polyglot_disabled = ['javascript', 'jsx']
 
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')
   if executable('direnv')
