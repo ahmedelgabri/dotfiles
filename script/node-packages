@@ -4,6 +4,7 @@ NPM_PACKAGES=(
 "jscpd"
 "jsctags"
 "jsinspect"
+"bash-language-server"
 "flow-language-server"
 "javascript-typescript-langserver"
 "ocaml-language-server"
