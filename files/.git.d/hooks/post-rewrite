@@ -1,5 +1,6 @@
 #!/bin/sh
-HOOKS_DIR="$(command git config --get core.hooksPath || echo "$DOTFILES/git/hooks")"
+HOOKS_DIR="$(command git config --global --get core.hooksPath || echo "$DOTFILES/files/.git.d/hooks")"
+
 case "$1" in
   rebase) exec "$HOOKS_DIR/post-merge" ;;
 esac
