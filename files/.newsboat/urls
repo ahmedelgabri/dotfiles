@@ -180,6 +180,7 @@
   http://katemats.com/feed/ "Blog" "Leadership" "Career"
   http://buzzdecafe.github.io/rss.xml "~Ramda author" "JavaScript" "FP"
   https://twobithistory.org/feed.xml "Blog" "Programming" "Computer Science" "History"
+  https://increment.com/feed.xml "Programming" "Magazine"
 # }}}
 
 # Browsers {{{
