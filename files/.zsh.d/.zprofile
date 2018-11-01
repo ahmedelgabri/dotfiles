@@ -32,6 +32,7 @@ path=(
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
   ./node_modules/.bin
+  /usr/local/opt/curl/bin(N-/)
   /usr/local/opt/openssl/bin(N-/)
   ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
