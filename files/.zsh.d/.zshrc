@@ -100,8 +100,6 @@ autoload -Uz _zplugin
 # }}}
 
 # Local plugins/completions/etc... {{{
-  zplugin light %HOME/Box\ Sync/dotfiles
-
   zplugin ice lucid atinit'local i; for i in *.zsh; do source $i; done'
   zplugin light %HOME/.zsh.d/functions
 

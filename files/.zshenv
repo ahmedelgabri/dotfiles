@@ -14,11 +14,12 @@ export HOSTNAME=$(hostname)
 export XDG_CONFIG_HOME="${HOME}/.config"
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
-export PROJECTS="${HOME}/Sites/dev"
+export PROJECTS="${HOME}/Sites/personal/dev"
+export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTE_DIR="${PERSONAL_STORAGE}/notes"
-
 [[ -x /usr/local/bin/brew ]] && export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
+[[ -f "${PERSONAL_STORAGE}/dotfiles/personal.zsh" ]] && source "${PERSONAL_STORAGE}/dotfiles/personal.zsh"
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
 # (Only once) if it was not sourced before, becuase .zshenv is always sourced
