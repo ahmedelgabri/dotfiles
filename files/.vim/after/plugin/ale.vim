@@ -17,7 +17,7 @@ let g:ale_sign_style_warning  = g:ale_sign_error
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
 let g:ale_echo_msg_format = '[%linter%] %code% %s'
 let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi'
+let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf'
 " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
 au! OptionSet textwidth let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi'
 
@@ -31,16 +31,17 @@ let g:ale_linters = {
       \}
 
 let g:ale_fixers = {
-      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown': [ 'prettier' ],
+      \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
+      \   'markdown'  : [ 'prettier' ],
       \   'javascript': [ 'prettier' ],
-      \   'css': [ 'prettier' ],
-      \   'json': [ 'prettier' ],
-      \   'scss': [ 'prettier' ],
-      \   'yaml': [ 'prettier' ],
-      \   'graphql': [ 'prettier' ],
-      \   'reason': [ 'refmt' ],
-      \   'python': [ 'black' ],
+      \   'css'       : [ 'prettier' ],
+      \   'json'      : [ 'prettier' ],
+      \   'scss'      : [ 'prettier' ],
+      \   'yaml'      : [ 'prettier' ],
+      \   'graphql'   : [ 'prettier' ],
+      \   'html'      : [ 'prettier' ],
+      \   'reason'    : [ 'refmt' ],
+      \   'python'    : [ 'black' ],
       \}
 
 " Don't auto fix (format) files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
@@ -61,7 +62,7 @@ let g:ale_pattern_options = {
       \   'package.json': {
       \       'ale_fixers': []
       \   },
-      \   'Sites/forks/.*': {
+      \   'Sites/personal/forks/.*': {
       \       'ale_fixers': []
       \   },
       \}
