@@ -60,3 +60,4 @@ alias r="ranger" # overrides built-in r command
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
+(( $+commands[sbcl] )) && (( $+commands[rlwrap] )) && alias sbcl="rlwrap sbcl"
