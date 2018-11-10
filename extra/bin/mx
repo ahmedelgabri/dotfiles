@@ -44,11 +44,10 @@ SESSION="$(get_session "$1")"
 if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
   WORKINGDIR=""
 
-  # To handle the legacy structue I had, TODO: change the folder structure.
-  if [ -d "$PROJECTS"/"$SESSION"/"$2" ]; then
-    WORKINGDIR="$PROJECTS"/"$SESSION"/"$2"
-  elif [ -d "$PROJECTS"/"$SESSION" ]; then
-    WORKINGDIR="$PROJECTS"/"$SESSION"
+  if [ -d "$WORK/$SESSION/$2" ]; then
+    WORKINGDIR="$WORK/$SESSION/$2"
+  elif [ -d "$PROJECTS/$SESSION" ]; then
+    WORKINGDIR="$PROJECTS/$SESSION"
   else
     WORKINGDIR="$HOME"
   fi
