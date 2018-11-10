@@ -28,5 +28,8 @@ augroup MyAutoCmds
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
   autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu | set nornu | endif
 
+  " See https://github.com/neovim/neovim/issues/7994
+  autocmd InsertLeave * set nopaste
+
   autocmd FileType gitcommit,gina-status,todo,qf setlocal cursorline
 augroup END
