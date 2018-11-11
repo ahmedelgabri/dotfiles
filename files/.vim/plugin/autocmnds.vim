@@ -32,4 +32,6 @@ augroup MyAutoCmds
   autocmd InsertLeave * set nopaste
 
   autocmd FileType gitcommit,gina-status,todo,qf setlocal cursorline
+
+  autocmd FileType lisp,clojure,scheme RainbowParentheses
 augroup END
