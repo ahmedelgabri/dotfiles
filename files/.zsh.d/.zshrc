@@ -58,6 +58,9 @@ autoload -Uz _zplugin
   # Program installed by homebrew
   zplugin snippet 'https://raw.githubusercontent.com/garabik/grc/master/grc.zsh'
 
+  zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
+  zplugin light snoe/clojure-lsp
+
   zplugin ice from"gh-r" as"program" mv"fd*/fd -> fd"
   zplugin light sharkdp/fd
 
