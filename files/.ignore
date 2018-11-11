@@ -12,6 +12,7 @@ log
 tmp
 cache
 .cache
+pack
 
 *.pyc
 *.pdf
