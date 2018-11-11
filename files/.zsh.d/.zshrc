@@ -36,52 +36,17 @@ autoload -Uz _zplugin
 # }}}
 
 # Tools {{{
-  zplugin ice as"program" pick"transcrypt"
-  zplugin light elasticdog/transcrypt
-
   zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
   zplugin light direnv/direnv
 
   zplugin ice as"program" atclone"./install --bin" atpull"%atclone" atload'export FZF_PATH="${ZDOTDIR:-$HOME}/.zplugin/plugins/junegunn---fzf"; local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
   zplugin light junegunn/fzf
-# }}}
 
-# Git {{{
-  zplugin ice as'program' make"install prefix=$ZPFX" pick"$ZPFX/bin/tig"
-  zplugin light jonas/tig
-
-  zplugin ice as"program" pick"bin/git-dsf"
-  zplugin light zdharma/zsh-diff-so-fancy
+  zplugin ice as"program" atclone"./install.sh $ZPLGM[PLUGINS_DIR]/garabik---grc $ZPLGM[PLUGINS_DIR]/garabik---grc"atpull"%atclone" atload"source grc.zsh" pick"bin/*"
+  zplugin light garabik/grc
 # }}}
 
 # Utilities & enhancements {{{
-  # Program installed by homebrew
-  zplugin snippet 'https://raw.githubusercontent.com/garabik/grc/master/grc.zsh'
-
-  zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
-  zplugin light snoe/clojure-lsp
-
-  zplugin ice from"gh-r" as"program" mv"fd*/fd -> fd"
-  zplugin light sharkdp/fd
-
-  zplugin ice from"gh-r" as"program" bpick"*osx*" mv"jq* -> jq"
-  zplugin light stedolan/jq
-
-  zplugin ice from"gh-r" as"program" bpick"*macos*" mv"exa* -> exa"
-  zplugin light ogham/exa
-
-  zplugin ice from"gh-r" as"program" mv"bat*/bat -> bat"
-  zplugin light sharkdp/bat
-
-  zplugin ice as"program" make"install PREFIX=$ZPFX" pick"$ZPFX/bin/trans"
-  zplugin light soimort/translate-shell
-
-  zplugin ice as"program" mv"rename"
-  zplugin light ap/rename
-
-  zplugin ice pick"z.sh"
-  zplugin light rupa/z
-
   zplugin light "zsh-users/zsh-history-substring-search"
 
   zplugin ice wait"0" blockf lucid
@@ -94,7 +59,10 @@ autoload -Uz _zplugin
   zplugin light zdharma/fast-syntax-highlighting
 # }}}
 
-# UI {{{
+# Misc {{{
+  zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
+  zplugin light snoe/clojure-lsp
+
   zplugin ice id-as"be5invis/Iosevka" from"gh-r" bpick"*01-iosevka*" atclone'local f; for f (ttf/*.ttf); mv -f $f ~/Library/Fonts/' atpull"%atclone"
   zplugin light be5invis/Iosevka
 
