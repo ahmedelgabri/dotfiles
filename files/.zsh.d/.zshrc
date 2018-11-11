@@ -75,8 +75,6 @@ autoload -Uz _zplugin
   zplugin light %HOME/.zsh.d/functions
 
   zplugin light %HOME/.zsh.d/aliases
-
-  zplugin creinstall -q %HOME/.zsh.d/completions
 # }}}
 
 if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
