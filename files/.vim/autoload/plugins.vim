@@ -102,9 +102,10 @@ function! plugins#loadPlugins() abort
   let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig,conf'
 
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
+  call minpac#add('https://github.com/neoclide/jsonc.vim')
   call minpac#add('https://github.com/jez/vim-github-hub')
-  call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
+  call minpac#add('https://github.com/sheerun/vim-polyglot')
   let g:polyglot_disabled = ['javascript', 'jsx']
 
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')

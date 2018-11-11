@@ -25,7 +25,7 @@
     "reason": {
       "command": "ocaml-language-server",
       "args": ["start", "--stdio"],
-      "filetypes": ["reason"],
+      "filetypes": ["ocaml", "reason"],
       "initializationOptions": {},
       "settings": {}
     },
@@ -36,10 +36,24 @@
       "initializationOptions": {},
       "settings": {}
     },
-    "haskell": {
-      "command": "hie-wrapper",
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh", "bash"],
+      "initializationOptions": {},
+      "settings": {}
+    },
+    "docker": {
+      "command": "docker-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["dockerfile"],
+      "initializationOptions": {},
+      "settings": {}
+    },
+    "clojure": {
+      "command": "clojure-lsp",
       "args": [],
-      "filetypes": ["haskell"],
+      "filetypes": ["clojure"],
       "initializationOptions": {},
       "settings": {}
     },
