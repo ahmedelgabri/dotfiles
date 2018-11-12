@@ -101,7 +101,10 @@ bindkey '^[[B' history-substring-search-down
 ##############################################################
 # Custom/Plugins
 ###############################################################
+export BAT_CONFIG_PATH="$HOME/.batrc"
+
 export RIPGREP_CONFIG_PATH="$HOME/.rgrc"
+
 export FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
 export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
 export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
@@ -115,6 +118,7 @@ export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d
 export HOMEBREW_INSTALL_BADGE="⚽️"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_FORCE_BREWED_GIT=1
+
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 # `cd ~df` or `z ~df`
 # hash -d df=~/.dotfiles

@@ -1,0 +1,6 @@
+--theme="TwoDark"
+--tabs=0
+--map-syntax .ignore:.gitignore
+--map-syntax .fdignore:.gitignore
+--map-syntax .gitconfig.local:.gitconfig
+--map-syntax .zshrc.local:.zshrc
