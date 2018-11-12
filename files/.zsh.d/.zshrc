@@ -36,6 +36,9 @@ autoload -Uz _zplugin
 # }}}
 
 # Tools {{{
+  zplugin ice pick"z.sh"
+  zplugin light rupa/z
+
   zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
   zplugin light direnv/direnv
 
