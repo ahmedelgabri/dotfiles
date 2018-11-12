@@ -26,3 +26,4 @@ https://jvns.ca/blog/senior-engineer/ What's a senior engineer's job?
 http://blog.capwatkins.com/should-i-become-a-manager Should I Become a Manager?
 http://blog.benjamin-encz.de/post/flavors-of-engineering-management/ Flavors of Engineering Management
 http://blog.benjamin-encz.de/post/engineering-process-is-overvalued/ Engineering Process Is Overvalued
+http://stevelosh.com/blog/2018/08/a-road-to-common-lisp/ A Road to Common Lisp
