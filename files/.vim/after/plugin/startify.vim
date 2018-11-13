@@ -68,6 +68,7 @@ let g:startify_skiplist = [
       \ '^/tmp',
       \ escape(fnamemodify(resolve($VIMRUNTIME), ':p'), '\') .'doc',
       \ 'plugged/.*/doc',
+      \ 'pack/.*/doc',
       \ '.*/vimwiki/.*'
       \ ]
 
