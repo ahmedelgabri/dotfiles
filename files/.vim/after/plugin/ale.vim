@@ -7,13 +7,15 @@ endif
 let g:ale_fix_on_save = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
+let g:ale_virtualtext_cursor = 1
+" let g:ale_virtualtext_prefix = ' '
 let g:ale_list_window_size = 5
 let g:ale_warn_about_trailing_blank_lines = 1
 let g:ale_warn_about_trailing_whitespace = 1
 let g:ale_sign_error = functions#GetIcon('linter_error')
 let g:ale_sign_warning = g:ale_sign_error
-let g:ale_sign_style_error  = functions#GetIcon('linter_style')
-let g:ale_sign_style_warning  = g:ale_sign_error
+let g:ale_sign_style_error = functions#GetIcon('linter_style')
+let g:ale_sign_style_warning = g:ale_sign_error
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
 let g:ale_echo_msg_format = '[%linter%] %code% %s'
 let g:ale_javascript_prettier_use_local_config = 1
