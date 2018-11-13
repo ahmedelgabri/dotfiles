@@ -5,7 +5,7 @@ endif
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_completionPreferTextEdit = 1
 " let g:LanguageClient_hasSnippetSupport = 0
-let g:LanguageClient_loggingLevel='DEBUG'
+" let g:LanguageClient_loggingLevel='DEBUG'
 let g:LanguageClient_serverCommands = {}
 
 " Requires https://github.com/haskell/haskell-ide-engine
