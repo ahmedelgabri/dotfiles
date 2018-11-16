@@ -1,6 +1,7 @@
 set encoding=utf-8
 scriptencoding utf-8
 set fileencoding=utf-8
+set termencoding=utf-8
 
 set tabstop=4                         " spaces per tab
 set softtabstop=2
@@ -11,6 +12,7 @@ set nowrap                            " no wrap
 set signcolumn=yes
 set textwidth=80
 " set colorcolumn=+1
+" let &colorcolumn=join([&colorcolumn,81] + range(101,999), ',')
 
 " This works with project specific `.local.vim` files, need to check why if I move
 " to an autoload function it doesn't work
@@ -18,6 +20,7 @@ augroup MyLongLinesHighlight
   autocmd!
   autocmd BufWinEnter,BufEnter ?* call functions#setOverLength()
   autocmd OptionSet textwidth call functions#setOverLength()
+  autocmd BufWinEnter,BufEnter * match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'  " highlight VCS conflict markers
 augroup END
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards
@@ -29,6 +32,7 @@ set noshowmode                        " Don't Display the mode you're in. since 
 set wildmode=longest:full,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.swp,*~,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
+set tagcase=followscs
 
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
@@ -244,6 +248,6 @@ if exists('&guioptions')
 endif
 
 if executable('rg')
-  set grepprg=rg\ --vimgrep\ --glob\ "!tags"
+  set grepprg=rg\ --vimgrep
   set grepformat=%f:%l:%c:%m
 endif
