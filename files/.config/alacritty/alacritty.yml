@@ -30,6 +30,9 @@ window:
     x: 40
     y: 40
 
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: true
+
   # Window decorations
   #
   # Available values:
@@ -261,6 +264,7 @@ mouse:
   triple_click: {threshold: 300}
 
 selection:
+  # prettier-ignore
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
@@ -497,7 +501,6 @@ key_bindings:
   - {key: D, mods: Alt, chars: "\x1b\x64"}
     # https://github.com/jwilm/alacritty/issues/93#issuecomment-312760361
   - {key: Key6, mods: Control, chars: "\x1e"}
-
     # Tmux
   - {key: W, mods: Command, chars: "\x01\x78"}
   - {key: T, mods: Command, chars: "\x01\x63"}
