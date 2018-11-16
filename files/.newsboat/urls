@@ -183,6 +183,7 @@
   https://increment.com/feed.xml "Programming" "Magazine"
   http://www.codingthearchitecture.com/rss.xml "Blog" "Software Architecture"
   https://feeds2.feedburner.com/stevelosh "Blog" "Programming" "unix"
+  https://feeds.feedburner.com/TroyHunt "Blog" "Security"
 # }}}
 
 # Browsers {{{
