@@ -35,20 +35,6 @@ autoload -Uz _zplugin
   zplugin light ahmedelgabri/pure
 # }}}
 
-# Tools {{{
-  zplugin ice pick"z.sh"
-  zplugin light rupa/z
-
-  zplugin ice from"gh-r" as"program" mv"direnv* -> direnv" atload'export NODE_VERSIONS="${HOME}/.node-versions"; export NODE_VERSION_PREFIX=""; eval "$(direnv hook zsh)"';
-  zplugin light direnv/direnv
-
-  zplugin ice as"program" atclone"./install --bin" atpull"%atclone" atload'export FZF_PATH="${ZDOTDIR:-$HOME}/.zplugin/plugins/junegunn---fzf"; local f; for f (shell/*.zsh) source $f' compile"shell/*.zsh" pick"bin/*"
-  zplugin light junegunn/fzf
-
-  zplugin ice as"program" atclone"./install.sh $ZPLGM[PLUGINS_DIR]/garabik---grc $ZPLGM[PLUGINS_DIR]/garabik---grc"atpull"%atclone" atload"source grc.zsh" pick"bin/*"
-  zplugin light garabik/grc
-# }}}
-
 # Utilities & enhancements {{{
   zplugin light "zsh-users/zsh-history-substring-search"
 
@@ -80,16 +66,14 @@ autoload -Uz _zplugin
   zplugin light %HOME/.zsh.d/aliases
 # }}}
 
-if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
-  kitty + complete setup zsh | source /dev/stdin
-fi
-
 ##############################################################
 # PLUGINS VARS & SETTINGS
 ##############################################################
 
+############### Autosuggest
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 
+############### History Substring
 # bind UP and DOWN keys
 bindkey "${terminfo[kcuu1]}" history-substring-search-up
 bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -98,31 +82,7 @@ bindkey "${terminfo[kcud1]}" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-##############################################################
-# Custom/Plugins
-###############################################################
-export BAT_CONFIG_PATH="$HOME/.batrc"
-
-export RIPGREP_CONFIG_PATH="$HOME/.rgrc"
-
-export FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
-export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
-export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
-export FZF_CTRL_T_COMMAND="$FZF_CMD"
-export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
-export FZF_ALT_C_COMMAND="$FZF_CMD --type d ."
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
-
-export HOMEBREW_INSTALL_BADGE="⚽️"
-export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_FORCE_BREWED_GIT=1
-
-export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
-# `cd ~df` or `z ~df`
-# hash -d df=~/.dotfiles
-
+############### pure.zsh
 SYMBOLS=(
 "λ"
 "ϟ"
@@ -137,12 +97,52 @@ SYMBOLS=(
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
 export PURE_GIT_BRANCH=" "
 
-##############################################################
-# Python
-###############################################################
+############### Python
+export PYTHONSTARTUP="${HOME}/.pyrc.py"
 
-export PYTHONSTARTUP=${HOME}/.pyrc.py
+############### z.sh
+[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
 
+############### grc
+[[ -f "${HOMEBREW_ROOT}/etc/grc.zsh" ]] && source "${HOMEBREW_ROOT}/etc/grc.zsh"
+
+############### FZF
+if [[ -f "${XDG_CONFIG_HOME}/fzf/fzf.zsh" ]]; then
+  source "${XDG_CONFIG_HOME}/fzf/fzf.zsh"
+else
+  echo "y" | "${HOMEBREW_ROOT}/opt/fzf/install" --xdg --no-update-rc
+fi
+
+export FZF_VIM_PATH="${HOMEBREW_ROOT}/opt/fzf" # used in vim
+export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
+
+if (( $+commands[fd] )); then
+  export FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
+  export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
+  export FZF_CTRL_T_COMMAND="$FZF_CMD"
+  export FZF_ALT_C_COMMAND="$FZF_CMD --type d ."
+elif (( $+commands[rg] )); then
+  export FZF_CMD='rg --no-messages --no-ignore-vcs'
+  export FZF_DEFAULT_COMMAND="$FZF_CMD --files"
+  export FZF_CTRL_T_COMMAND="$FZF_CMD"
+fi
+
+export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --preview-window wrap'
+export FZF_CTRL_T_OPTS='--preview "(highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
+############### Homebrew
+export HOMEBREW_INSTALL_BADGE="⚽️"
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_FORCE_BREWED_GIT=1
+
+############### Bat, Ripgrep, Weechat
+export BAT_CONFIG_PATH="${HOME}/.batrc"
+export RIPGREP_CONFIG_PATH="${HOME}/.rgrc"
+export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
+
+############### Exa
 # di directories
 # ex executable files
 # fi regular files
@@ -163,6 +163,19 @@ export PYTHONSTARTUP=${HOME}/.pyrc.py
 # da a file's date
 export EXA_COLORS="uu=38;5;249:un=38;5;241:gu=38;5;245:gn=38;5;241:da=38;5;245:sn=38;5;7:sb=38;5;7:ur=38;5;3;1:uw=38;5;5;1:ux=38;5;1;1:ue=38;5;1;1:gr=38;5;3:gw=38;5;5:gx=38;5;1:tr=38;5;3:tw=38;5;1:tx=38;5;1:di=38;5;12:ex=38;5;7;1:*.md=38;5;229;4:*.png=38;5;208:*.jpg=38;5;208:*.gif=38;5;208"
 
+############### Direnv
+export NODE_VERSIONS="${HOME}/.node-versions";
+export NODE_VERSION_PREFIX="";
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+############### Jira
+(( $+commands[jira] )) && eval "$(jira --completion-script-zsh)"
+
+############### Kitty
+if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
+  kitty + complete setup zsh | source /dev/stdin
+fi
+
 ##############################################################
 # /etc/motd
 ##############################################################
@@ -172,12 +185,6 @@ if [ -e /etc/motd ]; then
     tee ${HOME}/.hushlogin < /etc/motd
   fi
 fi
-
-##############################################################
-# Custom completions init.
-##############################################################
-
-(( $+commands[jira] )) && eval "$(jira --completion-script-zsh)"
 
 ##############################################################
 # LOCAL.

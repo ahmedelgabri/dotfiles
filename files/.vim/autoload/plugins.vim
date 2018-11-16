@@ -48,9 +48,9 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  if !empty(glob($FZF_PATH))
+  if !empty(glob($FZF_VIM_PATH))
     call minpac#add('https://github.com/junegunn/fzf.vim')
-    set runtimepath^=$FZF_PATH
+    set runtimepath^=$FZF_VIM_PATH
   endif
   call minpac#add('https://github.com/Shougo/unite.vim')
   call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
