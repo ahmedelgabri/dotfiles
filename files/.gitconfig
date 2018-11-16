@@ -10,6 +10,70 @@
   verbose = true
   gpgsign = true
 
+[core]
+  editor = $EDITOR
+  commitGraph = true
+  whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
+  excludesfile = ~/.git.d/.gitignore
+  attributesfile = ~/.git.d/.gitattributes
+  ; https://news.ycombinator.com/item?id=11388479
+  untrackedCache = true
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  ; # conflicts with Markdown
+  commentChar = %
+  hooksPath = ~/.git.d/hooks
+
+[branch]
+  autosetupmerge = always
+  autosetuprebase = always
+
+[branch "master"]
+  rebase = true
+
+[pull]
+  rebase = true
+
+[push]
+  default = simple
+  followTags = true
+
+[fetch]
+  prune = true
+  pruneTags = true
+
+[rebase]
+  autosquash = true
+  instructionFormat = [%cn <%ce> %G?] %s
+  autoStash = true
+
+[diff]
+  # Detect copies as well as renames
+  renames = copies
+  algorithm = histogram
+  tool = vimdiff
+  compactionHeuristic = true
+  colorMoved = zebra
+
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = 1000
+  tool = vimdiff
+  conflictstyle = diff3
+
+[log]
+  decorate = short
+  date = local
+
+[status]
+  submodulesummary = true
+  color = true
+
+[tag]
+  forceSignAnnotated = true
+
+[apply]
+  whitespace = nowarn
+
 [color]
   ui = true
 
@@ -44,18 +108,6 @@
 ; https://github.com/so-fancy/diff-so-fancy/issues/296
 ; [interactive]
 ;   diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
-
-[core]
-  editor = $EDITOR
-  whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-  excludesfile = ~/.git.d/.gitignore
-  attributesfile = ~/.git.d/.gitattributes
-  ; https://news.ycombinator.com/item?id=11388479
-  untrackedCache = true
-  pager = diff-so-fancy | less --tabs=4 -RFX
-  ; # conflicts with Markdown
-  commentChar = %
-  hooksPath = ~/.git.d/hooks
 
 [alias]
   amend = commit --amend -C HEAD
@@ -93,21 +145,6 @@
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
 
-[branch]
-  autosetupmerge = always
-  autosetuprebase = always
-
-[branch "master"]
-  rebase = true
-
-[diff]
-  # Detect copies as well as renames
-  renames = copies
-  algorithm = histogram
-  tool = vimdiff
-  compactionHeuristic = true
-  colorMoved = zebra
-
 [difftool]
   prompt = false
 [diff "exif"]
@@ -118,18 +155,6 @@
   # $BASE $LOCAL $REMOTE $MERGED
   cmd = $EDITOR -d $LOCAL $REMOTE
 
-[merge]
-  # Include summaries of merged commits in newly created merge commit messages
-  log = 1000
-  tool = vimdiff
-  conflictstyle = diff3
-
-[tag]
-  forceSignAnnotated = true
-
-[log]
-  decorate = short
-
 [mergetool]
   keepBackup = false
   prompt = false
@@ -137,27 +162,9 @@
 [mergetool "vimdiff"]
   cmd = $EDITOR -d $LOCAL $REMOTE
 
-[pull]
-  rebase = true
-
-[push]
-  default = simple
-  followTags = true
-
-[status]
-  submodulesummary = true
-
-[apply]
-  whitespace = nowarn
-
 [filter "media"]
   clean = git-media-clean %f
   smudge = git-media-smudge %f
-
-[fetch]
-  prune = true
-  pruneTags = true
-
 # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
 [transfer]
   fsckObjects = true
@@ -184,20 +191,20 @@
   insteadOf = "gist:"
 
 [url "git@gitlab.com:"]
-    insteadOf = gl:
-    pushInsteadOf = gitlab:
-    pushInsteadOf = git://gitlab.com/
+  insteadOf = gl:
+  pushInsteadOf = gitlab:
+  pushInsteadOf = git://gitlab.com/
 
 [url "git://gitlab.com/"]
-    insteadOf = gitlab:
+  insteadOf = gitlab:
 
 [url "git@bitbucket.org:"]
-    insteadOf = bb:
-    pushInsteadOf = bitbucket:
-    pushInsteadOf = git://bitbucket.org/
+  insteadOf = bb:
+  pushInsteadOf = bitbucket:
+  pushInsteadOf = git://bitbucket.org/
 
 [url "git://bitbucket.org/"]
-    insteadOf = bitbucket:
+  insteadOf = bitbucket:
 
 [credential]
   helper = osxkeychain
@@ -206,11 +213,6 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
-
-[rebase]
-  autosquash = true
-  instructionFormat = [%cn <%ce> %G?] %s
-  autoStash = true
 
 [include]
   path = ~/.gitconfig.local
