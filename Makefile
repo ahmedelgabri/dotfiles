@@ -37,9 +37,9 @@ rust:
 # Neovim providers (optional)
 neovim:
 	gem install neovim
-	pip2 install --user neovim
-	pip3 install --user neovim
-	yarn global add neovim
+	# pip2 install --upgrade --user pynvim
+	# pip3 install --upgrade --user pynvim
+	# yarn global add neovim
 
 macos:
 	source $(DOTFILES)/extra/macos/.macos

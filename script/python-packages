@@ -9,6 +9,7 @@ PACKAGES=(
 "pipenv"
 "vobject" # for mutt & dump-ical.py script
 "black"
+"pynvim"
 )
 
 FLAGS=''
