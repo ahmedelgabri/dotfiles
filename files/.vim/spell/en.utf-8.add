@@ -6,8 +6,6 @@ iTerm2
 config
 Vim
 tmux
-input/!
-LightSpeed
 i18n
 CoffeeScript
 ES2015
@@ -37,3 +35,18 @@ Backend
 devs
 jQuery
 GitLab
+Gmail
+macOS
+keychain
+gmail
+smtp
+imap
+dotfiles
+screenshot
+weechat
+newsboat
+hammerspoon
+IRC
+RSS
+GitHub
+github
