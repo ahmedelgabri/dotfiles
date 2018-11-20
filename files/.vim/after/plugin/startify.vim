@@ -10,41 +10,12 @@ let g:startify_fortune_use_unicode = 1
 let g:startify_change_to_vcs_root = 1
 let g:startify_update_oldfiles = 1
 let g:startify_use_env = 1
+let g:startify_enable_special = 0
 let g:startify_files_number = 6
 let g:startify_session_persistence = 1
 let g:startify_session_delete_buffers = 1
-
-if has('nvim')
-  let s:ascii = [
-        \ '           _     ',
-        \ '  __ _  __(_)_ _ ',
-        \ ' /  \ |/ / /  / \',
-        \ '/_/_/___/_/_/_/_/',
-        \ '']
-else
-  let s:ascii = [
-        \ '       _     ',
-        \ ' _  __(_)_ _ ',
-        \ '| |/ / /  / \',
-        \ '|___/_/_/_/_/',
-        \ '']
-endif
-
-let g:startify_ascii = [
-      \ '',
-      \ '        ,/     ',
-      \ "      ,'/      ",
-      \ "    ,' /       ". s:ascii[0],
-      \ "  ,'  /_____,  ". s:ascii[1],
-      \ ".'____    ,'   ". s:ascii[2],
-      \ "     /  ,'     ". s:ascii[3],
-      \ "    / ,'       ",
-      \ "   /,'         ",
-      \ "  /'           ",
-      \ ''
-      \ ]
-
-let g:startify_custom_header = 'map(g:startify_ascii + startify#fortune#boxed(), "repeat(\" \", 5).v:val")'
+let g:startify_ascii = [' ', ' ϟ ' . (has('nvim') ? 'nvim' : 'vim') . '.', ' ']
+let g:startify_custom_header = 'map(startify#fortune#boxed() + g:startify_ascii, "repeat(\" \", 5).v:val")'
 let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Simplicity is a great virtue but it requires hard work to achieve it', 'and education to appreciate it. And to make matters worse: complexity sells better.', '', '― Edsger W. Dijkstra'],
       \ ['A common fallacy is to assume authors of incomprehensible code will be able to express themselves clearly in comments.'],
