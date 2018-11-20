@@ -17,9 +17,6 @@ function! StatusLine(mode) abort
   " active
   if a:mode ==# 'active'
     let l:line.='%6*%{statusline#gitInfo()}'
-    if exists('*sy#repo#get_stats')
-      let l:line.= statusline#GetHunks(sy#repo#get_stats())
-    endif
     let l:line.='%<'
     let l:line.=statusline#filepath()
     let l:line.='%4* %{statusline#fileSize()}%*'

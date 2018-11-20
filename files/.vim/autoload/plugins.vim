@@ -155,7 +155,7 @@ function! plugins#loadPlugins() abort
   " }}}
 
   call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
-  if getcwd() =~ 'lightspeed'
+  if getcwd() =~ 'Sites/work'
     silent! packadd vim-wakatime
   endif
 
