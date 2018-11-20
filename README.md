@@ -58,10 +58,11 @@ $ cp files/.zshrc.local.example ~/.zshrc.local
 $ cp files/.gitconfig.local.example ~/.gitconfig.local
 ```
 
-Don't forget to upload your public key to Github!
-https://github.com/blog/2144-gpg-signature-verification Note: There needs to be
-a three-way match on your email for Github to show the commit as 'verified': The
-commit email, github email, & the email associated with the public key
+Don't forget to upload your public key to GitHub!
+https://github.com/blog/2144-gpg-signature-verification Note: There needs to
+be a three-way match on your email for GitHub to show the commit as
+'verified': The commit email, github email, & the email associated with the
+public key
 
 Learn about creating a GPG key and the knowledge behind these commands here:
 https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
@@ -70,8 +71,8 @@ https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
 
 I have two email accounts, one for work and one for personal emails. The
 messages are syncronised between the remote server and my computer with
-[isync][isync], and I read them with [NeoMutt][neomutt]. A search index is built
-by [notmuch][notmuch], and emails are sent with [msmtp][msmtp].
+[isync][isync], and I read them with [NeoMutt][neomutt]. A search index is
+built by [notmuch][notmuch], and emails are sent with [msmtp][msmtp].
 
 After linking the dotfiles, there are only a few more things that need to be
 done.
@@ -108,7 +109,7 @@ For sending mail:
 
 **Repeat this for each account you want to add.**
 
-## Synchronising periodically
+## Synchronizing periodically
 
 Emails are sent by the `msmtp` program when they're sent in NeoMutt. Incoming
 messages are fetched from the remote server when `mbsync` runs (the executable
@@ -120,7 +121,7 @@ To run `mbsync` periodically, load the [`launchctl`][launchctl] job with:
 $ launchctl load ~/Library/LaunchAgents/com.ahmedelgabri.isync.plist
 ```
 
-This will run `mbsync -a` every 2 minutes, synchronising all IMAP folders.
+This will run `mbsync -a` every 2 minutes, synchronizing all IMAP folders.
 
 [isync]: http://isync.sourceforge.net
 [neomutt]: http://www.neomutt.org/
