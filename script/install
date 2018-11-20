@@ -1,8 +1,7 @@
 #!/bin/bash
 
-set -u
-set -e
-set -o pipefail
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eueo pipefail
 
 # =======================================================================
 # = Helpers & setting some variables
