@@ -114,6 +114,7 @@ if has('windows')
   set fillchars=diff:⣿                " BOX DRAWINGS
   set fillchars+=vert:┃               " HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
   set fillchars+=fold:─
+  set fillchars=eob:\                 " Hide end of buffer ~
 endif
 
 " Configure fold status text
