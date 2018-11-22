@@ -158,8 +158,6 @@ function! plugins#loadPlugins() abort
   if getcwd() =~ 'Sites/work'
     silent! packadd vim-wakatime
   endif
-
-  call minpac#add('https://github.com/GabrieleLippi/ydkjs-vim')
 endfunction
 
 if !exists('*plugins#init')

@@ -22,10 +22,6 @@ xnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 xnoremap <expr> k v:count ? 'k' : 'gk'
 
-" Move visual block
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
-
 " Move VISUAL LINE selection within buffer.
 xnoremap <silent> K :call functions#move_up()<CR>
 xnoremap <silent> J :call functions#move_down()<CR>

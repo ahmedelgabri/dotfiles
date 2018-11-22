@@ -29,7 +29,7 @@ let g:ale_linter_aliases = {
       \}
 
 let g:ale_linters = {
-      \ 'javascript': ['eslint', 'flow'],
+      \ 'javascript': ['eslint'],
       \}
 
 let g:ale_fixers = {
