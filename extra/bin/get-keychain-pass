@@ -10,7 +10,7 @@ KEYCHAIN="$HOME/Library/Keychains/login.keychain"
 PASSAGE_SOCK="$HOME/.passage.sock"
 
 if [ -S "$PASSAGE_SOCK" ]; then
-  # TODO: consider validating this as valid JSON
+  # [TODO]: consider validating this as valid JSON
   echo "{\"service\":\"$SERVER\",\"account\":\"$ACCOUNT\"}" | nc -U "$PASSAGE_SOCK"
   echo # For parity with `security`, which prints a newline.
 else

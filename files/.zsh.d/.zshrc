@@ -51,12 +51,6 @@ autoload -Uz _zplugin
 # Misc {{{
   zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
   zplugin light snoe/clojure-lsp
-
-  zplugin ice id-as"be5invis/Iosevka" from"gh-r" bpick"*01-iosevka*" atclone'local f; for f (ttf/*.ttf); mv -f $f ~/Library/Fonts/' atpull"%atclone"
-  zplugin light be5invis/Iosevka
-
-  zplugin ice id-as"be5invis/Iosevka-term" from"gh-r" bpick"*02-iosevka-term*" atclone'local f; for f (ttf/*.ttf); mv -f $f ~/Library/Fonts/' atpull"%atclone"
-  zplugin light be5invis/Iosevka
 # }}}
 
 # Local plugins/completions/etc... {{{
@@ -95,7 +89,8 @@ SYMBOLS=(
 
 # Arrays in zsh starts from 1
 export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
-export PURE_GIT_BRANCH=" "
+# Old icon 
+export PURE_GIT_BRANCH="  "
 
 ############### Python
 export PYTHONSTARTUP="${HOME}/.pyrc.py"

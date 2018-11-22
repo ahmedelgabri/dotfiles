@@ -3,7 +3,7 @@ local modalKey = {'alt'}
 local focusKeys = {
   -- [g]oogle chrome
   -- becasue it conflicts with fzf alt+c
-  -- TODO: look into hyper mode?
+  -- [TODO]: look into hyper mode?
   g='Google Chrome',
   -- [b]rowser (main)
   b='Google Chrome Canary',
@@ -45,5 +45,3 @@ end))
 hs.hotkey.bind(modalKey, 'r', function()
   hs.reload()
 end)
-
-

@@ -1,5 +1,5 @@
 scriptencoding utf-8
-" @TODO: Cleanup this file
+" [TODO]: Cleanup this file
 
 function! functions#trim(txt) abort
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
@@ -252,7 +252,7 @@ function! functions#GetIcon(key) abort
   let l:ICONS = {
         \'paste': '⍴',
         \'spell': '✎',
-        \'branch': '  ',
+        \'branch': exists($PURE_GIT_BRANCH) ? $PURE_GIT_BRANCH : '  ',
         \'linter_error': '×',
         \'linter_style': '●',
         \'lock': ' ',

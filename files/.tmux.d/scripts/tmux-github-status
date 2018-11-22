@@ -1,13 +1,13 @@
 #!/bin/bash
 GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.status')
 
-INDICATIOR="#[fg=colour237]•"
+INDICATIOR="#[fg=colour237]⦁"
 case $GITHUB_STATUS in
   ma*)
-    STATUS="#[fg=red] ⨉ $INDICATOR "
+    STATUS="#[fg=red]   $INDICATOR "
     ;;
   mi*)
-    STATUS="#[fg=yellow] ~ $INDICATIOR "
+    STATUS="#[fg=yellow]   $INDICATIOR "
     ;;
   *)
     STATUS=""

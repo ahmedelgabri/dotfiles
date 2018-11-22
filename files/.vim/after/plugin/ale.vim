@@ -17,7 +17,10 @@ let g:ale_sign_warning = g:ale_sign_error
 let g:ale_sign_style_error = functions#GetIcon('linter_style')
 let g:ale_sign_style_warning = g:ale_sign_error
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
-let g:ale_echo_msg_format = '[%linter%] %code% %s'
+let g:ale_echo_msg_error_str='[ERROR]'
+let g:ale_echo_msg_info_str='[INFO]'
+let g:ale_echo_msg_warning_str='[WARNING]'
+let g:ale_echo_msg_format = '%severity% -> %linter% -> %code% %s'
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf'
 " Auto update the option when textwidth is dynamically set or changed in a ftplugin file

@@ -85,19 +85,19 @@ tabspaces: 2
 font:
   # Normal (roman) font face
   normal:
-    family: Iosevka
+    family: PragmataPro Liga
     # The `style` can be specified to pick a specific face.
     # style: Regular
 
   # Italic font face
   bold:
-    family: Iosevka
+    family: PragmataPro Liga
     # The `style` can be specified to pick a specific face.
     # style: Bold
 
   # Italic font face
   italic:
-    family: Iosevka
+    family: PragmataPro Liga
     # The `style` can be specified to pick a specific face.
     # style: Italic
 

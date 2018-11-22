@@ -1,7 +1,7 @@
 #!/bin/bash
 command -v hub >/dev/null 2>&1 || { echo >&2 "This command needs hub installed and in PATH. http://defunkt.io/hub"; exit 1; }
 
-# TODO make login resolution a function call
+# [TODO] make login resolution a function call
 if [ -z "$GITHUB_USER" ]; then
   echo >&2 "Please define GITHUB_USER with your GitHub user to let me know who you are."; exit 1;
 fi

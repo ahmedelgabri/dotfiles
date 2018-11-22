@@ -4,6 +4,6 @@ TMUX_WIFI=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Curr
 
 ON_ICON=""
 OFF_ICON'⨉'
-TAIL="#[fg=colour237] • "
+TAIL="#[fg=colour237] ⦁ "
 
 [ -n "$TMUX_WIFI" ] && echo "$ON_ICON$TMUX_WIFI$TAIL" || echo "#[fg=red]$OFF_ICON$TAIL"

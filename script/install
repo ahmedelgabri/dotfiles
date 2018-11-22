@@ -190,7 +190,7 @@ take_backup() {
   local BAKCUP_DIR="$HOME/.dotbackup/$(date "+%Y.%m.%d_%H.%M")"
   mkdir -p "$BAKCUP_DIR"
 
-  # @TODO: Look into how to automate this list
+  # [TODO]: Look into how to automate this list
   local FILES=(
     ".config/newsboat"
     ".config/nvim"

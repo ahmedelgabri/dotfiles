@@ -85,7 +85,7 @@ function _switch_account(opt)
       folder_prefix..".Archive",
       folder_prefix..".Trash",
       folder_prefix..".Spam",
-      -- TODO: This is awful, fix this!
+      -- [TODO]: This is awful, fix this!
       "`tree ~/.mail -d -I \"cur|new|tmp|certs|.notmuch|Inbox|\\[Gmail\\]\" -a -f -i | sed -n -E -e \"s|^"..os.getenv('HOME').."/.mail/?||\" -e \"/^(Work|Personal)(\\/[a-z].+)?$/d\" -e \"/^("..opt.account_name..")/{p;}\" | sed -E -e 's/(.*)/+\"\\1\"/' | tr '\\n' ' '`"
       )
 
@@ -108,7 +108,7 @@ init_accounts()
 
 
 -- =======================================================================
--- = TODO: Enable gpg in neomutt
+-- = [TODO]: Enable gpg in neomutt
 -- =======================================================================
 
 -- https://github.com/sadsfae/misc-dotfiles/blob/5d10342013b7620e85eadb659c8295c243f49dec/muttrc-gpg.txt

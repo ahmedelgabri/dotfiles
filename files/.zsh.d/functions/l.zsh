@@ -9,7 +9,7 @@ l(){
     fi
   elif [[ -x "${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin/ls" ]]; then
     # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
-    # @TODO: Check why this is not picked up from $PATH?
+    # [TODO]: Check why this is not picked up from $PATH?
     ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin/ls --almost-all -l --human-readable --classify -alph --group-directories-first --color=always "$@" | awk '
     {
       k=0;
