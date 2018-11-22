@@ -52,8 +52,8 @@ function! plugins#loadPlugins() abort
     call minpac#add('https://github.com/junegunn/fzf.vim')
     set runtimepath^=$FZF_VIM_PATH
   endif
-  call minpac#add('https://github.com/Shougo/unite.vim')
-  call minpac#add('https://github.com/Shougo/vimfiler.vim', { 'type': 'opt' })
+  call minpac#add('https://github.com/justinmk/vim-dirvish')
+  call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
   call minpac#add('https://github.com/junegunn/vim-peekaboo')
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
