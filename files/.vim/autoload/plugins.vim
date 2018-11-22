@@ -66,6 +66,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/tpope/vim-apathy')
   call minpac#add('https://github.com/tpope/vim-commentary')
   call minpac#add('https://github.com/tpope/vim-eunuch')
+  call minpac#add('https://github.com/tpope/vim-projectionist')
   call minpac#add('https://github.com/tpope/vim-repeat')
   call minpac#add('https://github.com/tpope/vim-speeddating')
   call minpac#add('https://github.com/tpope/vim-surround')
