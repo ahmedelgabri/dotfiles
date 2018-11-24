@@ -2,7 +2,7 @@ command! Todo :Grepper
       \ -side
       \ -noprompt
       \ -tool git
-      \ -grepprg git grep -nIi '\@\?\(TODO\|FIXME\|NOTE)'
+      \ -grepprg git grep -nIi '(TODO\|FIXME\|NOTE)'
 
 augroup MyGrepper
   autocmd!
