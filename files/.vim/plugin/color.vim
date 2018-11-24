@@ -7,13 +7,13 @@ augroup MyCustomColors
   autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
         \| hi! TablineFill cterm=NONE gui=NONE
         \| hi! TablineSel cterm=reverse gui=reverse
-        \| hi! Comment cterm=NONE gui=NONE
         \| hi! link Todo Comment
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
         \| hi! link VertSplit LineNr
 
   autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('VisualNOS'),'bg', 'gui'), synIDattr(hlID('VisualNOS'),'bg', 'cterm'))
+        \| hi! Comment cterm=NONE gui=NONE ctermfg=236 guifg=#555555
         \| hi! link PmenuSel TermCursor
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal
