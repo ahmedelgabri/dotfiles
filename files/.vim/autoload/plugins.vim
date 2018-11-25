@@ -58,31 +58,35 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Autocompletion {{{
-  call minpac#add('https://github.com/autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': {-> system('bash install.sh')} })
-  call minpac#add('https://github.com/othree/csscomplete.vim')
-  if has('nvim') && has('python3')
-    call minpac#add('https://github.com/ncm2/ncm2')
-    call minpac#add('https://github.com/roxma/nvim-yarp')
-    call minpac#add('https://github.com/ncm2/ncm2-path')
-    call minpac#add('https://github.com/ncm2/ncm2-tmux')
-    call minpac#add('https://github.com/ncm2/ncm2-bufword')
-    call minpac#add('https://github.com/ncm2/ncm2-github')
-    call minpac#add('https://github.com/ncm2/ncm2-cssomni')
-    call minpac#add('https://github.com/ncm2/ncm2-html-subscope')
-    call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope')
-    call minpac#add('https://github.com/ncm2/ncm2-ultisnips')
-    call minpac#add('https://github.com/jsfaint/ncm2-vim')
-    call minpac#add('https://github.com/fgrsnau/ncm2-otherbuf')
-    call minpac#add('https://github.com/Shougo/neco-vim')
-  endif
+  let g:coc_global_extensions = [
+        \ 'coc-css',
+        \ 'coc-rls',
+        \ 'coc-html',
+        \ 'coc-json',
+        \ 'coc-pyls',
+        \ 'coc-yaml',
+        \ 'coc-emoji',
+        \ 'coc-tsserver',
+        \ 'coc-ultisnips',
+        \ 'coc-highlight',
+        \ ]
+
+  function! s:coc_plugins(hooktype, name) abort
+    execute 'packadd ' . a:name
+    call coc#util#install()
+    call coc#util#install_extension(join(get(g:, 'coc_global_extensions', [])))
+  endfunction
+
+  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_plugins')})
+  call minpac#add('https://github.com/Shougo/neco-vim')
+  call minpac#add('https://github.com/neoclide/coc-neco')
   " }}}
 
   " Syntax {{{
-  call minpac#add('https://github.com/chrisbra/Colorizer')
+  " call minpac#add('https://github.com/chrisbra/Colorizer')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
-  call minpac#add('https://github.com/neoclide/jsonc.vim')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')

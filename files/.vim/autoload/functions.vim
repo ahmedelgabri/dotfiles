@@ -182,43 +182,59 @@ function! s:show_documentation() abort
 endfunction
 
 function! functions#setupCompletion() abort
-  if has('nvim') && has('python3')
-    try
-      " enable ncm2
-      augroup COMPLETION_SETUP
-        au!
-        autocmd BufEnter * call ncm2#enable_for_buffer()
-        autocmd TextChangedI * call ncm2#auto_trigger()
-      augroup END
+  let g:UltiSnipsExpandTrigger='<c-u>'
+  let g:UltiSnipsJumpForwardTrigger='<c-j>'
+  let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 
-      set completeopt+=noselect
+  let g:coc_snippet_next='<c-j>'
+  let g:coc_snippet_prev='<c-k>'
 
-      let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-      let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_expand)'
-      let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_backward)'
-      let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
-      let g:UltiSnipsRemoveSelectModeMappings = 0
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
 
-      inoremap <silent> <expr> <CR> ((pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : (!empty(v:completed_item) ? ncm2_ultisnips#expand_or("\<cr>", 'n') : "\<CR>" ))
-      imap <C-Space> <Plug>(ncm2_manual_trigger)
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-      imap <silent> <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<cr>\<Plug>(ultisnip_expand_or_jump_result)"
-      vnoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res ? '' : "\<Tab>"
-      inoremap <expr> <Plug>(ultisnip_expand_or_jump_result) g:ulti_expand_or_jump_res ? '' : "\<Tab>"
-      xmap <Tab> <Plug>(ultisnips_expand)
-      smap <Tab> <Plug>(ultisnips_expand)
+  " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+  " Coc only does snippet and additional edit on confirm.
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <silent><expr> <c-space> coc#refresh()
 
-      imap <silent> <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-r>=UltiSnips#JumpBackwards()\<cr>\<Plug>(ultisnips_backwards_result)"
-      vnoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res ? '' : "\<S-Tab>"
-      inoremap <expr> <Plug>(ultisnips_backwards_result) g:ulti_jump_backwards_res ? '' : "\<S-Tab>"
-      xmap <S-Tab> <Plug>(ultisnips_backward)
-      smap <S-Tab> <Plug>(ultisnips_backward)
-    catch
-      echom "ncm2 couldn't load"
-    endtry
-  endif
+  " imap <silent> <C-x><C-o> <Plug>(coc-complete-custom)
+  imap <silent> <C-x><C-u> <Plug>(coc-complete-custom)
+  " Use `[c` and `]c` for navigate diagnostics
+  nmap <silent> [c <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+  " Remap keys for gotos
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+  " Use K for show documentation in preview window
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  function! s:show_documentation()
+    if &filetype == 'vim'
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  " Show signature help while editing
+  augroup MY_COC
+    autocmd!
+    " Update signature help on jump placeholder
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  augroup end
 endfunction
-
 
 " Project specific override
 " Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879

@@ -32,9 +32,9 @@ function! StatusLine(mode) abort
       let l:line.='%#WarningMsg#%{" '. functions#GetIcon('spell') .' "}%*'
     endif
     let l:line.=statusline#LinterStatus()
-    if exists('*LanguageClient#statusLine')
+    if exists('*statusline#statusDiagnostic')
       let l:line.='%4* %*'
-      let l:line.=LanguageClient#statusLine()
+      let l:line.=statusline#statusDiagnostic()
     endif
     let l:line.='%4* '. &filetype " %y will have [] around the test & %Y is uppercase so &filetype gives me what I want
     if &fileformat !=# 'unix'

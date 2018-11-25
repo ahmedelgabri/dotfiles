@@ -1,27 +1,22 @@
 #!/bin/bash
 
 NPM_PACKAGES=(
-"bash-language-server"
-"dockerfile-language-server-nodejs"
-"flow-language-server"
-"javascript-typescript-langserver"
-"ocaml-language-server"
-"netlify-cli"
-"now"
-"parker"
-"prettier"
-"serve"
-"source-map-explorer"
-"svgo"
-"overtime-cli"
-"dependency-cruiser"
-"reason-cli@latest-macos"
-"neovim"
+  "bash-language-server"
+  "dockerfile-language-server-nodejs"
+  "ocaml-language-server"
+  "netlify-cli"
+  "now"
+  "parker"
+  "prettier"
+  "serve"
+  "source-map-explorer"
+  "svgo"
+  "overtime-cli"
+  "dependency-cruiser"
+  "reason-cli@latest-macos"
+  "neovim"
 )
 
-for package in "${NPM_PACKAGES[@]}"; do
-  yarn global add "$package"
-done
-
+yarn global add "${NPM_PACKAGES[@]}"
 
 unset -v NPM_PACKAGES
