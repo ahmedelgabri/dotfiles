@@ -184,6 +184,11 @@
   https://feeds2.feedburner.com/stevelosh "Blog" "Programming" "unix"
   https://feeds.feedburner.com/TroyHunt "Blog" "Security"
   https://usesthis.com/feed.atom "Blog" "Gadgets" "Tools"
+  http://lambda-the-ultimate.org/rss.xml " Blog" "FP" "Programming"
+  https://blog.functorial.com/feed.rss "Blog" "FP" "Programming"
+  http://www.haskellforall.com/feeds/posts/default "Blog" "FP" "Haskell"
+  http://blog.ploeh.dk/rss.xml "Blog" "FP" "Programming"
+  https://simonwillison.net/atom/everything/ "Blog" "FP" "Programming" "Computer Science"
 # }}}
 
 # Browsers {{{
@@ -240,6 +245,7 @@
   https://medium.com/feed/@Pinterest_Engineering "Engineering"
   https://blog.twitter.com/api/blog.rss?name=engineering "~twitter Engineering" "Engineering"
   https://deliveroo.engineering/feed.xml "Engineering"
+  https://artsy.github.io/feed "Engineering"
 # }}}
 
 # ME {{{
