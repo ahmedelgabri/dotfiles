@@ -7,6 +7,7 @@ augroup MyCustomColors
   autocmd ColorScheme * hi! Tabline cterm=NONE gui=NONE
         \| hi! TablineFill cterm=NONE gui=NONE
         \| hi! TablineSel cterm=reverse gui=reverse
+        \| hi! NonText ctermbg=NONE guibg=NONE
         \| hi! link Todo Comment
         \| hi! link Conceal NonText
         \| hi! clear SignColumn

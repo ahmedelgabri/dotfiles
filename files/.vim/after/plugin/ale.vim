@@ -22,9 +22,12 @@ let g:ale_echo_msg_info_str='[INFO]'
 let g:ale_echo_msg_warning_str='[WARNING]'
 let g:ale_echo_msg_format = '%severity% -> %linter% -> %code% %s'
 let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf'
+function! s:PRETTIER_OPTIONS()
+  return '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf --print-width ' . &textwidth
+endfunction
+let g:ale_javascript_prettier_options = s:PRETTIER_OPTIONS()
 " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
-au! OptionSet textwidth let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi'
+au! OptionSet textwidth let g:ale_javascript_prettier_options = s:PRETTIER_OPTIONS()
 
 let g:ale_linter_aliases = {
       \ 'mail': 'markdown',

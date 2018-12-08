@@ -31,10 +31,13 @@ nnoremap Y y$
 
 " https://twitter.com/vimgifs/status/913390282242232320
 " :h i_CTRL-G_u
-autocmd! FileType markdown,text inoremap <buffer> . .<c-g>u
-autocmd! FileType markdown,text inoremap <buffer> ? ?<c-g>u
-autocmd! FileType markdown,text inoremap <buffer> ! !<c-g>u
-autocmd! FileType markdown,text inoremap <buffer> , ,<c-g>u
+augroup PROSE_MAPPINGS
+  au!
+  au FileType markdown,text inoremap <buffer> . .<c-g>u
+  au FileType markdown,text inoremap <buffer> ? ?<c-g>u
+  au FileType markdown,text inoremap <buffer> ! !<c-g>u
+  au FileType markdown,text inoremap <buffer> , ,<c-g>u
+augroup END
 
 " Disable arrow keys (hardcore)
 imap <up>    <nop>
@@ -109,15 +112,3 @@ function! ExecuteMacroOverVisualRange()
   echo '@'.getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
-
-" Make the dot command work as expected in visual mode (via
-" https://www.reddit.com/r/vim/comments/3y2mgt/do_you_have_any_minor_customizationsmappings_that/cya0x04)
-vnoremap . :norm.<CR>
-
-" inc & dec numbers
-" :h nrformats
-noremap + <C-a>
-noremap - <C-x>
-" Visual mode too
-xnoremap + g<C-a>
-xnoremap - g<C-x>

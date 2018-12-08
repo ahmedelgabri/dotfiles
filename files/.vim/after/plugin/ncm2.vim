@@ -1,4 +1,4 @@
-if exists('g:ncm2_loaded')
+if get(g:,'ncm2_loaded','0')
   finish
 endif
 
