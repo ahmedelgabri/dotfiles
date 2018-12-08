@@ -29,3 +29,4 @@ http://blog.benjamin-encz.de/post/engineering-process-is-overvalued/ Engineering
 http://stevelosh.com/blog/2018/08/a-road-to-common-lisp/ A Road to Common Lisp
 https://www.troyhunt.com/beyond-passwords-2fa-u2f-and-google-advanced-protection/ Beyond Passwords: 2FA, U2F and Google Advanced Protection
 https://www.artofwork.co/job-interviewing The Art of Job Interviewing
+https://patterninislamicart.com/ Patterns in Islamic Art

@@ -169,8 +169,8 @@
   https://blog.janestreet.com/feed.xml "Blog" "OCaml" "Programming"
   https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
   https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
-  https://bluz71.github.io/feed.xml "Vim" "Zsh"
-  https://jacky.wtf/feeds/articles.xml "Vim" "Programming"
+  https://bluz71.github.io/feed.xml "vim" "Zsh"
+  https://jacky.wtf/feeds/articles.xml "vim" "Programming"
   http://feeds.haacked.com/haacked "Blog" "Leadership"
   https://infrequently.org/feed/ "Blog" "Web"
   http://tonsky.me/blog/atom.xml "Blog" "Programming"
@@ -189,6 +189,9 @@
   http://www.haskellforall.com/feeds/posts/default "Blog" "FP" "Haskell"
   http://blog.ploeh.dk/rss.xml "Blog" "FP" "Programming"
   https://simonwillison.net/atom/everything/ "Blog" "FP" "Programming" "Computer Science"
+  https://overreacted.io/rss.xml "~Dan Abramov blog" "Blog" "JavaScript" "React"
+  https://sophiebits.com/atom.xml "Blog" "JavaScript" "Programming"
+  https://blog.cryptographyengineering.com/feed/ "Blog" "Security" "Cryptography"
 # }}}
 
 # Browsers {{{
@@ -246,6 +249,7 @@
   https://blog.twitter.com/api/blog.rss?name=engineering "~twitter Engineering" "Engineering"
   https://deliveroo.engineering/feed.xml "Engineering"
   https://artsy.github.io/feed "Engineering"
+  https://blogs.msdn.microsoft.com/oldnewthing/feed "Engineering"
 # }}}
 
 # ME {{{
@@ -351,6 +355,7 @@
 # xmas {{{
   http://feeds.feedburner.com/24ways?format=xml "xmas"
   https://calendar.perfplanet.com/feed/ "xmas"
+  https://vimways.org/index.xml "xmas" "vim"
 # }}}
 
 # Football {{{
