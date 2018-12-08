@@ -77,7 +77,7 @@ end
 
 aug lang_client_mappings
   au!
-  au User LanguageClientBufReadPost nnoremap <buffer> K :call LanguageClient#textDocument_hover()<CR>
-  au User LanguageClientBufReadPost nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
-  au User LanguageClientBufReadPost nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  au User LanguageClientStarted nnoremap <buffer> K :call LanguageClient#textDocument_hover()<CR>
+  au User LanguageClientStarted nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
+  au User LanguageClientStarted nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 augroup END
