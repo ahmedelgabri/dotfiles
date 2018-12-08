@@ -7,10 +7,10 @@ l(){
     else
       exa --all --long --header --links --color-scale --group-directories-first --sort=type "$@"
     fi
-  elif [[ -x "${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin/ls" ]]; then
+  elif [[ -x "${HOMEBREW_ROOT}/opt/coreutils/libexec/gnubin/ls" ]]; then
     # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
     # [TODO]: Check why this is not picked up from $PATH?
-    ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin/ls --almost-all -l --human-readable --classify -alph --group-directories-first --color=always "$@" | awk '
+    ${HOMEBREW_ROOT}/opt/coreutils/libexec/gnubin/ls --almost-all -l --human-readable --classify -alph --group-directories-first --color=always "$@" | awk '
     {
       k=0;
       for (i=0;i<=8;i++)

@@ -4,6 +4,8 @@ typeset -gU cdpath fpath manpath mailpath path
 ##############################################################
 # PATH.
 # (N-/): do not register if the directory does not exists
+# (Nn[-1]-/)
+#
 #  N   : NULL_GLOB option (ignore path if the path does not match the glob)
 #  n   : Sort the output
 #  [-1]: Select the last item in the array
@@ -18,7 +20,7 @@ fpath=(
 )
 
 manpath=(
-  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnuman(N-/)
+  ${HOMEBREW_ROOT}/opt/coreutils/libexec/gnuman(N-/)
   $manpath
 )
 
@@ -34,17 +36,13 @@ path=(
   ./node_modules/.bin
   /usr/local/opt/curl/bin(N-/)
   /usr/local/opt/openssl/bin(N-/)
-  ${HOMEBREW_ROOT:-/usr/local}/opt/coreutils/libexec/gnubin(N-/)
-  ${HOMEBREW_ROOT:-/usr/local}/opt/python/libexec/bin(N-/)
+  ${HOMEBREW_ROOT}/opt/coreutils/libexec/gnubin(N-/)
+  ${HOMEBREW_ROOT}/opt/python/libexec/bin(N-/)
   /usr/local/{bin,sbin}
   # Until yarn fixes itself & link binaries to `/usr/local/bin`
   ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
   ${HOME}/.cargo/bin(N-/)
   ${GOPATH}/bin(N-/)
-  ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
-  ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
-  # $(${HOMEBREW_ROOT:-/usr/local}/bin/python3 -m site --user-base)/bin(N-/)
-  # $(${HOMEBREW_ROOT:-/usr/local}/bin/python2 -m site --user-base)/bin(N-/)
   $path
 )
 
