@@ -38,3 +38,5 @@ if exists('b:match_words')
     let b:match_words .= ',' . s:pattern
   endfor
 endif
+
+let b:undo_ftplugin ='setl commentstring< | unlet! b:twigMatchWords b:match_words'

@@ -8,3 +8,5 @@ setl spell
 " ("$VIMRUNTIME/ftplugin/mail.vim"), which sets it back to 72, but only if it
 " was previously set to 0.
 setl textwidth=0
+
+let b:undo_ftplugin = 'setl spell< textwidth<'

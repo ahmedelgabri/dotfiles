@@ -8,3 +8,4 @@ else
   setlocal makeprg=yarn
 endif
 
+let b:undo_ftplugin = 'setl conceallevel< makeprg<'
