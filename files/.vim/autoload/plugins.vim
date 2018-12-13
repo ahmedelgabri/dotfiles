@@ -24,27 +24,6 @@ function! plugins#loadPlugins() abort
   " General {{{
   call minpac#add('https://github.com/andymass/vim-matchup')
   call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
-  if !has('nvim')
-    " Must explicitly load this before vim-sensible, becasue vim-sensible will
-    " load match-it which we don't want. order is important.
-    " https://github.com/andymass/vim-matchup#matchit
-    silent! packadd vim-matchup
-    silent! packadd vim-sensible
-    if !has('nvim') " For vim
-      if exists('&belloff')
-        " never ring the bell for any reason
-        set belloff=all
-      endif
-      if has('showcmd')
-        " extra info at end of command line
-        set showcmd
-      endif
-      if &term =~# '^tmux'
-        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-      endif
-    endif
-  endif
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
@@ -62,36 +41,20 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/mhinz/vim-startify')
   call minpac#add('https://github.com/nelstrom/vim-visual-star-search')
   call minpac#add('https://github.com/tpope/tpope-vim-abolish')
-  call minpac#add('https://github.com/tpope/vim-characterize')
   call minpac#add('https://github.com/tpope/vim-apathy')
+  call minpac#add('https://github.com/tpope/vim-characterize')
   call minpac#add('https://github.com/tpope/vim-commentary')
   call minpac#add('https://github.com/tpope/vim-eunuch')
   call minpac#add('https://github.com/tpope/vim-projectionist')
   call minpac#add('https://github.com/tpope/vim-repeat')
+  call minpac#add('https://github.com/tpope/vim-scriptease')
   call minpac#add('https://github.com/tpope/vim-speeddating')
   call minpac#add('https://github.com/tpope/vim-surround')
-  let g:surround_indent = 0
-  let g:surround_no_insert_mappings = 1
-
   call minpac#add('https://github.com/wellle/targets.vim')
   call minpac#add('https://github.com/wincent/loupe')
   call minpac#add('https://github.com/wincent/terminus')
   call minpac#add('https://github.com/tommcdo/vim-lion')
-
-  if executable('tmux')
-    call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
-    if !empty($TMUX)
-      silent! packadd vim-tmux-navigator
-      let g:tmux_navigator_disable_when_zoomed = 1
-    endif
-  endif
-
-  if executable('trans')
-    call minpac#add('https://github.com/VincentCordobes/vim-translate', {'type': 'opt'})
-    command! -nargs=* Translate :silent! packadd vim-translate | Translate
-    command! -nargs=* TranslateReplace :silent! packadd vim-translate | TranslateReplace
-    command! -nargs=* TranslateClear :silent! packadd vim-translate | TranslateClear
-  endif
+  call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   " }}}
 
   " Autocompletion {{{
@@ -115,19 +78,14 @@ function! plugins#loadPlugins() abort
 
   " Syntax {{{
   call minpac#add('https://github.com/chrisbra/Colorizer')
-  let g:colorizer_auto_filetype='sass,scss,stylus,css,html,html.twig,twig,conf'
-
+  call minpac#add('https://github.com/sheerun/vim-polyglot')
+  call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/neoclide/jsonc.vim')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
-  call minpac#add('https://github.com/sheerun/vim-polyglot')
-  let g:polyglot_disabled = ['javascript', 'jsx']
-
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')
-  if executable('direnv')
-    call minpac#add('https://github.com/direnv/direnv.vim')
-  endif
+  " }}}
 
   " Linters & Code quality {{{
   call minpac#add('https://github.com/w0rp/ale', { 'do': '!yarn global add prettier' })
@@ -138,12 +96,12 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/lambdalisue/vim-gista')
   call minpac#add('https://github.com/tpope/vim-fugitive')
   call minpac#add('https://github.com/tpope/vim-rhubarb')
+  call minpac#add('https://github.com/AGhost-7/critiq.vim')
   " }}}
 
   " Writing {{{
   call minpac#add('https://github.com/junegunn/goyo.vim', { 'type': 'opt' })
   call minpac#add('https://github.com/junegunn/limelight.vim', { 'type': 'opt' })
-  command! -nargs=* Limelight :silent! packadd limelight.vim | Limelight
   " }}}
 
   " Themes, UI & eye cnady {{{
