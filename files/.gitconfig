@@ -51,14 +51,38 @@
   renames = copies
   algorithm = histogram
   tool = vimdiff
-  compactionHeuristic = true
+  indentHeuristic = true
   colorMoved = zebra
+
+[difftool]
+  prompt = false
+  trustExitCode = true
+
+[diff "exif"]
+  textconv = exiftool
+
+[diff "plist"]
+  textconv = plutil -convert xml1 -o -
+
+[difftool "vimdiff"]
+  cmd = $EDITOR -d $LOCAL $REMOTE
 
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
   log = 1000
   tool = vimdiff
   conflictstyle = diff3
+
+[mergetool]
+  trustExitCode = true
+  keepBackup = false
+  prompt = false
+
+[mergetool "vimdiff"]
+  cmd = $EDITOR -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[mergetool "fugitivediff"]
+  cmd = $EDITOR -f -c "Gdiff" "$MERGED"
 
 [log]
   decorate = short
@@ -144,23 +168,6 @@
   who = shortlog -sne
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
   unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
-
-[difftool]
-  prompt = false
-[diff "exif"]
-  textconv = exiftool
-[diff "plist"]
-  textconv = plutil -convert xml1 -o -
-[difftool "vimdiff"]
-  # $BASE $LOCAL $REMOTE $MERGED
-  cmd = $EDITOR -d $LOCAL $REMOTE
-
-[mergetool]
-  keepBackup = false
-  prompt = false
-
-[mergetool "vimdiff"]
-  cmd = $EDITOR -d $LOCAL $REMOTE
 
 [filter "media"]
   clean = git-media-clean %f
