@@ -5,7 +5,8 @@
   email =
   signingkey =
 
-[includeIf "gitdir:~/path/to/work/dir/"]
+[includeIf "gitdir:~/Sites/work/"]
   # if you add an email here make sure this email is added to your GPG key,
+  # or even better generate a separate GPG key just for work & add it to GitHub
   # otherwise your commits will not be signed on GitHub
-  path = ~/path/to/work/dir/.gitconfig
+  path = ~/.git.d/.work

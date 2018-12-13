@@ -252,8 +252,8 @@ symlink_files() {
     log_success "Symlinking files/folders..."
       # I want all the make steps to run even if a cask or a brew errored out
     cd "$DOTFILES_DIR" && \
-    cp files/.gitconfig.local.example $HOME/.gitconfig.local && \
-    cp files/.zshrc.local.example $HOME/.zshrc.local && \
+    cp files/.gitconfig.local $HOME/.gitconfig.local && \
+    cp files/.zshrc.local $HOME/.zshrc.local && \
     make symlink
   else
     log_error "There is no $DOTFILES_DIR directory"

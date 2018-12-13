@@ -18,7 +18,7 @@ _darcs
 \.git
 \.gitignore
 
-.+.example
+.+.local
 
 
 .+~          # emacs backup files
