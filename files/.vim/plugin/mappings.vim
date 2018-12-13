@@ -39,7 +39,7 @@ augroup PROSE_MAPPINGS
   au FileType markdown,text inoremap <buffer> , ,<c-g>u
 augroup END
 
-" Disable arrow keys (hardcore)
+" Disable arrow keys
 imap <up>    <nop>
 imap <down>  <nop>
 imap <left>  <nop>

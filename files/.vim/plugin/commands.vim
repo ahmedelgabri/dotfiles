@@ -19,4 +19,3 @@ else
 endif
 
 command! ClearRegisters call functions#ClearRegisters()
-
