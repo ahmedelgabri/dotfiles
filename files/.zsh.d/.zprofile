@@ -43,6 +43,8 @@ path=(
   ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
   ${HOME}/.cargo/bin(N-/)
   ${GOPATH}/bin(N-/)
+  ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
+  ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
   $path
 )
 
