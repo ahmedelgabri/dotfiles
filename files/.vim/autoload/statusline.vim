@@ -92,19 +92,6 @@ function! statusline#filepath() abort
   endif
 endfunction
 
-function! statusline#showHighligh() abort
-  if get(b:, 'show_highlight')
-    let l:id = synID(line('.'), col('.'), 1)
-    let l:line ='%#WarningMsg#['
-          \ . '%{synIDattr('.l:id.',"name")} as '
-          \ . '%{synIDattr(synIDtrans('.l:id.'),"name")}'
-          \ . '] %*'
-    return l:line
-  endif
-
-  return ''
-endfunction
-
 " DEFINE MODE DICTIONARY
 " :h mode() to see all modes
 let s:dictmode= {

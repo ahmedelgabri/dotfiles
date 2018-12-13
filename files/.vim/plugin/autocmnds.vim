@@ -1,5 +1,13 @@
 augroup MyAutoCmds
   autocmd!
+
+  " Project specific override {{{
+  autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
+
+  if has('nvim')
+    autocmd DirChanged * call functions#sourceProjectConfig()
+  endif
+
   " Automatically make splits equal in size
   autocmd VimResized * wincmd =
 

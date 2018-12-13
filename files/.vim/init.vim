@@ -52,17 +52,6 @@ if filereadable(s:vimrc_local)
 endif
 " }}}
 
-" Project specific override {{{
-augroup MyVimrc
-  autocmd!
-  autocmd BufRead,BufNewFile * call functions#sourceProjectConfig()
-
-  if has('nvim')
-    autocmd DirChanged * call functions#sourceProjectConfig()
-  endif
-augroup END
-" }}}
-
 " After this file is sourced, plug-in code will be evaluated.
 " See ~/.vim/after for files evaluated after that.
 " See `:scriptnames` for a list of all scripts, in evaluation order.

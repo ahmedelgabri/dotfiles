@@ -10,7 +10,6 @@ function! StatusLine(mode) abort
   " help or man pages
   if &filetype ==# 'help' || &filetype ==# 'man'
     let l:line.=' %#StatusLineNC# ['. &filetype .'] %f '
-    let l:line.=statusline#showHighligh()
     return l:line
   endif
 
@@ -24,8 +23,6 @@ function! StatusLine(mode) abort
     let l:line.='%5*'
     let l:line.=' %{statusline#readOnly()} %w%*'
     let l:line.='%9* %=%*'
-
-    let l:line.=statusline#showHighligh()
 
     let l:line.='%{statusline#getMode()} %*'
     if &paste
