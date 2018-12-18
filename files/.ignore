@@ -15,11 +15,6 @@ cache
 pack
 
 *.pyc
-*.pdf
-*.png
-*.jpg
-*.jpeg
-*.gif
 *.spl
 *.jar
 .DS_Store
