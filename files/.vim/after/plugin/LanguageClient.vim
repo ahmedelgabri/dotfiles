@@ -6,47 +6,50 @@ let g:LanguageClient_autoStart = 1
 let g:LanguageClient_completionPreferTextEdit = 1
 " let g:LanguageClient_hasSnippetSupport = 0
 " let g:LanguageClient_loggingLevel='DEBUG'
-let g:LanguageClient_serverCommands = {}
+let g:LanguageClient_diagnosticsList = 'Location'
+let g:LanguageClient_diagnosticsSignsMax = 0
 
 " Requires https://github.com/haskell/haskell-ide-engine
 " Requires https://github.com/snoe/clojure-lsp & is installed by zplugin
+" `flow lsp` command is available but currently experimental
+let g:LanguageClient_serverCommands = {}
 let s:LSP_CONFIG = {
       \'flow-language-server': {
-      \    'condition': executable('flow'),
-      \    'command': ['flow-language-server', '--stdio'],
+      \    'condition': executable('flow') && filereadable('.flowconfig'),
+      \    'command': [exepath('flow-language-server'), '--stdio'],
       \    'language': ['javascript', 'javascript.jsx']
       \  },
       \'javascript-typescript-stdio': {
-      \    'condition': !(executable('flow') && executable('flow-language-server')),
-      \    'command': ['javascript-typescript-stdio'],
+      \    'condition': !executable('flow') || filereadable('tsconfig.json'),
+      \    'command': [exepath('javascript-typescript-stdio')],
       \    'language': ['javascript', 'javascript.jsx']
       \  },
       \'ocaml-language-server': {
-      \    'command': ['ocaml-language-server', '--stdio'],
+      \    'command': [exepath('ocaml-language-server'), '--stdio'],
       \    'language': ['ocaml', 'reason']
       \  },
       \'pyls': {
-      \    'command': ['pyls'],
+      \    'command': [exepath('pyls')],
       \    'language': ['python']
       \  },
       \'rls': {
-      \    'command': ['rust', 'run', 'stable', 'rls'],
+      \    'command': [exepath('rust'), 'run', 'stable', 'rls'],
       \    'language': ['rust']
       \  },
       \'hie-wrapper': {
-      \    'command': ['hie-wrapper'],
+      \    'command': [exepath('hie-wrapper')],
       \    'language': ['haskell']
       \  },
       \'bash-language-server': {
-      \    'command': ['bash-language-server', 'start'],
+      \    'command': [exepath('bash-language-server'), 'start'],
       \    'language': ['sh', 'bash']
       \  },
       \'docker-langserver': {
-      \    'command': ['docker-langserver', '--stdio'],
+      \    'command': [exepath('docker-langserver'), '--stdio'],
       \    'language': ['dockerfile']
       \  },
       \'clojure-lsp': {
-      \    'command': ['clojure-lsp'],
+      \    'command': [exepath('clojure-lsp')],
       \    'language': ['clojure']
       \  },
       \}
