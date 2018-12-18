@@ -87,7 +87,7 @@ export VISUAL=$EDITOR
 export GIT_EDITOR=$EDITOR
 export PAGER='less'
 case $EDITOR in
-    nvim) export MANPAGER="nvim +'set ft=man' -" ;;
+    nvim) export MANPAGER="nvim +Man!" ;;
      vim) export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man' -\"" ;;
        *) export MANPAGER='less' ;;
 esac
@@ -118,4 +118,3 @@ if [[ ! -d "$TMPDIR" ]]; then
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
-
