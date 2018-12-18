@@ -273,3 +273,16 @@ function! functions#create_directories() abort
     call mkdir(s:directory, 'p')
   endif
 endfunction
+
+function! functions#open() abort
+  " Linux/BSD
+  if executable('xdg-open')
+    return 'xdg-open'
+  endif
+  " MacOS
+  if executable('open')
+    return 'open'
+  endif
+  " Windows
+  return 'explorer'
+endfunction

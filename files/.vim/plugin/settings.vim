@@ -31,7 +31,7 @@ set noshowmode                        " Don't Display the mode you're in. since 
 " show a navigable menu for tab completion
 set wildmode=longest:full,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
-set wildignore+=*.swp,*~,*.jpg,*.png,*.gif,*.jpeg,*/.DS_Store
+set wildignore+=*.swp,*~,*/.DS_Store
 set tagcase=followscs
 
 if has('syntax')
