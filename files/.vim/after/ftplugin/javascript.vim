@@ -1,4 +1,5 @@
 setl conceallevel=2
+setl isfname+=@-@
 
 let s:package_lock = findfile('package-lock.json', expand('%:p').';')
 
@@ -8,4 +9,4 @@ else
   setlocal makeprg=yarn
 endif
 
-let b:undo_ftplugin = 'setl conceallevel< makeprg<'
+let b:undo_ftplugin = 'setl conceallevel< makeprg< isfname<'
