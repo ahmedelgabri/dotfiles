@@ -34,3 +34,4 @@ https://www.cyberciti.biz/tips/linux-security.html 40 Linux Server Hardening Sec
 https://alexcabal.com/creating-the-perfect-gpg-keypair CREATING THE PERFECT GPG KEYPAIR
 https://www.apache.org/dev/key-transition.html gpg key transition
 https://www.apache.org/dev/openpgp.html openpgp
+https://staltz.com/javascript-getter-setter-pyramid.html JavaScript getter/setter pyramid
