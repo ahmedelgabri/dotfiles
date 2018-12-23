@@ -3,6 +3,7 @@
 cask_args appdir: '/Applications'
 
 brew "php@5.6"
+brew "go-jira"
 
 cask "zoomus"
 cask "vagrant"

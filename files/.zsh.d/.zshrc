@@ -163,9 +163,6 @@ export NODE_VERSIONS="${HOME}/.node-versions";
 export NODE_VERSION_PREFIX="";
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
 
-############### Jira
-(( $+commands[jira] )) && eval "$(jira --completion-script-zsh)"
-
 ############### Kitty
 if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
   kitty + complete setup zsh | source /dev/stdin
