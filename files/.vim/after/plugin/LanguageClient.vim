@@ -22,7 +22,7 @@ let s:LSP_CONFIG = {
       \'javascript-typescript-stdio': {
       \    'condition': !executable('flow') || filereadable('tsconfig.json'),
       \    'command': [exepath('javascript-typescript-stdio')],
-      \    'language': ['javascript', 'javascript.jsx']
+      \    'language': ['javascript', 'javascript.jsx', 'typescript']
       \  },
       \'ocaml-language-server': {
       \    'command': [exepath('ocaml-language-server'), '--stdio'],

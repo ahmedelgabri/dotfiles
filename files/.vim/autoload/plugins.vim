@@ -96,6 +96,8 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/lambdalisue/vim-gista')
   call minpac#add('https://github.com/tpope/vim-fugitive')
   call minpac#add('https://github.com/tpope/vim-rhubarb')
+  call minpac#add('https://github.com/shumphrey/fugitive-gitlab.vim')
+  call minpac#add('https://github.com/tommcdo/vim-fubitive')
   call minpac#add('https://github.com/AGhost-7/critiq.vim')
   " }}}
 
