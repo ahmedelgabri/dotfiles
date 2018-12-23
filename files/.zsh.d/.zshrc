@@ -14,10 +14,10 @@
 ZPLUGIN="${ZDOTDIR:-$HOME}/.zplugin/bin/zplugin.zsh"
 
 if [[ ! -f "$ZPLUGIN" ]]; then
-  if (( $+commands[git] )); then
+  if (( $+commands[curl] )); then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
   else
-    echo 'git not found' >&2
+    echo 'curl not found' >&2
     exit 1
   fi
 fi
