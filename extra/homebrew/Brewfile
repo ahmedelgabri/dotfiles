@@ -30,7 +30,7 @@ brew "transcrypt"
 
 # Languages
 brew "node"
-brew "node-build", args: ["HEAD"]
+brew "n"
 brew "yarn"
 brew "ruby"
 cask "java8"
