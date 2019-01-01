@@ -26,7 +26,7 @@ fi
 # TERMINAL
 alias "?"="pwd"
 alias c="clear "
-alias KABOOM="yarn global upgrade --latest;TERM=xterm-256color brew update; brew upgrade; brew prune; brew cleanup -s; brew doctor"
+alias KABOOM="yarn global upgrade --latest;brew update; brew upgrade; brew prune; brew cleanup -s; brew prune; brew doctor"
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -56,7 +56,6 @@ alias r="ranger" # overrides built-in r command
 [[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
 
 (( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
-(( $+commands[task] )) && alias t='task'
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"

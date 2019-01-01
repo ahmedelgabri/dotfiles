@@ -18,7 +18,7 @@ export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTE_DIR="${PERSONAL_STORAGE}/notes"
-export HOMEBREW_ROOT="/usr/local"
+export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
 [[ -f "${PERSONAL_STORAGE}/dotfiles/personal.zsh" ]] && source "${PERSONAL_STORAGE}/dotfiles/personal.zsh"
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
