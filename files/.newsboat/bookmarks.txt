@@ -35,3 +35,8 @@ https://alexcabal.com/creating-the-perfect-gpg-keypair CREATING THE PERFECT GPG 
 https://www.apache.org/dev/key-transition.html gpg key transition
 https://www.apache.org/dev/openpgp.html openpgp
 https://staltz.com/javascript-getter-setter-pyramid.html JavaScript getter/setter pyramid
+https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/ Category Theory for programmers
+https://robots.thoughtbot.com/pgp-and-you PGP and You
+https://www.youtube.com/playlist?list=PLmoQ11MXEmajkNPMvmc8OEeZ0zxOKbGRa More GPG stuff
+https://purelyfunctional.tv/guide/clojure-concurrency/ The Ultimate Guide to Clojure Concurrency
+https://www.troyhunt.com/10-personal-finance-lessons-for-technology-professionals/ 10 Personal Finance Lessons for Technology Professionals
