@@ -11,6 +11,7 @@ tap "homebrew/services"
 tap "neomutt/homebrew-neomutt"
 tap "tavianator/tap"
 tap "universal-ctags/universal-ctags"
+tap "sachaos/todoist"
 
 # Core
 brew "openssl"
@@ -35,6 +36,7 @@ brew "yarn"
 brew "ruby"
 cask "java8"
 brew "clojure"
+brew "leiningen"
 brew "candid82/brew/joker"
 brew "sbcl" # Lisp
 brew "ghc"
@@ -84,6 +86,8 @@ brew "tmux", args: ["HEAD"]
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
 brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
 brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
+brew "todoist"
+brew "youtube-dl"
 
 # Nice to have
 # brew "ledger"
