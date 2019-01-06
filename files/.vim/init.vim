@@ -34,10 +34,10 @@ if has('nvim')
   let g:python_host_skip_check = 1
   let g:python3_host_skip_check = 1
   if executable('python2')
-    let g:python_host_prog = '/usr/local/bin/python2'
+    let g:python_host_prog = exepath('python2')
   endif
   if executable('python3')
-    let g:python3_host_prog = '/usr/local/bin/python3'
+    let g:python3_host_prog = exepath('python3')
   endif
 endif
 " }}}

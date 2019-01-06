@@ -38,6 +38,7 @@ let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \}
 
+" TSLint/ESLint --fix is so slow to run it as part of the fixers, so I do this using a precommit hook or something else
 let g:ale_fixers = {
       \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
       \   'markdown'  : [ 'prettier' ],
