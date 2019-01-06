@@ -12,6 +12,7 @@ tap "neomutt/homebrew-neomutt"
 tap "tavianator/tap"
 tap "universal-ctags/universal-ctags"
 tap "sachaos/todoist"
+tap "dbcli/tap"
 
 # Core
 brew "openssl"
@@ -106,6 +107,9 @@ brew "translate-shell"
 brew "bat"
 brew "exa"
 brew "grc"
+brew "pgcli"
+brew "mycli"
+brew "litecli"
 
 cask "1password-cli"
 cask "alfred"
