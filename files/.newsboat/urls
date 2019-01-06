@@ -193,6 +193,8 @@
   https://sophiebits.com/atom.xml "Blog" "JavaScript" "Programming"
   https://blog.cryptographyengineering.com/feed/ "Blog" "Security" "Cryptography"
   https://blog.jonlu.ca/feed.xml "Blog" "Programming" "Security"
+  https://krausefx.com/feed.xml "Blog" "Security"
+  https://knowyourteam.com/blog/feed/ "Blog" "Leadership"
 # }}}
 
 # Browsers {{{

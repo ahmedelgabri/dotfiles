@@ -40,3 +40,4 @@ https://robots.thoughtbot.com/pgp-and-you PGP and You
 https://www.youtube.com/playlist?list=PLmoQ11MXEmajkNPMvmc8OEeZ0zxOKbGRa More GPG stuff
 https://purelyfunctional.tv/guide/clojure-concurrency/ The Ultimate Guide to Clojure Concurrency
 https://www.troyhunt.com/10-personal-finance-lessons-for-technology-professionals/ 10 Personal Finance Lessons for Technology Professionals
+https://shellhaters.org The POSIX Shell And Utilities
