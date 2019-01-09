@@ -145,6 +145,7 @@
   dm = d --word-diff-regex=.
   doctor = remote -v show origin
   fl = l -u
+  stat = --no-pager diff --stat
   grr = grep --break --heading --line-number
   hide = update-index --assume-unchanged
   unhide = update-index --no-assume-unchanged
