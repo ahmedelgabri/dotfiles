@@ -195,6 +195,9 @@
   https://blog.jonlu.ca/feed.xml "Blog" "Programming" "Security"
   https://krausefx.com/feed.xml "Blog" "Security"
   https://knowyourteam.com/blog/feed/ "Blog" "Leadership"
+  https://monicalent.com/blog/index.xml "Blog" "Programming" "JavaScript"
+  https://feeds.feedburner.com/steveklabnik/words "Blog" "Rust"
+  https://lispcast.com/feed/ "Blog" "Programming" "Clojure"
 # }}}
 
 # Browsers {{{
