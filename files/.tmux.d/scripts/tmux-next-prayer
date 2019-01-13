@@ -1,30 +1,23 @@
 #!/usr/bin/env python
+
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring,invalid-name
 
 import json
 import sys
 import os
+import io
 import time
-from datetime import datetime, timedelta
-from random import choice
+from datetime import datetime
+from tempfile import gettempdir
+from urllib.request import urlopen, HTTPError, Request
 
-try:
-    from urllib.request import urlopen, HTTPError, Request
-except ImportError:
-    from urllib2 import urlopen, HTTPError
-    from urllib2 import Request
-
-
+CACHE = os.path.join(
+    gettempdir(),
+    ".{}.json".format(time.strftime("%d-%m-%Y", datetime.now().timetuple())),
+)
 RED = "#[fg=red]" if os.environ["TMUX"] else "\033[1;31;40m"
 PRAYERS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
-AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
-    "Mozilla",
-]
 
 # https://aladhan.com/prayer-times-api#GetCalendarByCitys
 CITY = sys.argv[1] if len(sys.argv) > 1 else "amsterdam"
@@ -33,7 +26,7 @@ METHOD = sys.argv[3] if len(sys.argv) > 3 else 12
 TUNE = sys.argv[4] if len(sys.argv) > 4 else "0,-19,0,0,0,0,0,10,0"
 
 
-def get_data(day_time):
+def get_api(day_time):
     url = (
         "http://api.aladhan.com/v1/timingsByCity/{time}?method={method}"
         "&city={city}&country={country}&tune={tune}".format(
@@ -46,18 +39,28 @@ def get_data(day_time):
     )
 
     try:
-        req = Request(url, data=None, headers={"User-Agent": choice(AGENTS)})
+        req = Request(url, data=None)
         response = urlopen(req)
+        data = json.load(response)["data"]
+
+        return {"timings": data["timings"], "readable_date": data["date"]["readable"]}
     except HTTPError as err:
         if err.code == 403:
             print(err)
         else:
             print("Something happened! Error code", err.code)
-        return
 
-    data = json.load(response)["data"]
 
-    return {"timings": data["timings"], "readable_date": data["date"]["readable"]}
+def get_data(day_time):
+    if os.path.isfile(CACHE) and os.access(CACHE, os.R_OK):
+        with io.open(CACHE) as cache:
+            return json.load(cache)
+    else:
+        data = get_api(day_time)
+        with io.open(CACHE, "w") as cache:
+            cache.write(json.dumps(data))
+
+        return data
 
 
 def get_prayer_time(prayer, readable_date, timings):
@@ -66,42 +69,34 @@ def get_prayer_time(prayer, readable_date, timings):
     )
 
 
-def print_prayer(now=datetime.now()):
+def get_prayer(now):
     data = get_data(now)
     timings = data["timings"]
     readable_date = data["readable_date"]
+    after_isha = get_prayer_time(PRAYERS[-1], readable_date, timings)
 
-    if get_prayer_time(PRAYERS[-1], readable_date, timings) < now:
-        now = now + timedelta(days=1)
-        data = get_data(now)
-        prayer = PRAYERS[0]
+    if now > after_isha:
+        fajr = PRAYERS[0]
 
-        prayer_time = get_prayer_time(prayer, readable_date, timings)
-        now_timestamp = time.mktime(now.timetuple())
-        prayer_time_timestamp = time.mktime(prayer_time.timetuple())
-        time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
-
-        print(
-            "{color}{prayer}: {time}".format(
-                prayer=prayer, time=timings[prayer], color=""
-            )
-        )
+        result = "{prayer}: {time}".format(prayer=fajr, time=timings[fajr])
     else:
         for prayer in PRAYERS:
             prayer_time = get_prayer_time(prayer, readable_date, timings)
+
             if prayer_time >= now:
                 now_timestamp = time.mktime(now.timetuple())
                 prayer_time_timestamp = time.mktime(prayer_time.timetuple())
                 time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
 
-                print(
-                    "{color}{prayer}: {time}".format(
-                        prayer=prayer,
-                        time=timings[prayer],
-                        color="" if time_remaning > 30 else RED,
-                    )
+                result = "{color}{prayer}: {time}".format(
+                    prayer=prayer,
+                    time=timings[prayer],
+                    color="" if time_remaning > 30 else RED,
                 )
+
                 break
 
+    return result
 
-print_prayer()
+
+print(get_prayer(datetime.now()))
