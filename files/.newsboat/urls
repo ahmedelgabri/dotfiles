@@ -198,6 +198,7 @@
   https://monicalent.com/blog/index.xml "Blog" "Programming" "JavaScript"
   https://feeds.feedburner.com/steveklabnik/words "Blog" "Rust"
   https://lispcast.com/feed/ "Blog" "Programming" "Clojure"
+  https://presumably.de/atom.xml "Blog" "ClojureScript"
 # }}}
 
 # Browsers {{{
