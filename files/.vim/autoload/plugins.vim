@@ -18,7 +18,7 @@ function! plugins#loadPlugins() abort
   command! -bar PackStatus call plugins#init() | call minpac#status()
   command! -bar PackClean call plugins#init() | call minpac#clean()
 
-  call minpac#init({ 'verbose': 3, 'jobs': 0 })
+  call minpac#init({ 'verbose': 3 })
   call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
 
   " General {{{
