@@ -39,7 +39,6 @@ cask "java8"
 brew "clojure"
 brew "leiningen"
 brew "candid82/brew/joker"
-brew "sbcl" # Lisp
 brew "ghc"
 brew "cabal-install"
 brew "haskell-stack"
