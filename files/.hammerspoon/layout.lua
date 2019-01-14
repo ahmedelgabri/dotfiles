@@ -33,7 +33,7 @@ local screens = {
 
 local threeMonitors = {
   {apps.stable, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
-  {apps.tweetbot, nil, screens.dell, hs.layout.right50, nil, nil},
+  {apps.tweetbot, nil, screens.dell, hs.layout.left50, nil, nil},
   {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
   -- {apps.canary, nil, screens.main, hs.layout.maximized, nil, nil},
   -- {apps.iterm, nil, screens.main, hs.layout.maximized, nil, nil},
@@ -76,4 +76,3 @@ end
 
 local layoutWatcher = hs.screen.watcher.newWithActiveScreen(switchLayout)
 layoutWatcher:start()
-
