@@ -1,9 +1,6 @@
 #!/bin/bash
 
 NPM_PACKAGES=(
-"jscpd"
-"jsctags"
-"jsinspect"
 "bash-language-server"
 "dockerfile-language-server-nodejs"
 "flow-language-server"
@@ -15,10 +12,8 @@ NPM_PACKAGES=(
 "prettier"
 "serve"
 "source-map-explorer"
-"surge"
 "svgo"
 "overtime-cli"
-"rtm-cli"
 "dependency-cruiser"
 "reason-cli@latest-macos"
 "neovim"
