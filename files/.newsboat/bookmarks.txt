@@ -42,3 +42,5 @@ https://purelyfunctional.tv/guide/clojure-concurrency/ The Ultimate Guide to Clo
 https://www.troyhunt.com/10-personal-finance-lessons-for-technology-professionals/ 10 Personal Finance Lessons for Technology Professionals
 https://shellhaters.org The POSIX Shell And Utilities
 https://www.hyfr.life/bitwise-operators-tricks/ Bitwise operators and tricks!
+https://fs.blog/2016/04/second-order-thinking/ Second-Order Thinking: What Smart People Use to Outperform
+https://fs.blog/2017/08/amateurs-professionals/ The Difference Between Amateurs and Professionals

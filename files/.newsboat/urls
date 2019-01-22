@@ -199,6 +199,9 @@
   https://feeds.feedburner.com/steveklabnik/words "Blog" "Rust"
   https://lispcast.com/feed/ "Blog" "Programming" "Clojure"
   https://presumably.de/atom.xml "Blog" "ClojureScript"
+  https://fs.blog/feed/ "Blog" "Personal Development"
+  https://mxstbr.com/feed.json "Blog" "JavaScript" "React"
+  https://mxstbr.com/feed.xml "Blog" "JavaScript" "React"
 # }}}
 
 # Browsers {{{
