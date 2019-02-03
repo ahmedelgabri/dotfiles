@@ -72,6 +72,7 @@ function! plugins#loadPlugins() abort
     call minpac#add('https://github.com/ncm2/ncm2-markdown-subscope')
     call minpac#add('https://github.com/ncm2/ncm2-ultisnips')
     call minpac#add('https://github.com/jsfaint/ncm2-vim')
+    call minpac#add('https://github.com/fgrsnau/ncm2-otherbuf')
     call minpac#add('https://github.com/Shougo/neco-vim')
   endif
   " }}}
