@@ -131,7 +131,6 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export HOMEBREW_INSTALL_BADGE="⚽️"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_FORCE_BREWED_GIT=1
-export HOMEBREW_INSTALL_CLEANUP=1
 
 ############### Bat, Ripgrep, Weechat
 export BAT_CONFIG_PATH="${HOME}/.batrc"

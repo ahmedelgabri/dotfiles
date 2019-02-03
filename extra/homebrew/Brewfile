@@ -18,9 +18,9 @@ tap "dbcli/tap"
 brew "openssl"
 brew "git"
 brew "python"
-brew "python@2" # do I need it anymore?
+brew "python@2"
 brew "gawk"
-brew "gnu-sed", args: ["with-default-names"]
+brew "gnu-sed"
 brew "coreutils"
 brew "findutils"
 brew "curl"
@@ -74,18 +74,18 @@ brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 brew "neovim"
 brew "newsboat"
 # Mail
-brew "isync", args: ["with-berkeley-db"]
+brew "isync"
 brew "lbdb"
 brew "msmtp"
 brew "offlineimap"
 brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
 # End Mail
-brew "mpv", args: ["with-bundle", "with-rubberband"]
+brew "mpv" #, args: ["with-bundle", "with-rubberband"]
 brew "rtv"
 brew "tmux", args: ["HEAD"]
 brew "ahmedelgabri/battery/battery", args: ["HEAD"]
-brew "vim", args: ["with-lua", "with-python3", "with-override-system-vi"]
-brew "weechat", args: ["with-perl", "with-python", "with-ruby", "with-lua", "with-curl"]
+brew "vim"
+brew "weechat" # , args: ["with-curl"]
 brew "todoist"
 brew "youtube-dl"
 
@@ -109,6 +109,7 @@ brew "grc"
 brew "pgcli"
 brew "mycli"
 brew "litecli"
+brew "shfmt" # Doesn't work with zsh, only sh & bash
 
 cask "1password-cli"
 cask "alfred"
