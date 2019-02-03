@@ -133,7 +133,9 @@
 ;   diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
 
 [alias]
-  amend = commit --amend -C HEAD
+  amend = commit --amend --no-edit
+  force = push --force-with-lease
+  fam = "!f() { git add . && git amend && git force; }; f"
   blm = blame -wMC
   br = branch
   brs = branch --sort=-committerdate --all --verbose
