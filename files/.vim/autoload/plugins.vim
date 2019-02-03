@@ -27,9 +27,9 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  if !empty(glob($FZF_VIM_PATH))
+  if !empty(expand('$VIM_FZF_PATH'))
     call minpac#add('https://github.com/junegunn/fzf.vim')
-    set runtimepath^=$FZF_VIM_PATH
+    set runtimepath^=$VIM_FZF_PATH
   endif
   call minpac#add('https://github.com/justinmk/vim-dirvish')
   call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')

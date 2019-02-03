@@ -101,24 +101,29 @@ else
   echo "y" | "${HOMEBREW_PREFIX}/opt/fzf/install" --xdg --no-update-rc
 fi
 
-export FZF_VIM_PATH="${HOMEBREW_PREFIX}/opt/fzf" # used in vim
-export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
-
-if (( $+commands[fd] )); then
-  export FZF_CMD='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
-  export FZF_DEFAULT_COMMAND="$FZF_CMD --type f"
-  export FZF_CTRL_T_COMMAND="$FZF_CMD"
-  export FZF_ALT_C_COMMAND="$FZF_CMD --type d ."
-elif (( $+commands[rg] )); then
-  export FZF_CMD='rg --no-messages --no-ignore-vcs'
-  export FZF_DEFAULT_COMMAND="$FZF_CMD --files"
-  export FZF_CTRL_T_COMMAND="$FZF_CMD"
+if [[ -x "${HOMEBREW_PREFIX}/opt/fzf" ]]; then
+  export VIM_FZF_PATH="${HOMEBREW_PREFIX}/opt/fzf"
 fi
 
+export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
+
+typeset -AU __FZF
+if (( $+commands[fd] )); then
+  __FZF[CMD]='fd --hidden --follow --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
+  __FZF[DEFAULT]="${__FZF[CMD]} --type f"
+  __FZF[ALT_C]="${__FZF[CMD]} --type d ."
+elif (( $+commands[rg] )); then
+  __FZF[CMD]='rg --no-messages --no-ignore-vcs'
+  __FZF[DEFAULT]="${__FZF[CMD]} --files"
+fi
+
+export FZF_DEFAULT_COMMAND="${__FZF[DEFAULT]}"
+export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
+export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
 export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3'
 export FZF_CTRL_T_OPTS='--preview-window right:60% --preview "(bat --style=numbers,changes --wrap never --color always {} || highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -200" --bind "?:toggle-preview"'
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null | head -200'"
 
 ############### Homebrew
 export HOMEBREW_INSTALL_BADGE="⚽️"

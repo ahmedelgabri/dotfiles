@@ -1,8 +1,17 @@
-" FZF
-let g:fzf_files_options = $FZF_CTRL_T_OPTS
+if !exists(':FZF')
+  finish
+endif
+
+if !empty(expand('$FZF_CTRL_T_OPTS'))
+  let g:fzf_files_options = $FZF_CTRL_T_OPTS
+endif
+
+if !empty(expand('$VIM_FZF_LOG'))
+  let g:fzf_commits_log_options = $VIM_FZF_LOG
+endif
+
 let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_commits_log_options = $FZF_VIM_LOG
-let g:fzf_history_dir = '~/.fzf-history'
+let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
 
@@ -39,7 +48,7 @@ function! FzfSpellSink(word)
   exe 'normal! "_ciw'.a:word
 endfunction
 function! FzfSpell()
-  let suggestions = spellsuggest(expand("<cword>"))
-  return fzf#run({'source': suggestions, 'sink': function("FzfSpellSink"), 'down': 10 })
+  let suggestions = spellsuggest(expand('<cword>'))
+  return fzf#run({'source': suggestions, 'sink': function('FzfSpellSink'), 'down': 10 })
 endfunction
 nnoremap z= :call FzfSpell()<CR>

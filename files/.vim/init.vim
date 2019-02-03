@@ -20,7 +20,7 @@ scriptencoding utf-8
                      " '=='
 
 " This is needed to keep all [n]vim files (backups, swaps, packages, etc...) in the same place
-let g:DOTFILES_VIM_FOLDER = expand('$DOTFILES') . '/files/.vim'
+let g:DOTFILES_VIM_FOLDER = empty(glob($VIM_ROOT)) ? expand('~/.vim') : expand('$VIM_ROOT')
 
 " Skip vim plugins {{{
 let g:loaded_rrhelper = 1

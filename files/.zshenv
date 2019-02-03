@@ -29,6 +29,7 @@ export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 export OSTYPE=$(uname -s)
 export HOSTNAME=$(hostname)
 export DOTFILES="${HOME}/.dotfiles"
+export VIM_ROOT="${DOTFILES}/files/.vim"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
