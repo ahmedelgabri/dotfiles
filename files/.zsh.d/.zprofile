@@ -20,8 +20,13 @@ fpath=(
 )
 
 manpath=(
-  ${HOMEBREW_ROOT}/opt/coreutils/libexec/gnuman(N-/)
+  ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman(N-/)
   $manpath
+)
+
+infopath=(
+ /usr/local/share/info
+ $infopath
 )
 
 # Set the the list of directories that cd searches.
@@ -36,8 +41,9 @@ path=(
   ./node_modules/.bin
   /usr/local/opt/curl/bin(N-/)
   /usr/local/opt/openssl/bin(N-/)
-  ${HOMEBREW_ROOT}/opt/coreutils/libexec/gnubin(N-/)
-  ${HOMEBREW_ROOT}/opt/python/libexec/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
+  ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
+  ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
   /usr/local/{bin,sbin}
   # Until yarn fixes itself & link binaries to `/usr/local/bin`
   ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)

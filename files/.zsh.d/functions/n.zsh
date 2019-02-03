@@ -4,7 +4,7 @@ unalias n 2>/dev/null
 
 function n() {
   if [[ $# -eq 0 ]]; then
-    __CMD=("${HOMEBREW_ROOT}/bin/n")
+    __CMD=("${HOMEBREW_PREFIX}/bin/n")
     __VERSION=""
 
     [[ -f ".nvmrc" ]] && __VERSION=$(command cat .nvmrc)

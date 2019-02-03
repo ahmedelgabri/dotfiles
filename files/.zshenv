@@ -9,16 +9,22 @@ export LANG=en_US.UTF-8
 # realpath(dirname(absolute path to this file)
 # export ZDOTDIR="${${(%):-%N}:A:h}"
 export ZDOTDIR="${HOME}/.zsh.d"
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME_HOME:-$HOME/.local/share}
+
+export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:-"/usr/local"}
+export HOMEBREW_CELLAR=${HOMEBREW_CELLAR:-"/usr/local/Cellar"}
+export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
+
 export OSTYPE=$(uname -s)
 export HOSTNAME=$(hostname)
-export XDG_CONFIG_HOME="${HOME}/.config"
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTE_DIR="${PERSONAL_STORAGE}/notes"
-export HOMEBREW_ROOT=$(/usr/local/bin/brew --prefix)
 [[ -f "${PERSONAL_STORAGE}/dotfiles/personal.zsh" ]] && source "${PERSONAL_STORAGE}/dotfiles/personal.zsh"
 
 # Ensure that a non-login, non-interactive shell has a defined environment.

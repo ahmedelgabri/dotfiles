@@ -96,19 +96,19 @@ export PURE_GIT_BRANCH="  "
 export PYTHONSTARTUP="${HOME}/.pyrc.py"
 
 ############### z.sh
-[[ -f "${HOMEBREW_ROOT}/etc/profile.d/z.sh" ]] && source "${HOMEBREW_ROOT}/etc/profile.d/z.sh"
+[[ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ]] && source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
 
 ############### grc
-[[ -f "${HOMEBREW_ROOT}/etc/grc.zsh" ]] && source "${HOMEBREW_ROOT}/etc/grc.zsh"
+[[ -f "${HOMEBREW_PREFIX}/etc/grc.zsh" ]] && source "${HOMEBREW_PREFIX}/etc/grc.zsh"
 
 ############### FZF
 if [[ -f "${XDG_CONFIG_HOME}/fzf/fzf.zsh" ]]; then
   source "${XDG_CONFIG_HOME}/fzf/fzf.zsh"
 else
-  echo "y" | "${HOMEBREW_ROOT}/opt/fzf/install" --xdg --no-update-rc
+  echo "y" | "${HOMEBREW_PREFIX}/opt/fzf/install" --xdg --no-update-rc
 fi
 
-export FZF_VIM_PATH="${HOMEBREW_ROOT}/opt/fzf" # used in vim
+export FZF_VIM_PATH="${HOMEBREW_PREFIX}/opt/fzf" # used in vim
 export FZF_VIM_LOG=$(git config --get alias.l | awk '{$1=""; print $0;}' | tr -d '\r')
 
 if (( $+commands[fd] )); then
