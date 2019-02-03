@@ -36,21 +36,21 @@ cdpath=(
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  ./node_modules/.bin
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
-  ./node_modules/.bin
   /usr/local/opt/curl/bin(N-/)
   /usr/local/opt/openssl/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
-  /usr/local/{bin,sbin}
   # Until yarn fixes itself & link binaries to `/usr/local/bin`
   ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
   ${HOME}/.cargo/bin(N-/)
   ${GOPATH}/bin(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
+  /usr/local/{bin,sbin}
   $path
 )
 
