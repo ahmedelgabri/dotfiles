@@ -202,6 +202,7 @@
   https://fs.blog/feed/ "Blog" "Personal Development"
   https://mxstbr.com/feed.json "Blog" "JavaScript" "React"
   https://mxstbr.com/feed.xml "Blog" "JavaScript" "React"
+  https://romanliutikov.com/rss.xml "Blog" "Clojure" "Programming" "JavaScript"
 # }}}
 
 # Browsers {{{

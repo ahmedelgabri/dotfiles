@@ -44,3 +44,4 @@ https://shellhaters.org The POSIX Shell And Utilities
 https://www.hyfr.life/bitwise-operators-tricks/ Bitwise operators and tricks!
 https://fs.blog/2016/04/second-order-thinking/ Second-Order Thinking: What Smart People Use to Outperform
 https://fs.blog/2017/08/amateurs-professionals/ The Difference Between Amateurs and Professionals
+http://blog.samaltman.com/how-to-be-successful How to be successful
