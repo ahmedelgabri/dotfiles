@@ -45,3 +45,5 @@ https://www.hyfr.life/bitwise-operators-tricks/ Bitwise operators and tricks!
 https://fs.blog/2016/04/second-order-thinking/ Second-Order Thinking: What Smart People Use to Outperform
 https://fs.blog/2017/08/amateurs-professionals/ The Difference Between Amateurs and Professionals
 http://blog.samaltman.com/how-to-be-successful How to be successful
+https://overreacted.io/react-as-a-ui-runtime/ React as a UI runtime
+https://michel.codes/blogs/ui-as-an-afterthought Ui as an afterthought

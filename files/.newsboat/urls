@@ -5,6 +5,7 @@
   "query:→ Bookmarked Articles:flags # \"s\"" "Starred"
   "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
   "query:→ YouTube:tags # \"YouTube\"" "YouTube"
+  "query:→ Twitch:tags # \"Twitch\"" "Twitch"
   "query:→ Blogs:tags # \"Blogs\"" "Blogs"
   "query:→ Browsers:tags # \"Browsers\"" "Browsers"
   "query:→ Comics:tags # \"Comics\"" "Comics"
@@ -203,6 +204,7 @@
   https://mxstbr.com/feed.json "Blog" "JavaScript" "React"
   https://mxstbr.com/feed.xml "Blog" "JavaScript" "React"
   https://romanliutikov.com/rss.xml "Blog" "Clojure" "Programming" "JavaScript"
+  https://kellanem.com/feed.xml "Blog" "Engineering" "Leadership"
 # }}}
 
 # Browsers {{{
@@ -557,4 +559,37 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCIGqC7zgqiFrGztcgXSSWOg "YouTube" # Workshop.me
   https://www.youtube.com/feeds/videos.xml?channel_id=UCcefcZRL2oaA_uBNeo5UOWg "YouTube" # Y Combinator
   https://www.youtube.com/feeds/videos.xml?channel_id=UCLq8gNoee7oXM7MvTdjyQvA "YouTube" # ZEIT
+# }}}
+
+# Twitch {{{ NOT official RSS support
+  https://twitchrss.appspot.com/vod/Clarkio "Twitch"
+  https://twitchrss.appspot.com/vod/JessiTRONica "Twitch"
+  https://twitchrss.appspot.com/vod/Tsoding "Twitch"
+  https://twitchrss.appspot.com/vod/adaplaysoverwatch "Twitch"
+  https://twitchrss.appspot.com/vod/byteconf "Twitch"
+  https://twitchrss.appspot.com/vod/esl_csgo "Twitch"
+  https://twitchrss.appspot.com/vod/ferossity "Twitch"
+  https://twitchrss.appspot.com/vod/fhinkel "Twitch"
+  https://twitchrss.appspot.com/vod/funfunfunction "Twitch"
+  https://twitchrss.appspot.com/vod/garybernhardt "Twitch"
+  https://twitchrss.appspot.com/vod/illuminatedspace "Twitch"
+  https://twitchrss.appspot.com/vod/jackyalcine "Twitch"
+  https://twitchrss.appspot.com/vod/jlengstorf "Twitch"
+  https://twitchrss.appspot.com/vod/jlongster2 "Twitch"
+  https://twitchrss.appspot.com/vod/josevalim "Twitch"
+  https://twitchrss.appspot.com/vod/kentcdodds "Twitch"
+  https://twitchrss.appspot.com/vod/kyleshevlin "Twitch"
+  https://twitchrss.appspot.com/vod/lukeed05 "Twitch"
+  https://twitchrss.appspot.com/vod/noopkat "Twitch"
+  https://twitchrss.appspot.com/vod/ostera "Twitch"
+  https://twitchrss.appspot.com/vod/puffnfresh "Twitch"
+  https://twitchrss.appspot.com/vod/riotgames "Twitch"
+  https://twitchrss.appspot.com/vod/sxywu "Twitch"
+  https://twitchrss.appspot.com/vod/thekitze "Twitch"
+  https://twitchrss.appspot.com/vod/thelarkinn "Twitch"
+  https://twitchrss.appspot.com/vod/themitsuhiko "Twitch"
+  https://twitchrss.appspot.com/vod/thepracticaldev "Twitch"
+  https://twitchrss.appspot.com/vod/thlorenz "Twitch"
+  https://twitchrss.appspot.com/vod/timpote "Twitch"
+  https://twitchrss.appspot.com/vod/tsm_myth "Twitch"
 # }}}

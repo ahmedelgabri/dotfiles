@@ -15,7 +15,8 @@
   reload-threads 3
   reload-time 15
   save-path "~/Box\ Sync/saved-articles"
-  bookmark-cmd ~/.newsboat/bookmark.sh
+  # bookmark-cmd ~/.newsboat/bookmark.sh
+  bookmark-cmd ~/.newsboat/getpocket.com/send-to-pocket.sh
   bookmark-interactive no
   bookmark-autopilot yes
   show-read-feeds no
@@ -69,7 +70,7 @@ macro y set browser "echo %u | pbcopy"; open-in-browser ; set browser "$BROWSER 
   # highlight all "Linux" yellow black blink
 
   color info blue default
-  color listnormal color246 default
+  color listnormal color237 default
   color listnormal_unread color244 default
   color listfocus_unread color7 color27
   color listfocus color7 color27
