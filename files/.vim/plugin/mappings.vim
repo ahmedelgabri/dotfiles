@@ -22,10 +22,6 @@ xnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 xnoremap <expr> k v:count ? 'k' : 'gk'
 
-" Move VISUAL LINE selection within buffer.
-xnoremap <silent> K :call functions#move_up()<CR>
-xnoremap <silent> J :call functions#move_down()<CR>
-
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
 

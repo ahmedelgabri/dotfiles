@@ -285,4 +285,22 @@ snippet jsc "JSX Comment"
 {/* ${0:${VISUAL}} */}
 endsnippet
 
+# Jest
+
+snippet describe "describe" b
+describe('${1}', () => {
+	${0:${VISUAL}}
+})
+endsnippet
+
+snippet it "it" b
+it('${1}', () => {
+	${0:${VISUAL}}
+})
+endsnippet
+
+snippet expect "expect" b
+expect(${1}).to${2}(${3})
+endsnippet
+
 # vim:ft=snippets:
