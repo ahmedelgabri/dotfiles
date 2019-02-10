@@ -38,25 +38,27 @@ let g:ale_linter_aliases = {
       \}
 
 let g:ale_linters = {
-      \ 'javascript': ['eslint'],
+      \ 'javascript': ['eslint', 'flow'],
+      \ 'javascript.jsx': ['eslint', 'flow'],
+      \ 'typescript': ['eslint', 'tslint', 'tsserver'],
       \}
 
 " ESLint --fix is so slow to run it as part of the fixers, so I do this using a precommit hook or something else
 let g:ale_fixers = {
       \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown'  : [ 'prettier' ],
-      \   'javascript': [ 'prettier' ],
-      \   'typescript': [ 'prettier' ],
-      \   'css'       : [ 'prettier' ],
-      \   'json'      : [ 'prettier' ],
-      \   'scss'      : [ 'prettier' ],
-      \   'yaml'      : [ 'prettier' ],
-      \   'graphql'   : [ 'prettier' ],
-      \   'html'      : [ 'prettier' ],
-      \   'reason'    : [ 'refmt' ],
-      \   'python'    : [ 'black' ],
-      \   'sh'        : [ 'shfmt' ],
-      \   'bash'      : [ 'shfmt' ],
+      \   'markdown'  : ['prettier'],
+      \   'javascript': ['prettier'],
+      \   'typescript': ['prettier'],
+      \   'css'       : ['prettier'],
+      \   'json'      : ['prettier'],
+      \   'scss'      : ['prettier'],
+      \   'yaml'      : ['prettier'],
+      \   'graphql'   : ['prettier'],
+      \   'html'      : ['prettier'],
+      \   'reason'    : ['refmt'],
+      \   'python'    : ['black'],
+      \   'sh'        : ['shfmt'],
+      \   'bash'      : ['shfmt'],
       \}
 
 " Don't auto auto-format files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
