@@ -85,6 +85,7 @@ function! plugins#loadPlugins() abort
   " Syntax {{{
   " call minpac#add('https://github.com/chrisbra/Colorizer')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
+  call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
