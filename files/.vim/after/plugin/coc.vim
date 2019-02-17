@@ -38,6 +38,7 @@ let s:LSP_CONFIG = [
 
 call coc#config('coc.preferences', {
       \ 'autoTrigger': 'always',
+      \ 'noselect': 0,
       \ 'colorSupport': 1,
       \ 'diagnostic.errorSign': '×',
       \ 'diagnostic.warningSign': '●',
