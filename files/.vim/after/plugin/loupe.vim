@@ -13,3 +13,5 @@ if has('autocmd')
 endif
 
 call s:SetUpLoupeHighlight()
+
+nmap <Leader>c <Plug>(LoupeClearHighlight)

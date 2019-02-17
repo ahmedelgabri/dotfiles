@@ -5,9 +5,6 @@ command! Wqa wqa
 command! W w
 command! Q q
 
-" Use :C to clear hlsearch
-command! C nohlsearch
-
 command! Light set background=light
 command! Dark set background=dark
 

@@ -31,7 +31,6 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
 nnoremap <silent> <leader><leader> :Files<cr>
-nnoremap <silent> <Leader>c :Colors<cr>
 nnoremap <silent> <Leader>b :Buffers<cr>
 nnoremap <silent> <Leader>h :Helptags<cr>
 
