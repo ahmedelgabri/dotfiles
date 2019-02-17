@@ -205,6 +205,7 @@
   https://mxstbr.com/feed.xml "Blog" "JavaScript" "React"
   https://romanliutikov.com/rss.xml "Blog" "Clojure" "Programming" "JavaScript"
   https://kellanem.com/feed.xml "Blog" "Engineering" "Leadership"
+  https://catonmat.net/feed "Blog" "Programming" "JavaScript"
 # }}}
 
 # Browsers {{{
@@ -559,6 +560,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCIGqC7zgqiFrGztcgXSSWOg "YouTube" # Workshop.me
   https://www.youtube.com/feeds/videos.xml?channel_id=UCcefcZRL2oaA_uBNeo5UOWg "YouTube" # Y Combinator
   https://www.youtube.com/feeds/videos.xml?channel_id=UCLq8gNoee7oXM7MvTdjyQvA "YouTube" # ZEIT
+  https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
 # }}}
 
 # Twitch {{{ NOT official RSS support
