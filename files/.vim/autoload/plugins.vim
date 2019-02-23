@@ -74,7 +74,7 @@ function! plugins#loadPlugins() abort
   function! s:coc_plugins(hooktype, name) abort
     execute 'packadd ' . a:name
     call coc#util#install()
-    call coc#util#install_extension(join(get(g:, 'coc_global_extensions', [])))
+    call coc#util#install_extension(g:coc_global_extensions)
   endfunction
 
   call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_plugins')})
