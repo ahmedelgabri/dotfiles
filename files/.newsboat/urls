@@ -206,6 +206,7 @@
   https://romanliutikov.com/rss.xml "Blog" "Clojure" "Programming" "JavaScript"
   https://kellanem.com/feed.xml "Blog" "Engineering" "Leadership"
   https://catonmat.net/feed "Blog" "Programming" "JavaScript"
+  https://otremblay.com/index.xml "Blog"
 # }}}
 
 # Browsers {{{
@@ -384,6 +385,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "vim"
   https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?user=Tsoding "YouTube" "CLI" "Haskell"
+  https://www.youtube.com/feeds/videos.xml?user=MrFhinkel "YouTube" "JavaScript" "Programming"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?channel_id=UCO1cgjhGzsSYb1rsB4bFe4Q "YouTube" "JavaScript" "Programming"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC1UxEQuBvfLJgWR5tk_XIXA "YouTube" "Clojure" "Programming"
