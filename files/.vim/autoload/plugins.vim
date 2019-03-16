@@ -7,16 +7,16 @@ function! plugins#installMinpac() abort
   execute 'silent !git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
+command! -bar PackUpdate call plugins#init() | call minpac#update('', {'do': 'call minpac#status()'})
+command! -bar PackStatus call plugins#init() | call minpac#status()
+command! -bar PackClean call plugins#init() | call minpac#clean()
+
 function! plugins#loadPlugins() abort
   silent! packadd minpac
 
   if !exists('*minpac#init')
     finish
   endif
-
-  command! -bar PackUpdate call plugins#init() | call minpac#update('', {'do': 'call minpac#status()'})
-  command! -bar PackStatus call plugins#init() | call minpac#status()
-  command! -bar PackClean call plugins#init() | call minpac#clean()
 
   call minpac#init({ 'verbose': 3 })
   call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
@@ -33,8 +33,8 @@ function! plugins#loadPlugins() abort
   endif
   call minpac#add('https://github.com/justinmk/vim-dirvish')
   call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
-  call minpac#add('https://github.com/junegunn/vim-peekaboo')
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim')
+  call minpac#add('https://github.com/junegunn/vim-peekaboo')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
@@ -86,6 +86,7 @@ function! plugins#loadPlugins() abort
   " call minpac#add('https://github.com/chrisbra/Colorizer')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
+  call minpac#add('https://github.com/amadeus/vim-convert-color-to')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
@@ -132,7 +133,7 @@ if !exists('*plugins#init')
     exec 'source ' . s:CURRENT_FILE
 
     if empty(glob(s:VIM_MINPAC_FOLDER))
-      call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update('', {'do': 'quit'})
+      set nomore | call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update('', {'do': 'quit'})
     else
       call plugins#loadPlugins()
     endif
