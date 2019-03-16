@@ -43,11 +43,10 @@
   http://brandur.org/articles.atom "Blogs"
   http://bricss.net/rss "Blogs" "CSS" "Web"
   http://christianheilmann.com/feed/ "Blogs" "Web" "CSS"
-  http://clearleft.com/thinks/rss.xml "Blogs"
+  http://clearleft.com/posts/rss.xml "Blogs"
   http://code.flickr.com/blog/feed/ "Blogs"
   http://code.flickr.net/feed/ "Blogs"
   http://codeascraft.etsy.com/feed/ "Blogs"
-  http://codular.com/feed.xml "Blogs"
   http://cwebbdesign.tumblr.com/rss "Blogs"
   http://daverupert.com/atom.xml "Blogs"
   http://dbushell.com/rss/ "Blogs"
@@ -207,6 +206,11 @@
   https://kellanem.com/feed.xml "Blog" "Engineering" "Leadership"
   https://catonmat.net/feed "Blog" "Programming" "JavaScript"
   https://otremblay.com/index.xml "Blog"
+  https://blog.yoshuawuyts.com/rss.xml "Blog" "Rust" "Programming"
+  https://abstract.properties/rss.xml "Blog" "Programming"
+  https://writing.kemitchell.com/feed.xml "Blog" "Open Source" "Legal"
+  https://vim.works/index.xml "vim"
+  https://aweary.dev/rss.xml "Blog" "React" "JavaScript"
 # }}}
 
 # Browsers {{{
@@ -563,6 +567,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCcefcZRL2oaA_uBNeo5UOWg "YouTube" # Y Combinator
   https://www.youtube.com/feeds/videos.xml?channel_id=UCLq8gNoee7oXM7MvTdjyQvA "YouTube" # ZEIT
   https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCRVQQJtsbCBF0tL7j0fEGpg "YouTube" # Fhinkel
 # }}}
 
 # Twitch {{{ NOT official RSS support
