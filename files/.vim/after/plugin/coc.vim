@@ -36,15 +36,21 @@ let s:LSP_CONFIG = [
       \  }],
       \ ]
 
-call coc#config('coc.preferences', {
+call coc#config('suggest', {
       \ 'autoTrigger': 'always',
       \ 'noselect': 0,
+      \ })
+
+call coc#config('diagnostic', {
+      \ 'errorSign': '×',
+      \ 'warningSign': '●',
+      \ 'infoSign': '!',
+      \ 'hintSign': '!',
+      \ 'displayByAle': 1
+      \ })
+
+call coc#config('coc.preferences', {
       \ 'colorSupport': 1,
-      \ 'diagnostic.errorSign': '×',
-      \ 'diagnostic.warningSign': '●',
-      \ 'diagnostic.infoSign': '!',
-      \ 'diagnostic.hintSign': '!',
-      \ 'diagnostic.displayByAle': 1
       \ })
 
 call coc#config('highlight', {
