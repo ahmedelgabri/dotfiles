@@ -121,11 +121,6 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
   call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   " }}}
-
-  call minpac#add('https://github.com/wakatime/vim-wakatime', { 'type': 'opt'  })
-  if getcwd() =~ 'Sites/work'
-    silent! packadd vim-wakatime
-  endif
 endfunction
 
 if !exists('*plugins#init')
