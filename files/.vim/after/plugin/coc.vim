@@ -4,6 +4,8 @@ if !exists('g:did_coc_loaded')
   finish
 endif
 
+let s:HAS_FLOATING_WINDOW = exists('##MenuPopupChanged') && exists('*nvim_open_win')
+
 let s:LSP_CONFIG = [
       \ ['flow', {
       \   'command': exepath('flow'),
@@ -51,6 +53,8 @@ call coc#config('diagnostic', {
 
 call coc#config('coc.preferences', {
       \ 'colorSupport': 1,
+      \ 'hoverTarget': s:HAS_FLOATING_WINDOW > 0 ? 'float' : 'echo',
+      \ 'signatureHelpTarget': s:HAS_FLOATING_WINDOW > 0 ? 'float' : 'echo',
       \ })
 
 call coc#config('highlight', {

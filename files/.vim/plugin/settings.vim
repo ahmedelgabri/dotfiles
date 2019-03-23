@@ -34,6 +34,18 @@ set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.swp,*~,*/.DS_Store
 set tagcase=followscs
 
+if has('nvim-0.4')
+  set wildoptions=pum
+endif
+
+if has('nvim-0.4')
+  set pumblend=10
+endif
+
+if has('nvim-0.4')
+  set pumheight=50
+endif
+
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
   " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
