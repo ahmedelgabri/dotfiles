@@ -44,8 +44,6 @@ path=(
   ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
-  # Until yarn fixes itself & link binaries to `/usr/local/bin`
-  ${XDG_CONFIG_HOME}/yarn/global/node_modules/.bin(N-/)
   ${HOME}/.cargo/bin(N-/)
   ${GOPATH}/bin(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
