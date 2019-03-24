@@ -1,7 +1,20 @@
+# -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring,invalid-name,len-as-condition
+
 import os
 import re
 
 # https://github.com/lencioni/dotfiles/blob/eddc37169fd36648791a395a47e2ead3fcadcb87/.vim/pythonx/snippet_helpers.py
+
+
+def repeat_char(snip, ch):
+    comment_char = snip.opt("&commentstring")
+    comment_char_len = 0 if comment_char is None else len(comment_char)
+    repeated_ch = ch * (int(snip.opt("&tw")) - comment_char_len)
+
+    return (
+        comment_char % " " + repeated_ch if not (comment_char is None) else repeated_ch
+    )
 
 
 def pascal_case_basename(basename):
@@ -35,8 +48,8 @@ def path_to_component_name(path, case_fn):
     if basename in ["index"]:
         # Pop the last directory name off the dirname
         return case_fn(_clean_basename(os.path.basename(dirname)))
-    else:
-        return case_fn(_clean_basename(basename))
+
+    return case_fn(_clean_basename(basename))
 
 
 def complete(text, opts):
@@ -85,7 +98,7 @@ def formatVariableName(path):
     except IndexError:
         firstPart = ""
 
-    dict = {
+    deps_map = {
         "lodash": "_",
         "ramda": "R",
         "react": "* as React",
@@ -97,7 +110,8 @@ def formatVariableName(path):
 
     if firstPart == "lodash":
         return lastPart
-    elif lastPart in dict:
-        return dict[lastPart]
-    else:
-        return re.sub(r"[_\-]", "", lastPart)
+
+    if lastPart in deps_map:
+        return deps_map[lastPart]
+
+    return re.sub(r"[_\-]", "", lastPart)
