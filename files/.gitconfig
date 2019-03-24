@@ -153,7 +153,7 @@
   unhide = update-index --no-assume-unchanged
   unhide-all = update-index --really-refresh
   hidden = !git ls-files -v | grep \"^[a-z]\"
-  l = log --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=short
+  l = log --color=always --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=auto:human
   lme = "!sh -c \"git l $@ --author=\"$NAME\"\""
   la = l --all --simplify-by-decoration
   lastchange = log -p --follow -n 1
@@ -168,7 +168,7 @@
   track = push origin -u HEAD
   undo = reset --soft HEAD^
   who = shortlog -sne
-  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=short
+  wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=auto:human
   unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
 
 [filter "media"]
