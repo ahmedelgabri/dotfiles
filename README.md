@@ -3,7 +3,7 @@
 For setting up development environment on new Mac. The config is managed by
 [GNU stow](https://www.gnu.org/software/stow/)
 
-![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/latest.png)
+![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
 
 ## What's in it?
 
@@ -59,10 +59,9 @@ $ cp files/.gitconfig.local.example ~/.gitconfig.local
 ```
 
 Don't forget to upload your public key to GitHub!
-https://github.com/blog/2144-gpg-signature-verification Note: There needs to
-be a three-way match on your email for GitHub to show the commit as
-'verified': The commit email, github email, & the email associated with the
-public key
+https://github.com/blog/2144-gpg-signature-verification Note: There needs to be
+a three-way match on your email for GitHub to show the commit as 'verified': The
+commit email, github email, & the email associated with the public key
 
 Learn about creating a GPG key and the knowledge behind these commands here:
 https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
@@ -71,8 +70,8 @@ https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
 
 I have two email accounts, one for work and one for personal emails. The
 messages are syncronised between the remote server and my computer with
-[isync][isync], and I read them with [NeoMutt][neomutt]. A search index is
-built by [notmuch][notmuch], and emails are sent with [msmtp][msmtp].
+[isync][isync], and I read them with [NeoMutt][neomutt]. A search index is built
+by [notmuch][notmuch], and emails are sent with [msmtp][msmtp].
 
 After linking the dotfiles, there are only a few more things that need to be
 done.
