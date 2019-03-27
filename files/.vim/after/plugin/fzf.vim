@@ -15,16 +15,6 @@ let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
 
-" color=always makes fzf slow, not a ripgrep issues
-" https://github.com/junegunn/fzf.vim/issues/488#issuecomment-346909854
-" https://github.com/BurntSushi/ripgrep/issues/696
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=never'.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
-
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
