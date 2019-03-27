@@ -4,6 +4,8 @@ if !exists('g:did_coc_loaded')
   finish
 endif
 
+let g:coc_node_path=exepath('node')
+
 let s:HAS_FLOATING_WINDOW = exists('##MenuPopupChanged') && exists('*nvim_open_win')
 
 let s:LSP_CONFIG = [
