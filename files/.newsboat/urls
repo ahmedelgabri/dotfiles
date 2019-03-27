@@ -211,6 +211,7 @@
   https://writing.kemitchell.com/feed.xml "Blog" "Open Source" "Legal"
   https://vim.works/index.xml "vim"
   https://aweary.dev/rss.xml "Blog" "React" "JavaScript"
+  https://blog.jessfraz.com/index.xml "Blog"
 # }}}
 
 # Browsers {{{
@@ -288,7 +289,6 @@
   http://blog.npmjs.org/rss "JavaScript"
   http://blog.pamelafox.org/feeds/posts/default "JavaScript"
   http://feeds.feedburner.com/jlongster "JavaScript"
-  http://feeds.feedburner.com/metafizzy "JavaScript"
   http://feeds.feedburner.com/remysharp "JavaScript"
   http://feeds.nczonline.net/blog/ "JavaScript"
   http://jsforallof.us/feed.xml "JavaScript"
