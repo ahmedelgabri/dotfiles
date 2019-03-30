@@ -25,7 +25,7 @@ log() {
   shift
   shift
   local MSG=("$@")
-  printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols)-${#LABEL})) | tr ' ' '='
+  printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols) - ${#LABEL})) | tr ' ' '='
   for M in "${MSG[@]}"; do
     let COL=$(tput cols)-2-${#M}
     printf "%s%${COL}s${RESET}" "$COLOR* $M"
@@ -46,19 +46,21 @@ log_success() {
   log "OK" "$GREEN" "$@"
 }
 
-
 get_permission() {
   # Ask for the administrator password upfront.
   sudo -v
 
   # Keep-alive: update existing `sudo` time stamp until the script has finished.
-  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+  while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+  done 2>/dev/null &
 }
-
 
 print_main_banner() {
   cd "$HOME"
-command cat <<EOF
+  command cat <<EOF
 $BLUE
                             _       _    __ _ _
                            | |     | |  / _(_) |
@@ -71,8 +73,8 @@ $BLUE
 $RESET
 EOF
 
-if [ -d "$DOTFILES_DIR/.git" ]; then
-command cat <<EOF
+  if [ -d "$DOTFILES_DIR/.git" ]; then
+    command cat <<EOF
 $BLUE
                       $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
                       $RESET$BLUE
@@ -84,52 +86,51 @@ $BLUE
                       $RESET~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$BLUE
 $RESET
 EOF
-fi;
+  fi
 }
 
 print_prompt() {
   echo "What do you want to do?"
   PS3="Enter your choice (must be a number): "
   options=("All" "Install package manager" "Clone dotfiles" "Backup old files" "Symlink files" "Install Apps" "Change shell" "Quit")
-  select opt in "${options[@]}"
-  do
+  select opt in "${options[@]}"; do
     case $opt in
-      "All")
-        all
-        break
-        ;;
-      "Install package manager")
-        package_manager
-        break
-        ;;
-      "Clone dotfiles")
-        clone_dotfiles
-        break
-        ;;
-      "Backup old files")
-        take_backup
-        break
-        ;;
-      "Symlink files")
-        symlink_files
-        break
-        ;;
-      "Install Apps")
-        install_apps
-        break
-        ;;
-      "Change shell")
-        get_permission
-        change_shell
-        break
-        ;;
-      "Quit")
-        break
-        ;;
-      *)
-        echo "Invalid option"
-        break
-        ;;
+    "All")
+      all
+      break
+      ;;
+    "Install package manager")
+      package_manager
+      break
+      ;;
+    "Clone dotfiles")
+      clone_dotfiles
+      break
+      ;;
+    "Backup old files")
+      take_backup
+      break
+      ;;
+    "Symlink files")
+      symlink_files
+      break
+      ;;
+    "Install Apps")
+      install_apps
+      break
+      ;;
+    "Change shell")
+      get_permission
+      change_shell
+      break
+      ;;
+    "Quit")
+      break
+      ;;
+    *)
+      echo "Invalid option"
+      break
+      ;;
     esac
   done
 }
@@ -146,7 +147,7 @@ install_homebrew() {
   fi
 }
 
-package_manager(){
+package_manager() {
   if [ "$(uname)" == "Darwin" ]; then
     # This is handled by homebrew....?
     # if type xcode-select >&- && xpath=$( xcode-select --print-path ) && test -d "${xpath}" && test -x
@@ -169,18 +170,18 @@ clone_dotfiles() {
     git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
 
     # Setup repo origin & mirrors
-    cd "$DOTFILES_DIR" && \
-    git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git && \
-    git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git && \
-    git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
+    cd "$DOTFILES_DIR" &&
+      git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
+      git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
+      git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
   else
-    cd "$DOTFILES_DIR" && \
-    git stash -u && \
-    git checkout master && \
-    git reset --hard origin/master && \
-    git submodule update --init --recursive && \
-    git checkout - && \
-    git stash pop
+    cd "$DOTFILES_DIR" &&
+      git stash -u &&
+      git checkout master &&
+      git reset --hard origin/master &&
+      git submodule update --init --recursive &&
+      git checkout - &&
+      git stash pop
   fi
 }
 
@@ -224,7 +225,6 @@ take_backup() {
     ".zprofile"
     ".zshenv"
     ".zshrc"
-    "Library/Preferences/com.googlecode.iterm2.plist"
   )
 
   for file in "${FILES[@]}"; do
@@ -250,17 +250,17 @@ symlink_files() {
 
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Symlinking files/folders..."
-      # I want all the make steps to run even if a cask or a brew errored out
-    cd "$DOTFILES_DIR" && \
-    cp files/.gitconfig.local $HOME/.gitconfig.local && \
-    cp files/.zshrc.local $HOME/.zshrc.local && \
-    make symlink
+    # I want all the make steps to run even if a cask or a brew errored out
+    cd "$DOTFILES_DIR" &&
+      cp files/.gitconfig.local $HOME/.gitconfig.local &&
+      cp files/.zshrc.local $HOME/.zshrc.local &&
+      make symlink
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
 }
 
-install_apps(){
+install_apps() {
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
     if [ "$(uname)" == "Darwin" ]; then
@@ -288,7 +288,7 @@ change_shell() {
       log_info "Using system (outdated) zsh...."
     fi
 
-    echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
+    echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
     chsh -s "$ZSH_PATH" "$(whoami)"
   else
     log_info "No need to switch shell, you are using Homebrew zsh already"
@@ -310,7 +310,7 @@ all() {
     log_success "Done."
     log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages & neovim deps" \
       "Don't forget to generate SSH keys & import gpg keys" \
-    command vim -u NONE $HOME/.{gitconfig,zshrc}.local
+      command vim -u NONE $HOME/.{gitconfig,zshrc}.local
   else
     log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
   fi

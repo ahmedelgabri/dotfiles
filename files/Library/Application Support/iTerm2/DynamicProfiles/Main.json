@@ -1,9 +1,0 @@
-{
-  "Profiles": [
-    {
-      "Name" : "Main",
-      "Dynamic Profile Parent Name": "Base",
-      "Guid" : "B2D08C02-7260-4C2B-8571-6723F5EED51E"
-    }
-  ]
-}

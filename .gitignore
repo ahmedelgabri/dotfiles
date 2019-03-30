@@ -12,8 +12,6 @@ files/.mutt/cache
 files/.mutt/tmp
 files/.mutt/certificates
 files/.mutt/secure-ca.cert
-*.itermcolors
-**/iTerm2/version.txt
 scratch
 files/.newsboat/history.*
 files/.newsboat/cache.*
