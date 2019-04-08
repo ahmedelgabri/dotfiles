@@ -38,9 +38,9 @@ let g:ale_linter_aliases = {
       \}
 
 let g:ale_linters = {
-      \ 'javascript': ['eslint', 'flow'],
-      \ 'javascript.jsx': ['eslint', 'flow'],
-      \ 'typescript': ['eslint', 'tslint', 'tsserver'],
+      \ 'javascript': ['eslint'],
+      \ 'javascript.jsx': ['eslint'],
+      \ 'typescript': ['eslint'],
       \}
 
 " ESLint --fix is so slow to run it as part of the fixers, so I do this using a precommit hook or something else
