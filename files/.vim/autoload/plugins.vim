@@ -27,7 +27,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  if !empty(expand('$VIM_FZF_PATH'))
+  if !empty(expand($VIM_FZF_PATH))
     call minpac#add('https://github.com/junegunn/fzf.vim')
     set runtimepath^=$VIM_FZF_PATH
   endif

@@ -2,11 +2,11 @@ if !exists(':FZF')
   finish
 endif
 
-if !empty(expand('$FZF_CTRL_T_OPTS'))
+if !empty(expand($FZF_CTRL_T_OPTS))
   let g:fzf_files_options = $FZF_CTRL_T_OPTS
 endif
 
-if !empty(expand('$VIM_FZF_LOG'))
+if !empty(expand($VIM_FZF_LOG))
   let g:fzf_commits_log_options = $VIM_FZF_LOG
 endif
 
