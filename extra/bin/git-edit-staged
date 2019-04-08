@@ -1,0 +1,2 @@
+#!/bin/sh
+$EDITOR $(git diff --staged --name-only --diff-filter=ACMR)
