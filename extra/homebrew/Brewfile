@@ -112,6 +112,7 @@ brew "litecli"
 brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip"
 
+cask "alacritty"
 cask "1password-cli"
 cask "alfred"
 cask "appcleaner"
