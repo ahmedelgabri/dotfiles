@@ -212,6 +212,7 @@
   https://vim.works/index.xml "vim"
   https://aweary.dev/rss.xml "Blog" "React" "JavaScript"
   https://blog.jessfraz.com/index.xml "Blog"
+  http://feeds.feedburner.com/HighScalability "Blog" "System Design" "Architecture"
 # }}}
 
 # Browsers {{{
@@ -401,7 +402,6 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCYQweOJvW7EWa3_v7NdW-Gg "YouTube" # Agent
   https://www.youtube.com/feeds/videos.xml?channel_id=UCVoCnQ2-CdhVlK8RqEehSKQ "YouTube" # AgentXPQ
   https://www.youtube.com/feeds/videos.xml?channel_id=UCX-DxbzazqkYcTkFZn5yv7Q "YouTube" # ALSadany - Sarcasm
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCd6MoB9NC6uYN2grvUNT-Zg "YouTube" # Amazon Web Services
   https://www.youtube.com/feeds/videos.xml?channel_id=UC0pEW_GOrMJ23l8QcrGdKSw "YouTube" # Apollo GraphQL
   https://www.youtube.com/feeds/videos.xml?channel_id=UCE_M8A5yxnLfW0KghEeajjw "YouTube" # Apple
   https://www.youtube.com/feeds/videos.xml?channel_id=UCC552Sd-3nyi_tk2BudLUzA "YouTube" # AsapSCIENCE
@@ -508,10 +508,8 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCoxcjq-8xIDTYp3uz647V5A "YouTube" # Numberphile
   https://www.youtube.com/feeds/videos.xml?channel_id=UC3BGlwmI-Vk6PWyMt15dKGw "YouTube" # O'Reilly
   https://www.youtube.com/feeds/videos.xml?channel_id=UCY0I9iFZT4gTlCXBhbkXFxQ "YouTube" # omar adel
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCWLo4r-9_x4GCJCFShNFq0A "YouTube" # ON Sport
   https://www.youtube.com/feeds/videos.xml?channel_id=UCRDEsZDDhVhtHLi0L8-5fow "YouTube" # Paul Lewis
   https://www.youtube.com/feeds/videos.xml?channel_id=UCYf_yv_NqnPfGgpF8u1xglw "YouTube" # PayPal Engineering
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCNyKhK1GI6CUbJ-BDtJ44DA "YouTube" # Presentation Sports
   https://www.youtube.com/feeds/videos.xml?channel_id=UCoyqucxoFXDFnh3khD0rjUg "YouTube" # Pusher
   https://www.youtube.com/feeds/videos.xml?channel_id=UC0nyG8Ep-RhkAFGvK66RMFg "YouTube" # Pyramids TV
   https://www.youtube.com/feeds/videos.xml?channel_id=UCsFrt8oKNYXGspSlX9u6uXw "YouTube" # React Amsterdam
@@ -568,6 +566,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCLq8gNoee7oXM7MvTdjyQvA "YouTube" # ZEIT
   https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
   https://www.youtube.com/feeds/videos.xml?channel_id=UCRVQQJtsbCBF0tL7j0fEGpg "YouTube" # Fhinkel
+  https://www.youtube.com/feeds/videos.xml?channel_id=UC806fwFWpiLQV5y-qifzHnA "YouTube" # William Candillon
 # }}}
 
 # Twitch {{{ NOT official RSS support
