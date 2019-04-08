@@ -6,7 +6,7 @@ endif
 
 let g:coc_node_path=exepath('node')
 
-let s:HAS_FLOATING_WINDOW = exists('##MenuPopupChanged') && exists('*nvim_open_win')
+let s:HAS_FLOATING_WINDOW = (exists('##MenuPopupChanged') && exists('*nvim_open_win')) > 0
 
 let s:LSP_CONFIG = [
       \ ['flow', {
@@ -50,18 +50,13 @@ call coc#config('diagnostic', {
       \ 'warningSign': '●',
       \ 'infoSign': '!',
       \ 'hintSign': '!',
-      \ 'displayByAle': 1
+      \ 'displayByAle': s:HAS_FLOATING_WINDOW ? 0 : 1
       \ })
 
 call coc#config('coc.preferences', {
-      \ 'colorSupport': 1,
-      \ 'hoverTarget': s:HAS_FLOATING_WINDOW > 0 ? 'float' : 'echo',
-      \ 'signatureHelpTarget': s:HAS_FLOATING_WINDOW > 0 ? 'float' : 'echo',
-      \ })
-
-call coc#config('highlight', {
-      \ 'colors': 1,
-      \ 'disableLanguages': ['vim']
+      \ 'colorSupport': 0,
+      \ 'hoverTarget': s:HAS_FLOATING_WINDOW ? 'float' : 'echo',
+      \ 'signatureHelpTarget': s:HAS_FLOATING_WINDOW ? 'float' : 'echo',
       \ })
 
 let s:languageservers = {}
