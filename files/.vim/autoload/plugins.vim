@@ -68,22 +68,24 @@ function! plugins#loadPlugins() abort
         \ 'coc-emoji',
         \ 'coc-tsserver',
         \ 'coc-ultisnips',
-        \ 'coc-highlight',
         \ ]
 
-  function! s:coc_plugins(hooktype, name) abort
+  function! s:coc_cb(hooktype, name) abort
     execute 'packadd ' . a:name
-    call coc#util#install()
+    call coc#util#build()
     call coc#util#install_extension(g:coc_global_extensions)
   endfunction
 
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_plugins')})
+  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_cb')})
   call minpac#add('https://github.com/Shougo/neco-vim')
   call minpac#add('https://github.com/neoclide/coc-neco')
   " }}}
 
   " Syntax {{{
-  " call minpac#add('https://github.com/chrisbra/Colorizer')
+  call minpac#add('https://github.com/RRethy/vim-hexokinase')
+  " let g:Hexokinase_highlighters = ['sign_column']
+  " let g:Hexokinase_virtualText = '██'
+  let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx']
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
   call minpac#add('https://github.com/amadeus/vim-convert-color-to')
