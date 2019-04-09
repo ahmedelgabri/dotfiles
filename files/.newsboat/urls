@@ -389,7 +389,7 @@
 # YouTube {{{
   https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "vim"
   https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
-  https://www.youtube.com/feeds/videos.xml?user=Tsoding "YouTube" "CLI" "Haskell"
+  https://www.youtube.com/feeds/videos.xml?user=destinws2 "YouTube"
   https://www.youtube.com/feeds/videos.xml?user=MrFhinkel "YouTube" "JavaScript" "Programming"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?channel_id=UCO1cgjhGzsSYb1rsB4bFe4Q "YouTube" "JavaScript" "Programming"
@@ -548,7 +548,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCUR1pFG_3XoZn3JNKjulqZg "YouTube" # thoughtbot
   https://www.youtube.com/feeds/videos.xml?channel_id=UCBa659QWEk1AI4Tg--mrJ2A "YouTube" # Tom Scott
   https://www.youtube.com/feeds/videos.xml?channel_id=UCqHktcPJV7C7T3e9Cg4T4iw "YouTube" # Treehouse
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg "YouTube" # Tsoding
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg "YouTube" "CLI" "Haskell" # Tsoding
   https://www.youtube.com/feeds/videos.xml?channel_id=UCwbsWIWfcOL2FiUZ2hKNJHQ "YouTube" # UC Berkeley Courses
   https://www.youtube.com/feeds/videos.xml?channel_id=UCyGa1YEx9ST66rYrJTGIKOw "YouTube" # UEFA.tv
   https://www.youtube.com/feeds/videos.xml?channel_id=UCsTcErHg8oDvUnTzoqsYeNw "YouTube" # Unbox Therapy
@@ -565,7 +565,6 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCcefcZRL2oaA_uBNeo5UOWg "YouTube" # Y Combinator
   https://www.youtube.com/feeds/videos.xml?channel_id=UCLq8gNoee7oXM7MvTdjyQvA "YouTube" # ZEIT
   https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCRVQQJtsbCBF0tL7j0fEGpg "YouTube" # Fhinkel
   https://www.youtube.com/feeds/videos.xml?channel_id=UC806fwFWpiLQV5y-qifzHnA "YouTube" # William Candillon
 # }}}
 
