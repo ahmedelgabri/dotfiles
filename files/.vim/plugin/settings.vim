@@ -51,7 +51,7 @@ if has('syntax')
   " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
   set spelllang=en_us,nl
   set spellsuggest=30
-  let &spellfile=g:DOTFILES_VIM_FOLDER.'/spell/en.utf-8.add'
+  let &spellfile=g:VIM_ROOT.'/spell/en.utf-8.add'
 endif
 
 set complete+=kspell
@@ -191,7 +191,7 @@ if has('nvim')
 endif
 
 if has('mksession')
-  let &viewdir=g:DOTFILES_VIM_FOLDER.'/tmp/view' " override ~/.vim/view default
+  let &viewdir=g:VIM_ROOT.'/tmp/view' " override ~/.vim/view default
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
 endif
 
@@ -199,14 +199,14 @@ if exists('$SUDO_USER')
   set nobackup                        " don't create root-owned files
   set nowritebackup                   " don't create root-owned files
 else
-  let &backupdir=g:DOTFILES_VIM_FOLDER.'/tmp/backup' " keep backup files out of the way
+  let &backupdir=g:VIM_ROOT.'/tmp/backup' " keep backup files out of the way
   set backupdir+=.
 endif
 
 if exists('$SUDO_USER')
   set noswapfile                      " don't create root-owned files
 else
-  let &directory=g:DOTFILES_VIM_FOLDER.'/tmp/swap//' " keep swap files out of the way
+  let &directory=g:VIM_ROOT.'/tmp/swap//' " keep swap files out of the way
   set directory+=.
 endif
 
@@ -220,7 +220,7 @@ if has('persistent_undo')
   if exists('$SUDO_USER')
     set noundofile                    " don't create root-owned files
   else
-    let &undodir=g:DOTFILES_VIM_FOLDER.'/tmp/undo/' " keep undo files out of the way
+    let &undodir=g:VIM_ROOT.'/tmp/undo/' " keep undo files out of the way
     set undodir+=.
     set undofile                      " actually use undo files
   endif
@@ -235,13 +235,13 @@ if exists('$SUDO_USER')               " don't create root-owned files
 else
   if has('nvim')
     " default in nvim: !,'100,<50,s10,h
-    execute "set shada=!,'100,<500,:10000,/10000,s10,h,n".g:DOTFILES_VIM_FOLDER.'/tmp/main.shada'
+    execute "set shada=!,'100,<500,:10000,/10000,s10,h,n".g:VIM_ROOT.'/tmp/main.shada'
     augroup MyNeovimShada
       autocmd!
       autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
     augroup END
   else
-    execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".g:DOTFILES_VIM_FOLDER.'/tmp/viminfo'
+    execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".g:VIM_ROOT.'/tmp/viminfo'
   endif
 endif
 

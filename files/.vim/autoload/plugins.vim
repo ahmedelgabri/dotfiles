@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-let s:VIM_MINPAC_FOLDER = expand(g:DOTFILES_VIM_FOLDER . '/pack/minpac')
+let s:VIM_MINPAC_FOLDER = expand(g:VIM_ROOT . '/pack/minpac')
 let s:CURRENT_FILE = expand('<sfile>')
 
 function! plugins#installMinpac() abort

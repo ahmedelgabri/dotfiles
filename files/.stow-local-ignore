@@ -18,6 +18,8 @@ _darcs
 \.git
 \.gitignore
 
+\.vim
+
 .+.local
 
 
