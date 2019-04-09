@@ -86,7 +86,7 @@ function _switch_account(opt)
       folder_prefix..".Trash",
       folder_prefix..".Spam",
       -- [TODO]: This is awful, fix this!
-      "`tree ~/.mail -d -I \"cur|new|tmp|certs|.notmuch|Inbox|\\[Gmail\\]\" -a -f -i | sed -n -E -e \"s|^"..os.getenv('HOME').."/.mail/?||\" -e \"/^(Work|Personal)(\\/[a-z].+)?$/d\" -e \"/^("..opt.account_name..")/{p;}\" | sed -E -e 's/(.*)/+\"\\1\"/' | tr '\\n' ' '`"
+      "`tree ~/.mail -d -I \"cur|new|tmp|certs|.notmuch|Inbox|\\[Gmail\\]\" -a -f -i | sed -n -E -e \"s|^"..os.getenv('HOME').."/.mail/?||\" -e \"/^("..opt.account_name..")$/d\" -e \"/^("..opt.account_name..")/{p;}\" | sed -E -e 's/(.*)/+\"\\1\"/' | grep -v \"\\/\\.\" | tr '\\n' ' '`"
       )
 
     mutt.enter("macro index SI '<shell-escape>mbsync "..string.lower(opt.account_name).."-download<enter>' 'sync inbox'")
