@@ -1,10 +1,5 @@
 " Plugin mappings are inside plugin/after/<plugin name>.vim files
 
-"
-" leader is space, only works with double quotes around it?!
-let g:mapleader="\<Space>"
-let g:maplocalleader=','
-
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv

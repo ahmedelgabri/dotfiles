@@ -47,6 +47,10 @@ if has('nvim')
 endif
 " }}}
 
+" leader is space, only works with double quotes around it?!
+let g:mapleader="\<Space>"
+let g:maplocalleader=','
+
 call plugins#init()
 call functions#setupCompletion()
 
