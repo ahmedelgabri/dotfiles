@@ -47,7 +47,7 @@ fco() {
     sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
   target=$(
     (echo "$tags"; echo "$branches") |
-    fzf-tmux -- --reverse --no-hscroll --ansi +m -d "\t" -n 2) || return
+    fzf --reverse --no-hscroll --ansi +m -d "\t" -n 2) || return
   git checkout $(echo "$target" | awk '{print $2}')
 }
 
@@ -73,7 +73,7 @@ fgl() (
 #   - Exit if there's no match (--exit-0)
 fe() {
   local files
-  files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  files=($(fzf --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
