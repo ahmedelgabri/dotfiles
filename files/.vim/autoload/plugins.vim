@@ -54,6 +54,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/wincent/loupe')
   call minpac#add('https://github.com/wincent/terminus')
   call minpac#add('https://github.com/tommcdo/vim-lion')
+  call minpac#add('https://github.com/liuchengxu/vista.vim')
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   " }}}
 
@@ -122,6 +123,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
   call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
   call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
+  call minpac#add('https://github.com/NLKNguyen/papercolor-theme', { 'type': 'opt' })
   " }}}
 endfunction
 
