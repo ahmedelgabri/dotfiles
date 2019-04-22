@@ -315,3 +315,22 @@ endfunction
 function! functions#has_floating_window() abort
   return (exists('##MenuPopupChanged') && exists('*nvim_open_win')) > 0
 endfunction
+
+function! functions#floating_fzf() abort
+  let l:buf = nvim_create_buf(v:false, v:true)
+  call setbufvar(buf, '&signcolumn', 'no')
+
+  let l:height = float2nr(&lines * 0.75)
+  let l:width = float2nr(&columns - (&columns * 2 / 40))
+  let l:col = float2nr((&columns - width) / 2)
+
+  let l:opts = {
+        \ 'relative': 'editor',
+        \ 'row': 0,
+        \ 'col': l:col,
+        \ 'width': l:width,
+        \ 'height': l:height
+        \ }
+
+  call nvim_open_win(l:buf, v:true, l:opts)
+endfunction

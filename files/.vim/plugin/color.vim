@@ -12,6 +12,7 @@ augroup MyCustomColors
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
         \| hi! link VertSplit LineNr
+        \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
         \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
         \| execute 'hi! User5 ctermfg=red guifg=red'
         \| execute 'hi! User7 ctermfg=cyan guifg=cyan'
