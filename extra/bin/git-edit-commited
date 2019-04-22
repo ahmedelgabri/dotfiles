@@ -1,2 +1,0 @@
-#!/bin/sh
-$EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)

@@ -1,5 +1,0 @@
-#!/bin/sh
-# Usage: git-edit-status
-# Edit files from the current status
-$EDITOR $(git status --porcelain | awk '{print $2}')
-
