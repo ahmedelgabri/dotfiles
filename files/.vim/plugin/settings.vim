@@ -144,8 +144,8 @@ set hidden
 " Make tilde command behave like an operator.
 set tildeop
 
-" Make sure diffs are always opened in vertical splits
-set diffopt+=vertical
+" Make sure diffs are always opened in vertical splits, also match my git settings
+set diffopt+=vertical,algorithm:histogram,indent-heuristic
 
 set shortmess+=A                      " ignore annoying swapfile messages
 set shortmess+=I                      " no splash screen
