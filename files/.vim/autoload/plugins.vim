@@ -64,11 +64,12 @@ function! plugins#loadPlugins() abort
         \ 'coc-rls',
         \ 'coc-html',
         \ 'coc-json',
-        \ 'coc-pyls',
+        \ 'coc-python',
         \ 'coc-yaml',
         \ 'coc-emoji',
         \ 'coc-tsserver',
         \ 'coc-ultisnips',
+        \ 'coc-phpls'
         \ ]
 
   function! s:coc_cb(hooktype, name) abort
@@ -77,9 +78,9 @@ function! plugins#loadPlugins() abort
     call coc#util#install_extension(g:coc_global_extensions)
   endfunction
 
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_cb')})
   call minpac#add('https://github.com/Shougo/neco-vim')
   call minpac#add('https://github.com/neoclide/coc-neco')
+  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_cb')})
   " }}}
 
   " Syntax {{{

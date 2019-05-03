@@ -1,15 +1,15 @@
 #!/bin/bash
 
 PACKAGES=(
-"setuptools"
-"pip"
-"vim-vint"
-"websocket-client"
-"'python-language-server[all]'"
-"pipenv"
-"vobject" # for mutt & dump-ical.py script
-"black"
-"pynvim"
+  "setuptools"
+  "pip"
+  "vim-vint"
+  "websocket-client"
+  "pipenv"
+  "vobject" # for mutt & dump-ical.py script
+  "black"
+  "pynvim"
+  "pylint"
 )
 
 FLAGS=''

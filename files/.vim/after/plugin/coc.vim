@@ -57,6 +57,12 @@ call coc#config('coc.preferences', {
       \ 'signatureHelpTarget': functions#has_floating_window() ? 'float' : 'echo',
       \ })
 
+call coc#config('python', {
+      \ 'linting': {
+      \   'pylintUseMinimalCheckers': 0
+      \   }
+      \ })
+
 let s:languageservers = {}
 for [lsp, config] in s:LSP_CONFIG
   " COC chokes on emptykcommands https://github.com/neoclide/coc.nvim/issues/418#issuecomment-462106680"
