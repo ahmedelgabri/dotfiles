@@ -213,6 +213,7 @@
   https://aweary.dev/rss.xml "Blog" "React" "JavaScript"
   https://blog.jessfraz.com/index.xml "Blog"
   http://feeds.feedburner.com/HighScalability "Blog" "System Design" "Architecture"
+  https://rjzaworski.com/feed "Blog" "JavaScript" "Programming"
 # }}}
 
 # Browsers {{{
@@ -391,6 +392,7 @@
   https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?user=destinws2 "YouTube"
   https://www.youtube.com/feeds/videos.xml?user=MrFhinkel "YouTube" "JavaScript" "Programming"
+  https://www.youtube.com/feeds/videos.xml?user=kaihendry "YouTube" "Linux" "Programming" "Tooling"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?channel_id=UCO1cgjhGzsSYb1rsB4bFe4Q "YouTube" "JavaScript" "Programming"
   https://www.youtube.com/feeds/videos.xml?channel_id=UC1UxEQuBvfLJgWR5tk_XIXA "YouTube" "Clojure" "Programming"
@@ -567,6 +569,8 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
   https://www.youtube.com/feeds/videos.xml?channel_id=UC806fwFWpiLQV5y-qifzHnA "YouTube" # William Candillon
   https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ "YouTube" # Marques Brownlee
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg "YouTube" "CLI" "Terminal" "Unix" # DistroTube
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCsnGwSIHyoYN0kiINAGUKxg "YouTube" "CLI" "Terminal" "Unix" # Wolfgang's Channel
 # }}}
 
 # Twitch {{{ NOT official RSS support
