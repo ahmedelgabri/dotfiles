@@ -1,7 +1,8 @@
 # Paths
 set alias_file       = "$HOME/.mutt/config/aliases.private"
 # set display_filter   = "$HOME/.mutt/scripts/add-address.sh"
-set header_cache     = "$HOME/.mutt/cache/headers/"
+# Headers cache is set automatically per account in init.lua
+# set header_cache     = "$HOME/.mutt/cache/headers/"
 set header_cache_backend=lmdb
 set read_inc=1000
 set message_cachedir = "$HOME/.mutt/cache/message/"
