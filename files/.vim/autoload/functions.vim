@@ -94,9 +94,9 @@ function! functions#mkview() abort
   endif
 endfunction
 
-let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit']
+let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff']
 function! functions#should_quit_on_q() abort
-  return index(g:GabriQuitOnQ, &filetype) >= 0
+  return &diff || index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
 
 let g:GabriNoColorcolumn = [
@@ -119,6 +119,7 @@ let g:GabriNoColorcolumn = [
       \]
 function! functions#should_turn_off_colorcolumn() abort
   return &textwidth == 0
+        \|| &diff
         \|| index(g:GabriNoColorcolumn, &filetype) >= 0
         \|| &buftype ==# 'terminal' || &readonly
 endfunction
@@ -333,4 +334,14 @@ function! functions#floating_fzf() abort
         \ }
 
   call nvim_open_win(l:buf, v:true, l:opts)
+endfunction
+
+function! functions#customize_diff()
+  if &diff
+    syntax off
+    set number
+  else
+    syntax on
+    set number&
+  endif
 endfunction

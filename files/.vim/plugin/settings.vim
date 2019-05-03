@@ -146,6 +146,7 @@ set tildeop
 
 " Make sure diffs are always opened in vertical splits, also match my git settings
 set diffopt+=vertical,algorithm:histogram,indent-heuristic
+call functions#customize_diff()
 
 set shortmess+=A                      " ignore annoying swapfile messages
 set shortmess+=I                      " no splash screen
