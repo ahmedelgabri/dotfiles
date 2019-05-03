@@ -18,14 +18,7 @@ scriptencoding utf-8
                       " ||
                      " |""|
                      " '=='
-
-" This is needed to keep all [n]vim files (backups, swaps, packages, etc...) in the same place
-let g:VIM_ROOT = !empty(glob('$VIM_ROOT')) ? expand('$VIM_ROOT') : expand('~/.vim')
-
-" :h nvim-from-vim
-execute 'set runtimepath^=' . g:VIM_ROOT
-execute 'set runtimepath+=' . g:VIM_ROOT . '/after'
-let &packpath = &runtimepath
+let $VIMHOME = expand($HOME.'/.vim')
 
 " Skip vim plugins {{{
 let g:loaded_rrhelper = 1
