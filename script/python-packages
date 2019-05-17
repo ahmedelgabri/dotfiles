@@ -5,7 +5,7 @@ PACKAGES=(
   "pip"
   "vim-vint"
   "websocket-client"
-  "pipenv"
+  "poetry"
   "vobject" # for mutt & dump-ical.py script
   "black"
   "pynvim"
