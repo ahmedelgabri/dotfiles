@@ -1,6 +1,6 @@
-# vim:ft=config foldmethod=marker:
+# vim:ft=config foldmethod=marker tw=0 spell:
 
-# Querys {{{
+# Queries {{{
   "query:→ Unread Articles:unread = \"yes\""
   "query:→ Bookmarked Articles:flags # \"s\"" "Starred"
   "query:→ Podcasts:tags # \"Podcasts\"" "Podcasts"
@@ -167,10 +167,10 @@
   https://blog.safia.rocks/rss "Blog" "Programming" "JavaScript"
   http://journal.stuffwithstuff.com/rss.xml "Blog" "Programming"
   https://blog.janestreet.com/feed.xml "Blog" "OCaml" "Programming"
-  https://lethain.com/feeds/ "Blog" "Software" "Infrastrcuture"
+  https://lethain.com/feeds/ "Blog" "Software" "Infrastructure"
   https://drawings.jvns.ca/index.xml "Programming" "Illustrations" "Cartoons"
-  https://bluz71.github.io/feed.xml "vim" "Zsh"
-  https://jacky.wtf/feeds/articles.xml "vim" "Programming"
+  https://bluz71.github.io/feed.xml "Vim" "Zsh"
+  https://jacky.wtf/feeds/articles.xml "Vim" "Programming"
   http://feeds.haacked.com/haacked "Blog" "Leadership"
   https://infrequently.org/feed/ "Blog" "Web"
   http://tonsky.me/blog/atom.xml "Blog" "Programming"
@@ -181,7 +181,7 @@
   https://twobithistory.org/feed.xml "Blog" "Programming" "Computer Science" "History"
   https://increment.com/feed.xml "Programming" "Magazine"
   http://www.codingthearchitecture.com/rss.xml "Blog" "Software Architecture"
-  https://feeds2.feedburner.com/stevelosh "Blog" "Programming" "unix"
+  https://feeds2.feedburner.com/stevelosh "Blog" "Programming" "Unix"
   https://feeds.feedburner.com/TroyHunt "Blog" "Security"
   https://usesthis.com/feed.atom "Blog" "Gadgets" "Tools"
   http://lambda-the-ultimate.org/rss.xml " Blog" "FP" "Programming"
@@ -209,11 +209,12 @@
   https://blog.yoshuawuyts.com/rss.xml "Blog" "Rust" "Programming"
   https://abstract.properties/rss.xml "Blog" "Programming"
   https://writing.kemitchell.com/feed.xml "Blog" "Open Source" "Legal"
-  https://vim.works/index.xml "vim"
+  https://vim.works/index.xml "Vim"
   https://aweary.dev/rss.xml "Blog" "React" "JavaScript"
   https://blog.jessfraz.com/index.xml "Blog"
   http://feeds.feedburner.com/HighScalability "Blog" "System Design" "Architecture"
   https://rjzaworski.com/feed "Blog" "JavaScript" "Programming"
+  https://mxb.dev/feed.xml "Blog" "CSS"
 # }}}
 
 # Browsers {{{
@@ -255,7 +256,6 @@
   http://devblog.coolblue.nl/feed/ "Engineering"
   http://engineering.indeed.com/feed/ "Engineering"
   http://engineering.khanacademy.org/rss.xml "Engineering"
-  http://engineering.tumblr.com/rss "Engineering"
   http://engineroom.ft.com/feed/ "Engineering"
   http://feeds.cognitect.com/blog/feed.rss "Engineering"
   http://feeds.feedburner.com/corner-squareup-com "Engineering"
@@ -272,14 +272,15 @@
   https://deliveroo.engineering/feed.xml "Engineering"
   https://artsy.github.io/feed "Engineering"
   https://blogs.msdn.microsoft.com/oldnewthing/feed "Engineering"
+  https://labs.spotify.com/feed/ "Engineering"
 # }}}
 
 # ME {{{
   https://gabri.me/feed.xml "ME"
 # }}}
 
-# Friends {{{
-  http://sakr.me/rss "Friends"
+# Misc. {{{
+  http://stratechery.com/feed/ "Tech" "News" "Analysis"
 # }}}
 
 # Github {{{
@@ -376,7 +377,7 @@
 # xmas {{{
   http://feeds.feedburner.com/24ways?format=xml "xmas"
   https://calendar.perfplanet.com/feed/ "xmas"
-  https://vimways.org/index.xml "xmas" "vim"
+  https://vimways.org/index.xml "xmas" "Vim"
 # }}}
 
 # Football {{{
@@ -388,7 +389,7 @@
 # }}}
 
 # YouTube {{{
-  https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "vim"
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "Vim"
   https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
   https://www.youtube.com/feeds/videos.xml?user=destinws2 "YouTube"
   https://www.youtube.com/feeds/videos.xml?user=MrFhinkel "YouTube" "JavaScript" "Programming"
@@ -569,8 +570,10 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UC5ttNr1jtNU0MgANZcYElEw "YouTube" # Christina
   https://www.youtube.com/feeds/videos.xml?channel_id=UC806fwFWpiLQV5y-qifzHnA "YouTube" # William Candillon
   https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ "YouTube" # Marques Brownlee
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCtFP_Hn5nIbZY4Xi47qfHhw "YouTube" # ReaconConf
   https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg "YouTube" "CLI" "Terminal" "Unix" # DistroTube
   https://www.youtube.com/feeds/videos.xml?channel_id=UCsnGwSIHyoYN0kiINAGUKxg "YouTube" "CLI" "Terminal" "Unix" # Wolfgang's Channel
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCRPMAqdtSgd0Ipeef7iFsKw "YouTube" "Algorithms" "Data Structure" "System Design" # Gaurav Sen
 # }}}
 
 # Twitch {{{ NOT official RSS support
