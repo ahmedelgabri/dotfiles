@@ -12,7 +12,6 @@ augroup MyCustomColors
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
         \| hi! link VertSplit LineNr
-        \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
         \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
         \| execute 'hi! User5 ctermfg=red guifg=red'
         \| execute 'hi! User7 ctermfg=cyan guifg=cyan'
@@ -21,6 +20,7 @@ augroup MyCustomColors
         \| execute "hi! ALEInfoLine guifg=".(&background=='light'?'#808000':'#ffff00')." guibg=".(&background=='light'?'#ffff00':'#555500')
         \| execute "hi! ALEWarningLine guifg=".(&background=='light'?'#808000':'#ffff00')." guibg=".(&background=='light'?'#ffff00':'#555500')
         \| execute "hi! ALEErrorLine guifg=".(&background=='light'?'#ff0000':'#ff0000')." guibg=".(&background=='light'?'#ffcccc':'#550000')
+        " \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
 
   autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('VisualNOS'),'bg', 'gui'), synIDattr(hlID('VisualNOS'),'bg', 'cterm'))
         \| hi! Comment cterm=NONE gui=NONE ctermfg=236 guifg=#555555

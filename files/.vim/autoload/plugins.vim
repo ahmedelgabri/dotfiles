@@ -110,6 +110,7 @@ function! plugins#loadPlugins() abort
   call minpac#add('https://github.com/shumphrey/fugitive-gitlab.vim')
   call minpac#add('https://github.com/tommcdo/vim-fubitive')
   call minpac#add('https://github.com/AGhost-7/critiq.vim')
+  call minpac#add('https://github.com/rhysd/git-messenger.vim')
   " }}}
 
   " Writing {{{
