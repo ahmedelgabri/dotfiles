@@ -1,9 +1,11 @@
 " Plugin mappings are inside plugin/after/<plugin name>.vim files
 
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
-" Keep search matches in the middle of the window.
-nnoremap n nzzzv
-nnoremap N Nzzzv
+" The `zzzv` keeps search matches in the middle of the window.
+" and make sure n will go forward when searching with ? or #
+" https://vi.stackexchange.com/a/2366/4600
+nnoremap <expr> n (v:searchforward ? 'n' : 'N') . 'zzzv'
+nnoremap <expr> N (v:searchforward ? 'N' : 'n') . 'zzzv'
 
 " Movement
 "-----------------
