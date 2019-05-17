@@ -38,7 +38,7 @@
 ##-------- macros {{{
 ## Note: macro prefix key ( default: , )
 ## add video or audio to play queue using mpv (requires: mpv, youtube-dl)
-macro p set browser "mpv --ontop --no-border --force-window --speed=1.5 --autofit=500x280 --geometry=-15-10 %u"; open-in-browser ; set browser "$BROWSER %u"
+macro p set browser "mpv --ontop --speed=1.5 --geometry=35%+100%+100% %u"; open-in-browser ; set browser "$BROWSER %u"
 
 # Play podcast
 # macro e open ; enqueue ; set browser "~/.newsboat/play_podcast.sh" ; open-in-browser ; set browser "$BROWSER %u" ; quit

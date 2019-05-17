@@ -65,10 +65,10 @@ image/gif; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
 
 # Youtube videos are assigned a custom mime-type, which can be streamed with
 # vlc or youtube-dl.
-video/x-youtube; mpv --ytdl-format=best --no-resume-playback '%s'; test=test -n "$DISPLAY"
+video/x-youtube; mpv --geometry=35%+100%+100% --no-resume-playback '%s'; test=test -n "$DISPLAY"
 
 # Mpv is a simple and effective video streamer
-video/*; mpv '%s' --autofit --no-resume-playback 640x480 --loop=inf; test=test -n "$DISPLAY"
+video/*; mpv '%s' --no-resume-playback --geometry=35%+100%+100% --loop=inf; test=test -n "$DISPLAY"
 
 ###############################################################################
 # Commands below this point will attempt to display media directly in the
