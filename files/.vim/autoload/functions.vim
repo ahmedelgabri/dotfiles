@@ -314,7 +314,8 @@ function! functions#openMarkdownPreview() abort
 endfunction
 
 function! functions#has_floating_window() abort
-  return (exists('##MenuPopupChanged') && exists('*nvim_open_win')) > 0
+  " MenuPopupChanged was renamed to CompleteChanged -> https://github.com/neovim/neovim/pull/9819
+  return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win')
 endfunction
 
 function! functions#floating_fzf() abort
