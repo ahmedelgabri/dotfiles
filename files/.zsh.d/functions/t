@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 # For todoist cli
 
 # Exit if yarn is not installed
@@ -18,3 +19,5 @@ function t() {
 }
 
 # compdef t=todoist
+
+t "$@"

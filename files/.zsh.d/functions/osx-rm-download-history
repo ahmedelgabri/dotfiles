@@ -1,3 +1,5 @@
+# vim:ft=zsh:
+
 function osx-rm-download-history {
   local db
   for db in ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV*; do
@@ -6,3 +8,5 @@ function osx-rm-download-history {
     fi
   done
 }
+
+osx-rm-download-history "$@"

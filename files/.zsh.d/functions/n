@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 # Shadow `n` https://github.com/tj/n for ease of use in repos with `.nvmrc` or `.node-version` files
 
 unalias n 2>/dev/null
@@ -21,3 +22,5 @@ function n() {
 }
 
 # compdef n=n
+
+n "$@"

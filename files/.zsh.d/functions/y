@@ -1,3 +1,4 @@
+# vim:ft=zsh:
 # I'm lazy to type `yarn`, `yarn run <script>`, etc...
 
 # Exit if yarn is not installed
@@ -15,3 +16,5 @@ function y() {
 
 # Ensure y is completed like yarn
 compdef y=yarn
+
+y "$@"

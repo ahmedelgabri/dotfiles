@@ -47,9 +47,6 @@ autoload -Uz _zplugin
 # }}}
 
 # Local plugins/completions/etc... {{{
-  zplugin ice lucid atinit'local i; for i in *.zsh; do source $i; done'
-  zplugin light %HOME/.zsh.d/functions
-
   zplugin light %HOME/.zsh.d/aliases
 # }}}
 

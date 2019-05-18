@@ -11,13 +11,17 @@ typeset -gU cdpath fpath manpath mailpath path
 #  [-1]: Select the last item in the array
 #  -   : follow the symbol links
 #  /   : ignore files
+#  t   : tail of the path
 ##############################################################
 
 fpath=(
-  ${ZDOTDIR:-${HOME}}/completions(N-/)
+  ${ZDOTDIR:-${HOME}/.dotfiles/files/.zsh.d}/functions(N-/)
+  ${ZDOTDIR:-${HOME}/.dotfiles/files/.zsh.d}/completions(N-/)
   /usr/local/share/zsh/site-functions(N-/)
   $fpath
 )
+
+autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.zsh.d}/functions/**/*(N:t)
 
 manpath=(
   ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman(N-/)

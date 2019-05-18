@@ -1,0 +1,7 @@
+# vim:ft=zsh:
+# Changes to a directory and lists its contents.
+function cdls {
+  builtin cd "$argv[-1]" && ls "${(@)argv[1,-2]}"
+}
+
+cdls "$@"
