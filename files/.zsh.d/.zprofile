@@ -20,7 +20,7 @@ fpath=(
 )
 
 manpath=(
-  ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnuman(N-/)
+  ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman(N-/)
   $manpath
 )
 
