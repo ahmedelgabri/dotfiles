@@ -8,6 +8,8 @@ if [[ ${TERM} == 'dumb' ]]; then
   return 1
 fi
 
+bindkey -v
+
 # Use human-friendly identifiers.
 zmodload -F zsh/terminfo +b:echoti +p:terminfo
 typeset -gA key_info
@@ -106,3 +108,7 @@ zle -N zle-line-init
 zle -N zle-line-finish
 
 export KEYTIMEOUT=1
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd '!' edit-command-line
