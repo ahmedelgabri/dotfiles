@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Usage: gitio URL [CODE]
 #
@@ -19,4 +19,4 @@ if expr "${OUT}" : "[0-9]\+" >/dev/null; then
 fi
 
 echo "${OUT}"
-which pbcopy >/dev/null && echo "${OUT}" | pbcopy "${OUT}"
+command -v pbcopy >/dev/null && echo "${OUT}" | pbcopy "${OUT}"

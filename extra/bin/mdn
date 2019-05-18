@@ -2,7 +2,7 @@
 
 if [ $# -eq 0 ]; then
   echo "No arguments supplied: ex: mdn css, mdn \"css animations\""
-  exit 1;
+  exit 1
 else
   open "http://mdn.io/$@"
 fi

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # ssh & attach to a TMUX session or create a new one
 
-ssh $@ -t "tmux attach || tmux new";
+ssh "$@" -t "tmux attach || tmux new"

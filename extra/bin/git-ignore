@@ -1,10 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Usage: $ git ignore <file/directory>
 
-if [[ ! -f ".gitignore" ]]; then
+if [ ! -f ".gitignore" ]; then
   touch .gitignore
 else
-  echo $1 >> .gitignore
+  echo "$1" >>.gitignore
 fi
-
-

@@ -1,17 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env sh
 set -e
 
 SESSION='_shared'
 
-open_or_log () {
-  if type "$1" > /dev/null; then
+open_or_log() {
+  if type "$1" >/dev/null; then
     tmux send-keys "$1 $2" C-m
   else
     tmux send-keys "echo \"You need to install $1...\"" C-m
   fi
 }
 
-create_session () {
+create_session() {
   tmux new-session -d -s "$SESSION" -n 'mail'
   open_or_log neomutt
 
@@ -26,7 +26,7 @@ create_session () {
   tmux set-option allow-rename off
   open_or_log weechat
 
-  local logpath="$PROJECTS"/knowledge
+  logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then
     tmux new-window -n 'log' -c "$logpath"
     tmux send-keys "$EDITOR" C-m

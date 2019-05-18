@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Create and copy SSH key using Ed25519 to your clipboard
 #   author: @ahmedelgabri
 #   version: 2.0.0
@@ -6,7 +6,7 @@
 # $2 = Email ID used
 
 ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"${2:-id_rsa}" -C "$1"
-cat ~/.ssh/"${2:-id_rsa}".pub | pbcopy
-echo -e "------------------------------------------------------------\n"
-echo -e "$fg[green]($1.pub) has been created & copied to your clipboard $reset_color\n"
-echo -e "------------------------------------------------------------\n"
+pbcopy <"$HOME"/.ssh/"${2:-id_rsa}".pub
+echo "------------------------------------------------------------\n"
+echo "($1.pub) has been created & copied to your clipboard \n"
+echo "------------------------------------------------------------\n"

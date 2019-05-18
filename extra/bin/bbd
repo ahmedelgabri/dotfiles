@@ -6,8 +6,9 @@
 #        bbd "Sep"
 
 main() {
-  local date=$1
+  date=$1
+
   git reflog --date=local | grep "$date .* checkout: moving from .* to" | grep -o "[a-zA-Z0-9\-]*$" | sort | uniq
 }
 
-main
+main "$@"

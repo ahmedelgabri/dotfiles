@@ -1,27 +1,30 @@
 #!/bin/bash
-command -v hub >/dev/null 2>&1 || { echo >&2 "This command needs hub installed and in PATH. http://defunkt.io/hub"; exit 1; }
+command -v hub >/dev/null 2>&1 || {
+  echo >&2 "This command needs hub installed and in PATH. http://defunkt.io/hub"
+  exit 1
+}
 
 # [TODO] make login resolution a function call
 if [ -z "$GITHUB_USER" ]; then
-  echo >&2 "Please define GITHUB_USER with your GitHub user to let me know who you are."; exit 1;
+  echo >&2 "Please define GITHUB_USER with your GitHub user to let me know who you are."
+  exit 1
 fi
 
-
-function gh_browse {
+function gh_browse() {
   open "https://github.com/$1"
 }
 
-function repo_browse {
+function repo_browse() {
   if [ -d .git ]; then
-    hub browse $1
+    hub browse "$1"
   else
     echo "Must be in a git repository to run that command."
     exit 1
   fi
 }
 
-function usage {
-read -d '' usage <<"BLOCK"
+function usage() {
+  read -r -d '' usage <<"BLOCK"
 USAGE:   git-go [OPTION] [COMMAND]
 
 SYNOPSIS:
@@ -51,9 +54,8 @@ COMMANDS:
         - Everything else forwards to `hub browse`
 BLOCK
 
-echo "$usage"
+  echo "$usage"
 }
-
 
 [ $# -eq 0 ] && {
   usage
@@ -62,75 +64,78 @@ echo "$usage"
 
 while getopts ":g" opt; do
   case $opt in
-    g)
-      global_browse=1
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      ;;
+  g)
+    global_browse=1
+    ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    ;;
   esac
 done
 
 # Clear all options and reset the command line
-shift $(( OPTIND -1 ))
+shift $((OPTIND - 1))
 
 case "$1" in
-  search )
-    gh_browse "search?q=$2"
+search)
+  gh_browse "search?q=$2"
+  ;;
+@*)
+  target=$(echo "$1" | sed 's/@//g')
+  gh_browse "$target"
+  ;;
+explore)
+  gh_browse 'explore'
+  ;;
+my*)
+  case $2 in
+  dashboard)
+    gh_browse "dashboard"
     ;;
-  @* )
-    target=$(echo "$1" | sed 's/@//g')
-    gh_browse $target
+  issues)
+    if [[ -z $global_browse ]]; then
+      case $3 in
+      m*)
+        filter="mentioned"
+        ;;
+      c*)
+        filter="created_by"
+        ;;
+      *)
+        filter="assigned"
+        ;;
+      esac
+      repo_browse "-- issues/$filter/$GITHUB_USER"
+    else
+      gh_browse "dashboard/issues"
+    fi
     ;;
-  explore )
-    gh_browse 'explore'
+  notifications)
+    if [[ -z $global_browse ]]; then
+      repo_browse "-- notifications/$GITHUB_USER"
+    else
+      gh_browse "dashboard/notifications"
+    fi
     ;;
-  my*)
-    case $2 in
-      dashboard )
-        gh_browse "dashboard"
-        ;;
-      issues )
-        if [[ -z $global_browse ]]; then
-          case $3 in
-            m* )
-              filter="mentioned";;
-            c* )
-              filter="created_by";;
-            * )
-              filter="assigned";;
-          esac
-          repo_browse "-- issues/$filter/$GITHUB_USER"
-        else
-          gh_browse "dashboard/issues"
-        fi
-        ;;
-      notifications )
-        if [[ -z $global_browse ]]; then
-          repo_browse "-- notifications/$GITHUB_USER"
-        else
-          gh_browse "dashboard/notifications"
-        fi
-        ;;
-      profile )
-        gh_browse "$GITHUB_USER"
-        ;;
-      pulls )
-        if [[ -z $global_browse ]]; then
-          repo_browse "-- pulls/$GITHUB_USER"
-        else
-          gh_browse "dashboard/pulls"
-        fi
-        ;;
-      settings )
-        gh_browse "settings/profile"
-        ;;
-      stars )
-        gh_browse "stars"
-        ;;
-    esac
+  profile)
+    gh_browse "$GITHUB_USER"
     ;;
-  *)
-    repo_browse "-- $1"
+  pulls)
+    if [[ -z $global_browse ]]; then
+      repo_browse "-- pulls/$GITHUB_USER"
+    else
+      gh_browse "dashboard/pulls"
+    fi
     ;;
+  settings)
+    gh_browse "settings/profile"
+    ;;
+  stars)
+    gh_browse "stars"
+    ;;
+  esac
+  ;;
+*)
+  repo_browse "-- $1"
+  ;;
 esac
