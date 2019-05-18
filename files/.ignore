@@ -13,7 +13,6 @@ tmp
 cache
 .cache
 pack
-.config/nvim/
 
 *.pyc
 *.spl
