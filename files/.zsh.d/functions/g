@@ -12,13 +12,6 @@
 
 unalias g 2>/dev/null
 
-if [[ -f `command -v hub` ]] ; then
-  alias git=hub
-  compdef g=hub
-else
-  compdef g=git
-fi
-
 function time_since_last_commit() {
   local ref=$(git symbolic-ref HEAD 2> /dev/null) || return
   local LAST_COMMIT=$(git log --color=always -n 1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN%Creset" --date=auto:human 2>/dev/null)
@@ -27,12 +20,16 @@ function time_since_last_commit() {
 }
 
 function g() {
-  if [[ $# > 0 ]]; then
-    git "$@"
-  else
+  local __CMD=("${(@Q)${(z)aliases[git]:-git}}")
+
+  if [[ $# -eq 0 ]]; then
     echo "$(time_since_last_commit)\n"
-    git status --short --branch
+    __CMD+=(status --short --branch)
+  else
+    __CMD+=($@)
   fi
+
+  "${__CMD[@]}"
 }
 
 g "$@"

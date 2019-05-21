@@ -1,15 +1,18 @@
 # vim:ft=zsh:
 # Shadow `n` https://github.com/tj/n for ease of use in repos with `.nvmrc` or `.node-version` files
 
+(( $+commands[n] )) || return 0
+
 unalias n 2>/dev/null
 
 function n() {
-  if [[ $# -eq 0 ]]; then
-    __CMD=("${HOMEBREW_PREFIX}/bin/n")
-    __VERSION=""
+  # [todo] figure out how to get this dynamically
+  local __CMD=("${HOMEBREW_PREFIX}/bin/n")
+  local __VERSION=""
 
-    [[ -f ".nvmrc" ]] && __VERSION=$(command cat .nvmrc)
-    [[ -f ".node-version" ]] && __VERSION=$(command cat .node-version)
+  if [[ $# -eq 0 ]]; then
+    [[ -f "$PWD/.nvmrc" ]] && __VERSION=$(command cat .nvmrc)
+    [[ -f "$PWD/.node-version" ]] && __VERSION=$(command cat .node-version)
 
     if [[ ! -z "$__VERSION" && ! -d "${N_PREFIX}/n/versions/node/${__VERSION}" ]]; then
       __CMD+=(--download $__VERSION)
@@ -20,7 +23,5 @@ function n() {
 
   "${__CMD[@]}"
 }
-
-# compdef n=n
 
 n "$@"

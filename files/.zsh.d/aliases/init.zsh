@@ -60,4 +60,5 @@ alias r="ranger" # overrides built-in r command
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
 (( $+commands[sbcl] )) && (( $+commands[rlwrap] )) && alias sbcl="rlwrap sbcl"
+(( $+commands[hub] )) && alias git="hub"
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'
