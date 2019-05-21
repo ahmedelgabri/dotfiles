@@ -12,14 +12,14 @@ augroup MyCustomColors
         \| hi! link Conceal NonText
         \| hi! clear SignColumn
         \| hi! link VertSplit LineNr
+        \| hi! User5 ctermfg=red guifg=red
+        \| hi! User7 ctermfg=cyan guifg=cyan
         \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
-        \| execute 'hi! User5 ctermfg=red guifg=red'
-        \| execute 'hi! User7 ctermfg=cyan guifg=cyan'
         \| execute printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
         \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('NonText'),'fg', 'gui'), synIDattr(hlID('NonText'),'fg', 'cterm'))
-        \| execute "hi! ALEInfoLine guifg=".(&background=='light'?'#808000':'#ffff00')." guibg=".(&background=='light'?'#ffff00':'#555500')
-        \| execute "hi! ALEWarningLine guifg=".(&background=='light'?'#808000':'#ffff00')." guibg=".(&background=='light'?'#ffff00':'#555500')
-        \| execute "hi! ALEErrorLine guifg=".(&background=='light'?'#ff0000':'#ff0000')." guibg=".(&background=='light'?'#ffcccc':'#550000')
+        \| execute printf("hi! ALEInfoLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
+        \| execute printf("hi! ALEWarningLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
+        \| execute printf("hi! ALEErrorLine guifg=%s guibg=%s", '#ff0000', &background=='light'?'#ffcccc':'#550000')
         " \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
 
   autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('VisualNOS'),'bg', 'gui'), synIDattr(hlID('VisualNOS'),'bg', 'cterm'))
@@ -40,17 +40,5 @@ augroup MyCustomColors
 
 augroup END
 
-let s:hour = strftime('%H')
-let s:month = strftime('%m')
-let s:summerNight = (s:month >= 4 && s:month < 10) && (s:hour <= 21 && s:hour > 7)
-let s:winterNight = s:hour <= 18 && s:hour > 8
 set background=dark
-
-try
-  if s:summerNight || s:winterNight
-    colorscheme plain
-  else
-    colorscheme plain
-  endif
-catch
-endtry
+colorscheme plain
