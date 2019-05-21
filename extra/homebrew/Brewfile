@@ -109,8 +109,12 @@ brew "grc"
 brew "pgcli"
 brew "mycli"
 brew "litecli"
+brew "shellcheck"
 brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip"
+brew "nnn"
+brew "pass"
+brew "sk"
 
 cask "alacritty"
 cask "1password-cli"
