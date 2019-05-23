@@ -6,8 +6,7 @@
 unalias n 2>/dev/null
 
 function n() {
-  # [todo] figure out how to get this dynamically
-  local __CMD=("${HOMEBREW_PREFIX}/bin/n")
+  local __CMD=($(command which n))
   local __VERSION=""
 
   if [[ $# -eq 0 ]]; then
