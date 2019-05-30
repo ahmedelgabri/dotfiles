@@ -66,18 +66,18 @@ let g:ale_pattern_options_enabled = 1
 let g:ale_pattern_options = {
       \   '\.min\.(js\|css)$': {
       \       'ale_linters': [],
-      \       'ale_fixers': []
+      \       'ale_fixers': ['remove_trailing_lines', 'trim_whitespace']
       \   },
       \   'jquery.*': {
       \       'ale_linters': [],
-      \       'ale_fixers': []
+      \       'ale_fixers': ['remove_trailing_lines', 'trim_whitespace']
       \   },
       \   'node_modules/.*': {
       \       'ale_linters': [],
       \       'ale_fixers': []
       \   },
       \   'package.json': {
-      \       'ale_fixers': []
+      \       'ale_fixers': ['remove_trailing_lines', 'trim_whitespace']
       \   },
       \   'Sites/personal/forks/.*': {
       \       'ale_fixers': []
