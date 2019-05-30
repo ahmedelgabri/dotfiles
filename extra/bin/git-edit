@@ -5,19 +5,19 @@ main() {
   action="$1"
   case $action in
   conflict | conflicts | conflicted)
-    "$EDITOR $(git-conflicts)"
+    $EDITOR $(git-conflicts)
     ;;
   commited)
-    "$EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)"
+    $EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)
     ;;
   staged)
-    "$EDITOR $(git diff --staged --name-only --diff-filter=ACMR)"
+    $EDITOR $(git diff --staged --name-only --diff-filter=ACMR)
     ;;
   status)
-    "$EDITOR $(git status --porcelain | awk '{print $2}')"
+    $EDITOR $(git status --porcelain | awk '{print $2}')
     ;;
   edited)
-    "$EDITOR $(git diff HEAD --name-only --diff-filter=ACMR)"
+    $EDITOR $(git diff HEAD --name-only --diff-filter=ACMR)
     ;;
   esac
 }
