@@ -3,7 +3,7 @@ scriptencoding utf-8
 let s:VIM_MINPAC_FOLDER = expand($VIMHOME . '/pack/minpac')
 let s:CURRENT_FILE = expand('<sfile>')
 
-function! plugins#installMinpac() abort
+function! plugins#install_minpac() abort
   execute 'silent !git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
@@ -11,7 +11,7 @@ command! -bar PackUpdate call plugins#init() | call minpac#update('', {'do': 'ca
 command! -bar PackStatus call plugins#init() | call minpac#status()
 command! -bar PackClean call plugins#init() | call minpac#clean()
 
-function! plugins#loadPlugins() abort
+function! plugins#install_plugins() abort
   silent! packadd minpac
 
   if !exists('*minpac#init')
@@ -135,9 +135,9 @@ if !exists('*plugins#init')
     exec 'source ' . s:CURRENT_FILE
 
     if empty(glob(s:VIM_MINPAC_FOLDER))
-      set nomore | call plugins#installMinpac() | call plugins#loadPlugins() | call minpac#update('', {'do': 'quit'})
+      call plugins#install_minpac() | set nomore | call plugins#install_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
     else
-      call plugins#loadPlugins()
+      call plugins#install_plugins()
     endif
   endfunction
 endif
