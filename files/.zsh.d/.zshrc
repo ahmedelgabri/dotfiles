@@ -26,16 +26,41 @@ autoload -Uz _zplugin
 
   zplugin ice pick"async.zsh" src"pure.zsh"
   zplugin light ahmedelgabri/pure
+  SYMBOLS=(
+  "λ"
+  "ϟ"
+  "▲"
+  "∴"
+  "→"
+  "»"
+  "৸"
+  "◗"
+  )
+
+  # Arrays in zsh starts from 1
+  export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
+  # Old icon 
+  export PURE_GIT_BRANCH="  "
 # }}}
 
 # Utilities & enhancements {{{
+  zplugin ice wait"0" lucid
   zplugin light "zsh-users/zsh-history-substring-search"
+  # bind UP and DOWN keys
+  bindkey "${terminfo[kcuu1]}" history-substring-search-up
+  bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+  # bind UP and DOWN arrow keys (compatibility fallback)
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+
 
   zplugin ice wait"0" blockf lucid
   zplugin light zsh-users/zsh-completions
 
   zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
   zplugin light zsh-users/zsh-autosuggestions
+  ZSH_AUTOSUGGEST_USE_ASYNC=true
 
   zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
   zplugin light zdharma/fast-syntax-highlighting
@@ -53,35 +78,6 @@ autoload -Uz _zplugin
 ##############################################################
 # PLUGINS VARS & SETTINGS
 ##############################################################
-
-############### Autosuggest
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-
-############### History Substring
-# bind UP and DOWN keys
-bindkey "${terminfo[kcuu1]}" history-substring-search-up
-bindkey "${terminfo[kcud1]}" history-substring-search-down
-
-# bind UP and DOWN arrow keys (compatibility fallback)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-############### pure.zsh
-SYMBOLS=(
-"λ"
-"ϟ"
-"▲"
-"∴"
-"→"
-"»"
-"৸"
-"◗"
-)
-
-# Arrays in zsh starts from 1
-export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
-# Old icon 
-export PURE_GIT_BRANCH="  "
 
 ############### Python
 export PYTHONSTARTUP="${HOME}/.pyrc.py"
