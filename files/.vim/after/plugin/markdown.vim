@@ -18,7 +18,7 @@ let g:markdown_fenced_languages = [
 let g:goyo_width = '120'
 let g:limelight_conceal_ctermfg=240
 let g:limelight_conceal_guifg = '#777777'
-nmap <Leader>g :silent! packadd goyo.vim<CR>\|:Goyo<CR>
+nmap <Leader>g :packadd goyo.vim<CR>\|:Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization
 function! s:goyo_enter() abort

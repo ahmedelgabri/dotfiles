@@ -2,8 +2,8 @@ if !has('nvim')
   " Must explicitly load this before vim-sensible, becasue vim-sensible will
   " load match-it which we don't want. order is important.
   " https://github.com/andymass/vim-matchup#matchit
-  silent! packadd vim-matchup
-  silent! packadd vim-sensible
+  packadd vim-matchup
+  packadd vim-sensible
   if !has('nvim') " For vim
     if exists('&belloff')
       " never ring the bell for any reason

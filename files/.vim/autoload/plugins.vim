@@ -12,7 +12,7 @@ command! -bar PackStatus call plugins#init() | call minpac#status()
 command! -bar PackClean call plugins#init() | call minpac#clean()
 
 function! plugins#install_plugins() abort
-  silent! packadd minpac
+  packadd minpac
 
   if !exists('*minpac#init')
     finish
@@ -24,7 +24,15 @@ function! plugins#install_plugins() abort
   " General {{{
   call minpac#add('https://github.com/andymass/vim-matchup')
   call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
-  call minpac#add('https://github.com/jiangmiao/auto-pairs')
+  " call minpac#add('https://github.com/jiangmiao/auto-pairs')
+  call minpac#add('https://github.com/tmsvg/pear-tree')
+  " let g:pear_tree_repeatable_expand = 0
+
+  " Smart pairs are disabled by default:
+  " let g:pear_tree_smart_openers = 1
+  " let g:pear_tree_smart_closers = 1
+  " let g:pear_tree_smart_backspace = 1
+
   call minpac#add('https://github.com/SirVer/ultisnips')
 
   if !empty(expand($VIM_FZF_PATH))

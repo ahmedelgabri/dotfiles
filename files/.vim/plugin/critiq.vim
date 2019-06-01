@@ -2,4 +2,4 @@ if !exists('g:critiq_loaded')
   finish
 endif
 
-command! -nargs=* Critiq :silent! packadd critiq.vim | Critiq
+command! -nargs=* Critiq :packadd critiq.vim | Critiq
