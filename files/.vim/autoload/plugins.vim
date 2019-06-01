@@ -69,18 +69,19 @@ function! plugins#loadPlugins() abort
         \ 'coc-emoji',
         \ 'coc-tsserver',
         \ 'coc-ultisnips',
-        \ 'coc-phpls'
+        \ 'coc-phpls',
+        \ 'coc-vimlsp',
+        \ 'coc-github',
+        \ 'coc-git'
         \ ]
-
   function! s:coc_cb(hooktype, name) abort
     execute 'packadd ' . a:name
-    call coc#util#build()
+    call coc#util#install()
     call coc#util#install_extension(g:coc_global_extensions)
   endfunction
 
-  call minpac#add('https://github.com/Shougo/neco-vim')
-  call minpac#add('https://github.com/neoclide/coc-neco')
   call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_cb')})
+  call minpac#add('https://github.com/Shougo/echodoc.vim')
   " }}}
 
   " Syntax {{{
@@ -103,7 +104,7 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Git {{{
-  call minpac#add('https://github.com/airblade/vim-gitgutter')
+  " call minpac#add('https://github.com/airblade/vim-gitgutter')
   call minpac#add('https://github.com/lambdalisue/vim-gista')
   call minpac#add('https://github.com/tpope/vim-fugitive')
   call minpac#add('https://github.com/tpope/vim-rhubarb')
@@ -119,12 +120,12 @@ function! plugins#loadPlugins() abort
   " }}}
 
   " Themes, UI & eye cnady {{{
+  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
   call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
   call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
-  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   call minpac#add('https://github.com/NLKNguyen/papercolor-theme', { 'type': 'opt' })
   " }}}
 endfunction

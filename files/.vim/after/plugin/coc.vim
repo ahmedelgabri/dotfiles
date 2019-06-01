@@ -70,6 +70,19 @@ call coc#config('python', {
       \   }
       \ })
 
+call coc#config('git', {
+      \ 'enableGutters': 1,
+      \ 'addedSign.text':'▎',
+      \ 'changedSign.text':'▎',
+      \ 'removedSign.text':'◢',
+      \ 'topRemovedSign.text': '◥',
+      \ 'changeRemovedSign.text': '◢',
+      \ })
+
+call coc#config('coc.github', {
+      \ 'filetypes': ['gitcommit', 'markdown.ghpull']
+      \ })
+
 let s:languageservers = {}
 for [lsp, config] in s:LSP_CONFIG
   " COC chokes on emptykcommands https://github.com/neoclide/coc.nvim/issues/418#issuecomment-462106680"
