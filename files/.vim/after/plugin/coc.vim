@@ -36,11 +36,17 @@ let s:LSP_CONFIG = [
       \   'command': exepath('clojure-lsp'),
       \   'filetypes': ['clojure']
       \  }],
+      \ ['golang', {
+      \   'command': exepath('gopls'),
+      \   'filetypes': ['go'],
+      \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/']
+      \  }],
       \ ]
 
 call coc#config('suggest', {
       \ 'autoTrigger': 'always',
       \ 'noselect': 0,
+      \ 'echodocSupport': 1
       \ })
 
 call coc#config('diagnostic', {
@@ -48,7 +54,8 @@ call coc#config('diagnostic', {
       \ 'warningSign': '●',
       \ 'infoSign': '!',
       \ 'hintSign': '!',
-      \ 'displayByAle': functions#has_floating_window() ? 0 : 1
+      \ 'displayByAle': functions#has_floating_window() ? 0 : 1,
+      \ 'refreshOnInsertMode': 1
       \ })
 
 call coc#config('coc.preferences', {

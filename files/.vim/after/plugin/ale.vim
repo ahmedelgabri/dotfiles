@@ -37,6 +37,7 @@ let g:ale_linter_aliases = {
       \ 'html': ['html', 'css']
       \}
 
+let g:rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'javascript.jsx': ['eslint'],
@@ -59,6 +60,8 @@ let g:ale_fixers = {
       \   'python'    : ['black'],
       \   'sh'        : ['shfmt'],
       \   'bash'      : ['shfmt'],
+      \   'rust'      : ['rustfmt'],
+      \   'go'        : ['gofmt'],
       \}
 
 " Don't auto auto-format files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
