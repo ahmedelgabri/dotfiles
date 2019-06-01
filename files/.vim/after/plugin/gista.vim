@@ -14,7 +14,5 @@ endfunction
 
 augroup my_vim_gista_autocmd
   autocmd! *
-  autocmd User GistaPost call s:on_GistaPost()
+  autocmd User GistaPost call <SID>on_GistaPost()
 augroup END
-
-

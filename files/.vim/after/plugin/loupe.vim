@@ -8,7 +8,7 @@ endfunction
 if has('autocmd')
   augroup MyLoupe
     autocmd!
-    autocmd ColorScheme * call s:SetUpLoupeHighlight()
+    autocmd ColorScheme * call <SID>SetUpLoupeHighlight()
   augroup END
 endif
 
