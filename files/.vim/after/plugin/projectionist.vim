@@ -4,28 +4,6 @@ endif
 
 let g:projectionist_heuristics = {
       \   '*': {
-      \     '*.js': {
-      \       'alternate': [
-      \         '{dirname}/{basename}.test.js',
-      \         '{dirname}/{dirname}.test.js',
-      \         '{dirname}/__tests__/{basename}.test.js',
-      \       ],
-      \       'type': 'source'
-      \     },
-      \     '*.test.js': {
-      \       'alternate': [
-      \         '{basename}.js',
-      \         '{basename}/index.js'
-      \        ],
-      \       'type': 'test',
-      \     },
-      \     '**/__tests__/*.test.js': {
-      \       'alternate': [
-      \         '{basename}.js',
-      \         '{basename}/index.js'
-      \        ],
-      \       'type': 'test'
-      \     },
       \     'src/*.re': {
       \       'alternate': [
       \         '__tests__/{}_test.re',
@@ -51,3 +29,38 @@ let g:projectionist_heuristics = {
       \     }
       \   }
       \ }
+
+" https://github.com/wincent/wincent/blob/60e0aab821932c247cd70681641bf1d87245ae36/roles/dotfiles/files/.vim/after/plugin/projectionist.vim#L38-L68
+" Helper function for batch-updating the g:projectionist_heuristics variable.
+function! s:project(...)
+  for [l:pattern, l:projection] in a:000
+    let g:projectionist_heuristics['*'][l:pattern] = l:projection
+  endfor
+endfunction
+
+" Set up projections for JS variants.
+for s:extension in ['.js', '.jsx', '.ts', '.tsx']
+  call s:project(
+        \ ['*' . s:extension, {
+        \   'alternate': [
+        \         '{dirname}/{basename}.test' . s:extension,
+        \         '{dirname}/{dirname}.test' . s:extension,
+        \         '{dirname}/__tests__/{basename}.test' . s:extension,
+        \   ],
+        \   'type': 'source'
+        \ }],
+        \ ['*.test' . s:extension, {
+        \       'alternate': [
+        \         '{basename}' . s:extension,
+        \         '{basename}/index' . s:extension
+        \        ],
+        \   'type': 'test',
+        \ }],
+        \ ['**/__tests__/*.test' . s:extension, {
+        \       'alternate': [
+        \         '{basename}' . s:extension,
+        \         '{basename}/index' . s:extension
+        \        ],
+        \   'type': 'test'
+        \ }])
+endfor
