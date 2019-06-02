@@ -60,7 +60,7 @@ augroup MyStatusLine
   autocmd!
   autocmd WinEnter * setl statusline=%!StatusLine('active')
   autocmd WinLeave * setl statusline=%!StatusLine('inactive')
-  if exists('#TextChangedI')
+  if exists('##TextChangedI')
     autocmd TextChanged,TextChangedI * call statusline#getMode()
   endif
   autocmd BufWinEnter,BufWritePost,FileWritePost,WinEnter,InsertEnter,InsertLeave,CmdWinEnter,CmdWinLeave,ColorScheme * call statusline#getMode()
