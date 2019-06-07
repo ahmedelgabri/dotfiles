@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+__WIFI_NAME=$(wifi)
+
+case $__WIFI_NAME in
+Fanko*)
+  __LOCATION="Almere"
+  ;;
+*)
+  __LOCATION=""
+  ;;
+esac
+
+__FILE="$TMPDIR/weather-$__LOCATION.tmux"
+
+if ! stat "$__FILE" >/dev/null; then
+  curl -s "wttr.in/$__LOCATION?format=%l:+%c+%t+%w" >"$__FILE"
+fi
+
+DATA=$(cat "$__FILE")
+
+printf "%s#[fg=colour237] ⦁ " "$DATA"

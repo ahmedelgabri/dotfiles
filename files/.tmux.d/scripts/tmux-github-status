@@ -2,16 +2,17 @@
 GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.status')
 
 INDICATIOR="#[fg=colour237]⦁"
+
 case $GITHUB_STATUS in
-  ma*)
-    STATUS="#[fg=red]   $INDICATOR "
-    ;;
-  mi*)
-    STATUS="#[fg=yellow]   $INDICATIOR "
-    ;;
-  *)
-    STATUS=""
-    ;;
+ma*)
+  STATUS="#[fg=red]   $INDICATOR "
+  ;;
+mi*)
+  STATUS="#[fg=yellow]   $INDICATIOR "
+  ;;
+*)
+  STATUS=""
+  ;;
 esac
 
-echo "$STATUS"
+printf "%s" "$STATUS"

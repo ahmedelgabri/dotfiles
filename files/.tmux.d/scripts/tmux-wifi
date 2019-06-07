@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-TMUX_WIFI=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')
+WIFI_NAME=$(wifi)
 
 ON_ICON=" "
 OFF_ICON'⨉'
 TAIL="#[fg=colour237] ⦁ "
 
-[ -n "$TMUX_WIFI" ] && echo "$ON_ICON  $TMUX_WIFI$TAIL" || echo "#[fg=red]$OFF_ICON$TAIL"
+[ -n "$WIFI_NAME" ] && printf "%s" "$ON_ICON  $WIFI_NAME$TAIL" || printf "#[fg=red]%s" "$OFF_ICON$TAIL"

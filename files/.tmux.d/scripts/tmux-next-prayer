@@ -100,4 +100,4 @@ def get_prayer(now):
     return result
 
 
-print(get_prayer(datetime.now()))
+print(get_prayer(datetime.now()), end="")
