@@ -95,10 +95,6 @@ else
   echo "y" | "${HOMEBREW_PREFIX}/opt/fzf/install" --xdg --no-update-rc
 fi
 
-if [[ -x "${HOMEBREW_PREFIX}/opt/fzf" ]]; then
-  export VIM_FZF_PATH="${HOMEBREW_PREFIX}/opt/fzf"
-fi
-
 export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
 
 typeset -AU __FZF

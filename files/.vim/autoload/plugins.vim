@@ -24,21 +24,13 @@ function! plugins#install_plugins() abort
   " General {{{
   call minpac#add('https://github.com/andymass/vim-matchup')
   call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
-  " call minpac#add('https://github.com/jiangmiao/auto-pairs')
-  call minpac#add('https://github.com/tmsvg/pear-tree')
-  " let g:pear_tree_repeatable_expand = 0
-
-  " Smart pairs are disabled by default:
-  " let g:pear_tree_smart_openers = 1
-  " let g:pear_tree_smart_closers = 1
-  " let g:pear_tree_smart_backspace = 1
-
+  call minpac#add('https://github.com/jiangmiao/auto-pairs')
   call minpac#add('https://github.com/SirVer/ultisnips')
 
-  if !empty(expand($VIM_FZF_PATH))
-    call minpac#add('https://github.com/junegunn/fzf.vim')
-    set runtimepath^=$VIM_FZF_PATH
-  endif
+  " I have the bin globally, so don't build, and just grab plugin directory
+  call minpac#add('https://github.com/junegunn/fzf')
+  call minpac#add('https://github.com/junegunn/fzf.vim')
+
   call minpac#add('https://github.com/justinmk/vim-dirvish')
   call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim')
@@ -82,6 +74,7 @@ function! plugins#install_plugins() abort
         \ 'coc-github',
         \ 'coc-git'
         \ ]
+
   function! s:coc_cb(hooktype, name) abort
     execute 'packadd ' . a:name
     call coc#util#install()

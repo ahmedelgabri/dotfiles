@@ -174,8 +174,8 @@ function! functions#NeatFoldText() abort
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
-function! s:show_documentation() abort
-  if &filetype == 'vim'
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
