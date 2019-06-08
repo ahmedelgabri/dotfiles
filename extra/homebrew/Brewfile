@@ -2,7 +2,6 @@
 
 cask_args appdir: '/Applications'
 
-tap "ahmedelgabri/homebrew-battery"
 tap "caskroom/cask"
 tap "caskroom/fonts"
 tap "caskroom/versions"
@@ -83,7 +82,6 @@ brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patc
 brew "mpv" #, args: ["with-bundle", "with-rubberband"]
 brew "rtv"
 brew "tmux", args: ["HEAD"]
-brew "ahmedelgabri/battery/battery", args: ["HEAD"]
 brew "vim"
 brew "weechat" # , args: ["with-curl"]
 brew "todoist"
@@ -115,6 +113,7 @@ brew "grip"
 brew "nnn"
 brew "pass"
 brew "sk"
+brew "spark" # Needed for battery bin (optional)
 
 cask "alacritty"
 cask "1password-cli"
