@@ -53,6 +53,7 @@ path=(
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
   /usr/local/{bin,sbin}
+  /usr/local/Cellar/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
   $path
 )
 
