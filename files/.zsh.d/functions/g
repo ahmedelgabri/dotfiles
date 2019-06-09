@@ -20,7 +20,7 @@ function time_since_last_commit() {
 }
 
 function g() {
-  local __CMD=("${(@Q)${(z)aliases[git]:-git}}")
+  local __CMD=($(command which hub || command which git))
 
   if [[ $# -eq 0 ]]; then
     echo "$(time_since_last_commit)\n"
@@ -31,5 +31,11 @@ function g() {
 
   "${__CMD[@]}"
 }
+
+if (( $+commands[hub] )); then
+  compdef g=hub
+else
+  compdef g=git
+fi
 
 g "$@"
