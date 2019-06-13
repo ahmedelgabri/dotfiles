@@ -159,6 +159,17 @@ if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
   kitty + complete setup zsh | source /dev/stdin
 fi
 
+# Not really a fan of this hack to get a better git completions with git & it adds a couple of ms to the startup
+# But until I find a good solution, it will stay here :(
+# For context https://github.com/github/hub/pull/1962
+
+__GIT_ZSH_COMPLETIONS_FILE_PATH="${HOMEBREW_PREFIX}/share/zsh/site-functions/_git"
+
+if [ -f "$__GIT_ZSH_COMPLETIONS_FILE_PATH" ]
+then
+  command rm "$__GIT_ZSH_COMPLETIONS_FILE_PATH"
+fi
+
 ##############################################################
 # /etc/motd
 ##############################################################
