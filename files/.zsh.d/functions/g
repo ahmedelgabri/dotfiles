@@ -1,4 +1,5 @@
 # vim:ft=zsh:
+
 # https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
 # Wrap git with hub
 #
@@ -8,34 +9,25 @@
 # $ sudo chmod -R 755 zsh
 # $ sudo chown -R $USER:staff zsh
 
-(( $+commands[git] )) || return 0
+command -v git >/dev/null || return 0
 
 unalias g 2>/dev/null
 
 function time_since_last_commit() {
-  local ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  local LAST_COMMIT=$(git log --color=always -n 1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN%Creset" --date=auto:human 2>/dev/null)
+  local __LAST_COMMIT=$(git log --color=always -n 1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN%Creset" --date=auto:human 2>/dev/null)
 
-  echo "Last commit:\n$LAST_COMMIT"
+  printf "%s\n%s\n" "Last commit:" "$__LAST_COMMIT"
 }
 
 function g() {
-  local __CMD=($(command which hub || command which git))
+  local __CMD="$(command -v hub || command -v git)"
 
-  if [[ $# -eq 0 ]]; then
-    echo "$(time_since_last_commit)\n"
-    __CMD+=(status --short --branch)
+  if [ $# -eq 0 ]; then
+    printf "%s\n\n" "$(time_since_last_commit)"
+    "$__CMD" status --short --branch
   else
-    __CMD+=($@)
+    "$__CMD" "$@"
   fi
-
-  "${__CMD[@]}"
 }
-
-if (( $+commands[hub] )); then
-  compdef g=hub
-else
-  compdef g=git
-fi
 
 g "$@"

@@ -9,10 +9,7 @@ alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias e="${(z)VISUAL:-${(z)EDITOR}}"
 alias type='type -a'
 alias which='which -a'
-
-if (( $+commands[htop] )); then
-  alias top=htop
-fi
+(( $+commands[htop] )) && alias top=htop
 
 
 if (( $+commands[exa] )); then
@@ -60,5 +57,12 @@ alias r="ranger" # overrides built-in r command
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
 (( $+commands[sbcl] )) && (( $+commands[rlwrap] )) && alias sbcl="rlwrap sbcl"
-(( $+commands[hub] )) && alias git="hub"
+
+if (( $+commands[hub] )); then
+  alias git=hub
+  compdef g=hub
+else
+  compdef g=git
+fi
+
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'
