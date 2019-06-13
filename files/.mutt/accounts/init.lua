@@ -49,7 +49,7 @@ function _switch_account(opt)
   local email_env = string.upper(opt.account_name) .. EMAIL_ENV_SUFFIX
   local alternate_env = string.upper(opt.account_name) .. EMAIL_ALIASES_ENV_SUFFIX
   local email = os.getenv(email_env)
-  local alernates = os.getenv(alternate_env)
+  local alternates = os.getenv(alternate_env)
 
   if email == nil then
     if opt.required then
