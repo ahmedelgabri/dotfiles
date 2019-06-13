@@ -11,12 +11,4 @@ Fanko*)
   ;;
 esac
 
-__FILE="$TMPDIR/weather-$__LOCATION.tmux"
-
-if ! stat "$__FILE" >/dev/null; then
-  curl -s "wttr.in/$__LOCATION?format=%l:+%c+%t+%w" >"$__FILE"
-fi
-
-DATA=$(cat "$__FILE")
-
-printf "%s#[fg=colour237] ⦁ " "$DATA"
+printf "%s#[fg=colour237] ⦁ " "$(curl -s "https://wttr.in/$__LOCATION?format=%l:+%c+%t+%w")"
