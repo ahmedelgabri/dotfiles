@@ -11,4 +11,4 @@ Fanko*)
   ;;
 esac
 
-printf "%s#[fg=colour237] ⦁ " "$(curl -s "https://wttr.in/$__LOCATION?format=%l:+%c+%t+%w")"
+printf "%s#[fg=colour237] ⦁ " "$(curl -s "https://wttr.in/$__LOCATION?format=%l:+%c+%t+%w" 2>/dev/null)"
