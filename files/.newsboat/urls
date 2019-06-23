@@ -216,6 +216,7 @@
   https://rjzaworski.com/feed "Blog" "JavaScript" "Programming"
   https://mxb.dev/feed.xml "Blog" "CSS"
   http://feeds.feedburner.com/KrisJenkinsBlog "Blog" "FP" "Elm" "Clojure" "Haskell"
+  https://jrsinclair.com/index.rss "Blog" "FP" "JavaScript"
 # }}}
 
 # Browsers {{{
