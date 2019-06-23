@@ -2,3 +2,5 @@
 --smart-case
 --glob=!.git/*
 --glob=!node_modules/*
+--type-add
+twig:*.rain
