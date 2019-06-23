@@ -45,6 +45,9 @@ function {
     export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
     # Old icon 
     export PURE_GIT_BRANCH="  "
+    zstyle :prompt:pure:path color 240
+    zstyle :prompt:pure:git:branch color blue
+    zstyle :prompt:pure:prompt:success color 003
   # }}}
 
   # Utilities & enhancements {{{
