@@ -9,6 +9,7 @@ alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias e="${(z)VISUAL:-${(z)EDITOR}}"
 alias type='type -a'
 alias which='which -a'
+alias history='fc -il 1'
 (( $+commands[htop] )) && alias top=htop
 
 
