@@ -48,7 +48,6 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/tpope/vim-projectionist')
   call minpac#add('https://github.com/tpope/vim-repeat')
   call minpac#add('https://github.com/tpope/vim-scriptease')
-  call minpac#add('https://github.com/tpope/vim-speeddating')
   call minpac#add('https://github.com/tpope/vim-surround')
   call minpac#add('https://github.com/wellle/targets.vim')
   call minpac#add('https://github.com/wincent/loupe')
