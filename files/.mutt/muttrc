@@ -5,7 +5,7 @@ set alias_file       = "$HOME/.mutt/config/aliases.private"
 # set header_cache     = "$HOME/.mutt/cache/headers/"
 set header_cache_backend=lmdb
 set read_inc=1000
-set message_cachedir = "$HOME/.mutt/cache/message/"
+# set message_cachedir = "$HOME/.mutt/cache/message/"
 set certificate_file = "$HOME/.mutt/certificates"
 set tmpdir           = "$HOME/.mutt/tmp/"
 

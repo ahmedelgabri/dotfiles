@@ -77,6 +77,7 @@ function _switch_account(opt)
     mutt.set("mbox", opt.record or folder_prefix..".Archive")
     mutt.set("trash", opt.trash or folder_prefix..".Trash")
     mutt.set("header_cache", opt.header_cache or os.getenv('HOME').."/.mutt/cache/headers/"..string.lower(opt.account_name).."/")
+    mutt.set("message_cachedir", opt.message_cachedir or os.getenv('HOME').."/.mutt/cache/messages/"..string.lower(opt.account_name).."/")
 
     mutt.call("mailboxes",
       folder_prefix,
