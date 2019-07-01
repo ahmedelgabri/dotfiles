@@ -72,11 +72,14 @@ function! plugins#install_plugins() abort
         \ 'coc-phpls',
         \ 'coc-vimlsp',
         \ 'coc-github',
-        \ 'coc-git'
+        \ 'coc-git',
+        \ 'coc-svg',
+        \ 'coc-tailwindcss'
         \ ]
 
   function! s:coc_cb(hooktype, name) abort
     execute 'packadd ' . a:name
+    " call coc#util#build()
     call coc#util#install()
     call coc#util#install_extension(g:coc_global_extensions)
   endfunction

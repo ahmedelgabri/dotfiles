@@ -43,25 +43,30 @@ let s:LSP_CONFIG = [
       \  }],
       \ ]
 
+call coc#config('coc.preferences', {
+      \ 'colorSupport': 0,
+      \ 'hoverTarget': functions#has_floating_window() ? 'float' : 'echo',
+      \ })
+
 call coc#config('suggest', {
       \ 'autoTrigger': 'always',
       \ 'noselect': 0,
-      \ 'echodocSupport': 1
+      \ 'echodocSupport': 1,
+      \ 'floatEnable': functions#has_floating_window(),
+      \ })
+
+call coc#config('signature', {
+      \ 'target': functions#has_floating_window() ? 'float' : 'echo',
       \ })
 
 call coc#config('diagnostic', {
       \ 'errorSign': '×',
       \ 'warningSign': '●',
       \ 'infoSign': '!',
-      \ 'hintSign': '!',
+      \ 'hintSign': '?',
+      \ 'messageTarget': functions#has_floating_window() ? 'float' : 'echo',
       \ 'displayByAle': functions#has_floating_window() ? 0 : 1,
       \ 'refreshOnInsertMode': 1
-      \ })
-
-call coc#config('coc.preferences', {
-      \ 'colorSupport': 0,
-      \ 'hoverTarget': functions#has_floating_window() ? 'float' : 'echo',
-      \ 'signatureHelpTarget': functions#has_floating_window() ? 'float' : 'echo',
       \ })
 
 call coc#config('python', {
