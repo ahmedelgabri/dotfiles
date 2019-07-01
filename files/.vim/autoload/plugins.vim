@@ -101,6 +101,7 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
   call minpac#add('https://github.com/neoclide/vim-jsx-improve')
+  call minpac#add('https://github.com/gberenfield/cljfold.vim', { 'type': 'opt' })
   " }}}
 
   " Linters & Code quality {{{

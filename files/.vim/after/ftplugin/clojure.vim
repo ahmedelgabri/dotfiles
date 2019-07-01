@@ -1,0 +1,2 @@
+packadd cljfold.vim
+RainbowParentheses
