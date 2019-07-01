@@ -49,6 +49,7 @@ log/
 logs/
 tmp/
 dump/
+.next/
 
 # Editors       #
 #################
@@ -80,4 +81,3 @@ npm-debug.log*
 .tern-project
 .ignore
 *.zwc
-
