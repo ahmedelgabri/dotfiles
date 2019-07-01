@@ -41,7 +41,7 @@ augroup MyAutoCmds
 
   autocmd FileType gitcommit,gina-status,todo,qf setlocal cursorline
 
-  autocmd FileType lisp,clojure,scheme RainbowParentheses
+  autocmd FileType lisp,scheme RainbowParentheses
 
   autocmd BufWritePre,FileWritePre * call functions#create_directories()
 augroup END

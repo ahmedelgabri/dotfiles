@@ -142,7 +142,7 @@ let s:dictmode= {
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
-let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', synIDattr(hlID('Identifier'),'fg', 'gui'), synIDattr(hlID('Identifier'),'fg', 'cterm'))
+let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('Identifier', 'fg', 'gui'), functions#get_color('Identifier', 'fg', 'cterm'))
 let s:dictstatuscolor={
       \ '1': s:statusline_color,
       \ '2': s:statusline_color,
