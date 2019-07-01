@@ -28,8 +28,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ]
 
 let g:startify_list_order = [
-      \ ['   Sessions:'], 'sessions',
       \ ['   Files:'], 'dir',
+      \ ['   Sessions:'], 'sessions',
       \ ['   MRU'], 'files',
       \ ['   Bookmarks:'], 'bookmarks',
       \ ]
