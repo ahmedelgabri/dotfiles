@@ -337,6 +337,10 @@ function! functions#floating_fzf() abort
   call nvim_open_win(l:buf, v:true, l:opts)
 endfunction
 
+function! functions#fzf_window() abort
+  return functions#has_floating_window() ? 'call functions#floating_fzf()' : 'enew'
+endfunction
+
 function! functions#customize_diff()
   if &diff
     syntax off

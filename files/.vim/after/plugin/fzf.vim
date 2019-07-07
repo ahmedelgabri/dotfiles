@@ -10,7 +10,7 @@ if !empty(expand($VIM_FZF_LOG))
   let g:fzf_commits_log_options = $VIM_FZF_LOG
 endif
 
-let g:fzf_layout = { 'window':  functions#has_floating_window() ? 'call functions#floating_fzf()' : 'enew' }
+let g:fzf_layout = { 'window': functions#fzf_window() }
 let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
