@@ -1,3 +1,8 @@
 scriptencoding utf-8
 
-syntax match jsFunction /\<function\>/ skipwhite skipempty nextgroup=jsGenerator,jsFuncName,jsFuncArgs,jsFlowFunctionGroup skipwhite conceal cchar=ƒ
+" remove the keywords. we'll re-add them below
+syntax clear typescriptFuncImpl typescriptFuncKeyword typescriptAsyncFuncKeyword
+
+syntax keyword typescriptFuncImpl function conceal cchar=ƒ
+syntax keyword typescriptFuncKeyword function conceal cchar=ƒ
+syntax keyword typescriptAsyncFuncKeyword function conceal cchar=ƒ
