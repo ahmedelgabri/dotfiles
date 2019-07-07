@@ -45,7 +45,7 @@ let g:mapleader="\<Space>"
 let g:maplocalleader=','
 
 call plugins#init()
-call functions#setupCompletion()
+call utils#setupCompletion()
 
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'

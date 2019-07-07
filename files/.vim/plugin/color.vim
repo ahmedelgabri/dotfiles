@@ -17,9 +17,9 @@ augroup MyCustomColors
         \| hi! link Conceal NonText
         \| hi! User5 ctermfg=red guifg=red
         \| hi! User7 ctermfg=cyan guifg=cyan
-        \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('NonText', 'fg', 'gui'), functions#get_color('NonText','fg', 'cterm'))
-        \| execute printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('Identifier', 'fg', 'gui'), functions#get_color('Identifier', 'fg', 'cterm'))
-        \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('NonText', 'fg', 'gui'), functions#get_color('NonText', 'fg', 'cterm'))
+        \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm'))
+        \| execute printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm'))
+        \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm'))
         \| execute printf("hi! ALEInfoLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
         \| execute printf("hi! ALEWarningLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
         \| execute printf("hi! ALEErrorLine guifg=%s guibg=%s", '#ff0000', &background=='light'?'#ffcccc':'#550000')
@@ -37,7 +37,7 @@ augroup MyCustomColors
         \| hi! link StartifyBracket StartifyPath
         \| hi! link StartifyNumber Title
 
-  autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('VisualNOS', 'bg', 'gui'), functions#get_color('VisualNOS', 'bg', 'cterm'))
+  autocmd ColorScheme plain execute printf('hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('VisualNOS', 'bg', 'gui'), utils#get_color('VisualNOS', 'bg', 'cterm'))
         \| hi! Comment cterm=NONE gui=NONE ctermfg=236 guifg=#555555
         \| hi! link PmenuSel TermCursor
 augroup END

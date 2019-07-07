@@ -1,1 +1,1 @@
-call system(functions#open() . ' ' . expand('%:p')) | buffer# | bdelete# | redraw! | syntax on
+call system(utils#open() . ' ' . expand('%:p')) | buffer# | bdelete# | redraw! | syntax on

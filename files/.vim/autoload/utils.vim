@@ -1,11 +1,11 @@
 scriptencoding utf-8
 " [TODO]: Cleanup this file
 
-function! functions#trim(txt) abort
+function! utils#trim(txt) abort
   return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
 endfunction
 
-function! functions#ZoomToggle() abort
+function! utils#ZoomToggle() abort
   if exists('t:zoomed') && t:zoomed
     exec t:zoom_winrestcmd
     let t:zoomed = 0
@@ -19,7 +19,7 @@ endfunction
 
 " Show highlighting groups for current word
 " https://twitter.com/kylegferg/status/697546733602136065
-function! functions#SynStack() abort
+function! utils#SynStack() abort
   if !exists('*synstack')
     return
   endif
@@ -27,7 +27,7 @@ function! functions#SynStack() abort
 endfunc
 
 " strips trailing whitespace at the end of files.
-function! functions#Preserve(command) abort
+function! utils#Preserve(command) abort
   " Preparation: save last search, and cursor position.
   let l:pos=winsaveview()
   let l:search=@/
@@ -40,7 +40,7 @@ function! functions#Preserve(command) abort
 endfunction
 
 
-function! functions#ClearRegisters() abort
+function! utils#ClearRegisters() abort
   let l:regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
   let l:i=0
   while (l:i<strlen(l:regs))
@@ -50,40 +50,40 @@ function! functions#ClearRegisters() abort
 endfunction
 
 
-function! functions#setupWrapping() abort
+function! utils#setupWrapping() abort
   set wrap
   set wrapmargin=2
   set textwidth=80
 endfunction
 
 " via: http://vim.wikia.com/wiki/HTML_entities
-function! functions#HtmlEscape() abort
+function! utils#HtmlEscape() abort
   silent s/&/\&amp;/eg
   silent s/</\&lt;/eg
   silent s/>/\&gt;/eg
 endfunction
 
-function! functions#HtmlUnEscape() abort
+function! utils#HtmlUnEscape() abort
   silent s/&lt;/</eg
   silent s/&gt;/>/eg
   silent s/&amp;/\&/eg
 endfunction
 
-function! functions#OpenFileFolder() abort
+function! utils#OpenFileFolder() abort
   silent call system('open '.expand('%:p:h:~'))
 endfunction
 
 " Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
 " from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
 let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
-function! functions#should_mkview() abort
+function! utils#should_mkview() abort
   return
         \ &buftype ==# '' &&
         \ index(g:GabriMkviewFiletypeBlacklist, &filetype) == -1 &&
         \ !exists('$SUDO_USER') " Don't create root-owned files.
 endfunction
 
-function! functions#mkview() abort
+function! utils#mkview() abort
   if exists('*haslocaldir') && haslocaldir()
     " We never want to save an :lcd command, so hack around it...
     cd -
@@ -95,7 +95,7 @@ function! functions#mkview() abort
 endfunction
 
 let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff']
-function! functions#should_quit_on_q() abort
+function! utils#should_quit_on_q() abort
   return &diff || index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
 
@@ -117,22 +117,22 @@ let g:GabriNoColorcolumn = [
       \'json'
       \'diff'
       \]
-function! functions#should_turn_off_colorcolumn() abort
+function! utils#should_turn_off_colorcolumn() abort
   return &textwidth == 0
         \|| &diff
         \|| index(g:GabriNoColorcolumn, &filetype) >= 0
         \|| &buftype ==# 'terminal' || &readonly
 endfunction
 
-function! functions#setOverLength()
-  if functions#should_turn_off_colorcolumn()
+function! utils#setOverLength()
+  if utils#should_turn_off_colorcolumn()
     match NONE
   else
     " Stolen from https://github.com/whatyouhide/vim-lengthmatters/blob/74e248378544ac97fb139803b39583001c83d4ef/plugin/lengthmatters.vim#L17-L33
     let s:overlengthCmd = 'highlight OverLength'
     for l:md in ['cterm', 'term', 'gui']
-      let l:bg = functions#get_color('WildMenu', 'bg', l:md)
-      let l:fg = functions#get_color('Normal', 'fg', l:md)
+      let l:bg = utils#get_color('WildMenu', 'bg', l:md)
+      let l:fg = utils#get_color('Normal', 'fg', l:md)
 
       if has('gui_running') && l:md !=# 'gui'
         continue
@@ -149,11 +149,11 @@ function! functions#setOverLength()
 endfunction
 
 let g:GabriKeepWhitespace = ['markdown']
-function! functions#should_strip_whitespace() abort
+function! utils#should_strip_whitespace() abort
   return index(g:GabriKeepWhitespace, &filetype) == -1
 endfunction
 
-fun! functions#ProfileStart(...)
+fun! utils#ProfileStart(...)
   if a:0 && a:1 != 1
     let l:profile_file = a:1
   else
@@ -166,7 +166,7 @@ fun! functions#ProfileStart(...)
   profile  func *
 endfun
 
-function! functions#NeatFoldText() abort
+function! utils#NeatFoldText() abort
   let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
   let l:lines=(v:foldend - v:foldstart + 1) . ' lines'
   let l:first=substitute(getline(v:foldstart), '\v *', '', '')
@@ -182,7 +182,7 @@ function! s:show_documentation()
   endif
 endfunction
 
-function! functions#setupCompletion() abort
+function! utils#setupCompletion() abort
   let g:UltiSnipsExpandTrigger='<c-u>'
   let g:UltiSnipsJumpForwardTrigger='<c-j>'
   let g:UltiSnipsJumpBackwardTrigger='<c-k>'
@@ -233,7 +233,7 @@ endfunction
 
 " Project specific override
 " Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
-function! functions#sourceProjectConfig() abort
+function! utils#sourceProjectConfig() abort
   let l:projectfile = findfile('.local.vim', expand('%:p').';')
   if filereadable(l:projectfile)
     silent execute 'source' l:projectfile
@@ -253,17 +253,17 @@ function! s:Move(address, at_limit)
   call feedkeys('gv', 'n')
 endfunction
 
-function! functions#move_up() abort range
+function! utils#move_up() abort range
   let l:at_top=a:firstline == 1
   call s:Move("'<-2", l:at_top)
 endfunction
 
-function! functions#move_down() abort range
+function! utils#move_down() abort range
   let l:at_bottom=a:lastline == line('$')
   call s:Move("'>+1", l:at_bottom)
 endfunction
 
-function! functions#GetIcon(key) abort
+function! utils#GetIcon(key) abort
   let l:ICONS = {
         \'paste': '⍴',
         \'spell': '✎',
@@ -277,7 +277,7 @@ function! functions#GetIcon(key) abort
 endfunction
 
 " copied from https://github.com/duggiefresh/vim-easydir/blob/80f7fc2fd78d1c09cd6f8370012f20b58b5c6305/plugin/easydir.vim
-function! functions#create_directories() abort
+function! utils#create_directories() abort
   let s:directory = expand('<afile>:p:h')
   if s:directory !~# '^\(scp\|ftp\|dav\|fetch\|ftp\|http\|rcp\|rsync\|sftp\|file\):'
         \ && !isdirectory(s:directory)
@@ -285,7 +285,7 @@ function! functions#create_directories() abort
   endif
 endfunction
 
-function! functions#open() abort
+function! utils#open() abort
   " Linux/BSD
   if executable('xdg-open')
     return 'xdg-open'
@@ -300,7 +300,7 @@ endfunction
 
 " Form: https://www.reddit.com/r/vim/comments/8asgjj/topnotch_vim_markdown_live_previews_with_no/
 " Depends on `brew install grip`
-function! functions#openMarkdownPreview() abort
+function! utils#openMarkdownPreview() abort
   if exists('s:markdown_job_id') && s:markdown_job_id > 0
     call jobstop(s:markdown_job_id)
     unlet s:markdown_job_id
@@ -313,22 +313,23 @@ function! functions#openMarkdownPreview() abort
   endfunction
 endfunction
 
-function! functions#has_floating_window() abort
+function! utils#has_floating_window() abort
   " MenuPopupChanged was renamed to CompleteChanged -> https://github.com/neovim/neovim/pull/9819
   return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win')
 endfunction
 
-function! functions#floating_fzf() abort
+function! utils#floating_fzf() abort
   let l:buf = nvim_create_buf(v:false, v:true)
   call setbufvar(buf, '&signcolumn', 'no')
 
   let l:height = float2nr(&lines * 0.75)
   let l:width = float2nr(&columns - (&columns * 2 / 40))
   let l:col = float2nr((&columns - width) / 2)
+  let l:row = float2nr(&lines / 15)
 
   let l:opts = {
         \ 'relative': 'editor',
-        \ 'row': 0,
+        \ 'row': l:row,
         \ 'col': l:col,
         \ 'width': l:width,
         \ 'height': l:height
@@ -337,11 +338,11 @@ function! functions#floating_fzf() abort
   call nvim_open_win(l:buf, v:true, l:opts)
 endfunction
 
-function! functions#fzf_window() abort
-  return functions#has_floating_window() ? 'call functions#floating_fzf()' : 'enew'
+function! utils#fzf_window() abort
+  return utils#has_floating_window() ? 'call utils#floating_fzf()' : 'enew'
 endfunction
 
-function! functions#customize_diff()
+function! utils#customize_diff()
   if &diff
     syntax off
     set number
@@ -351,6 +352,6 @@ function! functions#customize_diff()
   endif
 endfunction
 
-function! functions#get_color(synID, what, mode) abort
+function! utils#get_color(synID, what, mode) abort
   return synIDattr(synIDtrans(hlID(a:synID)), a:what, a:mode)
 endfunction

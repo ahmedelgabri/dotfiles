@@ -81,21 +81,21 @@ if has('nvim')
   augroup END
 endif
 
-nnoremap <silent> <leader>z :call functions#ZoomToggle()<CR>
-nnoremap <c-g> :call functions#SynStack()<CR>
+nnoremap <silent> <leader>z :call utils#ZoomToggle()<CR>
+nnoremap <c-g> :call utils#SynStack()<CR>
 
 if exists(':Move')
   nnoremap <leader>r :Move %<cr>
 endif
 
-nnoremap _$ :call functions#Preserve("%s/\\s\\+$//e")<CR>
-nnoremap _= :call functions#Preserve("normal gg=G")<CR>
+nnoremap _$ :call utils#Preserve("%s/\\s\\+$//e")<CR>
+nnoremap _= :call utils#Preserve("normal gg=G")<CR>
 
-vmap <silent> <Leader>hu :call functions#HtmlUnEscape()<CR>
-vmap <silent> <Leader>he :call functions#HtmlEscape()<CR>
+vmap <silent> <Leader>hu :call utils#HtmlUnEscape()<CR>
+vmap <silent> <Leader>he :call utils#HtmlEscape()<CR>
 
 " maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
-nnoremap <silent> gof :call functions#OpenFileFolder()<CR>
+nnoremap <silent> gof :call utils#OpenFileFolder()<CR>
 
 " Allows you to visually select a section and then hit @ to run a macro on all lines
 " https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db#.3dcn9prw6

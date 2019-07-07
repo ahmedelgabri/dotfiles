@@ -15,4 +15,4 @@ else
   command! Del :call delete(@%) | bdelete!
 endif
 
-command! ClearRegisters call functions#ClearRegisters()
+command! ClearRegisters call utils#ClearRegisters()

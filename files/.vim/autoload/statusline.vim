@@ -31,8 +31,8 @@ function! statusline#LinterStatus() abort
     return ''
   endif
 
-  let l:error_symbol = functions#GetIcon('linter_error')
-  let l:style_symbol = functions#GetIcon('linter_style')
+  let l:error_symbol = utils#GetIcon('linter_error')
+  let l:style_symbol = utils#GetIcon('linter_style')
   let l:counts = ale#statusline#Count(bufnr(''))
   let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
   let l:status = []
@@ -66,10 +66,10 @@ function! statusline#statusDiagnostic() abort
   let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
   let l:msgs = []
   if get(l:info, 'error', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , functions#GetIcon('linter_error')))
+    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , utils#GetIcon('linter_error')))
   endif
   if get(info, 'warning', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['warning'] , functions#GetIcon('linter_style')))
+    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['warning'] , utils#GetIcon('linter_style')))
   endif
 
   return join(l:msgs, ' ')
@@ -82,18 +82,18 @@ function! statusline#gitInfo() abort
 
   let l:out = fugitive#head(10)
   if !empty(l:out)
-    let l:out = functions#GetIcon('branch') . l:out
+    let l:out = utils#GetIcon('branch') . l:out
   endif
   return l:out
 endfunction
 
 function! statusline#readOnly() abort
   if !&modifiable && &readonly
-    return functions#GetIcon('lock') . ' RO'
+    return utils#GetIcon('lock') . ' RO'
   elseif &modifiable && &readonly
     return 'RO'
   elseif !&modifiable && !&readonly
-    return functions#GetIcon('lock')
+    return utils#GetIcon('lock')
   else
     return ''
   endif
@@ -142,7 +142,7 @@ let s:dictmode= {
       \ }
 
 " DEFINE COLORS FOR STATUSBAR
-let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', functions#get_color('Identifier', 'fg', 'gui'), functions#get_color('Identifier', 'fg', 'cterm'))
+let s:statusline_color=printf('highlight! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm'))
 let s:dictstatuscolor={
       \ '1': s:statusline_color,
       \ '2': s:statusline_color,

@@ -18,8 +18,8 @@ set textwidth=80
 " to an autoload function it doesn't work
 augroup MyLongLinesHighlight
   autocmd!
-  autocmd BufWinEnter,BufEnter ?* call functions#setOverLength()
-  autocmd OptionSet textwidth call functions#setOverLength()
+  autocmd BufWinEnter,BufEnter ?* call utils#setOverLength()
+  autocmd OptionSet textwidth call utils#setOverLength()
   autocmd BufWinEnter,BufEnter * match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'  " highlight VCS conflict markers
 augroup END
 
@@ -127,7 +127,7 @@ endif
 
 " Configure fold status text
 if has('folding')
-  set foldtext=functions#NeatFoldText()
+  set foldtext=utils#NeatFoldText()
   set foldmethod=indent               " not as cool as syntax, but faster
   set foldlevelstart=99               " start unfolded
 endif
@@ -146,7 +146,7 @@ set tildeop
 
 " Make sure diffs are always opened in vertical splits, also match my git settings
 set diffopt+=vertical,algorithm:histogram,indent-heuristic
-call functions#customize_diff()
+call utils#customize_diff()
 
 set shortmess+=A                      " ignore annoying swapfile messages
 set shortmess+=I                      " no splash screen

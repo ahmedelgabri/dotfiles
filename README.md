@@ -1,4 +1,4 @@
-# My [.]files
+# ~ 🍭 ~
 
 For setting up development environment on new Mac. The config is managed by
 [GNU stow](https://www.gnu.org/software/stow/)
