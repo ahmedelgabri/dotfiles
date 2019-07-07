@@ -95,7 +95,7 @@ for [lsp, config] in s:LSP_CONFIG
   if s:not_empty_cmd | let s:languageservers[lsp] = config | endif
 
   " Disable tsserver when flow is loaded
-  if lsp ==# 'flow' && s:not_empty_cmd | call coc#config('tsserver', { 'enable': 0 }) | endif
+  if lsp ==# 'flow' && s:not_empty_cmd | call coc#config('tsserver', { 'enableJavascript': 0 }) | endif
 endfor
 
 if !empty(s:languageservers)
