@@ -106,7 +106,7 @@ function {
 
   typeset -AU __FZF
   if (( $+commands[fd] )); then
-    __FZF[CMD]='fd --hidden --no-ignore-vcs --exclude ".git/*" --exclude "node_modules/*"'
+    __FZF[CMD]='fd --hidden --no-ignore-vcs --exclude ".git" --exclude "node_modules"'
     __FZF[DEFAULT]="${__FZF[CMD]} --type f"
     __FZF[ALT_C]="${__FZF[CMD]} --type d ."
   elif (( $+commands[rg] )); then
