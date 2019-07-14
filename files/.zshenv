@@ -34,7 +34,7 @@ export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTE_DIR="${PERSONAL_STORAGE}/notes"
-[[ -f "${PERSONAL_STORAGE}/dotfiles/personal.zsh" ]] && source "${PERSONAL_STORAGE}/dotfiles/personal.zsh"
+source "${ZDOTDIR:-$HOME}/.zshenv.private"
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
 # (Only once) if it was not sourced before, becuase .zshenv is always sourced
