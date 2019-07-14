@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eueo pipefail
@@ -143,7 +143,7 @@ install_homebrew() {
   if ! command -v brew >/dev/null; then
     log_success "Installing Homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install stow
+    brew install stow transcrypt
   fi
 }
 
@@ -164,6 +164,20 @@ package_manager() {
   fi
 }
 
+decrypt_repo() {
+  cd "$DOTFILES_DIR"
+
+  echo "decrypting dotfiles..."
+  echo -n "transcrypt cipher: "
+  read -sr cipher
+  echo
+  echo -n "transcrypt password: "
+  read -sr password
+  echo
+
+  transcrypt -c "$cipher" -p "$password"
+}
+
 clone_dotfiles() {
   if [[ ! -d $DOTFILES_DIR ]]; then
     log_success "Cloning dotfiles..."
@@ -174,6 +188,8 @@ clone_dotfiles() {
       git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
       git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
       git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
+
+    decrypt_repo
   else
     cd "$DOTFILES_DIR" &&
       git stash -u &&
