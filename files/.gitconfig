@@ -225,3 +225,6 @@
 
 [include]
   path = ~/.gitconfig.local
+
+[protocol "keybase"]
+  allow = always
