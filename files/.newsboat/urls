@@ -34,6 +34,7 @@
 
 # Blog {{{
   https://brendaneich.com/feed/ "Blogs" "JavaScript"
+  https://feeds.feedburner.com/JohnResig "Blogs" "JavaScript"
   http://acko.net/atom.xml "Blogs" "Programming" "Creative" "Data"
   http://benhowdle.im/feed.xml "Blogs" "Web" "JavaScript"
   http://blog.dmfranc.com/rss "Blogs"
@@ -217,6 +218,7 @@
   https://mxb.dev/feed.xml "Blog" "CSS"
   http://feeds.feedburner.com/KrisJenkinsBlog "Blog" "FP" "Elm" "Clojure" "Haskell"
   https://jrsinclair.com/index.rss "Blog" "FP" "JavaScript"
+  https://programmingisterrible.com/rss "Blog" "Programming"
 # }}}
 
 # Browsers {{{
@@ -576,6 +578,7 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCsnGwSIHyoYN0kiINAGUKxg "YouTube" "CLI" "Terminal" "Unix" # Wolfgang's Channel
   https://www.youtube.com/feeds/videos.xml?channel_id=UCRPMAqdtSgd0Ipeef7iFsKw "YouTube" "Algorithms" "Data Structure" "System Design" # Gaurav Sen
   https://www.youtube.com/feeds/videos.xml?channel_id=UCFzGyNKXPAglNq28qWYTDFA "YouTube" "CLI" "Terminal" "Unix" # Kai Hendry
+  https://www.youtube.com/feeds/videos.xml?channel_id=UC-RKpEc4eE9PwJaupN91xYQ "YouTube" # Sprouts
 # }}}
 
 # Twitch {{{ NOT official RSS support
