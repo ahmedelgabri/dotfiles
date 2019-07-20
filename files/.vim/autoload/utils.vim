@@ -32,13 +32,14 @@ function! utils#Preserve(command) abort
   let l:pos=winsaveview()
   let l:search=@/
   " Do the business:
-  keepjumps execute a:command
+  keeppatterns execute a:command
+  " Trim trailing blank lines
+  " keeppatterns %s#\($\n\s*\)\+\%$##
   " Clean up: restore previous search history, and cursor position
   let @/=l:search
   nohlsearch
   call winrestview(l:pos)
 endfunction
-
 
 function! utils#ClearRegisters() abort
   let l:regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
@@ -148,9 +149,8 @@ function! utils#setOverLength()
   endif
 endfunction
 
-let g:GabriKeepWhitespace = ['markdown']
-function! utils#should_strip_whitespace() abort
-  return index(g:GabriKeepWhitespace, &filetype) == -1
+function! utils#should_strip_whitespace(filetypelist) abort
+  return index(a:filetypelist, &filetype) == -1
 endfunction
 
 fun! utils#ProfileStart(...)
@@ -215,7 +215,7 @@ function! utils#setupCompletion() abort
 
   " Remap keys for gotos
   nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gt <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
 

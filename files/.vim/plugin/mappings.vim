@@ -88,9 +88,6 @@ if exists(':Move')
   nnoremap <leader>r :Move %<cr>
 endif
 
-nnoremap _$ :call utils#Preserve("%s/\\s\\+$//e")<CR>
-nnoremap _= :call utils#Preserve("normal gg=G")<CR>
-
 vmap <silent> <Leader>hu :call utils#HtmlUnEscape()<CR>
 vmap <silent> <Leader>he :call utils#HtmlEscape()<CR>
 
