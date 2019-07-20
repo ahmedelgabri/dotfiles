@@ -24,7 +24,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['If a feature is sometimes dangerous, and there is a better option, then always use the better option.', '', '- Douglas Crockford'],
       \ ['The best way to make your dreams come true is to wake up.', '', '― Paul Valéry'],
       \ ['Fast is slow, but continuously, without interruptions', '', '– Japanese proverb'],
-      \ ['A language that doesn’t affect the way you think about programming is not worth knowing.', '- Alan Perlis']
+      \ ['A language that doesn’t affect the way you think about programming is not worth knowing.', '- Alan Perlis'],
+      \ ['Bad programmers worry about the code. Good programmers worry about data structures and their relationships', '' , '― Linus Torvalds']
       \ ]
 
 let g:startify_list_order = [
