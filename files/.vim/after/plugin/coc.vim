@@ -75,15 +75,6 @@ call coc#config('python', {
       \   }
       \ })
 
-call coc#config('git', {
-      \ 'enableGutters': 1,
-      \ 'addedSign.text':'▎',
-      \ 'changedSign.text':'▎',
-      \ 'removedSign.text':'◢',
-      \ 'topRemovedSign.text': '◥',
-      \ 'changeRemovedSign.text': '◢',
-      \ })
-
 call coc#config('coc.github', {
       \ 'filetypes': ['gitcommit', 'markdown.ghpull']
       \ })

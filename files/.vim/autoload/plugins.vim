@@ -71,7 +71,6 @@ function! plugins#install_plugins() abort
         \ 'coc-phpls',
         \ 'coc-vimlsp',
         \ 'coc-github',
-        \ 'coc-git',
         \ 'coc-svg',
         \ 'coc-tailwindcss'
         \ ]
@@ -108,7 +107,7 @@ function! plugins#install_plugins() abort
   " }}}
 
   " Git {{{
-  " call minpac#add('https://github.com/airblade/vim-gitgutter')
+  call minpac#add('https://github.com/airblade/vim-gitgutter')
   call minpac#add('https://github.com/lambdalisue/vim-gista')
   call minpac#add('https://github.com/tpope/vim-fugitive')
   call minpac#add('https://github.com/tpope/vim-rhubarb')
