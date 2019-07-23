@@ -219,6 +219,7 @@
   http://feeds.feedburner.com/KrisJenkinsBlog "Blog" "FP" "Elm" "Clojure" "Haskell"
   https://jrsinclair.com/index.rss "Blog" "FP" "JavaScript"
   https://programmingisterrible.com/rss "Blog" "Programming"
+  https://queue.acm.org/rss/feeds/queuecontent.xml "Blog" "Programming"
 # }}}
 
 # Browsers {{{
