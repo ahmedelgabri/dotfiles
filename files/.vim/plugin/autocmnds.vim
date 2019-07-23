@@ -42,4 +42,6 @@ augroup MyAutoCmds
   autocmd FileType lisp,scheme RainbowParentheses
 
   autocmd BufWritePre,FileWritePre * call utils#create_directories()
+  autocmd BufEnter,BufWinEnter,BufRead,BufNewFile bookmarks.{md,txt} hi! link mkdLink Normal
+        \| set concealcursor-=n
 augroup END
