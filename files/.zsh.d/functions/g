@@ -24,7 +24,7 @@ function g() {
 
   if [ $# -eq 0 ]; then
     printf "%s\n\n" "$(time_since_last_commit)"
-    "$__CMD" status --short --branch
+    "$__CMD" st 2> /dev/null || "$__CMD" status --short --branch
   else
     "$__CMD" "$@"
   fi

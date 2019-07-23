@@ -1,0 +1,40 @@
+#! /usr/bin/env bash
+# Code from: https://github.com/rec/gitz/blob/11b2604827fe85f261f3bceaa99fdcea621c41f3/git-st
+# Found on: https://www.reddit.com/r/git/comments/cfykfu/better_git_status/
+
+IFS=
+status="$(git -c color.status=always status -sb)"
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+diff="$(git diff --color --stat HEAD 2>/dev/null | sed '$d; s/^ //' | cut -d '|' -f 2)"
+
+IFS=$'\n' status=($status)
+IFS=$'\n' diff=($diff)
+
+len=-1
+for i in $(seq 1 $((${#status[@]} - 1))); do
+  if [ ${#status[i]} -gt $len ]; then
+    len=${#status[i]}
+  fi
+done
+((len *= -1))
+
+for i in $(seq 0 $((${#status[@]} - 1))); do
+  currStatus=${status[i]}
+  if [ $i -eq 0 ]; then
+    echo "${status[0]}" | cut -d ' ' -f 2-
+  else
+    if [ ! -z ${diff[i - 1]} ]; then
+      currDiff="|${diff[i - 1]}"
+    else
+      currDiff=""
+    fi
+    printf "%*s  %s\n" $len "${currStatus}" "${currDiff}"
+  fi
+done
+
+if [ $((${#status[@]} - 1)) -eq 0 ]; then
+  printf "\033[93mNothing to commit, working tree clean\033[0m\n"
+fi
