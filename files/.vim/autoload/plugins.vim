@@ -90,9 +90,9 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/RRethy/vim-hexokinase')
   " let g:Hexokinase_highlighters = ['sign_column']
   " let g:Hexokinase_virtualText = '██'
-  let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx']
+  let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx', 'json']
   call minpac#add('https://github.com/sheerun/vim-polyglot')
-  call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
+  " call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
   call minpac#add('https://github.com/amadeus/vim-convert-color-to')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
