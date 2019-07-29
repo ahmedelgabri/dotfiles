@@ -9,4 +9,4 @@ augroup END
 command! StripTrailingWhitespace call utils#Preserve("%s/\\s\\+$//e")
 command! Reindent call utils#Preserve("normal gg=G")
 
-nnoremap _= Reindent<cr>
+nnoremap _= :Reindent<cr>
