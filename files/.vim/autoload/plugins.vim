@@ -103,7 +103,7 @@ function! plugins#install_plugins() abort
   " }}}
 
   " Linters & Code quality {{{
-  call minpac#add('https://github.com/w0rp/ale', { 'do': '!yarn global add prettier' })
+  call minpac#add('https://github.com/dense-analysis/ale', { 'do': '!yarn global add prettier' })
   " }}}
 
   " Git {{{
