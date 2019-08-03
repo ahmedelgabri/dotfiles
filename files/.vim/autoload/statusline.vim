@@ -21,7 +21,7 @@ function! statusline#fileSize() abort
 endfunction
 
 function! statusline#getDiffColors() abort
-  return ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#']
+  return ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#', '%#DiffText#']
 endfunction
 
 " For a more fancy ale statusline
@@ -34,7 +34,7 @@ function! statusline#LinterStatus() abort
   let l:error_symbol = utils#GetIcon('linter_error')
   let l:style_symbol = utils#GetIcon('linter_style')
   let l:counts = ale#statusline#Count(bufnr(''))
-  let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
+  let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
   let l:status = []
 
   if l:counts.error
@@ -63,7 +63,7 @@ function! statusline#statusDiagnostic() abort
     return ''
   endif
 
-  let [l:DELETE, l:CHANGE, l:ADD] = statusline#getDiffColors()
+  let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
   let l:msgs = []
   if get(l:info, 'error', 0)
     call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , utils#GetIcon('linter_error')))
@@ -105,13 +105,13 @@ function! statusline#filepath() abort
   let l:extension = expand('%:e')
   let l:prefix = (l:basename ==# '' || l:basename ==# '.') ?
         \ '' : substitute(l:basename . '/', '\C^' . $HOME, '~', '')
-  let l:diffColors = statusline#getDiffColors()
+  let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
 
   if empty(l:prefix) && empty(l:filename)
-    return printf('%%4* %%f%%* %s%%m%%*', l:diffColors[2])
-  else
-    return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:diffColors[2] : '%6*', l:filename)
+    return printf('%%4* %%f%%* %s%%*', &modified ? l:CHANGE . '-' . '%*' : '%4*')
   endif
+
+  return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:CHANGE : '%6*', l:filename)
 endfunction
 
 " DEFINE MODE DICTIONARY
