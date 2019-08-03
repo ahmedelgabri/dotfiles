@@ -9,10 +9,10 @@ INSTALL="$(SCRIPTS)/install"
 all: node python neovim rust macos
 
 install:
-	bash <(cat $(INSTALL))
+	cat $(INSTALL) | bash
 
 debug:
-	bash -x <(cat $(INSTALL))
+	cat $(INSTALL) | bash -x
 
 # This is used inside `scripts/install` symlink_files function
 # The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124

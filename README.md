@@ -33,7 +33,7 @@ These are the main configs:
 2. Run one of these commands
 
 ```bash
-$ bash <(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)
+$ curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install | $(which bash)
 ```
 
 or
