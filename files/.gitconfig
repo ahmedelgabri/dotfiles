@@ -3,6 +3,15 @@
 [user]
   useconfigonly = true
 
+[include]
+  path = ~/.gitconfig.local
+
+[includeIf "gitdir:~/Sites/work/"]
+  # if you add an email here make sure this email is added to your GPG key,
+  # or even better generate a separate GPG key just for work & add it to GitHub
+  # otherwise your commits will not be signed on GitHub
+  path = ~/.gitconfig.work
+
 [gpg]
   program = /usr/local/bin/gpg
 
@@ -222,9 +231,6 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
-
-[include]
-  path = ~/.gitconfig.local
 
 [protocol "keybase"]
   allow = always
