@@ -120,7 +120,7 @@ function {
   export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
   export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
   export FZF_DEFAULT_OPTS='--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3'
-  export FZF_CTRL_T_OPTS='--preview-window right:50% --preview "(bat --style=numbers,changes --wrap never --color always {} || highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -500" --bind "?:toggle-preview"'
+  export FZF_CTRL_T_OPTS='--preview-window down:60% --preview "(bat --style=numbers,changes --wrap never --color always {} || highlight -O ansi -l {} || cat {} || tree -C {}) 2> /dev/null | head -500" --bind "?:toggle-preview"'
   export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
   export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null | head -200'"
 
