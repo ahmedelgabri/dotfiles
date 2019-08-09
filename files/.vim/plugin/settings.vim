@@ -37,7 +37,7 @@ set wildignore+=*.swp,*~,*/.DS_Store
 set tagcase=followscs
 
 if has('nvim-0.4')
-  set wildoptions=pum
+  set wildoptions+=pum
 endif
 
 if has('nvim-0.4')

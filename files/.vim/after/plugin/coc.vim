@@ -41,7 +41,21 @@ let s:LSP_CONFIG = [
       \   'filetypes': ['go'],
       \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/']
       \  }],
+      \ ['haskell', {
+      \     'command': exepath('hie-wrapper'),
+      \     'rootPatterns': ['.stack.yaml', 'cabal.config', 'package.yaml'],
+      \     'filetypes': ['hs', 'lhs', 'haskell'],
+      \     'initializationOptions': {},
+      \     'settings': {
+      \       'languageServerHaskell': {
+      \         'hlintOn': empty(exepath('hlint')) ? 1 : 0,
+      \         'maxNumberOfProblems': 10,
+      \         'completionSnippetsOn': 1
+      \       }
+      \     }
+      \   }
       \ ]
+      \]
 
 call coc#config('coc.preferences', {
       \ 'colorSupport': 0,

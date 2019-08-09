@@ -322,8 +322,8 @@ function! utils#floating_fzf() abort
   let l:buf = nvim_create_buf(v:false, v:true)
   call setbufvar(buf, '&signcolumn', 'no')
 
-  let l:height = float2nr(&lines * 0.75)
-  let l:width = float2nr(&columns - (&columns * 2 / 40))
+  let l:height = float2nr(&lines * 0.9)
+  let l:width = float2nr(&columns - (&columns * 2 / 60))
   let l:col = float2nr((&columns - width) / 2)
   let l:row = float2nr(&lines / 15)
 
