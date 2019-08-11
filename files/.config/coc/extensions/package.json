@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "coc-css": ">=1.2.2",
+    "coc-emoji": ">=1.2.3",
+    "coc-github": ">=1.0.1",
+    "coc-html": ">=1.2.1",
+    "coc-json": ">=1.2.3",
+    "coc-phpls": ">=2.0.6",
+    "coc-python": ">=1.2.5",
+    "coc-rls": ">=1.1.2",
+    "coc-svg": ">=0.0.13",
+    "coc-tailwindcss": ">=0.2.2",
+    "coc-tsserver": ">=1.3.15",
+    "coc-ultisnips": ">=1.2.3",
+    "coc-vimlsp": ">=0.3.6",
+    "coc-yaml": ">=1.0.2"
+  }
+}

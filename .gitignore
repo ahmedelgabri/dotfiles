@@ -35,3 +35,6 @@ files/.config/ranger/tagged
 files/.mail/.notmuch/
 !files/.mail/.notmuch/hooks
 .zplugin
+files/.config/coc
+!files/.config/coc/extensions/yarn.lock
+!files/.config/coc/extensions/package.json
