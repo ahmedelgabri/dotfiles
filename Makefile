@@ -20,12 +20,19 @@ symlink:
 	stow --restow -vv --ignore ".DS_Store" --target="$(HOME)" --dir="$(DOTFILES)" files
 
 homebrew:
-	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile"
+	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.shared"
 	brew cleanup
 	brew doctor
 
-homebrew-work:
+homebrew-personal: homebrew
+	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.personal"
+	brew cleanup
+	brew doctor
+
+homebrew-work: homebrew
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.work"
+	brew cleanup
+	brew doctor
 
 node:
 	sh $(SCRIPTS)/node-packages

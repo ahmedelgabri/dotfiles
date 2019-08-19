@@ -21,13 +21,15 @@ function init_accounts()
   switch_account("Personal")
 
   for _, acc in pairs(accounts) do
-    local switch_to = acc.switch_account.."/"..acc.switch_account
-    local switch_to_env = os.getenv(string.upper(acc.switch_account) .. EMAIL_ENV_SUFFIX)
-    local first_char = string.lower(string.sub(acc.switch_account, 1, 1))
+    if acc.switch_account ~= nill then
+      local switch_to = acc.switch_account.."/"..acc.switch_account
+      local switch_to_env = os.getenv(string.upper(acc.switch_account) .. EMAIL_ENV_SUFFIX)
+      local first_char = string.lower(string.sub(acc.switch_account, 1, 1))
 
-    mutt.enter("folder-hook +"..acc.account_name.."/* 'lua switch_account(\""..acc.account_name.."\")'")
-    if switch_to_env ~= nil then
-      mutt.enter('macro index,pager g' ..first_char.. ' "<change-folder>=' ..switch_to.. '<enter>" "Switch account to ' ..acc.switch_account.. '"')
+      mutt.enter("folder-hook +"..acc.account_name.."/* 'lua switch_account(\""..acc.account_name.."\")'")
+      if switch_to_env ~= nil then
+        mutt.enter('macro index,pager g' ..first_char.. ' "<change-folder>=' ..switch_to.. '<enter>" "Switch account to ' ..acc.switch_account.. '"')
+      end
     end
   end
 end

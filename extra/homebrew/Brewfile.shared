@@ -34,16 +34,6 @@ brew "node"
 brew "n"
 brew "yarn"
 brew "ruby"
-cask "java8"
-brew "clojure"
-brew "leiningen"
-brew "candid82/brew/joker"
-brew "ghc"
-brew "cabal-install"
-brew "haskell-stack"
-brew "pipenv"
-# I install rust from https://www.rust-lang.org/en-US/install.html
-# check Makefile
 
 # Core utils
 brew "hub"
@@ -86,10 +76,8 @@ brew "tmux", args: ["HEAD"]
 brew "vim"
 brew "weechat" # , args: ["with-curl"]
 brew "todoist"
-brew "youtube-dl"
 
 # Nice to have
-# brew "ledger"
 brew "graphviz"
 brew "asciinema"
 brew "editorconfig"
@@ -113,17 +101,12 @@ brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip"
 brew "nnn"
 brew "pass"
-brew "sk"
 brew "spark" # Needed for battery bin (optional)
 
 cask "alacritty"
 cask "1password"
-cask "1password-cli"
 cask "alfred"
 cask "appcleaner"
-cask "arq"
-cask "box-sync"
-cask "dayone-cli"
 cask "keybase"
 cask "kitty"
 cask "brave-browser"
@@ -141,10 +124,8 @@ cask "caskroom/fonts/font-ibm-plex"
 cask "caskroom/fonts/font-symbola"
 cask "google-chrome"
 cask "caskroom/versions/google-chrome-canary"
-# cask "gpg-suite"
 cask "hammerspoon"
 cask "imageoptim"
-cask "iina"
 cask "launchcontrol"
 cask "licecap"
 cask "qlcolorcode"
@@ -158,20 +139,9 @@ cask "quicklook-json"
 cask "rescuetime"
 cask "sequel-pro"
 cask "sketch"
-cask "skype"
-cask "transmission"
-cask "transmit"
 cask "caskroom/versions/visual-studio-code-insiders"
-cask "vlc"
-cask "viscosity"
 cask "webpquicklook"
-cask "whatsapp"
 
-# mas "Day One", id: 1055511498
 # mas "Guidance", id: 412759995
-# mas "Irvue", id: 1039633667
-# mas "Keynote", id: 409183694
 # mas "Sip", id: 507257563
 # mas "The Unarchiver", id: 425424353
-# mas "Transmit", id: 403388562
-# mas "Tweetbot", id: 557168941

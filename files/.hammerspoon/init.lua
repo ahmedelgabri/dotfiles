@@ -8,6 +8,8 @@ require 'window-managment'
 require 'layout'
 amphetamine = require 'amphetamine'
 
+local default_browser = hs.host.localizedName() == 'Pandoras-Box' and 'com.google.Chrome.Canary' or 'com.brave.Browser'
+
 spoon.SpoonInstall.use_syncinstall = true
 
 spoon.SpoonInstall:andUse('URLDispatcher',
@@ -23,7 +25,7 @@ spoon.SpoonInstall:andUse('URLDispatcher',
         { 'https?://circleci.com/gh/SEOshop',  'com.google.Chrome' },
         { 'https?://circleci.com/gh/merchantos',  'com.google.Chrome' },
       },
-      default_handler = 'com.google.Chrome.Canary'
+      default_handler = default_browser
     },
     start = true
   }
