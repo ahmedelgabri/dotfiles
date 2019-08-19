@@ -4,9 +4,9 @@ endglobal
 
 snippet pretty "pretty-print JSON-able data" b
 console.log(
-  JSON.stringify({
-    $1
-  }, null, 2)
+	JSON.stringify({
+		$1
+	}, null, 2)
 )
 endsnippet
 
@@ -259,7 +259,7 @@ endsnippet
 snippet ** "docblock" b
 /**
 ${VISUAL:/((?m)^)/ * /g}$0
- */
+*/
 endsnippet
 
 snippet par "@param {...}"
@@ -301,6 +301,11 @@ endsnippet
 
 snippet expect "expect" b
 expect(${1}).to${2}(${3})
+endsnippet
+
+snippet esl "eslint comment"
+// eslint-disable${1:-next-line} ${2:no-debugger}
+${0:debugger}
 endsnippet
 
 # vim:ft=snippets:
