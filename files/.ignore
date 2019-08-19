@@ -19,3 +19,4 @@ pack
 *.spl
 *.jar
 .DS_Store
+.config/coc
