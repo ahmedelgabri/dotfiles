@@ -31,8 +31,8 @@ function! statusline#LinterStatus() abort
     return ''
   endif
 
-  let l:error_symbol = utils#GetIcon('linter_error')
-  let l:style_symbol = utils#GetIcon('linter_style')
+  let l:error_symbol = utils#GetIcon('error')
+  let l:style_symbol = utils#GetIcon('warn')
   let l:counts = ale#statusline#Count(bufnr(''))
   let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
   let l:status = []
@@ -41,10 +41,10 @@ function! statusline#LinterStatus() abort
     call add(l:status, printf('%s%d %s %%*', l:DELETE,  l:counts.error, l:error_symbol))
   endif
   if l:counts.warning
-    call add(l:status, printf('%s%d %s %%*', l:CHANGE, l:counts.warning, l:error_symbol))
+    call add(l:status, printf('%s%d %s %%*', l:CHANGE, l:counts.warning, l:style_symbol))
   endif
   if l:counts.style_error
-    call add(l:status, printf('%s%d %s %%*', l:DELETE, l:counts.style_error, l:style_symbol))
+    call add(l:status, printf('%s%d %s %%*', l:DELETE, l:counts.style_error, l:error_symbol))
   endif
   if l:counts.style_warning
     call add(l:status, printf('%s%d %s %%*', l:CHANGE, l:counts.style_warning, l:style_symbol))
@@ -66,10 +66,10 @@ function! statusline#statusDiagnostic() abort
   let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
   let l:msgs = []
   if get(l:info, 'error', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , utils#GetIcon('linter_error')))
+    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , utils#GetIcon('error')))
   endif
   if get(info, 'warning', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['warning'] , utils#GetIcon('linter_style')))
+    call add(l:msgs, printf('%s%d %s %%*', l:CHANGE,  l:info['warning'] , utils#GetIcon('warn')))
   endif
 
   return join(l:msgs, ' ')

@@ -267,9 +267,11 @@ function! utils#GetIcon(key) abort
   let l:ICONS = {
         \'paste': '⍴',
         \'spell': '✎',
-        \'branch': exists($PURE_GIT_BRANCH) ? $PURE_GIT_BRANCH : '  ',
-        \'linter_error': '×',
-        \'linter_style': '●',
+        \'branch': exists($PURE_GIT_BRANCH) ? trim($PURE_GIT_BRANCH) : '  ',
+        \'error': '×',
+        \'warn': '●',
+        \'info': '!',
+        \'hint': '?',
         \'lock': ' ',
         \}
 

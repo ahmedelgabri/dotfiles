@@ -20,9 +20,6 @@ augroup MyCustomColors
         \| execute printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm'))
         \| execute printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm'))
         \| execute printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm'))
-        \| execute printf("hi! ALEInfoLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
-        \| execute printf("hi! ALEWarningLine guifg=%s guibg=%s", &background=='light'?'#808000':'#ffff00', &background=='light'?'#ffff00':'#555500')
-        \| execute printf("hi! ALEErrorLine guifg=%s guibg=%s", '#ff0000', &background=='light'?'#ffcccc':'#550000')
         \| hi! link Error ErrorMsg
         \| hi! link ALEError DiffDelete
         \| hi! link ALEErrorSign DiffDelete
