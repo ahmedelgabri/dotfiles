@@ -21,8 +21,6 @@ symlink:
 
 homebrew:
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.shared"
-	brew cleanup
-	brew doctor
 
 homebrew-personal: homebrew
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.personal"
