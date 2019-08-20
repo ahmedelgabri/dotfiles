@@ -282,10 +282,10 @@ install_apps() {
     if [ "$(uname)" == "Darwin" ]; then
       # I want all the make steps to run even if a cask or a brew errored out
       # So I use --ignore-errors flag
-      if [ "$(hostname)" == "Pandoras-Box" ]; then
-        cd "$DOTFILES_DIR" && make --ignore-errors homebrew-personal
-      else
+      if [ "$(echo "$0" | tr '[:upper:]' '[:lower:]')" == "work" ]; then
         cd "$DOTFILES_DIR" && make --ignore-errors homebrew-work
+      else
+        cd "$DOTFILES_DIR" && make --ignore-errors homebrew-personal
       fi
     else
       # install linux packages

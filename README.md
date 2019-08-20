@@ -30,16 +30,18 @@ These are the main configs:
 1. Install Xcode & Command line tools, do it manually. Automation doesn't work
    nice here.
 
-2. Run one of these commands
+2. Run the following command
+
+By default it will install personal stuff
 
 ```bash
 $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)"
 ```
 
-or
+for work you need to pass `work` as an argument
 
 ```sh
-$ git clone https://github.com/ahmedelgabri/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && make install
+$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)" work
 ```
 
 ### Notes
