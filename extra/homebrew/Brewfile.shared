@@ -83,7 +83,7 @@ brew "asciinema"
 brew "editorconfig"
 brew "exiftool"
 brew "figlet"
-brew "heroku"
+brew "heroku/brew/heroku"
 brew "httpie"
 brew "neofetch"
 brew "proselint"
@@ -141,6 +141,7 @@ cask "sequel-pro"
 cask "sketch"
 cask "caskroom/versions/visual-studio-code-insiders"
 cask "webpquicklook"
+cask "zoomus"
 
 # mas "Guidance", id: 412759995
 # mas "Sip", id: 507257563
