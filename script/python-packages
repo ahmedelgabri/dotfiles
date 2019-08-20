@@ -15,7 +15,7 @@ PACKAGES=(
 FLAGS=''
 
 for package in "${PACKAGES[@]}"; do
-  [[ $package == "pip" ]] && FLAGS="--upgrade" || FLAGS="--user --upgrade"
+  [[ $package == "pip" ]] && FLAGS="--upgrade" || FLAGS="--user"
   [[ $package == "black" ]] && pip3 install "$FLAGS" "$package" || pip2 install "$FLAGS" "$package" && pip3 install "$FLAGS" "$package"
 done
 
