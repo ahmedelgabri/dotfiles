@@ -8,7 +8,7 @@ require 'window-managment'
 require 'layout'
 amphetamine = require 'amphetamine'
 
-local default_browser = hs.host.localizedName() == 'Pandoras-Box' and 'com.google.Chrome.Canary' or 'com.brave.Browser'
+local default_browser = hs.host.localizedName() == 'pandoras-box' and 'com.google.Chrome.Canary' or 'com.brave.Browser'
 
 spoon.SpoonInstall.use_syncinstall = true
 
