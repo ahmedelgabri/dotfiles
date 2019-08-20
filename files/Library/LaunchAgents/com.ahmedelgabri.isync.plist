@@ -4,8 +4,12 @@
   <dict>
     <key>Label</key>
     <string>com.ahmedelgabri.isync</string>
-    <key>Program</key>
-    <string>/Users/ahmed/.dotfiles/extra/bin/mail-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>-c</string>
+      <string>exec $HOME/.dotfiles/extra/bin/mail-sync</string>
+    </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
