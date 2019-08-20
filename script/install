@@ -281,7 +281,7 @@ install_apps() {
     log_success "Installing apps & tools, this will take a while..."
     if [ "$(uname)" == "Darwin" ]; then
       # I want all the make steps to run even if a cask or a brew errored out
-      cd "$DOTFILES_DIR" && make --ignore-errors homebrew
+      # So I use --ignore-errors flag
       if [ "$(hostname)" == "Pandoras-Box" ]; then
         cd "$DOTFILES_DIR" && make --ignore-errors homebrew-personal
       else
@@ -330,8 +330,8 @@ all() {
   if [ $? -eq 0 ]; then
     log_success "Done."
     log_info "Open a new tab & run \"cd ~/.dotfiles && make\" to install node, python packages & neovim deps" \
-      "Don't forget to generate SSH keys & import gpg keys" \
-      command vim -u NONE $HOME/.{gitconfig,zshrc}.local
+      "Don't forget to generate SSH keys & import gpg keys"
+    command vim -u NONE $HOME/.{gitconfig,zshrc}.local
   else
     log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
   fi
