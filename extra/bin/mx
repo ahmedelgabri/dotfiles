@@ -65,7 +65,11 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
   tmux link-window -s _shared:mail -t 6
   tmux link-window -s _shared:rss -t 7
   tmux link-window -s _shared:dotfiles -t 8
-  tmux link-window -s _shared:log -t 9
+  # [TODO] Find a tmux check solution instead
+  LOGPATH="$PROJECTS"/knowledge
+  if [ -d "$LOGPATH" ]; then
+    tmux link-window -s _shared:log -t 9
+  fi
   tmux link-window -s _shared:reddit -t 10
   tmux link-window -s _shared:weechat -t 11
   tmux select-window -t 1
