@@ -28,7 +28,6 @@ cask "transmission"
 cask "transmit"
 cask "vlc"
 cask "viscosity"
-cask "whatsapp"
 
 # mas "Day One", id: 1055511498
 # mas "Guidance", id: 412759995
