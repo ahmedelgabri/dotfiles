@@ -5,8 +5,14 @@
 # $1 = keyname
 # $2 = Email ID used
 
-ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"${2:-id_rsa}" -C "$1"
-pbcopy <"$HOME"/.ssh/"${2:-id_rsa}".pub
-echo "------------------------------------------------------------\n"
-echo "($1.pub) has been created & copied to your clipboard \n"
-echo "------------------------------------------------------------\n"
+mkssh() {
+  NAME=${2:-id_rsa}
+
+  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$NAME" -C "$1"
+  pbcopy <"$HOME"/.ssh/"$NAME".pub
+  echo "------------------------------------------------------------\n"
+  echo "($NAME.pub) has been created & copied to your clipboard \n"
+  echo "------------------------------------------------------------\n"
+}
+
+mkssh "$@"
