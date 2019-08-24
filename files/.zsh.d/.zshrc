@@ -24,6 +24,8 @@ function {
   (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
   # Shell {{{
+    zplugin snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+
     zplugin light zdharma/zui
     zplugin ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
     zplugin light zdharma/zplugin-crasis
