@@ -52,6 +52,8 @@ path=(
   ${GOPATH}/bin(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
+  ${HOMEBREW_CELLAR}/ruby/*/bin(N-/)
+  ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(N-/)
   /usr/local/{bin,sbin}
   /usr/local/Cellar/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
   $path
