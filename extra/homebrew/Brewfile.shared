@@ -2,8 +2,8 @@
 
 cask_args appdir: '/Applications'
 
-tap "caskroom/fonts"
-tap "caskroom/versions"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "neomutt/homebrew-neomutt"
