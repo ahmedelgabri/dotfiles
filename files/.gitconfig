@@ -140,8 +140,8 @@
   force = push --force-with-lease
   fam = "!f() { git add . && git amend && git force; }; f"
   blm = blame -wMC
-  br = branch
-  brs = branch --sort=-committerdate --all --verbose
+  br = branch --sort=-committerdate --verbose --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) - %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)'
+  brs = br -a
   cb = checkout -b
   cm = commit
   co = checkout
