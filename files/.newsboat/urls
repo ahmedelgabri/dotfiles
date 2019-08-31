@@ -221,6 +221,8 @@
   https://programmingisterrible.com/rss "Blog" "Programming"
   https://queue.acm.org/rss/feeds/queuecontent.xml "Blog" "Programming"
   https://sookocheff.com/index.xml "Blog" "FP" "Haskell" "Lambda Calculus"
+  https://feross.org/atom.xml "Blog" "JavaScript"
+  https://sulami.github.io/atom.xml "Blog" "Clojure"
 # }}}
 
 # Browsers {{{
