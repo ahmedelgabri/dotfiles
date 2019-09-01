@@ -6,6 +6,9 @@ add_mirrors() {
   for mirror in "${MIRROS[@]}"; do
     git remote add --mirror=push "$mirror" "git@$mirror.com:${GITHUB_USER:-ahmedelgabri}/$1.git"
   done
+
+  echo "${MIRROS[*]} were added as mirrors to your remote"
+  git remote --verbose
 }
 
 add_mirrors "$@"
