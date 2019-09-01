@@ -1,6 +1,8 @@
 # vim:ft=zsh:
 # https://github.com/junegunn/fzf/wiki/Examples
 
+emulate -L zsh
+
 # fuzzy z
 unalias z 2> /dev/null
 z() {

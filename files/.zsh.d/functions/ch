@@ -1,6 +1,8 @@
 # vim:ft=zsh:
 # c - browse chrome canary history
 
+emulate -L zsh
+
 ch() {
   local cols sep google_history open
   cols=$(( COLUMNS / 3 ))

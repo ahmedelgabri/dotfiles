@@ -24,7 +24,7 @@ if (( terminfo[colors] >= 8 )); then
     (( ! ${+LSCOLORS} )) && export LSCOLORS='ExfxcxdxbxGxDxabagacad'
 
     # stock OpenBSD ls does not support colors at all, but colorls does.
-    if [[ ${OSTYPE} == openbsd* ]]; then
+    if [[ "$(uname)" == openbsd* ]]; then
       if (( ${+commands[colorls]} )); then
         alias ls='colorls -G'
       fi
@@ -34,7 +34,7 @@ if (( terminfo[colors] >= 8 )); then
   # grep Colours
   (( ! ${+GREP_COLOR} )) && export GREP_COLOR='37;45'               #BSD
   (( ! ${+GREP_COLORS} )) && export GREP_COLORS="mt=${GREP_COLOR}"  #GNU
-  if [[ ${OSTYPE} == openbsd* ]]; then
+  if [[ "$(uname)" == openbsd* ]]; then
     if (( ${+commands[ggrep]} )); then
       alias grep='ggrep --color=auto'
     fi
@@ -83,7 +83,7 @@ alias du='du -kh'
 # Better safe than sorry
 #
 
-if [[ ${OSTYPE} == linux* ]]; then
+if [[ "$(uname)" == linux* ]]; then
   alias chmod='chmod --preserve-root -v'
   alias chown='chown --preserve-root -v'
 fi

@@ -3,47 +3,27 @@
 #
 
 # sets the location of the history file
-HISTFILE="${HOME}/.zhistory"
+HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
 
 # limit of history entries
 HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
 HISTORY_IGNORE='(clear|c|pwd|exit|* —help|[bf]g *|l[alsh]#( *)#|less *)'
 
-# Perform textual history expansion, csh-style, treating the character ‘!’ specially.
-setopt BANG_HIST
-
-# Expire a duplicate event first when trimming history.
-setopt HIST_EXPIRE_DUPS_FIRST
-
-# Save each command’s beginning timestamp (in seconds since the epoch) and the duration (in seconds) to the history file.
-# ‘: <beginning time>:<elapsed seconds>;<command>’.
-setopt EXTENDED_HISTORY
-
-# This options works like APPEND_HISTORY except that new history lines are added to the ${HISTFILE} incrementally
-# (as soon as they are entered), rather than waiting until the shell exits.
-setopt INC_APPEND_HISTORY
-
-# Shares history across all sessions rather than waiting for a new shell invocation to read the history file.
-setopt SHARE_HISTORY
-
-# Do not enter command lines into the history list if they are duplicates of the previous event.
-setopt HIST_IGNORE_DUPS
-
-# If a new command line being added to the history list duplicates an older one,
-# the older command is removed from the list (even if it is not the previous event).
-setopt HIST_IGNORE_ALL_DUPS
-
-# Remove command lines from the history list when the first character on the line is a space,
-# or when one of the expanded aliases contains a leading space.
-setopt HIST_IGNORE_SPACE
-
-# When writing out the history file, older commands that duplicate newer ones are omitted.
-setopt HIST_SAVE_NO_DUPS
-
-# Whenever the user enters a line with history expansion, don’t execute the line directly;
-# instead, perform history expansion and reload the line into the editing buffer.
-setopt HIST_VERIFY
+setopt BANG_HIST                 # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
+setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks from each command line being added to the history list.
+setopt APPEND_HISTORY            # append to history file
+setopt HIST_NO_STORE             # Don't store history commands
 
 # Lists the ten most used commands.
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"

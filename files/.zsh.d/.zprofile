@@ -21,7 +21,8 @@ fpath=(
   $fpath
 )
 
-autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.zsh.d}/functions/**/*(N:t)
+autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.zsh.d}/functions/**/*(N:t) promptinit
+promptinit # enables prompt command which is useful to list installed prompts
 
 manpath=(
   ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman(N-/)

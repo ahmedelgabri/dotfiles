@@ -9,6 +9,8 @@
 # $ sudo chmod -R 755 zsh
 # $ sudo chown -R $USER:staff zsh
 
+emulate -L zsh
+
 command -v git >/dev/null || return 0
 
 unalias g 2>/dev/null

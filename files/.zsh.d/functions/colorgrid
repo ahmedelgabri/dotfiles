@@ -1,5 +1,7 @@
 # vim:ft=zsh:
 
+emulate -L zsh
+
 colorgrid() {
   iter=16
   while [ $iter -lt 52 ]

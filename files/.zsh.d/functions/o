@@ -2,6 +2,8 @@
 # No arguments: `open .`
 # With arguments: acts like `open`
 
+emulate -L zsh
+
 unalias o 2> /dev/null
 
 function o {

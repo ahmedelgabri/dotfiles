@@ -57,7 +57,6 @@ alias r="ranger" # overrides built-in r command
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
-(( $+commands[sbcl] )) && (( $+commands[rlwrap] )) && alias sbcl="rlwrap sbcl"
 
 if (( $+commands[hub] )); then
   alias git=hub
@@ -65,5 +64,7 @@ if (( $+commands[hub] )); then
 else
   compdef g=git
 fi
+
+(( $+commands[yarn] )) && alias y=yarn
 
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'

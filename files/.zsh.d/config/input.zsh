@@ -47,18 +47,6 @@ key_info=(
 
 # Bind the keys
 
-local key
-for key (${(s: :)key_info[ControlLeft]}) bindkey ${key} backward-word
-for key (${(s: :)key_info[ControlRight]}) bindkey ${key} forward-word
-
-[[ -n ${key_info[Home]} ]] && bindkey ${key_info[Home]} beginning-of-line
-[[ -n ${key_info[End]} ]] && bindkey ${key_info[End]} end-of-line
-
-[[ -n ${key_info[PageUp]} ]] && bindkey ${key_info[PageUp]} up-line-or-history
-[[ -n ${key_info[PageDown]} ]] && bindkey ${key_info[PageDown]} down-line-or-history
-
-[[ -n ${key_info[Insert]} ]] && bindkey ${key_info[Insert]} overwrite-mode
-
 if [[ ${zdouble_dot_expand} == 'true' ]]; then
   double-dot-expand() {
     if [[ ${LBUFFER} == *.. ]]; then
@@ -70,12 +58,6 @@ if [[ ${zdouble_dot_expand} == 'true' ]]; then
   zle -N double-dot-expand
   bindkey '.' double-dot-expand
 fi
-
-[[ -n ${key_info[Backspace]} ]] && bindkey ${key_info[Backspace]} backward-delete-char
-[[ -n ${key_info[Delete]} ]] && bindkey ${key_info[Delete]} delete-char
-
-[[ -n ${key_info[Left]} ]] && bindkey ${key_info[Left]} backward-char
-[[ -n ${key_info[Right]} ]] && bindkey ${key_info[Right]} forward-char
 
 # Expandpace.
 bindkey ' ' magic-space

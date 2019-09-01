@@ -1,6 +1,8 @@
 # vim:ft=zsh:
 # For todoist cli
 
+emulate -L zsh
+
 # Exit if yarn is not installed
 (( $+commands[todoist] )) || return 0
 

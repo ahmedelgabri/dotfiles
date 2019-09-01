@@ -1,6 +1,8 @@
 # vim:ft=zsh:
 # Shadow `n` https://github.com/tj/n for ease of use in repos with `.nvmrc` or `.node-version` files
 
+emulate -L zsh
+
 (( $+commands[n] )) || return 0
 
 unalias n 2>/dev/null

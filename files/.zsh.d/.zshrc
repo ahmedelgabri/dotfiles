@@ -45,6 +45,8 @@ function {
 
     # Arrays in zsh starts from 1
     export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
+    export PURE_GIT_UP_ARROW='🠥'
+    export PURE_GIT_DOWN_ARROW='🠧'
     # Old icon 
     export PURE_GIT_BRANCH="  "
     zstyle :prompt:pure:path color 240
@@ -168,26 +170,15 @@ function {
     kitty + complete setup zsh | source /dev/stdin
   fi
 
-  # For context https://github.com/github/hub/pull/1962
-  # I run in the background to not affect startup time.
-  # https://github.com/ahmedelgabri/dotfiles/commit/c8156c2f0cf74917392a0e700668005b8f1bbbdb#r33940655
-  (
-  __GIT_ZSH_COMPLETIONS_FILE_PATH="${HOMEBREW_PREFIX}/share/zsh/site-functions/_git"
-
-  if [ -f "$__GIT_ZSH_COMPLETIONS_FILE_PATH" ]
-  then
-    command rm "$__GIT_ZSH_COMPLETIONS_FILE_PATH"
-  fi
-  ) &!
-
-  ##############################################################
-  # /etc/motd
-  ##############################################################
-
-  if [ -e /etc/motd ]; then
-    if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
-      tee ${HOME}/.hushlogin < /etc/motd
-    fi
+  if [ "$(uname)" = "Darwin" ]; then
+    # For context https://github.com/github/hub/pull/1962
+    # I run in the background to not affect startup time.
+    # https://github.com/ahmedelgabri/dotfiles/commit/c8156c2f0cf74917392a0e700668005b8f1bbbdb#r33940655
+    (
+      if [ -e /usr/local/share/zsh/site-functions/_git ]; then
+        mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
+      fi
+    ) &!
   fi
 
   ##############################################################
@@ -202,3 +193,9 @@ function {
     fi
   fi
 }
+
+if [ -e /etc/motd ]; then
+  if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
+    tee ${HOME}/.hushlogin < /etc/motd
+  fi
+fi

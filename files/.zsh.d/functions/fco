@@ -1,5 +1,8 @@
 # vim:ft=zsh:
 # fco - checkout git branch/tag
+
+emulate -L zsh
+
 fco() {
   local tags branches target
   tags=$(

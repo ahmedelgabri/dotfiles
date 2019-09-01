@@ -1,5 +1,7 @@
 # vim:ft=zsh:
 
+emulate -L zsh
+
 unalias l 2> /dev/null
 
 l(){

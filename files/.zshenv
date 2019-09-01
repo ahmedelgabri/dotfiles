@@ -26,14 +26,12 @@ export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:-"/usr/local"}
 export HOMEBREW_CELLAR=${HOMEBREW_CELLAR:-"/usr/local/Cellar"}
 export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 
-export OSTYPE=$(uname -s)
-export HOSTNAME=$(hostname)
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
 export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
-export NOTE_DIR="${PERSONAL_STORAGE}/notes"
+export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 source "${ZDOTDIR:-$HOME}/.zshenv.private"
 
 # Ensure that a non-login, non-interactive shell has a defined environment.

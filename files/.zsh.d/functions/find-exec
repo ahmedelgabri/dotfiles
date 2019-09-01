@@ -1,5 +1,8 @@
 # vim:ft=zsh:
 # Finds files and executes a command on them.
+
+emulate -L zsh
+
 function find-exec {
   find . -type f -iname "*${1:-}*" -exec "${2:-file}" '{}' \;
 }
