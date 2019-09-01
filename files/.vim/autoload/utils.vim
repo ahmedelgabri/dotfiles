@@ -269,8 +269,8 @@ function! utils#GetIcon(key) abort
         \'spell': '✎',
         \'branch': exists($PURE_GIT_BRANCH) ? trim($PURE_GIT_BRANCH) : '  ',
         \'error': '×',
-        \'warn': '●',
-        \'info': '!',
+        \'info': '●',
+        \'warn': '!',
         \'hint': '?',
         \'lock': ' ',
         \}
