@@ -2,8 +2,4 @@
 
 /usr/local/opt/coreutils/libexec/gnubin/timeout 2m /usr/local/bin/mbsync -q -a
 
-if [ "$HOSTNAME" = "Pandoras-Box" ]; then
-  find "$HOME/.mail/Personal/Personal" -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \;
-else
-  find "$HOME/.mail/Work/Work" -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \;
-fi
+find "$HOME/.mail/Personal/Personal" "$HOME/.mail/Work/Work" -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \; 2>/dev/null
