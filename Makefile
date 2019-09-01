@@ -9,15 +9,17 @@ INSTALL="$(SCRIPTS)/install"
 all: node python neovim rust macos
 
 install:
-	cat $(INSTALL) | bash
+	bash <(cat $(INSTALL))
 
 debug:
-	cat $(INSTALL) | bash -x
+	bash -x <(cat $(INSTALL))
 
 # This is used inside `scripts/install` symlink_files function
 # The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124
 symlink:
 	stow --restow -vv --ignore ".DS_Store" --target="$(HOME)" --dir="$(DOTFILES)" files
+	# Fix gpg folder/file permissions after symlinking
+	chmod 700 $(HOME)/.gnupg && chmod 600 $(HOME)/.gnupg/*
 
 homebrew:
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.shared"
