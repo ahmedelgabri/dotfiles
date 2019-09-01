@@ -169,8 +169,7 @@ decrypt_repo() {
 
   echo "decrypting dotfiles..."
   echo -n "transcrypt cipher: "
-  read -sr cipher
-  echo
+  read -r cipher
   echo -n "transcrypt password: "
   read -sr password
   echo
