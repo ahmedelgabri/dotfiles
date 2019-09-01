@@ -20,7 +20,6 @@ brew "youtube-dl"
 
 cask "1password-cli"
 cask "arq"
-cask "box-sync"
 cask "dayone-cli"
 cask "iina"
 cask "skype"

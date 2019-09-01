@@ -2,7 +2,6 @@
 
 cask_args appdir: '/Applications'
 
-tap "caskroom/cask"
 tap "caskroom/fonts"
 tap "caskroom/versions"
 tap "homebrew/bundle"
@@ -101,6 +100,7 @@ cask "alacritty"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
+cask "box-sync"
 cask "keybase"
 cask "kitty"
 cask "brave-browser"
