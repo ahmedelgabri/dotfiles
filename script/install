@@ -278,7 +278,7 @@ symlink_files() {
 install_apps() {
   if [[ -d $DOTFILES_DIR ]]; then
     log_success "Installing apps & tools, this will take a while..."
-    if [ "$(uname)" == "Darwin" ]; then
+    if [ "$(uname)" = "Darwin" ]; then
       # I want all the make steps to run even if a cask or a brew errored out
       # So I use --ignore-errors flag
       if [ "$(echo "$0" | tr '[:upper:]' '[:lower:]')" == "work" ]; then

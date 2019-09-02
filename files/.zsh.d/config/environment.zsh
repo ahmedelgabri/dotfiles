@@ -55,7 +55,7 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un
 # Browser
 #
 
-if [[ "$(uname)" == darwin* ]]; then
+if [ "$(uname)" = "Darwin" ]; then
   export BROWSER='open'
 fi
 
