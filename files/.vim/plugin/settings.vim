@@ -35,6 +35,7 @@ set wildmode=longest:full,list,full
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc
 set wildignore+=*.swp,*~,*/.DS_Store
 set tagcase=followscs
+set tags^=./.git/tags;
 
 if has('nvim-0.4')
   set wildoptions+=pum
