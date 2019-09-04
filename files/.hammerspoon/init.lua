@@ -14,7 +14,7 @@ if hs.host.localizedName() == 'pandoras-box' then
   spoon.SpoonInstall:andUse('URLDispatcher',
     {
       config = {
-        default_handler = 'com.google.Chrome.Canary'
+        default_handler = 'com.google.Chrome'
       },
       start = true
     }
