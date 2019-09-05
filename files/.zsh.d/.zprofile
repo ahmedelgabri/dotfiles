@@ -44,8 +44,8 @@ path=(
   ./node_modules/.bin
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
-  /usr/local/opt/curl/bin(N-/)
-  /usr/local/opt/openssl/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/openssl/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
@@ -53,10 +53,10 @@ path=(
   ${GOPATH}/bin(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
-  ${HOMEBREW_CELLAR}/ruby/*/bin(N-/)
-  ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/ruby/bin(N-/)
+  ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(Nn[-1]-/)
   /usr/local/{bin,sbin}
-  /usr/local/Cellar/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
+  ${HOMEBREW_CELLAR}/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
   $path
 )
 
