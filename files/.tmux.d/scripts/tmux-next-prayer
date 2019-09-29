@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # -*- coding: utf-8 -*-
 # pylint: disable=missing-docstring,invalid-name,line-too-long
@@ -100,4 +100,5 @@ def get_prayer(now):
     return result
 
 
-print(get_prayer(datetime.now()), end="")
+if __name__ == "__main__":
+    print(get_prayer(datetime.now()), end="")
