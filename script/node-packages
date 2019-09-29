@@ -1,5 +1,12 @@
 #!/bin/bash
 
+type yarn >/dev/null 2>&1 || {
+  echo >&2 "# yarn and node must be installed."
+  echo >&2 "# Please, install node and yarn and try again"
+  echo >&2 "# Skipping node packages installation…"
+  exit 1
+}
+
 NPM_PACKAGES=(
   "bash-language-server"
   "dockerfile-language-server-nodejs"
