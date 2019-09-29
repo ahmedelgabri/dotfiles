@@ -138,10 +138,10 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
   call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
   call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
+  call minpac#add('https://github.com/liuchengxu/space-vim-theme', {'type': 'opt'})
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
-  call minpac#add('https://github.com/agreco/vim-citylights', { 'type': 'opt'  })
-  call minpac#add('https://github.com/NLKNguyen/papercolor-theme', { 'type': 'opt' })
+  call minpac#add('https://github.com/arzg/vim-corvine', { 'type': 'opt' })
   " }}}
 endfunction
 
