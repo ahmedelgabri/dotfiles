@@ -38,10 +38,6 @@ set tagcase=followscs
 set tags^=./.git/tags;
 
 if has('nvim-0.4')
-  set wildoptions+=pum
-endif
-
-if has('nvim-0.4')
   set pumblend=10
 endif
 
@@ -148,7 +144,7 @@ set hidden
 set tildeop
 
 " Make sure diffs are always opened in vertical splits, also match my git settings
-set diffopt+=vertical,algorithm:histogram,indent-heuristic
+set diffopt+=vertical,algorithm:histogram,indent-heuristic,hiddenoff
 call utils#customize_diff()
 
 set shortmess+=A                      " ignore annoying swapfile messages
