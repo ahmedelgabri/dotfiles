@@ -41,6 +41,7 @@ cdpath=(
 
 # Set the list of directories that Zsh searches for programs.
 path=(
+  ./node_modules/.bin
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
