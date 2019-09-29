@@ -41,11 +41,10 @@ cdpath=(
 
 # Set the list of directories that Zsh searches for programs.
 path=(
-  ./node_modules/.bin
   ${DOTFILES}/extra/bin(N-/)
   ${HOME}/.local/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
-  ${HOMEBREW_PREFIX}/opt/openssl/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/openssl@*/bin(Nn[-1]-/)
   ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
