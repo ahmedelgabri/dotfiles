@@ -283,6 +283,7 @@ endfunction
 function! utils#floating_fzf() abort
   let l:buf = nvim_create_buf(v:false, v:true)
   call setbufvar(buf, '&signcolumn', 'no')
+  call setbufvar(l:buf, '&filetype', 'fzf')
 
   let l:height = float2nr(&lines * 0.9)
   let l:width = float2nr(&columns - (&columns * 2 / 60))
