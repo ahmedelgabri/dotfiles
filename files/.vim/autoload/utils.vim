@@ -318,3 +318,8 @@ endfunction
 function! utils#get_color(synID, what, mode) abort
   return synIDattr(synIDtrans(hlID(a:synID)), a:what, a:mode)
 endfunction
+
+function! utils#is_git() abort
+  silent call system('git rev-parse')
+  return v:shell_error == 0
+endfunction
