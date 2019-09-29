@@ -97,9 +97,10 @@ function! plugins#install_plugins() abort
   " }}}
 
   " Syntax {{{
-  call minpac#add('https://github.com/RRethy/vim-hexokinase')
+  call minpac#add('https://github.com/RRethy/vim-hexokinase', { 'do': 'make hexokinase' })
   " let g:Hexokinase_highlighters = ['sign_column']
   " let g:Hexokinase_virtualText = '██'
+  let g:Hexokinase_highlighters = ['foregroundfull']
   let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx', 'json']
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   " call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
