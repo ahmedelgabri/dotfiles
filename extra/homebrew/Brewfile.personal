@@ -1,7 +1,7 @@
 # vim:ft=ruby:
 
 # Languages
-cask "java8"
+cask "adoptopenjdk8"
 brew "clojure"
 brew "leiningen"
 brew "candid82/brew/joker"
