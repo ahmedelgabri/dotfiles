@@ -63,6 +63,8 @@ function! plugins#install_plugins() abort
         \ }
   let g:vista_close_on_jump = 1
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
+  call minpac#add('https://github.com/tpope/vim-dispatch')
+  let g:dispatch_no_tmux_make = 1  " Prefer job strategy even in tmux.
   " }}}
 
   " Autocompletion {{{
