@@ -9,7 +9,11 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 set expandtab                         " always use spaces instead of tabs
 
 set nowrap                            " no wrap
-set signcolumn=yes
+if has('nvim-0.4.2')
+  set signcolumn=yes:2
+else
+  set signcolumn=yes
+endif
 set textwidth=80
 " set colorcolumn=+1
 " let &colorcolumn=join([&colorcolumn,81] + range(101,999), ',')
