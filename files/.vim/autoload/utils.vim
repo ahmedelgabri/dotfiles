@@ -174,14 +174,6 @@ function! utils#NeatFoldText() abort
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
 function! utils#setupCompletion() abort
   let g:UltiSnipsExpandTrigger='<c-u>'
   let g:UltiSnipsJumpForwardTrigger='<c-j>'
