@@ -16,5 +16,9 @@
     <true/>
     <key>StartInterval</key>
     <integer>120</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/ahmed.isync.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/ahmed.isync.err.log</string>
   </dict>
 </plist>
