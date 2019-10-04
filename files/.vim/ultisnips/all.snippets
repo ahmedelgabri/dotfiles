@@ -91,30 +91,33 @@ snippet :shrug "shrug ascci" b
 ¯\_(ツ)_/¯
 endsnippet
 
-snippet mode
-`!p
-comment_char=snip.opt('&commentstring')
-# vim goes crazy if I have this a literal string so I trick it by doing this
-str = "{}:{}=".format('vim', 'ft')
-snip.rv = comment_char % ' ' + str if not (comment_char is None) else str
-`${1}:
+snippet modeline "Vim modeline"
+`!v printf(&commentstring, ' vim:ft=')`
 endsnippet
 
-snippet box "Box"
+snippet box "A nice box with the current comment symbol" b
 `!p
-comment_char = snip.opt('&commentstring')
-top='┌' + '─' * (len(t[1]) + 2) + '┐'
-snip.rv = comment_char.replace('%s',  ' ' + top) if not (comment_char is None) else top
-`
+box = make_box(len(t[1]))
+snip.rv = box[0]
+snip += box[1]
+`${1:${VISUAL:content}}`!p
+box = make_box(len(t[1]))
+snip.rv = box[2]
+snip += box[3]`
+$0
+endsnippet
+
+snippet bbox "A nice box over the full width" b
 `!p
-comment_char = snip.opt('&commentstring')
-snip.rv = comment_char.replace('%s',  ' │ ' + t[1] + ' │ ') if not (comment_char is None) else ''
-`$1
-`!p
-comment_char = snip.opt('&commentstring')
-bottom='└' + '─' * (len(t[1]) + 2) + '┘'
-snip.rv = comment_char.replace('%s',  ' ' + bottom) if not (comment_char is None) else bottom
-`
+if not snip.c:
+	width = int(vim.eval("&textwidth - (virtcol('.') == 1 ? 0 : virtcol('.'))")) or 71
+box = make_box(len(t[1]), width)
+snip.rv = box[0]
+snip += box[1]
+`${1:${VISUAL:content}}`!p
+box = make_box(len(t[1]), width)
+snip.rv = box[2]
+snip += box[3]`
 $0
 endsnippet
 
@@ -126,4 +129,8 @@ snip.rv = comment_char.replace('%s', ' ') if not (comment_char is None) else ''
 ` $1
 `!p snip.rv = repeat_char(snip, '━')`
 $0
+endsnippet
+
+snippet uuid "Random UUID" w
+`!p if not snip.c: import uuid; snip.rv = uuid.uuid4()`
 endsnippet
