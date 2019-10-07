@@ -269,7 +269,8 @@ endfunction
 
 function! utils#has_floating_window() abort
   " MenuPopupChanged was renamed to CompleteChanged -> https://github.com/neovim/neovim/pull/9819
-  return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win')
+  " https://github.com/neoclide/coc.nvim/wiki/F.A.Q#how-to-make-preview-window-shown-aside-with-pum
+  return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win') || (has('textprop') && has('patch-8.1.1522'))
 endfunction
 
 function! utils#floating_fzf() abort
