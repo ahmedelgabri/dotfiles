@@ -85,14 +85,7 @@ function! plugins#install_plugins() abort
         \ 'coc-tailwindcss'
         \ ]
 
-  function! s:coc_cb(hooktype, name) abort
-    execute 'packadd ' . a:name
-    " call coc#util#build()
-    call coc#util#install()
-    call coc#util#install_extension(g:coc_global_extensions)
-  endfunction
-
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'do': function('s:coc_cb')})
+  call minpac#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
   call minpac#add('https://github.com/Shougo/echodoc.vim')
   " }}}
 
