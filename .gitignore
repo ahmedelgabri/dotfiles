@@ -34,7 +34,7 @@ files/.hammerspoon/Spoons/*
 *.old
 .zcompdump*
 .zcompcache
-.zhistory
+.zsh_history
 log.*.txt
 
 files/.config/mpv/watch_later

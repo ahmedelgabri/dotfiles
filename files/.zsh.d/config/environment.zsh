@@ -15,6 +15,7 @@ setopt NOTIFY               # Report the status of background jobs immediately, 
 setopt NO_BG_NICE           # Prevent runing all background jobs at a lower priority.
 setopt NO_CHECK_JOBS        # Prevent reporting the status of background and suspended jobs before exiting a shell with job control. NO_CHECK_JOBS is best used only in combination with NO_HUP, else such jobs will be killed automatically.
 setopt NO_HUP               # Prevent sending the HUP signal to running jobs when the shell exits.
+setopt NO_BEEP              # Don't beep on erros (overrides /etc/zshrc in Catalina)
 
 # Remove path separtor from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}

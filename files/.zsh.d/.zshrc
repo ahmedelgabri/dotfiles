@@ -4,6 +4,10 @@
 # To create a closure to not leak local variables
 
 function {
+  # To override Catalina /etc/zshrc
+  HISTSIZE=1000000
+  SAVEHIST=$HISTSIZE
+
   ##############################################################
   # ZPLUGIN https://github.com/zdharma/zplugin
   ##############################################################

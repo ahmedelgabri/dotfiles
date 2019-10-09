@@ -2,12 +2,7 @@
 # Configures history options
 #
 
-# sets the location of the history file
-HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"
-
 # limit of history entries
-HISTSIZE=1000000
-SAVEHIST=$HISTSIZE
 HISTORY_IGNORE='(clear|c|pwd|exit|* —help|[bf]g *|l[alsh]#( *)#|less *)'
 
 setopt BANG_HIST                 # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
