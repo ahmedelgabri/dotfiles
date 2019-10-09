@@ -181,7 +181,7 @@ function {
     # https://github.com/ahmedelgabri/dotfiles/commit/c8156c2f0cf74917392a0e700668005b8f1bbbdb#r33940655
     (
       if [ -e /usr/local/share/zsh/site-functions/_git ]; then
-        mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
+        command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
       fi
     ) &!
   fi
