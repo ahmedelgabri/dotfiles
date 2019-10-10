@@ -22,6 +22,8 @@ nmap <Leader>g :packadd goyo.vim<CR>\|:Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization
 function! s:goyo_enter() abort
+  packadd limelight.vim
+  packadd goyo.vim
   Limelight
   if exists('$TMUX')
     silent !tmux set -g status off
