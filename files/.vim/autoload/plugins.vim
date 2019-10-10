@@ -136,6 +136,7 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
   call minpac#add('https://github.com/arzg/vim-corvine', { 'type': 'opt' })
+  call minpac#add('https://github.com/arzg/vim-substrata', {'type': 'opt'})
   " }}}
 endfunction
 
