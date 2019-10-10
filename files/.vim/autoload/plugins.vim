@@ -72,6 +72,7 @@ function! plugins#install_plugins() abort
         \ 'coc-css',
         \ 'coc-rls',
         \ 'coc-html',
+        \ 'coc-emmet',
         \ 'coc-json',
         \ 'coc-python',
         \ 'coc-yaml',

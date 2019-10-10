@@ -58,6 +58,10 @@ let s:LSP_CONFIG = [
       \ ]
       \]
 
+let g:coc_filetype_map = {
+      \ 'html.twig': 'html',
+      \ }
+
 " 'diagnostic.displayByAle' Doesn't work well, for some reason...
 let g:coc_user_config = {
       \  'coc.preferences.colorSupport': 0,
@@ -77,7 +81,8 @@ let g:coc_user_config = {
       \  'python.linting': {
       \    'pylintUseMinimalCheckers': 0
       \   },
-      \  'coc.github.filetypes': ['gitcommit', 'markdown.ghpull']
+      \  'coc.github.filetypes': ['gitcommit', 'markdown.ghpull'],
+      \  'emmet.includeLanguages': { 'javascript': 'javascriptreact' }
       \ }
 
 let s:languageservers = {}

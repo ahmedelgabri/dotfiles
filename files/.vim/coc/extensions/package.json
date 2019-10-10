@@ -13,6 +13,7 @@
     "coc-phpls": ">=2.0.7",
     "coc-yaml": ">=1.0.2",
     "coc-html": ">=1.2.1",
-    "coc-tsserver": ">=1.4.4"
+    "coc-tsserver": ">=1.4.2",
+    "coc-emmet": ">=1.1.3"
   }
 }
