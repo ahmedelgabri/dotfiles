@@ -32,10 +32,10 @@ function {
 
     zplugin light zdharma/zui
     zplugin ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
-    zplugin light zdharma/zplugin-crasis
+    zplugin light https://github.com/zdharma/zplugin-crasis
 
     zplugin ice pick"async.zsh" src"pure.zsh"
-    zplugin light ahmedelgabri/pure
+    zplugin light https://github.com/ahmedelgabri/pure
     SYMBOLS=(
     "λ"
     "ϟ"
@@ -60,7 +60,7 @@ function {
 
   # Utilities & enhancements {{{
     zplugin ice wait"0" lucid
-    zplugin light "zsh-users/zsh-history-substring-search"
+    zplugin light https://github.com/zsh-users/zsh-history-substring-search
     # bind UP and DOWN keys
     bindkey "${terminfo[kcuu1]}" history-substring-search-up
     bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -71,19 +71,25 @@ function {
 
 
     zplugin ice wait"0" blockf lucid
-    zplugin light zsh-users/zsh-completions
+    zplugin light https://github.com/zsh-users/zsh-completions
 
     zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
-    zplugin light zsh-users/zsh-autosuggestions
+    zplugin light https://github.com/zsh-users/zsh-autosuggestions
     ZSH_AUTOSUGGEST_USE_ASYNC=true
 
     zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
-    zplugin light zdharma/fast-syntax-highlighting
+    zplugin light https://github.com/zdharma/fast-syntax-highlighting
+
+    zplugin ice wait"0" lucid
+    zplugin light https://github.com/voronkovich/gitignore.plugin.zsh
+
+    zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
+    zplugin load https://github.com/trapd00r/LS_COLORS
   # }}}
 
   # Misc {{{
     zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
-    zplugin light snoe/clojure-lsp
+    zplugin light https://github.com/snoe/clojure-lsp
   # }}}
 
   # Local plugins/completions/etc... {{{
