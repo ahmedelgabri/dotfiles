@@ -97,7 +97,8 @@ function! plugins#install_plugins() abort
   let g:Hexokinase_highlighters = ['foregroundfull']
   let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx', 'json']
   call minpac#add('https://github.com/sheerun/vim-polyglot')
-  " call minpac#add('https://github.com/HerringtonDarkholme/yats.vim')
+  call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
+  call minpac#add('https://github.com/plasticboy/vim-markdown')
   call minpac#add('https://github.com/amadeus/vim-convert-color-to')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')

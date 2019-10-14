@@ -1,16 +1,24 @@
-let g:markdown_fenced_languages = [
+let g:vim_markdown_fenced_languages = [
       \'css',
       \'erb=eruby',
       \'javascript',
       \'js=javascript',
       \'jsx=javascript.jsx',
-      \'json=json',
+      \'ts=typescript',
+      \'tsx=typescript.tsx',
+      \'json',
+      \'json5',
       \'ruby',
       \'sass',
       \'scss=sass',
       \'xml',
       \'html',
+      \'py=python',
       \'python',
+      \'clojure',
+      \'clj=clojure',
+      \'clojurescript',
+      \'cljs=clojurescript',
       \'stylus=css',
       \'less=css'
       \]
