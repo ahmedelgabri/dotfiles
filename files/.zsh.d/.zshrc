@@ -55,6 +55,8 @@ function {
     export PURE_GIT_BRANCH="  "
     zstyle :prompt:pure:path color 240
     zstyle :prompt:pure:git:branch color blue
+    zstyle :prompt:pure:git:dirty color red
+    zstyle :prompt:pure:git:action color 005
     zstyle :prompt:pure:prompt:success color 003
   # }}}
 
@@ -203,10 +205,17 @@ function {
       echo "These ENV vars are not set: HOMEBREW_GITHUB_API_TOKEN, GITHUB_TOKEN & GITHUB_USER. Add them to ~/.zshrc.local"
     fi
   fi
+
+  if [ -e /etc/motd ]; then
+    if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
+      tee ${HOME}/.hushlogin < /etc/motd
+    fi
+  fi
 }
 
-if [ -e /etc/motd ]; then
-  if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
-    tee ${HOME}/.hushlogin < /etc/motd
-  fi
-fi
+##############################################################
+# Profiling.
+##############################################################
+
+# uncomment to profile & run `zprof`
+# zmodload zsh/zprof
