@@ -41,8 +41,7 @@ python:
 	sh $(SCRIPTS)/python-packages
 
 rust:
-	curl https://sh.rustup.rs -sSf | sh -s -- -y
-	$(HOME)/.cargo/bin/rustup component add rls-preview rust-analysis rust-src rustfmt clippy
+	curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete # I need complete for rls & LSP support
 
 # Neovim providers (optional)
 neovim:
