@@ -61,7 +61,7 @@ function {
   # }}}
 
   # Utilities & enhancements {{{
-    zplugin ice wait"0" lucid
+    zplugin ice wait lucid
     zplugin light https://github.com/zsh-users/zsh-history-substring-search
     # bind UP and DOWN keys
     bindkey "${terminfo[kcuu1]}" history-substring-search-up
@@ -72,21 +72,18 @@ function {
     bindkey '^[[B' history-substring-search-down
 
 
-    zplugin ice wait"0" blockf lucid
+    zplugin ice wait blockf lucid
     zplugin light https://github.com/zsh-users/zsh-completions
 
-    zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
+    zplugin ice wait lucid atload"_zsh_autosuggest_start"
     zplugin light https://github.com/zsh-users/zsh-autosuggestions
     ZSH_AUTOSUGGEST_USE_ASYNC=true
 
-    zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
+    zplugin ice wait lucid atinit"zpcompinit; zpcdreplay"
     zplugin light https://github.com/zdharma/fast-syntax-highlighting
 
-    zplugin ice wait"0" lucid
-    zplugin light https://github.com/voronkovich/gitignore.plugin.zsh
-
-    zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
-    zplugin load https://github.com/trapd00r/LS_COLORS
+    zplugin ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
+    zplugin light https://github.com/trapd00r/LS_COLORS
   # }}}
 
   # Misc {{{
