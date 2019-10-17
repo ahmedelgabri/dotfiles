@@ -6,7 +6,7 @@
     "coc-python": ">=1.2.6",
     "coc-ultisnips": ">=1.2.3",
     "coc-css": ">=1.2.2",
-    "coc-tailwindcss": ">=0.2.5",
+    "coc-tailwindcss": ">=0.3.0",
     "coc-github": ">=1.0.1",
     "coc-svg": ">=0.0.13",
     "coc-vimlsp": ">=0.3.9",

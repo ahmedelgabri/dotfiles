@@ -295,7 +295,8 @@ function! utils#floating_fzf() abort
 endfunction
 
 function! utils#fzf_window() abort
-  return utils#has_floating_window() ? 'call utils#floating_fzf()' : 'enew'
+  " until I figure out how to make the pop up window works in vim using
+  return has('nvim') && utils#has_floating_window() ? 'call utils#floating_fzf()' : 'enew'
 endfunction
 
 function! utils#customize_diff()
