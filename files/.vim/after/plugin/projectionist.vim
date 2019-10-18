@@ -1,4 +1,4 @@
-if !exists(':ProjectDo')
+if !exists('g:loaded_projectionist')
   finish
 endif
 
