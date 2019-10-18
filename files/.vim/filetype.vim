@@ -9,4 +9,5 @@ augroup filetypedetect
   autocmd BufRead,BufNewFile {Gemfile,Brewfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} setfiletype ruby
   autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint,prettier}rc,.tern-* setfiletype json
   autocmd BufRead,BufNewFile .envrc setfiletype bash
+  autocmd BufRead,BufNewFile *.conf setfiletype conf
 augroup END
