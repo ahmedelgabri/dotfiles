@@ -24,8 +24,7 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-nnoremap <silent><expr> <leader><leader> utils#is_git() ? ':GFiles<CR>' : ':Files<CR>'
-nnoremap <silent><expr> <leader>s utils#is_git() ? ':GFiles?<CR>' : ':Files<CR>'
+nnoremap <silent> <leader><leader> :Files<CR>
 nnoremap <silent> <Leader>b :Buffers<cr>
 nnoremap <silent> <Leader>h :Helptags<cr>
 
@@ -46,6 +45,3 @@ function! FzfSpell()
   return fzf#run({'source': suggestions, 'sink': function('FzfSpellSink'), 'down': 10 })
 endfunction
 nnoremap z= :call FzfSpell()<CR>
-
-command! -bang -nargs=? -complete=dir GFiles
-  \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('down:60%'), <bang>0)
