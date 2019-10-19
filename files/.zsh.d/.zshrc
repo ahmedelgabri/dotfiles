@@ -1,8 +1,14 @@
 # vim:ft=zsh:
 
+##############################################################
+# Profiling.
+##############################################################
+
+# uncomment to profile & run `zprof`
+# zmodload zsh/zprof
+
 # Wrapping my config in a ZSH Anonymous Functions http://zsh.sourceforge.net/Doc/Release/Functions.html#Anonymous-Functions
 # To create a closure to not leak local variables
-
 function {
   # To override Catalina /etc/zshrc
   HISTSIZE=1000000
@@ -133,8 +139,8 @@ function {
   export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || highlight -O ansi -l {} || cat {} || tree -C {}"
   export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
   export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
-  export FZF_DEFAULT_OPTS="--min-height 30 --height 50% --reverse --tabstop 2 --multi --margin 0,3,3,3 --bind '?:toggle-preview'"
-  export FZF_CTRL_T_OPTS="--preview-window down:60% --preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -500'"
+  export FZF_DEFAULT_OPTS="--reverse --tabstop 2 --multi --bind '?:toggle-preview'"
+  export FZF_CTRL_T_OPTS="--min-height 30 --preview-window down:60% --preview '($FZF_PREVIEW_COMMAND) 2> /dev/null | head -500'"
   export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
   export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null | head -200'"
 
@@ -209,10 +215,3 @@ function {
     fi
   fi
 }
-
-##############################################################
-# Profiling.
-##############################################################
-
-# uncomment to profile & run `zprof`
-# zmodload zsh/zprof

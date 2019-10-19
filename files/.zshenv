@@ -1,4 +1,11 @@
 ##############################################################
+# Profiling.
+##############################################################
+
+# uncomment to profile & run `zprof` also the same needs to happend in `.zshrc`
+# zmodload zsh/zprof
+#
+##############################################################
 
 # set -x
 # setopt NO_GLOBAL_RCS
