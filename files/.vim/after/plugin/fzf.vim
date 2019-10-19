@@ -10,6 +10,10 @@ if !empty(expand($VIM_FZF_LOG))
   let g:fzf_commits_log_options = $VIM_FZF_LOG
 endif
 
+if !empty(expand($FZF_DEFAULT_OPTS))
+  let $FZF_DEFAULT_OPTS .= ' --margin=1,4'
+endif
+
 let g:fzf_layout = { 'window': utils#fzf_window() }
 let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
