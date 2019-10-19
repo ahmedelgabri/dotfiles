@@ -288,7 +288,8 @@ function! utils#floating_fzf() abort
         \ 'row': l:row,
         \ 'col': l:col,
         \ 'width': l:width,
-        \ 'height': l:height
+        \ 'height': l:height,
+        \ 'style': 'minimal'
         \ }
 
   call nvim_open_win(l:buf, v:true, l:opts)
