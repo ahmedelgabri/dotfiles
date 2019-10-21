@@ -9,6 +9,7 @@ brew "ghc"
 brew "cabal-install"
 brew "haskell-stack"
 brew "pipenv"
+brew "elm"
 # I install rust from https://www.rust-lang.org/en-US/install.html
 # check Makefile
 

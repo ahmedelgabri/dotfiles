@@ -22,6 +22,8 @@ NPM_PACKAGES=(
   "dependency-cruiser"
   "reason-cli@latest-macos"
   "neovim"
+  "elm-format"
+  "@elm-tooling/elm-language-server"
 )
 
 yarn global add "${NPM_PACKAGES[@]}"

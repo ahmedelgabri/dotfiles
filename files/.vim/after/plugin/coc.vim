@@ -43,18 +43,25 @@ let s:LSP_CONFIG = [
       \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/']
       \  }],
       \ ['haskell', {
-      \     'command': exepath('hie-wrapper'),
-      \     'rootPatterns': ['.stack.yaml', 'cabal.config', 'package.yaml'],
-      \     'filetypes': ['hs', 'lhs', 'haskell'],
-      \     'initializationOptions': {},
-      \     'settings': {
-      \       'languageServerHaskell': {
-      \         'hlintOn': empty(exepath('hlint')) ? 1 : 0,
-      \         'maxNumberOfProblems': 10,
-      \         'completionSnippetsOn': 1
-      \       }
-      \     }
-      \   }
+      \    'command': exepath('hie-wrapper'),
+      \    'rootPatterns': ['.stack.yaml', 'cabal.config', 'package.yaml'],
+      \    'filetypes': ['hs', 'lhs', 'haskell'],
+      \    'initializationOptions': {},
+      \    'settings': {
+      \      'languageServerHaskell': {
+      \        'hlintOn': empty(exepath('hlint')) ? 1 : 0,
+      \        'maxNumberOfProblems': 10,
+      \        'completionSnippetsOn': 1
+      \      }
+      \    }
+      \  }
+      \ ],
+      \ ['elm', {
+      \    'command': exepath('elm-language-server'),
+      \    'rootPatterns': ['elm.json'],
+      \    'filetypes': ['elm'],
+      \    'initializationOptions': { 'elmAnalyseTrigger': 'change' },
+      \  }
       \ ]
       \]
 
@@ -82,7 +89,8 @@ let g:coc_user_config = {
       \    'pylintUseMinimalCheckers': 0
       \   },
       \  'coc.github.filetypes': ['gitcommit', 'markdown.ghpull'],
-      \  'emmet.includeLanguages': { 'javascript': 'javascriptreact' }
+      \  'emmet.includeLanguages': { 'javascript': 'javascriptreact' },
+      \  'codeLens.enable': 1
       \ }
 
 let s:languageservers = {}
