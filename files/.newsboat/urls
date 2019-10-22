@@ -224,6 +224,7 @@
   https://feross.org/atom.xml "Blog" "JavaScript"
   https://sulami.github.io/atom.xml "Blog" "Clojure"
   https://scriptingosx.com/feed/ "Blog" "OSX" "CLI" "shell"
+  https://adamwathan.me/rss/index.xml "Blogs" "CSS" "JavaScript"
 # }}}
 
 # Browsers {{{
