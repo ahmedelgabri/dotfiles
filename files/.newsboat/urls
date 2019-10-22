@@ -39,7 +39,6 @@
   http://benhowdle.im/feed.xml "Blog" "Web" "JavaScript"
   http://blog.dmfranc.com/rss "Blog"
   http://blog.kenneth.io/atom.xml "Blog" "Web" "JavaScript"
-  http://blog.klipse.tech/feed.xml "Blog" "Programming" "FP" "ClojureScript"
   http://blog.millermedeiros.com/feed/ "Blog" "Web" "JavaScript"
   http://brandur.org/articles.atom "Blog"
   http://bricss.net/rss "Blog" "CSS" "Web"
@@ -198,7 +197,6 @@
   https://knowyourteam.com/blog/feed/ "Blog" "Leadership"
   https://monicalent.com/blog/index.xml "Blog" "Programming" "JavaScript"
   https://feeds.feedburner.com/steveklabnik/words "Blog" "Rust"
-  https://lispcast.com/feed/ "Blog" "Programming" "Clojure"
   https://presumably.de/atom.xml "Blog" "ClojureScript"
   https://fs.blog/feed/ "Blog" "Personal Development"
   https://mxstbr.com/feed.json "Blog" "JavaScript" "React"
@@ -216,15 +214,15 @@
   http://feeds.feedburner.com/HighScalability "Blog" "System Design" "Architecture"
   https://rjzaworski.com/feed "Blog" "JavaScript" "Programming"
   https://mxb.dev/feed.xml "Blog" "CSS"
-  http://feeds.feedburner.com/KrisJenkinsBlog "Blog" "FP" "Elm" "Clojure" "Haskell"
   https://jrsinclair.com/index.rss "Blog" "FP" "JavaScript"
   https://programmingisterrible.com/rss "Blog" "Programming"
   https://queue.acm.org/rss/feeds/queuecontent.xml "Blog" "Programming"
   https://sookocheff.com/index.xml "Blog" "FP" "Haskell" "Lambda Calculus"
   https://feross.org/atom.xml "Blog" "JavaScript"
-  https://sulami.github.io/atom.xml "Blog" "Clojure"
   https://scriptingosx.com/feed/ "Blog" "OSX" "CLI" "shell"
   https://adamwathan.me/rss/index.xml "Blogs" "CSS" "JavaScript"
+  http://planet.clojure.in/atom.xml "Blog" "Clojure" "ClojureScript"
+  https://keavy.com/feed.xml "Blog" "Engineering" "Leadership"
 # }}}
 
 # Browsers {{{
@@ -311,10 +309,6 @@
   https://glebbahmutov.com/blog/atom.xml "JavaScript"
   https://www.webreflection.co.uk/blog/feed.atom "JavaScript"
   http://jasonformat.com/rss/ "~Jason Miller @_developit (Preact)" "JavaScript"
-# }}}
-
-# Clojure {{{
-  http://swannodette.github.com/atom.xml "Clojure" "ClojureScript"
 # }}}
 
 # logo {{{
@@ -591,6 +585,8 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCV0qA-eDDICsRR9rPcnG7tw "YouTube" # Joma Tech
   https://www.youtube.com/feeds/videos.xml?channel_id=UC-yuWVUplUJZvieEligKBkA "YouTube" # One Lone Coder (javidx9)
   https://www.youtube.com/feeds/videos.xml?channel_id=UCJ24N4O0bP7LGLBDvye7oCA "YouTube" # Matt D'Avella
+  https://www.youtube.com/feeds/videos.xml?user=minutephysics "YouTube" # minutephysics
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCRM1gWNTDx0SHIqUJygD-kQ "YouTube" # JustDjango
 # }}}
 
 # Twitch {{{ NOT official RSS support
