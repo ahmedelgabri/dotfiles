@@ -65,6 +65,10 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   call minpac#add('https://github.com/tpope/vim-dispatch')
   let g:dispatch_no_tmux_make = 1  " Prefer job strategy even in tmux.
+  call minpac#add('https://github.com/janko/vim-test')
+  if has('nvim')
+    let g:test#strategy = 'neovim'
+  endif
   " }}}
 
   " Autocompletion {{{
