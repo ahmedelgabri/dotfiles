@@ -1,4 +1,5 @@
 # vim:ft=zsh:
+# setopt warn_create_global
 
 ##############################################################
 # Profiling.
@@ -18,7 +19,7 @@ function {
   # ZPLUGIN https://github.com/zdharma/zplugin
   ##############################################################
 
-  __ZPLUGIN="${ZDOTDIR:-$HOME}/.zplugin/bin/zplugin.zsh"
+  local __ZPLUGIN="${ZDOTDIR:-$HOME}/.zplugin/bin/zplugin.zsh"
 
   if [[ ! -f "$__ZPLUGIN" ]]; then
     if (( $+commands[curl] )); then
@@ -42,16 +43,7 @@ function {
 
     zplugin ice pick"async.zsh" src"pure.zsh"
     zplugin light https://github.com/ahmedelgabri/pure
-    SYMBOLS=(
-    "λ"
-    "ϟ"
-    "▲"
-    "∴"
-    "→"
-    "»"
-    "৸"
-    "◗"
-    )
+    local SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸" "◗")
 
     # Arrays in zsh starts from 1
     export PURE_PROMPT_SYMBOL="${SYMBOLS[$RANDOM % ${#SYMBOLS[@]} + 1]}"
@@ -83,7 +75,7 @@ function {
 
     zplugin ice wait lucid atload"_zsh_autosuggest_start"
     zplugin light https://github.com/zsh-users/zsh-autosuggestions
-    ZSH_AUTOSUGGEST_USE_ASYNC=true
+    export ZSH_AUTOSUGGEST_USE_ASYNC=true
 
     zplugin ice wait lucid atinit"zpcompinit; zpcdreplay"
     zplugin light https://github.com/zdharma/fast-syntax-highlighting
