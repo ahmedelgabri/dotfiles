@@ -3,7 +3,6 @@
     "coc-emoji": ">=1.2.3",
     "coc-rls": ">=1.1.2",
     "coc-json": ">=1.2.4",
-    "coc-python": ">=1.2.6",
     "coc-ultisnips": ">=1.2.3",
     "coc-css": ">=1.2.2",
     "coc-tailwindcss": ">=0.3.1",
@@ -14,6 +13,7 @@
     "coc-yaml": ">=1.0.2",
     "coc-html": ">=1.2.1",
     "coc-tsserver": ">=1.4.2",
-    "coc-emmet": ">=1.1.3"
+    "coc-emmet": ">=1.1.3",
+    "coc-python": ">=1.2.6"
   }
 }

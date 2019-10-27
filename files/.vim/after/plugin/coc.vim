@@ -31,20 +31,21 @@ let s:LSP_CONFIG = [
       \ ['docker', {
       \   'command': exepath('docker-langserver'),
       \   'args': ['--stdio'],
-      \   'filetypes': ['dockerfile']
+      \   'filetypes': ['Dockerfile', 'dockerfile']
       \ }],
       \ ['clojure', {
       \   'command': exepath('clojure-lsp'),
-      \   'filetypes': ['clojure']
+      \   'filetypes': ['clojure'],
+      \   'additionalSchemes': ['jar', 'zipfile'],
+      \   'trace.server': 'verbose',
+      \   'initializationOptions': {}
       \  }],
       \ ['golang', {
       \   'command': exepath('gopls'),
       \   'filetypes': ['go'],
-      \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/']
       \  }],
       \ ['haskell', {
       \    'command': exepath('hie-wrapper'),
-      \    'rootPatterns': ['.stack.yaml', 'cabal.config', 'package.yaml'],
       \    'filetypes': ['hs', 'lhs', 'haskell'],
       \    'initializationOptions': {},
       \    'settings': {
@@ -58,11 +59,10 @@ let s:LSP_CONFIG = [
       \ ],
       \ ['elm', {
       \    'command': exepath('elm-language-server'),
-      \    'rootPatterns': ['elm.json'],
       \    'filetypes': ['elm'],
       \    'initializationOptions': { 'elmAnalyseTrigger': 'change' },
       \  }
-      \ ]
+      \ ],
       \]
 
 let g:coc_filetype_map = {
@@ -85,6 +85,7 @@ let g:coc_user_config = {
       \  'diagnostic.messageTarget': utils#has_floating_window() ? 'float' : 'echo',
       \  'diagnostic.refreshOnInsertMode': 1,
       \  'diagnostic.locationlist': 1,
+      \  'python.jediEnabled': 0,
       \  'python.linting': {
       \    'pylintUseMinimalCheckers': 0
       \   },

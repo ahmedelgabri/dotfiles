@@ -95,6 +95,7 @@ brew "grip" # Markdown previewer
 brew "nnn"
 brew "pass"
 brew "spark" # Needed for battery bin (optional)
+brew "yamllint"
 
 cask "alacritty"
 cask "1password"
