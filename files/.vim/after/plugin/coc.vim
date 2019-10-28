@@ -36,33 +36,32 @@ let s:LSP_CONFIG = [
       \ ['clojure', {
       \   'command': exepath('clojure-lsp'),
       \   'filetypes': ['clojure'],
+      \   'rootPatterns': ['project.clj'],
       \   'additionalSchemes': ['jar', 'zipfile'],
       \   'trace.server': 'verbose',
       \   'initializationOptions': {}
       \  }],
       \ ['golang', {
       \   'command': exepath('gopls'),
+      \   'rootPatterns': ['go.mod'],
       \   'filetypes': ['go'],
       \  }],
       \ ['haskell', {
       \    'command': exepath('hie-wrapper'),
       \    'filetypes': ['hs', 'lhs', 'haskell'],
-      \    'initializationOptions': {},
+      \    'rootPatterns': ['stack.yaml', 'cabal.config', 'package.yaml'],
       \    'settings': {
       \      'languageServerHaskell': {
       \        'hlintOn': empty(exepath('hlint')) ? 1 : 0,
-      \        'maxNumberOfProblems': 10,
-      \        'completionSnippetsOn': 1
       \      }
       \    }
-      \  }
-      \ ],
+      \  }],
       \ ['elm', {
       \    'command': exepath('elm-language-server'),
       \    'filetypes': ['elm'],
+      \    'rootPatterns': ['elm.json'],
       \    'initializationOptions': { 'elmAnalyseTrigger': 'change' },
-      \  }
-      \ ],
+      \  }],
       \]
 
 let g:coc_filetype_map = {
