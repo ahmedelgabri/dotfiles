@@ -113,6 +113,7 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/gberenfield/cljfold.vim', { 'type': 'opt' })
   call minpac#add('https://github.com/tpope/vim-fireplace', {'type': 'opt'})
   call minpac#add('https://github.com/zplugin/zplugin-vim-syntax')
+  call minpac#add('https://github.com/fatih/vim-go', {'do': 'GoUpdateBinaries'})
   " }}}
 
   " Linters & Code quality {{{
