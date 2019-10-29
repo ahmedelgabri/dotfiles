@@ -28,6 +28,7 @@ export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 
 export DOTFILES="${HOME}/.dotfiles"
 export GOPATH="${HOME}/.go"
+export GOBIN="${GOPATH}/bin"
 export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"

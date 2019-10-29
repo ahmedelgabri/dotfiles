@@ -43,8 +43,11 @@ let s:LSP_CONFIG = [
       \  }],
       \ ['golang', {
       \   'command': exepath('gopls'),
-      \   'rootPatterns': ['go.mod'],
+      \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/'],
       \   'filetypes': ['go'],
+      \   'initializationOptions': {
+      \     'usePlaceholders': 1
+      \   }
       \  }],
       \ ['haskell', {
       \    'command': exepath('hie-wrapper'),
@@ -155,4 +158,5 @@ augroup MY_COC
   autocmd CursorHold * silent call CocActionAsync('highlight')
   autocmd BufWritePost coc.vim source % | CocRestart
   autocmd BufWritePost coc-settings.json CocRestart
+  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 augroup end

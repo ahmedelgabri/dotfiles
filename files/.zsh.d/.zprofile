@@ -50,7 +50,7 @@ path=(
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
   ${HOME}/.cargo/bin(N-/)
-  ${GOPATH}/bin(N-/)
+  ${GOBIN}(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
   ${HOMEBREW_PREFIX}/opt/ruby/bin(N-/)
