@@ -3,7 +3,7 @@
 WIFI_NAME=$(wifi)
 
 ON_ICON=" "
-OFF_ICON'⨉'
+OFF_ICON=" "
 TAIL="#[fg=colour237] ⦁ "
 
-[ -n "$WIFI_NAME" ] && printf "%s" "$ON_ICON  $WIFI_NAME$TAIL" || printf "#[fg=red]%s" "$OFF_ICON$TAIL"
+[ "$WIFI_NAME" = "" ] && printf "#[fg=red]%s" "$OFF_ICON$TAIL" || printf "%s" "$ON_ICON  $WIFI_NAME$TAIL"
