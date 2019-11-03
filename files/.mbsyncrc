@@ -65,7 +65,7 @@ Channel Personal-folders
 Master :Personal-remote:
 Slave :Personal-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
+Patterns * !INBOX !Personal.Archive !Personal.Drafts !Personal.Starred !Personal.Sent !Personal.Spam !Personal.Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync personal`
 Group personal
@@ -139,7 +139,7 @@ Channel Work-folders
 Master :Work-remote:
 Slave :Work-local:
 # All folders except those defined above
-Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
+Patterns * !INBOX !Work.Archive !Work.Drafts !Work.Starred !Work.Sent !Work.Spam !Work.Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync work`
 Group work
