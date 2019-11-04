@@ -109,8 +109,8 @@
   remote = green
 
 [color "diff"]
-  meta = yellow
-  frag = magenta
+  meta = 238 italic
+  frag = 240
   old = red strike
   new = green italic
   whitespace = red reverse
