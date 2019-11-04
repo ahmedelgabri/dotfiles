@@ -41,7 +41,6 @@ let g:ale_linter_aliases = {
 let g:rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_linters = {
       \ 'javascript': ['eslint'],
-      \ 'javascript.jsx': ['eslint'],
       \ 'typescript': ['eslint'],
       \}
 

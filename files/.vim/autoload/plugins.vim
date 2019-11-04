@@ -54,14 +54,6 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/wincent/terminus')
   call minpac#add('https://github.com/tommcdo/vim-lion')
   call minpac#add('https://github.com/liuchengxu/vista.vim')
-  let g:vista#renderer#enable_icon = 1
-  let g:vista_executive_for = {
-        \ 'javascript': 'coc',
-        \ 'javascript.jsx': 'coc',
-        \ 'typescript': 'coc',
-        \ 'typescript.tsx': 'coc',
-        \ }
-  let g:vista_close_on_jump = 1
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   call minpac#add('https://github.com/tpope/vim-dispatch')
   let g:dispatch_no_tmux_make = 1  " Prefer job strategy even in tmux.
