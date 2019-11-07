@@ -172,6 +172,7 @@ function {
   export NODE_VERSIONS="${N_PREFIX}/n/versions/node"
   export NODE_VERSION_PREFIX=""
   (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+  (( $+commands[hub] )) && eval "$(hub alias -s)"
 
   ############### Kitty
   if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
