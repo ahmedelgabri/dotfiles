@@ -35,14 +35,15 @@ function {
   (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
   # Shell {{{
-    zplugin snippet OMZ::plugins/gpg-agent/gpg-agent.plugin.zsh
+    zplugin ice svn
+    zplugin snippet OMZ::plugins/gpg-agent
 
-    zplugin light zdharma/zui
+    zplugin load https://github.com/zdharma/zui
     zplugin ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
-    zplugin light https://github.com/zdharma/zplugin-crasis
+    zplugin load https://github.com/zdharma/zplugin-crasis
 
     zplugin ice pick"async.zsh" src"pure.zsh"
-    zplugin light https://github.com/ahmedelgabri/pure
+    zplugin load https://github.com/ahmedelgabri/pure
     local SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸" "◗")
 
     # Arrays in zsh starts from 1
@@ -60,7 +61,7 @@ function {
 
   # Utilities & enhancements {{{
     zplugin ice wait lucid
-    zplugin light https://github.com/zsh-users/zsh-history-substring-search
+    zplugin load https://github.com/zsh-users/zsh-history-substring-search
     # bind UP and DOWN keys
     bindkey "${terminfo[kcuu1]}" history-substring-search-up
     bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -69,28 +70,29 @@ function {
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
 
-
-    zplugin ice wait blockf lucid
-    zplugin light https://github.com/zsh-users/zsh-completions
-
-    zplugin ice wait lucid atload"_zsh_autosuggest_start"
-    zplugin light https://github.com/zsh-users/zsh-autosuggestions
-    export ZSH_AUTOSUGGEST_USE_ASYNC=true
-
-    zplugin ice wait lucid atinit"zpcompinit; zpcdreplay"
-    zplugin light https://github.com/zdharma/fast-syntax-highlighting
-
-    zplugin ice wait lucid atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
-    zplugin light https://github.com/trapd00r/LS_COLORS
+    zplugin ice atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+    zplugin load trapd00r/LS_COLORS
   # }}}
 
   # Misc {{{
     zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
-    zplugin light https://github.com/snoe/clojure-lsp
+    zplugin load https://github.com/snoe/clojure-lsp
   # }}}
 
   # Local plugins/completions/etc... {{{
-    zplugin light %HOME/.zsh.d/aliases
+    zplugin load %HOME/.zsh.d/aliases
+  # }}}
+
+  # Recommended be loaded last {{{
+    zplugin ice wait blockf lucid atpull'zplugin creinstall -q .'
+    zplugin load https://github.com/zsh-users/zsh-completions
+
+    zplugin ice wait lucid atinit"zpcompinit; zpcdreplay"
+    zplugin load https://github.com/zdharma/fast-syntax-highlighting
+
+    zplugin ice wait lucid atload"_zsh_autosuggest_start"
+    zplugin load https://github.com/zsh-users/zsh-autosuggestions
+    export ZSH_AUTOSUGGEST_USE_ASYNC=true
   # }}}
 
   ##############################################################
