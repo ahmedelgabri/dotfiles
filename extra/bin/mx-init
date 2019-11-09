@@ -19,7 +19,7 @@ create_session() {
   open_or_log newsboat
 
   tmux new-window -n 'reddit'
-  open_or_log rtv
+  open_or_log tuir
 
   tmux new-window -n 'weechat'
   # Stop Weechat from renaming the window
