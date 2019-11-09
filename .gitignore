@@ -31,7 +31,7 @@ files/.newsboat/queue
 files/.hammerspoon/Spoons/*
 !files/.hammerspoon/Spoons/SpoonInstall.spoon
 
-!files/.ignore
+!.ignore
 
 *.old
 .zcompdump*
