@@ -1,0 +1,198 @@
+#!/usr/bin/env node
+
+const path = require('path')
+const fs = require('fs')
+
+/////////////////////////////////////////////////////////////////////////////////
+//                                   CONFIG                                    //
+/////////////////////////////////////////////////////////////////////////////////
+
+const accounts = [
+  {
+    accountName: 'Personal',
+    switchAccount: 'Work',
+    color: 'blue',
+    required: true,
+  },
+  {
+    accountName: 'Work',
+    switchAccount: 'Personal',
+    color: 'red',
+  },
+]
+
+const EMAIL_ENV_SUFFIX = '_EMAIL'
+const EMAIL_ALIASES_ENV_SUFFIX = '_EMAIL_ALIASES'
+
+const MUTT_ROOT = '~/.mutt'
+
+/////////////////////////////////////////////////////////////////////////////////
+//                                   HELPERS                                   //
+/////////////////////////////////////////////////////////////////////////////////
+
+const lowerCase = str => str.toLowerCase()
+const upperCase = str => str.toUpperCase()
+
+const getPrefix = accountName => `${accountName}/${accountName}`
+const generateFolder = accountName => (folder = '') =>
+  `+${getPrefix(accountName)}${folder ? '.' : ''}${folder}`
+
+const getAccountFile = accountName =>
+  path.join(MUTT_ROOT, '/accounts/', lowerCase(accountName))
+
+const getCacheFor = ffor =>
+  path.join(process.env.XDG_CACHE_HOME, '/.cache/mutt/', ffor, '/')
+
+const getHeaderCache = accountName =>
+  path.join(getCacheFor('headers'), lowerCase(accountName), '/')
+
+const getMessagesCache = accountName =>
+  path.join(getCacheFor('messages'), lowerCase(accountName), '/')
+
+const mailboxes = accountName =>
+  `tree ~/.mail/${accountName} -d -I "cur|new|tmp|certs|.notmuch|Inbox|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
+
+/////////////////////////////////////////////////////////////////////////////////
+//                                 GENERATION                                  //
+/////////////////////////////////////////////////////////////////////////////////
+
+/////////////
+//  HOOKS  //
+/////////////
+
+function updateHooks() {
+  const data = accounts.reduce((str, {accountName, switchAccount}) => {
+    str += `folder-hook +${accountName}/ source ${getAccountFile(
+      accountName,
+    )}\n`
+
+    return str
+  }, ``)
+
+  return `# vi:syntax=muttrc
+
+# THIS FILE IS AUTO GENERATED, DONOT EDIT MANUALLY
+# Source account-specific settings when moving around folders
+# This allows us to change SMTP servers, for example, when inside different accounts
+
+${data}
+# Source this file initially, so it acts like a default account
+source ${getAccountFile('personal')}`
+}
+
+////////////////
+//  ACCOUNTS  //
+////////////////
+
+function createAccount({
+  accountName,
+  switchAccount,
+  color,
+  required,
+  sendmail,
+  inbox,
+  drafts,
+  trash,
+  headerCache,
+  messageCachedir,
+  record,
+}) {
+  const notmuchPath = `${accountName}/**`
+  const prefix = getPrefix(accountName)
+  const getFolder = generateFolder(accountName)
+  const emailEnv = `${upperCase(accountName)}${EMAIL_ENV_SUFFIX}`
+  const alternateEnv = `${upperCase(accountName)}${EMAIL_ALIASES_ENV_SUFFIX}`
+  const email = process.env[emailEnv]
+  const alternates = process.env[alternateEnv]
+  const switchToEnv =
+    process.env[`${upperCase(switchAccount)}${EMAIL_ENV_SUFFIX}`]
+  const switchToPrefix = getPrefix(switchAccount)
+  const firstChar = lowerCase(switchAccount[0])
+
+  if (!email) {
+    if (required) {
+      console.log(`You need to set ${emailEnv}`)
+      process.exit(1)
+    }
+  } else {
+    const folders = [
+      {
+        name: 'Starred',
+        key: 's',
+      },
+      {
+        name: 'Sent',
+        key: 't',
+      },
+      {
+        name: 'Drafts',
+        key: 'd',
+      },
+    ].reduce((str, {name, key}) => {
+      str += `macro index,pager g${key} "<change-folder>=${prefix}.${name}<enter>" "go to ${name}"
+macro browser gs "<exit><change-folder>=${prefix}.${name}<enter>" "go to ${name}"\n`
+      return str
+    }, '')
+
+    return `# vi:syntax=muttrc
+# THIS FILE IS AUTO GENERATED, DONOT EDIT MANUALLY
+
+unmailboxes *
+
+${
+  switchAccount && switchToEnv
+    ? `macro index,pager g${firstChar} "<change-folder>=${switchToPrefix}<enter>" "Switch account to ${switchAccount}"`
+    : ''
+}
+
+${folders}
+
+macro index,pager / "<vfolder-from-query>path:${notmuchPath} " "Searching ${accountName} mailbox with notmuch integration in neomutt"
+
+# ${alternates ? `alternates "${alternates}"` : ''}
+
+set sendmail = "${sendmail ||
+      `/usr/local/bin/msmtp -a ${lowerCase(accountName)}`}"
+set from = "${email}"
+set spoolfile = "${inbox || getFolder()}"
+set postponed = "${drafts || getFolder('Drafts')}"
+set mbox = "${record || getFolder('Archive')}"
+set trash = "${trash || getFolder('Trash')}"
+set header_cache = "${headerCache || getHeaderCache(accountName)}"
+set message_cachedir = "${messageCachedir || getMessagesCache(accountName)}"
+mailboxes "${getFolder()}" \\
+  "${getFolder('Starred')}" \\
+  "${getFolder('Sent')}" \\
+  "${getFolder('Drafts')}" \\
+  "${getFolder('Archive')}" \\
+  "${getFolder('Trash')}" \\
+  "${getFolder('Spam')}" \\
+  \`${mailboxes(accountName)}\`
+
+macro index SI "<shell-escape>mbsync ${lowerCase(
+      accountName,
+    )} -download<enter>" "sync inbox"
+macro index,pager y "<save-message>=${prefix}.Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><save-message>=${prefix}.Archive<enter>" "Archive conversation"
+
+color status ${color} default
+color sidebar_highlight black ${color}
+color sidebar_indicator ${color} color0`
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+//                                    DO IT                                    //
+/////////////////////////////////////////////////////////////////////////////////
+
+fs.writeFileSync(
+  path.join(process.env.HOME, '/.mutt/config/hooks.mutt'),
+  updateHooks(),
+)
+
+accounts.forEach(a =>
+  fs.writeFileSync(
+    path.join(process.env.HOME, '/.mutt/accounts', lowerCase(a.accountName)),
+    createAccount(a),
+  ),
+)

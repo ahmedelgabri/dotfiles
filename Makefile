@@ -6,7 +6,7 @@ DOTFILES="$(HOME)/.dotfiles"
 SCRIPTS="$(DOTFILES)/script"
 INSTALL="$(SCRIPTS)/install"
 
-all: node python neovim rust macos
+all: mail node python neovim rust macos
 
 install:
 	bash <(cat $(INSTALL))
@@ -33,6 +33,9 @@ homebrew-work: homebrew
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.work"
 	brew cleanup
 	brew doctor
+
+mail:
+	node $(DOTFILES)/files/.mutt/scripts/setup
 
 node:
 	sh $(SCRIPTS)/node-packages

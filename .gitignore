@@ -15,10 +15,12 @@ files/.weechat/*
 !files/.weechat/sec.conf
 
 files/.mutt/config/aliases
-files/.mutt/cache
+files/.mutt/config/hooks.mutt
 files/.mutt/tmp
 files/.mutt/certificates
 files/.mutt/secure-ca.cert
+files/.mutt/accounts/*
+!files/.mutt/accounts/init.lua
 
 scratch
 
