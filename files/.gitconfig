@@ -150,8 +150,6 @@
   dm = d --word-diff-regex=.
   doctor = remote -v show origin
   fl = l -u
-  stat = --no-pager diff --stat
-  grr = grep --break --heading --line-number
   hide = update-index --assume-unchanged
   unhide = update-index --no-assume-unchanged
   unhide-all = update-index --really-refresh
@@ -173,6 +171,19 @@
   who = shortlog -sne
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=auto:human
   unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
+  # Review helpers: https://blog.jez.io/cli-code-review/
+  # https://github.com/jez/dotfiles/blob/d7b720fe13b6bc83829d248e23127b918d65de6e/util/gitconfig#L23-L53
+  review-base = !git merge-base HEAD \"${review_base:-master}\"
+  stat = !git --no-pager diff --stat $(git review-base)
+  files = !git --no-pager diff --name-only $(git review-base)
+  # Review by commit
+  by-commit = !tig log --reverse $(git review-base)..HEAD
+  # Show a markdown-formatted summary of commits from {review_base:-master} until HEAD
+  pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"${review_base:-master}\"..HEAD
+  # split-diff style review using vim-fugitive Gdiff
+  review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
+  reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
+  reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
 
 [filter "media"]
   clean = git-media-clean %f
