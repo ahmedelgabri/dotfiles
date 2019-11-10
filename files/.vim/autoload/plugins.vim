@@ -87,11 +87,6 @@ function! plugins#install_plugins() abort
   " }}}
 
   " Syntax {{{
-  " call minpac#add('https://github.com/RRethy/vim-hexokinase', { 'do': 'make hexokinase' })
-  " let g:Hexokinase_highlighters = ['sign_column']
-  " let g:Hexokinase_virtualText = '██'
-  let g:Hexokinase_highlighters = ['foregroundfull']
-  let g:Hexokinase_ftAutoload = ['sass','scss','stylus','css','html','html.twig','twig','conf','javascript', 'javascript.jsx', 'json']
   call minpac#add('https://github.com/norcalli/nvim-colorizer.lua')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
@@ -101,7 +96,6 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
-  call minpac#add('https://github.com/neoclide/vim-jsx-improve')
   call minpac#add('https://github.com/gberenfield/cljfold.vim', { 'type': 'opt' })
   call minpac#add('https://github.com/tpope/vim-fireplace', {'type': 'opt'})
   call minpac#add('https://github.com/zplugin/zplugin-vim-syntax')
