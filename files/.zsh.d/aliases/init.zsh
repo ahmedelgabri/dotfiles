@@ -60,4 +60,10 @@ alias r="ranger" # overrides built-in r command
 
 (( $+commands[yarn] )) && alias y=yarn
 
+if (( $+commands[hub] )); then
+  compdef g=hub
+else
+  compdef g=git
+fi
+
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'
