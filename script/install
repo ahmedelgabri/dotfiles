@@ -269,7 +269,8 @@ symlink_files() {
     cd "$DOTFILES_DIR" &&
       cp files/.gitconfig.local $HOME/.gitconfig.local &&
       cp files/.zshrc.local $HOME/.zshrc.local &&
-      make symlink
+      make symlink &&
+      make gpg
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi

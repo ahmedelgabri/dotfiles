@@ -18,6 +18,8 @@ debug:
 # The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124
 symlink:
 	stow --restow -vv --ignore ".DS_Store" --target="$(HOME)" --dir="$(DOTFILES)" files
+
+gpg: symlink
 	# Fix gpg folder/file permissions after symlinking
 	chmod 700 $(HOME)/.gnupg && chmod 600 $(HOME)/.gnupg/*
 
