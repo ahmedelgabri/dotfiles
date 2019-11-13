@@ -86,7 +86,7 @@ brew "proselint"
 brew "task"
 brew "tldr"
 brew "bat"
-brew "exa"
+brew "lsd"
 brew "grc"
 brew "shellcheck"
 brew "shfmt" # Doesn't work with zsh, only sh & bash

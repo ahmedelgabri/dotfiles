@@ -13,12 +13,13 @@ alias history='fc -il 1'
 (( $+commands[htop] )) && alias top=htop
 
 
-if (( $+commands[exa] )); then
-  alias ll="exa --tree --all --group-directories-first"
+if (( $+commands[lsd] )); then
+  alias ls="lsd "
+  alias ll="lsd --tree --almost-all --group-dirs first "
 elif (( $+commands[tree] )); then
   alias ll="type tree >/dev/null && tree --dirsfirst -a -L 1 || l -d .*/ */ "
 else
-  alias ll="echo 'You have to install exa or tree'"
+  alias ll="echo 'You have to install lsd or tree'"
 fi
 
 # TERMINAL

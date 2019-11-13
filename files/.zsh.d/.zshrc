@@ -148,27 +148,6 @@ function {
   export RIPGREP_CONFIG_PATH="${HOME}/.rgrc"
   export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 
-  ############### Exa
-  # di directories
-  # ex executable files
-  # fi regular files
-  # ln symlinks
-  # ur,uw,ux user permissions
-  # gr,gw,gx group permissions
-  # tr,tw,tx others permissions
-  # sn the numbers of a file's size
-  # sb the units of a file's size
-  # uu user that is you
-  # un user that is someone else
-  # gu a group that you belong to
-  # gn a group you aren't a member of
-  # ga new file in Git
-  # gm a modified file in Git
-  # gd a deleted file in Git
-  # gv a renamed file in Git
-  # da a file's date
-  export EXA_COLORS="uu=38;5;249:un=38;5;241:gu=38;5;245:gn=38;5;241:da=38;5;245:sn=38;5;7:sb=38;5;7:ur=38;5;3;1:uw=38;5;5;1:ux=38;5;1;1:ue=38;5;1;1:gr=38;5;3:gw=38;5;5:gx=38;5;1:tr=38;5;3:tw=38;5;1:tx=38;5;1:di=38;5;12:ex=38;5;7;1:*.md=38;5;229;4:*.png=38;5;208:*.jpg=38;5;208:*.gif=38;5;208"
-
   ############### Direnv
   export N_PREFIX="${HOME}/.n"
   export NODE_VERSIONS="${N_PREFIX}/n/versions/node"
