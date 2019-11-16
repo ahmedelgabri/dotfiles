@@ -33,7 +33,6 @@ function! plugins#install_plugins() abort
 
   call minpac#add('https://github.com/justinmk/vim-dirvish')
   call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
-  call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim')
   call minpac#add('https://github.com/junegunn/vim-peekaboo')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
@@ -91,15 +90,16 @@ function! plugins#install_plugins() abort
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
   call minpac#add('https://github.com/plasticboy/vim-markdown')
-  call minpac#add('https://github.com/amadeus/vim-convert-color-to')
   call minpac#add('https://github.com/styled-components/vim-styled-components')
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
-  call minpac#add('https://github.com/gberenfield/cljfold.vim', { 'type': 'opt' })
-  call minpac#add('https://github.com/tpope/vim-fireplace', {'type': 'opt'})
   call minpac#add('https://github.com/zplugin/zplugin-vim-syntax')
   call minpac#add('https://github.com/fatih/vim-go', {'do': 'GoUpdateBinaries'})
+  " Clojure
+  call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
+  call minpac#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
+  call minpac#add('https://github.com/tpope/vim-fireplace', {'type': 'opt'})
   " }}}
 
   " Linters & Code quality {{{
