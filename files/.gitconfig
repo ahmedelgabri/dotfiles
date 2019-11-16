@@ -17,14 +17,14 @@
   editor = $EDITOR
   commitGraph = true
   whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-  excludesfile = ~/.git.d/.gitignore
-  attributesfile = ~/.git.d/.gitattributes
+  excludesfile = ~/.config/git.d/.gitignore
+  attributesfile = ~/.config/git.d/.gitattributes
   ; https://news.ycombinator.com/item?id=11388479
   untrackedCache = true
   pager = diff-so-fancy | less --tabs=4 -RFX
   ; # conflicts with Markdown
   commentChar = %
-  hooksPath = ~/.git.d/hooks
+  hooksPath = ~/.config/git.d/hooks
 
 [branch]
   autosetupmerge = always
