@@ -80,7 +80,7 @@ function {
   # }}}
 
   # Local plugins/completions/etc... {{{
-    zplugin load %HOME/.zsh.d/aliases
+    zplugin load %HOME/.config/zsh.d/aliases
   # }}}
 
   # Recommended be loaded last {{{
