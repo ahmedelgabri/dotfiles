@@ -223,6 +223,9 @@
   https://adamwathan.me/rss/index.xml "Blogs" "CSS" "JavaScript"
   http://planet.clojure.in/atom.xml "Blog" "Clojure" "ClojureScript"
   https://keavy.com/feed.xml "Blog" "Engineering" "Leadership"
+  https://productionreadygraphql.com/rss/ "Blog" "GraphQL"
+  https://blog.jez.io/atom.xml "Blog" "Programming"
+  http://feeds.feedburner.com/ThePragmaticEngineer "Blog"
 # }}}
 
 # Browsers {{{
@@ -280,6 +283,7 @@
   https://artsy.github.io/feed "Engineering"
   https://blogs.msdn.microsoft.com/oldnewthing/feed "Engineering"
   https://labs.spotify.com/feed/ "Engineering"
+  https://tech.wayfair.com/feed/ "Engineering"
 # }}}
 
 # ME {{{
