@@ -46,6 +46,11 @@
     vscode-nls "^4.1.1"
     vscode-uri "^2.0.3"
 
+"@emmetio/extract-abbreviation@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@emmetio/extract-abbreviation/-/extract-abbreviation-0.1.6.tgz#e4a9856c1057f0aff7d443b8536477c243abe28c"
+  integrity sha512-Ce3xE2JvTSEbASFbRbA1gAIcMcZWdS2yUYRaQbeM0nbOzaZrUYfa3ePtcriYRZOZmr+CkKA+zbjhvTpIOAYVcw==
+
 "@nodelib/fs.scandir@2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.2.tgz#1f981cd5b83e85cfdeb386fc693d4baab392fa54"
@@ -302,6 +307,13 @@ coc-css@>=1.2.2:
   resolved "https://registry.yarnpkg.com/coc-css/-/coc-css-1.2.2.tgz#9b62ac96a9db8c687396ab4648c0c67dc3897a2f"
   integrity sha512-JvZnKZZJZemS70o972OEjfnMGGO2sLpJA3iX1OT3CXmaymPb8CmufboyCVnzGMDMbFL/qHgfjbdw9kOg5ZtzzQ==
 
+coc-emmet@>=1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/coc-emmet/-/coc-emmet-1.1.3.tgz#135a6a527a25fcf44432a983220e2de3f880cfe0"
+  integrity sha512-FTWuUqxH0NEEHgTLSl4XiggB437nrfjnsqF2SaepAL6xnNfYxSLWkp2Npm+hEwjgu8hcIb2csaeIURWrUGuu5Q==
+  dependencies:
+    vscode-emmet-helper "^1.2.15"
+
 coc-emoji@>=1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/coc-emoji/-/coc-emoji-1.2.3.tgz#e4657414c14b957be44f0a0c1369b136f6e90fab"
@@ -321,10 +333,10 @@ coc-html@>=1.2.1:
   dependencies:
     typescript "^3"
 
-coc-json@>=1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/coc-json/-/coc-json-1.2.3.tgz#74fd20ce91387086fdc864011e28348b90063c2b"
-  integrity sha512-JlM2CqVuDcxHAxVRcCTd2PsEzAU6jCwJ3N8jaszD3m2HSjq5I796Y7zFmoW6TK/7IOqAiYWCq1l+1yqjTSBedQ==
+coc-json@>=1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/coc-json/-/coc-json-1.2.4.tgz#088169129931693eb8faa5f6d858e47a6df60568"
+  integrity sha512-Xt5D58lx0EHXCMorLt3+RAO0VMrEyZpPOVCSeb8iV3SZTWFNtA2vSh4NSCSd7VUqRUzk7Md++2AJgGyubqtQqA==
 
 coc-phpls@>=2.0.7:
   version "2.0.7"
@@ -343,10 +355,10 @@ coc-python@>=1.2.6:
   resolved "https://registry.yarnpkg.com/coc-python/-/coc-python-1.2.6.tgz#a1c20098319933713ec862621dd2191e17e452e6"
   integrity sha512-z7LYC5yEXV123WQ3O0JbsLw7XhzGUQGq59Yn0j4ee1mZWijM//pCSgz5nIIPpSzrnMvnTAHrBPASzMnqImRvPg==
 
-coc-rls@>=1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/coc-rls/-/coc-rls-1.1.2.tgz#d9853a1a26790c305def086b91d2c1816a602d7e"
-  integrity sha512-+srC3IcThFUvKChqnx/JwAUs0OJMrjjPXtjgLmrlUOZF211LHq8oYxxQQaf7mDAMDyDEyMgWQ615mJZP7s/3EQ==
+coc-rls@>=1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/coc-rls/-/coc-rls-1.1.4.tgz#24a8f803ed837160c536651ed718fffca392c4b1"
+  integrity sha512-UcQCBSp/Mzt5SR2mS4Qukvn7mBoh86cB1Fb1/oD88+sn1RHRl67eTrdlbswzdrXyd6WotQi62okCuIhyVoqAig==
 
 coc-svg@>=0.0.13:
   version "0.0.13"
@@ -360,34 +372,27 @@ coc-svg@>=0.0.13:
     vscode-languageserver-protocol "^3.15.0-next.1"
     vscode-uri "^1.0.6"
 
-coc-tailwindcss@>=0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/coc-tailwindcss/-/coc-tailwindcss-0.2.5.tgz#6b9cca6bf6ed985e625a601ca75c14c98d72642e"
-  integrity sha512-HfExcJODt9kMnCLhX5Bf6fJLLj+qP4zLZeoeRlO/amU9D9aTXOfQnr5w7GYzKB9ftRrh8C/NNHbM73WuTI5YZw==
-  dependencies:
-    fast-glob "^3.0.4"
-    tailwindcss-language-server "0.0.1"
-    vscode-languageserver-protocol "^3.14.1"
+coc-tailwindcss@>=0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/coc-tailwindcss/-/coc-tailwindcss-0.3.2.tgz#f99cf825c784e38bc1a7bd3f4ee8e943da8108dd"
+  integrity sha512-NWhECeFZXk081SWDAo+aImvpVKakpGkUQwtJino6obi+4g1L7hNfRW4SXeoTYWAfCXHlQmgeoB1YfsbFD7ZsYg==
 
-coc-tsserver@>=1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/coc-tsserver/-/coc-tsserver-1.4.1.tgz#f3b2933cd5498b51f43ce19e9ed704296cf1148d"
-  integrity sha512-WqDl49VTQC0d4y2dAXHNkgYqklWi2z8AWdbSgo/LBBodI1sn0uL2s1GsnGOSDcax0agEl2iNnt0z/hGr7KOIKw==
+coc-tsserver@>=1.4.5:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/coc-tsserver/-/coc-tsserver-1.4.6.tgz#263d5429302dfd84c7a3703261e50d9b93eee293"
+  integrity sha512-DYlRkMkrzU1N6zzVfM0y6HqH5snrX7NGlqBaZUZKuBFqcITI6vOTQ8NBPMmMH7mRsxJbHV6g959BLfn8YN+9wQ==
   dependencies:
-    typescript "3.6.2"
+    typescript "3.7.2"
 
 coc-ultisnips@>=1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/coc-ultisnips/-/coc-ultisnips-1.2.3.tgz#07dfc47a581111239867f7e27daf8d974f287ad6"
   integrity sha512-gefj80C24vZ9FTnFLWXhNC8aW9VBVQGELH0e80gAAZma/RY5FGOkzWVvtjO9vQqAVHt4TQUErybsf/en5ci82w==
 
-coc-vimlsp@>=0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/coc-vimlsp/-/coc-vimlsp-0.3.9.tgz#42a3096226e8ac9941a30a17810c47049f803488"
-  integrity sha512-Zm/mfKpiTNPR+9JItinxvWsKfJyFea3aQvVVM5fo6wgPnEIkNVmTIO735W5XJaV1pzq/UJH3oKAhh6dUfF+EbA==
-  dependencies:
-    tslib "^1.9.3"
-    vim-language-server "^1.2.9"
+coc-vimlsp@>=0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/coc-vimlsp/-/coc-vimlsp-0.4.3.tgz#df9123832ba54439bc0f45d74631d8e99f26ac97"
+  integrity sha512-ZYyOd9fxVJYX/Oy7zOt6OhKmS/mU2kmLghGVqrkyxIn59BxnfaLYNvdKosT53UpygscRASVtF4arytP/dmxHCw==
 
 coc-yaml@>=1.0.2:
   version "1.0.2"
@@ -413,11 +418,6 @@ colors@^1.1.2:
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
 
-colors@~0.6.0-1:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/colors/-/colors-0.6.2.tgz#2423fe6678ac0c5dae8852e5d0e5be08c997abcc"
-  integrity sha1-JCP+ZnisDF2uiFLl0OW+CMmXq8w=
-
 combined-stream@^1.0.6, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
@@ -434,11 +434,6 @@ commander@^2.19.0:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.1.tgz#3863ce3ca92d0831dcf2a102f5fb4b5926afd0f9"
   integrity sha512-cCuLsMhJeWQ/ZpsFTbE765kvVfoeSddc4nU3up4fV+fDBcfUXnbITJ+JzhkdjzOqhURjZgujxaioam4RM9yGUg==
-
-commander@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.1.0.tgz#d121bbae860d9992a3d517ba96f56588e47c6781"
-  integrity sha1-0SG7roYNmZKj1Re6lvVliOR8Z4E=
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -725,14 +720,6 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-findup@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/findup/-/findup-0.1.5.tgz#8ad929a3393bac627957a7e5de4623b06b0e2ceb"
-  integrity sha1-itkpozk7rGJ5V6fl3kYjsGsOLOs=
-  dependencies:
-    colors "~0.6.0-1"
-    commander "~2.1.0"
-
 forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
@@ -894,9 +881,9 @@ http-signature@~1.2.0:
     sshpk "^1.7.0"
 
 https-proxy-agent@^2.2.1:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.2.tgz#271ea8e90f836ac9f119daccd39c19ff7dfb0793"
-  integrity sha512-c8Ndjc9Bkpfx/vCJueCPy0jlP4ccCCSNDp8xwCZzPjKJUm+B+u9WX2x98Qx4n1PiMNTWo3D7KK5ifNV/yJyRzg==
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
+  integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
   dependencies:
     agent-base "^4.3.0"
     debug "^3.1.0"
@@ -1020,7 +1007,7 @@ json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
-jsonc-parser@^1.0.3:
+jsonc-parser@^1.0.0, jsonc-parser@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-1.0.3.tgz#1d53d7160e401a783dbceabaad82473f80e6ad7e"
   integrity sha512-hk/69oAeaIzchq/v3lS50PXuzn5O2ynldopMC+SWBql7J2WtdptfB9dy8Y7+Og5rPkTCpn83zTiO8FMcqlXJ/g==
@@ -1374,18 +1361,6 @@ run-parallel@^1.1.9:
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.1.9.tgz#c9dd3a7cf9f4b2c4b6244e173a6ed866e61dd679"
   integrity sha512-DEqnSRTDw/Tc3FXf49zedI638Z9onwUotBMiUFKmrO2sdFKIbXamXGQ3Axd4qgphxKB4kw/qP1w5kTxnfU1B9Q==
 
-rxjs-operators@^1.1.2:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/rxjs-operators/-/rxjs-operators-1.1.3.tgz#023511f0e1e2203ccba96f9c27d01a37124cd615"
-  integrity sha512-2aIIEgsH4Wbii8WoyEMniHGzrmFnBKD4jJUke8nCcowj3mL7+7Bx5IQEkYbdkNMO5Z5MZ0uHzu0LhU1SXhAIbg==
-
-rxjs@^6.4.0:
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
-  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
-  dependencies:
-    tslib "^1.9.0"
-
 safe-buffer@^5.0.1, safe-buffer@^5.1.2, safe-buffer@~5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.0.tgz#b74daec49b1148f88c64b68d49b1e815c1f2f519"
@@ -1410,11 +1385,6 @@ shimmer@^1.1.0, shimmer@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/shimmer/-/shimmer-1.2.1.tgz#610859f7de327b587efebf501fb43117f9aff337"
   integrity sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==
-
-shvl@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/shvl/-/shvl-2.0.0.tgz#55fd550b6e81bf7574f2f576b8b5c1ffae74e10f"
-  integrity sha512-WbpzSvI5XgVGJ3A4ySGe8hBxj0JgJktfnoLhhJmvITDdK21WPVWwgG8GPlYEh4xqdti3Ff7PJ5G0QrRAjNS0Ig==
 
 sigmund@^1.0.1:
   version "1.0.1"
@@ -1530,11 +1500,6 @@ svgo@^1.0.1:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-tailwindcss-language-server@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/tailwindcss-language-server/-/tailwindcss-language-server-0.0.1.tgz#a4f24cb05cc6b36fc73517bcc8c6c6c80c8c6cde"
-  integrity sha512-lMoncp8ICeUA1kLVaiKARRUKQxRndKtIelydoMgg3P2ZjAIfcptN8Nin848+VClr2wGoM3+9RZ71sDG1YrnX1g==
-
 to-regex-range@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
@@ -1550,7 +1515,7 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
-tslib@^1.10.0, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
@@ -1567,10 +1532,10 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-typescript@3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.2.tgz#105b0f1934119dde543ac8eb71af3a91009efe54"
-  integrity sha512-lmQ4L+J6mnu3xweP8+rOrUwzmN+MRAj7TgtJtDaXE5PMyX2kCrklhg3rvOsOIfNeAWMQWO2F1GPc1kMD2vLAfw==
+typescript@3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
+  integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
 
 typescript@^3, typescript@^3.5.3:
   version "3.6.3"
@@ -1629,20 +1594,6 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vim-language-server@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/vim-language-server/-/vim-language-server-1.2.9.tgz#ea6feb35f866f7f130903a4a14c46e8d9067a244"
-  integrity sha512-51VJ74Lx6TfBEPZnXmlvsm/vnxlpAKu1ctLQs8eJzvQi4atgC1FqOKOvGFZhswpckRSxXKLlxmkjH4v/G2VqSg==
-  dependencies:
-    fast-glob "^3.0.4"
-    findup "^0.1.5"
-    rxjs "^6.4.0"
-    rxjs-operators "^1.1.2"
-    shvl "^2.0.0"
-    tslib "^1.9.3"
-    vscode-languageserver "^5.2.1"
-    vscode-uri "^1.0.6"
-
 vscode-css-languageservice@^4.0.3-next.4:
   version "4.0.3-next.8"
   resolved "https://registry.yarnpkg.com/vscode-css-languageservice/-/vscode-css-languageservice-4.0.3-next.8.tgz#0b81693b6ea9d10f78775a1dcad2c0f464fbde16"
@@ -1651,6 +1602,15 @@ vscode-css-languageservice@^4.0.3-next.4:
     vscode-languageserver-types "^3.15.0-next.2"
     vscode-nls "^4.1.1"
     vscode-uri "^2.0.3"
+
+vscode-emmet-helper@^1.2.15:
+  version "1.2.16"
+  resolved "https://registry.yarnpkg.com/vscode-emmet-helper/-/vscode-emmet-helper-1.2.16.tgz#cfefb8b54c68178b4696d4abae806bb3a2b043e8"
+  integrity sha512-BuQK6fTV2w65Yd0/CJGj1EOvcJ9NHWfrMJ9nA8pjnu9jzAAnXLhnbviuGT9medMiPU0mp0tJqc/8Z0qlXcqdGw==
+  dependencies:
+    "@emmetio/extract-abbreviation" "0.1.6"
+    jsonc-parser "^1.0.0"
+    vscode-languageserver-types "^3.6.0-next.1"
 
 vscode-html-languageservice@^3.0.4-next.1:
   version "3.0.4-next.3"
@@ -1710,7 +1670,7 @@ vscode-languageserver-protocol@^3.15.0-next.1, vscode-languageserver-protocol@^3
     vscode-jsonrpc "^5.0.0-next.2"
     vscode-languageserver-types "^3.15.0-next.5"
 
-vscode-languageserver-types@3.14.0, vscode-languageserver-types@^3.6.1:
+vscode-languageserver-types@3.14.0, vscode-languageserver-types@^3.6.0-next.1, vscode-languageserver-types@^3.6.1:
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.14.0.tgz#d3b5952246d30e5241592b6dde8280e03942e743"
   integrity sha512-lTmS6AlAlMHOvPQemVwo3CezxBp0sNB95KNPkqp3Nxd5VFEnuG1ByM0zlRWos0zjO3ZWtkvhal0COgiV1xIA4A==
@@ -1732,14 +1692,6 @@ vscode-languageserver@^4.0.0:
   dependencies:
     vscode-languageserver-protocol "^3.10.3"
     vscode-uri "^1.0.5"
-
-vscode-languageserver@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/vscode-languageserver/-/vscode-languageserver-5.2.1.tgz#0d2feddd33f92aadf5da32450df498d52f6f14eb"
-  integrity sha512-GuayqdKZqAwwaCUjDvMTAVRPJOp/SLON3mJ07eGsx/Iq9HjRymhKWztX41rISqDKhHVVyFM+IywICyZDla6U3A==
-  dependencies:
-    vscode-languageserver-protocol "3.14.1"
-    vscode-uri "^1.0.6"
 
 vscode-languageserver@^5.3.0-next.8:
   version "5.3.0-next.10"
