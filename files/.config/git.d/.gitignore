@@ -50,6 +50,8 @@ logs/
 tmp/
 dump/
 .next/
+.cache/
+.netlify/
 
 # Editors       #
 #################
