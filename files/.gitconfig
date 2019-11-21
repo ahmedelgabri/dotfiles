@@ -140,8 +140,9 @@
   force = push --force-with-lease
   fam = "!f() { git add . && git amend && git force; }; f"
   blm = blame -wMC
-  br = branch --sort=-committerdate --verbose --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) - %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)'
-  brs = br -a
+  br = branch --sort=-committerdate
+  brl = br --verbose --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) - %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) - %(color:green)(%(committerdate:relative))%(color:reset) %(color:blue)<%(authorname)>%(color:reset)'
+  brs = brl -a
   cb = checkout -b
   cm = commit
   co = checkout
@@ -162,8 +163,6 @@
   lnm = l --no-merges
   patch = !git --no-pager diff --no-color | pbcopy | echo "Patch copied to clipboard"
   rb = "!sh -c \"git rebase -i HEAD~$1\" -"
-  recentall = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short) [%(committername)]'
-  recentlocal = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(refname:short) [%(committername)]'
   st = status -sb
   stashes = stash list
   track = push origin -u HEAD
