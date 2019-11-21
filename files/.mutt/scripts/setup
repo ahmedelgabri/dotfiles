@@ -2,6 +2,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const os = require('os')
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                   CONFIG                                    //
@@ -25,6 +26,7 @@ const EMAIL_ENV_SUFFIX = '_EMAIL'
 const EMAIL_ALIASES_ENV_SUFFIX = '_EMAIL_ALIASES'
 
 const MUTT_ROOT = '~/.mutt'
+cons HOME = os.homedir()
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                   HELPERS                                   //
@@ -186,13 +188,13 @@ color sidebar_indicator ${color} color0`
 /////////////////////////////////////////////////////////////////////////////////
 
 fs.writeFileSync(
-  path.join(process.env.HOME, '/.mutt/config/hooks.mutt'),
+  path.join(HOME, '/.mutt/config/hooks.mutt'),
   updateHooks(),
 )
 
 accounts.forEach(a =>
   fs.writeFileSync(
-    path.join(process.env.HOME, '/.mutt/accounts', lowerCase(a.accountName)),
+    path.join(HOME, '/.mutt/accounts', lowerCase(a.accountName)),
     createAccount(a),
   ),
 )
