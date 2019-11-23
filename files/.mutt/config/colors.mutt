@@ -4,7 +4,8 @@
 
 # Sidebar -------------------------------------------------------
 color sidebar_divider color0 color0
-
+color sidebar_new brightyellow default
+color sidebar_unread magenta default
 # Main colors ---------------------------------------------------
 
 # color attachment brightblack default

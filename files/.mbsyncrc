@@ -19,7 +19,7 @@ IMAPAccount Personal
 Host imap.gmail.com
 User ahmed@gabri.me
 # Get the account password from the system Keychain
-PassCmd "~/.dotfiles/extra/bin/get-keychain-pass 'ahmed+mutt@gabri.me' 'smtp.gmail.com'"
+PassCmd "~/.dotfiles/extra/bin/get-keychain-pass 'ahmed+mutt@gabri.me' 'gmail.com'"
 AuthMechs LOGIN
 SSLType IMAPS
 
@@ -30,42 +30,42 @@ Account Personal
 # Local storage (where the mail is retrieved to)
 MaildirStore Personal-local
 Path ~/.mail/Personal/ # The trailing "/" is important
-Inbox ~/.mail/Personal/Personal
+Inbox ~/.mail/Personal/INBOX
 SubFolders Verbatim
 
 Channel Personal-inbox
 Master :Personal-remote:INBOX
-Slave :Personal-local:Personal
+Slave :Personal-local:INBOX
 
 Channel Personal-archive
 Master :Personal-remote:"[Gmail]/All Mail"
-Slave :Personal-local:Personal.Archive
+Slave :Personal-local:Archive
 
 Channel Personal-drafts
 Master :Personal-remote:"[Gmail]/Drafts"
-Slave :Personal-local:Personal.Drafts
+Slave :Personal-local:Drafts
 
 Channel Personal-starred
 Master :Personal-remote:"[Gmail]/Starred"
-Slave :Personal-local:Personal.Starred
+Slave :Personal-local:Starred
 
 Channel Personal-sent
 Master :Personal-remote:"[Gmail]/Sent Mail"
-Slave :Personal-local:Personal.Sent
+Slave :Personal-local:Sent
 
 Channel Personal-spam
 Master :Personal-remote:"[Gmail]/Spam"
-Slave :Personal-local:Personal.Spam
+Slave :Personal-local:Spam
 
 Channel Personal-trash
 Master :Personal-remote:"[Gmail]/Trash"
-Slave :Personal-local:Personal.Trash
+Slave :Personal-local:Trash
 
 Channel Personal-folders
 Master :Personal-remote:
 Slave :Personal-local:
 # All folders except those defined above
-Patterns * !INBOX !Personal.Archive !Personal.Drafts !Personal.Starred !Personal.Sent !Personal.Spam !Personal.Trash ![Gmail]*
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync personal`
 Group personal
@@ -81,7 +81,7 @@ Channel Personal-folders
 # For doing a quick sync of just the INBOX with `mbsync personal-download`.
 Channel personal-download
 Master :Personal-remote:INBOX
-Slave :Personal-local:Personal
+Slave :Personal-local:INBOX
 Create Slave
 Expunge Slave
 Sync Pull
@@ -93,7 +93,7 @@ IMAPAccount Work
 Host imap.gmail.com
 User ahmed.elgabri@lightspeedhq.com
 # Get the account password from the system Keychain
-PassCmd "~/.dotfiles/extra/bin/get-keychain-pass 'ahmed.elgabri+mutt@lightspeedhq.com' 'smtp.gmail.com'"
+PassCmd "~/.dotfiles/extra/bin/get-keychain-pass 'ahmed.elgabri+mutt@lightspeedhq.com' 'gmail.com'"
 AuthMechs LOGIN
 SSLType IMAPS
 
@@ -104,42 +104,42 @@ Account Work
 # Local storage (where the mail is retrieved to)
 MaildirStore Work-local
 Path ~/.mail/Work/ # The trailing "/" is important
-Inbox ~/.mail/Work/Work
+Inbox ~/.mail/Work/INBOX
 SubFolders Verbatim
 
 Channel Work-inbox
 Master :Work-remote:INBOX
-Slave :Work-local:Work
+Slave :Work-local:INBOX
 
 Channel Work-archive
 Master :Work-remote:"[Gmail]/All Mail"
-Slave :Work-local:Work.Archive
+Slave :Work-local:Archive
 
 Channel Work-drafts
 Master :Work-remote:"[Gmail]/Drafts"
-Slave :Work-local:Work.Drafts
+Slave :Work-local:Drafts
 
 Channel Work-starred
 Master :Work-remote:"[Gmail]/Starred"
-Slave :Work-local:Work.Starred
+Slave :Work-local:Starred
 
 Channel Work-sent
 Master :Work-remote:"[Gmail]/Sent Mail"
-Slave :Work-local:Work.Sent
+Slave :Work-local:Sent
 
 Channel Work-spam
 Master :Work-remote:"[Gmail]/Spam"
-Slave :Work-local:Work.Spam
+Slave :Work-local:Spam
 
 Channel Work-trash
 Master :Work-remote:"[Gmail]/Trash"
-Slave :Work-local:Work.Trash
+Slave :Work-local:Trash
 
 Channel Work-folders
 Master :Work-remote:
 Slave :Work-local:
 # All folders except those defined above
-Patterns * !INBOX !Work.Archive !Work.Drafts !Work.Starred !Work.Sent !Work.Spam !Work.Trash ![Gmail]*
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
 
 # Group the channels, so that all channels can be sync'd with `mbsync work`
 Group work
@@ -155,7 +155,7 @@ Channel Work-folders
 # For doing a quick sync of just the INBOX with `mbsync work-download`.
 Channel work-download
 Master :Work-remote:INBOX
-Slave :Work-local:Work
+Slave :Work-local:INBOX
 Create Slave
 Expunge Slave
 Sync Pull

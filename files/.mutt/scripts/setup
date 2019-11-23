@@ -26,7 +26,7 @@ const EMAIL_ENV_SUFFIX = '_EMAIL'
 const EMAIL_ALIASES_ENV_SUFFIX = '_EMAIL_ALIASES'
 
 const MUTT_ROOT = '~/.mutt'
-cons HOME = os.homedir()
+const HOME = os.homedir()
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                   HELPERS                                   //
@@ -35,9 +35,8 @@ cons HOME = os.homedir()
 const lowerCase = str => str.toLowerCase()
 const upperCase = str => str.toUpperCase()
 
-const getPrefix = accountName => `${accountName}/${accountName}`
-const generateFolder = accountName => (folder = '') =>
-  `+${getPrefix(accountName)}${folder ? '.' : ''}${folder}`
+const generateFolder = accountName => (folder = 'INBOX') =>
+  `+${accountName}${folder ? '/' : ''}${folder}`
 
 const getAccountFile = accountName =>
   path.join(MUTT_ROOT, '/accounts/', lowerCase(accountName))
@@ -52,7 +51,7 @@ const getMessagesCache = accountName =>
   path.join(getCacheFor('messages'), lowerCase(accountName), '/')
 
 const mailboxes = accountName =>
-  `tree ~/.mail/${accountName} -d -I "cur|new|tmp|certs|.notmuch|Inbox|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
+  `tree ~/.mail/${accountName} -d -I "Archive|cur|new|tmp|certs|.notmuch|Inbox|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                 GENERATION                                  //
@@ -100,7 +99,6 @@ function createAccount({
   record,
 }) {
   const notmuchPath = `${accountName}/**`
-  const prefix = getPrefix(accountName)
   const getFolder = generateFolder(accountName)
   const emailEnv = `${upperCase(accountName)}${EMAIL_ENV_SUFFIX}`
   const alternateEnv = `${upperCase(accountName)}${EMAIL_ALIASES_ENV_SUFFIX}`
@@ -108,7 +106,6 @@ function createAccount({
   const alternates = process.env[alternateEnv]
   const switchToEnv =
     process.env[`${upperCase(switchAccount)}${EMAIL_ENV_SUFFIX}`]
-  const switchToPrefix = getPrefix(switchAccount)
   const firstChar = lowerCase(switchAccount[0])
 
   if (!email) {
@@ -131,8 +128,8 @@ function createAccount({
         key: 'd',
       },
     ].reduce((str, {name, key}) => {
-      str += `macro index,pager g${key} "<change-folder>=${prefix}.${name}<enter>" "go to ${name}"
-macro browser gs "<exit><change-folder>=${prefix}.${name}<enter>" "go to ${name}"\n`
+      str += `macro index,pager g${key} "<change-folder>=${accountName}/${name}<enter>" "go to ${name}"
+macro browser gs "<exit><change-folder>=${accountName}/${name}<enter>" "go to ${name}"\n`
       return str
     }, '')
 
@@ -143,7 +140,7 @@ unmailboxes *
 
 ${
   switchAccount && switchToEnv
-    ? `macro index,pager g${firstChar} "<change-folder>=${switchToPrefix}<enter>" "Switch account to ${switchAccount}"`
+    ? `macro index,pager g${firstChar} "<change-folder>=${switchAccount}/INBOX<enter>" "Switch account to ${switchAccount}"`
     : ''
 }
 
@@ -166,7 +163,6 @@ mailboxes "${getFolder()}" \\
   "${getFolder('Starred')}" \\
   "${getFolder('Sent')}" \\
   "${getFolder('Drafts')}" \\
-  "${getFolder('Archive')}" \\
   "${getFolder('Trash')}" \\
   "${getFolder('Spam')}" \\
   \`${mailboxes(accountName)}\`
@@ -174,8 +170,8 @@ mailboxes "${getFolder()}" \\
 macro index SI "<shell-escape>mbsync ${lowerCase(
       accountName,
     )} -download<enter>" "sync inbox"
-macro index,pager y "<save-message>=${prefix}.Archive<enter>" "Archive conversation"
-macro index,pager Y "<tag-thread><save-message>=${prefix}.Archive<enter>" "Archive conversation"
+macro index,pager y "<save-message>=${accountName}/Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><save-message>=${accountName}/Archive<enter>" "Archive conversation"
 
 color status ${color} default
 color sidebar_highlight black ${color}
@@ -187,10 +183,7 @@ color sidebar_indicator ${color} color0`
 //                                    DO IT                                    //
 /////////////////////////////////////////////////////////////////////////////////
 
-fs.writeFileSync(
-  path.join(HOME, '/.mutt/config/hooks.mutt'),
-  updateHooks(),
-)
+fs.writeFileSync(path.join(HOME, '/.mutt/config/hooks.mutt'), updateHooks())
 
 accounts.forEach(a =>
   fs.writeFileSync(
