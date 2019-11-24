@@ -65,27 +65,48 @@ let g:coc_filetype_map = {
 
 " 'diagnostic.displayByAle' Doesn't work well, for some reason...
 let g:coc_user_config = {
-      \  'coc.preferences.colorSupport': 0,
-      \  'coc.preferences.hoverTarget': utils#has_floating_window() ? 'float' : 'echo',
-      \  'suggest.autoTrigger': 'always',
-      \  'suggest.noselect': 0,
-      \  'suggest.echodocSupport': 1,
-      \  'suggest.floatEnable': utils#has_floating_window(),
-      \  'signature.target': utils#has_floating_window() ? 'float' : 'echo',
-      \  'diagnostic.errorSign': '',
-      \  'diagnostic.warningSign': '',
-      \  'diagnostic.infoSign': utils#GetIcon('info'),
-      \  'diagnostic.hintSign': utils#GetIcon('hint'),
-      \  'diagnostic.messageTarget': utils#has_floating_window() ? 'float' : 'echo',
-      \  'diagnostic.refreshOnInsertMode': 1,
-      \  'diagnostic.locationlist': 1,
-      \  'python.jediEnabled': 0,
-      \  'python.linting': {
-      \    'pylintUseMinimalCheckers': 0
-      \   },
-      \  'coc.github.filetypes': ['gitcommit', 'markdown.ghpull'],
-      \  'emmet.includeLanguages': { 'javascript': 'javascriptreact' },
-      \  'codeLens.enable': 1
+      \  'coc': {
+      \    'preferences': {
+      \      'colorSupport': 0,
+      \      'hoverTarget': utils#has_floating_window() ? 'float' : 'echo',
+      \    },
+      \    'github': {
+      \      'filetype': ['gitcommit', 'markdown.ghpull'],
+      \    },
+      \  },
+      \  'suggest': {
+      \    'autoTrigger': 'always',
+      \    'noselect': 0,
+      \    'echodocSupport': 1,
+      \    'floatEnable': utils#has_floating_window(),
+      \  },
+      \  'signature': {
+      \    'target': utils#has_floating_window() ? 'float' : 'echo',
+      \  },
+      \  'diagnostic': {
+      \    'errorSign': '',
+      \    'warningSign': '',
+      \    'infoSign': utils#GetIcon('info'),
+      \    'hintSign': utils#GetIcon('hint'),
+      \    'messageTarget': utils#has_floating_window() ? 'float' : 'echo',
+      \    'refreshOnInsertMode': 1,
+      \    'locationlist': 1,
+      \  },
+      \  'python': {
+      \    'jediEnabled': 0,
+      \    'linting': {
+      \      'pylintUseMinimalCheckers': 0
+      \    },
+      \  },
+      \  'emmet': {
+      \    'includeLanguages': { 'javascript': 'javascriptreact' },
+      \  },
+      \  'codeLens': {
+      \    'enable': 1,
+      \  },
+      \  'rust': {
+      \    'clippy_preference': 'on',
+      \  },
       \ }
 
 let s:languageservers = {}

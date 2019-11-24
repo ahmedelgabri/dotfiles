@@ -1,19 +1,20 @@
 {
   "dependencies": {
-    "coc-emoji": ">=1.2.3",
-    "coc-rls": ">=1.1.4",
-    "coc-json": ">=1.2.4",
-    "coc-ultisnips": ">=1.2.3",
+    "coc-conjure": ">=0.2.2",
     "coc-css": ">=1.2.2",
-    "coc-tailwindcss": ">=0.3.2",
-    "coc-github": ">=1.0.1",
-    "coc-svg": ">=0.0.13",
-    "coc-vimlsp": ">=0.4.3",
-    "coc-phpls": ">=2.0.7",
-    "coc-yaml": ">=1.0.2",
-    "coc-html": ">=1.2.1",
-    "coc-tsserver": ">=1.4.5",
     "coc-emmet": ">=1.1.3",
-    "coc-python": ">=1.2.6"
+    "coc-emoji": ">=1.2.3",
+    "coc-github": ">=1.0.1",
+    "coc-html": ">=1.2.1",
+    "coc-json": ">=1.2.4",
+    "coc-phpls": ">=2.0.7",
+    "coc-python": ">=1.2.6",
+    "coc-rls": ">=1.1.4",
+    "coc-svg": ">=0.0.13",
+    "coc-tailwindcss": ">=0.3.2",
+    "coc-tsserver": ">=1.4.8",
+    "coc-ultisnips": ">=1.2.3",
+    "coc-vimlsp": ">=0.4.3",
+    "coc-yaml": ">=1.0.2"
   }
 }
