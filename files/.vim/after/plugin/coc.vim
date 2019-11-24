@@ -33,14 +33,6 @@ let s:LSP_CONFIG = [
       \   'args': ['--stdio'],
       \   'filetypes': ['Dockerfile', 'dockerfile']
       \ }],
-      \ ['clojure', {
-      \   'command': exepath('clojure-lsp'),
-      \   'filetypes': ['clojure'],
-      \   'rootPatterns': ['project.clj'],
-      \   'additionalSchemes': ['jar', 'zipfile'],
-      \   'trace.server': 'verbose',
-      \   'initializationOptions': {}
-      \  }],
       \ ['golang', {
       \   'command': exepath('gopls'),
       \   'rootPatterns': ['go.mod', '.vim/', '.git/', '.hg/'],

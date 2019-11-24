@@ -1,4 +1,4 @@
 packadd vim-sexp
-packadd fireplace.vim
+packadd conjure.vim
 packadd rainbow_parentheses.vim
 RainbowParentheses

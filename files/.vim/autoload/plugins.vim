@@ -78,7 +78,8 @@ function! plugins#install_plugins() abort
         \ 'coc-vimlsp',
         \ 'coc-github',
         \ 'coc-svg',
-        \ 'coc-tailwindcss'
+        \ 'coc-tailwindcss',
+        \ 'coc-conjure'
         \ ]
 
   call minpac#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
@@ -99,7 +100,7 @@ function! plugins#install_plugins() abort
   " Clojure
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
   call minpac#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
-  call minpac#add('https://github.com/tpope/vim-fireplace', {'type': 'opt'})
+  call minpac#add('https://github.com/Olical/conjure', {'type': 'opt', 'rev': 'v2.1.0', 'do': {-> system('bin/compile')}})
   " }}}
 
   " Linters & Code quality {{{

@@ -74,11 +74,6 @@ function {
     zplugin load trapd00r/LS_COLORS
   # }}}
 
-  # Misc {{{
-    zplugin ice from"gh-r" as"program" bpick"*clojure-lsp*" atclone"chmod 755 clojure-lsp" atpull"%atclone" mv="clojure-lsp -> clojure-lsp"
-    zplugin load https://github.com/snoe/clojure-lsp
-  # }}}
-
   # Local plugins/completions/etc... {{{
     zplugin load %HOME/.config/zsh.d/aliases
   # }}}
