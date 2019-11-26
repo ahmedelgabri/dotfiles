@@ -1,7 +1,4 @@
-plugged
-minpac
 *.un~
 *.zwc
 *.zwc.old
-.zplugin
 files/.vim/coc/
