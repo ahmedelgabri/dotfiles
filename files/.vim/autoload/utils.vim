@@ -279,9 +279,9 @@ function! utils#floating_fzf() abort
   call setbufvar(l:buf, '&filetype', 'fzf')
 
   let l:height = float2nr(&lines * 0.9)
-  let l:width = float2nr(&columns - (&columns * 2 / 60))
+  let l:width = float2nr(&columns - (&columns / 10))
   let l:col = float2nr((&columns - width) / 2)
-  let l:row = float2nr(&lines / 15)
+  let l:row = 0
 
   let l:opts = {
         \ 'relative': 'editor',
