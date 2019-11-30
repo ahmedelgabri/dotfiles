@@ -4,6 +4,7 @@ if !exists(':ALEInfo')
   finish
 endif
 
+let g:ale_completion_enabled=0
 let g:ale_set_signs = 0
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
@@ -69,11 +70,11 @@ let g:ale_pattern_options_enabled = 1
 let g:ale_pattern_options = {
       \   '\.min\.(js\|css)$': {
       \       'ale_linters': [],
-      \       'ale_fixers': g:ale_fixers['*']
+      \       'ale_fixers': []
       \   },
       \   'jquery.*': {
       \       'ale_linters': [],
-      \       'ale_fixers': g:ale_fixers['*']
+      \       'ale_fixers': []
       \   },
       \   'node_modules/.*': {
       \       'ale_linters': [],
@@ -83,6 +84,6 @@ let g:ale_pattern_options = {
       \       'ale_fixers': g:ale_fixers['*']
       \   },
       \   'Sites/personal/forks/.*': {
-      \       'ale_fixers': []
+      \       'ale_fixers': g:ale_fixers['*']
       \   },
       \}
