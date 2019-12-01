@@ -1,60 +1,60 @@
 scriptencoding utf-8
 
-let s:VIM_MINPAC_FOLDER = expand($VIMHOME . '/pack/minpac')
+let s:VIM_PACKAGER_FOLDER = expand($VIMHOME . '/pack/vim-packager')
 let s:CURRENT_FILE = expand('<sfile>')
 
-function! plugins#install_minpac() abort
-  execute 'silent !git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
+function! plugins#install_packager() abort
+  execute 'silent !git clone https://github.com/kristijanhusak/vim-packager.git ' . expand(s:VIM_PACKAGER_FOLDER . '/opt/vim-packager')
 endfunction
 
-command! -bar PackUpdate call plugins#install_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
-command! -bar PackStatus call plugins#install_plugins() | call minpac#status()
-command! -bar PackClean call plugins#install_plugins() | call minpac#clean()
+command! -bang PackUpdate call plugins#install_plugins() | call packager#update({'force_hooks': '<bang>'})
+command! PackStatus call plugins#install_plugins() | call packager#status()
+command! PackClean call plugins#install_plugins() | call packager#clean()
 
 function! plugins#install_plugins() abort
-  packadd minpac
+  packadd vim-packager
 
-  if !exists('*minpac#init')
+  if !exists('*packager#init')
     finish
   endif
 
-  call minpac#init({ 'verbose': 3 })
-  call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
+  call packager#init()
+  call packager#add('https://github.com/kristijanhusak/vim-packager', { 'type': 'opt' })
 
   " General {{{
-  call minpac#add('https://github.com/andymass/vim-matchup')
-  call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
-  call minpac#add('https://github.com/jiangmiao/auto-pairs')
-  call minpac#add('https://github.com/SirVer/ultisnips')
+  call packager#add('https://github.com/andymass/vim-matchup')
+  call packager#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
+  call packager#add('https://github.com/jiangmiao/auto-pairs')
+  call packager#add('https://github.com/SirVer/ultisnips')
 
   " I have the bin globally, so don't build, and just grab plugin directory
-  call minpac#add('https://github.com/junegunn/fzf')
-  call minpac#add('https://github.com/junegunn/fzf.vim')
+  call packager#add('https://github.com/junegunn/fzf')
+  call packager#add('https://github.com/junegunn/fzf.vim')
 
-  call minpac#add('https://github.com/justinmk/vim-dirvish')
-  call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
-  call minpac#add('https://github.com/junegunn/vim-peekaboo')
-  call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
-  call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
-  call minpac#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
-  call minpac#add('https://github.com/mhinz/vim-startify')
-  call minpac#add('https://github.com/nelstrom/vim-visual-star-search')
-  call minpac#add('https://github.com/tpope/tpope-vim-abolish')
-  call minpac#add('https://github.com/tpope/vim-apathy')
-  call minpac#add('https://github.com/tpope/vim-characterize')
-  call minpac#add('https://github.com/tpope/vim-commentary')
-  call minpac#add('https://github.com/tpope/vim-eunuch')
-  call minpac#add('https://github.com/tpope/vim-projectionist')
-  call minpac#add('https://github.com/tpope/vim-repeat')
-  call minpac#add('https://github.com/tpope/vim-scriptease')
-  call minpac#add('https://github.com/tpope/vim-surround')
-  call minpac#add('https://github.com/wellle/targets.vim')
-  call minpac#add('https://github.com/wincent/loupe')
-  call minpac#add('https://github.com/wincent/terminus')
-  call minpac#add('https://github.com/tommcdo/vim-lion')
-  call minpac#add('https://github.com/liuchengxu/vista.vim')
-  call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
-  call minpac#add('https://github.com/tpope/vim-dispatch')
+  call packager#add('https://github.com/justinmk/vim-dirvish')
+  call packager#add('https://github.com/kristijanhusak/vim-dirvish-git')
+  call packager#add('https://github.com/junegunn/vim-peekaboo')
+  call packager#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
+  call packager#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
+  call packager#add('https://github.com/mhinz/vim-sayonara', { 'type': 'opt' })
+  call packager#add('https://github.com/mhinz/vim-startify')
+  call packager#add('https://github.com/nelstrom/vim-visual-star-search')
+  call packager#add('https://github.com/tpope/tpope-vim-abolish')
+  call packager#add('https://github.com/tpope/vim-apathy')
+  call packager#add('https://github.com/tpope/vim-characterize')
+  call packager#add('https://github.com/tpope/vim-commentary')
+  call packager#add('https://github.com/tpope/vim-eunuch')
+  call packager#add('https://github.com/tpope/vim-projectionist')
+  call packager#add('https://github.com/tpope/vim-repeat')
+  call packager#add('https://github.com/tpope/vim-scriptease')
+  call packager#add('https://github.com/tpope/vim-surround')
+  call packager#add('https://github.com/wellle/targets.vim')
+  call packager#add('https://github.com/wincent/loupe')
+  call packager#add('https://github.com/wincent/terminus')
+  call packager#add('https://github.com/tommcdo/vim-lion')
+  call packager#add('https://github.com/liuchengxu/vista.vim')
+  call packager#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
+  call packager#add('https://github.com/tpope/vim-dispatch')
   let g:dispatch_no_tmux_make = 1  " Prefer job strategy even in tmux.
   " }}}
 
@@ -78,64 +78,64 @@ function! plugins#install_plugins() abort
         \ 'coc-conjure'
         \ ]
 
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
-  call minpac#add('https://github.com/Shougo/echodoc.vim')
+  call packager#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
+  call packager#add('https://github.com/Shougo/echodoc.vim')
   " }}}
 
   " Syntax {{{
-  call minpac#add('https://github.com/norcalli/nvim-colorizer.lua')
-  call minpac#add('https://github.com/sheerun/vim-polyglot')
-  call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
-  call minpac#add('https://github.com/plasticboy/vim-markdown')
-  call minpac#add('https://github.com/styled-components/vim-styled-components')
-  call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
-  call minpac#add('https://github.com/jez/vim-github-hub')
-  call minpac#add('https://github.com/jxnblk/vim-mdx-js')
-  call minpac#add('https://github.com/zplugin/zplugin-vim-syntax')
-  call minpac#add('https://github.com/fatih/vim-go', {'do': 'GoUpdateBinaries'})
+  call packager#add('https://github.com/norcalli/nvim-colorizer.lua')
+  call packager#add('https://github.com/sheerun/vim-polyglot')
+  call packager#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
+  call packager#add('https://github.com/plasticboy/vim-markdown')
+  call packager#add('https://github.com/styled-components/vim-styled-components')
+  call packager#add('https://github.com/reasonml-editor/vim-reason-plus')
+  call packager#add('https://github.com/jez/vim-github-hub')
+  call packager#add('https://github.com/jxnblk/vim-mdx-js')
+  call packager#add('https://github.com/zplugin/zplugin-vim-syntax')
+  call packager#add('https://github.com/fatih/vim-go', {'do': ':GoUpdateBinaries'})
   " Clojure
-  call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
-  call minpac#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
-  call minpac#add('https://github.com/Olical/conjure', {'type': 'opt', 'rev': 'v2.1.0', 'do': {-> system('bin/compile')}})
+  call packager#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
+  call packager#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
+  call packager#add('https://github.com/Olical/conjure', {'tag': 'v2.1.0', 'do': 'bin/compile'})
   " }}}
 
   " Linters & Code quality {{{
-  call minpac#add('https://github.com/dense-analysis/ale', { 'do': '!yarn global add prettier' })
+  call packager#add('https://github.com/dense-analysis/ale', { 'do': 'yarn global add prettier' })
   " }}}
 
   " Git {{{
-  call minpac#add('https://github.com/airblade/vim-gitgutter')
-  call minpac#add('https://github.com/lambdalisue/vim-gista')
-  call minpac#add('https://github.com/tpope/vim-fugitive')
-  call minpac#add('https://github.com/tpope/vim-rhubarb')
-  call minpac#add('https://github.com/shumphrey/fugitive-gitlab.vim')
-  call minpac#add('https://github.com/tommcdo/vim-fubitive')
-  call minpac#add('https://github.com/rhysd/git-messenger.vim')
+  call packager#add('https://github.com/airblade/vim-gitgutter')
+  call packager#add('https://github.com/lambdalisue/vim-gista')
+  call packager#add('https://github.com/tpope/vim-fugitive')
+  call packager#add('https://github.com/tpope/vim-rhubarb')
+  call packager#add('https://github.com/shumphrey/fugitive-gitlab.vim')
+  call packager#add('https://github.com/tommcdo/vim-fubitive')
+  call packager#add('https://github.com/rhysd/git-messenger.vim')
   " }}}
 
   " Writing {{{
-  call minpac#add('https://github.com/junegunn/goyo.vim', { 'type': 'opt' })
-  call minpac#add('https://github.com/junegunn/limelight.vim', { 'type': 'opt' })
+  call packager#add('https://github.com/junegunn/goyo.vim', { 'type': 'opt' })
+  call packager#add('https://github.com/junegunn/limelight.vim', { 'type': 'opt' })
   " }}}
 
   " Themes, UI & eye cnady {{{
-  call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
-  call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
-  call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
-  call minpac#add('https://github.com/liuchengxu/space-vim-theme', {'type': 'opt'})
-  call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
-  call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
-  call minpac#add('https://github.com/arzg/vim-corvine', { 'type': 'opt' })
-  call minpac#add('https://github.com/arzg/vim-substrata', {'type': 'opt'})
+  call packager#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
+  call packager#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
+  call packager#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
+  call packager#add('https://github.com/liuchengxu/space-vim-theme', {'type': 'opt'})
+  call packager#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
+  call packager#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
+  call packager#add('https://github.com/arzg/vim-corvine', { 'type': 'opt' })
+  call packager#add('https://github.com/arzg/vim-substrata', {'type': 'opt'})
   " }}}
 endfunction
 
 if !exists('*plugins#init')
   function! plugins#init() abort
-    if !empty(glob(s:VIM_MINPAC_FOLDER))
+    if !empty(glob(s:VIM_PACKAGER_FOLDER))
       return
     endif
     exec 'source ' . s:CURRENT_FILE
-    call plugins#install_minpac() | set nomore | call plugins#install_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
+    call plugins#install_packager() | set nomore | call plugins#install_plugins() | call packager#update({'force_hooks': 1, 'on_finish': 'quitall'})
   endfunction
 endif
