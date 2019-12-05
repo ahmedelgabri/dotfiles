@@ -228,6 +228,7 @@
   http://feeds.feedburner.com/ThePragmaticEngineer "Blog"
   https://jxnblk.com/rss.xml "Blog" "React" "CSS"
   https://matthewstrom.com/feed.xml "Blog" "UI" "Design"
+  https://oli.me.uk/feed.xml "Blog" "Clojure" "vim"
 # }}}
 
 # Browsers {{{
