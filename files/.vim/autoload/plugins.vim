@@ -18,7 +18,7 @@ function! plugins#install_plugins() abort
     finish
   endif
 
-  call packager#init()
+  call packager#init({'dir': s:VIM_PACKAGER_FOLDER})
   call packager#add('https://github.com/kristijanhusak/vim-packager', { 'type': 'opt' })
 
   " General {{{
@@ -96,7 +96,7 @@ function! plugins#install_plugins() abort
   " Clojure
   call packager#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
   call packager#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
-  call packager#add('https://github.com/Olical/conjure', {'tag': 'v2.1.0', 'do': 'bin/compile'})
+  call packager#add('https://github.com/Olical/conjure', {'tag': 'v2.1.2', 'do': 'bin/compile'})
   " }}}
 
   " Linters & Code quality {{{
