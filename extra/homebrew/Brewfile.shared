@@ -92,7 +92,6 @@ brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip" # Markdown previewer
 brew "nnn"
 brew "pass"
-brew "spark" # Needed for battery bin (optional)
 brew "yamllint"
 
 cask "alacritty"
