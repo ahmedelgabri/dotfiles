@@ -24,14 +24,9 @@ else
     {
       config = {
         url_patterns = {
-          { 'https?://jira.atlightspeed.net', 'com.google.Chrome' },
-          { 'https?://confluence.atlightspeed.net', 'com.google.Chrome' },
-          { 'https?://%w-%.-github%.com/SEOshop',  'com.google.Chrome' },
-          { 'https?://github.com/merchantos',  'com.google.Chrome' },
-          { 'https?://github.com/lightspeedretail',  'com.google.Chrome' },
-          { 'https?://circleci.com/gh/lightspeedretail',  'com.google.Chrome' },
-          { 'https?://circleci.com/gh/SEOshop',  'com.google.Chrome' },
-          { 'https?://circleci.com/gh/merchantos',  'com.google.Chrome' },
+          { 'https?://.*SEOshop.*',  'com.google.Chrome' },
+          { 'https?://.*merchantos.*',  'com.google.Chrome' },
+          { 'https?://.*lightspeed.*',  'com.google.Chrome' },
         },
         default_handler = 'com.brave.Browser'
       },
