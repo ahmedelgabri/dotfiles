@@ -18,7 +18,6 @@ NPM_PACKAGES=(
   "serve"
   "source-map-explorer"
   "svgo"
-  "overtime-cli"
   "dependency-cruiser"
   "reason-cli@latest-macos"
   "neovim"
