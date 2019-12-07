@@ -77,7 +77,6 @@ let g:coc_user_config = {
       \  'suggest': {
       \    'autoTrigger': 'always',
       \    'noselect': 0,
-      \    'echodocSupport': 1,
       \    'floatEnable': utils#has_floating_window(),
       \  },
       \  'signature': {

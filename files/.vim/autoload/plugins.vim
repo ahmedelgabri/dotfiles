@@ -79,7 +79,6 @@ function! plugins#install_plugins() abort
         \ ]
 
   call packager#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
-  call packager#add('https://github.com/Shougo/echodoc.vim')
   " }}}
 
   " Syntax {{{
