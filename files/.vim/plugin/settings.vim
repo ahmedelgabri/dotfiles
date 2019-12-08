@@ -129,7 +129,6 @@ endif
 " Configure fold status text
 if has('folding')
   set foldtext=utils#NeatFoldText()
-  set foldmethod=indent               " not as cool as syntax, but faster
   set foldlevelstart=99               " start unfolded
 endif
 
