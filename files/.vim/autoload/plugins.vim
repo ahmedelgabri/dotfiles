@@ -60,22 +60,17 @@ function! plugins#install_plugins() abort
 
   " Autocompletion {{{
   let g:coc_global_extensions = [
+        \ 'coc-conjure',
         \ 'coc-css',
-        \ 'coc-rls',
-        \ 'coc-html',
         \ 'coc-emmet',
         \ 'coc-json',
+        \ 'coc-phpls',
         \ 'coc-python',
-        \ 'coc-yaml',
-        \ 'coc-emoji',
+        \ 'coc-rls',
+        \ 'coc-tailwindcss',
         \ 'coc-tsserver',
         \ 'coc-ultisnips',
-        \ 'coc-phpls',
         \ 'coc-vimlsp',
-        \ 'coc-github',
-        \ 'coc-svg',
-        \ 'coc-tailwindcss',
-        \ 'coc-conjure'
         \ ]
 
   call packager#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})

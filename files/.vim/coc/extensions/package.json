@@ -3,9 +3,6 @@
     "coc-conjure": ">=0.2.2",
     "coc-css": ">=1.2.2",
     "coc-emmet": ">=1.1.4",
-    "coc-emoji": ">=1.2.3",
-    "coc-github": ">=1.0.1",
-    "coc-html": ">=1.2.1",
     "coc-json": ">=1.2.4",
     "coc-phpls": ">=2.1.2",
     "coc-python": ">=1.2.6",
@@ -14,7 +11,6 @@
     "coc-tailwindcss": ">=0.3.2",
     "coc-tsserver": ">=1.4.8",
     "coc-ultisnips": ">=1.2.3",
-    "coc-vimlsp": ">=0.4.3",
-    "coc-yaml": ">=1.0.2"
+    "coc-vimlsp": ">=0.4.3"
   }
 }
