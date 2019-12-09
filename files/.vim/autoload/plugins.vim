@@ -54,8 +54,6 @@ function! plugins#install_plugins() abort
   call packager#add('https://github.com/tommcdo/vim-lion')
   call packager#add('https://github.com/liuchengxu/vista.vim')
   call packager#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
-  call packager#add('https://github.com/tpope/vim-dispatch')
-  let g:dispatch_no_tmux_make = 1  " Prefer job strategy even in tmux.
   " }}}
 
   " Autocompletion {{{
