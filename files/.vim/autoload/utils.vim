@@ -275,13 +275,11 @@ endfunction
 
 function! utils#floating_fzf() abort
   let l:buf = nvim_create_buf(v:false, v:true)
-  call setbufvar(buf, '&signcolumn', 'no')
-  call setbufvar(l:buf, '&filetype', 'fzf')
 
-  let l:height = float2nr(&lines * 0.9)
-  let l:width = float2nr(&columns - (&columns / 10))
-  let l:col = float2nr((&columns - width) / 2)
-  let l:row = 0
+  let l:height = float2nr(&lines * 0.6)
+  let l:width = float2nr(&columns * 0.9)
+  let l:col = (&columns - width) / 2
+  let l:row = (&lines - height) / 2
 
   let l:opts = {
         \ 'relative': 'editor',
@@ -292,7 +290,10 @@ function! utils#floating_fzf() abort
         \ 'style': 'minimal'
         \ }
 
-  call nvim_open_win(l:buf, v:true, l:opts)
+  let l:win = nvim_open_win(l:buf, v:true, l:opts)
+  if exists('&winblend')
+    call setwinvar(win, '&winblend', 5)
+  endif
 endfunction
 
 function! utils#fzf_window() abort
