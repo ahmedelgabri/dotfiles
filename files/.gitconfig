@@ -167,6 +167,7 @@
   stashes = stash list
   track = push origin -u HEAD
   undo = reset --soft HEAD^
+  unstage = reset HEAD --
   who = shortlog -sne
   wt = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=auto:human
   unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
