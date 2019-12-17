@@ -241,3 +241,6 @@
 
 [diff-so-fancy]
   first-run = false
+
+[protocol]
+  version = 2 # Added in Git 2.18.0.
