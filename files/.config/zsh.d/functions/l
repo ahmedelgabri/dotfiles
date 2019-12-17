@@ -4,17 +4,8 @@ emulate -L zsh
 
 unalias l 2> /dev/null
 
-if [[ $# -eq 1 && -f $1 ]]; then
-  if (( $+commands[bat] )); then
-    bat "$1"
-  else
-    less "$1"
-  fi
-  return
-fi
-
 if (( $+commands[lsd] )); then
-  lsd --almost-all --long --group-dirs first --timesort "$@"
+  lsd --almost-all --long --group-dirs first --size short "$@"
 elif [[ -x "${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin/ls" ]]; then
   # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
   # [TODO]: Check why this is not picked up from $PATH?
