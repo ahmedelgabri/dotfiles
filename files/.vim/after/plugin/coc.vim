@@ -63,7 +63,6 @@ let g:coc_filetype_map = {
       \ 'html.twig': 'html',
       \ }
 
-" 'diagnostic.displayByAle' Doesn't work well, for some reason...
 let g:coc_user_config = {
       \  'coc': {
       \    'preferences': {
