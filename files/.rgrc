@@ -2,5 +2,6 @@
 --smart-case
 --glob=!.git/*
 --glob=!node_modules/*
+--glob=!.DS_Store
 --type-add
 twig:*.rain
