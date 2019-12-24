@@ -89,6 +89,8 @@ let g:coc_user_config = {
       \    'messageTarget': utils#has_floating_window() ? 'float' : 'echo',
       \    'refreshOnInsertMode': 1,
       \    'locationlist': 1,
+      \    'virtualText': 1,
+      \    'virtualTextPrefix': ':: ',
       \  },
       \  'python': {
       \    'jediEnabled': 0,
