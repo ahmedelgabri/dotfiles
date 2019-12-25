@@ -54,10 +54,6 @@ function! statusline#LinterStatus() abort
 endfunction
 
 function! statusline#statusDiagnostic() abort
-  if exists('*LanguageClient#statusLine')
-    return LanguageClient#statusLine()
-  endif
-
   let l:info = get(b:, 'coc_diagnostic_info', {})
   if empty(l:info)
     return ''
@@ -100,18 +96,18 @@ function! statusline#readOnly() abort
 endfunction
 
 function! statusline#filepath() abort
-  let l:basename = expand('%:h')
-  let l:filename = expand('%:t')
-  let l:extension = expand('%:e')
-  let l:prefix = (l:basename ==# '' || l:basename ==# '.') ?
-        \ '' : substitute(l:basename . '/', '\C^' . $HOME, '~', '')
+  let l:filename = expand('%:~:.:t')
+  let l:base = expand('%:~:.:h')
+  let l:prefix = empty(l:base) || l:base ==# '.' ? '' : l:base.'/'
   let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
 
-  if empty(l:prefix) && empty(l:filename)
+  if isdirectory(expand('%'))
+    return '%4* Dirvish%*'
+  elseif empty(l:prefix) && empty(l:filename)
     return printf('%%4* %%f%%* %s%%*', &modified ? l:CHANGE . '-' . '%*' : '%4*')
+  else
+    return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:CHANGE : '%6*', l:filename)
   endif
-
-  return printf('%%4* %s%%*%s%s%%*', l:prefix, &modified ? l:CHANGE : '%6*', l:filename)
 endfunction
 
 " :h mode() to see all modes
