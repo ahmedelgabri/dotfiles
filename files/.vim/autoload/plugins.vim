@@ -41,7 +41,6 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/nelstrom/vim-visual-star-search')
   call minpac#add('https://github.com/tpope/tpope-vim-abolish')
   call minpac#add('https://github.com/tpope/vim-apathy')
-  call minpac#add('https://github.com/tpope/vim-characterize')
   call minpac#add('https://github.com/tpope/vim-eunuch')
   call minpac#add('https://github.com/tpope/vim-projectionist')
   call minpac#add('https://github.com/tpope/vim-repeat')
@@ -60,7 +59,6 @@ function! plugins#load_plugins() abort
   let g:coc_global_extensions = [
         \ 'coc-conjure',
         \ 'coc-css',
-        \ 'coc-emmet',
         \ 'coc-json',
         \ 'coc-phpls',
         \ 'coc-python',

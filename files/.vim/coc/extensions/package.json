@@ -2,7 +2,6 @@
   "dependencies": {
     "coc-conjure": ">=0.2.2",
     "coc-css": ">=1.2.2",
-    "coc-emmet": ">=1.1.4",
     "coc-json": ">=1.2.4",
     "coc-phpls": ">=2.1.4",
     "coc-python": ">=1.2.6",
