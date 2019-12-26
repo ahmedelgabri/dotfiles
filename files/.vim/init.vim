@@ -1,24 +1,7 @@
 scriptencoding utf-8
 
-                                " _ .--.
-                                " ( `    )
-                             " .-'      `--,
-                  " _..----.. (             )`-.
-                " .'_|` _|` _|(  .__,           )
-               " /_|  _|  _|  _(        (_,  .-'
-              " ;|  _|  _|  _|  '-'__,--'`--'
-              " | _|  _|  _|  _| |
-          " _   ||  _|  _|  _|  _|
-        " _( `--.\_|  _|  _|  _|/
-     " .-'       )--,|  _|  _|.`
-    " (__, (_      ) )_|  _| /
-      " `-.__.\ _,--'\|__|__/
-                    " ;____;
-                     " \YT/
-                      " ||
-                     " |""|
-                     " '=='
-let $VIMHOME = expand($HOME.'/.vim')
+let g:VIMHOME = exists('*stdpath') ? stdpath('config') : expand(exists('$XDG_CONFIG_HOME') ? $XDG_CONFIG_HOME.'/nvim' : $HOME.'/.config/nvim')
+let g:VIMDATA = exists('*stdpath') ? stdpath('data')   : expand(exists('$XDG_DATA_HOME')   ? $XDG_DATA_HOME.'/nvim'   : $HOME.'/.local/share/nvim')
 
 " Skip vim plugins {{{
 let g:loaded_rrhelper = 1

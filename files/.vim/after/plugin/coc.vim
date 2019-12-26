@@ -4,7 +4,7 @@ if !exists('g:did_coc_loaded')
   finish
 endif
 
-let g:coc_extension_root = $VIMHOME . '/coc/extensions'
+let g:coc_extension_root = g:VIMHOME . '/coc/extensions'
 let g:coc_node_path=exepath('node')
 
 let s:LSP_CONFIG = [

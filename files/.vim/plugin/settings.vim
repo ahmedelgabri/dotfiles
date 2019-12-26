@@ -52,7 +52,7 @@ if has('syntax')
   " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
   set spelllang=en,nl
   set spellsuggest=30
-  let &spellfile=$VIMHOME.'/spell/en.utf-8.add'
+  let &spellfile=g:VIMHOME.'/spell/en.utf-8.add'
 endif
 
 set complete+=kspell
@@ -159,7 +159,7 @@ set shortmess+=t                      " truncate file messages at start
 
 if has('mksession')
   if !has('nvim')
-    let &viewdir=$XDG_DATA_HOME.'/nvim/view' " override ~/.vim/view default
+    let &viewdir=g:VIMDATA.'/view' " override ~/.vim/view default
   endif
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
 endif
@@ -169,7 +169,7 @@ if exists('$SUDO_USER')
   set nowritebackup                   " don't create root-owned files
 else
   if !has('nvim')
-    let &backupdir=$XDG_DATA_HOME.'/nvim/backup' " keep backup files out of the way
+    let &backupdir=g:VIMDATA.'/backup' " keep backup files out of the way
   endif
   set backupdir+=.
 endif
@@ -178,7 +178,7 @@ if exists('$SUDO_USER')
   set noswapfile                      " don't create root-owned files
 else
   if !has('nvim')
-    let &directory=$XDG_DATA_HOME.'/nvim/swap//' " keep swap files out of the way
+    let &directory=g:VIMDATA.'/swap//' " keep swap files out of the way
   endif
   set directory+=.
 endif
@@ -194,7 +194,7 @@ if has('persistent_undo')
     set noundofile                    " don't create root-owned files
   else
     if !has('nvim')
-      let &undodir=$XDG_DATA_HOME.'/nvim/undo/' " keep undo files out of the way
+      let &undodir=g:VIMDATA.'/undo/' " keep undo files out of the way
     endif
     set undodir+=.
     set undofile                      " actually use undo files
@@ -216,7 +216,7 @@ else
       autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
     augroup END
   else
-    execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".$XDG_DATA_HOME.'/nvim/viminfo'
+    execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".g:VIMDATA.'/viminfo'
   endif
 endif
 
