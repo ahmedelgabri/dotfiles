@@ -7,9 +7,9 @@ function! plugins#install_minpac() abort
   execute '!git clone https://github.com/ahmedelgabri/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
-command! -bang PackUpdate call plugins#load_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
-command! PackStatus call plugins#load_plugins() | call minpac#status()
-command! PackClean call plugins#load_plugins() | call minpac#clean()
+command! -bar PackUpdate call plugins#load_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
+command! -bar PackStatus call plugins#load_plugins() | call minpac#status()
+command! -bar PackClean call plugins#load_plugins() | call minpac#clean()
 
 function! plugins#load_plugins() abort
   packadd minpac
@@ -130,6 +130,6 @@ if !exists('*plugins#init')
       return
     endif
     exec 'source ' . s:CURRENT_FILE
-    call plugins#install_minpac() | call plugins#load_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
+    call plugins#install_minpac() | PackUpdate
   endfunction
 endif
