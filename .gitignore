@@ -1,35 +1,35 @@
-files/.vim/coc
-files/.vim/pack/
-files/.vim/tmp/
-files/.vim/autoload/plug.vim*
-!files/.vim/coc/extensions/yarn.lock
-!files/.vim/coc/extensions/package.json
+**/.vim/coc
+**/.vim/pack/
+**/.vim/tmp/
+**/.vim/autoload/plug.vim*
+!**/.vim/coc/extensions/yarn.lock
+!**/.vim/coc/extensions/package.json
 *.spl
 *.sug
 
-files/.weechat/*
-!files/.weechat/buflist.conf
-!files/.weechat/irc.conf
-!files/.weechat/weechat.conf
-!files/.weechat/plugins.conf
-!files/.weechat/sec.conf
+**/.weechat/*
+!**/.weechat/buflist.conf
+!**/.weechat/irc.conf
+!**/.weechat/weechat.conf
+!**/.weechat/plugins.conf
+!**/.weechat/sec.conf
 
-files/.mutt/config/aliases
-files/.mutt/config/hooks.mutt
-files/.mutt/tmp
-files/.mutt/certificates
-files/.mutt/secure-ca.cert
-files/.mutt/accounts/*
-!files/.mutt/accounts/init.lua
+**/.mutt/config/aliases
+**/.mutt/config/hooks.mutt
+**/.mutt/tmp
+**/.mutt/certificates
+**/.mutt/secure-ca.cert
+**/.mutt/accounts/*
+!**/.mutt/accounts/init.lua
 
 scratch
 
-files/.newsboat/history.*
-files/.newsboat/cache.*
-files/.newsboat/queue
+**/.newsboat/history.*
+**/.newsboat/cache.*
+**/.newsboat/queue
 
-files/.hammerspoon/Spoons/*
-!files/.hammerspoon/Spoons/SpoonInstall.spoon
+**/.hammerspoon/Spoons/*
+!**/.hammerspoon/Spoons/SpoonInstall.spoon
 
 !.ignore
 
@@ -39,14 +39,14 @@ files/.hammerspoon/Spoons/*
 .zsh_history
 log.*.txt
 
-files/.config/mpv/watch_later
-files/.config/rtv/*.log
-files/.config/rtv/*-token
-files/.config/ranger/bookmarks
-files/.config/ranger/history
-files/.config/ranger/tagged
+**/.config/mpv/watch_later
+**/.config/rtv/*.log
+**/.config/rtv/*-token
+**/.config/ranger/bookmarks
+**/.config/ranger/history
+**/.config/ranger/tagged
 
-files/.mail/.notmuch/
-!files/.mail/.notmuch/hooks
+**/.mail/.notmuch/
+!**/.mail/.notmuch/hooks
 
 .zplugin
