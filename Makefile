@@ -17,7 +17,25 @@ debug:
 # This is used inside `scripts/install` symlink_files function
 # The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124
 symlink:
-	stow --restow -vv --ignore ".DS_Store" --target="$(HOME)" --dir="$(DOTFILES)" files
+	stow --restow -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" \
+		alacritty \
+		ctags \
+		git \
+		gpg \
+		hammerspoon \
+		irc \
+		kitty \
+		mail \
+		mpv \
+		node \
+		python \
+		rss \
+		shell \
+		ssh \
+		tmux \
+		tuir \
+		utils \
+		vim
 
 gpg: symlink
 	# Fix gpg folder/file permissions after symlinking
@@ -37,7 +55,7 @@ homebrew-work: homebrew
 	brew doctor
 
 mail:
-	node $(DOTFILES)/files/.mutt/scripts/setup
+	node $(DOTFILES)/files/mail/.mutt/scripts/setup
 
 node:
 	sh $(SCRIPTS)/node-packages

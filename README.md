@@ -50,14 +50,14 @@ $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/scri
   automatically, if not, you can run the following command.
 
 ```sh
-$ cp files/.zshrc.local.example ~/.zshrc.local
+$ cp files/shell/.zshrc.local ~/.zshrc.local
 ```
 
 - For git you have to update `~/.gitconfig.local` which should be copied
   automatically, if not, you can run the following command.
 
 ```sh
-$ cp files/.gitconfig.local.example ~/.gitconfig.local
+$ cp files/git/.gitconfig.local ~/.gitconfig.local
 ```
 
 Don't forget to upload your public key to GitHub!

@@ -1,4 +1,4 @@
 *.un~
 *.zwc
 *.zwc.old
-files/.vim/coc/
+**/.vim/coc/
