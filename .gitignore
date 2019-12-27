@@ -1,7 +1,6 @@
 **/.vim/coc
 **/.vim/pack/
 **/.vim/tmp/
-**/.vim/autoload/plug.vim*
 !**/.vim/coc/extensions/yarn.lock
 !**/.vim/coc/extensions/package.json
 *.spl
@@ -40,11 +39,8 @@ scratch
 log.*.txt
 
 **/.config/mpv/watch_later
-**/.config/rtv/*.log
-**/.config/rtv/*-token
-**/.config/ranger/bookmarks
-**/.config/ranger/history
-**/.config/ranger/tagged
+**/.config/tuir/*.log
+**/.config/tuir/*-token
 
 **/.mail/.notmuch/
 !**/.mail/.notmuch/hooks
