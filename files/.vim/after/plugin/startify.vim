@@ -27,7 +27,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['A language that doesn’t affect the way you think about programming is not worth knowing.', '- Alan Perlis'],
       \ ['Bad programmers worry about the code. Good programmers worry about data structures and their relationships', '' , '― Linus Torvalds'],
       \ ['Work expands to fill the time available for its completion.', '', "― C. Northcote Parkinson (Parkinson's Law)"],
-      \ ['Hard Choices, Easy Life. Easy Choices, Hard Life.', '', '― Jerzy Gregory']
+      \ ['Hard Choices, Easy Life. Easy Choices, Hard Life.', '', '― Jerzy Gregory'],
+      \ ['Future regret minimization is a powerful force for good judgement.', '', '― Tobi Lutke']
       \ ]
 
 let g:startify_list_order = [
