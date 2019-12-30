@@ -274,13 +274,12 @@ function! utils#has_floating_window() abort
 endfunction
 
 function! utils#floating_fzf() abort
-  let l:buf = nvim_create_buf(v:false, v:true)
+  let s:buf = nvim_create_buf(v:false, v:true)
 
-  let l:height = float2nr(&lines * 0.6)
+  let l:height = float2nr(&lines * 0.8)
   let l:width = float2nr(&columns * 0.9)
-  let l:col = (&columns - width) / 2
-  let l:row = (&lines - height) / 2
-
+  let l:row = (&lines - l:height) / 2
+  let l:col = (&columns - l:width) / 2
   let l:opts = {
         \ 'relative': 'editor',
         \ 'row': l:row,
@@ -290,10 +289,24 @@ function! utils#floating_fzf() abort
         \ 'style': 'minimal'
         \ }
 
-  let l:win = nvim_open_win(l:buf, v:true, l:opts)
-  if exists('&winblend')
-    call setwinvar(win, '&winblend', 5)
-  endif
+  let l:top = '╭' . repeat('─', l:width - 2) . '╮'
+  let l:mid = '│' . repeat(' ', l:width - 2) . '│'
+  let l:bot = '╰' . repeat('─', l:width - 2) . '╯'
+  let l:lines = [l:top] + repeat([l:mid], l:height - 2) + [l:bot]
+
+  call nvim_buf_set_lines(s:buf, 0, -1, v:true, l:lines)
+  call nvim_open_win(s:buf, v:true, l:opts)
+
+  set winhl=Normal:Floating
+
+  let l:opts.row += 1
+  let l:opts.height -= 2
+  let l:opts.col += 2
+  let l:opts.width -= 4
+
+  call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, l:opts)
+
+  au BufWipeout <buffer> exe 'bw 's:buf
 endfunction
 
 function! utils#fzf_window() abort
