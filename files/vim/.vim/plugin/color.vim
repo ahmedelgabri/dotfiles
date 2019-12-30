@@ -3,7 +3,7 @@ if has('termguicolors')
 end
 
 set background=dark
-colorscheme plain
+silent! colorscheme plain
 
 augroup MyCustomColors
   autocmd!
