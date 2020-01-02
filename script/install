@@ -9,6 +9,10 @@ set -Eueo pipefail
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
+if [ "$(echo "$0" | tr '[:upper:]' '[:lower:]')" == "work" ]; then
+  WORK_SETUP=1
+fi
+
 tput sgr0
 RED=$(tput setaf 1)
 ORANGE=$(tput setaf 3)
@@ -271,6 +275,10 @@ symlink_files() {
       cp files/shell/.zshrc.local $HOME/.zshrc.local &&
       make symlink &&
       make gpg
+
+    if [ -n "$WORK_SETUP" ]; then
+      echo "export $(hostname)_MACHINE=1" >>"$HOME/.zshrc.local"
+    fi
   else
     log_error "There is no $DOTFILES_DIR directory"
   fi
@@ -282,7 +290,7 @@ install_apps() {
     if [ "$(uname)" = "Darwin" ]; then
       # I want all the make steps to run even if a cask or a brew errored out
       # So I use --ignore-errors flag
-      if [ "$(echo "$0" | tr '[:upper:]' '[:lower:]')" == "work" ]; then
+      if [ -n "$WORK_SETUP" ]; then
         cd "$DOTFILES_DIR" && make --ignore-errors homebrew-work
       else
         cd "$DOTFILES_DIR" && make --ignore-errors homebrew-personal

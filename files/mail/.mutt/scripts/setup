@@ -9,6 +9,12 @@ const os = require('os')
 /////////////////////////////////////////////////////////////////////////////////
 
 const accounts = [
+  !Boolean(process.env[`${os.hostname()}_MACHINE`]) && {
+    accountName: 'Personal',
+    switchAccount: 'Work',
+    color: 'blue',
+    required: true,
+  },
   {
     accountName: 'Personal',
     switchAccount: 'Work',
@@ -17,10 +23,12 @@ const accounts = [
   },
   {
     accountName: 'Work',
-    switchAccount: 'Personal',
+    switchAccount: Boolean(process.env[`${os.hostname()}_MACHINE`])
+      ? ''
+      : 'Personal',
     color: 'red',
   },
-]
+].filter(Boolean)
 
 const EMAIL_ENV_SUFFIX = '_EMAIL'
 const EMAIL_ALIASES_ENV_SUFFIX = '_EMAIL_ALIASES'
@@ -106,7 +114,7 @@ function createAccount({
   const alternates = process.env[alternateEnv]
   const switchToEnv =
     process.env[`${upperCase(switchAccount)}${EMAIL_ENV_SUFFIX}`]
-  const firstChar = lowerCase(switchAccount[0])
+  const firstChar = lowerCase(switchAccount[0] || '')
 
   if (!email) {
     if (required) {
