@@ -1,11 +1,7 @@
 # Paths
-set alias_file       = "$HOME/.mutt/config/aliases.private"
-# set display_filter   = "$HOME/.mutt/scripts/add-address.sh"
-# Headers cache is set automatically per account in init.lua
-# set header_cache     = "$XDG_CACHE_HOME/mutt/headers/"
+set alias_file       = "$HOME/Box\ Sync/dotfiles/aliases"
 set header_cache_backend=lmdb
 set read_inc=1000
-# set message_cachedir = "$XDG_CACHE_HOME/mutt/message/"
 set certificate_file = "$HOME/.mutt/certificates"
 set tmpdir           = "$HOME/.mutt/tmp/"
 
@@ -121,7 +117,7 @@ set status_format = "%f%r—[%?M?%M/?%m messages, %?n?%n new, ?%?d?%d deleted, ?
 set ts_status_format = 'mutt %m messages%?n?, %n new?'
 
 # Color ---------------------------------------------------------
-source ./config/aliases.private
+source ~/Box\ Sync/dotfiles/aliases
 source ./config/colors.mutt
 source ./config/bindings.mutt
 source ./config/hooks.mutt
