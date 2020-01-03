@@ -55,7 +55,6 @@ brew "w3m"
 brew "cloc"
 brew "loc"
 brew "tokei"
-brew "ranger"
 brew "tree"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 
