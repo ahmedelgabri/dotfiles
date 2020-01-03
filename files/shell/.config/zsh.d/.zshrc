@@ -14,6 +14,7 @@ function {
   # To override Catalina /etc/zshrc
   HISTSIZE=1000000
   SAVEHIST=$HISTSIZE
+  HISTFILE="${XDG_DATA_HOME:-$HOME}/.zsh_history"
 
   ##############################################################
   # ZPLUGIN https://github.com/zdharma/zplugin
