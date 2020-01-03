@@ -28,9 +28,8 @@ end
 
 -- lock screen
 -- Old: https://www.isi.edu/~calvin/mac-lockscreen.htm
--- Curent: https://github.com/sindresorhus/macos-lock
-hs.hotkey.bind({'ctrl', 'cmd', 'alt'}, 'l', function()
-  os.execute('/Users/ahmed/.dotfiles/extra/bin/lock')
+hs.hotkey.bind({'cmd', 'shift'}, '0', function()
+  hs.caffeinate.lockScreen()
 end)
 
 hs.hotkey.bind({}, '§', function()
