@@ -11,8 +11,9 @@
 # configured here named ".notmuch".
 #
 
-[database]
-path=/Users/ahmed/.mail
+# This section is set by setting up $MAILDIR
+# [database]
+# path=
 
 # User configuration
 #
@@ -30,9 +31,10 @@ path=/Users/ahmed/.mail
 # address to which the original email was addressed.
 #
 
-[user]
-name=Ahmed El Gabri
-primary_email=ahmed@gabri.me
+# This section is set by setting up $NAME & $EMAIL
+# [user]
+# name=
+# primary_email=
 
 # Configuration for "notmuch new"
 #
