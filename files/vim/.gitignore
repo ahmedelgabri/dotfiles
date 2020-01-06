@@ -1,0 +1,7 @@
+.vim/coc/
+.vim/pack/
+.vim/tmp/
+!.vim/coc/extensions/yarn.lock
+!.vim/coc/extensions/package.json
+*.spl
+*.sug

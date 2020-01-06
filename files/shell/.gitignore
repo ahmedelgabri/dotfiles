@@ -1,0 +1,4 @@
+.zplugin
+.zcompdump*
+.zcompcache
+.zsh_history

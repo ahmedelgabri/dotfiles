@@ -1,0 +1,9 @@
+.mail
+!.mail/.notmuch/hooks/{pre-new,post-new,post-insert}
+.mutt/config/aliases
+.mutt/config/hooks.mutt
+.mutt/tmp
+.mutt/certificates
+.mutt/secure-ca.cert
+.mutt/accounts/*
+!.mutt/accounts/init.lua

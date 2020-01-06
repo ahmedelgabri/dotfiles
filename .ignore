@@ -1,4 +1,5 @@
 *.un~
 *.zwc
 *.zwc.old
-**/.vim/coc/
+files/vim/.vim/coc/
+files/mail/.mail/{Work,Personal}
