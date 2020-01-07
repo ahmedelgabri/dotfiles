@@ -39,4 +39,5 @@ augroup MyCustomColors
         \| hi! Comment cterm=italic gui=italic ctermfg=236 guifg=#555555
         \| execute printf('hi! Pmenu gui=NONE cterm=NONE guibg=#222222 ctermbg=234 guifg=%s ctermfg=%s', utils#get_color('Pmenu', 'fg', 'gui'), utils#get_color('Pmenu', 'fg', 'cterm'))
         \| hi! link PmenuSel TermCursor
+        \| hi! Whitespace ctermfg=235 guifg=#333333
 augroup END

@@ -113,7 +113,7 @@ set clipboard=unnamed
 
 " show trailing whitespace
 set list
-set listchars=tab:→\ ,nbsp:░,extends:»,precedes:«,trail:·
+set listchars=tab:………,nbsp:░,extends:»,precedes:«,trail:·
 set nojoinspaces
 set concealcursor=n
 
