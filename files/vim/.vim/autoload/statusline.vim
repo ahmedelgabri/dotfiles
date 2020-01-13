@@ -139,5 +139,5 @@ let s:dictmode={
 exec printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm'))
 
 function! statusline#getMode() abort
-  return get(s:dictmode, mode(), '')
+  return get(s:dictmode, mode(), mode() ==# 'n' ? '' : mode().' NOT IN MAP')
 endfunction
