@@ -227,6 +227,8 @@
   https://jxnblk.com/rss.xml "Blog" "React" "CSS"
   https://matthewstrom.com/feed.xml "Blog" "UI" "Design"
   https://oli.me.uk/feed.xml "Blog" "Clojure" "vim"
+  http://paulgraham.com/rss.html "Blog"
+  https://metaredux.com/feed.xml "Blog" "Programming" "Clojure"
 # }}}
 
 # Browsers {{{
