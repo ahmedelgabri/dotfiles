@@ -186,7 +186,7 @@ endfunction
 " Project specific override
 " Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
 function! utils#sourceProjectConfig() abort
-  let l:projectfile = findfile('.local.vim', expand('%:p').';')
+  let l:projectfile = findfile('.vim/local.vim', expand('%:p').';')
   if filereadable(l:projectfile)
     silent execute 'source' l:projectfile
   endif
