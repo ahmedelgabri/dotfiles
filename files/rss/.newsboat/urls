@@ -582,36 +582,3 @@
   https://www.youtube.com/feeds/videos.xml?user=minutephysics "YouTube" # minutephysics
   https://www.youtube.com/feeds/videos.xml?channel_id=UCRM1gWNTDx0SHIqUJygD-kQ "YouTube" # JustDjango
 # }}}
-
-# Twitch {{{ NOT official RSS support
-  https://twitchrss.appspot.com/vod/Clarkio "Twitch"
-  https://twitchrss.appspot.com/vod/JessiTRONica "Twitch"
-  https://twitchrss.appspot.com/vod/Tsoding "Twitch"
-  https://twitchrss.appspot.com/vod/adaplaysoverwatch "Twitch"
-  https://twitchrss.appspot.com/vod/byteconf "Twitch"
-  https://twitchrss.appspot.com/vod/esl_csgo "Twitch"
-  https://twitchrss.appspot.com/vod/ferossity "Twitch"
-  https://twitchrss.appspot.com/vod/fhinkel "Twitch"
-  https://twitchrss.appspot.com/vod/funfunfunction "Twitch"
-  https://twitchrss.appspot.com/vod/garybernhardt "Twitch"
-  https://twitchrss.appspot.com/vod/illuminatedspace "Twitch"
-  https://twitchrss.appspot.com/vod/jackyalcine "Twitch"
-  https://twitchrss.appspot.com/vod/jlengstorf "Twitch"
-  https://twitchrss.appspot.com/vod/jlongster2 "Twitch"
-  https://twitchrss.appspot.com/vod/josevalim "Twitch"
-  https://twitchrss.appspot.com/vod/kentcdodds "Twitch"
-  https://twitchrss.appspot.com/vod/kyleshevlin "Twitch"
-  https://twitchrss.appspot.com/vod/lukeed05 "Twitch"
-  https://twitchrss.appspot.com/vod/noopkat "Twitch"
-  https://twitchrss.appspot.com/vod/ostera "Twitch"
-  https://twitchrss.appspot.com/vod/puffnfresh "Twitch"
-  https://twitchrss.appspot.com/vod/riotgames "Twitch"
-  https://twitchrss.appspot.com/vod/sxywu "Twitch"
-  https://twitchrss.appspot.com/vod/thekitze "Twitch"
-  https://twitchrss.appspot.com/vod/thelarkinn "Twitch"
-  https://twitchrss.appspot.com/vod/themitsuhiko "Twitch"
-  https://twitchrss.appspot.com/vod/thepracticaldev "Twitch"
-  https://twitchrss.appspot.com/vod/thlorenz "Twitch"
-  https://twitchrss.appspot.com/vod/timpote "Twitch"
-  https://twitchrss.appspot.com/vod/tsm_myth "Twitch"
-# }}}
