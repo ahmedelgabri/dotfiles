@@ -43,7 +43,8 @@ alias work='mx lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias apache="sudo apachectl "
-alias r="ranger" # overrides built-in r command
+alias lf="TERM=xterm-256color lf " # overrides built-in r command
+alias jobs="jobs -l "
 
 [[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
 [[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
