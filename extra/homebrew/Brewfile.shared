@@ -55,6 +55,7 @@ brew "w3m"
 brew "cloc"
 brew "loc"
 brew "tokei"
+brew "lf"
 brew "tree"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 
@@ -91,6 +92,7 @@ brew "grip" # Markdown previewer
 brew "nnn"
 brew "pass"
 brew "yamllint"
+brew "streamlink"
 
 cask "alacritty"
 cask "1password"
@@ -101,6 +103,7 @@ cask "db-browser-for-sqlite"
 cask "keybase"
 cask "kitty"
 cask "brave-browser"
+cask "figma"
 cask "firefox"
 cask "caskroom/versions/firefox-nightly"
 cask "flux"
