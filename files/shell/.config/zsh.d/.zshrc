@@ -83,7 +83,7 @@ function {
     zinit ice wait blockf lucid atpull'zinit creinstall -q .'
     zinit load https://github.com/zsh-users/zsh-completions
 
-    zinit ice wait lucid atinit"zpcompinit; zpcdreplay"
+    zinit ice wait lucid atinit"zpcompinit; zpcdreplay" atload"unset 'FAST_HIGHLIGHT[chroma-whatis]' 'FAST_HIGHLIGHT[chroma-man]'"
     zinit load https://github.com/zdharma/fast-syntax-highlighting
 
     zinit ice wait lucid atload"_zsh_autosuggest_start"
