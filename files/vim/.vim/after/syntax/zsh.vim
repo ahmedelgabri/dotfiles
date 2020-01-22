@@ -6,6 +6,6 @@ scriptencoding utf-8
 " obvious reasons.
 "
 " Not Sure if I should expand the regex to only match strings only inside
-" `zplugin foo` or keep it generic.
+" `zinit foo` or keep it generic.
 
 syn match gitHubURL  /https\:\/\/github\.com\//  conceal containedin=zshString

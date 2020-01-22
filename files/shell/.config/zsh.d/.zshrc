@@ -17,34 +17,34 @@ function {
   HISTFILE="${XDG_DATA_HOME:-$HOME}/.zsh_history"
 
   ##############################################################
-  # ZPLUGIN https://github.com/zdharma/zplugin
+  # ZINIT https://github.com/zdharma/zinit
   ##############################################################
 
-  local __ZPLUGIN="${ZDOTDIR:-$HOME}/.zplugin/bin/zplugin.zsh"
+  local __ZINIT="${ZDOTDIR:-$HOME}/.zinit/bin/zinit.zsh"
 
-  if [[ ! -f "$__ZPLUGIN" ]]; then
+  if [[ ! -f "$__ZINIT" ]]; then
     if (( $+commands[curl] )); then
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
     else
       echo 'curl not found' >&2
       exit 1
     fi
   fi
 
-  source "$__ZPLUGIN"
-  autoload -Uz _zplugin
-  (( ${+_comps} )) && _comps[zplugin]=_zplugin
+  source "$__ZINIT"
+  autoload -Uz _zinit
+  (( ${+_comps} )) && _comps[zinit]=_zinit
 
   # Shell {{{
-    zplugin ice svn
-    zplugin snippet OMZ::plugins/gpg-agent
+    zinit ice svn
+    zinit snippet OMZ::plugins/gpg-agent
 
-    zplugin load https://github.com/zdharma/zui
-    zplugin ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
-    zplugin load https://github.com/zdharma/zplugin-crasis
+    zinit load https://github.com/zdharma/zui
+    zinit ice lucid wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]'
+    zinit load https://github.com/zdharma/zplugin-crasis
 
-    zplugin ice pick"async.zsh" src"pure.zsh"
-    zplugin load https://github.com/ahmedelgabri/pure
+    zinit ice pick"async.zsh" src"pure.zsh"
+    zinit load https://github.com/ahmedelgabri/pure
     local SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸" "◗")
 
     # Arrays in zsh starts from 1
@@ -61,8 +61,8 @@ function {
   # }}}
 
   # Utilities & enhancements {{{
-    zplugin ice wait lucid
-    zplugin load https://github.com/zsh-users/zsh-history-substring-search
+    zinit ice wait lucid
+    zinit load https://github.com/zsh-users/zsh-history-substring-search
     # bind UP and DOWN keys
     bindkey "${terminfo[kcuu1]}" history-substring-search-up
     bindkey "${terminfo[kcud1]}" history-substring-search-down
@@ -71,23 +71,23 @@ function {
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
 
-    zplugin ice atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-    zplugin load trapd00r/LS_COLORS
+    zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+    zinit load trapd00r/LS_COLORS
   # }}}
 
   # Local plugins/completions/etc... {{{
-    zplugin load %HOME/.config/zsh.d/aliases
+    zinit load %HOME/.config/zsh.d/aliases
   # }}}
 
   # Recommended be loaded last {{{
-    zplugin ice wait blockf lucid atpull'zplugin creinstall -q .'
-    zplugin load https://github.com/zsh-users/zsh-completions
+    zinit ice wait blockf lucid atpull'zinit creinstall -q .'
+    zinit load https://github.com/zsh-users/zsh-completions
 
-    zplugin ice wait lucid atinit"zpcompinit; zpcdreplay"
-    zplugin load https://github.com/zdharma/fast-syntax-highlighting
+    zinit ice wait lucid atinit"zpcompinit; zpcdreplay"
+    zinit load https://github.com/zdharma/fast-syntax-highlighting
 
-    zplugin ice wait lucid atload"_zsh_autosuggest_start"
-    zplugin load https://github.com/zsh-users/zsh-autosuggestions
+    zinit ice wait lucid atload"_zsh_autosuggest_start"
+    zinit load https://github.com/zsh-users/zsh-autosuggestions
     export ZSH_AUTOSUGGEST_USE_ASYNC=true
   # }}}
 

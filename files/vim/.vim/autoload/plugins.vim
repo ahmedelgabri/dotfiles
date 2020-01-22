@@ -81,7 +81,7 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/reasonml-editor/vim-reason-plus')
   call minpac#add('https://github.com/jez/vim-github-hub')
   call minpac#add('https://github.com/jxnblk/vim-mdx-js')
-  call minpac#add('https://github.com/zplugin/zplugin-vim-syntax')
+  call minpac#add('https://github.com/zinit-zsh/zplugin-vim-syntax')
   function! s:go(hooktype, name) abort
     execute 'packadd ' . a:name
     GoUpdateBinaries
