@@ -2,6 +2,9 @@ if !exists('g:loaded_projectionist')
   finish
 endif
 
+let g:projectionist_ignore_term=1
+let g:projectionist_ignore_man=1
+
 let g:projectionist_heuristics = {
       \   '&bsconfig.json': {
       \     'src/*.re': {
