@@ -174,9 +174,10 @@ function {
   if [ -f ${HOME}/.zshrc.local ]; then
     source ${HOME}/.zshrc.local
   else
-    if [[ -z "${HOMEBREW_GITHUB_API_TOKEN}" && -z "${GITHUB_TOKEN}" && -z "${GITHUB_USER}" ]]; then
-      echo "These ENV vars are not set: HOMEBREW_GITHUB_API_TOKEN, GITHUB_TOKEN & GITHUB_USER. Add them to ~/.zshrc.local"
-    fi
+    [[ -z "${HOMEBREW_GITHUB_API_TOKEN}" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN not set." && _has_unset_config=yes
+    [[ -z "${GITHUB_TOKEN}" ]] && echo "⚠ GITHUB_TOKEN not set." && _has_unset_config=yes
+    [[ -z "${GITHUB_USER}" ]] && echo "⚠ GITHUB_USER not set." && _has_unset_config=yes
+    [[ ${_has_unset_config:-no} == "yes" ]] && echo "Set the missing configs in ~/.zshrc"
   fi
 
   if [ -e /etc/motd ]; then
