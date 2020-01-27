@@ -273,7 +273,7 @@ function! utils#has_floating_window() abort
   return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win') || (has('textprop') && has('patch-8.1.1522'))
 endfunction
 
-function! utils#floating_fzf() abort
+function! utils#create_floating_window() abort
   let s:buf = nvim_create_buf(v:false, v:true)
 
   let l:height = float2nr(&lines * 0.8)
@@ -306,12 +306,15 @@ function! utils#floating_fzf() abort
 
   call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, l:opts)
 
-  au BufWipeout <buffer> exe 'bw 's:buf
+  augroup FLOATING_WINDOW
+    au!
+    au BufWipeout <buffer> exe 'bw 's:buf
+  augroup END
 endfunction
 
 function! utils#fzf_window() abort
   " until I figure out how to make the pop up window works in vim using
-  return has('nvim') && utils#has_floating_window() ? 'call utils#floating_fzf()' : 'enew'
+  return has('nvim') && utils#has_floating_window() ? 'call utils#create_floating_window()' : 'enew'
 endfunction
 
 function! utils#customize_diff()
