@@ -4,7 +4,7 @@ let s:VIM_MINPAC_FOLDER = expand(g:VIMHOME . '/pack/minpac')
 let s:CURRENT_FILE = expand('<sfile>')
 
 function! plugins#install_minpac() abort
-  execute '!git clone https://github.com/ahmedelgabri/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
+  execute '!git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
 command! -bar PackUpdate call plugins#load_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
@@ -19,7 +19,7 @@ function! plugins#load_plugins() abort
   endif
 
   call minpac#init()
-  call minpac#add('https://github.com/ahmedelgabri/minpac', { 'type': 'opt' })
+  call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
 
   " General {{{
   call minpac#add('https://github.com/andymass/vim-matchup')
