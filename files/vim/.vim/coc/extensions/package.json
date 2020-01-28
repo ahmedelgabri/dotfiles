@@ -10,6 +10,6 @@
     "coc-tailwindcss": ">=0.4.0",
     "coc-tsserver": ">=1.4.9",
     "coc-ultisnips": ">=1.2.3",
-    "coc-vimlsp": ">=0.4.4"
+    "coc-vimlsp": ">=0.4.5"
   }
 }
