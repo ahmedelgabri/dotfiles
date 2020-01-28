@@ -54,7 +54,7 @@ const getMessagesCache = accountName =>
   path.join(getCacheFor('messages'), lowerCase(accountName), '/')
 
 const mailboxes = accountName =>
-  `tree ~/.mail/${accountName} -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
+  `tree ~/.mail/${accountName} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                 GENERATION                                  //
