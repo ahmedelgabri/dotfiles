@@ -6,6 +6,55 @@ endif
 
 let g:coc_extension_root = g:VIMHOME . '/coc/extensions'
 let g:coc_node_path=exepath('node')
+let g:coc_filetype_map = {
+      \ 'html.twig': 'html',
+      \ }
+
+let g:coc_user_config = {
+      \  'coc': {
+      \    'preferences': {
+      \      'colorSupport': 0,
+      \      'hoverTarget': utils#has_floating_window() ? 'float' : 'echo',
+      \    },
+      \    'github': {
+      \      'filetype': ['gitcommit', 'markdown.ghpull'],
+      \    },
+      \  },
+      \  'suggest': {
+      \    'autoTrigger': 'always',
+      \    'noselect': 0,
+      \    'floatEnable': utils#has_floating_window(),
+      \  },
+      \  'signature': {
+      \    'target': utils#has_floating_window() ? 'float' : 'echo',
+      \  },
+      \  'diagnostic': {
+      \    'errorSign': '',
+      \    'warningSign': '',
+      \    'infoSign': utils#GetIcon('info'),
+      \    'hintSign': utils#GetIcon('hint'),
+      \    'messageTarget': utils#has_floating_window() ? 'float' : 'echo',
+      \    'refreshOnInsertMode': 1,
+      \    'locationlist': 1,
+      \    'virtualText': 1,
+      \    'virtualTextPrefix': ':: ',
+      \  },
+      \  'python': {
+      \    'jediEnabled': 0,
+      \    'linting': {
+      \      'pylintUseMinimalCheckers': 0
+      \    },
+      \  },
+      \  'emmet': {
+      \    'includeLanguages': { 'javascript': 'javascriptreact' },
+      \  },
+      \  'codeLens': {
+      \    'enable': 1,
+      \  },
+      \  'rust': {
+      \    'clippy_preference': 'on',
+      \  },
+      \ }
 
 let s:LSP_CONFIG = [
       \ ['flow', {
@@ -58,56 +107,6 @@ let s:LSP_CONFIG = [
       \    'initializationOptions': { 'elmAnalyseTrigger': 'change' },
       \  }],
       \]
-
-let g:coc_filetype_map = {
-      \ 'html.twig': 'html',
-      \ }
-
-let g:coc_user_config = {
-      \  'coc': {
-      \    'preferences': {
-      \      'colorSupport': 0,
-      \      'hoverTarget': utils#has_floating_window() ? 'float' : 'echo',
-      \    },
-      \    'github': {
-      \      'filetype': ['gitcommit', 'markdown.ghpull'],
-      \    },
-      \  },
-      \  'suggest': {
-      \    'autoTrigger': 'always',
-      \    'noselect': 0,
-      \    'floatEnable': utils#has_floating_window(),
-      \  },
-      \  'signature': {
-      \    'target': utils#has_floating_window() ? 'float' : 'echo',
-      \  },
-      \  'diagnostic': {
-      \    'errorSign': '',
-      \    'warningSign': '',
-      \    'infoSign': utils#GetIcon('info'),
-      \    'hintSign': utils#GetIcon('hint'),
-      \    'messageTarget': utils#has_floating_window() ? 'float' : 'echo',
-      \    'refreshOnInsertMode': 1,
-      \    'locationlist': 1,
-      \    'virtualText': 1,
-      \    'virtualTextPrefix': ':: ',
-      \  },
-      \  'python': {
-      \    'jediEnabled': 0,
-      \    'linting': {
-      \      'pylintUseMinimalCheckers': 0
-      \    },
-      \  },
-      \  'emmet': {
-      \    'includeLanguages': { 'javascript': 'javascriptreact' },
-      \  },
-      \  'codeLens': {
-      \    'enable': 1,
-      \  },
-      \  'rust': {
-      \    'clippy_preference': 'on',
-      \  },
-      \ }
 
 let s:languageservers = {}
 for [lsp, config] in s:LSP_CONFIG
