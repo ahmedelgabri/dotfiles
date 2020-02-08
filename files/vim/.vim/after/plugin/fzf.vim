@@ -45,3 +45,15 @@ function! FzfSpell()
   return fzf#run({'source': suggestions, 'sink': function('FzfSpellSink'), 'down': 10 })
 endfunction
 nnoremap z= :call FzfSpell()<CR>
+
+" https://github.com/junegunn/fzf.vim/issues/907#issuecomment-554699400
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let options = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(options), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RF call RipgrepFzf(<q-args>, <bang>0)
+nnoremap <leader>\ :RF<CR>
