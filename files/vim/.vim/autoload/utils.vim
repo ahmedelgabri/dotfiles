@@ -313,7 +313,7 @@ function! utils#create_floating_window() abort
 endfunction
 
 function! utils#fzf_window() abort
-  return utils#has_floating_window() ? { 'width': 0.8 , 'height': 0.8 } : 'enew'
+  return utils#has_floating_window() ? { 'width': 0.9 , 'height': 0.8 } : 'enew'
 endfunction
 
 function! utils#customize_diff()
