@@ -2,20 +2,15 @@
 local modalKey = {'alt'}
 local focusKeys = {
   -- [g]oogle chrome
-  -- becasue it conflicts with fzf alt+c
-  -- [TODO]: look into hyper mode?
   g='Google Chrome',
   -- [b]rowser (main)
-  b='Google Chrome Canary',
+  b='Brave Browser',
   -- [s]lack
   s='Slack',
-  -- [i]term
-  i='iTerm',
-  -- [k]itty
-  -- CTRL+space='Kitty',
-  k='Kitty',
-  -- [t]witter/weetbot
-  t='Tweetbot',
+  -- [t]erminal
+  t='Kitty',
+  -- tweet[b]ot
+  b='Tweetbot',
   -- i[m]essage
   m='Messages',
 }
@@ -25,16 +20,6 @@ for key in pairs(focusKeys) do
     hs.application.launchOrFocus(focusKeys[key])
   end)
 end
-
--- lock screen
--- Old: https://www.isi.edu/~calvin/mac-lockscreen.htm
-hs.hotkey.bind({'cmd', 'shift'}, '0', function()
-  hs.caffeinate.lockScreen()
-end)
-
-hs.hotkey.bind({}, '§', function()
-  hs.eventtap.keyStroke({}, 'ESCAPE')
-end)
 
 hs.hotkey.bind({}, 'f10', (function()
   hs.alert('Hammerspoon console')
