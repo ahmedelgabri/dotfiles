@@ -3,8 +3,8 @@
 __WIFI_NAME=$(wifi)
 
 case $__WIFI_NAME in
-Fanko*)
-  __LOCATION="Almere"
+LS* | Lightspeed*)
+  __LOCATION="Amsterdam"
   ;;
 *)
   __LOCATION=""
