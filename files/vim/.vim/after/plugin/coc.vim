@@ -4,7 +4,7 @@ if !exists('g:did_coc_loaded')
   finish
 endif
 
-let g:coc_extension_root = g:VIMHOME . '/coc/extensions'
+let g:coc_data_home=g:VIMHOME . '/coc/extensions'
 let g:coc_node_path=exepath('node')
 let g:coc_filetype_map = {
       \ 'html.twig': 'html',
