@@ -1,10 +1,12 @@
 #!/bin/bash
-GITHUB_STATUS=$(curl -sS https://status.github.com/api/status.json | jq -r '.status')
+
+# https://www.githubstatus.com/api#status
+GITHUB_STATUS=$(curl -sS https://kctbh9vrtdwd.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
 
 INDICATIOR="#[fg=colour237]⦁"
 
 case $GITHUB_STATUS in
-ma*)
+ma* | cri*)
   STATUS="#[fg=red]   $INDICATOR "
   ;;
 mi*)
