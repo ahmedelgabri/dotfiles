@@ -48,9 +48,6 @@ let g:coc_user_config = {
       \  'emmet': {
       \    'includeLanguages': { 'javascript': 'javascriptreact' },
       \  },
-      \  'codeLens': {
-      \    'enable': 1,
-      \  },
       \  'rust': {
       \    'clippy_preference': 'on',
       \  },
