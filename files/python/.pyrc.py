@@ -56,6 +56,7 @@ class TermColors(dict):
     def __init__(self):
         if os.environ.get("TERM") in (
             "xterm-color",
+            "xterm-kitty",
             "xterm-256color",
             "linux",
             "screen",
