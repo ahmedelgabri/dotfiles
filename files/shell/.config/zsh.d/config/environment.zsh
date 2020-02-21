@@ -44,11 +44,6 @@ fi
 # GLOBAL CONFIG
 ##############################################################
 
-
-if [[ ! -n "$TMUX" && "$TERM" == kitty* ]]; then
-  export TERM=xterm-256color
-fi
-
 # Better spell checking & auto correction prompt
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]? "
 
