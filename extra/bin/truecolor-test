@@ -2,7 +2,6 @@
 # Test truecolor support in a terminal emulator
 # from https://gist.github.com/XVilka/8346728
 
-
 awk 'BEGIN{
     s="/\\/\\/\\/\\/\\"; s=s s s s s s s s;
     for (colnum = 0; colnum<77; colnum++) {
@@ -16,4 +15,3 @@ awk 'BEGIN{
     }
     printf "\n";
 }'
-
