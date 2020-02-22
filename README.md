@@ -22,8 +22,8 @@ These are the main configs:
 - [newsboat](http://newsboat.org/) for RSS
 - [weechat](https://weechat.org/) IRC client
 - [hammerspoon](http://www.hammerspoon.org/)
+- [node](https://nodejs.org)
 - [Python](https://www.python.org/)
-- [Ruby](https://www.ruby-lang.org/)
 
 ## Installation
 
