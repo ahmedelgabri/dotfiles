@@ -18,10 +18,11 @@ These are the main configs:
   Ruby and Python support
 - [Zsh](http://www.zsh.org/)
 - [Git](http://git-scm.com/)
-- [Kitty](https://github.com/kovidgoyal/kitty)
+- [Kitty](https://github.com/kovidgoyal/kitty) as my terminal
 - [newsboat](http://newsboat.org/) for RSS
 - [weechat](https://weechat.org/) IRC client
-- [hammerspoon](http://www.hammerspoon.org/)
+- [hammerspoon](http://www.hammerspoon.org/) macOS automation, using it for
+  window management & other stuff
 - [node](https://nodejs.org)
 - [Python](https://www.python.org/)
 
