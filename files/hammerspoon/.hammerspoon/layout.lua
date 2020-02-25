@@ -7,13 +7,11 @@
 --
 
 local apps = {
-  -- canary = 'Google Chrome Canary',
-  -- stable = 'Google Chrome',
-  -- Let's see if this will select Stable Google Chrome right or will confuse it with Canary still
-  stable = hs.application.applicationsForBundleID('com.google.Chrome')[1],
+  brave = 'Brave Browser',
+  chrome = 'Google Chrome',
   slack = 'Slack',
   tweetbot = 'Tweetbot',
-  -- iterm = 'iTerm',
+  terminal = 'Kitty',
 }
 
 
@@ -24,7 +22,7 @@ local apps = {
 local screens = {
   main = hs.screen("Color LCD"),
   thunderbolt = hs.screen("Thunderbolt Display"),
-  dell = hs.screen("DELL P2714H"),
+  dell = hs.screen("DELL U2717D"),
 }
 
 --
@@ -32,21 +30,21 @@ local screens = {
 --
 
 local threeMonitors = {
-  {apps.stable, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
+  {apps.chrome, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
   {apps.tweetbot, nil, screens.dell, hs.layout.left50, nil, nil},
   {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
-  -- {apps.canary, nil, screens.main, hs.layout.maximized, nil, nil},
-  -- {apps.iterm, nil, screens.main, hs.layout.maximized, nil, nil},
+  -- {apps.brave, nil, screens.main, hs.layout.maximized, nil, nil},
+  -- {apps.terminal, nil, screens.main, hs.layout.maximized, nil, nil},
 }
 
 local twoThunderbot = {
-  {apps.stable, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
+  {apps.chrome, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
   {apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil},
   {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
 }
 
 local twoDell = {
-  {apps.stable, nil, screens.dell, hs.layout.maximized, nil, nil},
+  {apps.chrome, nil, screens.dell, hs.layout.maximized, nil, nil},
   {apps.tweetbot, nil, screens.dell, hs.layout.right50, nil, nil},
   {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
 }

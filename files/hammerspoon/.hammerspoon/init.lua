@@ -40,22 +40,16 @@ end
 -- Auto-reload config on change.
 --
 
-function reloadConfig(paths)
+function reloadConfig(files)
   doReload = false
-  for _,file in pairs(paths) do
-    if file:sub(-4) == '.lua' then
-      print('A lua file changed, doing reload')
+  for _,file in pairs(files) do
+    if file:sub(-4) == ".lua" then
       doReload = true
     end
   end
-  if not doReload then
-    print('No lua file changed, skipping reload')
-    return
+  if doReload then
+    hs.reload()
   end
-
-  hs.reload()
 end
-
-local configFileWatcher = hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', reloadConfig)
-configFileWatcher:start()
-hs.alert.show('Config loaded')
+myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
+hs.alert.show("Config loaded")
