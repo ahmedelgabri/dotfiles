@@ -228,6 +228,8 @@
   https://oli.me.uk/feed.xml "Blog" "Clojure" "vim"
   http://paulgraham.com/rss.html "Blog"
   https://metaredux.com/feed.xml "Blog" "Programming" "Clojure"
+  https://jaredpalmer.com/rss.xml "Blog" "JavaScript"
+  https://fasterthanli.me/index.xml "Blog" "Programming" "Rust" "Go"
 # }}}
 
 # Browsers {{{
@@ -1190,4 +1192,6 @@
   https://www.youtube.com/feeds/videos.xml?channel_id=UCJ24N4O0bP7LGLBDvye7oCA "YouTube" # Matt D'Avella
   https://www.youtube.com/feeds/videos.xml?user=minutephysics "YouTube" # minutephysics
   https://www.youtube.com/feeds/videos.xml?channel_id=UCRM1gWNTDx0SHIqUJygD-kQ "YouTube" # JustDjango
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCWSYAntBbdd2SLYUqPIxo0w "YouTube" # Byte by Byte
+  https://www.youtube.com/feeds/videos.xml?channel_id=UCS0N5baNlQWJCUrhCEo8WlA "YouTube" "Machine Code" "Circutis" # Ben Eater
 # }}}
