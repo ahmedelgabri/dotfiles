@@ -39,7 +39,7 @@ augroup MyAutoCmds
 
   autocmd FileType gitcommit,gina-status,todo,qf setlocal cursorline
 
-  autocmd FileType lisp,scheme,clojure packadd rainbow_parentheses.vim | RainbowParentheses
+  autocmd FileType lisp,scheme,clojure packadd rainbow_parentheses.vim | packadd vim-sexp | RainbowParentheses
 
   autocmd BufWritePre,FileWritePre * call utils#create_directories()
   autocmd BufEnter,BufWinEnter,BufRead,BufNewFile bookmarks.{md,txt} hi! link mkdLink Normal | set concealcursor-=n
