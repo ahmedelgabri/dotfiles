@@ -1,3 +1,5 @@
+#compdef open
+
 # vim:ft=zsh:
 # No arguments: `open .`
 # With arguments: acts like `open`
@@ -13,8 +15,5 @@ function o {
     open "$@"
   fi
 }
-
-# Complete o like open
-compdef o=open
 
 o "$@"

@@ -1,3 +1,5 @@
+#compdef todoist
+
 # vim:ft=zsh:
 # For todoist cli
 
@@ -19,7 +21,5 @@ function t() {
 
   todoist sync && "${__CMD[@]}"
 }
-
-# compdef t=todoist
 
 t "$@"
