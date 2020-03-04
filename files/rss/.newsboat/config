@@ -13,7 +13,7 @@
   refresh-on-startup no
   auto-reload yes
   reload-threads 3
-  reload-time 15
+  reload-time 120
   save-path "~/Box\ Sync/saved-articles"
   bookmark-cmd ~/.newsboat/bookmark.sh
   bookmark-interactive no
