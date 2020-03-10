@@ -58,8 +58,8 @@ autoload -Uz _zinit
   zinit ice wait lucid
   zinit light https://github.com/rupa/z
 
-  zplugin ice depth="1" as"program" atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
-  zplugin light https://github.com/garabik/grc
+  zinit ice depth="1" as"program" atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
+  zinit light https://github.com/garabik/grc
 
   zinit ice pick"async.zsh" src"pure.zsh"
   zinit light https://github.com/ahmedelgabri/pure
