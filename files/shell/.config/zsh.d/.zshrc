@@ -55,8 +55,8 @@ autoload -Uz _zinit
   zinit ice svn
   zinit snippet OMZ::plugins/gpg-agent
 
-  zinit ice wait lucid
-  zinit light https://github.com/rupa/z
+  zinit ice wait lucid from"gh-r" as"program" mv"zoxide* -> zoxide" atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+  zinit light https://github.com/ajeetdsouza/zoxide
 
   zinit ice depth="1" as"program" atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
   zinit light https://github.com/garabik/grc
