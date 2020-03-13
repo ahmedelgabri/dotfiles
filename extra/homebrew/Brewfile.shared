@@ -35,8 +35,6 @@ brew "yarn"
 brew "ruby"
 
 # Core utils
-brew "hub"
-brew "direnv"
 brew "fzf"
 brew "htop"
 brew "ncdu"

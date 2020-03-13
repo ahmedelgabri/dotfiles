@@ -71,6 +71,12 @@ autoload -Uz _zinit
   zstyle :prompt:pure:git:dirty color red
   zstyle :prompt:pure:git:action color 005
   zstyle :prompt:pure:prompt:success color 003
+
+  zinit ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+  zinit light https://github.com/direnv/direnv
+
+  zinit ice from"gh-r" as"program" mv"hub* -> hub" atclone'./hub/bin/hub alias -s > zhook.zsh; ln -sf ./hub/etc/hub.zsh_completion _hub' atpull'%atclone' src"zhook.zsh" pick"hub/bin/hub"
+  zinit light https://github.com/github/hub
 # }}}
 
 # Utilities & enhancements {{{
@@ -136,10 +142,6 @@ export FZF_DEFAULT_OPTS="--reverse --tabstop 2 --multi --color=bg+:-1 --bind '?:
 export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window down:60%:noborder"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null'"
-
-############### Direnv
-(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
-(( $+commands[hub] )) && eval "$(hub alias -s)"
 
 ############### Kitty
 if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
