@@ -55,10 +55,12 @@ autoload -Uz _zinit
   zinit ice svn
   zinit snippet OMZ::plugins/gpg-agent
 
-  zinit ice wait lucid from"gh-r" as"program" mv"zoxide* -> zoxide" atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+  zinit ice wait lucid from"gh-r" as"program" \
+    mv"zoxide* -> zoxide" atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
   zinit light https://github.com/ajeetdsouza/zoxide
 
-  zinit ice depth="1" as"program" atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
+  zinit ice as"program" \
+    atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
   zinit light https://github.com/garabik/grc
 
   zinit ice pick"async.zsh" src"pure.zsh"
@@ -72,10 +74,13 @@ autoload -Uz _zinit
   zstyle :prompt:pure:git:action color 005
   zstyle :prompt:pure:prompt:success color 003
 
-  zinit ice from"gh-r" as"program" mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+  zinit ice from"gh-r" as"program" \
+    mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
   zinit light https://github.com/direnv/direnv
 
-  zinit ice from"gh-r" as"program" mv"hub* -> hub" atclone'./hub/bin/hub alias -s > zhook.zsh; ln -sf ./hub/etc/hub.zsh_completion _hub' atpull'%atclone' src"zhook.zsh" pick"hub/bin/hub"
+  zinit ice from"gh-r" as"program" mv"hub* -> hub" \
+    atclone'prefix=$ZPFX ./hub/install; ln -sf ./hub/etc/hub.zsh_completion _hub; ./hub/bin/hub alias -s > zhook.zsh;' \
+    atpull'%atclone' src"zhook.zsh" pick'$ZPFX/bin/hub*'
   zinit light https://github.com/github/hub
 # }}}
 
@@ -90,7 +95,8 @@ autoload -Uz _zinit
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 
-  zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+  zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+    atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
   zinit light https://github.com/trapd00r/LS_COLORS
 # }}}
 
@@ -102,7 +108,8 @@ autoload -Uz _zinit
   zinit ice wait blockf lucid atpull'zinit creinstall -q .'
   zinit light https://github.com/zsh-users/zsh-completions
 
-  zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" atload"unset 'FAST_HIGHLIGHT[chroma-whatis]' 'FAST_HIGHLIGHT[chroma-man]'"
+  zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+    atload"unset 'FAST_HIGHLIGHT[chroma-whatis]' 'FAST_HIGHLIGHT[chroma-man]'"
   zinit light https://github.com/zdharma/fast-syntax-highlighting
 
   zinit ice wait lucid atload"_zsh_autosuggest_start"
