@@ -14,6 +14,11 @@ if has('nvim-0.4.2')
 else
   set signcolumn=yes
 endif
+
+if exists('+emoji')
+  set noemoji
+endif
+
 set textwidth=80
 " set colorcolumn=+1
 " let &colorcolumn=join([&colorcolumn,81] + range(101,999), ',')
