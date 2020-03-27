@@ -4,22 +4,6 @@ function! statusline#rhs() abort
   return winwidth(0) > 80 ? printf('%02d/%02d:%02d', line('.'), line('$'), col('.')) : ''
 endfunction
 
-function! statusline#fileSize() abort
-  let l:size = getfsize(expand('%'))
-  if l:size == 0 || l:size == -1 || l:size == -2
-    return ''
-  endif
-  if l:size < 1024
-    return l:size.' bytes'
-  elseif l:size < 1024*1024
-    return printf('%.1f', l:size/1024.0).'k'
-  elseif l:size < 1024*1024*1024
-    return printf('%.1f', l:size/1024.0/1024.0) . 'm'
-  else
-    return printf('%.1f', l:size/1024.0/1024.0/1024.0) . 'g'
-  endif
-endfunction
-
 function! statusline#getDiffColors() abort
   return ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#', '%#DiffText#']
 endfunction

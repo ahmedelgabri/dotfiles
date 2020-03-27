@@ -18,7 +18,6 @@ function! StatusLine(mode) abort
     let l:line.='%6*%{statusline#gitInfo()}'
     let l:line.='%<'
     let l:line.=statusline#filepath()
-    let l:line.='%4* %{statusline#fileSize()}%*'
 
     let l:line.='%5*'
     let l:line.=' %{statusline#readOnly()} %w%*'
