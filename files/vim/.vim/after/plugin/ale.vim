@@ -25,7 +25,7 @@ let g:ale_echo_msg_warning_str='[WARNING]'
 let g:ale_echo_msg_format = '%severity% %linter% -> [%code%] -> %s'
 let g:ale_javascript_prettier_use_local_config = 1
 function! s:PRETTIER_OPTIONS()
-  return '--config-precedence prefer-file --single-quote --no-bracket-spacing --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf --print-width ' . &textwidth
+  return '--config-precedence prefer-file --single-quote --no-bracket-spacing --prose-wrap always --arrow-parens always --trailing-comma all --no-semi --end-of-line  lf --print-width ' . &textwidth
 endfunction
 let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
 " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
