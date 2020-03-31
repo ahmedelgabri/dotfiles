@@ -18,6 +18,9 @@ function! StatusLine(mode) abort
     let l:line.='%6*%{statusline#gitInfo()}'
     let l:line.='%<'
     let l:line.=statusline#filepath()
+    if &filetype ==# 'markdown' || &filetype ==# 'text'
+      let l:line.='%4* %{wordcount()["words"]} words%*'
+    endif
 
     let l:line.='%5*'
     let l:line.=' %{statusline#readOnly()} %w%*'
