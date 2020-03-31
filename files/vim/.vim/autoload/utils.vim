@@ -78,8 +78,8 @@ endfunction
 " from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
 let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
 function! utils#should_mkview() abort
-  return
-        \ &buftype ==# '' &&
+  return &buftype ==# '' &&
+        \ getcmdwintype() ==# '' &&
         \ index(g:GabriMkviewFiletypeBlacklist, &filetype) == -1 &&
         \ !exists('$SUDO_USER') " Don't create root-owned files.
 endfunction
