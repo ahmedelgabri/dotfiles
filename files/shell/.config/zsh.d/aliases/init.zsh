@@ -43,19 +43,8 @@ alias work='mx lightspeed'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias apache="sudo apachectl "
-alias lf="TERM=xterm-256color lf " # overrides built-in r command
 alias jobs="jobs -l "
 
-[[ $TERM == *"tmux"* ]] && alias :sp='tmux split-window'
-[[ $TERM == *"tmux"* ]] && alias :vs='tmux split-window -h'
-
-# Conditional aliases
-# https://gist.github.com/sos4nt/3187620#gistcomment-1452131
-[[ $TERM == *"tmux"* ]] && alias ssh="TERM=xterm-256color ssh"
-[[ $TERM == *"tmux"* ]] && alias vagrant="TERM=xterm-256color vagrant"
-[[ $TERM == *"tmux"* ]] && alias brew="TERM=xterm-256color brew"
-
-(( $+commands[emacs] )) && alias emacs="TERM=xterm-256color emacs "
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
