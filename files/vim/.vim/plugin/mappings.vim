@@ -14,10 +14,10 @@ nnoremap gV `[v`]
 
 " Move by 'display lines' rather than 'logical lines' if no v:count was
 " provided.  When a v:count is provided, move by logical lines.
-nnoremap <expr> j v:count ? 'j' : 'gj'
-xnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
-xnoremap <expr> k v:count ? 'k' : 'gk'
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+xnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+xnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 
 " Make `Y` behave like `C` and `D` (to the end of line)
 nnoremap Y y$
@@ -44,10 +44,9 @@ nnoremap <Left> :vertical resize +2<CR>
 nnoremap <Down> :resize -2<CR>
 nnoremap <Up> :resize +2<CR>
 
-inoremap jj <ESC>
 nnoremap <Leader><TAB> <C-w><C-w>
-nnoremap <leader>= <C-w>t<C-w>K<CR>
-nnoremap <leader>\ <C-w>t<C-w>H<CR>
+nnoremap <leader>sh <C-w>t<C-w>K<CR>
+nnoremap <leader>sv <C-w>t<C-w>H<CR>
 
 " https://github.com/mhinz/vim-galore#dont-lose-selection-when-shifting-sidewards
 xnoremap <  <gv
@@ -58,9 +57,10 @@ nnoremap <Leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 
 nnoremap <Leader>l :set nu! rnu!<cr>
 nnoremap <Leader>p :t.<left><left>
+nnoremap <leader>e :exe getline(line('.'))<cr>
 
 " qq to record, Q to replay
-nnoremap Q @q
+nnoremap Q @@
 
 " Make dot work in visual mode
 vnoremap . :norm.<CR>
