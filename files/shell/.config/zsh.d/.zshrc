@@ -55,9 +55,6 @@ function {
   (( ${+_comps} )) && _comps[zinit]=_zinit
 
   # Shell {{{
-    zinit ice svn
-    zinit snippet OMZ::plugins/gpg-agent
-
     zinit ice wait lucid from"gh-r" as"program" \
       mv"zoxide* -> zoxide" atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
     zinit light https://github.com/ajeetdsouza/zoxide
