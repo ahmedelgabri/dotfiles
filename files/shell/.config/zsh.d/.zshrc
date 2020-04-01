@@ -133,11 +133,11 @@ function {
   export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
 
   if (( $+commands[fd] )); then
-    __FZF[CMD]='fd --hidden --no-ignore-vcs --exclude ".git" --exclude "node_modules" --exclude ".DS_Store"'
+    __FZF[CMD]='fd --hidden --follow --no-ignore-vcs'
     __FZF[DEFAULT]="${__FZF[CMD]} --type f"
     __FZF[ALT_C]="${__FZF[CMD]} --type d ."
   elif (( $+commands[rg] )); then
-    __FZF[CMD]='rg --no-messages --no-ignore-vcs'
+    __FZF[CMD]='rg --follow --no-messages --no-ignore-vcs'
     __FZF[DEFAULT]="${__FZF[CMD]} --files"
   else
     __FZF[DEFAULT]='git ls-tree -r --name-only HEAD || find .'

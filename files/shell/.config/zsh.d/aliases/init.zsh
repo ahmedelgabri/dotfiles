@@ -48,7 +48,8 @@ alias jobs="jobs -l "
 (( $+commands[stow] )) && alias stow='stow --ignore ".DS_Store"'
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[python3] )) && alias server="python3 -m http.server 80"
-
+(( $+commands[python3] )) && alias server="python3 -m http.server 80"
+(( $+commands[fd] )) && alias fd='fd --hidden '
 (( $+commands[yarn] )) && alias y=yarn
 
 if (( $+commands[hub] )); then
