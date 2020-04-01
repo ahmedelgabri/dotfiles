@@ -45,9 +45,6 @@ let g:coc_user_config = {
       \      'pylintUseMinimalCheckers': 0
       \    },
       \  },
-      \  'emmet': {
-      \    'includeLanguages': { 'javascript': 'javascriptreact' },
-      \  },
       \  'rust': {
       \    'clippy_preference': 'on',
       \  },
