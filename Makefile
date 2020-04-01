@@ -5,6 +5,24 @@ SHELL:=/bin/bash
 DOTFILES="$(HOME)/.dotfiles"
 SCRIPTS="$(DOTFILES)/script"
 INSTALL="$(SCRIPTS)/install"
+STOW_PACKAGES= alacritty \
+			   ctags \
+			   git \
+			   gpg \
+			   hammerspoon \
+			   irc \
+			   kitty \
+			   mail \
+			   mpv \
+			   node \
+			   python \
+			   rss \
+			   shell \
+			   ssh \
+			   tmux \
+			   tuir \
+			   utils \
+			   vim
 
 all: mail node python neovim rust macos
 
@@ -14,28 +32,29 @@ install:
 debug:
 	bash -x <(cat $(INSTALL))
 
-# This is used inside `scripts/install` symlink_files function
-# The `-` before commands are to ignore their errors https://stackoverflow.com/a/2670143/213124
 symlink:
-	stow --restow -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" \
-		alacritty \
-		ctags \
-		git \
-		gpg \
-		hammerspoon \
-		irc \
-		kitty \
-		mail \
-		mpv \
-		node \
-		python \
-		rss \
-		shell \
-		ssh \
-		tmux \
-		tuir \
-		utils \
-		vim
+	stow --restow -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
+
+# Context: https://github.com/aspiers/stow/issues/29
+prepare:
+	mkdir -p "$(HOME)/.mail/{Personal,Work,.notmuch}" \
+		"$(HOME)/.mutt/tmp" \
+		"$(HOME)/.{ssh,gnupg}" \
+		"$(HOME)/.config/mpv" \
+		"$(HOME)/.newsboat" \
+		"$(HOME)/.weechat" \
+		"$(HOME)/Library/LaunchAgents"
+
+# This command runs only once, on the initial setup of a machine.
+#
+# `stow` by default doesn't override files/folders
+# The `--adopt` flag will take any files from `$HOME` in this case that
+# conflicts with my files, put them in the repo & link them.
+# Which means that git will show files as changed, so we revert the changes
+# to get our changes & everything should be working as expected
+initial-symlink: prepare
+	stow --adopt -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
+	cd "$(DOTFILES)" && git stash -u; git reset --hard origin/master && git stash pop
 
 gpg: symlink
 	# Fix gpg folder/file permissions after symlinking
