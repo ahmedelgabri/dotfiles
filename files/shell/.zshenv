@@ -96,6 +96,7 @@ export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 ############### Bat, Ripgrep, Weechat
 export BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat/config"
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgrep/config"
+export WEECHAT_HOME="${XDG_CONFIG_HOME}/weechat"
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 
 ############### Direnv

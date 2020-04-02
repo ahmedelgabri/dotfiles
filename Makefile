@@ -39,10 +39,9 @@ symlink:
 prepare:
 	mkdir -p "$(HOME)/.mail/{Personal,Work,.notmuch}" \
 		"$(HOME)/.mutt/tmp" \
-		"$(HOME)/.{ssh,gnupg}" \
+		"$(HOME)/.ssh" \
 		"$(HOME)/.config/mpv" \
 		"$(HOME)/.newsboat" \
-		"$(HOME)/.weechat" \
 		"$(HOME)/Library/LaunchAgents"
 
 # This command runs only once, on the initial setup of a machine.

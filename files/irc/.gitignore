@@ -1,6 +1,6 @@
-.weechat/*
-!.weechat/buflist.conf
-!.weechat/irc.conf
-!.weechat/weechat.conf
-!.weechat/plugins.conf
-!.weechat/sec.conf
+.config/weechat/*
+!.config/weechat/buflist.conf
+!.config/weechat/irc.conf
+!.config/weechat/weechat.conf
+!.config/weechat/plugins.conf
+!.config/weechat/sec.conf
