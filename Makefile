@@ -40,8 +40,7 @@ prepare:
 	mkdir -p "$(HOME)/.mail/{Personal,Work,.notmuch}" \
 		"$(HOME)/.mutt/tmp" \
 		"$(HOME)/.ssh" \
-		"$(HOME)/.config/mpv" \
-		"$(HOME)/.newsboat" \
+		"$(HOME)/.config/{weechat,zsh,mpv,gnupg,python,ripgrep,bat,newsboat}" \
 		"$(HOME)/Library/LaunchAgents"
 
 # This command runs only once, on the initial setup of a machine.
