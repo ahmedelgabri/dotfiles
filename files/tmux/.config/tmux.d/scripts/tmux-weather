@@ -1,14 +1,41 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-__WIFI_NAME=$(wifi)
+_load_weather() {
+  weather_location="$(corelocationcli -format '%locality')"
 
-case $__WIFI_NAME in
-LS* | Lightspeed*)
-  __LOCATION="Amsterdam"
-  ;;
-*)
-  __LOCATION=""
-  ;;
-esac
+  # check for internet connection
+  wget -q --spider http://google.com
 
-printf "%s#[fg=colour237] ⦁ " "$(curl -s "https://wttr.in/$__LOCATION?format=%l:+%c+%t+%w" 2>/dev/null)"
+  if [ $? -eq 0 ]; then
+    curl -s "http://wttr.in/$weather_location?format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
+    echo "$(date +'%s')" >>"$TMP_WEATHER_FILE"
+  fi
+}
+
+# Weather data
+weather_segment() {
+  local -r TMP_WEATHER_FILE="$TMPDIR/weather.tmp"
+  local -r REFRESH_RATE=$((60 * 60)) // 60 # minutes
+
+  [[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
+
+  local now
+  now="$(date +'%s')"
+  local epoch
+  epoch="$(tail -n 1 "$TMP_WEATHER_FILE")"
+  local delta
+  delta="$((now - epoch))"
+
+  # check if it's time to update the data
+  [[ $delta -gt $REFRESH_RATE ]] && _load_weather
+
+  local weather
+  weather="$(head -n 1 "$TMP_WEATHER_FILE")"
+  weather="$(echo "${weather//+/}")"
+
+  echo
+
+  printf "%s#[fg=colour237] ⦁ " "$weather"
+}
+
+weather_segment

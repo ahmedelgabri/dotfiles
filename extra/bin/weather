@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Simple function to get weather data
 #
@@ -7,8 +7,8 @@
 #   $ weather <city>
 # Check curl wttr.in/:help for more info
 
-weather () {
-  curl -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-Amsterdam}"?0qm
+weather() {
+  curl -H "Accept-Language: ${LANG%_*}" wttr.in/"$(corelocationcli -format '%locality')"?0qm
 }
 
 weather "$@"
