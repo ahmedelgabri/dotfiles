@@ -55,15 +55,21 @@ function {
   (( ${+_comps} )) && _comps[zinit]=_zinit
 
   # Shell {{{
-    zinit ice wait lucid from"gh-r" as"program" \
-      mv"zoxide* -> zoxide" atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+    zinit ice wait lucid from'gh-r' as'program'
+    zinit light https://github.com/junegunn/fzf-bin
+
+    zinit ice wait lucid as'command' multisrc'shell/{completion,key-bindings}.zsh' id-as'junegunn/fzf_completions' pick'bin/fzf-tmux'
+    zinit light https://github.com/junegunn/fzf
+
+    zinit ice wait lucid from'gh-r' as'program' \
+      mv'zoxide* -> zoxide' atclone'./zoxide init zsh > zhook.zsh' atpull'%atclone' src'zhook.zsh'
     zinit light https://github.com/ajeetdsouza/zoxide
 
-    zinit ice as"program" \
-      atclone'./install.sh $ZPFX $ZPFX' atpull"%atclone" compile"grc.zsh" src"grc.zsh" pick'$ZPFX/bin/grc*'
+    zinit ice wait lucid as'program' \
+      atclone'./install.sh $ZPFX $ZPFX' atpull'%atclone' compile'grc.zsh' src'grc.zsh' pick'$ZPFX/bin/grc*'
     zinit light https://github.com/garabik/grc
 
-    zinit ice pick"async.zsh" src"pure.zsh"
+    zinit ice pick'async.zsh' src'pure.zsh'
     zinit light https://github.com/ahmedelgabri/pure
     PURE_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸" "◗")
     # Arrays in zsh starts from 1
@@ -74,14 +80,15 @@ function {
     zstyle :prompt:pure:git:action color 005
     zstyle :prompt:pure:prompt:success color 003
 
-    zinit ice from"gh-r" as"program" \
-      mv"direnv* -> direnv" atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src"zhook.zsh"
+    zinit ice wait lucid from'gh-r' as'program' \
+      mv'direnv* -> direnv' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src'zhook.zsh'
     zinit light https://github.com/direnv/direnv
 
-    zinit ice from"gh-r" as"program" mv"hub* -> hub" \
+    zinit ice wait lucid from'gh-r' as'program' mv'hub* -> hub' \
       atclone'prefix=$ZPFX ./hub/install; ln -sf ./hub/etc/hub.zsh_completion _hub; ./hub/bin/hub alias -s > zhook.zsh;' \
-      atpull'%atclone' src"zhook.zsh" pick'$ZPFX/bin/hub*'
+      atpull'%atclone' src'zhook.zsh' pick'$ZPFX/bin/hub*'
     zinit light https://github.com/github/hub
+
   # }}}
 
   # Utilities & enhancements {{{
@@ -108,11 +115,11 @@ function {
     zinit ice wait blockf lucid atpull'zinit creinstall -q .'
     zinit light https://github.com/zsh-users/zsh-completions
 
-    zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
-      atload"unset 'FAST_HIGHLIGHT[chroma-whatis]' 'FAST_HIGHLIGHT[chroma-man]'"
+    zinit ice wait lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay' \
+      atload'unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"'
     zinit light https://github.com/zdharma/fast-syntax-highlighting
 
-    zinit ice wait lucid atload"_zsh_autosuggest_start"
+    zinit ice wait lucid atload'_zsh_autosuggest_start'
     zinit light https://github.com/zsh-users/zsh-autosuggestions
   # }}}
 
@@ -121,12 +128,6 @@ function {
   ##############################################################
 
   ############### FZF
-  if [[ -f "${XDG_CONFIG_HOME}/fzf/fzf.zsh" ]]; then
-    source "${XDG_CONFIG_HOME}/fzf/fzf.zsh"
-  else
-    echo "y" | "${HOMEBREW_PREFIX}/opt/fzf/install" --xdg --no-update-rc
-  fi
-
   export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
 
   if (( $+commands[fd] )); then
@@ -144,7 +145,7 @@ function {
   export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
   export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
   export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
-  export FZF_DEFAULT_OPTS="--reverse --tabstop 2 --multi --color=bg+:-1 --bind '?:toggle-preview'"
+  export FZF_DEFAULT_OPTS="--prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --bind '?:toggle-preview'"
   export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window down:60%:noborder"
   export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'"
   export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null'"
