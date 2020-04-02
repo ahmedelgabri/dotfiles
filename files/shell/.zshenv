@@ -58,15 +58,17 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 
 export KEYTIMEOUT=1
 
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+
 # using prompt expansion and modifiers to get
 # https://github.com/filipekiss/dotfiles/commit/c7288905178be3e6c378cc4dea86c1a80ca60660#r29121191
 # man zshexpn
 # realpath(dirname(absolute path to this file)
 # export ZDOTDIR="${${(%):-%N}:A:h}"
-export ZDOTDIR="${HOME}/.config/zsh.d"
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-export XDG_DATA_HOME=${XDG_DATA_HOME_HOME:-$HOME/.local/share}
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh.d"
+
 export MAILDIR="${HOME}/.mail" # will be picked up by .notmuch-config for database.path
 export DOTFILES="${HOME}/.dotfiles"
 export PROJECTS="${HOME}/Sites/personal/dev"
@@ -74,7 +76,7 @@ export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 
-export GOPATH="${HOME}/.go"
+export GOPATH="${XDG_DATA_HOME}/go"
 export GOBIN="${GOPATH}/bin"
 
 ############### Telemetry
@@ -83,7 +85,7 @@ export HOMEBREW_NO_ANALYTICS=1
 export GATSBY_TELEMETRY_DISABLED=1
 
 ############### Python
-export PYTHONSTARTUP="${HOME}/.pyrc.py"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/config.py"
 
 ############### Homebrew
 export HOMEBREW_INSTALL_BADGE="⚽️"
@@ -92,13 +94,13 @@ export HOMEBREW_CELLAR=${HOMEBREW_CELLAR:-"/usr/local/Cellar"}
 export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 
 ############### Bat, Ripgrep, Weechat
-export BAT_CONFIG_PATH="${HOME}/.batrc"
-export RIPGREP_CONFIG_PATH="${HOME}/.rgrc"
+export BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat/config"
+export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgrep/config"
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 
 ############### Direnv
-export N_PREFIX="${HOME}/.n"
-export NODE_VERSIONS="${N_PREFIX}/n/versions/node"
+export N_PREFIX="${XDG_DATA_HOME}/n"
+export NODE_VERSIONS="${N_PREFIX}/versions/node"
 export NODE_VERSION_PREFIX=""
 
 ############### Pure
