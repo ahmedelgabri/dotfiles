@@ -79,6 +79,8 @@ export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 export GOPATH="${XDG_DATA_HOME}/go"
 export GOBIN="${GOPATH}/bin"
 
+export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
+
 # export MAILCAP="${XDG_CONFIG_HOME}/mailcap" # elinks, w3m
 # export MAILCAPS="$MAILCAP"   # Mutt, pine
 

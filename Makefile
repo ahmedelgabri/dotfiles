@@ -57,7 +57,7 @@ initial-symlink: prepare
 
 gpg: symlink
 	# Fix gpg folder/file permissions after symlinking
-	chmod 700 $(HOME)/.gnupg && chmod 600 $(HOME)/.gnupg/*
+	chmod 700 $(HOME)/.config/gnupg && chmod 600 $(HOME)/.config/gnupg/*
 
 homebrew:
 	brew bundle --file="$(DOTFILES)/extra/homebrew/Brewfile.shared"
