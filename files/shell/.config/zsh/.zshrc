@@ -108,7 +108,7 @@ function {
   # }}}
 
   # Local plugins/completions/etc... {{{
-    zinit light %HOME/.config/zsh.d/aliases
+    zinit light %HOME/.config/zsh/aliases
   # }}}
 
   # Recommended be loaded last {{{

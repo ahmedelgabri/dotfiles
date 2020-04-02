@@ -67,7 +67,7 @@ export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 # man zshexpn
 # realpath(dirname(absolute path to this file)
 # export ZDOTDIR="${${(%):-%N}:A:h}"
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh.d"
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
 export MAILDIR="${HOME}/.mail" # will be picked up by .notmuch-config for database.path
 export DOTFILES="${HOME}/.dotfiles"
@@ -78,6 +78,9 @@ export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 
 export GOPATH="${XDG_DATA_HOME}/go"
 export GOBIN="${GOPATH}/bin"
+
+# export MAILCAP="${XDG_CONFIG_HOME}/mailcap" # elinks, w3m
+# export MAILCAPS="$MAILCAP"   # Mutt, pine
 
 ############### Telemetry
 export DO_NOT_TRACK=1 # Future proof? https://consoledonottrack.com/

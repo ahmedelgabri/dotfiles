@@ -15,13 +15,13 @@ typeset -gU cdpath fpath manpath mailpath path
 ##############################################################
 
 fpath=(
-  ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh.d}/functions(N-/)
-  ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh.d}/completions(N-/)
+  ${ZDOTDIR:-${XDG_CONFIG_HOME}/.dotfiles/files/.config/zsh}/functions(N-/)
+  ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh}/completions(N-/)
   /usr/local/share/zsh/site-functions(N-/)
   $fpath
 )
 
-autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh.d}/functions/**/*(N:t) promptinit
+autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh}/functions/**/*(N:t) promptinit
 promptinit # enables prompt command which is useful to list installed prompts
 
 manpath=(
