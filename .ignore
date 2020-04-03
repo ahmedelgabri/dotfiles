@@ -1,5 +1,6 @@
 # vim:ft=gitconfig
 
-files/vim/.config/nvim # this is symlinked from .vim so no need to appear in file search
+# this is symlinked from .vim so no need to appear in file search
+files/vim/.config/nvim
 files/vim/**/{pack,coc,tmp}
 files/mail/.mail/{Work,Personal}
