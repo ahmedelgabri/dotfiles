@@ -35,25 +35,25 @@ const HOME = os.homedir()
 //                                   HELPERS                                   //
 /////////////////////////////////////////////////////////////////////////////////
 
-const lowerCase = str => str.toLowerCase()
-const upperCase = str => str.toUpperCase()
+const lowerCase = (str) => str.toLowerCase()
+const upperCase = (str) => str.toUpperCase()
 
-const generateFolder = accountName => (folder = 'INBOX') =>
+const generateFolder = (accountName) => (folder = 'INBOX') =>
   `+${accountName}${folder ? '/' : ''}${folder}`
 
-const getAccountFile = accountName =>
+const getAccountFile = (accountName) =>
   path.join(MUTT_ROOT, '/accounts/', lowerCase(accountName))
 
-const getCacheFor = ffor =>
+const getCacheFor = (ffor) =>
   path.join(process.env.XDG_CACHE_HOME, '/mutt/', ffor, '/')
 
-const getHeaderCache = accountName =>
+const getHeaderCache = (accountName) =>
   path.join(getCacheFor('headers'), lowerCase(accountName), '/')
 
-const getMessagesCache = accountName =>
+const getMessagesCache = (accountName) =>
   path.join(getCacheFor('messages'), lowerCase(accountName), '/')
 
-const mailboxes = accountName =>
+const mailboxes = (accountName) =>
   `tree ~/.mail/${accountName} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|\[Gmail\]" -afin --noreport | awk '{if(NR>1)print}' | tr '\\n' ' '`
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ const mailboxes = accountName =>
 /////////////
 
 function updateHooks() {
-  const data = accounts.reduce((str, {accountName, switchAccount}) => {
+  const data = accounts.reduce((str, {accountName}) => {
     str += `folder-hook +${accountName}/ source ${getAccountFile(
       accountName,
     )}\n`
@@ -153,8 +153,9 @@ macro index,pager / "<vfolder-from-query>path:${notmuchPath} " "Searching ${acco
 
 # ${alternates ? `alternates "${alternates}"` : ''}
 
-set sendmail = "${sendmail ||
-      `/usr/local/bin/msmtp -a ${lowerCase(accountName)}`}"
+set sendmail = "${
+      sendmail || `/usr/local/bin/msmtp -a ${lowerCase(accountName)}`
+    }"
 set from = "${email}"
 set spoolfile = "${inbox || getFolder()}"
 set postponed = "${drafts || getFolder('Drafts')}"
@@ -188,7 +189,7 @@ color sidebar_indicator ${color} color0`
 
 fs.writeFileSync(path.join(HOME, '/.mutt/config/hooks.mutt'), updateHooks())
 
-accounts.forEach(a =>
+accounts.forEach((a) =>
   fs.writeFileSync(
     path.join(HOME, '/.mutt/accounts', lowerCase(a.accountName)),
     createAccount(a),
