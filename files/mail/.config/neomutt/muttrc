@@ -2,8 +2,8 @@
 set alias_file       = "$HOME/Box\ Sync/dotfiles/aliases"
 set header_cache_backend=lmdb
 set read_inc=1000
-set certificate_file = "$HOME/.mutt/certificates"
-set tmpdir           = "$HOME/.mutt/tmp/"
+set certificate_file = "$HOME/.config/neomutt/certificates"
+set tmpdir           = "$HOME/.config/neomutt/tmp/"
 
 # Connection options
 set ssl_force_tls

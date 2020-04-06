@@ -22,34 +22,34 @@
 ###############################################################################
 
 # MS Word documents
-# application/msword; ~/.mutt/scripts/view_attachment.sh %s "-" com.apple.TextEdit
+# application/msword; ~/.config/neomutt/scripts/view_attachment.sh %s "-" com.apple.TextEdit
 
 # Images
-# image/jpg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/jpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/pjpeg; ~/.mutt/scripts/view-attachment.sh %s jpg
-# image/png; ~/.mutt/scripts/view-attachment.sh %s png
+# image/jpg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/jpeg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/pjpeg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/png; ~/.config/neomutt/scripts/view-attachment.sh %s png
 
 # PDFs
-text/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
-application/pdf; ~/.mutt/scripts/view-attachment.sh %s pdf
+text/pdf; ~/.config/neomutt/scripts/view-attachment.sh %s pdf
+application/pdf; ~/.config/neomutt/scripts/view-attachment.sh %s pdf
 
 # HTML
 
 # Explicitly render in browser with "v" (view attachment):
-text/html; CHARSET=%{charset} ~/.mutt/scripts/view-attachment.sh %s html
+text/html; CHARSET=%{charset} ~/.config/neomutt/scripts/view-attachment.sh %s html
 
 # text/html; w3m %s; nametemplate=%s.html; needsterminal
 text/html; w3m -I %{charset} -T text/html; copiousoutput;
 
-text/plain; ~/.mutt/scripts/view-mail.sh %s %{charset}; needsterminal
-text/rtf; ~/.mutt/view_attachment.sh %s rtf
+text/plain; ~/.config/neomutt/scripts/view-mail.sh %s %{charset}; needsterminal
+text/rtf; ~/.config/neomutt/view_attachment.sh %s rtf
 
 # Unidentified files
-application/octet-stream; ~/.mutt/scripts/view-attachment.sh %s "-"
+application/octet-stream; ~/.config/neomutt/scripts/view-attachment.sh %s "-"
 
 # Better calendar invitations format
-text/calendar; ~/.mutt/scripts/dump-ical.py %s; copiousoutput;
+text/calendar; ~/.config/neomutt/scripts/dump-ical.py %s; copiousoutput;
 
 ###############################################################################
 # Commands below this point will open media in a separate window without

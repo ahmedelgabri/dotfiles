@@ -28,8 +28,7 @@ const accounts = [
 const EMAIL_ENV_SUFFIX = '_EMAIL'
 const EMAIL_ALIASES_ENV_SUFFIX = '_EMAIL_ALIASES'
 
-const MUTT_ROOT = '~/.mutt'
-const HOME = os.homedir()
+const MUTT_ROOT = path.join(process.env.XDG_CONFIG_HOME, 'neomutt')
 
 /////////////////////////////////////////////////////////////////////////////////
 //                                   HELPERS                                   //
@@ -187,11 +186,11 @@ color sidebar_indicator ${color} color0`
 //                                    DO IT                                    //
 /////////////////////////////////////////////////////////////////////////////////
 
-fs.writeFileSync(path.join(HOME, '/.mutt/config/hooks.mutt'), updateHooks())
+fs.writeFileSync(path.join(MUTT_ROOT, '/config/hooks.mutt'), updateHooks())
 
 accounts.forEach((a) =>
   fs.writeFileSync(
-    path.join(HOME, '/.mutt/accounts', lowerCase(a.accountName)),
+    path.join(MUTT_ROOT, '/accounts', lowerCase(a.accountName)),
     createAccount(a),
   ),
 )

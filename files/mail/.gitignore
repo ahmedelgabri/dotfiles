@@ -1,9 +1,9 @@
 .mail
 !.mail/.notmuch/hooks/{pre-new,post-new,post-insert}
-.mutt/config/aliases
-.mutt/config/hooks.mutt
-.mutt/tmp
-.mutt/certificates
-.mutt/secure-ca.cert
-.mutt/accounts/*
-!.mutt/accounts/init.lua
+.config/neomutt/config/aliases
+.config/neomutt/config/hooks.mutt
+.config/neomutt/tmp
+.config/neomutt/certificates
+.config/neomutt/secure-ca.cert
+.config/neomutt/accounts/*
+!.config/neomutt/accounts/init.lua

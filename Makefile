@@ -38,7 +38,7 @@ symlink:
 # Context: https://github.com/aspiers/stow/issues/29
 prepare:
 	mkdir -p "$(HOME)/.mail/{Personal,Work,.notmuch}" \
-		"$(HOME)/.mutt/tmp" \
+		"$(HOME)/.config/neomutt/tmp" \
 		"$(HOME)/.ssh" \
 		"$(HOME)/.config/{weechat,zsh,mpv,gnupg,python,ripgrep,bat,newsboat}" \
 		"$(HOME)/Library/LaunchAgents"
@@ -72,7 +72,7 @@ homebrew-work: homebrew
 	brew doctor
 
 mail:
-	node $(DOTFILES)/files/mail/.mutt/scripts/setup
+	node $(DOTFILES)/files/mail/.config/neomutt/scripts/setup
 
 node:
 	sh $(SCRIPTS)/node-packages

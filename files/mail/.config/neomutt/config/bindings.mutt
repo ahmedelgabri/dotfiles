@@ -43,7 +43,7 @@ macro index,pager gl "<change-folder>?<toggle-mailboxes>" "go to 'Label'"
 macro browser gi "<exit><change-folder>!<enter>" "go to inbox"
 macro browser ga "<exit><change-folder>><enter>" "go to all mail"
 macro browser gl "<exit><change-folder>?<toggle-mailboxes>" "go to 'Label'"
-macro attach D "<save-entry><bol>~/.mutt/attachments/<eol><enter>" "Save to ~/.mutt/attachments"
+macro attach D "<save-entry><bol>~/.config/neomutt/attachments/<eol><enter>" "Save to ~/.config/neomutt/attachments"
 
 macro index ! "<tag-prefix-cond><save-message>!.Spam<enter><enter><next-undeleted><end-cond>" "mark as spam"
 macro index \# "<tag-prefix-cond><save-message>!.Trash<enter><enter><next-undeleted><end-cond>" "trash"
