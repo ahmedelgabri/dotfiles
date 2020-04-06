@@ -81,6 +81,7 @@ export GOBIN="${GOPATH}/bin"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 
 export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
+export NOTMUCH_CONFIG="${XDG_CONFIG_HOME}/notmuch/config"
 
 # export MAILCAP="${XDG_CONFIG_HOME}/mailcap" # elinks, w3m
 # export MAILCAPS="$MAILCAP"   # Mutt, pine
