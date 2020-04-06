@@ -316,6 +316,29 @@ function! utils#fzf_window() abort
   return utils#has_floating_window() ? { 'width': 0.9 , 'height': 0.8 } : 'enew'
 endfunction
 
+function! utils#toggle_term(cmd)
+  if empty(bufname(a:cmd))
+    call utils#create_floating_window()
+    call termopen(a:cmd, { 'on_exit': function('OnTermExit') })
+  else
+    bwipeout!
+  endif
+endfunction
+
+function! OnTermExit(job_id, code, event) dict
+  if a:code == 0
+    bwipeout!
+  endif
+endfunction
+
+function! utils#toggle_tig()
+  call utils#toggle_term('tig')
+endfunction
+
+function! utils#toggle_shell()
+  call utils#toggle_term('zsh -l')
+endfunction
+
 function! utils#customize_diff()
   if &diff
     syntax off
