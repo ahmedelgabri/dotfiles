@@ -31,11 +31,12 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Future regret minimization is a powerful force for good judgement.', '', '― Tobi Lutke']
       \ ]
 
-let g:startify_list_order = [
-      \ ['   Files:'], 'dir',
-      \ ['   Sessions:'], 'sessions',
-      \ ['   MRU'], 'files',
-      \ ['   Bookmarks:'], 'bookmarks',
+let g:startify_lists = [
+      \ { 'type': 'commands' },
+      \ { 'header': [ '   Files [' . getcwd() . ']' ], 'type': 'dir' },
+      \ { 'header': [ '   Bookmarks' ], 'type': 'bookmarks' },
+      \ { 'header': [ '   MRU' ], 'type': 'files' },
+      \ { 'header': [ '   Sessions' ], 'type': 'sessions' },
       \ ]
 
 let g:startify_skiplist = [

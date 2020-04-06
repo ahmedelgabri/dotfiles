@@ -71,7 +71,7 @@ function! utils#HtmlUnEscape() abort
 endfunction
 
 function! utils#OpenFileFolder() abort
-  silent call system('open '.expand('%:p:h:~'))
+  silent call system(utils#open() . ' '.expand('%:p:h:~'))
 endfunction
 
 " Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
