@@ -231,6 +231,7 @@
   https://jaredpalmer.com/rss.xml "Blog" "JavaScript"
   https://fasterthanli.me/index.xml "Blog" "Programming" "Rust" "Go"
   https://superorganizers.substack.com/feed/  "~Superorganizers" "Blog" "Productivity"
+  https://www.tweag.io/rss.xml "Blog" "Haskell" "Programming"
 # }}}
 
 # Browsers {{{
