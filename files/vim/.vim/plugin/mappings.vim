@@ -55,7 +55,7 @@ xnoremap >  >gv
 " new file in current directory
 nnoremap <Leader>n :e <C-R>=expand("%:p:h") . "/" <CR>
 
-nnoremap <Leader>l :set nu! rnu!<cr>
+nnoremap <Localleader>n :set nu! rnu!<cr>
 nnoremap <Leader>p :t.<left><left>
 nnoremap <leader>e :exe getline(line('.'))<cr>
 
@@ -83,10 +83,6 @@ endif
 
 nnoremap <silent> <leader>z :call utils#ZoomToggle()<CR>
 nnoremap <c-g> :call utils#SynStack()<CR>
-
-if exists(':Move')
-  nnoremap <leader>r :Move %<cr>
-endif
 
 vmap <silent> <Leader>hu :call utils#HtmlUnEscape()<CR>
 vmap <silent> <Leader>he :call utils#HtmlEscape()<CR>

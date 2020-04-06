@@ -1,10 +1,12 @@
 " https://vimways.org/2019/personal-notetaking-in-vim/
 " https://danishpraka.sh/2020/02/23/journaling-in-vim.html
 
-command! -nargs=* Note call <SID>note_edit(<f-args>)
-command! -bang Notes call fzf#vim#files(expand('$NOTES_DIR'), <bang>0)
+let s:NOTES_DIR = expand('$NOTES_DIR')
 
-nnoremap <silent> <leader>ww :Notes<CR>
+command! -nargs=* Note call <SID>note_edit(<f-args>)
+command! -bang Notes call fzf#vim#files(s:NOTES_DIR)
+
+nnoremap <silent> <leader>sn :Notes<CR>
 
 func! s:note_edit(...)
 
@@ -13,7 +15,9 @@ func! s:note_edit(...)
   if len(a:000) > 0
     let l:sep = '-'
   endif
-  let l:fname = expand('$NOTES_DIR') . '/' . strftime('%Y/%m/%d/%H:%M') . l:sep . join(a:000, '-') . '.md'
+  let l:fname = s:NOTES_DIR . '/' . strftime('%Y/%m/%d/%H-%M-%S') . l:sep . join(a:000, '-') . '.md'
+
+  echo l:fname
 
   " edit the new file
   exec 'e ' . l:fname
