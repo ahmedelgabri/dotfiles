@@ -78,6 +78,7 @@ export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 
 export GOPATH="${XDG_DATA_HOME}/go"
 export GOBIN="${GOPATH}/bin"
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 
 export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
 
