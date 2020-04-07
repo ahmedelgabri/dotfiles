@@ -76,12 +76,23 @@ export WORK="${HOME}/Sites/work"
 export PERSONAL_STORAGE="${HOME}/Box Sync"
 export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 
+############### APPS/POGRAMS XDG SPEC CLEANUP
 export GOPATH="${XDG_DATA_HOME}/go"
-export GOBIN="${GOPATH}/bin"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
-
 export GNUPGHOME="${XDG_CONFIG_HOME}/gnupg"
 export NOTMUCH_CONFIG="${XDG_CONFIG_HOME}/notmuch/config"
+export BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat/config"
+export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgrep/config"
+export WEECHAT_HOME="${XDG_CONFIG_HOME}/weechat"
+export N_PREFIX="${XDG_DATA_HOME}/n"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/config.py"
+export RLWRAP_HOME="${XDG_DATA_HOME}/rlwrap"
+export AWS_SHARED_CREDENTIALS_FILE="${XDG_CONFIG_HOME}/aws/credentials"
+export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
+export ELINKS_CONFDIR="${XDG_CONFIG_HOME}/elinks"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
 
 # export MAILCAP="${XDG_CONFIG_HOME}/mailcap" # elinks, w3m
 # export MAILCAPS="$MAILCAP"   # Mutt, pine
@@ -91,8 +102,8 @@ export DO_NOT_TRACK=1 # Future proof? https://consoledonottrack.com/
 export HOMEBREW_NO_ANALYTICS=1
 export GATSBY_TELEMETRY_DISABLED=1
 
-############### Python
-export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/config.py"
+############### Go
+export GOBIN="${GOPATH}/bin"
 
 ############### Homebrew
 export HOMEBREW_INSTALL_BADGE="⚽️"
@@ -100,14 +111,10 @@ export HOMEBREW_PREFIX=${HOMEBREW_PREFIX:-"/usr/local"}
 export HOMEBREW_CELLAR=${HOMEBREW_CELLAR:-"/usr/local/Cellar"}
 export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 
-############### Bat, Ripgrep, Weechat
-export BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat/config"
-export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgrep/config"
-export WEECHAT_HOME="${XDG_CONFIG_HOME}/weechat"
+############### Weechat
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 
 ############### Direnv
-export N_PREFIX="${XDG_DATA_HOME}/n"
 export NODE_VERSIONS="${N_PREFIX}/versions/node"
 export NODE_VERSION_PREFIX=""
 
