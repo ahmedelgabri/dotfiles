@@ -33,7 +33,7 @@ debug:
 	bash -x <(cat $(INSTALL))
 
 symlink:
-	stow --restow -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
+	stow --restow -vv --ignore ".DS_Store" --ignore ".+.local" --ignore ".+.template" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
 
 # Context: https://github.com/aspiers/stow/issues/29
 prepare:
@@ -51,7 +51,7 @@ prepare:
 # Which means that git will show files as changed, so we revert the changes
 # to get our changes & everything should be working as expected
 initial-symlink: prepare
-	stow --adopt -vv --ignore ".DS_Store" --ignore ".+.local" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
+	stow --adopt -vv --ignore ".DS_Store" --ignore ".+.local" --ignore ".+.template" --target="$(HOME)" --dir="$(DOTFILES)/files" $(STOW_PACKAGES)
 	cd "$(DOTFILES)" && git stash -u; git reset --hard origin/master && git stash pop
 
 gpg: symlink
@@ -73,6 +73,11 @@ homebrew-work: homebrew
 
 mail:
 	node $(DOTFILES)/files/mail/.config/neomutt/scripts/setup
+	\rm $(XDG_CONFIG_HOME)/notmuch/config; \
+		\sed -e "s#__MAILDIR__#${MAILDIR}#" \
+		-e "s#__EMAIL__#${EMAIL}#"\
+		-e "s#__NAME__#${NAME}#"\
+		$(DOTFILES)/files/mail/.config/notmuch/config.template > $(XDG_CONFIG_HOME)/notmuch/config
 
 node:
 	sh $(SCRIPTS)/node-packages

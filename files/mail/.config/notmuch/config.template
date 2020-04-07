@@ -1,3 +1,5 @@
+#  vim:ft=conf
+
 # .notmuch-config - Configuration file for the notmuch mail system
 #
 # For more information about notmuch, see https://notmuchmail.org
@@ -13,7 +15,7 @@
 
 # This section is set by setting up $MAILDIR
 [database]
-path=/Users/ahmed/.mail
+path=__MAILDIR__
 
 # User configuration
 #
@@ -33,8 +35,8 @@ path=/Users/ahmed/.mail
 
 # This section is set by setting up $NAME & $EMAIL
 # [user]
-name=Ahmed El Gabri
-primary_email=ahmed@gabri.me
+name=__NAME__
+primary_email=__EMAIL__
 
 # Configuration for "notmuch new"
 #

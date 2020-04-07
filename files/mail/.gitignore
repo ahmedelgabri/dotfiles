@@ -1,4 +1,5 @@
 .mail
+.config/notmuch/config
 !.mail/.notmuch/hooks/{pre-new,post-new,post-insert}
 .config/neomutt/config/aliases
 .config/neomutt/config/hooks.mutt
