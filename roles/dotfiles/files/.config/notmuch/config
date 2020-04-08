@@ -15,7 +15,7 @@
 
 # This section is set by setting up $MAILDIR
 [database]
-path=__MAILDIR__
+path=/Users/ahmed/.mail
 
 # User configuration
 #
@@ -35,8 +35,8 @@ path=__MAILDIR__
 
 # This section is set by setting up $NAME & $EMAIL
 # [user]
-name=__NAME__
-primary_email=__EMAIL__
+name=Ahmed El Gabri
+primary_email=ahmed@gabri.me
 
 # Configuration for "notmuch new"
 #
