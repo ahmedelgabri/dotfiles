@@ -53,6 +53,7 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/tommcdo/vim-lion')
   call minpac#add('https://github.com/liuchengxu/vista.vim')
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
+  call minpac#add('https://github.com/mtth/scratch.vim')
   " }}}
 
   " Autocompletion {{{
@@ -60,6 +61,7 @@ function! plugins#load_plugins() abort
         \ 'coc-conjure',
         \ 'coc-css',
         \ 'coc-json',
+        \ 'coc-java',
         \ 'coc-emmet',
         \ 'coc-python',
         \ 'coc-rls',
