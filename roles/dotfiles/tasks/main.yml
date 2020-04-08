@@ -1,0 +1,38 @@
+---
+- name:
+    dotfiles | find all directories in '{{ ansible_env.PWD
+    }}/roles/dotfiles/files'
+  find:
+    paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
+    recurse: yes
+    file_type: directory
+    hidden: yes
+  register: dirs
+
+- name:
+    dotfiles | find all files in '{{ ansible_env.PWD }}/roles/dotfiles/files'
+  find:
+    paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
+    recurse: yes
+    file_type: file
+    excludes: '.DS_Store,.gitkeep,.gitignore'
+    hidden: yes
+  register: files
+
+- name: dotfiles | create directories
+  file:
+    path="~/{{ item.path | relpath | regex_replace('roles/dotfiles/files/', '')
+    }}" state=directory
+  with_items: '{{ dirs.files }}'
+
+- name: dotfiles | symlink files
+  with_items: '{{ files.files }}'
+  vars:
+    path:
+      '{{ item.path | relpath | regex_replace("roles/dotfiles/files/", "") |
+      dirname }}'
+  file:
+    src: '{{ item.path }}'
+    path: "~/{{ path + '/' if path != '' else '' }}{{ item.path | basename }}"
+    state: link
+    force: true

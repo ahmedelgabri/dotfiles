@@ -1,0 +1,4 @@
+# vim:ft=conf
+# global ignores are in ~/.ignore so it can be picked up by fd & other tools too
+--hidden
+--smart-case
