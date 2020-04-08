@@ -34,7 +34,7 @@ path=/Users/ahmed/.mail
 #
 
 # This section is set by setting up $NAME & $EMAIL
-# [user]
+[user]
 name=Ahmed El Gabri
 primary_email=ahmed@gabri.me
 
