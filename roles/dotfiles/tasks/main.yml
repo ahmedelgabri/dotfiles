@@ -1,6 +1,6 @@
 ---
 - name:
-    dotfiles | find all directories in '{{ ansible_env.PWD
+    dotfiles | find all directories in '{{ ansible_env.PWD | expanduser
     }}/roles/dotfiles/files'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
@@ -10,7 +10,8 @@
   register: dirs
 
 - name:
-    dotfiles | find all files in '{{ ansible_env.PWD }}/roles/dotfiles/files'
+    dotfiles | find all files in '{{ ansible_env.PWD | expanduser
+    }}/roles/dotfiles/files'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
     recurse: yes
@@ -18,6 +19,17 @@
     excludes: '.DS_Store,.gitkeep,.gitignore'
     hidden: yes
   register: files
+
+- name:
+    dotfiles | find all templates in '{{ ansible_env.PWD | expanduser
+    }}/roles/dotfiles/templates'
+  find:
+    paths: '{{ ansible_env.PWD }}/roles/dotfiles/templates'
+    recurse: yes
+    file_type: file
+    excludes: '.DS_Store,.gitkeep,.gitignore,account'
+    hidden: yes
+  register: templates
 
 # - debug:
 #     msg="Dirs {{ item.path | relpath | regex_replace('roles/dotfiles/files/',
@@ -29,7 +41,13 @@
 #     | relpath }} {{ item.path | relpath | regex_replace('roles/dotfiles/files/',
 #     '') | dirname }}"
 #   with_items: '{{ files.files }}'
-
+#
+# - debug:
+#     msg="Files {{ item.path | basename }} {{ item.path | dirname }} {{ item.path
+#     | relpath }} {{ item.path | relpath |
+#     regex_replace('roles/dotfiles/templates/', '') | dirname }}"
+#   with_items: '{{ templates.files }}'
+#
 - name: dotfiles | create directories
   file:
     path="~/{{ item.path | relpath | regex_replace('roles/dotfiles/files/', '')
@@ -48,6 +66,16 @@
     state: link
     force: true
 
+- name: dotfiles | symlink templates
+  with_items: '{{ templates.files }}'
+  vars:
+    path:
+      '{{ item.path | relpath | regex_replace("roles/dotfiles/templates/", "") |
+      dirname }}'
+  template:
+    src: '{{ item.path }}'
+    dest: "~/{{ path + '/' if path != '' else '' }}{{ item.path | basename }}"
+
 - name: dotfiles | symlink {{ item.name }}
   file: path={{ item.path }} src={{ item.src }} state=link force=yes
   loop:
@@ -57,3 +85,11 @@
     - title: 'mutt to neomutt'
       path: ~/.config/mutt
       src: ~/.config/neomutt
+
+- name: dotfiles | generate mail accounts
+  with_items: '{{ mail_accounts }}'
+  template:
+    src:
+      '{{ ansible_env.PWD
+      }}/roles/dotfiles/templates/.config/neomutt/accounts/account'
+    dest: '~/.config/neomutt/accounts/{{ item.name }}'

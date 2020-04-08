@@ -118,6 +118,6 @@ set ts_status_format = 'mutt %m messages%?n?, %n new?'
 
 # Color ---------------------------------------------------------
 source ~/Box\ Sync/dotfiles/aliases
-source ./config/colors.mutt
-source ./config/bindings.mutt
-source ./config/hooks.mutt
+source ~/.config/neomutt/config/colors.mutt
+source ~/.config/neomutt/config/bindings.mutt
+source ~/.config/neomutt/config/hooks.mutt

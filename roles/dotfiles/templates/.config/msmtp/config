@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+defaults
+port 587
+protocol smtp
+auth on
+tls on
+tls_trust_file /usr/local/etc/openssl/cert.pem
+
+{% set _mail_accounts = mail_accounts if 'personal' in group_names else [mail_accounts[1]] %}
+
+{% for account in _mail_accounts %}
+account {{ account.name }}
+host {{ account.smtp_server }}
+from {{ account.smtp_from }}
+user {{ account.smtp_user }}
+passwordeval ~/.dotfiles/extra/bin/get-keychain-pass {{ account.smtp_keychain_account }} {{ account.smtp_keychain_name }}
+
+{% endfor %}
+
+account default : {{ 'work' if 'work' in group_names else 'personal' }}

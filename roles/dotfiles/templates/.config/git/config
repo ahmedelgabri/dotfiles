@@ -1,6 +1,13 @@
+; {{ ansible_managed }}
 ; vim: ft=gitconfig
 
 [user]
+{% if user_email != '' %}
+	email = {{ user_email }}
+{% endif %}
+{% if user_name != '' %}
+	name = {{ user_name }}
+{% endif %}
   useconfigonly = true
 
 [include]

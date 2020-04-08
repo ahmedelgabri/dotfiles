@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 ##############################################################
 # Profiling.
 ##############################################################
@@ -126,7 +127,19 @@ export PURE_GIT_BRANCH="  "
 ############### Autosuggest
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
 
-source "${ZDOTDIR:-$HOME}/.zshenv.private"
+{% if github_username != '' %}
+export GITHUB_USER="{{ github_username }}"
+{% endif %}
+
+{% if user_name != '' %}
+export NPM_NAME="{{ user_name }}"
+{% endif %}
+{% if user_email != '' %}
+export NPM_EMAIL="{{ user_email }}"
+{% endif %}
+{% if user_website != '' %}
+export NPM_URL="{{ user_website }}"
+{% endif %}
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
 # (Only once) if it was not sourced before, becuase .zshenv is always sourced
