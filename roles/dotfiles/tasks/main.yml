@@ -19,6 +19,17 @@
     hidden: yes
   register: files
 
+# - debug:
+#     msg="Dirs {{ item.path | relpath | regex_replace('roles/dotfiles/files/',
+#     '') }}"
+#   with_items: '{{ dirs.files }}'
+#
+# - debug:
+#     msg="Files {{ item.path | basename }} {{ item.path | dirname }} {{ item.path
+#     | relpath }} {{ item.path | relpath | regex_replace('roles/dotfiles/files/',
+#     '') | dirname }}"
+#   with_items: '{{ files.files }}'
+
 - name: dotfiles | create directories
   file:
     path="~/{{ item.path | relpath | regex_replace('roles/dotfiles/files/', '')
@@ -36,3 +47,13 @@
     path: "~/{{ path + '/' if path != '' else '' }}{{ item.path | basename }}"
     state: link
     force: true
+
+- name: dotfiles | symlink {{ item.name }}
+  file: path={{ item.path }} src={{ item.src }} state=link force=yes
+  loop:
+    - title: 'nvim to vim'
+      path: ~/.config/nvim
+      src: ~/.vim
+    - title: 'mutt to neomutt'
+      path: ~/.config/mutt
+      src: ~/.config/neomutt
