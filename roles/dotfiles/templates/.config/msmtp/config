@@ -14,7 +14,7 @@ account {{ account.name }}
 host {{ account.smtp_server }}
 from {{ account.smtp_from }}
 user {{ account.smtp_user }}
-passwordeval ~/.dotfiles/extra/bin/get-keychain-pass {{ account.smtp_keychain_account }} {{ account.smtp_keychain_name }}
+passwordeval ~/.config/zsh/bin/get-keychain-pass {{ account.smtp_keychain_account }} {{ account.smtp_keychain_name }}
 
 {% endfor %}
 

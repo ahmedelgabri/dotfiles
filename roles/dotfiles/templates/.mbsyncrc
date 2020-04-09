@@ -24,7 +24,7 @@ IMAPAccount {{ account.imap_nickname }}
 Host {{ account.imap_server }}
 User {{ account.imap_user }}
 # Get the account password from the system Keychain
-PassCmd "~/.dotfiles/extra/bin/get-keychain-pass '{{ account.imap_keychain_account }}' '{{ account.imap_keychain_name }}'"
+PassCmd "~/.config/zsh/bin/get-keychain-pass '{{ account.imap_keychain_account }}' '{{ account.imap_keychain_name }}'"
 AuthMechs LOGIN
 SSLType IMAPS
 

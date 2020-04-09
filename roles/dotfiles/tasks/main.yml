@@ -54,6 +54,18 @@
     }}" state=directory
   with_items: '{{ dirs.files }}'
 
+# - name: symlink dotfilesrc
+#   vars:
+#     one: 1
+#     two: 2
+#   # file:
+#   #   src: '{{ ansible_env.PWD }}/roles/dotfiles/files/foorc'
+#   #   path: '~/.config/dotfiles/foorc'
+#   #   state: link
+#   template:
+#     src: '{{ ansible_env.PWD }}/roles/dotfiles/files/foorc'
+#     dest: '~/dotfilesrc'
+
 - name: dotfiles | symlink files
   with_items: '{{ files.files }}'
   vars:

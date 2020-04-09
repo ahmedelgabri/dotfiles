@@ -15,13 +15,13 @@ typeset -gU cdpath fpath manpath mailpath path
 ##############################################################
 
 fpath=(
-  ${ZDOTDIR:-${XDG_CONFIG_HOME}/.dotfiles/files/.config/zsh}/functions(N-/)
-  ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh}/completions(N-/)
+  ${ZDOTDIR:-${DOTFILES}/roles/dotfiles/files/.config/zsh}/functions(N-/)
+  ${ZDOTDIR:-${DOTFILES}/roles/dotfiles/files/.config/zsh}/completions(N-/)
   /usr/local/share/zsh/site-functions(N-/)
   $fpath
 )
 
-autoload -Uz ${ZDOTDIR:-${HOME}/.dotfiles/files/.config/zsh}/functions/**/*(N:t) promptinit
+autoload -Uz ${ZDOTDIR:-${DOTFILES}/roles/dotfiles/files/.config/zsh}/functions/**/*(N:t) promptinit
 promptinit # enables prompt command which is useful to list installed prompts
 
 manpath=(
@@ -42,7 +42,7 @@ cdpath=(
 # Set the list of directories that Zsh searches for programs.
 path=(
   ./node_modules/.bin
-  ${DOTFILES}/extra/bin(N-/)
+  ${ZDOTDIR:-${DOTFILES}/roles/dotfiles/files/.config/zsh}/bin(N-/)
   ${HOME}/.local/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
   ${HOMEBREW_PREFIX}/opt/openssl@*/bin(Nn[-1]-/)
