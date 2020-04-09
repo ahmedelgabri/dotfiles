@@ -1,39 +1,18 @@
 # vim:tw=200
 ---
-user_email: '{{ "ahmed@gabri.me" if lookup("env", "USER") in ["ahmed"] else "" }}'
-user_name: '{{ "Ahmed El Gabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"] else "" }}'
-user_website: 'https://gabri.me'
-github_username: '{{ "ahmedelgabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"] else "" }}'
-
 mail_accounts:
-  - name: 'personal'
-    imap_nickname: 'Personal'
-    imap_server: imap.gmail.com
-    imap_user: '{{ user_email }}'
-    imap_keychain_account: ahmed+mutt@gabri.me
-    imap_keychain_name: gmail.com
+  - name: 'Example'
+    imap_nickname: 'EXAMPLE'
+    imap_server: imap.example.com
+    imap_user: 'user@example.com'
+    imap_keychain_account: 'user@example.com'
+    imap_keychain_name: example.com
 
-    smtp_server: smtp.gmail.com
-    smtp_from: '{{ user_email }}'
-    smtp_user: '{{ user_email }}'
-    smtp_keychain_account: ahmed+mutt@gabri.me
-    smtp_keychain_name: gmail.com
+    smtp_server: smtp.example.com
+    smtp_from: 'user@example.com'
+    smtp_user: 'user@example.com'
+    smtp_keychain_account: 'user@example.com'
+    smtp_keychain_name: example.com
 
-    account_color: blue
-    switch_to: Work
-
-  - name: 'work'
-    imap_nickname: 'Work'
-    imap_server: imap.gmail.com
-    imap_user: ''
-    imap_keychain_account: ''
-    imap_keychain_name: gmail.com
-
-    smtp_server: smtp.gmail.com
-    smtp_from: ''
-    smtp_user: ''
-    smtp_keychain_account: ''
-    smtp_keychain_name: gmail.com
-
-    account_color: red
-    switch_to: Personal
+    account_color: black
+    switch_to: Example

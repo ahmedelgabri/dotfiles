@@ -12,11 +12,7 @@
 Create Slave
 Expunge Both
 SyncState *
-
-{# [TODO] find a way to handle this cleanly, because it's duplicated in msmtp/config, hooks.mutt #}
-{% set _mail_accounts = mail_accounts if 'personal' in group_names else [mail_accounts[1]] %}
-
-{% for account in _mail_accounts %}
+{% for account in mail_accounts %}
 ########################################
 # {{ account.imap_nickname }}
 ########################################
