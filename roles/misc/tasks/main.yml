@@ -1,0 +1,55 @@
+---
+# Note: Won't work without Node (which means homebrew role has to have run
+# first, but I don't want to declare an explicit, heavyweight dependency in this
+# role).
+- name: misc | install global yarn modules
+  yarn: name={{ item }} global=yes
+  loop:
+    - bash-language-server
+    - dockerfile-language-server-nodejs
+    - ocaml-language-server
+    - netlify-cli
+    - now
+    - parker
+    - prettier
+    - serve
+    - source-map-explorer
+    - svgo
+    - dependency-cruiser
+    - reason-cli@latest-macos
+    - neovim
+    - elm-format
+    - '@elm-tooling/elm-language-server'
+# - name: misc | install Work-related NPM modules
+#   npm: name={{ item }} global=yes
+#   loop:
+#     - gh
+#     - gh-jira
+#     - 'gradle-launcher'
+#   when: "'work' in group_names"
+
+# [TODO] make this work with custom pip & different versions
+# - name: misc | install global python packages
+#   pip:
+#     name:{{ item }}
+#     global: yes
+#     extra_args: "{{ '--user' if item == 'pip' else '--upgrade' }}"
+#   loop:
+#     - setuptools
+#     - pip
+#     - vim-vint
+#     - websocket-client
+#     - poetry
+#     - black
+#     - pynvim
+#     - pylint
+#     - tuir
+#     # for mutt & dump-ical.py script
+#     - vobject
+
+- name: misc | install global python packages
+  command: sh "{{ ansible_env.PWD }}/roles/misc/support/python-packages"
+
+- name: misc | install rust
+  # I need complete for rls & LSP support
+  command: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete
