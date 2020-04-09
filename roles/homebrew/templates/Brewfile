@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 # vim:ft=ruby:
 
 cask_args appdir: '/Applications'
@@ -128,3 +129,57 @@ cask "zoomus"
 # mas "Guidance", id: 412759995
 # mas "Sip", id: 507257563
 # mas "The Unarchiver", id: 425424353
+# mas "Tweetbot", id: 557168941
+{% if 'personal' in group_vars %}
+# Languages
+cask "adoptopenjdk8"
+brew "clojure"
+brew "leiningen"
+brew "candid82/brew/joker"
+brew "borkdude/brew/clj-kondo"
+brew "ghc"
+brew "cabal-install"
+brew "haskell-stack"
+brew "pipenv"
+brew "elm"
+# I install rust from https://www.rust-lang.org/en-US/install.html
+# check Makefile
+
+# Core apps
+brew "youtube-dl"
+
+# Nice to have
+# brew "ledger"
+
+cask "1password-cli"
+cask "arq"
+cask "dayone-cli"
+cask "iina"
+cask "skype"
+cask "transmission"
+cask "transmit"
+cask "vlc"
+cask "viscosity"
+
+# mas "Day One", id: 1055511498
+# mas "Irvue", id: 1039633667
+# mas "Keynote", id: 409183694
+{% endif %}
+{% if 'work' in group_vars %}
+tap "exolnet/homebrew-deprecated"
+
+brew "php@5.6"
+brew "go-jira"
+brew "circleci"
+brew "composer"
+brew "pkg-config"
+brew "libmemcached"
+brew "kubernetes-helm"
+brew "kubectl"
+
+cask "vagrant"
+cask "docker"
+cask "virtualbox"
+cask "google-cloud-sdk"
+cask "minikube"
+{% endif %}
