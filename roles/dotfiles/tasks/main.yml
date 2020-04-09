@@ -73,7 +73,7 @@
 - name: dotfiles | generate mail accounts
   with_items: '{{ mail_accounts }}'
   loop_control:
-    label: '{{ item.path | item.name }}: {{ item.path | item.imap_user }}'
+    label: '{{ item.name }}: {{ item.imap_user }}'
   template:
     src: '{{ ansible_env.PWD }}/roles/dotfiles/templates/.config/neomutt/accounts/account'
     dest: '~/.config/neomutt/accounts/{{ item.name }}'

@@ -4,23 +4,24 @@
 # first, but I don't want to declare an explicit, heavyweight dependency in this
 # role).
 - name: misc | install global yarn modules
-  yarn: name={{ item }} global=yes
-  loop:
-    - bash-language-server
-    - dockerfile-language-server-nodejs
-    - ocaml-language-server
-    - netlify-cli
-    - now
-    - parker
-    - prettier
-    - serve
-    - source-map-explorer
-    - svgo
-    - dependency-cruiser
-    - reason-cli@latest-macos
-    - neovim
-    - elm-format
-    - '@elm-tooling/elm-language-server'
+  vars:
+    npm_packages:
+      - bash-language-server
+      - dockerfile-language-server-nodejs
+      - ocaml-language-server
+      - netlify-cli
+      - now
+      - parker
+      - prettier
+      - serve
+      - source-map-explorer
+      - svgo
+      - dependency-cruiser
+      - reason-cli@latest-macos
+      - elm-format
+      - '@elm-tooling/elm-language-server'
+  shell: '/usr/local/bin/yarn global add {{ npm_packages }}'
+
 # - name: misc | install Work-related NPM modules
 #   npm: name={{ item }} global=yes
 #   loop:
@@ -34,11 +35,9 @@
   loop:
     - setuptools
     - pip
-    - vim-vint
     - websocket-client
     - poetry
     - black
-    - pynvim
     - pylint
     - tuir
     # for mutt & dump-ical.py script
@@ -46,4 +45,4 @@
 
 - name: misc | install rust
   # I need complete for rls & LSP support
-  command: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete

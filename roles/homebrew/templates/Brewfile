@@ -1,5 +1,5 @@
-# {{ ansible_managed }}
 # vim:ft=ruby:
+# {{ ansible_managed }}
 
 cask_args appdir: '/Applications'
 
@@ -130,7 +130,7 @@ cask "zoomus"
 # mas "Sip", id: 507257563
 # mas "The Unarchiver", id: 425424353
 # mas "Tweetbot", id: 557168941
-{% if 'personal' in group_vars %}
+{% if 'personal' in group_names %}
 # Languages
 cask "adoptopenjdk8"
 brew "clojure"
@@ -165,7 +165,7 @@ cask "viscosity"
 # mas "Irvue", id: 1039633667
 # mas "Keynote", id: 409183694
 {% endif %}
-{% if 'work' in group_vars %}
+{% if 'work' in group_names %}
 tap "exolnet/homebrew-deprecated"
 
 brew "php@5.6"

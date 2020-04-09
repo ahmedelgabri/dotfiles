@@ -2,9 +2,11 @@
 ---
 - hosts: localhost
   roles:
-    # - {role: homebrew, tags: homebrew}
-    # - {role: shell, tags: shell}
+    - {role: homebrew, tags: homebrew}
+    - {role: shell, tags: shell}
     - {role: dotfiles, tags: dotfiles}
-    # - {role: misc, tags: misc}
+    - {role: launchd, tags: launchd}
+    - {role: misc, tags: misc}
+    - {role: vim, tags: vim}
   vars:
     my_var: true
