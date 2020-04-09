@@ -19,14 +19,14 @@ macro index,pager / "<vfolder-from-query>path:{{ item.imap_nickname }}/** " "Sea
 
 # alternates "^(accounts|subscribe|work|life\+?(amsterdam|dubai)?|contact|weblinks|whois)@gabri.me$"
 
-set sendmail = "/usr/local/bin/msmtp -a personal"
-set from = "ahmed@gabri.me"
+set sendmail = "/usr/local/bin/msmtp -a {{ item.name }}"
+set from = "{{ item.imap_user }}"
 set spoolfile = "+{{ item.imap_nickname }}/INBOX"
 set postponed = "+{{ item.imap_nickname }}/Drafts"
 set mbox = "+{{ item.imap_nickname }}/Archive"
 set trash = "+{{ item.imap_nickname }}/Trash"
-set header_cache = "/Users/ahmed/.cache/neomutt/headers/{{ item.name }}/"
-set message_cachedir = "/Users/ahmed/.cache/neomutt/messages/{{ item.name }}/"
+set header_cache = "{{ ('~/.cache/neomutt/headers/' +  item.name + '/') | expanduser }}"
+set message_cachedir = "{{ ('~/.cache/neomutt/messages/' +  item.name + '/') | expanduser }}"
 mailboxes "+{{ item.imap_nickname }}/INBOX" \
   "+{{ item.imap_nickname }}/Starred" \
   "+{{ item.imap_nickname }}/Sent" \
@@ -35,7 +35,7 @@ mailboxes "+{{ item.imap_nickname }}/INBOX" \
   "+{{ item.imap_nickname }}/Spam" \
   `tree ~/.mail/{{ item.imap_nickname }} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
-macro index SI "<shell-escape>mbsync personal -download<enter>" "sync inbox"
+macro index SI "<shell-escape>mbsync {{ item.name }} -download<enter>" "sync inbox"
 macro index,pager y "<save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
 macro index,pager Y "<tag-thread><save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
 

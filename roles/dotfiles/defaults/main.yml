@@ -1,13 +1,9 @@
+# vim:tw=200
 ---
-user_email:
-  '{{ "ahmed@gabri.me" if lookup("env", "USER") in ["ahmed"] else "" }}'
-user_name:
-  '{{ "Ahmed El Gabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"]
-  else "" }}'
+user_email: '{{ "ahmed@gabri.me" if lookup("env", "USER") in ["ahmed"] else "" }}'
+user_name: '{{ "Ahmed El Gabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"] else "" }}'
 user_website: 'https://gabri.me'
-github_username:
-  '{{ "ahmedelgabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"] else
-  "" }}'
+github_username: '{{ "ahmedelgabri" if lookup("env", "USER") in ["ahmed", "ahmedelgabri"] else "" }}'
 
 mail_accounts:
   - name: 'personal'

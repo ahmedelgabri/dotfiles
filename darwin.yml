@@ -1,9 +1,10 @@
+# vim:tw=200
 ---
 - hosts: localhost
   roles:
     # - {role: homebrew, tags: homebrew}
     # - {role: shell, tags: shell}
     - {role: dotfiles, tags: dotfiles}
-    - {role: misc, tags: misc}
+    # - {role: misc, tags: misc}
   vars:
     my_var: true

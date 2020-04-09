@@ -1,3 +1,4 @@
+# vim:tw=200
 ---
 - name: shell | add /usr/local/bin/zsh to /etc/shells
   lineinfile: >

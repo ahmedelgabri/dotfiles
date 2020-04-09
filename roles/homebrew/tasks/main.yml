@@ -1,3 +1,4 @@
+# vim:tw=200
 ---
 # [note] This task depends on homebrew being installed already
 - name: homebrew | prepare Brewfile

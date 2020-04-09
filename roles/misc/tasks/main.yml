@@ -1,3 +1,4 @@
+# vim:tw=200
 ---
 # Note: Won't work without Node (which means homebrew role has to have run
 # first, but I don't want to declare an explicit, heavyweight dependency in this
@@ -28,27 +29,20 @@
 #     - 'gradle-launcher'
 #   when: "'work' in group_names"
 
-# [TODO] make this work with custom pip & different versions
-# - name: misc | install global python packages
-#   pip:
-#     name:{{ item }}
-#     global: yes
-#     extra_args: "{{ '--user' if item == 'pip' else '--upgrade' }}"
-#   loop:
-#     - setuptools
-#     - pip
-#     - vim-vint
-#     - websocket-client
-#     - poetry
-#     - black
-#     - pynvim
-#     - pylint
-#     - tuir
-#     # for mutt & dump-ical.py script
-#     - vobject
-
 - name: misc | install global python packages
-  command: sh "{{ ansible_env.PWD }}/roles/misc/support/python-packages"
+  pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
+  loop:
+    - setuptools
+    - pip
+    - vim-vint
+    - websocket-client
+    - poetry
+    - black
+    - pynvim
+    - pylint
+    - tuir
+    # for mutt & dump-ical.py script
+    - vobject
 
 - name: misc | install rust
   # I need complete for rls & LSP support
