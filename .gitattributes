@@ -1,3 +1,2 @@
-*.private  filter=crypt diff=crypt
 **/.ssh/config filter=crypt diff=crypt
 **/weechat/*.conf filter=crypt diff=crypt

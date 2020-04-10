@@ -46,3 +46,4 @@
 - name: misc | install rust
   # I need complete for rls & LSP support
   shell: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete
+  ignore_errors: yes

@@ -192,7 +192,7 @@ clone_dotfiles() {
 }
 
 install() {
-  /usr/local/bin/ansible-playbook -i inventory darwin.yml
+  /usr/local/bin/ansible-playbook --ask-become-pass -i inventory darwin.yml
 }
 
 all() {

@@ -8,5 +8,3 @@
     - {role: launchd, tags: launchd}
     - {role: misc, tags: misc}
     - {role: vim, tags: vim}
-  vars:
-    my_var: true
