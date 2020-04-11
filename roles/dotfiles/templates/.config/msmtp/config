@@ -7,12 +7,14 @@ auth on
 tls on
 tls_trust_file /usr/local/etc/openssl/cert.pem
 {% for account in mail_accounts %}
+{% if account.smtp_user != '' %}
 account {{ account.name }}
 host {{ account.smtp_server }}
 from {{ account.smtp_from }}
 user {{ account.smtp_user }}
 passwordeval ~/.config/zsh/bin/get-keychain-pass {{ account.smtp_keychain_account }} {{ account.smtp_keychain_name }}
 
+{% endif %}
 {% endfor %}
 
 account default : {{ 'work' if 'work' in group_names else 'personal' }}

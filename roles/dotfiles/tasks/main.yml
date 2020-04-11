@@ -81,6 +81,7 @@
 
 - name: generate mail accounts
   with_items: '{{ mail_accounts }}'
+  when: item.imap_user != ''
   loop_control:
     label: '{{ item.name }}: {{ item.imap_user }}'
   template:

@@ -13,6 +13,7 @@ Create Slave
 Expunge Both
 SyncState *
 {% for account in mail_accounts %}
+{% if account.imap_user != '' %}
 ########################################
 # {{ account.imap_nickname }}
 ########################################
@@ -87,4 +88,5 @@ Create Slave
 Expunge Slave
 Sync Pull
 
+{% endif %}
 {% endfor %}
