@@ -166,20 +166,20 @@ cask "viscosity"
 # mas "Keynote", id: 409183694
 {% endif %}
 {% if 'work' in group_names %}
-tap "exolnet/homebrew-deprecated"
-
-brew "php@5.6"
-brew "go-jira"
-brew "circleci"
-brew "composer"
-brew "pkg-config"
-brew "libmemcached"
-brew "kubernetes-helm"
-brew "kubectl"
-
-cask "vagrant"
-cask "docker"
-cask "virtualbox"
-cask "google-cloud-sdk"
-cask "minikube"
+# tap "exolnet/homebrew-deprecated"
+#
+# brew "php@5.6"
+# brew "go-jira"
+# brew "circleci"
+# brew "composer"
+# brew "pkg-config"
+# brew "libmemcached"
+# brew "kubernetes-helm"
+# brew "kubectl"
+#
+# cask "vagrant"
+# cask "docker"
+# cask "virtualbox"
+# cask "google-cloud-sdk"
+# cask "minikube"
 {% endif %}
