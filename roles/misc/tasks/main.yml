@@ -4,31 +4,22 @@
 # first, but I don't want to declare an explicit, heavyweight dependency in this
 # role).
 - name: install global yarn modules
-  vars:
-    npm_packages:
-      - bash-language-server
-      - dockerfile-language-server-nodejs
-      - ocaml-language-server
-      - netlify-cli
-      - now
-      - parker
-      - prettier
-      - serve
-      - source-map-explorer
-      - svgo
-      - dependency-cruiser
-      - reason-cli@latest-macos
-      - elm-format
-      - '@elm-tooling/elm-language-server'
-  shell: '/usr/local/bin/yarn global add {{ npm_packages | join(" ") }}'
-
-# - name: install Work-related NPM modules
-#   npm: name={{ item }} global=yes
-#   loop:
-#     - gh
-#     - gh-jira
-#     - 'gradle-launcher'
-#   when: "'work' in group_names"
+  yarn: name={{ item }} global=yes
+  loop:
+    - bash-language-server
+    - dockerfile-language-server-nodejs
+    - ocaml-language-server
+    - netlify-cli
+    - now
+    - parker
+    - prettier
+    - serve
+    - source-map-explorer
+    - svgo
+    - dependency-cruiser
+    - reason-cli@latest-macos
+    - elm-format
+    - '@elm-tooling/elm-language-server'
 
 - name: install global python packages
   pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}

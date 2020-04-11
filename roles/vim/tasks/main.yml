@@ -1,11 +1,8 @@
 # vim:tw=200
 ---
 # Buggy, see https://github.com/ansible/ansible/issues/68827
-# - name: install neovim support via npm
-#   yarn: executable=/usr/local/bin/yarn name=neovim global=yes
-
 - name: install neovim support via npm
-  shell: /usr/local/bin/yarn global add neovim
+  yarn: name=neovim global=yes
 
 - name: install neovim support via rubygems
   gem: name=neovim user_install=yes
