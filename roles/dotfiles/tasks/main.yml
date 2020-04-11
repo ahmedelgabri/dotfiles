@@ -3,7 +3,7 @@
 - name: find all files/directories in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/files'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
-    excludes: '.DS_Store'
+    excludes: '.DS_Store,.config,.ssh'
     file_type: any
     hidden: yes
   register: files
@@ -11,7 +11,7 @@
 - name: find all directories in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/files/.config'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files/.config'
-    excludes: '.DS_Store,gnupg,weechat,.ssh'
+    excludes: '.DS_Store,gnupg,weechat'
     file_type: directory
     hidden: yes
   register: config_dirs
@@ -31,7 +31,11 @@
     - ~/.config
     - ~/.config/gnupg
     - ~/.config/weechat
+    - ~/.config/msmtp
+    - ~/.config/notmuch
+    - ~/.config/neomutt/accounts
     - ~/.mail
+    - ~/.mail/.notmuch/hooks
     - ~/.mail/Personal
     - ~/.mail/Work
     - ~/.ssh
@@ -39,7 +43,7 @@
     label: '{{ item }}'
 
 - name: symlink files
-  with_items: '{{ files.files }}'
+  with_items: '{{ files.files + config_dirs.files }}'
   vars:
     path: '{{ item.path | relpath | regex_replace("roles/dotfiles/files/", "") | dirname }}'
     dest: "~/{{ path + '/' if path != '' else '' }}{{ item.path | basename }}"
@@ -51,6 +55,7 @@
   loop_control:
     label: '{{ item.path | relpath }} -> {{ dest }}'
 
+# Dynamically create folders for templates if they don't exist
 - name: symlink templates
   with_items: '{{ templates.files }}'
   vars:
