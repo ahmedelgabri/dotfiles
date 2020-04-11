@@ -7,7 +7,7 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/bundle"
 tap "homebrew/services"
-tap "neomutt/homebrew-neomutt"
+tap "neomutt/neomutt"
 tap "tavianator/tap"
 tap "universal-ctags/universal-ctags"
 tap "sachaos/todoist"
@@ -17,7 +17,6 @@ tap "dbcli/tap"
 brew "openssl"
 brew "git"
 brew "python"
-brew "python@2"
 brew "gawk"
 brew "gnu-sed"
 brew "coreutils"
@@ -54,6 +53,7 @@ brew "loc"
 brew "tokei"
 brew "lf"
 brew "tree"
+brew "github/gh/gh"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 
 # Core apps
@@ -63,30 +63,25 @@ brew "newsboat"
 brew "isync"
 brew "lbdb"
 brew "msmtp"
-brew "neomutt/homebrew-neomutt/neomutt", args: ["with-gpgme", "with-notmuch-patch", "with-lua"]
+brew "neomutt"
 # End Mail
 brew "tmux", args: ["HEAD"]
 brew "vim"
 brew "weechat" # , args: ["with-curl"]
-brew "todoist"
+brew "sachaos/todoist/todoist"
 
 # Nice to have
 brew "graphviz"
 brew "asciinema"
 brew "editorconfig"
 brew "exiftool"
-brew "figlet"
 brew "hyperfine"
-brew "neofetch"
 brew "proselint"
-brew "task"
-brew "tldr"
 brew "bat"
 brew "lsd"
 brew "shellcheck"
 brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip" # Markdown previewer
-brew "nnn"
 brew "pass"
 brew "yamllint"
 brew "streamlink"
@@ -103,10 +98,7 @@ cask "kitty"
 cask "brave-browser"
 cask "figma"
 cask "firefox"
-cask "caskroom/versions/firefox-nightly"
-cask "flux"
 cask "google-chrome"
-cask "caskroom/versions/google-chrome-canary"
 cask "hammerspoon"
 cask "imageoptim"
 cask "launchcontrol"
@@ -120,9 +112,8 @@ cask "qlstephen"
 cask "qlvideo"
 cask "quicklook-csv"
 cask "quicklook-json"
-cask "sequel-pro"
 cask "sketch"
-cask "caskroom/versions/visual-studio-code-insiders"
+cask "visual-studio-code-insiders"
 cask "webpquicklook"
 cask "zoomus"
 
@@ -137,49 +128,20 @@ brew "clojure"
 brew "leiningen"
 brew "candid82/brew/joker"
 brew "borkdude/brew/clj-kondo"
-brew "ghc"
-brew "cabal-install"
-brew "haskell-stack"
-brew "pipenv"
-brew "elm"
-# I install rust from https://www.rust-lang.org/en-US/install.html
-# check Makefile
 
 # Core apps
 brew "youtube-dl"
 
-# Nice to have
-# brew "ledger"
-
 cask "1password-cli"
 cask "arq"
 cask "dayone-cli"
-cask "iina"
 cask "skype"
-cask "transmission"
 cask "transmit"
-cask "vlc"
-cask "viscosity"
 
 # mas "Day One", id: 1055511498
 # mas "Irvue", id: 1039633667
 # mas "Keynote", id: 409183694
 {% endif %}
 {% if 'work' in group_names %}
-# tap "exolnet/homebrew-deprecated"
-#
-# brew "php@5.6"
 # brew "go-jira"
-# brew "circleci"
-# brew "composer"
-# brew "pkg-config"
-# brew "libmemcached"
-# brew "kubernetes-helm"
-# brew "kubectl"
-#
-# cask "vagrant"
-# cask "docker"
-# cask "virtualbox"
-# cask "google-cloud-sdk"
-# cask "minikube"
 {% endif %}
