@@ -1,2 +1,3 @@
 **/.ssh/config filter=crypt diff=crypt
 **/weechat/*.conf filter=crypt diff=crypt
+**/.npmrc filter=crypt diff=crypt
