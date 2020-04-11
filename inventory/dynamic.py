@@ -5,7 +5,7 @@ import socket
 
 HOST = socket.gethostname()
 
-if re.search(r"^ahmed-", HOST):
+if re.search(r"\bmiro\b", HOST):
     GROUP = "work"
 elif re.match(r"pandoras-box(?:\.(?:local|lan)?)?\Z", HOST):
     GROUP = "personal"

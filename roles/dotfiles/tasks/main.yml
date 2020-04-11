@@ -1,38 +1,42 @@
 # vim:tw=200
 ---
-- name: find all directories in '{{ ansible_env.PWD | expanduser }}/roles/dotfiles/files'
+- name: find all files/directories in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/files'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
-    recurse: yes
-    file_type: directory
-    hidden: yes
-  register: dirs
-
-- name: find all files in '{{ ansible_env.PWD | expanduser }}/roles/dotfiles/files'
-  find:
-    paths: '{{ ansible_env.PWD }}/roles/dotfiles/files'
-    recurse: yes
-    file_type: file
-    excludes: '.DS_Store,.gitkeep,.gitignore'
+    excludes: '.DS_Store'
+    file_type: any
     hidden: yes
   register: files
 
-- name: find all templates in '{{ ansible_env.PWD | expanduser }}/roles/dotfiles/templates'
+- name: find all directories in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/files/.config'
+  find:
+    paths: '{{ ansible_env.PWD }}/roles/dotfiles/files/.config'
+    excludes: '.DS_Store,gnupg,weechat,.ssh'
+    file_type: directory
+    hidden: yes
+  register: config_dirs
+
+- name: find all templates in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/templates'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/templates'
     recurse: yes
     file_type: file
-    excludes: '.DS_Store,.gitkeep,.gitignore,account'
+    excludes: '.DS_Store,account'
     hidden: yes
   register: templates
 
-- name: create directories
-  vars:
-    path: "~/{{ item.path | relpath | regex_replace('roles/dotfiles/files/', '') }}"
-  file: path="{{ path }}" state=directory
-  with_items: '{{ dirs.files }}'
+- name: create directories that we shouldn't manage
+  file: path="{{ item }}" state=directory
+  with_items:
+    - ~/.config
+    - ~/.config/gnupg
+    - ~/.config/weechat
+    - ~/.mail
+    - ~/.mail/Personal
+    - ~/.mail/Work
+    - ~/.ssh
   loop_control:
-    label: '{{ item.path | relpath }} -> {{ path }}'
+    label: '{{ item }}'
 
 - name: symlink files
   with_items: '{{ files.files }}'

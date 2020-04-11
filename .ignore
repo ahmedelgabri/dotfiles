@@ -1,7 +1,0 @@
-# vim:ft=gitconfig
-
-# this is symlinked from .vim so no need to appear in file search
-files/vim/.config/nvim
-files/mail/.config/mutt
-files/vim/**/{pack,coc,tmp}
-files/mail/.mail/{Work,Personal}
