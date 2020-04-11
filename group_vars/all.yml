@@ -6,3 +6,5 @@ user_website: '{{ (lookup("env", "USER") in ["ahmed", "ahmedelgabri"]) | ternary
 github_username: '{{ (lookup("env", "USER") in ["ahmed", "ahmedelgabri"]) | ternary("ahmedelgabri", "") }}'
 
 keychain_account: "{{ (user_email == '') | ternary(user_email, (user_email | regex_replace('(.*)@(.*)', '\\1+mutt@\\2'))) }}"
+
+timezone: 'Europe/Amsterdam'

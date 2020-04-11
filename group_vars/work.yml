@@ -1,5 +1,6 @@
 # vim:tw=200
 ---
+computer_name: ''
 mail_accounts:
   - name: 'work'
     imap_nickname: 'Work'

@@ -20,7 +20,7 @@
       - reason-cli@latest-macos
       - elm-format
       - '@elm-tooling/elm-language-server'
-  shell: '/usr/local/bin/yarn global add {{ npm_packages }}'
+  shell: '/usr/local/bin/yarn global add {{ npm_packages | join(" ") }}'
 
 # - name: misc | install Work-related NPM modules
 #   npm: name={{ item }} global=yes

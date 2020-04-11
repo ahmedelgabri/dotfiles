@@ -1,5 +1,6 @@
 # vim:tw=200
 ---
+computer_name: 'pandoras-box'
 mail_accounts:
   - name: 'personal'
     imap_nickname: 'Personal'

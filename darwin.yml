@@ -8,3 +8,4 @@
     - {role: launchd, tags: launchd}
     - {role: misc, tags: misc}
     - {role: vim, tags: vim}
+    - {role: defaults, tags: defaults}

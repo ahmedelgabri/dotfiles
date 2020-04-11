@@ -1,0 +1,491 @@
+# vim:tw=200
+---
+# Many of these settings taken (or modified) from:
+#
+#   https://github.com/mathiasbynens/dotfiles/blob/master/.macos
+
+- name: defaults | Activity Monitor -> View -> Dock Icon -> Show CPU History
+  osx_defaults: domain=com.apple.ActivityMonitor key=IconType type=int value=6
+
+- name: defaults | Siri -> Enable Siri
+  osx_defaults: domain=com.apple.assistant.support key="Assistant Enabled" type=bool value=false
+
+- name: defaults | Don't create .DS_Store files on network volumes.
+  osx_defaults: domain=com.apple.desktopservices key=DSDontWriteNetworkStores type=bool value=true
+
+- name: defaults | Don't create .DS_Store files on external USB drives.
+  osx_defaults: domain=com.apple.desktopservices key=DSDontWriteUSBStores type=bool value=true
+
+# Last tested: 10.9
+- name: defaults | Automatically quit printer app once the print jobs complete
+  osx_defaults: domain=com.apple.print.PrintingPrefs key="Quit When Finished" type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Disable auto-correct
+  osx_defaults: key=NSAutomaticSpellingCorrectionEnabled type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Disable press-and-hold for keys in favor of key repeat Requires logout.
+  osx_defaults: key=ApplePressAndHoldEnabled type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Disable automatic capitalization
+  osx_defaults: key=NSAutomaticCapitalizationEnabled type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Disable smart quotes, dashes, ellipses
+  osx_defaults: key=NSAutomaticDashSubstitutionEnabled type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Disable smart quotes, dashes, ellipses
+  osx_defaults: key=NSAutomaticQuoteSubstitutionEnabled type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Disable the warning when changing a file extension
+  osx_defaults: domain=com.apple.finder key=FXEnableExtensionChangeWarning type=bool value=false
+
+# Last tested: [10.9]
+- name: defaults | Display full POSIX path as Finder window title
+  osx_defaults: domain=com.apple.finder key=_FXShowPosixPathInTitle type=bool value=true
+
+# Last tested: [10.12.6]
+- name: defaults | New Finder windows show $HOME
+  osx_defaults: domain=com.apple.finder key=NewWindowTarget type=string value=PfHm
+
+# Last tested: [10.9]
+- name: defaults | Expand print panel by default
+  osx_defaults: key=PMPrintingExpandedStateForPrint type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Expand print panel by default
+  osx_defaults: key=PMPrintingExpandedStateForPrint2 type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Expand save panel by default
+  osx_defaults: key=NSNavPanelExpandedStateForSaveMode type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Expand save panel by default
+  osx_defaults: key=NSNavPanelExpandedStateForSaveMode2 type=bool value=true
+
+# Last tested: [10.10.2]
+- name: defaults | Finder -> Preferences -> General -> Spring-loaded folders and windows -> Delay (short)
+  osx_defaults: key=com.apple.springing.delay type=float value=0
+
+# Last tested: [10.10.2]
+- name: defaults | Finder -> Preferences -> General -> Spring-loaded folders and windows
+  osx_defaults: key=com.apple.springing.enabled type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> allow quitting via Command-Q; doing so will also hide desktop icons
+  osx_defaults: domain=com.apple.finder key=QuitMenuItem type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> allow text selection in Quick Look
+  osx_defaults: domain=com.apple.finder key=QLEnableTextSelection type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> disable window animations and Get Info animations
+  osx_defaults: domain=com.apple.finder key=DisableAllAnimations type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> show all filename extensions
+  osx_defaults: key=AppleShowAllExtensions type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> show path bar
+  osx_defaults: domain=com.apple.finder key=ShowPathbar type=bool value=true
+
+# Last tested: [10.9]
+- name: defaults | Finder -> show status bar
+  osx_defaults: domain=com.apple.finder key=ShowStatusBar type=bool value=true
+
+- name: defaults | Finder Preferences -> New Finder windows show
+  osx_defaults: domain=com.apple.finder key=NewWindowTargetPath value=file:///Users/ahmed/
+
+- name: defaults | Finder Preferences -> Open folders in tabs instead of new windows
+  osx_defaults: domain=com.apple.finder key=FinderSpawnTab type=bool value=true
+
+- name: defaults | Finder Preferences -> Sidebar -> Tags -> Recent Tags
+  osx_defaults: domain=com.apple.finder key=ShowRecentTags type=bool value=false
+
+- name: defaults | Hammerspoon preferences -> Keep Console window on top
+  osx_defaults: domain=org.hammerspoon.Hammerspoon key=MJKeepConsoleOnTopKey type=bool value=true
+
+- name: defaults | Hammerspoon preferences -> Show dock icon
+  osx_defaults: domain=org.hammerspoon.Hammerspoon key=MJShowDockIconKey type=bool value=false
+
+- name: defaults | Hammerspoon preferences -> Show menu icon
+  osx_defaults: domain=org.hammerspoon.Hammerspoon key=MJShowMenuIconKey type=bool value=false
+
+# Last tested: [10.10.2]
+- name: defaults | Make sheets drop down (almost) instantly
+  osx_defaults: key=NSWindowResizeTime type=float value=0.001
+
+# Last tested: [10.9]
+- name: defaults | Require password immediately after sleep or screen saver begins
+  osx_defaults: domain=com.apple.screensaver key=askForPassword type=int value=1
+
+# Last tested: [10.9]
+- name: defaults | Require password immediately after sleep or screen saver begins
+  osx_defaults: domain=com.apple.screensaver key=askForPasswordDelay type=int value=0
+
+# Last tested: 10.10
+- name: defaults | System Preferences -> Accessibility -> Display -> Reduce Transparency
+  osx_defaults: domain=com.apple.universalaccess key=reduceTransparency type=bool value=true
+
+- name: defaults | System Preferences -> Accessibility -> Zoom -> Use scroll gesture with modifier keys to zoom (Control)
+  osx_defaults: domain={{ item.domain }}  key={{ item.key }}  type={{ item.type }}  value={{ item.value }}
+  loop:
+    - domain: com.apple.universalaccess
+      key: closeViewScrollWheelToggle
+      type: bool
+      value: true
+    - domain: com.apple.universalaccess
+      key: HIDScrollZoomModifierMask
+      type: int
+      value: 262144
+  loop_control:
+    label: '{{item.domain}} {{item.key}}'
+
+# Last tested: [10.12.1]
+- name: defaults | System Preferences -> Desktop & Screen Saver -> Screen Saver -> Show with clock
+  osx_defaults: domain=com.apple.screensaver host=currentHost key=showClock type=bool value=false
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> Desktop & Screen Saver -> Screen Saver -> Start after -> 5 Minutes
+  osx_defaults: domain=com.apple.screensaver host=currentHost key=idleTime type=int value=300
+
+- name: defaults | System Preferences -> Dock -> Automatically hide and show Dock
+  osx_defaults: domain=com.apple.dock key=autohide type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Enable highlight hover effect for the grid view of a stack (Dock)
+  osx_defaults: domain=com.apple.dock key=mouse-over-hilite-stack type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Set the icon size of Dock items to 36 pixels
+  osx_defaults: domain=com.apple.dock key=tilesize type=float value=36
+
+- name: defaults | System Preferences -> Dock -> Minimize windows into their application’s icon
+  osx_defaults: domain=com.apple.dock key=minimize-to-application type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Wipe all (default) app icons from the Dock
+  osx_defaults:
+    domain: com.apple.dock
+    key: persistent-apps
+    type: array
+    value:
+      -
+
+- name: defaults | System Preferences -> Dock -> Show only open applications in the Dock
+  osx_defaults: domain=com.apple.dock key=static-only type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Don’t animate opening applications from the Dock
+  osx_defaults: domain=com.apple.dock key=launchanim type=bool value=false
+
+- name: defaults | System Preferences -> Dock -> Speed up Mission Control animations
+  osx_defaults: domain=com.apple.dock key=expose-animation-duration type=float value=0.1
+
+- name: defaults | System Preferences -> Dock -> Don’t group windows by application in Mission Control (i.e. use the old Exposé behavior instead)
+  osx_defaults: domain=com.apple.dock key=expose-group-by-app type=bool value=false
+
+- name: defaults | System Preferences -> Dock -> Don’t show recent applications in Dock
+  osx_defaults: domain=com.apple.dock key=show-recents type=bool value=false
+
+- name: defaults | System Preferences -> Dock -> Disable Dashboard
+  osx_defaults: domain=com.apple.dashboard key=mcx-disabled type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Don’t show Dashboard as a Space
+  osx_defaults: domain=com.apple.dock key=dashboard-in-overlay type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Don’t automatically rearrange Spaces based on most recent use
+  osx_defaults: domain=com.apple.dock key=mru-spaces type=bool value=false
+
+- name: defaults | System Preferences -> Dock -> Remove the auto-hiding Dock delay
+  osx_defaults: domain=com.apple.dock key=autohide-delay type=float value=0
+
+- name: defaults | System Preferences -> Dock -> Remove the animation when hiding/showing the Dock
+  osx_defaults: domain=com.apple.dock key=autohide-time-modifier type=float value=0
+
+- name: defaults | System Preferences -> Dock -> Make Dock icons of hidden applications translucent
+  osx_defaults: domain=com.apple.dock key=showhidden type=bool value=true
+
+- name: defaults | System Preferences -> Dock -> Disable the Launchpad gesture (pinch with thumb and three fingers)
+  osx_defaults: domain=com.apple.dock key=showLaunchpadGestureEnabled type=int value=0
+
+# Last tested: 10.11
+- name: defaults | System Preferences -> General -> Appearance -> Automatically hide and show the menu bar
+  osx_defaults: key=_HIHideMenuBar type=bool value=true
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> General -> Click in scroll bar to -> Jump to the next page
+  osx_defaults: key=AppleScrollerPagingBehavior type=int value=0
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> General -> Show scroll bars -> Automatically based on mouse or trackpad
+  osx_defaults: key=AppleShowScrollBars type=string value=Automatic
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> General -> Sidebar icon size -> Small
+  osx_defaults: key=NSTableViewDefaultSizeMode type=int value=2
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> General -> [Don't] Ask to keep changes when closing documents
+  osx_defaults: key=NSCloseAlwaysConfirmsChanges type=int value=0
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> General -> Close windows when quitting an app
+  osx_defaults: key=NSQuitAlwaysKeepsWindows type=int value=1
+
+# Last tested: [10.11.5]
+- name: defaults | System Preferences -> Mission Control -> Displays have separate Spaces
+  osx_defaults: domain=com.apple.spaces key=spans-displays type=bool value=true
+
+# Last tested: [10.10.2]
+- name: defaults | System Preferences -> Sound -> Sound Effects -> Play feedback when volume is changed
+  osx_defaults: key=com.apple.sound.beep.feedback type=bool value=false
+
+# Last tested: [10.13.3]
+- name: defaults | System Preferences -> Sound -> Sound Effects -> Play user interface sound effects
+  osx_defaults: key=com.apple.sound.uiaudio.enabled type=int value=0
+
+# Last tested: 10.9
+- name: defaults | Tweak subpixel font rendering (https://wincent.com/wiki/AppleFontSmoothing) (https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501)
+  osx_defaults: host=currentHost key=AppleFontSmoothing type=int value=2
+
+# Last tested: [10.9]
+- name: defaults | Use plain text mode for new TextEdit documents
+  osx_defaults: domain=com.apple.TextEdit key=RichText type=int value=0
+
+- name: defaults | Disable the over-the-top focus ring animation
+  osx_defaults: key=NSUseAnimatedFocusRing type=bool value=false
+
+- name: defaults | Save to disk (not to iCloud) by default
+  osx_defaults: key=NSDocumentSaveNewDocumentsToCloud type=bool value=false
+
+- name: defaults | Disable the "Are you sure you want to open this application?" dialog
+  osx_defaults: domain=com.apple.LaunchServices key=LSQuarantine type=bool value=false
+
+- name: defaults | Display ASCII control characters using caret notation in standard text views
+  osx_defaults: key=NSTextShowsControlCharacters type=bool value=true
+
+- name: defaults | Disable automatic termination of inactive apps
+  osx_defaults: key=NSDisableAutomaticTermination type=bool value=true
+
+- name: defaults | Set Help Viewer windows to act as normal windows & not always on top
+  osx_defaults: domain=com.apple.helpviewer key=DevMode type=bool value=true
+
+- name: defaults | Trackpad -> enable tap to click for this user and for the login screen
+  osx_defaults: domain=com.apple.driver.AppleBluetoothMultitouch.trackpad key=Clicking type=bool value=true
+
+- name: defaults | Trackpad -> enable tap to click for this user and for the login screen
+  osx_defaults: host=currentHost key=com.apple.mouse.tapBehavior type=int value=1
+
+- name: defaults | Trackpad -> enable tap to click for this user and for the login screen
+  osx_defaults: key=com.apple.mouse.tapBehavior type=int value=1
+
+- name: defaults | Increase sound quality for Bluetooth headphones/headsets
+  osx_defaults: domain=com.apple.BluetoothAudioAgent key="Apple Bitpool Min key=(editable)" type=int value=40
+
+- name: defaults | Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+  osx_defaults: key=AppleKeyboardUIMode type=int value=3
+
+- name: defaults | Follow the keyboard focus while zoomed in
+  osx_defaults: domain=com.apple.universalaccess key=closeViewZoomFollowsFocus type=bool value=true
+
+- name: defaults | Set a blazingly fast keyboard repeat rate
+  osx_defaults: key=KeyRepeat type=int value=1
+
+- name: defaults | Set a blazingly fast keyboard repeat rate
+  osx_defaults: key=InitialKeyRepeat type=int value=10
+
+- name: defaults | Set language and text formats
+  osx_defaults:
+    key: AppleLanguages
+    type: array
+    value:
+      - en_GB
+
+- name: defaults | Set language and text formats
+  osx_defaults: key=AppleLocale type=string value="en_GB@currency=EUR"
+
+- name: defaults | Set language and text formats
+  osx_defaults: key=AppleMeasurementUnits type=string value="Centimeters"
+
+- name: defaults | Set language and text formats
+  osx_defaults: key=AppleMetricUnits type=bool value=true
+
+- name: defaults | Show icons for hard drives, servers, and removable media on the desktop
+  osx_defaults: domain=com.apple.finder key=ShowExternalHardDrivesOnDesktop type=bool value=true
+
+- name: defaults | Show icons for hard drives, servers, and removable media on the desktop
+  osx_defaults: domain=com.apple.finder key=ShowMountedServersOnDesktop type=bool value=true
+
+- name: defaults | Show icons for hard drives, servers, and removable media on the desktop
+  osx_defaults: domain=com.apple.finder key=ShowRemovableMediaOnDesktop type=bool value=true
+
+- name: defaults | When performing a search, search the current folder by default
+  osx_defaults: domain=com.apple.finder key=FXDefaultSearchScope type=string value="SCcf"
+
+- name: defaults | Automatically open a new Finder window when a volume is mounted
+  osx_defaults: domain=com.apple.frameworks.diskimages key=auto-open-ro-root type=bool value=true
+
+- name: defaults | Automatically open a new Finder window when a volume is mounted
+  osx_defaults: domain=com.apple.frameworks.diskimages key=auto-open-rw-root type=bool value=true
+
+- name: defaults | Automatically open a new Finder window when a volume is mounted
+  osx_defaults: domain=com.apple.finder key=OpenWindowForNewRemovableDisk type=bool value=true
+
+# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+- name: defaults | Use list view in all Finder windows by default
+  osx_defaults: domain=com.apple.finder key=FXPreferredViewStyle type=string value="Nlsv"
+
+- name: defaults | Disable the warning before emptying the Trash
+  osx_defaults: domain=com.apple.finder key=WarnOnEmptyTrash type=bool value=false
+
+- name: defaults | Privacy -> don’t send search queries to Apple
+  osx_defaults: domain=com.apple.Safari key=UniversalSearchEnabled type=bool value=false
+
+- name: defaults | Privacy -> don’t send search queries to Apple
+  osx_defaults: domain=com.apple.Safari key=SuppressSearchSuggestions type=bool value=true
+
+- name: defaults | Press Tab to highlight each item on a web page
+  osx_defaults: domain=com.apple.Safari key=WebKitTabToLinksPreferenceKey type=bool value=true
+
+- name: defaults | Press Tab to highlight each item on a web page
+  osx_defaults: domain=com.apple.Safari key=com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks type=bool value=true
+
+- name: defaults | Show the full URL in the address bar (note, this still hides the scheme)
+  osx_defaults: domain=com.apple.Safari key=ShowFullURLInSmartSearchField type=bool value=true
+
+- name: defaults | Prevent Safari from opening ‘safe’ files automatically after downloading
+  osx_defaults: domain=com.apple.Safari key=AutoOpenSafeDownloads type=bool value=false
+
+- name: defaults | Hide Safari’s bookmarks bar by default
+  osx_defaults: domain=com.apple.Safari key=ShowFavoritesBar type=bool value=false
+
+- name: defaults | Disable Safari’s thumbnail cache for History and Top Sites
+  osx_defaults: domain=com.apple.Safari key=DebugSnapshotsUpdatePolicy type=int value=2
+
+- name: defaults | Enable Safari’s debug menu
+  osx_defaults: domain=com.apple.Safari key=IncludeInternalDebugMenu type=bool value=true
+
+- name: defaults | Enable the Develop menu and the Web Inspector in Safari
+  osx_defaults: domain=com.apple.Safari key=IncludeDevelopMenu type=bool value=true
+
+- name: defaults | Enable the Develop menu and the Web Inspector in Safari
+  osx_defaults: domain=com.apple.Safari key=WebKitDeveloperExtrasEnabledPreferenceKey type=bool value=true
+
+- name: defaults | Enable the Develop menu and the Web Inspector in Safari
+  osx_defaults: domain=com.apple.Safari key=com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled type=bool value=true
+
+- name: defaults | Add a context menu item for showing the Web Inspector in web views
+  osx_defaults: key=WebKitDeveloperExtras type=bool value=true
+
+- name: defaults | Warn about fraudulent websites
+  osx_defaults: domain=com.apple.Safari key=WarnAboutFraudulentWebsites type=bool value=true
+
+- name: defaults | Block pop-up windows
+  osx_defaults: domain=com.apple.Safari key=WebKitJavaScriptCanOpenWindowsAutomatically type=bool value=false
+
+- name: defaults | Block pop-up windows
+  osx_defaults: domain=com.apple.Safari key=com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically type=bool value=false
+
+- name: defaults | Enable “Do Not Track”
+  osx_defaults: domain=com.apple.Safari key=SendDoNotTrackHTTPHeader type=bool value=true
+
+- name: defaults | Prevent Time Machine from prompting to use new hard drives as backup volume
+  osx_defaults: domain=com.apple.TimeMachine key=DoNotOfferNewDisksForBackup type=bool value=true
+
+- name: defaults | Show all processes in Activity Monitor
+  osx_defaults: domain=com.apple.ActivityMonitor key=ShowCategory type=int value=100
+
+- name: defaults | Sort Activity Monitor results by CPU usage
+  osx_defaults: domain=com.apple.ActivityMonitor key=SortColumn type=string value="CPUUsage"
+
+- name: defaults | Sort Activity Monitor results by CPU usage
+  osx_defaults: domain=com.apple.ActivityMonitor key=SortDirection type=int value=0
+
+- name: defaults | Prevent Photos from opening automatically when devices are plugged in
+  osx_defaults: host=currentHost domain=com.apple.ImageCapture key=disableHotPlug type=bool value=true
+
+# ansible doesn't support -dict-add
+- name: defaults | Disable continuous spell checking
+  shell: defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "continuousSpellCheckingEnabled" -bool false
+
+- name: defaults | Bypass the annoyingly slow t.co URL shortener
+  osx_defaults: domain=com.tapbots.TweetbotMac key=OpenURLsDirectly type=bool value=true
+
+- name: defaults | Set computer name (as done via System Preferences → Sharing)
+  shell: scutil --set ComputerName "{{ computer_name }}"
+  become: yes
+  when: computer_name != ''
+
+- name: defaults | Set computer name (as done via System Preferences → Sharing)
+  shell: scutil --set HostName "{{ computer_name }}"
+  become: yes
+  when: computer_name != ''
+
+- name: defaults | Set computer name (as done via System Preferences → Sharing)
+  shell: scutil --set LocalHostName "{{ computer_name }}"
+  become: yes
+  when: computer_name != ''
+
+- name: defaults | Set computer name (as done via System Preferences → Sharing)
+  osx_defaults: domain=/Library/Preferences/SystemConfiguration/com.apple.smb.server key=NetBIOSName type=string value="{{ computer_name }}"
+  become: yes
+  when: computer_name != ''
+
+- name: defaults | Restart automatically if the computer freezes
+  shell: systemsetup -setrestartfreeze on
+  become: yes
+
+- name: defaults | Set the timezone; see `sudo systemsetup -listtimezones` for other values
+  shell: systemsetup -settimezone "{{ timezone }}" >/dev/null
+  become: yes
+  when: timezone != ''
+
+- name: defaults | Enable snap-to-grid for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Enable snap-to-grid for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Enable snap-to-grid for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase grid spacing for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase grid spacing for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase grid spacing for icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase the size of icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase the size of icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Increase the size of icons on the desktop and in other icon views
+  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+  become: yes
+
+- name: defaults | Show the ~/Library folder
+  shell: chflags nohidden ~/Library
+
+- name: defaults | Show the /Volumes folder
+  shell: chflags nohidden /Volumes
+  become: yes
+
+- name: defaults | Reset Launchpad, but keep the desktop wallpaper intact
+  shell: find {{ "~/Library/Application Support/Dock" | expanduser }} -name "*-*.db" -maxdepth 1 -delete
