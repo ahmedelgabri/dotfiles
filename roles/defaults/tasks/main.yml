@@ -131,22 +131,22 @@
   osx_defaults: domain=com.apple.screensaver key=askForPasswordDelay type=int value=0
 
 # Last tested: 10.10
-- name: System Preferences -> Accessibility -> Display -> Reduce Transparency
-  osx_defaults: domain=com.apple.universalaccess key=reduceTransparency type=bool value=true
-
-- name: System Preferences -> Accessibility -> Zoom -> Use scroll gesture with modifier keys to zoom (Control)
-  osx_defaults: domain={{ item.domain }}  key={{ item.key }}  type={{ item.type }}  value={{ item.value }}
-  loop:
-    - domain: com.apple.universalaccess
-      key: closeViewScrollWheelToggle
-      type: bool
-      value: true
-    - domain: com.apple.universalaccess
-      key: HIDScrollZoomModifierMask
-      type: int
-      value: 262144
-  loop_control:
-    label: '{{item.domain}} {{item.key}}'
+# - name: System Preferences -> Accessibility -> Display -> Reduce Transparency
+#   osx_defaults: domain=com.apple.universalaccess key=reduceTransparency type=bool value=true
+#
+# - name: System Preferences -> Accessibility -> Zoom -> Use scroll gesture with modifier keys to zoom (Control)
+#   osx_defaults: domain={{ item.domain }}  key={{ item.key }}  type={{ item.type }}  value={{ item.value }}
+#   loop:
+#     - domain: com.apple.universalaccess
+#       key: closeViewScrollWheelToggle
+#       type: bool
+#       value: true
+#     - domain: com.apple.universalaccess
+#       key: HIDScrollZoomModifierMask
+#       type: int
+#       value: 262144
+#   loop_control:
+#     label: '{{item.domain}} {{item.key}}'
 
 # Last tested: [10.12.1]
 - name: System Preferences -> Desktop & Screen Saver -> Screen Saver -> Show with clock
@@ -274,8 +274,8 @@
 - name: Set Help Viewer windows to act as normal windows & not always on top
   osx_defaults: domain=com.apple.helpviewer key=DevMode type=bool value=true
 
-- name: Trackpad -> enable tap to click for this user and for the login screen
-  osx_defaults: domain=com.apple.driver.AppleBluetoothMultitouch.trackpad key=Clicking type=bool value=true
+# - name: Trackpad -> enable tap to click for this user and for the login screen
+#   osx_defaults: domain=com.apple.driver.AppleBluetoothMultitouch.trackpad key=Clicking type=bool value=true
 
 - name: Trackpad -> enable tap to click for this user and for the login screen
   osx_defaults: host=currentHost key=com.apple.mouse.tapBehavior type=int value=1
@@ -289,8 +289,8 @@
 - name: Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
   osx_defaults: key=AppleKeyboardUIMode type=int value=3
 
-- name: Follow the keyboard focus while zoomed in
-  osx_defaults: domain=com.apple.universalaccess key=closeViewZoomFollowsFocus type=bool value=true
+# - name: Follow the keyboard focus while zoomed in
+#   osx_defaults: domain=com.apple.universalaccess key=closeViewZoomFollowsFocus type=bool value=true
 
 - name: Set a blazingly fast keyboard repeat rate
   osx_defaults: key=KeyRepeat type=int value=1
@@ -335,7 +335,7 @@
 - name: Automatically open a new Finder window when a volume is mounted
   osx_defaults: domain=com.apple.finder key=OpenWindowForNewRemovableDisk type=bool value=true
 
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+# Four-letter codes for the other view modes: 'icnv', 'clmv', 'Flwv'
 - name: Use list view in all Finder windows by default
   osx_defaults: domain=com.apple.finder key=FXPreferredViewStyle type=string value="Nlsv"
 
@@ -439,46 +439,46 @@
   shell: systemsetup -setrestartfreeze on
   become: yes
 
-- name: Set the timezone; see `sudo systemsetup -listtimezones` for other values
+- name: Set the timezone; see 'sudo systemsetup -listtimezones' for other values
   shell: systemsetup -settimezone "{{ timezone }}" >/dev/null
   become: yes
   when: timezone != ''
 
-- name: Enable snap-to-grid for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Enable snap-to-grid for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Enable snap-to-grid for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase grid spacing for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase grid spacing for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase grid spacing for icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase the size of icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase the size of icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
-
-- name: Increase the size of icons on the desktop and in other icon views
-  shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
-  become: yes
+# - name: Enable snap-to-grid for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Enable snap-to-grid for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Enable snap-to-grid for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase grid spacing for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase grid spacing for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase grid spacing for icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase the size of icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase the size of icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
+#
+# - name: Increase the size of icons on the desktop and in other icon views
+#   shell: /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist
+#   become: yes
 
 - name: Show the ~/Library folder
   shell: chflags nohidden ~/Library
@@ -486,6 +486,5 @@
 - name: Show the /Volumes folder
   shell: chflags nohidden /Volumes
   become: yes
-
-- name: Reset Launchpad, but keep the desktop wallpaper intact
-  shell: find {{ "~/Library/Application Support/Dock" | expanduser }} -name "*-*.db" -maxdepth 1 -delete
+# - name: Reset Launchpad, but keep the desktop wallpaper intact
+#   shell: find {{ "~/Library/Application\ Support/Dock" | expanduser }} -name "*-*.db" -maxdepth 1 -delete
