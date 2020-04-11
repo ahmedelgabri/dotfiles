@@ -1,9 +1,9 @@
 # vim:tw=200
 ---
-- name: launchd | create (local) LaunchAgents directory
+- name: create (local) LaunchAgents directory
   file: path="~/Library/LaunchAgents" state=directory
 
-- name: launchd | configure (local) LaunchAgents
+- name: configure (local) LaunchAgents
   template:
     src: com.ahmedelgabri.isync.plist
     dest: '~/Library/LaunchAgents/com.ahmedelgabri.isync.plist'

@@ -3,7 +3,7 @@
 # Note: Won't work without Node (which means homebrew role has to have run
 # first, but I don't want to declare an explicit, heavyweight dependency in this
 # role).
-- name: misc | install global yarn modules
+- name: install global yarn modules
   vars:
     npm_packages:
       - bash-language-server
@@ -22,7 +22,7 @@
       - '@elm-tooling/elm-language-server'
   shell: '/usr/local/bin/yarn global add {{ npm_packages | join(" ") }}'
 
-# - name: misc | install Work-related NPM modules
+# - name: install Work-related NPM modules
 #   npm: name={{ item }} global=yes
 #   loop:
 #     - gh
@@ -30,7 +30,7 @@
 #     - 'gradle-launcher'
 #   when: "'work' in group_names"
 
-- name: misc | install global python packages
+- name: install global python packages
   pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
   loop:
     - setuptools
@@ -43,7 +43,7 @@
     # for mutt & dump-ical.py script
     - vobject
 
-- name: misc | install rust
+- name: install rust
   # I need complete for rls & LSP support
   shell: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete
   ignore_errors: yes

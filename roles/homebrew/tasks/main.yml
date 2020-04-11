@@ -1,11 +1,11 @@
 # vim:tw=200
 ---
 # [note] This task depends on homebrew being installed already
-- name: homebrew | prepare Brewfile
+- name: prepare Brewfile
   template: dest="~/Library/Preferences/Brewfile" mode=0644 src=Brewfile
 
-- name: homebrew | bundle
+- name: bundle
   command: brew bundle chdir="~/Library/Preferences"
 
-- name: homebrew | clean up old versions
+- name: clean up old versions
   command: brew cleanup
