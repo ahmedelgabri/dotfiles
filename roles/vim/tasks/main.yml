@@ -7,11 +7,11 @@
 - name: install neovim support via rubygems
   gem: name=neovim user_install=yes
 
-- name: install neovim support via pip2
-  pip: executable=pip2 name=pynvim
+# - name: install neovim support via pip2
+#   pip: executable=pip2 name=pynvim
 
 - name: install neovim support via pip3
-  pip: executable=pip3 name=pynvim
+  pip: name=pynvim
 
 - name: install vim-vint
-  pip: executable=pip3 name=vim-vint
+  pip: name=vim-vint
