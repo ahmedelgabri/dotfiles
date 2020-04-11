@@ -1,6 +1,11 @@
 # vim:tw=200
 ---
+# this will fail when it runs again?
 - name: add /usr/local/bin/zsh to /etc/shells
   lineinfile: >
     dest=/etc/shells group=wheel line=/usr/local/bin/zsh owner=root
   become: !!bool yes
+
+# because of this error `zsh compinit: insecure directories, run compaudit for list.`
+- name: fix permissions in zsh folder
+  file: dest=/usr/local/share/zsh mode=0755 recurse=yes
