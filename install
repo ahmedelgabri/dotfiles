@@ -9,10 +9,6 @@ set -Eueo pipefail
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
-if [ "$(echo "$0" | tr '[:upper:]' '[:lower:]')" == "work" ]; then
-  WORK_SETUP=1
-fi
-
 tput sgr0
 RED=$(tput setaf 1)
 ORANGE=$(tput setaf 3)
@@ -48,18 +44,6 @@ log_info() {
 
 log_success() {
   log "OK" "$GREEN" "$@"
-}
-
-get_permission() {
-  # Ask for the administrator password upfront.
-  sudo -v
-
-  # Keep-alive: update existing `sudo` time stamp until the script has finished.
-  while true; do
-    sudo -n true
-    sleep 60
-    kill -0 "$$" || exit
-  done 2>/dev/null &
 }
 
 print_main_banner() {
@@ -192,11 +176,15 @@ clone_dotfiles() {
 }
 
 install() {
-  /usr/local/bin/ansible-playbook --ask-become-pass -i inventory darwin.yml
+  if [ "$(uname)" == "Darwin" ]; then
+    /usr/local/bin/ansible-playbook --ask-become-pass -i inventory darwin.yml
+  else
+    # naivley assuming that it will be a UNIX system
+    /usr/local/bin/ansible-playbook -i inventory linux.yml
+  fi
 }
 
 all() {
-  get_permission
   package_manager
   clone_dotfiles
   install
