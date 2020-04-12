@@ -11,7 +11,7 @@
 #   pip: executable=pip2 name=pynvim
 
 - name: install neovim support via pip3
-  pip: name=pynvim
+  pip: executable=pip3 name=pynvim
 
 - name: install vim-vint
-  pip: name=vim-vint
+  pip: executable=pip3 name=vim-vint
