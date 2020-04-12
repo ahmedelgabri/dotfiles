@@ -1,1 +1,3 @@
 accounts/
+config/hooks.mutt
+scripts/mail-sync
