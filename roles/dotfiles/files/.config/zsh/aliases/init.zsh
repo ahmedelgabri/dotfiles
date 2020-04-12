@@ -39,7 +39,7 @@ else
   alias formatJSON='python -m json.tool'
 fi
 alias dots="cd $DOTFILES"
-alias work='mx lightspeed'
+alias work='mx miro'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias apache="sudo apachectl "

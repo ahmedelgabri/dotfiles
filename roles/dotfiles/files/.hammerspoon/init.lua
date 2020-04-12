@@ -14,6 +14,9 @@ if hs.host.localizedName() == 'pandoras-box' then
   spoon.SpoonInstall:andUse('URLDispatcher',
     {
       config = {
+        url_patterns = {
+          { 'https?://zoom.us/j/*', 'zoom.us.app' }
+        },
         default_handler = 'com.google.Chrome'
       },
       start = true
@@ -24,9 +27,7 @@ else
     {
       config = {
         url_patterns = {
-          { 'https?://.*SEOshop.*',  'com.google.Chrome' },
-          { 'https?://.*merchantos.*',  'com.google.Chrome' },
-          { 'https?://.*lightspeed.*',  'com.google.Chrome' },
+          { 'https?://zoom.us/j/*', 'zoom.us.app' }
         },
         default_handler = 'com.brave.Browser'
       },
