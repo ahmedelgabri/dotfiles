@@ -1,6 +1,5 @@
 # vim:tw=200
 ---
-computer_name: 'ahmed@work-miro'
 mail_accounts:
   - name: 'work'
     imap_nickname: 'Work'

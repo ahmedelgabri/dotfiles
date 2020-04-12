@@ -298,22 +298,6 @@
 - name: Set a blazingly fast keyboard repeat rate
   osx_defaults: key=InitialKeyRepeat type=int value=10
 
-- name: Set language and text formats
-  osx_defaults:
-    key: AppleLanguages
-    type: array
-    value:
-      - en_GB
-
-- name: Set language and text formats
-  osx_defaults: key=AppleLocale type=string value="en_GB@currency=EUR"
-
-- name: Set language and text formats
-  osx_defaults: key=AppleMeasurementUnits type=string value="Centimeters"
-
-- name: Set language and text formats
-  osx_defaults: key=AppleMetricUnits type=bool value=true
-
 - name: Show icons for hard drives, servers, and removable media on the desktop
   osx_defaults: domain=com.apple.finder key=ShowExternalHardDrivesOnDesktop type=bool value=true
 
@@ -414,26 +398,6 @@
 
 - name: Bypass the annoyingly slow t.co URL shortener
   osx_defaults: domain=com.tapbots.TweetbotMac key=OpenURLsDirectly type=bool value=true
-
-# - name: Set computer name (as done via System Preferences → Sharing)
-#   shell: scutil --set ComputerName "{{ computer_name }}"
-#   become: yes
-#   when: computer_name != ''
-#
-# - name: Set computer name (as done via System Preferences → Sharing)
-#   shell: scutil --set HostName "{{ computer_name }}"
-#   become: yes
-#   when: computer_name != ''
-#
-# - name: Set computer name (as done via System Preferences → Sharing)
-#   shell: scutil --set LocalHostName "{{ computer_name }}"
-#   become: yes
-#   when: computer_name != ''
-
-- name: Set computer name (as done via System Preferences → Sharing)
-  osx_defaults: domain=/Library/Preferences/SystemConfiguration/com.apple.smb.server key=NetBIOSName type=string value="{{ computer_name }}"
-  become: yes
-  when: computer_name != ''
 
 - name: Restart automatically if the computer freezes
   shell: systemsetup -setrestartfreeze on
