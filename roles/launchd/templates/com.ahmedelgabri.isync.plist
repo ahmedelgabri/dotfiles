@@ -9,7 +9,7 @@
     <array>
       <string>/bin/sh</string>
       <string>-c</string>
-      <string>exec {{ '~/.config/zsh/bin/mail-sync' | expanduser }}</string>
+      <string>exec {{ '~/.config/neomutt/scripts/mail-sync' | expanduser }}</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
