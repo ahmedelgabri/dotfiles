@@ -65,7 +65,6 @@
   loop_control:
     label: '{{ item.path | relpath }} -> {{ dest }}'
 
-# Dynamically create folders for templates if they don't exist
 - name: symlink templates
   with_items: '{{ templates.files }}'
   vars:
@@ -76,6 +75,12 @@
     dest: '{{ dest }}'
   loop_control:
     label: '{{ item.path | relpath }} -> {{ dest }}'
+
+- name: change permissions for mail-sync
+  file: path=~/.config/neomutt/scripts/mail-sync mode=a+x
+
+- name: change permissions for notmuch hooks
+  file: path=~/.mail/.notmuch/hooks mode=a+x recurse=yes
 
 - name: symlink neovim & mutt
   file: path={{ item.path }} src={{ item.src }} state=link force=yes
