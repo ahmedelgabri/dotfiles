@@ -11,7 +11,6 @@
 # set -x
 # setopt NO_GLOBAL_RCS
 
-export LANG=en_US.UTF-8
 export COLORTERM='truecolor'
 
 # Remove path separtor from WORDCHARS.

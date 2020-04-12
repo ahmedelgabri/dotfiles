@@ -3,7 +3,17 @@
 - name: create (local) LaunchAgents directory
   file: path="~/Library/LaunchAgents" state=directory
 
-- name: configure (local) LaunchAgents
+- name: configure mail sync LaunchAgents
   template:
     src: com.ahmedelgabri.isync.plist
     dest: '~/Library/LaunchAgents/com.ahmedelgabri.isync.plist'
+
+- name: configure (local) LaunchAgents
+  template: mode=0644 dest=~/Library/LaunchAgents/{{ item.label }}.plist src=run.plist
+  loop:
+    - label: setenv.lang
+      args: ['setenv', 'LANG', 'en_US.UTF-8']
+    - label: setenv.lc_time
+      args: ['setenv', 'LC_TIME', 'en_GB.UTF-8']
+  loop_control:
+    label: '{{item.label}}'
