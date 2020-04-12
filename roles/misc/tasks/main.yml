@@ -13,13 +13,10 @@
     - now
     - parker
     - prettier
-    - serve
     - source-map-explorer
     - svgo
     - dependency-cruiser
     - reason-cli@latest-macos
-    - elm-format
-    - '@elm-tooling/elm-language-server'
 
 - name: install global python packages
   pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
