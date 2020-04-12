@@ -28,10 +28,16 @@ These are the main configs:
 
 ## Installation
 
-1. Install Xcode & Command line tools, do it manually. Automation doesn't work
+1. Name your computer in System Preferences -> Sharing
+
+2. Install Xcode & Command line tools, do it manually. Automation doesn't work
    nice here.
 
-2. Run the following command
+```bash
+$ xcode-select --install
+```
+
+3. Run the following command
 
 ```bash
 $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
