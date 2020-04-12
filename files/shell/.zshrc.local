@@ -1,6 +1,0 @@
-# vim:ft=zsh:
-
-echo "================================= EDIT ME: ~/.zshrc.local ===================================================="
-export NPM_AUTH_TOKEN=
-export GITHUB_TOKEN=
-export HOMEBREW_GITHUB_API_TOKEN=

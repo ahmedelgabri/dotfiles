@@ -1,0 +1,37 @@
+# vim:tw=200
+---
+# Note: Won't work without Node (which means homebrew role has to have run
+# first, but I don't want to declare an explicit, heavyweight dependency in this
+# role).
+- name: install global yarn modules
+  yarn: name={{ item }} global=yes
+  loop:
+    - bash-language-server
+    - dockerfile-language-server-nodejs
+    - ocaml-language-server
+    - netlify-cli
+    - now
+    - parker
+    - prettier
+    - source-map-explorer
+    - svgo
+    - dependency-cruiser
+    - reason-cli@latest-macos
+
+- name: install global python packages
+  pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
+  loop:
+    - setuptools
+    - pip
+    - websocket-client
+    - poetry
+    - black
+    - pylint
+    - tuir
+    # for mutt & dump-ical.py script
+    - vobject
+
+- name: install rust
+  # I need complete for rls & LSP support
+  shell: curl https://sh.rustup.rs -sSf | sh -s -- -y --profile complete
+  ignore_errors: yes

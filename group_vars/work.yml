@@ -1,0 +1,19 @@
+# vim:tw=200
+---
+computer_name: 'ahmed@work-miro'
+mail_accounts:
+  - name: 'work'
+    imap_nickname: 'Work'
+    imap_server: imap.gmail.com
+    imap_user: ''
+    imap_keychain_account: ''
+    imap_keychain_name: gmail.com
+
+    smtp_server: smtp.gmail.com
+    smtp_from: ''
+    smtp_user: ''
+    smtp_keychain_account: ''
+    smtp_keychain_name: gmail.com
+
+    account_color: red
+    switch_to: Personal

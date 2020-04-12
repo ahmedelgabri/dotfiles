@@ -1,7 +1,7 @@
 # ~ 🍭 ~
 
 For setting up development environment on new Mac. The config is managed by
-[GNU stow](https://www.gnu.org/software/stow/)
+[Ansible](https://www.ansible.com/)
 
 ![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
 
@@ -33,32 +33,28 @@ These are the main configs:
 
 2. Run the following command
 
-By default it will install personal stuff
-
 ```bash
-$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)"
-```
-
-for work you need to pass `work` as an argument
-
-```sh
-$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/script/install)" work
+$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
 ```
 
 ### Notes
 
-- For ZSH you have to update `~/.zshrc.local` which should be copied
-  automatically, if not, you can run the following command.
+- zsh: add these to `~/.zshrc.local`
 
-```sh
-$ cp files/shell/.zshrc.local ~/.zshrc.local
+```zsh
+export HOMEBREW_GITHUB_API_TOKEN =
+export GITHUB_TOKEN =
+export GITHUB_USER =
+export GH_USER =
+export GH_PASS =
+export WEECHAT_PASSPHRASE =
 ```
 
-- For git you have to update `~/.gitconfig.local` which should be copied
-  automatically, if not, you can run the following command.
+- For git add your GPG key info in `~/.gitconfig.local`
 
-```sh
-$ cp files/git/.gitconfig.local ~/.gitconfig.local
+```
+[user]
+  signingkey =
 ```
 
 Don't forget to upload your public key to GitHub!
@@ -83,7 +79,8 @@ done.
 
 Each account must authenticate with an IMAP server and an SMTP server. The
 passwords, need be stored in the [OS X keychain][keychain]. The IMAP items
-should be named as in the `PassCmd` directive in the [`.mbsyncrc`](.mbsyncrc)
+should be named as in the `PassCmd` directive in the
+[`.config/msmtp/config`](roles/dotfiles/files/templates/.config/msmtp/config)
 file. The SMTP items should be named as `smtp://smtp.theserver.tld`. In both
 cases the account should be the login account of the server.
 
@@ -100,14 +97,14 @@ For sending mail:
 
 - An item with (for Gmail):
   - "Keychain Item Name": smtp.gmail.com (corresponds to the "host" field in
-    ~/.msmtprc).
+    ~/.config/msmtp/config).
   - "Account Name": username+mutt@example.com (corresponds to the "user" field
-    in ~/.msmtprc).
+    in ~/.config/msmtp/config).
 - An item with (for Gmail):
   - "Keychain Item Name": imap.gmail.com (corresponds to the "Host" field in
-    ~/.mbsyncrc).
+    ~/.config/msmtp/config).
   - "Account Name": username+mutt@example.com (corresponds to the "PassCmd"
-    field in ~/.mbsyncrc).
+    field in ~/.config/msmtp/config).
 
 **Repeat this for each account you want to add.**
 

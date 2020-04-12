@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+# vi:syntax=muttrc
+
+unmailboxes *
+
+{% if 'personal' in group_names %}
+macro index,pager gw "<change-folder>={{ item.switch_to }}/INBOX<enter>" "Switch account to {{ item.switch_to }}"
+{% endif %}
+
+macro index,pager gs "<change-folder>={{ item.imap_nickname }}/Starred<enter>" "go to Starred"
+macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Starred<enter>" "go to Starred"
+macro index,pager gt "<change-folder>={{ item.imap_nickname }}/Sent<enter>" "go to Sent"
+macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Sent<enter>" "go to Sent"
+macro index,pager gd "<change-folder>={{ item.imap_nickname }}/Drafts<enter>" "go to Drafts"
+macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Drafts<enter>" "go to Drafts"
+
+
+macro index,pager / "<vfolder-from-query>path:{{ item.imap_nickname }}/** " "Searching {{ item.imap_nickname }} mailbox with notmuch integration in neomutt"
+
+# alternates "^(accounts|subscribe|work|life\+?(amsterdam|dubai)?|contact|weblinks|whois)@gabri.me$"
+
+set sendmail = "/usr/local/bin/msmtp -a {{ item.name }}"
+set from = "{{ item.imap_user }}"
+set spoolfile = "+{{ item.imap_nickname }}/INBOX"
+set postponed = "+{{ item.imap_nickname }}/Drafts"
+set mbox = "+{{ item.imap_nickname }}/Archive"
+set trash = "+{{ item.imap_nickname }}/Trash"
+set header_cache = "{{ ('~/.cache/neomutt/headers/' +  item.name + '/') | expanduser }}"
+set message_cachedir = "{{ ('~/.cache/neomutt/messages/' +  item.name + '/') | expanduser }}"
+mailboxes "+{{ item.imap_nickname }}/INBOX" \
+  "+{{ item.imap_nickname }}/Starred" \
+  "+{{ item.imap_nickname }}/Sent" \
+  "+{{ item.imap_nickname }}/Drafts" \
+  "+{{ item.imap_nickname }}/Trash" \
+  "+{{ item.imap_nickname }}/Spam" \
+  `tree ~/.mail/{{ item.imap_nickname }} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+
+macro index SI "<shell-escape>mbsync {{ item.name }} -download<enter>" "sync inbox"
+macro index,pager y "<save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
+
+color status {{ item.account_color }} default
+color sidebar_highlight black {{ item.account_color }}
+color sidebar_indicator {{ item.account_color }} color0

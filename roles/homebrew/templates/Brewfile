@@ -1,0 +1,146 @@
+# vim:ft=ruby:
+# {{ ansible_managed }}
+
+cask_args appdir: '/Applications'
+
+tap "dbcli/tap"
+tap "github/gh"
+tap "homebrew/bundle"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/services"
+tap "neomutt/neomutt"
+tap "sachaos/todoist"
+tap "tavianator/tap"
+tap "universal-ctags/universal-ctags"
+
+# Core
+brew "openssl"
+brew "git"
+brew "python"
+brew "gawk"
+brew "gnu-sed"
+brew "coreutils"
+brew "findutils"
+brew "curl"
+brew "wget"
+brew "pinentry-mac"
+brew "gnupg"
+brew "zsh"
+brew "transcrypt"
+
+# Languages
+brew "node"
+brew "n"
+brew "yarn"
+brew "ruby"
+
+# Core utils
+brew "htop"
+brew "ncdu"
+brew "ripgrep"
+brew "pandoc"
+brew "urlview"
+brew "rename"
+brew "tig"
+brew "diff-so-fancy"
+brew "fd"
+brew "jq"
+brew "par"
+brew "w3m"
+brew "cloc"
+brew "loc"
+brew "tokei"
+brew "lf"
+brew "tree"
+brew "github/gh/gh"
+brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
+
+# Core apps
+brew "neovim", args: ["HEAD"]
+brew "newsboat"
+# Mail
+brew "isync"
+brew "lbdb"
+brew "msmtp"
+brew "neomutt"
+# End Mail
+brew "tmux", args: ["HEAD"]
+brew "vim"
+brew "weechat" # , args: ["with-curl"]
+brew "sachaos/todoist/todoist"
+
+# Nice to have
+brew "graphviz"
+brew "asciinema"
+brew "editorconfig"
+brew "exiftool"
+brew "hyperfine"
+brew "proselint"
+brew "bat"
+brew "lsd"
+brew "shellcheck"
+brew "shfmt" # Doesn't work with zsh, only sh & bash
+brew "grip" # Markdown previewer
+brew "pass"
+brew "yamllint"
+brew "streamlink"
+
+cask "alacritty"
+cask "1password"
+cask "alfred"
+cask "appcleaner"
+cask "box-sync"
+cask "corelocationcli"
+cask "kitty"
+cask "brave-browser"
+cask "firefox"
+cask "google-chrome"
+cask "hammerspoon"
+cask "imageoptim"
+cask "launchcontrol"
+cask "kap"
+cask "mpv"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "visual-studio-code-insiders"
+cask "webpquicklook"
+cask "zoomus"
+
+# mas "Guidance", id: 412759995
+# mas "Sip", id: 507257563
+# mas "The Unarchiver", id: 425424353
+# mas "Tweetbot", id: 557168941
+{% if 'personal' in group_names %}
+# Languages
+cask "adoptopenjdk8"
+brew "clojure"
+brew "leiningen"
+brew "candid82/brew/joker"
+brew "borkdude/brew/clj-kondo"
+
+# Core apps
+brew "youtube-dl"
+
+cask "1password-cli"
+cask "arq"
+cask "dayone-cli"
+cask "skype"
+cask "transmit"
+cask "db-browser-for-sqlite"
+cask "keybase"
+cask "figma"
+
+# mas "Day One", id: 1055511498
+# mas "Irvue", id: 1039633667
+# mas "Keynote", id: 409183694
+{% endif %}
+{% if 'work' in group_names %}
+# brew "go-jira"
+{% endif %}

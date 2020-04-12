@@ -1,0 +1,29 @@
+# vim:ft=zsh:
+
+# https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
+# Wrap git with hub
+
+emulate -L zsh
+
+command -v git >/dev/null || return 0
+
+unalias g 2>/dev/null
+
+function time_since_last_commit() {
+  local __LAST_COMMIT=$(git log --color=always -n 1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN%Creset" --date=auto:human 2>/dev/null)
+
+  printf "%s\n%s\n" "Last commit:" "$__LAST_COMMIT"
+}
+
+function g() {
+  local __CMD="$(command -v hub || command -v git)"
+
+  if [ $# -eq 0 ]; then
+    printf "%s\n\n" "$(time_since_last_commit)"
+    "$__CMD" st 2> /dev/null || "$__CMD" status --short --branch
+  else
+    "$__CMD" "$@"
+  fi
+}
+
+g "$@"

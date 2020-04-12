@@ -1,0 +1,18 @@
+# vim:tw=200
+---
+mail_accounts:
+  - name: 'Example'
+    imap_nickname: 'EXAMPLE'
+    imap_server: imap.example.com
+    imap_user: 'user@example.com'
+    imap_keychain_account: 'user@example.com'
+    imap_keychain_name: example.com
+
+    smtp_server: smtp.example.com
+    smtp_from: 'user@example.com'
+    smtp_user: 'user@example.com'
+    smtp_keychain_account: 'user@example.com'
+    smtp_keychain_name: example.com
+
+    account_color: black
+    switch_to: Example
