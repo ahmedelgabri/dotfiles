@@ -44,9 +44,6 @@ $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/inst
 ```zsh
 export HOMEBREW_GITHUB_API_TOKEN =
 export GITHUB_TOKEN =
-export GITHUB_USER =
-export GH_USER =
-export GH_PASS =
 export WEECHAT_PASSPHRASE =
 ```
 
