@@ -8,4 +8,5 @@
 
 # because of this error `zsh compinit: insecure directories, run compaudit for list.`
 - name: fix permissions in zsh folder
-  file: dest=/usr/local/share/zsh mode=0755 recurse=yes
+  file: dest=/usr/local/share/zsh/ owner={{ lookup('env','USER') }} group=staff mode=0775 state=directory recurse=yes
+  become: yes
