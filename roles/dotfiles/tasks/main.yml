@@ -11,19 +11,10 @@
 - name: find all directories in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/files/.config'
   find:
     paths: '{{ ansible_env.PWD }}/roles/dotfiles/files/.config'
-    excludes: '.DS_Store,weechat'
+    excludes: '.DS_Store'
     file_type: directory
     hidden: yes
   register: config_dirs
-
-- name: find all files that I only want to symlink without managing thier directories
-  find:
-    paths:
-      - '{{ ansible_env.PWD }}/roles/dotfiles/files/.config/weechat'
-    excludes: '.DS_Store'
-    file_type: file
-    hidden: yes
-  register: critical_files
 
 - name: find all templates in '{{ ansible_env.PWD | relpath }}/roles/dotfiles/templates'
   find:
@@ -38,7 +29,6 @@
   file: path="{{ item }}" state=directory
   with_items:
     - ~/.config
-    - ~/.config/weechat
     - ~/.config/msmtp
     - ~/.config/notmuch
     - ~/.mail
@@ -49,7 +39,7 @@
     label: '{{ item }}'
 
 - name: symlink files
-  with_items: '{{ files.files + config_dirs.files + critical_files.files }}'
+  with_items: '{{ files.files + config_dirs.files }}'
   vars:
     path: '{{ item.path | relpath | regex_replace("roles/dotfiles/files/", "") | dirname }}'
     dest: "~/{{ path + '/' if path != '' else '' }}{{ item.path | basename }}"

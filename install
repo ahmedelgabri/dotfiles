@@ -161,8 +161,8 @@ clone_dotfiles() {
       git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
       git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
       git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git &&
-      git update-index --assume-unchanged roles/dotfiles/files/weechat/sec.conf &&
-      git update-index --assume-unchanged roles/dotfiles/files/weechat/weechat.conf
+      git update-index --assume-unchanged roles/irc/files/sec.conf &&
+      git update-index --assume-unchanged roles/irc/files/weechat.conf
 
     decrypt_repo
   else
