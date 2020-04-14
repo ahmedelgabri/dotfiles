@@ -6,6 +6,7 @@
     - {role: shell, tags: shell}
     - {role: dotfiles, tags: dotfiles}
     - {role: ssh, tags: ssh}
+    - {role: gpg, tags: gpg}
     - {role: launchd, tags: launchd}
     - {role: misc, tags: misc}
     - {role: vim, tags: vim}

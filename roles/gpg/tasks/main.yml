@@ -1,0 +1,10 @@
+# vim:tw=200
+---
+- name: create ~/.config/gnupg directory
+  file: path="~/.config/gnupg" state=directory
+
+- name: symlink gpg config files
+  with_items:
+    - gpg.conf
+    - gpg-agent.conf
+  file: src='{{ ansible_env.PWD }}/roles/gpg/files/{{ item }}' path='~/.config/gnupg/{{ item }}' state=link force=true
