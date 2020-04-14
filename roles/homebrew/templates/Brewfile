@@ -90,7 +90,7 @@ cask "alacritty"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
-cask "box-sync"
+cask "box-drive"
 cask "corelocationcli"
 cask "kitty"
 cask "brave-browser"
@@ -142,5 +142,5 @@ cask "figma"
 # mas "Keynote", id: 409183694
 {% endif %}
 {% if 'work' in group_names %}
-# brew "go-jira"
+brew "go-jira"
 {% endif %}

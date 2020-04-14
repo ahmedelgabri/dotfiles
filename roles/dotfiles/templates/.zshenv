@@ -73,7 +73,7 @@ export MAILDIR="${HOME}/.mail" # will be picked up by .notmuch-config for databa
 export DOTFILES="${HOME}/.dotfiles"
 export PROJECTS="${HOME}/Sites/personal/dev"
 export WORK="${HOME}/Sites/work"
-export PERSONAL_STORAGE="${HOME}/Box Sync"
+export PERSONAL_STORAGE="${HOME}/Box"
 export NOTES_DIR="${PERSONAL_STORAGE}/notes"
 
 ############### APPS/POGRAMS XDG SPEC CLEANUP
