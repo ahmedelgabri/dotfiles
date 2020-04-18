@@ -8,3 +8,5 @@ github_username: '{{ (lookup("env", "USER") in ["ahmed", "ahmedelgabri"]) | tern
 keychain_account: "{{ (user_email == '') | ternary(user_email, (user_email | regex_replace('(.*)@(.*)', '\\1+mutt@\\2'))) }}"
 
 timezone: 'Europe/Amsterdam'
+
+mail_alias_path: '~/.config/neomutt/config/aliases'

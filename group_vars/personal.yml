@@ -1,5 +1,6 @@
 # vim:tw=200
 ---
+mail_alias_path: '~/Box/dotfiles/aliases'
 mail_accounts:
   - name: 'personal'
     imap_nickname: 'Personal'
