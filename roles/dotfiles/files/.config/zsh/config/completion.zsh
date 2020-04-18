@@ -13,7 +13,7 @@ if [[ ${TERM} == 'dumb' ]]; then
 fi
 
 # load and initialize the completion system
-autoload -Uz compinit && compinit -C -d "${ZDOTDIR:-${HOME}}/${zcompdump_file:-.zcompdump}"
+autoload -Uz compinit && compinit -C -d "${XDG_CACHE_HOME:-${HOME}}/zsh/${zcompdump_file:-.zcompdump}"
 
 # set any compdefs
 # source ${0:h}/compdefs.zsh
