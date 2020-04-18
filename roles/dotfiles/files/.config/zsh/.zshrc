@@ -55,6 +55,8 @@ function {
   (( ${+_comps} )) && _comps[zinit]=_zinit
 
   # Shell {{{
+    zinit snippet OMZP::gpg-agent
+
     zinit ice wait lucid from'gh-r' as'program'
     zinit light https://github.com/junegunn/fzf-bin
 
