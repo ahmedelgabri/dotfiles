@@ -4,9 +4,6 @@
 - name: install neovim support via npm
   yarn: name=neovim global=yes
 
-- name: install neovim support via rubygems
-  gem: name=neovim user_install=yes
-
 # - name: install neovim support via pip2
 #   pip: executable=pip2 name=pynvim
 
