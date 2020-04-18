@@ -67,7 +67,6 @@ brew "neomutt"
 # End Mail
 brew "tmux", args: ["HEAD"]
 brew "vim"
-brew "weechat" # , args: ["with-curl"]
 brew "sachaos/todoist/todoist"
 
 # Nice to have
@@ -124,6 +123,7 @@ brew "clojure"
 brew "leiningen"
 brew "candid82/brew/joker"
 brew "borkdude/brew/clj-kondo"
+brew "weechat" # , args: ["with-curl"]
 
 # Core apps
 brew "youtube-dl"
@@ -143,4 +143,6 @@ cask "figma"
 {% endif %}
 {% if 'work' in group_names %}
 brew "go-jira"
+brew "maven@3.5"
+cask "java"
 {% endif %}
