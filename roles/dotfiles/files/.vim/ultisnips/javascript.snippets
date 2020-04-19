@@ -12,8 +12,7 @@ endsnippet
 
 # Functions
 
-snippet fun "function with dynamic docblock" bA
-`!p snip.rv=jsDoc(t[2])`
+snippet fun "function" bA
 function ${1}(${2}) {
 	${0:${VISUAL}}
 }
@@ -59,7 +58,6 @@ snippet "^imp" "import x form y" brA
 import `!p snip.rv=formatVariableName(t[1])` from '${1}'
 endsnippet
 
-
 snippet me "module.exports" b
 module.exports = ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}$0
 endsnippet
@@ -68,6 +66,9 @@ snippet ed "export default" b
 export default ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}$0
 endsnippet
 
+snippet ea "export all" b
+export * from '${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}'
+endsnippet
 
 # Conditionals
 
@@ -113,20 +114,6 @@ const ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} = (
 }
 
 export default `!p snip.rv=formatVariableName(t[1])`
-endsnippet
-
-snippet scomp "React component (stateful)" b
-export default class ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} extends Component {
-	constructor(props) {
-		super(props);${2}
-	}
-
-	render() {
-		return (
-			$0
-		)
-	}
-}
 endsnippet
 
 snippet ctor "constructor()" b
@@ -202,18 +189,6 @@ shouldComponentUpdate(nextProps, nextState) {
 }
 endsnippet
 
-snippet <> "<Component>" b
-<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}>
-	${0:${VISUAL}}
-</$1>
-endsnippet
-
-snippet < "<Component />" b
-<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} ${0}/>
-endsnippet
-
-# console.log
-
 snippet cl "console.log" b
 console.log(${1})
 endsnippet
@@ -252,37 +227,6 @@ snippet cg "console.group" b
 console.group(${1})
 cosnole.log(${2})$3
 console.groupEnd()$0
-endsnippet
-
-# JSDoc
-
-snippet ** "docblock" b
-/**
-${VISUAL:/((?m)^)/ * /g}$0
-*/
-endsnippet
-
-snippet par "@param {...}"
-@param {${1:type}} ${0:name description}
-endsnippet
-
-snippet ret "@return {...}"
-@return {${1:type}} ${0}
-endsnippet
-
-
-# Misc
-
-snippet fl "flow" b
-// @flow
-endsnippet
-
-snippet "(use|strict)" "'use strict' declaration" br
-'use strict';
-endsnippet
-
-snippet jsc "JSX Comment"
-{/* ${0:${VISUAL}} */}
 endsnippet
 
 # Jest

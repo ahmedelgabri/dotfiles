@@ -19,36 +19,20 @@ ${1:Fold title} {{{
 }}}
 endsnippet
 
-snippet :d "Jan 25, 2011"
-`date "+%b %e, %Y"`
+snippet :d "2011-01-25"
+`date "+%F"`
 endsnippet
 
 snippet :dd "Sun, Jan 25"
 `date "+%a, %b %e"`
 endsnippet
 
-snippet :date "Jan 25, 2011"
-`date "+%b %e, %Y"`
-endsnippet
-
-snippet :date "Sun, Jan 25"
-`date "+%a, %b %e"`
-endsnippet
-
-snippet :date "January 25, 2011"
+snippet :ddd "January 25, 2011"
 `date "+%B %e, %Y"`
 endsnippet
 
-snippet :date "2011-01-25"
-`date "+%F"`
-endsnippet
-
-snippet :t "15:35"
+snippet :time "15:35"
 `date "+%H:%M"`
-endsnippet
-
-snippet :time "03:35PM"
-`date "+%I:%M%p"`
 endsnippet
 
 snippet :cmd
@@ -85,10 +69,6 @@ endsnippet
 
 snippet :tab
 ⇥
-endsnippet
-
-snippet :shrug "shrug ascci" b
-¯\_(ツ)_/¯
 endsnippet
 
 snippet modeline "Vim modeline"
@@ -131,6 +111,6 @@ snip.rv = comment_char.replace('%s', ' ') if not (comment_char is None) else ''
 $0
 endsnippet
 
-snippet uuid "Random UUID" w
+snippet :uuid "Random UUID" w
 `!p if not snip.c: import uuid; snip.rv = uuid.uuid4()`
 endsnippet
