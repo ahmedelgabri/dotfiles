@@ -54,6 +54,7 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/liuchengxu/vista.vim')
   call minpac#add('https://github.com/christoomey/vim-tmux-navigator', {'type': 'opt'})
   call minpac#add('https://github.com/mtth/scratch.vim')
+  call minpac#add('https://github.com/rhysd/devdocs.vim')
   " }}}
 
   " Autocompletion {{{
