@@ -85,11 +85,11 @@ function! plugins#load_plugins() abort
     execute 'packadd ' . a:name
     GoUpdateBinaries
   endfunction
-  call minpac#add('https://github.com/fatih/vim-go', {'do': function('s:go')})
+  call minpac#add('https://github.com/fatih/vim-go', {'do': function('s:go'), 'type': 'opt'})
   " Clojure
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
   call minpac#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
-  call minpac#add('https://github.com/Olical/conjure', {'tag': 'v2.1.2', 'do': '!./bin/compile'})
+  call minpac#add('https://github.com/Olical/conjure', {'tag': 'v2.1.2', 'do': '!./bin/compile', 'type': 'opt'})
   " }}}
 
   " Linters & Code quality {{{
@@ -101,8 +101,6 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/lambdalisue/vim-gista')
   call minpac#add('https://github.com/tpope/vim-fugitive')
   call minpac#add('https://github.com/tpope/vim-rhubarb')
-  call minpac#add('https://github.com/shumphrey/fugitive-gitlab.vim')
-  call minpac#add('https://github.com/tommcdo/vim-fubitive')
   call minpac#add('https://github.com/rhysd/git-messenger.vim')
   " }}}
 
