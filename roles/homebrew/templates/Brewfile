@@ -33,7 +33,6 @@ brew "transcrypt"
 brew "node"
 brew "n"
 brew "yarn"
-brew "ruby"
 
 # Core utils
 brew "htop"

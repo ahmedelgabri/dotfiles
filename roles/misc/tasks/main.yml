@@ -6,16 +6,14 @@
 - name: install global yarn modules
   yarn: name={{ item }} global=yes
   loop:
+    - node
+    - yarn
+    - prettier
+    - now
     - bash-language-server
     - dockerfile-language-server-nodejs
     - ocaml-language-server
-    - netlify-cli
-    - now
-    - parker
-    - prettier
-    - source-map-explorer
     - svgo
-    - dependency-cruiser
     - reason-cli@latest-macos
 
 - name: install global python packages
@@ -24,7 +22,6 @@
     - setuptools
     - pip
     - websocket-client
-    - poetry
     - black
     - pylint
     - tuir
