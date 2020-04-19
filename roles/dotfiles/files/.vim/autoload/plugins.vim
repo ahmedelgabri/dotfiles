@@ -62,6 +62,7 @@ function! plugins#load_plugins() abort
         \ 'coc-conjure',
         \ 'coc-css',
         \ 'coc-json',
+        \ 'coc-yaml',
         \ 'coc-java',
         \ 'coc-emmet',
         \ 'coc-python',
