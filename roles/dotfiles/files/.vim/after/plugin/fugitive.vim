@@ -2,6 +2,15 @@ if !exists('g:loaded_fugitive')
   finish
 endif
 
+let g:fugitive_miro_domains=['code.devrtb.com']
+
+if !exists('g:fugitive_browse_handlers')
+  let g:fugitive_browse_handlers = []
+endif
+
+call insert(g:fugitive_browse_handlers, miro#register('miro#get_url'))
+
+
 " Open current file on github.com
 nnoremap gb  :Gbrowse<cr>
 vnoremap gb  :Gbrowse<cr>
