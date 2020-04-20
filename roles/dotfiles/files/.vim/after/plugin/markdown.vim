@@ -1,3 +1,8 @@
+if !get(g:, 'mywaikikisetup_loaded', 0)
+  call mywaikiki#Load()
+  let g:mywaikikisetup_loaded = 1
+endif
+
 let g:vim_markdown_fenced_languages = [
       \'css',
       \'erb=eruby',

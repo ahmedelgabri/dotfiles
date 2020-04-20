@@ -4,6 +4,7 @@
 let s:NOTES_DIR = expand('$NOTES_DIR')
 
 command! -nargs=* Note call <SID>note_edit(<f-args>)
+command! -nargs=* Wiki call <SID>wiki_edit(<f-args>)
 command! -bang Notes call fzf#vim#files(s:NOTES_DIR)
 
 nnoremap <silent> <leader>sn :Notes<CR>
@@ -28,6 +29,25 @@ func! s:note_edit(...)
   else
     exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
   endif
+
+  silent! packadd goyo.vim
+  silent! Goyo
+endfunc
+
+
+func! s:wiki_edit(...)
+
+  " build the file name
+  let l:sep = ''
+  if len(a:000) > 0
+    let l:sep = '-'
+  endif
+  let l:fname = s:NOTES_DIR . '/wiki/' . join(a:000, '-') . '.md'
+
+  echo l:fname
+
+  " edit the new file
+  exec 'e ' . l:fname
 
   silent! packadd goyo.vim
   silent! Goyo
