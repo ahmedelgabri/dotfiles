@@ -6,8 +6,6 @@
 - name: install global yarn modules
   yarn: name={{ item }} global=yes
   loop:
-    - node
-    - yarn
     - prettier
     - now
     - bash-language-server
