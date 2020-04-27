@@ -40,6 +40,8 @@ if has('nvim')
   else
     let g:loaded_ruby_provider = 0
   endif
+
+  let g:loaded_perl_provider = 0
 endif
 " }}}
 
