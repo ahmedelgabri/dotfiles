@@ -9,40 +9,6 @@
 ehthumbs.db
 Thumbs.db
 
-# Folders #
-###########
-.sass-cache/
-.grunt/
-node_modules/
-.gems/
-.bundle/
-elm-stuff/
-log/
-logs/
-tmp/
-dump/
-.next/
-.cache/
-.netlify/
-
-# Editors       #
-#################
-*.sublime-project
-*.sublime-workspace
-*.code-workspace
-sublime/User/Package Control.merged-ca-bundle
-
-*.un~
-tags
-tags.*
-.local.vim
-Session.vim
-*.swp
-*.add.spl
-*.vim-rplugin~
-.netrwhist
-undodir/
-
 # Misc      #
 #############
 *.pyc
@@ -55,3 +21,11 @@ undodir/
 .ignore
 *.zwc
 *.zwc.old
+*.un~
+tags.*
+.local.vim
+Session.vim
+*.swp
+*.add.spl
+*.vim-rplugin~
+.netrwhist
