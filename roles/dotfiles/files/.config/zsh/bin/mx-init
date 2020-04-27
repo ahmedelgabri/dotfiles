@@ -3,28 +3,30 @@ set -e
 
 SESSION='_shared'
 
-open_or_log() {
-  if type "$1" >/dev/null; then
-    tmux send-keys "$1 $2" C-m
-  else
-    tmux send-keys "echo \"You need to install $1...\"" C-m
-  fi
-}
-
 create_session() {
-  tmux new-session -d -s "$SESSION" -n 'mail'
-  open_or_log neomutt
+  tmux new-session -d -s "$SESSION"
 
-  tmux new-window -n 'rss'
-  open_or_log newsboat
+  if type neomutt >/dev/null; then
+    tmux new-window -n 'mail'
+    tmux send-keys "neomutt" C-m
+  fi
 
-  tmux new-window -n 'reddit'
-  open_or_log tuir
+  if type newsboat >/dev/null; then
+    tmux new-window -n 'rss'
+    tmux send-keys "newsboat" C-m
+  fi
 
-  tmux new-window -n 'weechat'
-  # Stop Weechat from renaming the window
-  tmux set-option allow-rename off
-  open_or_log weechat
+  if type newsboat >/dev/null; then
+    tmux new-window -n 'reddit'
+    tmux send-keys "tuir" C-m
+  fi
+
+  if type weechat >/dev/null; then
+    tmux new-window -n 'weechat'
+    # Stop Weechat from renaming the window
+    tmux set-option allow-rename off
+    tmux send-keys "weechat" C-m
+  fi
 
   logpath="$PROJECTS"/knowledge
   if [ -d "$logpath" ]; then
