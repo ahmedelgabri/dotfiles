@@ -38,7 +38,6 @@ if (( $+commands[jq] )) then;
 else
   alias formatJSON='python -m json.tool'
 fi
-alias work='mx miro'
 alias play='mx ϟ'
 alias cask="brew cask"
 alias apache="sudo apachectl "

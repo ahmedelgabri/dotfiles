@@ -117,7 +117,7 @@ export HOMEBREW_REPOSITORY=${HOMEBREW_REPOSITORY:-"/usr/local/Homebrew"}
 export WEECHAT_PASSPHRASE=`security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`
 
 ############### Direnv
-export NODE_VERSIONS="${N_PREFIX}/versions/node"
+export NODE_VERSIONS="${N_PREFIX}/n/versions/node"
 export NODE_VERSION_PREFIX=""
 
 ############### Pure
