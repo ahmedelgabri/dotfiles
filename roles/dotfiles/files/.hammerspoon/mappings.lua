@@ -8,7 +8,7 @@ local focusKeys = {
   -- [s]lack
   s='Slack',
   -- [t]erminal
-  t='Kitty',
+  t='open -a kitty --args --single-instance --directory $HOME',
   -- tweet[b]ot
   b='Tweetbot',
   -- i[m]essage
@@ -17,7 +17,11 @@ local focusKeys = {
 
 for key in pairs(focusKeys) do
   hs.hotkey.bind(modalKey, key, function()
-    hs.application.launchOrFocus(focusKeys[key])
+    if key == "t" then
+      local cmd = hs.execute(focusKeys[key])
+    else
+      hs.application.launchOrFocus(focusKeys[key])
+    end
   end)
 end
 
