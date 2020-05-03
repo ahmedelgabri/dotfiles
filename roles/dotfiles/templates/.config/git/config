@@ -24,10 +24,10 @@
   editor = $EDITOR
   commitGraph = true
   whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
-  ; https://news.ycombinator.com/item?id=11388479
+  ; https://git-scm.com/docs/git-update-index#_untracked_cache
   untrackedCache = true
-  pager = diff-so-fancy | less --tabs=4 -RFX
-  ; # conflicts with Markdown
+  pager = diff-so-fancy | less -RFX
+  ; hash (#) conflicts with Markdown when I use hb to open PRs etc...
   commentChar = %
   hooksPath = ~/.config/git/hooks
 
@@ -133,8 +133,13 @@
   newHighlight = green italic 22
 
 [pager]
-  show = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
-  diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+  show-branch = true
+  status = true
+  show = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+  diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+  log  = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+  whatchanged = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+
 
 ; https://github.com/so-fancy/diff-so-fancy/issues/296
 ; [interactive]
