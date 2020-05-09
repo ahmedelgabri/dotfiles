@@ -137,8 +137,6 @@
   status = true
   show = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
   diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
-  log  = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
-  whatchanged = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
 
 
 ; https://github.com/so-fancy/diff-so-fancy/issues/296
