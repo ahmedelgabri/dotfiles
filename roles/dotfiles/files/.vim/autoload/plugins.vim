@@ -64,7 +64,6 @@ function! plugins#load_plugins() abort
         \ 'coc-json',
         \ 'coc-yaml',
         \ 'coc-java',
-        \ 'coc-emmet',
         \ 'coc-python',
         \ 'coc-rls',
         \ 'coc-tailwindcss',
