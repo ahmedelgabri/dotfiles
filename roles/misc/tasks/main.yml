@@ -8,11 +8,16 @@
   loop:
     - prettier
     - now
+    - svgo
+    - reason-cli@latest-macos
     - bash-language-server
     - dockerfile-language-server-nodejs
     - ocaml-language-server
-    - svgo
-    - reason-cli@latest-macos
+    - typescript-language-server
+    - yaml-language-server
+    - vim-language-server
+    - vscode-css-languageserver-bin
+    - vscode-json-languageserver
 
 - name: install global python packages
   pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}

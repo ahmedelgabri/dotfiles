@@ -174,15 +174,6 @@ function! utils#NeatFoldText() abort
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
-function! utils#setupCompletion() abort
-  let g:UltiSnipsExpandTrigger='<c-u>'
-  let g:UltiSnipsJumpForwardTrigger='<c-j>'
-  let g:UltiSnipsJumpBackwardTrigger='<c-k>'
-
-  let g:coc_snippet_next='<c-j>'
-  let g:coc_snippet_prev='<c-k>'
-endfunction
-
 " Project specific override
 " Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
 function! utils#sourceProjectConfig() abort

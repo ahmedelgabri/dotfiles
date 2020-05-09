@@ -57,21 +57,10 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/fcpg/vim-waikiki')
   " }}}
 
-  " Autocompletion {{{
-  let g:coc_global_extensions = [
-        \ 'coc-conjure',
-        \ 'coc-css',
-        \ 'coc-json',
-        \ 'coc-yaml',
-        \ 'coc-python',
-        \ 'coc-rls',
-        \ 'coc-tailwindcss',
-        \ 'coc-tsserver',
-        \ 'coc-ultisnips',
-        \ 'coc-vimlsp',
-        \ ]
-
-  call minpac#add('https://github.com/neoclide/coc.nvim', {'branch': 'release'})
+  " LSP/Autocompletion {{{
+  call minpac#add('https://github.com/neovim/nvim-lsp')
+  call minpac#add('https://github.com/haorenW1025/completion-nvim')
+  call minpac#add('https://github.com/haorenW1025/diagnostic-nvim')
   " }}}
 
   " Syntax {{{

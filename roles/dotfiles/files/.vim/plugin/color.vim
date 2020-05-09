@@ -14,7 +14,6 @@ augroup MyCustomColors
         \| hi! NonText ctermbg=NONE guibg=NONE
         \| if &background ==# 'dark' | hi! VertSplit gui=NONE guibg=NONE guifg=#333333 cterm=NONE ctermbg=NONE ctermfg=14 | endif
         \| hi! link Todo Comment
-        \| hi! link CocErrorVirtualText Comment
         \| hi! link Conceal NonText
         \| hi! User5 ctermfg=red guifg=red
         \| hi! User7 ctermfg=cyan guifg=cyan

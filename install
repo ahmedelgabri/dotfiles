@@ -162,9 +162,7 @@ clone_dotfiles() {
       git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
       git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git &&
       git update-index --assume-unchanged roles/irc/files/sec.conf &&
-      git update-index --assume-unchanged roles/irc/files/weechat.conf &&
-      git update-index --assume-unchanged roles/dotfiles/files/.vim/coc/extensions/package.json &&
-      git update-index --assume-unchanged roles/dotfiles/files/.vim/coc/extensions/yarn.lock
+      git update-index --assume-unchanged roles/irc/files/weechat.conf
 
     decrypt_repo
   else

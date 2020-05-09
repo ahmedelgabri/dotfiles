@@ -9,11 +9,7 @@ set shiftwidth=2                      " spaces per tab (when shifting)
 set expandtab                         " always use spaces instead of tabs
 
 set nowrap                            " no wrap
-if has('nvim-0.4.2')
-  set signcolumn=yes:2
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 if exists('+emoji')
   set noemoji
