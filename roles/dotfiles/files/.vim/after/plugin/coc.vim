@@ -6,9 +6,6 @@ endif
 
 let g:coc_data_home=g:VIMHOME . '/coc'
 let g:coc_node_path=exepath('node')
-let g:coc_filetype_map = {
-      \ 'html.twig': 'html',
-      \ }
 
 " JSON & YAML schemas http://schemastore.org/json/
 let g:coc_user_config = {
@@ -34,10 +31,10 @@ let g:coc_user_config = {
       \    'warningSign': '',
       \    'infoSign': utils#GetIcon('info'),
       \    'hintSign': utils#GetIcon('hint'),
+      \    'enableMessage': 'jump',
       \    'messageTarget': utils#has_floating_window() ? 'float' : 'echo',
-      \    'refreshOnInsertMode': 1,
       \    'locationlist': 1,
-      \    'virtualText': 1,
+      \    'virtualText': exists('*nvim_buf_set_virtual_text'),
       \    'virtualTextPrefix': ':: ',
       \  },
       \  'python': {
@@ -120,15 +117,6 @@ let g:coc_user_config = {
       \ }
 
 let s:LSP_CONFIG = [
-      \ ['flow', {
-      \   'command': exepath('flow'),
-      \   'args': ['lsp'],
-      \   'filetypes': ['javascript', 'javascript.jsx'],
-      \   'initializationOptions': {},
-      \   'requireRootPattern': 1,
-      \   'settings': {},
-      \   'rootPatterns': ['.flowconfig']
-      \ }],
       \ ['ocaml', {
       \   'command': exepath('ocaml-language-server'),
       \   'args': ['--stdio'],
@@ -153,22 +141,6 @@ let s:LSP_CONFIG = [
       \     'usePlaceholders': 1
       \   }
       \  }],
-      \ ['haskell', {
-      \    'command': exepath('hie-wrapper'),
-      \    'filetypes': ['hs', 'lhs', 'haskell'],
-      \    'rootPatterns': ['stack.yaml', 'cabal.config', 'package.yaml'],
-      \    'settings': {
-      \      'languageServerHaskell': {
-      \        'hlintOn': empty(exepath('hlint')) ? 1 : 0,
-      \      }
-      \    }
-      \  }],
-      \ ['elm', {
-      \    'command': exepath('elm-language-server'),
-      \    'filetypes': ['elm'],
-      \    'rootPatterns': ['elm.json'],
-      \    'initializationOptions': { 'elmAnalyseTrigger': 'change' },
-      \  }],
       \]
 
 let s:languageservers = {}
@@ -176,9 +148,6 @@ for [lsp, config] in s:LSP_CONFIG
   " COC chokes on emptykcommands https://github.com/neoclide/coc.nvim/issues/418#issuecomment-462106680"
   let s:not_empty_cmd = !empty(get(config, 'command'))
   if s:not_empty_cmd | let s:languageservers[lsp] = config | endif
-
-  " Disable tsserver when flow is loaded
-  if lsp ==# 'flow' && s:not_empty_cmd | call coc#config('tsserver', { 'enableJavascript': 0 }) | endif
 endfor
 
 if !empty(s:languageservers)

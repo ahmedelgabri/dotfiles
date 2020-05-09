@@ -51,6 +51,7 @@ function! statusline#statusDiagnostic() abort
   if get(info, 'warning', 0)
     call add(l:msgs, printf('%s%d %s %%*', l:CHANGE,  l:info['warning'] , utils#GetIcon('warn')))
   endif
+  call add(l:msgs, printf('%s %%*', utils#GetIcon('info')))
 
   return join(l:msgs, ' ')
 endfunction

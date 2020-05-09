@@ -3,7 +3,6 @@
     "coc-conjure": ">=0.2.2",
     "coc-css": ">=1.2.3",
     "coc-emmet": ">=1.1.4",
-    "coc-java": ">=1.4.10",
     "coc-json": ">=1.2.5",
     "coc-python": ">=1.2.12",
     "coc-rls": ">=1.1.5",
