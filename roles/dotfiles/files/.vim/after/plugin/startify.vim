@@ -29,7 +29,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Work expands to fill the time available for its completion.', '', "― C. Northcote Parkinson (Parkinson's Law)"],
       \ ['Hard Choices, Easy Life. Easy Choices, Hard Life.', '', '― Jerzy Gregory'],
       \ ['Future regret minimization is a powerful force for good judgement.', '', '― Tobi Lutke'],
-      \ ['The works must be conceived with fire in the soul but executed with clinical coolness', '', '― Joan Miró']
+      \ ['The works must be conceived with fire in the soul but executed with clinical coolness', '', '― Joan Miró'],
+      \ ['Believe those who seek the truth, doubt those who find it.', '', '― André Gide']
       \ ]
 
 let g:startify_lists = [
