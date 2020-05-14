@@ -143,4 +143,7 @@ cask "figma"
 brew "go-jira"
 brew "maven@3.5"
 cask "java"
+cask "virtualbox"
+cask "vagrant"
+cask "docker"
 {% endif %}
