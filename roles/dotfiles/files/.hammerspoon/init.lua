@@ -14,7 +14,6 @@ if hs.host.localizedName() == 'pandoras-box' then
   spoon.SpoonInstall:andUse('URLDispatcher',
     {
       config = {
-        url_patterns = {},
         default_handler = 'com.google.Chrome'
       },
       start = true
@@ -24,7 +23,9 @@ else
   spoon.SpoonInstall:andUse('URLDispatcher',
     {
       config = {
-        url_patterns = {},
+        url_patterns = {
+          {'https?://.*.devrtb.com','com.google.Chrome'}
+        },
         default_handler = 'com.brave.Browser'
       },
       start = true
