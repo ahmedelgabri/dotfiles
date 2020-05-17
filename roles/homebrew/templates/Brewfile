@@ -81,7 +81,7 @@ brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip" # Markdown previewer
 brew "pass"
 brew "yamllint"
-brew "streamlink"
+brew "lnav"
 
 cask "alacritty"
 cask "1password"
