@@ -69,7 +69,7 @@ nvim_lsp.sumneko_lua.setup{
       },
       diagnostics={
         enable=true,
-        globals={"vim"},
+        globals={"vim", "spoon", "hs"},
       },
     }
   },

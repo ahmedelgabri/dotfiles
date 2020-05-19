@@ -10,8 +10,6 @@ let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 
 let g:completion_enable_snippet = 'UltiSnips'
-let g:completion_enable_fuzzy_match = 1
-let g:completion_enable_auto_paren = 1
 
 function! s:check_back_space() abort
   let col = col('.') - 1
