@@ -38,22 +38,26 @@ function! statusline#LinterStatus() abort
 endfunction
 
 function! statusline#statusDiagnostic() abort
-  let l:info = get(b:, 'coc_diagnostic_info', {})
-  if empty(l:info)
+  if !luaeval('vim.lsp.buf.server_ready()')
     return ''
   endif
 
+  let l:errors = luaeval('vim.lsp.util.buf_diagnostics_count("Error")')
+  let l:warning = luaeval('vim.lsp.util.buf_diagnostics_count("Warning")')
   let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
-  let l:msgs = []
-  if get(l:info, 'error', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:DELETE,  l:info['error'] , utils#GetIcon('error')))
-  endif
-  if get(info, 'warning', 0)
-    call add(l:msgs, printf('%s%d %s %%*', l:CHANGE,  l:info['warning'] , utils#GetIcon('warn')))
-  endif
-  call add(l:msgs, printf('%s %%*', utils#GetIcon('info')))
+  let l:msgs = ''
 
-  return join(l:msgs, ' ')
+  if l:errors
+    let l:msgs .= printf('%s%d %s %%* ', l:DELETE,  l:errors , utils#GetIcon('error'))
+  endif
+
+  if l:warning
+    let l:msgs .= printf('%s%d %s %%* ', l:CHANGE,  l:warning , utils#GetIcon('warn'))
+  endif
+
+  let l:msgs .= printf('%s %%*', utils#GetIcon('info'))
+
+  return l:msgs
 endfunction
 
 function! statusline#gitInfo() abort

@@ -11,7 +11,7 @@ vim.fn.sign_define('LspDiagnosticsHintSign', {text='➤' or 'H', texthl='LspDiag
 
 vim.api.nvim_command('highlight! link LspDiagnosticsError DiffDelete')
 vim.api.nvim_command('highlight! link LspDiagnosticsWarning DiffChange')
-vim.api.nvim_command('highlight! link LspDiagnosticsHint DiffChange')
+vim.api.nvim_command('highlight! link LspDiagnosticsHint NonText')
 
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
