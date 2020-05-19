@@ -51,6 +51,7 @@ let g:ale_fixers = {
       \   'css'       : ['prettier'],
       \   'json'      : ['prettier'],
       \   'scss'      : ['prettier'],
+      \   'less'      : ['prettier'],
       \   'yaml'      : ['prettier'],
       \   'graphql'   : ['prettier'],
       \   'html'      : ['prettier'],
