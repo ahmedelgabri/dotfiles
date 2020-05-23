@@ -10,7 +10,7 @@ local focusKeys = {
   -- [t]erminal
   t='open -a kitty --args --single-instance --directory $HOME',
   -- tweet[b]ot
-  b='Tweetbot',
+  -- b='Tweetbot',
   -- i[m]essage
   m='Messages',
 }
@@ -25,10 +25,7 @@ for key in pairs(focusKeys) do
   end)
 end
 
-hs.hotkey.bind({}, 'f10', (function()
-  hs.alert('Hammerspoon console')
-  hs.openConsole()
-end))
+hs.hotkey.bind({}, 'f10', hs.openConsole)
 
 hs.hotkey.bind(modalKey, 'r', function()
   hs.reload()

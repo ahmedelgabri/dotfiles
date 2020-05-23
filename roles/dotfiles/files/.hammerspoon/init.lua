@@ -6,40 +6,32 @@ hs.loadSpoon('SpoonInstall')
 require 'mappings'
 require 'window-managment'
 require 'layout'
-amphetamine = require 'amphetamine'
+Amphetamine = require 'amphetamine'
 
-spoon.SpoonInstall.use_syncinstall = true
+local urlDispatcherConfig = {
+  start = true,
+  config = {
+    default_handler = 'com.google.Chrome'
+  }
+}
 
-if hs.host.localizedName() == 'pandoras-box' then
-  spoon.SpoonInstall:andUse('URLDispatcher',
-    {
-      config = {
-        default_handler = 'com.google.Chrome'
-      },
-      start = true
-    }
-    )
-else
-  spoon.SpoonInstall:andUse('URLDispatcher',
-    {
-      config = {
-        url_patterns = {
-          {'https?://.*.devrtb.com','com.google.Chrome'}
-        },
-        default_handler = 'com.brave.Browser'
-      },
-      start = true
-    }
-    )
+if hs.host.localizedName() ~= 'pandoras-box' then
+  urlDispatcherConfig.config = {
+    url_patterns = {
+      {'https?://.*.devrtb.com','com.google.Chrome'}
+    },
+    default_handler = 'com.brave.Browser'
+  }
 end
 
+spoon.SpoonInstall:andUse('URLDispatcher', urlDispatcherConfig)
 
 --
 -- Auto-reload config on change.
 --
 
-function reloadConfig(files)
-  doReload = false
+function ReloadConfig(files)
+  local doReload = false
   for _,file in pairs(files) do
     if file:sub(-4) == ".lua" then
       doReload = true
@@ -49,5 +41,7 @@ function reloadConfig(files)
     hs.reload()
   end
 end
-myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
-hs.alert.show("Config loaded")
+
+MyWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", ReloadConfig):start()
+
+hs.alert("Config loaded")
