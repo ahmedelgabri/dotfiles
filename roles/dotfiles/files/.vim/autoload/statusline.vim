@@ -8,58 +8,6 @@ function! statusline#getDiffColors() abort
   return ['%#DiffDelete#', '%#DiffChange#', '%#DiffAdd#', '%#DiffText#']
 endfunction
 
-" For a more fancy ale statusline
-" https://github.com/w0rp/ale#5iv-how-can-i-show-errors-or-warnings-in-my-statusline
-function! statusline#LinterStatus() abort
-  if !exists(':ALEInfo')
-    return ''
-  endif
-
-  let l:error_symbol = utils#GetIcon('error')
-  let l:style_symbol = utils#GetIcon('warn')
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
-  let l:status = []
-
-  if l:counts.error
-    call add(l:status, printf('%s%d %s %%*', l:DELETE,  l:counts.error, l:error_symbol))
-  endif
-  if l:counts.warning
-    call add(l:status, printf('%s%d %s %%*', l:CHANGE, l:counts.warning, l:style_symbol))
-  endif
-  if l:counts.style_error
-    call add(l:status, printf('%s%d %s %%*', l:DELETE, l:counts.style_error, l:error_symbol))
-  endif
-  if l:counts.style_warning
-    call add(l:status, printf('%s%d %s %%*', l:CHANGE, l:counts.style_warning, l:style_symbol))
-  endif
-
-  return join(l:status, ' ')
-endfunction
-
-function! statusline#statusDiagnostic() abort
-  if !luaeval('vim.lsp.buf.server_ready()')
-    return ''
-  endif
-
-  let l:errors = luaeval('vim.lsp.util.buf_diagnostics_count("Error")')
-  let l:warning = luaeval('vim.lsp.util.buf_diagnostics_count("Warning")')
-  let [l:DELETE, l:CHANGE, l:ADD, l:TEXT] = statusline#getDiffColors()
-  let l:msgs = ''
-
-  if l:errors
-    let l:msgs .= printf('%s%d %s %%* ', l:DELETE,  l:errors , utils#GetIcon('error'))
-  endif
-
-  if l:warning
-    let l:msgs .= printf('%s%d %s %%* ', l:CHANGE,  l:warning , utils#GetIcon('warn'))
-  endif
-
-  let l:msgs .= printf('%s %%*', utils#GetIcon('info'))
-
-  return l:msgs
-endfunction
-
 function! statusline#gitInfo() abort
   if !exists('*fugitive#head')
     return ''

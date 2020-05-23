@@ -28,8 +28,12 @@ function! s:PRETTIER_OPTIONS()
   return '--config-precedence prefer-file --single-quote --no-bracket-spacing --prose-wrap always --arrow-parens always --trailing-comma all --no-semi --end-of-line  lf --print-width ' . &textwidth
 endfunction
 let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
-" Auto update the option when textwidth is dynamically set or changed in a ftplugin file
-au! OptionSet textwidth let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
+
+augroup ALE
+  au!
+  " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
+  au! OptionSet textwidth let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
+augroup END
 
 let g:ale_linter_aliases = {
       \ 'mail': 'markdown',

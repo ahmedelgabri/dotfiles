@@ -48,4 +48,7 @@ augroup MyAutoCmds
   if executable('direnv')
     autocmd BufWritePost .envrc silent !direnv allow %
   endif
+  if has('nvim') && exists('*luaeval')
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
+  endif
 augroup END
