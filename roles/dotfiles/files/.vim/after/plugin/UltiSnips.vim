@@ -3,7 +3,8 @@ if !exists(':UltiSnipsAddFiletypes')
 endif
 
 let g:UltiSnipsSnippetDirectories = [
-      \ g:VIMHOME . '/ultisnips',
-      \ g:VIMHOME . '/ultisnips-private'
+      \ 'ultisnips',
+      \ 'ultisnips-private'
       \ ]
+
 let g:UltiSnipsEditSplit='context'
