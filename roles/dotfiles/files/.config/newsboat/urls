@@ -234,6 +234,7 @@
   https://www.tweag.io/rss.xml "Blog" "Haskell" "Programming"
   https://staffeng.com/rss "Blog" "Career"
   https://macwright.org/rss.xml "Blog"
+  https://swyx.io/rss.xml "Blog" "JavaScript"
 # }}}
 
 # Browsers {{{
