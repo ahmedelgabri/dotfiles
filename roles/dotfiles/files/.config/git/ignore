@@ -29,3 +29,4 @@ Session.vim
 *.add.spl
 *.vim-rplugin~
 .netrwhist
+.git-fuzzy-snapshots
