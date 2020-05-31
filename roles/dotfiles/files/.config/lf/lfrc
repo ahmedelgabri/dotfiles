@@ -1,0 +1,46 @@
+#
+# Settings
+#
+
+set color256
+set incsearch
+set previewer ~/.config/lf/preview.sh
+
+# Two columns.
+set ratios 3:4
+
+#
+# Mappings
+#
+
+# Muscle memory (from vim-vinegar): - = updir
+map - updir
+
+map gc cd ~/Sites
+map gf $test -d $f && $OPENER $f || $OPENER -R $f
+map gd cd ~/Downloads
+map gD cd ~/Documents
+map gb cd ~/Box
+map gp cd ~/Pictures
+map gr cd /
+map gt fzf
+
+map <enter> open
+
+#
+# Commands
+#
+
+cmd open ${{
+  case $(file --brief --mime-type $f) in
+    text/*) $EDITOR $fx;;
+    audio/mpeg) setsid mpv $f;;
+    video/*) setsid mpv $f > /dev/null 2 2>&1 & ;;
+    *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;; # [TODO]: fix for filenames with spaces
+  esac
+}}
+
+cmd fzf ${{
+  DIR=$(fd --type d 2> /dev/null | fzf --no-multi)
+  lf -remote "send $id cd \"$DIR\""
+}}

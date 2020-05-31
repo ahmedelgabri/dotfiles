@@ -50,6 +50,7 @@ brew "w3m"
 brew "loc"
 brew "tokei"
 brew "lf"
+brew "chafa"
 brew "tree"
 brew "github/gh/gh"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
