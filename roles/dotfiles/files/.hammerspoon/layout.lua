@@ -14,63 +14,36 @@ local apps = {
   terminal = 'Kitty',
 }
 
-
---
--- Screens
---
-
-local screens = {
-  main = hs.screen("Color LCD"),
-  thunderbolt = hs.screen("Thunderbolt Display"),
-  dell = hs.screen("DELL U2717D"),
-}
-
---
--- Layouts
---
-
-local threeMonitors = {
-  {apps.chrome, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
-  {apps.tweetbot, nil, screens.dell, hs.layout.left50, nil, nil},
-  {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
-  -- {apps.brave, nil, screens.main, hs.layout.maximized, nil, nil},
-  -- {apps.terminal, nil, screens.main, hs.layout.maximized, nil, nil},
-}
-
-local twoThunderbot = {
-  {apps.chrome, nil, screens.thunderbolt, hs.layout.maximized, nil, nil},
-  {apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil},
-  {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
-}
-
-local twoDell = {
-  {apps.chrome, nil, screens.dell, hs.layout.maximized, nil, nil},
-  {apps.tweetbot, nil, screens.dell, hs.layout.right50, nil, nil},
-  {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
-}
-
 ---
 -- Screen watcher
 ---
 
-function switchLayout()
+function SwitchLayout()
   local allScreens = hs.screen.allScreens()
+  local moreThanOneScreen = #allScreens > 1
+  local isTwoScreens = #allScreens == 2
   local contains = hs.fnutils.contains
 
-  if #allScreens == 3 and contains(allScreens, screens.main) and contains(allScreens, screens.thunderbolt) and contains(allScreens, screens.dell) then
-    -- hs.alert.show(#allScreens .. ' monitors layout activated')
-    hs.layout.apply(threeMonitors)
-  elseif #allScreens == 2 and contains(allScreens, screens.main) and contains(allScreens, screens.thunderbolt) then
-    -- hs.alert.show(#allScreens .. ' monitors: ' .. screens.thunderbolt:name() .. ' layout activated')
-    hs.layout.apply(twoThunderbot)
-  elseif #allScreens == 2 and contains(allScreens, screens.main) and contains(allScreens, screens.dell) then
-    -- hs.alert.show(#allScreens .. ' monitors: ' .. screens.dell:name() .. ' layout activated')
-    hs.layout.apply(twoDell)
-  else
-    return
+  local screens = {
+    main = hs.screen("Color LCD"), -- MBP screen
+    samsung = hs.screen("S24R65x"),
+  }
+
+  local layout = {
+    { apps.chrome  , nil, (isTwoScreens and contains(allScreens, screens.samsung)) and screens.samsung or screens.main, hs.layout.maximized, nil, nil },
+    { apps.tweetbot, nil, screens.main                                                                                , hs.layout.right30  , nil, nil },
+    { apps.slack   , nil, screens.main                                                                                , hs.layout.maximized, nil, nil },
+    { apps.brave   , nil, screens.main                                                                                , hs.layout.maximized, nil, nil },
+  }
+
+  if (moreThanOneScreen) then
+    hs.notify.show("Hammerspoon", #allScreens .. " monitor layout activated", screens.samsung:name() or screens.main:name())
   end
+
+  hs.layout.apply(layout)
 end
 
+-- SwitchLayout()
 
-local layoutWatcher = hs.screen.watcher.newWithActiveScreen(switchLayout)
+local layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout)
 layoutWatcher:start()
