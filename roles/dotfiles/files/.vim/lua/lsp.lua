@@ -1,9 +1,14 @@
 vim.cmd('packadd nvim-lsp')
 vim.cmd('packadd completion-nvim')
--- vim.cmd('packadd diagnostic-nvim')
+vim.cmd('packadd diagnostic-nvim')
 
+local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
+local has_completion, completion = pcall(require, 'completion')
+local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
 
-local nvim_lsp = require'nvim_lsp'
+if not has_lsp then
+  return
+end
 
 -- for debugging
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
@@ -38,8 +43,16 @@ local on_attach = function(client, bufnr)
   end
   vim.api.nvim_command[[autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()]]
 
-  require'completion'.on_attach()
-  -- require'diagnostic'.on_attach()
+  if has_diagnostic then
+    diagnostic.on_attach()
+  end
+
+  if has_completion then
+    completion.on_attach({
+        sorter = 'alphabet',
+        matcher = {'exact', 'fuzzy'}
+      })
+  end
 end
 
 nvim_lsp.tsserver.setup{
@@ -49,6 +62,7 @@ nvim_lsp.tsserver.setup{
   --   "--tsserver-log-file",
   --   "tslog"
   -- }
+  -- See https://github.com/neovim/nvim-lsp/issues/237
   root_dir = nvim_lsp.util.root_pattern("tsconfig.json", ".git"),
   on_attach = on_attach
 }
