@@ -61,6 +61,7 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/neovim/nvim-lsp')
   call minpac#add('https://github.com/haorenW1025/completion-nvim')
   call minpac#add('https://github.com/haorenW1025/diagnostic-nvim')
+  call minpac#add('https://github.com/steelsojka/completion-buffers')
   " }}}
 
   " Syntax {{{
