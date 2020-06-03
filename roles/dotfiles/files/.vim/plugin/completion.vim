@@ -1,5 +1,11 @@
 scriptencoding utf-8
 
+if !has('nvim')
+  " Don't load lsp in vim
+  let g:nvim_lsp=1
+  finish
+endif
+
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

@@ -1,7 +1,3 @@
-vim.cmd('packadd nvim-lsp')
-vim.cmd('packadd completion-nvim')
-vim.cmd('packadd diagnostic-nvim')
-
 local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
 local has_completion, completion = pcall(require, 'completion')
 local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
