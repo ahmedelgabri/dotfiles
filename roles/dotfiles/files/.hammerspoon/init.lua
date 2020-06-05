@@ -1,12 +1,39 @@
 -- Ensure the IPC command line client is available
 hs.ipc.cliInstall()
+-- disable animations
+hs.window.animationDuration = 0
+
 hs.application.enableSpotlightForNameSearches(true)
 hs.loadSpoon('SpoonInstall')
 
+Install = spoon.SpoonInstall
+
 require 'mappings'
-require 'window-managment'
 require 'layout'
-Amphetamine = require 'amphetamine'
+
+Install:andUse('WindowHalfsAndThirds', {
+    config = {
+      use_frame_correctness = true
+    },
+  })
+
+-- Muscle memory from  Spectacle
+spoon.WindowHalfsAndThirds:bindHotkeys({
+    max =  { {"cmd", "alt"}, "f" },
+    left_half =  { {"cmd", "alt"}, "Left" },
+    right_half =  { {"cmd", "alt"}, "Right" },
+    bottom_half =  { {"cmd", "alt"}, "Down" },
+    top_half =  { {"cmd", "alt"}, "Up" }
+  })
+
+Install:andUse('WindowScreenLeftAndRight',  {
+    hotkeys =  'default'
+  })
+
+Install:andUse('Caffeine', {
+    start = true,
+  })
+
 
 local urlDispatcherConfig = {
   start = true,
@@ -24,7 +51,7 @@ if hs.host.localizedName() ~= 'pandoras-box' then
   }
 end
 
-spoon.SpoonInstall:andUse('URLDispatcher', urlDispatcherConfig)
+Install:andUse('URLDispatcher', urlDispatcherConfig)
 
 --
 -- Auto-reload config on change.
