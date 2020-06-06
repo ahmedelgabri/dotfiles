@@ -42,7 +42,6 @@ augroup MyAutoCmds
   autocmd FileType lisp,scheme,clojure packadd conjure | packadd rainbow_parentheses.vim | packadd vim-sexp | RainbowParentheses
   autocmd FileType go packadd vim-go
 
-  autocmd BufWritePre,FileWritePre * call utils#create_directories()
   autocmd BufEnter,BufWinEnter,BufRead,BufNewFile bookmarks.{md,txt} hi! link mkdLink Normal | set concealcursor-=n
 
   if executable('direnv')

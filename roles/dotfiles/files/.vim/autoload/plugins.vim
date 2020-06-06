@@ -33,6 +33,7 @@ function! plugins#load_plugins() abort
 
   call minpac#add('https://github.com/justinmk/vim-dirvish')
   call minpac#add('https://github.com/kristijanhusak/vim-dirvish-git')
+  call minpac#add('https://github.com/duggiefresh/vim-easydir')
   call minpac#add('https://github.com/junegunn/vim-peekaboo')
   call minpac#add('https://github.com/mbbill/undotree', { 'type': 'opt' })
   call minpac#add('https://github.com/mhinz/vim-grepper', { 'type': 'opt' })
