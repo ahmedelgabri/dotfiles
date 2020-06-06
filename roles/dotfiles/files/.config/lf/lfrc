@@ -5,9 +5,45 @@
 set color256
 set incsearch
 set previewer ~/.config/lf/preview.sh
+set promptfmt "\033[34;1m%w\033[0m"
+set shellopts '-eu'
+set ifs "\n"
 
 # Two columns.
-set ratios 3:4
+set ratios 1:2
+
+
+#
+# Commands
+#
+
+cmd open ${{
+  case $(file --brief --mime-type $f) in
+    text/*) $EDITOR $fx;;
+    audio/*) setsid mpv --audio-display=no $f;;
+    video/*) setsid mpv $f -quiet >/dev/null 2>&1;;
+    *) for f in $fx; do setid $OPENER $f > /dev/null 2> /dev/null & done;;
+  esac
+}}
+
+cmd fzf ${{
+  DIR=$(fd --type d 2> /dev/null | fzf --no-multi)
+  lf -remote "send $id cd \"$DIR\""
+}}
+
+# https://godoc.org/github.com/gokcehan/lf#hdr-Changing_Directory
+# cmd on-cd &{{
+#     # display git repository status in your prompt
+#     source /usr/local/Cellar/git/2.26.2_1/etc/bash_completion.d/git-prompt.sh
+#     GIT_PS1_SHOWDIRTYSTATE=auto
+#     GIT_PS1_SHOWSTASHSTATE=auto
+#     GIT_PS1_SHOWUNTRACKEDFILES=auto
+#     GIT_PS1_SHOWUPSTREAM=auto
+#     git=$(__git_ps1 " (%s)") || true
+#     fmt="\033[34;1m%w\033[0m$git\033[0m"
+#     lf -remote "send $id set promptfmt \"$fmt\""
+# }}
+# on-cd
 
 #
 # Mappings
@@ -26,21 +62,3 @@ map gr cd /
 map gt fzf
 
 map <enter> open
-
-#
-# Commands
-#
-
-cmd open ${{
-  case $(file --brief --mime-type $f) in
-    text/*) $EDITOR $fx;;
-    audio/mpeg) setsid mpv $f;;
-    video/*) setsid mpv $f > /dev/null 2 2>&1 & ;;
-    *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;; # [TODO]: fix for filenames with spaces
-  esac
-}}
-
-cmd fzf ${{
-  DIR=$(fd --type d 2> /dev/null | fzf --no-multi)
-  lf -remote "send $id cd \"$DIR\""
-}}
