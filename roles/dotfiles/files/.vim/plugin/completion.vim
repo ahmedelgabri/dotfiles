@@ -16,6 +16,8 @@ let g:completion_chain_complete_list = [
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent><expr> <c-p> completion#trigger_completion()
+imap <leader>j <cmd>lua require'source'.prevCompletion()<CR>
+imap <leader>k <cmd>lua require'source'.nextCompletion()<CR>
 
 let g:UltiSnipsExpandTrigger='<c-u>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
