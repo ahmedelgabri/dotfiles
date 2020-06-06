@@ -68,18 +68,6 @@
 - name: change permissions for notmuch hooks
   file: path=~/.mail/.notmuch/hooks mode=a+x recurse=yes
 
-- name: symlink neovim & mutt
-  file: path={{ item.path }} src={{ item.src }} state=link force=yes
-  loop_control:
-    label: '{{ item.path }}'
-  loop:
-    - title: 'nvim to vim'
-      path: ~/.config/nvim
-      src: ~/.vim
-    - title: 'mutt to neomutt'
-      path: ~/.config/mutt
-      src: ~/.config/neomutt
-
 - name: create accounts directory
   file: path="~/.config/neomutt/accounts" state=directory
 

@@ -1,11 +1,18 @@
 # vim:tw=200
 ---
+- name: symlink config
+  file: path={{ item.path }} src='{{ ansible_env.PWD }}/roles/vim/files/.vim' state=link force=yes
+  loop_control:
+    label: '{{ item.path }}'
+  loop:
+    - title: 'neovim'
+      path: ~/.config/nvim
+    - title: 'vim'
+      path: ~/.vim
+
 # Buggy, see https://github.com/ansible/ansible/issues/68827
 - name: install neovim support via npm
   yarn: name=neovim global=yes
-
-# - name: install neovim support via pip2
-#   pip: executable=pip2 name=pynvim
 
 - name: install neovim support via pip3
   pip: executable=pip3 name=pynvim
