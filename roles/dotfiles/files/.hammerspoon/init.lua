@@ -17,13 +17,13 @@ Install:andUse('WindowHalfsAndThirds', {
     },
   })
 
--- Muscle memory from  Spectacle
+-- Muscle memory from Spectacle
 spoon.WindowHalfsAndThirds:bindHotkeys({
-    max =  { {"cmd", "alt"}, "f" },
-    left_half =  { {"cmd", "alt"}, "Left" },
-    right_half =  { {"cmd", "alt"}, "Right" },
-    bottom_half =  { {"cmd", "alt"}, "Down" },
-    top_half =  { {"cmd", "alt"}, "Up" }
+    max = { {"cmd", "alt"}, "f" },
+    left_half = { {"cmd", "alt"}, "Left" },
+    right_half = { {"cmd", "alt"}, "Right" },
+    bottom_half = { {"cmd", "alt"}, "Down" },
+    top_half = { {"cmd", "alt"}, "Up" }
   })
 
 Install:andUse('WindowScreenLeftAndRight',  {
