@@ -3,39 +3,44 @@
 
 let s:NOTES_DIR = expand('$NOTES_DIR')
 
-command! -nargs=* Note call <SID>note_edit(<f-args>)
-command! -nargs=* Wiki call <SID>wiki_edit(<f-args>)
+command! -complete=customlist,GetNotesCompletion -nargs=? Note call <SID>note_edit(<f-args>)
+command! -nargs=? Wiki call <SID>wiki_edit(<f-args>)
 command! -bang Notes call fzf#vim#files(s:NOTES_DIR)
 
 nnoremap <silent> <leader>sn :Notes<CR>
 
-func! s:note_edit(...)
+func! GetNotesCompletion(ArgLead, CmdLine, CursorPos) abort
+  return map(getcompletion(s:NOTES_DIR . '/*/**/', 'dir'), {i,v -> substitute(v, '\m\C^'.$HOME.'/', '~/', '')})
+endfunc
+
+func! s:note_edit(...) abort
 
   " build the file name
-  let l:sep = ''
-  if len(a:000) > 0
-    let l:sep = '-'
-  endif
-  let l:fname = s:NOTES_DIR . '/' . strftime('%Y/%m/%d/%H-%M-%S') . l:sep . join(a:000, '-') . '.md'
+  let l:sep = '-'
+  let l:path = s:NOTES_DIR . '/'
+  let l:fname = len(a:000) > 0 ? trim(a:000[0]) : ''
 
-  echo l:fname
+  if len(a:000) > 0 && stridx(a:000[0], "~/") == 0
+    let l:path = fnamemodify(a:000[0], ':h') . '/'
+    let l:fname = fnamemodify(a:000[0], ':t:r')
+  endif
+
+  let l:path .= strftime('%Y/%m/%d/%H-%M-%S') . (l:fname !=# '' ? l:sep : '') . l:fname . '.md'
+
+  echo l:path
 
   " edit the new file
-  exec 'e ' . l:fname
+  exec 'e ' . l:path
 
-  " enter the title and timestamp (using ultisnips) in the new file
-  if len(a:000) > 0
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . join(a:000) . "\<cr>\<esc>G"
-  else
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
-  endif
+  " Add metadata (date, etc...) on the top of the file
+  exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . l:fname . "\<cr>\<esc>G"
 
   silent! packadd goyo.vim
   silent! Goyo
 endfunc
 
 
-func! s:wiki_edit(...)
+func! s:wiki_edit(...) abort
 
   " build the file name
   let l:sep = ''
