@@ -19,7 +19,7 @@ vim.api.nvim_command('highlight! link LspDiagnosticsError DiffDelete')
 vim.api.nvim_command('highlight! link LspDiagnosticsWarning DiffChange')
 vim.api.nvim_command('highlight! link LspDiagnosticsHint NonText')
 
-vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 local on_attach = function(client, bufnr)
   local resolved_capabilities = client.resolved_capabilities
