@@ -35,9 +35,9 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
 
 let g:startify_lists = [
       \ { 'type': 'commands' },
+      \ { 'header': [ '   Bookmarks' ], 'type': 'bookmarks' },
       \ { 'header': [ '   Sessions' ], 'type': 'sessions' },
       \ { 'header': [ '   Files [' . getcwd() . ']' ], 'type': 'dir' },
-      \ { 'header': [ '   Bookmarks' ], 'type': 'bookmarks' },
       \ { 'header': [ '   MRU' ], 'type': 'files' },
       \ ]
 
