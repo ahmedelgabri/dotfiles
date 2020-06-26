@@ -7,7 +7,7 @@
   yarn: name={{ item }} global=yes
   loop:
     - prettier
-    - now
+    - vercel
     - svgo
     - reason-cli@latest-macos
     - bash-language-server
@@ -20,7 +20,9 @@
     - vscode-json-languageserver
 
 - name: install global python packages
-  pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
+  pip:
+    executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else
+    '--upgrade' }}
   loop:
     - setuptools
     - pip
@@ -33,6 +35,7 @@
 
 - name: install rust
   shell:
-    CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo" curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && ~/.local/share/cargo/bin/rustup component add
-    rls rust-analysis rust-src
+    CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo" curl --proto
+    '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    && ~/.local/share/cargo/bin/rustup component add rls rust-analysis rust-src
   ignore_errors: yes
