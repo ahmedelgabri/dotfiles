@@ -60,8 +60,8 @@ function! plugins#load_plugins() abort
 
   " LSP/Autocompletion {{{
   call minpac#add('https://github.com/neovim/nvim-lsp')
-  call minpac#add('https://github.com/haorenW1025/completion-nvim')
-  call minpac#add('https://github.com/haorenW1025/diagnostic-nvim')
+  call minpac#add('https://github.com/nvim-lua/completion-nvim')
+  call minpac#add('https://github.com/nvim-lua/diagnostic-nvim')
   call minpac#add('https://github.com/steelsojka/completion-buffers')
   " }}}
 

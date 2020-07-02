@@ -6,6 +6,15 @@ if !has('nvim')
   finish
 endif
 
+let g:UltiSnipsExpandTrigger='<c-u>'
+let g:UltiSnipsJumpForwardTrigger='<c-j>'
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+
+let g:completion_enable_snippet = 'UltiSnips'
+" Change the completion source automatically if no completion availabe
+let g:completion_auto_change_source = 1
+" Delete on completion
+let g:completion_trigger_on_delete = 1
 let g:completion_chain_complete_list = [
       \{'complete_items': ['lsp', 'snippet', 'buffers']},
       \{'mode': '<c-p>'},
@@ -19,12 +28,6 @@ inoremap <silent><expr> <c-p> completion#trigger_completion()
 imap <localleader>j <cmd>lua require'source'.prevCompletion()<CR>
 imap <localleader>k <cmd>lua require'source'.nextCompletion()<CR>
 
-let g:UltiSnipsExpandTrigger='<c-u>'
-let g:UltiSnipsJumpForwardTrigger='<c-j>'
-let g:UltiSnipsJumpBackwardTrigger='<c-k>'
-
-let g:completion_enable_snippet = 'UltiSnips'
-let g:diagnostic_enable_virtual_text = 1
 
 function! s:check_back_space() abort
   let col = col('.') - 1
