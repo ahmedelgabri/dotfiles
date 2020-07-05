@@ -63,9 +63,6 @@ function {
     zinit ice wait lucid as'command' multisrc'shell/{completion,key-bindings}.zsh' id-as'junegunn/fzf_completions' pick'bin/fzf-tmux'
     zinit light https://github.com/junegunn/fzf
 
-    zinit ice wait lucid as'command' pick'bin/git-fuzzy'
-    zinit light https://github.com/bigH/git-fuzzy
-
     zinit ice wait lucid from'gh-r' as'program' \
       mv'zoxide* -> zoxide' atclone'echo "unalias zi 2> /dev/null " > zhook.zsh && ./zoxide init zsh --hook pwd >> zhook.zsh' atpull'%atclone' src'zhook.zsh'
     zinit light https://github.com/ajeetdsouza/zoxide
@@ -132,7 +129,6 @@ function {
   # PLUGINS VARS & SETTINGS
   ##############################################################
   ############### git fuzzy
-  export GF_SNAPSHOT_DIRECTORY='./.git-fuzzy-snapshots'
 
   ############### FZF
   export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
