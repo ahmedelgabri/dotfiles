@@ -67,7 +67,7 @@ function {
     zinit light https://github.com/bigH/git-fuzzy
 
     zinit ice wait lucid from'gh-r' as'program' \
-      mv'zoxide* -> zoxide' atclone'./zoxide init zsh --hook pwd > zhook.zsh' atpull'%atclone' src'zhook.zsh'
+      mv'zoxide* -> zoxide' atclone'echo "unalias zi 2> /dev/null " > zhook.zsh && ./zoxide init zsh --hook pwd >> zhook.zsh' atpull'%atclone' src'zhook.zsh'
     zinit light https://github.com/ajeetdsouza/zoxide
 
     zinit ice wait lucid as'program' \
