@@ -33,7 +33,7 @@ func! s:note_edit(...) abort
   exec 'e ' . l:path
 
   " Add metadata (date, etc...) on the top of the file
-  exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . l:fname . "\<cr>\<esc>G"
+  exec "normal ggO---\<cr>date: \<c-r>=strftime('%A %B %d, %Y %H:%M')\<cr>\<cr>title: " . l:fname . "\<cr>---\<cr>\<esc>G"
 
   silent! packadd goyo.vim
   silent! Goyo
