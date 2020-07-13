@@ -25,8 +25,8 @@ let g:completion_chain_complete_list = [
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent><expr> <c-p> completion#trigger_completion()
-imap <localleader>j <cmd>lua require'source'.prevCompletion()<CR>
-imap <localleader>k <cmd>lua require'source'.nextCompletion()<CR>
+imap <localleader>j <Plug>(completion_prev_source)
+imap <localleader>k <Plug>(completion_prev_source)
 
 
 function! s:check_back_space() abort
