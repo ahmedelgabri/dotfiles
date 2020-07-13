@@ -125,28 +125,28 @@ function! utils#should_turn_off_colorcolumn() abort
         \|| &buftype ==# 'terminal' || &readonly
 endfunction
 
-function! utils#setOverLength()
+function! utils#highlight_overlength()
+  if exists('w:last_overlength')
+    silent! call matchdelete(w:last_overlength)
+    silent! unlet w:last_overlength
+  endif
+
   if utils#should_turn_off_colorcolumn()
     match NONE
   else
-    " Stolen from https://github.com/whatyouhide/vim-lengthmatters/blob/74e248378544ac97fb139803b39583001c83d4ef/plugin/lengthmatters.vim#L17-L33
-    let s:overlengthCmd = 'highlight OverLength'
-    for l:md in ['cterm', 'term', 'gui']
-      let l:bg = utils#get_color('WildMenu', 'bg', l:md)
-      let l:fg = utils#get_color('Normal', 'fg', l:md)
-
-      if has('gui_running') && l:md !=# 'gui'
-        continue
-      endif
-
-      if !empty(l:bg) | let s:overlengthCmd .= ' ' . l:md . 'bg=' . l:bg | endif
-      if !empty(l:fg) | let s:overlengthCmd .= ' ' . l:md . 'fg=' . l:fg | endif
-    endfor
-    exec s:overlengthCmd
     " Use tw + 1 so invisble characters are not marked
-    let s:overlengthSize = &textwidth
-    execute 'match OverLength /\%>'. s:overlengthSize .'v.*/'
+    let w:overlength_pattern = '\%>'. (&textwidth + 1) .'v.\+'
+    let w:last_overlength = matchadd('OverLength', w:overlength_pattern)
   endif
+endfunction
+
+function! utils#highlight_git_markers()
+  if exists('w:last_git_markers')
+    silent! call matchdelete(w:last_git_markers)
+    silent! unlet w:last_git_markers
+  endif
+
+  let w:last_git_markers = matchadd('ErrorMsg', '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$')
 endfunction
 
 function! utils#should_strip_whitespace(filetypelist) abort
