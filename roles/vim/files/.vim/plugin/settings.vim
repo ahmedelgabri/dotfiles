@@ -62,6 +62,7 @@ set complete+=kspell
 " Only run autocommands owned by me
 " http://andrew.stwrt.ca/posts/project-specific-vimrc/
 set secure
+" set exrc
 
 if has('virtualedit')
   set virtualedit=block               " allow cursor to move where there is no text in visual block mode
@@ -144,6 +145,8 @@ set hidden
 
 " Make tilde command behave like an operator.
 set tildeop
+
+set updatetime=1000
 
 " Make sure diffs are always opened in vertical splits, also match my git settings
 set diffopt+=vertical,algorithm:histogram,indent-heuristic,hiddenoff
