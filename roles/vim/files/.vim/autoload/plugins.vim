@@ -80,7 +80,7 @@ function! plugins#load_plugins() abort
   " Clojure
   call minpac#add('https://github.com/junegunn/rainbow_parentheses.vim', {'type': 'opt'})
   call minpac#add('https://github.com/guns/vim-sexp', {'type': 'opt'})
-  call minpac#add('https://github.com/Olical/conjure', {'tag': 'v4.0.0', 'type': 'opt'})
+  call minpac#add('https://github.com/Olical/conjure', {'tag': 'v4.1.0', 'type': 'opt'})
   " }}}
 
   " Linters & Code quality {{{
