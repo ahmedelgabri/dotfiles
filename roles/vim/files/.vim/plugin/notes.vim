@@ -18,11 +18,11 @@ func! s:note_edit(...) abort
   " build the file name
   let l:sep = '-'
   let l:path = s:NOTES_DIR . '/'
-  let l:fname = len(a:000) > 0 ? trim(a:000[0]) : ''
+  let l:fname = len(a:000) > 0 ? tolower(trim(a:000[0])) : ''
 
   if len(a:000) > 0 && stridx(a:000[0], "~/") == 0
     let l:path = fnamemodify(a:000[0], ':h') . '/'
-    let l:fname = fnamemodify(a:000[0], ':t:r')
+    let l:fname = tolower(fnamemodify(a:000[0], ':t:r'))
   endif
 
   let l:path .= strftime('%Y/%m/%d/%H-%M-%S') . (l:fname !=# '' ? l:sep : '') . l:fname . '.md'
