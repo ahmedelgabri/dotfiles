@@ -1,3 +1,4 @@
+---
 window:
   # Window dimensions (changes require restart)
   #
@@ -6,6 +7,8 @@ window:
   dimensions:
     columns: 0
     lines: 0
+
+  dynamic_title: true
 
   # Window padding (changes require restart)
   #
@@ -187,7 +190,7 @@ colors:
 #   - Linear
 #
 # Specifying a `duration` of `0` will disable the visual bell.
-visual_bell:
+bell:
   animation: EaseOutExpo
   duration: 0
 
@@ -230,8 +233,6 @@ selection:
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: false
-
-dynamic_title: true
 
 # Cursor style
 #
