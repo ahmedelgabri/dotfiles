@@ -5,7 +5,7 @@ endif
 
 augroup filetypedetect
   autocmd!
-  autocmd BufRead,BufNewFile jrnl*.txt,TODO,*.mdx setfiletype markdown
+  autocmd BufRead,BufNewFile jrnl*.txt,TODO setfiletype markdown
   autocmd BufRead,BufNewFile {Gemfile,Brewfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake} setfiletype ruby
   autocmd BufRead,BufNewFile .{babel,eslint,stylelint,jshint}rc,.tern-* setfiletype json
   autocmd BufRead,BufNewFile .prettierrc setfiletype yaml
