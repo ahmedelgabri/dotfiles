@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# https://status.npmjs.org/api#status
+GITHUB_STATUS=$(curl -sS https://wyvgptkd90hm.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
+
+INDICATIOR="#[fg=colour237]⦁"
+
+case $GITHUB_STATUS in
+ma* | cri*)
+  STATUS="#[fg=red]   $INDICATOR "
+  ;;
+mi*)
+  STATUS="#[fg=yellow]   $INDICATIOR "
+  ;;
+*)
+  STATUS=""
+  ;;
+esac
+
+printf "%s" "$STATUS"
