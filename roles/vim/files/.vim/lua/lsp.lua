@@ -9,15 +9,9 @@ end
 -- for debugging
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 
--- highlights
-vim.fn.sign_define('LspDiagnosticsErrorSign', {text='✖ ' or 'E', texthl='LspDiagnosticsError', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsWarningSign', {text='⚠' or 'W', texthl='LspDiagnosticsWarning', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsInformationSign', {text='ℹ' or 'I', texthl='LspDiagnosticsInformation', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsHintSign', {text='➤' or 'H', texthl='LspDiagnosticsHint', linehl='', numhl=''})
-
-vim.api.nvim_command('highlight! link LspDiagnosticsError DiffDelete')
-vim.api.nvim_command('highlight! link LspDiagnosticsWarning DiffChange')
-vim.api.nvim_command('highlight! link LspDiagnosticsHint NonText')
+if has_completion then
+  vim.api.nvim_command("autocmd BufEnter * lua require'completion'.on_attach()")
+end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -26,10 +20,6 @@ local on_attach = function(client, bufnr)
 
   if has_diagnostic then
     diagnostic.on_attach()
-  end
-
-  if has_completion then
-    completion.on_attach()
   end
 
   -- Mappings.

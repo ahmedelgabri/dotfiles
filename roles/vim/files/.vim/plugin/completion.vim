@@ -9,23 +9,55 @@ endif
 let g:UltiSnipsExpandTrigger='<c-u>'
 let g:UltiSnipsJumpForwardTrigger='<c-j>'
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+" highlights
+call sign_define("LspDiagnosticsErrorSign", {"text": utils#GetIcon('error'), "texthl":"LspDiagnosticsError", "linehl":"", "numhl":""})
+call sign_define("LspDiagnosticsWarningSign", {"text":"⚠", "texthl":"LspDiagnosticsWarning", "linehl":"", "numhl":""})
+call sign_define("LspDiagnosticsInformationSign", {"text": utils#GetIcon('warn'), "texthl":"LspDiagnosticsInformation", "linehl":"", "numhl":""})
+call sign_define("LspDiagnosticsHintSign", {"text": utils#GetIcon('hint'), "texthl":"LspDiagnosticsHint", "linehl":"", "numhl":""})
 
 let g:completion_enable_snippet = 'UltiSnips'
-" Change the completion source automatically if no completion availabe
-let g:completion_auto_change_source = 1
-" Delete on completion
-let g:completion_trigger_on_delete = 1
-let g:completion_chain_complete_list = [
-      \{'complete_items': ['lsp', 'snippet', 'buffers']},
-      \{'mode': '<c-p>'},
-      \{'mode': '<c-n>'}
-      \]
+highlight! link LspDiagnosticsError DiffDelete
+highlight! link LspDiagnosticsWarning DiffChange
+highlight! link LspDiagnosticsHint NonText
 
+let g:completion_customize_lsp_label = {
+      \ 'Function': ' [function]',
+      \ 'Method': ' [method]',
+      \ 'Reference': ' [refrence]',
+      \ 'Enum': ' [enum]',
+      \ 'Field': 'ﰠ [field]',
+      \ 'Keyword': ' [key]',
+      \ 'Variable': ' [variable]',
+      \ 'Folder': ' [folder]',
+      \ 'Snippet': ' [snippet]',
+      \ 'Operator': ' [operator]',
+      \ 'Module': ' [module]',
+      \ 'Text': 'ﮜ[text]',
+      \ 'Class': ' [class]',
+      \ 'Interface': ' [interface]'
+      \}
+
+"  completion-nvim
+let g:completion_auto_change_source = 1 " Change the completion source automatically if no completion availabe
+let g:completion_matching_ignore_case = 1
+let g:completion_trigger_on_delete = 1
+let g:completion_chain_complete_list = {
+      \ 'default' : {
+      \   'default': [
+      \       {'complete_items': ['lsp', 'snippet']},
+      \       {'complete_items': ['buffers']},
+      \       {'mode': '<c-p>'},
+      \       {'mode': '<c-n>'},
+      \       {'mode': 'dict'}
+      \   ],
+      \   'string' : [
+      \       {'complete_items': ['path'], 'triggered_only': ['/']}]
+      \   }}
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent><expr> <c-p> completion#trigger_completion()
-imap <localleader>j <Plug>(completion_prev_source)
+imap <localleader>j <Plug>(completion_next_source)
 imap <localleader>k <Plug>(completion_prev_source)
 
 
