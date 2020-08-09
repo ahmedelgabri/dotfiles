@@ -1,0 +1,17 @@
+{
+  "autocommand": {
+    "prefix": ["au"],
+    "body": ["autocmd $TM_SELECTED_TEXT"],
+    "description": "Example for selected text"
+  },
+  "modeline": {
+    "prefix": ["modeline"],
+    "body": ["${LINE_COMMENT} vim:ft=$0"],
+    "description": "vim modeline"
+  },
+  "vimfold": {
+    "prefix": ["vimfold"],
+    "body": ["${1:Fold title} {{{", "\t${0:${TM_SELECTED_TEXT}}", "}}}"],
+    "description": "vimfold"
+  }
+}

@@ -25,7 +25,8 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/andymass/vim-matchup')
   call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
   call minpac#add('https://github.com/jiangmiao/auto-pairs')
-  call minpac#add('https://github.com/SirVer/ultisnips')
+  call minpac#add('https://github.com/hrsh7th/vim-vsnip')
+  call minpac#add('https://github.com/hrsh7th/vim-vsnip-integ')
 
   " I have the bin globally, so don't build, and just grab plugin directory
   call minpac#add('https://github.com/junegunn/fzf')

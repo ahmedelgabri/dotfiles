@@ -1,0 +1,82 @@
+{
+  "Comment": {
+    "prefix": "comment",
+    "description": "Comment block",
+    "body": ["{% comment \"$1\" %}", "$2", "{% endcomment %}"]
+  },
+  "var": {
+    "prefix": "var",
+    "description": "Empty Var",
+    "body": ["{{ $1 }}"]
+  },
+  "tag": {
+    "prefix": "tag",
+    "description": "Empty tag",
+    "body": ["{% $1 %}"]
+  },
+  "CSRF": {
+    "prefix": "csrf",
+    "description": "CSRF token",
+    "body": ["{% csrf_token %}"]
+  },
+  "Extends": {
+    "prefix": "extends",
+    "description": "Extends block",
+    "body": ["{% extends \"$1\" %}"]
+  },
+  "For loop": {
+    "prefix": "for",
+    "description": "For loop",
+    "body": ["{% for $1 in $2 %}", "$3", "{% endfor %}"]
+  },
+  "For-Empty loop": {
+    "prefix": "forempty",
+    "description": "For-Empty loop",
+    "body": ["{% for $1 in $2 %}", "$3", "{% empty %}", "$4", "{% endfor %}"]
+  },
+  "If condition": {
+    "prefix": "if",
+    "description": "IF condition",
+    "body": ["{% if $1 %}", "$2", "{% else %}", "{% endif %}"]
+  },
+  "Include": {
+    "prefix": "include",
+    "description": "Include other templates",
+    "body": ["{% include \"$1\" %}"]
+  },
+  "Lorem": {
+    "prefix": "lorem",
+    "description": "Generate Lorem Text Block",
+    "body": ["{% lorem ${how_many_paragraphs} %}"]
+  },
+  "Spaceless": {
+    "prefix": "spaceless",
+    "description": "Removes whitespaces in between",
+    "body": ["{% spaceless %}", "$1", "{% endspaceless %}"]
+  },
+  "Super": {
+    "prefix": "super",
+    "description": "Super block",
+    "body": ["{{ block.super }}"]
+  },
+  "Template Block": {
+    "prefix": "block",
+    "description": "Creates a block",
+    "body": ["{% block $1 %}", "$2", "{% endblock $1 %}"]
+  },
+  "URL": {
+    "prefix": "url",
+    "description": "URL tag",
+    "body": ["{% url '${some-url-name}' ${arg} %}"]
+  },
+  "With": {
+    "prefix": "with",
+    "description": "With block",
+    "body": ["{% with ${local_var}=${context_var} %}", "$1", "{% endwith %}"]
+  },
+  "Static": {
+    "prefix": "static",
+    "description": "Static file",
+    "body": ["{% static '$1' %}"]
+  }
+}

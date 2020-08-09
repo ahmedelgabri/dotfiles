@@ -1,0 +1,24 @@
+{
+  "react boilerplate": {
+    "prefix": "react",
+    "body": [
+      "import * as React from 'react'",
+      "",
+      "interface ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props {\n\t\n}",
+      "",
+      "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${2:props}:${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props) {\n\t$0\n}",
+      "",
+      "export default ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}"
+    ],
+    "description": "React boilerplate"
+  },
+  "react component": {
+    "prefix": "comp",
+    "body": [
+      "interface ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props {\n\t\n}",
+      "",
+      "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${2:props}:${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props) {\n\t$0\n}"
+    ],
+    "description": "React component"
+  }
+}

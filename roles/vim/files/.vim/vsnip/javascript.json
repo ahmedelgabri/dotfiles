@@ -1,0 +1,245 @@
+{
+  "Pretty JSON": {
+    "prefix": ["pretty"],
+    "body": ["console.log(JSON.stringify($1, null, 2))"],
+    "description": "pretty-print JSON-able data"
+  },
+  "function": {
+    "prefix": ["fun"],
+    "body": ["function ${1}(${2}) {", "\t${0:${TM_SELECTED_TEXT}}", "}"]
+  },
+  "arrowFunction": {
+    "prefix": ["af"],
+    "body": ["const ${1:function} = (${2:args}) => {$3}"]
+  },
+  "consoleAssert": {
+    "prefix": "ca",
+    "body": "console.assert(${1:expression}, ${2:object});",
+    "description": "If the specified expression is false, the message is written to the console along with a stack trace"
+  },
+  "consoleClear": {
+    "prefix": "ccl",
+    "body": "console.clear();",
+    "description": "Clears the console"
+  },
+  "consoleCount": {
+    "prefix": "cc",
+    "body": "console.count(${1:label});",
+    "description": "Writes the the number of times that count() has been invoked at the same line and with the same label"
+  },
+  "consoleDebug": {
+    "prefix": "cd",
+    "body": "console.debug(${1:object});",
+    "description": "Displays a message in the console. Also display a blue right arrow icon along with the logged message in Safari"
+  },
+  "consoleDir": {
+    "prefix": "cdi",
+    "body": "console.dir(${1:object});",
+    "description": "Prints a JavaScript representation of the specified object"
+  },
+  "consoleError": {
+    "prefix": "cer",
+    "body": "console.error(${1:object});",
+    "description": "Displays a message in the console and also includes a stack trace from where the method was called"
+  },
+  "consoleGroup": {
+    "prefix": "cg",
+    "body": [
+      "console.group(${1:label})",
+      "cosnole.log(${2})$3",
+      "console.groupEnd()$0"
+    ],
+    "description": "Groups and indents all following output by an additional level, until console.groupEnd() is called."
+  },
+  "consoleLog": {
+    "prefix": "cl",
+    "body": "console.log(${1:object});",
+    "description": "Displays a message in the console"
+  },
+  "consoleLogObject": {
+    "prefix": "clo",
+    "body": "console.log('${1:object} :>> ', ${1:object});",
+    "description": "Displays an object in the console with its name"
+  },
+  "consoleTrace": {
+    "prefix": "ctr",
+    "body": "console.trace(${1:object});",
+    "description": "Prints a stack trace from the point where the method was called"
+  },
+  "consoleWarn": {
+    "prefix": "cw",
+    "body": "console.warn(${1:object});",
+    "description": "Displays a message in the console but also displays a yellow warning icon along with the logged message"
+  },
+  "consoleInfo": {
+    "prefix": "ci",
+    "body": "console.info(${1:object});",
+    "description": "Displays a message in the console but also displays a blue information icon along with the logged message"
+  },
+  "consoleTable": {
+    "prefix": "clt",
+    "body": "console.table(${1:object});",
+    "description": "Displays tabular data as a table."
+  },
+  "consoleTime": {
+    "prefix": "ct",
+    "body": [
+      "console.time(${1})",
+      "${0:${TM_SELECTED_TEXT}}",
+      "console.timeEnd($1)"
+    ],
+    "description": "Sets starting point for execution time measurement"
+  },
+  "iife": {
+    "prefix": ["iife"],
+    "body": [
+      "((${1:window, document, undefined}) => {",
+      "\t${0:${VISUAL}}",
+      "}(${2:win, doc}))"
+    ]
+  },
+  "for loop": {
+    "prefix": ["for"],
+    "body": [
+      "for (let ${1:i} = 0, len = ${2:array}.length; $1 < len; $1++) {",
+      "\tconst item = $2[i]",
+      "\t$0",
+      "}"
+    ]
+  },
+  "for...of": {
+    "prefix": ["forof"],
+    "body": "for (const ${1:item} of ${2:object}) {\n\t${0:${TM_SELECTED_TEXT}}\n}",
+    "description": "Iterating over property names of iterable objects"
+  },
+  "for...in": {
+    "prefix": ["forin"],
+    "body": [
+      "for (let ${1:key} in ${2:object}) {",
+      "\tif ($2.hasOwnProperty($1)) {",
+      "\t\t${0:let ${3:value} = $2[$1];}",
+      "\t}",
+      "}"
+    ]
+  },
+  "require": {
+    "prefix": "rqr",
+    "body": "require('${1:package}');",
+    "description": "Require a package"
+  },
+  "requireToConst": {
+    "prefix": "req",
+    "body": "const ${1:packageName} = require('${1:package}');\n$0",
+    "description": "Require a package to const"
+  },
+  "import": {
+    "prefix": "imp",
+    "body": "import ${2:moduleName} from '${1:module}';\n$0",
+    "description": "Imports entire module statement in ES6 syntax"
+  },
+  "importNoModuleName": {
+    "prefix": "imn",
+    "body": "import '${1:module}';\n$0",
+    "description": "Imports entire module in ES6 syntax without module name"
+  },
+  "moduleExports": {
+    "prefix": "me",
+    "body": "module.exports = {\n\t$0\n};\n",
+    "description": "Module exports from Common JS, node syntax at ES6"
+  },
+  "exportNamedVariable": {
+    "prefix": "env",
+    "body": "export const ${1:exportVariable} = ${2:localVariable};\n",
+    "description": "Export named variable in ES6 syntax"
+  },
+  "exportNamedFunction": {
+    "prefix": "enf",
+    "body": "export const ${1:functionName} = (${2:params}) => {\n\t$0\n};\n",
+    "description": "Export named function in ES6 syntax"
+  },
+  "exportDefaultFunction": {
+    "prefix": "edf",
+    "body": "export default function ${1:${TM_FILENAME_BASE}}(${2:params}) {\n\t$0\n};\n",
+    "description": "Export default function in ES6 syntax"
+  },
+  "exportClass": {
+    "prefix": "ecl",
+    "body": "export default class ${1:className} {\n\t$0\n};\n",
+    "description": "Export default class in ES6 syntax"
+  },
+  "exportClassExtends": {
+    "prefix": "ece",
+    "body": "export default class ${1:className} extends ${2:baseclassName} {\n\t$0\n};\n",
+    "description": "Export default class which extends a base one in ES6 syntax"
+  },
+  "exportAll": {
+    "prefix": "ea",
+    "body": "export * from '${1}'",
+    "description": "Export everything from module"
+  },
+  "constructor": {
+    "prefix": "ctor",
+    "body": "constructor(${1:params}) {\n\t${0}\n}",
+    "description": "Add default constructor in a class in ES6 syntax"
+  },
+  "method": {
+    "prefix": "met",
+    "body": "${1:methodName}(${2:params}) {\n\t${0}\n}",
+    "description": "Creates a method inside a class in ES6 syntax"
+  },
+  "propertyGet": {
+    "prefix": "pge",
+    "body": "get ${1:propertyName}() {\n\treturn this.${0};\n}",
+    "description": "Creates a getter property inside a class in ES6 syntax"
+  },
+  "propertyset": {
+    "prefix": "pse",
+    "body": "set ${1:propertyName}(${2:value}) {\n\t${0};\n}",
+    "description": "Creates a setter property inside a class in ES6 syntax"
+  },
+  "describe": {
+    "prefix": "describe",
+    "body": " describe('${1}', () => {\n\t${0:${TM_SELECTED_TEXT}} })",
+    "description": "Describe block"
+  },
+  "it": {
+    "prefix": "it",
+    "body": " it('${1}', () => {\n\t${0:${TM_SELECTED_TEXT}} })",
+    "description": "it block"
+  },
+  "expect": {
+    "prefix": "expect",
+    "body": "expect(${1}).to${2}(${3})",
+    "description": "expect assertion"
+  },
+  "eslint comment": {
+    "prefix": "esl",
+    "body": [
+      "// eslint-disable${1:-next-line} ${2:no-debugger}",
+      "${0:debugger}"
+    ],
+    "description": "ESLint comment"
+  },
+  "react boilerplate": {
+    "prefix": "react",
+    "body": [
+      "import * as React from 'react'",
+      "",
+      "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${2:props}) {\n\t$0\n}",
+      "",
+      "export default ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}"
+    ],
+    "description": "React boilerplate"
+  },
+  "react component": {
+    "prefix": "comp",
+    "body": [
+      "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${1:props}) {\n\t$0\n}"
+    ],
+    "description": "React component"
+  },
+  "test": {
+    "prefix": "test",
+    "body": "${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}"
+  }
+}

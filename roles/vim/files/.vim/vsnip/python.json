@@ -1,0 +1,18 @@
+{
+  "utf": {
+    "prefix": ["utf"],
+    "body": ["encoding: utf-8", "$0"]
+  },
+  "def": {
+    "prefix": ["def"],
+    "body": ["def ${1:method}:", "  $0"]
+  },
+  "class": {
+    "prefix": ["class"],
+    "body": [
+      "class ${1:MyClass}(${2:object}):",
+      "  def __init__(self$3):",
+      "   $0"
+    ]
+  }
+}
