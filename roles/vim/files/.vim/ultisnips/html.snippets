@@ -24,10 +24,4 @@ snippet html
 </html>
 endsnippet
 
-snippet "wrap([a-z]+)?" "wrap with tag" br
-<${1:`!p snip.rv = match.group(1) if match.group(1) is not None else "div"`} ${2:class="$3"}>
-	${0:${VISUAL}}
-</$1>
-endsnippet
-
 # vim:ft=snippets:

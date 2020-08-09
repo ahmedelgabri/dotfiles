@@ -1,21 +1,10 @@
-snippet note "For day one notes" bt
-# ${1:Title}
-
- ---
- date: ${2:`date "+%Y-%m-%d %H:%M"`}
- tags: #$3
- ---
-
-$0
-endsnippet
-
 snippet fmatter
 ---
 title: ${1:Title}
 date: ${2:`date +%Y-%m-%d`}
-tags: $3
+${3:tags}: $4
 ---
-# $1
+
 $0
 endsnippet
 
@@ -51,18 +40,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 endsnippet
 
-snippet travis "Travis badge"
-[![Status](https://travis-ci.org/${1:user/repo}.svg?branch=master)](https://travis-ci.org/$1 "See test builds")
-endsnippet
-
-snippet npm "npm badge"
-[![NPM](https://nodei.co/npm/${1:name}.png?mini=true)](https://npmjs.org/package/$1)
-endsnippet
-
-snippet npms "npm badge - shields.io"
-[![npm version](http://img.shields.io/npm/v/${1:name}.svg)](https://npmjs.org/package/$1 "View this project on npm")
-endsnippet
-
 snippet thanks
 **${1:projectname}** © 2015+, Ahmed El Gabri Released under the [MIT] License.<br>
 Authored and maintained by Ahmed El Gabri with help from contributors ([list][contributors]).
@@ -84,11 +61,4 @@ This project follows [collaborative etiquette](http://git.io/col) guidelines.
 ### [Read →](http://git.io/col)
 endsnippet
 
-snippet collab-badge
-[![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg)](http://git.io/col)
-endsnippet
-
-snippet testling
-[![](https://ci.testling.com/${1:user/repo}.png)](https://ci.testling.com/$1)
-endsnippet
 # vim:ft=snippets:
