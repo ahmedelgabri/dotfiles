@@ -102,8 +102,6 @@ function! plugins#load_plugins() abort
 
   " Themes, UI & eye cnady {{{
   call minpac#add('https://github.com/andreypopp/vim-colors-plain', { 'type': 'opt' })
-  call minpac#add('https://github.com/tomasiser/vim-code-dark', { 'type': 'opt' })
-  call minpac#add('https://github.com/tyrannicaltoucan/vim-deep-space', { 'type': 'opt' })
   call minpac#add('https://github.com/liuchengxu/space-vim-theme', {'type': 'opt'})
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
@@ -111,6 +109,8 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/arzg/vim-substrata', {'type': 'opt'})
   call minpac#add('https://github.com/haishanh/night-owl.vim', {'type': 'opt'})
   call minpac#add('https://github.com/lifepillar/vim-gruvbox8', {'type': 'opt'})
+  call minpac#add('https://github.com/bluz71/vim-moonfly-colors', {'type': 'opt'})
+  call minpac#add('https://github.com/chuling/ci_dark', {'type': 'opt'})
   " }}}
 endfunction
 
