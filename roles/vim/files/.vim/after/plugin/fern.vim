@@ -26,6 +26,7 @@ function! s:init_fern() abort
   nmap <buffer> m <Plug>(fern-action-mark-toggle)j
   nmap <buffer> s <Plug>(fern-action-open:split)
   nmap <buffer> v <Plug>(fern-action-open:vsplit)
+  nmap <buffer> z <Plug>(fern-action-zoom)
 
   nmap <buffer> q :q<CR>
 endfunction
