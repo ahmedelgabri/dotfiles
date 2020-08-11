@@ -30,7 +30,9 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Hard Choices, Easy Life. Easy Choices, Hard Life.', '', '― Jerzy Gregory'],
       \ ['Future regret minimization is a powerful force for good judgement.', '', '― Tobi Lutke'],
       \ ['The works must be conceived with fire in the soul but executed with clinical coolness', '', '― Joan Miró'],
-      \ ['Believe those who seek the truth, doubt those who find it.', '', '― André Gide']
+      \ ['Believe those who seek the truth, doubt those who find it.', '', '― André Gide'],
+      \ ["Argue like you're right. Listen like you're wrong", '', '― Adam M. Grant'],
+      \ ['Luck is what happens when preparation meets opportunity.', '', '― Seneca']
       \ ]
 
 let g:startify_lists = [
