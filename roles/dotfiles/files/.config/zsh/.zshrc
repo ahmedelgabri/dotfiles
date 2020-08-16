@@ -68,7 +68,7 @@ function {
     zinit light https://github.com/ajeetdsouza/zoxide
 
     zinit ice wait lucid as'program' \
-      atclone'./install.sh $ZPFX $ZPFX' atpull'%atclone' compile'grc.zsh' src'grc.zsh' pick'$ZPFX/bin/grc*'
+      atclone'./install.sh $ZPFX $ZPFX && ln -sf $ZPFX/share/grc ~/.config/grc' atpull'%atclone' compile'grc.zsh' src'grc.zsh' pick'$ZPFX/bin/grc*'
     zinit light https://github.com/garabik/grc
 
     zinit ice pick'async.zsh' src'pure.zsh'
