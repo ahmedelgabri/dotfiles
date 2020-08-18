@@ -1,12 +1,15 @@
-let g:waikiki_wiki_roots=['~/Box/notes']
-let g:waikiki_wiki_patterns = ['/wiki/', '\d+' ]
-let g:waikiki_default_maps  = 1
-
 function! mywaikiki#Load() abort
   if get(g:, 'waikiki_loaded', 0) == 1
     packadd vim-waikiki
     call waikiki#CheckBuffer(expand('%:p'))
   endif
+endfun
+
+function! mywaikiki#TargetsDict(name) abort
+  let ret = {}
+  let ret['myName'] = notes#myName(a:name)
+
+  return ret
 endfun
 
 " function! mywaikiki#SetupBuffer() abort
@@ -18,8 +21,3 @@ endfun
 "   setl sw=2
 "   setl cole=2
 " endfun
-"
-" augroup Waikiki
-"   au!
-"   autocmd User setup call mywaikiki#SetupBuffer()
-" augroup END
