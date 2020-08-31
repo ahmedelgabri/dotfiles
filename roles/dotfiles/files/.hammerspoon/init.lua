@@ -38,18 +38,15 @@ Install:andUse('Caffeine', {
 local urlDispatcherConfig = {
   start = true,
   config = {
-    default_handler = 'com.google.Chrome'
+    default_handler = 'com.brave.Browser'
   }
 }
 
 if hs.host.localizedName() ~= 'pandoras-box' then
-  urlDispatcherConfig.config = {
-    url_patterns = {
-      {'https?://miro.*','com.google.Chrome'},
-      {'https?://dev.*.com','com.google.Chrome'},
-      {'https?://localhost:*','com.google.Chrome'}
-    },
-    default_handler = 'com.brave.Browser'
+  urlDispatcherConfig.config.url_patterns = {
+    {'https?://miro.*','com.google.Chrome'},
+    {'https?://dev.*.com','com.google.Chrome'},
+    {'https?://localhost:*','com.google.Chrome'}
   }
 end
 
