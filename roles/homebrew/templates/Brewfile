@@ -74,7 +74,6 @@ brew "exiftool"
 brew "hyperfine"
 brew "proselint"
 brew "bat"
-brew "clojure-lsp"
 brew "exa"
 brew "shellcheck"
 brew "shfmt" # Doesn't work with zsh, only sh & bash

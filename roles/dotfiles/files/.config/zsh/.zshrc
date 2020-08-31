@@ -107,6 +107,9 @@ function {
     zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
       atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
     zinit light https://github.com/trapd00r/LS_COLORS
+
+    zinit ice wait lucid from'gh-r' as'command' pick'clojure-lsp'
+    zinit light https://github.com/snoe/clojure-lsp
   # }}}
 
   # Local plugins/completions/etc... {{{
@@ -128,8 +131,6 @@ function {
   ##############################################################
   # PLUGINS VARS & SETTINGS
   ##############################################################
-  ############### git fuzzy
-
   ############### FZF
   export VIM_FZF_LOG=$(git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')
 
