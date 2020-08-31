@@ -7,7 +7,7 @@ _load_weather() {
   wget -q --spider http://google.com
 
   if [ $? -eq 0 ]; then
-    curl -s "http://wttr.in/$weather_location?format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
+    weather "$weather_location" "format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
     printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
   fi
 }
