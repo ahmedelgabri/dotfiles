@@ -1,0 +1,6 @@
+# vim:tw=200
+---
+- name: symlink .hammerspoon
+  with_items:
+    - .hammerspoon
+  file: src='{{ ansible_env.PWD }}/roles/hammerspoon/files/{{ item }}' path='~/{{ item }}' state=link force=true
