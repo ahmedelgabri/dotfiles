@@ -23,7 +23,7 @@
   external-url-viewer "urlview"
 
   feedlist-title-format "—[%u feeds with new articles]——%>——(%N %V)—"
-  feedlist-format "%S %-80t %?d?- %-80d&? %> %U/%c"
+  feedlist-format "%S [%U] %-80t %?d?- %-80d&? %>"
   articlelist-title-format "—[%T]——(%u unread, %t total)——%>——(%U)—"
   articlelist-format "%?T?%-60T ?%t"
   notify-format  "%I %d %n %f new articles (%n unread articles, %f unread feeds)"
@@ -53,6 +53,7 @@ macro y set browser "echo %u | pbcopy"; open-in-browser ; set browser "$BROWSER 
 ## }}}
 
 # formatting and colorization ------------------------------------------ {{{
+  highlight all "━━.*━━" yellow black blink
   highlight feedlist "^ *[0-9]+ *N " color156 default
   highlight articlelist "^ *[0-9]+ *N " color156 default
 
@@ -66,7 +67,6 @@ macro y set browser "echo %u | pbcopy"; open-in-browser ; set browser "$BROWSER 
   highlight article ":.*\\(image\\)$" color74 default
   highlight article ":.*\\(embedded flash\\)$" color74 default
   highlight article "^(Feed|Title|Author|Link|Date):.*" yellow default bold
-  # highlight all "Linux" yellow black blink
 
   color info blue default
   color listnormal color237 default

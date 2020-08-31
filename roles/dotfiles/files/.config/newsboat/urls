@@ -238,6 +238,7 @@
   https://www.industrialempathy.com/feed/feed.xml "Blog" "JavaScript"
   https://www.rockyourcode.com/index.xml "Blog" "Programming"
   https://thesephist.com/index.xml "Blog" "Programming" "Go" "JavaScript"
+  https://lexi-lambda.github.io/feeds/all.rss.xml "Blog" "Haskell" "Programming" "Functional"
 # }}}
 
 # Browsers {{{
@@ -292,7 +293,7 @@
   https://labs.spotify.com/feed/ "Engineering"
   https://tech.wayfair.com/feed/ "Engineering"
   https://www.figma.com/blog/feed/atom.xml "Engineering"
-
+  " "
   https://developers.500px.com/feed "~500px" "Engineering"
   https://8thlight.com/blog/feed/atom.xml "~8th Light" "Engineering"
   https://99designs.com/tech-blog/feed.xml "~99designs" "Engineering"
@@ -936,18 +937,6 @@
   https://glebbahmutov.com/blog/atom.xml "JavaScript"
   https://www.webreflection.co.uk/blog/feed.atom "JavaScript"
   http://jasonformat.com/rss/ "~Jason Miller @_developit (Preact)" "JavaScript"
-# }}}
-
-# logo {{{
-  http://feeds.feedburner.com/IdentityDesigned "logo"
-# }}}
-
-# Mobile {{{
-  http://www.cloudfour.com/feed/ "Mobile"
-  http://mobiforge.com/rss.xml "Mobile"
-# }}}
-
-# node.js {{{
   http://blog.nodejs.org/feed/ "node.js"
 # }}}
 
