@@ -18,7 +18,7 @@ function! plugins#load_plugins() abort
     finish
   endif
 
-  call minpac#init()
+  call minpac#init({ 'progress_open': 'none', 'status_open': 'vertical' })
   call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
 
   " General {{{
