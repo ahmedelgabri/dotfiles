@@ -1,6 +1,7 @@
 local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
 local has_completion = pcall(require, 'completion')
 local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
+local _ = pcall(vim.cmd, [[packadd completion-buffers]]) -- Lazy loaded because it breaks vim
 
 if not has_lsp then
   return
