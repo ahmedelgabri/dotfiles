@@ -239,6 +239,7 @@
   https://www.rockyourcode.com/index.xml "Blog" "Programming"
   https://thesephist.com/index.xml "Blog" "Programming" "Go" "JavaScript"
   https://lexi-lambda.github.io/feeds/all.rss.xml "Blog" "Haskell" "Programming" "Functional"
+  https://charity.wtf/feed/ "Blog"
 # }}}
 
 # Browsers {{{
