@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 
 WIFI_NAME=$(wifi)
-
-ON_ICON=" "
 OFF_ICON=" "
 TAIL="#[fg=colour237] ⦁ "
 
-[ "$WIFI_NAME" = "" ] && printf "#[fg=red]%s" "$OFF_ICON$TAIL" || printf "%s" "$ON_ICON  $WIFI_NAME$TAIL"
+[ "$WIFI_NAME" = "$OFF_ICON" ] && printf "#[fg=red]%s" "$WIFI_NAME$TAIL" || printf "%s" "$WIFI_NAME$TAIL"

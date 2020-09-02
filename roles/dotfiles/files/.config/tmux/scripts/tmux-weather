@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 _load_weather() {
-  weather_location="$(corelocationcli -format '%locality')"
-
   # check for internet connection
   wget -q --spider http://google.com
 
   if [ $? -eq 0 ]; then
-    weather "$weather_location" "format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
+    weather "" "format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
     printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
   fi
 }
