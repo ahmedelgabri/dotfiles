@@ -8,4 +8,4 @@ scriptencoding utf-8
 " Not Sure if I should expand the regex to only match strings only inside
 " `zinit foo` or keep it generic.
 
-syn match gitHubURL  /https\:\/\/github\.com\//  conceal containedin=zshString
+syn match gitHubURL  /https\:\/\/github\.com\//  conceal containedin=ZinitPlugin3
