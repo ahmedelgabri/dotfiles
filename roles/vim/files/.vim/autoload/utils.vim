@@ -95,7 +95,7 @@ function! utils#mkview() abort
   endif
 endfunction
 
-let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff']
+let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff', 'man']
 function! utils#should_quit_on_q() abort
   return &diff || index(g:GabriQuitOnQ, &filetype) >= 0
 endfunction
