@@ -7,7 +7,7 @@ function! plugins#install_minpac() abort
   execute '!git clone https://github.com/k-takata/minpac.git ' . expand(s:VIM_MINPAC_FOLDER . '/opt/minpac')
 endfunction
 
-command! -bar PackUpdate call plugins#load_plugins() | call minpac#update('', {'do': 'call minpac#status()'})
+command! -bar PackUpdate call plugins#load_plugins() | call minpac#update()
 command! -bar PackStatus call plugins#load_plugins() | call minpac#status()
 command! -bar PackClean call plugins#load_plugins() | call minpac#clean()
 
@@ -18,7 +18,7 @@ function! plugins#load_plugins() abort
     finish
   endif
 
-  call minpac#init({ 'progress_open': 'none', 'status_open': 'vertical' })
+  call minpac#init({ 'progress_open': 'vertical', 'status_open': 'vertical' })
   call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
 
   " General {{{
