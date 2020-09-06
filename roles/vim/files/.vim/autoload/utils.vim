@@ -184,15 +184,17 @@ function! utils#sourceProjectConfig() abort
 endfunction
 
 function! utils#GetIcon(key) abort
+  " 'success':' '
   let l:ICONS = {
         \'paste': '⍴',
         \'spell': '✎',
-        \'branch': exists($PURE_GIT_BRANCH) ? trim($PURE_GIT_BRANCH) : '  ',
+        \'branch': exists($PURE_GIT_BRANCH) ? trim($PURE_GIT_BRANCH) : ' ',
         \'error': '×',
         \'info': '●',
         \'warn': '!',
-        \'hint': '?',
-        \'lock': ' ',
+        \'hint': ' ',
+        \'lock': '',
+        \'success':' ',
         \}
 
   return get(l:ICONS, a:key, a:key)
