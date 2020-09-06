@@ -8,8 +8,8 @@ endif
 
 " highlights
 call sign_define("LspDiagnosticsErrorSign", {"text": utils#GetIcon('error'), "texthl":"LspDiagnosticsError", "linehl":"", "numhl":""})
-call sign_define("LspDiagnosticsWarningSign", {"text":"⚠", "texthl":"LspDiagnosticsWarning", "linehl":"", "numhl":""})
-call sign_define("LspDiagnosticsInformationSign", {"text": utils#GetIcon('warn'), "texthl":"LspDiagnosticsInformation", "linehl":"", "numhl":""})
+call sign_define("LspDiagnosticsWarningSign", {"text": utils#GetIcon('warn'), "texthl":"LspDiagnosticsWarning", "linehl":"", "numhl":""})
+call sign_define("LspDiagnosticsInformationSign", {"text": utils#GetIcon('info'), "texthl":"LspDiagnosticsInformation", "linehl":"", "numhl":""})
 call sign_define("LspDiagnosticsHintSign", {"text": utils#GetIcon('hint'), "texthl":"LspDiagnosticsHint", "linehl":"", "numhl":""})
 
 highlight! link LspDiagnosticsError DiffDelete
