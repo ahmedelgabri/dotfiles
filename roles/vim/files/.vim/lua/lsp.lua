@@ -51,7 +51,6 @@ local servers = {
   {name = 'bashls'},
   {name = 'vimls'},
   {name = 'pyls'},
-  {name = 'clojure_lsp'},
   {
     name = 'tsserver',
     config = {
