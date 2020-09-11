@@ -39,7 +39,6 @@ function! s:goyo_enter() abort
   packadd goyo.vim
   Limelight
   if exists('$TMUX')
-    silent !tmux set -g status off
     silent !tmux set -g pane-border-status off
     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
   endif
@@ -55,7 +54,6 @@ endfunction
 function! s:goyo_leave() abort
   Limelight!
   if exists('$TMUX')
-    silent !tmux set -g status on
     silent !tmux set -g pane-border-status top
     silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
   endif
