@@ -74,22 +74,22 @@ local servers = {
       },
     }
   },
-  {
-    name = 'sumneko_lua',
-    config = {
-      settings = {
-        Lua = {
-          runtime={
-            version="LuaJIT",
-          },
-          diagnostics={
-            enable=true,
-            globals={"vim", "spoon", "hs"},
-          },
-        }
-      },
-    }
-  },
+  -- {
+  --   name = 'sumneko_lua',
+  --   config = {
+  --     settings = {
+  --       Lua = {
+  --         runtime={
+  --           version="LuaJIT",
+  --         },
+  --         diagnostics={
+  --           enable=true,
+  --           globals={"vim", "spoon", "hs"},
+  --         },
+  --       }
+  --     },
+  --   }
+  -- },
   -- JSON & YAML schemas http://schemastore.org/json/
   {
     name = 'jsonls',
