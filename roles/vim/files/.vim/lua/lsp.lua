@@ -21,7 +21,7 @@ local on_attach = function(client, bufnr)
   local resolved_capabilities = client.resolved_capabilities
 
   if has_diagnostic then
-    diagnostic.on_attach()
+    diagnostic.on_attach(client)
   end
 
   -- Mappings.
