@@ -1,7 +1,6 @@
 local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
 local has_completion = pcall(require, 'completion')
 local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
-local _ = pcall(vim.cmd, [[packadd completion-buffers]]) -- Lazy loaded because it breaks vim
 
 if not has_lsp then
   return
@@ -11,6 +10,8 @@ end
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 
 if has_completion then
+  -- Lazy loaded because it breaks in completion is not loaded already
+  pcall(vim.cmd, [[packadd completion-buffers]])
   vim.api.nvim_command("autocmd BufEnter * lua require'completion'.on_attach()")
 end
 
