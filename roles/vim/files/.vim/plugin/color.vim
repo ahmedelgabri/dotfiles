@@ -26,6 +26,9 @@ augroup MyCustomColors
         \| hi! link ALEWarning DiffChange
         \| hi! link ALEWarningSign DiffChange
         \| execute(printf('hi! OverLength guifg=%s ctermfg=%s guibg=NONE ctermbg=NONE', utils#get_color('ErrorMsg', 'fg', 'gui'), utils#get_color('ErrorMsg','fg', 'cterm')))
+        \| hi! link LspDiagnosticsError DiffDelete
+        \| hi! link LspDiagnosticsWarning DiffChange
+        \| hi! link LspDiagnosticsHint NonText
         " \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal

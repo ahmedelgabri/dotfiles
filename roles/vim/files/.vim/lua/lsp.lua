@@ -6,6 +6,10 @@ if not has_lsp then
   return
 end
 
+if pcall(require, 'completion_config') then
+  require'completion_config'.setup()
+end
+
 -- for debugging
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 
