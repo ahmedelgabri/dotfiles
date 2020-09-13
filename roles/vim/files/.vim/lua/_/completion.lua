@@ -1,3 +1,5 @@
+local utils = require'_.utils'
+
 local M = {}
 
 M.setup = function()
@@ -71,14 +73,14 @@ M.setup = function()
   vim.o.completeopt = 'menuone,noinsert'
   vim.cmd [[set shortmess+=c]]
 
-  vim.api.nvim_set_keymap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
-  vim.api.nvim_set_keymap('s', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
-  vim.api.nvim_set_keymap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "\<S-Tab>"]], { expr = true })
-  vim.api.nvim_set_keymap('s', '<S-Tab>', [[pumvisible() ? "\<C-p>" : vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "\<S-Tab>"]], { expr = true })
+  utils.gmap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
+  utils.gmap('s', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
+  utils.gmap('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "\<S-Tab>"]], { expr = true })
+  utils.gmap('s', '<S-Tab>', [[pumvisible() ? "\<C-p>" : vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "\<S-Tab>"]], { expr = true })
 
-  vim.api.nvim_set_keymap('i', '<c-p>', 'completion#trigger_completion()', { expr = true, noremap = true, silent = true })
-  vim.api.nvim_set_keymap('i', '<localleader>j', '<Plug>(completion_next_source)', {})
-  vim.api.nvim_set_keymap('i', '<localleader>k', '<Plug>(completion_prev_source)', {})
+  utils.gmap('i', '<c-p>', 'completion#trigger_completion()', { expr = true, noremap = true, silent = true })
+  utils.gmap('i', '<localleader>j', '<Plug>(completion_next_source)', {})
+  utils.gmap('i', '<localleader>k', '<Plug>(completion_prev_source)', {})
 end
 
 return M

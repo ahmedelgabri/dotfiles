@@ -1,2 +1,2 @@
-require 'nvim-colorizer'
-require 'lsp'
+require'_.nvim-colorizer'
+require'_.lsp'

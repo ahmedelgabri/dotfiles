@@ -1,13 +1,15 @@
 local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
 local has_completion = pcall(require, 'completion')
 local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
+local utils = require'_.utils'
+local map_opts = { noremap=true, silent=true }
 
 if not has_lsp then
   return
 end
 
-if pcall(require, 'completion_config') then
-  require'completion_config'.setup()
+if pcall(require, '_.completion') then
+  require'_.completion'.setup()
 end
 
 -- for debugging
@@ -21,7 +23,7 @@ end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-local on_attach = function(client, bufnr)
+local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
 
   if has_diagnostic then
@@ -29,17 +31,17 @@ local on_attach = function(client, bufnr)
   end
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  -- [TODO] Check conflicting mappings with these ones
+  utils.bmap('n', 'gd', '<Cmd>lua vim.lsp.buf.declaration()<CR>', map_opts)
+  utils.bmap('n', '<C-]>', '<Cmd>lua vim.lsp.buf.definition()<CR>', map_opts)
+  utils.bmap('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', map_opts)
   if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    utils.bmap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', map_opts)
   end
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ld', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', opts)
+  utils.bmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', map_opts)
+  utils.bmap('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>', map_opts)
+  utils.bmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', map_opts)
+  utils.bmap('n', '<leader>ld', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', map_opts)
 
   vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
 
@@ -159,7 +161,13 @@ local servers = {
             ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
             ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
             ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}'
-          }
+          },
+          format = {
+            enable = true
+          },
+          validate = true,
+          hover = true,
+          completion = true
         }
       },
     }
