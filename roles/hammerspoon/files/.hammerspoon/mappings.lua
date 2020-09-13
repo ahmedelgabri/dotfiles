@@ -8,7 +8,7 @@ local focusKeys = {
   -- [s]lack
   s='Slack',
   -- [t]erminal
-  t='open -a kitty --args --single-instance --directory $HOME',
+  t='open -a kitty',
   -- tweet[b]ot
   -- b='Tweetbot',
   -- i[m]essage
