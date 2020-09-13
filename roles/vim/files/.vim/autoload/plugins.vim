@@ -67,6 +67,8 @@ function! plugins#load_plugins() abort
   " }}}
 
   " Syntax {{{
+  call minpac#add('https://github.com/nvim-treesitter/nvim-treesitter')
+  call minpac#add('https://github.com/nvim-treesitter/playground')
   call minpac#add('https://github.com/norcalli/nvim-colorizer.lua')
   call minpac#add('https://github.com/sheerun/vim-polyglot')
   call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
@@ -105,7 +107,6 @@ function! plugins#load_plugins() abort
   call minpac#add('https://github.com/liuchengxu/space-vim-theme', {'type': 'opt'})
   call minpac#add('https://github.com/rakr/vim-two-firewatch', { 'type': 'opt' })
   call minpac#add('https://github.com/logico-dev/typewriter', { 'type': 'opt' })
-  call minpac#add('https://github.com/arzg/vim-corvine', { 'type': 'opt' })
   call minpac#add('https://github.com/arzg/vim-substrata', {'type': 'opt'})
   call minpac#add('https://github.com/haishanh/night-owl.vim', {'type': 'opt'})
   call minpac#add('https://github.com/lifepillar/vim-gruvbox8', {'type': 'opt'})
