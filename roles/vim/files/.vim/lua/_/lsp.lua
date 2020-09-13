@@ -1,19 +1,23 @@
-local has_lsp, nvim_lsp = pcall(require, 'nvim_lsp')
-local has_completion = pcall(require, 'completion')
-local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
-local utils = require'_.utils'
-local map_opts = { noremap=true, silent=true }
+-- for debugging
+-- :lua require('vim.lsp.log').set_level("debug")
+-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
+-- :lua print(vim.lsp.get_log_path())
+-- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
+
+local has_lsp, lsp = pcall(require, 'nvim_lsp')
 
 if not has_lsp then
   return
 end
 
+local has_completion = pcall(require, 'completion')
+local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
+local utils = require'_.utils'
+local map_opts = { noremap=true, silent=true }
+
 if pcall(require, '_.completion') then
   require'_.completion'.setup()
 end
-
--- for debugging
--- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 
 if has_completion then
   -- Lazy loaded because it breaks in completion is not loaded already
@@ -22,6 +26,40 @@ if has_completion then
 end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+local callbacks = {}
+
+local wrap_hover = function(bufnr, winnr)
+  local hover_len = #vim.api.nvim_buf_get_lines(bufnr,0,-1,false)[1]
+  local win_width = vim.api.nvim_win_get_width(0)
+  if hover_len > win_width then
+    vim.api.nvim_win_set_width(winnr,math.min(hover_len,win_width))
+    vim.api.nvim_win_set_height(winnr,math.ceil(hover_len/win_width))
+    vim.wo[winnr].wrap = true  -- luacheck: ignore 122
+  end
+end
+
+-- https://github.com/scalameta/nvim-metals/blob/20fd8d5812f3ac2c98ab97f2049c3eabce272b43/lua/metals.lua#L138-L160
+callbacks['textDocument/hover'] = function(_, method, result)
+  local opts = {
+    pad_left = 1;
+    pad_right = 1;
+  }
+  lsp.util.focusable_float(method, function()
+    if not (result and result.contents) then
+      return
+    end
+    local markdown_lines = lsp.util.convert_input_to_markdown_lines(result.contents)
+    markdown_lines = lsp.util.trim_empty_lines(markdown_lines)
+    if vim.tbl_isempty(markdown_lines) then
+      return
+    end
+    local bufnr, winnr = lsp.util.fancy_floating_markdown(markdown_lines, opts)
+    lsp.util.close_preview_autocmd({"CursorMoved", "BufHidden", "InsertCharPre"}, winnr)
+    wrap_hover(bufnr, winnr)
+    return bufnr, winnr
+  end)
+end
 
 local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
@@ -68,7 +106,7 @@ local servers = {
       --   "tslog"
       -- }
       -- See https://github.com/neovim/nvim-lsp/issues/237
-      root_dir = nvim_lsp.util.root_pattern("tsconfig.json", ".git"),
+      root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
     }
   },
   {
@@ -174,14 +212,21 @@ local servers = {
   },
 }
 
-for _, lsp in ipairs(servers) do
-  if lsp.config then
-    lsp.config.on_attach = on_attach
-  else
-    lsp.config = {
-      on_attach = on_attach
-    }
-  end
+for _, server in ipairs(servers) do
+  local server_disabled = (server.disabled ~= nil and server.disabled) or false
 
-  nvim_lsp[lsp.name].setup(lsp.config)
+  if not server_disabled then
+    if server.config then
+      server.config.on_attach = on_attach
+      server.config.callbacks = vim.tbl_deep_extend('keep', {}, callbacks, vim.lsp.callbacks)
+    else
+      server.config = {
+        on_attach = on_attach,
+        callbacks = vim.tbl_deep_extend('keep', {}, callbacks, vim.lsp.callbacks),
+      }
+    end
+
+
+    lsp[server.name].setup(server.config)
+  end
 end
