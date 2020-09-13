@@ -38,6 +38,12 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
 function! s:list_commits()
   let git = 'git -C '. getcwd()
   let commits = systemlist(git .' log --no-decorate --oneline -n 10')
+
+  " if we are not inside a git repo don't show anything
+  if commits[0] =~? '^fatal:'
+    return []
+  endif
+
   " let git = 'G'. git[1:] " fugitive doesn't support -C flag https://github.com/tpope/vim-fugitive/blob/511d3035d4da2453a9cb0188b6020ed7bc8fc18f/autoload/fugitive.vim#L2477-L2478
   let git = 'Git'
 
