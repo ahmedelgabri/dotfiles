@@ -22,7 +22,9 @@ end
 if has_completion then
   -- Lazy loaded because it breaks in completion is not loaded already
   pcall(vim.cmd, [[packadd completion-buffers]])
-  vim.api.nvim_command("autocmd BufEnter * lua require'completion'.on_attach()")
+  utils.Augroup('LSP', function()
+    vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
+  end)
 end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
