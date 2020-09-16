@@ -29,40 +29,6 @@ end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-local callbacks = {}
-
-local wrap_hover = function(bufnr, winnr)
-  local hover_len = #vim.api.nvim_buf_get_lines(bufnr,0,-1,false)[1]
-  local win_width = vim.api.nvim_win_get_width(0)
-  if hover_len > win_width then
-    vim.api.nvim_win_set_width(winnr,math.min(hover_len,win_width))
-    vim.api.nvim_win_set_height(winnr,math.ceil(hover_len/win_width))
-    vim.wo[winnr].wrap = true  -- luacheck: ignore 122
-  end
-end
-
--- https://github.com/scalameta/nvim-metals/blob/20fd8d5812f3ac2c98ab97f2049c3eabce272b43/lua/metals.lua#L138-L160
-callbacks['textDocument/hover'] = function(_, method, result)
-  local opts = {
-    pad_left = 1;
-    pad_right = 1;
-  }
-  lsp.util.focusable_float(method, function()
-    if not (result and result.contents) then
-      return
-    end
-    local markdown_lines = lsp.util.convert_input_to_markdown_lines(result.contents)
-    markdown_lines = lsp.util.trim_empty_lines(markdown_lines)
-    if vim.tbl_isempty(markdown_lines) then
-      return
-    end
-    local bufnr, winnr = lsp.util.fancy_floating_markdown(markdown_lines, opts)
-    lsp.util.close_preview_autocmd({"CursorMoved", "BufHidden", "InsertCharPre"}, winnr)
-    wrap_hover(bufnr, winnr)
-    return bufnr, winnr
-  end)
-end
-
 local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
 
@@ -220,11 +186,9 @@ for _, server in ipairs(servers) do
   if not server_disabled then
     if server.config then
       server.config.on_attach = on_attach
-      server.config.callbacks = vim.tbl_deep_extend('keep', {}, callbacks, vim.lsp.callbacks)
     else
       server.config = {
         on_attach = on_attach,
-        callbacks = vim.tbl_deep_extend('keep', {}, callbacks, vim.lsp.callbacks),
       }
     end
 
