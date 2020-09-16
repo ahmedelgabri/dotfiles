@@ -15,11 +15,6 @@ augroup MyCustomColors
         \| if &background ==# 'dark' | hi! VertSplit gui=NONE guibg=NONE guifg=#333333 cterm=NONE ctermbg=NONE ctermfg=14 | endif
         \| hi! link Todo Comment
         \| hi! link Conceal NonText
-        \| hi! User5 ctermfg=red guifg=red
-        \| hi! User7 ctermfg=cyan guifg=cyan
-        \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))
-        \| execute(printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm')))
-        \| execute(printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm')))
         \| hi! link Error ErrorMsg
         \| hi! link ALEError DiffDelete
         \| hi! link ALEErrorSign DiffDelete
@@ -29,6 +24,15 @@ augroup MyCustomColors
         \| hi! link LspDiagnosticsError DiffDelete
         \| hi! link LspDiagnosticsWarning DiffChange
         \| hi! link LspDiagnosticsHint NonText
+        \| hi! link GitGutterAdd DiffAdd
+        \| hi! link GitGutterChange DiffChange
+        \| hi! link GitGutterDelete DiffDelete
+        \| hi! link GitGutterChangeDelete GitGutterChange
+        \| hi! User5 ctermfg=red guifg=red
+        \| hi! User7 ctermfg=cyan guifg=cyan
+        \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))
+        \| execute(printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm')))
+        \| execute(printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm')))
         " \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal

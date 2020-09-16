@@ -4,11 +4,6 @@ if !exists(':GitGutter')
   finish
 endif
 
-hi! link GitGutterAdd DiffAdd
-hi! link GitGutterChange DiffChange
-hi! link GitGutterDelete DiffDelete
-hi! link GitGutterChangeDelete GitGutterChange
-
 let g:gitgutter_realtime = 0
 let g:gitgutter_diff_args = '--ignore-all-space'
 let g:gitgutter_grep_command = executable('rg') ? 'rg' : 'grep'
