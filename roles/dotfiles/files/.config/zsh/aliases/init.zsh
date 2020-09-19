@@ -32,6 +32,7 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en1"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias fs="stat -f '%z bytes'"
+alias sys='sw_vers && echo && system_profiler SPSoftwareDataType && curl -s https://en.wikipedia.org/wiki/MacOS_version_history | grep -Eo "Version $(version=$(sw_vers -productVersion) && echo ${version%.*}): \"[^\s]+\"" | uniq'
 alias flushdns="sudo killall -HUP mDNSResponder"
 if (( $+commands[jq] )) then;
   alias formatJSON='jq .'
