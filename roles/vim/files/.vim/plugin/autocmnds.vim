@@ -54,4 +54,6 @@ augroup MyAutoCmds
   if exists('##TextYankPost')
     autocmd TextYankPost * silent! lua return (not vim.v.event.visual) and require'vim.highlight'.on_yank("IncSearch", 200)
   endif
+
+  autocmd BufWritePost */spell/*.add silent! :mkspell! %
 augroup END
