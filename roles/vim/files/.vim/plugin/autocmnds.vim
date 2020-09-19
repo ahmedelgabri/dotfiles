@@ -14,6 +14,9 @@ augroup MyAutoCmds
   " Close preview buffer with q
   autocmd FileType * if utils#should_quit_on_q() | nmap <buffer> <silent> <expr> q &filetype ==# 'man' \|\| &diff ? ':qa!<cr>' : ':q<cr>' | endif
 
+  autocmd InsertLeave,VimEnter,WinEnter * setlocal cursorline
+  autocmd InsertEnter,WinLeave * setlocal nocursorline
+
   " https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/plugin/autocmds.vim#L27-L40
   if has('mksession')
     " Save/restore folds and cursor position.
