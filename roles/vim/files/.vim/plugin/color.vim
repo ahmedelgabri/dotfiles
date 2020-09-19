@@ -24,10 +24,6 @@ augroup MyCustomColors
         \| hi! link LspDiagnosticsError DiffDelete
         \| hi! link LspDiagnosticsWarning DiffChange
         \| hi! link LspDiagnosticsHint NonText
-        \| hi! link GitGutterAdd DiffAdd
-        \| hi! link GitGutterChange DiffChange
-        \| hi! link GitGutterDelete DiffDelete
-        \| hi! link GitGutterChangeDelete GitGutterChange
         \| hi! User5 ctermfg=red guifg=red
         \| hi! User7 ctermfg=cyan guifg=cyan
         \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))

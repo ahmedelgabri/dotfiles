@@ -196,9 +196,9 @@
 	# Show a markdown-formatted summary of commits from {review_base:-master} until HEAD
 	pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"${review_base:-master}\"..HEAD
 	# split-diff style review using vim-fugitive Gdiff
-	review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
-	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
-	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\" +\"let g:gitgutter_diff_base = '${review_base:-master}'\"
+	review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\"
+	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\"
+	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\"
 
 [filter "media"]
 	clean = git-media-clean %f
