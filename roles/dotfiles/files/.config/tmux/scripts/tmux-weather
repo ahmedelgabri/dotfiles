@@ -2,12 +2,10 @@
 
 _load_weather() {
   # check for internet connection
-  wget -q --spider http://google.com
-
-  if [ $? -eq 0 ]; then
+  ping -q -c 1 1.1.1.1 >/dev/null && {
     weather "" "format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
     printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
-  fi
+  }
 }
 
 # Weather data
