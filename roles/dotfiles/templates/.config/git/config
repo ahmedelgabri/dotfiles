@@ -31,10 +31,26 @@
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	; https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta
 	; hash (#) conflicts with Markdown when I use hb to open PRs etc...
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
+
+[delta]
+	features = side-by-side line-numbers decorations
+	whitespace-error-style = 22 reverse
+  syntax-theme = TwoDark
+  file-modified-label = modified:
+	# line-numbers-left-format = ""
+	# line-numbers-right-format = "│ "
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box
+	file-style = bold blue
+	# file-decoration-style = none
+
+[interactive]
+  diffFilter = delta --color-only
 
 [branch]
 	autosetupmerge = always
@@ -141,12 +157,6 @@
 [pager]
 	show-branch = true
 	status = true
-	show = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
-	diff = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
-
-; https://github.com/so-fancy/diff-so-fancy/issues/296
-; [interactive]
-;   diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
 
 [alias]
 	amend = commit --amend --no-edit
@@ -251,9 +261,6 @@
 
 [protocol "keybase"]
 	allow = always
-
-[diff-so-fancy]
-	first-run = false
 
 [protocol]
 	version = 2 # Added in Git 2.18.0.
