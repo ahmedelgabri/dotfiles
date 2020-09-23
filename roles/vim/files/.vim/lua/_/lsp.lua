@@ -24,6 +24,7 @@ if has_completion then
   pcall(vim.cmd, [[packadd completion-buffers]])
   utils.Augroup('LSP', function()
     vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
+    vim.api.nvim_command("au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()")
   end)
 end
 
@@ -77,16 +78,7 @@ local servers = {
       root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
     }
   },
-  {
-    name = 'rls',
-    config = {
-      settings = {
-        rust = {
-          clippy_preference = 'on'
-        }
-      },
-    }
-  },
+  { name = 'rust_analyzer' },
   {
     name = 'sumneko_lua',
     config = {

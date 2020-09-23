@@ -107,6 +107,9 @@ function {
     zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
       atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
     zinit light https://github.com/trapd00r/LS_COLORS
+
+    zinit ice wait lucid from'gh-r' as'command' mv'rust-analyzer* -> rust-analyzer'
+    zinit light https://github.com/rust-analyzer/rust-analyzer
   # }}}
 
   # Local plugins/completions/etc... {{{
