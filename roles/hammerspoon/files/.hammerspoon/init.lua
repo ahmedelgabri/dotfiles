@@ -10,25 +10,7 @@ Install = spoon.SpoonInstall
 
 require 'mappings'
 require 'layout'
-
-Install:andUse('WindowHalfsAndThirds', {
-    config = {
-      use_frame_correctness = true
-    },
-  })
-
--- Muscle memory from Spectacle
-spoon.WindowHalfsAndThirds:bindHotkeys({
-    max = { {"cmd", "alt"}, "f" },
-    left_half = { {"cmd", "alt"}, "Left" },
-    right_half = { {"cmd", "alt"}, "Right" },
-    bottom_half = { {"cmd", "alt"}, "Down" },
-    top_half = { {"cmd", "alt"}, "Up" }
-  })
-
-Install:andUse('WindowScreenLeftAndRight',  {
-    hotkeys =  'default'
-  })
+require 'window-managment'
 
 Install:andUse('Caffeine', {
     start = true,
