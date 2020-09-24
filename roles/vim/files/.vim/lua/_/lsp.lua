@@ -21,7 +21,7 @@ if pcall(require, '_.completion') then
 end
 
 if has_completion then
-  -- Lazy loaded because it breaks in completion is not loaded already
+  -- Lazy loaded because it breaks if completion is not loaded already
   pcall(vim.cmd, [[packadd completion-buffers]])
   utils.Augroup('LSP', function()
     vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
