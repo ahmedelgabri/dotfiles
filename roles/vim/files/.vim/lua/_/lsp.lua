@@ -10,8 +10,9 @@ if not has_lsp then
   return
 end
 
-local has_completion = pcall(require, 'completion')
+local has_completion, completion = pcall(require, 'completion')
 local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
+local has_extensions = pcall(require, 'lsp_extensions')
 local utils = require'_.utils'
 local map_opts = { noremap=true, silent=true }
 
@@ -24,7 +25,9 @@ if has_completion then
   pcall(vim.cmd, [[packadd completion-buffers]])
   utils.Augroup('LSP', function()
     vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
-    vim.api.nvim_command("au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()")
+    if has_extensions then
+      vim.api.nvim_command("au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()")
+    end
   end)
 end
 
@@ -32,6 +35,10 @@ vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
+
+  if has_completion then
+    completion.on_attach(client)
+  end
 
   if has_diagnostic then
     diagnostic.on_attach(client)
@@ -58,6 +65,13 @@ local on_attach = function(client)
     vim.api.nvim_command('autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()')
   end
 end
+
+-- Uncomment to execute the extension test mentioned above.
+-- local function custom_codeAction_callback(_, _, action)
+-- 	print(vim.inspect(action))
+-- end
+
+-- lsp.callbacks['textDocument/codeAction'] = custom_codeAction_callback
 
 local servers = {
   {name = 'ocamlls'},

@@ -56,7 +56,7 @@ M.setup = function()
   }
 
   vim.o.completeopt = 'menuone,noinsert'
-  vim.cmd [[set shortmess+=c]]
+  vim.o.shortmess = vim.o.shortmess .. 'c'
 
   utils.gmap('i', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
   utils.gmap('s', '<Tab>', [[pumvisible() ? "\<C-n>" : vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "\<Tab>"]], { expr = true })
