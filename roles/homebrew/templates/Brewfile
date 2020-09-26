@@ -80,6 +80,7 @@ brew "shfmt" # Doesn't work with zsh, only sh & bash
 brew "grip" # Markdown previewer
 brew "pass"
 brew "yamllint"
+brew "hadolint"
 brew "lnav"
 
 cask "alacritty"
