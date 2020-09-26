@@ -31,26 +31,33 @@
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	; https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
-	pager = delta
+	pager = delta_
 	; hash (#) conflicts with Markdown when I use hb to open PRs etc...
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
 
 [delta]
-	features = side-by-side line-numbers decorations
-	whitespace-error-style = 22 reverse
   syntax-theme = TwoDark
   file-modified-label = modified:
-	# line-numbers-left-format = ""
-	# line-numbers-right-format = "│ "
+	features = line-numbers customization
 
-[delta "decorations"]
+[delta "customization"]
+	whitespace-error-style = 22 reverse
 	commit-decoration-style = bold yellow box
-	file-style = bold blue
-	# file-decoration-style = none
+	hunk-header-style = omit
+	hunk-header-decoration-style = black box
+	file-style = yellow italic
+	file-decoration-style = yellow ul
+	minus-style = strike 088
+	minus-emph-style = 001 052
+	plus-style = italic 034
+	plus-emph-style = italic black 034
+	line-numbers-zero-style = 235
+	line-numbers-minus-style = 088
+	line-numbers-plus-style = 034
 
 [interactive]
-  diffFilter = delta --color-only
+  diffFilter = delta_ --color-only
 
 [branch]
 	autosetupmerge = always
