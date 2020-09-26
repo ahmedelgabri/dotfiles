@@ -146,13 +146,13 @@ function {
   fi
 
   export FZF_DEFAULT_COMMAND="${__FZF[DEFAULT]}"
-  export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || tree -C {}"
+  export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || (exa --tree --group-directories-first {} || tree -C {})"
   export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
   export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
   export FZF_DEFAULT_OPTS="--prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --bind '?:toggle-preview'"
   export FZF_CTRL_T_OPTS="--preview '($FZF_PREVIEW_COMMAND) 2> /dev/null' --preview-window down:60%:noborder"
   export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'"
-  export FZF_ALT_C_OPTS="--preview 'tree -C {} 2> /dev/null'"
+  export FZF_ALT_C_OPTS="--preview '(exa --tree --group-directories-first {} || tree -C {}) 2> /dev/null'"
 
   ############### Kitty
   if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
