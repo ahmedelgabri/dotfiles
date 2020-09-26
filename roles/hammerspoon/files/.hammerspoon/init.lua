@@ -1,16 +1,15 @@
--- Ensure the IPC command line client is available
-hs.ipc.cliInstall()
--- disable animations
-hs.window.animationDuration = 0
-
+hs.ipc.cliInstall() -- Ensure the IPC command line client is available
+hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
 hs.loadSpoon('SpoonInstall')
 
 Install = spoon.SpoonInstall
 
+local layout = require 'layout'
 require 'mappings'
-require 'layout'
 require 'window-managment'
+
+layout.layoutWatcher:start()
 
 Install:andUse('Caffeine', {
     start = true,

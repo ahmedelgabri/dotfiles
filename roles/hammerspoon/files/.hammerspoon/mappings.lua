@@ -18,7 +18,7 @@ local focusKeys = {
 for key in pairs(focusKeys) do
   hs.hotkey.bind(modalKey, key, function()
     if key == "t" then
-      local cmd = hs.execute(focusKeys[key])
+      hs.execute(focusKeys[key])
     else
       hs.application.launchOrFocus(focusKeys[key])
     end

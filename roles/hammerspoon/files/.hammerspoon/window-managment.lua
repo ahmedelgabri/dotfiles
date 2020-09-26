@@ -5,15 +5,11 @@
 -- https://github.com/wincent/wincent/blob/a33430e43464842c067016e507ab91abd6569948/roles/dotfiles/files/.hammerspoon/init.lua
 local lastSeenChain = nil
 local lastSeenWindow = nil
-local screens = hs.screen.allScreens()
-local screenCount = #screens
-local logLevel = 'info' -- generally want 'debug' or 'info'
-local log = hs.logger.new('gabri', logLevel)
+local lastSeenAt = nil
 
 hs.grid.setGrid('12x12') -- allows us to place on quarters, thirds and halves
 hs.grid.MARGINX = 0
 hs.grid.MARGINY = 0
-hs.window.animationDuration = 0 -- disable animations
 
 local grid = {
   topHalf = '0,0 12x6',
@@ -47,7 +43,7 @@ local grid = {
 --    one chain to another, or on switching from one app to another, or from one
 --    window to another.
 --
-function chain(movements)
+local function chain(movements)
   local chainResetInterval = 2 -- seconds
   local cycleLength = #movements
   local sequenceNumber = 1
@@ -77,8 +73,8 @@ function chain(movements)
   end
 end
 
-function alertCannotManipulateWindow()
-  alert.show("Can't move window")
+local function alertCannotManipulateWindow()
+  hs.alert.show("Can't move window")
 end
 
 --

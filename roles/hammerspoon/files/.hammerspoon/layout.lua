@@ -18,7 +18,7 @@ local apps = {
 -- Screen watcher
 ---
 
-function SwitchLayout()
+local function SwitchLayout()
   local allScreens = hs.screen.allScreens()
   local moreThanOneScreen = #allScreens > 1
   local isTwoScreens = #allScreens == 2
@@ -43,7 +43,8 @@ function SwitchLayout()
   hs.layout.apply(layout)
 end
 
--- SwitchLayout()
+SwitchLayout()
 
-local layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout)
-layoutWatcher:start()
+return {
+  layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout)
+}
