@@ -32,8 +32,8 @@ config.setup {
       enable = true
     },
     smart_rename = {
-      enable = true,
-      smart_rename = "grr" -- mapping to rename reference under cursor
+      enable = false,
+      -- smart_rename = "grr" -- mapping to rename reference under cursor
     },
     navigation = {
       enable = true,
