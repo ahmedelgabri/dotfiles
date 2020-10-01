@@ -116,7 +116,8 @@ let g:GabriNoColorcolumn = [
       \'vimfiler',
       \'dos',
       \'json'
-      \'diff'
+      \'diff',
+      \'minpacprgs'
       \]
 function! utils#should_turn_off_colorcolumn() abort
   return &textwidth == 0
