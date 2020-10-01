@@ -43,6 +43,7 @@ let g:rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'typescript': ['eslint'],
+      \ 'rust': ['analyzer']
       \}
 
 " ESLint --fix is so slow to run it as part of the fixers, so I do this using a precommit hook or something else
