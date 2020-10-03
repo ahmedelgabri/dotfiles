@@ -1,4 +1,4 @@
-let g:waikiki_wiki_roots=['~/Box/notes']
+let g:waikiki_wiki_roots=[expand('$NOTES_DIR')]
 " let g:waikiki_wiki_patterns = ['/wiki/', '\d+' ]
 let g:waikiki_default_maps  = 1
 " to account the '-' when creating a link from the world under cursor
