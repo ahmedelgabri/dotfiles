@@ -3,9 +3,6 @@
 --italic-text=always
 --map-syntax '.*ignore:Git Ignore'
 --map-syntax '.gitconfig.local:Git Config'
---map-syntax '**/git/config:Git Config'
---map-syntax '**/git/ignore:Git Ignore'
---map-syntax '**/git/attributes:Git Attributes'
 --map-syntax '**/mx*:Bourne Again Shell (bash)'
 --map-syntax '**/completions/_*:Bourne Again Shell (bash)'
 --map-syntax '.zsh*:Bourne Again Shell (bash)'
