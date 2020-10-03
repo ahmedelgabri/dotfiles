@@ -98,3 +98,5 @@ function! ExecuteMacroOverVisualRange()
   echo '@'.getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
+
+nnoremap <silent><buffer> K :<C-U>exe 'help '.utils#helptopic()<CR>
