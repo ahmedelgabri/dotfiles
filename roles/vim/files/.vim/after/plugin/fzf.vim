@@ -18,6 +18,7 @@ let g:fzf_layout = { 'window': utils#fzf_window() }
 let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
+let g:fzf_preview_window = 'right:noborder'
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
