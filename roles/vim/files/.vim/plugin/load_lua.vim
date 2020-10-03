@@ -1,3 +1,5 @@
-if has('nvim') && exists('*luaeval')
-  lua require 'init'
+if !has('nvim')
+  finish
 endif
+
+lua require 'init'

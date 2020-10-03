@@ -3,34 +3,6 @@ local utils = require'_.utils'
 local M = {}
 
 M.setup = function()
-  vim.fn.sign_define('LspDiagnosticsErrorSign', {
-      text = vim.fn['utils#GetIcon']('error'),
-      texthl = 'LspDiagnosticsError',
-      linehl = '',
-      numhl = ''
-    })
-
-  vim.fn.sign_define('LspDiagnosticsWarningSign', {
-      text = vim.fn['utils#GetIcon']('warn'),
-      texthl = 'LspDiagnosticsWarning',
-      linehl = '',
-      numhl = ''
-    })
-
-  vim.fn.sign_define('LspDiagnosticsInformationSign', {
-      text = vim.fn['utils#GetIcon']('info'),
-      texthl = 'LspDiagnosticsInformation',
-      linehl = '',
-      numhl = ''
-    })
-
-  vim.fn.sign_define('LspDiagnosticsHintSign', {
-      text = vim.fn['utils#GetIcon']('hint'),
-      texthl = 'LspDiagnosticsHint',
-      linehl = '',
-      numhl = ''
-    })
-
   vim.g.completion_enable_snippet = 'vim-vsnip'
   vim.g.completion_auto_change_source = 1 -- Change the completion source automatically if no completion availabe
   vim.g.completion_matching_ignore_case = 1

@@ -33,6 +33,34 @@ end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+vim.fn.sign_define('LspDiagnosticsErrorSign', {
+    text = vim.fn['utils#GetIcon']('error'),
+    texthl = 'LspDiagnosticsError',
+    linehl = '',
+    numhl = ''
+  })
+
+vim.fn.sign_define('LspDiagnosticsWarningSign', {
+    text = vim.fn['utils#GetIcon']('warn'),
+    texthl = 'LspDiagnosticsWarning',
+    linehl = '',
+    numhl = ''
+  })
+
+vim.fn.sign_define('LspDiagnosticsInformationSign', {
+    text = vim.fn['utils#GetIcon']('info'),
+    texthl = 'LspDiagnosticsInformation',
+    linehl = '',
+    numhl = ''
+  })
+
+vim.fn.sign_define('LspDiagnosticsHintSign', {
+    text = vim.fn['utils#GetIcon']('hint'),
+    texthl = 'LspDiagnosticsHint',
+    linehl = '',
+    numhl = ''
+  })
+
 local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
 
