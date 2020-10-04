@@ -34,7 +34,10 @@ let g:projectionist_heuristics = {
       \  '&package.json': {
       \     'package.json': {
       \       'type': 'package',
-      \       'alternate': 'yarn.lock',
+      \       'alternate': ['yarn.lock', 'package-lock.json'],
+      \     },
+      \     'package-lock.json': {
+      \       'alternate': 'package.json',
       \     },
       \     'yarn.lock': {
       \       'alternate': 'package.json',
