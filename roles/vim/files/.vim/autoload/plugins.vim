@@ -40,7 +40,7 @@ function! plugins#load_plugins() abort
     call minpac#add('https://github.com/nelstrom/vim-visual-star-search')
     call minpac#add('https://github.com/tpope/tpope-vim-abolish')
     call minpac#add('https://github.com/tpope/vim-eunuch')
-    " call minpac#add('https://github.com/tpope/vim-projectionist')
+    call minpac#add('https://github.com/tpope/vim-projectionist')
     call minpac#add('https://github.com/tpope/vim-repeat')
     call minpac#add('https://github.com/machakann/vim-sandwich')
     call minpac#add('https://github.com/tomtom/tcomment_vim')
@@ -55,15 +55,15 @@ function! plugins#load_plugins() abort
     " }}}
 
     " LSP/Autocompletion {{{
-    call minpac#add('https://github.com/neovim/nvim-lspconfig')
+    call minpac#add('https://github.com/neovim/nvim-lspconfig', {'type': 'opt'})
     call minpac#add('https://github.com/tjdevries/lsp_extensions.nvim')
-    call minpac#add('https://github.com/nvim-lua/completion-nvim')
+    call minpac#add('https://github.com/nvim-lua/completion-nvim' )
     call minpac#add('https://github.com/nvim-lua/diagnostic-nvim')
     call minpac#add('https://github.com/steelsojka/completion-buffers', {'type':'opt'})
     " }}}
 
     " Syntax {{{
-    call minpac#add('https://github.com/nvim-treesitter/nvim-treesitter')
+    call minpac#add('https://github.com/nvim-treesitter/nvim-treesitter', {'type': 'opt'})
     call minpac#add('https://github.com/nvim-treesitter/playground', {'type': 'opt'})
     call minpac#add('https://github.com/norcalli/nvim-colorizer.lua')
     call minpac#add('https://github.com/sheerun/vim-polyglot')
