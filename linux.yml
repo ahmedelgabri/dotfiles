@@ -1,0 +1,12 @@
+# vim:tw=200
+---
+- hosts: localhost
+  roles:
+    - {role: pacman, tags: pacman}
+    - {role: shell, tags: shell}
+    - {role: dotfiles, tags: dotfiles}
+    - {role: irc, tags: irc}
+    - {role: ssh, tags: ssh}
+    - {role: gpg, tags: gpg}
+    - {role: misc, tags: misc}
+    - {role: vim, tags: vim}

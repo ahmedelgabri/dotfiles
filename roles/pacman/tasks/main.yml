@@ -1,0 +1,21 @@
+# vim:tw=200
+---
+- name: Run the equivalent of "pacman -Syu" as a separate step
+  pacman:
+    update_cache: yes
+    upgrade: yes
+
+- name: Install pacaur
+  pacman:
+    name: pacaur
+
+- name: symlink pacman hook
+  with_items:
+    - pacmanfile.hook
+  file: src='{{ ansible_env.PWD }}/roles/pacman/files/{{ item }}' path='/etc/{{ item }}' state=link force=true
+
+- name: prepare pacmanfile
+  template: dest="/etc/pacmanfile" mode=0644 src=pacmanfile
+
+- name: install packages
+  command: pacaur --noconfirm --noedit --needed -S - </etc/pacmanfile

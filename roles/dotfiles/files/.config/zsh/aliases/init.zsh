@@ -55,4 +55,11 @@ else
   compdef g=git
 fi
 
+if [[ "$(uname)" == "Linux" ]]; then
+  if (( $+commands[xclip] )); then
+    alias pbcopy="xclip -selection c"
+    alias pbpaste="xclip -selection c -o"
+  fi
+fi
+
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'

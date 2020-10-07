@@ -3,6 +3,16 @@
 ON_ICON=" "
 OFF_ICON=" "
 
-WIFI_NAME="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')"
+if [ "$(uname)" = "Darwin" ]; then
+  WIFI_NAME="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')"
+elif [ "$(uname)" = "Linux" ]; then
+  if command -v iwgetid >/dev/null 2>&1; then
+    WIFI_NAME="$(iwgetid -r)"
+  else
+    WIFI_NAME="$(iw dev | grep "ssid" | awk '{print $2}')"
+  fi
+else
+  WIFI_NAME="Not supported"
+fi
 
-[ "$WIFI_NAME" = "" ] && printf "%s" "$OFF_ICON" || printf "%s" "$ON_ICON $WIFI_NAME"
+[ "$WIFI_NAME" = "" ] && printf "%s" "$OFF_ICON" || printf "%s %s" "$ON_ICON" "$WIFI_NAME"

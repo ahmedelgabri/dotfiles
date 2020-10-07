@@ -132,9 +132,16 @@ package_manager() {
     #   xcode-select --install
     # fi
     install_homebrew
+  elif [ "$(uname)" == "Linux" ]; then
+    sudo pacman-mirros -g
+    sudo pacman --noconfirm -S ansible
+
+    git clone https://github.com/elasticdog/transcrypt.git ~/transcrypt &&
+      cd ~/transcrypt/contrib/packaging/pacman/ &&
+      makepkg -sic
   else
     # Do something linux specifc apt-get, yum, etc...
-    echo "Linux package manager stuff here..."
+    echo "Not supported"
   fi
 }
 
@@ -179,9 +186,10 @@ clone_dotfiles() {
 install() {
   if [ "$(uname)" == "Darwin" ]; then
     /usr/local/bin/ansible-playbook --ask-become-pass -i inventory darwin.yml
+  elif [ "$(uname)" == "Linux" ]; then
+    /usr/bin/ansible-playbook --ask-become-pass -i inventory linux.yml
   else
-    # naivley assuming that it will be a UNIX system
-    /usr/local/bin/ansible-playbook -i inventory linux.yml
+    echo "not supported"
   fi
 }
 

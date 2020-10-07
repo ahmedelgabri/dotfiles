@@ -4,9 +4,17 @@
 - name: add /usr/local/bin/zsh to /etc/shells
   lineinfile: >
     dest=/etc/shells group=wheel line=/usr/local/bin/zsh owner=root
-  become: !!bool yes
+  become: yes
+  when: ansible_facts['os_family'] == "Darwin"
+
+- name: add /usr/bin/zsh to /etc/shells
+  lineinfile: >
+    dest=/etc/shells group=wheel line=/usr/bin/zsh owner=root
+  become: yes
+  when: ansible_facts['os_family'] == "Archlinux"
 
 # because of this error `zsh compinit: insecure directories, run compaudit for list.`
 - name: fix permissions in zsh folder
   file: dest=/usr/local/share/zsh/ owner={{ lookup('env','USER') }} group=staff mode=0775 state=directory recurse=yes
   become: yes
+  when: ansible_facts['os_family'] == "Darwin"

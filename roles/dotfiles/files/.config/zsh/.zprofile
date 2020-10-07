@@ -54,6 +54,7 @@ path=(
   ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
   ${HOMEBREW_PREFIX}/opt/ruby/bin(N-/)
   ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(Nn[-1]-/)
+  ${HOME}/.yarn/bin(N-/) # Linux yarn bin
   /usr/local/{bin,sbin}
   ${HOMEBREW_CELLAR}/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
   $path
