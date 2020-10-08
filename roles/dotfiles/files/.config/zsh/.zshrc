@@ -146,7 +146,7 @@ function {
   fi
 
   export FZF_DEFAULT_COMMAND="${__FZF[DEFAULT]}"
-  export FZF_PREVIEW_COMMAND="bat --style=numbers,changes --wrap never --color always {} || cat {} || (exa --tree --group-directories-first {} || tree -C {})"
+  export FZF_PREVIEW_COMMAND="bat --style=changes --wrap never --color always {} || cat {} || (exa --tree --group-directories-first {} || tree -C {})"
   export FZF_CTRL_T_COMMAND="${__FZF[CMD]}"
   export FZF_ALT_C_COMMAND="${__FZF[ALT_C]}"
   export FZF_DEFAULT_OPTS="--prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --bind '?:toggle-preview'"
