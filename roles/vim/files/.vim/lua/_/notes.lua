@@ -4,19 +4,19 @@ local NOTES_DIR = vim.fn.expand('$NOTES_DIR')
 local sep = '_'
 
 -- Investigate how to make this work with commands?
--- M.get_notes_completion = function(ArgLead, CmdLine, CursorPos)
+-- function M.get_notes_completion(ArgLead, CmdLine, CursorPos)
 --   return vim.fn.map(vim.fn.getcompletion(M.get_dir() .. '/*/**/', 'dir'), function(_, v) return vim.fn.substitute(v, 'mC^'.. os.getenv('HOME') ..'/', '~/', '') end)
 -- end
 
-M.get_dir = function()
+function M.get_dir()
   return NOTES_DIR
 end
 
-M.note_info = function(f_args)
+function M.note_info(f_args)
   local path = M.get_dir() .. '/'
-  local fname = #f_args > 0 and f_args[1]:lower():gsub("%s+", "") or ''
+  local fname = #f_args > 0 and f_args[1]:lower():gsub('%s+', '') or ''
 
-  if #f_args > 0 and string.match(f_args[1], "^~/") == '~/' then
+  if #f_args > 0 and string.match(f_args[1], '^~/') == '~/' then
     path = vim.fn.fnamemodify(f_args[1], ':h') .. '/'
     fname = vim.fn.fnamemodify(f_args[1], ':t:r'):lower()
   end
@@ -29,7 +29,7 @@ M.note_info = function(f_args)
   return {path, has_fname and vim.fn.split(tail, sep)[2] or ''}
 end
 
-M.note_edit = function(f_args)
+function M.note_edit(f_args)
   local data = M.note_info(f_args)
   local path = data[1]
   local fname = data[2]
@@ -37,13 +37,13 @@ M.note_edit = function(f_args)
   print(path)
   vim.cmd('edit ' .. path)
 
-  local frontmatter = { "normal ggO---", "date: " .. vim.fn.strftime('%A, %B %d, %Y, %H:%M'), "title: " .. fname, "---" }
+  local frontmatter = { 'normal ggO---', 'date: ' .. vim.fn.strftime('%A, %B %d, %Y, %H:%M'), 'title: ' .. fname, '---' }
   vim.cmd(table.concat(frontmatter, '\n'))
 
   vim.cmd('silent! packadd goyo.vim | Goyo')
 end
 
-M.wiki_edit = function(f_args)
+function M.wiki_edit(f_args)
   local wiki_sep = ''
 
   if #f_args > 0 then
@@ -59,14 +59,14 @@ M.wiki_edit = function(f_args)
   vim.cmd('silent! packadd goyo.vim | Goyo')
 end
 
-M.my_name = function(name)
+function M.my_name(name)
   local data = M.note_info(name)
   local fname = data[2]
 
   return fname
 end
 
-M.search_notes = function()
+function M.search_notes()
   vim.fn['fzf#vim#files'](M.get_dir(), vim.fn['fzf#vim#with_preview']({ options = { '--preview-window=' .. vim.g.fzf_preview_window } }))
 end
 
