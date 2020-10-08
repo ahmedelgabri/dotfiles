@@ -9,7 +9,6 @@ tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/services"
-tap "neomutt/neomutt"
 tap "sachaos/todoist"
 tap "tavianator/tap"
 tap "universal-ctags/universal-ctags"
@@ -59,9 +58,7 @@ brew "neovim", args: ["HEAD"]
 brew "newsboat"
 # Mail
 brew "isync"
-brew "lbdb"
-brew "msmtp"
-brew "neomutt"
+brew "dante" # Needed for aerc
 # End Mail
 brew "tmux", args: ["HEAD"]
 brew "vim"

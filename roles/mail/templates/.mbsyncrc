@@ -1,0 +1,92 @@
+# {{ ansible_managed }}
+# Settings for isync, a program to syncronise IMAP mailboxes
+# This file defines the syncronisation for two accounts, Personal and Work
+# The remote for each account is a server somewhere, and the local is a folder
+# in ~/.mail
+# Syncronise everything with `mbsync -a`
+
+########################################
+# Default settings
+# Applied to all channels
+########################################
+Create Slave
+Expunge Both
+SyncState *
+{% for account in mail_accounts %}
+{% if account.email != '' %}
+########################################
+# {{ account.name }}
+########################################
+IMAPAccount {{ account.name }}
+Host {{ account.imap_server }}
+User {{ account.email }}
+# Get the account password from the system Keychain
+PassCmd "~/.config/zsh/bin/get-keychain-pass '{{ account.keychain_account }}' '{{ account.keychain_name }}'"
+AuthMechs LOGIN
+SSLType IMAPS
+
+# Remote storage (where the mail is retrieved from)
+IMAPStore {{ account.name }}-remote
+Account {{ account.name }}
+
+# Local storage (where the mail is retrieved to)
+MaildirStore {{ account.name }}-local
+Path ~/.mail/{{ account.name }}/ # The trailing "/" is important
+Inbox ~/.mail/{{ account.name }}/INBOX
+SubFolders Verbatim
+
+Channel {{ account.name }}-inbox
+Master :{{ account.name }}-remote:INBOX
+Slave :{{ account.name }}-local:INBOX
+
+Channel {{ account.name }}-archive
+Master :{{ account.name }}-remote:"[Gmail]/All Mail"
+Slave :{{ account.name }}-local:Archive
+
+Channel {{ account.name }}-drafts
+Master :{{ account.name }}-remote:"[Gmail]/Drafts"
+Slave :{{ account.name }}-local:Drafts
+
+Channel {{ account.name }}-starred
+Master :{{ account.name }}-remote:"[Gmail]/Starred"
+Slave :{{ account.name }}-local:Starred
+
+Channel {{ account.name }}-sent
+Master :{{ account.name }}-remote:"[Gmail]/Sent Mail"
+Slave :{{ account.name }}-local:Sent
+
+Channel {{ account.name }}-spam
+Master :{{ account.name }}-remote:"[Gmail]/Spam"
+Slave :{{ account.name }}-local:Spam
+
+Channel {{ account.name }}-trash
+Master :{{ account.name }}-remote:"[Gmail]/Trash"
+Slave :{{ account.name }}-local:Trash
+
+Channel {{ account.name }}-folders
+Master :{{ account.name }}-remote:
+Slave :{{ account.name }}-local:
+# All folders except those defined above
+Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
+
+# Group the channels, so that all channels can be sync'd with `mbsync personal`
+Group personal
+Channel {{ account.name }}-inbox
+Channel {{ account.name }}-archive
+Channel {{ account.name }}-drafts
+Channel {{ account.name }}-starred
+Channel {{ account.name }}-sent
+Channel {{ account.name }}-spam
+Channel {{ account.name }}-trash
+Channel {{ account.name }}-folders
+
+# For doing a quick sync of just the INBOX with `mbsync {{ account.name | lower }}-download`.
+Channel {{ account.name | lower }}-download
+Master :{{ account.name }}-remote:INBOX
+Slave :{{ account.name }}-local:INBOX
+Create Slave
+Expunge Slave
+Sync Pull
+
+{% endif %}
+{% endfor %}

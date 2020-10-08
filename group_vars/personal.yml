@@ -1,19 +1,10 @@
 # vim:tw=200
 ---
-mail_alias_path: '~/Box/dotfiles/aliases'
 mail_accounts:
-  - name: 'personal'
-    imap_nickname: 'Personal'
-    imap_server: imap.gmail.com
-    imap_user: '{{ user_email }}'
-    imap_keychain_account: '{{ keychain_account }}'
-    imap_keychain_name: gmail.com
-
-    smtp_server: smtp.gmail.com
-    smtp_from: '{{ user_email }}'
-    smtp_user: '{{ user_email }}'
-    smtp_keychain_account: '{{ keychain_account }}'
-    smtp_keychain_name: gmail.com
-
-    account_color: blue
-    switch_to: Work
+  - name: 'Personal'
+    email: '{{ user_email }}'
+    keychain_account: '{{ keychain_account }}'
+    keychain_name: '{{ keychain_name }}'
+    imap_server: '{{ imap_server }}'
+    smtp_server: '{{ smtp_server }}'
+    accent: blue

@@ -29,12 +29,6 @@
   file: path="{{ item }}" state=directory
   with_items:
     - ~/.config
-    - ~/.config/msmtp
-    - ~/.config/notmuch
-    - ~/.mail
-    - ~/.mail/.notmuch/hooks
-    - ~/.mail/Personal
-    - ~/.mail/Work
   loop_control:
     label: '{{ item }}'
 
@@ -61,21 +55,3 @@
     dest: '{{ dest }}'
   loop_control:
     label: '{{ item.path | relpath }} -> {{ dest }}'
-
-- name: change permissions for mail-sync
-  file: path=~/.config/neomutt/scripts/mail-sync mode=a+x
-
-- name: change permissions for notmuch hooks
-  file: path=~/.mail/.notmuch/hooks mode=a+x recurse=yes
-
-- name: create accounts directory
-  file: path="~/.config/neomutt/accounts" state=directory
-
-- name: generate mail accounts
-  with_items: '{{ mail_accounts }}'
-  when: item.imap_user != ''
-  loop_control:
-    label: '{{ item.name }}: {{ item.imap_user }}'
-  template:
-    src: '{{ ansible_env.PWD }}/roles/dotfiles/templates/.config/neomutt/accounts/account'
-    dest: '~/.config/neomutt/accounts/{{ item.name }}'

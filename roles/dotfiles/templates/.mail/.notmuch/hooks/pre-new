@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-# {{ ansible_managed }}
-
-/usr/local/opt/coreutils/libexec/gnubin/timeout 2m /usr/local/bin/mbsync -q -a
-
-find {{ '~/.mail/*/INBOX' | expanduser }} -type f -mtime -30d -print -exec sh -c 'cat {} | /usr/local/bin/lbdb-fetchaddr' \; 2>/dev/null

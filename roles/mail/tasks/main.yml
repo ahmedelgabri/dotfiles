@@ -1,0 +1,67 @@
+# vim:tw=200
+---
+- name: Clone aerc
+  git:
+    repo: 'https://git.sr.ht/~sircmpwn/aerc'
+    dest: ~/.aerc
+
+- name: Build & Install aerc
+  shell: cd ~/.aerc && GOFLAGS=-tags=notmuch make && make install
+
+- name: create directories that we shouldn't manage
+  file: path="{{ item }}" state=directory
+  with_items:
+    - ~/.config
+    - ~/.config/notmuch
+    - ~/.config/aerc/scripts
+    - ~/.mail
+    - ~/.mail/.notmuch/hooks
+    - ~/.mail/Personal
+    - ~/.mail/Work
+  loop_control:
+    label: '{{ item }}'
+
+- name: symlink mail files
+  with_items:
+    - '{{ ansible_env.PWD }}/roles/mail/files/.config/aerc'
+  vars:
+    path: '{{ item | relpath | regex_replace("roles/mail/files/", "") | dirname }}'
+    dest: "~/{{ path + '/' if path != '' else '' }}{{ item | basename }}"
+  file:
+    src: '{{ item }}'
+    path: '{{ dest }}'
+    state: link
+    force: true
+  loop_control:
+    label: '{{ item | relpath }} -> {{ dest }}'
+
+- name: symlink mail templates
+  with_items:
+    - '{{ ansible_env.PWD }}/roles/mail/templates/.mail/.notmuch/hooks/pre-new'
+    - '{{ ansible_env.PWD }}/roles/mail/templates/.config/aerc/scripts/mail-sync'
+    - '{{ ansible_env.PWD }}/roles/mail/templates/.mbsyncrc'
+    - '{{ ansible_env.PWD }}/roles/mail/templates/.config/notmuch/config'
+  vars:
+    path: '{{ item | relpath | regex_replace("roles/mail/templates/", "") | dirname }}'
+    dest: "~/{{ path + '/' if path != '' else '' }}{{ item | basename }}"
+  template:
+    src: '{{ item }}'
+    dest: '{{ dest }}'
+  loop_control:
+    label: '{{ item | relpath }} -> {{ dest }}'
+
+- name: change permissions for mail-sync
+  file: path=~/.config/aerc/scripts/mail-sync mode=a+x
+
+- name: change permissions for notmuch hooks
+  file: path=~/.mail/.notmuch/hooks mode=a+x recurse=yes
+
+- name: generate mail accounts
+  with_items: '{{ mail_accounts }}'
+  when: item.email != ''
+  loop_control:
+    label: '{{ item.name }}: {{ item.email }}'
+  template:
+    src: '{{ ansible_env.PWD }}/roles/mail/templates/.config/aerc/accounts.conf'
+    dest: '~/.config/aerc/accounts.conf'
+    mode: '600'

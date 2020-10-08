@@ -5,6 +5,7 @@
     - {role: homebrew, tags: homebrew}
     - {role: shell, tags: shell}
     - {role: dotfiles, tags: dotfiles}
+    - {role: mail, tags: mail}
     - {role: hammerspoon, tags: hammerspoon}
     - {role: irc, tags: irc}
     - {role: ssh, tags: ssh}
