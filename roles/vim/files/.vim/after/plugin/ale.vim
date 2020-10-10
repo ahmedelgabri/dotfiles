@@ -86,6 +86,6 @@ let g:ale_pattern_options = {
       \       'ale_fixers': g:ale_fixers['*']
       \   },
       \   'Sites/personal/forks/.*': {
-      \       'ale_fixers': g:ale_fixers['*']
+      \       'ale_fixers': filter(copy(g:ale_fixers), {k,v -> k ==# '*' || k ==# 'go' || k ==# 'rust'})
       \   },
       \}
