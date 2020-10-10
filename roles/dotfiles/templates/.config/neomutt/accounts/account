@@ -4,43 +4,43 @@
 {% if user_name != '' %}
 set realname = "{{ user_name }}"
 {% endif %}
-set sendmail = "/usr/local/bin/msmtp -a {{ item.name }}"
+set sendmail = "/usr/local/bin/msmtp -a {{ item.name | lower }}"
 {% if mail_alias_path != '' %}
 set alias_file = "{{ mail_alias_path | expanduser }}"
 source {{ mail_alias_path | expanduser }}
 {% endif %}
 set from = "{{ item.imap_user }}"
-set spoolfile = "+{{ item.imap_nickname }}/INBOX"
-set postponed = "+{{ item.imap_nickname }}/Drafts"
-set mbox = "+{{ item.imap_nickname }}/Archive"
-set trash = "+{{ item.imap_nickname }}/Trash"
+set spoolfile = "+{{ item.name }}/INBOX"
+set postponed = "+{{ item.name }}/Drafts"
+set mbox = "+{{ item.name }}/Archive"
+set trash = "+{{ item.name }}/Trash"
 set header_cache = "{{ ('~/.cache/neomutt/headers/' +  item.name + '/') | expanduser }}"
 set message_cachedir = "{{ ('~/.cache/neomutt/messages/' +  item.name + '/') | expanduser }}"
 unmailboxes *
-mailboxes "+{{ item.imap_nickname }}/INBOX" \
-  "+{{ item.imap_nickname }}/Starred" \
-  "+{{ item.imap_nickname }}/Sent" \
-  "+{{ item.imap_nickname }}/Drafts" \
-  "+{{ item.imap_nickname }}/Trash" \
-  "+{{ item.imap_nickname }}/Spam" \
-  `tree ~/.mail/{{ item.imap_nickname }} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+mailboxes "+{{ item.name }}/INBOX" \
+  "+{{ item.name }}/Starred" \
+  "+{{ item.name }}/Sent" \
+  "+{{ item.name }}/Drafts" \
+  "+{{ item.name }}/Trash" \
+  "+{{ item.name }}/Spam" \
+  `tree ~/.mail/{{ item.name }} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
-{% if 'personal' in group_names %}
+{% if 'personal' in group_names and item.switch_to|default %}
 macro index,pager gw "<change-folder>={{ item.switch_to }}/INBOX<enter>" "Switch account to {{ item.switch_to }}"
 {% endif %}
 
-macro index,pager gs "<change-folder>={{ item.imap_nickname }}/Starred<enter>" "go to Starred"
-macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Starred<enter>" "go to Starred"
-macro index,pager gt "<change-folder>={{ item.imap_nickname }}/Sent<enter>" "go to Sent"
-macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Sent<enter>" "go to Sent"
-macro index,pager gd "<change-folder>={{ item.imap_nickname }}/Drafts<enter>" "go to Drafts"
-macro browser gs "<exit><change-folder>={{ item.imap_nickname }}/Drafts<enter>" "go to Drafts"
+macro index,pager gs "<change-folder>={{ item.name }}/Starred<enter>" "go to Starred"
+macro browser gs "<exit><change-folder>={{ item.name }}/Starred<enter>" "go to Starred"
+macro index,pager gt "<change-folder>={{ item.name }}/Sent<enter>" "go to Sent"
+macro browser gs "<exit><change-folder>={{ item.name }}/Sent<enter>" "go to Sent"
+macro index,pager gd "<change-folder>={{ item.name }}/Drafts<enter>" "go to Drafts"
+macro browser gs "<exit><change-folder>={{ item.name }}/Drafts<enter>" "go to Drafts"
 
-macro index,pager / "<vfolder-from-query>path:{{ item.imap_nickname }}/** " "Searching {{ item.imap_nickname }} mailbox with notmuch integration in neomutt"
+macro index,pager / "<vfolder-from-query>path:{{ item.name }}/** " "Searching {{ item.name }} mailbox with notmuch integration in neomutt"
 
 macro index SI "<shell-escape>mbsync {{ item.name }} -download<enter>" "sync inbox"
-macro index,pager y "<save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
-macro index,pager Y "<tag-thread><save-message>={{ item.imap_nickname }}/Archive<enter>" "Archive conversation"
+macro index,pager y "<save-message>={{ item.name }}/Archive<enter>" "Archive conversation"
+macro index,pager Y "<tag-thread><save-message>={{ item.name }}/Archive<enter>" "Archive conversation"
 
 color status {{ item.account_color }} default
 color sidebar_highlight black {{ item.account_color }}

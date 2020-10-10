@@ -4,7 +4,7 @@
 # Source account-specific settings when moving around folders
 # This allows us to change SMTP servers, for example, when inside different accounts
 {% for account in mail_accounts %}
-folder-hook +{{ account.imap_nickname }}/ source {{ ('~/.config/neomutt/accounts/' + account.name) | expanduser }}
+folder-hook +{{ account.name }}/ source {{ ('~/.config/neomutt/accounts/' + account.name | lower) | expanduser }}
 {% endfor %}
 
 # Source this file initially, so it acts like a default account

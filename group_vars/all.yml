@@ -6,7 +6,9 @@ user_website: '{{ (lookup("env", "USER") in ["ahmed", "ahmedelgabri"]) | ternary
 github_username: '{{ (lookup("env", "USER") in ["ahmed", "ahmedelgabri"]) | ternary("ahmedelgabri", "") }}'
 
 keychain_account: "{{ (user_email == '') | ternary(user_email, (user_email | regex_replace('(.*)@(.*)', '\\1+mutt@\\2'))) }}"
+keychain_name: gmail.com
+imap_server: imap.gmail.com
+smtp_server: smtp.gmail.com:465
+mail_alias_path: '~/.config/neomutt/config/aliases'
 
 timezone: 'Europe/Amsterdam'
-
-mail_alias_path: '~/.config/neomutt/config/aliases'

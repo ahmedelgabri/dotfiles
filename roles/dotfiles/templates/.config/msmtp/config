@@ -8,7 +8,7 @@ tls on
 tls_trust_file /usr/local/etc/openssl/cert.pem
 {% for account in mail_accounts %}
 {% if account.smtp_user != '' %}
-account {{ account.name }}
+account {{ account.name | lower }}
 host {{ account.smtp_server }}
 from {{ account.smtp_from }}
 user {{ account.smtp_user }}

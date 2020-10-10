@@ -2,17 +2,16 @@
 ---
 user_email: 'ahmed@miro.com'
 mail_accounts:
-  - name: 'work'
-    imap_nickname: 'Work'
-    imap_server: imap.gmail.com
-    imap_user: 'ahmed@miro.com'
-    imap_keychain_account: 'ahmed+mutt@miro.com'
-    imap_keychain_name: gmail.com
+  - name: 'Work'
+    imap_server: '{{ imap_server }}'
+    imap_user: '{{ user_email }}'
+    imap_keychain_account: '{{ keychain_account }}'
+    imap_keychain_name: '{{ keychain_name }}'
 
-    smtp_server: smtp.gmail.com
-    smtp_from: 'ahmed@miro.com'
-    smtp_user: 'ahmed@miro.com'
-    smtp_keychain_account: 'ahmed+mutt@miro.com'
-    smtp_keychain_name: gmail.com
+    smtp_server: '{{ smtp_server }}'
+    smtp_from: '{{ user_email }}'
+    smtp_user: '{{ user_email }}'
+    smtp_keychain_account: '{{ keychain_account }}'
+    smtp_keychain_name: '{{ keychain_name }}'
 
     account_color: yellow

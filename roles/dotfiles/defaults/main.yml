@@ -2,7 +2,6 @@
 ---
 mail_accounts:
   - name: 'Example'
-    imap_nickname: 'EXAMPLE'
     imap_server: imap.example.com
     imap_user: 'user@example.com'
     imap_keychain_account: 'user@example.com'
@@ -15,4 +14,3 @@ mail_accounts:
     smtp_keychain_name: example.com
 
     account_color: black
-    switch_to: Example

@@ -15,9 +15,9 @@ SyncState *
 {% for account in mail_accounts %}
 {% if account.imap_user != '' %}
 ########################################
-# {{ account.imap_nickname }}
+# {{ account.name }}
 ########################################
-IMAPAccount {{ account.imap_nickname }}
+IMAPAccount {{ account.name }}
 Host {{ account.imap_server }}
 User {{ account.imap_user }}
 # Get the account password from the system Keychain
@@ -26,64 +26,64 @@ AuthMechs LOGIN
 SSLType IMAPS
 
 # Remote storage (where the mail is retrieved from)
-IMAPStore {{ account.imap_nickname }}-remote
-Account {{ account.imap_nickname }}
+IMAPStore {{ account.name }}-remote
+Account {{ account.name }}
 
 # Local storage (where the mail is retrieved to)
-MaildirStore {{ account.imap_nickname }}-local
-Path ~/.mail/{{ account.imap_nickname }}/ # The trailing "/" is important
-Inbox ~/.mail/{{ account.imap_nickname }}/INBOX
+MaildirStore {{ account.name }}-local
+Path ~/.mail/{{ account.name }}/ # The trailing "/" is important
+Inbox ~/.mail/{{ account.name }}/INBOX
 SubFolders Verbatim
 
-Channel {{ account.imap_nickname }}-inbox
-Master :{{ account.imap_nickname }}-remote:INBOX
-Slave :{{ account.imap_nickname }}-local:INBOX
+Channel {{ account.name }}-inbox
+Master :{{ account.name }}-remote:INBOX
+Slave :{{ account.name }}-local:INBOX
 
-Channel {{ account.imap_nickname }}-archive
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/All Mail"
-Slave :{{ account.imap_nickname }}-local:Archive
+Channel {{ account.name }}-archive
+Master :{{ account.name }}-remote:"[Gmail]/All Mail"
+Slave :{{ account.name }}-local:Archive
 
-Channel {{ account.imap_nickname }}-drafts
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/Drafts"
-Slave :{{ account.imap_nickname }}-local:Drafts
+Channel {{ account.name }}-drafts
+Master :{{ account.name }}-remote:"[Gmail]/Drafts"
+Slave :{{ account.name }}-local:Drafts
 
-Channel {{ account.imap_nickname }}-starred
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/Starred"
-Slave :{{ account.imap_nickname }}-local:Starred
+Channel {{ account.name }}-starred
+Master :{{ account.name }}-remote:"[Gmail]/Starred"
+Slave :{{ account.name }}-local:Starred
 
-Channel {{ account.imap_nickname }}-sent
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/Sent Mail"
-Slave :{{ account.imap_nickname }}-local:Sent
+Channel {{ account.name }}-sent
+Master :{{ account.name }}-remote:"[Gmail]/Sent Mail"
+Slave :{{ account.name }}-local:Sent
 
-Channel {{ account.imap_nickname }}-spam
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/Spam"
-Slave :{{ account.imap_nickname }}-local:Spam
+Channel {{ account.name }}-spam
+Master :{{ account.name }}-remote:"[Gmail]/Spam"
+Slave :{{ account.name }}-local:Spam
 
-Channel {{ account.imap_nickname }}-trash
-Master :{{ account.imap_nickname }}-remote:"[Gmail]/Trash"
-Slave :{{ account.imap_nickname }}-local:Trash
+Channel {{ account.name }}-trash
+Master :{{ account.name }}-remote:"[Gmail]/Trash"
+Slave :{{ account.name }}-local:Trash
 
-Channel {{ account.imap_nickname }}-folders
-Master :{{ account.imap_nickname }}-remote:
-Slave :{{ account.imap_nickname }}-local:
+Channel {{ account.name }}-folders
+Master :{{ account.name }}-remote:
+Slave :{{ account.name }}-local:
 # All folders except those defined above
 Patterns * !INBOX !Archive !Drafts !Starred !Sent !Spam !Trash ![Gmail]*
 
-# Group the channels, so that all channels can be sync'd with `mbsync personal`
-Group personal
-Channel {{ account.imap_nickname }}-inbox
-Channel {{ account.imap_nickname }}-archive
-Channel {{ account.imap_nickname }}-drafts
-Channel {{ account.imap_nickname }}-starred
-Channel {{ account.imap_nickname }}-sent
-Channel {{ account.imap_nickname }}-spam
-Channel {{ account.imap_nickname }}-trash
-Channel {{ account.imap_nickname }}-folders
+# Group the channels, so that all channels can be sync'd with `mbsync {{ account.name | lower }}`
+Group {{ account.name | lower }}
+Channel {{ account.name }}-inbox
+Channel {{ account.name }}-archive
+Channel {{ account.name }}-drafts
+Channel {{ account.name }}-starred
+Channel {{ account.name }}-sent
+Channel {{ account.name }}-spam
+Channel {{ account.name }}-trash
+Channel {{ account.name }}-folders
 
-# For doing a quick sync of just the INBOX with `mbsync personal-download`.
-Channel personal-download
-Master :{{ account.imap_nickname }}-remote:INBOX
-Slave :{{ account.imap_nickname }}-local:INBOX
+# For doing a quick sync of just the INBOX with `mbsync {{ account.name | lower }}-download`.
+Channel {{ account.name | lower }}-download
+Master :{{ account.name }}-remote:INBOX
+Slave :{{ account.name }}-local:INBOX
 Create Slave
 Expunge Slave
 Sync Pull
