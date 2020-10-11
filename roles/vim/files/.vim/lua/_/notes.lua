@@ -4,9 +4,9 @@ local NOTES_DIR = vim.fn.expand('$NOTES_DIR')
 local sep = '_'
 
 -- Investigate how to make this work with commands?
--- function M.get_notes_completion(ArgLead, CmdLine, CursorPos)
---   return vim.fn.map(vim.fn.getcompletion(M.get_dir() .. '/*/**/', 'dir'), function(_, v) return vim.fn.substitute(v, 'mC^'.. os.getenv('HOME') ..'/', '~/', '') end)
--- end
+function M.get_notes_completion(ArgLead, CmdLine, CursorPos)
+  return vim.fn.map(vim.fn.getcompletion(M.get_dir() .. '/*/**/', 'dir'), function(_, v) return vim.fn.substitute(v, 'mC^'.. os.getenv('HOME') ..'/', '~/', '') end)
+end
 
 function M.get_dir()
   return NOTES_DIR

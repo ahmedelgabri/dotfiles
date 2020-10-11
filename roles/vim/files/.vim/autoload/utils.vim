@@ -74,82 +74,6 @@ function! utils#OpenFileFolder() abort
   silent call system(utils#open() . ' '.expand('%:p:h:~'))
 endfunction
 
-" Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
-" from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
-let g:GabriMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
-function! utils#should_mkview() abort
-  return &buftype ==# '' &&
-        \ getcmdwintype() ==# '' &&
-        \ index(g:GabriMkviewFiletypeBlacklist, &filetype) == -1 &&
-        \ !exists('$SUDO_USER') " Don't create root-owned files.
-endfunction
-
-function! utils#mkview() abort
-  if exists('*haslocaldir') && haslocaldir()
-    " We never want to save an :lcd command, so hack around it...
-    cd -
-    mkview
-    lcd -
-  else
-    mkview
-  endif
-endfunction
-
-let g:GabriQuitOnQ = ['preview', 'qf', 'fzf', 'netrw', 'help', 'taskedit', 'diff', 'man']
-function! utils#should_quit_on_q() abort
-  return &diff || index(g:GabriQuitOnQ, &filetype) >= 0
-endfunction
-
-let g:GabriNoColorcolumn = [
-      \'qf',
-      \'fzf',
-      \'netrw',
-      \'help',
-      \'markdown',
-      \'startify',
-      \'GrepperSide',
-      \'text',
-      \'gitconfig',
-      \'gitrebase',
-      \'conf',
-      \'tags',
-      \'vimfiler',
-      \'dos',
-      \'json'
-      \'diff',
-      \'minpacprgs'
-      \]
-function! utils#should_turn_off_colorcolumn() abort
-  return &textwidth == 0
-        \|| &diff
-        \|| index(g:GabriNoColorcolumn, &filetype) >= 0
-        \|| &buftype ==# 'terminal' || &readonly
-endfunction
-
-function! utils#highlight_overlength()
-  if exists('w:last_overlength')
-    silent! call matchdelete(w:last_overlength)
-    silent! unlet w:last_overlength
-  endif
-
-  if utils#should_turn_off_colorcolumn()
-    match NONE
-  else
-    " Use tw + 1 so invisble characters are not marked
-    let w:overlength_pattern = '\%>'. (&textwidth + 1) .'v.\+'
-    let w:last_overlength = matchadd('OverLength', w:overlength_pattern)
-  endif
-endfunction
-
-function! utils#highlight_git_markers()
-  if exists('w:last_git_markers')
-    silent! call matchdelete(w:last_git_markers)
-    silent! unlet w:last_git_markers
-  endif
-
-  let w:last_git_markers = matchadd('ErrorMsg', '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$')
-endfunction
-
 function! utils#should_strip_whitespace(filetypelist) abort
   return index(a:filetypelist, &filetype) == -1
 endfunction
@@ -173,15 +97,6 @@ function! utils#NeatFoldText() abort
   let l:first=substitute(getline(v:foldstart), '\v *', '', '')
   let l:dashes=substitute(v:folddashes, '-', l:foldchar, 'g')
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
-endfunction
-
-" Project specific override
-" Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
-function! utils#sourceProjectConfig() abort
-  let l:projectfile = findfile('.vim/local.vim', expand('%:p').';')
-  if filereadable(l:projectfile)
-    silent execute 'source' l:projectfile
-  endif
 endfunction
 
 function! utils#GetIcon(key) abort

@@ -22,9 +22,12 @@ set cursorline
 " to an autoload function it doesn't work
 augroup MyLongLinesHighlight
   autocmd!
-  autocmd BufWinEnter,BufEnter ?* call utils#highlight_overlength()
-  autocmd OptionSet textwidth call utils#highlight_overlength()
-  autocmd BufWinEnter,BufEnter * call utils#highlight_git_markers() " highlight VCS conflict markers
+  if has('nvim')
+    autocmd BufWinEnter,BufEnter ?* lua require'_.autocmds'.highlight_overlength()
+    autocmd OptionSet textwidth lua require'_.autocmds'.highlight_overlength()
+    " highlight VCS conflict markers
+    autocmd BufWinEnter,BufEnter * lua require'_.autocmds'.highlight_git_markers()
+  endif
 augroup END
 
 syntax sync minlines=256              " start highlighting from 256 lines backwards

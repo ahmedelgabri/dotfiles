@@ -2,7 +2,7 @@
 " https://danishpraka.sh/2020/02/23/journaling-in-vim.html
 
 func! GetNotesCompletion(ArgLead, CmdLine, CursorPos) abort
-  return map(getcompletion(expand('$NOTES_DIR') . '/*/**/', 'dir'), {i,v -> substitute(v, '\m\C^'.$HOME.'/', '~/', '')})
+  return luaeval("require'_/notes'.get_notes_completion(_A[1], _A[2], _A[3])", [ArgLead, CmdLine, CursorPos])
 endfunc
 
 command! -complete=customlist,GetNotesCompletion -nargs=* Note lua require'_/notes'.note_edit({<f-args>})

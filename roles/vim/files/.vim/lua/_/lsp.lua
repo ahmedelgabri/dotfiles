@@ -23,7 +23,7 @@ end
 if has_completion then
   -- Lazy loaded because it breaks if completion is not loaded already
   pcall(vim.cmd, [[packadd completion-buffers]])
-  utils.Augroup('LSP', function()
+  utils.Augroup('COMPLETION', function()
     vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
     if has_extensions then
       vim.api.nvim_command("au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()")
