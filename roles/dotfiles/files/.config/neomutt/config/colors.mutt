@@ -10,7 +10,6 @@ color sidebar_unread magenta default
 
 # color attachment brightblack default
 color hdrdefault cyan default
-color indicator white color27
 color markers blue default
 color tilde blue default
 color tree color8 default # Arrow in threads.
@@ -36,7 +35,7 @@ color header magenta default ^(From|To|Cc|Subject):
 color signature cyan default
 
 color index color238 default ~A # All
-color index color2 default ~U # New
+color index white default ~U # New messages
 color index color8 color0 ~D # Deleted messages
 color index brightcolor11 color0 ~T # "Tagged" (selected) messages.
 color index_number color235 color0

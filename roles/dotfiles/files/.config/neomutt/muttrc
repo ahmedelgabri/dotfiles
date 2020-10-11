@@ -100,7 +100,6 @@ set reverse_alias
 
 # Status Bar {{{
 set status_chars = '—+#~'
-set status_on_top
 
 ## status_format - format of summary on the current folder in the index
 # https://www.neomutt.org/guide/reference.html#status-format
