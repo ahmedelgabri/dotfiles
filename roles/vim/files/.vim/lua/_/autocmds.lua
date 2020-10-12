@@ -154,10 +154,14 @@ function M.highlight_git_markers()
 end
 
 function M.disable_heavy_plugins()
-  if vim.fn.getfsize(vim.fn.expand('%')) > 200000 then
-    -- or M.heavy_plugins_blocklist[vim.bo.filetype] == nil then
-    vim.cmd(':ALEDisableBuffer')
-    vim.cmd(':GitGutterBufferDisable')
+  if vim.fn.getfsize(vim.fn.expand('%')) <= 200000 or M.heavy_plugins_blocklist[vim.bo.filetype] == nil then
+    if vim.fn.exists(':ALEEnableBuffer') == 1 then
+      vim.cmd(':ALEEnableBuffer')
+    end
+
+    if vim.fn.exists(':GitGutterBufferEnable') == 1 then
+      vim.cmd(':GitGutterBufferEnable')
+    end
   end
 end
 
