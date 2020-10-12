@@ -45,3 +45,4 @@ macro index,pager Y "<tag-thread><save-message>={{ item.name }}/Archive<enter>" 
 color status {{ item.account_color }} default
 color sidebar_highlight black {{ item.account_color }}
 color sidebar_indicator {{ item.account_color }} color0
+color indicator black {{ item.account_color }} # currently selected message
