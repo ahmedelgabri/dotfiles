@@ -37,6 +37,7 @@ M.colorcolumn_blocklist = {
   json = true,
   diff = true,
   minpacprgs = true,
+  gitcommit = true,
 }
 
 M.heavy_plugins_blocklist = {
