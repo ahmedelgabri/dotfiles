@@ -78,4 +78,4 @@
     label: '{{ item.name }}: {{ item.imap_user }}'
   template:
     src: '{{ ansible_env.PWD }}/roles/dotfiles/templates/.config/neomutt/accounts/account'
-    dest: '~/.config/neomutt/accounts/{{ item.name }}'
+    dest: '~/.config/neomutt/accounts/{{ item.name | lower }}'
