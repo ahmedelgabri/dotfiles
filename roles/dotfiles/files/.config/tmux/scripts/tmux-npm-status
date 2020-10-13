@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # https://status.npmjs.org/api#status
-GITHUB_STATUS=$(curl -sS https://wyvgptkd90hm.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
+NPM_STATUS=$(curl -sS https://wyvgptkd90hm.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
 
 INDICATIOR="#[fg=colour237]⦁"
 
-case $GITHUB_STATUS in
+case $NPM_STATUS in
 ma* | cri*)
   STATUS="#[fg=red]   $INDICATOR "
   ;;
