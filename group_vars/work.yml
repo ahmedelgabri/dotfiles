@@ -14,4 +14,4 @@ mail_accounts:
     smtp_keychain_account: '{{ keychain_account }}'
     smtp_keychain_name: '{{ keychain_name }}'
 
-    account_color: yellow
+    account_color: color238
