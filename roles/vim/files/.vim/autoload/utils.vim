@@ -99,23 +99,6 @@ function! utils#NeatFoldText() abort
   return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
-function! utils#GetIcon(key) abort
-  " 'success':' '
-  let l:ICONS = {
-        \'paste': '⍴',
-        \'spell': '✎',
-        \'branch': exists($PURE_GIT_BRANCH) ? trim($PURE_GIT_BRANCH) : ' ',
-        \'error': '×',
-        \'info': '●',
-        \'warn': '!',
-        \'hint': ' ',
-        \'lock': '',
-        \'success':' ',
-        \}
-
-  return get(l:ICONS, a:key, a:key)
-endfunction
-
 function! utils#open() abort
   " Linux/BSD
   if executable('xdg-open')

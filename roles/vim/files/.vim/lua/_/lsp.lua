@@ -34,28 +34,28 @@ end
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 vim.fn.sign_define('LspDiagnosticsErrorSign', {
-    text = vim.fn['utils#GetIcon']('error'),
+    text = utils.get_icon('error'),
     texthl = 'LspDiagnosticsError',
     linehl = '',
     numhl = ''
   })
 
 vim.fn.sign_define('LspDiagnosticsWarningSign', {
-    text = vim.fn['utils#GetIcon']('warn'),
+    text = utils.get_icon('warn'),
     texthl = 'LspDiagnosticsWarning',
     linehl = '',
     numhl = ''
   })
 
 vim.fn.sign_define('LspDiagnosticsInformationSign', {
-    text = vim.fn['utils#GetIcon']('info'),
+    text = utils.get_icon('info'),
     texthl = 'LspDiagnosticsInformation',
     linehl = '',
     numhl = ''
   })
 
 vim.fn.sign_define('LspDiagnosticsHintSign', {
-    text = vim.fn['utils#GetIcon']('hint'),
+    text = utils.get_icon('hint'),
     texthl = 'LspDiagnosticsHint',
     linehl = '',
     numhl = ''

@@ -16,8 +16,20 @@ function M.augroup(group, fn)
 end
 
 function M.get_icon(icon_name)
-  -- [todo] pcall?
-  return vim.fn['utils#GetIcon'](icon_name)
+  local ICONS = {
+    paste = '⍴',
+    spell = '✎',
+    branch = os.getenv('PURE_GIT_BRANCH') ~= '' and vim.fn.trim(os.getenv('PURE_GIT_BRANCH')) or ' ',
+    error = '×',
+    info = '●',
+    warn = '!',
+    hint = '›',
+    lock = '',
+    success =' ',
+    -- success = ' '
+  }
+
+  return ICONS[icon_name] or ''
 end
 
 function M.get_color(synID, what, mode)

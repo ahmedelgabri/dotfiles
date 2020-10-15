@@ -35,7 +35,7 @@ function M.git_info()
   local out = vim.fn.FugitiveHead(10)
 
   if out ~= '' then
-    out = utils.get_icon('branch') .. ' ' .. out
+    out = utils.get_icon('branch') .. '  ' .. out
   end
 
   return out
