@@ -56,7 +56,7 @@ primary_email={{ user_email }}
 
 [new]
 tags=unread;inbox;
-ignore=
+ignore=.mbsyncstate;.uidvalidity
 
 # Search configuration
 #
@@ -69,6 +69,7 @@ ignore=
 #
 
 [search]
+# exclude_tags=deleted;killed;spam;
 exclude_tags=deleted;spam;
 
 # Maildir compatibility configuration
