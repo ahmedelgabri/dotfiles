@@ -63,8 +63,6 @@ function! plugins#load_plugins() abort
     " }}}
 
     " Syntax {{{
-    call minpac#add('https://github.com/nvim-treesitter/nvim-treesitter', {'type': 'opt'})
-    call minpac#add('https://github.com/nvim-treesitter/playground', {'type': 'opt'})
     call minpac#add('https://github.com/norcalli/nvim-colorizer.lua')
     call minpac#add('https://github.com/sheerun/vim-polyglot')
     call minpac#add('https://github.com/godlygeek/tabular') " required for plasticboy/vim-markdown
