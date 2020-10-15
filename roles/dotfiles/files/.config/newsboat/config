@@ -14,7 +14,7 @@
   auto-reload yes
   reload-threads 3
   reload-time 120
-  save-path "~/Box/saved-articles"
+  save-path "~/Sync/saved-articles"
   bookmark-cmd ~/.config/newsboat/bookmark.sh
   bookmark-interactive no
   bookmark-autopilot yes

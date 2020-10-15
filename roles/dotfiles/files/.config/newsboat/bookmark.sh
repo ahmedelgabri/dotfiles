@@ -9,6 +9,6 @@ fi
 URL=$(echo "${url}" | perl -p -e 's/(\?|\&)?utm_[a-z]+=[^\&]+//g;' -e 's/(#|\&)?utm_[a-z]+=[^\&]+//g;')
 TITLE="$2"
 
-grep -q "[${TITLE}](${URL})" ~/Box/saved-articles/bookmarks.txt || echo "[${TITLE}](${URL})" >>~/Box/saved-articles/bookmarks.txt
+grep -q "[${TITLE}](${URL})" ~/Sync/saved-articles/bookmarks.txt || echo "[${TITLE}](${URL})" >>~/Sync/saved-articles/bookmarks.txt
 
 ./getpocket.com/send-to-pocket.sh "$URL" "$TITLE"

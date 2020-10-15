@@ -23,7 +23,7 @@ map gc cd ~/Sites
 map gf $test -d $f && $OPENER $f || $OPENER -R $f
 map gd cd ~/Downloads
 map gD cd ~/Documents
-map gb cd ~/Box
+map gb cd ~/Sync
 map gp cd ~/Pictures
 map gr cd /
 map gt fzf
