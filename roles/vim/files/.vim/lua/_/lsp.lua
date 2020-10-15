@@ -104,60 +104,45 @@ end
 -- lsp.callbacks['textDocument/codeAction'] = custom_codeAction_callback
 
 local servers = {
-  {name = 'ocamlls'},
-  {name = 'cssls'},
-  {name = 'bashls'},
-  {name = 'vimls'},
-  {name = 'pyls'},
-  {name = "rust_analyzer"},
-  {
-    name = 'tsserver',
-    config = {
-      -- cmd = {
-      --   "typescript-language-server",
-      --   "--stdio",
-      --   "--tsserver-log-file",
-      --   "tslog"
-      -- }
-      -- See https://github.com/neovim/nvim-lsp/issues/237
-      root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
-    }
+  ocamlls = {},
+  cssls = {},
+  bashls = {},
+  vimls = {},
+  pyls = {},
+  rust_analyzer = {},
+  tsserver = {
+    -- cmd = {
+    --   "typescript-language-server",
+    --   "--stdio",
+    --   "--tsserver-log-file",
+    --   "tslog"
+    -- }
+    -- See https://github.com/neovim/nvim-lsp/issues/237
+    root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
   },
-  {
-    name = 'sumneko_lua',
-    config = {
-      settings = {
-        Lua = {
-          runtime = {
-            version = "LuaJIT",
-            path = vim.split(package.path, ';'),
-          },
-          completion = {
-            keywordSnippet = "Disable",
-          },
-          diagnostics = {
-            enable = true,
-            globals = {"vim", "spoon", "hs"},
-          },
-        }
+  sumneko_lua = {
+    settings = {
+      Lua = {
+        runtime = {
+          version = "LuaJIT",
+          path = vim.split(package.path, ';'),
+        },
+        completion = {
+          keywordSnippet = "Disable",
+        },
+        diagnostics = {
+          enable = true,
+          globals = {"vim", "spoon", "hs"},
+        },
       },
     }
   },
 }
 
-for _, server in ipairs(servers) do
-  local server_disabled = (server.disabled ~= nil and server.disabled) or false
+for server, config in pairs(servers) do
+  local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
   if not server_disabled then
-    if server.config then
-      server.config.on_attach = on_attach
-    else
-      server.config = {
-        on_attach = on_attach,
-      }
-    end
-
-
-    lsp[server.name].setup(server.config)
+    lsp[server].setup(vim.tbl_deep_extend('force', { on_attach = on_attach }, config))
   end
 end
