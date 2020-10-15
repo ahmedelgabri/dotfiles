@@ -85,13 +85,15 @@ local on_attach = function(client)
   utils.bmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', map_opts)
   utils.bmap('n', '<leader>ld', '<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>', map_opts)
 
-  vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
+  utils.augroup('LSP', function ()
+    vim.api.nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
 
-  if resolved_capabilities.document_highlight then
-    vim.api.nvim_command('autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()')
-    vim.api.nvim_command('autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()')
-    vim.api.nvim_command('autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()')
-  end
+    if resolved_capabilities.document_highlight then
+      vim.api.nvim_command('autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()')
+      vim.api.nvim_command('autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()')
+      vim.api.nvim_command('autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()')
+    end
+  end)
 end
 
 -- Uncomment to execute the extension test mentioned above.
@@ -107,6 +109,7 @@ local servers = {
   {name = 'bashls'},
   {name = 'vimls'},
   {name = 'pyls'},
+  {name = "rust_analyzer"},
   {
     name = 'tsserver',
     config = {
@@ -120,7 +123,6 @@ local servers = {
       root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
     }
   },
-  { name = 'rust_analyzer' },
   {
     name = 'sumneko_lua',
     config = {
@@ -137,81 +139,6 @@ local servers = {
             enable = true,
             globals = {"vim", "spoon", "hs"},
           },
-        }
-      },
-    }
-  },
-  -- JSON & YAML schemas http://schemastore.org/json/
-  {
-    name = 'jsonls',
-    config = {
-      settings = {
-        json = {
-          schemas = {
-            {
-              description = 'TypeScript compiler configuration file',
-              fileMatch = {'tsconfig.json', 'tsconfig.*.json'},
-              url = 'http://json.schemastore.org/tsconfig'
-            },
-            {
-              description = 'Lerna config',
-              fileMatch = {'lerna.json'},
-              url = 'http://json.schemastore.org/lerna'
-            },
-            {
-              description = 'Babel configuration',
-              fileMatch = {'.babelrc.json', '.babelrc', 'babel.config.json'},
-              url = 'http://json.schemastore.org/lerna'
-            },
-            {
-              description = 'ESLint config',
-              fileMatch = {'.eslintrc.json', '.eslintrc'},
-              url = 'http://json.schemastore.org/eslintrc'
-            },
-            {
-              description = 'Bucklescript config',
-              fileMatch = {'bsconfig.json'},
-              url = 'https://bucklescript.github.io/bucklescript/docson/build-schema.json'
-            },
-            {
-              description = 'Prettier config',
-              fileMatch = {'.prettierrc', '.prettierrc.json', 'prettier.config.json'},
-              url = 'http://json.schemastore.org/prettierrc'
-            },
-            {
-              description = 'Vercel Now config',
-              fileMatch = {'now.json', 'vercel.json'},
-              url = 'http://json.schemastore.org/now'
-            },
-            {
-              description = 'Stylelint config',
-              fileMatch = {'.stylelintrc', '.stylelintrc.json', 'stylelint.config.json'},
-              url = 'http://json.schemastore.org/stylelintrc'
-            },
-          }
-        },
-      },
-    }
-  },
-  {
-    name = 'yamlls',
-    config = {
-      settings = {
-        yaml = {
-          schemas = {
-            ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
-            ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-            ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
-            ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
-            ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
-            ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}'
-          },
-          format = {
-            enable = true
-          },
-          validate = true,
-          hover = true,
-          completion = true
         }
       },
     }
