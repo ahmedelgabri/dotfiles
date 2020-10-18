@@ -4,100 +4,27 @@
 cask_args appdir: '/Applications'
 
 tap "dbcli/tap"
-tap "github/gh"
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/services"
-tap "neomutt/neomutt"
-tap "sachaos/todoist"
 tap "tavianator/tap"
-tap "universal-ctags/universal-ctags"
 
 # Core
-brew "openssl"
-brew "git"
-brew "python"
-brew "gawk"
 brew "gnu-sed"
-brew "coreutils"
-brew "findutils"
-brew "curl"
-brew "wget"
-brew "pinentry-mac"
-brew "gnupg"
-brew "zsh"
-brew "transcrypt"
 
 # Languages
-brew "node"
 brew "n"
-brew "yarn"
 
-# Core utils
-brew "htop"
-brew "ncdu"
-brew "ripgrep"
-brew "pandoc"
-brew "urlview"
-# brew "rename"
-brew "tig"
-brew "diff-so-fancy"
-brew "fd"
-brew "jq"
-brew "par"
-brew "w3m"
-brew "scc"
-brew "tokei"
-brew "lf"
-brew "chafa"
-brew "github/gh/gh"
-brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
-
-# Core apps
-brew "neovim", args: ["HEAD"]
-brew "newsboat"
-# Mail
-brew "isync"
-brew "lbdb"
-brew "msmtp"
-brew "neomutt"
-# End Mail
-brew "tmux", args: ["HEAD"]
-brew "vim"
-brew "sachaos/todoist/todoist"
-
-# Nice to have
-brew "asciinema"
-brew "editorconfig"
-brew "exiftool"
-brew "hyperfine"
-brew "proselint"
-brew "bat"
-brew "exa"
-brew "shellcheck"
-brew "shfmt" # Doesn't work with zsh, only sh & bash
-brew "grip" # Markdown previewer
-brew "pass"
-brew "yamllint"
-brew "hadolint"
-brew "lnav"
-
-cask "alacritty"
 cask "1password"
 cask "alfred"
 cask "appcleaner"
 cask "corelocationcli"
-cask "kitty"
-cask "brave-browser"
-cask "firefox"
 cask "google-chrome"
 cask "hammerspoon"
 cask "imageoptim"
 cask "launchcontrol"
 cask "kap"
-cask "mpv"
-cask "obsidian"
 cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
@@ -118,22 +45,11 @@ cask "zoomus"
 {% if 'personal' in group_names %}
 # Languages
 cask "adoptopenjdk8"
-brew "clojure"
-brew "leiningen"
-brew "candid82/brew/joker"
-brew "borkdude/brew/clj-kondo"
-brew "weechat" # , args: ["with-curl"]
 
-# Core apps
-brew "youtube-dl"
-
-cask "1password-cli"
 cask "arq"
-cask "dayone-cli"
 cask "skype"
 cask "transmit"
 cask "db-browser-for-sqlite"
-cask "keybase"
 cask "figma"
 
 # mas "Day One", id: 1055511498
@@ -141,10 +57,5 @@ cask "figma"
 # mas "Keynote", id: 409183694
 {% endif %}
 {% if 'work' in group_names %}
-brew "go-jira"
-brew "maven@3.5"
 cask "java"
-cask "virtualbox"
-cask "vagrant"
-cask "docker"
 {% endif %}

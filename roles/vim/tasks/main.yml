@@ -10,13 +10,3 @@
       path: ~/.config/nvim
     - title: 'vim'
       path: ~/.vim
-
-# Buggy, see https://github.com/ansible/ansible/issues/68827
-- name: install neovim support via npm
-  yarn: name=neovim global=yes
-
-- name: install neovim support via pip3
-  pip: executable=pip3 name=pynvim
-
-- name: install vim-vint
-  pip: executable=pip3 name=vim-vint

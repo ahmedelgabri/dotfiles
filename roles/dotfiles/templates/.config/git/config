@@ -19,7 +19,7 @@
 	path = ~/.gitconfig.local
 
 [gpg]
-	program = /usr/local/bin/gpg
+	program = gpg
 
 [commit]
 	verbose = true

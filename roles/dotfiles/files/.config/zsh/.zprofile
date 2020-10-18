@@ -1,5 +1,5 @@
 # Ensure path arrays do not contain duplicates.
-typeset -gU cdpath fpath manpath mailpath path
+typeset -gU fpath manpath mailpath path
 
 ##############################################################
 # PATH.
@@ -29,31 +29,21 @@ manpath=(
   $manpath
 )
 
-infopath=(
- /usr/local/share/info
- $infopath
-)
-
-# Set the the list of directories that cd searches.
-cdpath=(
-  $cdpath
-)
-
 # Set the list of directories that Zsh searches for programs.
 path=(
   ${ZDOTDIR:-${DOTFILES}/roles/dotfiles/files/.config/zsh}/bin(N-/)
   ${HOME}/.local/bin(N-/)
-  ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
-  ${HOMEBREW_PREFIX}/opt/openssl@*/bin(Nn[-1]-/)
-  ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
-  ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
-  ${HOMEBREW_PREFIX}/opt/python@3.*/libexec/bin(Nn[-1]-/)
+  # ${HOMEBREW_PREFIX}/opt/curl/bin(N-/)
+  # ${HOMEBREW_PREFIX}/opt/openssl@*/bin(Nn[-1]-/)
+  # ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
+  # ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
+  # ${HOMEBREW_PREFIX}/opt/python@3.*/libexec/bin(Nn[-1]-/)
   ${CARGO_HOME}/bin(N-/)
   ${GOBIN}(N-/)
-  ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
-  ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
-  ${HOMEBREW_PREFIX}/opt/ruby/bin(N-/)
-  ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(Nn[-1]-/)
+  # ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
+  # ${HOME}/Library/Python/2.*/bin(Nn[-1]-/)
+  # ${HOMEBREW_PREFIX}/opt/ruby/bin(N-/)
+  # ${HOMEBREW_PREFIX}/lib/ruby/gems/*/bin(Nn[-1]-/)
   /usr/local/{bin,sbin}
   ${HOMEBREW_CELLAR}/git/*/share/git-core/contrib/git-jump(Nn[-1]-/)
   $path

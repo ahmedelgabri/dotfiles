@@ -6,19 +6,7 @@
 - name: install global yarn modules
   yarn: name={{ item }} global=yes
   loop:
-    - prettier
     - vercel
-    - svgo
-    - reason-cli@latest-macos
-    - bash-language-server
-    - dockerfile-language-server-nodejs
-    - ocaml-language-server
-    - typescript-language-server
-    - yaml-language-server
-    - vim-language-server
-    - vscode-css-languageserver-bin
-    - vscode-json-languageserver
-    - lua-fmt
 
 - name: install global python packages
   pip: executable=pip3 name={{ item }} extra_args={{ '--user' if item == 'pip' else '--upgrade' }}
@@ -26,11 +14,6 @@
     - setuptools
     - pip
     - websocket-client
-    - black
-    - pylint
-    - tuir
-    # for mutt & dump-ical.py script
-    - vobject
 
 - name: install rust
   shell:

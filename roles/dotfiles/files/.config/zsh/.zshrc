@@ -57,19 +57,9 @@ function {
   # Shell {{{
     zinit snippet OMZP::gpg-agent
 
-    zinit ice wait lucid from'gh-r' as'program'
-    zinit light https://github.com/junegunn/fzf
-
-    zinit ice wait lucid as'command' multisrc'shell/{completion,key-bindings}.zsh' id-as'junegunn/fzf_completions' pick'bin/fzf-tmux'
-    zinit light https://github.com/junegunn/fzf
-
     zinit ice wait lucid from'gh-r' as'program' \
       mv'zoxide* -> zoxide' atclone'echo "unalias zi 2> /dev/null " > zhook.zsh && ./zoxide init zsh --hook pwd >> zhook.zsh' atpull'%atclone' src'zhook.zsh'
     zinit light https://github.com/ajeetdsouza/zoxide
-
-    zinit ice wait lucid as'program' \
-      atclone'./install.sh $ZPFX $ZPFX && ln -sf $ZPFX/share/grc ~/.config/grc' atpull'%atclone' compile'grc.zsh' src'grc.zsh' pick'$ZPFX/bin/grc*'
-    zinit light https://github.com/garabik/grc
 
     zinit ice pick'async.zsh' src'pure.zsh'
     zinit light https://github.com/ahmedelgabri/pure
@@ -107,9 +97,6 @@ function {
     zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
       atpull'%atclone' pick"clrs.zsh" nocompile'!' atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
     zinit light https://github.com/trapd00r/LS_COLORS
-
-    zinit ice wait lucid from'gh-r' as'program' mv'rust-analyzer* -> rust-analyzer'
-    zinit light https://github.com/rust-analyzer/rust-analyzer
   # }}}
 
   # Local plugins/completions/etc... {{{
@@ -117,6 +104,9 @@ function {
   # }}}
 
   # Recommended be loaded last {{{
+    zinit ice wait lucid
+    zinit light https://github.com/spwhitt/nix-zsh-completions
+
     zinit ice wait blockf lucid atpull'zinit creinstall -q .'
     zinit light https://github.com/zsh-users/zsh-completions
 
@@ -188,4 +178,9 @@ function {
       tee ${HOME}/.hushlogin < /etc/motd
     fi
   fi
+
+
+  if [ -e /Users/ahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/ahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+  if [ -f ~/foo-nix.zsh ]; then source ~/foo-nix.zsh; fi
 }
