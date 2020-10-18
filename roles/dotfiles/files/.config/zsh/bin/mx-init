@@ -28,11 +28,9 @@ create_session() {
     tmux send-keys "weechat" C-m
   fi
 
-  logpath="$PROJECTS"/knowledge
-  if [ -d "$logpath" ]; then
-    tmux new-window -n 'log' -c "$logpath"
+  if [ -d "$NOTES_DIR" ]; then
+    tmux new-window -n 'notes' -c "$NOTES_DIR"
     tmux send-keys "$EDITOR" C-m
-    tmux split-window -h -p 15 -c "$logpath"
   fi
 
   if [ -d "$DOTFILES" ]; then
