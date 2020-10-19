@@ -104,7 +104,6 @@ function! plugins#load_plugins() abort
     call minpac#add('https://github.com/haishanh/night-owl.vim', {'type': 'opt'})
     call minpac#add('https://github.com/lifepillar/vim-gruvbox8', {'type': 'opt'})
     call minpac#add('https://github.com/bluz71/vim-moonfly-colors', {'type': 'opt'})
-    call minpac#add('https://github.com/chuling/ci_dark', {'type': 'opt'})
     " }}}
   endif
 endfunction
