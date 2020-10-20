@@ -7,7 +7,11 @@ function! miro#get_url(opts, ...) abort
     return ''
   endif
 
-  let l:path = substitute(a:opts.path, '^/', '', '')
+  let l:type = get(a:opts, 'type', '')
+  let l:p = get(a:opts, 'path', '')
+  let l:path = substitute(l:p, '^/', '', '')
+  let l:line1  = get(a:opts, 'line1')
+  let l:line2  = get(a:opts, 'line2')
   let l:domain_pattern = ''
   let l:domains = exists('g:fugitive_miro_domains') ? g:fugitive_miro_domains : []
 
@@ -24,14 +28,27 @@ function! miro#get_url(opts, ...) abort
   let [l:domain_port, l:project, l:repo_name] = split(l:repo, '/')
   let l:repo = join([l:domain_port, l:project, 'repos', l:repo_name], '/')
   let l:root = (index(l:domains, 'http://' . matchstr(l:repo, '^[^:/]*')) >= 0 ? 'http://' : 'https://') . substitute(l:repo,':\d*','/projects','')
-  let l:commit = a:opts.repo.head()
-  let l:url = l:root . '/browse/' .  l:path . '?at=refs/heads/' . l:commit
+  let l:head = a:opts.repo.head()
+  let l:commit = a:opts.commit =~# '^\d\=$' ? '' : a:opts.commit
+  echo [a:opts.repo.find(l:commit), a:opts.repo.config(l:head)]
 
-  if get(a:opts, 'line1')
-    let l:url .= '#' . a:opts.line1
+  " If buffer contains directory not file, return a /tree url
+  if l:type ==# 'tree' || l:p =~# '/$'
+    let l:url = l:root . '/browse/' .  l:path
+  elseif l:type ==# 'blob' || l:p =~# '[^/]$'
+    " If we have ranges prefer normal view
+    " otherwise go to commit view because we can't highlight lines in commit view
+    let l:url = l:root . '/browse/' .  l:path . '?at=refs/heads/' . l:head
+    if l:line1 !=# ''
+      let l:url .= '#' . a:opts.line1
 
-    if get(a:opts, 'line2')
-      let l:url .= '-' . a:opts.line2
+      if l:line2 !=# ''
+        let l:url .= '-' . a:opts.line2
+      endif
+      " else
+      "   if l:commit !=# ''
+      "     let l:url = l:root . '/commits/' .  l:commit . '#' . l:path
+      "   endif
     endif
   endif
 
