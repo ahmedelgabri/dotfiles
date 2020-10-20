@@ -10,7 +10,8 @@ UNSUPPORTED_MSG="PLATFORM not supported"
 PARSE_ERROR_MSG="Couldn't parse URL"
 
 function get_url() {
-  local url=$(git config --get remote.origin.url | awk '{$1=$1;print}')
+  # using git remote instead of git config --get remote.origin.url because it will always work even with url & insteadOf
+  local url=$(git remote get-url origin | awk '{$1=$1;print}')
 
   # This regex is a bit naive, only works with the SSH URL, it doesn't work for the HTTPS one, yet
   local re="([A-Za-z0-9_]+:\/\/)(.+@)*([A-Za-z0-9_\.]+)(:[0-9]+){0,1}\/(.*)\/(.*)\.git(\/)?"
