@@ -16,7 +16,7 @@ function M.note_info(f_args)
   local fname = ''
 
   if #f_args >= 1 then
-    local where = string.gsub(vim.fn.fnamemodify(f_args[1], ':h') .. '/', '^.', '')
+    local where = string.gsub(vim.fn.fnamemodify(f_args[1], ':h') .. '/', '^\\.', '')
 
     path = path .. where
     fname = vim.fn.fnamemodify(f_args[1], ':t:r'):lower() or ''
