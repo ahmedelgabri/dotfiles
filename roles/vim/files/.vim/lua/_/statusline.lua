@@ -13,11 +13,13 @@ local function line_no_indicator()
   local total_lines = vim.fn.line('$')
   local index = current_line
 
-  if current_line == total_lines then
+  if current_line == 1 then
+    index = 1
+  elseif current_line == total_lines then
     index = #line_no_indicator_chars
   else
     local line_no_fraction = math.floor(current_line) / math.floor(total_lines)
-    index = math.floor(line_no_fraction * #line_no_indicator_chars) + 1
+    index = math.ceil(line_no_fraction * #line_no_indicator_chars)
   end
 
   return line_no_indicator_chars[index]
@@ -207,13 +209,13 @@ function M.inactive()
 end
 
 
-  function M.activate()
-    vim.cmd(('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%d'):format(utils.get_color('Identifier', 'fg', 'gui'), utils.get_color('Identifier', 'fg', 'cterm')))
+function M.activate()
+  vim.cmd(('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%d'):format(utils.get_color('Identifier', 'fg', 'gui'), utils.get_color('Identifier', 'fg', 'cterm')))
 
-    utils.augroup('MyStatusLine', function ()
-      vim.cmd("autocmd WinEnter,BufEnter * lua require'_.statusline'.active()")
-      vim.cmd("autocmd WinLeave,BufLeave * lua require'_.statusline'.inactive()")
-    end)
-  end
+  utils.augroup('MyStatusLine', function ()
+    vim.cmd("autocmd WinEnter,BufEnter * lua require'_.statusline'.active()")
+    vim.cmd("autocmd WinLeave,BufLeave * lua require'_.statusline'.inactive()")
+  end)
+end
 
-  return M
+return M
