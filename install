@@ -133,7 +133,8 @@ package_manager() {
     # fi
     install_homebrew
   elif [ "$(uname)" == "Linux" ]; then
-    sudo pacman-mirros -g
+    # doesn't work
+    # sudo pacman-mirros -g
     sudo pacman --noconfirm -S ansible
 
     git clone https://github.com/elasticdog/transcrypt.git ~/transcrypt &&
