@@ -232,6 +232,7 @@
   https://lexi-lambda.github.io/feeds/all.rss.xml "Blog" "Haskell" "Programming" "Functional"
   https://charity.wtf/feed/ "Blog"
   https://brandur.org/articles.atom "Blog" "Programming"
+  https://tkdodo.eu/blog/rss.xml "Blog" "TypeScript"
 # }}}
 
 # Browsers {{{
