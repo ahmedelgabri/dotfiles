@@ -58,7 +58,7 @@ function {
     zinit snippet OMZP::gpg-agent
 
     zinit ice wait lucid from'gh-r' as'program'
-    zinit light https://github.com/junegunn/fzf-bin
+    zinit light https://github.com/junegunn/fzf
 
     zinit ice wait lucid as'command' multisrc'shell/{completion,key-bindings}.zsh' id-as'junegunn/fzf_completions' pick'bin/fzf-tmux'
     zinit light https://github.com/junegunn/fzf
