@@ -1,9 +1,18 @@
-U2FsdGVkX18SvhfqTSM4EOt50X+4ZwpiDiBTOnBgJjB/hdoep2EyIh0J821xL/s3
-6yyRXnQdG66+HowVy/Jsvy0u6boD78Uxvy3rISlIdFKGX9eim1BvraL8vsw/RxCZ
-U5kH5iSdF43LWRCpWT59Pc8+J2mUAJjLKhMQBZCiuglRksxe6tm8rU/vjDBBE6j6
-ckzXI3JkJMOzSrtTf9mTQfwpOmriYIcpNQlZLD8x0WHFNzxJGky8XUlogNFczUUL
-XWIsB80Rl4JtaclIcw0rWNJ0gf1HZzvS4ahn6WmplQZWu19asa3VyGzcj6YsEXzo
-f4H39t6ibNMrOLkpwKn20+FJFjV2ie6+96w+wlXckctnvHaC6w3rf6Flb7DBQnCW
-sQxmB4cYqLKh7/wY5LgqnXD+/v5EiuE1EsLN7j8sHaH6ThftHEAgu46WgQrDK/Ec
-oX1f3J+FEfyNhX5ZoRPIR7TjHx0R9Z4ClHLrxuZOGWT/AnWyQX+p8903dLMFkFxy
-iHLpIY/FUlhy2LZIZ69hnA==
+# include directives can't appear after a host block
+Include config.d/*
+
+Host *
+  Ciphers aes128-ctr
+  ControlPath ~/.ssh/%C.sock
+  ControlMaster auto
+  ControlPersist 10m
+  PasswordAuthentication no
+  ChallengeResponseAuthentication no
+  HashKnownHosts yes
+  AddKeysToAgent yes
+  UseKeyChain yes
+  Compression yes
+
+Host github
+  HostName git@github.com
+  forwardAgent yes

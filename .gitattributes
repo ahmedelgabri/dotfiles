@@ -1,3 +1,2 @@
-roles/ssh/files/config filter=crypt diff=crypt
 roles/irc/files/*.conf filter=crypt diff=crypt
 .npmrc filter=crypt diff=crypt
