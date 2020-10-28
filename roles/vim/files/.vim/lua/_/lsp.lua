@@ -103,6 +103,20 @@ end
 
 -- lsp.callbacks['textDocument/codeAction'] = custom_codeAction_callback
 
+local function root_pattern(...)
+  local patterns = vim.tbl_flatten {...}
+
+  return function(startpath)
+    for _, pattern in ipairs(patterns) do
+      return lsp.util.search_ancestors(startpath, function(path)
+        if lsp.util.path.exists(vim.fn.glob(lsp.util.path.join(path, pattern))) then
+          return path
+        end
+      end)
+    end
+  end
+end
+
 local servers = {
   ocamlls = {},
   cssls = {},
@@ -118,7 +132,7 @@ local servers = {
     --   "tslog"
     -- }
     -- See https://github.com/neovim/nvim-lsp/issues/237
-    root_dir = lsp.util.root_pattern("tsconfig.json", ".git"),
+    root_dir = root_pattern("tsconfig.json",  "package.json", ".git"),
   },
   sumneko_lua = {
     settings = {
