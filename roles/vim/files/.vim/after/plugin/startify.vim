@@ -32,7 +32,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['The works must be conceived with fire in the soul but executed with clinical coolness', '', '― Joan Miró'],
       \ ['Believe those who seek the truth, doubt those who find it.', '', '― André Gide'],
       \ ["Argue like you're right. Listen like you're wrong", '', '― Adam M. Grant'],
-      \ ['Luck is what happens when preparation meets opportunity.', '', '― Seneca']
+      \ ['Luck is what happens when preparation meets opportunity.', '', '― Seneca'],
+      \ ['A complex system that works is invariably found to have evolved from a simple system that worked. The inverse proposition also appears to be true: A complex system designed from scratch never works and cannot be made to work. You have to start over, beginning with a working simple system.', '', '― John Gall']
       \ ]
 
 function! s:list_commits()
