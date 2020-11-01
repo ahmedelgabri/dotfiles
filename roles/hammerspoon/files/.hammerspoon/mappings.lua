@@ -27,6 +27,11 @@ end
 
 hs.hotkey.bind({}, 'f10', hs.openConsole)
 
+--  Mute Zoom (requires enabling global keyboard shortcut in Zoom)
+hs.hotkey.bind({}, '§', function()
+ hs.eventtap.keyStroke({'CMD', 'SHIFT'}, 'a')
+end)
+
 hs.hotkey.bind(modalKey, 'r', function()
   hs.reload()
 end)
