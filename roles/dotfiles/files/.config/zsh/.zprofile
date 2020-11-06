@@ -47,7 +47,7 @@ path=(
   ${HOMEBREW_PREFIX}/opt/openssl@*/bin(Nn[-1]-/)
   ${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin(N-/)
   ${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin(N-/)
-  ${HOMEBREW_PREFIX}/opt/python/libexec/bin(N-/)
+  ${HOMEBREW_PREFIX}/opt/python@3.*/libexec/bin(Nn[-1]-/)
   ${CARGO_HOME}/bin(N-/)
   ${GOBIN}(N-/)
   ${HOME}/Library/Python/3.*/bin(Nn[-1]-/)
