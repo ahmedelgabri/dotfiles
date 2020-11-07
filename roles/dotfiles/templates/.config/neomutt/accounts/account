@@ -18,7 +18,9 @@ set header_cache = "{{ ('~/.cache/neomutt/headers/' +  item.name + '/') | expand
 set message_cachedir = "{{ ('~/.cache/neomutt/messages/' +  item.name + '/') | expanduser }}"
 unmailboxes *
 mailboxes "+{{ item.name }}/INBOX" \
+{% if keychain_name == 'gmail.com' %}
   "+{{ item.name }}/Starred" \
+{% endif %}
   "+{{ item.name }}/Sent" \
   "+{{ item.name }}/Drafts" \
   "+{{ item.name }}/Trash" \
@@ -29,12 +31,14 @@ mailboxes "+{{ item.name }}/INBOX" \
 macro index,pager gw "<change-folder>={{ item.switch_to }}/INBOX<enter>" "Switch account to {{ item.switch_to }}"
 {% endif %}
 
+{% if keychain_name == 'gmail.com' %}
 macro index,pager gs "<change-folder>={{ item.name }}/Starred<enter>" "go to Starred"
 macro browser gs "<exit><change-folder>={{ item.name }}/Starred<enter>" "go to Starred"
+{% endif %}
 macro index,pager gt "<change-folder>={{ item.name }}/Sent<enter>" "go to Sent"
-macro browser gs "<exit><change-folder>={{ item.name }}/Sent<enter>" "go to Sent"
+macro browser gt "<exit><change-folder>={{ item.name }}/Sent<enter>" "go to Sent"
 macro index,pager gd "<change-folder>={{ item.name }}/Drafts<enter>" "go to Drafts"
-macro browser gs "<exit><change-folder>={{ item.name }}/Drafts<enter>" "go to Drafts"
+macro browser gd "<exit><change-folder>={{ item.name }}/Drafts<enter>" "go to Drafts"
 
 macro index,pager / "<vfolder-from-query>path:{{ item.name }}/** " "Searching {{ item.name }} mailbox with notmuch integration in neomutt"
 

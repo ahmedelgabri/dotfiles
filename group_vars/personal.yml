@@ -1,6 +1,9 @@
 # vim:tw=200
 ---
 mail_alias_path: '~/Sync/dotfiles/aliases'
+keychain_name: fastmail.com
+imap_server: imap.fastmail.com
+smtp_server: smtp.fastmail.com
 mail_accounts:
   - name: 'Personal'
     imap_server: '{{ imap_server }}'
