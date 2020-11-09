@@ -11,16 +11,13 @@ if not has_lsp then
 end
 
 local has_completion, completion = pcall(require, 'completion')
-local has_diagnostic, diagnostic = pcall(require, 'diagnostic')
 local has_extensions = pcall(require, 'lsp_extensions')
 local utils = require'_.utils'
 local map_opts = { noremap=true, silent=true }
 
-if pcall(require, '_.completion') then
-  require'_.completion'.setup()
-end
-
 if has_completion then
+  require'_.completion'.setup()
+
   -- Lazy loaded because it breaks if completion is not loaded already
   pcall(vim.cmd, [[packadd completion-buffers]])
   utils.augroup('COMPLETION', function()
@@ -66,10 +63,6 @@ local on_attach = function(client)
 
   if has_completion then
     completion.on_attach(client)
-  end
-
-  if has_diagnostic then
-    diagnostic.on_attach(client)
   end
 
   -- Mappings.

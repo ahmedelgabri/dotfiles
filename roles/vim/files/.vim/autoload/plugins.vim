@@ -19,6 +19,7 @@ function! plugins#load_plugins() abort
     call minpac#add('https://github.com/k-takata/minpac', { 'type': 'opt' })
 
     " General {{{
+    call minpac#add('https://github.com/antoinemadec/FixCursorHold.nvim')
     call minpac#add('https://github.com/andymass/vim-matchup')
     call minpac#add('https://github.com/tpope/vim-sensible', { 'type': 'opt' })
     call minpac#add('https://github.com/jiangmiao/auto-pairs')
@@ -58,7 +59,6 @@ function! plugins#load_plugins() abort
     call minpac#add('https://github.com/neovim/nvim-lspconfig', {'type': 'opt'})
     call minpac#add('https://github.com/tjdevries/lsp_extensions.nvim')
     call minpac#add('https://github.com/nvim-lua/completion-nvim' )
-    " call minpac#add('https://github.com/nvim-lua/diagnostic-nvim')
     call minpac#add('https://github.com/steelsojka/completion-buffers', {'type':'opt'})
     " }}}
 
