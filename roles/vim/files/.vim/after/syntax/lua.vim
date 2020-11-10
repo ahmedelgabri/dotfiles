@@ -8,4 +8,4 @@ scriptencoding utf-8
 " Not Sure if I should expand the regex to only match strings only inside
 " `Plug/Bundle/Plugin/call minpac#add` or keep it generic.
 
-syn match gitHubURL  /https\:\/\/github\.com\//  conceal containedin=luaComment
+syn match gitHubURL  /https\:\/\/github\.com\//  conceal containedin=luaComment,luaString

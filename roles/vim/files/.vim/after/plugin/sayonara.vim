@@ -1,1 +1,1 @@
-nnoremap <M-d> :packadd vim-sayonara<CR>\|:Sayonara!<CR>
+nnoremap <M-d> :Sayonara!<CR>

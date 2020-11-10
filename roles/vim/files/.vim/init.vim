@@ -46,13 +46,21 @@ if has('nvim')
 endif
 " }}}
 
-
 " leader is space, only works with double quotes around it?!
 let g:mapleader="\<Space>"
 let g:maplocalleader=','
 
 let g:polyglot_disabled = ['md', 'markdown']
-call plugins#init()
+
+if has('nvim')
+  lua require'_.plugins'
+  augroup Format
+    autocmd!
+    autocmd BufWritePost *.lua FormatWrite
+    autocmd BufWritePost plugins.lua PackerCompile
+  augroup END
+endif
+
 
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
