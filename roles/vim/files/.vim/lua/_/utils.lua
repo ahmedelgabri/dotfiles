@@ -9,7 +9,7 @@ function M.gmap(mode, key, result, opts)
 end
 
 function M.augroup(group, fn)
-  vim.api.nvim_command("augroup "..group)
+  vim.api.nvim_command("augroup " .. group)
   vim.api.nvim_command("autocmd!")
   fn()
   vim.api.nvim_command("augroup END")
@@ -17,19 +17,21 @@ end
 
 function M.get_icon(icon_name)
   local ICONS = {
-    paste = '⍴',
-    spell = '✎',
-    branch = os.getenv('PURE_GIT_BRANCH') ~= '' and vim.fn.trim(os.getenv('PURE_GIT_BRANCH')) or ' ',
-    error = '×',
-    info = '●',
-    warn = '!',
-    hint = '›',
-    lock = '',
-    success =' ',
+    paste = "⍴",
+    spell = "✎",
+    branch = os.getenv("PURE_GIT_BRANCH") ~= "" and
+      vim.fn.trim(os.getenv("PURE_GIT_BRANCH")) or
+      " ",
+    error = "×",
+    info = "●",
+    warn = "!",
+    hint = "›",
+    lock = "",
+    success = " "
     -- success = ' '
   }
 
-  return ICONS[icon_name] or ''
+  return ICONS[icon_name] or ""
 end
 
 function M.get_color(synID, what, mode)
