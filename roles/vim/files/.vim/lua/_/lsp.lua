@@ -93,8 +93,18 @@ local on_attach = function(client)
   utils.bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", map_opts)
   utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
   utils.bmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", map_opts)
-  utils.bmap("n", "dn", "lua vim.lsp.diagnostic.goto_next()", map_opts)
-  utils.bmap("n", "dp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", map_opts)
+  utils.bmap(
+    "n",
+    "<leader>dn",
+    "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>",
+    map_opts
+  )
+  utils.bmap(
+    "n",
+    "<leader>dp",
+    "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>",
+    map_opts
+  )
   -- utils.bmap(
   --   "n",
   --   "<leader>ld",

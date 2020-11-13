@@ -2,7 +2,7 @@ if !exists(':DevDocs')
   finish
 endif
 
-nmap <leader>d <Plug>(devdocs-under-cursor)
+nmap <leader>dd <Plug>(devdocs-under-cursor)
 
 let g:devdocs_filetype_map = {
     \   'java': 'java',
