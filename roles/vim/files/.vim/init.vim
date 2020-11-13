@@ -54,11 +54,6 @@ let g:polyglot_disabled = ['md', 'markdown']
 
 if has('nvim')
   lua require'_.plugins'
-  augroup Format
-    autocmd!
-    autocmd BufWritePost *.lua FormatWrite
-    autocmd BufWritePost plugins.lua PackerCompile
-  augroup END
 endif
 
 
