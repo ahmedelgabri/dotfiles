@@ -62,7 +62,7 @@ return require "packer".startup(
       opt = true,
       cmd = "UndotreeToggle"
     }
-    use {"https://github.com/mhinz/vim-grepper", opt = true, cmd = "Grepper"}
+    use {"https://github.com/eugen0329/vim-esearch"}
     use {"https://github.com/mhinz/vim-sayonara", opt = true, cmd = "Sayonara"}
     use "https://github.com/mhinz/vim-startify"
     use "https://github.com/nelstrom/vim-visual-star-search"

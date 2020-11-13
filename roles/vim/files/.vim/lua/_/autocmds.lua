@@ -17,6 +17,7 @@ M.quit_on_q_allowlist = {
   taskedit = true,
   diff = true,
   man = true,
+  esearch = true
 }
 
 M.colorcolumn_blocklist = {
@@ -26,7 +27,6 @@ M.colorcolumn_blocklist = {
   help = true,
   markdown = true,
   startify = true,
-  GrepperSide = true,
   text = true,
   gitconfig = true,
   gitrebase = true,
