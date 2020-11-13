@@ -21,9 +21,9 @@ augroup MyCustomColors
         \| hi! link ALEWarning DiffChange
         \| hi! link ALEWarningSign DiffChange
         \| execute(printf('hi! OverLength guibg=%s ctermbg=%s guifg=NONE ctermfg=NONE', '#222222', '234'))
-        \| hi! link LspDiagnosticsError DiffDelete
-        \| hi! link LspDiagnosticsWarning DiffChange
-        \| hi! link LspDiagnosticsHint NonText
+        \| hi! link LspDiagnosticsDefaultError DiffDelete
+        \| hi! link LspDiagnosticsDefaultWarning DiffChange
+        \| hi! link LspDiagnosticsDefaultHint NonText
         \| hi! User5 ctermfg=red guifg=red
         \| hi! User7 ctermfg=cyan guifg=cyan
         \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))

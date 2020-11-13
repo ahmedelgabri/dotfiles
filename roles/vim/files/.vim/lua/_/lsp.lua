@@ -4,7 +4,7 @@
 -- :lua print(vim.lsp.get_log_path())
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
 
-local has_lsp, lsp = pcall(require, "nvim_lsp")
+local has_lsp, nvim_lsp = pcall(require, "nvim_lsp")
 
 if not has_lsp then
   return
@@ -36,40 +36,40 @@ end
 vim.api.nvim_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
 vim.fn.sign_define(
-  "LspDiagnosticsErrorSign",
+  "LspDiagnosticsSignError",
   {
     text = utils.get_icon("error"),
-    texthl = "LspDiagnosticsError",
+    texthl = "LspDiagnosticsDefaultError",
     linehl = "",
     numhl = ""
   }
 )
 
 vim.fn.sign_define(
-  "LspDiagnosticsWarningSign",
+  "LspDiagnosticsSignWarning",
   {
     text = utils.get_icon("warn"),
-    texthl = "LspDiagnosticsWarning",
+    texthl = "LspDiagnosticsDefaultWarning",
     linehl = "",
     numhl = ""
   }
 )
 
 vim.fn.sign_define(
-  "LspDiagnosticsInformationSign",
+  "LspDiagnosticsSignInformation",
   {
     text = utils.get_icon("info"),
-    texthl = "LspDiagnosticsInformation",
+    texthl = "LspDiagnosticsDefaultInformation",
     linehl = "",
     numhl = ""
   }
 )
 
 vim.fn.sign_define(
-  "LspDiagnosticsHintSign",
+  "LspDiagnosticsSignHint",
   {
     text = utils.get_icon("hint"),
-    texthl = "LspDiagnosticsHint",
+    texthl = "LspDiagnosticsDefaultHint",
     linehl = "",
     numhl = ""
   }
@@ -93,18 +93,20 @@ local on_attach = function(client)
   utils.bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", map_opts)
   utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
   utils.bmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", map_opts)
-  utils.bmap(
-    "n",
-    "<leader>ld",
-    "<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>",
-    map_opts
-  )
+  utils.bmap("n", "dn", "lua vim.lsp.diagnostic.goto_next()", map_opts)
+  utils.bmap("n", "dp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", map_opts)
+  -- utils.bmap(
+  --   "n",
+  --   "<leader>ld",
+  --   "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>",
+  --   map_opts
+  -- )
 
   utils.augroup(
     "LSP",
     function()
       vim.api.nvim_command(
-        "autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()"
+        "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
       )
 
       if resolved_capabilities.document_highlight then
@@ -122,6 +124,22 @@ local on_attach = function(client)
   )
 end
 
+-- https://github.com/nvim-lua/diagnostic-nvim/issues/73
+vim.lsp.handlers["textDocument/publishDiagnostics"] =
+  vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+    virtual_text = true,
+    -- virtual_text = {
+    --   spacing = 4,
+    --   prefix = "~"
+    -- },
+    underline = false,
+    signs = true,
+    update_in_insert = false
+  }
+)
+
 -- Uncomment to execute the extension test mentioned above.
 -- local function custom_codeAction_callback(_, _, action)
 -- 	print(vim.inspect(action))
@@ -134,11 +152,13 @@ local function root_pattern(...)
 
   return function(startpath)
     for _, pattern in ipairs(patterns) do
-      return lsp.util.search_ancestors(
+      return vim.lsp.util.search_ancestors(
         startpath,
         function(path)
           if
-            lsp.util.path.exists(vim.fn.glob(lsp.util.path.join(path, pattern)))
+            vim.lsp.util.path.exists(
+              vim.fn.glob(vim.lsp.util.path.join(path, pattern))
+            )
            then
             return path
           end
@@ -188,7 +208,7 @@ for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
   if not server_disabled then
-    lsp[server].setup(
+    nvim_lsp[server].setup(
       vim.tbl_deep_extend("force", {on_attach = on_attach}, config)
     )
   end
