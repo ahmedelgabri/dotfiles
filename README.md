@@ -80,7 +80,7 @@ done.
 Each account must authenticate with an IMAP server and an SMTP server. The
 passwords, need be stored in the [OS X keychain][keychain].
 
-For Gmail accounts with two-factor authentication enabled, use an
+For Fastmail (or Gmail accounts with two-factor authentication enabled), use an
 application-specific password.
 
 In order for all this to work, a few items have to be stored in the macOS
@@ -91,9 +91,9 @@ protocols, only hostnames):
 
 For sending mail:
 
-- An item with (for Gmail):
-  - "Keychain Item Name": gmail.com
-  - "Account Name": username+mutt@gmail.com - An item with (for Gmail)
+- An item with:
+  - "Keychain Item Name": fastmail.com
+  - "Account Name": username+mutt@fastmail.com
 
 **Repeat this for each account you want to add.**
 
