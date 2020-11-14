@@ -2,7 +2,7 @@
 local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
 
 if not packer_exists then
-  if vim.fn.input("Download Packer? (y for yes)") ~= "y" then
+  if vim.fn.input("Download Packer? (y for yes) ") ~= "y" then
     return
   end
 
@@ -26,10 +26,9 @@ if not packer_exists then
   return
 end
 
--- Only if your version of Neovim doesn't have https://github.com/neovim/neovim/pull/12632 merged
--- vim._update_package_paths()
+local packer = require "packer"
 
-require "packer".init(
+packer.init(
   {
     package_root = string.format("%s/pack", vim.fn.stdpath("config")),
     display = {
@@ -38,8 +37,10 @@ require "packer".init(
   }
 )
 
-return require "packer".startup(
+return packer.startup(
   function(use)
+    use {"https://github.com/wbthomason/packer.nvim", opt = true}
+
     use "https://github.com/antoinemadec/FixCursorHold.nvim"
     use "https://github.com/andymass/vim-matchup"
     use {"https://github.com/tpope/vim-sensible", opt = true}
@@ -83,23 +84,25 @@ return require "packer".startup(
     -- }}}
 
     -- LSP/Autocompletion {{{
-    local lsp = {"https://github.com/neovim/nvim-lspconfig", opt = true}
     use {
-      "https://github.com/tjdevries/lsp_extensions.nvim",
-      requires = {lsp}
-    }
-    use {
-      "https://github.com/steelsojka/completion-buffers",
+      "https://github.com/neovim/nvim-lspconfig",
       opt = true,
       requires = {
         {
-          "https://github.com/nvim-lua/completion-nvim",
-          requires = {
-            lsp,
-            {"https://github.com/hrsh7th/vim-vsnip"},
-            {"https://github.com/hrsh7th/vim-vsnip-integ"}
-          }
+          "https://github.com/tjdevries/lsp_extensions.nvim"
         }
+      }
+    }
+
+    use {
+      "https://github.com/nvim-lua/completion-nvim",
+      requires = {
+        {
+          "https://github.com/steelsojka/completion-buffers",
+          opt = true
+        },
+        {"https://github.com/hrsh7th/vim-vsnip"},
+        {"https://github.com/hrsh7th/vim-vsnip-integ"}
       }
     }
     -- }}}
