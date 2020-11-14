@@ -86,7 +86,10 @@ return packer.startup(
     -- LSP/Autocompletion {{{
     use {
       "https://github.com/neovim/nvim-lspconfig",
-      opt = true,
+      cond = "vim.fn.has('nvim-0.5.0')",
+      config = function()
+        vim.cmd [[lua require 'init']]
+      end,
       requires = {
         {
           "https://github.com/tjdevries/lsp_extensions.nvim"
@@ -99,7 +102,7 @@ return packer.startup(
       requires = {
         {
           "https://github.com/steelsojka/completion-buffers",
-          opt = true
+          cond = "vim.fn.has('nvim-0.5.0')"
         },
         {"https://github.com/hrsh7th/vim-vsnip"},
         {"https://github.com/hrsh7th/vim-vsnip-integ"}
@@ -109,7 +112,6 @@ return packer.startup(
 
     -- Syntax {{{
     use "https://github.com/norcalli/nvim-colorizer.lua"
-    use "https://github.com/sheerun/vim-polyglot"
     use {
       "https://github.com/plasticboy/vim-markdown",
       requires = {{"https://github.com/godlygeek/tabular"}}
@@ -118,17 +120,21 @@ return packer.startup(
     use {
       "https://github.com/fatih/vim-go",
       run = ":GoUpdateBinaries",
-      opt = true
+      opt = true,
+      ft = {"go"}
     }
     -- Clojure
     local lisps = {"lisp", "scheme", "clojure"}
     use {
       "https://github.com/junegunn/rainbow_parentheses.vim",
       ft = lisps,
-      cmd = "RainbowParentheses"
+      cmd = "RainbowParentheses",
+      -- event = "InsertEnter *",
+      config = "vim.cmd[[RainbowParentheses]]"
     }
     use {"https://github.com/guns/vim-sexp", ft = lisps}
     use {"https://github.com/Olical/conjure", tag = "v4.8.0", ft = lisps}
+    use "https://github.com/sheerun/vim-polyglot"
     -- }}}
 
     -- Linters & Code quality {{{
@@ -155,14 +161,27 @@ require "format".setup {
 
     -- Git {{{
     use "https://github.com/lambdalisue/vim-gista"
-    use "https://github.com/tpope/vim-fugitive"
-    use "https://github.com/tpope/vim-rhubarb"
-    use "https://github.com/rhysd/git-messenger.vim"
+    use {
+      "https://github.com/tpope/vim-fugitive",
+      requires = {
+        {"https://github.com/tpope/vim-rhubarb"}
+      }
+    }
+    use {
+      "https://github.com/rhysd/git-messenger.vim",
+      opt = true,
+      cmd = "GitMessenger",
+      keys = "<Plug>(git-messenger)"
+    }
     -- }}}
 
     -- Writing {{{
-    use {"https://github.com/junegunn/goyo.vim", opt = true}
-    use {"https://github.com/junegunn/limelight.vim", opt = true}
+    use {"https://github.com/junegunn/goyo.vim", opt = true, cmd = "Goyo"}
+    use {
+      "https://github.com/junegunn/limelight.vim",
+      opt = true,
+      cmd = "Limelight"
+    }
     -- }}}
 
     -- Themes, UI & eye cnady {{{

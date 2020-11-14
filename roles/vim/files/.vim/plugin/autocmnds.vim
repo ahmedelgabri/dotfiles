@@ -16,8 +16,6 @@ augroup MyAutoCmds
   " See https://github.com/neovim/neovim/issues/7994
   autocmd InsertLeave * set nopaste
 
-  autocmd FileType lisp,scheme,clojure RainbowParentheses
-
   autocmd BufEnter,BufWinEnter,BufRead,BufNewFile bookmarks.{md,txt} hi! link mkdLink Normal | set concealcursor-=n
 
   if executable('direnv')

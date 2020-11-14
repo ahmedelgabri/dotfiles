@@ -18,8 +18,6 @@ local map_opts = {noremap = true, silent = true}
 if has_completion then
   require "_.completion".setup()
 
-  -- Lazy loaded because it breaks if completion is not loaded already
-  pcall(vim.cmd, [[packadd completion-buffers]])
   utils.augroup(
     "COMPLETION",
     function()

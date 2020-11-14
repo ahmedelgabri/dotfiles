@@ -60,7 +60,7 @@ function M.note_edit(f_args)
   }
   vim.cmd(table.concat(frontmatter, "\n"))
 
-  vim.cmd("silent! packadd goyo.vim | Goyo")
+  vim.cmd("Goyo")
 end
 
 function M.wiki_edit(f_args)
@@ -77,7 +77,7 @@ function M.wiki_edit(f_args)
 
   vim.cmd("edit " .. fname)
 
-  vim.cmd("silent! packadd goyo.vim | Goyo")
+  vim.cmd("Goyo")
 end
 
 function M.my_name(name)
