@@ -4,7 +4,7 @@
 -- :lua print(vim.lsp.get_log_path())
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
 
-local has_lsp, nvim_lsp = pcall(require, "nvim_lsp")
+local has_lsp, nvim_lsp = pcall(require, "lspconfig")
 
 if not has_lsp then
   return
@@ -160,12 +160,12 @@ local function root_pattern(...)
 
   return function(startpath)
     for _, pattern in ipairs(patterns) do
-      return vim.lsp.util.search_ancestors(
+      return nvim_lsp.util.search_ancestors(
         startpath,
         function(path)
           if
-            vim.lsp.util.path.exists(
-              vim.fn.glob(vim.lsp.util.path.join(path, pattern))
+            nvim_lsp.util.path.exists(
+              vim.fn.glob(nvim_lsp.util.path.join(path, pattern))
             )
            then
             return path
@@ -192,24 +192,24 @@ local servers = {
     -- }
     -- See https://github.com/neovim/nvim-lsp/issues/237
     root_dir = root_pattern("tsconfig.json", "package.json", ".git")
-  },
-  sumneko_lua = {
-    settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJIT",
-          path = vim.split(package.path, ";")
-        },
-        completion = {
-          keywordSnippet = "Disable"
-        },
-        diagnostics = {
-          enable = true,
-          globals = {"vim", "spoon", "hs"}
-        }
-      }
-    }
   }
+  -- sumneko_lua = {
+  --   settings = {
+  --     Lua = {
+  --       runtime = {
+  --         version = "LuaJIT",
+  --         path = vim.split(package.path, ";")
+  --       },
+  --       completion = {
+  --         keywordSnippet = "Disable"
+  --       },
+  --       diagnostics = {
+  --         enable = true,
+  --         globals = {"vim", "spoon", "hs"}
+  --       }
+  --     }
+  --   }
+  -- }
 }
 
 for server, config in pairs(servers) do

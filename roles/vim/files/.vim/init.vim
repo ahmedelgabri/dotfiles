@@ -56,7 +56,6 @@ if has('nvim')
   lua require'_.plugins'
 endif
 
-
 " Overrrides {{{
 let s:vimrc_local = $HOME . '/.vimrc.local'
 if filereadable(s:vimrc_local)
