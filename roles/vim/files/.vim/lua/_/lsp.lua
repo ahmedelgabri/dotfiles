@@ -176,6 +176,16 @@ local function root_pattern(...)
   end
 end
 
+require("nlua.lsp.nvim").setup(
+  nvim_lsp,
+  {
+    on_attach = on_attach,
+    globals = {
+      globals = {"vim", "spoon", "hs"}
+    }
+  }
+)
+
 local servers = {
   ocamlls = {},
   cssls = {},
