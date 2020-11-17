@@ -180,9 +180,7 @@ require("nlua.lsp.nvim").setup(
   nvim_lsp,
   {
     on_attach = on_attach,
-    globals = {
-      globals = {"vim", "spoon", "hs"}
-    }
+    globals = {"vim", "spoon", "hs"}
   }
 )
 
