@@ -145,30 +145,121 @@ local plugins = {
     config = "vim.cmd[[RainbowParentheses]]"
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.8.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.9.0", ft = lisps},
   {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 
   -- Linters & Code quality {{{
   {"https://github.com/dense-analysis/ale"},
   {
-    "https://github.com/lukas-reineke/format.nvim",
+    "https://github.com/mhartington/formatter.nvim",
     config = function()
-      require "format".setup {
-        lua = {
-          {
-            cmd = {
-              function(file)
-                return string.format(
-                  "luafmt -i 2 -l %s -w replace %s",
-                  vim.bo.textwidth,
-                  file
-                )
-              end
-            }
+      local function prettier()
+        return {
+          exe = "prettier",
+          args = {
+            "--config-precedence",
+            "prefer-file",
+            "--single-quote",
+            "--no-bracket-spacing",
+            "--prose-wrap",
+            "always",
+            "--arrow-parens",
+            "always",
+            "--trailing-comma",
+            "all",
+            "--no-semi",
+            "--end-of-line",
+            "lf",
+            "--print-width",
+            vim.bo.textwidth,
+            "--stdin-filepath",
+            vim.api.nvim_buf_get_name(0)
+          },
+          stdin = true
+        }
+      end
+
+      local function shfmt()
+        return {
+          exe = "shfmt",
+          args = {"-"},
+          stdin = true
+        }
+      end
+
+      require "format".setup(
+        {
+          javascript = {prettier = prettier},
+          typescript = {prettier = prettier},
+          ["javascript.jsx"] = {prettier = prettier},
+          ["typescript.tsx"] = {prettier = prettier},
+          markdown = {prettier = prettier},
+          css = {prettier = prettier},
+          json = {prettier = prettier},
+          scss = {prettier = prettier},
+          less = {prettier = prettier},
+          yaml = {prettier = prettier},
+          graphql = {prettier = prettier},
+          html = {prettier = prettier},
+          sh = {shfmt = shfmt},
+          bash = {shfmt = shfmt},
+          reason = {
+            refmt = function()
+              return {
+                exe = "refmt",
+                args = {},
+                stdin = true
+              }
+            end
+          },
+          rust = {
+            rustfmt = function()
+              return {
+                exe = "rustfmt",
+                args = {"--emit=stdout"},
+                stdin = true
+              }
+            end
+          },
+          python = {
+            black = function()
+              return {
+                exe = "black",
+                args = {"--quiet", "-"},
+                stdin = true
+              }
+            end
+          },
+          go = {
+            gofmt = function()
+              return {
+                exe = "gofmt",
+                args = {},
+                stdin = true
+              }
+            end
+          },
+          nix = {
+            nixfmt = function()
+              return {
+                exe = "nixfmt",
+                args = {},
+                stdin = true
+              }
+            end
+          },
+          lua = {
+            luafmt = function()
+              return {
+                exe = "luafmt",
+                args = {"--indent-count", 2, "-l", vim.bo.textwidth, "--stdin"},
+                stdin = true
+              }
+            end
           }
         }
-      }
+      )
     end
   },
   -- }}}
