@@ -108,10 +108,10 @@ local mode_table = {
   no = "N-Operator Pending",
   v = "V.",
   V = "V·Line",
-  ["\22"] = "V·Block", -- \<C-V>
+  [""] = "V·Block", -- this is not ^V, but it's , they're different
   s = "S.",
   S = "S·Line",
-  ["\19"] = "S·Block.", -- \<C-S>
+  [""] = "S·Block",
   i = "I.",
   ic = "I·Compl",
   ix = "I·X-Compl",
@@ -125,7 +125,7 @@ local mode_table = {
   r = "Propmt",
   rm = "More",
   ["r?"] = "Confirm",
-  ["r?"] = "Sh",
+  ["!"] = "Sh",
   t = "T."
 }
 
