@@ -148,13 +148,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
   }
 )
 
--- Uncomment to execute the extension test mentioned above.
--- local function custom_codeAction_callback(_, _, action)
--- 	print(vim.inspect(action))
--- end
-
--- lsp.callbacks['textDocument/codeAction'] = custom_codeAction_callback
-
 local function root_pattern(...)
   local patterns = vim.tbl_flatten {...}
 
