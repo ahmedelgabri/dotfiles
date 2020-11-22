@@ -958,6 +958,10 @@
   https://rss.simplecast.com/podcasts/4151/rss "Podcasts"
 # }}}
 
+# Finance {{{
+  https://www.financieelonafhankelijkblog.nl/feed/rss/ "Finance"
+# }}}
+
 # YouTube {{{
   https://www.youtube.com/feeds/videos.xml?channel_id=UCXPHFM88IlFn68OmLwtPmZA "YouTube" "CLI" "Vim"
   https://www.youtube.com/feeds/videos.xml?user=gotbletu "YouTube" "CLI"
