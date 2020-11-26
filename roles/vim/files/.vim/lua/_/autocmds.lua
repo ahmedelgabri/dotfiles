@@ -172,15 +172,12 @@ end
 
 function M.disable_heavy_plugins()
   if
-    vim.fn.getfsize(vim.fn.expand("%")) <= 200000 or
-      M.heavy_plugins_blocklist[vim.bo.filetype] == nil
+    M.heavy_plugins_blocklist[vim.bo.filetype] ~= nil or
+      vim.regex("\\.min\\..*$"):match_str(vim.fn.expand("%:t")) ~= nil or
+      vim.fn.getfsize(vim.fn.expand("%")) > 200000
    then
-    if vim.fn.exists(":ALEEnableBuffer") == 1 then
-      vim.cmd(":ALEEnableBuffer")
-    end
-
-    if vim.fn.exists(":GitGutterBufferEnable") == 1 then
-      vim.cmd(":GitGutterBufferEnable")
+    if vim.fn.exists(":ALEDisableBuffer") == 2 then
+      vim.cmd(":ALEDisableBuffer")
     end
   end
 end

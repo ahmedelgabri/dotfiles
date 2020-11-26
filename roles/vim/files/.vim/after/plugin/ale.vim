@@ -4,7 +4,6 @@ if !exists(':ALEInfo')
   finish
 endif
 
-let g:ale_enabled = 0
 let g:ale_disable_lsp = 1
 let g:ale_completion_enabled=0
 let g:ale_set_signs = 0
