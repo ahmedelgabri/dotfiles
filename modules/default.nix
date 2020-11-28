@@ -1,6 +1,16 @@
 {
-  imports =
-    [ ./settings ./macos ./mail ./gpg ./git ./kitty ./alacritty ./bat ./lf ];
+  imports = [
+    ./settings
+    ./macos
+    ./mail
+    ./gpg
+    ./git
+    ./kitty
+    ./alacritty
+    ./bat
+    ./lf
+    ./mpv
+  ];
 
   my = {
     git.enable = false;
@@ -10,6 +20,7 @@
     alacritty.enable = false;
     bat.enable = false;
     lf.enable = false;
+    mpv.enable = false;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }

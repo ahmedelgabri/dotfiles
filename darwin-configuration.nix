@@ -106,7 +106,6 @@ in {
       proselint # ???
       exa
       shellcheck
-      mpv
       shfmt # Doesn't work with zsh, only sh & bash
       tuir
       yamllint
@@ -199,10 +198,6 @@ in {
           '';
           # ".hammerspoon".source =
           #   "${homeDir}/.dotfiles/roles/hammerspoon/files/.hammerspoon";
-          # ".config/lf/lfrc".source =
-          #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/lf";
-          # ".config/mpv".source =
-          #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/mpv";
           # ".config/newsboat".source =
           #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/newsboat";
           # ".vim".source = "${homeDir}/.dotfiles/roles/vim/files/.vim";
@@ -295,10 +290,6 @@ in {
         # vim.enable = true;
 
         # jq.enable = true;
-
-        # lf.enable = true;
-
-        # mpv.enable = true;
 
         # newsboat.enable = true;
 
