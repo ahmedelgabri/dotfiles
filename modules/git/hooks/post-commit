@@ -1,0 +1,9 @@
+#!/bin/sh
+HOOKS_DIR="$(command git config --global --get core.hooksPath || echo "$DOTFILES/files/.config/git/hooks")"
+if [ -z "$GIT_DIR" ]; then
+  GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"
+fi
+
+exec "$HOOKS_DIR/ctags" >/dev/null 2>&1 &
+[ -f "$GIT_DIR/hooks/post-commit" ] && exec "$GIT_DIR/hooks/post-commit" $@
+exit 0

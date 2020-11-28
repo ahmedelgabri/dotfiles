@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Look for files that still have conflict markers (>|< repeated 7 times)
+CONFLICTS="$(git diff --diff-filter=d --cached --name-only --pickaxe-regex -S'[>|<]{7}')"
+if [ -z "$GIT_DIR" ]; then
+  GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"
+fi
+
+if [ -n "$CONFLICTS" ]; then
+  echo "Unresolved merge conflicts in this commit:"
+  echo "$CONFLICTS"
+  exit 1
+else
+  [ -f "$GIT_DIR/hooks/pre-commit" ] && exec "$GIT_DIR/hooks/pre-commit" $@
+  exit 0
+fi

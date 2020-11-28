@@ -1,0 +1,33 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# Icon?
+ehthumbs.db
+Thumbs.db
+
+# Misc      #
+#############
+*.pyc
+*.map
+.mx-start
+.direnv
+.envrc
+.tern-port
+.tern-project
+.ignore
+*.zwc
+*.zwc.old
+*.un~
+tags.*
+.local.vim
+Session.vim
+*.swp
+*.add.spl
+*.vim-rplugin~
+.netrwhist
+.git-fuzzy-snapshots
+

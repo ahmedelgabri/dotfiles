@@ -42,14 +42,19 @@ in {
     # ./modules/macos
     # ./modules/mail
     # ./modules/gpg
+    ./modules/git
   ];
   nixpkgs.config = import ./config.nix;
+
+  my = {
+    git.enable = false;
+    # macos.enable = pkgs.isDarwin;
+  };
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
     openssl
-    git
     gawk
     coreutils
     findutils
@@ -74,7 +79,6 @@ in {
       comma
       jq
       lf
-      gitAndTools.transcrypt
       # (python3.withPackages (ps:
       #   with ps; [
       #     pip
@@ -94,8 +98,6 @@ in {
       ripgrep
       pandoc
       tmuxPlugins.urlview
-      # gitAndTools.diff-so-fancy
-      gitAndTools.delta
       par
       w3m
       fd
@@ -104,15 +106,10 @@ in {
       chafa
       grc
       go
-      gitAndTools.hub
-      gitAndTools.gh
-      gitAndTools.tig
       pure-prompt
-      universal-ctags
       nodePackages.neovim
       todoist
       asciinema
-      exiftool
       # editorconfig-checker # do I use it?
       hyperfine
       proselint # ???

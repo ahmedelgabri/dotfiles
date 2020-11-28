@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+dir="$(git rev-parse --git-dir 2>/dev/null)"
+trap 'rm -f "$dir/$$.tags"' EXIT
+git ls-files | ctags -L - -f"$dir/$$.tags"
+mv "$dir/$$.tags" "$dir/tags"
