@@ -75,7 +75,6 @@ in {
       nodePackages.npm
       (yarn.override { inherit nodejs; })
       ncdu
-      ripgrep
       pandoc
       tmuxPlugins.urlview
       par
@@ -189,8 +188,6 @@ in {
           # ".config/zsh-hm/config".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/config";
           # ".config/zsh-hm/functions".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/functions";
           # ".config/zsh-hm/completions".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/completions";
-          # ".config/ripgrep/config".source =
-          #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/ripgrep/config";
         };
       };
 

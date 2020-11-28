@@ -11,6 +11,7 @@
     ./lf
     ./mpv
     ./newsboat
+    ./ripgrep
 
     ./python
   ];
@@ -26,6 +27,7 @@
     mpv.enable = false;
     newsboat.enable = false;
     python.enable = false;
+    ripgrep.enable = false;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }
