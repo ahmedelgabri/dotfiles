@@ -9,9 +9,3 @@ let g:tcomment_mapleader_uncomment_anyway='gu'
 "  Uncomment a line; mirrors gcc (which comments/toggles a line).
 nmap guu <Plug>TComment_Uncommentc
 xmap gu <Plug>TComment_Uncommentc
-
-" augroup TCOMMENT
-"   autocmd!
-"   autocmd FileType ruby,python setl commentstring=#\ %s
-"   autocmd FileType htmldjango,jinja2 setl commentstring={#\ %s\ #}
-" augroup END
