@@ -71,19 +71,6 @@ in {
     packages = with pkgs; [
       comma
       jq
-      lf
-      # (python3.withPackages (ps:
-      #   with ps; [
-      #     pip
-      #     black
-      #     setuptools
-      #     pylint
-      #     grip
-      #     pynvim
-      #     vobject # Mutt calendar script
-      #     # python-language-server
-      #     # websocket-client # Wee-slack
-      #   ]))
       nodejs # LTS
       nodePackages.npm
       (yarn.override { inherit nodejs; })
@@ -130,7 +117,6 @@ in {
       reason
       rustup
       rust-analyzer-unwrapped
-      # nixos.python38Packages.httpx
       #######################
       # Only on personal laptop
       #######################

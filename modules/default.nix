@@ -11,6 +11,8 @@
     ./lf
     ./mpv
     ./newsboat
+
+    ./python
   ];
 
   my = {
@@ -23,6 +25,7 @@
     lf.enable = false;
     mpv.enable = false;
     newsboat.enable = false;
+    python.enable = false;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }
