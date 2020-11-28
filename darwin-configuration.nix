@@ -92,7 +92,6 @@ in {
       exa
       shellcheck
       shfmt # Doesn't work with zsh, only sh & bash
-      tuir
       yamllint
       hadolint # Docker linter
       lnav # System Log file navigator

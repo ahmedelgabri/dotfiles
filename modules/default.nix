@@ -13,23 +13,25 @@
     ./newsboat
     ./ripgrep
     ./tmux
+    ./tuir
 
     ./python
   ];
 
   my = {
-    git.enable = false;
-    mail = { enable = false; };
-    gpg.enable = false;
-    kitty.enable = false;
-    alacritty.enable = false;
-    bat.enable = false;
-    lf.enable = false;
-    mpv.enable = false;
-    newsboat.enable = false;
-    python.enable = false;
-    ripgrep.enable = false;
-    tmux.enable = false;
+    # git.enable = true;
+    # mail = { enable = true; };
+    # gpg.enable = true;
+    # kitty.enable = true;
+    # alacritty.enable = true;
+    # bat.enable = true;
+    # lf.enable = true;
+    # mpv.enable = true;
+    # newsboat.enable = true;
+    # python.enable = true;
+    # ripgrep.enable = true;
+    # tmux.enable = true;
+    # tuir.enable = true;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }
