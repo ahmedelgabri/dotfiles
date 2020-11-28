@@ -41,7 +41,7 @@ in {
     ./modules/settings
     # ./modules/macos
     # ./modules/mail
-    # ./modules/gpg.nix
+    # ./modules/gpg
   ];
   nixpkgs.config = import ./config.nix;
 
