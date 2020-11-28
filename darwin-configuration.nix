@@ -125,7 +125,6 @@ in {
       # clj-kondo
       weechat # https://github.com/rummik/nixos-config/blob/55023e003095a1affb26906c56ffb883803af354/config/weechat.nix
       weechatScripts.wee-slack
-      youtube-dl
       # sqlitebrowser
       #######################
       # Only on work laptop

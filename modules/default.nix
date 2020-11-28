@@ -14,6 +14,7 @@
     ./ripgrep
     ./tmux
     ./tuir
+    ./youtube-dl
 
     ./python
   ];
@@ -32,6 +33,7 @@
     # ripgrep.enable = true;
     # tmux.enable = true;
     # tuir.enable = true;
+    # youtube-dl.enable = true;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }
