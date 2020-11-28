@@ -130,7 +130,6 @@ in {
       reason
       rustup
       rust-analyzer-unwrapped
-      newsboat
       # nixos.python38Packages.httpx
       #######################
       # Only on personal laptop
@@ -198,8 +197,6 @@ in {
           '';
           # ".hammerspoon".source =
           #   "${homeDir}/.dotfiles/roles/hammerspoon/files/.hammerspoon";
-          # ".config/newsboat".source =
-          #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/newsboat";
           # ".vim".source = "${homeDir}/.dotfiles/roles/vim/files/.vim";
           # ".config/zsh-hm/aliases".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/aliases";
           # ".config/zsh-hm/bin".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/bin";
@@ -290,8 +287,6 @@ in {
         # vim.enable = true;
 
         # jq.enable = true;
-
-        # newsboat.enable = true;
 
         # htop.enable = true;
 
