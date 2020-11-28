@@ -38,9 +38,9 @@ let
 in {
   imports = [
     <home-manager/nix-darwin>
-    ./modules/settings.nix
+    ./modules/settings
     # ./modules/macos
-    ./modules/mail
+    # ./modules/mail
     # ./modules/gpg.nix
   ];
   nixpkgs.config = import ./config.nix;
