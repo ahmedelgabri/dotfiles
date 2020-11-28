@@ -36,20 +36,14 @@ let
   comma = (import (builtins.fetchTarball
     "https://github.com/Shopify/comma/archive/master.tar.gz") { });
 in {
-  imports = [
-    <home-manager/nix-darwin>
-    ./modules/settings
-    # ./modules/macos
-    # ./modules/mail
-    # ./modules/gpg
-    ./modules/git
-  ];
+  imports = [ <home-manager/nix-darwin> ./modules ];
   nixpkgs.config = import ./config.nix;
 
-  my = {
-    git.enable = false;
-    # macos.enable = pkgs.isDarwin;
-  };
+  # networking = {
+  #   hostName = "pandoras-box";
+  # };
+
+  time.timeZone = config.settings.timezone;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -232,15 +226,6 @@ in {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
 
-        # gpg = {
-        #   enable = true;
-        #   settings = {
-        #     pinentry-program = "${pkgs.pinentry_mac}/bin/pinentry-mac";
-        #     default-cache-ttl = "600";
-        #     max-cache-ttl = "7200";
-        #   };
-        # };
-
         # https://github.com/jared-w/nixos-configs/blob/b2f253b71d5aef4d5ad84ab58f24ec1939c07812/home.nix#L153-L205
         # zsh = {
         #   enable = true;
@@ -265,10 +250,6 @@ in {
         #     src = pkgs.zsh-fast-syntax-highlighting;
         #     file = "share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh";
         #   }];
-        # };
-
-        # git = {
-        #   enable = true;
         # };
 
         # ssh = {
@@ -459,11 +440,6 @@ in {
       RPS1 = ""; # Disable the right side prompt that "walters" theme introduces
     };
   };
-
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # Check programs.ssh.*
 
