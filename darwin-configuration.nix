@@ -95,7 +95,6 @@ in {
       fd
       scc
       tokei
-      chafa
       grc
       go
       pure-prompt
