@@ -42,7 +42,7 @@ macro browser gd "<exit><change-folder>={{ item.name }}/Drafts<enter>" "go to Dr
 
 macro index,pager / "<vfolder-from-query>path:{{ item.name }}/** " "Searching {{ item.name }} mailbox with notmuch integration in neomutt"
 
-macro index SI "<shell-escape>mbsync {{ item.name }} -download<enter>" "sync inbox"
+macro index SI "<shell-escape>mbsync --pull {{ item.name | lower }}<enter>" "sync inbox"
 macro index,pager y "<save-message>={{ item.name }}/Archive<enter>" "Archive conversation"
 macro index,pager Y "<tag-thread><save-message>={{ item.name }}/Archive<enter>" "Archive conversation"
 
