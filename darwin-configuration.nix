@@ -198,8 +198,6 @@ in {
             source ${pkgs.fzf}/share/fzf/completion.zsh
             source ${pkgs.fzf}/share/fzf/key-bindings.zsh
           '';
-          # ".config/bat".source =
-          #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/bat";
           # ".hammerspoon".source =
           #   "${homeDir}/.dotfiles/roles/hammerspoon/files/.hammerspoon";
           # ".config/lf/lfrc".source =
@@ -316,23 +314,6 @@ in {
         #   enable = true;
         #   enableZshIntegration = true;
         # };
-
-        # bat = {
-        #   enable = true;
-        #   config = {
-        #     theme = "TwoDark";
-        #     style = "changes,header";
-        #     italic-text = "always";
-        #     "map-syntax" = ".*ignore:Git Ignore";
-        #     "map-syntax" = ".gitconfig.local:Git Config";
-        #     # map-syntax = "**/mx*:Bourne Again Shell (bash)";
-        #     # map-syntax = "**/completions/_*:Bourne Again Shell (bash)";
-        #     # map-syntax = ".zsh*:Bourne Again Shell (bash)";
-        #     # map-syntax = ".vimrc.local:VimL";
-        #     # map-syntax = "vimrc:VimL";
-        #   };
-        # };
-
       };
     };
   };
