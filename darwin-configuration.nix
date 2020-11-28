@@ -39,9 +39,9 @@ in {
   imports = [
     <home-manager/nix-darwin>
     ./modules/settings.nix
-    ./modules/defaults.nix
-    ./modules/mail.nix
-    ./modules/gpg.nix
+    # ./modules/macos
+    ./modules/mail
+    # ./modules/gpg.nix
   ];
   nixpkgs.config = import ./config.nix;
 
@@ -70,13 +70,118 @@ in {
     home = "/Users/${config.settings.username}";
     description = config.settings.name;
     shell = [ pkgs.zsh ];
-    # packages = with pkgs; [ ];
+    packages = with pkgs; [
+      comma
+      jq
+      lf
+      gitAndTools.transcrypt
+      # (python3.withPackages (ps:
+      #   with ps; [
+      #     pip
+      #     black
+      #     setuptools
+      #     pylint
+      #     grip
+      #     pynvim
+      #     vobject # Mutt calendar script
+      #     # python-language-server
+      #     # websocket-client # Wee-slack
+      #   ]))
+      nodejs # LTS
+      nodePackages.npm
+      (yarn.override { inherit nodejs; })
+      ncdu
+      ripgrep
+      pandoc
+      tmuxPlugins.urlview
+      # gitAndTools.diff-so-fancy
+      gitAndTools.delta
+      par
+      w3m
+      fd
+      scc
+      tokei
+      chafa
+      grc
+      go
+      gitAndTools.hub
+      gitAndTools.gh
+      gitAndTools.tig
+      pure-prompt
+      universal-ctags
+      nodePackages.neovim
+      todoist
+      asciinema
+      exiftool
+      # editorconfig-checker # do I use it?
+      hyperfine
+      proselint # ???
+      exa
+      shellcheck
+      mpv
+      shfmt # Doesn't work with zsh, only sh & bash
+      tuir
+      yamllint
+      hadolint # Docker linter
+      lnav # System Log file navigator
+      _1password # CLI
+      nixfmt
+      niv
+      docker
+      vim-vint
+      nodePackages.prettier
+      nodePackages.svgo
+      nodePackages.bash-language-server
+      nodePackages.dockerfile-language-server-nodejs
+      nodePackages.ocaml-language-server
+      nodePackages.typescript-language-server
+      nodePackages.yaml-language-server
+      nodePackages.vim-language-server
+      # nodePackages.lua-fmt
+      nodePackages.vscode-css-languageserver-bin
+      nodePackages.vscode-json-languageserver-bin
+      reason
+      rustup
+      rust-analyzer-unwrapped
+      newsboat
+      # nixos.python38Packages.httpx
+      #######################
+      # Only on personal laptop
+      #######################
+      clojure
+      leiningen
+      joker
+      kotlin
+      ktlint
+      # clj-kondo
+      weechat # https://github.com/rummik/nixos-config/blob/55023e003095a1affb26906c56ffb883803af354/config/weechat.nix
+      weechatScripts.wee-slack
+      youtube-dl
+      # sqlitebrowser
+      #######################
+      # Only on work laptop
+      #######################
+      # go-jira
+      # maven # How to get 3.5? does it matter?
+      # jdk8 # is this the right package?
+      # vagrant
+      #######################
+      # GUIs
+      #######################
+      # brave # Linux only
+      # firefox # Linux only?
+      # obsidian # Linux only
+      # zoom-us # Linux only
+      # virtualbox
+      vscodium
+      slack
+    ];
   };
 
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    users.${config.settings.username} = { pkgs, ... }: {
+    users.${config.settings.username} = {
       xdg = {
         enable = true;
         configFile."nixpkgs/config.nix".source = ./config.nix;
@@ -97,112 +202,6 @@ in {
           "$HOME/.local/bin"
           # "$CARGO_HOME/bin"
           # "$GOBIN"
-        ];
-        packages = with pkgs; [
-          comma
-          jq
-          lf
-          gitAndTools.transcrypt
-          (python3.withPackages (ps:
-            with ps; [
-              pip
-              black
-              setuptools
-              pylint
-              grip
-              pynvim
-              vobject # Mutt calendar script
-              # python-language-server
-              # websocket-client # Wee-slack
-            ]))
-          nodejs # LTS
-          nodePackages.npm
-          (yarn.override { inherit nodejs; })
-          ncdu
-          ripgrep
-          pandoc
-          tmuxPlugins.urlview
-          # gitAndTools.diff-so-fancy
-          gitAndTools.delta
-          par
-          w3m
-          fd
-          scc
-          tokei
-          chafa
-          grc
-          go
-          gitAndTools.hub
-          gitAndTools.gh
-          gitAndTools.tig
-          pure-prompt
-          universal-ctags
-          nodePackages.neovim
-          todoist
-          asciinema
-          exiftool
-          # editorconfig-checker # do I use it?
-          hyperfine
-          proselint # ???
-          exa
-          shellcheck
-          mpv
-          shfmt # Doesn't work with zsh, only sh & bash
-          tuir
-          yamllint
-          hadolint # Docker linter
-          lnav # System Log file navigator
-          _1password # CLI
-          nixfmt
-          niv
-          docker
-          vim-vint
-          nodePackages.prettier
-          nodePackages.svgo
-          nodePackages.bash-language-server
-          nodePackages.dockerfile-language-server-nodejs
-          nodePackages.ocaml-language-server
-          nodePackages.typescript-language-server
-          nodePackages.yaml-language-server
-          nodePackages.vim-language-server
-          # nodePackages.lua-fmt
-          nodePackages.vscode-css-languageserver-bin
-          nodePackages.vscode-json-languageserver-bin
-          reason
-          rustup
-          rust-analyzer-unwrapped
-          newsboat
-          # nixos.python38Packages.httpx
-          #######################
-          # Only on personal laptop
-          #######################
-          clojure
-          leiningen
-          joker
-          kotlin
-          ktlint
-          # clj-kondo
-          weechat # https://github.com/rummik/nixos-config/blob/55023e003095a1affb26906c56ffb883803af354/config/weechat.nix
-          weechatScripts.wee-slack
-          youtube-dl
-          # sqlitebrowser
-          #######################
-          # Only on work laptop
-          #######################
-          # go-jira
-          # maven # How to get 3.5? does it matter?
-          # jdk8 # is this the right package?
-          # vagrant
-          #######################
-          # GUIs
-          #######################
-          # brave # Linux only
-          # firefox # Linux only?
-          # obsidian # Linux only
-          # zoom-us # Linux only
-          # virtualbox
-          vscodium
-          slack
         ];
         file = {
           "foo-nix.zsh".text = ''
