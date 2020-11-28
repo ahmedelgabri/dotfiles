@@ -93,7 +93,6 @@ in {
       pandoc
       tmuxPlugins.urlview
       par
-      w3m
       fd
       scc
       tokei
