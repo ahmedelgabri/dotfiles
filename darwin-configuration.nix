@@ -76,7 +76,6 @@ in {
       (yarn.override { inherit nodejs; })
       ncdu
       pandoc
-      tmuxPlugins.urlview
       par
       fd
       scc
@@ -224,10 +223,6 @@ in {
         # ssh = {
         #   enable = true;
         #   controlPath = "~/.ssh/master-%C";
-        # };
-
-        # tmux = {
-        #   enable = true;
         # };
 
         # I need HEAD because LSP, look at https://github.com/gilligan/nix-neovim-nightly/issues/2#issuecomment-649531153

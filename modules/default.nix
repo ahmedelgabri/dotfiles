@@ -12,6 +12,7 @@
     ./mpv
     ./newsboat
     ./ripgrep
+    ./tmux
 
     ./python
   ];
@@ -28,6 +29,7 @@
     newsboat.enable = false;
     python.enable = false;
     ripgrep.enable = false;
+    tmux.enable = false;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }
