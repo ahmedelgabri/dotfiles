@@ -57,7 +57,6 @@ in {
     vim
     fzf
     htop
-    kitty
     direnv
     zoxide
     nix-zsh-completions
@@ -201,7 +200,6 @@ in {
           '';
           # ".config/bat".source =
           #   "${homeDir}/.dotfiles/roles/dotfiles/files/.config/bat";
-          # ".config/kitty/kitty.conf".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/kitty";
           # ".hammerspoon".source =
           #   "${homeDir}/.dotfiles/roles/hammerspoon/files/.hammerspoon";
           # ".config/lf/lfrc".source =
@@ -273,11 +271,6 @@ in {
         # };
 
         # password-store.enable = true;
-
-        # kitty = {
-        #   enable = true;
-        # };
-        #
 
         # fzf = {
         #   enable = true;
