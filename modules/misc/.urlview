@@ -1,0 +1,4 @@
+#REGEXP (((http|https|ftp|gopher)|mailto):(//)?[^ >"\t]*|www\.[-a-z0-9.]+)[^ .,;\t>">\):]
+REGEXP (((http|https|ftp|gopher)|mailto)[.:][^ >"\t]*|www\.[-a-z0-9.]+)[^ .,;\t>">\):]
+
+COMMAND open %s

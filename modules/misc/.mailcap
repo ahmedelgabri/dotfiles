@@ -1,0 +1,103 @@
+# Example mailcap file for Reddit Terminal Viewer
+# https://github.com/michael-lazar/rtv/
+#
+# Copy the contents of this file to {HOME}/.mailcap, or point to it using $MAILCAPS
+# Then launch RTV using the --enable-media flag. All shell commands defined in
+# this file depend on external programs that must be installed on your system.
+#
+# HELP REQUESTED! If you come up with your own commands (especially for OS X)
+# and would like to share, please post an issue on the GitHub tracker and we
+# can get them added to this file as references.
+#
+#
+#                              Mailcap 101
+# - The first entry with a matching MIME type will be executed, * is a wildcard
+# - %s will be replaced with the image or video url
+# - Add ``test=test -n "$DISPLAY"`` if your command opens a new window
+# - Add ``needsterminal`` for commands that use the terminal
+# - Add ``copiousoutput`` for commands that dump text to stdout
+
+###############################################################################
+# Documents, mainly used for Neomutt attachments
+###############################################################################
+
+# MS Word documents
+# application/msword; ~/.config/neomutt/scripts/view_attachment.sh %s "-" com.apple.TextEdit
+
+# Images
+# image/jpg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/jpeg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/pjpeg; ~/.config/neomutt/scripts/view-attachment.sh %s jpg
+# image/png; ~/.config/neomutt/scripts/view-attachment.sh %s png
+
+# PDFs
+text/pdf; ~/.config/neomutt/scripts/view-attachment.sh %s pdf
+application/pdf; ~/.config/neomutt/scripts/view-attachment.sh %s pdf
+
+# HTML
+
+# Explicitly render in browser with "v" (view attachment):
+text/html; CHARSET=%{charset} ~/.config/neomutt/scripts/view-attachment.sh %s html
+
+# text/html; w3m %s; nametemplate=%s.html; needsterminal
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+
+text/plain; ~/.config/neomutt/scripts/view-mail.sh %s %{charset}; needsterminal
+text/rtf; ~/.config/neomutt/view_attachment.sh %s rtf
+
+# Unidentified files
+application/octet-stream; ~/.config/neomutt/scripts/view-attachment.sh %s "-"
+
+# Better calendar invitations format
+text/calendar; ~/.config/neomutt/scripts/dump-ical.py %s; copiousoutput;
+
+###############################################################################
+# Commands below this point will open media in a separate window without
+# pausing execution of RTV.
+###############################################################################
+
+# Feh is a simple and effective image viewer
+# Note that rtv returns a list of urls for imgur albums, so we don't put quotes
+# around the `%s`
+# image/x-imgur-album; feh -g 640x480 %s; test=test -n "$DISPLAY"
+image/gif; mpv '%s' --autofit 640x480 --loop=inf; test=test -n "$DISPLAY"
+# image/*; feh -g 640x480 '%s'; test=test -n "$DISPLAY"
+
+# Youtube videos are assigned a custom mime-type, which can be streamed with
+# vlc or youtube-dl.
+video/x-youtube; mpv --geometry=35%+100%+100% --no-resume-playback '%s'; test=test -n "$DISPLAY"
+
+# Mpv is a simple and effective video streamer
+video/*; mpv '%s' --no-resume-playback --geometry=35%+100%+100% --loop=inf; test=test -n "$DISPLAY"
+
+###############################################################################
+# Commands below this point will attempt to display media directly in the
+# terminal when a desktop is not available (e.g. inside of an SSH session)
+###############################################################################
+
+# View images directly in your terminal with iTerm2
+# curl -L https://iterm2.com/misc/install_shell_integration_and_utilities.sh | bash
+# image/*; curl -s %s | ~/.iterm2/imgcat && read -n 1; needsterminal
+
+# View true images in the terminal, supported by rxvt-unicode, xterm and st
+# Requires the w3m-img package
+# image/*; w3m -o 'ext_image_viewer=off' '%s'; needsterminal
+
+# Don't have a solution for albums yet
+# image/x-imgur-album; echo
+
+# 256 color images using half-width unicode characters
+# Much higher quality that img2txt, but must be built from source
+# https://github.com/rossy/img2xterm
+# image/*; curl -s '%s' | convert -resize 80x80 - jpg:/tmp/rtv.jpg && img2xterm /tmp/rtv.jpg; needsterminal; copiousoutput
+
+# Display images in classic ascii using img2txt and lib-caca
+# image/*; curl -s '%s' | convert - jpg:/tmp/rtv.jpg && img2txt -f utf8 /tmp/rtv.jpg; needsterminal; copiousoutput
+
+# Full motion videos - requires a framebuffer to view
+video/x-youtube; mpv -quiet --no-resume-playback '%s'; needsterminal
+video/*; mpv -quiet --no-resume-playback '%s'; needsterminal
+
+# Ascii videos
+# video/x-youtube; youtube-dl -q -o - '%s' | mplayer -cache 8192 -vo caca -quiet -; needsterminal
+# video/*; wget '%s' -O - | mplayer -cache 8192 -vo caca -quiet -; needsterminal

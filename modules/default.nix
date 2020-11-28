@@ -15,6 +15,7 @@
     ./tmux
     ./tuir
     ./youtube-dl
+    ./misc
 
     ./python
   ];
@@ -34,6 +35,7 @@
     # tmux.enable = true;
     # tuir.enable = true;
     # youtube-dl.enable = true;
+    # misc.enable = true;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }

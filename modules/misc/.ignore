@@ -1,0 +1,8 @@
+# vim:ft=gitconfig
+.git/
+.DS_Store
+node_modules/
+.next/
+.cache/
+.netlify/
+.yarn/
