@@ -201,11 +201,6 @@ in {
         #   }];
         # };
 
-        # ssh = {
-        #   enable = true;
-        #   controlPath = "~/.ssh/master-%C";
-        # };
-
         # I need HEAD because LSP, look at https://github.com/gilligan/nix-neovim-nightly/issues/2#issuecomment-649531153
         # neovim = {
         #   enable = true;
@@ -357,8 +352,6 @@ in {
       RPS1 = ""; # Disable the right side prompt that "walters" theme introduces
     };
   };
-
-  # Check programs.ssh.*
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

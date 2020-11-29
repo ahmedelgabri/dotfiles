@@ -9,6 +9,7 @@
 
     ./mail
     ./gpg
+    ./ssh
     ./git
     ./kitty
     ./alacritty
@@ -30,6 +31,7 @@
     # git.enable = true;
     # mail = { enable = true; };
     # gpg.enable = true;
+    # ssh.enable = true;
     # kitty.enable = true;
     # alacritty.enable = true;
     # bat.enable = true;

@@ -1,0 +1,17 @@
+# include directives can't appear after a host block
+Include config.d/*
+
+Host *
+  Ciphers aes128-ctr
+  ControlPath ~/.ssh/%C.sock
+  ControlMaster auto
+  ControlPersist 10m
+  PasswordAuthentication no
+  ChallengeResponseAuthentication no
+  HashKnownHosts yes
+  AddKeysToAgent yes
+  Compression yes
+
+Host github
+  HostName git@github.com
+  forwardAgent yes
