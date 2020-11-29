@@ -17,6 +17,10 @@ with lib;
         default = "ahmed";
         type = with types; uniq str;
       };
+      website = mkOption {
+        default = "https://gabri.me";
+        type = with types; uniq str;
+      };
       github_username = mkOption {
         default = "ahmedelgabri";
         type = with types; uniq str;

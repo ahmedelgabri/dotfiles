@@ -16,6 +16,7 @@
     ./tuir
     ./youtube-dl
     ./misc
+    ./node
 
     ./python
   ];
@@ -36,6 +37,7 @@
     # tuir.enable = true;
     # youtube-dl.enable = true;
     # misc.enable = true;
+    # node.enable = true;
     # macos.enable = pkgs.stdenv.isDarwin;
   };
 }

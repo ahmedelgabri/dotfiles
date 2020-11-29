@@ -71,9 +71,6 @@ in {
     packages = with pkgs; [
       comma
       jq
-      nodejs # LTS
-      nodePackages.npm
-      (yarn.override { inherit nodejs; })
       ncdu
       pandoc
       par
@@ -83,7 +80,6 @@ in {
       grc
       go
       pure-prompt
-      nodePackages.neovim
       todoist
       asciinema
       # editorconfig-checker # do I use it?
@@ -100,17 +96,6 @@ in {
       niv
       docker
       vim-vint
-      nodePackages.prettier
-      nodePackages.svgo
-      nodePackages.bash-language-server
-      nodePackages.dockerfile-language-server-nodejs
-      nodePackages.ocaml-language-server
-      nodePackages.typescript-language-server
-      nodePackages.yaml-language-server
-      nodePackages.vim-language-server
-      # nodePackages.lua-fmt
-      nodePackages.vscode-css-languageserver-bin
-      nodePackages.vscode-json-languageserver-bin
       reason
       rustup
       rust-analyzer-unwrapped
