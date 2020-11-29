@@ -210,75 +210,84 @@ local plugins = {
         }
       end
 
-      require "format".setup(
+      require "formatter".setup(
         {
-          javascript = {prettier = prettier},
-          typescript = {prettier = prettier},
-          ["javascript.jsx"] = {prettier = prettier},
-          ["typescript.tsx"] = {prettier = prettier},
-          markdown = {prettier = prettier},
-          css = {prettier = prettier},
-          json = {prettier = prettier},
-          scss = {prettier = prettier},
-          less = {prettier = prettier},
-          yaml = {prettier = prettier},
-          graphql = {prettier = prettier},
-          html = {prettier = prettier},
-          sh = {shfmt = shfmt},
-          bash = {shfmt = shfmt},
-          reason = {
-            refmt = function()
-              return {
-                exe = "refmt",
-                args = {},
-                stdin = true
-              }
-            end
-          },
-          rust = {
-            rustfmt = function()
-              return {
-                exe = "rustfmt",
-                args = {"--emit=stdout"},
-                stdin = true
-              }
-            end
-          },
-          python = {
-            black = function()
-              return {
-                exe = "black",
-                args = {"--quiet", "-"},
-                stdin = true
-              }
-            end
-          },
-          go = {
-            gofmt = function()
-              return {
-                exe = "gofmt",
-                args = {},
-                stdin = true
-              }
-            end
-          },
-          nix = {
-            nixfmt = function()
-              return {
-                exe = "nixfmt",
-                args = {},
-                stdin = true
-              }
-            end
-          },
-          lua = {
-            luafmt = function()
-              return {
-                exe = "luafmt",
-                args = {"--indent-count", 2, "-l", vim.bo.textwidth, "--stdin"},
-                stdin = true
-              }
-            end
+          logging = false,
+          filetype = {
+            javascript = {prettier},
+            typescript = {prettier},
+            ["javascript.jsx"] = {prettier},
+            ["typescript.tsx"] = {prettier},
+            markdown = {prettier},
+            css = {prettier},
+            json = {prettier},
+            scss = {prettier},
+            less = {prettier},
+            yaml = {prettier},
+            graphql = {prettier},
+            html = {prettier},
+            sh = {shfmt},
+            bash = {shfmt},
+            reason = {
+              function()
+                return {
+                  exe = "refmt",
+                  args = {},
+                  stdin = true
+                }
+              end
+            },
+            rust = {
+              function()
+                return {
+                  exe = "rustfmt",
+                  args = {"--emit=stdout"},
+                  stdin = true
+                }
+              end
+            },
+            python = {
+              function()
+                return {
+                  exe = "black",
+                  args = {"--quiet", "-"},
+                  stdin = true
+                }
+              end
+            },
+            go = {
+              function()
+                return {
+                  exe = "gofmt",
+                  args = {},
+                  stdin = true
+                }
+              end
+            },
+            nix = {
+              function()
+                return {
+                  exe = "nixfmt",
+                  args = {},
+                  stdin = true
+                }
+              end
+            },
+            lua = {
+              function()
+                return {
+                  exe = "luafmt",
+                  args = {
+                    "--indent-count",
+                    2,
+                    "-l",
+                    vim.bo.textwidth,
+                    "--stdin"
+                  },
+                  stdin = true
+                }
+              end
+            }
           }
         }
       )
