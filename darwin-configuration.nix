@@ -162,8 +162,6 @@ in {
             source ${pkgs.fzf}/share/fzf/completion.zsh
             source ${pkgs.fzf}/share/fzf/key-bindings.zsh
           '';
-          # ".hammerspoon".source =
-          #   "${homeDir}/.dotfiles/roles/hammerspoon/files/.hammerspoon";
           # ".vim".source = "${homeDir}/.dotfiles/roles/vim/files/.vim";
           # ".config/zsh-hm/aliases".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/aliases";
           # ".config/zsh-hm/bin".source = "${homeDir}/.dotfiles/roles/dotfiles/files/.config/zsh/bin";

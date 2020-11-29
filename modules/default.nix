@@ -1,7 +1,12 @@
+{ config, pkgs, ... }:
+
 {
   imports = [
     ./settings
+
     ./macos
+    ./hammerspoon
+
     ./mail
     ./gpg
     ./git
@@ -39,5 +44,6 @@
     # misc.enable = true;
     # node.enable = true;
     # macos.enable = pkgs.stdenv.isDarwin;
+    # hammerspoon.enable = pkgs.stdenv.isDarwin;
   };
 }
