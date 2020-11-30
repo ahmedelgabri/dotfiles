@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# Usage: git-edit [conflicted|staged|edited|commited]
+
+main() {
+  action="$1"
+  case $action in
+  conflict | conflicts | conflicted)
+    $EDITOR $(git-conflicts)
+    ;;
+  commited)
+    $EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)
+    ;;
+  staged)
+    $EDITOR $(git diff --staged --name-only --diff-filter=ACMR)
+    ;;
+  status)
+    $EDITOR $(git status --porcelain | awk '{print $2}')
+    ;;
+  edited)
+    $EDITOR $(git diff HEAD --name-only --diff-filter=ACMR)
+    ;;
+  esac
+}
+
+main "$@"

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+# Check daylight savings
+# https://superuser.com/a/805205/26670
+#
+# $ dst Europe/Amsterdam
+
+dst() {
+  zdump -v "${1:-"Europe/Amsterdam"}" -c "$(date '+%Y')","$(date -d '+1 year' '+%Y')" | awk -v y="$(date '+%Y')" '
+                                     ($6==y && dst=="") {dst=$15}
+                                     ($6==y && dst==$15) {ftime=$12; dst=$15;}
+                                     ($6==y && dst!=$15) {print ftime, "to", $12, "on", $4, $3, $6, $15; dst=$15}'
+}
+
+dst "$@"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Simple function to get weather data
+#
+# Usage:
+#   $ weather
+#   $ weather <city>
+# Check curl wttr.in/:help for more info
+
+weather() {
+  curl -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-$(corelocationcli -format '%locality' 2>/dev/null)}"?"${2:-0qm}"
+}
+
+weather "$@"

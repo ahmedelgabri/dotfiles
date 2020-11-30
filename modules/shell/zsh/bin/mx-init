@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+set -e
+
+SESSION='_shared'
+
+create_session() {
+  tmux new-session -d -s "$SESSION"
+
+  if command -v neomutt &>/dev/null; then
+    tmux new-window -n 'mail'
+    tmux send-keys "neomutt" C-m
+  fi
+
+  if command -v newsboat &>/dev/null; then
+    tmux new-window -n 'rss'
+    tmux send-keys "newsboat" C-m
+  fi
+
+  if command -v tuir &>/dev/null; then
+    tmux new-window -n 'reddit'
+    tmux send-keys "tuir" C-m
+  fi
+
+  if command -v weechat &>/dev/null; then
+    tmux new-window -n 'weechat'
+    # Stop Weechat from renaming the window
+    tmux set-option allow-rename off
+    tmux send-keys "weechat" C-m
+  fi
+
+  if [ -d "$NOTES_DIR" ]; then
+    tmux new-window -n 'notes' -c "$NOTES_DIR"
+    tmux send-keys "$EDITOR" C-m
+  fi
+
+  if [ -d "$DOTFILES" ]; then
+    tmux new-window -n 'dotfiles' -c "$DOTFILES"
+    tmux send-keys "$EDITOR" C-m
+    tmux split-window -h -p 15 -c "$DOTFILES"
+  fi
+}
+
+if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
+  create_session
+fi

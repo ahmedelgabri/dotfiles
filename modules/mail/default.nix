@@ -66,35 +66,21 @@ in {
         ];
       };
 
-      environment.userLaunchAgents."com.ahmedelgabri.isync.plist" = {
-        text = ''
-          <!-- ${nix_managed} -->
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-            <dict>
-              <key>Label</key>
-              <string>com.ahmedelgabri.isync</string>
-              <key>ProgramArguments</key>
-              <array>
-                <string>/bin/sh</string>
-                <string>-c</string>
-                <string>exec ${
-                  builtins.getEnv "HOME"
-                }/.config/neomutt/scripts/mail-sync</string>
-              </array>
-              <key>RunAtLoad</key>
-              <true/>
-              <key>KeepAlive</key>
-              <true/>
-              <key>StartInterval</key>
-              <integer>120</integer>
-              <key>StandardOutPath</key>
-              <string>/tmp/ahmed.isync.log</string>
-              <key>StandardErrorPath</key>
-              <string>/tmp/ahmed.isync.err.log</string>
-            </dict>
-          </plist>'';
+      launchd.user.agents."ahmedelgabri.isync" = {
+        command =
+          "${pkgs.notmuch}/bin/notmuch --config=/Users/${username}/.config/notmuch/config new";
+        serviceConfig = {
+          ProcessType = "Background";
+          LowPriorityIO = true;
+          StartInterval = 2 * 60;
+          RunAtLoad = true;
+          KeepAlive = false;
+          StandardOutPath = "/tmp/ahmed.isync.log";
+          StandardErrorPath = "/tmp/ahmed.isync.err.log";
+          EnvironmentVariables = {
+            "SSL_CERT_FILE" = "/etc/ssl/certs/ca-certificates.crt";
+          };
+        };
       };
 
       home-manager = {

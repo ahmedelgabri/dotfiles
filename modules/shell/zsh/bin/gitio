@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# Usage: gitio URL [CODE]
+#
+# Turns a github.com URL
+#  into a git.io URL
+#
+# Copies the git.io URL to your clipboard if pbcopy is available.
+# Thanks to @przemoc https://gist.github.com/przemoc/1275673
+
+URL="$1"
+CODE="$2"
+
+OUT="$(curl -si https://git.io -F "url=${URL}" ${CODE:+-F "code=${CODE}"} | sed '/^Status: /{s///;/^201/d;q};/^Location: /!d;s///')"
+
+if expr "${OUT}" : "[0-9]\+" >/dev/null; then
+  echo "${OUT}" >&2
+  exit 1
+fi
+
+echo "${OUT}"
+command -v pbcopy >/dev/null && echo "${OUT}" | pbcopy "${OUT}"

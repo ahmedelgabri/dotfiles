@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Create and copy SSH key using Ed25519 to your clipboard
+#   author: @ahmedelgabri
+#   version: 2.0.0
+# $1 = keyname
+# $2 = Email ID used
+
+mkssh() {
+  NAME=${2:-id_rsa}
+
+  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$NAME" -C "$1"
+  pbcopy <"$HOME"/.ssh/"$NAME".pub
+  echo "------------------------------------------------------------\n"
+  echo "($NAME.pub) has been created & copied to your clipboard \n"
+  echo "------------------------------------------------------------\n"
+}
+
+mkssh "$@"

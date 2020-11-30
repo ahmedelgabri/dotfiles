@@ -4,6 +4,8 @@
   imports = [
     ./settings
 
+    ./shell
+
     ./macos
     ./hammerspoon
 
@@ -28,6 +30,7 @@
   ];
 
   my = {
+    shell.enable = true;
     # git.enable = true;
     # mail = { enable = true; };
     # gpg.enable = true;

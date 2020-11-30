@@ -5,7 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.hammerspoon;
-  hammerspoon = pkgs.callPackage ../../apps/hammerspoon.nix { };
+  hammerspoon = pkgs.callPackage ../../apps/hammerspoon { };
 
 in {
   options = with lib; {

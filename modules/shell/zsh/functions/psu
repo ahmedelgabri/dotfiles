@@ -1,0 +1,10 @@
+# vim:ft=zsh:
+# Displays user owned processes status.
+
+emulate -L zsh
+
+function psu {
+  ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${(@)argv[2,-1]}"
+}
+
+psu "$@"

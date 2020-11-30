@@ -1,0 +1,11 @@
+# vim:ft=zsh:
+# Figlet font selector
+
+emulate -L zsh
+
+fgl() (
+  cd /usr/local/Cellar/figlet/*/share/figlet/fonts
+  ls *.flf | sort | fzf --no-multi --reverse --preview "figlet -f {} Hello World!"
+)
+
+fgl "$@"

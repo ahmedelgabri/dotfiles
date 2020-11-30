@@ -21,10 +21,7 @@ Install:andUse(
 local urlDispatcherConfig = {
   start = true,
   config = {
-    default_handler = "com.brave.Browser",
-    url_patterns = {
-      {"https?://youtu.*", "io.mpv"}
-    }
+    default_handler = "com.brave.Browser"
   }
 }
 

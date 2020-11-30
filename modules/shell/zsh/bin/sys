@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+sw_vers
+echo
+system_profiler SPSoftwareDataType
+curl -s https://en.wikipedia.org/wiki/MacOS_version_history | grep -Eo "Version $(version=$(sw_vers -productVersion) && echo ${version%.*}): \"[^\s]+\"" | uniq

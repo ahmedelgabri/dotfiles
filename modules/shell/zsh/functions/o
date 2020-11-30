@@ -1,0 +1,19 @@
+#compdef open
+
+# vim:ft=zsh:
+# No arguments: `open .`
+# With arguments: acts like `open`
+
+emulate -L zsh
+
+unalias o 2> /dev/null
+
+function o {
+  if [[ $# -eq 0 ]]; then
+    open .
+  else
+    open "$@"
+  fi
+}
+
+o "$@"
