@@ -16,7 +16,6 @@ endif
 set textwidth=80
 " set colorcolumn=+1
 " let &colorcolumn=join([&colorcolumn,81] + range(101,999), ',')
-set cursorline
 
 " This works with project specific `.local.vim` files, need to check why if I move
 " to an autoload function it doesn't work

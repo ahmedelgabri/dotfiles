@@ -6,8 +6,8 @@ augroup MyAutoCmds
   " Disable paste mode on leaving insert mode.
   autocmd InsertLeave * set nopaste
 
-  autocmd InsertLeave,VimEnter,WinEnter * setlocal cursorline
-  autocmd InsertEnter,WinLeave * setlocal nocursorline
+  " autocmd InsertLeave,VimEnter,WinEnter * setlocal cursorline
+  " autocmd InsertEnter,WinLeave * setlocal nocursorline
 
   " taken from https://github.com/jeffkreeftmeijer/vim-numbertoggle/blob/cfaecb9e22b45373bb4940010ce63a89073f6d8b/plugin/number_toggle.vim
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
