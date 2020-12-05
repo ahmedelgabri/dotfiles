@@ -232,7 +232,6 @@ local plugins = {
               function()
                 return {
                   exe = "refmt",
-                  args = {},
                   stdin = true
                 }
               end
@@ -259,7 +258,6 @@ local plugins = {
               function()
                 return {
                   exe = "gofmt",
-                  args = {},
                   stdin = true
                 }
               end
@@ -268,7 +266,6 @@ local plugins = {
               function()
                 return {
                   exe = "nixfmt",
-                  args = {},
                   stdin = true
                 }
               end
