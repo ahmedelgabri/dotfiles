@@ -35,7 +35,7 @@ augroup MyAutoCmds
       autocmd DirChanged * lua require'_.autocmds'.source_project_config()
     endif
 
-    autocmd BufWritePre * Format
+    autocmd BufWritePre * FormatWrite
     autocmd BufWritePost plugins.lua PackerCompile
   endif
 
