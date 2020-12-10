@@ -90,7 +90,7 @@ in {
               ".config/neomutt/neomuttrc" = {
                 text = ''
                   # ${nix_managed}
-                  source ./muttrc'';
+                  ${builtins.readFile ./muttrc}'';
               };
 
               ".config/neomutt/muttrc" = {
@@ -171,16 +171,15 @@ in {
 
                   # [todo] support multiple accounts
                   # {% for account in mail_accounts %}
-                  # folder-hook +${cfg.account}/ source "${
+                  folder-hook +${cfg.account}/ source ${
                     builtins.getEnv "HOME"
-                  }/.config/neomutt/account/${lib.toLower cfg.account}/"
+                  }/.config/neomutt/accounts/${lib.toLower cfg.account}
                   # {% endfor %}
 
                   # Source this file initially, so it acts like a default account
-                  source ${cfg.account}/ source "${
-                    builtins.getEnv "HOME"
-                  }/.config/neomutt/account/${lib.toLower cfg.account}/"
-                                '';
+                  source ${builtins.getEnv "HOME"}/.config/neomutt/accounts/${
+                    lib.toLower cfg.account
+                  }'';
 
               };
 
@@ -234,7 +233,7 @@ in {
                   find  /Users/${username}/.mail/*/INBOX -type f -mtime -30d -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
               };
 
-              ".config/notmuch/config-nix" = {
+              ".config/notmuch/config" = {
                 text = ''
                   # ${nix_managed}
                   #  vim:ft=conf
