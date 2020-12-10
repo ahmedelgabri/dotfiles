@@ -14,12 +14,12 @@ in rec {
   pure-prompt = super.pure-prompt.overrideAttrs
     (old: { patches = (old.patches or [ ]) ++ [ ./pure-zsh.patch ]; });
 
-  zoxide = super.zoxide.overrideAttrs (old: {
-    postInstall = ''
-      mkdir -p $out/hook
-
-      echo "unalias zi 2> /dev/null" > $out/hook/zoxide-hook.zsh && $out/bin/zoxide init zsh --hook pwd >> $out/hook/zoxide-hook.zsh'';
-  });
+  python3 = super.python3.override {
+    packageOverrides = self: super: {
+      python-language-server = super.python-language-server.overridePythonAttrs
+        (old: rec { doCheck = false; });
+    };
+  };
 
   # direnv = super.direnv.overrideAttrs (old: {
   #   postInstall = ''
