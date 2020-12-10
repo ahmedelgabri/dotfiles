@@ -253,7 +253,7 @@ in {
 
                   # This section is set by setting up $MAILDIR
                   [database]
-                  path="${builtins.getEnv "HOME"}/.mail"
+                  path=${builtins.getEnv "HOME"}/.mail
 
                   # User configuration
                   #
@@ -477,9 +477,11 @@ in {
                   Group ${lib.toLower cfg.account}
                   Channel ${cfg.account}-inbox
                   Channel ${cfg.account}-archive
-                  Channel ${cfg.account}-drafts
-                  ${lib.optionalString (cfg.keychain.name == "gmail.com")
-                  "Channel ${cfg.account}-starred"}
+                  Channel ${cfg.account}-drafts ${
+                    lib.optionalString (cfg.keychain.name == "gmail.com") ''
+
+                      Channel ${cfg.account}-starred''
+                  }
                   Channel ${cfg.account}-sent
                   Channel ${cfg.account}-spam
                   Channel ${cfg.account}-trash

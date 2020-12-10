@@ -26,6 +26,7 @@ color body cyan default "[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-
 color body cyan default "(\(19|20\)?[0-9]{2}/[01]?[0-9]/[0123]?[0-9]|[0123]?[0-9][/.][01]?[0-9][/.]\(19|20\)?[0-9]{2})(( at)? +[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?"
 color body cyan default "((Sun(day)?|Mon(day)?|Tue(sday)?|Wed(nesday)?|Thu(sday)?|Fri(day)?|Sat(urday)?),? +)?(Jan(uary)?|Feb(rary)?|Mar(ch)?|Apr(il)?|May|June?|July?|Aug(ust)?|Sep(ember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)[ .]+[0-9]{1,2}(st|nd|rd|th)?,?( +(19|20)[0-9]{2}(,?( at)? [0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?)?"
 color body cyan default "((Sun(day)?|Mon(day)?|Tue(sday)?|Wed(nesday)?|Thu(sday)?|Fri(day)?|Sat(urday)?),? +)?[0-9]{1,2}(st|nd|rd|th)?[ .]+(Jan(uary)?|Feb(rary)?|Mar(ch)?|Apr(il)?|May|June?|July?|Aug(ust)?|Sep(ember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?),?( +(19|20)?[0-9]{2})?(( at)? [0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?"
+color body color0 green "(MERGED|Merged|merged)"
 
 color quoted green default
 color quoted1 yellow default
@@ -45,31 +46,31 @@ color error brightcolor1 color0
 ### the following list of expressions are taken from:
 ### https://raw.githubusercontent.com/jessfraz/dockerfiles/master/mutt/.mutt/mutt-patch-highlighting.muttrc
 # Patch syntax highlighting
-# #color   normal  white           default
-# color   body    brightwhite     default         ^[[:space:]].*
-# color   body    yellow          default         ^(diff).*
-# color   body    white           default         ^[\-\-\-].*
-# color   body    white           default         ^[\+\+\+].*
-# color   body    green           default         ^[\+].*
-# color   body    red             default         ^[\-].*
-# color   body    brightblue      default         [@@].*
-# color   body    brightwhite     default         ^(\s).*
-# color   body    cyan            default         ^(Signed-off-by).*
-# color   body    cyan            default         ^(Docker-DCO-1.1-Signed-off-by).*
-# color   body    brightwhite     default         ^(Cc)
-# color   body    yellow          default         "^diff \-.*"
-# color   body    brightwhite     default         "^index [a-f0-9].*"
-# color   body    brightblue      default         "^---$"
-# color   body    white           default         "^\-\-\- .*"
-# color   body    white           default         "^[\+]{3} .*"
-# color   body    green           default         "^[\+][^\+]+.*"
-# color   body    red             default         "^\-[^\-]+.*"
-# color   body    brightblue      default         "^@@ .*"
-# color   body    green           default         "LGTM"
-# color   body    brightmagenta   default         "-- Commit Summary --"
-# color   body    brightmagenta   default         "-- File Changes --"
-# color   body    brightmagenta   default         "-- Patch Links --"
-# color   body    green           default         "^Merged #.*"
-# color   body    red             default         "^Closed #.*"
-# color   body    brightblue      default         "^Reply to this email.*"
+# color   normal  white           default
+color   body    brightwhite     default         ^[[:space:]].*
+color   body    yellow          default         ^(diff).*
+color   body    white           default         ^[\-\-\-].*
+color   body    white           default         ^[\+\+\+].*
+color   body    green           default         ^[\+].*
+color   body    red             default         ^[\-].*
+color   body    brightblue      default         [@@].*
+color   body    brightwhite     default         ^(\s).*
+color   body    cyan            default         ^(Signed-off-by).*
+color   body    cyan            default         ^(Docker-DCO-1.1-Signed-off-by).*
+color   body    brightwhite     default         ^(Cc)
+color   body    yellow          default         "^diff \-.*"
+color   body    brightwhite     default         "^index [a-f0-9].*"
+color   body    brightblue      default         "^---$"
+color   body    white           default         "^\-\-\- .*"
+color   body    white           default         "^[\+]{3} .*"
+color   body    green           default         "^[\+][^\+]+.*"
+color   body    red             default         "^\-[^\-]+.*"
+color   body    brightblue      default         "^@@ .*"
+color   body    green           default         "LGTM"
+color   body    brightmagenta   default         "-- Commit Summary --"
+color   body    brightmagenta   default         "-- File Changes --"
+color   body    brightmagenta   default         "-- Patch Links --"
+color   body    green           default         "^Merged #.*"
+color   body    red             default         "^Closed #.*"
+color   body    brightblue      default         "^Reply to this email.*"
 
