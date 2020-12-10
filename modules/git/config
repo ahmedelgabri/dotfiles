@@ -1,6 +1,3 @@
-[gpg]
-	program = gpg
-
 [commit]
 	verbose = true
 	gpgsign = true
@@ -139,6 +136,57 @@
 	show-branch = true
 	status = true
 
+[alias]
+	amend = commit --amend --no-edit
+	force = push --force-with-lease
+	fam = "!f() { git add . && git amend && git force; }; f"
+	blm = blame -wMC
+	br = branch -vv --sort=-committerdate --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) %(if:equals=*)%(HEAD)%(then)%(color:cyan)%(end)%(align:15,left)%(refname:short)%(end)%(color:reset)%(align:21,left)%(color:green)%(committerdate:auto:human)%(color:reset)%(end)%(contents:subject)'
+	brs = br -a
+	cb = checkout -b
+	cm = commit
+	co = checkout
+	d = diff --patch-with-stat
+	dc = d --staged
+	dm = d --word-diff-regex=.
+	doctor = remote -v show origin
+	fl = l -u
+	hide = update-index --assume-unchanged
+	unhide = update-index --no-assume-unchanged
+	unhide-all = update-index --really-refresh
+	hidden = !git ls-files -v | grep \"^[a-z]\"
+	l = log --color=always --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=auto:human
+	lme = "!sh -c \"git l $@ --author=\"$NAME\"\""
+	la = l --all --simplify-by-decoration
+	lastchange = log -p --follow -n 1
+	ll = log --cc
+	lnm = l --no-merges
+	patch = !git --no-pager diff --no-color | pbcopy | echo "Patch copied to clipboard"
+	rb = "!sh -c \"git rebase -i HEAD~$1\" -"
+	st = status -sb
+	stashes = stash list
+	track = push origin -u HEAD
+	undo = reset --soft HEAD^
+	unstage = reset HEAD --
+	who = shortlog -sne
+	wc = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=auto:human
+	# similar to whatchanged, but gives a dir-level overview:
+	# usage: git wd [diff-against=HEAD] [max-depth=4]
+	wd = "!f() { git --paginate diff --dirstat=cumulative,files,0 ${1:-HEAD} | awk '{print $2}' | cut -d / -f1-${2:-4} | sort | uniq; }; f"
+	unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
+	# Review helpers: https://blog.jez.io/cli-code-review/
+	# https://github.com/jez/dotfiles/blob/d7b720fe13b6bc83829d248e23127b918d65de6e/util/gitconfig#L23-L53
+	review-base = !git merge-base HEAD \"${review_base:-master}\"
+	stat = !git --no-pager diff --stat $(git review-base)
+	files = !git --no-pager diff --name-only $(git review-base)
+	# Review by commit
+	by-commit = !tig log --reverse $(git review-base)..HEAD
+	# Show a markdown-formatted summary of commits from {review_base:-master} until HEAD
+	pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"${review_base:-master}\"..HEAD
+	# split-diff style review using vim-fugitive Gdiff
+	review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\"
+	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\"
+	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\"
 
 [filter "media"]
 	clean = git-media-clean %f
