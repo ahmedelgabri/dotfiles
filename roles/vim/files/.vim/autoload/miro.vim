@@ -30,7 +30,6 @@ function! miro#get_url(opts, ...) abort
   let l:root = (index(l:domains, 'http://' . matchstr(l:repo, '^[^:/]*')) >= 0 ? 'http://' : 'https://') . substitute(l:repo,':\d*','/projects','')
   let l:head = a:opts.repo.head()
   let l:commit = a:opts.commit =~# '^\d\=$' ? '' : a:opts.commit
-  echo [a:opts.repo.find(l:commit), a:opts.repo.config(l:head)]
 
   " If buffer contains directory not file, return a /tree url
   if l:type ==# 'tree' || l:p =~# '/$'

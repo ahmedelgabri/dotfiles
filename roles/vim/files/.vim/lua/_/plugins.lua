@@ -58,7 +58,48 @@ local plugins = {
   {"https://github.com/tpope/vim-eunuch"},
   -- {'https://github.com/tpope/vim-projectionist'},
   {"https://github.com/tpope/vim-repeat"},
-  {"https://github.com/machakann/vim-sandwich"},
+  {
+    "https://github.com/machakann/vim-sandwich",
+    config = function()
+      vim.cmd("runtime macros/sandwich/keymap/surround.vim")
+      vim.g["sandwich#recipes"] =
+        vim.tbl_extend(
+        "force",
+        vim.g["sandwich#recipes"],
+        {
+          {
+            buns = {[[/\*\s*]], [[\s*\*/]]},
+            regex = 1,
+            filetype = {
+              "typescript",
+              "typescriptreact",
+              "typescript.tsx",
+              "javascript",
+              "javascriptreact",
+              "javascript.jsx"
+            },
+            input = {"/"}
+          },
+          {
+            buns = {"${", "}"},
+            filetype = {
+              "typescript",
+              "typescriptreact",
+              "typescript.tsx",
+              "javascript",
+              "javascriptreact",
+              "javascript.jsx",
+              "zsh",
+              "bash",
+              "shell",
+              "nix"
+            },
+            input = {"$"}
+          }
+        }
+      )
+    end
+  },
   {"https://github.com/tomtom/tcomment_vim"},
   {"https://github.com/wellle/targets.vim"},
   {"https://github.com/wincent/loupe"},
@@ -83,7 +124,6 @@ local plugins = {
         end
       },
       {"https://github.com/tjdevries/nlua.nvim"},
-      {"https://github.com/RishabhRD/popfix"},
       {
         "https://github.com/RishabhRD/nvim-lsputils",
         config = function()
@@ -103,7 +143,8 @@ local plugins = {
             require "lsputil.symbols".document_handler
           vim.lsp.handlers["workspace/symbol"] =
             require "lsputil.symbols".workspace_handler
-        end
+        end,
+        requires = {{"https://github.com/RishabhRD/popfix", run = "make"}}
       }
     }
   },
@@ -123,11 +164,11 @@ local plugins = {
     cond = "vim.fn.has('nvim-0.5.0')",
     config = function()
       require "_.treesitter"
-    end,
-    requires = {
-      "https://github.com/nvim-treesitter/playground",
-      cmd = "TSPlaygroundToggle"
-    }
+    end
+  },
+  {
+    "https://github.com/nvim-treesitter/playground",
+    cmd = "TSPlaygroundToggle"
   },
   -- }}}
 
@@ -168,7 +209,7 @@ local plugins = {
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
   {"https://github.com/Olical/conjure", tag = "v4.9.0", ft = lisps},
-  {"https://github.com/sheerun/vim-polyglot"},
+  -- {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 
   -- Linters & Code quality {{{

@@ -54,27 +54,27 @@ function! s:project(...)
 endfunction
 
 " Set up projections for JS variants.
-for s:extension in ['.js', '.jsx', '.ts', '.tsx']
-  call s:project(
-        \ ['*' . s:extension, {
-        \  'alternate': [
-        \     '{dirname}/{file|dirname|basename}.test' . s:extension,
-        \     '{dirname}/__tests__/{basename}.test' . s:extension,
-        \  ],
-        \  'type': 'source'
-        \ }],
-        \ ['*.test' . s:extension, {
-        \   'alternate': [
-        \      '{file|dirname}' . s:extension,
-        \      '{file|dirname}/index' . s:extension
-        \     ],
-        \   'type': 'test',
-        \ }],
-        \ ['**/__tests__/*.test' . s:extension, {
-        \   'alternate': [
-        \      '{dirname}/{basename}' . s:extension,
-        \      '{dirname}/{basename}/index' . s:extension
-        \    ],
-        \   'type': 'test'
-        \ }])
-endfor
+" for s:extension in ['.js', '.jsx', '.ts', '.tsx']
+"   call s:project(
+"         \ ['*' . s:extension, {
+"         \  'alternate': [
+"         \     '{dirname}/{file|dirname|basename}.test' . s:extension,
+"         \     '{dirname}/__tests__/{basename}.test' . s:extension,
+"         \  ],
+"         \  'type': 'source'
+"         \ }],
+"         \ ['*.test' . s:extension, {
+"         \   'alternate': [
+"         \      '{file|dirname}' . s:extension,
+"         \      '{file|dirname}/index' . s:extension
+"         \     ],
+"         \   'type': 'test',
+"         \ }],
+"         \ ['**/__tests__/*.test' . s:extension, {
+"         \   'alternate': [
+"         \      '{dirname}/{basename}' . s:extension,
+"         \      '{dirname}/{basename}/index' . s:extension
+"         \    ],
+"         \   'type': 'test'
+"         \ }])
+" endfor

@@ -53,9 +53,9 @@ endif
 if has('syntax')
   set spellcapcheck=                  " don't check for capital letters at start of sentence
   " https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
-  set spelllang=en,nl
+  set spelllang=en,nl,ar
   set spellsuggest=30
-  let &spellfile=g:VIMHOME.'/spell/en.utf-8.add'
+  let &spellfile=g:VIMHOME.'/spell/spell.add'
 endif
 
 set complete+=kspell
