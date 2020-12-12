@@ -10,7 +10,6 @@ Host *
   ChallengeResponseAuthentication no
   HashKnownHosts yes
   AddKeysToAgent yes
-  UseKeyChain yes
   Compression yes
 
 Host github
