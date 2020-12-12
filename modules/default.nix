@@ -25,6 +25,7 @@
     ./youtube-dl
     ./misc
     ./node
+    ./vim
 
     ./python
   ];
@@ -48,6 +49,7 @@
     youtube-dl.enable = true;
     misc.enable = true;
     node.enable = true;
+    vim.enable = true;
     macos.enable = pkgs.stdenv.isDarwin;
     hammerspoon.enable = pkgs.stdenv.isDarwin;
   };

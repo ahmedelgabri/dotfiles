@@ -52,9 +52,7 @@ in {
     findutils
     curl
     wget
-    vim
     htop
-    neovim-unwrapped
   ];
 
   users.users.${config.settings.username} = {
@@ -63,22 +61,15 @@ in {
     shell = [ pkgs.zsh ];
     packages = with pkgs; [
       pandoc
-      par
       scc
       tokei
       go
       todoist
       asciinema
       telnet
-      # editorconfig-checker # do I use it?
-      proselint # ???
-      yamllint
-      hadolint # Docker linter
       _1password # CLI
-      nixfmt
       niv
       docker
-      vim-vint
       reason
       rustup
       rust-analyzer-unwrapped

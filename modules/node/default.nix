@@ -22,18 +22,7 @@ in {
           nodejs # LTS
           nodePackages.npm
           (yarn.override { inherit nodejs; })
-          nodePackages.neovim
-          nodePackages.prettier
           nodePackages.svgo
-          nodePackages.bash-language-server
-          nodePackages.dockerfile-language-server-nodejs
-          nodePackages.ocaml-language-server
-          nodePackages.typescript-language-server
-          nodePackages.yaml-language-server
-          nodePackages.vim-language-server
-          # nodePackages.lua-fmt
-          nodePackages.vscode-css-languageserver-bin
-          nodePackages.vscode-json-languageserver-bin
         ];
       };
 
