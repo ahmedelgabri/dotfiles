@@ -23,10 +23,9 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/lf/lfrc" = { source = ./lfrc; };
-              ".config/lf/preview-nix.sh" = {
-                executable = true;
-                source = ./preview.sh;
+              ".config/lf" = {
+                recursive = true;
+                source = ../../config/lf;
               };
             };
           };

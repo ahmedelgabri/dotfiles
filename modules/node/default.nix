@@ -5,6 +5,8 @@ with config.settings;
 let
 
   cfg = config.my.node;
+  xdg = config.home-manager.users.${username}.xdg;
+  n = pkgs.callPackage ../../apps/n { };
 
 in {
   options = with lib; {
@@ -17,8 +19,16 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
+      environment.variables = {
+        # ############## Direnv & n
+        N_PREFIX = "${xdg.dataHome}/n";
+        NODE_VERSIONS = "${xdg.dataHome}/n/n/versions/node";
+        NODE_VERSION_PREFIX = "";
+      };
+
       users.users.${username} = {
         packages = with pkgs; [
+          n
           nodejs # LTS
           nodePackages.npm
           (yarn.override { inherit nodejs; })
@@ -42,8 +52,7 @@ in {
                   ${lib.optionalString (website != "")
                   "init-author-url=${website}"}
                   init-version=0.0.1
-                  ${builtins.readFile ./.npmrc}'';
-
+                  ${builtins.readFile ../../config/.npmrc}'';
               };
             };
           };

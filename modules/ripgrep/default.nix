@@ -5,6 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.ripgrep;
+  xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
@@ -17,12 +18,21 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
+      environment.variables = {
+        RIPGREP_CONFIG_PATH = "${xdg.configHome}/ripgrep/config";
+      };
+
       users.users.${username} = { packages = with pkgs; [ ripgrep ]; };
 
       home-manager = {
         users.${username} = {
           home = {
-            file = { ".config/ripgrep/config" = { source = ./config; }; };
+            file = {
+              ".config/ripgrep" = {
+                recursive = true;
+                source = ../../config/ripgrep;
+              };
+            };
           };
         };
       };

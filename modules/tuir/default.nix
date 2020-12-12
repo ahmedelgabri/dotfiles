@@ -23,11 +23,10 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/tuir/themes" = {
+              ".config/tuir" = {
                 recursive = true;
-                source = ./themes;
+                source = ../../config/tuir;
               };
-              ".config/tuir/tuir.cfg" = { source = ./tuir.cfg; };
             };
           };
         };

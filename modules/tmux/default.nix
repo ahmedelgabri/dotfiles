@@ -25,11 +25,10 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/tmux/scripts" = {
+              ".config/tmux" = {
                 recursive = true;
-                source = ./scripts;
+                source = ../../config/tmux;
               };
-              ".config/tmux/tmux.conf" = { source = ./tmux.conf; };
             };
           };
         };

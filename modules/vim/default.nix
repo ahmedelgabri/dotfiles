@@ -18,6 +18,12 @@ in {
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with pkgs; [ vim neovim-unwrapped ];
+      environment.variables = {
+        EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
+        VISUAL = "$EDITOR";
+        GIT_EDITOR = "$EDITOR";
+        MANPAGER = "${pkgs.neovim-unwrapped}/bin/nvim +Man!";
+      };
 
       users.users.${username} = {
         packages = with pkgs; [
@@ -53,11 +59,11 @@ in {
             file = {
               ".config/nvim" = {
                 recursive = true;
-                source = ./.vim;
+                source = ../../config/.vim;
               };
               ".vim" = {
                 recursive = true;
-                source = ./.vim;
+                source = ../../config/.vim;
               };
             };
           };

@@ -16,7 +16,9 @@ let
   z = pkgs.callPackage ../../apps/z { };
 
   xdg = config.home-manager.users.${username}.xdg;
-  go_path = "${xdg.dataHome}/go";
+
+  darwinPackages = with pkgs; [ openssl gawk coreutils findutils ];
+
   personal_storage = "$HOME/Sync";
   fzf_command = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
   fzf_default_command = "${fzf_command} --type f";
@@ -39,13 +41,11 @@ in {
   config = with lib;
     mkIf cfg.enable {
 
-      environment.systemPackages = with pkgs; [
-        fzf
-        direnv
-        nix-zsh-completions
-        zsh
-        z
-      ];
+      # List packages installed in system profile. To search by name, run:
+      # $ nix-env -qaP | grep wget
+      environment.systemPackages = with pkgs;
+        (if pkgs.stdenv.isDarwin then darwinPackages else [ ])
+        ++ [ curl wget htop fzf direnv nix-zsh-completions zsh z ];
 
       users.users.${username} = {
         shell = [ pkgs.zsh ];
@@ -56,13 +56,22 @@ in {
           jq
           fd
           grc
-          go
           pure-prompt
           hyperfine
           exa
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           lnav # System Log file navigator
+          pandoc
+          scc
+          tokei
+          todoist
+          asciinema
+          telnet
+          _1password # CLI
+          niv
+          docker
+          pass
         ];
       };
 
@@ -72,11 +81,11 @@ in {
             file = {
               ".config/zsh" = {
                 recursive = true;
-                source = ./zsh;
+                source = ../../config/zsh.d/zsh;
               };
               ".terminfo" = {
                 recursive = true;
-                source = ./.terminfo;
+                source = ../../config/.terminfo;
               };
             };
           };
@@ -92,7 +101,6 @@ in {
           # So care needs to be taken if two env vars depend on each other
           # ====================================================
           {
-            TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
             COLORTERM = "truecolor";
             BROWSER = if pkgs.stdenv.isDarwin then "open" else "xdg-open";
             # Better spell checking & auto correction prompt
@@ -108,13 +116,6 @@ in {
             XDG_DATA_HOME = xdg.dataHome;
             ZDOTDIR = "${xdg.configHome}/zsh";
 
-            EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
-            VISUAL = "$EDITOR";
-            GIT_EDITOR = "$EDITOR";
-            MANPAGER = "${pkgs.neovim-unwrapped}/bin/nvim +Man!";
-
-            MAILDIR =
-              "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
             DOTFILES = "$HOME/.dotfiles";
             PROJECTS = "$HOME/Sites/personal/dev";
             WORK = "$HOME/Sites/work";
@@ -122,25 +123,11 @@ in {
             NOTES_DIR = "${personal_storage}/notes";
 
             ############### APPS/POGRAMS XDG SPEC CLEANUP
-            GOPATH = go_path;
-            CARGO_HOME = "${xdg.dataHome}/cargo";
-            GNUPGHOME = "${xdg.configHome}/gnupg";
-            NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
-            BAT_CONFIG_PATH = "${xdg.configHome}/bat/config";
-            RIPGREP_CONFIG_PATH = "${xdg.configHome}/ripgrep/config";
-            WEECHAT_HOME = "${xdg.configHome}/weechat";
-            PYTHONSTARTUP = "${xdg.configHome}/python/config.py";
             RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
             AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
             AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
             DOCKER_CONFIG = "${xdg.configHome}/docker";
             ELINKS_CONFDIR = "${xdg.configHome}/elinks";
-            "_JAVA_OPTIONS" =
-              ''-Djava.util.prefs.userRoot="${xdg.configHome}/java"'';
-            RUSTUP_HOME = "${xdg.dataHome}/rustup";
-
-            # export MAILCAP="${xdg.configHome}/mailcap"; # elinks, w3m
-            # export MAILCAPS="$MAILCAP";   # Mutt, pine
 
             ############### Telemetry
             DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
@@ -148,20 +135,8 @@ in {
             GATSBY_TELEMETRY_DISABLED = "1";
             ADBLOCK = "1";
 
-            ############### Go
-            GOBIN = "${go_path}/bin";
-
             ############### Homebrew
             HOMEBREW_INSTALL_BADGE = "⚽️";
-
-            ############### Weechat
-            WEECHAT_PASSPHRASE = ''
-              `security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`'';
-
-            ############### Direnv
-            N_PREFIX = "${xdg.dataHome}/n";
-            NODE_VERSIONS = "${xdg.dataHome}/n/n/versions/node";
-            NODE_VERSION_PREFIX = "";
 
             ############### Pure
             PURE_GIT_UP_ARROW = "🠥";
@@ -202,11 +177,12 @@ in {
           history = "fc -il 1";
           top = "${pkgs.htop}/bin/htop";
           ls = "${pkgs.exa}/bin/exa ";
-          ll = "${pkgs.exa}/bin/exa --tree --group-directories-first ";
-          tree = "${pkgs.exa}/bin/exa --tree --group-directories-first ";
+          ll = ''
+            ${pkgs.exa}/bin/exa --tree --group-directories-first -I "node_modules" '';
+          tree = ''${pkgs.exa}/bin/tree -I  "node_modules" '';
           c = "clear ";
           KABOOM =
-            "yarn global upgrade --latest; brew update; brew upgrade; brew cleanup -s; brew doctor";
+            "${pkgs.yarn}/bin/yarn global upgrade --latest; brew update; brew upgrade; brew cleanup -s; brew doctor";
           emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
           fs = "stat -f '%z bytes'";
           flushdns = "sudo killall -HUP mDNSResponder";
@@ -232,17 +208,17 @@ in {
         ########################################################################
 
         # zshenv
-        shellInit = builtins.readFile ./.zshenv;
+        shellInit = builtins.readFile ../../config/zsh.d/.zshenv;
 
         # zprofile
         loginShellInit = lib.concatStringsSep "\n" (map builtins.readFile [
-          ./.zprofile
-          ./zsh/config/input.zsh
-          ./zsh/config/environment.zsh
-          ./zsh/config/history.zsh
-          ./zsh/config/completion.zsh
-          ./zsh/config/directory.zsh
-          ./zsh/config/utility.zsh
+          ../../config/zsh.d/.zprofile
+          ../../config/zsh.d/zsh/config/input.zsh
+          ../../config/zsh.d/zsh/config/environment.zsh
+          ../../config/zsh.d/zsh/config/history.zsh
+          ../../config/zsh.d/zsh/config/completion.zsh
+          ../../config/zsh.d/zsh/config/directory.zsh
+          ../../config/zsh.d/zsh/config/utility.zsh
           "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh"
 
         ]) + ''
@@ -259,12 +235,8 @@ in {
             "${pkgs.fzf}/share/fzf/completion.zsh"
             "${pkgs.fzf}/share/fzf/key-bindings.zsh"
             "${z}/share/z.sh"
-            # "${pkgs.direnv}/dhook/direnv-hook.zsh"
-            ./.zshrc
-          ]) + ''
-
-            eval "$(direnv hook zsh)"
-          '';
+            ../../config/zsh.d/.zshrc
+          ]);
 
         # Prevent NixOS from clobbering prompts
         # See: https://github.com/NixOS/nixpkgs/pull/38535

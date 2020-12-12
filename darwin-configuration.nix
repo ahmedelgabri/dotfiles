@@ -27,12 +27,11 @@
 # https://github.com/kclejeune/system (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
 #
-# if isDarwin <> then <> else
+# if isDarwin then <> else <>
 
 { config, pkgs, lib, ... }:
 
-let homeDir = builtins.getEnv "HOME";
-in {
+{
   imports = [ <home-manager/nix-darwin> ./modules ];
   nixpkgs.config = import ./config.nix;
   nixpkgs.overlays = [ (import ./overlays) ];
@@ -43,66 +42,13 @@ in {
 
   time.timeZone = config.settings.timezone;
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
-    openssl
-    gawk
-    coreutils
-    findutils
-    curl
-    wget
-    htop
-  ];
-
   users.users.${config.settings.username} = {
-    home = "/Users/${config.settings.username}";
-    description = config.settings.name;
+    home = if pkgs.stdenv.isDarwin then
+      "/Users/${config.settings.username}"
+    else
+      "/home/${config.settings.username}";
+    description = "Primary user account";
     shell = [ pkgs.zsh ];
-    packages = with pkgs; [
-      pandoc
-      scc
-      tokei
-      go
-      todoist
-      asciinema
-      telnet
-      _1password # CLI
-      niv
-      docker
-      reason
-      rustup
-      rust-analyzer-unwrapped
-      #######################
-      # Only on personal laptop
-      #######################
-      clojure
-      leiningen
-      joker
-      kotlin
-      ktlint
-      # clj-kondo
-      weechat # https://github.com/rummik/nixos-config/blob/55023e003095a1affb26906c56ffb883803af354/config/weechat.nix
-      weechatScripts.wee-slack
-      # sqlitebrowser
-      #######################
-      # Only on work laptop
-      #######################
-      # go-jira
-      # maven # How to get 3.5? does it matter?
-      # jdk8 # is this the right package?
-      # vagrant
-      #######################
-      # GUIs
-      #######################
-      # brave # Linux only
-      # firefox # Linux only?
-      # obsidian # Linux only
-      # zoom-us # Linux only
-      # virtualbox
-      vscodium
-      slack
-    ];
   };
 
   home-manager = {
@@ -112,25 +58,13 @@ in {
       xdg = {
         enable = true;
         configFile."nixpkgs/config.nix".source = ./config.nix;
-        # configHome = "${homeDir}/.config";
-        # dataHome = "${homeDir}/.local/share";
-        # cacheHome = "${homeDir}/.cache";
       };
-      home = {
-        stateVersion = "20.09";
 
-        username = config.settings.username;
-        homeDirectory = homeDir;
-        file = {
-          # ".vim".source = "${homeDir}/.dotfiles/roles/vim/files/.vim";
-        };
-      };
+      home = { stateVersion = "20.09"; };
 
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
-
-        # password-store.enable = true;
       };
     };
   };

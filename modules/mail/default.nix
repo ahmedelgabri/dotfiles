@@ -5,6 +5,8 @@ with config.settings;
 let
 
   cfg = config.my.mail;
+  homeDir = config.users.users.${username}.home;
+  xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
@@ -18,7 +20,7 @@ in {
           type = with types; uniq str;
         };
         alias_path = mkOption {
-          default = "${builtins.getEnv "HOME"}/Sync/dotfiles/aliases";
+          default = "${homeDir}/Sync/dotfiles/aliases";
           type = with types; uniq str;
         };
         keychain = {
@@ -63,20 +65,29 @@ in {
           w3m
           notmuch
           tmuxPlugins.urlview
+          tree
         ];
       };
 
-      launchd.user.agents."ahmedelgabri.isync" = {
+      environment.variables = {
+        MAILDIR =
+          "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
+        NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
+        # MAILCAP="${xdg.configHome}/mailcap"; # elinks, w3m
+        # MAILCAPS="$MAILCAP";   # Mutt, pine
+      };
+
+      launchd.user.agents."isync" = {
         command =
-          "${pkgs.notmuch}/bin/notmuch --config=/Users/${username}/.config/notmuch/config new";
+          "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
         serviceConfig = {
           ProcessType = "Background";
           LowPriorityIO = true;
           StartInterval = 2 * 60;
           RunAtLoad = true;
           KeepAlive = false;
-          StandardOutPath = "/tmp/ahmed.isync.log";
-          StandardErrorPath = "/tmp/ahmed.isync.err.log";
+          StandardOutPath = "/tmp/isync.log";
+          StandardErrorPath = "/tmp/isync.err.log";
           EnvironmentVariables = {
             "SSL_CERT_FILE" = "/etc/ssl/certs/ca-certificates.crt";
           };
@@ -87,19 +98,12 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/neomutt/neomuttrc" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./muttrc}'';
+              ".config/neomutt" = {
+                recursive = true;
+                source = ../../config/neomutt;
               };
 
-              ".config/neomutt/muttrc" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./muttrc}'';
-              };
-
-              ".lbdbrc" = { source = ./lbdbrc; };
+              ".lbdbrc" = { source = ../../config/.lbdbrc; };
 
               ".config/neomutt/accounts/${lib.toLower cfg.account}" = {
                 text = ''
@@ -116,12 +120,8 @@ in {
                   set postponed = "+${cfg.account}/Drafts"
                   set mbox = "+${cfg.account}/Archive"
                   set trash = "+${cfg.account}/Trash"
-                  set header_cache = "${
-                    builtins.getEnv "HOME"
-                  }/.cache/neomutt/headers/${cfg.account}/"
-                  set message_cachedir = "${
-                    builtins.getEnv "HOME"
-                  }/.cache/neomutt/messages/${cfg.account}/"
+                  set header_cache = "${xdg.cacheHome}/neomutt/headers/${cfg.account}/"
+                  set message_cachedir = "${xdg.cacheHome}/neomutt/messages/${cfg.account}/"
                   unmailboxes *
                   mailboxes "+${cfg.account}/INBOX" ${
                     if cfg.keychain.name == "gmail.com" then
@@ -133,7 +133,7 @@ in {
                     "+${cfg.account}/Drafts" \
                     "+${cfg.account}/Trash" \
                     "+${cfg.account}/Spam" \
-                    `tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+                    `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
                   ${lib.optionalString
                   (lib.toLower cfg.account == "personal" && cfg.switch_to != "")
@@ -171,29 +171,15 @@ in {
 
                   # [todo] support multiple accounts
                   # {% for account in mail_accounts %}
-                  folder-hook +${cfg.account}/ source ${
-                    builtins.getEnv "HOME"
-                  }/.config/neomutt/accounts/${lib.toLower cfg.account}
+                  folder-hook +${cfg.account}/ source ${xdg.configHome}/neomutt/accounts/${
+                    lib.toLower cfg.account
+                  }
                   # {% endfor %}
 
                   # Source this file initially, so it acts like a default account
-                  source ${builtins.getEnv "HOME"}/.config/neomutt/accounts/${
+                  source ${xdg.configHome}/neomutt/accounts/${
                     lib.toLower cfg.account
                   }'';
-
-              };
-
-              ".config/neomutt/config/bindings.mutt" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./bindings.mutt}'';
-                # macro pager \Cu "<enter-command>set pipe_decode = yes<enter>|${pkgs.urlview}/bin/urlview<enter><enter-command>set pipe_decode = no<enter>" "view URLs"'';
-              };
-
-              ".config/neomutt/config/colors.mutt" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./colors.mutt}'';
               };
 
               ".config/neomutt/scripts/mail-sync" = {
@@ -204,22 +190,7 @@ in {
 
                   # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
                   # Check `.mail/.notmuch/hooks/`
-                  ${pkgs.notmuch}/bin/notmuch --config=/Users/${username}/.config/notmuch/config new'';
-              };
-
-              ".config/neomutt/scripts/dump-ical.py" = {
-                executable = true;
-                source = ./dump-ical.py;
-              };
-
-              ".config/neomutt/scripts/view-mail.sh" = {
-                executable = true;
-                source = ./view-mail.sh;
-              };
-
-              ".config/neomutt/scripts/view-attachment.sh" = {
-                executable = true;
-                source = ./view-attachment.sh;
+                  ${pkgs.notmuch}/bin/notmuch --config=${homeDir}/.config/notmuch/config new'';
               };
 
               ".mail/.notmuch/hooks/pre-new" = {
@@ -230,7 +201,7 @@ in {
 
                   ${pkgs.coreutils}/bin/timeout 2m ${pkgs.isync}/bin/mbsync -q -a
 
-                  find  /Users/${username}/.mail/*/INBOX -type f -mtime -30d -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
+                  find  ${homeDir}/.mail/*/INBOX -type f -mtime -30d -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
               };
 
               ".config/notmuch/config" = {
@@ -253,7 +224,7 @@ in {
 
                   # This section is set by setting up $MAILDIR
                   [database]
-                  path=${builtins.getEnv "HOME"}/.mail
+                  path=${homeDir}/.mail
 
                   # User configuration
                   #

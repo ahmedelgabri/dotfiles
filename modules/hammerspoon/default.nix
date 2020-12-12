@@ -26,7 +26,7 @@ in {
             file = {
               ".hammerspoon" = {
                 recursive = true;
-                source = ./.hammerspoon;
+                source = ../../config/.hammerspoon;
               };
             };
           };

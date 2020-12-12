@@ -105,6 +105,8 @@ if [ "$(uname)" = "Darwin" ]; then
   ) &!
 fi
 
+eval "$(direnv hook zsh)"
+
 ##############################################################
 # LOCAL.
 ##############################################################
@@ -123,6 +125,3 @@ if [ -e /etc/motd ]; then
     tee ${HOME}/.hushlogin < /etc/motd
   fi
 fi
-
-
-# if [ -e /Users/ahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/ahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

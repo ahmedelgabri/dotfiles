@@ -19,7 +19,9 @@ in {
     mkIf cfg.enable {
       home-manager = {
         users.${username} = {
-          home = { file = { ".ssh/config" = { source = ./config; }; }; };
+          home = {
+            file = { ".ssh/config" = { source = ../../config/.ssh/config; }; };
+          };
         };
       };
     };

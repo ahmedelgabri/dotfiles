@@ -36,7 +36,7 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/git/config" = {
+              ".config/git/config-nix" = {
                 text = ''
                   ; ${nix_managed}
                   ; vim: ft=gitconfig
@@ -59,24 +59,18 @@ in {
                   ${optionalString (pkgs.stdenv.isDarwin) ''
                     [diff "plist"]
                       textconv = plutil -convert xml1 -o -''}
-
-                  ${builtins.readFile ./config}'';
+                '';
               };
 
-              ".config/git/ignore" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./ignore}'';
+              ".config/git" = {
+                recursive = true;
+                source = ../../config/git;
               };
 
-              ".config/git/attributes" = {
-                text = ''
-                  # ${nix_managed}
-                  ${builtins.readFile ./attributes}'';
+              ".config/tig" = {
+                recursive = true;
+                source = ../../config/tig;
               };
-
-              ".config/git/hooks" = { source = ./hooks; };
-              ".config/tig/config" = { source = ./tigrc; };
             };
           };
         };

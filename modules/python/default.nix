@@ -5,6 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.python;
+  xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
@@ -17,6 +18,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
+      environment.variables = {
+        PYTHONSTARTUP = "${xdg.configHome}/python/config.py";
+      };
+
       users.users.${username} = {
         packages = with pkgs;
           [
@@ -40,8 +45,14 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/python/config.py" = { source = ./config.py; };
-              ".config/pip/pip.conf" = { source = ./pip.conf; };
+              ".config/python" = {
+                recursive = true;
+                source = ../../config/python;
+              };
+              ".config/pip" = {
+                recursive = true;
+                source = ../../config/pip;
+              };
             };
           };
         };

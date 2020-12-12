@@ -23,15 +23,9 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/newsboat/config" = { source = ./config; };
-              ".config/newsboat/urls" = { source = ./urls; };
-              ".config/newsboat/bookmark.sh" = {
-                executable = true;
-                source = ./bookmark.sh;
-              };
-              ".config/newsboat/play_podcast.sh" = {
-                executable = true;
-                source = ./play_podcast.sh;
+              ".config/newsboat" = {
+                recursive = true;
+                source = ../../config/newsboat;
               };
             };
           };

@@ -21,12 +21,12 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".gemrc" = { source = ./.gemrc; };
-              ".curlrc" = { source = ./.curlrc; };
-              ".ignore" = { source = ./.ignore; };
-              ".mailcap" = { source = ./.mailcap; };
-              ".psqlrc" = { source = ./.psqlrc; };
-              ".urlview" = { source = ./.urlview; };
+              ".gemrc" = { source = ../../config/.gemrc; };
+              ".curlrc" = { source = ../../config/.curlrc; };
+              ".ignore" = { source = ../../config/.ignore; };
+              ".mailcap" = { source = ../../config/.mailcap; };
+              ".psqlrc" = { source = ../../config/.psqlrc; };
+              ".urlview" = { source = ../../config/.urlview; };
             };
           };
         };

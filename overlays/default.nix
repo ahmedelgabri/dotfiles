@@ -21,12 +21,14 @@ in rec {
     };
   };
 
-  # direnv = super.direnv.overrideAttrs (old: {
-  #   postInstall = ''
-  #     mkdir -p $out/dhook
-  #
-  #     ${pkgs.direnv}/bin/direnv hook zsh
-  #
-  #     ${pkgs.direnv}/bin/direnv hook zsh > $out/dhook/direnv-hook.zsh'';
-  # });
+  # https://github.com/NixOS/nixpkgs/issues/106506#issuecomment-742639055
+  weechat = super.weechat.override {
+    configure = { availablePlugins, ... }: {
+      plugins = with availablePlugins;
+        [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
+      scripts = with super.weechatScripts;
+        [ wee-slack ] ++ self.stdenv.lib.optionals (!self.stdenv.isDarwin)
+        [ weechat-notify-send ];
+    };
+  };
 }

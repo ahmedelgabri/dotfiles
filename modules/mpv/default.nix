@@ -23,8 +23,10 @@ in {
         users.${username} = {
           home = {
             file = {
-              ".config/mpv/mpv.conf" = { source = ./mpv.conf; };
-              ".config/mpv/input.conf" = { source = ./input.conf; };
+              ".config/mpv" = {
+                recursive = true;
+                source = ../../config/mpv;
+              };
             };
           };
         };

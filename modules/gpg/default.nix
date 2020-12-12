@@ -5,6 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.gpg;
+  xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
@@ -18,6 +19,7 @@ in {
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with pkgs; [ pinentry_mac gnupg ];
+      environment.variables = { GNUPGHOME = "${xdg.configHome}/gnupg"; };
 
       users.users.${config.settings.username} = {
         packages = with pkgs;
@@ -48,7 +50,7 @@ in {
               ".config/gnupg/gpg.conf" = {
                 text = ''
                   # ${nix_managed}
-                  ${builtins.readFile ./gpg.conf}'';
+                  ${builtins.readFile ../../config/gnupg/gpg.conf}'';
               };
             };
           };

@@ -24,9 +24,17 @@
     ./tuir
     ./youtube-dl
     ./misc
-    ./node
     ./vim
 
+    ./node
+    ./java
+    ./kotlin
+    ./weechat
+    ./go
+    ./rust
+    ./rescript
+    ./gui
+    ./clojure
     ./python
   ];
 
@@ -48,8 +56,18 @@
     tuir.enable = true;
     youtube-dl.enable = true;
     misc.enable = true;
-    node.enable = true;
     vim.enable = true;
+
+    node.enable = true;
+    java.enable = false;
+    kotlin.enable = true;
+    weechat.enable = true;
+    go.enable = true;
+    rust.enable = true;
+    rescript.enable = true;
+    gui.enable = true;
+    clojure.enable = true;
+
     macos.enable = pkgs.stdenv.isDarwin;
     hammerspoon.enable = pkgs.stdenv.isDarwin;
   };

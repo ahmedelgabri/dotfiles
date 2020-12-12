@@ -244,4 +244,5 @@
 	version = 2 # Added in Git 2.18.0.
 
 [include]
+	path = config-nix
 	path = ~/.gitconfig.local

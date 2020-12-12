@@ -22,7 +22,12 @@ in {
       home-manager = {
         users.${username} = {
           home = {
-            file = { ".config/youtube-dl/config" = { source = ./config; }; };
+            file = {
+              ".config/youtube-dl" = {
+                recursive = true;
+                source = ../../config/youtube-dl;
+              };
+            };
           };
         };
       };
