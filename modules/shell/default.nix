@@ -74,6 +74,10 @@ in {
                 recursive = true;
                 source = ./zsh;
               };
+              ".terminfo" = {
+                recursive = true;
+                source = ./.terminfo;
+              };
             };
           };
         };
