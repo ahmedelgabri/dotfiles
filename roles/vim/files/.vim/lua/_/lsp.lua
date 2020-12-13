@@ -194,23 +194,6 @@ local servers = {
     -- See https://github.com/neovim/nvim-lsp/issues/237
     root_dir = root_pattern("tsconfig.json", "package.json", ".git")
   }
-  -- sumneko_lua = {
-  --   settings = {
-  --     Lua = {
-  --       runtime = {
-  --         version = "LuaJIT",
-  --         path = vim.split(package.path, ";")
-  --       },
-  --       completion = {
-  --         keywordSnippet = "Disable"
-  --       },
-  --       diagnostics = {
-  --         enable = true,
-  --         globals = {"vim", "spoon", "hs"}
-  --       }
-  --     }
-  --   }
-  -- }
 }
 
 for server, config in pairs(servers) do
