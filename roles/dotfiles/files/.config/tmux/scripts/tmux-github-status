@@ -6,15 +6,18 @@ GITHUB_STATUS=$(curl -sS https://kctbh9vrtdwd.statuspage.io/api/v2/status.json |
 INDICATIOR="#[fg=colour237]⦁"
 
 case $GITHUB_STATUS in
-ma* | cri*)
-  STATUS="#[fg=red]   $INDICATOR "
-  ;;
+maj* | cri*)
+	STATUS="#[fg=red]   $INDICATOR "
+	;;
 mi*)
-  STATUS="#[fg=yellow]   $INDICATIOR "
-  ;;
+	STATUS="#[fg=yellow]   $INDICATIOR "
+	;;
+mai*)
+	STATUS="#[fg=yellow]   $INDICATIOR "
+	;;
 *)
-  STATUS=""
-  ;;
+	STATUS=""
+	;;
 esac
 
 printf "%s" "$STATUS"
