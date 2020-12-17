@@ -125,27 +125,48 @@ local plugins = {
       },
       {"https://github.com/tjdevries/nlua.nvim"},
       {
-        "https://github.com/RishabhRD/nvim-lsputils",
+        "https://github.com/gfanto/fzf-lsp.nvim",
         config = function()
           vim.lsp.handlers["textDocument/codeAction"] =
-            require "lsputil.codeAction".code_action_handler
-          vim.lsp.handlers["textDocument/references"] =
-            require "lsputil.locations".references_handler
+            require "fzf_lsp".code_action_handler
           vim.lsp.handlers["textDocument/definition"] =
-            require "lsputil.locations".definition_handler
+            require "fzf_lsp".definition_handler
           vim.lsp.handlers["textDocument/declaration"] =
-            require "lsputil.locations".declaration_handler
+            require "fzf_lsp".declaration_handler
           vim.lsp.handlers["textDocument/typeDefinition"] =
-            require "lsputil.locations".typeDefinition_handler
+            require "fzf_lsp".type_definition_handler
           vim.lsp.handlers["textDocument/implementation"] =
-            require "lsputil.locations".implementation_handler
+            require "fzf_lsp".implementation_handler
+          vim.lsp.handlers["textDocument/references"] =
+            require "fzf_lsp".references_handler
           vim.lsp.handlers["textDocument/documentSymbol"] =
-            require "lsputil.symbols".document_handler
+            require "fzf_lsp".document_symbol_handler
           vim.lsp.handlers["workspace/symbol"] =
-            require "lsputil.symbols".workspace_handler
-        end,
-        requires = {{"https://github.com/RishabhRD/popfix", run = "make"}}
+            require "fzf_lsp".workspace_symbol_handler
+        end
       }
+      -- {
+      --   "https://github.com/RishabhRD/nvim-lsputils",
+      --   config = function()
+      --     vim.lsp.handlers["textDocument/codeAction"] =
+      --       require "lsputil.codeAction".code_action_handler
+      --     vim.lsp.handlers["textDocument/references"] =
+      --       require "lsputil.locations".references_handler
+      --     vim.lsp.handlers["textDocument/definition"] =
+      --       require "lsputil.locations".definition_handler
+      --     vim.lsp.handlers["textDocument/declaration"] =
+      --       require "lsputil.locations".declaration_handler
+      --     vim.lsp.handlers["textDocument/typeDefinition"] =
+      --       require "lsputil.locations".typeDefinition_handler
+      --     vim.lsp.handlers["textDocument/implementation"] =
+      --       require "lsputil.locations".implementation_handler
+      --     vim.lsp.handlers["textDocument/documentSymbol"] =
+      --       require "lsputil.symbols".document_handler
+      --     vim.lsp.handlers["workspace/symbol"] =
+      --       require "lsputil.symbols".workspace_handler
+      --   end,
+      --   requires = {{"https://github.com/RishabhRD/popfix", run = "make"}}
+      -- }
     }
   },
   {
