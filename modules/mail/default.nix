@@ -86,8 +86,8 @@ in {
           StartInterval = 2 * 60;
           RunAtLoad = true;
           KeepAlive = false;
-          StandardOutPath = "/tmp/isync.log";
-          StandardErrorPath = "/tmp/isync.err.log";
+          StandardOutPath = "${homeDir}/Library/Logs/isync/output.log";
+          StandardErrorPath = "${homeDir}/Library/Logs/isync/error.log";
           EnvironmentVariables = {
             "SSL_CERT_FILE" = "/etc/ssl/certs/ca-certificates.crt";
           };
@@ -111,6 +111,7 @@ in {
                   # vi:syntax=muttrc
 
                   set realname = "${name}"
+                  set signature = ""
                   set sendmail = "${pkgs.msmtp} -a ${lib.toLower cfg.account}"
                   ${lib.optionalString (cfg.alias_path != "") ''
                     set alias_file = "${cfg.alias_path}"
@@ -317,33 +318,22 @@ in {
                   gpg_path=${pkgs.gnupg}/bin/gpg '';
               };
 
+              # [todo] support multiple accounts
               ".config/msmtp/config" = {
                 text = ''
                   # ${nix_managed}
 
                   defaults
-                  port 587
                   protocol smtp
                   auth on
                   tls on
                   tls_trust_file /usr/local/etc/openssl/cert.pem
-                  # [todo] support multiple accounts
-                  # {% for account in mail_accounts %}
-                  # {% if account.smtp_user != "" %}
-                  # account ${lib.toLower cfg.account}
-                  # host ${cfg.smtp_server}
-                  # from ${email}
-                  # user ${email}
-                  # passwordeval ~/.config/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
-                  #
-                  # {% endif %}
-                  # {% endfor %}
-
+                  logfile ~/Library/Logs/msmtp.log
                   account ${lib.toLower cfg.account}
                   host ${cfg.smtp_server}
                   from ${email}
                   user ${email}
-                  passwordeval ~/.config/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
+                  passwordeval ${xdg.configHome}/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
 
                   account default : ${lib.toLower cfg.account}'';
               };
