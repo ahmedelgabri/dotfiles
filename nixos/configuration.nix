@@ -6,10 +6,10 @@
 
 let
   # https://discourse.nixos.org/t/install-nixpkgs-unstable-in-configuration-nix/6462/2
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+  unstable = import <nixos-unstable> { config = import ../config.nix; };
 in {
   imports = [ # Include the results of the hardware scan.
-    ./modules/settings.nix
+    ./modules
     ./hardware-configuration.nix
   ];
 
@@ -139,4 +139,3 @@ in {
   system.stateVersion = "20.03"; # Did you read the comment?
 
 }
-
