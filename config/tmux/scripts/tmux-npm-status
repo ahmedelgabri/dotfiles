@@ -7,14 +7,17 @@ INDICATIOR="#[fg=colour237]⦁"
 
 case $NPM_STATUS in
 ma* | cri*)
-  STATUS="#[fg=red]   $INDICATOR "
-  ;;
+	STATUS="#[fg=red]   $INDICATOR "
+	;;
 mi*)
-  STATUS="#[fg=yellow]   $INDICATIOR "
-  ;;
+	STATUS="#[fg=yellow]   $INDICATIOR "
+	;;
+mai*)
+	STATUS="#[fg=yellow]   $INDICATIOR "
+	;;
 *)
-  STATUS=""
-  ;;
+	STATUS=""
+	;;
 esac
 
 printf "%s" "$STATUS"
