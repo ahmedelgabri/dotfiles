@@ -1,13 +1,18 @@
 { config, pkgs, ... }:
 
-{
+let
+
+  darwinModules = [
+    ./macos
+    ./hammerspoon
+
+  ];
+
+in {
   imports = [
     ./settings
 
     ./shell
-
-    ./macos
-    ./hammerspoon
 
     ./mail
     ./gpg
@@ -36,7 +41,8 @@
     ./gui
     ./clojure
     ./python
-  ];
+  ] ++ darwinModules;
+  # ] ++ (if pkgs.stdenv.isDarwin then darwinModules else [ ]);
 
   my = {
     shell.enable = true;

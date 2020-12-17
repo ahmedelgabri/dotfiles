@@ -200,6 +200,8 @@ in {
 
       programs.zsh = {
         enable = true;
+
+        # darwin only...
         enableCompletion = false;
         enableBashCompletion = false;
 

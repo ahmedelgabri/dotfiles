@@ -77,6 +77,7 @@ in {
         # MAILCAPS="$MAILCAP";   # Mutt, pine
       };
 
+      # Darwin only...
       launchd.user.agents."isync" = {
         command =
           "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
