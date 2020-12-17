@@ -43,7 +43,7 @@ in {
                 # pinentry program from GPGtools. This is the OSX 'magic sauce',
                 # allowing the gpg key's passphrase to be stored in the login
                 # keychain, enabling automatic key signing.
-                pinentry-program ${pkgs.pinentry_mac}/bin/pinentry-mac
+                pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
                 default-cache-ttl 600
                 max-cache-ttl 7200'';
 
