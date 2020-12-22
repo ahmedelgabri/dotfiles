@@ -18,16 +18,14 @@ in {
   config = with lib;
     mkIf cfg.enable {
       users.users.${username} = {
-        packages = with pkgs; [
-          # sqlitebrowser
-          # brave # Linux only
-          # firefox # Linux only?
-          # obsidian # Linux only
-          # zoom-us # Linux only
-          # virtualbox
-          vscodium
-          slack
-        ];
+        packages = with pkgs;
+          (if stdenv.isDarwin then [ ] else [ brave firefox obsidian zoom-us ])
+          ++ [
+            # sqlitebrowser
+            # virtualbox
+            vscodium
+            slack
+          ];
       };
     };
 }

@@ -5,7 +5,7 @@
 # - Inline files when possible instead of souring then
 # - User specific shell files are to override or for machine specific setup
 
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with config.settings;
 
@@ -13,11 +13,12 @@ let
 
   cfg = config.my.shell;
 
-  z = pkgs.callPackage ../../apps/z { };
+  z = pkgs.callPackage ../../apps/z { newSrc = inputs.z; };
 
   xdg = config.home-manager.users.${username}.xdg;
 
   darwinPackages = with pkgs; [ openssl gawk coreutils findutils ];
+  nixosPackages = with pkgs; [ unstable.dwm dmenu xclip ];
 
   personal_storage = "$HOME/Sync";
   fzf_command = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
@@ -26,9 +27,6 @@ let
   # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
   fzf_preview_command =
     "COLORTERM=truecolor ${pkgs.bat}/bin/bat --style=changes --wrap never --color always {} || cat {} || (${pkgs.exa}/bin/exa --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {})";
-  comma = (import (builtins.fetchTarball
-    "https://github.com/Shopify/comma/archive/master.tar.gz") { });
-
 in {
   options = with lib; {
     my.shell = {
@@ -44,13 +42,13 @@ in {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs;
-        (if pkgs.stdenv.isDarwin then darwinPackages else [ ])
-        ++ [ curl wget htop fzf direnv nix-zsh-completions zsh z ];
+        (if stdenv.isDarwin then darwinPackages else nixosPackages)
+        ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z ];
 
       users.users.${username} = {
         shell = [ pkgs.zsh ];
         packages = with pkgs; [
-          comma
+          # comma
           ncdu
           bat
           jq

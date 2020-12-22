@@ -2,11 +2,7 @@
 
 let
 
-  darwinModules = [
-    ./macos
-    ./hammerspoon
-
-  ];
+  darwinModules = [ ./macos ./hammerspoon ];
 
 in {
   imports = [

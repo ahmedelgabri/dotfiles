@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with config.settings;
 
@@ -6,7 +6,7 @@ let
 
   cfg = config.my.node;
   xdg = config.home-manager.users.${username}.xdg;
-  n = pkgs.callPackage ../../apps/n { };
+  n = pkgs.callPackage ../../apps/n { newSrc = inputs.n; };
 
 in {
   options = with lib; {
