@@ -258,7 +258,7 @@ local plugins = {
             "--print-width",
             vim.bo.textwidth,
             "--stdin-filepath",
-            vim.api.nvim_buf_get_name(0)
+            vim.fn.shellescape(vim.api.nvim_buf_get_name(0))
           },
           stdin = true
         }
