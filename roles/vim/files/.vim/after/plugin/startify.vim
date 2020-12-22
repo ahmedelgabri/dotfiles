@@ -35,7 +35,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Luck is what happens when preparation meets opportunity.', '', '― Seneca'],
       \ ['A complex system that works is invariably found to have evolved from a simple system that worked. The inverse proposition also appears to be true: A complex system designed from scratch never works and cannot be made to work. You have to start over, beginning with a working simple system.', '', '― John Gall'],
       \ ['I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language. My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.', '', '― Tony Hoare, the inventor of Null References'],
-      \ ['I think that large objected-oriented programs struggle with increasing complexity as you build this large object graph of mutable objects. You know, trying to understand and keep in your mind what will happen when you call a method and what will the side effects be.', '', '― Rich Hickey']
+      \ ['I think that large objected-oriented programs struggle with increasing complexity as you build this large object graph of mutable objects. You know, trying to understand and keep in your mind what will happen when you call a method and what will the side effects be.', '', '― Rich Hickey'],
+      \ ['Most people overestimate what they can do in one year and underestimate what they can do in ten years', '', '― Bill Gates']
       \ ]
 
 function! s:list_commits()
