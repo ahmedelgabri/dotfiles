@@ -2,11 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
-let
-  # https://discourse.nixos.org/t/install-nixpkgs-unstable-in-configuration-nix/6462/2
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in {
+{ config, pkgs, inputs, ... }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix

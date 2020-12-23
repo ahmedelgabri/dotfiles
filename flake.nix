@@ -50,7 +50,7 @@
     };
 
     neovim-nightly = {
-      url = "github:neovim/neovim";
+      url = "github:neovim/neovim/master";
       flake = false;
     };
 

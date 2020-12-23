@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with config.settings;
 
@@ -18,7 +18,7 @@ in {
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with pkgs;
-        if stdenv.isDarwin then [ kitty ] else [ unstable.kitty ];
+        if stdenv.isDarwin then [ kitty ] else [ inputs.nixpkgs-unstable ];
       environment.variables = {
         TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
       };

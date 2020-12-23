@@ -18,7 +18,7 @@ let
   xdg = config.home-manager.users.${username}.xdg;
 
   darwinPackages = with pkgs; [ openssl gawk coreutils findutils ];
-  nixosPackages = with pkgs; [ unstable.dwm dmenu xclip ];
+  nixosPackages = with pkgs; [ inputs.nixpkgs-unstable.dwm dmenu xclip ];
 
   personal_storage = "$HOME/Sync";
   fzf_command = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
@@ -63,11 +63,7 @@ in {
           pandoc
           scc
           tokei
-          todoist
-          asciinema
-          telnet
           _1password # CLI
-          niv
           docker
           pass
         ];
