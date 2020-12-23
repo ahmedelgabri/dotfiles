@@ -39,6 +39,7 @@
     label: '{{ item }}'
 
 - name: symlink files
+  ignore_errors: '{{ ansible_check_mode }}'
   with_items: '{{ files.files + config_dirs.files }}'
   vars:
     path: '{{ item.path | relpath | regex_replace("roles/dotfiles/files/", "") | dirname }}'

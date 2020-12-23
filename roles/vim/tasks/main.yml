@@ -1,6 +1,7 @@
 # vim:tw=200
 ---
 - name: symlink config
+  ignore_errors: '{{ ansible_check_mode }}'
   file: path={{ item.path }} src='{{ ansible_env.PWD }}/roles/vim/files/.vim' state=link force=yes
   loop_control:
     label: '{{ item.path }}'

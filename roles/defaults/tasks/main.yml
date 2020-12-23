@@ -163,7 +163,7 @@
   osx_defaults: domain=com.apple.dock key=mouse-over-hilite-stack type=bool value=true
 
 - name: System Preferences -> Dock -> Set the icon size of Dock items to 36 pixels
-  osx_defaults: domain=com.apple.dock key=tilesize type=float value=36
+  osx_defaults: domain=com.apple.dock key=tilesize type=int value=36
 
 - name: System Preferences -> Dock -> Minimize windows into their application’s icon
   osx_defaults: domain=com.apple.dock key=minimize-to-application type=bool value=true

@@ -4,3 +4,4 @@
   with_items:
     - .hammerspoon
   file: src='{{ ansible_env.PWD }}/roles/hammerspoon/files/{{ item }}' path='~/{{ item }}' state=link force=true
+  ignore_errors: '{{ ansible_check_mode }}'
