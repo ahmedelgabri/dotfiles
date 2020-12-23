@@ -83,12 +83,8 @@
           inputs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-            }
-            ./shared
-            ./darwin
+            ./nix/shared
+            ./nix/darwin
           ];
         };
       };
@@ -99,12 +95,8 @@
           specialArgs = { inherit inputs; };
           modules = [
             inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-            }
-            ./shared
-            ./nixos
+            ./nix/shared
+            ./nix/nixos
           ];
         };
       };
