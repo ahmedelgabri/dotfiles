@@ -8,11 +8,12 @@
     # nix.buildCores = 4;
   };
 
-  imports = [ ../modules/macos ../modules/hammerspoon ];
+  imports = [ ../modules/darwin ];
 
   my = {
     macos.enable = true;
     hammerspoon.enable = true;
+    apps.enable = true;
   };
 
   # networking = {

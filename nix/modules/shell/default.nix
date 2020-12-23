@@ -17,7 +17,7 @@ let
 
   xdg = config.home-manager.users.${username}.xdg;
 
-  darwinPackages = with pkgs; [ openssl gawk coreutils findutils ];
+  darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ inputs.nixpkgs-unstable.dwm dmenu xclip ];
 
   personal_storage = "$HOME/Sync";

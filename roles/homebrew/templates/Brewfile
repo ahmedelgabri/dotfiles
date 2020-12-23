@@ -10,32 +10,14 @@ tap "homebrew/cask-versions"
 tap "homebrew/services"
 tap "tavianator/tap"
 
-# Core
-brew "gnu-sed"
-
-# Languages
-brew "n"
-
 cask "1password"
-cask "alfred"
-cask "appcleaner"
 cask "corelocationcli"
 cask "google-chrome"
-cask "hammerspoon"
 cask "imageoptim"
 cask "launchcontrol"
 cask "kap"
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlmarkdown"
-cask "qlprettypatch"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-csv"
-cask "quicklook-json"
 cask "sync"
 cask "visual-studio-code-insiders"
-cask "webpquicklook"
 cask "zoomus"
 
 # mas "Guidance", id: 412759995

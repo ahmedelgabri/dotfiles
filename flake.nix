@@ -89,6 +89,7 @@
         };
       };
 
+      # [todo] very alpha, needs work
       nixosConfigurations = {
         "vagrant-machine" = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
