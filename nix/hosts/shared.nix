@@ -12,7 +12,7 @@
     };
   };
 
-  imports = [ ../modules ];
+  imports = [ ../modules/shared ];
 
   my = {
     shell.enable = true;

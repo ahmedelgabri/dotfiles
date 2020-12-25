@@ -8,7 +8,7 @@
     # nix.buildCores = 4;
   };
 
-  imports = [ ../modules/darwin ];
+  imports = [ ../../modules/darwin ];
 
   my = {
     macos.enable = true;

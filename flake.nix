@@ -13,6 +13,8 @@
 # https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs
 # https://www.reddit.com/r/NixOS/comments/k9xwht/best_resources_for_learning_nixos/
 # https://www.reddit.com/r/NixOS/comments/k8zobm/nixos_preferred_packages_flow/
+# https://www.reddit.com/r/NixOS/comments/j4k2zz/does_anyone_use_flakes_to_manage_their_entire/
+# https://wickedchicken.github.io/post/macos-nix-setup/
 #
 # Sample repos
 # https://github.com/malloc47/config (very simple!)
@@ -31,6 +33,7 @@
 # https://github.com/mjlbach/nix-dotfiles
 # https://github.com/thpham/nix-configs/blob/e46a15f69f/default.nix (nice example of how to build)
 # https://github.com/sandhose/nixconf
+# https://github.com/cideM/dotfiles (darwin, nixOS, home-manager)
 
 {
   description = "My config";
@@ -83,11 +86,17 @@
           inputs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
-            ./nix/shared
-            ./nix/darwin
+            ./nix/hosts/shared.nix
+            ./nix/hosts/darwin
           ];
         };
       };
+
+      # for convenience
+      # nix build './#darwinConfigurations.pandoras-box.system'
+      # vs
+      # nix build './#pandoras-box'
+      pandoras-box = self.darwinConfigurations.pandoras-box.system;
 
       # [todo] very alpha, needs work
       nixosConfigurations = {
@@ -96,8 +105,8 @@
           specialArgs = { inherit inputs; };
           modules = [
             inputs.home-manager.nixosModules.home-manager
-            ./nix/shared
-            ./nix/nixos
+            ./nix/hosts/shared.nix
+            ./nix/hosts/nixos
           ];
         };
       };

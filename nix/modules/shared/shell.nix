@@ -13,7 +13,7 @@ let
 
   cfg = config.my.shell;
 
-  z = pkgs.callPackage ../../apps/z { newSrc = inputs.z; };
+  z = pkgs.callPackage ../../apps/z.nix { newSrc = inputs.z; };
 
   xdg = config.home-manager.users.${username}.xdg;
 
