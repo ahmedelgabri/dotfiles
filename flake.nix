@@ -15,6 +15,7 @@
 # https://www.reddit.com/r/NixOS/comments/k8zobm/nixos_preferred_packages_flow/
 # https://www.reddit.com/r/NixOS/comments/j4k2zz/does_anyone_use_flakes_to_manage_their_entire/
 # https://wickedchicken.github.io/post/macos-nix-setup/
+# https://nrdxp.dev/nixos/2020/12/19/NixOS-Flakes-and-KISS.html
 #
 # Sample repos
 # https://github.com/malloc47/config (very simple!)
@@ -26,6 +27,7 @@
 # https://github.com/gmarmstrong/dotfiles
 # https://github.com/jwiegley/nix-config (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
+# https://github.com/martinbaillie/dotfiles (Darwin & NixOS)
 #
 # With flakes
 # https://github.com/hlissner/dotfiles
