@@ -1,7 +1,5 @@
 local M = {}
 
-local sep = "_"
-
 function M.get_dir()
   return os.getenv("NOTES_DIR")
 end
@@ -9,42 +7,44 @@ end
 -- Investigate how to make this work with commands?
 function M.get_notes_completion()
   return vim.fn.map(
-    vim.fn.getcompletion(M.get_dir() .. "/*/**/", "dir"),
+    vim.fn.getcompletion(M.get_dir() .. "/*", "dir"),
     function(_, v)
       return string.gsub(v, M.get_dir() .. "/", "")
     end
   )
 end
 
-function M.note_info(f_args)
+function M.note_info(fpath, ...)
+  local args = {...}
   local path = M.get_dir() .. "/"
-  local fname = ""
+  local starts_with_a_path = vim.fn.fnamemodify(fpath, ":h")
+  local starts_with_name = vim.fn.fnamemodify(fpath, ":t")
+  local where = string.gsub(starts_with_a_path .. "/", "^\\.", "")
+  local has_a_path = starts_with_a_path ~= "."
+  local fname =
+    table.concat(
+    {
+      has_a_path and starts_with_name or fpath,
+      table.concat(args, " ")
+    },
+    " "
+  ) or ""
 
-  if #f_args >= 1 then
-    local where =
-      string.gsub(vim.fn.fnamemodify(f_args[1], ":h") .. "/", "^\\.", "")
-
+  if has_a_path then
     path = path .. where
-    fname = vim.fn.fnamemodify(f_args[1], ":t:r"):lower() or ""
   end
 
-  local has_fname = fname ~= ""
-
-  path =
-    path ..
-    vim.fn.strftime("%Y-%m-%dT%H-%M-%S") ..
-      (has_fname and sep or "") .. fname .. ".md"
-  local tail = vim.fn.fnamemodify(path, ":t:r")
+  path = path .. vim.fn.strftime("%Y%m%d%H%M") .. " " .. fname .. ".md"
 
   return {
     path,
-    has_fname and vim.fn.split(tail, sep)[2] or "",
+    fname,
     vim.fn.strftime("%A, %B %d, %Y, %H:%M")
   }
 end
 
-function M.note_edit(f_args)
-  local data = M.note_info(f_args)
+function M.note_edit(...)
+  local data = M.note_info(...)
   local path = data[1]
   local fname = data[2]
   local formatted_date = data[3]
@@ -56,28 +56,20 @@ function M.note_edit(f_args)
     "normal ggO---",
     "date: " .. formatted_date,
     "title: " .. fname,
+    "tags:",
     "---"
   }
-  vim.cmd(table.concat(frontmatter, "\n"))
 
-  vim.cmd("Goyo")
+  vim.cmd(table.concat(frontmatter, "\n"))
 end
 
-function M.wiki_edit(f_args)
-  local wiki_sep = ""
-
-  if #f_args > 0 then
-    wiki_sep = sep
-  end
-
-  local fname =
-    M.get_dir() .. "/wiki/" .. table.concat(f_args, wiki_sep) .. ".md"
+function M.wiki_edit(...)
+  local args = {...}
+  local fname = M.get_dir() .. "/wiki/" .. table.concat(args, " ") .. ".md"
 
   print(fname)
 
   vim.cmd("edit " .. fname)
-
-  vim.cmd("Goyo")
 end
 
 function M.my_name(name)

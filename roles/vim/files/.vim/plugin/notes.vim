@@ -9,8 +9,8 @@ func! GetNotesCompletion(ArgLead, CmdLine, CursorPos) abort
   return luaeval("require'_.notes'.get_notes_completion()")
 endfunc
 
-command! -complete=customlist,GetNotesCompletion -nargs=* Note lua require'_.notes'.note_edit({<f-args>})
-command! -nargs=* Wiki lua require'_.notes'.wiki_edit({<f-args>})
+command! -complete=customlist,GetNotesCompletion -nargs=* Note lua require'_.notes'.note_edit(<f-args>)
+command! -nargs=* Wiki lua require'_.notes'.wiki_edit(<f-args>)
 command! -bang Notes lua require'_.notes'.search_notes()
 
 nnoremap <silent> <leader>sn :Notes<CR>
