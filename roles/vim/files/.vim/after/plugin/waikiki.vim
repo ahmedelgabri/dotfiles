@@ -7,8 +7,9 @@ let g:waikiki_use_word_regex = 1
 let g:waikiki_targetsdict_func = 'mywaikiki#TargetsDict'
 let g:waikiki_lookup_order = ['raw', 'ext', 'subdir', 'myName']
 let g:waikiki_create_type = 'myName'
+let g:waikiki_space_replacement = ' '
 
-" augroup Waikiki
-"   au!
-"   autocmd User setup call mywaikiki#SetupBuffer()
-" augroup END
+augroup Waikiki
+  au!
+  autocmd User setup call mywaikiki#SetupBuffer()
+augroup END

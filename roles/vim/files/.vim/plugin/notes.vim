@@ -11,6 +11,6 @@ endfunc
 
 command! -complete=customlist,GetNotesCompletion -nargs=* Note lua require'_.notes'.note_edit(<f-args>)
 command! -nargs=* Wiki lua require'_.notes'.wiki_edit(<f-args>)
-command! -bang Notes lua require'_.notes'.search_notes()
+command! -nargs=* -bang Notes lua require'_.notes'.search_notes(<q-args>, <bang>0)
 
 nnoremap <silent> <leader>sn :Notes<CR>

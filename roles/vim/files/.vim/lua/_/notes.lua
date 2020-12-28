@@ -25,7 +25,7 @@ function M.note_info(fpath, ...)
     table.concat(
     {
       has_a_path and starts_with_name or fpath,
-      table.concat(args, " ")
+      #args > 1 and table.concat(args, " ") or args[1]
     },
     " "
   ) or ""
@@ -74,17 +74,35 @@ end
 
 function M.my_name(name)
   local data = M.note_info(name)
-  local fname = data[2]
+  local fname = vim.fn.fnamemodify(data[1], ":t")
 
   return fname
 end
 
-function M.search_notes()
-  vim.fn["fzf#vim#files"](
-    M.get_dir(),
-    vim.fn["fzf#vim#with_preview"](
-      {options = {"--preview-window=" .. vim.g.fzf_preview_window}}
-    )
+-- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
+function M.search_notes(query, fullscreen)
+  local command_fmt =
+    "rg --column --line-number --no-heading --color=always --smart-case -g '!.obsidian' -g '!miro-bk' -- %s || true"
+  local initial_command =
+    string.format(command_fmt, string.gsub(query, query, "'%1'"))
+  local reload_command = string.format(command_fmt, "{q}")
+
+  local opts = {
+    dir = M.get_dir(),
+    options = {
+      "--phony",
+      "--query",
+      query,
+      "--bind",
+      "change:reload:" .. reload_command
+    }
+  }
+
+  vim.fn["fzf#vim#grep"](
+    initial_command,
+    1,
+    vim.fn["fzf#vim#with_preview"](opts),
+    fullscreen
   )
 end
 

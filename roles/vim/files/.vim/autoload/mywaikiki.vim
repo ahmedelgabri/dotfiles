@@ -6,18 +6,14 @@ function! mywaikiki#Load() abort
 endfun
 
 function! mywaikiki#TargetsDict(name) abort
-  let ret = {}
-  let ret['myName'] = notes#myName(a:name)
-
-  return ret
+  return { 'myName': luaeval("require'_.notes'.my_name(_A)", a:name) }
 endfun
 
-" function! mywaikiki#SetupBuffer() abort
-"   nmap  <buffer>  zl                    <Plug>(waikikiFollowLink)
-"   nmap  <buffer>  zh                    <Plug>(waikikiGoUp)
-"   xn    <buffer>  <LocalLeader>c        <Esc>m`g'<O```<Esc>g'>o```<Esc>``
-"   nmap  <buffer><silent> <LocalLeader>i :let &l:cocu = (&l:cocu==""
-"         \ ? "n" : "")<cr>
-"   setl sw=2
-"   setl cole=2
-" endfun
+function! mywaikiki#SetupBuffer() abort
+  nmap  <buffer>  zl                    <Plug>(waikikiFollowLink)
+  nmap  <buffer>  zh                    <Plug>(waikikiGoUp)
+  xn    <buffer>  <LocalLeader>c        <Esc>m`g'<O```<Esc>g'>o```<Esc>``
+  nmap  <buffer><silent> <LocalLeader>i :let &l:cocu = (&l:cocu=="" \ ? "n" : "")<cr>
+  setl sw=2
+  setl cole=2
+endfun
