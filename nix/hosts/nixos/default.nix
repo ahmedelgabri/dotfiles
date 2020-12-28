@@ -2,6 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+# Notes from MBA NixOS installation
+#
+# - Wifi requires network manager & this can't be enabled if wireless is enabled also
+# - broadcom drivers for wifi, require allowUnfree
+# - wifi requires user to be in the networkmanager group
+# - bluetooth requires some setup https://nixos.wiki/wiki/Bluetooth & also running this command `systemctl --user daemon-reload; systemctl --user restart pulseaudio`
+
 { config, pkgs, inputs, ... }: {
   imports = [
     # Include the results of the hardware scan.
@@ -32,11 +39,15 @@
     # Use the systemd-boot EFI boot loader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    # for broadcom drivers for wifi on Macs
+    kernelModules = [ "wl" ];
+    extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
   };
 
   networking = {
     hostName = "nixos"; # Define your hostname.
-    wireless.enable = true; # Enables wireless support via wpa_supplicant.
+    # wireless.enable = true; # Enables wireless support via wpa_supplicant.
+    networkmanager.enable = true;
 
     # The global useDHCP flag is deprecated, therefore explicitly set to false here.
     # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -104,7 +115,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${config.settings.username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
   };
 
   # This value determines the NixOS release from which the default
@@ -113,5 +124,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.03"; # Did you read the comment?
+  system.stateVersion = "20.09"; # Did you read the comment?
 }
