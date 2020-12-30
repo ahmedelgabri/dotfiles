@@ -50,7 +50,7 @@ local plugins = {
     opt = true,
     cmd = "UndotreeToggle"
   },
-  {"https://github.com/eugen0329/vim-esearch"},
+  {"https://github.com/mhinz/vim-grepper", opt = true, cmd = "Grepper"},
   {"https://github.com/mhinz/vim-sayonara", opt = true, cmd = "Sayonara"},
   {"https://github.com/mhinz/vim-startify"},
   {"https://github.com/nelstrom/vim-visual-star-search"},
@@ -229,7 +229,7 @@ local plugins = {
     config = "vim.cmd[[RainbowParentheses]]"
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.9.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.10.0", ft = lisps},
   -- {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 

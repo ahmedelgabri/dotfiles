@@ -17,7 +17,7 @@ M.quit_on_q_allowlist = {
   taskedit = true,
   diff = true,
   man = true,
-  esearch = true
+  grepper = true
 }
 
 M.colorcolumn_blocklist = {
@@ -37,7 +37,8 @@ M.colorcolumn_blocklist = {
   json = true,
   diff = true,
   minpacprgs = true,
-  gitcommit = true
+  gitcommit = true,
+  GrepperSide = true
 }
 
 M.heavy_plugins_blocklist = {
