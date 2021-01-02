@@ -36,6 +36,7 @@
 # https://github.com/thpham/nix-configs/blob/e46a15f69f/default.nix (nice example of how to build)
 # https://github.com/sandhose/nixconf
 # https://github.com/cideM/dotfiles (darwin, nixOS, home-manager)
+# https://github.com/monadplus/nixconfig
 
 {
   description = "My config";
