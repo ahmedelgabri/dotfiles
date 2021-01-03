@@ -7,6 +7,7 @@ let
   cfg = config.my.apps;
   alfred = pkgs.callPackage ../../apps/alfred.nix { };
   appcleaner = pkgs.callPackage ../../apps/appcleaner.nix { };
+  arq = pkgs.callPackage ../../apps/arq.nix { };
 
 in {
   options = with lib; {
@@ -19,6 +20,6 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ alfred appcleaner ];
+      environment.systemPackages = with pkgs; [ arq alfred appcleaner ];
     };
 }
