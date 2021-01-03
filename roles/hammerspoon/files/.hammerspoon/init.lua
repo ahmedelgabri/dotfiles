@@ -9,7 +9,7 @@ local layout = require "layout"
 require "mappings"
 require "window-managment"
 
-layout.layoutWatcher:start()
+-- layout.layoutWatcher:start()
 
 Install:andUse(
   "Caffeine",
