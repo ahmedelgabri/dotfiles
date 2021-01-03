@@ -9,7 +9,7 @@ local layout = require "layout"
 require "mappings"
 require "window-managment"
 
-layout.layoutWatcher:start()
+-- layout.layoutWatcher:start()
 
 Install:andUse(
   "Caffeine",
@@ -27,14 +27,11 @@ local urlDispatcherConfig = {
 
 if hs.host.localizedName() ~= "pandoras-box" then
   urlDispatcherConfig.config.url_patterns =
-    hs.fnutils.concat(
-    urlDispatcherConfig.config.url_patterns,
     {
       {"https?://miro.*", "com.google.Chrome"},
       {"https?://dev.*.com", "com.google.Chrome"},
       {"https?://localhost:*", "com.google.Chrome"}
     }
-  )
 end
 
 Install:andUse("URLDispatcher", urlDispatcherConfig)

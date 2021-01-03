@@ -26,30 +26,40 @@ local function SwitchLayout()
 
   local screens = {
     main = hs.screen("Color LCD"), -- MBP screen
-    samsung = hs.screen("S24R65x")
+    samsung = hs.screen("S24R65x"),
+    LG = hs.screen("LG HDR 4K")
   }
 
   local layout = {
     {
       apps.chrome,
       nil,
-      (isTwoScreens and contains(allScreens, screens.samsung)) and
-        screens.samsung or
+      (moreThanOneScreen and
+        (contains(allScreens, screens.LG) or
+          contains(allScreens, screens.samsung))) and
+        (screens.LG or screens.samsung) or
         screens.main,
       hs.layout.maximized,
       nil,
       nil
     },
     {apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil},
-    {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil},
-    {apps.brave, nil, screens.main, hs.layout.maximized, nil, nil}
+    {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil}
+    -- {
+    --   apps.brave,
+    --   nil,
+    --   screens.main,
+    --   hs.layout.maximized,
+    --   nil,
+    --   nil
+    -- }
   }
 
   if (moreThanOneScreen) then
     hs.notify.show(
       "Hammerspoon",
       #allScreens .. " monitor layout activated",
-      screens.samsung:name() or screens.main:name()
+      (screens.LG or screens.samsung or screens.main):name()
     )
   end
 
