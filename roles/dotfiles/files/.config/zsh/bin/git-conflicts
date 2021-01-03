@@ -1,4 +1,0 @@
-#!/bin/sh
-# Usage: git-conflicts
-# Show list of files in a conflict state.
-git diff --name-only --diff-filter=U

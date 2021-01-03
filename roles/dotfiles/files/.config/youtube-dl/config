@@ -1,5 +1,0 @@
-# vim:ft=conf
---restrict-filenames
---format 'bestvideo'
-# --output '%(playlist)s/%(playlist_index)s-%(title)s.%(ext)s'
---output '%(title)s.%(ext)s'

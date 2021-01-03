@@ -1,7 +1,0 @@
-# vim:tw=200
----
-- name: create ~/.ssh directory
-  file: path="~/.ssh" state=directory
-
-- name: symlink ~/.ssh/config
-  file: src='{{ ansible_env.PWD }}/roles/ssh/files/config' path='~/.ssh/config' state=link force=true

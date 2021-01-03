@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-# {{ ansible_managed }}
-
-# This will call notmuch `pre-new` hook that will fetch new mail & addresses too
-# Check `.mail/.notmuch/hooks/`
-/usr/local/bin/notmuch --config={{ '~/.config/notmuch/config' | expanduser }} new

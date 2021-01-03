@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-# Copy SSH key to your clipboard
-
-pbcopy <"$HOME/.ssh/$1.pub"
