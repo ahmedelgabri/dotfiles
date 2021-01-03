@@ -66,6 +66,7 @@ in {
           notmuch
           tmuxPlugins.urlview
           tree
+          pass
         ];
       };
 
@@ -334,7 +335,7 @@ in {
                   host ${cfg.smtp_server}
                   from ${email}
                   user ${email}
-                  passwordeval ${xdg.configHome}/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
+                  passwordeval ${pkgs.pass}/bin/pass email/${cfg.keychain.name}
 
                   account default : ${lib.toLower cfg.account}'';
               };
@@ -365,7 +366,7 @@ in {
                   Host ${cfg.imap_server}
                   User ${email}
                   # Get the account password from the system Keychain
-                  PassCmd "~/.config/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'"
+                  PassCmd "${pkgs.pass}/bin/pass email/${cfg.keychain.name}"
                   AuthMechs LOGIN
                   SSLType IMAPS
                   SSLVersions TLSv1.2

@@ -221,6 +221,7 @@ in {
 
           fpath+=${pkgs.pure-prompt}/share/zsh/site-functions
           fpath+=${pkgs.nix-zsh-completions}/share/zsh/site-functions
+          fpath+=${pkgs.gitAndTools.hub}/share/zsh/site-functions
           autoload -U promptinit; promptinit
           prompt pure'';
 

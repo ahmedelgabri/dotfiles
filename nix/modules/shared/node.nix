@@ -21,8 +21,8 @@ in {
     mkIf cfg.enable {
       environment.variables = {
         # ############## Direnv & n
-        N_PREFIX = "${xdg.dataHome}/n";
-        NODE_VERSIONS = "${xdg.dataHome}/n/n/versions/node";
+        N_PREFIX = "${xdg.dataHome}";
+        NODE_VERSIONS = "${xdg.dataHome}/n/versions/node";
         NODE_VERSION_PREFIX = "";
       };
 

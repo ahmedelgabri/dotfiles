@@ -82,7 +82,7 @@ in {
           finder = {
             AppleShowAllExtensions = true;
             # QuitMenuItem = true;
-            _FXShowPosixPathInTitle = true;
+            _FXShowPosixPathInTitle = false; # In Big Sur this is so UGLY!
           };
 
           trackpad = {
