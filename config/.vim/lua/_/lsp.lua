@@ -169,9 +169,37 @@ local function root_pattern(...)
   end
 end
 
+local function get_sumneko_command()
+  local system_name
+
+  if vim.fn.has("mac") == 1 then
+    system_name = "macOS"
+  elseif vim.fn.has("unix") == 1 then
+    system_name = "Linux"
+  else
+    print("Unsupported system for sumneko")
+  end
+
+  -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
+  local sumneko_root_path =
+    string.format(
+    "%s/lspconfig/sumneko_lua/lua-language-server",
+    vim.fn.stdpath("cache")
+  )
+  local sumneko_binary =
+    string.format(
+    "%s/bin/%s/lua-language-server",
+    sumneko_root_path,
+    system_name
+  )
+
+  return {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"}
+end
+
 require("nlua.lsp.nvim").setup(
   nvim_lsp,
   {
+    cmd = get_sumneko_command(),
     on_attach = on_attach,
     globals = {"vim", "spoon", "hs"}
   }
