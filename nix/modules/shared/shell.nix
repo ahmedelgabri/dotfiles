@@ -43,7 +43,7 @@ in {
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs;
         (if stdenv.isDarwin then darwinPackages else nixosPackages)
-        ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z ];
+        ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z rsync ];
 
       users.users.${username} = {
         shell = [ pkgs.zsh ];
