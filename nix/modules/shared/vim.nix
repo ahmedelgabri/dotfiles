@@ -17,7 +17,11 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ vim neovim-unwrapped ];
+      environment.systemPackages = with pkgs; [
+        vim
+        ninja # used to build lua-language-server
+        neovim-unwrapped
+      ];
       environment.variables = {
         EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
         VISUAL = "$EDITOR";
