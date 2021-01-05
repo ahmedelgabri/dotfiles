@@ -1,43 +1,17 @@
-# vim:ft=ruby:
-# {{ ansible_managed }}
-
 cask_args appdir: '/Applications'
 
-tap "dbcli/tap"
-tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/services"
-tap "tavianator/tap"
-
 cask "1password"
+# cask "arq"
 cask "corelocationcli"
-cask "google-chrome"
-cask "imageoptim"
-cask "launchcontrol"
-cask "kap"
-cask "sync"
-cask "visual-studio-code-insiders"
-cask "zoomus"
-
-# mas "Guidance", id: 412759995
-# mas "Sip", id: 507257563
-# mas "The Unarchiver", id: 425424353
-# mas "Tweetbot", id: 557168941
-{% if 'personal' in group_names %}
-# Languages
-cask "adoptopenjdk8"
-
-cask "arq"
-cask "skype"
-cask "transmit"
 cask "db-browser-for-sqlite"
 cask "figma"
-
-# mas "Day One", id: 1055511498
-# mas "Irvue", id: 1039633667
-# mas "Keynote", id: 409183694
-{% endif %}
-{% if 'work' in group_names %}
-cask "java"
-{% endif %}
+cask "google-chrome"
+cask "imageoptim"
+cask "jdownloader"
+cask "kap"
+cask "launchcontrol"
+cask "sync"
+cask "transmit"
+cask "virtualbox"
+# cask "visual-studio-code-insiders"
+cask "zoomus"
