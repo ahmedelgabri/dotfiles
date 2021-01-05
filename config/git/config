@@ -169,7 +169,6 @@
 	undo = reset --soft HEAD^
 	unstage = reset HEAD --
 	who = shortlog -sne
-	wc = whatchanged --pretty=format:\"%C(blue)%h %Creset- %C(green)(%cr) %C(cyan)<%aN> %Creset%aE %C(magenta)%d %n %C(yellow)%s %n%Creset\" --date=auto:human
 	# similar to whatchanged, but gives a dir-level overview:
 	# usage: git wd [diff-against=HEAD] [max-depth=4]
 	wd = "!f() { git --paginate diff --dirstat=cumulative,files,0 ${1:-HEAD} | awk '{print $2}' | cut -d / -f1-${2:-4} | sort | uniq; }; f"
