@@ -24,6 +24,7 @@
     shell.enable = true;
     git.enable = true;
     mail = { enable = true; };
+    aerc = { enable = true; };
     gpg.enable = true;
     ssh.enable = true;
     kitty.enable = true;
