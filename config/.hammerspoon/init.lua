@@ -26,12 +26,11 @@ local urlDispatcherConfig = {
 }
 
 if hs.host.localizedName() ~= "pandoras-box" then
-  urlDispatcherConfig.config.url_patterns =
-    {
-      {"https?://miro.*", "com.google.Chrome"},
-      {"https?://dev.*.com", "com.google.Chrome"},
-      {"https?://localhost:*", "com.google.Chrome"}
-    }
+  urlDispatcherConfig.config.url_patterns = {
+    {"https?://miro.*", "com.google.Chrome"},
+    {"https?://dev.*.com", "com.google.Chrome"},
+    {"https?://localhost:*", "com.google.Chrome"}
+  }
 end
 
 Install:andUse("URLDispatcher", urlDispatcherConfig)
