@@ -80,6 +80,8 @@ in {
 
       # Darwin only...
       launchd.user.agents."isync" = {
+        # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
+        # Check `.mail/.notmuch/hooks/`
         command =
           "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
         serviceConfig = {
@@ -88,8 +90,8 @@ in {
           StartInterval = 2 * 60;
           RunAtLoad = true;
           KeepAlive = false;
-          StandardOutPath = "${homeDir}/Library/Logs/isync/output.log";
-          StandardErrorPath = "${homeDir}/Library/Logs/isync/error.log";
+          StandardOutPath = "${homeDir}/Library/Logs/isync-output.log";
+          StandardErrorPath = "${homeDir}/Library/Logs/isync-error.log";
           EnvironmentVariables = {
             "SSL_CERT_FILE" = "/etc/ssl/certs/ca-certificates.crt";
           };
@@ -185,17 +187,6 @@ in {
                   }'';
               };
 
-              ".config/neomutt/scripts/mail-sync" = {
-                executable = true;
-                text = ''
-                  #!/usr/bin/env sh
-                  # ${nix_managed}
-
-                  # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
-                  # Check `.mail/.notmuch/hooks/`
-                  ${pkgs.notmuch}/bin/notmuch --config=${homeDir}/.config/notmuch/config new'';
-              };
-
               ".mail/.notmuch/hooks/pre-new" = {
                 executable = true;
                 text = ''
@@ -204,7 +195,7 @@ in {
 
                   ${pkgs.coreutils}/bin/timeout 2m ${pkgs.isync}/bin/mbsync -q -a
 
-                  find  ${homeDir}/.mail/*/INBOX -type f -mtime -30d -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
+                  ${pkgs.findutils}/bin/find ${homeDir}/.mail/*/INBOX -type f -mtime -30 -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
               };
 
               ".config/notmuch/config" = {
@@ -335,7 +326,8 @@ in {
                   host ${cfg.smtp_server}
                   from ${email}
                   user ${email}
-                  passwordeval ${pkgs.pass}/bin/pass email/${cfg.keychain.name}
+                  passwordeval ${xdg.configHome}/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
+                  # passwordeval ${pkgs.pass}/bin/pass email/${cfg.keychain.name}
 
                   account default : ${lib.toLower cfg.account}'';
               };
@@ -366,7 +358,8 @@ in {
                   Host ${cfg.imap_server}
                   User ${email}
                   # Get the account password from the system Keychain
-                  PassCmd "${pkgs.pass}/bin/pass email/${cfg.keychain.name}"
+                  # PassCmd "${pkgs.pass}/bin/pass email/${cfg.keychain.name}"
+                  PassCmd "~/.config/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'"
                   AuthMechs LOGIN
                   SSLType IMAPS
                   SSLVersions TLSv1.2
