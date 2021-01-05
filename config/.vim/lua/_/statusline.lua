@@ -162,11 +162,11 @@ end
 function M.file_info()
   local line = vim.bo.filetype
   if vim.bo.fileformat ~= "unix" then
-    return line .. vim.bo.fileformat
+    return line .. " " .. vim.bo.fileformat
   end
 
   if vim.bo.fileencoding ~= "utf-8" then
-    return line .. vim.bo.fileencoding
+    return line .. " " .. vim.bo.fileencoding
   end
 
   return line
