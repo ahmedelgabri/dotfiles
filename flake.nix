@@ -81,6 +81,11 @@
       flake = false;
     };
 
+    lookatme = {
+      url = "github:d0c-s4vage/lookatme";
+      flake = false;
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

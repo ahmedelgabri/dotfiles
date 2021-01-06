@@ -57,6 +57,22 @@
         "type": "github"
       }
     },
+    "lookatme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1603431184,
+        "narHash": "sha256-nTeCI1wFk8+5X7fROSmSIyydi0BzU7vvc+qJeQ+u4MM=",
+        "owner": "d0c-s4vage",
+        "repo": "lookatme",
+        "rev": "a1ac49056008a1966266f352365bb6d268cb042f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d0c-s4vage",
+        "repo": "lookatme",
+        "type": "github"
+      }
+    },
     "n": {
       "flake": false,
       "locked": {
@@ -125,6 +141,7 @@
         "comma": "comma",
         "darwin": "darwin",
         "home-manager": "home-manager",
+        "lookatme": "lookatme",
         "n": "n",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs",

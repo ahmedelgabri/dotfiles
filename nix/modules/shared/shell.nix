@@ -14,6 +14,8 @@ let
   cfg = config.my.shell;
 
   z = pkgs.callPackage ../../pkgs/z.nix { newSrc = inputs.z; };
+  lookatme =
+    pkgs.callPackage ../../pkgs/lookatme.nix { newSrc = inputs.lookatme; };
 
   xdg = config.home-manager.users.${username}.xdg;
 
@@ -66,6 +68,7 @@ in {
           _1password # CLI
           docker
           pass
+          lookatme
         ];
       };
 
