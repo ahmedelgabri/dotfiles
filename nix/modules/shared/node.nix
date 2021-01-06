@@ -6,7 +6,7 @@ let
 
   cfg = config.my.node;
   xdg = config.home-manager.users.${username}.xdg;
-  n = pkgs.callPackage ../../apps/n.nix { newSrc = inputs.n; };
+  n = pkgs.callPackage ../../pkgs/n.nix { newSrc = inputs.n; };
 
 in {
   options = with lib; {
