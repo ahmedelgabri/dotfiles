@@ -8,6 +8,7 @@ let
   alfred = pkgs.callPackage ../../pkgs/alfred.nix { };
   appcleaner = pkgs.callPackage ../../pkgs/appcleaner.nix { };
   arq = pkgs.callPackage ../../pkgs/arq.nix { };
+  obsidian = pkgs.callPackage ../../pkgs/obsidian.nix { };
 
 in {
   options = with lib; {
@@ -20,6 +21,11 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ arq alfred appcleaner ];
+      environment.systemPackages = with pkgs; [
+        arq
+        alfred
+        appcleaner
+        obsidian
+      ];
     };
 }
