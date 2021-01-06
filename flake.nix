@@ -76,6 +76,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ttrv = {
+      url = "github:tildeclub/ttrv";
+      flake = false;
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

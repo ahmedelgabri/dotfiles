@@ -36,7 +36,7 @@
     python.enable = true;
     ripgrep.enable = true;
     tmux.enable = true;
-    tuir.enable = true;
+    ttrv.enable = true;
     youtube-dl.enable = true;
     misc.enable = true;
     vim.enable = true;

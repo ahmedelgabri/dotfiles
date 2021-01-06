@@ -129,7 +129,24 @@
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "ttrv": "ttrv",
         "z": "z"
+      }
+    },
+    "ttrv": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1607486638,
+        "narHash": "sha256-3omhnVou9lam3bd7vCYie0hpUeHEY2G8SRLsDDtH6to=",
+        "owner": "tildeclub",
+        "repo": "ttrv",
+        "rev": "c66bc02e3f5123af4598c18501972f76e797ca56",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tildeclub",
+        "repo": "ttrv",
+        "type": "github"
       }
     },
     "z": {

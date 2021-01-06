@@ -17,7 +17,7 @@
     ./newsboat.nix
     ./ripgrep.nix
     ./tmux.nix
-    ./tuir.nix
+    ./ttrv.nix
     ./youtube-dl.nix
     ./misc.nix
     ./vim.nix
