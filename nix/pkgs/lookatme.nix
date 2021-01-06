@@ -1,10 +1,10 @@
-{ stdenv, python3Packages, newSrc }:
+{ stdenv, python3Packages, source }:
 
 python3Packages.buildPythonApplication rec {
   name = "lookatme";
   version = "2.3.0";
 
-  src = newSrc;
+  src = source;
 
   checkInputs = with python3Packages; [ pytest ];
   # checkPhase = ''

@@ -1,10 +1,10 @@
-{ stdenv, newSrc }:
+{ stdenv, source }:
 
 stdenv.mkDerivation rec {
   name = "n-${version}";
   version = "master";
 
-  src = newSrc;
+  src = source;
 
   dontBuild = true;
 

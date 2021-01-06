@@ -13,9 +13,9 @@ let
 
   cfg = config.my.shell;
 
-  z = pkgs.callPackage ../../pkgs/z.nix { newSrc = inputs.z; };
+  z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
   lookatme =
-    pkgs.callPackage ../../pkgs/lookatme.nix { newSrc = inputs.lookatme; };
+    pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
 
   xdg = config.home-manager.users.${username}.xdg;
 

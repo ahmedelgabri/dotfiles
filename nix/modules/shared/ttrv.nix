@@ -5,7 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.ttrv;
-  ttrv = pkgs.callPackage ../../pkgs/ttrv.nix { newSrc = inputs.ttrv; };
+  ttrv = pkgs.callPackage ../../pkgs/ttrv.nix { source = inputs.ttrv; };
 
 in {
   options = with lib; {

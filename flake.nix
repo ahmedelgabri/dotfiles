@@ -39,7 +39,7 @@
 # https://github.com/monadplus/nixconfig
 
 {
-  description = "My config";
+  description = "~ 🍭 ~";
 
   inputs = {
     nixpkgs.url = "nixpkgs/master";

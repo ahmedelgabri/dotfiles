@@ -1,11 +1,11 @@
-{ lib, newSrc, python3Packages }:
+{ lib, source, python3Packages }:
 
 with python3Packages;
 buildPythonApplication rec {
   pname = "ttrv";
   version = "1.27.3";
 
-  src = newSrc;
+  src = source;
 
   # Tests try to access network
   doCheck = false;
