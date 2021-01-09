@@ -100,7 +100,16 @@
           modules = [
             inputs.home-manager.darwinModules.home-manager
             ./nix/hosts/shared.nix
-            ./nix/hosts/darwin
+            ./nix/hosts/pandoras-box.nix
+          ];
+        };
+
+        "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
+          inputs = inputs;
+          modules = [
+            inputs.home-manager.darwinModules.home-manager
+            ./nix/hosts/shared.nix
+            ./nix/hosts/ahmed-at-work.nix
           ];
         };
       };
@@ -110,6 +119,7 @@
       # vs
       # nix build './#pandoras-box'
       pandoras-box = self.darwinConfigurations.pandoras-box.system;
+      ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
 
       # [todo] very alpha, needs work
       nixosConfigurations = {
@@ -119,7 +129,7 @@
           modules = [
             inputs.home-manager.nixosModules.home-manager
             ./nix/hosts/shared.nix
-            ./nix/hosts/nixos
+            ./nix/hosts/nixos.nix
           ];
         };
       };
