@@ -20,7 +20,7 @@ let
   xdg = config.home-manager.users.${username}.xdg;
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
-  nixosPackages = with pkgs; [ inputs.nixpkgs-unstable.dwm dmenu xclip ];
+  nixosPackages = with pkgs; [ dwm dmenu xclip ];
 
   personal_storage = "$HOME/Sync";
   fzf_command = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
@@ -48,7 +48,7 @@ in {
         ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z rsync ];
 
       users.users.${username} = {
-        shell = [ pkgs.zsh ];
+        shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
         packages = with pkgs; [
           # comma
           ncdu
@@ -69,6 +69,7 @@ in {
           docker
           pass
           lookatme
+          mosh
         ];
       };
 
@@ -163,6 +164,12 @@ in {
           };
 
         shellAliases = {
+          # These are set by default shells-environment.nix
+          ls = "${pkgs.exa}/bin/exa ";
+          ll = ''
+            ${pkgs.exa}/bin/exa --tree --group-directories-first -I "node_modules" '';
+          # END
+
           cp = "cp -iv";
           ln = "ln -iv";
           mv = "mv -iv";
@@ -173,9 +180,6 @@ in {
           which = "which -a";
           history = "fc -il 1";
           top = "${pkgs.htop}/bin/htop";
-          ls = "${pkgs.exa}/bin/exa ";
-          ll = ''
-            ${pkgs.exa}/bin/exa --tree --group-directories-first -I "node_modules" '';
           tree = ''${pkgs.exa}/bin/tree -I  "node_modules" '';
           c = "clear ";
           KABOOM =
@@ -189,7 +193,6 @@ in {
           # https://twitter.com/wincent/status/1333036294440620036
           sudo = "sudo ";
           cat = "${pkgs.bat}/bin/bat ";
-          server = "${pkgs.python3}/bin/python3 -m http.server 80";
           fd = "${pkgs.fd}/bin/fd --hidden ";
           y = "${pkgs.yarn}/bin/yarn";
         };
@@ -219,14 +222,12 @@ in {
           ../../../config/zsh.d/zsh/config/directory.zsh
           ../../../config/zsh.d/zsh/config/utility.zsh
           "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh"
-
         ]) + ''
 
           fpath+=${pkgs.pure-prompt}/share/zsh/site-functions
           fpath+=${pkgs.nix-zsh-completions}/share/zsh/site-functions
           fpath+=${pkgs.gitAndTools.hub}/share/zsh/site-functions
-          autoload -U promptinit; promptinit
-          prompt pure'';
+        '';
 
         # zshrc
         interactiveShellInit = lib.concatStringsSep "\n"
@@ -238,13 +239,7 @@ in {
             ../../../config/zsh.d/.zshrc
           ]);
 
-        # Prevent NixOS from clobbering prompts
-        # See: https://github.com/NixOS/nixpkgs/pull/38535
-        promptInit = lib.mkDefault "";
-        variables = {
-          RPS1 =
-            ""; # Disable the right side prompt that "walters" theme introduces
-        };
+        promptInit = "autoload -U promptinit; promptinit; prompt pure";
       };
     };
 }

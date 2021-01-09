@@ -19,8 +19,15 @@ in {
     mkIf cfg.enable {
       users.users.${username} = {
         packages = with pkgs;
-          (if stdenv.isDarwin then [ ] else [ brave firefox obsidian zoom-us ])
-          ++ [
+          (if stdenv.isDarwin then
+            [ ]
+          else [
+            brave
+            firefox
+            obsidian
+            zoom-us
+            signal-desktop
+          ]) ++ [
             # sqlitebrowser
             # virtualbox
             vscodium

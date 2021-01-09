@@ -18,7 +18,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ pinentry_mac gnupg ];
+      environment.systemPackages = with pkgs; [ gnupg ];
       environment.variables = { GNUPGHOME = "${xdg.configHome}/gnupg"; };
 
       users.users.${config.settings.username} = {
@@ -39,11 +39,6 @@ in {
           home = {
             file = {
               ".config/gnupg/gpg-agent.conf".text = ''
-                # Connects gpg-agent to the OSX keychain via the brew-installed
-                # pinentry program from GPGtools. This is the OSX 'magic sauce',
-                # allowing the gpg key's passphrase to be stored in the login
-                # keychain, enabling automatic key signing.
-                pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
                 default-cache-ttl 600
                 max-cache-ttl 7200'';
 

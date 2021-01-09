@@ -8,17 +8,47 @@
     # nix.buildCores = 4;
   };
 
+  nixpkgs = {
+    overlays = [
+      (final: prev: {
+        # https://github.com/NixOS/nixpkgs/issues/106506#issuecomment-742639055
+        weechat = prev.weechat.override {
+          configure = { availablePlugins, ... }: {
+            plugins = with availablePlugins;
+              [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
+            scripts = with prev.weechatScripts;
+              [ wee-slack ]
+              ++ final.stdenv.lib.optionals (!final.stdenv.isDarwin)
+              [ weechat-notify-send ];
+          };
+        };
+      })
+    ];
+  };
+
   imports = [ ../modules/darwin ];
 
   my = {
     macos.enable = true;
     hammerspoon.enable = true;
     apps.enable = true;
+
+    mail = { enable = true; };
+    aerc = { enable = true; };
+    youtube-dl.enable = true;
+    weechat.enable = true;
+    rescript.enable = true;
+    clojure.enable = true;
+    newsboat.enable = true;
+    gpg.enable = true;
   };
 
-  # networking = {
-  #   hostName = "pandoras-box";
-  # };
+  environment.systemPackages = with pkgs; [
+    (pkgs.callPackage ../pkgs/arq.nix { })
+    (pkgs.callPackage ../pkgs/signal.nix { })
+  ];
+
+  networking = { hostName = "pandoras-box"; };
 
   users.users.${config.settings.username} = {
     home = "/Users/${config.settings.username}";

@@ -32,4 +32,27 @@
     ./clojure.nix
     ./python.nix
   ];
+
+  my = {
+    shell.enable = true;
+    git.enable = true;
+    ssh.enable = true;
+    kitty.enable = true;
+    alacritty.enable = true;
+    bat.enable = true;
+    lf.enable = true;
+    mpv.enable = true;
+    python.enable = true;
+    ripgrep.enable = true;
+    tmux.enable = true;
+    ttrv.enable = true;
+    misc.enable = true;
+    vim.enable = true;
+
+    node.enable = true;
+    go.enable = false;
+    rust.enable = false;
+    gui.enable = true;
+  };
+
 }

@@ -29,6 +29,7 @@
 # https://github.com/jwiegley/nix-config (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
 # https://github.com/martinbaillie/dotfiles (Darwin & NixOS)
+# https://github.com/martinbaillie/dotfiles (Darwin, NixOS & custom options)
 #
 # With flakes
 # https://github.com/hlissner/dotfiles
@@ -119,18 +120,19 @@
       # nix build './#darwinConfigurations.pandoras-box.system'
       # vs
       # nix build './#pandoras-box'
+      # Move them to `outputs.packages.<system>.name`
       pandoras-box = self.darwinConfigurations.pandoras-box.system;
       ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
 
       # [todo] very alpha, needs work
       nixosConfigurations = {
-        "vagrant-machine" = inputs.nixpkgs.lib.nixosSystem {
+        "nixos" = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
             inputs.home-manager.nixosModules.home-manager
             ./nix/hosts/shared.nix
-            ./nix/hosts/nixos.nix
+            ./nix/hosts/nixos
           ];
         };
       };

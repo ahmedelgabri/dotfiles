@@ -18,25 +18,20 @@
     ./hardware-configuration.nix
   ];
 
+  my = {
+    mail = { enable = true; };
+    aerc = { enable = true; };
+    youtube-dl.enable = true;
+    weechat.enable = true;
+    rescript.enable = true;
+    clojure.enable = true;
+    newsboat.enable = true;
+    gpg.enable = false;
+  };
+
   nixpkgs = {
-    config = { allowUnfree = true; };
     overlays = [
-      # (import inputs.comma { inherit pkgs; })
       (final: prev: {
-        neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {
-          version = "master";
-          src = inputs.neovim-nightly;
-          buildInputs = oldAttrs.buildInputs ++ [ pkgs.tree-sitter ];
-        });
-
-        python3 = prev.python3.override {
-          packageOverrides = final: prev: {
-            python-language-server =
-              prev.python-language-server.overridePythonAttrs
-              (old: rec { doCheck = false; });
-          };
-        };
-
         # https://github.com/NixOS/nixpkgs/issues/106506#issuecomment-742639055
         weechat = prev.weechat.override {
           configure = { availablePlugins, ... }: {
@@ -53,31 +48,12 @@
   };
 
   nix = {
-    gc = {
-      dates = "daily";
-      automatic = true;
-      options = "--delete-older-than 3d";
-    };
+    gc = { dates = "daily"; };
     autoOptimiseStore = true;
-    binaryCaches = [
-      "https://cache.nixos.org"
-      # "https://nix-community.cachix.org"
-      "https://nixpkgs.cachix.org"
-    ];
-    binaryCachePublicKeys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
-    ];
-
     registry = {
       nixos.flake = inputs.nixpkgs;
       nixpkgs.flake = inputs.nixpkgs-unstable;
     };
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -101,9 +77,6 @@
     package = pkgs.pulseaudioFull;
   };
   # services.blueman.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Amsterdam";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -166,44 +139,31 @@
 
   # Enable sound.
   sound.enable = true;
-  environment.shells = [ pkgs.bashInteractive pkgs.zsh ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ahmed = {
-    description = "Primary user account";
+  users.users.${config.settings.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    gnumake
     wget
     htop
-    vim
     emacs
-    # inputs.nixpkgs-unstable.kitty
-    kitty
-    git
-    brave
-    # tmux
-    firefox
-    zsh
-    pure-prompt
     dunst
     killall
-    # inputs.nixpkgs-unstable.feh
     feh
-    # inputs.nixpkgs-unstable.neovim
-    neovim-unwrapped
     unzip
     wirelesstools
-    python3
-
+    # python3
     libnotify
     x11
     gnome3.networkmanagerapplet # needed for i3m to be able to use networkmanager through nm-applet
   ];
+
+  environment.shellAliases.l = null;
 
   fonts.fonts = with pkgs; [
     noto-fonts
@@ -222,19 +182,7 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   programs = {
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryFlavor = "gnome3";
-    };
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableBashCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      promptInit = lib.mkDefault "";
-    };
+    gnupg.agent = { pinentryFlavor = "pinentry"; };
 
     java.enable = true;
     less.enable = true;
@@ -245,7 +193,6 @@
     npm.enable = true;
     # ssh.knownHosts = {};
     # ssh.startAgent = true; # Only this or the gnupg enableSSHSupport should be enabled in the same time
-    tmux.enable = true;
     wireshark.enable = true;
   };
 

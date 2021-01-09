@@ -20,42 +20,9 @@
 
   imports = [ ../modules/shared ];
 
-  my = {
-    shell.enable = true;
-    git.enable = true;
-    mail = { enable = true; };
-    aerc = { enable = true; };
-    gpg.enable = true;
-    ssh.enable = true;
-    kitty.enable = true;
-    alacritty.enable = true;
-    bat.enable = true;
-    lf.enable = true;
-    mpv.enable = true;
-    newsboat.enable = true;
-    python.enable = true;
-    ripgrep.enable = true;
-    tmux.enable = true;
-    ttrv.enable = true;
-    youtube-dl.enable = true;
-    misc.enable = true;
-    vim.enable = true;
-
-    node.enable = true;
-    java.enable = false;
-    kotlin.enable = true;
-    weechat.enable = true;
-    go.enable = true;
-    rust.enable = true;
-    rescript.enable = true;
-    gui.enable = true;
-    clojure.enable = true;
-  };
-
   nixpkgs = {
     config = { allowUnfree = true; };
     overlays = [
-      # (import inputs.comma { inherit pkgs; })
       (final: prev: {
         neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {
           version = "master";
@@ -74,18 +41,6 @@
               (old: rec { doCheck = false; });
           };
         };
-
-        # https://github.com/NixOS/nixpkgs/issues/106506#issuecomment-742639055
-        weechat = prev.weechat.override {
-          configure = { availablePlugins, ... }: {
-            plugins = with availablePlugins;
-              [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
-            scripts = with prev.weechatScripts;
-              [ wee-slack ]
-              ++ final.stdenv.lib.optionals (!final.stdenv.isDarwin)
-              [ weechat-notify-send ];
-          };
-        };
       })
     ];
   };
@@ -94,7 +49,6 @@
 
   users.users.${config.settings.username} = {
     description = "Primary user account";
-    shell = [ pkgs.zsh ];
   };
 
   home-manager = {
