@@ -148,27 +148,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
   }
 )
 
-local function root_pattern(...)
-  local patterns = vim.tbl_flatten {...}
-
-  return function(startpath)
-    for _, pattern in ipairs(patterns) do
-      return nvim_lsp.util.search_ancestors(
-        startpath,
-        function(path)
-          if
-            nvim_lsp.util.path.exists(
-              vim.fn.glob(nvim_lsp.util.path.join(path, pattern))
-            )
-           then
-            return path
-          end
-        end
-      )
-    end
-  end
-end
-
 local function get_sumneko_command()
   local system_name
 
@@ -212,16 +191,7 @@ local servers = {
   vimls = {},
   pyls = {},
   rust_analyzer = {},
-  tsserver = {
-    -- cmd = {
-    --   "typescript-language-server",
-    --   "--stdio",
-    --   "--tsserver-log-file",
-    --   "tslog"
-    -- }
-    -- See https://github.com/neovim/nvim-lsp/issues/237
-    root_dir = root_pattern("tsconfig.json", "package.json", ".git")
-  }
+  tsserver = {}
 }
 
 for server, config in pairs(servers) do
