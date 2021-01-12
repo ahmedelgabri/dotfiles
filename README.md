@@ -1,7 +1,9 @@
 # ~ 🍭 ~
 
-For setting up development environment on new Mac. The config is managed by
-[Ansible](https://www.ansible.com/)
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
+For setting up development environment on any Unix machine (Darwin/Linux). The
+config officially supports macOS & NixOS & managed by [nix][nix]
 
 ![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/master/screenshot.png)
 
@@ -9,8 +11,10 @@ For setting up development environment on new Mac. The config is managed by
 
 These are the main configs:
 
-- [Homebrew][homebrew] to manage installing most of the dependencies, including
-  apps using [Cask](https://github.com/caskroom/homebrew-cask)
+- [nix][nix] to manage installing most of the dependencies, for some GUI apps on
+  macs I'm still using
+  [Homebrew cask](https://github.com/caskroom/homebrew-cask) but a bit by bit
+  writing own derivations.
 - [neomutt][neomutt] for reading emails
 - [tmux][tmux] 2.3 or later
 - [Neovim][neovim] or [Vim][vim] 8.0 or later with Ruby and Python support
@@ -26,16 +30,13 @@ These are the main configs:
 
 ## Installation
 
-1. Name your computer in System Preferences -> Sharing
-
-2. Install Xcode & Command line tools, do it manually. Automation doesn't work
-   nice here.
+1. Install Command line tools.
 
 ```bash
 $ xcode-select --install
 ```
 
-3. Run the following command
+2. Run the following command
 
 ```bash
 $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
@@ -58,19 +59,21 @@ export WEECHAT_PASSPHRASE =
   signingkey =
 ```
 
-Don't forget to upload your public key to GitHub!
-https://github.com/blog/2144-gpg-signature-verification Note: There needs to be
-a three-way match on your email for GitHub to show the commit as 'verified': The
-commit email, github email, & the email associated with the public key
+Don't forget to upload your public key to
+[GitHub](https://github.com/blog/2144-gpg-signature-verification)!
 
-Learn about creating a GPG key and the knowledge behind these commands here:
-https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
+> Note: There needs to be a three-way match on your email for GitHub to show the
+> commit as 'verified': The commit email, github email, & the email associated
+> with the public key
+
+Learn about creating a GPG key and signing your commits
+[here](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)
 
 #### Email
 
-I have two email accounts (personal/work) The messages are synchronised between
-the remote server and my computer with [isync][isync], I read them with
-[neomutt][neomutt] and search index is built by [notmuch][notmuch].
+My email messages are synchronised between the remote server and my computer
+with [isync][isync], I read them with [neomutt][neomutt] and search index is
+built by [notmuch][notmuch].
 
 After linking the dotfiles, there are only a few more things that need to be
 done.
@@ -102,13 +105,8 @@ For sending mail:
 Incoming messages are fetched from the remote server when `mbsync` runs (the
 executable name for isync).
 
-To run `mbsync` periodically, load the [`launchctl`][launchctl] job with:
-
-```shell
-$ launchctl load ~/Library/LaunchAgents/com.ahmedelgabri.isync.plist
-```
-
-This will run `mbsync -a` every 2 minutes, synchronizing all IMAP folders.
+On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
+[`mail.nix`](nix/modules/shared/mail.nix).
 
 ### Authors
 
@@ -117,9 +115,9 @@ This will run `mbsync -a` every 2 minutes, synchronizing all IMAP folders.
 [isync]: http://isync.sourceforge.net
 [notmuch]: https://notmuchmail.org
 [keychain]: https://en.wikipedia.org/wiki/Keychain_(software)
-[launchctl]: http://launchd.info
+[launchd]: http://launchd.info
 [neomutt]: https://neomutt.org/
-[homebrew]: https://brew.sh/
+[nix]: https://nixos.org/
 [tmux]: http://tmux.sourceforge.net/
 [neovim]: https://neovim.io
 [zsh]: http://www.zsh.org/

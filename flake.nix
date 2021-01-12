@@ -2,6 +2,7 @@
 # migrate the configs to Nix
 #
 # https://nixcloud.io/ for Nix syntax
+# https://nix-community.github.io/awesome-nix/
 # https://discourse.nixos.org/t/home-manager-equivalent-of-apt-upgrade/8424/3
 # https://www.mathiaspolligkeit.de/dev/exploring-nix-on-macos/
 # https://catgirl.ai/log/nixos-experience/
