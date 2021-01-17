@@ -26,7 +26,7 @@ autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
 path=(
   ${ZDOTDIR}/bin(N-/)
   ${HOME}/.local/bin(N-/)
-  ${CARGO_HOME}/bin(N-/)
+  # ${CARGO_HOME}/bin(N-/)
   ${GOBIN}(N-/)
   $path
   /usr/local/{bin,sbin} # This looks hacky...
