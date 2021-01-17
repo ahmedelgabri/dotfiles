@@ -261,7 +261,7 @@ in {
 
                     [new]
                     tags=unread;inbox;
-                    ignore=.mbsyncstate;.uidvalidity
+                    ignore=.mbsyncstate;.DS_Store;.mbsyncstate.journal;.mbsyncstate.new;.mbsyncstate.lock;.uidvalidity
 
                     # Search configuration
                     #
