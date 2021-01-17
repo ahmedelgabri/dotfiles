@@ -124,8 +124,18 @@ install_homebrew() {
 package_manager() {
 	if [ "$(uname)" == "Darwin" ]; then
 		xcode-select --install
-		sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
+		true | sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 		source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+
+		if command -v nix-build >/dev/null; then
+			nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+			./result/bin/darwin-installer
+			# make just installed `darwin-rebuild` command available in current script
+			[ -f /etc/static/bashrc ] && source /etc/static/bashrc
+		else
+			echo "You need to install Nix Darwin https://github.com/LnL7/nix-darwin"
+			exit 1
+		fi
 
 		if command -v nix-env >/dev/null; then
 			nix-env -iA nixpkgs.nixFlakes
@@ -134,13 +144,6 @@ package_manager() {
 			exit 1
 		fi
 
-		# if command -v nix-build >/dev/null; then
-		# 	nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-		# 	./result/bin/darwin-installer
-		# else
-		# 	echo "You need to install Nix Darwin https://github.com/LnL7/nix-darwin"
-		# 	exit 1
-		# fi
 	fi
 }
 
