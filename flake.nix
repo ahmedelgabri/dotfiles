@@ -20,16 +20,9 @@
 # https://nrdxp.dev/nixos/2020/12/19/NixOS-Flakes-and-KISS.html
 #
 # Sample repos
-# https://github.com/malloc47/config (very simple!)
-# https://github.com/wbadart/dotfiles (simple)
-# https://github.com/srid/nix-config
-# https://github.com/yevhenshymotiuk/darwin-home (this is what I should aim for as a start)
-# https://github.com/rummik/nixos-config
 # https://github.com/teoljungberg/dotfiles/tree/master/nixpkgs (contains custom hammerspoon & vim )
-# https://github.com/gmarmstrong/dotfiles
 # https://github.com/jwiegley/nix-config (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
-# https://github.com/martinbaillie/dotfiles (Darwin & NixOS)
 # https://github.com/martinbaillie/dotfiles (Darwin, NixOS & custom options)
 #
 # With flakes
@@ -38,8 +31,10 @@
 # https://github.com/mjlbach/nix-dotfiles
 # https://github.com/thpham/nix-configs/blob/e46a15f69f/default.nix (nice example of how to build)
 # https://github.com/sandhose/nixconf
-# https://github.com/cideM/dotfiles (darwin, nixOS, home-manager)
+# https://github.com/cideM/dotfiles (darwin, NixOS, home-manager)
 # https://github.com/monadplus/nixconfig
+# https://github.com/jamesottaway/dotfiles (Darwin, NixOS, home-manager)
+# https://github.com/malob/nixpkgs (Darwin, home-manager, homebrew in nix & PAM, this is a great example)
 
 {
   description = "~ 🍭 ~";
@@ -98,49 +93,46 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = { self, ... }@inputs:
-    let nixpkgsCfg = { allowUnfree = true; };
-
-    in {
-      darwinConfigurations = {
-        "pandoras-box" = inputs.darwin.lib.darwinSystem {
-          inputs = inputs;
-          modules = [
-            inputs.home-manager.darwinModules.home-manager
-            ./nix/hosts/shared.nix
-            ./nix/hosts/pandoras-box.nix
-          ];
-        };
-
-        "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
-          inputs = inputs;
-          modules = [
-            inputs.home-manager.darwinModules.home-manager
-            ./nix/hosts/shared.nix
-            ./nix/hosts/ahmed-at-work.nix
-          ];
-        };
+  outputs = { self, ... }@inputs: {
+    darwinConfigurations = {
+      "pandoras-box" = inputs.darwin.lib.darwinSystem {
+        inputs = inputs;
+        modules = [
+          inputs.home-manager.darwinModules.home-manager
+          ./nix/hosts/shared.nix
+          ./nix/hosts/pandoras-box.nix
+        ];
       };
 
-      # for convenience
-      # nix build './#darwinConfigurations.pandoras-box.system'
-      # vs
-      # nix build './#pandoras-box'
-      # Move them to `outputs.packages.<system>.name`
-      pandoras-box = self.darwinConfigurations.pandoras-box.system;
-      ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
-
-      # [todo] very alpha, needs work
-      nixosConfigurations = {
-        "nixos" = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = [
-            inputs.home-manager.nixosModules.home-manager
-            ./nix/hosts/shared.nix
-            ./nix/hosts/nixos
-          ];
-        };
+      "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
+        inputs = inputs;
+        modules = [
+          inputs.home-manager.darwinModules.home-manager
+          ./nix/hosts/shared.nix
+          ./nix/hosts/ahmed-at-work.nix
+        ];
       };
     };
+
+    # for convenience
+    # nix build './#darwinConfigurations.pandoras-box.system'
+    # vs
+    # nix build './#pandoras-box'
+    # Move them to `outputs.packages.<system>.name`
+    pandoras-box = self.darwinConfigurations.pandoras-box.system;
+    ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
+
+    # [todo] very alpha, needs work
+    nixosConfigurations = {
+      "nixos" = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.home-manager.nixosModules.home-manager
+          ./nix/hosts/shared.nix
+          ./nix/hosts/nixos
+        ];
+      };
+    };
+  };
 }
