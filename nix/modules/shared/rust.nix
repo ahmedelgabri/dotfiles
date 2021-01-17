@@ -24,7 +24,7 @@ in {
       };
 
       users.users.${username} = {
-        packages = with pkgs; [ rustup rust-analyzer-unwrapped ];
+        packages = with pkgs; [ rustup rust-analyzer-unwrapped rustc cargo ];
       };
     };
 }
