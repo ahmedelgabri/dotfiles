@@ -214,12 +214,12 @@ local plugins = {
     requires = {{"https://github.com/godlygeek/tabular"}}
   },
   {"https://github.com/jez/vim-github-hub"},
-  {
-    "https://github.com/fatih/vim-go",
-    run = ":GoUpdateBinaries",
-    opt = true,
-    ft = {"go"}
-  },
+  -- {
+  --   "https://github.com/fatih/vim-go",
+  --   run = ":GoUpdateBinaries",
+  --   opt = true,
+  --   ft = {"go"}
+  -- },
   -- Clojure
   {
     "https://github.com/junegunn/rainbow_parentheses.vim",
@@ -229,7 +229,7 @@ local plugins = {
     config = "vim.cmd[[RainbowParentheses]]"
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.11.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.12.0", ft = lisps},
   -- {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 
