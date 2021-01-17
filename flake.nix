@@ -27,7 +27,6 @@
 #
 # With flakes
 # https://github.com/hlissner/dotfiles
-# https://github.com/kclejeune/system (nice example)
 # https://github.com/mjlbach/nix-dotfiles
 # https://github.com/thpham/nix-configs/blob/e46a15f69f/default.nix (nice example of how to build)
 # https://github.com/sandhose/nixconf
@@ -35,6 +34,7 @@
 # https://github.com/monadplus/nixconfig
 # https://github.com/jamesottaway/dotfiles (Darwin, NixOS, home-manager)
 # https://github.com/malob/nixpkgs (Darwin, home-manager, homebrew in nix & PAM, this is a great example)
+# https://github.com/kclejeune/system (nice example)
 
 {
   description = "~ 🍭 ~";
