@@ -21,35 +21,35 @@ BOLD=$(tput bold)
 RESET=$(tput sgr0)
 
 log() {
-  local LABEL="[$1]"
-  local COLOR="$2"
-  shift
-  shift
-  local MSG=("$@")
-  printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols) - ${#LABEL})) | tr ' ' '='
-  for M in "${MSG[@]}"; do
-    let COL=$(tput cols)-2-${#M}
-    printf "%s%${COL}s${RESET}" "$COLOR* $M"
-  done
-  printf "${COLOR}%*s${RESET}\n\n\n" $(tput cols) | tr ' ' '='
+	local LABEL="[$1]"
+	local COLOR="$2"
+	shift
+	shift
+	local MSG=("$@")
+	printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols) - ${#LABEL})) | tr ' ' '='
+	for M in "${MSG[@]}"; do
+		let COL=$(tput cols)-2-${#M}
+		printf "%s%${COL}s${RESET}" "$COLOR* $M"
+	done
+	printf "${COLOR}%*s${RESET}\n\n\n" $(tput cols) | tr ' ' '='
 }
 
 log_error() {
-  log "FAIL" "$RED" "$@"
-  exit 1
+	log "FAIL" "$RED" "$@"
+	exit 1
 }
 
 log_info() {
-  log "INFO" "$ORANGE" "$@"
+	log "INFO" "$ORANGE" "$@"
 }
 
 log_success() {
-  log "OK" "$GREEN" "$@"
+	log "OK" "$GREEN" "$@"
 }
 
 print_main_banner() {
-  cd "$HOME"
-  command cat <<EOF
+	cd "$HOME"
+	command cat <<EOF
 $GREEN
                             _       _    __ _ _
                            | |     | |  / _(_) |
@@ -62,8 +62,8 @@ $GREEN
 $RESET
 EOF
 
-  if [ -d "$DOTFILES_DIR/.git" ]; then
-    command cat <<EOF
+	if [ -d "$DOTFILES_DIR/.git" ]; then
+		command cat <<EOF
 $BLUE
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
          $(git --git-dir "$DOTFILES_DIR/.git" --work-tree "$DOTFILES_DIR" log -n 1 --pretty=format:'%C(yellow)commit:  %h')
@@ -73,40 +73,40 @@ $BLUE
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $RESET
 EOF
-  fi
+	fi
 }
 
 print_prompt() {
-  echo "What do you want to do?"
-  PS3="Enter your choice (must be a number): "
-  options=("All" "Install package manager" "Clone dotfiles" "Backup old files" "Symlink files" "Install Apps" "Change shell" "Quit")
-  select opt in "${options[@]}"; do
-    case $opt in
-    "All")
-      all
-      break
-      ;;
-    "Install package manager")
-      package_manager
-      break
-      ;;
-    "Clone dotfiles")
-      clone_dotfiles
-      break
-      ;;
-    "Install")
-      install
-      break
-      ;;
-    "Quit")
-      break
-      ;;
-    *)
-      echo "Invalid option"
-      break
-      ;;
-    esac
-  done
+	echo "What do you want to do?"
+	PS3="Enter your choice (must be a number): "
+	options=("All" "Install package manager" "Clone dotfiles" "Backup old files" "Symlink files" "Install Apps" "Change shell" "Quit")
+	select opt in "${options[@]}"; do
+		case $opt in
+		"All")
+			all
+			break
+			;;
+		"Install package manager")
+			package_manager
+			break
+			;;
+		"Clone dotfiles")
+			clone_dotfiles
+			break
+			;;
+		"Install")
+			install
+			break
+			;;
+		"Quit")
+			break
+			;;
+		*)
+			echo "Invalid option"
+			break
+			;;
+		esac
+	done
 }
 
 # =======================================================================
@@ -114,96 +114,106 @@ print_prompt() {
 # =======================================================================
 
 install_homebrew() {
-  if ! command -v brew >/dev/null; then
-    log_success "Installing Homebrew"
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install ansible transcrypt
-  fi
+	if ! command -v brew >/dev/null; then
+		log_success "Installing Homebrew"
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		brew install ansible transcrypt
+	fi
 }
 
 package_manager() {
-  if [ "$(uname)" == "Darwin" ]; then
-    # This is handled by homebrew....?
-    # if type xcode-select >&- && xpath=$( xcode-select --print-path ) && test -d "${xpath}" && test -x
-    # "${xpath}"; then
-    #    log_success "Command line tools are installed, moving on..."
-    # else
-    #   log_success "Installing Command line tools..."
-    #   xcode-select --install
-    # fi
-    install_homebrew
-  else
-    # Do something linux specifc apt-get, yum, etc...
-    echo "Linux package manager stuff here..."
-  fi
+	if [ "$(uname)" == "Darwin" ]; then
+		xcode-select --install
+		sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
+		source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+
+		if command -v nix-env >/dev/null; then
+			nix-env -iA nixpkgs.nixFlakes
+		else
+			echo "Check your Nix installation, nix-env is not availbe to install nixpkgs.nixFlakes"
+			exit 1
+		fi
+
+		# if command -v nix-build >/dev/null; then
+		# 	nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+		# 	./result/bin/darwin-installer
+		# else
+		# 	echo "You need to install Nix Darwin https://github.com/LnL7/nix-darwin"
+		# 	exit 1
+		# fi
+	fi
 }
 
 decrypt_repo() {
-  cd "$DOTFILES_DIR"
+	cd "$DOTFILES_DIR"
 
-  echo "decrypting dotfiles..."
-  echo -n "transcrypt cipher: "
-  read -r cipher
-  echo -n "transcrypt password: "
-  read -sr password
-  echo
+	echo "decrypting dotfiles..."
+	echo -n "transcrypt cipher: "
+	read -r cipher
+	echo -n "transcrypt password: "
+	read -sr password
+	echo
 
-  transcrypt -c "$cipher" -p "$password"
+	transcrypt -c "$cipher" -p "$password"
 }
 
 clone_dotfiles() {
-  if [[ ! -d $DOTFILES_DIR ]]; then
-    log_success "Cloning dotfiles..."
-    git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
+	if [[ ! -d $DOTFILES_DIR ]]; then
+		log_success "Cloning dotfiles..."
+		git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
 
-    # Setup repo origin & mirrors
-    cd "$DOTFILES_DIR" &&
-      git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
-      git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
-      git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git &&
-      git update-index --assume-unchanged roles/irc/files/sec.conf &&
-      git update-index --assume-unchanged roles/irc/files/weechat.conf
+		# Setup repo origin & mirrors
+		cd "$DOTFILES_DIR" &&
+			git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
+			git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
+			git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
 
-    decrypt_repo
-  else
-    cd "$DOTFILES_DIR" &&
-      git stash -u &&
-      git checkout master &&
-      git reset --hard origin/master &&
-      git submodule update --init --recursive &&
-      git checkout - &&
-      git stash pop
-  fi
+		decrypt_repo
+	else
+		cd "$DOTFILES_DIR" &&
+			git stash -u &&
+			git checkout master &&
+			git reset --hard origin/master &&
+			git submodule update --init --recursive &&
+			git checkout - &&
+			git stash pop
+	fi
 }
 
 install() {
-  if [ "$(uname)" == "Darwin" ]; then
-    /usr/local/bin/ansible-playbook --ask-become-pass -i inventory darwin.yml
-  else
-    # naivley assuming that it will be a UNIX system
-    /usr/local/bin/ansible-playbook -i inventory linux.yml
-  fi
+	if [ "$(uname)" == "Darwin" ]; then
+		sudo mv /etc/shells /etc/shells.old
+		sudo mv /etc/zshenv /etc/zshenv.old
+		sudo mv /etc/zshrc /etc/zshrc.old
+		sudo mv /etc/zprofile /etc/zprofile.old
+
+		cd "$DOTFILES_DIR" &&
+			nix --experimental-features 'nix-command flakes' build "./#$(hostname)" &&
+			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname)"
+	else
+		sudo nixos-rebuild switch --flake "./#$(hostname)"
+	fi
 }
 
 all() {
-  package_manager
-  clone_dotfiles
-  install
+	package_manager
+	clone_dotfiles
+	install
 
-  FAILED_COMMAND=$(fc -ln -1)
+	FAILED_COMMAND=$(fc -ln -1)
 
-  if [ $? -eq 0 ]; then
-    log_success "Done."
-    log_info "Don't forget to generate SSH keys & import gpg keys"
-    # command vim -u NONE $HOME/.{gitconfig,zshrc}.local
-  else
-    log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
-  fi
+	if [ $? -eq 0 ]; then
+		log_success "Done."
+		log_info "Don't forget to generate SSH keys & import gpg keys"
+		# command vim -u NONE $HOME/.{gitconfig,zshrc}.local
+	else
+		log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
+	fi
 }
 
 run() {
-  print_main_banner
-  print_prompt
+	print_main_banner
+	print_prompt
 }
 
 # =======================================================================
