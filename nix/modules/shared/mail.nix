@@ -323,7 +323,7 @@ in {
                     protocol smtp
                     auth on
                     tls on
-                    tls_trust_file /usr/local/etc/openssl/cert.pem
+                    tls_trust_file /etc/ssl/certs/ca-certificates.crt
                     logfile ~/Library/Logs/msmtp.log
                     account ${lib.toLower cfg.account}
                     host ${cfg.smtp_server}

@@ -24,7 +24,7 @@
     ./node.nix
     ./java.nix
     ./kotlin.nix
-    ./weechat.nix
+    ./irc.nix
     ./go.nix
     ./rust.nix
     ./rescript.nix
