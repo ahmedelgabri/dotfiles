@@ -24,6 +24,8 @@
     config = { allowUnfree = true; };
     overlays = [
       (final: prev: {
+        comma = import inputs.comma { inherit (prev) pkgs; };
+
         neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {
           version = "master";
           src = inputs.neovim-nightly;

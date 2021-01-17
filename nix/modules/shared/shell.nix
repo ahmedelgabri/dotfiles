@@ -50,7 +50,7 @@ in {
       users.users.${username} = {
         shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
         packages = with pkgs; [
-          # comma
+          comma
           ncdu
           bat
           jq
