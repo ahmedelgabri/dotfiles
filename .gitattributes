@@ -1,2 +1,2 @@
-roles/irc/files/*.conf filter=crypt diff=crypt merge=crypt
+weechat/*.conf filter=crypt diff=crypt merge=crypt
 .npmrc filter=crypt diff=crypt merge=crypt
