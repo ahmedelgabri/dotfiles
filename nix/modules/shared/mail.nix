@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with config.settings;
 
@@ -105,6 +105,13 @@ in {
         home-manager = {
           users.${username} = {
             home = {
+              activation = {
+                muttSetup = inputs.home-manager.lib.hm.dag.entryAfter
+                  [ "writeBoundary" ] ''
+                    [ -e $HOME/.mail/${cfg.account} ] || mkdir -p $HOME/.mail/${cfg.account}
+                  '';
+              };
+
               file = {
                 ".config/neomutt" = {
                   recursive = true;

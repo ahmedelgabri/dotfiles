@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with config.settings;
 
@@ -64,15 +64,18 @@ in {
       home-manager = {
         users.${username} = {
           home = {
-            file = {
-              ".config/nvim" = {
-                recursive = true;
-                source = ../../../config/.vim;
-              };
-              ".vim" = {
-                recursive = true;
-                source = ../../../config/.vim;
-              };
+            activation = {
+              vimSetup =
+                inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                  # Creating needed folders
+
+                  [ -e $HOME/.local/share/nvim/swap ] || mkdir -p $HOME/.local/share/nvim/{backup,swap,undo,view}
+
+                  # Handle mutable configs
+
+                  [ -e $HOME/.vim ] || ln -sf $HOME/.dotfiles/config/.vim $HOME/.vim
+                  [ -e $HOME/.config/nvim ] || ln -sf $HOME/.dotfiles/config/.vim $HOME/.config/nvim
+                '';
             };
           };
         };
