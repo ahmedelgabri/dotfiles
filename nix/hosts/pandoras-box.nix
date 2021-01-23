@@ -13,7 +13,6 @@
   my = {
     macos.enable = true;
     hammerspoon.enable = true;
-    apps.enable = true;
 
     mail = { enable = true; };
     aerc = { enable = true; };

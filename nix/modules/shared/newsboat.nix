@@ -17,7 +17,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ newsboat mpv w3m ]; };
+      users.users.${username} = { packages = with pkgs; [ newsboat w3m ]; };
 
       home-manager = {
         users.${username} = {

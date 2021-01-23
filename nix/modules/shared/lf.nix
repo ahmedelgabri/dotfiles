@@ -17,7 +17,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ lf chafa mpv fzf ]; };
+      users.users.${username} = { packages = with pkgs; [ lf chafa fzf ]; };
 
       home-manager = {
         users.${username} = {

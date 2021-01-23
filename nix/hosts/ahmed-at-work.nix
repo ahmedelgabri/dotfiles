@@ -20,7 +20,6 @@
   my = {
     macos.enable = true;
     hammerspoon.enable = true;
-    apps.enable = true;
     java.enable = false;
     kotlin.enable = true;
     gpg.enable = true;

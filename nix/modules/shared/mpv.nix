@@ -16,20 +16,27 @@ in {
   };
 
   config = with lib;
-    mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ mpv ]; };
+    mkIf cfg.enable (mkMerge [
+      (mkIf pkgs.stdenv.isDarwin {
+        environment.systemPackages = with pkgs; [ mpv ];
+      })
+      (mkIf pkgs.stdenv.isLinux {
+        users.users.${username} = { packages = with pkgs; [ mpv ]; };
+      })
 
-      home-manager = {
-        users.${username} = {
-          home = {
-            file = {
-              ".config/mpv" = {
-                recursive = true;
-                source = ../../../config/mpv;
+      {
+        home-manager = {
+          users.${username} = {
+            home = {
+              file = {
+                ".config/mpv" = {
+                  recursive = true;
+                  source = ../../../config/mpv;
+                };
               };
             };
           };
         };
-      };
-    };
+      }
+    ]);
 }
