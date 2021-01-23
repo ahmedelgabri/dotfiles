@@ -114,6 +114,8 @@
     desktopManager.plasma5.enable = true;
   };
 
+  services.nextdns.enable = true;
+
   nixpkgs.config.dwm.patches = [ ./dwm.patch ];
 
   # Enable CUPS to print documents.
