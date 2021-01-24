@@ -165,40 +165,6 @@ in {
             FZF_ALT_C_OPTS =
               "--preview '(${pkgs.exa}/bin/exa --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {}) 2> /dev/null'";
           };
-
-        shellAliases = {
-          # These are set by default shells-environment.nix
-          ls = "${pkgs.exa}/bin/exa ";
-          ll = ''
-            ${pkgs.exa}/bin/exa --tree --group-directories-first -I "node_modules" '';
-          # END
-
-          cp = "cp -iv";
-          ln = "ln -iv";
-          mv = "mv -iv";
-          rm = "rm -i";
-          mkdir = "mkdir -p";
-          e = "$EDITOR";
-          type = "type -a";
-          which = "which -a";
-          history = "fc -il 1";
-          top = "${pkgs.htop}/bin/htop";
-          tree = ''${pkgs.exa}/bin/tree -I  "node_modules" '';
-          c = "clear ";
-          KABOOM =
-            "${pkgs.yarn}/bin/yarn global upgrade --latest; brew update; brew upgrade; brew cleanup -s; brew doctor";
-          emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
-          fs = "stat -f '%z bytes'";
-          flushdns = "sudo killall -HUP mDNSResponder";
-          play = "mx ϟ";
-          cask = "brew cask";
-          jobs = "jobs -l";
-          # https://twitter.com/wincent/status/1333036294440620036
-          sudo = "sudo ";
-          cat = "${pkgs.bat}/bin/bat ";
-          fd = "${pkgs.fd}/bin/fd --hidden ";
-          y = "${pkgs.yarn}/bin/yarn";
-        };
       };
 
       programs.zsh = {
@@ -213,20 +179,7 @@ in {
         ########################################################################
 
         # zshenv
-        shellInit = builtins.readFile ../../../config/zsh.d/.zshenv;
-
-        # zprofile
-        loginShellInit = lib.concatStringsSep "\n" (map builtins.readFile [
-          ../../../config/zsh.d/.zprofile
-          ../../../config/zsh.d/zsh/config/input.zsh
-          ../../../config/zsh.d/zsh/config/environment.zsh
-          ../../../config/zsh.d/zsh/config/history.zsh
-          ../../../config/zsh.d/zsh/config/completion.zsh
-          ../../../config/zsh.d/zsh/config/directory.zsh
-          ../../../config/zsh.d/zsh/config/utility.zsh
-          "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh"
-        ]) + ''
-
+        shellInit = builtins.readFile ../../../config/zsh.d/.zshenv + ''
           fpath+=${pkgs.pure-prompt}/share/zsh/site-functions
           fpath+=${pkgs.nix-zsh-completions}/share/zsh/site-functions
           fpath+=${pkgs.gitAndTools.hub}/share/zsh/site-functions
@@ -235,6 +188,12 @@ in {
         # zshrc
         interactiveShellInit = lib.concatStringsSep "\n"
           (map builtins.readFile [
+            ../../../config/zsh.d/zsh/config/options.zsh
+            ../../../config/zsh.d/zsh/config/input.zsh
+            ../../../config/zsh.d/zsh/config/completion.zsh
+            ../../../config/zsh.d/zsh/config/utility.zsh
+            ../../../config/zsh.d/zsh/config/aliases.zsh
+            "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh"
             "${pkgs.grc}/etc/grc.zsh"
             "${pkgs.fzf}/share/fzf/completion.zsh"
             "${pkgs.fzf}/share/fzf/key-bindings.zsh"

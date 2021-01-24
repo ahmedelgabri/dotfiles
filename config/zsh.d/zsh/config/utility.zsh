@@ -22,13 +22,6 @@ if (( terminfo[colors] >= 8 )); then
     # BSD
 
     (( ! ${+LSCOLORS} )) && export LSCOLORS='ExfxcxdxbxGxDxabagacad'
-
-    # stock OpenBSD ls does not support colors at all, but colorls does.
-    if [[ "$(uname)" == openbsd* ]]; then
-      if (( ${+commands[colorls]} )); then
-        alias ls='colorls -G'
-      fi
-    fi
   fi
 
   # grep Colours
@@ -68,22 +61,4 @@ elif (( ${+commands[wget]} )); then
   alias get='wget --continue --progress=bar --timestamping'
 elif (( ${+commands[curl]} )); then
   alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
-fi
-
-
-#
-# Resource Usage
-#
-
-alias df='df -kh'
-alias du='du -kh'
-
-
-#
-# Better safe than sorry
-#
-
-if [[ "$(uname)" == linux* ]]; then
-  alias chmod='chmod --preserve-root -v'
-  alias chown='chown --preserve-root -v'
 fi

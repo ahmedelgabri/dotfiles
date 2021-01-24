@@ -24,6 +24,7 @@
 # https://github.com/jwiegley/nix-config (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
 # https://github.com/martinbaillie/dotfiles (Darwin, NixOS & custom options)
+# https://github.com/nuance/dotfiles
 #
 # With flakes
 # https://github.com/hlissner/dotfiles
@@ -35,6 +36,8 @@
 # https://github.com/jamesottaway/dotfiles (Darwin, NixOS, home-manager)
 # https://github.com/malob/nixpkgs (Darwin, home-manager, homebrew in nix & PAM, this is a great example)
 # https://github.com/kclejeune/system (nice example)
+# https://github.com/mrkuz/nixos
+#
 
 {
   description = "~ 🍭 ~";

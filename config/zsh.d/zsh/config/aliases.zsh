@@ -6,42 +6,51 @@ alias ln="${aliases[ln]:-ln} -iv"
 alias mv="${aliases[mv]:-mv} -iv"
 alias rm="${aliases[rm]:-rm} -i"
 alias mkdir="${aliases[mkdir]:-mkdir} -p"
+alias sudo="sudo "
 alias e="${(z)VISUAL:-${(z)EDITOR}}"
 alias type='type -a'
 alias which='which -a'
-alias history='fc -il 1'
-(( $+commands[htop] )) && alias top=htop
 
+alias KABOOM="yarn global upgrade --latest;brew update; brew upgrade; brew cleanup -s; brew doctor"
+alias c="clear "
+alias cask="brew --cask "
+alias df="df -kh"
+alias du="du -kh"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
+alias fd="fd --hidden "
+alias flushdns="sudo killall -HUP mDNSResponder"
+alias fs="stat -f '%z bytes'"
+alias history-stat="fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+alias history='fc -il 1'
+alias jobs="jobs -l "
+alias play='mx ϟ'
+alias y="yarn"
+
+(( $+commands[htop] )) && alias top=htop
 
 if (( $+commands[exa] )); then
   alias ls="exa "
-  alias ll="exa --tree --group-directories-first"
+  alias ll='exa --tree --group-directories-first -I "node_modules" '
 elif (( $+commands[tree] )); then
   alias ll="type tree >/dev/null && tree --dirsfirst -a -L 1 || l -d .*/ */ "
+  alias tree='tree -I  "node_modules" '
 else
   alias ll="echo 'You have to install exa or tree'"
 fi
 
-# TERMINAL
-alias "?"="pwd"
-alias c="clear "
-alias KABOOM="yarn global upgrade --latest;brew update; brew upgrade; brew cleanup -s; brew doctor"
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash"
-alias fs="stat -f '%z bytes'"
-alias flushdns="sudo killall -HUP mDNSResponder"
 if (( $+commands[jq] )) then;
   alias formatJSON='jq .'
 else
   alias formatJSON='python -m json.tool'
 fi
-alias play='mx ϟ'
-alias cask="brew cask"
-alias apache="sudo apachectl "
-alias jobs="jobs -l "
 
 (( $+commands[bat] )) && alias cat='bat '
-(( $+commands[python3] )) && alias server="python3 -m http.server 80"
 (( $+commands[fd] )) && alias fd='fd --hidden '
 (( $+commands[yarn] )) && alias y=yarn
 
 [[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'
+
+if [[ "$(uname)" == linux* ]]; then
+  alias chmod='chmod --preserve-root -v'
+  alias chown='chown --preserve-root -v'
+fi

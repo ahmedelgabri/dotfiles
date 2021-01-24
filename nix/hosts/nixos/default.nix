@@ -11,6 +11,8 @@
 # - printf in i3blocks scripts should be replaced with echo & colors need to change too. (edits need to happen for tmux/scripts because I will use those)
 # - mtui to debug network issues
 
+# https://github.com/AbhinavGeorge/configs/blob/master/.i3/config#L274-L281
+
 { config, pkgs, lib, inputs, ... }:
 
 {
