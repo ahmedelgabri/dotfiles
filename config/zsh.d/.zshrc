@@ -15,6 +15,12 @@ HISTSIZE=1000000
 SAVEHIST="$HISTSIZE"
 HISTFILE="${XDG_DATA_HOME}/.zsh_history"
 
+fpath=(
+  ${ZDOTDIR}/functions
+  $fpath
+)
+
+autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
 
 ##############################################################
 # ZINIT https://github.com/zdharma/zinit

@@ -179,11 +179,7 @@ in {
         ########################################################################
 
         # zshenv
-        shellInit = builtins.readFile ../../../config/zsh.d/.zshenv + ''
-          fpath+=${pkgs.pure-prompt}/share/zsh/site-functions
-          fpath+=${pkgs.nix-zsh-completions}/share/zsh/site-functions
-          fpath+=${pkgs.gitAndTools.hub}/share/zsh/site-functions
-        '';
+        shellInit = builtins.readFile ../../../config/zsh.d/.zshenv;
 
         # zshrc
         interactiveShellInit = lib.concatStringsSep "\n"
@@ -199,7 +195,9 @@ in {
             "${pkgs.fzf}/share/fzf/key-bindings.zsh"
             "${z}/share/z.sh"
             ../../../config/zsh.d/.zshrc
-          ]);
+          ]) + ''
+            fpath=($fpath ${pkgs.pure-prompt}/share/zsh/site-functions ${pkgs.nix-zsh-completions}/share/zsh/site-functions ${pkgs.gitAndTools.hub}/share/zsh/site-functions)
+          '';
 
         promptInit = "autoload -U promptinit; promptinit; prompt pure";
       };

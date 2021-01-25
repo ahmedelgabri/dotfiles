@@ -27,7 +27,7 @@ TMPPREFIX="${TMPDIR%/}/zsh";
 
 
 # Ensure path arrays do not contain duplicates.
-typeset -gU fpath mailpath path
+typeset -gU cdpath fpath mailpath manpath path
 
 ##############################################################
 # PATH.
@@ -42,22 +42,11 @@ typeset -gU fpath mailpath path
 #  t   : tail of the path
 ##############################################################
 
-fpath=(
-  ${ZDOTDIR}/functions(N-/)
-  ${ZDOTDIR}/completions(N-/)
-  $fpath
-)
-
-autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
-
-# Set the list of directories that Zsh searches for programs.
 path=(
-  ${ZDOTDIR}/bin(N-/)
+  ${ZDOTDIR}/bin
   ${HOME}/.local/bin(N-/)
   # ${CARGO_HOME}/bin(N-/)
   ${GOBIN}(N-/)
   $path
-  /usr/local/{bin,sbin} # This looks hacky...
+  /usr/local/{bin,sbin}
 )
-
-# for config (${ZDOTDIR}/config/*.zsh) source $config
