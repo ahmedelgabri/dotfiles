@@ -21,14 +21,6 @@ let
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
-
-  personal_storage = "$HOME/Sync";
-  fzf_command = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
-  fzf_default_command = "${fzf_command} --type f";
-  fzf_alt_c_command = "${fzf_command} --type d .";
-  # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
-  fzf_preview_command =
-    "COLORTERM=truecolor ${pkgs.bat}/bin/bat --style=changes --wrap never --color always {} || cat {} || (${pkgs.exa}/bin/exa --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {})";
 in {
   options = with lib; {
     my.shell = {
@@ -101,7 +93,7 @@ in {
           # This list gets set in alphabetical order.
           # So care needs to be taken if two env vars depend on each other
           # ====================================================
-          {
+          rec {
             COLORTERM = "truecolor";
             BROWSER = if pkgs.stdenv.isDarwin then "open" else "xdg-open";
             # Better spell checking & auto correction prompt
@@ -115,20 +107,20 @@ in {
             XDG_CONFIG_HOME = xdg.configHome;
             XDG_CACHE_HOME = xdg.cacheHome;
             XDG_DATA_HOME = xdg.dataHome;
-            ZDOTDIR = "${xdg.configHome}/zsh";
+            ZDOTDIR = "${XDG_CONFIG_HOME}/zsh";
 
             DOTFILES = "$HOME/.dotfiles";
             PROJECTS = "$HOME/Sites/personal/dev";
             WORK = "$HOME/Sites/work";
-            PERSONAL_STORAGE = personal_storage;
-            NOTES_DIR = "${personal_storage}/notes";
+            PERSONAL_STORAGE = "$HOME/Sync";
+            NOTES_DIR = "${PERSONAL_STORAGE}/notes";
 
             ############### APPS/POGRAMS XDG SPEC CLEANUP
-            RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
-            AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
-            AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
-            DOCKER_CONFIG = "${xdg.configHome}/docker";
-            ELINKS_CONFDIR = "${xdg.configHome}/elinks";
+            RLWRAP_HOME = "${XDG_DATA_HOME}/rlwrap";
+            AWS_SHARED_CREDENTIALS_FILE = "${XDG_CONFIG_HOME}/aws/credentials";
+            AWS_CONFIG_FILE = "${XDG_CONFIG_HOME}/aws/config";
+            DOCKER_CONFIG = "${XDG_CONFIG_HOME}/docker";
+            ELINKS_CONFDIR = "${XDG_CONFIG_HOME}/elinks";
 
             ############### Telemetry
             DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
@@ -152,14 +144,17 @@ in {
             VIM_FZF_LOG = ''
               "$(${pkgs.git}/bin/git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
 
-            FZF_DEFAULT_COMMAND = fzf_default_command;
-            FZF_PREVIEW_COMMAND = fzf_preview_command;
-            FZF_CTRL_T_COMMAND = fzf_command;
-            FZF_ALT_C_COMMAND = fzf_alt_c_command;
+            FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
+            # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
+            FZF_PREVIEW_COMMAND =
+              "COLORTERM=truecolor ${pkgs.bat}/bin/bat --style=changes --wrap never --color always {} || cat {} || (${pkgs.exa}/bin/exa --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {})";
+            FZF_CTRL_T_COMMAND =
+              "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
+            FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
             FZF_DEFAULT_OPTS =
               "--prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --bind '?:toggle-preview'";
             FZF_CTRL_T_OPTS =
-              "--preview '(${fzf_preview_command}) 2> /dev/null' --preview-window down:60%:noborder";
+              "--preview '(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --preview-window down:60%:noborder";
             FZF_CTRL_R_OPTS =
               "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
             FZF_ALT_C_OPTS =
