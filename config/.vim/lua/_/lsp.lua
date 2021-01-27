@@ -11,7 +11,6 @@ if not has_lsp then
 end
 
 local has_lspsaga, lspsaga = pcall(require, "lspsaga")
-local has_completion, completion = pcall(require, "completion")
 local has_extensions = pcall(require, "lsp_extensions")
 local utils = require "_.utils"
 local map_opts = {noremap = true, silent = true}
@@ -22,23 +21,18 @@ lspsaga.init_lsp_saga(
   }
 )
 
-if has_completion then
-  require "_.completion".setup()
+require "_.completion".setup()
 
-  utils.augroup(
-    "COMPLETION",
-    function()
-      vim.api.nvim_command("au BufEnter * lua require'completion'.on_attach()")
-      if has_extensions then
-        vim.api.nvim_command(
-          "au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()"
-        )
-      end
+utils.augroup(
+  "COMPLETION",
+  function()
+    if has_extensions then
+      vim.api.nvim_command(
+        "au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()"
+      )
     end
-  )
-end
-
-vim.api.nvim_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+  end
+)
 
 vim.fn.sign_define(
   "LspDiagnosticsSignError",
@@ -83,42 +77,56 @@ vim.fn.sign_define(
 local on_attach = function(client)
   local resolved_capabilities = client.resolved_capabilities
 
-  if has_completion then
-    completion.on_attach(client)
-  end
-
   -- Mappings.
   -- [TODO] Check conflicting mappings with these ones
   if has_lspsaga then
     utils.bmap(
       "n",
       "<C-]>",
-      "<Cmd>lua require 'lspsaga.provider'.preview_definition()<CR>",
+      "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>",
       map_opts
     )
     utils.bmap(
       "n",
       "ga",
-      "<Cmd>lua require 'lspsaga.codeaction'.code_action()<CR>",
+      "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
+      map_opts
+    )
+    utils.bmap(
+      "v",
+      "ga",
+      "<Cmd>lua require'lspsaga.codeaction'.range_code_action()<CR>",
       map_opts
     )
     utils.bmap(
       "n",
       "gr",
-      "<cmd>lua require 'lspsaga.provider'.lsp_finder()<CR>",
+      "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>",
+      map_opts
+    )
+    utils.bmap(
+      "n",
+      "gs",
+      "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>",
+      map_opts
+    )
+    utils.bmap(
+      "n",
+      "<leader>r",
+      "<cmd>lua require'lspsaga.rename'.rename()<CR>",
       map_opts
     )
   else
     utils.bmap("n", "<C-]>", "<Cmd>lua vim.lsp.buf.definition()<CR>", map_opts)
     utils.bmap("n", "ga", "<Cmd>lua vim.lsp.buf.code_action()<CR>", map_opts)
     utils.bmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", map_opts)
+    utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
   end
   if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
     utils.bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", map_opts)
   end
   utils.bmap("n", "gd", "<Cmd>lua vim.lsp.buf.declaration()<CR>", map_opts)
   utils.bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", map_opts)
-  utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
   utils.bmap(
     "n",
     "<leader>dn",

@@ -149,12 +149,8 @@ local plugins = {
     }
   },
   {
-    "https://github.com/nvim-lua/completion-nvim",
+    "https://github.com/hrsh7th/nvim-compe",
     requires = {
-      {
-        "https://github.com/steelsojka/completion-buffers",
-        cond = "vim.fn.has('nvim-0.5.0')"
-      },
       {"https://github.com/hrsh7th/vim-vsnip"},
       {"https://github.com/hrsh7th/vim-vsnip-integ"}
     }
