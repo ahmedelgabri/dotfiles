@@ -35,7 +35,7 @@ in {
                   [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
                 scripts = with prev.weechatScripts;
                   [ wee-slack weechat-autosort colorize_nicks ]
-                  ++ final.stdenv.lib.optionals (!final.stdenv.isDarwin)
+                  ++ final.lib.optionals (!final.stdenv.isDarwin)
                   [ weechat-notify-send ];
               };
             };

@@ -27,8 +27,8 @@ in rec {
       plugins = with availablePlugins;
         [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
       scripts = with super.weechatScripts;
-        [ wee-slack ] ++ self.stdenv.lib.optionals (!self.stdenv.isDarwin)
-        [ weechat-notify-send ];
+        [ wee-slack ]
+        ++ self.lib.optionals (!self.stdenv.isDarwin) [ weechat-notify-send ];
     };
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv, fetchzip }:
+{ stdenv, lib, fetchzip }:
 
 stdenv.mkDerivation rec {
   pname = "hammerspoon";
@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Staggeringly powerful macOS desktop automation with Lua";
-    license = stdenv.lib.licenses.mit;
+    license = lib.licenses.mit;
     homepage = "https://www.hammerspoon.org";
-    platforms = stdenv.lib.platforms.darwin;
+    platforms = lib.platforms.darwin;
   };
 }

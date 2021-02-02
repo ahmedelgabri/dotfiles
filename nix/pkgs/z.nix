@@ -1,4 +1,4 @@
-{ stdenv, source }:
+{ stdenv, source, lib }:
 
 stdenv.mkDerivation rec {
   name = "z-${version}";
@@ -19,9 +19,9 @@ stdenv.mkDerivation rec {
     chmod +x "$out/bin/z-share"
   '';
 
-  meta = with stdenv.lib; {
+  meta = {
     description = "Tracks your most used directories, based on 'frecency'";
     homepage = "https://github.com/rupa/z";
-    license = licenses.wtfpl;
+    license = lib.licenses.wtfpl;
   };
 }

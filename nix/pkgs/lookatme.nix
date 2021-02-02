@@ -1,4 +1,4 @@
-{ stdenv, python3Packages, source }:
+{ lib, python3Packages, source }:
 
 python3Packages.buildPythonApplication rec {
   name = "lookatme";
@@ -20,9 +20,9 @@ python3Packages.buildPythonApplication rec {
     urwid
   ];
 
-  meta = with stdenv.lib; {
+  meta = {
     description = "An interactive, terminal-based markdown presenter";
     homepage = "https://github.com/d0c-s4vage/lookatme";
-    license = licenses.mit;
+    license = lib.licenses.mit;
   };
 }

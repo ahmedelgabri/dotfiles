@@ -1,4 +1,4 @@
-{ stdenv, source }:
+{ stdenv, lib, source }:
 
 stdenv.mkDerivation rec {
   name = "n-${version}";
@@ -12,9 +12,9 @@ stdenv.mkDerivation rec {
     PREFIX=$out make install
   '';
 
-  meta = with stdenv.lib; {
+  meta = {
     description = "Node version management";
     homepage = "https://github.com/tj/n";
-    license = licenses.mit;
+    license = lib.licenses.mit;
   };
 }
