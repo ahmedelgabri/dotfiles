@@ -74,9 +74,9 @@ vim.fn.sign_define(
   }
 )
 
-local on_attach = function(client)
-  local resolved_capabilities = client.resolved_capabilities
+vim.api.nvim_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
+local on_attach = function(client)
   -- Mappings.
   -- [TODO] Check conflicting mappings with these ones
   if has_lspsaga then
@@ -122,10 +122,12 @@ local on_attach = function(client)
     utils.bmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", map_opts)
     utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
   end
+
   if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
     utils.bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", map_opts)
   end
-  utils.bmap("n", "gd", "<Cmd>lua vim.lsp.buf.declaration()<CR>", map_opts)
+
+  utils.bmap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", map_opts)
   utils.bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", map_opts)
   utils.bmap(
     "n",
@@ -146,6 +148,17 @@ local on_attach = function(client)
   --   map_opts
   -- )
 
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec(
+      [[
+      hi! LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
+      hi! LspReferenceText cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
+      hi! LspReferenceWrite cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
+      ]],
+      false
+    )
+  end
+
   utils.augroup(
     "LSP",
     function()
@@ -153,7 +166,7 @@ local on_attach = function(client)
         "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
       )
 
-      if resolved_capabilities.document_highlight then
+      if client.resolved_capabilities.document_highlight then
         vim.api.nvim_command(
           "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()"
         )
@@ -161,7 +174,7 @@ local on_attach = function(client)
           "autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()"
         )
         vim.api.nvim_command(
-          "autocmd CursorMoved <buffer> lua vim.lsp.util.buf_clear_references()"
+          "autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()"
         )
       end
     end

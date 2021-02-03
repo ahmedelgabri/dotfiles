@@ -31,8 +31,6 @@ local lisps = {"lisp", "scheme", "clojure"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
-  {"https://github.com/andymass/vim-matchup"},
-  {"https://github.com/tpope/vim-sensible", opt = true},
   {"https://github.com/jiangmiao/auto-pairs"},
   {
     "https://github.com/junegunn/fzf.vim",
@@ -125,27 +123,6 @@ local plugins = {
       },
       {"https://github.com/tjdevries/nlua.nvim"},
       {"https://github.com/glepnir/lspsaga.nvim"}
-      -- {
-      --   "https://github.com/gfanto/fzf-lsp.nvim",
-      --   config = function()
-      --     vim.lsp.handlers["textDocument/codeAction"] =
-      --       require "fzf_lsp".code_action_handler
-      --     vim.lsp.handlers["textDocument/definition"] =
-      --       require "fzf_lsp".definition_handler
-      --     vim.lsp.handlers["textDocument/declaration"] =
-      --       require "fzf_lsp".declaration_handler
-      --     vim.lsp.handlers["textDocument/typeDefinition"] =
-      --       require "fzf_lsp".type_definition_handler
-      --     vim.lsp.handlers["textDocument/implementation"] =
-      --       require "fzf_lsp".implementation_handler
-      --     vim.lsp.handlers["textDocument/references"] =
-      --       require "fzf_lsp".references_handler
-      --     vim.lsp.handlers["textDocument/documentSymbol"] =
-      --       require "fzf_lsp".document_symbol_handler
-      --     vim.lsp.handlers["workspace/symbol"] =
-      --       require "fzf_lsp".workspace_symbol_handler
-      --   end
-      -- }
     }
   },
   {
