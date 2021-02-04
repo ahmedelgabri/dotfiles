@@ -24,10 +24,8 @@
     gpg.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    (pkgs.callPackage ../pkgs/arq.nix { })
-    (pkgs.callPackage ../pkgs/signal.nix { })
-  ];
+  environment.systemPackages = with pkgs;
+    [ (pkgs.callPackage ../pkgs/signal.nix { }) ];
 
   networking = { hostName = "pandoras-box"; };
 
