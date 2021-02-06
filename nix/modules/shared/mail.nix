@@ -127,7 +127,8 @@ in {
 
                     set realname = "${name}"
                     set signature = ""
-                    set sendmail = "${pkgs.msmtp} -a ${lib.toLower cfg.account}"
+                    # can't use pkgs.msmtp because it breaks in neomutt
+                    set sendmail = "msmtp -a ${lib.toLower cfg.account}"
                     ${lib.optionalString (cfg.alias_path != "") ''
                       set alias_file = "${cfg.alias_path}"
                       source ${cfg.alias_path}''}
@@ -332,7 +333,10 @@ in {
                     tls on
                     tls_trust_file /etc/ssl/certs/ca-certificates.crt
                     logfile ~/Library/Logs/msmtp.log
+
                     account ${lib.toLower cfg.account}
+                    ${lib.optionalString (cfg.keychain.name == "fastmail.com")
+                    "tls_starttls off"}
                     host ${cfg.smtp_server}
                     from ${email}
                     user ${email}
