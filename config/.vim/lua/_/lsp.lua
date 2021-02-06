@@ -243,13 +243,18 @@ require("nlua.lsp.nvim").setup(
   }
 )
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local servers = {
   ocamlls = {},
   cssls = {},
   bashls = {},
   vimls = {},
   pyls = {},
-  rust_analyzer = {},
+  rust_analyzer = {
+    capabilities = capabilities
+  },
   tsserver = {
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("tsconfig.json")(fname) or
