@@ -359,7 +359,7 @@ in {
                     # Default settings
                     # Applied to all channels
                     ########################################
-                    Create Slave
+                    Create Near
                     Expunge Both
                     SyncState *
                     # [todo] support multiple accounts
@@ -389,52 +389,52 @@ in {
                     SubFolders Verbatim
 
                     Channel ${cfg.account}-inbox
-                    Master :${cfg.account}-remote:INBOX
-                    Slave :${cfg.account}-local:INBOX
+                    Far :${cfg.account}-remote:INBOX
+                    Near :${cfg.account}-local:INBOX
 
                     Channel ${cfg.account}-archive
                     ${if cfg.keychain.name == "fastmail.com" then
-                      "Master :${cfg.account}-remote:Archive"
+                      "Far :${cfg.account}-remote:Archive"
                     else
-                      ''Master :${cfg.account}-remote:"[Gmail]/All Mail"''}
-                    Slave :${cfg.account}-local:Archive
+                      ''Far :${cfg.account}-remote:"[Gmail]/All Mail"''}
+                    Near :${cfg.account}-local:Archive
 
                     Channel ${cfg.account}-drafts
                     ${if cfg.keychain.name == "fastmail.com" then
-                      "Master :${cfg.account}-remote:Drafts"
+                      "Far :${cfg.account}-remote:Drafts"
                     else
-                      ''Master :${cfg.account}-remote:"[Gmail]/Drafts"''}
-                    Slave :${cfg.account}-local:Drafts
+                      ''Far :${cfg.account}-remote:"[Gmail]/Drafts"''}
+                    Near :${cfg.account}-local:Drafts
 
                     ${lib.optionalString (cfg.keychain.name == "gmail.com") ''
                       Channel ${cfg.account}-starred
-                      Master :${cfg.account}-remote:"[Gmail]/Starred"
-                      Slave :${cfg.account}-local:Starred''}
+                      Far :${cfg.account}-remote:"[Gmail]/Starred"
+                      Near :${cfg.account}-local:Starred''}
 
                     Channel ${cfg.account}-sent
                     ${if cfg.keychain.name == "fastmail.com" then
-                      "Master :${cfg.account}-remote:Sent"
+                      "Far :${cfg.account}-remote:Sent"
                     else
-                      ''Master :${cfg.account}-remote:"[Gmail]/Sent Mail"''}
-                    Slave :${cfg.account}-local:Sent
+                      ''Far :${cfg.account}-remote:"[Gmail]/Sent Mail"''}
+                    Near :${cfg.account}-local:Sent
 
                     Channel ${cfg.account}-spam
                     ${if cfg.keychain.name == "fastmail.com" then
-                      "Master :${cfg.account}-remote:Spam"
+                      "Far :${cfg.account}-remote:Spam"
                     else
-                      ''Master :${cfg.account}-remote:"[Gmail]/Spam"''}
-                    Slave :${cfg.account}-local:Spam
+                      ''Far :${cfg.account}-remote:"[Gmail]/Spam"''}
+                    Near :${cfg.account}-local:Spam
 
                     Channel ${cfg.account}-trash
                     ${if cfg.keychain.name == "fastmail.com" then
-                      "Master :${cfg.account}-remote:Trash"
+                      "Far :${cfg.account}-remote:Trash"
                     else
-                      ''Master :${cfg.account}-remote:"[Gmail]/Trash"''}
-                    Slave :${cfg.account}-local:Trash
+                      ''Far :${cfg.account}-remote:"[Gmail]/Trash"''}
+                    Near :${cfg.account}-local:Trash
 
                     Channel ${cfg.account}-folders
-                    Master :${cfg.account}-remote:
-                    Slave :${cfg.account}-local:
+                    Far :${cfg.account}-remote:
+                    Near :${cfg.account}-local:
                     # All folders except those defined above
                     Patterns * !INBOX !Archive !Drafts ${
                       lib.optionalString (cfg.keychain.name == "gmail.com")
@@ -461,10 +461,10 @@ in {
                       lib.toLower cfg.account
                     }-download`.
                     Channel ${lib.toLower cfg.account}-download
-                    Master :${cfg.account}-remote:INBOX
-                    Slave :${cfg.account}-local:INBOX
-                    Create Slave
-                    Expunge Slave
+                    Far :${cfg.account}-remote:INBOX
+                    Near :${cfg.account}-local:INBOX
+                    Create Near
+                    Expunge Near
                     Sync Pull'';
                 };
               };
