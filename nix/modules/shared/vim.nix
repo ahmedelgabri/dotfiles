@@ -61,24 +61,23 @@ in {
         ];
       };
 
-      home-manager = {
-        users.${username} = {
-          home = {
-            activation = {
-              vimSetup =
-                inputs.home-manager.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                  # Creating needed folders
+      system.activationScripts.postUserActivation.text = ''
+        echo ":: -> Running vim activationScript..."
 
-                  [ -e $HOME/.local/share/nvim/swap ] || mkdir -p $HOME/.local/share/nvim/{backup,swap,undo,view}
+        # Creating needed folders
 
-                  # Handle mutable configs
+        if [ ! -e "$HOME/.local/share/nvim/swap" ]; then
+          echo "Creating vim swap/backup/undo/view folders inside $HOME/.local/share/nvim ..."
+          mkdir -p $HOME/.local/share/nvim/{backup,swap,undo,view}
+        fi
 
-                  [ -e $HOME/.vim ] || ln -sf $HOME/.dotfiles/config/.vim $HOME/.vim
-                  [ -e $HOME/.config/nvim ] || ln -sf $HOME/.dotfiles/config/.vim $HOME/.config/nvim
-                '';
-            };
-          };
-        };
-      };
+        # Handle mutable configs
+
+        if [ ! -e "$HOME/.config/nvim" ]; then
+          echo "Linking vim folders..."
+          ln -sf $HOME/.dotfiles/config/.vim $HOME/.config/nvim
+          ln -sf $HOME/.dotfiles/config/.vim $HOME/.vim
+        fi
+      '';
     };
 }

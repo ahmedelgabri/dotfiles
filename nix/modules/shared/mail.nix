@@ -102,16 +102,18 @@ in {
           # MAILCAPS="$MAILCAP";   # Mutt, pine
         };
 
+        system.activationScripts.postUserActivation.text = ''
+          echo ":: -> Running mail activationScript..."
+
+          if [ ! -e "$HOME/.mail/${cfg.account}" ]; then
+            echo "Creating mail folder for account ${cfg.account} at $HOME/.mail/${cfg.account}..."
+            mkdir -p $HOME/.mail/${cfg.account}
+          fi
+        '';
+
         home-manager = {
           users.${username} = {
             home = {
-              activation = {
-                muttSetup = inputs.home-manager.lib.hm.dag.entryAfter
-                  [ "writeBoundary" ] ''
-                    [ -e $HOME/.mail/${cfg.account} ] || mkdir -p $HOME/.mail/${cfg.account}
-                  '';
-              };
-
               file = {
                 ".config/neomutt" = {
                   recursive = true;
