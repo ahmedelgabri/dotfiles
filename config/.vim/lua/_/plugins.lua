@@ -182,7 +182,7 @@ local plugins = {
     config = "vim.cmd[[RainbowParentheses]]"
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.12.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.14.0", ft = lisps},
   -- {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 
