@@ -7,7 +7,6 @@ let
   cfg = config.my.gui;
   alfred = pkgs.callPackage ../../pkgs/alfred.nix { };
   appcleaner = pkgs.callPackage ../../pkgs/appcleaner.nix { };
-  obsidian = pkgs.callPackage ../../pkgs/obsidian.nix { };
   sharedApps = with pkgs; [
     # sqlitebrowser
     # virtualbox
@@ -31,7 +30,7 @@ in {
     mkIf cfg.enable (mkMerge [
       (mkIf pkgs.stdenv.isDarwin {
         environment.systemPackages = with pkgs;
-          [ alfred appcleaner obsidian nextdns ] ++ sharedApps;
+          [ alfred appcleaner nextdns ] ++ sharedApps;
       })
       (mkIf pkgs.stdenv.isLinux {
         users.users.${username} = {
