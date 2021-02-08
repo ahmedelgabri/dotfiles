@@ -32,9 +32,8 @@
           buildInputs = oldAttrs.buildInputs ++ [ pkgs.tree-sitter ];
         });
 
-        pure-prompt = prev.pure-prompt.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../overlays/pure-zsh.patch ];
-        });
+        pure-prompt = prev.pure-prompt.overrideAttrs
+          (old: { patches = (old.patches or [ ]) ++ [ ./pure-zsh.patch ]; });
 
         python3 = prev.python3.override {
           packageOverrides = final: prev: {
