@@ -54,6 +54,27 @@ function pull_request() {
 	fi
 }
 
+function compare() {
+	local base_url=$(get_url)
+	local branch_name=$(git symbolic-ref HEAD)
+
+	if [[ -z "$base_url" ]]; then
+		echo "$PARSE_ERROR_MSG"
+		exit 1
+	else
+		local pr_url=$(printf "%s/compare?diff&sourceBranch=%s&targetBranch=%s" "$base_url" "$branch_name" "${1:-master}")
+
+		printf "Opening compare at %s\n" "$pr_url"
+
+		if [[ "$PLATFORM" == 'Darwin' ]]; then
+			open "$pr_url"
+		else
+			echo "$UNSUPPORTED_MSG"
+			exit 1
+		fi
+	fi
+}
+
 function open_repo() {
 	local base_url=$(get_url "$1")
 
@@ -98,11 +119,13 @@ USAGE:   git-miro [COMMAND]
 
 COMMANDS:
 
-        open [repo]               - Opens the [repo] homepage
+        open [repo]               - Opens the [repo] homepage ([repo] defaults to the current repo)
 
-        pr|pull-request [branch]  - Opens the browser with pull-request for [branch] page ready to fill in info directly
+        diff|compare [branch]     - Opens the browser with compare page for [branch] ([branch] defaults to "matser")
 
-        build|ci [branch]         - Opens the browser with build page for the [branch]
+        pr|pull-request [branch]  - Opens the browser with pull-request page for [branch] ready to fill in info directly ([branch] defaults to "matser")
+
+        build|ci [branch]         - Opens the browser with build page for the [branch] ([branch] defaults to "matser")
 HELP
 	exit 1
 }
@@ -117,6 +140,9 @@ pr | pull-request)
 	;;
 open)
 	open_repo "${@:2}"
+	;;
+compare | diff)
+	compare "${@:2}"
 	;;
 build | ci)
 	open_build "${@:2}"
