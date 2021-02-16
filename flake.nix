@@ -92,6 +92,11 @@
       flake = false;
     };
 
+    neuron-notes-master = {
+      url = "github:srid/neuron";
+      flake = false;
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

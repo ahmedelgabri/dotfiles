@@ -24,6 +24,10 @@
     config = { allowUnfree = true; };
     overlays = [
       (final: prev: {
+        neuron-notes =
+          (prev.callPackage "${inputs.neuron-notes-master}/project.nix"
+            { }).neuron;
+
         comma = import inputs.comma { inherit (prev) pkgs; };
 
         neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {

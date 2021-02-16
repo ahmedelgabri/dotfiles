@@ -58,6 +58,7 @@ in {
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
           nodePackages.vscode-json-languageserver-bin
+          neuron-notes
         ];
       };
 

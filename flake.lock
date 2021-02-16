@@ -44,11 +44,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1612561117,
-        "narHash": "sha256-UEB+5KCINGyaAfkgqWeUhUwyBxTrlTLO+FjbYCG4exk=",
+        "lastModified": 1613153184,
+        "narHash": "sha256-9ZIBmZuEjcxWON6zeEzCUfobTf/WTVQVOdg3gyNfhTw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "d4202875831a2d1b9dd3002d89b8c794af9e5a43",
+        "rev": "1ee1d01daa19b3a6d16b5fb680c31a2bc110ce24",
         "type": "github"
       },
       "original": {
@@ -92,11 +92,11 @@
     "neovim-nightly": {
       "flake": false,
       "locked": {
-        "lastModified": 1612613458,
-        "narHash": "sha256-Rg3+RETG++zqjTzCJbxXNrZs9heQxugel5o51iAFZzo=",
+        "lastModified": 1613320572,
+        "narHash": "sha256-Yj0aMlKvEKRTjaUdU3fg1Ski5Ns62feCHY7u8hLqlAI=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "f4f6cce952c1233136f243e76d096e3aaa0b1689",
+        "rev": "dc3ca16a99ec05c88df1b1fe6a3cfbe97ea34227",
         "type": "github"
       },
       "original": {
@@ -106,13 +106,29 @@
         "type": "github"
       }
     },
+    "neuron-notes-master": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1613410698,
+        "narHash": "sha256-qamdRWF/5Z4+8Bv7GTMKyBAbDKzrqJUYMBjvMy3hq1w=",
+        "owner": "srid",
+        "repo": "neuron",
+        "rev": "174d6730f995e89168c76440bb8160af5704d821",
+        "type": "github"
+      },
+      "original": {
+        "owner": "srid",
+        "repo": "neuron",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1612611597,
-        "narHash": "sha256-Z9L7stUq2t5ugZ+kTOKuNYOz+3wukFQHMhz0VnQgmE0=",
+        "lastModified": 1613453993,
+        "narHash": "sha256-Sn6wMz+1OfyXzKecuBKCjTvyNhJBjSOkphxdkfMxNho=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "671fd3a3c13383cc1d7805e2b7854b5226205d07",
+        "rev": "b02948e6bf0c9c425c54bfcfe2baf67bf27b0660",
         "type": "github"
       },
       "original": {
@@ -123,11 +139,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1612611597,
-        "narHash": "sha256-Z9L7stUq2t5ugZ+kTOKuNYOz+3wukFQHMhz0VnQgmE0=",
+        "lastModified": 1613453993,
+        "narHash": "sha256-Sn6wMz+1OfyXzKecuBKCjTvyNhJBjSOkphxdkfMxNho=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "671fd3a3c13383cc1d7805e2b7854b5226205d07",
+        "rev": "b02948e6bf0c9c425c54bfcfe2baf67bf27b0660",
         "type": "github"
       },
       "original": {
@@ -144,6 +160,7 @@
         "lookatme": "lookatme",
         "n": "n",
         "neovim-nightly": "neovim-nightly",
+        "neuron-notes-master": "neuron-notes-master",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "ttrv": "ttrv",
