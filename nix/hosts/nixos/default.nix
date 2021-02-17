@@ -132,6 +132,18 @@
   users.users.${config.settings.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    # GUIs
+    packages = with pkgs; [
+      brave
+      firefox
+      obsidian
+      zoom-us
+      signal-desktop
+      vscodium
+      slack
+      # sqlitebrowser
+      # virtualbox
+    ];
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget

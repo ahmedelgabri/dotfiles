@@ -12,7 +12,6 @@
 
   my = {
     macos.enable = true;
-    hammerspoon.enable = true;
 
     mail = { enable = true; };
     aerc = { enable = true; };
@@ -24,8 +23,24 @@
     gpg.enable = true;
   };
 
-  environment.systemPackages = with pkgs;
-    [ (pkgs.callPackage ../pkgs/signal.nix { }) ];
+  homebrew.casks = [
+    # "arq" # I need a specific version so I will handle it myself.
+    "transmit"
+    "jdownloader"
+  ];
+
+  homebrew.masApps = {
+    Guidance = 412759995;
+    NextDNS = 1464122853;
+    Dato = 1470584107;
+    "Day One" = 1055511498;
+    WireGuard = 1451685025;
+    Tweetbot = 1384080005;
+    Todoist = 585829637;
+    Sip = 507257563;
+    Irvue = 1039633667;
+    Telegram = 747648890;
+  };
 
   networking = { hostName = "pandoras-box"; };
 

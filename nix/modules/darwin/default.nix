@@ -1,5 +1,5 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./macos.nix ./hammerspoon.nix ];
+  imports = [ ./macos.nix ./homebrew.nix ];
 }
