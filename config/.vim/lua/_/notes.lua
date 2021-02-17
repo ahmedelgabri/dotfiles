@@ -34,12 +34,14 @@ function M.note_info(fpath, ...)
     path = path .. where
   end
 
-  path = path .. vim.fn.strftime("%Y%m%d%H%M") .. " " .. fname .. ".md"
+  path =
+    path ..
+    vim.fn.strftime("%Y%m%d%H%M") .. (fname and " " .. fname or "") .. ".md"
 
   return {
     path,
     fname,
-    vim.fn.strftime("%A, %B %d, %Y, %H:%M")
+    vim.fn.strftime("%Y-%m-%dT%H:%M")
   }
 end
 
