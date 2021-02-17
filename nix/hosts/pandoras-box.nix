@@ -27,6 +27,7 @@
     # "arq" # I need a specific version so I will handle it myself.
     "transmit"
     "jdownloader"
+    "signal"
   ];
 
   homebrew.masApps = {

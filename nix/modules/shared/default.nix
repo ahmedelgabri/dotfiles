@@ -28,6 +28,7 @@
     ./go.nix
     ./rust.nix
     ./rescript.nix
+    ./gui.nix
     ./clojure.nix
     ./python.nix
   ];
@@ -51,6 +52,7 @@
     node.enable = true;
     go.enable = false;
     rust.enable = false;
+    gui.enable = true;
   };
 
 }
