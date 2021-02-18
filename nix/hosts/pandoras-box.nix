@@ -30,6 +30,8 @@
     "signal"
   ];
 
+  # Requires to be logged in to the AppStore
+  # Cleanup doesn't work automatically if you add/remove to list
   homebrew.masApps = {
     Guidance = 412759995;
     NextDNS = 1464122853;

@@ -19,7 +19,6 @@
 
   my = {
     macos.enable = true;
-    hammerspoon.enable = true;
     java.enable = false;
     kotlin.enable = true;
     gpg.enable = true;
@@ -32,6 +31,31 @@
       imap_server = "imap.gmail.com";
       smtp_server = "smtp.gmail.com";
     };
+  };
+
+  homebrew.casks = [
+    "adoptopenjdk8"
+    "corretto"
+    "firefox"
+    "loom"
+    "ngrok"
+    "obs"
+    "obs-virtualcam"
+    "vagrant"
+  ];
+
+  # Requires to be logged in to the AppStore
+  # Cleanup doesn't work automatically if you add/remove to list
+  homebrew.masApps = {
+    # Tweetbot = 1384080005;
+    Sip = 507257563;
+    Xcode = 497799835;
+    Pages = 409201541;
+    Guidance = 412759995;
+    Dato = 1470584107;
+    WireGuard = 1451685025;
+    Keynote = 409183694;
+    Numbers = 409203825;
   };
 
   users.users.${config.settings.username} = {

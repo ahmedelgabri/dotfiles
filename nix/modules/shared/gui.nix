@@ -22,6 +22,7 @@ in {
         homebrew.taps = [ "homebrew/cask" "homebrew/cask-versions" ];
         homebrew.brews = [ "mas" ];
         homebrew.casks = [
+          "1password"
           "alfred"
           "appcleaner"
           "corelocationcli"
@@ -42,10 +43,6 @@ in {
           "zoom"
         ];
 
-        # Requires to be logged in to the AppStore
-        # Cleanup doesn't work automatically if you add/remove to list
-        homebrew.masApps = { "1Password 7" = 1333542190; };
-
         home-manager = {
           users.${username} = {
             home = {
@@ -59,6 +56,7 @@ in {
           };
         };
       })
+
       (mkIf pkgs.stdenv.isLinux {
         users.users.${username} = {
           packages = with pkgs; [
