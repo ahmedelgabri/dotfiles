@@ -20,10 +20,17 @@
 
   imports = [ ../modules/shared ];
 
+  fonts = {
+    enableFontDir = true;
+    fonts = with pkgs; [ pragmatapro ];
+  };
+
   nixpkgs = {
     config = { allowUnfree = true; };
     overlays = [
       (final: prev: {
+        pragmatapro = (prev.callPackage ../pkgs/pragmatapro.nix { });
+
         neuron-notes =
           (prev.callPackage "${inputs.neuron-notes-master}/project.nix"
             { }).neuron;
