@@ -84,7 +84,7 @@ end
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
 function M.search_notes(query, fullscreen)
   local command_fmt =
-    "rg --column --line-number --no-heading --color=always --smart-case -g '!.obsidian' -g '!miro-bk' -- %s || true"
+    "rg --column --line-number --no-heading --color=always --smart-case -g '!.obsidian' -g '!.neuron' -g '!.neuronignore' -g '!.syncinfo' -- %s || true"
   local initial_command =
     string.format(command_fmt, string.gsub(query, query, "'%1'"))
   local reload_command = string.format(command_fmt, "{q}")
