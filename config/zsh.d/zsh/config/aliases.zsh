@@ -11,7 +11,7 @@ alias e="${(z)VISUAL:-${(z)EDITOR}}"
 alias type='type -a'
 alias which='which -a'
 
-alias KABOOM="yarn global upgrade --latest;brew update; brew upgrade; brew cleanup -s; brew doctor"
+alias KABOOM="yarn global upgrade --latest;brew cleanup -s; brew doctor"
 alias c="clear "
 alias cask="brew --cask "
 alias df="df -kh"
