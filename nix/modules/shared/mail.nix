@@ -4,13 +4,13 @@ with config.settings;
 
 let
 
-  cfg = config.my.mail;
+  cfg = config.my.modules.mail;
   homeDir = config.users.users.${username}.home;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my = {
+    my.modules = {
       mail = { # [todo] support multiple accounts
         enable = mkEnableOption ''
           Whether to enable mail module

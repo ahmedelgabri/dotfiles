@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.kotlin;
+  cfg = config.my.modules.kotlin;
 
 in {
   options = with lib; {
-    my.kotlin = {
+    my.modules.kotlin = {
       enable = mkEnableOption ''
         Whether to enable kotlin module
       '';

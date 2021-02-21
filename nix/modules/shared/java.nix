@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.java;
+  cfg = config.my.modules.java;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.java = {
+    my.modules.java = {
       enable = mkEnableOption ''
         Whether to enable java module
       '';

@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.newsboat;
+  cfg = config.my.modules.newsboat;
 
 in {
   options = with lib; {
-    my.newsboat = {
+    my.modules.newsboat = {
       enable = mkEnableOption ''
         Whether to enable newsboat module
       '';

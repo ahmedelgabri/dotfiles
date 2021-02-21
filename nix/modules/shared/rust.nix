@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.rust;
+  cfg = config.my.modules.rust;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.rust = {
+    my.modules.rust = {
       enable = mkEnableOption ''
         Whether to enable rust module
       '';

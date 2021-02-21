@@ -17,7 +17,7 @@
 
   imports = [ ../modules/darwin ];
 
-  my = {
+  my.modules = {
     macos.enable = true;
     java.enable = false;
     kotlin.enable = true;

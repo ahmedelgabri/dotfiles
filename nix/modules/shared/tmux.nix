@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.tmux;
+  cfg = config.my.modules.tmux;
 
 in {
   options = with lib; {
-    my.tmux = {
+    my.modules.tmux = {
       enable = mkEnableOption ''
         Whether to enable tmux module
       '';

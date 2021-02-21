@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.bat;
+  cfg = config.my.modules.bat;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.bat = {
+    my.modules.bat = {
       enable = mkEnableOption ''
         Whether to enable bat module
       '';

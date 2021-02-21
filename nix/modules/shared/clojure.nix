@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.clojure;
+  cfg = config.my.modules.clojure;
 
 in {
   options = with lib; {
-    my.clojure = {
+    my.modules.clojure = {
       enable = mkEnableOption ''
         Whether to enable clojure module
       '';

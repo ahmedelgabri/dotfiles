@@ -20,7 +20,7 @@
     ./hardware-configuration.nix
   ];
 
-  my = {
+  my.modules = {
     mail = { enable = true; };
     aerc = { enable = true; };
     youtube-dl.enable = true;

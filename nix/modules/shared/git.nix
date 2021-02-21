@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.git;
+  cfg = config.my.modules.git;
 
 in {
   options = with lib; {
-    my.git = {
+    my.modules.git = {
       enable = mkEnableOption ''
         Whether to enable git module
       '';

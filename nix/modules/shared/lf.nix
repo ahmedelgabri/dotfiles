@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.lf;
+  cfg = config.my.modules.lf;
 
 in {
   options = with lib; {
-    my.lf = {
+    my.modules.lf = {
       enable = mkEnableOption ''
         Whether to enable lf module
       '';

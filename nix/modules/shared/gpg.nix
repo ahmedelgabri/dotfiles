@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.gpg;
+  cfg = config.my.modules.gpg;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.gpg = {
+    my.modules.gpg = {
       enable = mkEnableOption ''
         Whether to enable gpg module
       '';

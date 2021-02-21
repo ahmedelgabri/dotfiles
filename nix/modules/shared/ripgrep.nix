@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.ripgrep;
+  cfg = config.my.modules.ripgrep;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.ripgrep = {
+    my.modules.ripgrep = {
       enable = mkEnableOption ''
         Whether to enable ripgrep module
       '';

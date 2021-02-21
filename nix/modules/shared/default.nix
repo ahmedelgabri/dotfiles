@@ -33,7 +33,7 @@
     ./python.nix
   ];
 
-  my = {
+  my.modules = {
     shell.enable = true;
     git.enable = true;
     ssh.enable = true;

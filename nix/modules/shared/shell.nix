@@ -11,7 +11,7 @@ with config.settings;
 
 let
 
-  cfg = config.my.shell;
+  cfg = config.my.modules.shell;
 
   z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
   lookatme =
@@ -23,7 +23,7 @@ let
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
 in {
   options = with lib; {
-    my.shell = {
+    my.modules.shell = {
       enable = mkEnableOption ''
         Whether to enable shell module
       '';

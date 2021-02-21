@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.python;
+  cfg = config.my.modules.python;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.python = {
+    my.modules.python = {
       enable = mkEnableOption ''
         Whether to enable python module
       '';

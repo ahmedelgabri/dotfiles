@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.misc;
+  cfg = config.my.modules.misc;
 
 in {
   options = with lib; {
-    my.misc = {
+    my.modules.misc = {
       enable = mkEnableOption ''
         Whether to enable misc module
       '';

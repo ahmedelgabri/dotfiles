@@ -4,13 +4,13 @@ with config.settings;
 
 let
 
-  cfg = config.my.aerc;
+  cfg = config.my.modules.aerc;
   homeDir = config.users.users.${username}.home;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my = {
+    my.modules = {
       aerc = { # [todo] support multiple accounts
         enable = mkEnableOption ''
           Whether to enable aerc module

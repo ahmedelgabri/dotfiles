@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.gui;
+  cfg = config.my.modules.gui;
 
 in {
   options = with lib; {
-    my.gui = {
+    my.modules.gui = {
       enable = mkEnableOption ''
         Whether to enable gui module
       '';

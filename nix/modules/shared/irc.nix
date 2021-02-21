@@ -5,12 +5,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.irc;
+  cfg = config.my.modules.irc;
   xdg = config.home-manager.users.${username}.xdg;
 
 in {
   options = with lib; {
-    my.irc = {
+    my.modules.irc = {
       enable = mkEnableOption ''
         Whether to enable irc module
       '';

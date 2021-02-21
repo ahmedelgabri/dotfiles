@@ -2,11 +2,11 @@
 
 let
 
-  cfg = config.my.macos;
+  cfg = config.my.modules.macos;
 
 in {
   options = with lib; {
-    my.macos = {
+    my.modules.macos = {
       enable = mkEnableOption ''
         Whether to enable macos module
       '';

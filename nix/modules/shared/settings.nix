@@ -2,7 +2,19 @@
 
 with lib;
 
-{
+let
+  mkOptStr = value:
+    mkOption {
+      type = with types; uniq str;
+      default = value;
+    };
+  mkSecret = description: default:
+    mkOption {
+      inherit description default;
+      type = with types; either str (listOf str);
+    };
+
+in {
   options = with types; {
     # user = mkOption {
     #   default = { };
@@ -43,39 +55,15 @@ with lib;
     # };
 
     settings = {
-      name = mkOption {
-        default = "Ahmed El Gabri";
-        type = uniq str;
-      };
-      timezone = mkOption {
-        default = "Europe/Amsterdam";
-        type = uniq str;
-      };
-      username = mkOption {
-        default = "ahmed";
-        type = uniq str;
-      };
-      website = mkOption {
-        default = "https://gabri.me";
-        type = uniq str;
-      };
-      github_username = mkOption {
-        default = "ahmedelgabri";
-        type = uniq str;
-      };
-      email = mkOption {
-        default = "ahmed@gabri.me";
-        type = uniq str;
-      };
-      terminal = mkOption {
-        default = "kitty";
-        type = uniq str;
-      };
-      nix_managed = mkOption {
-        default =
-          "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
-        type = uniq str;
-      };
+      name = mkOptStr "Ahmed El Gabri";
+      timezone = mkOptStr "Europe/Amsterdam";
+      username = mkOptStr "ahmed";
+      website = mkOptStr "https://gabri.me";
+      github_username = mkOptStr "ahmedelgabri";
+      email = mkOptStr "ahmed@gabri.me";
+      terminal = mkOptStr "kitty";
+      nix_managed = mkOptStr
+        "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
     };
   };
 

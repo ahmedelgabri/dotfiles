@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.ttrv;
+  cfg = config.my.modules.ttrv;
   ttrv = pkgs.callPackage ../../pkgs/ttrv.nix { source = inputs.ttrv; };
 
 in {
   options = with lib; {
-    my.ttrv = {
+    my.modules.ttrv = {
       enable = mkEnableOption ''
         Whether to enable ttrv module
       '';

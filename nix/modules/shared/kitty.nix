@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.kitty;
+  cfg = config.my.modules.kitty;
 
 in {
   options = with lib; {
-    my.kitty = {
+    my.modules.kitty = {
       enable = mkEnableOption ''
         Whether to enable kitty module
       '';

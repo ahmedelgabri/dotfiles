@@ -4,12 +4,12 @@ with config.settings;
 
 let
 
-  cfg = config.my.vim;
+  cfg = config.my.modules.vim;
   home = config.users.users.${username}.home;
 
 in {
   options = with lib; {
-    my.vim = {
+    my.modules.vim = {
       enable = mkEnableOption ''
         Whether to enable vim module
       '';

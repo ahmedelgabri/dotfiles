@@ -4,13 +4,13 @@ with config.settings;
 
 let
 
-  cfg = config.my.node;
+  cfg = config.my.modules.node;
   xdg = config.home-manager.users.${username}.xdg;
   n = pkgs.callPackage ../../pkgs/n.nix { source = inputs.n; };
 
 in {
   options = with lib; {
-    my.node = {
+    my.modules.node = {
       enable = mkEnableOption ''
         Whether to enable node module
       '';

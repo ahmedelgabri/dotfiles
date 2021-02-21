@@ -4,13 +4,13 @@ with config.settings;
 
 let
 
-  cfg = config.my.go;
+  cfg = config.my.modules.go;
   xdg = config.home-manager.users.${username}.xdg;
   go_path = "${xdg.dataHome}/go";
 
 in {
   options = with lib; {
-    my.go = {
+    my.modules.go = {
       enable = mkEnableOption ''
         Whether to enable go module
       '';

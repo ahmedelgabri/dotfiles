@@ -10,7 +10,7 @@
 
   imports = [ ../modules/darwin ];
 
-  my = {
+  my.modules = {
     macos.enable = true;
 
     mail = { enable = true; };

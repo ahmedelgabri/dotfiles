@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.mpv;
+  cfg = config.my.modules.mpv;
 
 in {
   options = with lib; {
-    my.mpv = {
+    my.modules.mpv = {
       enable = mkEnableOption ''
         Whether to enable mpv module
       '';

@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.youtube-dl;
+  cfg = config.my.modules.youtube-dl;
 
 in {
   options = with lib; {
-    my.youtube-dl = {
+    my.modules.youtube-dl = {
       enable = mkEnableOption ''
         Whether to enable youtube-dl module
       '';

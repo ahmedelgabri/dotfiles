@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.rescript;
+  cfg = config.my.modules.rescript;
 
 in {
   options = with lib; {
-    my.rescript = {
+    my.modules.rescript = {
       enable = mkEnableOption ''
         Whether to enable rescript module
       '';

@@ -4,11 +4,11 @@ with config.settings;
 
 let
 
-  cfg = config.my.ssh;
+  cfg = config.my.modules.ssh;
 
 in {
   options = with lib; {
-    my.ssh = {
+    my.modules.ssh = {
       enable = mkEnableOption ''
         Whether to enable ssh module
       '';
