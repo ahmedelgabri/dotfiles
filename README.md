@@ -11,13 +11,14 @@ config officially supports macOS & NixOS & managed by [nix][nix]
 
 These are the main configs:
 
-- [nix][nix] to manage installing most of the dependencies, for some GUI apps on
-  macs I'm still using
-  [Homebrew cask](https://github.com/caskroom/homebrew-cask) but a bit by bit
-  writing own derivations.
+- [nix][nix] to manage installing most of the dependencies, for GUI apps on
+  macsOS I'm still using
+  [Homebrew cask](https://github.com/caskroom/homebrew-cask) through the
+  homebrew module in
+  [`nix-darwin`](https://github.com/LnL7/nix-darwin/blob/5c3146b75d5d478f0693d0ea6c83f1da8382ff56/modules/homebrew.nix)
 - [neomutt][neomutt] for reading emails
 - [tmux][tmux] 2.3 or later
-- [Neovim][neovim] or [Vim][vim] 8.0 or later with Ruby and Python support
+- [Neovim][neovim] or [Vim][vim] 8.0 or later
 - [Zsh][zsh]
 - [Git][git]
 - [Kitty][kitty] as my terminal
@@ -25,8 +26,11 @@ These are the main configs:
 - [weechat][weechat] IRC client
 - [hammerspoon][hammerspoon] macOS automation, using it for window management &
   other stuff
-- [node][node]
-- [Python][python]
+
+## Officially supported OSs
+
+- macOS (tested on BigSur)
+- NixOS (tested on 20.09)
 
 ## Installation
 
