@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 
-with config.settings;
+with config.my;
 
 let
 
@@ -21,7 +21,7 @@ in {
       environment.systemPackages = with pkgs; [ gnupg ];
       environment.variables = { GNUPGHOME = "${xdg.configHome}/gnupg"; };
 
-      users.users.${config.settings.username} = {
+      users.users.${config.my.username} = {
         packages = with pkgs;
           [
             keybase
@@ -35,7 +35,7 @@ in {
       };
 
       home-manager = {
-        users.${config.settings.username} = { pkgs, ... }: {
+        users.${config.my.username} = { pkgs, ... }: {
           home = {
             file = {
               ".config/gnupg/gpg-agent.conf".text = ''

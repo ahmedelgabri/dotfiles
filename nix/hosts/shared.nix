@@ -62,16 +62,14 @@
     ];
   };
 
-  time.timeZone = config.settings.timezone;
+  time.timeZone = config.my.timezone;
 
-  users.users.${config.settings.username} = {
-    description = "Primary user account";
-  };
+  users.users.${config.my.username} = { description = "Primary user account"; };
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${config.settings.username} = {
+    users.${config.my.username} = {
       xdg = { enable = true; };
       home = {
         # Necessary for home-manager to work with flakes, otherwise it will

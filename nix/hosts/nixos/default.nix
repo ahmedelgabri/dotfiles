@@ -129,7 +129,7 @@
   sound.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${config.settings.username} = {
+  users.users.${config.my.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
   };

@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 
-with config.settings;
+with config.my;
 
 let
 
@@ -81,7 +81,7 @@ in {
                 text = ''
                   [${cfg.account.name}]
                   smtp-starttls     = yes
-                  from              = ${config.settings.name} <${config.settings.email}>
+                  from              = ${config.my.name} <${config.my.email}>
                   source            = imaps://${cfg.pass.account}@${cfg.imap_server}
                   source-cred-cmd   = pass email/${cfg.pass.name}
                   outgoing          = smtps+plain://${cfg.pass.account}@${cfg.smtp_server}

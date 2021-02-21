@@ -7,7 +7,7 @@
 
 { pkgs, lib, config, inputs, ... }:
 
-with config.settings;
+with config.my;
 
 let
 
@@ -139,7 +139,7 @@ in {
             ############### Autosuggest
             ZSH_AUTOSUGGEST_USE_ASYNC = "true";
 
-            GITHUB_USER = config.settings.github_username;
+            GITHUB_USER = config.my.github_username;
 
             VIM_FZF_LOG = ''
               "$(${pkgs.git}/bin/git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';

@@ -1,6 +1,6 @@
 { pkgs, lib, config, inputs, ... }:
 
-with config.settings;
+with config.my;
 
 let
 

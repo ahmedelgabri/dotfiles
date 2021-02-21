@@ -38,23 +38,23 @@ in {
     #     description = "Files to place in $XDG_DATA_HOME";
     #   };
     #   configHome = mkOption {
-    #     default = users.${config.settings.username}.xdg.configHome;
+    #     default = users.${config.my.username}.xdg.configHome;
     #     type = path;
     #     description = "path to $XDG_CONFIG_HOME";
     #   };
     #   dataHome = mkOption {
-    #     default = users.${config.settings.username}.xdg.dataHome;
+    #     default = users.${config.my.username}.xdg.dataHome;
     #     type = attrs;
     #     description = "path to $XDG_DATA_HOME";
     #   };
     #   cacheHome = mkOption {
-    #     default = users.${config.settings.username}.xdg.cacheHome;
+    #     default = users.${config.my.username}.xdg.cacheHome;
     #     type = attrs;
     #     description = "path to $XDG_CACHE_HOME";
     #   };
     # };
 
-    settings = {
+    my = {
       name = mkOptStr "Ahmed El Gabri";
       timezone = mkOptStr "Europe/Amsterdam";
       username = mkOptStr "ahmed";
@@ -69,13 +69,13 @@ in {
 
   # config = {
   #   user = {
-  #     name = config.settings.username;
+  #     name = config.my.username;
   #     description = "The primary user account";
-  #     # home = "/Users/${config.settings.username}";
+  #     # home = "/Users/${config.my.username}";
   #     # extraGroups = [ "wheel" ];
   #     # isNormalUser = true;
   #     # name = let name = builtins.getEnv "USER";
-  #     # in if elem name [ "" "root" ] then config.settings.username else name;
+  #     # in if elem name [ "" "root" ] then config.my.username else name;
   #     # uid = 1000;
   #   };
   #
@@ -86,7 +86,7 @@ in {
   #
   #     # I only need a subset of home-manager's capabilities. That is, access to
   #     # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
-  #     # files easily to my $HOME, but 'home-manager.users.${config.settings.username}.home.file.*'
+  #     # files easily to my $HOME, but 'home-manager.users.${config.my.username}.home.file.*'
   #     # is much too long and harder to maintain, so I've made aliases in:
   #     #
   #     #   home.file        ->  home-manager.users.ahmed.home.file
@@ -103,7 +103,7 @@ in {
   #       };
   #       home = {
   #         stateVersion = "20.09";
-  #         username = config.settings.username;
+  #         username = config.my.username;
   #         file = mkAliasDefinitions options.home.file;
   #       };
   #

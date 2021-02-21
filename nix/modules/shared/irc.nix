@@ -1,7 +1,7 @@
 # [todo] https://github.com/balsoft/nixos-config/blob/64e3aeb311f1e0c5c2ccaef94f04d51a72e48b48/modules/applications/weechat.nix
 { pkgs, lib, config, inputs, ... }:
 
-with config.settings;
+with config.my;
 
 let
 

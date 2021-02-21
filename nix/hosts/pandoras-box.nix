@@ -1,6 +1,6 @@
 { config, pkgs, lib, inputs, ... }: {
   nix = {
-    gc = { user = config.settings.username; };
+    gc = { user = config.my.username; };
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
     # nix.package = pkgs.nix;
@@ -47,8 +47,8 @@
 
   networking = { hostName = "pandoras-box"; };
 
-  users.users.${config.settings.username} = {
-    home = "/Users/${config.settings.username}";
+  users.users.${config.my.username} = {
+    home = "/Users/${config.my.username}";
   };
 
   # Use a custom configuration.nix location.

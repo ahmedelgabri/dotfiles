@@ -1,36 +1,35 @@
 { config, pkgs, lib, inputs, ... }: {
-  settings = {
+  imports = [ ../modules/darwin ];
+
+  my = {
     username = "ahmedelgabri";
     email = "ahmed@miro.com";
+    modules = {
+      macos.enable = true;
+      java.enable = false;
+      kotlin.enable = true;
+      gpg.enable = true;
+
+      mail = {
+        enable = true;
+        account = "Work";
+        alias_path = "";
+        keychain = { name = "gmail.com"; };
+        imap_server = "imap.gmail.com";
+        smtp_server = "smtp.gmail.com";
+      };
+    };
   };
 
   networking = { hostName = "ahmed-at-work"; };
 
   nix = {
-    gc = { user = config.settings.username; };
+    gc = { user = config.my.username; };
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
     # nix.package = pkgs.nix;
     # nix.maxJobs = 4;
     # nix.buildCores = 4;
-  };
-
-  imports = [ ../modules/darwin ];
-
-  my.modules = {
-    macos.enable = true;
-    java.enable = false;
-    kotlin.enable = true;
-    gpg.enable = true;
-
-    mail = {
-      enable = true;
-      account = "Work";
-      alias_path = "";
-      keychain = { name = "gmail.com"; };
-      imap_server = "imap.gmail.com";
-      smtp_server = "smtp.gmail.com";
-    };
   };
 
   homebrew.casks = [
@@ -58,8 +57,8 @@
     Numbers = 409203825;
   };
 
-  users.users.${config.settings.username} = {
-    home = "/Users/${config.settings.username}";
+  users.users.${config.my.username} = {
+    home = "/Users/${config.my.username}";
   };
 
   # Use a custom configuration.nix location.
