@@ -18,16 +18,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ ttrv ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/ttrv" = {
-                recursive = true;
-                source = ../../../config/ttrv;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/ttrv" = {
+          recursive = true;
+          source = ../../../config/ttrv;
         };
       };
     };

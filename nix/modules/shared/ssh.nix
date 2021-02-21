@@ -15,14 +15,8 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".ssh/config" = { source = ../../../config/.ssh/config; };
-            };
-          };
-        };
+      my.hm.file = {
+        ".ssh/config" = { source = ../../../config/.ssh/config; };
       };
     };
 }

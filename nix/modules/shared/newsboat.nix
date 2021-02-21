@@ -17,16 +17,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ newsboat w3m ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/newsboat" = {
-                recursive = true;
-                source = ../../../config/newsboat;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/newsboat" = {
+          recursive = true;
+          source = ../../../config/newsboat;
         };
       };
     };

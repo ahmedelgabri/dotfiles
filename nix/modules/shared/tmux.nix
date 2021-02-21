@@ -17,16 +17,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ tmux tmuxPlugins.urlview ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/tmux" = {
-                recursive = true;
-                source = ../../../config/tmux;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/tmux" = {
+          recursive = true;
+          source = ../../../config/tmux;
         };
       };
     };

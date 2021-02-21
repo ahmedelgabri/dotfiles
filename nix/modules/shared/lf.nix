@@ -17,16 +17,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ lf chafa fzf ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/lf" = {
-                recursive = true;
-                source = ../../../config/lf;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/lf" = {
+          recursive = true;
+          source = ../../../config/lf;
         };
       };
     };

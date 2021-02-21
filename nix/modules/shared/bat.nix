@@ -3,7 +3,6 @@
 let
 
   cfg = config.my.modules.bat;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -16,22 +15,14 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
-        BAT_CONFIG_PATH = "${xdg.configHome}/bat/config";
-      };
+      my.env = { BAT_CONFIG_PATH = "$XDG_CONFIG_HOME/bat/config"; };
 
       my.user = { packages = with pkgs; [ bat ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/bat" = {
-                recursive = true;
-                source = ../../../config/bat;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/bat" = {
+          recursive = true;
+          source = ../../../config/bat;
         };
       };
     };

@@ -22,20 +22,14 @@ in {
       })
 
       {
-        environment.variables = {
+        my.env = {
           TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
         };
 
-        home-manager = {
-          users.${config.my.username} = {
-            home = {
-              file = {
-                ".config/kitty" = {
-                  recursive = true;
-                  source = ../../../config/kitty;
-                };
-              };
-            };
+        my.hm.file = {
+          ".config/kitty" = {
+            recursive = true;
+            source = ../../../config/kitty;
           };
         };
       }

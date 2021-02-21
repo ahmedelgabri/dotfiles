@@ -8,10 +8,23 @@ let
       type = with types; uniq str;
       default = value;
     };
+
   mkSecret = description: default:
     mkOption {
       inherit description default;
       type = with types; either str (listOf str);
+    };
+
+  mkOpt = type: default: mkOption { inherit type default; };
+
+  mkOpt' = type: default: description:
+    mkOption { inherit type default description; };
+
+  mkBoolOpt = default:
+    mkOption {
+      inherit default;
+      type = types.bool;
+      example = true;
     };
 
 in {
@@ -27,47 +40,34 @@ in {
       nix_managed = mkOptStr
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
       user = mkOption { type = options.users.users.type.functor.wrapped; };
-      hm = mkOption { type = options.home-manager.users.type.functor.wrapped; };
-      # hm = mkOption {
-      #   type = options.home-manager.users.type.functor.wrapped;
-      #   default = mkOption {
-      #     file = mkOption {
-      #       default = { };
-      #       type = attrs;
-      #       description = "Files to place directly in $HOME";
-      #     };
-      #     configFile = mkOption {
-      #       default = { };
-      #       type = attrs;
-      #       description = "Files to place in $XDG_CONFIG_HOME";
-      #     };
-      #     dataFile = mkOption {
-      #       default = { };
-      #       type = attrs;
-      #       description = "Files to place in $XDG_DATA_HOME";
-      #     };
-      #     configHome = mkOption {
-      #       default = users.${config.my.username}.xdg.configHome;
-      #       type = path;
-      #       description = "path to $XDG_CONFIG_HOME";
-      #     };
-      #     dataHome = mkOption {
-      #       default = users.${config.my.username}.xdg.dataHome;
-      #       type = attrs;
-      #       description = "path to $XDG_DATA_HOME";
-      #     };
-      #     cacheHome = mkOption {
-      #       default = users.${config.my.username}.xdg.cacheHome;
-      #       type = attrs;
-      #       description = "path to $XDG_CACHE_HOME";
-      #     };
-      #   };
-      # };
-      #
+      hm = {
+        file = mkOpt' attrs { } "Files to place directly in $HOME";
+        configFile = mkOpt' attrs { } "Files to place in $XDG_CONFIG_HOME";
+        dataFile = mkOpt' attrs { } "Files to place in $XDG_DATA_HOME";
+      };
+      env = mkOption {
+        type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
+        apply = mapAttrs (n: v:
+          if isList v then
+            concatMapStringsSep ":" (x: toString x) v
+          else
+            (toString v));
+        default = { };
+        description = "TODO";
+      };
     };
   };
 
   config = {
+    users.users.${config.my.username} = mkAliasDefinitions options.my.user;
+    my.user = {
+      home = if pkgs.stdenv.isDarwin then
+        "/Users/${config.my.username}"
+      else
+        "/home/${config.my.username}";
+      description = "Primary user account";
+    };
+
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
@@ -81,16 +81,11 @@ in {
     #   my.hm.file        ->  home-manager.users.ahmed.home.file
     #   my.hm.configFile  ->  home-manager.users.ahmed.home.xdg.configFile
     #   my.hm.dataFile    ->  home-manager.users.ahmed.home.xdg.dataFile
-    home-manager.users.${config.my.username} = mkAliasDefinitions options.my.hm;
-
-    my.hm = {
+    home-manager.users.${config.my.username} = {
       xdg = {
         enable = true;
-        # dataHome = mkAliasDefinitions options.my.hm.dataHome;
-        # cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
-        # configFile = mkAliasDefinitions options.my.hm.configFile;
-        # dataFile = mkAliasDefinitions options.my.hm.dataFile;
-        # configHome = mkAliasDefinitions options.my.hm.configHome;
+        configFile = mkAliasDefinitions options.my.hm.configFile;
+        dataFile = mkAliasDefinitions options.my.hm.dataFile;
       };
 
       home = {
@@ -99,7 +94,7 @@ in {
         stateVersion =
           if pkgs.stdenv.isDarwin then "20.09" else config.system.stateVersion;
         username = config.my.username;
-        # file = mkAliasDefinitions options.my.hm.file;
+        file = mkAliasDefinitions options.my.hm.file;
       };
 
       programs = {
@@ -108,13 +103,7 @@ in {
       };
     };
 
-    users.users.${config.my.username} = mkAliasDefinitions options.my.user;
-    my.user = {
-      home = if pkgs.stdenv.isDarwin then
-        "/Users/${config.my.username}"
-      else
-        "/home/${config.my.username}";
-      description = "Primary user account";
-    };
+    environment.extraInit = concatStringsSep "\n"
+      (mapAttrsToList (n: v: ''export ${n}="${v}"'') config.my.env);
   };
 }

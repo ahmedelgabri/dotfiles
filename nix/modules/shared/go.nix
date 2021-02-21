@@ -3,8 +3,6 @@
 let
 
   cfg = config.my.modules.go;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
-  go_path = "${xdg.dataHome}/go";
 
 in {
   options = with lib; {
@@ -17,9 +15,9 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
-        GOPATH = go_path;
-        GOBIN = "${go_path}/bin";
+      my.env = rec {
+        GOPATH = "$XDG_DATA_HOME/go";
+        GOBIN = "${GOPATH}/bin";
       };
 
       my.user = { packages = with pkgs; [ go ]; };

@@ -3,7 +3,6 @@
 let
 
   cfg = config.my.modules.rust;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -16,9 +15,9 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
-        RUSTUP_HOME = "${xdg.dataHome}/rustup";
-        CARGO_HOME = "${xdg.dataHome}/cargo";
+      my.env = {
+        RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
+        CARGO_HOME = "$XDG_DATA_HOME/cargo";
       };
 
       my.user = {

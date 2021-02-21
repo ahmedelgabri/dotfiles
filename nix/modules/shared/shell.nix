@@ -15,8 +15,6 @@ let
   lookatme =
     pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
 
-  xdg = config.home-manager.users.${config.my.username}.xdg;
-
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
 in {
@@ -33,60 +31,71 @@ in {
 
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages = with pkgs;
-        (if stdenv.isDarwin then darwinPackages else nixosPackages)
-        ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z rsync ];
-
-      my.user = {
-        shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
-        packages = with pkgs; [
-          bandwhich # display current network utilization by process
-          bottom # fancy version of `top` with ASCII graphs
-          tealdeer # rust implementation of `tldr`
-          comma
-          ncdu
-          bat
-          jq
-          fd
-          grc
-          pure-prompt
-          hyperfine
-          exa
-          shellcheck
-          shfmt # Doesn't work with zsh, only sh & bash
-          lnav # System Log file navigator
-          pandoc
-          scc
-          tokei
-          _1password # CLI
-          docker
-          pass
-          lookatme
-          mosh
-        ];
-      };
-
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/zsh" = {
-                recursive = true;
-                source = ../../../config/zsh.d/zsh;
-              };
-              ".terminfo" = {
-                recursive = true;
-                source = ../../../config/.terminfo;
-              };
-            };
-          };
-        };
-      };
-
       environment = {
         shells = [ pkgs.bashInteractive_5 pkgs.zsh ];
+        variables = {
+          # [note] Darwin doesn't set them by default, unlike NixOS. So we have to set them.
+          XDG_CACHE_HOME = "${config.my.user.home}/.cache";
+          XDG_CONFIG_HOME = "${config.my.user.home}/.config";
+          XDG_DATA_HOME = "${config.my.user.home}/.local/share";
+        };
+        systemPackages = with pkgs;
+          (if stdenv.isDarwin then darwinPackages else nixosPackages) ++ [
+            curl
+            wget
+            cachix
+            htop
+            fzf
+            direnv
+            nix-zsh-completions
+            zsh
+            z
+            rsync
+          ];
+      };
 
-        variables =
+      my = {
+        user = {
+          shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
+          packages = with pkgs; [
+            bandwhich # display current network utilization by process
+            bottom # fancy version of `top` with ASCII graphs
+            tealdeer # rust implementation of `tldr`
+            comma
+            ncdu
+            bat
+            jq
+            fd
+            grc
+            pure-prompt
+            hyperfine
+            exa
+            shellcheck
+            shfmt # Doesn't work with zsh, only sh & bash
+            lnav # System Log file navigator
+            pandoc
+            scc
+            tokei
+            _1password # CLI
+            docker
+            pass
+            lookatme
+            mosh
+          ];
+        };
+
+        hm.file = {
+          ".config/zsh" = {
+            recursive = true;
+            source = ../../../config/zsh.d/zsh;
+          };
+          ".terminfo" = {
+            recursive = true;
+            source = ../../../config/.terminfo;
+          };
+        };
+
+        env =
           # ====================================================
           # This list gets set in alphabetical order.
           # So care needs to be taken if two env vars depend on each other
@@ -102,10 +111,7 @@ in {
             # Remove -X and -F (exit if the content fits on one screen) to enable it.
             LESS = "-F -g -i -M -R -S -w -X -z-4";
             KEYTIMEOUT = "1";
-            XDG_CONFIG_HOME = xdg.configHome;
-            XDG_CACHE_HOME = xdg.cacheHome;
-            XDG_DATA_HOME = xdg.dataHome;
-            ZDOTDIR = "${XDG_CONFIG_HOME}/zsh";
+            ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
 
             DOTFILES = "$HOME/.dotfiles";
             PROJECTS = "$HOME/Sites/personal/dev";
@@ -114,11 +120,11 @@ in {
             NOTES_DIR = "${PERSONAL_STORAGE}/notes";
 
             ############### APPS/POGRAMS XDG SPEC CLEANUP
-            RLWRAP_HOME = "${XDG_DATA_HOME}/rlwrap";
-            AWS_SHARED_CREDENTIALS_FILE = "${XDG_CONFIG_HOME}/aws/credentials";
-            AWS_CONFIG_FILE = "${XDG_CONFIG_HOME}/aws/config";
-            DOCKER_CONFIG = "${XDG_CONFIG_HOME}/docker";
-            ELINKS_CONFDIR = "${XDG_CONFIG_HOME}/elinks";
+            RLWRAP_HOME = "$XDG_DATA_HOME/rlwrap";
+            AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
+            AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
+            DOCKER_CONFIG = "$XDG_CONFIG_HOME/docker";
+            ELINKS_CONFDIR = "$XDG_CONFIG_HOME/elinks";
 
             ############### Telemetry
             DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
@@ -158,6 +164,7 @@ in {
             FZF_ALT_C_OPTS =
               "--preview '(${pkgs.exa}/bin/exa --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {}) 2> /dev/null'";
           };
+
       };
 
       programs.zsh = {

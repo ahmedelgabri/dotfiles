@@ -4,8 +4,6 @@
 let
 
   cfg = config.my.modules.irc;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
-
 in {
   options = with lib; {
     my.modules.irc = {
@@ -17,12 +15,6 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
-        WEECHAT_HOME = "${xdg.configHome}/weechat";
-        WEECHAT_PASSPHRASE = ''
-          `security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`'';
-      };
-
       nixpkgs = {
         overlays = [
           (final: prev: {
@@ -41,52 +33,50 @@ in {
         ];
       };
 
-      users.users.${config.my.username} = {
-        packages = with pkgs; [ weechat ];
-      };
-
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              # [todo] WeeChat will need to modify these files, how can this be done?
-              ".config/weechat" = {
-                recursive = true;
-                source = ../../../config/weechat;
-              };
-
-              ".config/weechat/perl/autoload/atcomplete.pl".source =
-                "${inputs.weechat-scripts}/perl/atcomplete.pl";
-
-              ".config/weechat/perl/autoload/highmon.pl".source =
-                "${inputs.weechat-scripts}/perl/highmon.pl";
-
-              ".config/weechat/perl/autoload/iset.pl".source =
-                "${inputs.weechat-scripts}/perl/iset.pl";
-
-              ".config/weechat/perl/autoload/multiline.pl".source =
-                "${inputs.weechat-scripts}/perl/multiline.pl";
-
-              ".config/weechat/python/autoload/autojoin.py".source =
-                "${inputs.weechat-scripts}/python/autojoin.py";
-
-              ".config/weechat/python/autoload/bitlbee_completion.py".source =
-                "${inputs.weechat-scripts}/python/bitlbee_completion.py";
-
-              ".config/weechat/python/autoload/go.py".source =
-                "${inputs.weechat-scripts}/python/go.py";
-
-              ".config/weechat/python/autoload/screen_away.py".source =
-                "${inputs.weechat-scripts}/python/screen_away.py";
-
-              # [Note] DARWIN ONLY
-              ".config/weechat/python/autoload/notification_center.py".source =
-                "${inputs.weechat-scripts}/python/notification_center.py";
-
-              ".config/weechat/lua/autoload/emoji.lua".source =
-                "${inputs.weechat-scripts}/lua/emoji.lua";
-            };
+      my = {
+        user = { packages = with pkgs; [ weechat ]; };
+        env = {
+          WEECHAT_HOME = "$XDG_CONFIG_HOME/weechat";
+          WEECHAT_PASSPHRASE = ''
+            `security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`'';
+        };
+        hm.file = {
+          # [todo] WeeChat will need to modify these files, how can this be done?
+          ".config/weechat" = {
+            recursive = true;
+            source = ../../../config/weechat;
           };
+
+          ".config/weechat/perl/autoload/atcomplete.pl".source =
+            "${inputs.weechat-scripts}/perl/atcomplete.pl";
+
+          ".config/weechat/perl/autoload/highmon.pl".source =
+            "${inputs.weechat-scripts}/perl/highmon.pl";
+
+          ".config/weechat/perl/autoload/iset.pl".source =
+            "${inputs.weechat-scripts}/perl/iset.pl";
+
+          ".config/weechat/perl/autoload/multiline.pl".source =
+            "${inputs.weechat-scripts}/perl/multiline.pl";
+
+          ".config/weechat/python/autoload/autojoin.py".source =
+            "${inputs.weechat-scripts}/python/autojoin.py";
+
+          ".config/weechat/python/autoload/bitlbee_completion.py".source =
+            "${inputs.weechat-scripts}/python/bitlbee_completion.py";
+
+          ".config/weechat/python/autoload/go.py".source =
+            "${inputs.weechat-scripts}/python/go.py";
+
+          ".config/weechat/python/autoload/screen_away.py".source =
+            "${inputs.weechat-scripts}/python/screen_away.py";
+
+          # [Note] DARWIN ONLY
+          ".config/weechat/python/autoload/notification_center.py".source =
+            "${inputs.weechat-scripts}/python/notification_center.py";
+
+          ".config/weechat/lua/autoload/emoji.lua".source =
+            "${inputs.weechat-scripts}/lua/emoji.lua";
         };
       };
     };

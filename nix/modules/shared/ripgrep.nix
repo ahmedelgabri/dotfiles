@@ -3,7 +3,6 @@
 let
 
   cfg = config.my.modules.ripgrep;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -16,22 +15,14 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
-        RIPGREP_CONFIG_PATH = "${xdg.configHome}/ripgrep/config";
-      };
+      my.env = { RIPGREP_CONFIG_PATH = "$XDG_CONFIG_HOME/ripgrep/config"; };
 
       my.user = { packages = with pkgs; [ ripgrep ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/ripgrep" = {
-                recursive = true;
-                source = ../../../config/ripgrep;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/ripgrep" = {
+          recursive = true;
+          source = ../../../config/ripgrep;
         };
       };
     };

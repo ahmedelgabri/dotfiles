@@ -5,7 +5,7 @@ with config.my;
 let
 
   cfg = config.my.modules.vim;
-  home = config.users.users.${username}.home;
+  home = config.my.user.home;
 
 in {
   options = with lib; {
@@ -27,11 +27,11 @@ in {
           gcc # Requried for treesitter parsers
         ]);
 
-      environment.variables = {
+      my.env = rec {
         EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
-        MANPAGER = "${pkgs.neovim-unwrapped}/bin/nvim +Man!";
+        MANPAGER = "$EDITOR +Man!";
       };
 
       my.user = {

@@ -22,16 +22,10 @@ in {
       })
 
       {
-        home-manager = {
-          users.${config.my.username} = {
-            home = {
-              file = {
-                ".config/mpv" = {
-                  recursive = true;
-                  source = ../../../config/mpv;
-                };
-              };
-            };
+        my.hm.file = {
+          ".config/mpv" = {
+            recursive = true;
+            source = ../../../config/mpv;
           };
         };
       }

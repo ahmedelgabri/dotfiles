@@ -3,7 +3,6 @@
 let
 
   cfg = config.my.modules.java;
-  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -16,9 +15,9 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.variables = {
+      my.env = {
         "_JAVA_OPTIONS" =
-          ''-Djava.util.prefs.userRoot="${xdg.configHome}/java"'';
+          ''-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"'';
       };
 
       my.user = {

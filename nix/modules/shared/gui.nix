@@ -41,16 +41,10 @@ in {
           "zoom"
         ];
 
-        home-manager = {
-          users.${config.my.username} = {
-            home = {
-              file = {
-                ".hammerspoon" = {
-                  recursive = true;
-                  source = ../../../config/.hammerspoon;
-                };
-              };
-            };
+        my.hm.file = {
+          ".hammerspoon" = {
+            recursive = true;
+            source = ../../../config/.hammerspoon;
           };
         };
       } else {

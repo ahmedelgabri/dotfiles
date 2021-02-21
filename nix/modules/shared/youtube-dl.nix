@@ -17,16 +17,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ youtube-dl ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/youtube-dl" = {
-                recursive = true;
-                source = ../../../config/youtube-dl;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/youtube-dl" = {
+          recursive = true;
+          source = ../../../config/youtube-dl;
         };
       };
     };

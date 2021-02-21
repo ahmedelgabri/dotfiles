@@ -15,19 +15,13 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".gemrc" = { source = ../../../config/.gemrc; };
-              ".curlrc" = { source = ../../../config/.curlrc; };
-              ".ignore" = { source = ../../../config/.ignore; };
-              ".mailcap" = { source = ../../../config/.mailcap; };
-              ".psqlrc" = { source = ../../../config/.psqlrc; };
-              ".urlview" = { source = ../../../config/.urlview; };
-            };
-          };
-        };
+      my.hm.file = {
+        ".gemrc" = { source = ../../../config/.gemrc; };
+        ".curlrc" = { source = ../../../config/.curlrc; };
+        ".ignore" = { source = ../../../config/.ignore; };
+        ".mailcap" = { source = ../../../config/.mailcap; };
+        ".psqlrc" = { source = ../../../config/.psqlrc; };
+        ".urlview" = { source = ../../../config/.urlview; };
       };
     };
 }

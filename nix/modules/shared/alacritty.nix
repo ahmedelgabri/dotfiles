@@ -17,16 +17,10 @@ in {
     mkIf cfg.enable {
       my.user = { packages = with pkgs; [ alacritty ]; };
 
-      home-manager = {
-        users.${config.my.username} = {
-          home = {
-            file = {
-              ".config/alacritty" = {
-                recursive = true;
-                source = ../../../config/alacritty;
-              };
-            };
-          };
+      my.hm.file = {
+        ".config/alacritty" = {
+          recursive = true;
+          source = ../../../config/alacritty;
         };
       };
     };

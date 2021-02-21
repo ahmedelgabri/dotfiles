@@ -5,25 +5,17 @@
 # https://nix.dev/
 # https://nix-community.github.io/awesome-nix/
 # https://discourse.nixos.org/t/home-manager-equivalent-of-apt-upgrade/8424/3
-# https://www.mathiaspolligkeit.de/dev/exploring-nix-on-macos/
-# https://catgirl.ai/log/nixos-experience/
-# https://kevincox.ca/2020/09/06/switching-to-desktop-nixos/
 # https://www.reddit.com/r/NixOS/comments/jmom4h/new_neofetch_nixos_logo/gayfal2/
-# https://ghedam.at/15978/an-introduction-to-nix-shell
-# https://foo-dogsquared.github.io/blog/posts/moving-into-nixos/
 # https://www.youtube.com/user/elitespartan117j27/videos?view=0&sort=da&flow=grid
 # https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs
 # https://www.reddit.com/r/NixOS/comments/k9xwht/best_resources_for_learning_nixos/
 # https://www.reddit.com/r/NixOS/comments/k8zobm/nixos_preferred_packages_flow/
 # https://www.reddit.com/r/NixOS/comments/j4k2zz/does_anyone_use_flakes_to_manage_their_entire/
-# https://wickedchicken.github.io/post/macos-nix-setup/
-# https://nrdxp.dev/nixos/2020/12/19/NixOS-Flakes-and-KISS.html
 #
 # Sample repos
 # https://github.com/teoljungberg/dotfiles/tree/master/nixpkgs (contains custom hammerspoon & vim )
 # https://github.com/jwiegley/nix-config (nice example)
 # https://github.com/hardselius/dotfiles (good readme on steps to do for install)
-# https://github.com/martinbaillie/dotfiles (Darwin, NixOS & custom options)
 # https://github.com/nuance/dotfiles
 #
 # With flakes
