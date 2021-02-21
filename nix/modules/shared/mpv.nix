@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, options, ... }:
 
 with config.settings;
 
@@ -17,8 +17,9 @@ in {
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (mkIf pkgs.stdenv.isDarwin { homebrew.casks = [ "mpv" ]; })
-      (mkIf pkgs.stdenv.isLinux {
+      (if (builtins.hasAttr "homebrew" options) then {
+        homebrew.casks = [ "mpv" ];
+      } else {
         users.users.${username} = { packages = with pkgs; [ mpv ]; };
       })
 

@@ -5,6 +5,7 @@ with config.settings;
 let
 
   cfg = config.my.vim;
+  home = config.users.users.${username}.home;
 
 in {
   options = with lib; {
@@ -64,20 +65,19 @@ in {
 
       system.activationScripts.postUserActivation.text = ''
         echo ":: -> Running vim activationScript..."
-
         # Creating needed folders
 
-        if [ ! -e "$HOME/.local/share/nvim/swap" ]; then
-          echo "Creating vim swap/backup/undo/view folders inside $HOME/.local/share/nvim ..."
-          mkdir -p $HOME/.local/share/nvim/{backup,swap,undo,view}
+        if [ ! -e "${home}/.local/share/nvim/swap" ]; then
+          echo "Creating vim swap/backup/undo/view folders inside ${home}/.local/share/nvim ..."
+          mkdir -p ${home}/.local/share/nvim/{backup,swap,undo,view}
         fi
 
         # Handle mutable configs
 
-        if [ ! -e "$HOME/.config/nvim" ]; then
+        if [ ! -e "${home}/.config/nvim" ]; then
           echo "Linking vim folders..."
-          ln -sf $HOME/.dotfiles/config/.vim $HOME/.config/nvim
-          ln -sf $HOME/.dotfiles/config/.vim $HOME/.vim
+          ln -sf ${home}/.dotfiles/config/.vim ${home}/.config/nvim
+          ln -sf ${home}/.dotfiles/config/.vim ${home}/.vim
         fi
       '';
     };

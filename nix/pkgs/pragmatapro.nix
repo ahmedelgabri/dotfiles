@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     sha256 = "19q6d0dxgd9k2mhr31944wpprks1qbqs1h5f400dyl5qzis2dji3";
     message = ''
       ${name} font not found in nix store, to add it run:
-      $ nix-store --add-fixed sha256 ~/downloads/${name}'';
+      $ nix-store --add-fixed sha256 /path/to/${name}'';
   };
 
   buildInputs = [ unzip ];

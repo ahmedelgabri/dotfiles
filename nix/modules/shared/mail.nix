@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, options, ... }:
 
 with config.settings;
 
@@ -56,7 +56,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (mkIf pkgs.stdenv.isDarwin {
+      (if (builtins.hasAttr "launchd" options) then {
         launchd.user.agents."isync" = {
           # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
           # Check `.mail/.notmuch/hooks/`
@@ -75,10 +75,11 @@ in {
             };
           };
         };
-      })
-      (mkIf pkgs.stdenv.isLinux {
-        # systemd
-      })
+      } else
+        {
+          # systemd
+        })
+
       {
         users.users.${username} = {
           packages = with pkgs; [
@@ -105,9 +106,9 @@ in {
         system.activationScripts.postUserActivation.text = ''
           echo ":: -> Running mail activationScript..."
 
-          if [ ! -e "$HOME/.mail/${cfg.account}" ]; then
-            echo "Creating mail folder for account ${cfg.account} at $HOME/.mail/${cfg.account}..."
-            mkdir -p $HOME/.mail/${cfg.account}
+          if [ ! -e "${homeDir}/.mail/${cfg.account}" ]; then
+            echo "Creating mail folder for account ${cfg.account} at ${homeDir}/.mail/${cfg.account}..."
+            mkdir -p ${homeDir}/.mail/${cfg.account}
           fi
         '';
 

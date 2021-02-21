@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, options, ... }:
 
 with config.settings;
 
@@ -17,8 +17,8 @@ in {
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      # [todo] (automate) Requires homebrew to be installed
-      (mkIf pkgs.stdenv.isDarwin {
+      (if (builtins.hasAttr "homebrew" options) then {
+        # [todo] (automate) Requires homebrew to be installed
         homebrew.taps = [ "homebrew/cask" "homebrew/cask-versions" ];
         homebrew.brews = [ "mas" ];
         homebrew.casks = [
@@ -55,9 +55,7 @@ in {
             };
           };
         };
-      })
-
-      (mkIf pkgs.stdenv.isLinux {
+      } else {
         users.users.${username} = {
           packages = with pkgs; [
             brave

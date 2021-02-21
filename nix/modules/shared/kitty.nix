@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, options, ... }:
 
 with config.settings;
 
@@ -17,10 +17,12 @@ in {
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (mkIf pkgs.stdenv.isDarwin { homebrew.casks = [ "kitty" ]; })
-      (mkIf pkgs.stdenv.isLinux {
+      (if (builtins.hasAttr "homebrew" options) then {
+        homebrew.casks = [ "kitty" ];
+      } else {
         users.users.${username} = { packages = with pkgs; [ kitty ]; };
       })
+
       {
         environment.variables = {
           TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
