@@ -1,11 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.rust;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -23,7 +21,7 @@ in {
         CARGO_HOME = "${xdg.dataHome}/cargo";
       };
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [ rustup rust-analyzer-unwrapped rustc cargo ];
       };
     };

@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.tmux;
@@ -17,12 +15,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = {
-        packages = with pkgs; [ tmux tmuxPlugins.urlview ];
-      };
+      my.user = { packages = with pkgs; [ tmux tmuxPlugins.urlview ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/tmux" = {

@@ -7,8 +7,6 @@
 
 { pkgs, lib, config, inputs, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.shell;
@@ -17,7 +15,7 @@ let
   lookatme =
     pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
 
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
@@ -39,7 +37,7 @@ in {
         (if stdenv.isDarwin then darwinPackages else nixosPackages)
         ++ [ curl wget cachix htop fzf direnv nix-zsh-completions zsh z rsync ];
 
-      users.users.${username} = {
+      my.user = {
         shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
         packages = with pkgs; [
           bandwhich # display current network utilization by process
@@ -69,7 +67,7 @@ in {
       };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/zsh" = {

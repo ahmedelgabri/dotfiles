@@ -63,24 +63,4 @@
   };
 
   time.timeZone = config.my.timezone;
-
-  users.users.${config.my.username} = { description = "Primary user account"; };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.${config.my.username} = {
-      xdg = { enable = true; };
-      home = {
-        # Necessary for home-manager to work with flakes, otherwise it will
-        # look for a nixpkgs channel.
-        stateVersion =
-          if pkgs.stdenv.isDarwin then "20.09" else config.system.stateVersion;
-      };
-      programs = {
-        # Let Home Manager install and manage itself.
-        home-manager.enable = true;
-      };
-    };
-  };
 }

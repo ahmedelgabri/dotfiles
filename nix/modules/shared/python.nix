@@ -1,11 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.python;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -22,7 +20,7 @@ in {
         PYTHONSTARTUP = "${xdg.configHome}/python/config.py";
       };
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs;
           [
             (python3.withPackages (ps:
@@ -42,7 +40,7 @@ in {
       };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/python" = {

@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.lf;
@@ -17,10 +15,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ lf chafa fzf ]; };
+      my.user = { packages = with pkgs; [ lf chafa fzf ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/lf" = {

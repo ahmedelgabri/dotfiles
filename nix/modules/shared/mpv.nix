@@ -1,7 +1,5 @@
 { pkgs, lib, config, options, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.mpv;
@@ -20,12 +18,12 @@ in {
       (if (builtins.hasAttr "homebrew" options) then {
         homebrew.casks = [ "mpv" ];
       } else {
-        users.users.${username} = { packages = with pkgs; [ mpv ]; };
+        my.user = { packages = with pkgs; [ mpv ]; };
       })
 
       {
         home-manager = {
-          users.${username} = {
+          users.${config.my.username} = {
             home = {
               file = {
                 ".config/mpv" = {

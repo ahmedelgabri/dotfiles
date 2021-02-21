@@ -1,11 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.java;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -23,7 +21,7 @@ in {
           ''-Djava.util.prefs.userRoot="${xdg.configHome}/java"'';
       };
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [
           go-jira
           vagrant

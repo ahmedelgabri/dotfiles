@@ -1,12 +1,10 @@
 # [todo] https://github.com/balsoft/nixos-config/blob/64e3aeb311f1e0c5c2ccaef94f04d51a72e48b48/modules/applications/weechat.nix
 { pkgs, lib, config, inputs, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.irc;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -43,10 +41,12 @@ in {
         ];
       };
 
-      users.users.${username} = { packages = with pkgs; [ weechat ]; };
+      users.users.${config.my.username} = {
+        packages = with pkgs; [ weechat ];
+      };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               # [todo] WeeChat will need to modify these files, how can this be done?

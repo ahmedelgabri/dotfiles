@@ -10,17 +10,19 @@
 
   imports = [ ../modules/darwin ];
 
-  my.modules = {
-    macos.enable = true;
+  my = {
+    modules = {
+      macos.enable = true;
 
-    mail = { enable = true; };
-    aerc = { enable = true; };
-    youtube-dl.enable = true;
-    irc.enable = true;
-    rescript.enable = true;
-    clojure.enable = true;
-    newsboat.enable = true;
-    gpg.enable = true;
+      mail = { enable = true; };
+      aerc = { enable = true; };
+      youtube-dl.enable = true;
+      irc.enable = true;
+      rescript.enable = true;
+      clojure.enable = true;
+      newsboat.enable = true;
+      gpg.enable = true;
+    };
   };
 
   homebrew.casks = [
@@ -46,10 +48,6 @@
   };
 
   networking = { hostName = "pandoras-box"; };
-
-  users.users.${config.my.username} = {
-    home = "/Users/${config.my.username}";
-  };
 
   # Use a custom configuration.nix location.
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix

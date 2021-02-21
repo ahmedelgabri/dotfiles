@@ -1,7 +1,5 @@
 { pkgs, lib, config, options, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.gui;
@@ -44,7 +42,7 @@ in {
         ];
 
         home-manager = {
-          users.${username} = {
+          users.${config.my.username} = {
             home = {
               file = {
                 ".hammerspoon" = {
@@ -56,7 +54,7 @@ in {
           };
         };
       } else {
-        users.users.${username} = {
+        my.user = {
           packages = with pkgs; [
             brave
             firefox

@@ -1,11 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.ripgrep;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
 
 in {
   options = with lib; {
@@ -22,10 +20,10 @@ in {
         RIPGREP_CONFIG_PATH = "${xdg.configHome}/ripgrep/config";
       };
 
-      users.users.${username} = { packages = with pkgs; [ ripgrep ]; };
+      my.user = { packages = with pkgs; [ ripgrep ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/ripgrep" = {

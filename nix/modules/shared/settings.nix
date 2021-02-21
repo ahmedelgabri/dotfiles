@@ -1,4 +1,4 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ config, pkgs, lib, home-manager, options, ... }:
 
 with lib;
 
@@ -16,44 +16,6 @@ let
 
 in {
   options = with types; {
-    # user = mkOption {
-    #   default = { };
-    #   type = attrs;
-    # };
-    #
-    # home = {
-    #   file = mkOption {
-    #     default = { };
-    #     type = attrs;
-    #     description = "Files to place directly in $HOME";
-    #   };
-    #   configFile = mkOption {
-    #     default = { };
-    #     type = attrs;
-    #     description = "Files to place in $XDG_CONFIG_HOME";
-    #   };
-    #   dataFile = mkOption {
-    #     default = { };
-    #     type = attrs;
-    #     description = "Files to place in $XDG_DATA_HOME";
-    #   };
-    #   configHome = mkOption {
-    #     default = users.${config.my.username}.xdg.configHome;
-    #     type = path;
-    #     description = "path to $XDG_CONFIG_HOME";
-    #   };
-    #   dataHome = mkOption {
-    #     default = users.${config.my.username}.xdg.dataHome;
-    #     type = attrs;
-    #     description = "path to $XDG_DATA_HOME";
-    #   };
-    #   cacheHome = mkOption {
-    #     default = users.${config.my.username}.xdg.cacheHome;
-    #     type = attrs;
-    #     description = "path to $XDG_CACHE_HOME";
-    #   };
-    # };
-
     my = {
       name = mkOptStr "Ahmed El Gabri";
       timezone = mkOptStr "Europe/Amsterdam";
@@ -64,55 +26,95 @@ in {
       terminal = mkOptStr "kitty";
       nix_managed = mkOptStr
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
+      user = mkOption { type = options.users.users.type.functor.wrapped; };
+      hm = mkOption { type = options.home-manager.users.type.functor.wrapped; };
+      # hm = mkOption {
+      #   type = options.home-manager.users.type.functor.wrapped;
+      #   default = mkOption {
+      #     file = mkOption {
+      #       default = { };
+      #       type = attrs;
+      #       description = "Files to place directly in $HOME";
+      #     };
+      #     configFile = mkOption {
+      #       default = { };
+      #       type = attrs;
+      #       description = "Files to place in $XDG_CONFIG_HOME";
+      #     };
+      #     dataFile = mkOption {
+      #       default = { };
+      #       type = attrs;
+      #       description = "Files to place in $XDG_DATA_HOME";
+      #     };
+      #     configHome = mkOption {
+      #       default = users.${config.my.username}.xdg.configHome;
+      #       type = path;
+      #       description = "path to $XDG_CONFIG_HOME";
+      #     };
+      #     dataHome = mkOption {
+      #       default = users.${config.my.username}.xdg.dataHome;
+      #       type = attrs;
+      #       description = "path to $XDG_DATA_HOME";
+      #     };
+      #     cacheHome = mkOption {
+      #       default = users.${config.my.username}.xdg.cacheHome;
+      #       type = attrs;
+      #       description = "path to $XDG_CACHE_HOME";
+      #     };
+      #   };
+      # };
+      #
     };
   };
 
-  # config = {
-  #   user = {
-  #     name = config.my.username;
-  #     description = "The primary user account";
-  #     # home = "/Users/${config.my.username}";
-  #     # extraGroups = [ "wheel" ];
-  #     # isNormalUser = true;
-  #     # name = let name = builtins.getEnv "USER";
-  #     # in if elem name [ "" "root" ] then config.my.username else name;
-  #     # uid = 1000;
-  #   };
-  #
-  #   users.users.${config.user.name} = mkAliasDefinitions options.user;
-  #
-  #   home-manager = {
-  #     useUserPackages = true;
-  #
-  #     # I only need a subset of home-manager's capabilities. That is, access to
-  #     # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
-  #     # files easily to my $HOME, but 'home-manager.users.${config.my.username}.home.file.*'
-  #     # is much too long and harder to maintain, so I've made aliases in:
-  #     #
-  #     #   home.file        ->  home-manager.users.ahmed.home.file
-  #     #   home.configFile  ->  home-manager.users.ahmed.home.xdg.configFile
-  #     #   home.dataFile    ->  home-manager.users.ahmed.home.xdg.dataFile
-  #     users.${config.user.name} = {
-  #       xdg = {
-  #         enable = true;
-  #         configHome = mkAliasDefinitions options.home.configHome;
-  #         dataHome = mkAliasDefinitions options.home.dataHome;
-  #         cacheHome = mkAliasDefinitions options.home.cacheHome;
-  #         configFile = mkAliasDefinitions options.home.configFile;
-  #         dataFile = mkAliasDefinitions options.home.dataFile;
-  #       };
-  #       home = {
-  #         stateVersion = "20.09";
-  #         username = config.my.username;
-  #         file = mkAliasDefinitions options.home.file;
-  #       };
-  #
-  #       programs = {
-  #         # Let Home Manager install and manage itself.
-  #         home-manager.enable = true;
-  #       };
-  #     };
-  #   };
-  #
-  # };
+  config = {
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+    };
+
+    # I only need a subset of home-manager's capabilities. That is, access to
+    # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
+    # files easily to my $HOME, but 'home-manager.users.${config.my.username}.home.file.*'
+    # is much too long and harder to maintain, so I've made aliases in:
+    #
+    #   my.hm.file        ->  home-manager.users.ahmed.home.file
+    #   my.hm.configFile  ->  home-manager.users.ahmed.home.xdg.configFile
+    #   my.hm.dataFile    ->  home-manager.users.ahmed.home.xdg.dataFile
+    home-manager.users.${config.my.username} = mkAliasDefinitions options.my.hm;
+
+    my.hm = {
+      xdg = {
+        enable = true;
+        # dataHome = mkAliasDefinitions options.my.hm.dataHome;
+        # cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
+        # configFile = mkAliasDefinitions options.my.hm.configFile;
+        # dataFile = mkAliasDefinitions options.my.hm.dataFile;
+        # configHome = mkAliasDefinitions options.my.hm.configHome;
+      };
+
+      home = {
+        # Necessary for home-manager to work with flakes, otherwise it will
+        # look for a nixpkgs channel.
+        stateVersion =
+          if pkgs.stdenv.isDarwin then "20.09" else config.system.stateVersion;
+        username = config.my.username;
+        # file = mkAliasDefinitions options.my.hm.file;
+      };
+
+      programs = {
+        # Let Home Manager install and manage itself.
+        home-manager.enable = true;
+      };
+    };
+
+    users.users.${config.my.username} = mkAliasDefinitions options.my.user;
+    my.user = {
+      home = if pkgs.stdenv.isDarwin then
+        "/Users/${config.my.username}"
+      else
+        "/home/${config.my.username}";
+      description = "Primary user account";
+    };
+  };
 }

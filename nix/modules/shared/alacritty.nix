@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.alacritty;
@@ -17,10 +15,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ alacritty ]; };
+      my.user = { packages = with pkgs; [ alacritty ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/alacritty" = {

@@ -20,15 +20,23 @@
     ./hardware-configuration.nix
   ];
 
-  my.modules = {
-    mail = { enable = true; };
-    aerc = { enable = true; };
-    youtube-dl.enable = true;
-    irc.enable = true;
-    rescript.enable = true;
-    clojure.enable = true;
-    newsboat.enable = true;
-    gpg.enable = false;
+  my = {
+    # Define a user account. Don't forget to set a password with ‘passwd’.
+    user = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    };
+
+    modules = {
+      mail = { enable = true; };
+      aerc = { enable = true; };
+      youtube-dl.enable = true;
+      irc.enable = true;
+      rescript.enable = true;
+      clojure.enable = true;
+      newsboat.enable = true;
+      gpg.enable = false;
+    };
   };
 
   nix = {
@@ -128,11 +136,6 @@
   # Enable sound.
   sound.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${config.my.username} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [

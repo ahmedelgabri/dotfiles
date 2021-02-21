@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.misc;
@@ -18,7 +16,7 @@ in {
   config = with lib;
     mkIf cfg.enable {
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".gemrc" = { source = ../../../config/.gemrc; };

@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.newsboat;
@@ -17,10 +15,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ newsboat w3m ]; };
+      my.user = { packages = with pkgs; [ newsboat w3m ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/newsboat" = {

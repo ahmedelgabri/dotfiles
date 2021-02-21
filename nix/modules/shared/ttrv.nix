@@ -1,7 +1,5 @@
 { pkgs, lib, config, inputs, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.ttrv;
@@ -18,10 +16,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ ttrv ]; };
+      my.user = { packages = with pkgs; [ ttrv ]; };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
               ".config/ttrv" = {

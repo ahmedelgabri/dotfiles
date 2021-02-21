@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.kotlin;
@@ -16,7 +14,5 @@ in {
   };
 
   config = with lib;
-    mkIf cfg.enable {
-      users.users.${username} = { packages = with pkgs; [ kotlin ktlint ]; };
-    };
+    mkIf cfg.enable { my.user = { packages = with pkgs; [ kotlin ktlint ]; }; };
 }

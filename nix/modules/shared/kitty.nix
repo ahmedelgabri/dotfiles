@@ -1,7 +1,5 @@
 { pkgs, lib, config, options, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.kitty;
@@ -20,7 +18,7 @@ in {
       (if (builtins.hasAttr "homebrew" options) then {
         homebrew.casks = [ "kitty" ];
       } else {
-        users.users.${username} = { packages = with pkgs; [ kitty ]; };
+        my.user = { packages = with pkgs; [ kitty ]; };
       })
 
       {
@@ -29,7 +27,7 @@ in {
         };
 
         home-manager = {
-          users.${username} = {
+          users.${config.my.username} = {
             home = {
               file = {
                 ".config/kitty" = {

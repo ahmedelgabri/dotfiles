@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.clojure;
@@ -17,7 +15,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [
           clojure
           leiningen

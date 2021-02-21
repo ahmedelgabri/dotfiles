@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.git;
@@ -19,7 +17,7 @@ in {
     mkIf cfg.enable {
       environment.systemPackages = with pkgs; [ git ];
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [
           gitAndTools.transcrypt
           # gitAndTools.diff-so-fancy
@@ -33,10 +31,10 @@ in {
       };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
-              ".config/git/config-nix" = {
+              ".config/git/config-nix" = with config.my; {
                 text = ''
                   ; ${nix_managed}
                   ; vim: ft=gitconfig

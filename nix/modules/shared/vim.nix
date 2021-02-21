@@ -34,7 +34,7 @@ in {
         MANPAGER = "${pkgs.neovim-unwrapped}/bin/nvim +Man!";
       };
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [
           fzf
           par

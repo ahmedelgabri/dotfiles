@@ -1,11 +1,9 @@
 { pkgs, lib, config, inputs, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.node;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
   n = pkgs.callPackage ../../pkgs/n.nix { source = inputs.n; };
 
 in {
@@ -26,7 +24,7 @@ in {
         NODE_VERSION_PREFIX = "";
       };
 
-      users.users.${username} = {
+      my.user = {
         packages = with pkgs; [
           n
           nodejs # LTS
@@ -37,10 +35,10 @@ in {
       };
 
       home-manager = {
-        users.${username} = {
+        users.${config.my.username} = {
           home = {
             file = {
-              ".npmrc" = {
+              ".npmrc" = with config.my; {
                 text = ''
                   # ${nix_managed}
                   # vim:ft=conf

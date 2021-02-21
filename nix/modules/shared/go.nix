@@ -1,11 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with config.my;
-
 let
 
   cfg = config.my.modules.go;
-  xdg = config.home-manager.users.${username}.xdg;
+  xdg = config.home-manager.users.${config.my.username}.xdg;
   go_path = "${xdg.dataHome}/go";
 
 in {
@@ -24,6 +22,6 @@ in {
         GOBIN = "${go_path}/bin";
       };
 
-      users.users.${username} = { packages = with pkgs; [ go ]; };
+      my.user = { packages = with pkgs; [ go ]; };
     };
 }
