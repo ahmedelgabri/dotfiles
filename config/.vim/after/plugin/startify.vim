@@ -37,7 +37,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language. My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.', '', '— Tony Hoare, the inventor of Null References'],
       \ ['I think that large objected-oriented programs struggle with increasing complexity as you build this large object graph of mutable objects. You know, trying to understand and keep in your mind what will happen when you call a method and what will the side effects be.', '', '— Rich Hickey'],
       \ ['Most people overestimate what they can do in one year and underestimate what they can do in ten years', '', '— Bill Gates'],
-      \ ['Compound interest is the eighth wonder of the world. He who understands it, earns it. He who doesn’t, pays it.', '', '— Albert Einstein']
+      \ ['Compound interest is the eighth wonder of the world. He who understands it, earns it. He who doesn’t, pays it.', '', '— Albert Einstein'],
+      \ ['Time is the fire in which we burn', '', '— Delmore Schwartz']
       \ ]
 
 function! s:list_commits()
