@@ -116,16 +116,16 @@ print_prompt() {
 install_homebrew() {
 	if ! command -v brew >/dev/null; then
 		log_success "Installing Homebrew"
-		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		brew install ansible transcrypt
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	fi
 }
 
 package_manager() {
 	if [ "$(uname)" == "Darwin" ]; then
-		xcode-select --install
-		true | sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
-		source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+		xcode-select --install &&
+			install_homebrew &&
+			true | sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume &&
+			source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 		if command -v nix-build >/dev/null; then
 			nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
