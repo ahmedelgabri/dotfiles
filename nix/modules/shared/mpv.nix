@@ -16,7 +16,7 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (if (builtins.hasAttr "homebrew" options) then {
-        homebrew.casks = [ "mpv" ];
+        homebrew.casks = [ "mpv" "iina" ];
       } else {
         my.user = { packages = with pkgs; [ mpv ]; };
       })
