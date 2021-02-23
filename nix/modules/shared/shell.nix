@@ -81,6 +81,7 @@ in {
             pass
             lookatme
             mosh
+            translate-shell
           ];
         };
 
@@ -130,7 +131,7 @@ in {
             DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
             HOMEBREW_NO_ANALYTICS = "1";
             GATSBY_TELEMETRY_DISABLED = "1";
-            ADBLOCK = "1";
+            ADBLOCK = "true";
 
             ############### Homebrew
             HOMEBREW_INSTALL_BADGE = "⚽️";
