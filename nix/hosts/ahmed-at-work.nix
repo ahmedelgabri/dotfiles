@@ -41,6 +41,7 @@
     "obs"
     "obs-virtualcam"
     "vagrant"
+    "ngrok"
   ];
 
   # Requires to be logged in to the AppStore
