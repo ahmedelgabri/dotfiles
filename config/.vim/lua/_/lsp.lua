@@ -82,7 +82,7 @@ local on_attach = function(client)
   if has_lspsaga then
     utils.bmap(
       "n",
-      "<C-]>",
+      "gd",
       "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>",
       map_opts
     )
@@ -156,7 +156,6 @@ local on_attach = function(client)
       )
     end
   else
-    utils.bmap("n", "<C-]>", "<Cmd>lua vim.lsp.buf.definition()<CR>", map_opts)
     utils.bmap("n", "ga", "<Cmd>lua vim.lsp.buf.code_action()<CR>", map_opts)
     utils.bmap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", map_opts)
     utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
@@ -177,6 +176,7 @@ local on_attach = function(client)
     )
   end
 
+  utils.bmap("n", "<C-]>", "<Cmd>lua vim.lsp.buf.definition()<CR>", map_opts)
   utils.bmap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", map_opts)
   utils.bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", map_opts)
   -- utils.bmap(
