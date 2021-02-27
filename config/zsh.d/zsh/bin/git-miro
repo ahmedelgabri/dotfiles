@@ -33,6 +33,19 @@ function get_url() {
 	fi
 }
 
+function get_build_url() {
+	local base_url=$(get_url)
+	local branch_name=$(git symbolic-ref HEAD)
+
+	if [[ -z "$base_url" ]]; then
+		echo "$PARSE_ERROR_MSG"
+		exit 1
+	fi
+
+	local build_url=$(printf "%s/builds?at=%s" "$base_url" "$branch_name")
+	printf "$build_url"
+}
+
 function pull_request() {
 	local base_url=$(get_url)
 	local branch_name=$(git symbolic-ref HEAD)
@@ -40,17 +53,17 @@ function pull_request() {
 	if [[ -z "$base_url" ]]; then
 		echo "$PARSE_ERROR_MSG"
 		exit 1
+	fi
+
+	local pr_url=$(printf "%s/pull-requests?create&sourceBranch=%s&targetBranch=%s" "$base_url" "$branch_name" "${1:-master}")
+
+	printf "Opening pull-request at %s\n" "$pr_url"
+
+	if [[ "$PLATFORM" == 'Darwin' ]]; then
+		open "$pr_url"
 	else
-		local pr_url=$(printf "%s/pull-requests?create&sourceBranch=%s&targetBranch=%s" "$base_url" "$branch_name" "${1:-master}")
-
-		printf "Opening pull-request at %s\n" "$pr_url"
-
-		if [[ "$PLATFORM" == 'Darwin' ]]; then
-			open "$pr_url"
-		else
-			echo "$UNSUPPORTED_MSG"
-			exit 1
-		fi
+		echo "$UNSUPPORTED_MSG"
+		exit 1
 	fi
 }
 
@@ -61,17 +74,17 @@ function compare() {
 	if [[ -z "$base_url" ]]; then
 		echo "$PARSE_ERROR_MSG"
 		exit 1
+	fi
+
+	local pr_url=$(printf "%s/compare?diff&sourceBranch=%s&targetBranch=%s" "$base_url" "$branch_name" "${1:-master}")
+
+	printf "Opening compare at %s\n" "$pr_url"
+
+	if [[ "$PLATFORM" == 'Darwin' ]]; then
+		open "$pr_url"
 	else
-		local pr_url=$(printf "%s/compare?diff&sourceBranch=%s&targetBranch=%s" "$base_url" "$branch_name" "${1:-master}")
-
-		printf "Opening compare at %s\n" "$pr_url"
-
-		if [[ "$PLATFORM" == 'Darwin' ]]; then
-			open "$pr_url"
-		else
-			echo "$UNSUPPORTED_MSG"
-			exit 1
-		fi
+		echo "$UNSUPPORTED_MSG"
+		exit 1
 	fi
 }
 
@@ -81,35 +94,38 @@ function open_repo() {
 	if [[ -z "$base_url" ]]; then
 		echo "$PARSE_ERROR_MSG"
 		exit 1
+	fi
+
+	if [[ "$PLATFORM" == 'Darwin' ]]; then
+		open "$base_url"
 	else
-		if [[ "$PLATFORM" == 'Darwin' ]]; then
-			open "$base_url"
-		else
-			echo "$UNSUPPORTED_MSG"
-			exit 1
-		fi
+		echo "$UNSUPPORTED_MSG"
+		exit 1
 	fi
 }
 
 function open_build() {
-	local base_url=$(get_url)
-	local branch_name=$(git symbolic-ref HEAD)
+	local build_url=$(get_build_url)
+	local branch_name=$(basename "$(git symbolic-ref HEAD)")
 
-	if [[ -z "$base_url" ]]; then
-		echo "$PARSE_ERROR_MSG"
+	if [[ "$branch_name" = "master" ]]; then
+		echo "FIX ME: Doesn't work with master yet"
 		exit 1
-	else
-		local pr_url=$(printf "%s/builds?at=%s" "$base_url" "$branch_name")
-
-		printf "Opening build for at %s\n" "$branch_name"
-
-		if [[ "$PLATFORM" == 'Darwin' ]]; then
-			open "$pr_url"
-		else
-			echo "$UNSUPPORTED_MSG"
-			exit 1
-		fi
 	fi
+
+	local base_url=$(printf "https://build.devrtb.com/rest/api/latest/plan/RTB-CLNT/branch/%s.json" "$branch_name")
+	local branch_data=$(curl --silent -H "Authorization: Bearer $BAMBOO_PERSONAL_TOKEN" "$base_url" | jq --raw-output '.latestResult.link.href')
+	local latest_results=$(curl --silent -H "Authorization: Bearer $BAMBOO_PERSONAL_TOKEN" "$branch_data".json | jq '{successful, finished}')
+	local finished=$(echo "$latest_results" | jq .finished)
+	local successful=$(echo "$latest_results" | jq .successful)
+
+	cat <<EOF
+
+URL: $build_url
+
+Finished: $finished
+Succesful: $successful
+EOF
 }
 
 function usage() {
@@ -152,7 +168,7 @@ help | -h | --help)
 	;;
 *)
 	echo ""
-	echo "Only open, pr & pull-request commands are supported"
+	echo "Command not supported check --help"
 	usage
 	;;
 esac
