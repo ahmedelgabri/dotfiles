@@ -15,11 +15,7 @@ local has_extensions = pcall(require, "lsp_extensions")
 local utils = require "_.utils"
 local map_opts = {noremap = true, silent = true}
 
-lspsaga.init_lsp_saga(
-  {
-    border_style = 2
-  }
-)
+lspsaga.init_lsp_saga()
 
 require "_.completion".setup()
 
@@ -151,10 +147,6 @@ local on_attach = function(client)
   utils.augroup(
     "LSP",
     function()
-      vim.api.nvim_command(
-        "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
-      )
-
       if client.resolved_capabilities.document_highlight then
         vim.api.nvim_command(
           "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()"
