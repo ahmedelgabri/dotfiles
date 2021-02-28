@@ -76,149 +76,67 @@ vim.fn.sign_define(
 
 vim.api.nvim_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
+local default_mappings = {
+  ["<leader>a"] = {"<Cmd>lua vim.lsp.buf.code_action()<CR>"},
+  ["<leader>f"] = {"<cmd>lua vim.lsp.buf.references()<CR>"},
+  ["<leader>r"] = {"<cmd>lua vim.lsp.buf.rename()<CR>"},
+  ["K"] = {"<Cmd>lua vim.lsp.buf.hover()<CR>"},
+  ["<leader>ld"] = {"<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
+  ["[d"] = {"<cmd>lua vim.lsp.diagnostic.goto_next()<cr>"},
+  ["]d"] = {"<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>"},
+  ["<C-]>"] = {"<Cmd>lua vim.lsp.buf.definition()<CR>"},
+  ["<leader>D"] = {"<Cmd>lua vim.lsp.buf.declaration()<CR>"},
+  ["<leader>i"] = {"<cmd>lua vim.lsp.buf.implementation()<CR>"}
+}
+
+local lspsaga_mappings = {
+  ["<leader>d"] = {
+    "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>"
+  },
+  ["<leader>a"] = {
+    "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
+    "<Cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>"
+  },
+  ["<leader>f"] = {"<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>"},
+  ["<leader>s"] = {
+    "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>"
+  },
+  ["<leader>r"] = {"<cmd>lua require'lspsaga.rename'.rename()<CR>"},
+  ["<leader>ld"] = {
+    "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>"
+  },
+  ["[d"] = {
+    "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>"
+  },
+  ["]d"] = {
+    "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>"
+  },
+  ["K"] = {"<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>"},
+  ["<C-f>"] = {"<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>"},
+  ["<C-b>"] = {"<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>"}
+}
+
+local mappings =
+  vim.tbl_extend(
+  "force",
+  default_mappings,
+  has_lspsaga and lspsaga_mappings or {}
+)
+
 local on_attach = function(client)
-  if has_lspsaga then
-    utils.bmap(
-      "n",
-      "<leader>d",
-      "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>a",
-      "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "v",
-      "<leader>a",
-      "<Cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>f",
-      "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>s",
-      "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>r",
-      "<cmd>lua require'lspsaga.rename'.rename()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>ld",
-      "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "[d",
-      "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "]d",
-      "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>",
-      map_opts
-    )
-
-    if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
-      utils.bmap(
-        "n",
-        "K",
-        "<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>",
-        map_opts
-      )
+  for lhs, rhs in pairs(mappings) do
+    if lhs == "K" then
+      if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
+        utils.bmap("n", lhs, rhs[1], map_opts)
+      end
+    else
+      utils.bmap("n", lhs, rhs[1], map_opts)
+      if #rhs == 2 then
+        utils.bmap("v", lhs, rhs[2], map_opts)
+      end
     end
-
-    utils.bmap(
-      "n",
-      "<C-f>",
-      "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<C-b>",
-      "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>",
-      map_opts
-    )
-  else
-    utils.bmap(
-      "n",
-      "<leader>a",
-      "<Cmd>lua vim.lsp.buf.code_action()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "<leader>f",
-      "<cmd>lua vim.lsp.buf.references()<CR>",
-      map_opts
-    )
-
-    utils.bmap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", map_opts)
-
-    if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
-      utils.bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", map_opts)
-    end
-
-    utils.bmap(
-      "n",
-      "<leader>ld",
-      "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "[d",
-      "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>",
-      map_opts
-    )
-
-    utils.bmap(
-      "n",
-      "]d",
-      "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>",
-      map_opts
-    )
   end
 
-  utils.bmap("n", "<C-]>", "<Cmd>lua vim.lsp.buf.definition()<CR>", map_opts)
-  utils.bmap(
-    "n",
-    "<leader>D",
-    "<Cmd>lua vim.lsp.buf.declaration()<CR>",
-    map_opts
-  )
-  utils.bmap(
-    "n",
-    "<leader>i",
-    "<cmd>lua vim.lsp.buf.implementation()<CR>",
-    map_opts
-  )
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
