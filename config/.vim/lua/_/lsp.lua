@@ -140,9 +140,9 @@ local on_attach = function(client)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
-      hi! LspReferenceRead cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
-      hi! LspReferenceText cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
-      hi! LspReferenceWrite cterm=bold ctermbg=red gui=italic guibg=LightYellow guifg=black
+      hi! link LspReferenceRead SpecialKey
+      hi! link LspReferenceText SpecialKey
+      hi! link LspReferenceWrite SpecialKey
       ]],
       false
     )
