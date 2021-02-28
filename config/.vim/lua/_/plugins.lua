@@ -122,7 +122,13 @@ local plugins = {
         end
       },
       {"https://github.com/tjdevries/nlua.nvim"},
-      {"https://github.com/glepnir/lspsaga.nvim"}
+      {"https://github.com/glepnir/lspsaga.nvim"},
+      {
+        "https://github.com/onsails/lspkind-nvim",
+        config = function()
+          require "lspkind".init()
+        end
+      }
     }
   },
   {
