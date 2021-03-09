@@ -15,14 +15,9 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      launchd.user.agents."setenv.lang" = {
-        command = "launchctl setenv LANG en_US.UTF-8";
-        serviceConfig = { RunAtLoad = true; };
-      };
-
-      launchd.user.agents."setenv.lc_time" = {
-        command = "launchctl setenv LC_TIME en_GB.UTF-8";
-        serviceConfig = { RunAtLoad = true; };
+      environment.variables = {
+        LANG = "en_US.UTF-8";
+        LC_TIME = "en_GB.UTF-8";
       };
 
       system = {

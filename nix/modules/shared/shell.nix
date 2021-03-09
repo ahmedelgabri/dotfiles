@@ -82,6 +82,7 @@ in {
             lookatme
             mosh
             translate-shell
+            rename
           ];
         };
 
