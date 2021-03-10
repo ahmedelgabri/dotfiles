@@ -38,4 +38,8 @@ function M.get_color(synID, what, mode)
   return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(synID)), what, mode)
 end
 
+function M.t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 return M
