@@ -233,6 +233,7 @@
   https://charity.wtf/feed/ "Blog"
   https://brandur.org/articles.atom "Blog" "Programming"
   https://tkdodo.eu/blog/rss.xml "Blog" "TypeScript"
+  https://fettblog.eu/feed.xml "Blog" "TypeScript" "Rust"
 # }}}
 
 # Browsers {{{
