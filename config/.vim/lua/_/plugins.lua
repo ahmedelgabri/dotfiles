@@ -22,6 +22,7 @@ if not packer_exists then
 
   print(out)
   print("Downloading packer.nvim...")
+  vim.fn.execute("packadd packer.nvim")
 
   return
 end
@@ -361,8 +362,6 @@ packer.init(
 
 return packer.startup(
   function(use)
-    for _, config in ipairs(plugins) do
-      use(config)
-    end
+    use(plugins)
   end
 )
