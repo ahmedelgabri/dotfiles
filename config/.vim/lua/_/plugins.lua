@@ -171,7 +171,10 @@ local plugins = {
   },
   {
     "https://github.com/plasticboy/vim-markdown",
-    requires = {{"https://github.com/godlygeek/tabular"}}
+    requires = {
+      {"https://github.com/godlygeek/tabular"},
+      {"https://github.com/npxbr/glow.nvim", cmd = "Glow"}
+    }
   },
   {"https://github.com/jez/vim-github-hub"},
   -- {

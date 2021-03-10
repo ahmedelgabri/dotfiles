@@ -83,6 +83,7 @@ in {
             mosh
             translate-shell
             rename
+            glow
           ];
         };
 
