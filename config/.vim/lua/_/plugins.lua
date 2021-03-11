@@ -142,6 +142,7 @@ local plugins = {
   },
   {
     "https://github.com/nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
     cond = "vim.fn.has('nvim-0.5.0')",
     config = function()
       require "_.treesitter"
@@ -193,7 +194,6 @@ local plugins = {
   },
   {"https://github.com/guns/vim-sexp", ft = lisps},
   {"https://github.com/Olical/conjure", tag = "v4.14.0", ft = lisps},
-  -- {"https://github.com/sheerun/vim-polyglot"},
   -- }}}
 
   -- Linters & Code quality {{{
