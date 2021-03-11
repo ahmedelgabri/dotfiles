@@ -4,7 +4,7 @@
     extraOptions = "experimental-features = nix-command flakes";
     binaryCaches = [
       "https://cache.nixos.org"
-      # "https://nix-community.cachix.org"
+      "https://nix-community.cachix.org"
       "https://nixpkgs.cachix.org"
     ];
     binaryCachePublicKeys = [
