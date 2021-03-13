@@ -178,12 +178,6 @@ local plugins = {
     }
   },
   {"https://github.com/jez/vim-github-hub"},
-  -- {
-  --   "https://github.com/fatih/vim-go",
-  --   run = ":GoUpdateBinaries",
-  --   opt = true,
-  --   ft = {"go"}
-  -- },
   -- Clojure
   {
     "https://github.com/junegunn/rainbow_parentheses.vim",

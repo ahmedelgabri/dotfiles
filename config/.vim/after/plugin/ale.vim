@@ -44,7 +44,8 @@ let g:rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'typescript': ['eslint'],
-      \ 'rust': ['analyzer']
+      \ 'rust': ['analyzer'],
+      \ 'go': ['gopls']
       \}
 let g:ale_nix_nixpkgsfmt_executable = 'nixfmt'
 

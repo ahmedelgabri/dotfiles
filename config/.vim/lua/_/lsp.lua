@@ -198,6 +198,13 @@ local servers = {
   rust_analyzer = {
     capabilities = capabilities
   },
+  gopls = {
+    cmd = {"gopls", "serve"},
+    root_dir = function(fname)
+      return nvim_lsp.util.root_pattern("go.mod", ".git")(fname) or
+        vim.fn.getcwd()
+    end
+  },
   tsserver = {
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("tsconfig.json")(fname) or
