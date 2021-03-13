@@ -178,6 +178,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
   }
 )
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 require("nlua.lsp.nvim").setup(
   nvim_lsp,
   {
@@ -186,15 +189,12 @@ require("nlua.lsp.nvim").setup(
   }
 )
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 local servers = {
-  ocamlls = {},
   cssls = {},
   bashls = {},
   vimls = {},
   pyls = {},
+  dockerls = {},
   rust_analyzer = {
     capabilities = capabilities
   },

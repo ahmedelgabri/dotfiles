@@ -32,6 +32,7 @@ M.setup = function()
       enabled = true,
       min_length = 2,
       debug = false,
+      preselect = "always",
       source = {
         path = true,
         buffer = true,
