@@ -5,9 +5,13 @@ let g:VIMDATA = exists('*stdpath') ? stdpath('data')   : expand(exists('$XDG_DAT
 
 
 " Skip vim plugins {{{
-let g:loaded_rrhelper = 1
 " Skip loading menu.vim, saves ~100ms
 let g:did_install_default_menus = 1
+let g:loaded_getscript          = 1
+let g:loaded_getscriptPlugin    = 1
+let g:loaded_vimball            = 1
+let g:loaded_vimballPlugin      = 1
+let g:loaded_rrhelper           = 1
 " }}}
 
 " Providers {{{
@@ -16,12 +20,8 @@ let g:did_install_default_menus = 1
 if has('nvim')
   " Python This must be here becasue it makes loading vim VERY SLOW otherwise
   let g:python_host_skip_check = 1
-  if executable('python2')
-    let g:python_host_prog = exepath('python2')
-  else
-    let g:loaded_python_provider = 0
-  endif
-
+  " Disable python2 provider
+  let g:loaded_python_provider = 0
 
   let g:python3_host_skip_check = 1
   if executable('python3')
