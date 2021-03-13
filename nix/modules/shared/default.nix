@@ -31,6 +31,7 @@
     ./gui.nix
     ./clojure.nix
     ./python.nix
+    ./syncthing.nix
   ];
 
   my.modules = {
@@ -48,11 +49,12 @@
     ttrv.enable = true;
     misc.enable = true;
     vim.enable = true;
+    gui.enable = true;
+    syncthing.enable = true;
 
     node.enable = true;
-    go.enable = false;
+    go.enable = true;
     rust.enable = false;
-    gui.enable = true;
   };
 
 }
