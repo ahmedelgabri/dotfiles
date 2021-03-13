@@ -42,8 +42,6 @@ in {
           ripgrep
           # editorconfig-checker # do I use it?
           proselint # ???
-          yamllint
-          hadolint # Docker linter
           nixfmt
           vim-vint
           shellcheck
@@ -52,13 +50,10 @@ in {
           nodePackages.prettier
           nodePackages.bash-language-server
           nodePackages.dockerfile-language-server-nodejs
-          nodePackages.ocaml-language-server
           nodePackages.typescript-language-server
-          nodePackages.yaml-language-server
           nodePackages.vim-language-server
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
-          nodePackages.vscode-json-languageserver-bin
           neuron-notes
         ];
       };
