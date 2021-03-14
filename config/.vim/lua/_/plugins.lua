@@ -55,7 +55,6 @@ local plugins = {
   {"https://github.com/nelstrom/vim-visual-star-search"},
   {"https://github.com/tpope/tpope-vim-abolish"},
   {"https://github.com/tpope/vim-eunuch"},
-  -- {'https://github.com/tpope/vim-projectionist'},
   {"https://github.com/tpope/vim-repeat"},
   {
     "https://github.com/machakann/vim-sandwich",
@@ -148,6 +147,8 @@ local plugins = {
       require "_.treesitter"
     end
   },
+  {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
+  {"https://github.com/p00f/nvim-ts-rainbow"},
   {
     "https://github.com/nvim-treesitter/playground",
     cmd = "TSPlaygroundToggle"
@@ -179,13 +180,6 @@ local plugins = {
   },
   {"https://github.com/jez/vim-github-hub"},
   -- Clojure
-  {
-    "https://github.com/junegunn/rainbow_parentheses.vim",
-    ft = lisps,
-    cmd = "RainbowParentheses",
-    -- event = "InsertEnter *",
-    config = "vim.cmd[[RainbowParentheses]]"
-  },
   {"https://github.com/guns/vim-sexp", ft = lisps},
   {"https://github.com/Olical/conjure", tag = "v4.14.0", ft = lisps},
   -- }}}
