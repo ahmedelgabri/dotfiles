@@ -234,6 +234,7 @@
   https://brandur.org/articles.atom "Blog" "Programming"
   https://tkdodo.eu/blog/rss.xml "Blog" "TypeScript"
   https://fettblog.eu/feed.xml "Blog" "TypeScript" "Rust"
+  https://antfu.me/feed.xml "Blog" "Vue" "JavaScript" "TypeScript"
 # }}}
 
 # Browsers {{{
