@@ -36,7 +36,6 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/master";
-    nixpkgs-unstable.url = "nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -93,46 +92,116 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = { self, ... }@inputs: {
-    darwinConfigurations = {
-      "pandoras-box" = inputs.darwin.lib.darwinSystem {
-        inputs = inputs;
-        modules = [
-          inputs.home-manager.darwinModules.home-manager
-          ./nix/hosts/shared.nix
-          ./nix/hosts/pandoras-box.nix
-        ];
+  outputs = { self, ... }@inputs:
+    let
+      sharedHostsConfig = { config, pkgs, lib, options, ... }: {
+        nix = {
+          package = pkgs.nixFlakes;
+          extraOptions = "experimental-features = nix-command flakes";
+          binaryCaches = [
+            "https://cache.nixos.org"
+            "https://nix-community.cachix.org"
+            "https://nixpkgs.cachix.org"
+          ];
+          binaryCachePublicKeys = [
+            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+            "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
+          ];
+          gc = {
+            automatic = true;
+            options = "--delete-older-than 3d";
+          };
+        };
+
+        fonts = (lib.mkMerge [
+          # [note] Remove this condition when `nix-darwin` aligns with NixOS
+          (if (builtins.hasAttr "fontDir" options.fonts) then {
+            fontDir.enable = true;
+          } else {
+            enableFontDir = true;
+          })
+          { fonts = with pkgs; [ pragmatapro ]; }
+        ]);
+
+        nixpkgs = {
+          config = { allowUnfree = true; };
+          overlays = [ self.overlay ];
+        };
+
+        time.timeZone = config.my.timezone;
       };
 
-      "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
-        inputs = inputs;
-        modules = [
-          inputs.home-manager.darwinModules.home-manager
-          ./nix/hosts/shared.nix
-          ./nix/hosts/ahmed-at-work.nix
-        ];
+    in {
+      overlay = (final: prev: {
+        pragmatapro = (prev.callPackage ./nix/pkgs/pragmatapro.nix { });
+
+        neuron-notes =
+          (prev.callPackage "${inputs.neuron-notes-master}/project.nix"
+            { }).neuron;
+
+        comma = import inputs.comma { inherit (prev) pkgs; };
+
+        neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {
+          version = "master";
+          src = inputs.neovim-nightly;
+          buildInputs = oldAttrs.buildInputs ++ [ prev.pkgs.tree-sitter ];
+        });
+
+        pure-prompt = prev.pure-prompt.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
+        });
+
+        python3 = prev.python3.override {
+          packageOverrides = final: prev: {
+            python-language-server =
+              prev.python-language-server.overridePythonAttrs
+              (old: rec { doCheck = false; });
+          };
+        };
+      });
+
+      darwinConfigurations = {
+        "pandoras-box" = inputs.darwin.lib.darwinSystem {
+          inputs = inputs;
+          modules = [
+            inputs.home-manager.darwinModules.home-manager
+            ./nix/modules/shared
+            sharedHostsConfig
+            ./nix/hosts/pandoras-box.nix
+          ];
+        };
+
+        "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
+          inputs = inputs;
+          modules = [
+            inputs.home-manager.darwinModules.home-manager
+            ./nix/modules/shared
+            sharedHostsConfig
+            ./nix/hosts/ahmed-at-work.nix
+          ];
+        };
+      };
+
+      # for convenience
+      # nix build './#darwinConfigurations.pandoras-box.system'
+      # vs
+      # nix build './#pandoras-box'
+      # Move them to `outputs.packages.<system>.name`
+      pandoras-box = self.darwinConfigurations.pandoras-box.system;
+      ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
+
+      # [todo] very alpha, needs work
+      nixosConfigurations = {
+        "nixos" = inputs.nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.home-manager.nixosModules.home-manager
+            ./nix/hosts/shared.nix
+            ./nix/hosts/nixos
+          ];
+        };
       };
     };
-
-    # for convenience
-    # nix build './#darwinConfigurations.pandoras-box.system'
-    # vs
-    # nix build './#pandoras-box'
-    # Move them to `outputs.packages.<system>.name`
-    pandoras-box = self.darwinConfigurations.pandoras-box.system;
-    ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
-
-    # [todo] very alpha, needs work
-    nixosConfigurations = {
-      "nixos" = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          inputs.home-manager.nixosModules.home-manager
-          ./nix/hosts/shared.nix
-          ./nix/hosts/nixos
-        ];
-      };
-    };
-  };
 }
