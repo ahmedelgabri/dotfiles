@@ -38,7 +38,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['I think that large objected-oriented programs struggle with increasing complexity as you build this large object graph of mutable objects. You know, trying to understand and keep in your mind what will happen when you call a method and what will the side effects be.', '', '— Rich Hickey'],
       \ ['Most people overestimate what they can do in one year and underestimate what they can do in ten years', '', '— Bill Gates'],
       \ ['Compound interest is the eighth wonder of the world. He who understands it, earns it. He who doesn’t, pays it.', '', '— Albert Einstein'],
-      \ ['Time is the fire in which we burn', '', '— Delmore Schwartz']
+      \ ['Time is the fire in which we burn', '', '— Delmore Schwartz'],
+      \ ['A ship in harbor is safe, but that is not what ships are built for.', '— John A. Shedd']
       \ ]
 
 function! s:list_commits()
