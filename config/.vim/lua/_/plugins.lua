@@ -99,7 +99,7 @@ local plugins = {
     end
   },
   {"https://github.com/tomtom/tcomment_vim"},
-  {"https://github.com/wellle/targets.vim"},
+  -- {"https://github.com/wellle/targets.vim"},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
   {"https://github.com/tommcdo/vim-lion"},
