@@ -6,10 +6,12 @@ let
 
   cfg = config.my.modules.aerc;
 
-in {
+in
+{
   options = with lib; {
     my.modules = {
-      aerc = { # [todo] support multiple accounts
+      aerc = {
+        # [todo] support multiple accounts
         enable = mkEnableOption ''
           Whether to enable aerc module
         '';

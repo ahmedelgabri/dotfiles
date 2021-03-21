@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.kotlin;
 
-in {
+in
+{
   options = with lib; {
     my.modules.kotlin = {
       enable = mkEnableOption ''

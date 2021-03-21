@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.clojure;
 
-in {
+in
+{
   options = with lib; {
     my.modules.clojure = {
       enable = mkEnableOption ''

@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.go;
 
-in {
+in
+{
   options = with lib; {
     my.modules.go = {
       enable = mkEnableOption ''

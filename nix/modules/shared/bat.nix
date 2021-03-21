@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.bat;
 
-in {
+in
+{
   options = with lib; {
     my.modules.bat = {
       enable = mkEnableOption ''

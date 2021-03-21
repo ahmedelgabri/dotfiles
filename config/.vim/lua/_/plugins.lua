@@ -278,7 +278,7 @@ local plugins = {
             nix = {
               function()
                 return {
-                  exe = "nixfmt",
+                  exe = "nixpkgs-fmt",
                   stdin = true
                 }
               end

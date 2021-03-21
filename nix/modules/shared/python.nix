@@ -3,7 +3,8 @@
 let
 
   cfg = config.my.modules.python;
-in {
+in
+{
   options = with lib; {
     my.modules.python = {
       enable = mkEnableOption ''

@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.alacritty;
 
-in {
+in
+{
   options = with lib; {
     my.modules.alacritty = {
       enable = mkEnableOption ''

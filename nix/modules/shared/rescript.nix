@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.rescript;
 
-in {
+in
+{
   options = with lib; {
     my.modules.rescript = {
       enable = mkEnableOption ''

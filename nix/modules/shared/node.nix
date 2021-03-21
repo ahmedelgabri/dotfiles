@@ -5,7 +5,8 @@ let
   cfg = config.my.modules.node;
   n = pkgs.callPackage ../../pkgs/n.nix { source = inputs.n; };
 
-in {
+in
+{
   options = with lib; {
     my.modules.node = {
       enable = mkEnableOption ''

@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.macos;
 
-in {
+in
+{
   options = with lib; {
     my.modules.macos = {
       enable = mkEnableOption ''

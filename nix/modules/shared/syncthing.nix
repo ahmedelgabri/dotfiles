@@ -5,7 +5,8 @@ let
   cfg = config.my.modules.syncthing;
   homeDir = config.my.user.home;
 
-in {
+in
+{
   options = with lib; {
     my.modules.syncthing = {
       enable = mkEnableOption ''

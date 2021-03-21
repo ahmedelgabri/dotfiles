@@ -18,7 +18,8 @@ let
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
-in {
+in
+{
   options = with lib; {
     my.modules.shell = {
       enable = mkEnableOption ''
@@ -200,8 +201,8 @@ in {
             "${z}/share/z.sh"
             ../../../config/zsh.d/.zshrc
           ]) + ''
-            fpath=($fpath ${pkgs.pure-prompt}/share/zsh/site-functions ${pkgs.nix-zsh-completions}/share/zsh/site-functions ${pkgs.gitAndTools.hub}/share/zsh/site-functions)
-          '';
+          fpath=($fpath ${pkgs.pure-prompt}/share/zsh/site-functions ${pkgs.nix-zsh-completions}/share/zsh/site-functions ${pkgs.gitAndTools.hub}/share/zsh/site-functions)
+        '';
 
         promptInit = "autoload -U promptinit; promptinit; prompt pure";
       };

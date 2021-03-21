@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.mpv;
 
-in {
+in
+{
   options = with lib; {
     my.modules.mpv = {
       enable = mkEnableOption ''

@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.kitty;
 
-in {
+in
+{
   options = with lib; {
     my.modules.kitty = {
       enable = mkEnableOption ''

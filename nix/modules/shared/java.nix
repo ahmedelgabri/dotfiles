@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.java;
 
-in {
+in
+{
   options = with lib; {
     my.modules.java = {
       enable = mkEnableOption ''

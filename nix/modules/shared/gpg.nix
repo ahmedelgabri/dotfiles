@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.gpg;
 
-in {
+in
+{
   options = with lib; {
     my.modules.gpg = {
       enable = mkEnableOption ''

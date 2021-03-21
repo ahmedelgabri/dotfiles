@@ -8,10 +8,12 @@ let
   homeDir = config.my.user.home;
   xdg = config.home-manager.users.${username}.xdg;
 
-in {
+in
+{
   options = with lib; {
     my.modules = {
-      mail = { # [todo] support multiple accounts
+      mail = {
+        # [todo] support multiple accounts
         enable = mkEnableOption ''
           Whether to enable mail module
         '';
@@ -177,7 +179,7 @@ in {
               color sidebar_highlight black ${cfg.accent}
               color sidebar_indicator ${cfg.accent} color0
               color indicator black ${cfg.accent} # currently selected message
-                '';
+            '';
           };
 
           ".config/neomutt/config/hooks.mutt" = {
@@ -236,10 +238,10 @@ in {
               # Here is where you can let notmuch know how you would like to be
               # addressed. Valid settings are
               #
-              #	name		Your full name.
-              #	primary_email	Your primary email address.
-              #	other_email	A list (separated by ';') of other email addresses
-              #			at which you receive email.
+              #  name    Your full name.
+              #  primary_email  Your primary email address.
+              #  other_email  A list (separated by ';') of other email addresses
+              #      at which you receive email.
               #
               # Notmuch will use the various email addresses configured here when
               # formatting replies. It will avoid including your own addresses in the
@@ -256,15 +258,15 @@ in {
               #
               # The following options are supported here:
               #
-              #	tags	A list (separated by ';') of the tags that will be
-              #		added to all messages incorporated by "notmuch new".
+              #  tags  A list (separated by ';') of the tags that will be
+              #    added to all messages incorporated by "notmuch new".
               #
-              #	ignore	A list (separated by ';') of file and directory names
-              #		that will not be searched for messages by "notmuch new".
+              #  ignore  A list (separated by ';') of file and directory names
+              #    that will not be searched for messages by "notmuch new".
               #
-              #		NOTE: *Every* file/directory that goes by one of those
-              #		names will be ignored, independent of its depth/location
-              #		in the mail store.
+              #    NOTE: *Every* file/directory that goes by one of those
+              #    names will be ignored, independent of its depth/location
+              #    in the mail store.
               #
 
               [new]
@@ -275,10 +277,10 @@ in {
               #
               # The following option is supported here:
               #
-              #	exclude_tags
-              #		A ;-separated list of tags that will be excluded from
-              #		search results by default.  Using an excluded tag in a
-              #		query will override that exclusion.
+              #  exclude_tags
+              #    A ;-separated list of tags that will be excluded from
+              #    search results by default.  Using an excluded tag in a
+              #    query will override that exclusion.
               #
 
               [search]
@@ -289,22 +291,22 @@ in {
               #
               # The following option is supported here:
               #
-              #	synchronize_flags      Valid values are true and false.
+              #  synchronize_flags      Valid values are true and false.
               #
-              #	If true, then the following maildir flags (in message filenames)
-              #	will be synchronized with the corresponding notmuch tags:
+              #  If true, then the following maildir flags (in message filenames)
+              #  will be synchronized with the corresponding notmuch tags:
               #
-              #		Flag	Tag
-              #		----	-------
-              #		D	draft
-              #		F	flagged
-              #		P	passed
-              #		R	replied
-              #		S	unread (added when 'S' flag is not present)
+              #    Flag  Tag
+              #    ----  -------
+              #    D  draft
+              #    F  flagged
+              #    P  passed
+              #    R  replied
+              #    S  unread (added when 'S' flag is not present)
               #
-              #	The "notmuch new" command will notice flag changes in filenames
-              #	and update tags, while the "notmuch tag" and "notmuch restore"
-              #	commands will notice tag changes and update flags in filenames
+              #  The "notmuch new" command will notice flag changes in filenames
+              #  and update tags, while the "notmuch tag" and "notmuch restore"
+              #  commands will notice tag changes and update flags in filenames
               #
 
               [maildir]
@@ -314,8 +316,8 @@ in {
               #
               # The following option is supported here:
               #
-              #	gpg_path
-              #		binary name or full path to invoke gpg.
+              #  gpg_path
+              #    binary name or full path to invoke gpg.
               #
 
               [crypto]

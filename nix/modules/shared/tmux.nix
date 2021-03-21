@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.tmux;
 
-in {
+in
+{
   options = with lib; {
     my.modules.tmux = {
       enable = mkEnableOption ''

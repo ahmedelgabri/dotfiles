@@ -4,7 +4,8 @@
 let
 
   cfg = config.my.modules.irc;
-in {
+in
+{
   options = with lib; {
     my.modules.irc = {
       enable = mkEnableOption ''
@@ -26,7 +27,7 @@ in {
                 scripts = with prev.weechatScripts;
                   [ wee-slack weechat-autosort colorize_nicks ]
                   ++ final.lib.optionals (!final.stdenv.isDarwin)
-                  [ weechat-notify-send ];
+                    [ weechat-notify-send ];
               };
             };
           })

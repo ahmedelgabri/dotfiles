@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.youtube-dl;
 
-in {
+in
+{
   options = with lib; {
     my.modules.youtube-dl = {
       enable = mkEnableOption ''

@@ -27,7 +27,8 @@ let
       example = true;
     };
 
-in {
+in
+{
   options = with types; {
     my = {
       name = mkOptStr "Ahmed El Gabri";
@@ -61,10 +62,11 @@ in {
   config = {
     users.users.${config.my.username} = mkAliasDefinitions options.my.user;
     my.user = {
-      home = if pkgs.stdenv.isDarwin then
-        "/Users/${config.my.username}"
-      else
-        "/home/${config.my.username}";
+      home =
+        if pkgs.stdenv.isDarwin then
+          "/Users/${config.my.username}"
+        else
+          "/home/${config.my.username}";
       description = "Primary user account";
     };
 

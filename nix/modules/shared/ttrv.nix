@@ -5,7 +5,8 @@ let
   cfg = config.my.modules.ttrv;
   ttrv = pkgs.callPackage ../../pkgs/ttrv.nix { source = inputs.ttrv; };
 
-in {
+in
+{
   options = with lib; {
     my.modules.ttrv = {
       enable = mkEnableOption ''

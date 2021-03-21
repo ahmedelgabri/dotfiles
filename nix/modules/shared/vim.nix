@@ -7,7 +7,8 @@ let
   cfg = config.my.modules.vim;
   home = config.my.user.home;
 
-in {
+in
+{
   options = with lib; {
     my.modules.vim = {
       enable = mkEnableOption ''
@@ -42,7 +43,7 @@ in {
           ripgrep
           # editorconfig-checker # do I use it?
           proselint # ???
-          nixfmt
+          nixpkgs-fmt
           vim-vint
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash

@@ -4,7 +4,8 @@ let
 
   cfg = config.my.modules.ssh;
 
-in {
+in
+{
   options = with lib; {
     my.modules.ssh = {
       enable = mkEnableOption ''
