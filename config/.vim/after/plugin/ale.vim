@@ -23,17 +23,6 @@ let g:ale_echo_msg_error_str='[ERROR]'
 let g:ale_echo_msg_info_str='[INFO]'
 let g:ale_echo_msg_warning_str='[WARNING]'
 let g:ale_echo_msg_format = '%severity% %linter% -> [%code%] -> %s'
-let g:ale_javascript_prettier_use_local_config = 1
-function! s:PRETTIER_OPTIONS()
-  return '--config-precedence prefer-file --single-quote --no-bracket-spacing --prose-wrap always --arrow-parens always --trailing-comma all --no-semi --end-of-line  lf --print-width ' . &textwidth
-endfunction
-let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
-
-augroup ALE
-  au!
-  " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
-  au! OptionSet textwidth let g:ale_javascript_prettier_options = <SID>PRETTIER_OPTIONS()
-augroup END
 
 let g:ale_linter_aliases = {
       \ 'mail': 'markdown',
@@ -46,29 +35,6 @@ let g:ale_linters = {
       \ 'typescript': ['eslint'],
       \ 'rust': ['analyzer'],
       \ 'go': ['gopls']
-      \}
-let g:ale_nix_nixpkgsfmt_executable = 'nixfmt'
-
-" ESLint --fix is so slow to run it as part of the fixers, so I do this using a precommit hook or something else
-let g:ale_fixers = {
-      \   '*'          : ['remove_trailing_lines', 'trim_whitespace'],
-      \   'markdown'   : ['prettier'],
-      \   'javascript' : ['prettier'],
-      \   'typescript' : ['prettier'],
-      \   'css'        : ['prettier'],
-      \   'json'       : ['prettier'],
-      \   'scss'       : ['prettier'],
-      \   'less'       : ['prettier'],
-      \   'yaml'       : ['prettier'],
-      \   'graphql'    : ['prettier'],
-      \   'html'       : ['prettier'],
-      \   'reason'     : ['refmt'],
-      \   'python'     : ['black'],
-      \   'sh'         : ['shfmt'],
-      \   'bash'       : ['shfmt'],
-      \   'rust'       : ['rustfmt'],
-      \   'go'         : ['gofmt'],
-      \   'nix'        : ['nixpkgs-fmt'],
       \}
 
 " Don't auto auto-format files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
@@ -85,11 +51,5 @@ let g:ale_pattern_options = {
       \   'node_modules/.*': {
       \       'ale_linters': [],
       \       'ale_fixers': []
-      \   },
-      \   'package.json': {
-      \       'ale_fixers': g:ale_fixers['*']
-      \   },
-      \   'Sites/personal/forks/.*': {
-      \       'ale_fixers': filter(copy(g:ale_fixers), {k,v -> k ==# '*' || k ==# 'go' || k ==# 'rust'})
       \   },
       \}
