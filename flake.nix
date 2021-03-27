@@ -35,7 +35,7 @@
   description = "~ 🍭 ~";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/master";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -43,12 +43,12 @@
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin/master";
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     neovim-nightly = {
-      url = "github:neovim/neovim/master";
+      url = "github:neovim/neovim";
       flake = false;
     };
 
@@ -134,7 +134,8 @@
         time.timeZone = config.my.timezone;
       };
 
-    in {
+    in
+    {
       overlay = (final: prev: {
         pragmatapro = (prev.callPackage ./nix/pkgs/pragmatapro.nix { });
 
@@ -158,7 +159,7 @@
           packageOverrides = final: prev: {
             python-language-server =
               prev.python-language-server.overridePythonAttrs
-              (old: rec { doCheck = false; });
+                (old: rec { doCheck = false; });
           };
         };
       });
