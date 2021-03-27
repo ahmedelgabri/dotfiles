@@ -4,6 +4,8 @@
 let
 
   cfg = config.my.modules.irc;
+  home = config.my.user.home;
+
 in
 {
   options = with lib; {
@@ -41,13 +43,8 @@ in
           WEECHAT_PASSPHRASE = ''
             `security find-generic-password -g -a weechat 2>&1| perl -e 'if (<STDIN> =~ m/password: \"(.*)\"$/ ) { print $1; }'`'';
         };
-        hm.file = {
-          # [todo] WeeChat will need to modify these files, how can this be done?
-          ".config/weechat" = {
-            recursive = true;
-            source = ../../../config/weechat;
-          };
 
+        hm.file = {
           ".config/weechat/perl/autoload/atcomplete.pl".source =
             "${inputs.weechat-scripts}/perl/atcomplete.pl";
 
@@ -80,5 +77,36 @@ in
             "${inputs.weechat-scripts}/lua/emoji.lua";
         };
       };
+
+      system.activationScripts.postUserActivation.text = ''
+        echo ":: -> Running weechat activationScript..."
+        # Handle mutable configs
+
+        if [ ! -e "${home}/.config/weechat/irc.conf" ]; then
+          echo "Linking weechat/irc.conf..."
+          ln -sf ${home}/.dotfiles/config/weechat/irc.conf ${home}/.config/weechat/irc.conf
+        fi
+
+        if [ ! -e "${home}/.config/weechat/plugins.conf" ]; then
+          echo "Linking weechat/plugins.conf..."
+          ln -sf ${home}/.dotfiles/config/weechat/plugins.conf ${home}/.config/weechat/plugins.conf
+        fi
+
+        if [ ! -e "${home}/.config/weechat/sec.conf" ]; then
+          echo "Linking weechat/sec.conf..."
+          ln -sf ${home}/.dotfiles/config/weechat/sec.conf ${home}/.config/weechat/sec.conf
+        fi
+
+        if [ ! -e "${home}/.config/weechat/weechat.conf" ]; then
+          echo "Linking weechat/weechat.conf..."
+          ln -sf ${home}/.dotfiles/config/weechat/weechat.conf ${home}/.config/weechat/weechat.conf
+        fi
+
+        if [ ! -e "${home}/.config/weechat/buflist.conf" ]; then
+          echo "Linking weechat/buflist.conf..."
+          ln -sf ${home}/.dotfiles/config/weechat/buflist.conf ${home}/.config/weechat/buflist.conf
+        fi
+      '';
+
     };
 }
