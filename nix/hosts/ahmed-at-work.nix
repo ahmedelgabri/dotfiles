@@ -32,6 +32,12 @@
     # nix.buildCores = 4;
   };
 
+  my.user = {
+    packages = with pkgs; [
+      emacs
+    ];
+  };
+
   homebrew.casks = [
     "adoptopenjdk8"
     "corretto"
@@ -42,6 +48,7 @@
     "obs-virtualcam"
     "vagrant"
     "ngrok"
+    "docker"
   ];
 
   # Requires to be logged in to the AppStore
