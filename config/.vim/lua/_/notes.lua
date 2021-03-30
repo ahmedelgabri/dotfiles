@@ -56,8 +56,8 @@ function M.note_edit(...)
 
   local frontmatter = {
     "normal ggO---",
-    "date: " .. formatted_date,
     "title: " .. fname,
+    "date: " .. formatted_date,
     "tags:",
     "---"
   }

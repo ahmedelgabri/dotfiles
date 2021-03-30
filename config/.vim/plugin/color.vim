@@ -13,9 +13,6 @@ augroup MyCustomColors
         \| hi! TablineSel cterm=reverse gui=reverse
         \| hi! NonText ctermbg=NONE guibg=NONE
         \| if &background ==# 'dark' | hi! VertSplit gui=NONE guibg=NONE guifg=#333333 cterm=NONE ctermbg=NONE ctermfg=14 | endif
-        \| hi! link Todo Comment
-        \| hi! link Conceal NonText
-        \| hi! link Error ErrorMsg
         \| hi! link ALEError DiffDelete
         \| hi! link ALEErrorSign DiffDelete
         \| hi! link ALEWarning DiffChange
@@ -44,4 +41,7 @@ augroup MyCustomColors
         \| hi! link PmenuSel TermCursor
         \| hi! Whitespace ctermfg=235 guifg=#333333
         \| hi! link graphqlString Comment
+        \| hi! link Todo Comment
+        \| hi! link Conceal NonText
+        \| hi! link Error ErrorMsg
 augroup END

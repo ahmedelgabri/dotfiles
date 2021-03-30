@@ -234,6 +234,7 @@ local plugins = {
             markdown = {prettier},
             css = {prettier},
             json = {prettier},
+            jsonc = {prettier},
             scss = {prettier},
             less = {prettier},
             yaml = {prettier},
