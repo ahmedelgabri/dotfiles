@@ -15,7 +15,6 @@
 
 [delta]
   syntax-theme = none
-  navigate = true
   file-modified-label = MODIFIED:
   file-removed-label  = REMOVED:
   file-added-label    = ADDED:
