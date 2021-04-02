@@ -22,14 +22,14 @@ in
       environment.systemPackages = with pkgs;
         [
           vim
-          neovim-unwrapped
+          neovim-nightly
           ninja # used to build lua-language-server
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
 
       my.env = rec {
-        EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
+        EDITOR = "${pkgs.neovim-nightly}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";

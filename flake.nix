@@ -48,8 +48,7 @@
     };
 
     neovim-nightly = {
-      url = "github:neovim/neovim";
-      flake = false;
+      url = "github:nix-community/neovim-nightly-overlay";
     };
 
     z = {
@@ -128,7 +127,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay ];
+          overlays = [ self.overlay inputs.neovim-nightly.overlay ];
         };
 
         time.timeZone = config.my.timezone;
@@ -144,12 +143,6 @@
             { }).neuron;
 
         comma = import inputs.comma { inherit (prev) pkgs; };
-
-        neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (oldAttrs: {
-          version = "master";
-          src = inputs.neovim-nightly;
-          buildInputs = oldAttrs.buildInputs ++ [ prev.pkgs.tree-sitter ];
-        });
 
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
