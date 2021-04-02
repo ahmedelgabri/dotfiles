@@ -194,6 +194,90 @@ require("nlua.lsp.nvim").setup(
   }
 )
 
+local configs = require "lspconfig/configs"
+local server_name = "tailwindlsp"
+
+configs[server_name] = {
+  default_config = {
+    cmd = {server_name},
+    filetypes = {
+      -- html
+      "aspnetcorerazor",
+      "blade",
+      "django-html",
+      "edge",
+      "ejs",
+      "erb",
+      "gohtml",
+      "haml",
+      "handlebars",
+      "hbs",
+      "html",
+      "html-eex",
+      "jade",
+      "leaf",
+      "liquid",
+      "markdown",
+      "mdx",
+      "mustache",
+      "njk",
+      "nunjucks",
+      "php",
+      "razor",
+      "slim",
+      "twig",
+      -- css
+      "css",
+      "less",
+      "postcss",
+      "sass",
+      "scss",
+      "stylus",
+      "sugarss",
+      -- js
+      "javascript",
+      "javascript.jsx",
+      "javascriptreact",
+      "reason",
+      "rescript",
+      "typescript",
+      "typescript.tsx",
+      "typescriptreact",
+      -- mixed
+      "vue",
+      "svelte"
+    },
+    root_dir = function(fname)
+      return nvim_lsp.util.root_pattern(
+        "tailwind.config.js",
+        "tailwind.config.ts"
+      )(fname) or
+        nvim_lsp.util.root_pattern("postcss.config.js", "postcss.config.ts")(
+          fname
+        ) or
+        nvim_lsp.util.find_package_json_ancestor(fname) or
+        nvim_lsp.util.find_node_modules_ancestor(fname) or
+        nvim_lsp.util.find_git_ancestor(fname)
+    end,
+    handlers = {
+      ["tailwindcss/getConfiguration"] = function(_, _, params, _, bufnr, _)
+        -- tailwindcss lang server waits for this repsonse before providing hover
+        vim.lsp.buf_notify(
+          bufnr,
+          "tailwindcss/getConfigurationResponse",
+          {_id = params._id}
+        )
+      end
+    }
+  },
+  docs = {
+    description = [[ ]],
+    default_config = {
+      root_dir = [[root_pattern("package.json", ".git")]]
+    }
+  }
+}
+
 local servers = {
   cssls = {},
   bashls = {},
@@ -218,7 +302,8 @@ local servers = {
         ) or
         vim.fn.getcwd()
     end
-  }
+  },
+  tailwindlsp = {}
 }
 
 for server, config in pairs(servers) do

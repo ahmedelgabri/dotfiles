@@ -6,7 +6,7 @@ let
 
   cfg = config.my.modules.vim;
   home = config.my.user.home;
-
+  tailwind-lsp = pkgs.callPackage ../../pkgs/tailwind.nix { };
 in
 {
   options = with lib; {
@@ -55,8 +55,21 @@ in
           nodePackages.vim-language-server
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
-          neuron-notes
-        ];
+          tailwind-lsp
+          # neuron-notes
+        ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
+          sumneko-lua-language-server
+        ]);
+      };
+
+      my.hm.file = {
+        ".config/zsh/bin/tailwindlsp" = {
+          executable = true;
+          text = ''
+            #! /usr/bin/env sh
+            node ${tailwind-lsp}/share/vscode/extensions/bradlc.vscode-tailwindcss/dist/server/index.js --stdio
+          '';
+        };
       };
 
       system.activationScripts.postUserActivation.text = ''
