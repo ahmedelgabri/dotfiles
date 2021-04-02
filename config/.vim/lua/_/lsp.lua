@@ -120,6 +120,8 @@ local mappings =
 )
 
 local on_attach = function(client)
+  client.config.flags.allow_incremental_sync = true
+
   for lhs, rhs in pairs(mappings) do
     if lhs == "K" then
       if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
@@ -147,6 +149,9 @@ local on_attach = function(client)
   utils.augroup(
     "LSP",
     function()
+      vim.api.nvim_command(
+        "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
+      )
       if client.resolved_capabilities.document_highlight then
         vim.api.nvim_command(
           "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()"
