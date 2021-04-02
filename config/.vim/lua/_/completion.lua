@@ -3,6 +3,14 @@ local utils = require "_.utils"
 
 local M = {}
 
+local check_back_space = function()
+  local col = vim.fn.col(".") - 1
+  if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+    return true
+  else
+    return false
+  end
+end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
@@ -11,8 +19,10 @@ _G.tab_complete = function()
     return utils.t "<C-n>"
   elseif vim.fn.call("vsnip#available", {1}) == 1 then
     return utils.t "<Plug>(vsnip-expand-or-jump)"
-  else
+  elseif check_back_space() then
     return utils.t "<Tab>"
+  else
+    return vim.fn["compe#complete"]()
   end
 end
 
@@ -66,6 +76,20 @@ M.setup = function()
       "i",
       "<C-e>",
       "compe#close('<C-e>')",
+      {expr = true, noremap = true, silent = true}
+    )
+
+    utils.gmap(
+      "i",
+      "<C-f>",
+      "compe#scroll({ 'delta': +4 })",
+      {expr = true, noremap = true, silent = true}
+    )
+
+    utils.gmap(
+      "i",
+      "<C-d>",
+      "compe#scroll({ 'delta': -4 })",
       {expr = true, noremap = true, silent = true}
     )
   end
