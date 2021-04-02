@@ -201,7 +201,8 @@
           specialArgs = { inherit inputs; };
           modules = [
             inputs.home-manager.nixosModules.home-manager
-            ./nix/hosts/shared.nix
+            ./nix/modules/shared
+            sharedHostsConfig
             ./nix/hosts/nixos
           ];
         };

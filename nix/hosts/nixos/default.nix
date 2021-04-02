@@ -45,7 +45,7 @@
     autoOptimiseStore = true;
     registry = {
       nixos.flake = inputs.nixpkgs;
-      nixpkgs.flake = inputs.nixpkgs-unstable;
+      nixpkgs.flake = inputs.nixpkgs;
     };
   };
 
