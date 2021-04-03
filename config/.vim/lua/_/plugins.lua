@@ -135,6 +135,7 @@ local plugins = {
     "https://github.com/hrsh7th/nvim-compe",
     requires = {
       {"https://github.com/tami5/compe-conjure", ft = lisps},
+      {"https://github.com/andersevenrud/compe-tmux"},
       {"https://github.com/hrsh7th/vim-vsnip"},
       {"https://github.com/hrsh7th/vim-vsnip-integ"}
     }

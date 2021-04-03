@@ -45,6 +45,7 @@ M.setup = function()
       preselect = "always",
       source = {
         path = true,
+        tmux = true,
         buffer = true,
         spell = true,
         tags = true,
