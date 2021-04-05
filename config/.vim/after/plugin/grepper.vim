@@ -22,6 +22,6 @@ let g:grepper = {
       \ 'highlight': 0,
       \ }
 
-xmap gs <plug>(GrepperOperator)
-vmap gs <Plug>(GrepperOperator)
+nmap <localleader><localleader> <Plug>(GrepperOperator)
+xmap <localleader><localleader> <plug>(GrepperOperator)
 nnoremap \ :Grepper -noprompt -tool rg -grepprg rg --vimgrep<space>
