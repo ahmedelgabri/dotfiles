@@ -47,6 +47,9 @@ local plugins = {
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = {{"https://github.com/junegunn/fzf"}}
   },
+  -- Promising!
+  -- {"https://github.com/vijaymarupudi/nvim-fzf"},
+  -- {"https://github.com/vijaymarupudi/nvim-fzf-commands"},
   {
     "https://github.com/lambdalisue/fern-git.vim",
     requires = {{"https://github.com/lambdalisue/fern.vim"}}
@@ -116,6 +119,7 @@ local plugins = {
   {"https://github.com/christoomey/vim-tmux-navigator", opt = true},
   {"https://github.com/rhysd/devdocs.vim"},
   {"https://github.com/fcpg/vim-waikiki"},
+  {"https://github.com/kevinhwang91/nvim-bqf"},
   -- LSP/Autocompletion {{{
   {
     "https://github.com/neovim/nvim-lspconfig",

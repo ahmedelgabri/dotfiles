@@ -6,11 +6,21 @@ command! Todo :Grepper
 
 augroup MyGrepper
   autocmd!
+  autocmd User Grepper call setqflist([], 'r',
+        \ {'context': {'bqf': {'pattern_hl': histget('/')}}}) |
+        \ botright copen
   autocmd FileType GrepperSide
-      \  silent execute 'keeppatterns v#'.b:grepper_side.'#>'
-      \| silent normal! ggn
-      \| setl wrap
+        \  silent execute 'keeppatterns v#'.b:grepper_side.'#>'
+        \| silent normal! ggn
+        \| setl wrap
 augroup END
+
+let g:grepper = {
+      \ 'open': 0,
+      \ 'quickfix': 1,
+      \ 'searchreg': 1,
+      \ 'highlight': 0,
+      \ }
 
 xmap gs <plug>(GrepperOperator)
 vmap gs <Plug>(GrepperOperator)
