@@ -16,13 +16,12 @@ buildPythonApplication rec {
 
   checkInputs = [ coverage coveralls docopt mock pylint pytest vcrpy ];
 
-  propagatedBuildInputs = [ beautifulsoup4 decorator kitchen requests ];
+  propagatedBuildInputs = [ beautifulsoup4 decorator six kitchen requests ];
 
   meta = with lib; {
     description =
       "A text-based interface (TUI) to view and interact with Reddit from your terminal.";
     homepage = "https://github.com/tildeclub/ttrv";
     license = licenses.mit;
-    maintainers = with maintainers; [ filalex77 matthiasbeyer ];
   };
 }
