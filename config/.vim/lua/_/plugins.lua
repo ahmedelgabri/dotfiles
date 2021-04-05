@@ -32,7 +32,16 @@ local lisps = {"lisp", "scheme", "clojure"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
-  {"https://github.com/jiangmiao/auto-pairs"},
+  {
+    "https://github.com/windwp/nvim-autopairs",
+    config = function()
+      require("nvim-autopairs").setup(
+        {
+          disable_filetype = {"TelescopePrompt", "fzf"}
+        }
+      )
+    end
+  },
   {
     "https://github.com/junegunn/fzf.vim",
     -- I have the bin globally, so don't build, and just grab plugin directory

@@ -1,5 +1,6 @@
 local has_completion, completion = pcall(require, "compe")
 local utils = require "_.utils"
+local has_npairs, npairs = pcall(require, "nvim-autopairs")
 
 local M = {}
 
@@ -89,7 +90,7 @@ M.setup = function()
     utils.gmap(
       "i",
       "<CR>",
-      "compe#confirm('<CR>')",
+      has_npairs and "v:lua._.completion_confirm()" or "compe#confirm('<CR>')",
       {expr = true, noremap = true, silent = true}
     )
 
