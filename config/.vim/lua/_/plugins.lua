@@ -353,6 +353,9 @@ packer.init(
   }
 )
 
+-- My global object
+_G._ = {}
+
 return packer.startup(
   function(use)
     use(plugins)

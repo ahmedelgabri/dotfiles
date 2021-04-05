@@ -11,10 +11,30 @@ local check_back_space = function()
     return false
   end
 end
+
+_G._.completion_confirm = function()
+  if vim.fn.pumvisible() ~= 0 then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      vim.fn["compe#confirm"]()
+      return npairs.esc("<c-y>")
+    else
+      vim.defer_fn(
+        function()
+          vim.fn["compe#confirm"]("<cr>")
+        end,
+        20
+      )
+      return npairs.esc("<c-n>")
+    end
+  else
+    return npairs.check_break_line_char()
+  end
+end
+
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
+_G._.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-n>"
   elseif vim.fn.call("vsnip#available", {1}) == 1 then
@@ -26,7 +46,7 @@ _G.tab_complete = function()
   end
 end
 
-_G.s_tab_complete = function()
+_G._.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-p>"
   elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
@@ -56,10 +76,10 @@ M.setup = function()
       }
     }
 
-    utils.gmap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-    utils.gmap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-    utils.gmap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-    utils.gmap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+    utils.gmap("i", "<Tab>", "v:lua._.tab_complete()", {expr = true})
+    utils.gmap("s", "<Tab>", "v:lua._.tab_complete()", {expr = true})
+    utils.gmap("i", "<S-Tab>", "v:lua._.s_tab_complete()", {expr = true})
+    utils.gmap("s", "<S-Tab>", "v:lua._.s_tab_complete()", {expr = true})
     utils.gmap(
       "i",
       "<c-p>",
