@@ -147,7 +147,7 @@ local plugins = {
   {
     "https://github.com/hrsh7th/nvim-compe",
     requires = {
-      {"https://github.com/tami5/compe-conjure", ft = lisps},
+      {"https://github.com/tami5/compe-conjure"},
       {"https://github.com/andersevenrud/compe-tmux"},
       {"https://github.com/hrsh7th/vim-vsnip"},
       {"https://github.com/hrsh7th/vim-vsnip-integ"}
@@ -195,7 +195,7 @@ local plugins = {
   {"https://github.com/jez/vim-github-hub"},
   -- Clojure
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.17.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.17.0"},
   -- }}}
 
   -- Linters & Code quality {{{
