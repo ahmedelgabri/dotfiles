@@ -90,11 +90,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1617220862,
-        "narHash": "sha256-nLka+S6Vww8hTF3ZkzK/BezvgAo1Z433/L6TR1SiXyM=",
+        "lastModified": 1617625716,
+        "narHash": "sha256-B36WKNVwtmRk3oqJ9XbOca0iy1Ga1dW6E26iavRFPKQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ad04237d5142f53dcba258942b78e2d2bbf210c8",
+        "rev": "cc60c22c69e6967b732d02f072a9f1e30454e4f6",
         "type": "github"
       },
       "original": {
@@ -145,11 +145,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1617351487,
-        "narHash": "sha256-VOEppGMHAmCs9344A8X62sXVN1QEoAkzeaBin/Q+lHc=",
+        "lastModified": 1617610628,
+        "narHash": "sha256-cz5QmkNStGobHYGr+OwGsbU/sl+9GSNBEwAWruv2GSw=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "190af52ad91afae5ada99f9752609f5d8890d536",
+        "rev": "f92ba2937872467bfba561a25c16f4dbb9395a1a",
         "type": "github"
       },
       "original": {
@@ -161,11 +161,11 @@
     "neovim-nightly_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1617333889,
-        "narHash": "sha256-XddjiTG14Lxy22IbrIrlTiqgm6MyRya4lktTtHcx1i4=",
+        "lastModified": 1617574911,
+        "narHash": "sha256-QNkCpnCUDqsb4n73BP50ZILrr+dyD7enbDLklJdq4+k=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "3f7cd18c4a416ea8805ffee445ec90d703806c78",
+        "rev": "9b2d4ff625c59961288dfb2708cc94516667b2ad",
         "type": "github"
       },
       "original": {
@@ -177,11 +177,11 @@
     "neuron-notes-master": {
       "flake": false,
       "locked": {
-        "lastModified": 1617326188,
-        "narHash": "sha256-ZWTNKsRRSTjeNoDslDYpUCGROBSC5Qv/zGDxEIf+J9c=",
+        "lastModified": 1617467728,
+        "narHash": "sha256-AVe+cFDRLjnI0zxpinujnK961zfg+zfL9SrlBMYIqXM=",
         "owner": "srid",
         "repo": "neuron",
-        "rev": "d6a6139787bf574253ce226bf6cedd9c1fb80adc",
+        "rev": "1f127b8343dbe05e057688988b289066df1cdedb",
         "type": "github"
       },
       "original": {
@@ -192,11 +192,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1616670887,
-        "narHash": "sha256-wn+l9qJfR5sj5Gq4DheJHAcBDfOs9K2p9seW2f35xzs=",
+        "lastModified": 1617325113,
+        "narHash": "sha256-GksR0nvGxfZ79T91UUtWjjccxazv6Yh/MvEJ82v1Xmw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c0e881852006b132236cbf0301bd1939bb50867e",
+        "rev": "54c1e44240d8a527a8f4892608c4bce5440c3ecb",
         "type": "github"
       },
       "original": {
@@ -208,11 +208,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1616670887,
-        "narHash": "sha256-wn+l9qJfR5sj5Gq4DheJHAcBDfOs9K2p9seW2f35xzs=",
+        "lastModified": 1617325113,
+        "narHash": "sha256-GksR0nvGxfZ79T91UUtWjjccxazv6Yh/MvEJ82v1Xmw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c0e881852006b132236cbf0301bd1939bb50867e",
+        "rev": "54c1e44240d8a527a8f4892608c4bce5440c3ecb",
         "type": "github"
       },
       "original": {
@@ -256,15 +256,16 @@
     "ttrv": {
       "flake": false,
       "locked": {
-        "lastModified": 1616120514,
-        "narHash": "sha256-1SiiXClbUchco6coqd2KW0iwbWBodzdhAb+US2l9ovw=",
+        "lastModified": 1607486638,
+        "narHash": "sha256-3omhnVou9lam3bd7vCYie0hpUeHEY2G8SRLsDDtH6to=",
         "owner": "tildeclub",
         "repo": "ttrv",
-        "rev": "addaade96540c77d7cbade877a372951b075debe",
+        "rev": "c66bc02e3f5123af4598c18501972f76e797ca56",
         "type": "github"
       },
       "original": {
         "owner": "tildeclub",
+        "ref": "v1.27.3",
         "repo": "ttrv",
         "type": "github"
       }
@@ -272,11 +273,11 @@
     "weechat-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1616231815,
-        "narHash": "sha256-TFzqD6ygcXrOtbfZss6UqaofB4RlgoMo0VY7vgEeZGw=",
+        "lastModified": 1617611723,
+        "narHash": "sha256-kmmc5cFlsPCX9IbE27jtetepZ05aoGfeLrJ7fXyDpDE=",
         "owner": "weechat",
         "repo": "scripts",
-        "rev": "ca89dac8e1eab48248bad245645dcedadf66a9ca",
+        "rev": "783793b2b4613608cc7b3ce1a791e181d0727a3f",
         "type": "github"
       },
       "original": {

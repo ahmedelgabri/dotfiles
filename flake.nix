@@ -68,7 +68,7 @@
     };
 
     ttrv = {
-      url = "github:tildeclub/ttrv";
+      url = "github:tildeclub/ttrv?ref=v1.27.3";
       flake = false;
     };
 
