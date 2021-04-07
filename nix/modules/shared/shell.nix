@@ -86,6 +86,7 @@ in
             translate-shell
             rename
             glow
+            buku
           ];
         };
 
