@@ -53,7 +53,9 @@ in
           nodePackages.dockerfile-language-server-nodejs
           nodePackages.typescript-language-server
           nodePackages.vim-language-server
+          nodePackages.vscode-json-languageserver
           nodePackages.pyright
+          nodePackages.yaml-language-server
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
           tailwind-lsp
