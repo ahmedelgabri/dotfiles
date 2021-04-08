@@ -303,7 +303,8 @@ local servers = {
         vim.fn.getcwd()
     end
   },
-  tailwindlsp = {}
+  tailwindlsp = {},
+  rnix = {}
 }
 
 for server, config in pairs(servers) do

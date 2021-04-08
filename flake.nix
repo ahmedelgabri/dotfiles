@@ -87,6 +87,11 @@
       flake = false;
     };
 
+    rnix-lsp = {
+      url = "github:nix-community/rnix-lsp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

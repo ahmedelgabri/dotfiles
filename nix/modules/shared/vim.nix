@@ -56,6 +56,7 @@ in
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
           tailwind-lsp
+          rnix-lsp
           # neuron-notes
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
