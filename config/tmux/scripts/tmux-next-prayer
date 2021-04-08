@@ -75,6 +75,7 @@ def get_prayer(now):
     timings = data["timings"]
     readable_date = data["readable_date"]
     after_isha = get_prayer_time(PRAYERS[-1], readable_date, timings)
+    result = ""
 
     if now > after_isha:
         fajr = PRAYERS[0]

@@ -30,7 +30,6 @@ in
                   grip
                   pynvim
                   vobject # Mutt calendar script
-                  python-language-server
                   websocket_client # Wee-slack
                 ]))
               # nixos.python38Packages.httpx

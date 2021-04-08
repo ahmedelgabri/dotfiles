@@ -152,14 +152,6 @@
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
-
-        python3 = prev.python3.override {
-          packageOverrides = final: prev: {
-            python-language-server =
-              prev.python-language-server.overridePythonAttrs
-                (old: rec { doCheck = false; });
-          };
-        };
       });
 
       darwinConfigurations = {
