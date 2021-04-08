@@ -44,6 +44,7 @@
     Sip = 507257563;
     Irvue = 1039633667;
     Telegram = 747648890;
+    Tailscale = 1475387142;
   };
 
   networking = { hostName = "pandoras-box"; };
