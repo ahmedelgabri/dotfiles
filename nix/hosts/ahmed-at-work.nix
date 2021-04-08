@@ -8,7 +8,6 @@
       macos.enable = true;
       java.enable = false;
       kotlin.enable = true;
-      gpg.enable = true;
 
       mail = {
         enable = true;
@@ -57,12 +56,9 @@
     # Tweetbot = 1384080005;
     Sip = 507257563;
     Xcode = 497799835;
-    Pages = 409201541;
     Guidance = 412759995;
     Dato = 1470584107;
     WireGuard = 1451685025;
-    Keynote = 409183694;
-    Numbers = 409203825;
   };
 
   # Use a custom configuration.nix location.

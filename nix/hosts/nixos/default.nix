@@ -36,6 +36,7 @@
       rescript.enable = true;
       clojure.enable = true;
       newsboat.enable = true;
+      # using nixos gpg module
       gpg.enable = false;
     };
   };

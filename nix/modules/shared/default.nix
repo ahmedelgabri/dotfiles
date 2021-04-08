@@ -38,6 +38,9 @@
     shell.enable = true;
     git.enable = true;
     ssh.enable = true;
+    gpg.enable = true;
+    syncthing.enable = true;
+
     kitty.enable = true;
     alacritty.enable = true;
     bat.enable = true;
@@ -50,7 +53,6 @@
     misc.enable = true;
     vim.enable = true;
     gui.enable = true;
-    syncthing.enable = true;
 
     node.enable = true;
     go.enable = true;

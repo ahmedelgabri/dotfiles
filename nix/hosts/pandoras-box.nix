@@ -18,10 +18,9 @@
       aerc = { enable = true; };
       youtube-dl.enable = true;
       irc.enable = true;
-      rescript.enable = true;
+      rescript.enable = false;
       clojure.enable = true;
       newsboat.enable = true;
-      gpg.enable = true;
     };
   };
 
