@@ -89,11 +89,7 @@ autoload -Uz _zinit
   zinit light https://github.com/zsh-users/zsh-autosuggestions
 # }}}
 
-autoload -Uz compinit
-
-for dump in $ZDOTDIR/.zcompdump(N.mh+24); do
-  compinit
-done
+autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
 
 zinit cdreplay -q
 

@@ -175,10 +175,7 @@ in
 
       programs.zsh = {
         enable = true;
-
-        # darwin only...
-        enableCompletion = false;
-        enableBashCompletion = false;
+        enableCompletion = true;
 
         ########################################################################
         # Instead of sourcing, I can read the files & save startiup time instead
@@ -195,15 +192,12 @@ in
             ../../../config/zsh.d/zsh/config/completion.zsh
             ../../../config/zsh.d/zsh/config/utility.zsh
             ../../../config/zsh.d/zsh/config/aliases.zsh
-            "${pkgs.nix-zsh-completions}/share/zsh/plugins/nix/nix-zsh-completions.plugin.zsh"
             "${pkgs.grc}/etc/grc.zsh"
             "${pkgs.fzf}/share/fzf/completion.zsh"
             "${pkgs.fzf}/share/fzf/key-bindings.zsh"
             "${z}/share/z.sh"
             ../../../config/zsh.d/.zshrc
-          ]) + ''
-          fpath=($fpath ${pkgs.pure-prompt}/share/zsh/site-functions ${pkgs.nix-zsh-completions}/share/zsh/site-functions ${pkgs.gitAndTools.hub}/share/zsh/site-functions)
-        '';
+          ]);
 
         promptInit = "autoload -U promptinit; promptinit; prompt pure";
       };

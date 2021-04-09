@@ -15,6 +15,9 @@ function time_since_last_commit() {
   printf "%s\n%s\n" "Last commit:" "$__LAST_COMMIT"
 }
 
+# Hack because otherwise compdef doesn't work with zinit for some reason.
+autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
+
 function g() {
   local __CMD=""
 

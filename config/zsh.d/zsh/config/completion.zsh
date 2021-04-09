@@ -12,13 +12,6 @@ if [[ ${TERM} == 'dumb' ]]; then
   return 1
 fi
 
-# load and initialize the completion system
-autoload -Uz compinit && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
-
-# set any compdefs
-# source ${0:h}/compdefs.zsh
-
-
 #
 # zsh options
 #
