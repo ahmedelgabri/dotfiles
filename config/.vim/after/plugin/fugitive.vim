@@ -12,10 +12,10 @@ call insert(g:fugitive_browse_handlers, miro#register('miro#get_url'))
 
 
 " Open current file on github.com
-nnoremap gb  :Gbrowse<cr>
-vnoremap gb  :Gbrowse<cr>
-nnoremap gs  :Gstatus<cr>
-vnoremap gs  :Gstatus<cr>
+nnoremap gb  :GBrowse<cr>
+vnoremap gb  :GBrowse<cr>
+nnoremap gs  :Git<cr>
+vnoremap gs  :Git<cr>
 
 augroup MY_FUGITIVE
   autocmd!
