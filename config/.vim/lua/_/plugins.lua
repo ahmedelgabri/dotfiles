@@ -162,7 +162,7 @@ local plugins = {
     end
   },
   {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
-  {"https://github.com/p00f/nvim-ts-rainbow"},
+  {"https://github.com/p00f/nvim-ts-rainbow", ft = lisps},
   {
     "https://github.com/nvim-treesitter/playground",
     cmd = "TSPlaygroundToggle"
@@ -353,8 +353,7 @@ local plugins = {
   {"https://github.com/arzg/vim-substrata", opt = true},
   {"https://github.com/haishanh/night-owl.vim", opt = true},
   {"https://github.com/lifepillar/vim-gruvbox8", opt = true},
-  {"https://github.com/bluz71/vim-moonfly-colors", opt = true},
-  {"https://github.com/ulwlu/elly.vim", opt = true}
+  {"https://github.com/bluz71/vim-moonfly-colors", opt = true}
 }
 
 packer.init(
