@@ -199,6 +199,8 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  services.avahi.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
