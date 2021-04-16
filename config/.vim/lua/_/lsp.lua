@@ -304,7 +304,7 @@ local servers = {
     end
   },
   tailwindlsp = {},
-  rnix = {},
+  -- rnix = {},
   jsonls = {
     filetypes = {"json", "jsonc"},
     settings = {
