@@ -1,4 +1,6 @@
 { config, pkgs, lib, inputs, ... }: {
+  imports = [ ../modules/darwin ];
+
   nix = {
     gc = { user = config.my.username; };
     # Auto upgrade nix package and the daemon service.
@@ -7,8 +9,6 @@
     # nix.maxJobs = 4;
     # nix.buildCores = 4;
   };
-
-  imports = [ ../modules/darwin ];
 
   my = {
     modules = {

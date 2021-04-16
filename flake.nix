@@ -100,6 +100,11 @@
     let
       sharedHostsConfig = { config, pkgs, lib, options, ... }: {
         nix = {
+          nixPath = [
+            "nixpkgs=${inputs.nixpkgs}"
+            "darwin=${inputs.darwin}"
+            "home-manager=${inputs.home-manager}"
+          ];
           package = pkgs.nixFlakes;
           extraOptions = "experimental-features = nix-command flakes";
           binaryCaches = [
