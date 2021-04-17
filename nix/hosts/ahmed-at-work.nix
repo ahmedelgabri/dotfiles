@@ -8,6 +8,7 @@
       macos.enable = true;
       java.enable = false;
       kotlin.enable = true;
+      gpg.enable = true;
 
       mail = {
         enable = true;

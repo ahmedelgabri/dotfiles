@@ -38,7 +38,6 @@
     shell.enable = true;
     git.enable = true;
     ssh.enable = true;
-    gpg.enable = true;
     syncthing.enable = true;
 
     kitty.enable = true;

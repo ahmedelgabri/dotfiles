@@ -36,8 +36,6 @@
       rescript.enable = true;
       clojure.enable = true;
       newsboat.enable = true;
-      # using nixos gpg module
-      gpg.enable = false;
     };
   };
 
@@ -191,13 +189,14 @@
     # ssh.knownHosts = {};
     # ssh.startAgent = true; # Only this or the gnupg enableSSHSupport should be enabled in the same time
     wireshark.enable = true;
-    tailscale.enable = true;
   };
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.tailscale.enable = true;
 
   services.avahi.enable = true;
 

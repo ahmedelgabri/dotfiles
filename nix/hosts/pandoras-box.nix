@@ -21,6 +21,7 @@
       rescript.enable = false;
       clojure.enable = true;
       newsboat.enable = true;
+      gpg.enable = true;
     };
   };
 
