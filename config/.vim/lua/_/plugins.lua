@@ -51,8 +51,12 @@ local plugins = {
   -- {"https://github.com/vijaymarupudi/nvim-fzf"},
   -- {"https://github.com/vijaymarupudi/nvim-fzf-commands"},
   {
-    "https://github.com/lambdalisue/fern-git.vim",
-    requires = {{"https://github.com/lambdalisue/fern.vim"}}
+    "https://github.com/lambdalisue/fern.vim",
+    requires = {
+      {"https://github.com/lambdalisue/fern-git.vim"},
+      {"https://github.com/lambdalisue/fern-ssh"},
+      {"https://github.com/lambdalisue/fern-hijack.vim"}
+    }
   },
   {"https://github.com/duggiefresh/vim-easydir"},
   {"https://github.com/junegunn/vim-peekaboo"},
