@@ -47,9 +47,6 @@ local plugins = {
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = {{"https://github.com/junegunn/fzf"}}
   },
-  -- Promising!
-  -- {"https://github.com/vijaymarupudi/nvim-fzf"},
-  -- {"https://github.com/vijaymarupudi/nvim-fzf-commands"},
   {
     "https://github.com/lambdalisue/fern.vim",
     requires = {
