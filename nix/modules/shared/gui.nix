@@ -19,7 +19,6 @@ in
       (if (builtins.hasAttr "homebrew" options) then {
         # [todo] (automate) Requires homebrew to be installed
         homebrew.taps = [ "homebrew/cask" "homebrew/cask-versions" ];
-        homebrew.brews = [ "mas" ];
         homebrew.casks = [
           "1password"
           "alfred"
