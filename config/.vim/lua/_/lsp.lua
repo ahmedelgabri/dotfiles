@@ -207,7 +207,7 @@ configs[server_name] = {
       "django-html",
       "edge",
       "ejs",
-      "erb",
+      "eruby",
       "gohtml",
       "haml",
       "handlebars",
@@ -246,6 +246,13 @@ configs[server_name] = {
       -- mixed
       "vue",
       "svelte"
+    },
+    init_options = {
+      userLanguages = {
+        eruby = "html",
+        ["javascript.jsx"] = "javascriptreact",
+        ["typescript.tsx"] = "typescriptreact"
+      }
     },
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern(
