@@ -23,13 +23,14 @@ in
         [
           vim
           neovim-nightly
+          neovim-remote
           ninja # used to build lua-language-server
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
 
       my.env = rec {
-        EDITOR = "${pkgs.neovim-nightly}/bin/nvim";
+        EDITOR = "NVIM_LISTEN_ADDRESS=/tmp/nvimsocket ${pkgs.neovim-nightly}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";
