@@ -136,6 +136,14 @@ local plugins = {
         end
       },
       {"https://github.com/tjdevries/nlua.nvim"},
+      {
+        "https://github.com/folke/lsp-trouble.nvim",
+        config = function()
+          require("trouble").setup {
+            icons = false
+          }
+        end
+      },
       {"https://github.com/glepnir/lspsaga.nvim"},
       {
         "https://github.com/onsails/lspkind-nvim",
