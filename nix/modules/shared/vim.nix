@@ -30,11 +30,13 @@ in
         ]);
 
       my.env = rec {
-        EDITOR = "NVIM_LISTEN_ADDRESS=/tmp/nvimsocket ${pkgs.neovim-nightly}/bin/nvim";
+        EDITOR = "${pkgs.neovim-nightly}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";
       };
+
+      environment.shellAliases.e = "NVIM_LISTEN_ADDRESS=/tmp/nvimsocket $EDITOR";
 
       my.user = {
         packages = with pkgs; [
@@ -60,21 +62,15 @@ in
           # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
           tailwind-lsp
+          (writeScriptBin "tailwindlsp" ''
+            #!/usr/bin/env sh
+            node ${tailwind-lsp}/share/vscode/extensions/bradlc.vscode-tailwindcss/dist/server/index.js --stdio
+          '')
           rnix-lsp
           # neuron-notes
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
         ]);
-      };
-
-      my.hm.file = {
-        ".config/zsh/bin/tailwindlsp" = {
-          executable = true;
-          text = ''
-            #! /usr/bin/env sh
-            node ${tailwind-lsp}/share/vscode/extensions/bradlc.vscode-tailwindcss/dist/server/index.js --stdio
-          '';
-        };
       };
 
       system.activationScripts.postUserActivation.text = ''

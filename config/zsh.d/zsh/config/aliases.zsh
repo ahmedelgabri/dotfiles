@@ -7,7 +7,6 @@ alias mv="${aliases[mv]:-mv} -iv"
 alias rm="${aliases[rm]:-rm} -i"
 alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias sudo="sudo "
-alias e="${VISUAL:-$EDITOR}"
 alias type='type -a'
 alias which='which -a'
 
