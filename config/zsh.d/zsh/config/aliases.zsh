@@ -47,8 +47,6 @@ fi
 (( $+commands[fd] )) && alias fd='fd --hidden '
 (( $+commands[yarn] )) && alias y=yarn
 
-[[ -x "/Applications/Alacritty.app/Contents/MacOS/alacritty" ]] && alias alacritty='/Applications/Alacritty.app/Contents/MacOS/alacritty'
-
 if [[ "$(uname)" == linux* ]]; then
   alias chmod='chmod --preserve-root -v'
   alias chown='chown --preserve-root -v'
