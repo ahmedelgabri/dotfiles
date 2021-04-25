@@ -22,6 +22,7 @@
     ./misc.nix
     ./vim.nix
     ./node.nix
+    ./deno.nix
     ./java.nix
     ./kotlin.nix
     ./irc.nix
@@ -54,6 +55,7 @@
     gui.enable = true;
 
     node.enable = true;
+    deno.enable = true;
     go.enable = true;
     rust.enable = false;
   };
