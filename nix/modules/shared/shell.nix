@@ -13,8 +13,8 @@ let
   home = config.my.user.home;
 
   z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
-  lookatme =
-    pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
+  lookatme = pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
+  local_zshrc = "${home}/.zshrc.local";
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
@@ -195,6 +195,24 @@ in
             };
 
         };
+
+        # [todo] look at this later, because it's ugly
+        system.activationScripts.postUserActivation.text = ''
+          echo ":: -> Running shell activationScript..."
+          # Creating needed folders
+
+          if [ ! -e "${local_zshrc}" ]; then
+            echo '# vim:ft=zsh:' > ${local_zshrc}
+            echo '[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"' >> ${local_zshrc}
+            echo '[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"' >> ${local_zshrc}
+            echo '[[ -z "$WEECHAT_PASSPHRASE" ]] && echo "⚠ WEECHAT_PASSPHRASE is not set"' >> ${local_zshrc}
+            echo '[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
+            echo '[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
+            echo '# Needed for grip & Markdown preview' >> ${local_zshrc}
+            echo '[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"' >> ${local_zshrc}
+            echo 'exit 1' >> ${local_zshrc}
+          fi
+        '';
 
         programs.zsh = {
           enable = true;
