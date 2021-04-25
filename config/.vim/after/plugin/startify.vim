@@ -39,7 +39,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Most people overestimate what they can do in one year and underestimate what they can do in ten years', '', '— Bill Gates'],
       \ ['Compound interest is the eighth wonder of the world. He who understands it, earns it. He who doesn’t, pays it.', '', '— Albert Einstein'],
       \ ['Time is the fire in which we burn', '', '— Delmore Schwartz'],
-      \ ['A ship in harbor is safe, but that is not what ships are built for.', '— John A. Shedd']
+      \ ['A ship in harbor is safe, but that is not what ships are built for.', '— John A. Shedd'],
+      \ ['You can’t call yourself a leader by coming into a situation that is by nature uncertain, ambiguous — and create confusion.', 'You have to create clarity where none exists', '— Satya Nadella']
       \ ]
 
 function! s:list_commits()
