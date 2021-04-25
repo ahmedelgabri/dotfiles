@@ -310,6 +310,12 @@ local servers = {
         vim.fn.getcwd()
     end
   },
+  denols = {
+    root_dir = function(fname)
+      return nvim_lsp.util.root_pattern("deps.ts")(fname) or
+        nvim_lsp.util.root_pattern("mod.ts")(fname)
+    end
+  },
   tailwindlsp = {},
   -- rnix = {},
   jsonls = {
