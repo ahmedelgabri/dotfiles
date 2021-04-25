@@ -201,7 +201,7 @@ local plugins = {
   {"https://github.com/jez/vim-github-hub"},
   -- Clojure
   {"https://github.com/guns/vim-sexp", ft = lisps},
-  {"https://github.com/Olical/conjure", tag = "v4.17.0", ft = lisps},
+  {"https://github.com/Olical/conjure", tag = "v4.18.0", ft = lisps},
   -- }}}
 
   -- Linters & Code quality {{{
