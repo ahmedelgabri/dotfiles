@@ -112,7 +112,6 @@ local plugins = {
     end
   },
   {"https://github.com/tomtom/tcomment_vim"},
-  -- {"https://github.com/wellle/targets.vim"},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
   {"https://github.com/tommcdo/vim-lion"},
@@ -124,7 +123,6 @@ local plugins = {
   -- LSP/Autocompletion {{{
   {
     "https://github.com/neovim/nvim-lspconfig",
-    cond = "vim.fn.has('nvim-0.5.0')",
     config = function()
       require "_.lsp"
     end,
@@ -165,19 +163,18 @@ local plugins = {
   {
     "https://github.com/nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    cond = "vim.fn.has('nvim-0.5.0')",
     config = function()
       require "_.treesitter"
-    end
+    end,
+    requires = {
+      {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
+      {"https://github.com/p00f/nvim-ts-rainbow", ft = lisps},
+      {
+        "https://github.com/nvim-treesitter/playground",
+        cmd = "TSPlaygroundToggle"
+      }
+    }
   },
-  {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
-  {"https://github.com/p00f/nvim-ts-rainbow", ft = lisps},
-  {
-    "https://github.com/nvim-treesitter/playground",
-    cmd = "TSPlaygroundToggle"
-  },
-  -- }}}
-
   -- Syntax {{{
   {
     "https://github.com/norcalli/nvim-colorizer.lua",
@@ -342,15 +339,6 @@ local plugins = {
     opt = true,
     cmd = "GitMessenger",
     keys = "<Plug>(git-messenger)"
-  },
-  -- }}}
-
-  -- Writing {{{
-  {"https://github.com/junegunn/goyo.vim", opt = true, cmd = "Goyo"},
-  {
-    "https://github.com/junegunn/limelight.vim",
-    opt = true,
-    cmd = "Limelight"
   },
   -- }}}
 
