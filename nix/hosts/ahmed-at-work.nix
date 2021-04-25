@@ -4,6 +4,7 @@
   my = {
     username = "ahmedelgabri";
     email = "ahmed@miro.com";
+    website = "https://miro.com";
     modules = {
       macos.enable = true;
       java.enable = false;
@@ -54,7 +55,7 @@
   # Requires to be logged in to the AppStore
   # Cleanup doesn't work automatically if you add/remove to list
   homebrew.masApps = {
-    # Tweetbot = 1384080005;
+    Twitter = 1482454543;
     Sip = 507257563;
     Xcode = 497799835;
     Guidance = 412759995;
