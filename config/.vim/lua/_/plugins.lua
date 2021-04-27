@@ -115,7 +115,7 @@ local plugins = {
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
   {"https://github.com/tommcdo/vim-lion"},
-  {"https://github.com/liuchengxu/vista.vim"},
+  {"https://github.com/liuchengxu/vista.vim", cmd = "Vista"},
   {"https://github.com/christoomey/vim-tmux-navigator", opt = true},
   {"https://github.com/rhysd/devdocs.vim"},
   {"https://github.com/fcpg/vim-waikiki"},
