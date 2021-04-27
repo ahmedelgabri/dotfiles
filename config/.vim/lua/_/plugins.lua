@@ -209,6 +209,13 @@ local plugins = {
   {
     "https://github.com/mhartington/formatter.nvim",
     config = function()
+      require "_.utils".augroup(
+        "__formatter__",
+        function()
+          vim.api.nvim_command("autocmd BufWritePre * FormatWrite")
+        end
+      )
+
       local function prettier()
         return {
           exe = "prettier",
@@ -249,6 +256,9 @@ local plugins = {
           filetype = {
             javascript = {prettier},
             typescript = {prettier},
+            javascriptreact = {prettier},
+            typescriptreact = {prettier},
+            vue = {prettier},
             ["javascript.jsx"] = {prettier},
             ["typescript.tsx"] = {prettier},
             markdown = {prettier},
@@ -367,6 +377,13 @@ _G._ = {}
 
 return packer.startup(
   function(use)
+    require "_.utils".augroup(
+      "__packer__",
+      function()
+        vim.api.nvim_command("autocmd BufWritePost plugins.lua PackerCompile")
+      end
+    )
+
     use(plugins)
   end
 )

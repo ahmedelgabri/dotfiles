@@ -9,56 +9,13 @@ vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
 config.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = {"comment"},
   highlight = {
     enable = true
   },
   rainbow = {
+    -- Lazy loaded only in lisp languages
     enable = true
-    -- basically only enable for lisps
-    -- disable = {
-    --   "bash",
-    --   "c",
-    --   "c_sharp",
-    --   "comment",
-    --   "cpp",
-    --   "css",
-    --   "dart",
-    --   "devicetree",
-    --   "elm",
-    --   "erlang",
-    --   "go",
-    --   "graphql",
-    --   "haskell",
-    --   "html",
-    --   "java",
-    --   "javascript",
-    --   "jsdoc",
-    --   "json",
-    --   "julia",
-    --   "kotlin",
-    --   "ledger",
-    --   "lua",
-    --   "nix",
-    --   "ocaml",
-    --   "ocaml_interface",
-    --   "ocamllex",
-    --   "php",
-    --   "python",
-    --   "ql",
-    --   "regex",
-    --   "rst",
-    --   "ruby",
-    --   "rust",
-    --   "scala",
-    --   "svelte",
-    --   "swift",
-    --   "teal",
-    --   "toml",
-    --   "tsx",
-    --   "typescript",
-    --   "vue",
-    --   "yaml"
-    -- }
   },
   textobjects = {
     select = {
