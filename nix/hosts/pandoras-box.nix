@@ -22,6 +22,7 @@
       clojure.enable = true;
       newsboat.enable = true;
       gpg.enable = true;
+      discord.enable = true;
     };
   };
 

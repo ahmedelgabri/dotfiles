@@ -33,6 +33,7 @@
     ./clojure.nix
     ./python.nix
     ./syncthing.nix
+    ./discord.nix
   ];
 
   my.modules = {

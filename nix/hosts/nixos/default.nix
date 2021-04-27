@@ -36,6 +36,7 @@
       rescript.enable = true;
       clojure.enable = true;
       newsboat.enable = true;
+      discord.enable = true;
     };
   };
 
