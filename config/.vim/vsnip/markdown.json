@@ -4,7 +4,7 @@
     "body": [
       "---",
       "title: ${1:Title}",
-      "date: ${CURRENT_DAY_NAME} ${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR} ${CURRENT_HOUR}:${CURRENT_MINUTE}",
+      "date: ${CURRENT_DATE}-${CURRENT_MONTH}-${CURRENT_YEAR}T${CURRENT_HOUR}:${CURRENT_MINUTE}",
       "${3:tags}: $4",
       "---",
       "",
