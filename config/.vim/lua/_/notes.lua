@@ -1,3 +1,5 @@
+local utils = require "_.utils"
+
 local M = {}
 
 function M.get_dir()
@@ -105,6 +107,57 @@ function M.search_notes(query, fullscreen)
     1,
     vim.fn["fzf#vim#with_preview"](opts),
     fullscreen
+  )
+end
+
+function M.open_in_obsidian()
+  local str =
+    string.format(
+    "obsidian://open?path=%s",
+    utils.urlencode(vim.fn.expand("%:p"))
+  )
+
+  print(str)
+  vim.fn.system(
+    string.format(
+      vim.fn.executable("osascript") and [[osascript -e 'open location "%s"']] or
+        [[xdg-open "%s"]],
+      str
+    )
+  )
+end
+
+function M.note_in_obsidian(...)
+  local data = M.note_info(...)
+  local path = data[1]
+  local fname = data[2]
+  local formatted_date = data[3]
+
+  local frontmatter = [[
+---
+title: %s
+date: %s
+tags:
+---
+]]
+
+  local str =
+    string.format(
+    -- "obsidian://new?path=%s&content=%s", -- not working?
+    -- utils.urlencode(path),
+    "obsidian://new?vault=notes&file=%s/%s&content=%s",
+    utils.urlencode(vim.fn.fnamemodify(path, ":h:t")),
+    utils.urlencode(vim.fn.fnamemodify(path, ":t")),
+    utils.urlencode(string.format(frontmatter, fname, formatted_date))
+  )
+
+  -- print(str)
+  vim.fn.system(
+    string.format(
+      vim.fn.executable("osascript") and [[osascript -e 'open location "%s"']] or
+        [[xdg-open "%s"]],
+      str
+    )
   )
 end
 

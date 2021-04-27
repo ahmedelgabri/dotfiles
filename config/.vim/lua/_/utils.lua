@@ -42,4 +42,18 @@ function M.t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
+function M.urlencode(str)
+  str =
+    string.gsub(
+    str,
+    "([^0-9a-zA-Z !'()*._~-])", -- locale independent
+    function(c)
+      return string.format("%%%02X", string.byte(c))
+    end
+  )
+
+  str = string.gsub(str, " ", "%%20")
+  return str
+end
+
 return M
