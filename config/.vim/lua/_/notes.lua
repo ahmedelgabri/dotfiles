@@ -54,15 +54,15 @@ function M.note_edit(...)
   print(path)
   vim.cmd("edit " .. path)
 
-  local frontmatter = {
-    "normal ggO---",
-    "title: " .. fname,
-    "date: " .. formatted_date,
-    "tags:",
-    "---"
-  }
+  local frontmatter = [[
+normal ggO---
+title: %s
+date: %s
+tags:
+---
+]]
 
-  vim.cmd(table.concat(frontmatter, "\n"))
+  vim.api.nvim_command(string.format(frontmatter, fname, formatted_date))
 end
 
 function M.wiki_edit(...)
