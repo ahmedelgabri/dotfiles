@@ -121,6 +121,7 @@ local mappings =
 
 local on_attach = function(client)
   client.config.flags.allow_incremental_sync = true
+  require "lsp_signature".on_attach()
 
   for lhs, rhs in pairs(mappings) do
     if lhs == "K" then

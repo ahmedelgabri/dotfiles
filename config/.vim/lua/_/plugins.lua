@@ -148,7 +148,8 @@ local plugins = {
         config = function()
           require "lspkind".init()
         end
-      }
+      },
+      {"https://github.com/ray-x/lsp_signature.nvim"}
     }
   },
   {
