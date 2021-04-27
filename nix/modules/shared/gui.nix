@@ -22,6 +22,7 @@ in
         homebrew.casks = [
           "1password"
           "alfred"
+          "anki"
           "appcleaner"
           "corelocationcli"
           "db-browser-for-sqlite"
@@ -50,6 +51,7 @@ in
       } else {
         my.user = {
           packages = with pkgs; [
+            anki
             brave
             firefox
             obsidian
