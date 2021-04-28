@@ -1,7 +1,5 @@
 local utils = require "_.utils"
 
-local M = {}
-
 ---------------------------------------------------------------------------------
 -- Helpers
 ---------------------------------------------------------------------------------
@@ -29,7 +27,7 @@ end
 -- Main functions
 ---------------------------------------------------------------------------------
 
-function M.git_info()
+local function git_info()
   if not vim.g.loaded_fugitive then
     return ""
   end
@@ -37,13 +35,13 @@ function M.git_info()
   local out = vim.fn.FugitiveHead(10)
 
   if out ~= "" then
-    out = utils.get_icon("branch") .. "  " .. out
+    out = string.format("%s %s", utils.get_icon("branch"), out)
   end
 
-  return out
+  return string.format("%%6* %s %%*", out)
 end
 
-function M.update_filepath_highlights()
+local function update_filepath_highlights()
   if vim.bo.modified then
     vim.cmd("hi! link StatusLineFilePath DiffChange")
     vim.cmd("hi! link StatusLineNewFilePath DiffChange")
@@ -55,7 +53,7 @@ function M.update_filepath_highlights()
   return ""
 end
 
-function M.get_filepath_parts()
+local function get_filepath_parts()
   local base = vim.fn.expand("%:~:.:h")
   local filename = vim.fn.expand("%:~:.:t")
   local prefix = (vim.fn.empty(base) == 1 or base == ".") and "" or base .. "/"
@@ -63,45 +61,40 @@ function M.get_filepath_parts()
   return {base, filename, prefix}
 end
 
-function M.filepath()
-  local parts = M.get_filepath_parts()
+local function filepath()
+  local parts = get_filepath_parts()
   local prefix = parts[3]
   local filename = parts[2]
 
-  local line = [[%{luaeval("require'_.statusline'.get_filepath_parts()[3]")}]]
-  line = line .. "%*"
-  line =
-    line .. [[%{luaeval("require'_.statusline'.update_filepath_highlights()")}]]
-  line = line .. "%#StatusLineFilePath#"
-  line = line .. [[%{luaeval("require'_.statusline'.get_filepath_parts()[2]")}]]
+  update_filepath_highlights()
+
+  local line = string.format("%s%%*%%#StatusLineFilePath#%s", prefix, filename)
 
   if vim.fn.empty(prefix) == 1 and vim.fn.empty(filename) == 1 then
-    line = [[%{luaeval("require'_.statusline'.update_filepath_highlights()")}]]
-    line = line .. "%#StatusLineNewFilePath#"
-    line = line .. "%f"
-    line = line .. "%*"
+    line = "%#StatusLineNewFilePath# %f %*"
   end
 
-  return line
+  return string.format("%%4*%s%%*", line)
 end
 
-function M.readonly()
+local function readonly()
   local is_modifiable = vim.bo.modifiable == true
   local is_readonly = vim.bo.readonly == true
+  local line = ""
 
   if not is_modifiable and is_readonly then
-    return utils.get_icon("lock") .. " RO"
+    line = utils.get_icon("lock") .. " RO"
   end
 
   if is_modifiable and is_readonly then
-    return "RO"
+    line = "RO"
   end
 
   if not is_modifiable and not is_readonly then
-    return utils.get_icon("lock")
+    line = utils.get_icon("lock")
   end
 
-  return ""
+  return string.format("%%5* %s %%w %%*", line)
 end
 
 local mode_table = {
@@ -129,14 +122,14 @@ local mode_table = {
   t = "T."
 }
 
-function M.mode()
+local function mode()
   return mode_table[vim.fn.mode()] or
     (vim.fn.mode() == "n" and "" or "NOT IN MAP")
 end
 
-function M.rhs()
+local function rhs()
   return vim.fn.winwidth(0) > 80 and
-    ("%s %02d/%02d:%02d"):format(
+    ("%%4* %s %02d/%02d:%02d %%*"):format(
       line_no_indicator(),
       vim.fn.line("."),
       vim.fn.line("$"),
@@ -145,75 +138,109 @@ function M.rhs()
     line_no_indicator()
 end
 
-function M.spell()
+local function spell()
   if vim.wo.spell then
-    return utils.get_icon("spell")
+    return string.format("%%#WarningMsg# %s %%*", utils.get_icon("spell"))
   end
   return ""
 end
 
-function M.paste()
+local function paste()
   if vim.o.paste then
-    return utils.get_icon("paste")
+    return string.format("%%#ErrorMsg# %s %%*", utils.get_icon("paste"))
   end
   return ""
 end
 
-function M.file_info()
+local function file_info()
   local line = vim.bo.filetype
   if vim.bo.fileformat ~= "unix" then
-    return line .. " " .. vim.bo.fileformat
+    line = string.format("%s %s", line, vim.bo.fileformat)
   end
 
   if vim.bo.fileencoding ~= "utf-8" then
-    return line .. " " .. vim.bo.fileencoding
+    line = string.format("%s %s", line, vim.bo.fileencoding)
   end
 
-  return line
+  return string.format("%%4* %s %%*", line)
 end
 
-function M.word_count()
+local function word_count()
   if vim.bo.filetype == "markdown" or vim.bo.filetype == "text" then
-    return vim.fn.wordcount()["words"] .. " words"
+    return string.format(
+      "%%4* %d %s %%*",
+      vim.fn.wordcount()["words"],
+      " words"
+    )
   end
+
   return ""
 end
 
-function M.filetype()
+local function filetype()
   return vim.bo.filetype
 end
 
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
+local M = {}
 
-function M.active()
-  local line = [[%6*%{luaeval("require'_.statusline'.git_info()")} %*]]
-
-  line = line .. "%<"
-  line = line .. "%4*" .. M.filepath() .. "%*"
-  line = line .. [[%4* %{luaeval("require'_.statusline'.word_count()")} %*]]
-  line = line .. [[%5* %{luaeval("require'_.statusline'.readonly()")} %w %*]]
-  line = line .. "%9*%=%*"
-  line = line .. [[ %{luaeval("require'_.statusline'.mode()")} %*]]
-  line = line .. [[%#ErrorMsg# %{luaeval("require'_.statusline'.paste()")} %*]]
-  line =
-    line .. [[%#WarningMsg# %{luaeval("require'_.statusline'.spell()")} %*]]
-  line = line .. [[%4* %{luaeval("require'_.statusline'.file_info()")} %*]]
-  line = line .. [[%4* %{luaeval("require'_.statusline'.rhs()")} %*]]
+function M.get_active_statusline()
+  local line =
+    table.concat(
+    {
+      git_info(),
+      "%<",
+      filepath(),
+      word_count(),
+      readonly(),
+      "%9*%=%* ",
+      mode(),
+      " %*",
+      paste(),
+      spell(),
+      file_info(),
+      rhs()
+    }
+  )
 
   if vim.bo.filetype == "help" or vim.bo.filetype == "man" then
-    line = [[%#StatusLineNC# %{luaeval("require'_.statusline'.filetype()")} %f]]
-    line = line .. [[%5* %{luaeval("require'_.statusline'.readonly()")} %w %*]]
+    line =
+      table.concat(
+      {
+        "%#StatusLineNC# ",
+        filetype(),
+        " %f",
+        line,
+        readonly()
+      }
+    )
   end
 
-  vim.api.nvim_win_set_option(0, "statusline", line)
+  return line
+end
+
+function M.get_inactive_statusline()
+  local line = "%#StatusLineNC#%f%*"
+
+  return line
+end
+
+function M.active()
+  vim.api.nvim_win_set_option(
+    0,
+    "statusline",
+    [[%!luaeval("require'_.statusline'.get_active_statusline()")]]
+  )
 end
 
 function M.inactive()
-  local line = "%#StatusLineNC#%f%*"
-
-  vim.api.nvim_win_set_option(0, "statusline", line)
+  vim.api.nvim_win_set_option(
+    0,
+    "statusline",
+    [[%!luaeval("require'_.statusline'.get_inactive_statusline()")]]
+  )
 end
 
 function M.activate()
