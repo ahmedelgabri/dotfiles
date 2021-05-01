@@ -102,4 +102,4 @@ endfunction
 nnoremap <silent><buffer> K :<C-U>exe 'help '.utils#helptopic()<CR>
 
 " Quick note taking per project
-nmap n<CR> :tab drop notes.md<CR>
+nmap ,n :tab drop notes.md<CR>

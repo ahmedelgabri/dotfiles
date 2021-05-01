@@ -32,6 +32,7 @@ local lisps = {"lisp", "scheme", "clojure"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
+  {"https://github.com/tweekmonster/startuptime.vim", cmd = "StartupTime"},
   {
     "https://github.com/windwp/nvim-autopairs",
     config = function()
@@ -110,12 +111,15 @@ local plugins = {
       )
     end
   },
-  {"https://github.com/tomtom/tcomment_vim"},
+  {"https://github.com/tomtom/tcomment_vim", keys = {"gc"}},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
   {"https://github.com/liuchengxu/vista.vim", cmd = "Vista"},
   {"https://github.com/christoomey/vim-tmux-navigator", opt = true},
-  {"https://github.com/rhysd/devdocs.vim"},
+  {
+    "https://github.com/rhysd/devdocs.vim",
+    keys = {"<Plug>(devdocs-under-cursor)"}
+  },
   {"https://github.com/kevinhwang91/nvim-bqf"},
   -- LSP/Autocompletion {{{
   {
