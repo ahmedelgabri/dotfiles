@@ -6,8 +6,7 @@ let g:vim_markdown_fenced_languages = [
       \'jsx=javascript.jsx',
       \'ts=typescript',
       \'tsx=typescript.tsx',
-      \'json',
-      \'json5',
+      \'json=jsonc',
       \'ruby',
       \'sass',
       \'scss=sass',
@@ -23,7 +22,8 @@ let g:vim_markdown_fenced_languages = [
       \'less=css'
       \]
 
-let g:goyo_width = '120'
+let g:goyo_width = '50%'
+let g:goyo_height = '75%'
 let g:limelight_conceal_ctermfg=240
 let g:limelight_conceal_guifg = '#777777'
 nmap <Leader>g :packadd goyo.vim<CR>\|:Goyo<CR>
@@ -33,6 +33,7 @@ function! s:goyo_enter() abort
   packadd limelight.vim
   packadd goyo.vim
   Limelight
+  set laststatus=0
   if exists('$TMUX')
     silent !tmux set -g pane-border-status off
     silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
@@ -48,6 +49,7 @@ endfunction
 
 function! s:goyo_leave() abort
   Limelight!
+  set laststatus=2
   if exists('$TMUX')
     silent !tmux set -g pane-border-status top
     silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z

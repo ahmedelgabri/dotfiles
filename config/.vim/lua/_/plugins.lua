@@ -354,6 +354,15 @@ local plugins = {
   },
   -- }}}
 
+  -- Writing {{{
+  {"https://github.com/junegunn/goyo.vim", opt = true, cmd = "Goyo"},
+  {
+    "https://github.com/junegunn/limelight.vim",
+    opt = true,
+    cmd = "Limelight"
+  },
+  -- }}}
+
   -- Themes, UI & eye cnady {{{
   {"https://github.com/andreypopp/vim-colors-plain", opt = true},
   {"https://github.com/liuchengxu/space-vim-theme", opt = true},
