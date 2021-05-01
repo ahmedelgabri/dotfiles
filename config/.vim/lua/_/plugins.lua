@@ -51,7 +51,6 @@ local plugins = {
     "https://github.com/lambdalisue/fern.vim",
     requires = {
       {"https://github.com/lambdalisue/fern-git.vim"},
-      {"https://github.com/lambdalisue/fern-ssh"},
       {"https://github.com/lambdalisue/fern-hijack.vim"}
     }
   },
@@ -114,11 +113,9 @@ local plugins = {
   {"https://github.com/tomtom/tcomment_vim"},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
-  {"https://github.com/tommcdo/vim-lion"},
   {"https://github.com/liuchengxu/vista.vim", cmd = "Vista"},
   {"https://github.com/christoomey/vim-tmux-navigator", opt = true},
   {"https://github.com/rhysd/devdocs.vim"},
-  {"https://github.com/fcpg/vim-waikiki"},
   {"https://github.com/kevinhwang91/nvim-bqf"},
   -- LSP/Autocompletion {{{
   {
