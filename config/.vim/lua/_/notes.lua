@@ -86,28 +86,33 @@ end
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
 function M.search_notes(query, fullscreen)
   local command_fmt =
-    "rg --column --line-number --no-heading --color=always --smart-case -g '!.obsidian' -g '!.neuron' -g '!.neuronignore' -g '!.syncinfo' -- %s || true"
-  local initial_command =
-    string.format(command_fmt, string.gsub(query, query, "'%1'"))
-  local reload_command = string.format(command_fmt, "{q}")
-
+    "rg --column --line-number --no-heading --color=always --smart-case"
+  -- local initial_command =
+  --   string.format(command_fmt, string.gsub(query, query, "'%1'"))
+  -- local reload_command = string.format(command_fmt, "{q}")
+  --
+  -- local opts = {
+  --   dir = M.get_dir(),
+  --   options = {
+  --     "--phony",
+  --     "--query",
+  --     query,
+  --     "--bind",
+  --     "change:reload:" .. reload_command
+  --   }
+  -- }
+  --
+  -- vim.fn["fzf#vim#grep"](
+  --   initial_command,
+  --   1,
+  --   vim.fn["fzf#vim#with_preview"](opts),
+  --   fullscreen
+  -- )
   local opts = {
-    dir = M.get_dir(),
-    options = {
-      "--phony",
-      "--query",
-      query,
-      "--bind",
-      "change:reload:" .. reload_command
-    }
+    search_dirs = {M.get_dir()}
   }
 
-  vim.fn["fzf#vim#grep"](
-    initial_command,
-    1,
-    vim.fn["fzf#vim#with_preview"](opts),
-    fullscreen
-  )
+  require("telescope.builtin").live_grep(opts)
 end
 
 function M.open_in_obsidian()

@@ -37,6 +37,20 @@ local plugins = {
     config = [[require "_.config.nvim-autopairs"]]
   },
   {
+    "https://github.com/nvim-telescope/telescope.nvim",
+    requires = {
+      {"https://github.com/nvim-lua/popup.nvim"},
+      {"https://github.com/nvim-lua/plenary.nvim"},
+      {
+        "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
+        run = "make"
+      }
+    },
+    config = function()
+      require "_.config.telescope".setup()
+    end
+  },
+  {
     "https://github.com/junegunn/fzf.vim",
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = {{"https://github.com/junegunn/fzf"}}
