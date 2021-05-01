@@ -12,12 +12,13 @@ end
 
 local has_lspsaga, lspsaga = pcall(require, "lspsaga")
 local has_extensions = pcall(require, "lsp_extensions")
+local configs = require "lspconfig/configs"
 local utils = require "_.utils"
 local map_opts = {noremap = true, silent = true}
 
 lspsaga.init_lsp_saga()
 
-require "_.completion".setup()
+require "_.config.completion".setup()
 
 utils.augroup(
   "COMPLETION",
@@ -194,104 +195,9 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-require("nlua.lsp.nvim").setup(
-  nvim_lsp,
-  {
-    on_attach = on_attach,
-    globals = {"vim", "spoon", "hs"}
-  }
-)
+local tailwindlsp = "tailwindlsp"
 
-local configs = require "lspconfig/configs"
-local server_name = "tailwindlsp"
-
-configs[server_name] = {
-  default_config = {
-    cmd = {server_name},
-    filetypes = {
-      -- html
-      "aspnetcorerazor",
-      "blade",
-      "django-html",
-      "edge",
-      "ejs",
-      "eruby",
-      "gohtml",
-      "haml",
-      "handlebars",
-      "hbs",
-      "html",
-      "html-eex",
-      "jade",
-      "leaf",
-      "liquid",
-      "markdown",
-      "mdx",
-      "mustache",
-      "njk",
-      "nunjucks",
-      "php",
-      "razor",
-      "slim",
-      "twig",
-      -- css
-      "css",
-      "less",
-      "postcss",
-      "sass",
-      "scss",
-      "stylus",
-      "sugarss",
-      -- js
-      "javascript",
-      "javascript.jsx",
-      "javascriptreact",
-      "reason",
-      "rescript",
-      "typescript",
-      "typescript.tsx",
-      "typescriptreact",
-      -- mixed
-      "vue",
-      "svelte"
-    },
-    init_options = {
-      userLanguages = {
-        eruby = "html",
-        ["javascript.jsx"] = "javascriptreact",
-        ["typescript.tsx"] = "typescriptreact"
-      }
-    },
-    root_dir = function(fname)
-      return nvim_lsp.util.root_pattern(
-        "tailwind.config.js",
-        "tailwind.config.ts"
-      )(fname) or
-        nvim_lsp.util.root_pattern("postcss.config.js", "postcss.config.ts")(
-          fname
-        ) or
-        nvim_lsp.util.find_package_json_ancestor(fname) or
-        nvim_lsp.util.find_node_modules_ancestor(fname) or
-        nvim_lsp.util.find_git_ancestor(fname)
-    end,
-    handlers = {
-      ["tailwindcss/getConfiguration"] = function(_, _, params, _, bufnr, _)
-        -- tailwindcss lang server waits for this repsonse before providing hover
-        vim.lsp.buf_notify(
-          bufnr,
-          "tailwindcss/getConfigurationResponse",
-          {_id = params._id}
-        )
-      end
-    }
-  },
-  docs = {
-    description = [[ ]],
-    default_config = {
-      root_dir = [[root_pattern("package.json", ".git")]]
-    }
-  }
-}
+configs[tailwindlsp] = require "_.config.lsp.tailwind".setup({tailwindlsp}, nvim_lsp)
 
 local servers = {
   cssls = {},
@@ -299,6 +205,7 @@ local servers = {
   vimls = {},
   pyright = {},
   dockerls = {},
+  sumneko_lua = require "_.config.lsp.sumneko",
   rust_analyzer = {
     capabilities = capabilities
   },
@@ -324,7 +231,7 @@ local servers = {
         nvim_lsp.util.root_pattern("mod.ts")(fname)
     end
   },
-  tailwindlsp = {},
+  [tailwindlsp] = {},
   -- rnix = {},
   jsonls = {
     filetypes = {"json", "jsonc"},

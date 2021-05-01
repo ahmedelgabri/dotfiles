@@ -32,16 +32,9 @@ local lisps = {"lisp", "scheme", "clojure"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
-  {"https://github.com/tweekmonster/startuptime.vim", cmd = "StartupTime"},
   {
     "https://github.com/windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup(
-        {
-          disable_filetype = {"TelescopePrompt", "fzf"}
-        }
-      )
-    end
+    config = [[require "_.config.nvim-autopairs"]]
   },
   {
     "https://github.com/junegunn/fzf.vim",
@@ -71,50 +64,12 @@ local plugins = {
   {"https://github.com/tpope/vim-repeat"},
   {
     "https://github.com/machakann/vim-sandwich",
-    config = function()
-      vim.cmd("runtime macros/sandwich/keymap/surround.vim")
-      vim.g["sandwich#recipes"] =
-        vim.tbl_extend(
-        "force",
-        vim.g["sandwich#recipes"],
-        {
-          {
-            buns = {[[/\*\s*]], [[\s*\*/]]},
-            regex = 1,
-            filetype = {
-              "typescript",
-              "typescriptreact",
-              "typescript.tsx",
-              "javascript",
-              "javascriptreact",
-              "javascript.jsx"
-            },
-            input = {"/"}
-          },
-          {
-            buns = {"${", "}"},
-            filetype = {
-              "typescript",
-              "typescriptreact",
-              "typescript.tsx",
-              "javascript",
-              "javascriptreact",
-              "javascript.jsx",
-              "zsh",
-              "bash",
-              "shell",
-              "nix"
-            },
-            input = {"$"}
-          }
-        }
-      )
-    end
+    config = [[require "_.config.vim-sandwich"]]
   },
   {"https://github.com/tomtom/tcomment_vim", keys = {"gc"}},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
-  {"https://github.com/liuchengxu/vista.vim", cmd = "Vista"},
+  {"https://github.com/simrat39/symbols-outline.nvim", cmd = "SymbolsOutline"},
   {"https://github.com/christoomey/vim-tmux-navigator", opt = true},
   {
     "https://github.com/rhysd/devdocs.vim",
@@ -124,21 +79,18 @@ local plugins = {
   -- LSP/Autocompletion {{{
   {
     "https://github.com/neovim/nvim-lspconfig",
-    config = function()
-      require "_.lsp"
-    end,
+    config = [[require "_.config.lsp"]],
     requires = {
       {
         "https://github.com/tjdevries/lsp_extensions.nvim",
         config = function()
-          require "_.statusline".activate()
+          require "_.config.statusline".activate()
         end
       },
-      {"https://github.com/tjdevries/nlua.nvim"},
       {
         "https://github.com/folke/lsp-trouble.nvim",
         config = function()
-          require("trouble").setup {
+          require "trouble".setup {
             icons = false
           }
         end
@@ -154,20 +106,23 @@ local plugins = {
     }
   },
   {
+    "https://github.com/hrsh7th/vim-vsnip",
+    requires = {
+      {"https://github.com/rafamadriz/friendly-snippets"},
+      {"https://github.com/hrsh7th/vim-vsnip-integ"}
+    }
+  },
+  {
     "https://github.com/hrsh7th/nvim-compe",
     requires = {
       {"https://github.com/tami5/compe-conjure", ft = lisps},
-      {"https://github.com/andersevenrud/compe-tmux"},
-      {"https://github.com/hrsh7th/vim-vsnip"},
-      {"https://github.com/hrsh7th/vim-vsnip-integ"}
+      {"https://github.com/andersevenrud/compe-tmux"}
     }
   },
   {
     "https://github.com/nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    config = function()
-      require "_.treesitter"
-    end,
+    config = [[require "_.config.treesitter"]],
     requires = {
       {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
       {"https://github.com/p00f/nvim-ts-rainbow", ft = lisps},
@@ -193,6 +148,7 @@ local plugins = {
       )
     end
   },
+  {"https://github.com/dhruvasagar/vim-dotoo"},
   {
     "https://github.com/plasticboy/vim-markdown",
     requires = {
@@ -210,136 +166,13 @@ local plugins = {
   {"https://github.com/dense-analysis/ale"},
   {
     "https://github.com/mhartington/formatter.nvim",
-    config = function()
-      require "_.utils".augroup(
-        "__formatter__",
-        function()
-          vim.api.nvim_command("autocmd BufWritePre * FormatWrite")
-        end
-      )
-
-      local function prettier()
-        return {
-          exe = "prettier",
-          args = {
-            "--config-precedence",
-            "prefer-file",
-            "--single-quote",
-            "--no-bracket-spacing",
-            "--prose-wrap",
-            "always",
-            "--arrow-parens",
-            "always",
-            "--trailing-comma",
-            "all",
-            "--no-semi",
-            "--end-of-line",
-            "lf",
-            "--print-width",
-            vim.bo.textwidth,
-            "--stdin-filepath",
-            vim.fn.shellescape(vim.api.nvim_buf_get_name(0))
-          },
-          stdin = true
-        }
-      end
-
-      local function shfmt()
-        return {
-          exe = "shfmt",
-          args = {"-"},
-          stdin = true
-        }
-      end
-
-      require "formatter".setup(
-        {
-          logging = false,
-          filetype = {
-            javascript = {prettier},
-            typescript = {prettier},
-            javascriptreact = {prettier},
-            typescriptreact = {prettier},
-            vue = {prettier},
-            ["javascript.jsx"] = {prettier},
-            ["typescript.tsx"] = {prettier},
-            markdown = {prettier},
-            css = {prettier},
-            json = {prettier},
-            jsonc = {prettier},
-            scss = {prettier},
-            less = {prettier},
-            yaml = {prettier},
-            graphql = {prettier},
-            html = {prettier},
-            sh = {shfmt},
-            bash = {shfmt},
-            reason = {
-              function()
-                return {
-                  exe = "refmt",
-                  stdin = true
-                }
-              end
-            },
-            rust = {
-              function()
-                return {
-                  exe = "rustfmt",
-                  args = {"--emit=stdout"},
-                  stdin = true
-                }
-              end
-            },
-            python = {
-              function()
-                return {
-                  exe = "black",
-                  args = {"--quiet", "-"},
-                  stdin = true
-                }
-              end
-            },
-            go = {
-              function()
-                return {
-                  exe = "gofmt",
-                  stdin = true
-                }
-              end
-            },
-            nix = {
-              function()
-                return {
-                  exe = "nixpkgs-fmt",
-                  stdin = true
-                }
-              end
-            },
-            lua = {
-              function()
-                return {
-                  exe = "luafmt",
-                  args = {
-                    "--indent-count",
-                    2,
-                    "-l",
-                    vim.bo.textwidth,
-                    "--stdin"
-                  },
-                  stdin = true
-                }
-              end
-            }
-          }
-        }
-      )
-    end
+    config = [[require "_.config.formatter"]]
   },
   -- }}}
 
   -- Git {{{
   {"https://github.com/lambdalisue/vim-gista"},
+  {"https://github.com/rhysd/conflict-marker.vim"},
   {
     "https://github.com/tpope/vim-fugitive",
     requires = {

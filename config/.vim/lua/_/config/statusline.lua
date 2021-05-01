@@ -231,7 +231,7 @@ function M.active()
   vim.api.nvim_win_set_option(
     0,
     "statusline",
-    [[%!luaeval("require'_.statusline'.get_active_statusline()")]]
+    [[%!luaeval("require'_.config.statusline'.get_active_statusline()")]]
   )
 end
 
@@ -239,7 +239,7 @@ function M.inactive()
   vim.api.nvim_win_set_option(
     0,
     "statusline",
-    [[%!luaeval("require'_.statusline'.get_inactive_statusline()")]]
+    [[%!luaeval("require'_.config.statusline'.get_inactive_statusline()")]]
   )
 end
 
@@ -254,9 +254,11 @@ function M.activate()
   utils.augroup(
     "MyStatusLine",
     function()
-      vim.cmd("autocmd WinEnter,BufEnter * lua require'_.statusline'.active()")
       vim.cmd(
-        "autocmd WinLeave,BufLeave * lua require'_.statusline'.inactive()"
+        "autocmd WinEnter,BufEnter * lua require'_.config.statusline'.active()"
+      )
+      vim.cmd(
+        "autocmd WinLeave,BufLeave * lua require'_.config.statusline'.inactive()"
       )
     end
   )
