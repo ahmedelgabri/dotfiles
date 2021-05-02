@@ -188,6 +188,17 @@ local plugins = {
   {"https://github.com/lambdalisue/vim-gista"},
   {"https://github.com/rhysd/conflict-marker.vim"},
   {
+    "https://github.com/sindrets/diffview.nvim",
+    cmd = {"DiffviewOpen"},
+    config = function()
+      require "diffview".setup {
+        file_panel = {
+          use_icons = false
+        }
+      }
+    end
+  },
+  {
     "https://github.com/tpope/vim-fugitive",
     requires = {
       {"https://github.com/tpope/vim-rhubarb"}
