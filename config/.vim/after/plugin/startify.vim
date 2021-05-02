@@ -60,7 +60,7 @@ endfunction
 
 let g:startify_lists = [
       \ { 'header': ['   Sessions'], 'type': 'sessions' },
-      \ { 'header': ['   MRU [' . getcwd() . ']'], 'type': 'dir' },
+      \ { 'header': ['   MRU [' . fnamemodify(getcwd(), ':~') . ']'], 'type': 'dir' },
       \ { 'header': ['   Files'], 'type': 'files' },
       \ { 'header': ['   Commits'], 'type': function('s:list_commits') },
       \ { 'header': ['   Commands'], 'type': 'commands' },
