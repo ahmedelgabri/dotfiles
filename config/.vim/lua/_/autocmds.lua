@@ -79,8 +79,8 @@ end
 
 local function cleanup_marker(marker)
   if vim.fn.exists(marker) == 1 then
-    vim.cmd("silent! call matchdelete(" .. marker .. ")")
-    vim.cmd("silent! unlet " .. marker)
+    vim.api.nvim_command("silent! call matchdelete(" .. marker .. ")")
+    vim.api.nvim_command("silent! unlet " .. marker)
   end
 end
 
@@ -91,11 +91,11 @@ function M.mkview()
       function()
         if vim.fn.exists("*haslocaldir") and vim.fn.haslocaldir() then
           -- We never want to save an :lcd command, so hack around it...
-          vim.cmd("cd -")
-          vim.cmd("mkview")
-          vim.cmd("lcd -")
+          vim.api.nvim_command("cd -")
+          vim.api.nvim_command("mkview")
+          vim.api.nvim_command("lcd -")
         else
-          vim.cmd("mkview")
+          vim.api.nvim_command("mkview")
         end
       end
     )
@@ -113,8 +113,8 @@ end
 
 function M.loadview()
   if should_mkview() then
-    vim.cmd("silent! loadview")
-    vim.cmd("silent! " .. vim.fn.line(".") .. "foldopen!")
+    vim.api.nvim_command("silent! loadview")
+    vim.api.nvim_command("silent! " .. vim.fn.line(".") .. "foldopen!")
   end
 end
 
@@ -137,7 +137,7 @@ function M.source_project_config()
     vim.fn.findfile(".vim/local.vim", vim.fn.expand("%:p") .. ";")
 
   if vim.fn.filereadable(projectfile) == 1 then
-    vim.cmd("silent source " .. projectfile)
+    vim.api.nvim_command("silent source " .. projectfile)
   end
 end
 
@@ -145,14 +145,14 @@ function M.highlight_overlength()
   cleanup_marker("w:last_overlength")
 
   if should_turn_off_colorcolumn() then
-    vim.cmd("match NONE")
+    vim.api.nvim_command("match NONE")
   else
     -- Use tw + 1 so invisble characters are not marked
     -- I have to escape the escape backslash to be able to pass it to vim
     -- Ex: I want "\(" I have to do it in Lua as "\\("
     local overlength_pattern = "\\%>" .. (vim.bo.textwidth + 1) .. "v.\\+"
     -- [TODO]: figure out how to convert this to Lua
-    vim.cmd(
+    vim.api.nvim_command(
       "let w:last_overlength = matchadd('OverLength', '" ..
         overlength_pattern .. "')"
     )
@@ -165,7 +165,7 @@ function M.highlight_git_markers()
   -- Ex: I want "\(" I have to do it in Lua as "\\("
   local overlength_pattern = "^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$"
   -- [TODO]: figure out how to convert this to Lua
-  vim.cmd(
+  vim.api.nvim_command(
     "let w:last_overlength = matchadd('ErrorMsg','" ..
       overlength_pattern .. "')"
   )
@@ -178,7 +178,7 @@ function M.disable_heavy_plugins()
       vim.fn.getfsize(vim.fn.expand("%")) > 200000
    then
     if vim.fn.exists(":ALEDisableBuffer") == 2 then
-      vim.cmd(":ALEDisableBuffer")
+      vim.api.nvim_command(":ALEDisableBuffer")
     end
   end
 end

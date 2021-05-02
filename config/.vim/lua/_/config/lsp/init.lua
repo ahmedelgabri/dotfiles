@@ -197,7 +197,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 
 local tailwindlsp = "tailwindlsp"
 
-configs[tailwindlsp] = require "_.config.lsp.tailwind".setup({tailwindlsp}, nvim_lsp)
+configs[tailwindlsp] =
+  require "_.config.lsp.tailwind".setup({tailwindlsp}, nvim_lsp)
 
 local servers = {
   cssls = {},
@@ -213,7 +214,7 @@ local servers = {
     cmd = {"gopls", "serve"},
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("go.mod", ".git")(fname) or
-        vim.fn.getcwd()
+        vim.loop.cwd()
     end
   },
   tsserver = {
@@ -222,7 +223,7 @@ local servers = {
         nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(
           fname
         ) or
-        vim.fn.getcwd()
+        vim.loop.cwd()
     end
   },
   denols = {

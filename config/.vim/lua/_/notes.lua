@@ -54,7 +54,7 @@ function M.note_edit(...)
   local formatted_date = data[3]
 
   print(path)
-  vim.cmd("edit " .. path)
+  vim.api.nvim_command("edit " .. path)
 
   local frontmatter = [[
 normal ggO---
@@ -73,7 +73,7 @@ function M.wiki_edit(...)
 
   print(fname)
 
-  vim.cmd("edit " .. fname)
+  vim.api.nvim_command("edit " .. fname)
 end
 
 function M.my_name(name)

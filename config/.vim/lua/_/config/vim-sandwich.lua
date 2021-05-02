@@ -1,4 +1,4 @@
-vim.cmd("runtime macros/sandwich/keymap/surround.vim")
+vim.api.nvim_command("runtime macros/sandwich/keymap/surround.vim")
 vim.g["sandwich#recipes"] =
   vim.tbl_extend(
   "force",

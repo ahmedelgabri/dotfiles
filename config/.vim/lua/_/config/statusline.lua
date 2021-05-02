@@ -43,11 +43,11 @@ end
 
 local function update_filepath_highlights()
   if vim.bo.modified then
-    vim.cmd("hi! link StatusLineFilePath DiffChange")
-    vim.cmd("hi! link StatusLineNewFilePath DiffChange")
+    vim.api.nvim_command("hi! link StatusLineFilePath DiffChange")
+    vim.api.nvim_command("hi! link StatusLineNewFilePath DiffChange")
   else
-    vim.cmd("hi! link StatusLineFilePath User6")
-    vim.cmd("hi! link StatusLineNewFilePath User4")
+    vim.api.nvim_command("hi! link StatusLineFilePath User6")
+    vim.api.nvim_command("hi! link StatusLineNewFilePath User4")
   end
 
   return ""
@@ -244,7 +244,7 @@ function M.inactive()
 end
 
 function M.activate()
-  vim.cmd(
+  vim.api.nvim_command(
     ("hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%d"):format(
       utils.get_color("Identifier", "fg", "gui"),
       utils.get_color("Identifier", "fg", "cterm")
@@ -254,10 +254,10 @@ function M.activate()
   utils.augroup(
     "MyStatusLine",
     function()
-      vim.cmd(
+      vim.api.nvim_command(
         "autocmd WinEnter,BufEnter * lua require'_.config.statusline'.active()"
       )
-      vim.cmd(
+      vim.api.nvim_command(
         "autocmd WinLeave,BufLeave * lua require'_.config.statusline'.inactive()"
       )
     end

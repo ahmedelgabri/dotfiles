@@ -1,5 +1,5 @@
 -- Only required if you have packer in your `opt` pack
-local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
+local packer_exists = pcall(vim.api.nvim_command, [[packadd packer.nvim]])
 
 if not packer_exists then
   if vim.fn.input("Download Packer? (y for yes) ") ~= "y" then
