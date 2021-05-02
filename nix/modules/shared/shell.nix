@@ -86,7 +86,6 @@ in
               bandwhich # display current network utilization by process
               bottom # fancy version of `top` with ASCII graphs
               tealdeer # rust implementation of `tldr`
-              comma
               ncdu
               bat
               jq

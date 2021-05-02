@@ -61,12 +61,6 @@
       flake = false;
     };
 
-    comma = {
-      url = "github:Shopify/comma";
-      flake = false;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     ttrv = {
       url = "github:tildeclub/ttrv?ref=v1.27.3";
       flake = false;
@@ -84,7 +78,7 @@
 
     neuron-notes-master = {
       url = "github:srid/neuron";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     rnix-lsp = {
@@ -152,8 +146,6 @@
           (prev.callPackage "${inputs.neuron-notes-master}/project.nix"
             { }).neuron;
 
-        comma = import inputs.comma { inherit (prev) pkgs; };
-
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
@@ -189,7 +181,6 @@
       pandoras-box = self.darwinConfigurations.pandoras-box.system;
       ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
 
-      # [todo] very alpha, needs work
       nixosConfigurations = {
         "nixos" = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
