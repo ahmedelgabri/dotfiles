@@ -26,7 +26,6 @@ augroup MyCustomColors
         \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))
         \| execute(printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm')))
         \| execute(printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm')))
-        " \| hi! NormalFloat cterm=NONE ctermbg=0 gui=NONE guibg=#000000
 
   autocmd ColorScheme codedark,plain hi! link StartifyHeader Normal
         \| hi! link StartifyFile Directory
@@ -44,4 +43,65 @@ augroup MyCustomColors
         \| hi! link Todo Comment
         \| hi! link Conceal NonText
         \| hi! link Error ErrorMsg
+
+  " Treesitter highlights
+  " autocmd ColorScheme plain hi! link TSAnnotation
+  "       \| hi! link TSAttribute
+  "       \| hi! link TSBoolean Boolean
+  "       \| hi! link TSCharacter Character
+  "       \| hi! link TSComment Comment
+  "       \| hi! link TSConditional
+  "       \| hi! link TSConstBuiltin
+  "       \| hi! link TSConstMacro
+  "       \| hi! link TSConstant
+  "       \| hi! link TSConstructor
+  "       \| hi! link TSDanger
+  "       \| hi! link TSEmphasis
+  "       \| hi! link TSEnviroment
+  "       \| hi! link TSEnviromentName
+  "       \| hi! link TSError Error
+  "       \| hi! link TSException
+  "       \| hi! link TSField
+  "       \| hi! link TSFloat
+  "       \| hi! link TSFuncBuiltin
+  "       \| hi! link TSFuncMacro
+  "       \| hi! link TSFunction Function
+  "       \| hi! link TSInclude
+  "       \| hi! link TSKeyword Keyword
+  "       \| hi! link TSKeywordFunction
+  "       \| hi! link TSKeywordOperator
+  "       \| hi! link TSLabel
+  "       \| hi! link TSLiteral
+  "       \| hi! link TSMath
+  "       \| hi! link TSMethod
+  "       \| hi! link TSNamespace
+  "       \| hi! link TSNone
+  "       \| hi! link TSNote
+  "       \| hi! link TSNumber Number
+  "       \| hi! link TSOperator
+  "       \| hi! link TSParameter
+  "       \| hi! link TSParameterReference
+  "       \| hi! link TSProperty
+  "       \| hi! link TSPunctBracket
+  "       \| hi! link TSPunctDelimiter
+  "       \| hi! link TSPunctSpecial
+  "       \| hi! link TSRepeat
+  "       \| hi! link TSStrike
+  "       \| hi! link TSString String
+  "       \| hi! link TSStringEscape
+  "       \| hi! link TSStringRegex
+  "       \| hi! link TSStrong
+  "       \| hi! link TSSymbol
+  "       \| hi! link TSTag
+  "       \| hi! link TSTagDelimiter
+  "       \| hi! link TSText
+  "       \| hi! link TSTextReference
+  "       \| hi! link TSTitle
+  "       \| hi! link TSType
+  "       \| hi! link TSTypeBuiltin
+  "       \| hi! link TSURI
+  "       \| hi! link TSUnderline
+  "       \| hi! link TSVariable
+  "       \| hi! link TSVariableBuiltin
+  "       \| hi! link TSWarning
 augroup END
