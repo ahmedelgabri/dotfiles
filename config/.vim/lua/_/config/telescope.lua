@@ -27,7 +27,7 @@ function M.setup()
     defaults = {
       selection_caret = "▶ ",
       -- winblend = 30,
-      layout_strategy = "flex",
+      layout_strategy = "vertical", -- flex
       layout_defaults = {
         horizontal = {
           preview_width = 0.6
