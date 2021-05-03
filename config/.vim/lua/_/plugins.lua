@@ -185,7 +185,6 @@ local plugins = {
   -- }}}
 
   -- Git {{{
-  {"https://github.com/lambdalisue/vim-gista"},
   {"https://github.com/rhysd/conflict-marker.vim"},
   {
     "https://github.com/sindrets/diffview.nvim",
