@@ -185,7 +185,17 @@ local plugins = {
   -- }}}
 
   -- Git {{{
-  {"https://github.com/rhysd/conflict-marker.vim"},
+  {
+    "https://github.com/rhysd/conflict-marker.vim",
+    config = function()
+      -- disable the default highlight group
+      vim.g.conflict_marker_highlight_group = ""
+
+      -- Include text after begin and end markers
+      vim.g.conflict_marker_begin = "^<<<<<<< .*$"
+      vim.g.conflict_marker_end = "^>>>>>>> .*$"
+    end
+  },
   {
     "https://github.com/sindrets/diffview.nvim",
     cmd = {"DiffviewOpen"},

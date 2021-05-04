@@ -160,15 +160,28 @@ function M.highlight_overlength()
 end
 
 function M.highlight_git_markers()
-  cleanup_marker("w:last_git_markers")
-  -- I have to escape the escape backslash to be able to pass it to vim
-  -- Ex: I want "\(" I have to do it in Lua as "\\("
-  local overlength_pattern = "^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$"
-  -- [TODO]: figure out how to convert this to Lua
-  vim.api.nvim_command(
-    "let w:last_overlength = matchadd('ErrorMsg','" ..
-      overlength_pattern .. "')"
-  )
+  if
+    packer_plugins["conflict-marker.vim"] and
+      packer_plugins["conflict-marker.vim"].loaded
+   then
+    vim.cmd [[
+highlight! ConflictMarkerBegin guibg=#2f7366
+highlight! ConflictMarkerOurs guibg=#2e5049
+highlight! ConflictMarkerTheirs guibg=#344f69
+highlight! ConflictMarkerEnd guibg=#2f628e
+highlight! ConflictMarkerCommonAncestorsHunk guibg=#754a81
+]]
+  else
+    cleanup_marker("w:last_git_markers")
+    -- I have to escape the escape backslash to be able to pass it to vim
+    -- Ex: I want "\(" I have to do it in Lua as "\\("
+    local overlength_pattern = "^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$"
+    -- [TODO]: figure out how to convert this to Lua
+    vim.api.nvim_command(
+      "let w:last_overlength = matchadd('ErrorMsg','" ..
+        overlength_pattern .. "')"
+    )
+  end
 end
 
 function M.disable_heavy_plugins()
