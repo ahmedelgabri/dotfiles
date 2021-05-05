@@ -15,14 +15,20 @@ in
   };
 
   config = with lib;
-    mkIf cfg.enable {
-      my.user = { packages = with pkgs; [ alacritty ]; };
+    mkIf cfg.enable (mkMerge [
+      (if (builtins.hasAttr "homebrew" options) then {
+        homebrew.casks = [ "alacritty" ];
+      } else {
+        my.user = { packages = with pkgs; [ alacritty ]; };
+      })
 
-      my.hm.file = {
-        ".config/alacritty" = {
-          recursive = true;
-          source = ../../../config/alacritty;
+      {
+        my.hm.file = {
+          ".config/alacritty" = {
+            recursive = true;
+            source = ../../../config/alacritty;
+          };
         };
-      };
-    };
+      }
+    ]);
 }
