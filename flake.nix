@@ -102,15 +102,10 @@
           };
         };
 
-        fonts = (lib.mkMerge [
-          # [note] Remove this condition when `nix-darwin` aligns with NixOS
-          (if (builtins.hasAttr "fontDir" options.fonts) then {
-            fontDir.enable = true;
-          } else {
-            enableFontDir = true;
-          })
-          { fonts = with pkgs; [ pragmatapro ]; }
-        ]);
+        fonts = {
+          enableFontDir = true;
+          fonts = with pkgs; [ pragmatapro ];
+        };
 
         nixpkgs = {
           config = { allowUnfree = true; };
