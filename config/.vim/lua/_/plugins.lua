@@ -28,7 +28,7 @@ if not packer_exists then
 end
 
 local packer = require "packer"
-local lisps = {"lisp", "scheme", "clojure"}
+local lisps = {"lisp", "scheme", "clojure", "fennel"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
