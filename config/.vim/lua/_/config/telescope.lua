@@ -5,13 +5,23 @@ local M = {}
 
 function M.find_files()
   require "telescope.builtin".find_files {
+    previewer = false,
     hidden = true,
     follow = true,
-    find_command = {"fd", "--hidden", "--follow", "--no-ignore-vcs", "-t", "f"},
-    prompt_prefix = string.format(
+    results_height = 50,
+    find_command = {
+      "fd",
+      "--hidden",
+      "--follow",
+      "--no-ignore-vcs",
+      "-t",
+      "f"
+    },
+    prompt_title = string.format(
       "%s/",
       vim.fn.fnamemodify(vim.loop.cwd(), ":~")
-    )
+    ),
+    prompt_prefix = " "
   }
 end
 
@@ -25,9 +35,10 @@ function M.setup()
       }
     },
     defaults = {
+      width = 0.95,
       selection_caret = "▶ ",
       -- winblend = 30,
-      layout_strategy = "vertical", -- flex
+      layout_strategy = "flex",
       layout_defaults = {
         horizontal = {
           preview_width = 0.6
@@ -60,7 +71,7 @@ function M.setup()
   utils.gmap(
     "n",
     "<leader>b",
-    [[<cmd>lua require "telescope.builtin".buffers { sort_lastused = true }<cr>]],
+    [[<cmd>lua require "telescope.builtin".buffers { sort_lastused = true, show_all_buffers = true }<cr>]],
     map_opts
   )
 
