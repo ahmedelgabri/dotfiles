@@ -136,6 +136,10 @@ in
                 source ${cfg.alias_path}''}
               set from = "${email}"
               set spoolfile = "+${cfg.account}/INBOX"
+              ${if cfg.keychain.name == "fastmail.com" then
+              ''set record =  "+${cfg.account}/Sent"''
+              else
+              ''unset record # don't save messages, gmail already does this.''}
               set postponed = "+${cfg.account}/Drafts"
               set mbox = "+${cfg.account}/Archive"
               set trash = "+${cfg.account}/Trash"

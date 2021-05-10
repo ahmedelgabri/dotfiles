@@ -8,7 +8,6 @@ set tmpdir           = "$XDG_DATA_HOME/neomutt/tmp/"
 set ssl_force_tls
 set hostname="prop"
 
-unset record # don't save messages, gmail already does this.
 set folder = "$HOME/.mail"
 set editor = "$EDITOR +/^$ +nohlsearch"
 
