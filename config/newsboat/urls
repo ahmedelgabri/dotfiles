@@ -235,6 +235,7 @@
   https://tkdodo.eu/blog/rss.xml "Blog" "TypeScript"
   https://fettblog.eu/feed.xml "Blog" "TypeScript" "Rust"
   https://antfu.me/feed.xml "Blog" "Vue" "JavaScript" "TypeScript"
+  https://maxschmitt.me/feed.rss "Blog" "JavaScript" "Next.js" "React"
 # }}}
 
 # Browsers {{{
