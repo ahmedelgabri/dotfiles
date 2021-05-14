@@ -40,7 +40,8 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Compound interest is the eighth wonder of the world. He who understands it, earns it. He who doesn’t, pays it.', '', '— Albert Einstein'],
       \ ['Time is the fire in which we burn', '', '— Delmore Schwartz'],
       \ ['A ship in harbor is safe, but that is not what ships are built for.', '— John A. Shedd'],
-      \ ['You can’t call yourself a leader by coming into a situation that is by nature uncertain, ambiguous — and create confusion.', 'You have to create clarity where none exists', '— Satya Nadella']
+      \ ['You can’t call yourself a leader by coming into a situation that is by nature uncertain, ambiguous — and create confusion.', 'You have to create clarity where none exists', '— Satya Nadella'],
+      \ ['The competent programmer is fully aware of the strictly limited size of his own skull; therefore he approaches the programming task in full humility', '— Edsger W. Dijkstra']
       \ ]
 
 function! s:list_commits()
