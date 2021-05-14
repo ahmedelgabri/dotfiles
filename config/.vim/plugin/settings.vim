@@ -23,7 +23,7 @@ augroup MyLongLinesHighlight
   autocmd!
   if has('nvim')
     autocmd BufWinEnter,BufEnter ?* lua require'_.autocmds'.highlight_overlength()
-    " [todo] figure out why it breaks help files?
+    " [TODO] figure out why it breaks help files?
     " autocmd OptionSet textwidth lua require'_.autocmds'.highlight_overlength()
     " highlight VCS conflict markers
     autocmd BufWinEnter,BufEnter * lua require'_.autocmds'.highlight_git_markers()

@@ -59,7 +59,7 @@ in
         environment = {
           shells = [ pkgs.bashInteractive_5 pkgs.zsh ];
           variables = {
-            # [note] Darwin doesn't set them by default, unlike NixOS. So we have to set them.
+            # [NOTE] Darwin doesn't set them by default, unlike NixOS. So we have to set them.
             XDG_CACHE_HOME = "${home}/.cache";
             XDG_CONFIG_HOME = "${home}/.config";
             XDG_DATA_HOME = "${home}/.local/share";
@@ -195,7 +195,7 @@ in
 
         };
 
-        # [todo] look at this later, because it's ugly
+        # [TODO] look at this later, because it's ugly
         system.activationScripts.postUserActivation.text = ''
           echo ":: -> Running shell activationScript..."
           # Creating needed folders

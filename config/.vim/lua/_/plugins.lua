@@ -109,6 +109,14 @@ local plugins = {
           }
         end
       },
+      {
+        "folke/todo-comments.nvim",
+        config = function()
+          require("todo-comments").setup {
+            pattern = "\\s(\\[(KEYWORDS)\\]|(KEYWORDS)):?\\s"
+          }
+        end
+      },
       {"https://github.com/glepnir/lspsaga.nvim"},
       {
         "https://github.com/onsails/lspkind-nvim",
@@ -154,7 +162,8 @@ local plugins = {
       require "colorizer".setup(
         {
           "*",
-          "!vim"
+          "!vim",
+          "!packer"
         },
         {
           css = true
