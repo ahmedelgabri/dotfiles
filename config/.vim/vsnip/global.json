@@ -7,7 +7,7 @@
   "todo": {
     "prefix": ["todo"],
     "body": [
-      "[TODO]: ${1:Do something} (${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR} ${CURRENT_HOUR}:${CURRENT_MINUTE}, ${2:${VIM:\\$GITHUB_USER}})\n$0"
+      "TODO: ${1:Do something} (${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR} ${CURRENT_HOUR}:${CURRENT_MINUTE}, ${2:${VIM:\\$GITHUB_USER}})\n$0"
     ]
   },
   "uuid": {

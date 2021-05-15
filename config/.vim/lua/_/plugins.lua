@@ -110,11 +110,9 @@ local plugins = {
         end
       },
       {
-        "folke/todo-comments.nvim",
+        "https://github.com/folke/todo-comments.nvim",
         config = function()
-          require("todo-comments").setup {
-            pattern = "\\s(\\[(KEYWORDS)\\]|(KEYWORDS)):?\\s"
-          }
+          require("todo-comments").setup {}
         end
       },
       {"https://github.com/glepnir/lspsaga.nvim"},

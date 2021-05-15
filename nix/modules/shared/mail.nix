@@ -13,7 +13,7 @@ in
   options = with lib; {
     my.modules = {
       mail = {
-        # [TODO] support multiple accounts
+        # TODO: support multiple accounts
         enable = mkEnableOption ''
           Whether to enable mail module
         '';
@@ -191,7 +191,7 @@ in
               # ${nix_managed}
               # vi:syntax=muttrc
 
-              # [TODO] support multiple accounts
+              # TODO: support multiple accounts
               # {% for account in mail_accounts %}
               folder-hook +${cfg.account}/ source ${xdg.configHome}/neomutt/accounts/${
                 lib.toLower cfg.account
@@ -328,7 +328,7 @@ in
               gpg_path=${pkgs.gnupg}/bin/gpg '';
           };
 
-          # [TODO] support multiple accounts
+          # TODO: support multiple accounts
           ".config/msmtp/config" = {
             text = ''
               # ${nix_managed}
@@ -368,7 +368,7 @@ in
               Create Near
               Expunge Both
               SyncState *
-              # [TODO] support multiple accounts
+              # TODO: support multiple accounts
               # {% for account in mail_accounts %}
               # {% if account.imap_user != "" %}
               ########################################

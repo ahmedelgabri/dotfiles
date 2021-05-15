@@ -11,7 +11,7 @@ in
   options = with lib; {
     my.modules = {
       aerc = {
-        # [TODO] support multiple accounts
+        # TODO: support multiple accounts
         enable = mkEnableOption ''
           Whether to enable aerc module
         '';

@@ -183,9 +183,9 @@
     java.enable = true;
     less.enable = true;
     mosh.enable = true;
-    # [TODO] check if I still need gnome3.networkmanagerapplet or not
+    # TODO: check if I still need gnome3.networkmanagerapplet or not
     # nm-applet = true;
-    # [TODO] check other options
+    # TODO: check other options
     npm.enable = true;
     # ssh.knownHosts = {};
     # ssh.startAgent = true; # Only this or the gnupg enableSSHSupport should be enabled in the same time

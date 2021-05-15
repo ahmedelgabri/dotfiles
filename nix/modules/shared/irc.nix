@@ -1,4 +1,4 @@
-# [TODO] https://github.com/balsoft/nixos-config/blob/64e3aeb311f1e0c5c2ccaef94f04d51a72e48b48/modules/applications/weechat.nix
+# TODO: https://github.com/balsoft/nixos-config/blob/64e3aeb311f1e0c5c2ccaef94f04d51a72e48b48/modules/applications/weechat.nix
 { pkgs, lib, config, inputs, ... }:
 
 let
@@ -69,7 +69,7 @@ in
           ".config/weechat/python/autoload/screen_away.py".source =
             "${inputs.weechat-scripts}/python/screen_away.py";
 
-          # [Note] DARWIN ONLY
+          # Note: DARWIN ONLY
           ".config/weechat/python/autoload/notification_center.py".source =
             "${inputs.weechat-scripts}/python/notification_center.py";
 
