@@ -74,7 +74,7 @@ in
               direnv
               nix-zsh-completions
               zsh
-              z
+              zoxide
               rsync
             ];
         };
@@ -153,6 +153,7 @@ in
               AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
               DOCKER_CONFIG = "$XDG_CONFIG_HOME/docker";
               ELINKS_CONFDIR = "$XDG_CONFIG_HOME/elinks";
+              _ZO_DATA_DIR = "$XDG_CONFIG_HOME/zoxide";
 
               ############### Telemetry
               DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
@@ -235,9 +236,9 @@ in
               "${pkgs.grc}/etc/grc.zsh"
               "${pkgs.fzf}/share/fzf/completion.zsh"
               "${pkgs.fzf}/share/fzf/key-bindings.zsh"
-              "${z}/share/z.sh"
               ../../../config/zsh.d/.zshrc
             ]);
+
 
           promptInit = "autoload -U promptinit; promptinit; prompt pure";
         };

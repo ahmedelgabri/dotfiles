@@ -110,6 +110,7 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh --hook pwd)"
 
 ##############################################################
 # LOCAL.
