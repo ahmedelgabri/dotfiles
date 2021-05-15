@@ -85,8 +85,10 @@ in
 
         # Handle mutable configs
 
-        echo "Linking vim folders..."
-        ln -sf ${home}/.dotfiles/config/.vim ${home}/.config/nvim
+        if [ ! -e "${home}/.config/nvim/" ]; then
+          echo "Linking vim folders..."
+          ln -sf ${home}/.dotfiles/config/.vim ${home}/.config/nvim
+        fi
       '';
     };
 }
