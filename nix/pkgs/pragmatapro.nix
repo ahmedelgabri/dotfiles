@@ -2,12 +2,12 @@
 
 stdenv.mkDerivation rec {
   name = "pragmatapro-${version}";
-  version = "0.828-2";
+  version = "0.829";
 
   src = requireFile rec {
     name = "PragmataPro${version}.zip";
     url = "file://path/to/${name}";
-    sha256 = "19q6d0dxgd9k2mhr31944wpprks1qbqs1h5f400dyl5qzis2dji3";
+    sha256 = "1x0p1gdbvlfzs7p8cj6ln48b1wbabp7qfblch52ywsjiladppfs1";
     message = ''
       ${name} font not found in nix store, to add it run:
       $ nix-store --add-fixed sha256 /path/to/${name}'';
