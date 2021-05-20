@@ -34,6 +34,7 @@
     ./python.nix
     ./syncthing.nix
     ./discord.nix
+    ./hledger.nix
   ];
 
   my.modules = {

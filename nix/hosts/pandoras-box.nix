@@ -23,6 +23,7 @@
       newsboat.enable = true;
       gpg.enable = true;
       discord.enable = true;
+      hledger.enable = true;
     };
   };
 
