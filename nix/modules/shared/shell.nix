@@ -109,6 +109,7 @@ in
               rename
               glow
               buku
+              graph-easy
             ];
           };
 
