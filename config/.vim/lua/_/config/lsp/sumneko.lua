@@ -56,9 +56,10 @@ return {
       },
       workspace = {
         library = get_lua_runtime(),
-        maxPreload = 1000,
-        preloadFileSize = 1000
-      }
+        maxPreload = 2000,
+        preloadFileSize = 150
+      },
+      telemetry = {enable = false}
     }
   }
 }
