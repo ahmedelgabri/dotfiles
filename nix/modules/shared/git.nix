@@ -18,9 +18,11 @@ in
     mkIf cfg.enable {
       environment.systemPackages = with pkgs; [ git ];
 
+      homebrew.brews = [ "transcrypt" ];
+
       my.user = {
         packages = with pkgs; [
-          gitAndTools.transcrypt
+          # gitAndTools.transcrypt # old version
           # gitAndTools.diff-so-fancy
           gitAndTools.delta
           gitAndTools.hub
