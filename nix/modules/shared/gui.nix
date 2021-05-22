@@ -21,7 +21,7 @@ in
         homebrew.taps = [ "homebrew/cask" "homebrew/cask-versions" ];
         homebrew.casks = [
           "1password"
-          "alfred"
+          "raycast"
           "anki"
           "appcleaner"
           "corelocationcli"
