@@ -34,11 +34,6 @@
       url = "github:nix-community/neovim-nightly-overlay";
     };
 
-    z = {
-      url = "github:rupa/z";
-      flake = false;
-    };
-
     n = {
       url = "github:tj/n";
       flake = false;
