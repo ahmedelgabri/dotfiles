@@ -18,26 +18,28 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      nixpkgs = {
-        overlays = [
-          (final: prev: {
-            # https://github.com/NixOS/nixpkgs/issues/106506#issuecomment-742639055
-            weechat = prev.weechat.override {
-              configure = { availablePlugins, ... }: {
-                plugins = with availablePlugins;
-                  [ (perl.withPackages (p: [ p.PodParser ])) ] ++ [ python ];
-                scripts = with prev.weechatScripts;
-                  [ wee-slack weechat-autosort colorize_nicks ]
-                  ++ final.lib.optionals (!final.stdenv.isDarwin)
-                    [ weechat-notify-send ];
-              };
-            };
-          })
-        ];
-      };
-
       my = {
-        user = { packages = with pkgs; [ weechat ]; };
+        user = {
+          packages = with pkgs; [
+            (weechat.override
+              {
+                configure = { availablePlugins, ... }: {
+                  plugins = with availablePlugins;
+                    [
+                      (perl.withPackages (p: [ p.PodParser ]))
+                      (python.withPackages (ps: [
+                        ps.websocket_client
+                        # ps.pync # requires 2.x
+                      ]))
+                    ];
+                  scripts = with pkgs.weechatScripts;
+                    [ wee-slack weechat-autosort colorize_nicks ]
+                    ++ lib.optionals (!pkgs.stdenv.isDarwin)
+                      [ weechat-notify-send ];
+                };
+              })
+          ];
+        };
         env = {
           WEECHAT_HOME = "$XDG_CONFIG_HOME/weechat";
           WEECHAT_PASSPHRASE = ''
@@ -73,8 +75,6 @@ in
           ".config/weechat/python/autoload/notification_center.py".source =
             "${inputs.weechat-scripts}/python/notification_center.py";
 
-          ".config/weechat/lua/autoload/emoji.lua".source =
-            "${inputs.weechat-scripts}/lua/emoji.lua";
         };
       };
 
