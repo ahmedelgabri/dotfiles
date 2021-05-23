@@ -13,7 +13,6 @@ let
   home = config.my.user.home;
 
   z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
-  lookatme = pkgs.callPackage ../../pkgs/lookatme.nix { source = inputs.lookatme; };
   local_zshrc = "${home}/.zshrc.local";
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
@@ -103,7 +102,6 @@ in
               _1password # CLI
               docker
               pass
-              lookatme
               mosh
               translate-shell
               rename

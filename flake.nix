@@ -44,11 +44,6 @@
       flake = false;
     };
 
-    lookatme = {
-      url = "github:d0c-s4vage/lookatme";
-      flake = false;
-    };
-
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;
