@@ -26,7 +26,6 @@ let g:goyo_width = '50%'
 let g:goyo_height = '75%'
 let g:limelight_conceal_ctermfg=240
 let g:limelight_conceal_guifg = '#777777'
-nmap <Leader>g :packadd goyo.vim<CR>\|:Goyo<CR>
 
 " https://github.com/junegunn/goyo.vim/wiki/Customization
 function! s:goyo_enter() abort
