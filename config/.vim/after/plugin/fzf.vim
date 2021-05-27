@@ -10,25 +10,20 @@ if !empty(expand($VIM_FZF_LOG))
   let g:fzf_commits_log_options = $VIM_FZF_LOG
 endif
 
-if !empty(expand($FZF_DEFAULT_OPTS))
-  let $FZF_DEFAULT_OPTS .= ' --margin=1,4'
-endif
-
 let g:fzf_layout = { 'window': utils#fzf_window() }
 let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
-let g:fzf_preview_window = 'right:noborder'
+let g:fzf_preview_window = 'right:border-left'
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-" nnoremap <silent> <leader><leader> :Files<CR>
-" nnoremap <silent> <Leader>b :Buffers<cr>
+nnoremap <silent> <leader><leader> :Files<CR>
+nnoremap <silent> <Leader>b :Buffers<cr>
 " nnoremap <silent> <Leader>h :Helptags<cr>
-
 
 function! s:fzf_statusline() abort
   setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t

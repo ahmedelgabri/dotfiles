@@ -27,13 +27,13 @@ end
 
 function M.setup()
   require "telescope".setup {
-    extensions = {
-      fzf = {
-        override_generic_sorter = true, -- override the generic sorter
-        override_file_sorter = true, -- override the file sorter
-        case_mode = "smart_case"
-      }
-    },
+    -- extensions = {
+    --   fzf = {
+    --     override_generic_sorter = true, -- override the generic sorter
+    --     override_file_sorter = true, -- override the file sorter
+    --     case_mode = "smart_case"
+    --   }
+    -- },
     defaults = {
       width = 0.95,
       selection_caret = "▶ ",
@@ -59,21 +59,21 @@ function M.setup()
     }
   }
 
-  require "telescope".load_extension("fzf")
+  -- require "telescope".load_extension("fzf")
 
-  utils.gmap(
-    "n",
-    "<leader><leader>",
-    [[<cmd>lua require "_.config.telescope".find_files()<cr>]],
-    map_opts
-  )
-
-  utils.gmap(
-    "n",
-    "<leader>b",
-    [[<cmd>lua require "telescope.builtin".buffers { sort_lastused = true, show_all_buffers = true }<cr>]],
-    map_opts
-  )
+  -- utils.gmap(
+  --   "n",
+  --   "<leader><leader>",
+  --   [[<cmd>lua require "_.config.telescope".find_files()<cr>]],
+  --   map_opts
+  -- )
+  --
+  -- utils.gmap(
+  --   "n",
+  --   "<leader>b",
+  --   [[<cmd>lua require "telescope.builtin".buffers { sort_lastused = true, show_all_buffers = true }<cr>]],
+  --   map_opts
+  -- )
 
   utils.gmap(
     "n",
