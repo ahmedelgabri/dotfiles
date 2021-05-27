@@ -28,7 +28,6 @@ in
           gitAndTools.hub
           gitAndTools.gh
           gitAndTools.tig
-          universal-ctags
           exiftool
         ];
       };
