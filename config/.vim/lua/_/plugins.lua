@@ -102,14 +102,6 @@ local plugins = {
         end
       },
       {
-        "https://github.com/folke/lsp-trouble.nvim",
-        config = function()
-          require "trouble".setup {
-            icons = false
-          }
-        end
-      },
-      {
         "https://github.com/folke/todo-comments.nvim",
         config = function()
           require("todo-comments").setup {}
