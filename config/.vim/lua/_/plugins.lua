@@ -137,7 +137,7 @@ local plugins = {
     config = [[require "_.config.treesitter"]],
     requires = {
       {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
-      {"https://github.com/p00f/nvim-ts-rainbow", ft = lisps},
+      {"https://github.com/p00f/nvim-ts-rainbow"},
       {
         "https://github.com/nvim-treesitter/playground",
         cmd = "TSPlaygroundToggle"
