@@ -1,5 +1,6 @@
+local parsers = require("nvim-treesitter.parsers")
+
 local function get_filetypes()
-  local parsers = require("nvim-treesitter.parsers")
   local configs = parsers.get_parser_configs()
   return table.concat(
     vim.tbl_map(
@@ -14,7 +15,7 @@ end
 
 require "nvim-treesitter.configs".setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = {"comment"},
+  ignore_install = {"verilog"},
   highlight = {
     enable = true,
     -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
@@ -27,7 +28,14 @@ require "nvim-treesitter.configs".setup {
   },
   rainbow = {
     enable = true,
-    disable = {"lua", "javascript", "typescript", "json"}
+    -- Enable only for lisp like languages
+    disable = vim.tbl_filter(
+      function(p)
+        return p ~= "clojure" and p ~= "commonlisp" and p ~= "fennel" and
+          p ~= "query"
+      end,
+      parsers.available_parsers()
+    )
   },
   autopairs = {
     enable = true
@@ -39,7 +47,9 @@ require "nvim-treesitter.configs".setup {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
         ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner"
+        ["ic"] = "@class.inner",
+        ["aC"] = "@conditional.outer",
+        ["iC"] = "@conditional.inner"
       }
     }
   },
