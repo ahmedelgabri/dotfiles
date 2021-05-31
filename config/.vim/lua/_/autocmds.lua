@@ -123,8 +123,9 @@ function M.quit_on_q()
     utils.bmap(
       "n",
       "q",
-      (vim.wo.diff == true or vim.bo.filetype == "man") and ":qa!<cr>" or
-        ":q<cr>",
+      ((vim.wo.diff == true or vim.bo.filetype == "man") and ":qa!" or
+        (vim.bo.filetype == "qf") and ":cclose" or
+        ":q") .. "<cr>",
       {noremap = true, silent = true}
     )
   end

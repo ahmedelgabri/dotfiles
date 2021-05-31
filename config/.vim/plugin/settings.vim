@@ -221,7 +221,7 @@ else
     set shada=!,'100,<500,:10000,/10000,s10,h
     augroup MyNeovimShada
       autocmd!
-      autocmd CursorHold,FocusGained,FocusLost * rshada|wshada
+      autocmd CursorHold,FocusGained,FocusLost * if &bt == '' | rshada|wshada | endif
     augroup END
   else
     execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".g:VIMDATA.'/viminfo'
