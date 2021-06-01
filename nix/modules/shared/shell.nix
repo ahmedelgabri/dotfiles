@@ -108,6 +108,7 @@ in
               glow
               buku
               graph-easy
+              graphviz
             ];
           };
 
