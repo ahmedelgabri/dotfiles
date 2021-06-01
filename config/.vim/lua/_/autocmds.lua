@@ -162,7 +162,7 @@ end
 
 function M.highlight_git_markers()
   if
-    packer_plugins["conflict-marker.vim"] and
+    packer_plugins ~= nil and packer_plugins["conflict-marker.vim"] and
       packer_plugins["conflict-marker.vim"].loaded
    then
     vim.cmd [[
