@@ -39,6 +39,8 @@
     ];
   };
 
+  homebrew.brews = [ "lastpass-cli" ];
+
   homebrew.casks = [
     "adoptopenjdk8"
     "corretto"
