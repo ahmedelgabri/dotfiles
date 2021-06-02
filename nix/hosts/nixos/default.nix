@@ -213,5 +213,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
   system.stateVersion = "20.09"; # Did you read the comment?
 }
