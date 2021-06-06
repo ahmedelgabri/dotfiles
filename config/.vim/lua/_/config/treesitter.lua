@@ -19,12 +19,7 @@ require "nvim-treesitter.configs".setup {
   highlight = {
     enable = true,
     -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
-    additional_vim_regex_highlighting = false,
-    custom_captures = {
-      ["punctuation.bracket"] = "",
-      ["muted_imports"] = "MutedImports",
-      ["muted_imports_info"] = "MutedImportsInfo"
-    }
+    additional_vim_regex_highlighting = false
   },
   rainbow = {
     enable = true,
