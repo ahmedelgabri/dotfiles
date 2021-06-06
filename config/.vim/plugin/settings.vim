@@ -218,15 +218,24 @@ if exists('$SUDO_USER')               " don't create root-owned files
     set viminfofile=NONE
   endif
 else
+  " Defaults:
+  "   Neovim: !,'100,<50,s10,h
+  "   Vim:    '100,<50,s10,h
+  "
+  " - ! save/restore global variables (only all-uppercase variables)
+  " - '100 save/restore marks from last 100 files
+  " - <50 save/restore 50 lines from each register
+  " - s10 max item size 10KB
+  " - h do not save/restore 'hlsearch' setting
+  "
+  " Our overrides: make sure vim is using the same as neovim
   if has('nvim')
-    " default in nvim: !,'100,<50,s10,h
-    set shada=!,'100,<500,:10000,/10000,s10,h
     augroup MyNeovimShada
       autocmd!
       autocmd CursorHold,FocusGained,FocusLost * if &bt == '' | rshada|wshada | endif
     augroup END
   else
-    execute "set viminfo=!,'100,<500,:10000,/10000,s10,h,n".g:VIMDATA.'/viminfo'
+    execute "set viminfo=!,'100,<50,s10,h,n".g:VIMDATA.'/viminfo'
   endif
 endif
 
