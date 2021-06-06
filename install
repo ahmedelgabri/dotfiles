@@ -175,8 +175,8 @@ clone_dotfiles() {
 	else
 		cd "$DOTFILES_DIR" &&
 			git stash -u &&
-			git checkout master &&
-			git reset --hard origin/master &&
+			git checkout main &&
+			git reset --hard origin/main &&
 			git submodule update --init --recursive &&
 			git checkout - &&
 			git stash pop
