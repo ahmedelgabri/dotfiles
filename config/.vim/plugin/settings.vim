@@ -177,7 +177,7 @@ if exists('$SUDO_USER')
   set nowritebackup                   " don't create root-owned files
 else
   if !has('nvim')
-    let &backupdir=g:VIMDATA.'/backup' " keep backup files out of the way
+    let &backupdir=g:VIMDATA.'/backup//' " keep backup files out of the way
   endif
   set backupdir+=.
 endif
@@ -202,7 +202,7 @@ if has('persistent_undo')
     set noundofile                    " don't create root-owned files
   else
     if !has('nvim')
-      let &undodir=g:VIMDATA.'/undo/' " keep undo files out of the way
+      let &undodir=g:VIMDATA.'/undo//' " keep undo files out of the way
     endif
     set undodir+=.
     set undofile                      " actually use undo files
@@ -212,8 +212,10 @@ endif
 if exists('$SUDO_USER')               " don't create root-owned files
   if has('nvim')
     set shada=
+    set shadafile=NONE
   else
     set viminfo=
+    set viminfofile=NONE
   endif
 else
   if has('nvim')
