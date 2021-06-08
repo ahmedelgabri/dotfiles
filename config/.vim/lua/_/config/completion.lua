@@ -13,25 +13,6 @@ local check_back_space = function()
   end
 end
 
-_G._.completion_confirm = function()
-  if vim.fn.pumvisible() ~= 0 then
-    if vim.fn.complete_info()["selected"] ~= -1 then
-      vim.fn["compe#confirm"]()
-      return npairs.esc("<c-y>")
-    else
-      vim.defer_fn(
-        function()
-          vim.fn["compe#confirm"]("<cr>")
-        end,
-        20
-      )
-      return npairs.esc("<c-n>")
-    end
-  else
-    return npairs.check_break_line_char()
-  end
-end
-
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
@@ -61,9 +42,11 @@ M.setup = function()
   if has_completion then
     completion.setup {
       enabled = true,
+      autocomplete = true,
       min_length = 2,
       debug = false,
       preselect = "always",
+      documentation = true,
       source = {
         path = true,
         tmux = true,
@@ -87,12 +70,35 @@ M.setup = function()
       "compe#complete()",
       {expr = true, noremap = true, silent = true}
     )
-    utils.gmap(
-      "i",
-      "<CR>",
-      has_npairs and "v:lua._.completion_confirm()" or "compe#confirm('<CR>')",
-      {expr = true, noremap = true, silent = true}
-    )
+
+    if has_npairs then
+      vim.g.completion_confirm_key = ""
+      _G._.completion_confirm = function()
+        if vim.fn.pumvisible() ~= 0 then
+          if vim.fn.complete_info()["selected"] ~= -1 then
+            return vim.fn["compe#confirm"](npairs.esc("<cr>"))
+          else
+            return npairs.esc("<cr>")
+          end
+        else
+          return npairs.autopairs_cr()
+        end
+      end
+
+      utils.gmap(
+        "i",
+        "<CR>",
+        "v:lua._.completion_confirm()",
+        {expr = true, noremap = true, silent = true}
+      )
+    else
+      utils.gmap(
+        "i",
+        "<CR>",
+        "compe#confirm('<CR>')",
+        {expr = true, noremap = true, silent = true}
+      )
+    end
 
     utils.gmap(
       "i",
