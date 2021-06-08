@@ -18,7 +18,7 @@ These are the main configs:
   [`nix-darwin`](https://github.com/LnL7/nix-darwin/blob/5c3146b75d5d478f0693d0ea6c83f1da8382ff56/modules/homebrew.nix)
 - [neomutt][neomutt] for reading emails
 - [tmux][tmux] 2.3 or later
-- [Neovim][neovim] or [Vim][vim] 8.0 or later
+- [Neovim][neovim]
 - [Zsh][zsh]
 - [Git][git]
 - [Kitty][kitty] as my terminal
