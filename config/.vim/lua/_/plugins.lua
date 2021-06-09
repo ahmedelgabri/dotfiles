@@ -37,17 +37,9 @@ local plugins = {
     config = [[require "_.config.nvim-autopairs"]]
   },
   {
-    "https://github.com/nvim-telescope/telescope.nvim",
-    requires = {
-      {"https://github.com/nvim-lua/popup.nvim"},
-      {"https://github.com/nvim-lua/plenary.nvim"},
-      {
-        "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
-        run = "make"
-      }
-    },
+    "https://github.com/camspiers/snap",
     config = function()
-      require "_.config.telescope".setup()
+      require "_.config.snap".setup {}
     end
   },
   {
