@@ -19,10 +19,7 @@ function M.setup()
     function()
       snap.run(
         {
-          prompt = string.format(
-            "%s/",
-            vim.fn.fnamemodify(vim.loop.cwd(), ":~")
-          ),
+          prompt = "Files",
           producer = fzf(producer_file),
           select = select_file.select,
           multiselect = select_file.multiselect,
