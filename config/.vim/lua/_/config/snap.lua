@@ -3,7 +3,7 @@ local M = {}
 
 local fzf = snap.get "consumer.fzf"
 local limit = snap.get "consumer.limit"
-local producer_file = snap.get "producer.ripgrep.file"
+local producer_file = snap.get "producer.fd.file"
 local producer_vimgrep = snap.get "producer.ripgrep.vimgrep"
 local producer_buffer = snap.get "producer.vim.buffer"
 local producer_oldfile = snap.get "producer.vim.oldfile"
@@ -19,8 +19,8 @@ function M.setup()
     function()
       snap.run(
         {
-          prompt = "Files",
-          producer = fzf(producer_file),
+          prompt = "",
+          producer = fzf(producer_file.args {"-H"}),
           select = select_file.select,
           multiselect = select_file.multiselect,
           views = {preview_file}
