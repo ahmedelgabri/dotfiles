@@ -251,6 +251,6 @@ if exists('&guioptions')
 endif
 
 if executable('rg')
-  set grepprg=rg\ --vimgrep
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden
   set grepformat=%f:%l:%c:%m
 endif
