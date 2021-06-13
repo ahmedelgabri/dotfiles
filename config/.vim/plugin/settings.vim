@@ -249,8 +249,3 @@ if exists('&guioptions')
   "   - blinking in insert-mode
   set guicursor+=n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100
 endif
-
-if executable('rg')
-  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden
-  set grepformat=%f:%l:%c:%m
-endif
