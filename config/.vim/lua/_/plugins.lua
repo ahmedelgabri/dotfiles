@@ -37,12 +37,6 @@ local plugins = {
     config = [[require "_.config.nvim-autopairs"]]
   },
   {
-    "https://github.com/camspiers/snap",
-    config = function()
-      require "_.config.snap".setup {}
-    end
-  },
-  {
     "https://github.com/junegunn/fzf.vim",
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = {{"https://github.com/junegunn/fzf"}}
