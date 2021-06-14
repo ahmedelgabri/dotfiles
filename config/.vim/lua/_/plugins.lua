@@ -43,6 +43,11 @@ local plugins = {
     end
   },
   {
+    "https://github.com/junegunn/fzf.vim",
+    -- I have the bin globally, so don't build, and just grab plugin directory
+    requires = {{"https://github.com/junegunn/fzf"}}
+  },
+  {
     "https://github.com/lambdalisue/fern.vim",
     requires = {
       {"https://github.com/lambdalisue/fern-git.vim"},
