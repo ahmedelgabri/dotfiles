@@ -11,6 +11,7 @@
   notify-screen yes
   prepopulate-query-feeds yes
   refresh-on-startup no
+  scrolloff 10
   auto-reload yes
   reload-threads 3
   reload-time 120
