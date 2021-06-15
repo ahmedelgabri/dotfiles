@@ -41,7 +41,9 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['Time is the fire in which we burn', '', '— Delmore Schwartz'],
       \ ['A ship in harbor is safe, but that is not what ships are built for.', '— John A. Shedd'],
       \ ['You can’t call yourself a leader by coming into a situation that is by nature uncertain, ambiguous — and create confusion.', 'You have to create clarity where none exists', '— Satya Nadella'],
-      \ ['The competent programmer is fully aware of the strictly limited size of his own skull; therefore he approaches the programming task in full humility', '— Edsger W. Dijkstra']
+      \ ['The competent programmer is fully aware of the strictly limited size of his own skull; therefore he approaches the programming task in full humility', '— Edsger W. Dijkstra'],
+      \ ["Yeah I know how to make packages, build system and other stuff. But I don't want. It's easy unthankful work with unpredictable audience reaction", '— Max G'],
+      \ ['A well-designed system makes it easy to do the right things and annoying (but not impossible) to do the wrong things', '', '— Jeff Atwood']
       \ ]
 
 function! s:list_commits()
