@@ -29,6 +29,18 @@ function M.setup()
     end
   )
 
+  snap.register.map(
+    {"n"},
+    {"<Leader>h"},
+    function()
+      snap.run {
+        prompt = "?",
+        producer = fzf(snap.get "producer.vim.help"),
+        select = snap.get "select.help".select,
+        views = {snap.get "preview.help"}
+      }
+    end
+  )
   -- snap.register.map(
   --   {"n"},
   --   {"<Leader>ff"},

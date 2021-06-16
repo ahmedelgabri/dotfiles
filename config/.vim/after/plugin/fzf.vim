@@ -21,9 +21,9 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-nnoremap <silent> <leader><leader> :Files<CR>
-nnoremap <silent> <Leader>b :Buffers<cr>
-nnoremap <silent> <Leader>h :Helptags<cr>
+" nnoremap <silent> <leader><leader> :Files<CR>
+" nnoremap <silent> <Leader>b :Buffers<cr>
+" nnoremap <silent> <Leader>h :Helptags<cr>
 
 function! s:fzf_statusline() abort
   setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t
