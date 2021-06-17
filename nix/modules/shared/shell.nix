@@ -112,16 +112,42 @@ in
             ];
           };
 
-          hm.file = {
-            ".config/zsh" = {
-              recursive = true;
-              source = ../../../config/zsh.d/zsh;
-            };
-            ".terminfo" = {
-              recursive = true;
-              source = ../../../config/.terminfo;
-            };
-          };
+          hm.file = with config.my;
+            let
+
+              glow_config = ''
+                # ${nix_managed}
+                # style name or JSON path (default "auto")
+                style: "auto"
+                # show local files only; no network (TUI-mode only)
+                local: true
+                # mouse support (TUI-mode only)
+                mouse: false
+                # use pager to display markdown
+                pager: true
+                # word-wrap at width
+                width: 80'';
+            in
+
+            lib.mkMerge [
+              (if pkgs.stdenv.isDarwin then {
+                "Library/Preferences/glow/glow.yml".text = glow_config;
+              } else
+                {
+                  ".config/glow/glow.yml".text = glow_config;
+                })
+
+              {
+                ".config/zsh" = {
+                  recursive = true;
+                  source = ../../../config/zsh.d/zsh;
+                };
+                ".terminfo" = {
+                  recursive = true;
+                  source = ../../../config/.terminfo;
+                };
+              }
+            ];
 
           env =
             # ====================================================
