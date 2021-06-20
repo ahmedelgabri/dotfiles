@@ -50,8 +50,6 @@ endif
 let g:mapleader="\<Space>"
 let g:maplocalleader=','
 
-let g:polyglot_disabled = ['md', 'markdown']
-
 if has('nvim')
   lua require'_.plugins'
 endif
