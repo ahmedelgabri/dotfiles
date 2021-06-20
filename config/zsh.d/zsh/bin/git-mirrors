@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 
 add_mirrors() {
-  local MIRROS=("bitbucket" "gitlab")
+	local REMOTE_REPO
+	REMOTE_REPO=$(basename -s .git "$(git config --get remote.origin.url)")
 
-  for mirror in "${MIRROS[@]}"; do
-    git remote add --mirror=push "$mirror" "git@$mirror.com:${GITHUB_USER:-ahmedelgabri}/$1.git"
-  done
+	local REPO=${REMOTE_REPO:-$1}
 
-  echo "--------------------------------------------------"
-  echo "${MIRROS[*]} were added as mirrors to your remote"
-  echo "--------------------------------------------------"
-  git remote --verbose
+	if [ -z "$REPO" ]; then
+		echo "Can't get the proper git repo name, you have to pass one"
+		exit 1
+	fi
+
+	local MIRROS=("bitbucket" "gitlab")
+
+	for mirror in "${MIRROS[@]}"; do
+		git remote add --mirror=push "$mirror" "git@$mirror.com:${GITHUB_USER:-ahmedelgabri}/${REPO}.git"
+	done
+
+	echo "--------------------------------------------------"
+	echo "${MIRROS[*]} were added as mirrors to your remote"
+	echo "--------------------------------------------------"
+	git remote --verbose
 }
 
 add_mirrors "$@"
