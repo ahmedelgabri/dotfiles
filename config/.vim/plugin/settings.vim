@@ -172,6 +172,8 @@ if has('mksession')
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
 endif
 
+set backupcopy=yes                    " overwrite files to update, instead of renaming + rewriting
+
 if exists('$SUDO_USER')
   set nobackup                        " don't create root-owned files
   set nowritebackup                   " don't create root-owned files
