@@ -82,7 +82,6 @@ in
           user = {
             shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
             packages = with pkgs; [
-              bandwhich # display current network utilization by process
               bottom # fancy version of `top` with ASCII graphs
               tealdeer # rust implementation of `tldr`
               ncdu
@@ -106,7 +105,7 @@ in
               translate-shell
               rename
               glow
-              buku
+              # buku
               graph-easy
               graphviz
             ];

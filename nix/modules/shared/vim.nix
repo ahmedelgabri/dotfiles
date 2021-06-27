@@ -68,7 +68,7 @@ in
             node ${tailwind-lsp}/share/vscode/extensions/bradlc.vscode-tailwindcss/dist/server/index.js --stdio
           '')
           rnix-lsp
-          neuron-notes
+          # neuron-notes
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
         ]);
