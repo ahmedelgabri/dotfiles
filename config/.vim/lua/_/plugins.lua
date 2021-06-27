@@ -245,7 +245,6 @@ local plugins = {
 
 packer.init(
   {
-    max_jobs = 50,
     package_root = string.format("%s/pack", vim.fn.stdpath("config")),
     display = {
       open_cmd = "100vnew [packer]"
