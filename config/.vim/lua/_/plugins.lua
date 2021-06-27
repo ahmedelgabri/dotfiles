@@ -152,7 +152,17 @@ local plugins = {
       )
     end
   },
-  {"https://github.com/dhruvasagar/vim-dotoo"},
+  {
+    "https://github.com/kristijanhusak/orgmode.nvim",
+    config = function()
+      require("orgmode").setup(
+        {
+          org_agenda_files = {"~/Sync/org/*"},
+          org_default_notes_file = "~/Sync/refile.org"
+        }
+      )
+    end
+  },
   {
     "https://github.com/plasticboy/vim-markdown",
     requires = {
