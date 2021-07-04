@@ -45,12 +45,12 @@ in
           fd
           ripgrep
           # editorconfig-checker # do I use it?
-          proselint # ???
           hadolint
           nixpkgs-fmt
           vim-vint
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
+          efm-langserver
           nodePackages.neovim
           nodePackages.prettier
           nodePackages.bash-language-server

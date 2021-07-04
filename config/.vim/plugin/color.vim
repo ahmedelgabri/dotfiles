@@ -13,10 +13,6 @@ augroup MyCustomColors
         \| hi! TablineSel cterm=reverse gui=reverse
         \| hi! NonText ctermbg=NONE guibg=NONE
         \| if &background ==# 'dark' | hi! VertSplit gui=NONE guibg=NONE guifg=#333333 cterm=NONE ctermbg=NONE ctermfg=14 | endif
-        \| hi! link ALEError DiffDelete
-        \| hi! link ALEErrorSign DiffDelete
-        \| hi! link ALEWarning DiffChange
-        \| hi! link ALEWarningSign DiffChange
         \| execute(printf('hi! OverLength guibg=%s ctermbg=%s guifg=NONE ctermfg=NONE', '#222222', '234'))
         \| hi! link LspDiagnosticsDefaultError DiffDelete
         \| hi! link LspDiagnosticsDefaultWarning DiffChange

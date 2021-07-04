@@ -19,7 +19,7 @@ local map_opts = {noremap = true, silent = true}
 lspsaga.init_lsp_saga()
 
 utils.augroup(
-  "COMPLETION",
+  "__COMPLETION__",
   function()
     if has_extensions then
       vim.api.nvim_command(
@@ -119,9 +119,15 @@ local mappings =
 )
 
 local on_attach = function(client)
+  -- ---------------
+  -- GENERAL
+  -- ---------------
   client.config.flags.allow_incremental_sync = true
   require "lsp_signature".on_attach()
 
+  -- ---------------
+  -- MAPPINGS
+  -- ---------------
   for lhs, rhs in pairs(mappings) do
     if lhs == "K" then
       if vim.api.nvim_buf_get_option(0, "filetype") ~= "vim" then
@@ -135,6 +141,18 @@ local on_attach = function(client)
     end
   end
 
+  -- ---------------
+  -- AUTOCMDS
+  -- ---------------
+  utils.augroup(
+    "__LSP__",
+    function()
+      vim.api.nvim_command(
+        "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
+      )
+    end
+  )
+
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
@@ -144,17 +162,12 @@ local on_attach = function(client)
       ]],
       false
     )
-  end
 
-  utils.augroup(
-    "LSP",
-    function()
-      vim.api.nvim_command(
-        "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"
-      )
-      if client.resolved_capabilities.document_highlight then
+    utils.augroup(
+      "__LSP_HIGHLIGHTS__",
+      function()
         vim.api.nvim_command(
-          "autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()"
+          "autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()"
         )
         vim.api.nvim_command(
           "autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()"
@@ -163,8 +176,30 @@ local on_attach = function(client)
           "autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()"
         )
       end
-    end
-  )
+    )
+  end
+
+  if client.resolved_capabilities.code_lens then
+    utils.augroup(
+      "__LSP_CODELENS__",
+      function()
+        vim.api.nvim_command(
+          "autocmd CursorHold,BufEnter,InsertLeave <buffer> lua vim.lsp.codelens.refresh()"
+        )
+      end
+    )
+  end
+
+  if client.resolved_capabilities.document_formatting then
+    utils.augroup(
+      "__LSP_FORMATTING__",
+      function()
+        vim.api.nvim_command(
+          "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)"
+        )
+      end
+    )
+  end
 end
 
 -- https://github.com/nvim-lua/diagnostic-nvim/issues/73
@@ -204,18 +239,32 @@ local servers = {
   vimls = {},
   pyright = {},
   dockerls = {},
+  [tailwindlsp] = {},
+  efm = require "_.config.lsp.efm",
   sumneko_lua = require "_.config.lsp.sumneko",
   rust_analyzer = {
     capabilities = capabilities
   },
   gopls = {
     cmd = {"gopls", "serve"},
+    on_attach = function(client)
+      -- Efm is handling formatting
+      client.resolved_capabilities.document_formatting = false
+
+      on_attach(client)
+    end,
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("go.mod", ".git")(fname) or
         vim.loop.cwd()
     end
   },
   tsserver = {
+    on_attach = function(client)
+      -- Efm is handling formatting
+      client.resolved_capabilities.document_formatting = false
+
+      on_attach(client)
+    end,
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("tsconfig.json")(fname) or
         nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(
@@ -230,7 +279,6 @@ local servers = {
         nvim_lsp.util.root_pattern("mod.ts")(fname)
     end
   },
-  [tailwindlsp] = {},
   -- rnix = {},
   jsonls = {
     filetypes = {"json", "jsonc"},

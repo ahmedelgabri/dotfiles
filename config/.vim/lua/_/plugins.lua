@@ -161,11 +161,6 @@ local plugins = {
   {"https://github.com/Olical/conjure", tag = "v4.21.0", ft = lisps},
   -- }}}
 
-  -- Linters & Code quality {{{
-  {"https://github.com/dense-analysis/ale"},
-  {"https://github.com/mhartington/formatter.nvim"},
-  -- }}}
-
   -- Git {{{
   {
     "https://github.com/rhysd/conflict-marker.vim",
