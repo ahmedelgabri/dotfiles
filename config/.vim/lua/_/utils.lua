@@ -56,4 +56,15 @@ function M.urlencode(str)
   return str
 end
 
+function M.plugin_loaded(name)
+  local has_packer = pcall(require, "packer")
+
+  if not has_packer then
+    return
+  end
+
+  return has_packer and packer_plugins ~= nil and packer_plugins[name] and
+    packer_plugins[name].loaded
+end
+
 return M

@@ -51,6 +51,8 @@ let g:mapleader="\<Space>"
 let g:maplocalleader=','
 
 if has('nvim')
+  " My global object
+  lua _G._ = {}
   lua require'_.plugins'
 endif
 

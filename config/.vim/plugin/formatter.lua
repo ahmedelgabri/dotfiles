@@ -1,3 +1,9 @@
+local has_formatter, formatter = pcall(require, "formatter")
+
+if not has_formatter then
+  return
+end
+
 local function prettier()
   return {
     exe = "prettier",
@@ -39,7 +45,7 @@ require "_.utils".augroup(
   end
 )
 
-require "formatter".setup(
+formatter.setup(
   {
     logging = false,
     filetype = {

@@ -32,16 +32,8 @@ local lisps = {"lisp", "scheme", "clojure", "fennel"}
 local plugins = {
   {"https://github.com/wbthomason/packer.nvim", opt = true},
   {"https://github.com/antoinemadec/FixCursorHold.nvim"},
-  {
-    "https://github.com/windwp/nvim-autopairs",
-    config = [[require "_.config.nvim-autopairs"]]
-  },
-  {
-    "https://github.com/camspiers/snap",
-    config = function()
-      require "_.config.snap".setup {}
-    end
-  },
+  {"https://github.com/windwp/nvim-autopairs"},
+  {"https://github.com/camspiers/snap"},
   {
     "https://github.com/junegunn/fzf.vim",
     -- I have the bin globally, so don't build, and just grab plugin directory
@@ -67,10 +59,7 @@ local plugins = {
   {"https://github.com/tpope/tpope-vim-abolish"},
   {"https://github.com/tpope/vim-eunuch"},
   {"https://github.com/tpope/vim-repeat"},
-  {
-    "https://github.com/machakann/vim-sandwich",
-    config = [[require "_.config.vim-sandwich"]]
-  },
+  {"https://github.com/machakann/vim-sandwich"},
   {"https://github.com/tomtom/tcomment_vim", keys = {"gc"}},
   {"https://github.com/wincent/loupe"},
   {"https://github.com/wincent/terminus"},
@@ -84,14 +73,11 @@ local plugins = {
   -- LSP/Autocompletion {{{
   {
     "https://github.com/neovim/nvim-lspconfig",
-    config = [[require "_.config.lsp"]],
+    config = function()
+      require "_.config.lsp"
+    end,
     requires = {
-      {
-        "https://github.com/tjdevries/lsp_extensions.nvim",
-        config = function()
-          require "_.config.statusline".activate()
-        end
-      },
+      {"https://github.com/tjdevries/lsp_extensions.nvim"},
       {
         "https://github.com/folke/todo-comments.nvim",
         config = function()
@@ -125,7 +111,6 @@ local plugins = {
   {
     "https://github.com/nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    config = [[require "_.config.treesitter"]],
     requires = {
       {"https://github.com/nvim-treesitter/nvim-treesitter-textobjects"},
       {"https://github.com/p00f/nvim-ts-rainbow"},
@@ -178,10 +163,7 @@ local plugins = {
 
   -- Linters & Code quality {{{
   {"https://github.com/dense-analysis/ale"},
-  {
-    "https://github.com/mhartington/formatter.nvim",
-    config = [[require "_.config.formatter"]]
-  },
+  {"https://github.com/mhartington/formatter.nvim"},
   -- }}}
 
   -- Git {{{
@@ -251,9 +233,6 @@ packer.init(
     }
   }
 )
-
--- My global object
-_G._ = {}
 
 return packer.startup(
   function(use)

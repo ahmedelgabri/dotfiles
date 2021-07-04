@@ -1,3 +1,9 @@
+local has_treesitter = pcall(require, "nvim-treesitter")
+
+if not has_treesitter then
+  return
+end
+
 local parsers = require("nvim-treesitter.parsers")
 
 local function get_filetypes()

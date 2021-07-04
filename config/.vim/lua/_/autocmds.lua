@@ -161,10 +161,7 @@ function M.highlight_overlength()
 end
 
 function M.highlight_git_markers()
-  if
-    packer_plugins ~= nil and packer_plugins["conflict-marker.vim"] and
-      packer_plugins["conflict-marker.vim"].loaded
-   then
+  if utils.plugin_loaded("conflict-marker.vim") then
     vim.cmd [[
 highlight! ConflictMarkerBegin guibg=#2f7366
 highlight! ConflictMarkerOurs guibg=#2e5049

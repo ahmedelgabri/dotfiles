@@ -1,3 +1,9 @@
+local has_snap = pcall(require, "snap")
+
+if not has_snap then
+  return
+end
+
 local snap = require "snap"
 local config = snap.config
 local notes = require "_.notes"
@@ -148,4 +154,4 @@ function M.setup()
   )
 end
 
-return M
+M.setup()

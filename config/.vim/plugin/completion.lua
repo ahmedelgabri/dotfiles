@@ -4,6 +4,8 @@ local has_npairs, npairs = pcall(require, "nvim-autopairs")
 
 local M = {}
 
+_G._.completion = M
+
 local check_back_space = function()
   local col = vim.fn.col(".") - 1
   if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
@@ -16,7 +18,7 @@ end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
-_G._.tab_complete = function()
+M.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-n>"
   elseif vim.fn.call("vsnip#available", {1}) == 1 then
@@ -28,7 +30,7 @@ _G._.tab_complete = function()
   end
 end
 
-_G._.s_tab_complete = function()
+M.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-p>"
   elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
@@ -61,10 +63,20 @@ M.setup = function()
       }
     }
 
-    utils.gmap("i", "<Tab>", "v:lua._.tab_complete()", {expr = true})
-    utils.gmap("s", "<Tab>", "v:lua._.tab_complete()", {expr = true})
-    utils.gmap("i", "<S-Tab>", "v:lua._.s_tab_complete()", {expr = true})
-    utils.gmap("s", "<S-Tab>", "v:lua._.s_tab_complete()", {expr = true})
+    utils.gmap("i", "<Tab>", "v:lua._.completion.tab_complete()", {expr = true})
+    utils.gmap("s", "<Tab>", "v:lua._.completion.tab_complete()", {expr = true})
+    utils.gmap(
+      "i",
+      "<S-Tab>",
+      "v:lua._completion.s_tab_complete()",
+      {expr = true}
+    )
+    utils.gmap(
+      "s",
+      "<S-Tab>",
+      "v:lua._.completion.s_tab_complete()",
+      {expr = true}
+    )
     utils.gmap(
       "i",
       "<c-p>",
@@ -74,7 +86,7 @@ M.setup = function()
 
     if has_npairs then
       vim.g.completion_confirm_key = ""
-      _G._.completion_confirm = function()
+      M.completion_confirm = function()
         if vim.fn.pumvisible() ~= 0 then
           if vim.fn.complete_info()["selected"] ~= -1 then
             return vim.fn["compe#confirm"](npairs.esc("<cr>"))
@@ -89,7 +101,7 @@ M.setup = function()
       utils.gmap(
         "i",
         "<CR>",
-        "v:lua._.completion_confirm()",
+        "v:lua._.completion.completion_confirm()",
         {expr = true, noremap = true, silent = true}
       )
     else
@@ -124,4 +136,4 @@ M.setup = function()
   end
 end
 
-return M
+M.setup()

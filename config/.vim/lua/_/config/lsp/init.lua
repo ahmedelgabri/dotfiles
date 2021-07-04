@@ -18,8 +18,6 @@ local map_opts = {noremap = true, silent = true}
 
 lspsaga.init_lsp_saga()
 
-require "_.config.completion".setup()
-
 utils.augroup(
   "COMPLETION",
   function()
