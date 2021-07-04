@@ -47,8 +47,6 @@
     "firefox"
     "loom"
     "ngrok"
-    "obs"
-    "obs-virtualcam"
     "vagrant"
     "ngrok"
     "docker"
