@@ -26,11 +26,12 @@ augroup MyAutoCmds
     autocmd BufReadPre * lua require'_.autocmds'.disable_heavy_plugins()
     autocmd BufWritePost,BufLeave,WinLeave ?* lua require'_.autocmds'.mkview()
     autocmd BufWinEnter ?* lua require'_.autocmds'.loadview()
+
     " Close preview buffer with q
     autocmd FileType * lua require'_.autocmds'.quit_on_q()
+
     " Project specific override
     autocmd BufRead,BufNewFile * lua require'_.autocmds'.source_project_config()
-
     if has('##DirChanged')
       autocmd DirChanged * lua require'_.autocmds'.source_project_config()
     endif

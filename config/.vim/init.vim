@@ -57,9 +57,16 @@ if has('nvim')
 endif
 
 " Overrrides {{{
-let s:vimrc_local = $HOME . '/.vimrc.local'
-if filereadable(s:vimrc_local)
-  execute 'source ' . s:vimrc_local
+if has('nvim')
+  let s:vimrc_local = $HOME . '/.nvimrc.lua'
+  if filereadable(s:vimrc_local)
+    execute 'luafile ' . s:vimrc_local
+  endif
+else
+  let s:vimrc_local = $HOME . '/.vimrc.local'
+  if filereadable(s:vimrc_local)
+    execute 'source ' . s:vimrc_local
+  endif
 endif
 " }}}
 
