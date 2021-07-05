@@ -37,7 +37,7 @@ augroup MyAutoCmds
   endif
 
   if exists('##TextYankPost')
-    autocmd TextYankPost * silent! lua return (not vim.v.event.visual) and require'vim.highlight'.on_yank("IncSearch", 200)
+    autocmd TextYankPost * silent! lua return (not vim.v.event.visual) and vim.highlight.on_yank {higroup = "IncSearch", timeout = 200}
   endif
 
   autocmd BufReadPre,BufRead,BufNewFile */node_modules/* LspStop
