@@ -173,25 +173,14 @@ if has('mksession')
 endif
 
 set backupcopy=yes                    " overwrite files to update, instead of renaming + rewriting
+set nobackup
+set nowritebackup
+let &backupdir=g:VIMDATA.'/backup//' " keep backup files out of the way
+set backupdir+=.
 
-if exists('$SUDO_USER')
-  set nobackup                        " don't create root-owned files
-  set nowritebackup                   " don't create root-owned files
-else
-  if !has('nvim')
-    let &backupdir=g:VIMDATA.'/backup//' " keep backup files out of the way
-  endif
-  set backupdir+=.
-endif
-
-if exists('$SUDO_USER')
-  set noswapfile                      " don't create root-owned files
-else
-  if !has('nvim')
-    let &directory=g:VIMDATA.'/swap//' " keep swap files out of the way
-  endif
-  set directory+=.
-endif
+set noswapfile
+let &directory=g:VIMDATA.'/swap//' " keep swap files out of the way
+set directory+=.
 
 if exists('&swapsync')
   set swapsync=                       " let OS sync swapfiles lazily
