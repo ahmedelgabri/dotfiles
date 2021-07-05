@@ -46,26 +46,10 @@ let g:startify_custom_header_quotes = startify#fortune#predefined_quotes() + [
       \ ['A well-designed system makes it easy to do the right things and annoying (but not impossible) to do the wrong things', '', '— Jeff Atwood']
       \ ]
 
-function! s:list_commits()
-  let git = 'git -C '. getcwd()
-  let commits = systemlist(git .' log --no-decorate --oneline -n 10')
-
-  " if we are not inside a git repo don't show anything
-  if commits[0] =~? '^fatal:'
-    return []
-  endif
-
-  " let git = 'G'. git[1:] " fugitive doesn't support -C flag https://github.com/tpope/vim-fugitive/blob/511d3035d4da2453a9cb0188b6020ed7bc8fc18f/autoload/fugitive.vim#L2477-L2478
-  let git = 'Git'
-
-  return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
-endfunction
-
 let g:startify_lists = [
       \ { 'header': ['   Sessions'], 'type': 'sessions' },
       \ { 'header': ['   MRU [' . fnamemodify(getcwd(), ':~') . ']'], 'type': 'dir' },
       \ { 'header': ['   Files'], 'type': 'files' },
-      \ { 'header': ['   Commits'], 'type': function('s:list_commits') },
       \ { 'header': ['   Commands'], 'type': 'commands' },
       \ { 'header': ['   Bookmarks'], 'type': 'bookmarks' }
       \ ]
