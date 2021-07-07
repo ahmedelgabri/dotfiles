@@ -1,1 +1,36 @@
-./init.vim
+scriptencoding utf-8
+
+let g:VIMHOME = expand(exists('$XDG_CONFIG_HOME') ? $XDG_CONFIG_HOME.'/nvim' : $HOME.'/.config/nvim')
+let g:VIMDATA = expand(exists('$XDG_DATA_HOME')   ? $XDG_DATA_HOME.'/nvim'   : $HOME.'/.local/share/nvim')
+
+
+" Skip vim plugins {{{
+" Skip loading menu.vim, saves ~100ms
+let g:did_install_default_menus = 1
+let g:loaded_getscript          = 1
+let g:loaded_getscriptPlugin    = 1
+let g:loaded_vimball            = 1
+let g:loaded_vimballPlugin      = 1
+let g:loaded_rrhelper           = 1
+" }}}
+
+" leader is space, only works with double quotes around it?!
+let g:mapleader="\<Space>"
+let g:maplocalleader=','
+
+" Overrrides {{{
+let s:vimrc_local = $HOME . '/.vimrc.local'
+if filereadable(s:vimrc_local)
+  execute 'source ' . s:vimrc_local
+endif
+" }}}
+
+" After this file is sourced, plug-in code will be evaluated.
+" See ~/.vim/after for files evaluated after that.
+" See `:scriptnames` for a list of all scripts, in evaluation order.
+" Launch Vim with `vim --startuptime vim.log` for profiling info.
+"
+" To see all leader mappings, including those from plug-ins:
+"
+"   vim -c 'set t_te=' -c 'set t_ti=' -c 'map <space>' -c q | sort
+
