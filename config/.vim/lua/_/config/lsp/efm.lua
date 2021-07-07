@@ -1,27 +1,3 @@
-local prettier = {
-  formatCommand = string.format(
-    table.concat(
-      {
-        "prettier", -- this will work because I have prettier globally & in projects direnv will add `node_modules/bin` to $PATH
-        "--config-precedence prefer-file",
-        "--single-quote",
-        "--no-bracket-spacing",
-        "--prose-wrap always",
-        "--arrow-parens always",
-        "--trailing-comma all",
-        "--no-semi",
-        "--end-of-line lf",
-        "--print-width",
-        "%s",
-        "--stdin-filepath ${INPUT}"
-      },
-      " "
-    ),
-    vim.bo.textwidth
-  ),
-  formatStdin = true
-}
-
 local eslint = {
   -- this will work because I have prettier globally & in projects direnv will add `node_modules/bin` to $PATH
   lintCommand = "eslint --format visualstudio --stdin --stdin-filename ${INPUT}",
@@ -45,16 +21,6 @@ local shellcheck = {
   lintSource = "shellcheck"
 }
 
-local shfmt = {
-  formatCommand = "shfmt -",
-  formatStdin = true
-}
-
-local black = {
-  formatCommand = "black --quiet -",
-  formatStdin = true
-}
-
 local pylint = {
   lintCommand = "pylint --output-format text --reports n --msg-template='{path}:{line}:{column}: {msg_id} ({symbol}) {msg}' ${INPUT}",
   lintIgnoreExitCode = true,
@@ -72,34 +38,6 @@ local pylint = {
     E = "E",
     F = "E"
   }
-}
-
-local luafmt = {
-  formatCommand = string.format(
-    "luafmt --indent-count 2 --line-width %s --stdin",
-    vim.bo.textwidth
-  ),
-  formatStdin = true
-}
-
-local nixfmt = {
-  formatCommand = "nixpkgs-fmt",
-  formatStdin = true
-}
-
-local rustfmt = {
-  formatCommand = "rustfmt",
-  formatStdin = true
-}
-
-local gofmt = {
-  formatCommand = "gofmt",
-  formatStdin = true
-}
-
-local refmt = {
-  formatCommand = "refmt",
-  formatStdin = true
 }
 
 local golint = {
@@ -124,34 +62,22 @@ local vint = {
 
 local languages = {
   vim = {vint},
-  lua = {luafmt},
-  rust = {rustfmt},
-  reason = {refmt},
-  rescript = {refmt},
-  go = {gofmt, golint},
-  nix = {nixfmt},
-  python = {black, pylint},
-  typescript = {prettier, eslint},
-  javascript = {prettier, eslint},
-  ["typescript.tsx"] = {prettier, eslint},
-  ["javascript.jsx"] = {prettier, eslint},
-  typescriptreact = {prettier, eslint},
-  javascriptreact = {prettier, eslint},
-  vue = {prettier},
-  yaml = {prettier},
-  json = {prettier},
-  html = {prettier},
-  scss = {prettier},
-  css = {prettier},
-  markdown = {prettier},
-  sh = {shfmt, shellcheck},
-  bash = {shfmt, shellcheck},
+  go = {golint},
+  python = {pylint},
+  typescript = {eslint},
+  javascript = {eslint},
+  ["typescript.tsx"] = {eslint},
+  ["javascript.jsx"] = {eslint},
+  typescriptreact = {eslint},
+  javascriptreact = {eslint},
+  sh = {shellcheck},
+  bash = {shellcheck},
   dockerfile = {hadolint}
 }
 
 return {
   -- cmd = {"efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "5"},
-  init_options = {documentFormatting = true, codeAction = true},
+  init_options = {documentFormatting = false, codeAction = true},
   root_dir = vim.loop.cwd,
   filetypes = vim.tbl_keys(languages), -- needed to work on new buffers
   settings = {

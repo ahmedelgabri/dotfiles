@@ -94,6 +94,7 @@ local plugins = {
       {"https://github.com/ray-x/lsp_signature.nvim"}
     }
   },
+  {"https://github.com/mhartington/formatter.nvim"},
   {
     "https://github.com/hrsh7th/vim-vsnip",
     requires = {

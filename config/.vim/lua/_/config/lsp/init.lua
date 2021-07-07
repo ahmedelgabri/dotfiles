@@ -189,17 +189,6 @@ local on_attach = function(client)
       end
     )
   end
-
-  if client.resolved_capabilities.document_formatting then
-    utils.augroup(
-      "__LSP_FORMATTING__",
-      function()
-        vim.api.nvim_command(
-          "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)"
-        )
-      end
-    )
-  end
 end
 
 -- https://github.com/nvim-lua/diagnostic-nvim/issues/73
@@ -247,24 +236,12 @@ local servers = {
   },
   gopls = {
     cmd = {"gopls", "serve"},
-    on_attach = function(client)
-      -- Efm is handling formatting
-      client.resolved_capabilities.document_formatting = false
-
-      on_attach(client)
-    end,
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("go.mod", ".git")(fname) or
         vim.loop.cwd()
     end
   },
   tsserver = {
-    on_attach = function(client)
-      -- Efm is handling formatting
-      client.resolved_capabilities.document_formatting = false
-
-      on_attach(client)
-    end,
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern("tsconfig.json")(fname) or
         nvim_lsp.util.root_pattern("package.json", "jsconfig.json", ".git")(
