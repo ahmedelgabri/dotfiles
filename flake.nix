@@ -30,10 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
-
     n = {
       url = "github:tj/n";
       flake = false;
@@ -47,11 +43,6 @@
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;
-    };
-
-    neuron-notes-master = {
-      url = "github:srid/neuron";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     rnix-lsp = {
@@ -100,7 +91,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay inputs.neovim-nightly.overlay ];
+          overlays = [ self.overlay ];
         };
 
         time.timeZone = config.my.timezone;
