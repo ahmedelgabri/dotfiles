@@ -3,7 +3,7 @@ local utils = require "_.utils"
 local M = {}
 
 function M.get_dir()
-  return os.getenv("NOTES_DIR")
+  return vim.env.NOTES_DIR
 end
 
 -- Investigate how to make this work with commands?

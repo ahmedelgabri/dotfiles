@@ -9,7 +9,7 @@ local config = snap.config
 local notes = require "_.notes"
 local M = {}
 
-local fd_args = vim.split(os.getenv("FZF_DEFAULT_COMMAND"), " ")
+local fd_args = vim.split(vim.env.FZF_DEFAULT_COMMAND, " ")
 -- Mutate the table & remove the first item, that's the fd command
 table.remove(fd_args, 1)
 

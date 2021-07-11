@@ -19,8 +19,8 @@ function M.get_icon(icon_name)
   local ICONS = {
     paste = "⍴",
     spell = "✎",
-    branch = os.getenv("PURE_GIT_BRANCH") ~= "" and
-      vim.fn.trim(os.getenv("PURE_GIT_BRANCH")) or
+    branch = vim.env.PURE_GIT_BRANCH ~= "" and
+      vim.fn.trim(vim.env.PURE_GIT_BRANCH) or
       " ",
     error = "×",
     info = "●",

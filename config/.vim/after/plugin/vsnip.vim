@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-let g:vsnip_snippet_dir=g:VIMHOME.'/vsnip'
+let g:vsnip_snippet_dir=stdpath('config').'/vsnip'
 
 " Expand
 imap <expr> <C-j> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>'
