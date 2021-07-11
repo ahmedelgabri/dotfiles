@@ -153,16 +153,26 @@ vim.opt.clipboard = "unnamed"
 
 -- show trailing whitespace
 vim.opt.list = true
-vim.opt.listchars = "tab:………,nbsp:░,extends:»,precedes:«,trail:·"
+vim.opt.listchars = {
+  tab = "………",
+  nbsp = "░",
+  extends = "»",
+  precedes = "«",
+  trail = "·"
+}
 vim.opt.joinspaces = false
 vim.opt.concealcursor = "n"
 
-vim.opt.fillchars = "diff:⣿" -- BOX DRAWINGS
-vim.opt.fillchars:append("vert:┃") -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-vim.opt.fillchars:append("fold:─")
-vim.opt.fillchars:append("msgsep:‾")
-vim.opt.fillchars:append("eob: ") -- Hide end of buffer ~
-vim.opt.fillchars:append("foldopen:▾,foldsep:│,foldclose:▸")
+vim.opt.fillchars = {
+  diff = "⣿", -- BOX DRAWINGS
+  vert = "┃", -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+  fold = "─",
+  msgsep = "‾",
+  eob = " ", -- Hide end of buffer ~
+  foldopen = "▾",
+  foldsep = "│",
+  foldclose = "▸"
+}
 
 vim.opt.foldtext = "utils#NeatFoldText()"
 vim.opt.foldlevelstart = 99 -- start unfolded
