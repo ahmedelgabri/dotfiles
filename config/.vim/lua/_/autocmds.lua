@@ -135,10 +135,17 @@ end
 -- Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
 function M.source_project_config()
   local projectfile =
+    vim.fn.findfile(".vim/local.lua", vim.fn.expand("%:p") .. ";")
+
+  local legacy_projectfile =
     vim.fn.findfile(".vim/local.vim", vim.fn.expand("%:p") .. ";")
 
+  if vim.fn.filereadable(legacy_projectfile) == 1 then
+    vim.api.nvim_command(string.format("silent source %s", legacy_projectfile))
+  end
+
   if vim.fn.filereadable(projectfile) == 1 then
-    vim.api.nvim_command("silent source " .. projectfile)
+    vim.api.nvim_command(string.format("luafile %s", projectfile))
   end
 end
 
