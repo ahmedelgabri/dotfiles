@@ -96,11 +96,29 @@ local plugins = {
   },
   {"https://github.com/mhartington/formatter.nvim"},
   {
-    "https://github.com/hrsh7th/vim-vsnip",
+    "https://github.com/L3MON4D3/LuaSnip",
     requires = {
-      {"https://github.com/rafamadriz/friendly-snippets"},
-      {"https://github.com/hrsh7th/vim-vsnip-integ"}
-    }
+      {"https://github.com/rafamadriz/friendly-snippets"}
+    },
+    config = function()
+      -- let g:vsnip_filetypes['typescript.tsx'] = ['javascript']
+      -- let g:vsnip_filetypes['jinja'] = ['html', 'htmldjango']
+      -- let g:vsnip_filetypes['jinja2'] = ['html', 'htmldjango']
+      -- let g:vsnip_filetypes['html.twig'] = ['htmldjango']
+      require "luasnip".config.set_config(
+        {
+          updateevents = "TextChanged,TextChangedI" -- default is InsertLeave
+        }
+      )
+      require "luasnip/loaders/from_vscode".lazy_load(
+        {
+          path = {
+            "~/.config/nvim/pack/packer/start/friendly-snippets/snippets",
+            "./vsnip"
+          }
+        }
+      )
+    end
   },
   {
     "https://github.com/hrsh7th/nvim-compe",

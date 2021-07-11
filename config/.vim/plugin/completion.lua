@@ -1,7 +1,7 @@
 local has_completion, completion = pcall(require, "compe")
+local has_luasnip, luasnip = pcall(require, "luasnip")
 local utils = require "_.utils"
 local has_npairs, npairs = pcall(require, "nvim-autopairs")
-
 local M = {}
 
 _G._.completion = M
@@ -21,8 +21,8 @@ end
 M.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
-    return utils.t "<Plug>(vsnip-expand-or-jump)"
+  elseif has_luasnip and luasnip.expand_or_jumpable() then
+    return utils.t "<Plug>luasnip-expand-or-jump"
   elseif check_back_space() then
     return utils.t "<Tab>"
   else
@@ -33,14 +33,33 @@ end
 M.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return utils.t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return utils.t "<Plug>(vsnip-jump-prev)"
+  elseif has_luasnip and luasnip.jumpable(-1) then
+    return utils.t "<Plug>luasnip-jump-prev"
   else
     return utils.t "<S-Tab>"
   end
 end
 
+M.completion_confirm = function()
+  if vim.fn.pumvisible() ~= 0 then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      if has_luasnip and luasnip.choice_active() then
+        return utils.t "<Plug>luasnip-next-choice"
+      end
+      return vim.fn["compe#confirm"](npairs.esc("<cr>"))
+    else
+      return npairs.esc("<cr>")
+    end
+  else
+    return npairs.autopairs_cr()
+  end
+end
+
 M.setup = function()
+  if has_npairs then
+    vim.g.completion_confirm_key = ""
+  end
+
   if has_completion then
     completion.setup {
       enabled = true,
@@ -56,10 +75,13 @@ M.setup = function()
         spell = true,
         tags = true,
         conjure = true,
-        vsnip = true,
         nvim_lsp = true,
         nvim_lua = true,
-        orgmode = true
+        orgmode = true,
+        emoji = true,
+        luasnip = true,
+        vsnip = false,
+        ultisnips = false
       }
     }
 
@@ -84,34 +106,12 @@ M.setup = function()
       {expr = true, noremap = true, silent = true}
     )
 
-    if has_npairs then
-      vim.g.completion_confirm_key = ""
-      M.completion_confirm = function()
-        if vim.fn.pumvisible() ~= 0 then
-          if vim.fn.complete_info()["selected"] ~= -1 then
-            return vim.fn["compe#confirm"](npairs.esc("<cr>"))
-          else
-            return npairs.esc("<cr>")
-          end
-        else
-          return npairs.autopairs_cr()
-        end
-      end
-
-      utils.gmap(
-        "i",
-        "<CR>",
-        "v:lua._.completion.completion_confirm()",
-        {expr = true, noremap = true, silent = true}
-      )
-    else
-      utils.gmap(
-        "i",
-        "<CR>",
-        "compe#confirm('<CR>')",
-        {expr = true, noremap = true, silent = true}
-      )
-    end
+    utils.gmap(
+      "i",
+      "<CR>",
+      "v:lua._.completion.completion_confirm()",
+      {expr = true, noremap = true, silent = true}
+    )
 
     utils.gmap(
       "i",
