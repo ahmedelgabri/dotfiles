@@ -199,16 +199,6 @@ function! utils#toggle_shell()
   call utils#toggle_term('zsh -l')
 endfunction
 
-function! utils#customize_diff()
-  if &diff
-    syntax off
-    set number
-  else
-    syntax on
-    set number&
-  endif
-endfunction
-
 function! utils#get_color(synID, what, mode) abort
   return synIDattr(synIDtrans(hlID(a:synID)), a:what, a:mode)
 endfunction

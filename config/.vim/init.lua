@@ -183,7 +183,6 @@ vim.opt.updatetime = 1000
 vim.opt.diffopt:append(
   "vertical,algorithm:histogram,indent-heuristic,hiddenoff"
 )
-vim.fn["utils#customize_diff"]()
 
 vim.opt.shortmess:append("A") -- ignore annoying swapfile messages
 vim.opt.shortmess:append("I") -- no splash screen
