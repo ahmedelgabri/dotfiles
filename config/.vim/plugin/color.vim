@@ -1,10 +1,3 @@
-if has('termguicolors')
-  set termguicolors
-end
-
-set background=dark
-silent! colorscheme plain
-
 augroup MyCustomColors
   autocmd!
   autocmd ColorScheme * hi! clear SignColumn
@@ -48,4 +41,12 @@ augroup MyCustomColors
         \| hi! link SnapBorder SnapNormal
         \| hi! link SnapPrompt NonText
         \| hi! link SnapPosition DiffText
+
+  autocmd BufWinEnter,BufEnter ?* lua require'_.autocmds'.highlight_overlength()
+  autocmd BufWinEnter,BufEnter * lua require'_.autocmds'.highlight_git_markers()
+  autocmd OptionSet textwidth lua require'_.autocmds'.highlight_overlength()
 augroup END
+
+" Order is important, so autocmds above works properly
+set background=dark
+silent! colorscheme plain
