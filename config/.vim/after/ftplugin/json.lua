@@ -1,5 +1,5 @@
 if vim.fn.executable("jq") == 1 then
-  vim.opt_local.formatprg = "jq ."
+  vim.cmd [[setlocal formatprg=jq\ .]]
 else
-  vim.opt_local.formatprg = "python -m json.tool"
+  vim.cmd [[setlocal formatprg=python\ -m\ json.tool]]
 end

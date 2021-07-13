@@ -1,6 +1,6 @@
-vim.opt_local.spell = true
-vim.opt_local.linebreak = true
-vim.opt_local.list = false
+vim.cmd [[setlocal spell]]
+vim.cmd [[setlocal linebreak]]
+vim.cmd [[setlocal nolist]]
 
 if vim.fn.executable("grip") == 1 then
   vim.cmd [[nnoremap <buffer><leader>p :call utils#openMarkdownPreview()<CR>]]

@@ -1,2 +1,2 @@
 vim.cmd [[syntax off]]
-vim.opt_local.number = true
+vim.cmd [[setlocal number]]
