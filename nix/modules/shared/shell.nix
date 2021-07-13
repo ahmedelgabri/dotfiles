@@ -154,49 +154,7 @@ in
             # So care needs to be taken if two env vars depend on each other
             # ====================================================
             rec {
-              COLORTERM = "truecolor";
               BROWSER = if pkgs.stdenv.isDarwin then "open" else "xdg-open";
-              # Better spell checking & auto correction prompt
-              SPROMPT =
-                "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
-              # Set the default Less options.
-              # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
-              # Remove -X and -F (exit if the content fits on one screen) to enable it.
-              LESS = "-F -g -i -M -R -S -w -X -z-4";
-              KEYTIMEOUT = "1";
-              ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
-
-              DOTFILES = "$HOME/.dotfiles";
-              PROJECTS = "$HOME/Sites/personal/dev";
-              WORK = "$HOME/Sites/work";
-              PERSONAL_STORAGE = "$HOME/Sync";
-              NOTES_DIR = "${PERSONAL_STORAGE}/notes";
-
-              ############### APPS/POGRAMS XDG SPEC CLEANUP
-              RLWRAP_HOME = "$XDG_DATA_HOME/rlwrap";
-              AWS_SHARED_CREDENTIALS_FILE = "$XDG_CONFIG_HOME/aws/credentials";
-              AWS_CONFIG_FILE = "$XDG_CONFIG_HOME/aws/config";
-              DOCKER_CONFIG = "$XDG_CONFIG_HOME/docker";
-              ELINKS_CONFDIR = "$XDG_CONFIG_HOME/elinks";
-              _ZO_DATA_DIR = "$XDG_CONFIG_HOME/zoxide";
-
-              ############### Telemetry
-              DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
-              HOMEBREW_NO_ANALYTICS = "1";
-              GATSBY_TELEMETRY_DISABLED = "1";
-              ADBLOCK = "true";
-
-              ############### Homebrew
-              HOMEBREW_INSTALL_BADGE = "⚽️";
-
-              ############### Pure
-              PURE_GIT_UP_ARROW = "🠥";
-              PURE_GIT_DOWN_ARROW = "🠧";
-              PURE_GIT_BRANCH = "  ";
-
-              ############### Autosuggest
-              ZSH_AUTOSUGGEST_USE_ASYNC = "true";
-
               GITHUB_USER = config.my.github_username;
 
               VIM_FZF_LOG = ''

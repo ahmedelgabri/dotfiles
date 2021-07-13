@@ -87,6 +87,10 @@ autoload -Uz _zinit
 
   zinit ice wait lucid atload'_zsh_autosuggest_start'
   zinit light https://github.com/zsh-users/zsh-autosuggestions
+
+  ############### Autosuggest
+  export ZSH_AUTOSUGGEST_USE_ASYNC="true"
+  export ZSH_AUTOSUGGEST_STRATEGY=("match_prev_cmd" "completion")
 # }}}
 
 autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"

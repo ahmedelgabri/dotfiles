@@ -1,3 +1,41 @@
+export COLORTERM="truecolor"
+# Better spell checking & auto correction prompt
+export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?"
+# Set the default Less options.
+# Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+# Remove -X and -F (exit if the content fits on one screen) to enable it.
+export LESS="-F -g -i -M -R -S -w -X -z-4"
+export KEYTIMEOUT="1"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+export DOTFILES="$HOME/.dotfiles"
+export PROJECTS="$HOME/Sites/personal/dev"
+export WORK="$HOME/Sites/work"
+export PERSONAL_STORAGE="$HOME/Sync"
+export NOTES_DIR="$PERSONAL_STORAGE/notes"
+
+############### APPS/POGRAMS XDG SPEC CLEANUP
+export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
+export _ZO_DATA_DIR="$XDG_CONFIG_HOME/zoxide"
+
+############### Telemetry
+export DO_NOT_TRACK="1" # Future proof? https://consoledonottrack.com/
+export HOMEBREW_NO_ANALYTICS="1"
+export GATSBY_TELEMETRY_DISABLED="1"
+export ADBLOCK="true"
+
+############### Homebrew
+export HOMEBREW_INSTALL_BADGE="⚽️"
+
+############### Pure
+export PURE_GIT_UP_ARROW="🠥"
+export PURE_GIT_DOWN_ARROW="🠧"
+export PURE_GIT_BRANCH="  "
+
 # Remove path separtor from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}
 
