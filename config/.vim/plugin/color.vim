@@ -15,7 +15,7 @@ augroup MyCustomColors
         \| execute(printf('hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText','fg', 'cterm')))
         \| execute(printf('hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Identifier', 'fg', 'gui'), utils#get_color('Identifier', 'fg', 'cterm')))
         \| execute(printf('hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('NonText', 'fg', 'gui'), utils#get_color('NonText', 'fg', 'cterm')))
-        \| if has('+pumblend') | highlight PmenuSel blend=0 | endif
+        \| highlight PmenuSel blend=0
         \| execute(printf('hi! MutedImports gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Ignore', 'fg', 'gui'), utils#get_color('Ignore', 'fg', 'cterm')))
         \| execute(printf('hi! MutedImportsInfo gui=italic,bold cterm=italic,bold guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Comment', 'fg', 'gui'), utils#get_color('Comment', 'fg', 'cterm')))
 

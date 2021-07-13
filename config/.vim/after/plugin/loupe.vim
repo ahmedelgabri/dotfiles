@@ -5,12 +5,10 @@ function! s:SetUpLoupeHighlight()
   execute 'highlight! link Search Underlined'
 endfunction
 
-if has('autocmd')
-  augroup MyLoupe
-    autocmd!
-    autocmd ColorScheme * call <SID>SetUpLoupeHighlight()
-  augroup END
-endif
+augroup MyLoupe
+  autocmd!
+  autocmd ColorScheme * call <SID>SetUpLoupeHighlight()
+augroup END
 
 call s:SetUpLoupeHighlight()
 

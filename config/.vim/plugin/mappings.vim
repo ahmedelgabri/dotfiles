@@ -66,20 +66,18 @@ nnoremap Q @@
 vnoremap . :norm.<CR>
 
 " For neovim terminal :term
-if has('nvim')
-  " nnoremap <leader>t  :vsplit +terminal<cr>
-  tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
-  tnoremap <M-h> <c-\><c-n><c-w>h
-  tnoremap <M-j> <c-\><c-n><c-w>j
-  tnoremap <M-k> <c-\><c-n><c-w>k
-  tnoremap <M-l> <c-\><c-n><c-w>l
-  augroup MyTerm
-    autocmd!
-    autocmd TermOpen * setl nonumber norelativenumber
-    autocmd TermOpen term://* startinsert
-    autocmd TermClose term://* stopinsert
-  augroup END
-endif
+" nnoremap <leader>t  :vsplit +terminal<cr>
+tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+tnoremap <M-h> <c-\><c-n><c-w>h
+tnoremap <M-j> <c-\><c-n><c-w>j
+tnoremap <M-k> <c-\><c-n><c-w>k
+tnoremap <M-l> <c-\><c-n><c-w>l
+augroup MyTerm
+  autocmd!
+  autocmd TermOpen * setl nonumber norelativenumber
+  autocmd TermOpen term://* startinsert
+  autocmd TermClose term://* stopinsert
+augroup END
 
 nnoremap <silent> <leader>z :call utils#ZoomToggle()<CR>
 nnoremap <c-g> :call utils#SynStack()<CR>
