@@ -9,11 +9,5 @@
     "body": [
       "TODO: ${1:Do something} (${CURRENT_MONTH_NAME} ${CURRENT_DATE}, ${CURRENT_YEAR} ${CURRENT_HOUR}:${CURRENT_MINUTE}, ${2:${VIM:\\$GITHUB_USER}})\n$0"
     ]
-  },
-  "uuid": {
-    "prefix": "uuid",
-    "body": [
-      "${VIM:system('python -c \"import uuid, sys;sys.stdout.write(str(uuid.uuid4()))\"')}"
-    ]
   }
 }
