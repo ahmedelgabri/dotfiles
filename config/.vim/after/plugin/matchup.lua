@@ -1,4 +1,4 @@
-if vim.fn.exists(":Matchup") == 0 then
+if vim.fn.exists ':Matchup' == 0 then
   return
 end
 

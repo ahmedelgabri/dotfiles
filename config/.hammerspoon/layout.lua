@@ -7,11 +7,11 @@
 --
 
 local apps = {
-  brave = "Brave Browser",
-  chrome = "Google Chrome",
-  slack = "Slack",
-  tweetbot = "Tweetbot",
-  terminal = "Kitty"
+  brave = 'Brave Browser',
+  chrome = 'Google Chrome',
+  slack = 'Slack',
+  tweetbot = 'Tweetbot',
+  terminal = 'Kitty',
 }
 
 ---
@@ -25,26 +25,25 @@ local function SwitchLayout()
   local contains = hs.fnutils.contains
 
   local screens = {
-    main = hs.screen("Color LCD"), -- MBP screen
-    samsung = hs.screen("S24R65x"),
-    LG = hs.screen("LG HDR 4K")
+    main = hs.screen 'Color LCD', -- MBP screen
+    samsung = hs.screen 'S24R65x',
+    LG = hs.screen 'LG HDR 4K',
   }
 
   local layout = {
     {
       apps.chrome,
       nil,
-      (moreThanOneScreen and
-        (contains(allScreens, screens.LG) or
-          contains(allScreens, screens.samsung))) and
-        (screens.LG or screens.samsung) or
-        screens.main,
+      (moreThanOneScreen and (contains(allScreens, screens.LG) or contains(
+        allScreens,
+        screens.samsung
+      ))) and (screens.LG or screens.samsung) or screens.main,
       hs.layout.maximized,
       nil,
-      nil
+      nil,
     },
-    {apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil},
-    {apps.slack, nil, screens.main, hs.layout.maximized, nil, nil}
+    { apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil },
+    { apps.slack, nil, screens.main, hs.layout.maximized, nil, nil },
     -- {
     --   apps.brave,
     --   nil,
@@ -55,10 +54,10 @@ local function SwitchLayout()
     -- }
   }
 
-  if (moreThanOneScreen) then
+  if moreThanOneScreen then
     hs.notify.show(
-      "Hammerspoon",
-      #allScreens .. " monitor layout activated",
+      'Hammerspoon',
+      #allScreens .. ' monitor layout activated',
       (screens.LG or screens.samsung or screens.main):name()
     )
   end
@@ -69,5 +68,5 @@ end
 SwitchLayout()
 
 return {
-  layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout)
+  layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout),
 }

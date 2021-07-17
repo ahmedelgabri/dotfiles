@@ -49,6 +49,7 @@ in
           vim-vint
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
+          stylua
           efm-langserver
           nodePackages.neovim
           nodePackages.prettier
@@ -59,7 +60,6 @@ in
           nodePackages.vscode-json-languageserver
           nodePackages.pyright
           nodePackages.yaml-language-server
-          # nodePackages.lua-fmt
           nodePackages.vscode-css-languageserver-bin
           tailwind-lsp
           (writeScriptBin "tailwindlsp" ''

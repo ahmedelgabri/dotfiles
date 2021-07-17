@@ -9,29 +9,29 @@ function M.gmap(mode, key, result, opts)
 end
 
 function M.augroup(group, fn)
-  vim.api.nvim_command("augroup " .. group)
-  vim.api.nvim_command("autocmd!")
+  vim.api.nvim_command('augroup ' .. group)
+  vim.api.nvim_command 'autocmd!'
   fn()
-  vim.api.nvim_command("augroup END")
+  vim.api.nvim_command 'augroup END'
 end
 
 function M.get_icon(icon_name)
   local ICONS = {
-    paste = "⍴",
-    spell = "✎",
-    branch = vim.env.PURE_GIT_BRANCH ~= "" and
-      vim.fn.trim(vim.env.PURE_GIT_BRANCH) or
-      " ",
-    error = "×",
-    info = "●",
-    warn = "!",
-    hint = "›",
-    lock = "",
-    success = " "
+    paste = '⍴',
+    spell = '✎',
+    branch = vim.env.PURE_GIT_BRANCH ~= '' and vim.fn.trim(
+      vim.env.PURE_GIT_BRANCH
+    ) or ' ',
+    error = '×',
+    info = '●',
+    warn = '!',
+    hint = '›',
+    lock = '',
+    success = ' ',
     -- success = ' '
   }
 
-  return ICONS[icon_name] or ""
+  return ICONS[icon_name] or ''
 end
 
 function M.get_color(synID, what, mode)
@@ -43,28 +43,29 @@ function M.t(str)
 end
 
 function M.urlencode(str)
-  str =
-    string.gsub(
+  str = string.gsub(
     str,
     "([^0-9a-zA-Z !'()*._~-])", -- locale independent
     function(c)
-      return string.format("%%%02X", string.byte(c))
+      return string.format('%%%02X', string.byte(c))
     end
   )
 
-  str = string.gsub(str, " ", "%%20")
+  str = string.gsub(str, ' ', '%%20')
   return str
 end
 
 function M.plugin_loaded(name)
-  local has_packer = pcall(require, "packer")
+  local has_packer = pcall(require, 'packer')
 
   if not has_packer then
     return
   end
 
-  return has_packer and packer_plugins ~= nil and packer_plugins[name] and
-    packer_plugins[name].loaded
+  return has_packer
+    and packer_plugins ~= nil
+    and packer_plugins[name]
+    and packer_plugins[name].loaded
 end
 
 return M
