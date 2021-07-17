@@ -3,7 +3,12 @@
 -- let g:vsnip_filetypes['jinja'] = ['html', 'htmldjango']
 -- let g:vsnip_filetypes['jinja2'] = ['html', 'htmldjango']
 -- let g:vsnip_filetypes['html.twig'] = ['htmldjango']
-local ls = require 'luasnip'
+local has_ls, ls = pcall(require, 'luasnip')
+
+if not has_ls then
+  return
+end
+
 local s = ls.snippet
 local sn = ls.snippet_node
 local t = ls.text_node
