@@ -16,7 +16,7 @@ function M.nmap(lhs, rhs, opts)
 end
 
 function M.nnoremap(lhs, rhs, opts)
-  map('n', lhs, rhs, vim.tbl_extend('force', opts, { noremap = true }))
+  map('n', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
 end
 
 function M.vmap(lhs, rhs, opts)
@@ -24,7 +24,7 @@ function M.vmap(lhs, rhs, opts)
 end
 
 function M.vnoremap(lhs, rhs, opts)
-  map('v', lhs, rhs, vim.tbl_extend('force', opts, { noremap = true }))
+  map('v', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
 end
 
 function M.imap(lhs, rhs, opts)
@@ -32,7 +32,7 @@ function M.imap(lhs, rhs, opts)
 end
 
 function M.inoremap(lhs, rhs, opts)
-  map('i', lhs, rhs, vim.tbl_extend('force', opts, { noremap = true }))
+  map('i', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
 end
 
 function M.smap(lhs, rhs, opts)
@@ -40,7 +40,23 @@ function M.smap(lhs, rhs, opts)
 end
 
 function M.snoremap(lhs, rhs, opts)
-  map('s', lhs, rhs, vim.tbl_extend('force', opts, { noremap = true }))
+  map('s', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
+end
+
+function M.xmap(lhs, rhs, opts)
+  map('x', lhs, rhs, opts or {})
+end
+
+function M.xnoremap(lhs, rhs, opts)
+  map('x', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
+end
+
+function M.tmap(lhs, rhs, opts)
+  map('t', lhs, rhs, opts or {})
+end
+
+function M.tnoremap(lhs, rhs, opts)
+  map('t', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
 end
 
 return M

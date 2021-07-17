@@ -88,7 +88,7 @@ M.setup = function()
 
     map.imap('<Tab>', 'v:lua._.completion.tab_complete()', { expr = true })
     map.smap('<Tab>', 'v:lua._.completion.tab_complete()', { expr = true })
-    map.imap('<S-Tab>', 'v:lua._completion.s_tab_complete()', { expr = true })
+    map.imap('<S-Tab>', 'v:lua._.completion.s_tab_complete()', { expr = true })
     map.smap('<S-Tab>', 'v:lua._.completion.s_tab_complete()', { expr = true })
     map.inoremap('<c-p>', 'compe#complete()', { expr = true, silent = true })
 
