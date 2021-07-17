@@ -1,8 +1,8 @@
-if vim.fn.exists ':Startify' == 0 then
+if vim.fn.exists(':Startify') == 0 then
   return
 end
 
-local utils = require '_.utils'
+local utils = require('_.utils')
 
 vim.g.startify_padding_left = 5
 vim.g.startify_relative_path = 1
@@ -16,7 +16,7 @@ vim.g.startify_session_persistence = 1
 vim.g.startify_session_delete_buffers = 1
 vim.g.startify_ascii = {
   ' ',
-  ' ϟ ' .. (vim.fn.has 'nvim' and 'nvim' or 'vim') .. '.',
+  ' ϟ ' .. (vim.fn.has('nvim') and 'nvim' or 'vim') .. '.',
   ' ',
 }
 vim.g.startify_custom_header =
@@ -154,6 +154,8 @@ vim.g.startify_custom_header_quotes = vim.tbl_extend(
   }
 )
 
+vim.g.startify_bookmarks = { { t = '.git/todo.md' } }
+
 vim.g.startify_lists = {
   { header = { '   Sessions' }, type = 'sessions' },
   {
@@ -178,5 +180,5 @@ vim.g.startify_skiplist = {
 }
 
 utils.augroup('__STARTIFY__', function()
-  vim.cmd [[autocmd User Startified setlocal cursorline]]
+  vim.cmd([[autocmd User Startified setlocal cursorline]])
 end)
