@@ -22,7 +22,7 @@ setopt NO_BEEP              # Don't beep on erros (overrides /etc/zshrc in Catal
 ###############################################################
 
 # limit of history entries
-HISTORY_IGNORE='(clear|c|pwd|exit|* —help|[bf]g *|l[alsh]#( *)#|less *)'
+HISTORY_IGNORE='(clear|c|pwd|exit|* —help|[bf]g *|less *|cd ..|cd -)'
 
 setopt BANG_HIST                 # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
