@@ -4,6 +4,8 @@ if not has_formatter then
   return
 end
 
+local au = require '_.utils.au'
+
 local function prettier()
   return {
     exe = 'prettier',
@@ -38,8 +40,8 @@ local function shfmt()
   }
 end
 
-require('_.utils').augroup('__formatter__', function()
-  vim.api.nvim_command 'autocmd BufWritePre * FormatWrite'
+au.augroup('__formatter__', function()
+  au.autocmd('BufWritePre', '*', 'FormatWrite')
 end)
 
 formatter.setup {

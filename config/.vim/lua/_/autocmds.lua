@@ -1,4 +1,5 @@
 local utils = require '_.utils'
+local map = require '_.utils.map'
 
 local M = {}
 
@@ -120,8 +121,7 @@ end
 
 function M.quit_on_q()
   if should_quit_on_q() then
-    utils.bmap(
-      'n',
+    map.nnoremap(
       'q',
       (
           (vim.wo.diff == true or vim.bo.filetype == 'man')
@@ -129,7 +129,7 @@ function M.quit_on_q()
           or (vim.bo.filetype == 'qf') and ':cclose'
           or ':q'
         ) .. '<cr>',
-      { noremap = true, silent = true }
+      { buffer = true, silent = true }
     )
   end
 end

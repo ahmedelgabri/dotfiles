@@ -14,13 +14,19 @@ local has_lspsaga, lspsaga = pcall(require, 'lspsaga')
 local has_extensions = pcall(require, 'lsp_extensions')
 local configs = require 'lspconfig/configs'
 local utils = require '_.utils'
-local map_opts = { noremap = true, silent = true }
+local au = require '_.utils.au'
+local map = require '_.utils.map'
+local map_opts = { buffer = true, silent = true }
 
 lspsaga.init_lsp_saga()
 
-utils.augroup('__COMPLETION__', function()
+au.augroup('__COMPLETION__', function()
   if has_extensions then
-    vim.api.nvim_command "au CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints()"
+    au.autocmd(
+      'CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost',
+      '*',
+      "lua require'lsp_extensions'.inlay_hints()"
+    )
   end
 end)
 
@@ -113,12 +119,12 @@ local on_attach = function(client)
   for lhs, rhs in pairs(mappings) do
     if lhs == 'K' then
       if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
-        utils.bmap('n', lhs, rhs[1], map_opts)
+        map.nnoremap(lhs, rhs[1], map_opts)
       end
     else
-      utils.bmap('n', lhs, rhs[1], map_opts)
+      map.nnoremap(lhs, rhs[1], map_opts)
       if #rhs == 2 then
-        utils.bmap('v', lhs, rhs[2], map_opts)
+        map.vnoremap(lhs, rhs[2], map_opts)
       end
     end
   end
@@ -126,8 +132,12 @@ local on_attach = function(client)
   -- ---------------
   -- AUTOCMDS
   -- ---------------
-  utils.augroup('__LSP__', function()
-    vim.api.nvim_command 'autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()'
+  au.augroup('__LSP__', function()
+    au.autocmd(
+      'CursorHold',
+      '<buffer>',
+      'lua vim.lsp.diagnostic.show_line_diagnostics()'
+    )
   end)
 
   if client.resolved_capabilities.document_highlight then
@@ -140,16 +150,32 @@ local on_attach = function(client)
       false
     )
 
-    utils.augroup('__LSP_HIGHLIGHTS__', function()
-      vim.api.nvim_command 'autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()'
-      vim.api.nvim_command 'autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()'
-      vim.api.nvim_command 'autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()'
+    au.augroup('__LSP_HIGHLIGHTS__', function()
+      au.autocmd(
+        'CursorHold',
+        '<buffer>',
+        'lua vim.lsp.buf.document_highlight()'
+      )
+      au.autocmd(
+        'CursorHoldI',
+        '<buffer>',
+        'lua vim.lsp.buf.document_highlight()'
+      )
+      au.autocmd(
+        'CursorMoved',
+        '<buffer>',
+        'lua vim.lsp.buf.clear_references()'
+      )
     end)
   end
 
   if client.resolved_capabilities.code_lens then
-    utils.augroup('__LSP_CODELENS__', function()
-      vim.api.nvim_command 'autocmd CursorHold,BufEnter,InsertLeave <buffer> lua vim.lsp.codelens.refresh()'
+    au.augroup('__LSP_CODELENS__', function()
+      au.autocmd(
+        'CursorHold,BufEnter,InsertLeave',
+        '<buffer>',
+        'lua vim.lsp.codelens.refresh()'
+      )
     end)
   end
 end

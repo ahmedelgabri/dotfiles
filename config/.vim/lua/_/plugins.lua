@@ -29,6 +29,7 @@ if not packer_exists then
 end
 
 local packer = require 'packer'
+local au = require '_.utils.au'
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
 local plugins = {
   { 'https://github.com/wbthomason/packer.nvim', opt = true },
@@ -224,8 +225,8 @@ packer.init {
 }
 
 return packer.startup(function(use)
-  require('_.utils').augroup('__packer__', function()
-    vim.api.nvim_command 'autocmd BufWritePost plugins.lua PackerCompile'
+  au.augroup('__packer__', function()
+    au.autocmd('BufWritePost', 'plugins.lua', 'PackerCompile')
   end)
 
   use(plugins)

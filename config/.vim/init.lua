@@ -4,11 +4,11 @@
 -- GENERAL {{{1
 -------------------------------------------------------------------------------
 
-local utils = require '_.utils'
+require '_'
+
+local au = require '_.utils.au'
 
 local root = vim.env.USER == 'root'
-
-_G._ = {} -- My global namespace
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
@@ -234,8 +234,12 @@ else
   -- - <50 save/restore 50 lines from each register
   -- - s10 max item size 10KB
   -- - h do not save/restore 'hlsearch' setting
-  utils.augroup('MyNeovimShada', function()
-    vim.api.nvim_command "autocmd CursorHold,FocusGained,FocusLost * if &bt == '' | rshada|wshada | endif"
+  au.augroup('MyNeovimShada', function()
+    au.autocmd(
+      'CursorHold,FocusGained,FocusLost',
+      '*',
+      [[if &bt == '' | rshada|wshada | endif]]
+    )
   end)
 end
 
