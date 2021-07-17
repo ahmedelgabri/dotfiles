@@ -22,10 +22,14 @@ end
 require "nvim-treesitter.configs".setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ignore_install = {"verilog"},
+  indent = {
+    enable = true
+  },
   highlight = {
     enable = true,
     -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
-    additional_vim_regex_highlighting = false
+    -- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
+    additional_vim_regex_highlighting = {"python"}
   },
   rainbow = {
     enable = true,
