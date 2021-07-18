@@ -1,4 +1,6 @@
-if vim.fn.exists ':NvimTreeToggle' == 0 then
+local utils = require '_.utils'
+
+if not utils.plugin_installed 'nvim-tree.lua' then
   return
 end
 

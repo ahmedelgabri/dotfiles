@@ -43,6 +43,8 @@ local plugins = {
   },
   {
     'https://github.com/kyazdani42/nvim-tree.lua',
+    keys = { '-' },
+    cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
     config = function()
       -- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
       -- maybe switch to https://github.com/ruifm/gitlinker.nvim?
@@ -149,6 +151,7 @@ local plugins = {
   },
   {
     'https://github.com/plasticboy/vim-markdown',
+    ft = { 'markdown' },
     requires = {
       { 'https://github.com/godlygeek/tabular' },
       { 'https://github.com/npxbr/glow.nvim', cmd = 'Glow' },

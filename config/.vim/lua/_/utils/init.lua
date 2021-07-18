@@ -40,17 +40,18 @@ function M.urlencode(str)
   return str
 end
 
-function M.plugin_loaded(name)
+function M.plugin_installed(name)
   local has_packer = pcall(require, 'packer')
 
   if not has_packer then
     return
   end
 
-  return has_packer
-    and packer_plugins ~= nil
-    and packer_plugins[name]
-    and packer_plugins[name].loaded
+  return has_packer and packer_plugins ~= nil and packer_plugins[name]
+end
+
+function M.plugin_loaded(name)
+  return M.plugin_installed(name) and packer_plugins[name].loaded
 end
 
 function get_color(synID, what, mode)
