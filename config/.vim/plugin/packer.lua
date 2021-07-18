@@ -41,7 +41,15 @@ local plugins = {
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = { { 'https://github.com/junegunn/fzf' } },
   },
-  { 'https://github.com/kyazdani42/nvim-tree.lua' },
+  {
+    'https://github.com/kyazdani42/nvim-tree.lua',
+    config = function()
+      -- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
+      -- maybe switch to https://github.com/ruifm/gitlinker.nvim?
+      -- I only use fugitive for GBrowse 99% of the time & git branch in the statusline
+      vim.g.nvim_tree_disable_netrw = 0
+    end,
+  },
   { 'https://github.com/duggiefresh/vim-easydir' },
   { 'https://github.com/junegunn/vim-peekaboo' },
   {

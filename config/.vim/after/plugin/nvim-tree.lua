@@ -4,7 +4,9 @@ end
 
 local map = require '_.utils.map'
 
+vim.g.nvim_tree_follow = 1
 vim.g.nvim_tree_auto_close = 1
+
 -- 0 is supposed to be the default (ie. don't close tree when opening a file),
 -- but it closes anyway; see: https://github.com/kyazdani42/nvim-tree.lua/issues/502
 vim.g.nvim_tree_quit_on_open = 0
