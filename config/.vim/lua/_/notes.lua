@@ -1,24 +1,24 @@
+_.notes = {}
+
 local utils = require '_.utils'
 
-local M = {}
-
-function M.get_dir()
+function _.notes.get_dir()
   return vim.env.NOTES_DIR
 end
 
 -- Investigate how to make this work with commands?
-function M.get_notes_completion()
+function _.notes.get_notes_completion()
   return vim.fn.map(
-    vim.fn.getcompletion(M.get_dir() .. '/*', 'dir'),
-    function(_, v)
-      return string.gsub(v, M.get_dir() .. '/', '')
+    vim.fn.getcompletion(_.notes.get_dir() .. '/*', 'dir'),
+    function(__, v)
+      return string.gsub(v, _.notes.get_dir() .. '/', '')
     end
   )
 end
 
-function M.note_info(fpath, ...)
+function _.notes.note_info(fpath, ...)
   local args = { ... }
-  local path = M.get_dir() .. '/'
+  local path = _.notes.get_dir() .. '/'
   local starts_with_a_path = vim.fn.fnamemodify(fpath, ':h')
   local starts_with_name = vim.fn.fnamemodify(fpath, ':t')
   local where = string.gsub(starts_with_a_path .. '/', '^\\.', '')
@@ -44,8 +44,8 @@ function M.note_info(fpath, ...)
   }
 end
 
-function M.note_edit(...)
-  local data = M.note_info(...)
+function _.notes.note_edit(...)
+  local data = _.notes.note_info(...)
   local path = data[1]
   local fname = data[2]
   local formatted_date = data[3]
@@ -64,24 +64,27 @@ tags:
   vim.api.nvim_command(string.format(frontmatter, fname, formatted_date))
 end
 
-function M.wiki_edit(...)
+function _.notes.wiki_edit(...)
   local args = { ... }
-  local fname = M.get_dir() .. '/wiki/' .. table.concat(args, ' ') .. '.md'
+  local fname = _.notes.get_dir()
+    .. '/wiki/'
+    .. table.concat(args, ' ')
+    .. '.md'
 
   print(fname)
 
   vim.api.nvim_command('edit ' .. fname)
 end
 
-function M.my_name(name)
-  local data = M.note_info(name)
+function _.notes.my_name(name)
+  local data = _.notes.note_info(name)
   local fname = vim.fn.fnamemodify(data[1], ':t')
 
   return fname
 end
 
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
-function M.search_notes(query, fullscreen)
+function _.notes.search_notes(query, fullscreen)
   local command_fmt =
     'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
   local initial_command = string.format(
@@ -91,7 +94,7 @@ function M.search_notes(query, fullscreen)
   local reload_command = string.format(command_fmt, '{q}')
 
   local opts = {
-    dir = M.get_dir(),
+    dir = _.notes.get_dir(),
     options = {
       '--phony',
       '--query',
@@ -109,7 +112,7 @@ function M.search_notes(query, fullscreen)
   )
 end
 
-function M.open_in_obsidian()
+function _.notes.open_in_obsidian()
   local str = string.format(
     'obsidian://open?path=%s',
     utils.urlencode(vim.fn.expand '%:p')
@@ -126,8 +129,8 @@ function M.open_in_obsidian()
   )
 end
 
-function M.note_in_obsidian(...)
-  local data = M.note_info(...)
+function _.notes.note_in_obsidian(...)
+  local data = _.notes.note_info(...)
   local path = data[1]
   local fname = data[2]
   local formatted_date = data[3]
@@ -159,5 +162,3 @@ tags:
     )
   )
 end
-
-return M

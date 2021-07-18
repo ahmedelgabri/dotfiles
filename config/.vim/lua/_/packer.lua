@@ -79,9 +79,6 @@ local plugins = {
   -- LSP/Autocompletion {{{
   {
     'https://github.com/neovim/nvim-lspconfig',
-    config = function()
-      require '_.config.lsp'
-    end,
     requires = {
       { 'https://github.com/tjdevries/lsp_extensions.nvim' },
       {
