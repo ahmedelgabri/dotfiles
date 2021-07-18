@@ -86,7 +86,7 @@ in
 
         if [ ! -e "${home}/.config/nvim/" ]; then
           echo "Linking vim folders..."
-          ln -sf ${home}/.dotfiles/config/.vim ${home}/.config/nvim
+          ln -sf ${home}/.dotfiles/config/nvim ${home}/.config/nvim
         fi
       '';
     };
