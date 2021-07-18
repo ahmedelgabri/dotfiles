@@ -137,22 +137,17 @@ end
 -- Project specific override
 -- Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
 function M.source_project_config()
-  local projectfile = vim.fn.findfile(
-    '.vim/local.lua',
-    vim.fn.expand '%:p' .. ';'
-  )
-
-  local legacy_projectfile = vim.fn.findfile(
+  local files = {
     '.vim/local.vim',
-    vim.fn.expand '%:p' .. ';'
-  )
+    '.vim/local.lua',
+  }
 
-  if vim.fn.filereadable(legacy_projectfile) == 1 then
-    vim.api.nvim_command(string.format('silent source %s', legacy_projectfile))
-  end
+  for _, file in pairs(files) do
+    local current_file = vim.fn.findfile(file, vim.fn.expand '%:p' .. ';')
 
-  if vim.fn.filereadable(projectfile) == 1 then
-    vim.api.nvim_command(string.format('luafile %s', projectfile))
+    if vim.fn.filereadable(current_file) == 1 then
+      vim.api.nvim_command(string.format('silent source %s', current_file))
+    end
   end
 end
 

@@ -257,7 +257,7 @@ vim.opt.guicursor:append 'n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-b
 local vimrc_local = string.format('%s%s', vim.env.HOME, '/.nvimrc.lua')
 
 if vim.fn.filereadable(vimrc_local) == 1 then
-  vim.cmd(string.format('luafile %s', vimrc_local))
+  vim.cmd(string.format('silent source %s', vimrc_local))
 end
 
 -------------------------------------------------------------------------------
