@@ -41,13 +41,7 @@ local plugins = {
     -- I have the bin globally, so don't build, and just grab plugin directory
     requires = { { 'https://github.com/junegunn/fzf' } },
   },
-  {
-    'https://github.com/lambdalisue/fern.vim',
-    requires = {
-      { 'https://github.com/lambdalisue/fern-git.vim' },
-      { 'https://github.com/lambdalisue/fern-hijack.vim' },
-    },
-  },
+  { 'https://github.com/kyazdani42/nvim-tree.lua' },
   { 'https://github.com/duggiefresh/vim-easydir' },
   { 'https://github.com/junegunn/vim-peekaboo' },
   {

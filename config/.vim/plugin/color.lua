@@ -61,6 +61,12 @@ au.augroup('__MyCustomColors__', function()
     '*',
     [[execute(printf('hi! MutedImportsInfo gui=italic,bold cterm=italic,bold guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s', utils#get_color('Comment', 'fg', 'gui'), utils#get_color('Comment', 'fg', 'cterm')))]]
   )
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitDirty DiffChange')
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitStaged DiffChange')
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitMerge DiffText')
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitRenamed DiffChange')
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitNew DiffAdd')
+  au.autocmd('ColorScheme', '*', 'hi! link NvimTreeGitDeleted DiffDelete')
 
   ---------------------------------------------------------------
   -- CODEDARK & PLAIN
