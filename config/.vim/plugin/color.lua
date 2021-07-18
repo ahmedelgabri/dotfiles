@@ -127,7 +127,7 @@ au.augroup('__MyCustomColors__', function()
   au.autocmd(
     'OptionSet',
     'textwidth',
-    [[lua require'_.autocmds'.highlight_overlength()]]
+    [[if &ft != 'help' | lua require'_.autocmds'.highlight_overlength() | endif]]
   )
 end)
 
