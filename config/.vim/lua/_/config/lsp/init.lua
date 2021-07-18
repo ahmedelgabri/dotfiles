@@ -30,33 +30,19 @@ au.augroup('__COMPLETION__', function()
   end
 end)
 
-vim.fn.sign_define('LspDiagnosticsSignError', {
-  text = utils.get_icon 'error',
-  texthl = 'LspDiagnosticsDefaultError',
-  linehl = '',
-  numhl = '',
-})
+local signs = { 'Error', 'Warning', 'Hint', 'Information' }
 
-vim.fn.sign_define('LspDiagnosticsSignWarning', {
-  text = utils.get_icon 'warn',
-  texthl = 'LspDiagnosticsDefaultWarning',
-  linehl = '',
-  numhl = '',
-})
+for _, type in pairs(signs) do
+  local hl = 'LspDiagnosticsSign' .. type
+  local texthl = 'LspDiagnosticsDefault' .. type
 
-vim.fn.sign_define('LspDiagnosticsSignInformation', {
-  text = utils.get_icon 'info',
-  texthl = 'LspDiagnosticsDefaultInformation',
-  linehl = '',
-  numhl = '',
-})
-
-vim.fn.sign_define('LspDiagnosticsSignHint', {
-  text = utils.get_icon 'hint',
-  texthl = 'LspDiagnosticsDefaultHint',
-  linehl = '',
-  numhl = '',
-})
+  vim.fn.sign_define(hl, {
+    text = utils.get_icon(string.lower(type)),
+    texthl = texthl,
+    linehl = '',
+    numhl = '',
+  })
+end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -65,7 +51,9 @@ local default_mappings = {
   ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
   ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
   ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
-  ['<leader>ld'] = { '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>' },
+  ['<leader>ld'] = {
+    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>',
+  },
   ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>' },
   [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>' },
   ['<C-]>'] = { '<Cmd>lua vim.lsp.buf.definition()<CR>' },
@@ -95,7 +83,6 @@ local lspsaga_mappings = {
   [']d'] = {
     "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>",
   },
-  ['K'] = { "<cmd>lua require('lspsaga.hover').render_hover_doc()<cr>" },
   ['<C-f>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>" },
   ['<C-b>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>" },
 }
@@ -107,6 +94,15 @@ local mappings = vim.tbl_extend(
 )
 
 local on_attach = function(client)
+  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = 'single' }
+  )
+
+  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = 'single' }
+  )
   -- ---------------
   -- GENERAL
   -- ---------------
@@ -180,30 +176,41 @@ local on_attach = function(client)
   end
 end
 
--- https://github.com/nvim-lua/diagnostic-nvim/issues/73
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-    virtual_text = false,
-    -- virtual_text = {
-    --   spacing = 4,
-    --   prefix = "~"
-    -- },
-    underline = false,
-    signs = true,
-    update_in_insert = false,
-  }
-)
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#show-source-in-diagnostics
+vim.lsp.handlers['textDocument/publishDiagnostics'] =
+  function(_, _, params, client_id, _)
+    local config = {
+      virtual_text = false,
+      -- virtual_text = {
+      --   spacing = 4,
+      --   prefix = "~"
+      -- },
+      underline = false,
+      signs = true,
+      update_in_insert = false,
+    }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
+    local uri = params.uri
+    local bufnr = vim.uri_to_bufnr(uri)
+
+    if not bufnr then
+      return
+    end
+
+    local diagnostics = params.diagnostics
+
+    for i, v in ipairs(diagnostics) do
+      diagnostics[i].message = string.format('%s: %s', v.source, v.message)
+    end
+
+    vim.lsp.diagnostic.save(diagnostics, bufnr, client_id)
+
+    if not vim.api.nvim_buf_is_loaded(bufnr) then
+      return
+    end
+
+    vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
+  end
 
 local tailwindlsp = 'tailwindlsp'
 
@@ -221,9 +228,7 @@ local servers = {
   [tailwindlsp] = {},
   efm = require '_.config.lsp.efm',
   sumneko_lua = require '_.config.lsp.sumneko',
-  rust_analyzer = {
-    capabilities = capabilities,
-  },
+  rust_analyzer = {},
   gopls = {
     cmd = { 'gopls', 'serve' },
     root_dir = function(fname)
@@ -322,12 +327,26 @@ local servers = {
   },
 }
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  },
+}
+
 for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
   if not server_disabled then
     nvim_lsp[server].setup(
-      vim.tbl_deep_extend('force', { on_attach = on_attach }, config)
+      vim.tbl_deep_extend(
+        'force',
+        { on_attach = on_attach, capabilities = capabilities },
+        config
+      )
     )
   end
 end

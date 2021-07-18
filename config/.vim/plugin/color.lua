@@ -9,6 +9,9 @@ au.augroup('__MyCustomColors__', function()
   au.autocmd('ColorScheme', '*', 'hi! TablineFill cterm=NONE gui=NONE')
   au.autocmd('ColorScheme', '*', 'hi! TablineSel cterm=reverse gui=reverse')
   au.autocmd('ColorScheme', '*', 'hi! NonText ctermbg=NONE guibg=NONE')
+  au.autocmd('ColorScheme', '*', 'hi! NormalFloat guibg=NONE')
+  au.autocmd('ColorScheme', '*', 'hi! link FloatBorder Number')
+
   au.autocmd(
     'ColorScheme',
     '*',

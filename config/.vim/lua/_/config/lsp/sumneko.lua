@@ -1,5 +1,5 @@
 local cache_location = vim.fn.stdpath 'cache'
-local bin_folder = jit.os
+local bin_folder = jit.os:lower() == 'osx' and 'macOS' or jit.os
 
 local nlua_nvim_lsp = {
   base_directory = string.format(
@@ -37,6 +37,10 @@ local function get_lua_runtime()
   return result
 end
 
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
+
 return {
   cmd = sumneko_command(),
   filetypes = { 'lua' },
@@ -44,7 +48,7 @@ return {
     Lua = {
       runtime = {
         version = 'LuaJIT',
-        path = vim.split(package.path, ';'),
+        path = runtime_path,
       },
       -- completion = {
       --   keywordSnippet = "Disable"
@@ -55,9 +59,7 @@ return {
         globals = { 'vim', 'spoon', 'hs' },
       },
       workspace = {
-        library = get_lua_runtime(),
-        maxPreload = 2000,
-        preloadFileSize = 150,
+        library = vim.api.nvim_get_runtime_file('', true),
       },
       telemetry = { enable = false },
     },

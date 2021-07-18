@@ -65,7 +65,7 @@ M.setup = function()
     completion.setup {
       enabled = true,
       autocomplete = true,
-      min_length = 2,
+      min_length = 1,
       debug = false,
       preselect = 'always',
       documentation = true,
