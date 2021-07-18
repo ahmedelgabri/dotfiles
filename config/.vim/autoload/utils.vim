@@ -1,10 +1,6 @@
 scriptencoding utf-8
 " [TODO]: Cleanup this file
 
-function! utils#trim(txt) abort
-  return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-endfunction
-
 function! utils#ZoomToggle() abort
   if exists('t:zoomed') && t:zoomed
     exec t:zoom_winrestcmd
@@ -50,13 +46,6 @@ function! utils#ClearRegisters() abort
   endwhile
 endfunction
 
-
-function! utils#setupWrapping() abort
-  set wrap
-  set wrapmargin=2
-  set textwidth=80
-endfunction
-
 " via: http://vim.wikia.com/wiki/HTML_entities
 function! utils#HtmlEscape() abort
   silent s/&/\&amp;/eg
@@ -76,27 +65,6 @@ endfunction
 
 function! utils#should_strip_whitespace(filetypelist) abort
   return index(a:filetypelist, &filetype) == -1
-endfunction
-
-fun! utils#ProfileStart(...)
-  if a:0 && a:1 != 1
-    let l:profile_file = a:1
-  else
-    let l:profile_file = '/tmp/vim.'.getpid().'.'.reltimestr(reltime())[-4:].'profile.txt'
-    echom 'Profiling into' l:profile_file
-    let @* = l:profile_file
-  endif
-  exec 'profile start '.l:profile_file
-  profile! file **
-  profile  func *
-endfun
-
-function! utils#NeatFoldText() abort
-  let l:foldchar = matchstr(&fillchars, 'fold:\zs.')
-  let l:lines=(v:foldend - v:foldstart + 1) . ' lines'
-  let l:first=substitute(getline(v:foldstart), '\v *', '', '')
-  let l:dashes=substitute(v:folddashes, '-', l:foldchar, 'g')
-  return l:dashes . l:foldchar . l:foldchar . ' ' . l:lines . ': ' . l:first . ' '
 endfunction
 
 function! utils#open() abort
@@ -127,95 +95,9 @@ function! utils#openMarkdownPreview() abort
   endfunction
 endfunction
 
-function! utils#has_floating_window() abort
-  " MenuPopupChanged was renamed to CompleteChanged -> https://github.com/neovim/neovim/pull/9819
-  " https://github.com/neoclide/coc.nvim/wiki/F.A.Q#how-to-make-preview-window-shown-aside-with-pum
-  return (exists('##MenuPopupChanged') || exists('##CompleteChanged')) && exists('*nvim_open_win') || (has('textprop') && has('patch-8.1.1522'))
-endfunction
-
-function! utils#create_floating_window() abort
-  let s:buf = nvim_create_buf(v:false, v:true)
-
-  let l:height = float2nr(&lines * 0.8)
-  let l:width = float2nr(&columns * 0.9)
-  let l:row = (&lines - l:height) / 2
-  let l:col = (&columns - l:width) / 2
-  let l:opts = {
-        \ 'relative': 'editor',
-        \ 'row': l:row,
-        \ 'col': l:col,
-        \ 'width': l:width,
-        \ 'height': l:height,
-        \ 'style': 'minimal'
-        \ }
-
-  let l:top = '╭' . repeat('─', l:width - 2) . '╮'
-  let l:mid = '│' . repeat(' ', l:width - 2) . '│'
-  let l:bot = '╰' . repeat('─', l:width - 2) . '╯'
-  let l:lines = [l:top] + repeat([l:mid], l:height - 2) + [l:bot]
-
-  call nvim_buf_set_lines(s:buf, 0, -1, v:true, l:lines)
-  call nvim_open_win(s:buf, v:true, l:opts)
-
-  set winhl=Normal:Floating
-
-  let l:opts.row += 1
-  let l:opts.height -= 2
-  let l:opts.col += 2
-  let l:opts.width -= 4
-
-  call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, l:opts)
-
-  augroup FLOATING_WINDOW
-    au!
-    au BufWipeout <buffer> exe 'bw 's:buf
-  augroup END
-endfunction
-
-function! utils#fzf_window() abort
-  return utils#has_floating_window() ? { 'width': 0.9 , 'height': 0.8, 'relative': 1 } : 'enew'
-endfunction
-
-function! utils#toggle_term(cmd)
-  if empty(bufname(a:cmd))
-    call utils#create_floating_window()
-    call termopen(a:cmd, { 'on_exit': function('OnTermExit') })
-  else
-    bwipeout!
-  endif
-endfunction
-
-function! OnTermExit(job_id, code, event) dict
-  if a:code == 0
-    bwipeout!
-  endif
-endfunction
-
-function! utils#toggle_tig()
-  call utils#toggle_term('tig')
-endfunction
-
-function! utils#toggle_shell()
-  call utils#toggle_term('zsh -l')
-endfunction
-
-function! utils#get_color(synID, what, mode) abort
-  return synIDattr(synIDtrans(hlID(a:synID)), a:what, a:mode)
-endfunction
-
 function! utils#is_git() abort
   silent call system('git rev-parse')
   return v:shell_error == 0
-endfunction
-
-
-function! utils#synnames(...) abort
-  if a:0
-    let [line, col] = [a:1, a:2]
-  else
-    let [line, col] = [line('.'), col('.')]
-  endif
-  return reverse(map(synstack(line, col), 'synIDattr(v:val,"name")'))
 endfunction
 
 function! utils#helptopic() abort

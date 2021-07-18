@@ -53,4 +53,8 @@ function M.plugin_loaded(name)
     and packer_plugins[name].loaded
 end
 
+function get_color(synID, what, mode)
+  return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(synID)), what, mode)
+end
+
 return M

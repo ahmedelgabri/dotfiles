@@ -10,7 +10,7 @@ if !empty(expand($VIM_FZF_LOG))
   let g:fzf_commits_log_options = $VIM_FZF_LOG
 endif
 
-let g:fzf_layout = { 'window': utils#fzf_window() }
+let g:fzf_layout = { 'window': { 'width': 0.9 , 'height': 0.8, 'relative': 1 } }
 let g:fzf_history_dir = expand('~/.fzf-history')
 let g:fzf_buffers_jump = 1
 let g:fzf_tags_command = 'ctags -R'
