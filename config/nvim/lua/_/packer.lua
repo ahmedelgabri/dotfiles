@@ -213,7 +213,10 @@ local plugins = {
 packer.init {
   package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
   display = {
-    open_cmd = '100vnew [packer]',
+    non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
+    open_cmd = function()
+      return require('packer.util').float { border = 'single' }
+    end,
   },
 }
 
