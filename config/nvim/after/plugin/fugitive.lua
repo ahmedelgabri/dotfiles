@@ -16,7 +16,7 @@ end
 --   { vim.fn['miro#register'] 'miro#get_url' }
 -- )
 --
-vim.cmd [[call insert(g:fugitive_browse_handlers, miro#register('miro#get_url'))]]
+vim.cmd [[call insert(g:fugitive_browse_handlers, function('miro#get_url'))]]
 
 -- Open current file on github.com
 map.nnoremap('gb', ':GBrowse<cr>')

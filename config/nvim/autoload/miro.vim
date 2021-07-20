@@ -1,7 +1,3 @@
-function! miro#register(name) abort
-  return function(substitute(a:name,'^s:',matchstr(expand('<sfile>'), '<SNR>\d\+_'),''))
-endfunction
-
 function! miro#get_url(opts, ...) abort
   if a:0 || type(a:opts) != type({})
     return ''
