@@ -188,8 +188,6 @@ vim.opt.hidden = true
 -- Make tilde command behave like an operator.
 vim.opt.tildeop = true
 
-vim.opt.updatetime = 1000
-
 -- Make sure diffs are always opened in vertical splits, also match my git settings
 vim.opt.diffopt:append 'vertical,algorithm:histogram,indent-heuristic,hiddenoff'
 
@@ -214,7 +212,8 @@ vim.opt.swapfile = false
 vim.opt.directory = string.format('%s%s', vim.fn.stdpath 'data', '/swap//') -- keep swap files out of the way
 vim.opt.directory:append '.'
 
-vim.opt.updatecount = 80 -- update swapfiles every 80 typed chars
+vim.opt.updatetime = 1000
+vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars (I don't use swap files anymore)
 
 if root then
   vim.opt.undofile = false -- don't create root-owned files
