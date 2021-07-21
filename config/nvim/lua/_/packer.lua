@@ -71,10 +71,6 @@ local plugins = {
   { 'https://github.com/wincent/terminus' },
   { 'https://github.com/simrat39/symbols-outline.nvim', cmd = 'SymbolsOutline' },
   { 'https://github.com/christoomey/vim-tmux-navigator', opt = true },
-  {
-    'https://github.com/rhysd/devdocs.vim',
-    keys = { '<Plug>(devdocs-under-cursor)' },
-  },
   { 'https://github.com/kevinhwang91/nvim-bqf' },
   -- LSP/Autocompletion {{{
   {
@@ -88,12 +84,6 @@ local plugins = {
         end,
       },
       { 'https://github.com/glepnir/lspsaga.nvim' },
-      {
-        'https://github.com/onsails/lspkind-nvim',
-        config = function()
-          require('lspkind').init()
-        end,
-      },
       { 'https://github.com/ray-x/lsp_signature.nvim' },
     },
   },
