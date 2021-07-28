@@ -1,9 +1,7 @@
-vim.cmd [[
-if &diff
-  syntax off
-  set number
+if vim.api.nvim_win_get_option(0, 'diff') then
+  vim.cmd [[syntax off]]
+  vim.opt.number = true
 else
-  syntax on
-  set number&
-endif
-]]
+  vim.cmd [[syntax on]]
+  vim.opt.number = false
+end
