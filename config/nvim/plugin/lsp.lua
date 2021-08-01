@@ -54,8 +54,12 @@ local default_mappings = {
   ['<leader>ld'] = {
     '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>',
   },
-  ['[d'] = { '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>' },
-  [']d'] = { '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>' },
+  ['[d'] = {
+    '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>',
+  },
+  [']d'] = {
+    '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>',
+  },
   ['<C-]>'] = { '<Cmd>lua vim.lsp.buf.definition()<CR>' },
   ['<leader>D'] = { '<Cmd>lua vim.lsp.buf.declaration()<CR>' },
   ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
