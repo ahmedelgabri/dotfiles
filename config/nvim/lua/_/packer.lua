@@ -1,5 +1,5 @@
 -- Only required if you have packer in your `opt` pack
-local packer_exists = pcall(require, 'packer')
+local packer_exists, packer = pcall(require, 'packer')
 
 if not packer_exists then
   if vim.fn.input 'Download Packer? (y for yes) ' ~= 'y' then
@@ -17,7 +17,7 @@ if not packer_exists then
     string.format(
       'git clone %s %s',
       'https://github.com/wbthomason/packer.nvim',
-      directory .. '/packer.nvim'
+      directory .. 'packer.nvim'
     )
   )
 
@@ -28,7 +28,6 @@ if not packer_exists then
   return
 end
 
-local packer = require 'packer'
 local au = require '_.utils.au'
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
 
