@@ -1,5 +1,7 @@
 local map = require '_.utils.map'
 
+require '_.notes'
+
 -- https://vimways.org/2019/personal-notetaking-in-vim/
 -- https://danishpraka.sh/2020/02/23/journaling-in-vim.html
 
