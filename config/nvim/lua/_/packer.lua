@@ -162,7 +162,7 @@ return packer.startup(function(use)
   use { 'https://github.com/jez/vim-github-hub' }
   -- Clojure
   use { 'https://github.com/guns/vim-sexp', ft = lisps }
-  use { 'https://github.com/Olical/conjure', tag = 'v4.22.0', ft = lisps }
+  use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
   -- }}}
 
   -- Git {{{
