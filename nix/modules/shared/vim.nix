@@ -52,15 +52,14 @@ in
           stylua
           efm-langserver
           nodePackages.neovim
+          nodePackages.vscode-langservers-extracted # HTML, CSS, JSON LSPs
           nodePackages.prettier
           nodePackages.bash-language-server
           nodePackages.dockerfile-language-server-nodejs
           nodePackages.typescript-language-server
           nodePackages.vim-language-server
-          nodePackages.vscode-json-languageserver
           nodePackages.pyright
           nodePackages.yaml-language-server
-          nodePackages.vscode-css-languageserver-bin
           tailwind-lsp
           (writeScriptBin "tailwindlsp" ''
             #!/usr/bin/env sh
@@ -77,7 +76,7 @@ in
         echo ":: -> Running vim activationScript..."
         # Creating needed folders
 
-        if [ ! -e "${home}/.local/share/nvim/swap" ]; then
+        if [ ! -e "${home}/.local/share/nvim/undo" ]; then
           echo "Creating vim swap/backup/undo/view folders inside ${home}/.local/share/nvim ..."
           mkdir -p ${home}/.local/share/nvim/{backup,swap,undo,view}
         fi
