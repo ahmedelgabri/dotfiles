@@ -168,11 +168,7 @@ end
 
 local function word_count()
   if vim.bo.filetype == 'markdown' or vim.bo.filetype == 'text' then
-    return string.format(
-      '%%4* %d %s %%*',
-      vim.fn.wordcount()['words'],
-      ' words'
-    )
+    return string.format('%%4* %d %s %%*', vim.fn.wordcount()['words'], 'words')
   end
 
   return ''
