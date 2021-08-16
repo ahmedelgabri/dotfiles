@@ -6,6 +6,11 @@ end
 
 local map = require '_.utils.map'
 
+-- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
+-- maybe switch to https://github.com/ruifm/gitlinker.nvim?
+-- I only use fugitive for GBrowse 99% of the time & git branch in the statusline
+vim.g.nvim_tree_disable_netrw = 0
+
 vim.g.nvim_tree_follow = 1
 vim.g.nvim_tree_auto_close = 1
 
