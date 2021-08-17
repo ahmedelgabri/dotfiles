@@ -24,6 +24,8 @@ alias history='fc -il 1'
 alias jobs="jobs -l "
 alias play='mx ϟ'
 alias y="yarn"
+# https://github.com/kovidgoyal/kitty/issues/3936
+alias kitty='SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt" kitty '
 
 (( $+commands[htop] )) && alias top=htop
 
