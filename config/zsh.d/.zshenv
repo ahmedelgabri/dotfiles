@@ -13,6 +13,8 @@ export PROJECTS="$HOME/Sites/personal/dev"
 export WORK="$HOME/Sites/work"
 export PERSONAL_STORAGE="$HOME/Sync"
 export NOTES_DIR="$PERSONAL_STORAGE/notes"
+# I use a single zk notes dir, so set it and forget
+export ZK_NOTEBOOK_DIR=$NOTES_DIR
 
 ############### APPS/POGRAMS XDG SPEC CLEANUP
 export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"

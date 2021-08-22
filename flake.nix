@@ -50,6 +50,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zk = {
+      url = "github:mickael-menu/zk";
+      flake = false;
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -102,9 +107,7 @@
       overlay = (final: prev: {
         pragmatapro = (prev.callPackage ./nix/pkgs/pragmatapro.nix { });
 
-        neuron-notes =
-          (prev.callPackage "${inputs.neuron-notes-master}/project.nix"
-            { }).neuron;
+        zk = (prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; });
 
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];

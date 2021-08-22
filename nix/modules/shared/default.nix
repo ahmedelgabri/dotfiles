@@ -35,6 +35,7 @@
     ./syncthing.nix
     ./discord.nix
     ./hledger.nix
+    ./zk.nix
   ];
 
   my.modules = {
@@ -60,6 +61,7 @@
     deno.enable = true;
     go.enable = true;
     rust.enable = false;
+    zk.enable = true;
   };
 
 }
