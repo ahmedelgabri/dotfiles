@@ -43,7 +43,7 @@ packer.init {
 
 return packer.startup(function(use)
   au.augroup('__packer__', function()
-    au.autocmd('BufWritePost', 'plugins.lua', 'PackerCompile')
+    au.autocmd('BufWritePost', 'packer.lua', 'PackerCompile')
   end)
 
   use { 'https://github.com/wbthomason/packer.nvim' }
