@@ -112,15 +112,26 @@ return packer.startup(function(use)
   }
   use {
     'https://github.com/nvim-treesitter/nvim-treesitter',
+    branch = '0.5-compat',
     run = ':TSUpdate',
     requires = {
-      { 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
+      {
+        'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+        branch = '0.5-compat',
+      },
       { 'https://github.com/p00f/nvim-ts-rainbow' },
       {
         'https://github.com/nvim-treesitter/playground',
         cmd = 'TSPlaygroundToggle',
       },
     },
+  }
+  use {
+    'https://github.com/vuki656/package-info.nvim',
+    ft = { 'json' },
+    config = function()
+      require('package-info').setup {}
+    end,
   }
   -- Syntax {{{
   use {
