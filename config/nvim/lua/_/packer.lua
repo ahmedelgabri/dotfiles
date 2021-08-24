@@ -74,7 +74,7 @@ return packer.startup(function(use)
   use { 'https://github.com/machakann/vim-sandwich' }
   use { 'https://github.com/tomtom/tcomment_vim', keys = { 'gc' } }
   use { 'https://github.com/wincent/loupe' }
-  -- { 'https://github.com/wincent/terminus' }
+  use { 'https://github.com/mhinz/vim-sayonara', opt = true, cmd = 'Sayonara' }
   use {
     'https://github.com/simrat39/symbols-outline.nvim',
     cmd = 'SymbolsOutline',
