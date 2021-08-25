@@ -1,21 +1,11 @@
-local has_autopairs, autopairs = pcall(require, 'nvim-autopairs')
+local autopais_loaded = pcall(function()
+  require('nvim-autopairs').setup {
+    close_triple_quotes = true,
+    check_ts = true,
+    disable_filetype = { 'TelescopePrompt', 'fzf' },
+  }
+end)
 
-if not has_autopairs then
-  return
+if not autopais_loaded then
+  print 'nvim-autopairs failed to load'
 end
-
-autopairs.setup {
-  close_triple_quotes = true,
-  check_ts = true,
-  disable_filetype = { 'TelescopePrompt', 'fzf' },
-}
-
-if not has_autopairs then
-  return
-end
-
-autopairs.setup {
-  close_triple_quotes = true,
-  check_ts = true,
-  disable_filetype = { 'TelescopePrompt', 'fzf' },
-}

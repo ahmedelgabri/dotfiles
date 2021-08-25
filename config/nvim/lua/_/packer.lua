@@ -104,10 +104,15 @@ return packer.startup(function(use)
     },
   }
   use {
-    'https://github.com/hrsh7th/nvim-compe',
+    'https://github.com/hrsh7th/nvim-cmp',
     requires = {
-      { 'https://github.com/tami5/compe-conjure', ft = lisps },
-      { 'https://github.com/andersevenrud/compe-tmux' },
+      { 'https://github.com/hrsh7th/cmp-nvim-lsp' },
+      { 'https://github.com/andersevenrud/compe-tmux', branch = 'cmp' },
+      { 'https://github.com/saadparwaiz1/cmp_luasnip' },
+      { 'https://github.com/hrsh7th/cmp-path' },
+      { 'https://github.com/PaterJason/cmp-conjure', ft = lisps },
+      { 'https://github.com/hrsh7th/cmp-buffer' },
+      { 'https://github.com/hrsh7th/cmp-emoji' },
     },
   }
   use {

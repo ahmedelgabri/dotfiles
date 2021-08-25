@@ -353,6 +353,8 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
