@@ -130,5 +130,3 @@ map.nnoremap(
 
 -- Quick note taking per project
 map.nmap(',n', ':tab drop notes.md<CR>')
-
-map.nnoremap('<M-d>', ':bd!<CR>')
