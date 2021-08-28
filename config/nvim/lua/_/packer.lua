@@ -114,6 +114,7 @@ packer.startup(function(use)
       { 'https://github.com/PaterJason/cmp-conjure', ft = lisps },
       { 'https://github.com/hrsh7th/cmp-buffer' },
       { 'https://github.com/hrsh7th/cmp-emoji' },
+      { 'https://github.com/f3fora/cmp-spell' },
     },
   }
   use {

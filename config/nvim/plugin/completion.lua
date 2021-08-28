@@ -15,8 +15,8 @@ local completion_loaded = pcall(function()
       { name = 'path' },
       { name = 'conjure' },
       { name = 'emoji' },
+      { name = 'spell' },
       -- { name = 'orgmode' },
-      -- { name = 'spell' },
       -- { name = 'tags' },
     },
     snippet = {
