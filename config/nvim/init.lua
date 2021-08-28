@@ -242,7 +242,7 @@ else
   end)
 end
 
-vim.opt.inccommand = 'split' -- incremental command live feedback"
+vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
 
 -- cursor behavior:
 --   - no blinking in normal/visual mode
