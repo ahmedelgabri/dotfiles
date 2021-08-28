@@ -32,4 +32,4 @@ vim.g.nvim_tree_show_icons = {
 -- Normally README.md gets highlighted by default, which is a bit distracting.
 vim.g.nvim_tree_special_files = {}
 
-map.nnoremap('-', ':NvimTreeFindFile<CR>', { silent = true })
+map.nnoremap('--', ':NvimTreeFindFile<CR>', { silent = true })
