@@ -56,14 +56,13 @@ packer.startup(function(use)
   }
   use {
     'https://github.com/kyazdani42/nvim-tree.lua',
-    keys = { '-' },
     cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
+    config = [[require '_.config.nvim-tree']],
   }
   use { 'https://github.com/duggiefresh/vim-easydir' }
-  use { 'https://github.com/junegunn/vim-peekaboo' }
+  use { 'https://github.com/junegunn/vim-peekaboo', event = 'BufReadPre' }
   use {
     'https://github.com/mbbill/undotree',
-    opt = true,
     cmd = 'UndotreeToggle',
   }
   use {
@@ -81,7 +80,7 @@ packer.startup(function(use)
   use { 'https://github.com/machakann/vim-sandwich' }
   use { 'https://github.com/tomtom/tcomment_vim', keys = { 'gc' } }
   use { 'https://github.com/wincent/loupe' }
-  use { 'https://github.com/mhinz/vim-sayonara', opt = true, cmd = 'Sayonara' }
+  use { 'https://github.com/mhinz/vim-sayonara', cmd = 'Sayonara' }
   use { 'https://github.com/tpope/vim-apathy' }
   use {
     'https://github.com/simrat39/symbols-outline.nvim',
@@ -128,18 +127,25 @@ packer.startup(function(use)
     'https://github.com/nvim-treesitter/nvim-treesitter',
     branch = '0.5-compat',
     run = ':TSUpdate',
+    config = [[require '_.config.treesitter']],
     requires = {
       {
         'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+        after = 'nvim-treesitter',
         branch = '0.5-compat',
       },
-      { 'https://github.com/p00f/nvim-ts-rainbow' },
+      {
+        'https://github.com/p00f/nvim-ts-rainbow',
+        after = 'nvim-treesitter',
+      },
       {
         'https://github.com/nvim-treesitter/playground',
         cmd = 'TSPlaygroundToggle',
+        after = 'nvim-treesitter',
       },
       {
         'https://github.com/lewis6991/spellsitter.nvim',
+        after = 'nvim-treesitter',
         config = function()
           require('spellsitter').setup {
             -- captures = { 'comment' }, -- set to {} to spellcheck everything
@@ -183,8 +189,12 @@ packer.startup(function(use)
     'https://github.com/plasticboy/vim-markdown',
     ft = { 'markdown' },
     requires = {
-      { 'https://github.com/godlygeek/tabular' },
-      { 'https://github.com/npxbr/glow.nvim', cmd = 'Glow' },
+      { 'https://github.com/godlygeek/tabular', after = 'vim-markdown' },
+      {
+        'https://github.com/npxbr/glow.nvim',
+        cmd = 'Glow',
+        after = 'vim-markdown',
+      },
     },
   }
   use { 'https://github.com/jez/vim-github-hub' }
@@ -196,6 +206,12 @@ packer.startup(function(use)
   -- Git {{{
   use {
     'https://github.com/rhysd/conflict-marker.vim',
+    cmd = {
+      'ConflictMarkerBoth',
+      'ConflictMarkerNone',
+      'ConflictMarkerOurselves',
+      'ConflictMarkerThemselves',
+    },
     config = function()
       -- disable the default highlight group
       vim.g.conflict_marker_highlight_group = ''
@@ -224,7 +240,6 @@ packer.startup(function(use)
   }
   use {
     'https://github.com/rhysd/git-messenger.vim',
-    opt = true,
     cmd = 'GitMessenger',
     keys = '<Plug>(git-messenger)',
   }

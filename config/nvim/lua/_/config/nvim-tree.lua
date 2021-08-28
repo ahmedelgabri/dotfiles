@@ -1,9 +1,4 @@
 local utils = require '_.utils'
-
-if not utils.plugin_installed 'nvim-tree.lua' then
-  return
-end
-
 local map = require '_.utils.map'
 
 -- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
