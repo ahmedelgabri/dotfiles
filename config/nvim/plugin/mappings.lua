@@ -65,7 +65,6 @@ map.xnoremap('>', '>gv')
 -- new file in current directory
 map.nnoremap('<Leader>n', [[:e <C-R>=expand("%:p:h") . "/" <CR>]])
 
-map.nnoremap('<Localleader>n', [[:set nu! rnu!<cr>]])
 map.nnoremap('<Leader>p', [[:t.<left><left>]])
 map.nnoremap('<leader>e', [[:exe getline(line('.'))<cr>]])
 
@@ -129,4 +128,4 @@ map.nnoremap(
 )
 
 -- Quick note taking per project
-map.nmap(',n', ':tab drop notes.md<CR>')
+map.nmap('<Localleader>t', ':tab drop .git/todo.md<CR>')
