@@ -31,6 +31,10 @@ end
 local au = require '_.utils.au'
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
 
+au.augroup('__packer__', function()
+  au.autocmd('BufWritePost', 'packer.lua', 'PackerCompile')
+end)
+
 packer.init {
   package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
   display = {
@@ -41,11 +45,7 @@ packer.init {
   },
 }
 
-return packer.startup(function(use)
-  au.augroup('__packer__', function()
-    au.autocmd('BufWritePost', 'packer.lua', 'PackerCompile')
-  end)
-
+packer.startup(function(use)
   use { 'https://github.com/wbthomason/packer.nvim' }
   use { 'https://github.com/antoinemadec/FixCursorHold.nvim' }
   use { 'https://github.com/windwp/nvim-autopairs' }
@@ -212,7 +212,7 @@ return packer.startup(function(use)
   }
   -- }}}
 
-  -- Themes, UI & eye cnady {{{
+  -- Themes, UI & eye candy {{{
   use { 'https://github.com/andreypopp/vim-colors-plain', opt = true }
   use { 'https://github.com/liuchengxu/space-vim-theme', opt = true }
   use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
