@@ -59,4 +59,12 @@ function M.tnoremap(lhs, rhs, opts)
   map('t', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
 end
 
+function M.omap(lhs, rhs, opts)
+  map('o', lhs, rhs, opts or {})
+end
+
+function M.onoremap(lhs, rhs, opts)
+  map('o', lhs, rhs, vim.tbl_extend('force', opts or {}, { noremap = true }))
+end
+
 return M
