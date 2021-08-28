@@ -201,7 +201,7 @@ conf = '$EDITOR "$ZK_NOTEBOOK_DIR/.zk/config.toml"'
 
 lc = 'zk new --group work --extra lc=true --working-dir "$NOTES_DIR/miro" --title $@'
 sd = 'zk new --group work --extra sd=true --working-dir "$NOTES_DIR/miro" --title $@'
-oto = 'zk new --group work --working-dir "$NOTES_DIR/miro" --template 1-1.md --title $@'
+oto = 'zk new --group work --working-dir "$NOTES_DIR/miro" --template 1-1.md --extra with=$@ --title $@'
 work = 'zk new --group work --extra group=miro --working-dir "$NOTES_DIR/miro" --title $@'
 journal = 'zk new --group journal --working-dir "$NOTES_DIR/journal" $@'
 
