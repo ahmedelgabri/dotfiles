@@ -29,6 +29,7 @@ map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
 map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
+map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
 function fzf_statusline()
   vim.cmd [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]]
