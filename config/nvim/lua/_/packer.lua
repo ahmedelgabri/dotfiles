@@ -75,6 +75,7 @@ packer.startup(function(use)
   use { 'https://github.com/tomtom/tcomment_vim', keys = { 'gc' } }
   use { 'https://github.com/wincent/loupe' }
   use { 'https://github.com/mhinz/vim-sayonara', opt = true, cmd = 'Sayonara' }
+  use { 'https://github.com/tpope/vim-apathy' }
   use {
     'https://github.com/simrat39/symbols-outline.nvim',
     cmd = 'SymbolsOutline',
@@ -129,6 +130,14 @@ packer.startup(function(use)
         'https://github.com/nvim-treesitter/playground',
         cmd = 'TSPlaygroundToggle',
       },
+      {
+        'https://github.com/lewis6991/spellsitter.nvim',
+        config = function()
+          require('spellsitter').setup {
+            -- captures = { 'comment' }, -- set to {} to spellcheck everything
+          }
+        end,
+      },
     },
   }
   use {
@@ -160,6 +169,7 @@ packer.startup(function(use)
         org_default_notes_file = '~/Sync/refile.org',
       }
     end,
+    requires = { { 'https://github.com/akinsho/org-bullets.nvim' } },
   }
   use {
     'https://github.com/plasticboy/vim-markdown',
