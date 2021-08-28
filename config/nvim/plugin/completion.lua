@@ -1,7 +1,8 @@
+local utils = require '_.utils'
+
 local completion_loaded = pcall(function()
   local cmp = require 'cmp'
   local luasnip = require 'luasnip'
-  local utils = require '_.utils'
 
   cmp.setup {
     completion = {
@@ -59,7 +60,7 @@ local completion_loaded = pcall(function()
 end)
 
 if not completion_loaded then
-  print 'Completion failed to set up'
+  utils.notify 'Completion failed to set up'
 end
 
 pcall(function()

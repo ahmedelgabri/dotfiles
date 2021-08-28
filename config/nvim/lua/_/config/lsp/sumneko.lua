@@ -21,47 +21,28 @@ local sumneko_command = function()
   }
 end
 
-local function get_lua_runtime()
-  local result = {}
-  for _, path in pairs(vim.api.nvim_list_runtime_paths()) do
-    local lua_path = path .. '/lua/'
-    if vim.fn.isdirectory(lua_path) then
-      result[lua_path] = true
-    end
-  end
-
-  -- This loads the `lua` files from nvim into the runtime.
-  result[vim.fn.expand '$VIMRUNTIME/lua'] = true
-  result[vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true
-
-  return result
-end
-
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/init.lua')
-
-return {
-  cmd = sumneko_command(),
-  filetypes = { 'lua' },
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-        path = runtime_path,
+return require('lua-dev').setup {
+  lspconfig = {
+    cmd = sumneko_command(),
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = {
+            'vim',
+            'describe',
+            'it',
+            'before_each',
+            'after_each',
+            'pending',
+            'teardown',
+            'packer_plugins',
+            'spoon',
+            'hs',
+          },
+        },
+        completion = { keywordSnippet = 'Replace', callSnippet = 'Replace' },
+        telemetry = { enable = false },
       },
-      -- completion = {
-      --   keywordSnippet = "Disable"
-      -- },
-      diagnostics = {
-        enable = true,
-        -- Neovim & Hammerspoon
-        globals = { 'vim', 'spoon', 'hs' },
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file('', true),
-      },
-      telemetry = { enable = false },
     },
   },
 }

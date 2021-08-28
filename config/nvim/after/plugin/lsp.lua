@@ -3,46 +3,39 @@
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 -- :lua print(vim.lsp.get_log_path())
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
-
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
-
-if not has_lsp then
-  return
-end
-
-local has_lspsaga, lspsaga = pcall(require, 'lspsaga')
-local has_extensions = pcall(require, 'lsp_extensions')
-local configs = require 'lspconfig/configs'
 local utils = require '_.utils'
 local au = require '_.utils.au'
 local map = require '_.utils.map'
 local map_opts = { buffer = true, silent = true }
 
-lspsaga.init_lsp_saga()
+if not has_lsp then
+  utils.notify 'LSP config failed to setup'
+  return
+end
 
-au.augroup('__COMPLETION__', function()
-  if has_extensions then
-    au.autocmd(
-      'CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost',
-      '*',
-      "lua require'lsp_extensions'.inlay_hints()"
-    )
-  end
-end)
+local has_lspsaga = pcall(require, 'lspsaga')
+local configs = require 'lspconfig/configs'
 
-local signs = { 'Error', 'Warning', 'Hint', 'Information' }
-
-for _, type in pairs(signs) do
+local signs = vim.tbl_map(function(type)
   local hl = 'LspDiagnosticsSign' .. type
   local texthl = 'LspDiagnosticsDefault' .. type
 
-  vim.fn.sign_define(hl, {
+  return {
+    name = hl,
     text = utils.get_icon(string.lower(type)),
     texthl = texthl,
     linehl = '',
     numhl = '',
-  })
-end
+  }
+end, {
+  'Error',
+  'Warning',
+  'Hint',
+  'Information',
+})
+
+vim.fn.sign_define(signs)
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -111,7 +104,13 @@ local on_attach = function(client)
   -- GENERAL
   -- ---------------
   client.config.flags.allow_incremental_sync = true
-  require('lsp_signature').on_attach()
+  local lsd_signature_loaded = pcall(function()
+    require('lsp_signature').on_attach()
+  end)
+
+  if not lsd_signature_loaded then
+    utils.notify 'LSP Signature failed to set up'
+  end
 
   -- ---------------
   -- MAPPINGS
@@ -218,7 +217,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] =
 
 local tailwindlsp = 'tailwindlsp'
 
-configs[tailwindlsp] = require('_.config.lsp.tailwind').setup(
+configs[tailwindlsp] = require '_.config.lsp.tailwind'(
   { tailwindlsp },
   nvim_lsp
 )
@@ -353,7 +352,9 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   },
 }
 
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+if pcall(require, 'cmp_nvim_lsp') then
+  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+end
 
 for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false

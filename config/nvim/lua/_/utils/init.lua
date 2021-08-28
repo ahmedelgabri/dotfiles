@@ -8,8 +8,8 @@ function M.get_icon(icon_name)
       vim.env.PURE_GIT_BRANCH
     ) or ' ',
     error = '×',
-    info = '●',
-    warn = '!',
+    information = '●',
+    warning = '!',
     hint = '›',
     lock = '',
     success = ' ',
@@ -52,6 +52,10 @@ end
 
 function M.plugin_loaded(name)
   return M.plugin_installed(name) and packer_plugins[name].loaded
+end
+
+function M.notify(msg, level)
+  vim.notify(msg, level or vim.log.levels.INFO, { title = ':: Local ::' })
 end
 
 return M

@@ -1,52 +1,41 @@
-local has_formatter, formatter = pcall(require, 'formatter')
+return function()
+  local au = require '_.utils.au'
 
-if not has_formatter then
-  return
-end
+  local function prettier()
+    return {
+      exe = 'prettier',
+      args = {
+        '--config-precedence',
+        'prefer-file',
+        '--single-quote',
+        '--no-bracket-spacing',
+        '--prose-wrap',
+        'always',
+        '--arrow-parens',
+        'always',
+        '--trailing-comma',
+        'all',
+        '--no-semi',
+        '--end-of-line',
+        'lf',
+        '--print-width',
+        vim.bo.textwidth,
+        '--stdin-filepath',
+        vim.fn.shellescape(vim.api.nvim_buf_get_name(0)),
+      },
+      stdin = true,
+    }
+  end
 
-local au = require '_.utils.au'
+  local function shfmt()
+    return {
+      exe = 'shfmt',
+      args = { '-' },
+      stdin = true,
+    }
+  end
 
-local function prettier()
-  return {
-    exe = 'prettier',
-    args = {
-      '--config-precedence',
-      'prefer-file',
-      '--single-quote',
-      '--no-bracket-spacing',
-      '--prose-wrap',
-      'always',
-      '--arrow-parens',
-      'always',
-      '--trailing-comma',
-      'all',
-      '--no-semi',
-      '--end-of-line',
-      'lf',
-      '--print-width',
-      vim.bo.textwidth,
-      '--stdin-filepath',
-      vim.fn.shellescape(vim.api.nvim_buf_get_name(0)),
-    },
-    stdin = true,
-  }
-end
-
-local function shfmt()
-  return {
-    exe = 'shfmt',
-    args = { '-' },
-    stdin = true,
-  }
-end
-
-au.augroup('__formatter__', function()
-  au.autocmd('BufWritePre', '*', 'FormatWrite')
-end)
-
-formatter.setup {
-  logging = false,
-  filetype = {
+  local filetype = {
     javascript = { prettier },
     typescript = { prettier },
     javascriptreact = { prettier },
@@ -128,5 +117,10 @@ formatter.setup {
         }
       end,
     },
-  },
-}
+  }
+
+  require('formatter').setup {
+    logging = false,
+    filetype = filetype,
+  }
+end

@@ -1,6 +1,4 @@
-local M = {}
-
-function M.setup(cmd, lsp)
+return function(cmd, lsp)
   return {
     default_config = {
       cmd = cmd,
@@ -87,5 +85,3 @@ function M.setup(cmd, lsp)
     },
   }
 end
-
-return M
