@@ -66,9 +66,16 @@ packer.startup(function(use)
     opt = true,
     cmd = 'UndotreeToggle',
   }
-  use { 'https://github.com/mhinz/vim-startify' }
+  use {
+    'https://github.com/mhinz/vim-startify',
+    event = 'BufEnter',
+    config = [[require '_.config.startify']],
+  }
   use { 'https://github.com/nelstrom/vim-visual-star-search' }
-  use { 'https://github.com/tpope/tpope-vim-abolish' }
+  use {
+    'https://github.com/tpope/tpope-vim-abolish',
+    cmd = { 'Abolish', 'S', 'Subvert' },
+  }
   use { 'https://github.com/tpope/vim-eunuch' }
   use { 'https://github.com/tpope/vim-repeat' }
   use { 'https://github.com/machakann/vim-sandwich' }

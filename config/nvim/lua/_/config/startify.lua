@@ -1,7 +1,3 @@
-if vim.fn.exists ':Startify' == 0 then
-  return
-end
-
 local au = require '_.utils.au'
 
 vim.g.startify_padding_left = 5
@@ -155,6 +151,12 @@ vim.g.startify_custom_header_quotes = vim.tbl_extend(
 )
 
 vim.g.startify_bookmarks = { { t = '.git/todo.md' } }
+
+vim.g.startify_commands = {
+  { s = { 'Packer Sync', ':PackerSync' } },
+  { u = { 'Packer Update', ':PackerUpdate' } },
+  { c = { 'Packer Clean', ':PackerClean' } },
+}
 
 vim.g.startify_lists = {
   { header = { '   Sessions' }, type = 'sessions' },
