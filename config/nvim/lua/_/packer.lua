@@ -149,6 +149,7 @@ return packer.startup {
     }
     use {
       'https://github.com/hrsh7th/nvim-cmp',
+      config = require '_.config.completion',
       requires = {
         { 'https://github.com/hrsh7th/cmp-nvim-lsp' },
         { 'https://github.com/andersevenrud/compe-tmux', branch = 'cmp' },
