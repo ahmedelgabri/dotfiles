@@ -70,6 +70,16 @@ return packer.startup {
     }
     use { 'https://github.com/duggiefresh/vim-easydir' }
     use {
+      'https://github.com/ojroques/vim-oscyank',
+      event = { 'TextYankPost *' },
+      config = function()
+        vim.cmd [[augroup __oscyank__]]
+        vim.cmd [[autocmd!]]
+        vim.cmd [[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif]]
+        vim.cmd [[augroup END]]
+      end,
+    }
+    use {
       'https://github.com/junegunn/vim-peekaboo',
       event = 'BufReadPre',
       config = function()
@@ -101,11 +111,17 @@ return packer.startup {
     }
     use { 'https://github.com/wincent/loupe' }
     use {
-      'https://github.com/mhinz/vim-sayonara',
-      cmd = 'Sayonara',
+      'https://github.com/ojroques/nvim-bufdel',
+      cmd = 'BufDel',
       setup = function()
         local map = require '_.utils.map'
-        map.nnoremap('<M-d>', ':Sayonara!<CR>')
+        map.nnoremap('<M-d>', ':BufDel<CR>')
+      end,
+      config = function()
+        require('bufdel').setup {
+          next = 'cycle', -- or 'alternate'
+          quit = false,
+        }
       end,
     }
     use { 'https://github.com/tpope/vim-apathy' }
@@ -194,15 +210,16 @@ return packer.startup {
           cmd = 'TSPlaygroundToggle',
           after = 'nvim-treesitter',
         },
-        {
-          'https://github.com/lewis6991/spellsitter.nvim',
-          after = 'nvim-treesitter',
-          config = function()
-            require('spellsitter').setup {
-              -- captures = { 'comment' }, -- set to {} to spellcheck everything
-            }
-          end,
-        },
+        -- I like it but it slows down the editor
+        -- {
+        --   'https://github.com/lewis6991/spellsitter.nvim',
+        --   after = 'nvim-treesitter',
+        --   config = function()
+        --     require('spellsitter').setup {
+        --       -- captures = { 'comment' }, -- set to {} to spellcheck everything
+        --     }
+        --   end,
+        -- },
       },
     }
     use {
