@@ -43,7 +43,6 @@ packer.init {
 return packer.startup {
   function(use)
     use { 'https://github.com/wbthomason/packer.nvim' }
-    use { 'https://github.com/antoinemadec/FixCursorHold.nvim' }
     use { 'https://github.com/windwp/nvim-autopairs' }
     --use {
     --  'https://github.com/junegunn/fzf.vim',
