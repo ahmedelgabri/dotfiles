@@ -45,10 +45,24 @@ return packer.startup {
     use { 'https://github.com/wbthomason/packer.nvim' }
     use { 'https://github.com/antoinemadec/FixCursorHold.nvim' }
     use { 'https://github.com/windwp/nvim-autopairs' }
+    --use {
+    --  'https://github.com/junegunn/fzf.vim',
+    --  -- I have the bin globally, so don't build, and just grab plugin directory
+    --  requires = { { 'https://github.com/junegunn/fzf' } },
+    --}
     use {
-      'https://github.com/junegunn/fzf.vim',
-      -- I have the bin globally, so don't build, and just grab plugin directory
-      requires = { { 'https://github.com/junegunn/fzf' } },
+      'https://github.com/nvim-telescope/telescope.nvim',
+      event = 'CursorHold',
+      requires = {
+        { 'https://github.com/nvim-lua/plenary.nvim' },
+        {
+          'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
+          run = 'make',
+        },
+      },
+      config = function()
+        require('_.config.telescope').setup()
+      end,
     }
     use {
       'https://github.com/kyazdani42/nvim-tree.lua',
