@@ -224,7 +224,7 @@ configs[tailwindlsp] = require '_.config.lsp.tailwind'(
 
 configs.zk = {
   default_config = {
-    cmd = { 'zk', 'lsp' },
+    cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
     filetypes = { 'markdown' },
     root_dir = function()
       return vim.loop.cwd()

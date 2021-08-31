@@ -119,7 +119,6 @@ return packer.startup {
       end,
       config = function()
         require('bufdel').setup {
-          next = 'cycle', -- or 'alternate'
           quit = false,
         }
       end,
