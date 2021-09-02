@@ -1,6 +1,11 @@
 return function()
   local utils = require '_.utils'
 
+  local check_back_space = function()
+    local col = vim.fn.col '.' - 1
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
+  end
+
   local completion_loaded = pcall(function()
     local cmp = require 'cmp'
     local has_luasnip, luasnip = pcall(require, 'luasnip')
@@ -38,16 +43,21 @@ return function()
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         },
-        ['<Tab>'] = function(fallback)
+        ['<Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
             vim.fn.feedkeys(utils.t '<C-n>', 'n')
           elseif has_luasnip and luasnip.expand_or_jumpable() then
             vim.fn.feedkeys(utils.t '<Plug>luasnip-expand-or-jump', '')
+          elseif check_back_space() then
+            vim.fn.feedkeys(utils.t '<Tab>', 'n')
           else
             fallback()
           end
-        end,
-        ['<S-Tab>'] = function(fallback)
+        end, {
+          'i',
+          's',
+        }),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
             vim.fn.feedkeys(utils.t '<C-p>', 'n')
           elseif has_luasnip and luasnip.jumpable(-1) then
@@ -55,7 +65,10 @@ return function()
           else
             fallback()
           end
-        end,
+        end, {
+          'i',
+          's',
+        }),
       },
     }
   end)
