@@ -8,7 +8,7 @@ return function()
 
   local completion_loaded = pcall(function()
     local cmp = require 'cmp'
-    local has_luasnip, luasnip = pcall(require, 'luasnip')
+    local luasnip = require 'luasnip'
 
     cmp.setup {
       completion = {
@@ -23,13 +23,13 @@ return function()
         { name = 'conjure' },
         { name = 'emoji' },
         { name = 'spell' },
-        -- { name = 'orgmode' },
-        -- { name = 'tags' },
+        { name = 'orgmode' },
+        { name = 'tags' },
       },
       snippet = {
-        expand = has_luasnip and function(args)
+        expand = function(args)
           luasnip.lsp_expand(args.body)
-        end or nil,
+        end,
       },
       mapping = {
         ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -46,7 +46,7 @@ return function()
         ['<Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
             vim.fn.feedkeys(utils.t '<C-n>', 'n')
-          elseif has_luasnip and luasnip.expand_or_jumpable() then
+          elseif luasnip.expand_or_jumpable() then
             vim.fn.feedkeys(utils.t '<Plug>luasnip-expand-or-jump', '')
           elseif check_back_space() then
             vim.fn.feedkeys(utils.t '<Tab>', 'n')
@@ -60,7 +60,7 @@ return function()
         ['<S-Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
             vim.fn.feedkeys(utils.t '<C-p>', 'n')
-          elseif has_luasnip and luasnip.jumpable(-1) then
+          elseif luasnip.jumpable(-1) then
             vim.fn.feedkeys(utils.t '<Plug>luasnip-jump-prev', '')
           else
             fallback()
