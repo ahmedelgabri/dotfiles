@@ -267,7 +267,7 @@ return packer.startup {
       },
     }
     use { 'https://github.com/jez/vim-github-hub' }
-    use { 'https://github.com/lumiliet/vim-twig' }
+    use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
     -- Clojure
     use { 'https://github.com/guns/vim-sexp', ft = lisps }
     use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
@@ -317,11 +317,9 @@ return packer.startup {
 
     -- Themes, UI & eye candy {{{
     use { 'https://github.com/andreypopp/vim-colors-plain', opt = true }
-    use { 'https://github.com/liuchengxu/space-vim-theme', opt = true }
     use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
     use { 'https://github.com/logico-dev/typewriter', opt = true }
     use { 'https://github.com/arzg/vim-substrata', opt = true }
-    use { 'https://github.com/haishanh/night-owl.vim', opt = true }
     use { 'https://github.com/lifepillar/vim-gruvbox8', opt = true }
     use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
     use { 'https://github.com/axvr/photon.vim', opt = true }
