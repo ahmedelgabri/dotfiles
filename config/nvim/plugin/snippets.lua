@@ -103,12 +103,6 @@ ls.snippets = {
     }),
   },
   javascript = {
-    -- TODO: make these smart about whether to use trailing semi or
-    -- not, based on directory (or maybe .editorconfig)
-    s(
-      { trig = 'log', dscr = 'console.log' },
-      { t 'console.log(', i(1, 'value'), t ');' }
-    ),
     s({ trig = 'require', dscr = 'require statement' }, {
       t 'const ',
       i(1, 'ModuleName'),
@@ -120,13 +114,46 @@ ls.snippets = {
       }),
       t "');",
     }),
+    s({ trig = '**', dscr = 'docblock' }, {
+      t { '/**', '' },
+      f(function(args)
+        local lines = vim.tbl_map(function(line)
+          print(vim.inspect(line))
+          return ' * ' .. vim.trim(line)
+        end, args[1].env.TM_SELECTED_TEXT)
+        if #lines == 0 then
+          return ' * '
+        else
+          return lines
+        end
+      end, {}),
+      i(1),
+      t { '', ' */' },
+    }),
+  },
+  markdown = {
+    s(
+      { trig = 'frontmatter', dscr = 'Document frontmatter' },
+      { t { '---', 'tags: ' }, i(1, 'value'), t { '', '---', '' } }
+    ),
+    s({ trig = 'table', dscr = 'Table template' }, {
+      t '| ',
+      i(1, 'First Header'),
+      t {
+        '  | Second Header |',
+        '| ------------- | ------------- |',
+        '| Content Cell  | Content Cell  |',
+        '| Content Cell  | Content Cell  |',
+      },
+    }),
   },
 }
 
 ls.config.set_config {
   updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
 }
-require('luasnip/loaders/from_vscode').lazy_load {
+
+require('luasnip.loaders.from_vscode').lazy_load {
   path = {
     '~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
     './vsnip',
