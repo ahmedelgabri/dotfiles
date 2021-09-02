@@ -1,4 +1,3 @@
--- TODO: Move this to external file
 -- let g:vsnip_filetypes['typescript.tsx'] = ['javascript']
 -- let g:vsnip_filetypes['jinja'] = ['html', 'htmldjango']
 -- let g:vsnip_filetypes['jinja2'] = ['html', 'htmldjango']

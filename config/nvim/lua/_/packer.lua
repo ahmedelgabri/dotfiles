@@ -266,6 +266,7 @@ return packer.startup {
       },
     }
     use { 'https://github.com/jez/vim-github-hub' }
+    use { 'https://github.com/lumiliet/vim-twig' }
     -- Clojure
     use { 'https://github.com/guns/vim-sexp', ft = lisps }
     use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
