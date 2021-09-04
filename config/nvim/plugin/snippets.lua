@@ -45,8 +45,7 @@ ls.snippets = {
       t { '*' },
       i(0),
     }),
-    s(
-      { trig = 'bang', dscr = 'Shebang!' },
+    s('bang', {
       t '#!/usr/bin/env ',
       c(1, {
         t 'sh',
@@ -55,8 +54,9 @@ ls.snippets = {
         t 'python',
         t 'node',
       }),
-      i(0)
-    ),
+    }, i(
+      0
+    )),
     ls.parser.parse_snippet(
       { trig = 'todo' },
       string.format(
@@ -76,25 +76,25 @@ ls.snippets = {
     ),
     s({ trig = 'fn' }, {
       c(1, {
-        t { 'public ' },
-        t { 'private ' },
+        t 'public ',
+        t 'private ',
       }),
       c(2, {
-        t { 'void' },
+        t 'void',
         i(nil, { '' }),
-        t { 'String' },
-        t { 'char' },
-        t { 'int' },
-        t { 'double' },
-        t { 'boolean' },
+        t 'String',
+        t 'char',
+        t 'int',
+        t 'double',
+        t 'boolean',
       }),
-      t { ' ' },
+      t ' ',
       i(3, { 'myFunc' }),
-      t { '(' },
+      t '(',
       i(4),
-      t { ')' },
+      t ')',
       c(5, {
-        t { '' },
+        t '',
         sn(nil, {
           t { '', ' throws ' },
           i(1),
@@ -184,6 +184,25 @@ ls.snippets = {
         '| Content Cell  | Content Cell  |',
         '| Content Cell  | Content Cell  |',
       },
+    }),
+  },
+  html = {
+    s('script', {
+      t '<script',
+      c(1, {
+        sn(nil, {
+          t ' src="',
+          i(1, 'path/to/file.js'),
+          t '">',
+        }),
+        sn(nil, {
+          t { '>', '\t' },
+          i(1, '// code'),
+          t { '', '' },
+        }),
+      }),
+      i(0),
+      t '</script>',
     }),
   },
 }

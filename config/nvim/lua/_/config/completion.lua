@@ -38,7 +38,19 @@ return function()
         -- @TODO: fix conflict with lspsaga
         -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.close(),
+        -- ['<C-e>'] = cmp.mapping.close(),
+        ['<C-e>'] = cmp.mapping(function(fallback)
+          if cmp.abort() then
+            return
+          elseif luasnip.choice_active() then
+            vim.fn.feedkeys(utils.t '<Plug>luasnip-next-choice', '')
+          else
+            fallback()
+          end
+        end, {
+          'i',
+          's',
+        }),
         ['<CR>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
