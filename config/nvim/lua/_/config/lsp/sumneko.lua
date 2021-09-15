@@ -40,6 +40,11 @@ return require('lua-dev').setup {
             'hs',
           },
         },
+        workspace = {
+          library = {
+            ['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
+          },
+        },
         completion = { keywordSnippet = 'Replace', callSnippet = 'Replace' },
         telemetry = { enable = false },
       },
