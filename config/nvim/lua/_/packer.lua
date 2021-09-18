@@ -259,9 +259,10 @@ return packer.startup {
     }
     use {
       'https://github.com/vuki656/package-info.nvim',
+      requires = { 'https://github.com/MunifTanjim/nui.nvim' },
       ft = { 'json' },
       config = function()
-        require('package-info').setup {}
+        require('package-info').setup { force = true }
       end,
     }
     -- Syntax {{{
