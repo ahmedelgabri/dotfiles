@@ -10,6 +10,10 @@ local au = require '_.utils.au'
 map.nnoremap('n', [[(v:searchforward ? 'n' : 'N') . 'zzzv']], { expr = true })
 map.nnoremap('N', [[(v:searchforward ? 'N' : 'n') . 'zzzv']], { expr = true })
 
+-- Center { & } movements
+map.nnoremap('{', '{zz')
+map.nnoremap('}', '}zz')
+
 -- Movement
 -------------------
 -- highlight last inserted text
@@ -17,10 +21,26 @@ map.nnoremap('gV', [[`[v`]']])
 
 -- Move by 'display lines' rather than 'logical lines' if no v:count was
 -- provided.  When a v:count is provided, move by logical lines.
-map.nnoremap('j', [[(v:count == 0 ? 'gj' : 'j')]], { expr = true })
-map.xnoremap('j', [[(v:count == 0 ? 'gj' : 'j')]], { expr = true })
-map.nnoremap('k', [[(v:count == 0 ? 'gk' : 'k')]], { expr = true })
-map.xnoremap('k', [[(v:count == 0 ? 'gk' : 'k')]], { expr = true })
+map.nnoremap(
+  'j',
+  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
+  { expr = true }
+)
+map.xnoremap(
+  'j',
+  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
+  { expr = true }
+)
+map.nnoremap(
+  'k',
+  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
+  { expr = true }
+)
+map.xnoremap(
+  'k',
+  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
+  { expr = true }
+)
 
 -- Make `Y` behave like `C` and `D` (to the end of line)
 map.nnoremap('Y', 'y$')
@@ -129,3 +149,16 @@ map.nnoremap(
 
 -- Quick note taking per project
 map.nmap('<Localleader>t', ':tab drop .git/todo.md<CR>')
+
+-- More easier increment/decrement mappings
+map.nnoremap('+', '<C-a>')
+map.nnoremap('-', '<C-x>')
+map.xnoremap('+', 'g<C-a>')
+map.xnoremap('-', 'g<C-x>')
+
+-- Execute "q" macro over visual line selections
+map.xnoremap('Q', [[:'<,'>:normal @q<CR>]])
+
+-- Redirect change operations to the blackhole
+map.nnoremap('c', '"_c')
+map.nnoremap('C', '"_C')
