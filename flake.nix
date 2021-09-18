@@ -116,6 +116,7 @@
 
       darwinConfigurations = {
         "pandoras-box" = inputs.darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
           inputs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
@@ -126,6 +127,7 @@
         };
 
         "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
           inputs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
