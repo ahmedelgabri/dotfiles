@@ -6,6 +6,22 @@ return function()
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
   end
 
+  local has_words_before = function()
+    if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
+      return false
+    end
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0
+      and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+          :sub(col, col)
+          :match '%s'
+        == nil
+  end
+
+  local feedkey = function(key)
+    vim.api.nvim_feedkeys(utils.t(key), 'n', true)
+  end
+
   local completion_loaded = pcall(function()
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
@@ -13,9 +29,25 @@ return function()
     cmp.setup {
       completion = {
         completeopt = 'menu,menuone,noinsert',
+        get_trigger_characters = function(trigger_characters)
+          return vim.tbl_filter(function(char)
+            return char ~= ' '
+          end, trigger_characters)
+        end,
       },
       sources = {
-        { name = 'buffer' },
+        {
+          name = 'buffer',
+          opts = {
+            get_bufnrs = function()
+              local bufs = {}
+              for _, win in ipairs(vim.api.nvim_list_wins()) do
+                bufs[vim.api.nvim_win_get_buf(win)] = true
+              end
+              return vim.tbl_keys(bufs)
+            end,
+          },
+        },
         { name = 'nvim_lsp' },
         { name = 'tmux' },
         { name = 'luasnip' },
@@ -43,7 +75,7 @@ return function()
           if cmp.abort() then
             return
           elseif luasnip.choice_active() then
-            vim.fn.feedkeys(utils.t '<Plug>luasnip-next-choice', '')
+            luasnip.jump(1)
           else
             fallback()
           end
@@ -57,11 +89,11 @@ return function()
         },
         ['<Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
-            vim.fn.feedkeys(utils.t '<C-n>', 'n')
+            feedkey '<C-n>'
           elseif luasnip.expand_or_jumpable() then
-            vim.fn.feedkeys(utils.t '<Plug>luasnip-expand-or-jump', '')
-          elseif check_back_space() then
-            vim.fn.feedkeys(utils.t '<Tab>', 'n')
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
           else
             fallback()
           end
@@ -71,9 +103,9 @@ return function()
         }),
         ['<S-Tab>'] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
-            vim.fn.feedkeys(utils.t '<C-p>', 'n')
+            feedkey '<C-p>'
           elseif luasnip.jumpable(-1) then
-            vim.fn.feedkeys(utils.t '<Plug>luasnip-jump-prev', '')
+            luasnip.jump(-1)
           else
             fallback()
           end
