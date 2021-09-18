@@ -155,11 +155,12 @@ vim.opt.clipboard = 'unnamed'
 -- show trailing whitespace
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = '………',
+  tab = '⋅ ',
+  -- tab = '| ',
   nbsp = '░',
   extends = '»',
   precedes = '«',
-  trail = '·',
+  trail = '␣',
 }
 vim.opt.joinspaces = false
 vim.opt.concealcursor = 'n'
