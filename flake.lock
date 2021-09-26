@@ -101,11 +101,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1631531304,
-        "narHash": "sha256-hlJ0FYaxUGpFqAuhB+Fde7ydxJQXV3NIwKQ8rW85gc8=",
+        "lastModified": 1632521018,
+        "narHash": "sha256-worJcyb+s+bUFCpMQx12W8ZLUlVqArWaN9ijxFzOiV8=",
         "owner": "nix-community",
         "repo": "rnix-lsp",
-        "rev": "ab9c26a903846fc6712b811bdb32a2539ed3a42d",
+        "rev": "f383249f3c6ea24164be5cddbe269626cd3d981e",
         "type": "github"
       },
       "original": {
@@ -177,11 +177,11 @@
     "zk": {
       "flake": false,
       "locked": {
-        "lastModified": 1629309103,
-        "narHash": "sha256-8FsDhUAuaeMxPQalbY87yVF6CbvBggyPZciJhc/qPsI=",
+        "lastModified": 1631565718,
+        "narHash": "sha256-GPglwu+k7QyvKT6kh5y4gIYsSkBYR6KpL+dPOIyuETk=",
         "owner": "mickael-menu",
         "repo": "zk",
-        "rev": "5abbab4c73319f12689a6ac9f78f237dcb450fe6",
+        "rev": "aed57452f7e6f922b990cbe71eec857eba0f6021",
         "type": "github"
       },
       "original": {
