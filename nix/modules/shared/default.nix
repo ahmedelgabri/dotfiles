@@ -60,7 +60,7 @@
     node.enable = true;
     deno.enable = true;
     go.enable = true;
-    rust.enable = false;
+    rust.enable = true;
     zk.enable = true;
   };
 

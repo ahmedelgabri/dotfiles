@@ -55,6 +55,11 @@
       flake = false;
     };
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -96,7 +101,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay ];
+          overlays = [ self.overlay inputs.rust-overlay.overlay ];
         };
 
         time.timeZone = config.my.timezone;

@@ -22,7 +22,11 @@ in
       };
 
       my.user = {
-        packages = with pkgs; [ rustup rust-analyzer-unwrapped rustc cargo ];
+        packages = with pkgs; [
+          rust-bin.stable.latest.default
+          rust-analyzer-unwrapped
+          # rustup rustc cargo
+        ];
       };
     };
 }
