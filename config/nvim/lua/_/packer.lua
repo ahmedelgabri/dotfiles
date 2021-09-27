@@ -100,6 +100,7 @@ return packer.startup {
     }
     use {
       'https://github.com/kyazdani42/nvim-tree.lua',
+      keys = { '--' },
       cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
       config = require '_.config.nvim-tree',
     }
