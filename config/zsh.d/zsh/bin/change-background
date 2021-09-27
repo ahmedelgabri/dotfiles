@@ -22,10 +22,10 @@ change_background() {
 	# Change kitty & neovim
 	if [ "$mode" == "dark" ]; then
 		nvr --nostart --remote-send ':set background=dark<cr>'
-		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/colors/color.conf
+		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/themes/color.conf
 	elif [ "$mode" == "light" ]; then
 		nvr --nostart --remote-send ':set background=light<cr>'
-		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/colors/atom-one-light.conf
+		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/themes/atom-one-light.conf
 	fi
 }
 
