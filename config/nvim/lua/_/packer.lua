@@ -247,16 +247,6 @@ return packer.startup {
           cmd = 'TSPlaygroundToggle',
           after = 'nvim-treesitter',
         },
-        -- I like it but it slows down the editor
-        -- {
-        --   'https://github.com/lewis6991/spellsitter.nvim',
-        --   after = 'nvim-treesitter',
-        --   config = function()
-        --     require('spellsitter').setup {
-        --       -- captures = { 'comment' }, -- set to {} to spellcheck everything
-        --     }
-        --   end,
-        -- },
       },
     }
     use {
@@ -307,8 +297,8 @@ return packer.startup {
     use { 'https://github.com/jez/vim-github-hub' }
     use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
     -- Clojure
-    use { 'https://github.com/guns/vim-sexp', ft = lisps }
-    use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
+    -- use { 'https://github.com/guns/vim-sexp', ft = lisps }
+    -- use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
     -- }}}
 
     -- Git {{{
@@ -358,7 +348,6 @@ return packer.startup {
     use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
     use { 'https://github.com/logico-dev/typewriter', opt = true }
     use { 'https://github.com/arzg/vim-substrata', opt = true }
-    use { 'https://github.com/lifepillar/vim-gruvbox8', opt = true }
     use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
     use { 'https://github.com/axvr/photon.vim', opt = true }
     use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
