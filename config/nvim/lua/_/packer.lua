@@ -224,10 +224,11 @@ return packer.startup {
     }
     use {
       'https://github.com/kristijanhusak/orgmode.nvim',
+      ft = { 'org' },
       config = function()
         require('orgmode').setup {
-          org_agenda_files = { '~/Sync/org/*' },
-          org_default_notes_file = '~/Sync/refile.org',
+          org_agenda_files = { '~/Sync/notes/org/*' },
+          org_default_notes_file = '~/Sync/notes/org/refile.org',
         }
       end,
       requires = { { 'https://github.com/akinsho/org-bullets.nvim' } },
