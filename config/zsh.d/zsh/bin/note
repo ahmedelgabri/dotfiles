@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-command -v zk >/dev/null || {
-	echo "zk https://github.com/mickael-menu/zk is not installed"
-	return 1
-}
-
-zk edit --interactive "$@"

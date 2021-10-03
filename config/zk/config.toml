@@ -12,7 +12,7 @@
 language = "en"
 
 # The default title used for new note, if no `--title` flag is provided.
-default-title = "Untitled"
+default-title = "Scratch"
 
 # Template used to generate a note's filename, without extension.
 filename = "{{date now 'timestamp'}} {{title}}"
@@ -32,10 +32,11 @@ ignore = [
   "neuron.dhall",
   ".neuronignore",
   ".obsidian",
-  "_templates",
   ".obsidian.vimrc",
   ".syncinfo",
-  "static"
+  "static",
+  ".mods",
+  ".zk"
 ]
 
 # Configure random ID generation.
@@ -46,7 +47,7 @@ ignore = [
 #   * alphanum: letters + numbers
 #   * hex: hexadecimal, from a to f and 0 to 9
 #   * custom string: will use any character from the provided value
-id-charset = "numbers"
+id-charset = "alphanum"
 
 # Length of the generated IDs.
 id-length = 12
@@ -60,8 +61,7 @@ id-length = 12
 # A dictionary of variables you can use for any custom values when generating
 # new notes. They are accessible in templates with {{extra.<key>}}
 [extra]
-
-#key = "value"
+author = "Ahmed El Gabri"
 
 
 # GROUP OVERRIDES
@@ -77,16 +77,23 @@ id-length = 12
 # directory it applies to.
 
 [group.work]
-paths = ["$NOTES_DIR/work"]
+
 [group.work.note]
 template = "work.md"
+
 [group.work.extra]
 employer = "miro"
 
 [group.journal]
-paths = ["$NOTES_DIR/journal"]
+
 [group.journal.note]
-filename = "{{date now}}"
+filename = "{{date now '%Y-%m-%d'}}"
+template = "journal.md"
+
+[group.todo]
+
+[group.todo.note]
+filename = "{{date now '%Y-%m-%d'}}"
 template = "journal.md"
 
 # MARKDOWN SETTINGS
@@ -94,14 +101,13 @@ template = "journal.md"
 
 # Format used to generate links between notes.
 # Either "wiki", "markdown" or a custom template. Default is "markdown".
-#link-format = "wiki"
+link-format = "markdown"
 # Indicates whether a link's path will be percent-encoded.
 # Defaults to true for "markdown" format and false for "wiki" format.
-#link-encode-path = true
+link-encode-path = true
 # Indicates whether a link's path file extension will be removed.
 # Defaults to true.
-#link-drop-extension = true
-
+link-drop-extension = false
 # Enable support for #hashtags.
 hashtags = true
 # Enable support for :colon:separated:tags:.
@@ -128,6 +134,8 @@ multiword-tags = false
 # bat is a great tool to render Markdown document with syntax highlighting.
 #https://github.com/sharkdp/bat
 fzf-preview = "bat -p --color always {-1}"
+# fzf-preview = "zk list --quiet --format full --limit 1 {-1}"
+# fzf-line = "{{style 'blue' rel-path}}{{#each tags}} #{{this}}{{/each}} {{style 'black' body}}"
 
 
 # LSP
@@ -141,7 +149,7 @@ fzf-preview = "bat -p --color always {-1}"
 # Each diagnostic can have for value: none, hint, info, warning, error
 
 # Report titles of wiki-links as hints.
-#wiki-title = "hint"
+wiki-title = "hint"
 # Warn for dead links between notes.
 dead-link = "error"
 
@@ -156,6 +164,7 @@ dead-link = "error"
 #    $ zk list recents --limit 15
 #    $ zk edit recents --interactive
 recents = "--sort created- --created-after 'last two weeks'"
+work = '--group work'
 
 
 # COMMAND ALIASES
@@ -170,14 +179,19 @@ recents = "--sort created- --created-after 'last two weeks'"
 [alias]
 # Here are a few aliases to get you started.
 
-# Shortcut to a command.
-#ls = "zk list $@"
+# override defaults
+e = "zk edit --interactive $@"
 
-# Default flags for an existing command.
-#list = "zk list --quiet $@"
+# Shortcut to a command.
+ls = "zk list --interactive $@"
+
+# backlinks
+bl = "zk list --link-to $@"
 
 # Edit the last modified note.
 editlast = "zk edit --limit 1 --sort modified- $@"
+
+wc = "zk list --format '{{#style \"green\"}}{{word-count}}{{/style}}\t{{#style \"blue\"}}{{title}}{{/style}}' --sort word-count-"
 
 # Edit the notes selected interactively among the notes created the last two weeks.
 # This alias doesn't take any argument, so we don't use $@.
@@ -187,26 +201,27 @@ recent = "zk edit --sort created- --created-after 'last two weeks' --interactive
 # arguments. This can be useful to expand a complex search query into a flag
 # taking only paths. For example:
 #   zk list --link-to "`zk path -m potatoe`"
-#path = "zk list --quiet --format {{path}} --delimiter , $@"
+path = "zk list --quiet --format {{path}} --delimiter , $@"
 
 # Show a random note.
-#lucky = "zk list --quiet --format full --sort random --limit 1"
+lucky = "zk list --quiet --format full --sort random --limit 1"
 
 # Returns the Git history for the notes found with the given arguments.
 # Note the use of a pipe and the location of $@.
-# hist = "zk list --format path --delimiter0 --quiet $@ | xargs -t -0 git log --patch --"
+hist = "zk list --format path --delimiter0 --quiet $@ | xargs -t -0 git log --patch --"
 
 # Edit this configuration file.
 conf = '$EDITOR "$ZK_NOTEBOOK_DIR/.zk/config.toml"'
 
 # Work related
-lc = 'zk new --group work --extra lc=true --working-dir "$NOTES_DIR/work" --title $@'
-sd = 'zk new --group work --extra sd=true --working-dir "$NOTES_DIR/work" --title $@'
-interview = 'zk new --group work --extra interview=true --working-dir "$NOTES_DIR/work" --title $@'
-oto = 'zk new --group work --working-dir "$NOTES_DIR/work" --template 1-1.md --extra with=$@ --title $@'
-work = 'zk new --group work --extra group=miro --working-dir "$NOTES_DIR/work" --title $@'
-erd = 'zk new --group work --working-dir "$NOTES_DIR/work" --template erd.md --title $@'
+lc = 'zk new work --extra lc=true --title "$*"'
+sd = 'zk new work --extra sd=true --title "$*"'
+interview = 'zk new work --extra interview=true --title "$*"'
+oto = 'zk new work --template 1-1.md --extra with="$*" --title "$*"'
+w = 'zk new work --title "$*"'
+rfc = 'zk new work --template rfc.md --title "$*"'
 
 # Personal
-journal = 'zk new --group journal --working-dir "$NOTES_DIR/journal" $@'
+j = 'zk new --no-input --group journal'
+t = 'zk new --no-input --group todo'
 

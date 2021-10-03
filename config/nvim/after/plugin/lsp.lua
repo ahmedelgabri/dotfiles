@@ -215,17 +215,6 @@ configs[tailwindlsp] = require '_.config.lsp.tailwind'(
   nvim_lsp
 )
 
-configs.zk = {
-  default_config = {
-    cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
-    filetypes = { 'markdown' },
-    root_dir = function()
-      return vim.loop.cwd()
-    end,
-    settings = {},
-  },
-}
-
 local servers = {
   cssls = {},
   bashls = {},
@@ -233,7 +222,12 @@ local servers = {
   pyright = {},
   dockerls = {},
   [tailwindlsp] = {},
-  zk = {},
+  zk = {
+    cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
+    root_dir = function()
+      return vim.loop.cwd()
+    end,
+  },
   efm = require '_.config.lsp.efm',
   sumneko_lua = require '_.config.lsp.sumneko',
   rust_analyzer = {},
