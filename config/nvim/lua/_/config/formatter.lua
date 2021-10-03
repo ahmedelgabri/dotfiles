@@ -1,6 +1,4 @@
 return function()
-  local au = require '_.utils.au'
-
   local function prettier()
     return {
       exe = 'prettier',

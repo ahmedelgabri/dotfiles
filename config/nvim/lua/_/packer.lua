@@ -275,9 +275,7 @@ return packer.startup {
       cmd = { 'DiffviewOpen' },
       config = function()
         require('diffview').setup {
-          file_panel = {
-            use_icons = false,
-          },
+          use_icons = false,
         }
       end,
     }
