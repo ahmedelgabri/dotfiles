@@ -17,25 +17,18 @@ end
 local has_lspsaga = pcall(require, 'lspsaga')
 local configs = require 'lspconfig/configs'
 
-local signs = vim.tbl_map(function(type)
-  local hl = 'LspDiagnosticsSign' .. type
-  local texthl = 'LspDiagnosticsDefault' .. type
+local signs = { 'Error', 'Warning', 'Hint', 'Information' }
 
-  return {
-    name = hl,
+for _, type in pairs(signs) do
+  -- vim.fn.sign_define('DiagnosticSign' .. type, {
+  vim.fn.sign_define('LspDiagnosticsSign' .. type, {
     text = utils.get_icon(string.lower(type)),
-    texthl = texthl,
+    -- texthl = 'DiagnosticDefault' .. type,
+    texthl = 'LspDiagnosticsDefault' .. type,
     linehl = '',
     numhl = '',
-  }
-end, {
-  'Error',
-  'Warning',
-  'Hint',
-  'Information',
-})
-
-vim.fn.sign_define(signs)
+  })
+end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -343,17 +336,18 @@ local servers = {
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
 
 if pcall(require, 'cmp_nvim_lsp') then
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+else
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    },
+  }
 end
 
 for server, config in pairs(servers) do
