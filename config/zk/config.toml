@@ -77,11 +77,11 @@ id-length = 12
 # directory it applies to.
 
 [group.work]
-paths = ["$NOTES_DIR/miro"]
+paths = ["$NOTES_DIR/work"]
 [group.work.note]
 template = "work.md"
 [group.work.extra]
-group = "miro"
+employer = "miro"
 
 [group.journal]
 paths = ["$NOTES_DIR/journal"]
@@ -199,9 +199,14 @@ recent = "zk edit --sort created- --created-after 'last two weeks' --interactive
 # Edit this configuration file.
 conf = '$EDITOR "$ZK_NOTEBOOK_DIR/.zk/config.toml"'
 
-lc = 'zk new --group work --extra lc=true --working-dir "$NOTES_DIR/miro" --title $@'
-sd = 'zk new --group work --extra sd=true --working-dir "$NOTES_DIR/miro" --title $@'
-oto = 'zk new --group work --working-dir "$NOTES_DIR/miro" --template 1-1.md --extra with=$@ --title $@'
-work = 'zk new --group work --extra group=miro --working-dir "$NOTES_DIR/miro" --title $@'
+# Work related
+lc = 'zk new --group work --extra lc=true --working-dir "$NOTES_DIR/work" --title $@'
+sd = 'zk new --group work --extra sd=true --working-dir "$NOTES_DIR/work" --title $@'
+interview = 'zk new --group work --extra interview=true --working-dir "$NOTES_DIR/work" --title $@'
+oto = 'zk new --group work --working-dir "$NOTES_DIR/work" --template 1-1.md --extra with=$@ --title $@'
+work = 'zk new --group work --extra group=miro --working-dir "$NOTES_DIR/work" --title $@'
+erd = 'zk new --group work --working-dir "$NOTES_DIR/work" --template erd.md --title $@'
+
+# Personal
 journal = 'zk new --group journal --working-dir "$NOTES_DIR/journal" $@'
 
