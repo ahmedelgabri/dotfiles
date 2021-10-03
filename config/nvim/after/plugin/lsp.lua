@@ -208,25 +208,35 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] =
     vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
   end
 
-local tailwindlsp = 'tailwindlsp'
-
-configs[tailwindlsp] = require '_.config.lsp.tailwind'(
-  { tailwindlsp },
-  nvim_lsp
-)
-
 local servers = {
   cssls = {},
   bashls = {},
   vimls = {},
   pyright = {},
   dockerls = {},
-  [tailwindlsp] = {},
+  tailwindcss = {
+    init_options = {
+      userLanguages = {
+        eruby = 'erb',
+        eelixir = 'html-eex',
+        ['javascript.jsx'] = 'javascriptreact',
+        ['typescript.tsx'] = 'typescriptreact',
+      },
+    },
+    handlers = {
+      ['tailwindcss/getConfiguration'] = function(_, _, params, _, bufnr, _)
+        -- tailwindcss lang server waits for this repsonse before providing hover
+        vim.lsp.buf_notify(
+          bufnr,
+          'tailwindcss/getConfigurationResponse',
+          { _id = params._id }
+        )
+      end,
+    },
+  },
   zk = {
     cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
-    root_dir = function()
-      return vim.loop.cwd()
-    end,
+    root_dir = nvim_lsp.util.path.dirname,
   },
   efm = require '_.config.lsp.efm',
   sumneko_lua = require '_.config.lsp.sumneko',
@@ -235,7 +245,7 @@ local servers = {
     cmd = { 'gopls', 'serve' },
     root_dir = function(fname)
       return nvim_lsp.util.root_pattern('go.mod', '.git')(fname)
-        or vim.loop.cwd()
+        or nvim_lsp.util.path.dirname(fname)
     end,
   },
   tsserver = {
@@ -246,7 +256,7 @@ local servers = {
           'jsconfig.json',
           '.git'
         )(fname)
-        or vim.loop.cwd()
+        or nvim_lsp.util.path.dirname(fname)
     end,
   },
   denols = {

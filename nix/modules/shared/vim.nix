@@ -6,7 +6,6 @@ let
 
   cfg = config.my.modules.vim;
   home = config.my.user.home;
-  tailwind-lsp = pkgs.callPackage ../../pkgs/tailwind.nix { };
 in
 {
   options = with lib; {
@@ -60,11 +59,6 @@ in
           nodePackages.vim-language-server
           nodePackages.pyright
           nodePackages.yaml-language-server
-          tailwind-lsp
-          (writeScriptBin "tailwindlsp" ''
-            #!/usr/bin/env sh
-            node ${tailwind-lsp}/share/vscode/extensions/bradlc.vscode-tailwindcss/dist/server/index.js --stdio
-          '')
           rnix-lsp
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
