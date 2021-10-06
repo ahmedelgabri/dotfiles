@@ -6,16 +6,6 @@ function _.notes.get_dir()
   return vim.env.NOTES_DIR
 end
 
--- Investigate how to make this work with commands?
-function _.notes.get_notes_completion()
-  return vim.fn.map(
-    vim.fn.getcompletion(_.notes.get_dir() .. '/*', 'dir'),
-    function(__, v)
-      return string.gsub(v, _.notes.get_dir() .. '/', '')
-    end
-  )
-end
-
 function _.notes.note_info(fpath, ...)
   local args = { ... }
   local path = _.notes.get_dir() .. '/'
@@ -42,45 +32,6 @@ function _.notes.note_info(fpath, ...)
     fname,
     vim.fn.strftime '%Y-%m-%dT%H:%M',
   }
-end
-
-function _.notes.note_edit(...)
-  local data = _.notes.note_info(...)
-  local path = data[1]
-  local fname = data[2]
-  local formatted_date = data[3]
-
-  print(path)
-  vim.api.nvim_command('edit ' .. path)
-
-  local frontmatter = [[
-normal ggO---
-title: %s
-date: %s
-tags:
----
-]]
-
-  vim.api.nvim_command(string.format(frontmatter, fname, formatted_date))
-end
-
-function _.notes.wiki_edit(...)
-  local args = { ... }
-  local fname = _.notes.get_dir()
-    .. '/wiki/'
-    .. table.concat(args, ' ')
-    .. '.md'
-
-  print(fname)
-
-  vim.api.nvim_command('edit ' .. fname)
-end
-
-function _.notes.my_name(name)
-  local data = _.notes.note_info(name)
-  local fname = vim.fn.fnamemodify(data[1], ':t')
-
-  return fname
 end
 
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
