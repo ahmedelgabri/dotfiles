@@ -62,13 +62,6 @@ local on_attach = function(client)
   -- GENERAL
   -- ---------------
   client.config.flags.allow_incremental_sync = true
-  local lsd_signature_loaded = pcall(function()
-    require('lsp_signature').on_attach()
-  end)
-
-  if not lsd_signature_loaded then
-    utils.notify 'LSP Signature failed to set up'
-  end
 
   -- ---------------
   -- MAPPINGS

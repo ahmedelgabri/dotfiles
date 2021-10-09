@@ -143,10 +143,14 @@ return packer.startup {
           end,
         },
         {
+          'https://github.com/ray-x/lsp_signature.nvim',
           config = function()
+            require('lsp_signature').setup {
+              hint_prefix = '⏵', -- default is a panda emoji...
+              zindex = 50,
+            }
           end,
         },
-        { 'https://github.com/ray-x/lsp_signature.nvim' },
         { 'https://github.com/folke/lua-dev.nvim' },
       },
     }
