@@ -172,6 +172,7 @@ local servers = {
   vimls = {},
   pyright = {},
   dockerls = {},
+  clojure_lsp = {},
   tailwindcss = {
     init_options = {
       userLanguages = {

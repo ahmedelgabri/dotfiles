@@ -250,9 +250,19 @@ return packer.startup {
     }
     use { 'https://github.com/jez/vim-github-hub' }
     use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
+    -- use {
+    --   'https://github.com/lukas-reineke/headlines.nvim',
+    --   config = function()
+    --     require('headlines').setup()
+    --   end,
+    -- }
     -- Clojure
-    -- use { 'https://github.com/guns/vim-sexp', ft = lisps }
-    -- use { 'https://github.com/Olical/conjure', tag = 'v4.23.0', ft = lisps }
+    use { 'https://github.com/guns/vim-sexp', ft = lisps }
+    use {
+      'https://github.com/tpope/vim-sexp-mappings-for-regular-people',
+      ft = lisps,
+    }
+    use { 'https://github.com/Olical/conjure', branch = 'master', ft = lisps }
     -- }}}
 
     -- Git {{{

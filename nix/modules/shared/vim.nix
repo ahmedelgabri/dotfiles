@@ -50,6 +50,7 @@ in
           shfmt # Doesn't work with zsh, only sh & bash
           stylua
           efm-langserver
+          clojure-lsp
           nodePackages.neovim
           nodePackages.vscode-langservers-extracted # HTML, CSS, JSON LSPs
           nodePackages.prettier
