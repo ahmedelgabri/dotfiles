@@ -31,7 +31,7 @@ map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
 -- map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
-function fzf_statusline()
+local function fzf_statusline()
   vim.cmd [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]]
 end
 
@@ -45,7 +45,11 @@ end
 
 function _.fzf.FzfSpell()
   local suggestions = vim.fn.spellsuggest(vim.fn.expand '<cword>')
-  return vim.fn['fzf#run'] { source = suggestions, sink = FzfSpellSink, down = 25 }
+  return vim.fn['fzf#run'] {
+    source = suggestions,
+    sink = FzfSpellSink,
+    down = 25,
+  }
 end
 
 map.nnoremap('z=', ':call v:lua._.fzf.FzfSpell()<CR>', { silent = true })
