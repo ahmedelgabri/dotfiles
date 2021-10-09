@@ -15,7 +15,7 @@ if vim.env.VIM_FZF_LOG ~= nil then
   vim.g.fzf_commits_log_options = vim.env.VIM_FZF_LOG
 end
 
-vim.g.fzf_layout = { window = { width = 0.9, height = 0.8, relative = 1 } }
+vim.g.fzf_layout = { window = { width = 0.9, height = 0.8, relative = false } }
 vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
 vim.g.fzf_buffers_jump = 1
 vim.g.fzf_tags_command = 'ctags -R'
@@ -29,7 +29,7 @@ map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
 map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
-map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
+-- map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
 function fzf_statusline()
   vim.cmd [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]]
