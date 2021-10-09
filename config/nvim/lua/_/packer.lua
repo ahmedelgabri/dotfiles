@@ -31,6 +31,7 @@ end
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
 
 packer.init {
+  max_jobs = 70, -- https://github.com/wbthomason/packer.nvim/issues/202
   package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
   display = {
     non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
