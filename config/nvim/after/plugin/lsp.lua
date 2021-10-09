@@ -35,7 +35,7 @@ local mappings = {
   ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
   ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
   ['<leader>ld'] = {
-    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false,  border = "single" })<CR>',
+    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false,  border = "single" })<CR>',
   },
   ['[d'] = {
     '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>',
@@ -48,16 +48,45 @@ local mappings = {
   ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
 }
 
-local on_attach = function(client)
-  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-    vim.lsp.handlers.hover,
-    { border = 'single' }
-  )
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = 'single', focusable = false, silent = true }
+)
 
-  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-    vim.lsp.handlers.hover,
-    { border = 'single' }
-  )
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = 'single', focusable = false, silent = true }
+)
+
+-- local diagnostic_ns = vim.api.nvim_create_namespace 'diagnostics'
+-- vim.diagnostic.config({
+--   virtual_text = false,
+--   -- virtual_text = {
+--   --   show_source = 'always',
+--   --   spacing = 4,
+--   --   prefix = '■', -- Could be '●', '▎', 'x'
+--   -- },
+--   underline = false,
+--   signs = true,
+--   update_in_insert = false,
+-- }, diagnostic_ns)
+
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+    virtual_text = false,
+    -- virtual_text = {
+    --   show_source = 'always',
+    --   spacing = 4,
+    --   prefix = '■', -- Could be '●', '▎', 'x'
+    -- },
+    underline = false,
+    signs = true,
+    update_in_insert = false,
+  }
+)
+
+local on_attach = function(client)
   -- ---------------
   -- GENERAL
   -- ---------------
@@ -130,42 +159,6 @@ local on_attach = function(client)
   end
 end
 
--- https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#show-source-in-diagnostics
-vim.lsp.handlers['textDocument/publishDiagnostics'] =
-  function(_, _, params, client_id, _)
-    local config = {
-      virtual_text = false,
-      -- virtual_text = {
-      --   spacing = 4,
-      --   prefix = "~"
-      -- },
-      underline = false,
-      signs = true,
-      update_in_insert = false,
-    }
-
-    local uri = params.uri
-    local bufnr = vim.uri_to_bufnr(uri)
-
-    if not bufnr then
-      return
-    end
-
-    local diagnostics = params.diagnostics
-
-    for i, v in ipairs(diagnostics) do
-      diagnostics[i].message = string.format('%s: %s', v.source, v.message)
-    end
-
-    vim.lsp.diagnostic.save(diagnostics, bufnr, client_id)
-
-    if not vim.api.nvim_buf_is_loaded(bufnr) then
-      return
-    end
-
-    vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
-  end
-
 local servers = {
   cssls = {},
   bashls = {},
@@ -183,12 +176,12 @@ local servers = {
       },
     },
     handlers = {
-      ['tailwindcss/getConfiguration'] = function(_, _, params, _, bufnr, _)
+      ['tailwindcss/getConfiguration'] = function(_, _, context)
         -- tailwindcss lang server waits for this repsonse before providing hover
         vim.lsp.buf_notify(
-          bufnr,
+          context.bufnr,
           'tailwindcss/getConfigurationResponse',
-          { _id = params._id }
+          { _id = context.params._id }
         )
       end,
     },
@@ -280,7 +273,9 @@ local servers = {
       yaml = {
         -- Schemas https://www.schemastore.org
         schemas = {
-          ['http://json.schemastore.org/gitlab-ci.json'] = { '.gitlab-ci.yml' },
+          ['http://json.schemastore.org/gitlab-ci.json'] = {
+            '.gitlab-ci.yml',
+          },
           ['https://json.schemastore.org/bamboo-spec.json'] = {
             'bamboo-specs/*.{yml,yaml}',
           },
