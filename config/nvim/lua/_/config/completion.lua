@@ -1,11 +1,6 @@
 return function()
   local utils = require '_.utils'
 
-  local check_back_space = function()
-    local col = vim.fn.col '.' - 1
-    return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
-  end
-
   local has_words_before = function()
     if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
       return false
@@ -18,15 +13,33 @@ return function()
         == nil
   end
 
-  local feedkey = function(key)
-    vim.api.nvim_feedkeys(utils.t(key), 'n', true)
-  end
-
   local completion_loaded = pcall(function()
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
+    local menu = {
+      buffer = ' Buffer',
+      nvim_lsp = ' LSP',
+      luasnip = ' Snip',
+      path = ' Path',
+      tmux = ' Tmux',
+      orgmode = ' Org',
+      emoji = ' Emoji',
+      spell = ' Spell',
+      conjure = ' Conjure',
+    }
 
     cmp.setup {
+      formatting = {
+        -- format = function(entry, vim_item)
+        --   vim_item.menu = (menu)[entry.source.name]
+        --   return vim_item
+        -- end,
+        format = require('lspkind').cmp_format {
+          with_text = true,
+          max_width = 100,
+          menu = menu,
+        },
+      },
       completion = {
         completeopt = 'menu,menuone,noinsert',
         get_trigger_characters = function(trigger_characters)
@@ -36,27 +49,30 @@ return function()
         end,
       },
       sources = {
+        { name = 'luasnip', priority = 10 },
+        { name = 'nvim_lsp', priority = 9 },
         {
           name = 'buffer',
+          max_item_count = 10,
           opts = {
-            get_bufnrs = function()
-              local bufs = {}
-              for _, win in ipairs(vim.api.nvim_list_wins()) do
-                bufs[vim.api.nvim_win_get_buf(win)] = true
-              end
-              return vim.tbl_keys(bufs)
-            end,
+            get_bufnrs = vim.api.nvim_list_bufs,
+            -- get_bufnrs = function()
+            --   local bufs = {}
+            --   for _, win in ipairs(vim.api.nvim_list_wins()) do
+            --     bufs[vim.api.nvim_win_get_buf(win)] = true
+            --   end
+            --   return vim.tbl_keys(bufs)
+            -- end,
           },
         },
-        { name = 'nvim_lsp' },
-        { name = 'tmux' },
-        { name = 'luasnip' },
+        { name = 'tmux', max_item_count = 10 },
+        { name = 'tags' },
+        { name = 'orgmode' },
         { name = 'path' },
         { name = 'conjure' },
         { name = 'emoji' },
         { name = 'spell' },
-        { name = 'orgmode' },
-        { name = 'tags' },
+        { name = 'treesitter' },
       },
       snippet = {
         expand = function(args)
@@ -64,11 +80,14 @@ return function()
         end,
       },
       mapping = {
-        ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-n>'] = cmp.mapping.select_next_item {
+          behavior = cmp.SelectBehavior.Insert,
+        },
+        ['<C-p>'] = cmp.mapping.select_prev_item {
+          behavior = cmp.SelectBehavior.Insert,
+        },
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        -- @TODO: fix conflict with lspsaga
-        -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         -- ['<C-e>'] = cmp.mapping.close(),
         ['<C-e>'] = cmp.mapping(function(fallback)
@@ -88,8 +107,8 @@ return function()
           select = true,
         },
         ['<Tab>'] = cmp.mapping(function(fallback)
-          if vim.fn.pumvisible() == 1 then
-            feedkey '<C-n>'
+          if cmp.visible() then
+            cmp.select_next_item()
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
           elseif has_words_before() then
@@ -102,8 +121,8 @@ return function()
           's',
         }),
         ['<S-Tab>'] = cmp.mapping(function(fallback)
-          if vim.fn.pumvisible() == 1 then
-            feedkey '<C-p>'
+          if cmp.visible() then
+            cmp.select_prev_item()
           elseif luasnip.jumpable(-1) then
             luasnip.jump(-1)
           else

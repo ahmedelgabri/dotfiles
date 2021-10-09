@@ -12,6 +12,13 @@ au.augroup('__MyCustomColors__', function()
   au.autocmd('ColorScheme', '*', 'hi! NonText ctermbg=NONE guibg=NONE')
   au.autocmd('ColorScheme', '*', 'hi! NormalFloat guibg=NONE')
   au.autocmd('ColorScheme', '*', 'hi! link FloatBorder Number')
+  -- matched item (what you typed until present)
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatch DiffChange')
+  -- fuzzy match for what you typed
+  -- au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatchFuzzy DiffDelete')
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemKind DiffText')
+  -- uncompleted item that may be good for completion
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbr Normal')
 
   au.autocmd(
     'ColorScheme',
@@ -137,7 +144,7 @@ au.augroup('__MyCustomColors__', function()
       )
     )
   end)
-  au.autocmd('ColorScheme', 'plain', 'hi! link PmenuSel TermCursor')
+  au.autocmd('ColorScheme', 'plain', 'hi! link PmenuSel ColorColumn')
   au.autocmd('ColorScheme', 'plain', 'hi! Whitespace ctermfg=235 guifg=#333333')
   au.autocmd('ColorScheme', 'plain', 'hi! link graphqlString Comment')
   au.autocmd('ColorScheme', 'plain', 'hi! link Todo Comment')

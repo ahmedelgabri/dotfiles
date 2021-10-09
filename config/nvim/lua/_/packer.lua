@@ -177,6 +177,7 @@ return packer.startup {
         { 'https://github.com/hrsh7th/cmp-emoji' },
         { 'https://github.com/f3fora/cmp-spell' },
         { 'https://github.com/quangnguyen30192/cmp-nvim-tags' },
+        { 'https://github.com/onsails/lspkind-nvim' },
       },
     }
     use {
