@@ -143,10 +143,7 @@ return packer.startup {
           end,
         },
         {
-          -- 'https://github.com/glepnir/lspsaga.nvim',
-          'https://github.com/tami5/lspsaga.nvim',
           config = function()
-            require('lspsaga').init_lsp_saga {}
           end,
         },
         { 'https://github.com/ray-x/lsp_signature.nvim' },

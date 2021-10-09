@@ -14,9 +14,6 @@ if not has_lsp then
   return
 end
 
-local has_lspsaga = pcall(require, 'lspsaga')
-local configs = require 'lspconfig/configs'
-
 local signs = { 'Error', 'Warning', 'Hint', 'Information' }
 
 for _, type in pairs(signs) do
@@ -32,13 +29,13 @@ end
 
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-local default_mappings = {
+local mappings = {
   ['<leader>a'] = { '<Cmd>lua vim.lsp.buf.code_action()<CR>' },
   ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
   ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
   ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
   ['<leader>ld'] = {
-    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})<CR>',
+    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false,  border = "single" })<CR>',
   },
   ['[d'] = {
     '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>',
@@ -50,38 +47,6 @@ local default_mappings = {
   ['<leader>D'] = { '<Cmd>lua vim.lsp.buf.declaration()<CR>' },
   ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
 }
-
-local lspsaga_mappings = {
-  ['<leader>d'] = {
-    "<Cmd>lua require'lspsaga.provider'.preview_definition()<CR>",
-  },
-  ['<leader>a'] = {
-    "<Cmd>lua require'lspsaga.codeaction'.code_action()<CR>",
-    "<Cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>",
-  },
-  ['<leader>f'] = { "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>" },
-  ['<leader>s'] = {
-    "<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>",
-  },
-  ['<leader>r'] = { "<cmd>lua require'lspsaga.rename'.rename()<CR>" },
-  ['<leader>ld'] = {
-    "<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>",
-  },
-  ['[d'] = {
-    "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>",
-  },
-  [']d'] = {
-    "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>",
-  },
-  ['<C-f>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(1)<cr>" },
-  ['<C-b>'] = { "<cmd>lua require('lspsaga.hover').smart_scroll_hover(-1)<CR>" },
-}
-
-local mappings = vim.tbl_extend(
-  'force',
-  default_mappings,
-  has_lspsaga and lspsaga_mappings or {}
-)
 
 local on_attach = function(client)
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
