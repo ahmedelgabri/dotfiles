@@ -30,10 +30,10 @@ end
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 local mappings = {
-  ['<leader>a'] = { '<Cmd>lua vim.lsp.buf.code_action()<CR>' },
+  ['<leader>a'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
   ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
   ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
-  ['K'] = { '<Cmd>lua vim.lsp.buf.hover()<CR>' },
+  ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
   ['<leader>ld'] = {
     '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false,  border = "single" })<CR>',
   },
@@ -43,8 +43,8 @@ local mappings = {
   [']d'] = {
     '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>',
   },
-  ['<C-]>'] = { '<Cmd>lua vim.lsp.buf.definition()<CR>' },
-  ['<leader>D'] = { '<Cmd>lua vim.lsp.buf.declaration()<CR>' },
+  ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
+  ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
   ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
 }
 
