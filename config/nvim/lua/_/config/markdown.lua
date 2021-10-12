@@ -23,5 +23,6 @@ return function()
     'cljs=clojurescript',
     'stylus=css',
     'less=css',
+    'viml=vim',
   }
 end
