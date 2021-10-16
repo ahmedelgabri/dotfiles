@@ -60,6 +60,9 @@ in
           nodePackages.vim-language-server
           nodePackages.pyright
           nodePackages.yaml-language-server
+          # This is Merged https://github.com/NixOS/nixpkgs/pull/140413 but not
+          # populated yet https://nixpk.gs/pr-tracker.html?pr=140413
+          # nodePackages."@tailwindcss/language-server"
           rnix-lsp
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
