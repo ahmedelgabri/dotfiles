@@ -46,9 +46,39 @@ return packer.startup {
     use { 'https://github.com/wbthomason/packer.nvim' }
     use { 'https://github.com/windwp/nvim-autopairs' }
     use {
-      'https://github.com/junegunn/fzf.vim',
-      -- I have the bin globally, so don't build, and just grab plugin directory
-      requires = { { 'https://github.com/junegunn/fzf' } },
+      'https://github.com/ibhagwan/fzf-lua',
+      config = function()
+        require('fzf-lua').setup {
+          keymap = {
+            builtin = {
+              ['?'] = 'toggle-preview',
+            },
+          },
+          files = {
+            prompt = ' ',
+            cmd = vim.env.FZF_DEFAULT_COMMAND,
+          },
+        }
+        local map = require '_.utils.map'
+        map.nnoremap(
+          '<leader><leader>',
+          [[<cmd>lua require 'fzf-lua'.files()<cr>]],
+          { silent = true }
+        )
+        map.nnoremap(
+          '<leader>b',
+          [[<cmd>lua require 'fzf-lua'.buffers()<cr>]],
+          { silent = true }
+        )
+        map.nnoremap(
+          '<leader>h',
+          [[<cmd>lua require 'fzf-lua'.help_tags()<cr>]],
+          { silent = true }
+        )
+      end,
+      requires = {
+        'https://github.com/vijaymarupudi/nvim-fzf',
+      },
     }
     use {
       'https://github.com/kyazdani42/nvim-tree.lua',
