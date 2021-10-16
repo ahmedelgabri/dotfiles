@@ -166,6 +166,7 @@ local servers = {
   pyright = {},
   dockerls = {},
   clojure_lsp = {},
+  eslint = {},
   tailwindcss = {
     init_options = {
       userLanguages = {

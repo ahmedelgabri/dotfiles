@@ -52,7 +52,7 @@ in
           efm-langserver
           clojure-lsp
           nodePackages.neovim
-          nodePackages.vscode-langservers-extracted # HTML, CSS, JSON LSPs
+          nodePackages.vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
           nodePackages.bash-language-server
           nodePackages.dockerfile-language-server-nodejs

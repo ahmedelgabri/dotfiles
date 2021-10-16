@@ -1,15 +1,3 @@
-local eslint = {
-  -- this will work because I have prettier globally & in projects direnv will add `node_modules/bin` to $PATH
-  lintCommand = 'eslint --format visualstudio --stdin --stdin-filename ${INPUT}',
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {
-    '%f(%l,%c): %tarning %m',
-    '%f(%l,%c): %rror %m',
-  },
-  lintSource = 'eslint',
-}
-
 local shellcheck = {
   lintCommand = 'shellcheck --format=gcc --external-sources -',
   lintStdin = true,
@@ -64,12 +52,6 @@ local languages = {
   vim = { vint },
   go = { golint },
   python = { pylint },
-  typescript = { eslint },
-  javascript = { eslint },
-  ['typescript.tsx'] = { eslint },
-  ['javascript.jsx'] = { eslint },
-  typescriptreact = { eslint },
-  javascriptreact = { eslint },
   sh = { shellcheck },
   bash = { shellcheck },
   dockerfile = { hadolint },
