@@ -18,8 +18,8 @@ buildGoModule rec {
 
   preBuild = ''buildFlagsArray+=("-tags" "fts5 icu")'';
 
-  buildFlagsArray =
-    [ "-ldflags=-X=main.Build=${version} -X=main.Build=${version}" ];
+  ldflags =
+    [ "-X=main.Build=${version}" "-X=main.Build=${version}" ];
 
   meta = with lib; {
     license = licenses.gpl3;
