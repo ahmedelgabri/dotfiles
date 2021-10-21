@@ -18,7 +18,7 @@
     ./ripgrep.nix
     ./tmux.nix
     ./ttrv.nix
-    ./youtube-dl.nix
+    ./yt-dlp.nix
     ./misc.nix
     ./vim.nix
     ./node.nix
@@ -56,6 +56,7 @@
     misc.enable = true;
     vim.enable = true;
     gui.enable = true;
+    yt-dlp.enable = true;
 
     node.enable = true;
     deno.enable = true;
