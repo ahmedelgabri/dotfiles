@@ -36,10 +36,31 @@ end
 
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
 function _.notes.search_notes(query, fullscreen)
-  require('fzf-lua').live_grep {
-    cwd = _.notes.get_dir(),
-    cmd = 'rg --column --line-number --no-heading --color=always --smart-case -- ',
+  local command_fmt =
+    'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  local initial_command = string.format(
+    command_fmt,
+    string.gsub(query, query, "'%1'")
+  )
+  local reload_command = string.format(command_fmt, '{q}')
+
+  local opts = {
+    dir = _.notes.get_dir(),
+    options = {
+      '--phony',
+      '--query',
+      query,
+      '--bind',
+      'change:reload:' .. reload_command,
+    },
   }
+
+  vim.fn['fzf#vim#grep'](
+    initial_command,
+    1,
+    vim.fn['fzf#vim#with_preview'](opts),
+    fullscreen
+  )
 end
 
 function _.notes.open_in_obsidian()
