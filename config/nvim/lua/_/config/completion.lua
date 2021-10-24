@@ -29,6 +29,9 @@ return function()
     }
 
     cmp.setup {
+      experimental = {
+        ghost_text = true,
+      },
       formatting = {
         -- format = function(entry, vim_item)
         --   vim_item.menu = (menu)[entry.source.name]
@@ -49,11 +52,16 @@ return function()
         end,
       },
       sources = {
-        { name = 'luasnip', priority = 10 },
-        { name = 'nvim_lsp', priority = 9 },
+        { name = 'luasnip' },
+        { name = 'nvim_lsp' },
+        { name = 'path' },
+        { name = 'tags' },
+        { name = 'conjure' },
+        { name = 'treesitter' },
         {
           name = 'buffer',
           max_item_count = 10,
+          keyword_length = 5,
           opts = {
             get_bufnrs = vim.api.nvim_list_bufs,
             -- get_bufnrs = function()
@@ -66,13 +74,9 @@ return function()
           },
         },
         { name = 'tmux', max_item_count = 10 },
-        { name = 'tags' },
         { name = 'orgmode' },
-        { name = 'path' },
-        { name = 'conjure' },
         { name = 'emoji' },
         { name = 'spell' },
-        { name = 'treesitter' },
       },
       snippet = {
         expand = function(args)

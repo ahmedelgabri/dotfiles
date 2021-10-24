@@ -3,6 +3,17 @@ local au = require '_.utils.au'
 
 au.augroup('__MyCustomColors__', function()
   ---------------------------------------------------------------
+  -- COMPLETION
+  ---------------------------------------------------------------
+  -- matched item (what you typed until present)
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatch DiffChange')
+  -- fuzzy match for what you typed
+  -- au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatchFuzzy DiffDelete')
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemKind DiffText')
+  -- uncompleted item that may be good for completion
+  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbr Normal')
+
+  ---------------------------------------------------------------
   -- GENERAL
   ---------------------------------------------------------------
   au.autocmd('ColorScheme', '*', 'hi! clear SignColumn')
@@ -12,14 +23,6 @@ au.augroup('__MyCustomColors__', function()
   au.autocmd('ColorScheme', '*', 'hi! NonText ctermbg=NONE guibg=NONE')
   au.autocmd('ColorScheme', '*', 'hi! NormalFloat guibg=NONE')
   au.autocmd('ColorScheme', '*', 'hi! link FloatBorder Number')
-  -- matched item (what you typed until present)
-  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatch DiffChange')
-  -- fuzzy match for what you typed
-  -- au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbrMatchFuzzy DiffDelete')
-  au.autocmd('ColorScheme', '*', 'hi! link CmpItemKind DiffText')
-  -- uncompleted item that may be good for completion
-  au.autocmd('ColorScheme', '*', 'hi! link CmpItemAbbr Normal')
-
   au.autocmd(
     'ColorScheme',
     '*',
