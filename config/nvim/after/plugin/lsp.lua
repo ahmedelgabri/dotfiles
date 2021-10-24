@@ -38,10 +38,10 @@ local mappings = {
     '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false,  border = "single" })<CR>',
   },
   ['[d'] = {
-    '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<cr>',
+    '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single", focusable = false, source = "always" }})<cr>',
   },
   [']d'] = {
-    '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>',
+    '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single", focusable = false, source = "always" }})<CR>',
   },
   ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
   ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
