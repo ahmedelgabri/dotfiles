@@ -14,6 +14,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 -- Skip vim plugins menu.vim, saves ~100ms
+vim.g.did_load_filetypes = 1
 vim.g.did_install_default_menus = 1
 vim.g.loaded_getscript = 1
 vim.g.loaded_getscriptPlugin = 1
