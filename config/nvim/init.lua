@@ -181,7 +181,7 @@ vim.opt.foldtext = 'utils#NeatFoldText()'
 vim.opt.foldlevelstart = 99 -- start unfolded
 
 vim.opt.breakindent = true
-vim.opt.breakindentopt = 'shift:2'
+vim.opt.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
 vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
 
 -- show where you are
