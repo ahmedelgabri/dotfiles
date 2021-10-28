@@ -93,7 +93,6 @@ return function()
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
-        -- ['<C-e>'] = cmp.mapping.close(),
         ['<C-e>'] = cmp.mapping(function(fallback)
           if cmp.abort() then
             return
@@ -145,9 +144,14 @@ return function()
   end
 
   pcall(function()
-    require('nvim-autopairs.completion.cmp').setup {
-      map_cr = true, --  map <CR> on insert mode
-      map_complete = true, -- it will auto insert `(` after select function or method item
+    local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+    local cmp = require 'cmp'
+
+    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+    require('nvim-autopairs').setup {
+      disable_filetype = { 'fzf' },
+      map_cr = false,
     }
   end)
 end
