@@ -94,6 +94,7 @@ in
             tmuxPlugins.urlview
             tree
             pass
+            himalaya
           ];
         };
 
@@ -115,6 +116,30 @@ in
         '';
 
         my.hm.file = {
+          ".config/himalaya/config.toml" = {
+            text = ''
+              # ${nix_managed}
+              name = "${name}"
+              downloads-dir = "~/Downloads/himalaya"
+              watch-cmds = ["${pkgs.isync}/bin/mbsync -a"]
+              # signature = """"""
+
+              [${cfg.account}]
+              default = true
+              email = "${email}"
+
+              imap-host = "${cfg.imap_server}"
+              imap-port = 993
+              imap-login = "${email}"
+              imap-passwd-cmd = "~/.config/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}"
+
+              smtp-host = "${cfg.smtp_server}"
+              smtp-starttls = true
+              smtp-port = 587
+              smtp-login = "${email}"
+              smtp-passwd-cmd = "~/.config/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}"'';
+          };
+
           ".config/neomutt" = {
             recursive = true;
             source = ../../../config/neomutt;

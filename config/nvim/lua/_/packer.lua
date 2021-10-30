@@ -67,6 +67,10 @@ return packer.startup {
     }
     use { 'https://github.com/windwp/nvim-autopairs' }
     use {
+      'https://github.com/soywod/himalaya',
+      rtp = 'vim',
+    }
+    use {
       'https://github.com/junegunn/fzf.vim',
       -- I have the bin globally, so don't build, and just grab plugin directory
       requires = { { 'https://github.com/junegunn/fzf' } },
