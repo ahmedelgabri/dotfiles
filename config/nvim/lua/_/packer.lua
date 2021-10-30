@@ -29,9 +29,12 @@ if not packer_exists then
 end
 
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
+local PACKER_COMPILED_PATH = vim.fn.stdpath 'cache'
+  .. '/packer/packer_compiled.lua'
 
 packer.init {
   max_jobs = 70, -- https://github.com/wbthomason/packer.nvim/issues/202
+  compile_path = PACKER_COMPILED_PATH,
   package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
   display = {
     non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
@@ -41,7 +44,7 @@ packer.init {
   },
 }
 
-return packer.startup {
+packer.startup {
   function(use)
     use { 'https://github.com/wbthomason/packer.nvim' }
     use {
@@ -351,7 +354,11 @@ return packer.startup {
       'https://github.com/tpope/vim-sexp-mappings-for-regular-people',
       ft = lisps,
     }
-    use { 'https://github.com/Olical/conjure', branch = 'master', ft = lisps }
+    use {
+      'https://github.com/Olical/conjure',
+      branch = 'master',
+      ft = lisps,
+    }
     -- }}}
 
     -- Git {{{
@@ -403,5 +410,13 @@ return packer.startup {
     use { 'https://github.com/axvr/photon.vim', opt = true }
     use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
     use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
+    -- }}}
   end,
 }
+
+if
+  not vim.g.packer_compiled_loaded and vim.loop.fs_stat(PACKER_COMPILED_PATH)
+then
+  vim.cmd(string.format('source %s', PACKER_COMPILED_PATH))
+  vim.g.packer_compiled_loaded = true
+end
