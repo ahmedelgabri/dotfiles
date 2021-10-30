@@ -220,10 +220,10 @@ packer.startup {
           after = 'nvim-treesitter',
           branch = '0.5-compat',
         },
-        {
-          'https://github.com/p00f/nvim-ts-rainbow',
-          after = 'nvim-treesitter',
-        },
+        -- {
+        --   'https://github.com/p00f/nvim-ts-rainbow',
+        --   after = 'nvim-treesitter',
+        -- },
         {
           'https://github.com/nvim-treesitter/playground',
           cmd = 'TSPlaygroundToggle',
