@@ -7,12 +7,21 @@ return function()
 
   local parsers = require 'nvim-treesitter.parsers'
   local au = require '_.utils.au'
+  local parser_config = parsers.get_parser_configs()
+
+  parser_config.org = {
+    install_info = {
+      url = 'https://github.com/milisims/tree-sitter-org',
+      revision = 'main',
+      files = { 'src/parser.c', 'src/scanner.cc' },
+    },
+    filetype = 'org',
+  }
 
   local function get_filetypes()
-    local configs = parsers.get_parser_configs()
     return table.concat(
       vim.tbl_map(function(ft)
-        return configs[ft].filetype or ft
+        return parser_config[ft].filetype or ft
       end, parsers.available_parsers()),
       ','
     )
@@ -26,9 +35,10 @@ return function()
     },
     highlight = {
       enable = true,
+      disable = { 'org' }, -- Remove this to use TS highlighter for some of the highlights (Experimental)
       -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
       -- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
-      additional_vim_regex_highlighting = { 'python' },
+      additional_vim_regex_highlighting = { 'python', 'org' }, -- (org) Required since TS highlighter doesn't support all syntax features (conceal)
     },
     textobjects = {
       select = {
