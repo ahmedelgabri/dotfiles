@@ -367,7 +367,9 @@ in
 
               account ${lib.toLower cfg.account}
               ${lib.optionalString (cfg.keychain.name == "fastmail.com")
-              "tls_starttls off"}
+              "tls_starttls on"}
+              ${lib.optionalString (cfg.keychain.name == "fastmail.com")
+              "port 587"}
               host ${cfg.smtp_server}
               from ${email}
               user ${email}
