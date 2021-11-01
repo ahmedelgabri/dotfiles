@@ -23,7 +23,7 @@ fpath=(
 autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
 
 ##############################################################
-# ZINIT https://github.com/zdharma/zinit
+# ZINIT https://github.com/zdharma-continuum/zinit
 ##############################################################
 # Investigate why this doesn't work with tmux when I add it to zshenv
 ZINIT[HOME_DIR]="$XDG_CACHE_HOME/zsh/zinit"
@@ -37,7 +37,7 @@ local __ZINIT="$ZINIT[BIN_DIR]/zinit.zsh"
 
 if [[ ! -f "$__ZINIT" ]]; then
   if (( $+commands[git] )); then
-    git clone https://github.com/zdharma/zinit.git "$ZINIT[BIN_DIR]"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT[BIN_DIR]"
   else
     echo 'git not found' >&2
     exit 1
@@ -83,7 +83,7 @@ autoload -Uz _zinit
 
   zinit ice wait lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay' \
     atload'unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"'
-  zinit light https://github.com/zdharma/fast-syntax-highlighting
+  zinit light https://github.com/zdharma-continuum/fast-syntax-highlighting
 
   zinit ice wait lucid atload'_zsh_autosuggest_start'
   zinit light https://github.com/zsh-users/zsh-autosuggestions
