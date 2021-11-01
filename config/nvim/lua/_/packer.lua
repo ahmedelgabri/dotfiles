@@ -71,7 +71,7 @@ packer.startup {
     use { 'https://github.com/windwp/nvim-autopairs' }
     use {
       'https://github.com/soywod/himalaya',
-      rtp = 'vim',
+      rtp = 'email-manager/vim',
     }
     use {
       'https://github.com/junegunn/fzf.vim',
