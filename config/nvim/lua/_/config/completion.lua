@@ -43,6 +43,9 @@ return function()
           menu = menu,
         },
       },
+      documentation = {
+        border = 'single',
+      },
       completion = {
         completeopt = 'menu,menuone,noinsert',
         get_trigger_characters = function(trigger_characters)
@@ -51,13 +54,12 @@ return function()
           end, trigger_characters)
         end,
       },
-      sources = {
+      sources = cmp.config.sources {
         { name = 'luasnip' },
         { name = 'nvim_lsp' },
+        { name = 'calc' },
         { name = 'path' },
-        { name = 'tags' },
         { name = 'conjure' },
-        { name = 'treesitter' },
         {
           name = 'buffer',
           max_item_count = 10,
@@ -90,9 +92,9 @@ return function()
         ['<C-p>'] = cmp.mapping.select_prev_item {
           behavior = cmp.SelectBehavior.Insert,
         },
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
         ['<C-e>'] = cmp.mapping(function(fallback)
           if cmp.abort() then
             return
@@ -137,6 +139,25 @@ return function()
         }),
       },
     }
+
+    cmp.setup.cmdline('/', {
+      sources = {
+        name = 'buffer',
+        max_item_count = 10,
+        keyword_length = 5,
+        opts = {
+          get_bufnrs = vim.api.nvim_list_bufs,
+        },
+      },
+    })
+
+    cmp.setup.cmdline(':', {
+      sources = cmp.config.sources({
+        { name = 'path' },
+      }, {
+        { name = 'cmdline' },
+      }),
+    })
   end)
 
   if not completion_loaded then
