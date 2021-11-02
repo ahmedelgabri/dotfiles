@@ -158,7 +158,3 @@ map.xnoremap('-', 'g<C-x>')
 
 -- Execute "q" macro over visual line selections
 map.xnoremap('Q', [[:'<,'>:normal @q<CR>]])
-
--- Redirect change operations to the blackhole
-map.nnoremap('c', '"_c')
-map.nnoremap('C', '"_C')
