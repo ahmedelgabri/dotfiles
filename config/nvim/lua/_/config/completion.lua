@@ -143,11 +143,6 @@ return function()
     cmp.setup.cmdline('/', {
       sources = {
         name = 'buffer',
-        max_item_count = 10,
-        keyword_length = 5,
-        opts = {
-          get_bufnrs = vim.api.nvim_list_bufs,
-        },
       },
     })
 
