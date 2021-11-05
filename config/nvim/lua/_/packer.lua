@@ -62,7 +62,7 @@ packer.startup {
               ['package.json'] = 'jsonc',
             },
             complex = {
-              ['tsconfig.*'] = 'jsonc',
+              ['tsconfig*'] = 'jsonc',
             },
           },
         }
