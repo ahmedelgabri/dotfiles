@@ -3,6 +3,8 @@
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eueo pipefail
 
+SUDO_USER=$(whoami)
+
 # =======================================================================
 # = Helpers & setting some variables
 # =======================================================================
@@ -185,16 +187,16 @@ clone_dotfiles() {
 
 install() {
 	if [ "$(uname)" == "Darwin" ]; then
-		sudo mv /etc/shells /etc/shells.old
-		sudo mv /etc/zshenv /etc/zshenv.old
-		sudo mv /etc/zshrc /etc/zshrc.old
-		sudo mv /etc/zprofile /etc/zprofile.old
+		sudo -u "$SUDO_USER" mv /etc/shells /etc/shells.old
+		sudo -u "$SUDO_USER" mv /etc/zshenv /etc/zshenv.old
+		sudo -u "$SUDO_USER" mv /etc/zshrc /etc/zshrc.old
+		sudo -u "$SUDO_USER" mv /etc/zprofile /etc/zprofile.old
 
 		cd "$DOTFILES_DIR" &&
 			nix --experimental-features 'nix-command flakes' build "./#$(hostname)" &&
 			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname)"
 	else
-		sudo nixos-rebuild switch --flake "./#$(hostname)"
+		sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname)"
 	fi
 }
 
