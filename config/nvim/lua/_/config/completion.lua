@@ -140,11 +140,12 @@ return function()
       },
     }
 
-    cmp.setup.cmdline('/', {
-      sources = {
-        name = 'buffer',
-      },
-    })
+    -- Disabled, see also https://github.com/hrsh7th/nvim-cmp/issues/485#issuecomment-962801123
+    -- cmp.setup.cmdline('/', {
+    --   sources = {
+    --     name = 'buffer',
+    --   },
+    -- })
 
     cmp.setup.cmdline(':', {
       sources = cmp.config.sources({
