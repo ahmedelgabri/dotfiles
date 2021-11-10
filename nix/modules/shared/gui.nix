@@ -37,7 +37,7 @@ in
           "slack"
           "sync"
           "virtualbox"
-          "homebrew/cask-versions/visual-studio-code-insiders"
+          "visual-studio-code"
           # "vscodium"
           "zoom"
         ];

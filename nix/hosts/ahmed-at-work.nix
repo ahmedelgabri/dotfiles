@@ -50,7 +50,6 @@
     "vagrant"
     "ngrok"
     "docker"
-    "visual-studio-code"
   ];
 
   # Requires to be logged in to the AppStore
