@@ -66,23 +66,6 @@
 
   outputs = { self, ... }@inputs:
     let
-      # This fix is required while waiting for https://github.com/NixOS/nixpkgs/pull/137870
-      # to be merged and land in nixpkgs-unstable
-      bs4Overlay = self: super:
-        let
-          lib = super.lib;
-        in
-        rec {
-          python3 = super.python3.override {
-            packageOverrides = self: super: {
-              beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
-                propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
-              });
-            };
-          };
-          python3Packages = python3.pkgs;
-        };
-
       sharedHostsConfig = { config, pkgs, lib, options, ... }: {
         nix = {
           nixPath = [
@@ -118,7 +101,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay inputs.rust-overlay.overlay bs4Overlay ];
+          overlays = [ self.overlay inputs.rust-overlay.overlay ];
         };
 
         time.timeZone = config.my.timezone;
