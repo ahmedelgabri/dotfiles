@@ -382,6 +382,7 @@ packer.startup {
     }
     use {
       'https://github.com/sindrets/diffview.nvim',
+      requires = { { 'https://github.com/nvim-lua/plenary.nvim' } },
       cmd = { 'DiffviewOpen' },
       config = function()
         require('diffview').setup {
