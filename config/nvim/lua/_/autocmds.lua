@@ -101,8 +101,7 @@ function M.mkview()
     end)
     if not success then
       if
-        err:find '%f[%w]E186%f[%W]'
-          == nil -- No previous directory: probably a `git` operation.
+        err:find '%f[%w]E186%f[%W]' == nil -- No previous directory: probably a `git` operation.
         and err:find '%f[%w]E190%f[%W]' == nil -- Could be name or path length exceeding NAME_MAX or PATH_MAX.
         and err:find '%f[%w]E5108%f[%W]' == nil
       then
@@ -124,8 +123,7 @@ function M.quit_on_q()
     map.nnoremap(
       'q',
       (
-          (vim.wo.diff == true or vim.bo.filetype == 'man')
-            and ':qa!'
+          (vim.wo.diff == true or vim.bo.filetype == 'man') and ':qa!'
           or (vim.bo.filetype == 'qf') and ':cclose'
           or ':q'
         ) .. '<cr>',
@@ -152,6 +150,10 @@ function M.source_project_config()
 end
 
 function M.highlight_overlength()
+  if vim.bo.filetype == 'help' then
+    return
+  end
+
   cleanup_marker 'w:last_overlength'
 
   if should_turn_off_colorcolumn() then
