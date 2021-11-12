@@ -113,6 +113,7 @@ if [ "$(uname)" = "Darwin" ]; then
   ) &!
 fi
 
+eval "$(fnm env --shell zsh --use-on-cd)"
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh --hook pwd)"
 
