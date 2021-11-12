@@ -6,7 +6,7 @@ let
 
   cfg = config.my.modules.mail;
   homeDir = config.my.user.home;
-  xdg = config.home-manager.users.${username}.xdg;
+  inherit (config.home-manager.users."${username}") xdg;
 
 in
 {

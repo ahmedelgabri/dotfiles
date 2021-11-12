@@ -53,7 +53,7 @@ in
             [diff "exif"]
               textconv = ${pkgs.exiftool}/bin/exiftool
 
-            ${optionalString (pkgs.stdenv.isDarwin) ''
+            ${optionalString pkgs.stdenv.isDarwin ''
               [diff "plist"]
                 textconv = plutil -convert xml1 -o -''}
           '';

@@ -5,7 +5,7 @@ with config.my;
 let
 
   cfg = config.my.modules.vim;
-  home = config.my.user.home;
+  inherit (config.my.user) home;
 in
 {
   options = with lib; {

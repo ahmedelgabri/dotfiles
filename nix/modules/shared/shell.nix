@@ -10,7 +10,7 @@
 let
 
   cfg = config.my.modules.shell;
-  home = config.my.user.home;
+  inherit (config.my.user) home;
 
   z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
   local_zshrc = "${home}/.zshrc.local";

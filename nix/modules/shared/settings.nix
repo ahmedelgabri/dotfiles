@@ -50,7 +50,7 @@ in
         type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
         apply = mapAttrs (n: v:
           if isList v then
-            concatMapStringsSep ":" (x: toString x) v
+            concatMapStringsSep ":" toString v
           else
             (toString v));
         default = { };
@@ -60,7 +60,7 @@ in
   };
 
   config = {
-    users.users.${config.my.username} = mkAliasDefinitions options.my.user;
+    users.users."${config.my.username}" = mkAliasDefinitions options.my.user;
     my.user = {
       home =
         if pkgs.stdenv.isDarwin then
@@ -83,7 +83,7 @@ in
     #   my.hm.file        ->  home-manager.users.ahmed.home.file
     #   my.hm.configFile  ->  home-manager.users.ahmed.home.xdg.configFile
     #   my.hm.dataFile    ->  home-manager.users.ahmed.home.xdg.dataFile
-    home-manager.users.${config.my.username} = {
+    home-manager.users."${config.my.username}" = {
       xdg = {
         enable = true;
         configFile = mkAliasDefinitions options.my.hm.configFile;
@@ -95,7 +95,7 @@ in
         # look for a nixpkgs channel.
         stateVersion =
           if pkgs.stdenv.isDarwin then "21.11" else config.system.stateVersion;
-        username = config.my.username;
+        inherit (config.my) username;
         file = mkAliasDefinitions options.my.hm.file;
       };
 

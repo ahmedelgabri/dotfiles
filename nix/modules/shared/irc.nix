@@ -4,7 +4,7 @@
 let
 
   cfg = config.my.modules.irc;
-  home = config.my.user.home;
+  inherit (config.my.user) home;
 
 in
 {
