@@ -122,6 +122,14 @@
         };
 
         time.timeZone = config.my.timezone;
+
+        documentation.man = {
+          enable = true;
+          # Currently doesn't work in nix-darwin
+          # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
+          # generateCaches = true;
+        };
+
       };
 
     in
