@@ -108,6 +108,7 @@ in
               # buku
               graph-easy
               graphviz
+              statix
             ];
           };
 
