@@ -23,6 +23,10 @@ return function()
     end,
 
     plugins = {
+      options = {
+        showbreak = '',
+        showmode = false,
+      },
       tmux = {
         enabled = true,
       },

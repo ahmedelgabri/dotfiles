@@ -45,23 +45,6 @@ map.xnoremap(
 -- Make `Y` behave like `C` and `D` (to the end of line)
 map.nnoremap('Y', 'y$')
 
--- https://twitter.com/vimgifs/status/913390282242232320
--- :h i_CTRL-G_u
-au.augroup('__prose_mappings__', function()
-  au.autocmd('FileType', 'markdown,text', function()
-    map.inoremap('.', '.<c-g>u', { buffer = true })
-  end)
-  au.autocmd('FileType', 'markdown,text', function()
-    map.inoremap('?', '?<c-g>u', { buffer = true })
-  end)
-  au.autocmd('FileType', 'markdown,text', function()
-    map.inoremap('!', '!<c-g>u', { buffer = true })
-  end)
-  au.autocmd('FileType', 'markdown,text', function()
-    map.inoremap(',', ',<c-g>u', { buffer = true })
-  end)
-end)
-
 -- Disable arrow keys
 map.imap('<up>', '<nop>')
 map.imap('<down>', '<nop>')

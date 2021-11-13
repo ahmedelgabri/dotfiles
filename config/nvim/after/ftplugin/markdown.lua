@@ -1,6 +1,6 @@
-vim.cmd [[setlocal spell]]
-vim.cmd [[setlocal linebreak]]
-vim.cmd [[setlocal nolist]]
+local utils = require '_.utils'
+
+utils.plaintext()
 
 if vim.fn.executable 'grip' == 1 then
   vim.cmd [[nnoremap <buffer><leader>p :call utils#openMarkdownPreview()<CR>]]

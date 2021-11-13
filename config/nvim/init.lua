@@ -65,8 +65,6 @@ vim.opt.shiftwidth = 2
 -- always use spaces instead of tabs
 vim.opt.expandtab = true
 
-vim.opt.textwidth = 80
-vim.opt.wrap = false
 vim.opt.signcolumn = 'yes'
 
 vim.opt.emoji = false
@@ -180,6 +178,9 @@ vim.opt.fillchars = {
 vim.opt.foldtext = 'utils#NeatFoldText()'
 vim.opt.foldlevelstart = 99 -- start unfolded
 
+vim.opt.linebreak = true
+vim.opt.textwidth = 80
+vim.opt.wrap = true
 vim.opt.breakindent = true
 vim.opt.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
 vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)

@@ -1,5 +1,5 @@
-vim.cmd [[setlocal spell]]
-vim.cmd [[setlocal formatoptions+="t"]]
+local utils = require '_.utils'
 
--- Git commit messages body are constraied to 72 characters
-vim.cmd [[setlocal textwidth=72]]
+utils.plaintext()
+
+vim.cmd [[setlocal formatoptions+="t"]]
