@@ -26,9 +26,9 @@ map.imap('<c-x><c-f>', '<plug>(fzf-complete-path)')
 map.imap('<c-x><c-j>', '<plug>(fzf-complete-file-ag)')
 map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 
-map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
-map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
-map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
+-- map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
+-- map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
+-- map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
 -- map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
 local function fzf_statusline()
