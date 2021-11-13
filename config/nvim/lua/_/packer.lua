@@ -403,6 +403,11 @@ packer.startup {
     }
     -- }}}
 
+    use {
+      'https://github.com/folke/zen-mode.nvim',
+      config = require '_.config.zenmode',
+    }
+
     -- Themes, UI & eye candy {{{
     use { 'https://github.com/andreypopp/vim-colors-plain', opt = true }
     use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
