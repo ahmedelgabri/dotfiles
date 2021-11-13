@@ -1,3 +1,5 @@
+# vim:noexpandtab
+
 [commit]
 	verbose = true
 	gpgsign = true
@@ -18,31 +20,31 @@
 	hooksPath = ~/.config/git/hooks
 
 [delta]
-  syntax-theme = none
-  file-modified-label = MODIFIED:
-  file-removed-label  = REMOVED:
-  file-added-label    = ADDED:
-  file-renamed-label  = RENAMED:
-  features = labels customization
+	syntax-theme = none
+	file-modified-label = MODIFIED:
+	file-removed-label  = REMOVED:
+	file-added-label    = ADDED:
+	file-renamed-label  = RENAMED:
+	features = labels customization
 
 [delta "customization"]
-  whitespace-error-style = 22 reverse
-  zero-style = 8
-  commit-decoration-style = bold yellow box
-  hunk-header-style = 8
-  hunk-header-decoration-style = black box
-  file-style = yellow italic
-  file-decoration-style = none
-  minus-style = strike 088
-  minus-emph-style = 001 052
-  plus-style = italic 034
-  plus-emph-style = italic black 034
-  line-numbers-zero-style = 235
-  line-numbers-minus-style = 088
-  line-numbers-plus-style = 034
+	whitespace-error-style = 22 reverse
+	zero-style = 8
+	commit-decoration-style = bold yellow box
+	hunk-header-style = 8
+	hunk-header-decoration-style = black box
+	file-style = yellow italic
+	file-decoration-style = none
+	minus-style = strike 088
+	minus-emph-style = 001 052
+	plus-style = italic 034
+	plus-emph-style = italic black 034
+	line-numbers-zero-style = 235
+	line-numbers-minus-style = 088
+	line-numbers-plus-style = 034
 
 [interactive]
-  diffFilter = delta_ --color-only
+	diffFilter = delta_ --color-only
 
 [branch]
 	autosetupmerge = always
@@ -201,6 +203,7 @@
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
+
 # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
 [transfer]
 	fsckObjects = true
