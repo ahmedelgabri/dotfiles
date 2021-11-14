@@ -178,6 +178,13 @@ local function filetype()
   return vim.bo.filetype
 end
 
+local function orgmode()
+  return _G.orgmode
+      and type(_G.orgmode.statusline) == 'function'
+      and _G.orgmode.statusline()
+    or nil
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -197,6 +204,7 @@ function M.get_active_statusline()
     ' %*',
     paste(),
     spell(),
+    orgmode(),
     file_info(),
     rhs(),
   }

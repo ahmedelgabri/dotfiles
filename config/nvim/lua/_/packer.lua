@@ -296,15 +296,30 @@ packer.startup {
                 '%s/org/refile.org',
                 vim.env.NOTES_DIR
               ),
-              -- org_hide_emphasis_markers = true,
+              mappings = {
+                agenda = {
+                  org_agenda_later = '>',
+                  org_agenda_earlier = '<',
+                },
+                capture = {
+                  org_capture_finalize = '<Leader>w',
+                  org_capture_refile = 'R',
+                  org_capture_kill = 'Q',
+                },
+                org = {
+                  org_timestamp_up = '+',
+                  org_timestamp_down = '-',
+                },
+              },
+              org_hide_emphasis_markers = true,
               -- org_agenda_start_on_weekday = false,
-              -- org_todo_keywords = {
-              --   'TODO(t)',
-              --   'PROGRESS(p)',
-              --   '|',
-              --   'DONE(d)',
-              --   'REJECTED(r)',
-              -- },
+              org_todo_keywords = {
+                'TODO(t)',
+                'PROGRESS(p)',
+                '|',
+                'DONE(d)',
+                'REJECTED(r)',
+              },
               org_agenda_templates = {
                 T = {
                   description = 'Todo',
@@ -340,16 +355,31 @@ packer.startup {
               --         task.time:to_string()
               --       )
               --
-              --       if vim.fn.executable 'notify-send' then
-              --         vim.loop.spawn(
-              --           'notify-send',
-              --           {
-              --             args = {
-              --               '--icon=/home/ahmed/.config/nvim/pack/packager/start/orgmode.nvim/assets/orgmode_nvim.png',
-              --               string.format('%s\n%s\n%s', title, subtitle, date),
-              --             },
-              --           }
-              --         )
+              --       if vim.fn.executable 'terminal-notifier' == 1 then
+              --         vim.loop.spawn('terminal-notifier', {
+              --           args = {
+              --             '-title',
+              --             title,
+              --             '-subtitle',
+              --             subtitle,
+              --             '-message',
+              --             date,
+              --           },
+              --         })
+              --       end
+              --
+              --       if vim.fn.executable 'osascript' == 1 then
+              --         vim.loop.spawn('osascript', {
+              --           args = {
+              --             '-e',
+              --             string.format(
+              --               "display notification '%s - %s' with title '%s'",
+              --               subtitle,
+              --               date,
+              --               title
+              --             ),
+              --           },
+              --         })
               --       end
               --     end
               --   end,
