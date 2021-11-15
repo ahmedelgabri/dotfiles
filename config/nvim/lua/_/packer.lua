@@ -104,6 +104,9 @@ packer.startup {
             git_icons = false,
             file_icons = false,
             cmd = vim.env.FZF_DEFAULT_COMMAND,
+            actions = {
+              ['default'] = require('fzf-lua.actions').file_edit,
+            },
           },
           buffers = {
             file_icons = false,
