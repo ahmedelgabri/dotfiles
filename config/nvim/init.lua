@@ -180,7 +180,6 @@ vim.opt.foldlevelstart = 99 -- start unfolded
 
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
-vim.opt.wrap = true
 vim.opt.breakindent = true
 vim.opt.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
 vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
