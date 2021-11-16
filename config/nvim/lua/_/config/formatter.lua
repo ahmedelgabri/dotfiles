@@ -17,7 +17,7 @@ return function()
         '--end-of-line',
         'lf',
         '--print-width',
-        vim.bo.textwidth,
+        vim.bo.textwidth <= 80 and 80 or vim.bo.textwidth,
         '--stdin-filepath',
         vim.fn.shellescape(vim.api.nvim_buf_get_name(0)),
       },
