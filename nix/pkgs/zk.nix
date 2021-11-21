@@ -2,7 +2,7 @@
 
 buildGoModule rec {
   pname = "zk";
-  version = "0.7.0";
+  version = "0.8.0";
 
   # TODO is it possibe to pin the hash in flake.lock?
   # This should be doable with https://github.com/tweag/gomod2nix
