@@ -1,0 +1,28 @@
+# vim:ft=zsh:
+
+# Nixify the current directory
+
+emulate -L zsh
+
+unalias nixify 2>/dev/null
+
+nixify() {
+  if [ ! -e ./.envrc ]; then
+    echo "use nix" > .envrc
+    direnv allow
+  fi
+
+  if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
+    # Make a default shell.nix and then pop open an editor
+    cat > shell.nix <<'EOF'
+    with import <nixpkgs> {};
+    mkShell {
+    # name = "";
+    buildInputs = [];
+  }
+EOF
+$EDITOR shell.nix
+  fi
+}
+
+nixify "$@"
