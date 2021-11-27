@@ -45,6 +45,23 @@ ls.snippets = {
       t { '*' },
       i(0),
     }),
+    s('modeline', {
+      d(1, function()
+        local str = vim.split(vim.bo.commentstring, '%s', true)
+
+        return sn(nil, {
+          t(str[1]),
+          t ' vim:ft=',
+          i(1),
+          t ' ',
+          t(str[2] or ''),
+        })
+      end, {}),
+    }),
+    ls.parser.parse_snippet(
+      { trig = 'vimfold' },
+      '${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
+    ),
     s('bang', {
       t '#!/usr/bin/env ',
       c(1, {
@@ -54,25 +71,13 @@ ls.snippets = {
         t 'python',
         t 'node',
       }),
-    }, i(
-      0
-    )),
+    }, i(0)),
     ls.parser.parse_snippet(
       { trig = 'todo' },
       string.format(
         'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
         vim.env.GITHUB_USER
       )
-    ),
-    s(
-      'trig',
-      c(1, {
-        t 'Ugh boring, a text node',
-        i(nil, 'At least I can edit something now...'),
-        f(function(args)
-          return 'Still only counts as text!!'
-        end, {}),
-      })
     ),
     s({ trig = 'fn' }, {
       c(1, {
@@ -171,10 +176,11 @@ ls.snippets = {
     }),
   },
   markdown = {
-    s(
-      { trig = 'frontmatter', dscr = 'Document frontmatter' },
-      { t { '---', 'tags: ' }, i(1, 'value'), t { '', '---', '' } }
-    ),
+    s({ trig = 'frontmatter', dscr = 'Document frontmatter' }, {
+      t { '---', 'tags: ' },
+      i(1, 'value'),
+      t { '', '---', '' },
+    }),
     s({ trig = 'table', dscr = 'Table template' }, {
       t '| ',
       i(1, 'First Header'),
@@ -203,6 +209,24 @@ ls.snippets = {
       }),
       i(0),
       t '</script>',
+    }),
+  },
+  css = {
+    s({
+      trig = 'debug',
+      dscr = 'Print box model from https://dev.to/gajus/my-favorite-css-hack-32g3',
+    }, {
+      t {
+        '* { background-color: rgba(255,0,0,.2); }',
+        '* * { background-color: rgba(0,255,0,.2); }',
+        '* * * { background-color: rgba(0,0,255,.2); }',
+        '* * * * { background-color: rgba(255,0,255,.2); }',
+        '* * * * * { background-color: rgba(0,255,255,.2); }',
+        '* * * * * * { background-color: rgba(255,255,0,.2); }',
+        '* * * * * * * { background-color: rgba(255,0,0,.2); }',
+        '* * * * * * * * { background-color: rgba(0,255,0,.2); }',
+        '* * * * * * * * * { background-color: rgba(0,0,255,.2); }',
+      },
     }),
   },
 }
