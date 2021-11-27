@@ -1,7 +1,3 @@
--- let g:vsnip_filetypes['typescript.tsx'] = ['javascript']
--- let g:vsnip_filetypes['jinja'] = ['html', 'htmldjango']
--- let g:vsnip_filetypes['jinja2'] = ['html', 'htmldjango']
--- let g:vsnip_filetypes['html.twig'] = ['htmldjango']
 local has_ls, ls = pcall(require, 'luasnip')
 
 if not has_ls then
@@ -22,6 +18,22 @@ local function replace_each(replacer)
     return { replacer:rep(len) }
   end
 end
+
+ls.filetype_extend('jinja', { 'html', 'htmldjango' })
+ls.filetype_extend('jinja2', { 'html', 'htmldjango' })
+ls.filetype_extend('html.twig', { 'html', 'htmldjango' })
+
+ls.filetype_extend('typescript', { 'javascript' })
+ls.filetype_extend('javascriptreact', { 'javascript' })
+ls.filetype_extend('javascript.jsx', { 'javascriptreact', 'javascript' })
+ls.filetype_extend(
+  'typescriptreact',
+  { 'javascriptreact', 'typescript', 'javascript' }
+)
+ls.filetype_extend(
+  'typescript.tsx',
+  { 'javascriptreact', 'typescript', 'javascript' }
+)
 
 ls.snippets = {
   all = {
