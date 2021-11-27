@@ -18,30 +18,13 @@ in
       # workaround for now see https://github.com/NixOS/nixpkgs/issues/145634
       homebrew.brews = [ "yarn" ];
       my = {
-        env = rec {
-          FNM_DIR = "$XDG_DATA_HOME/fnm";
-          # NODE_VERSIONS = "$FNM_DIR/node-versions";
-          # NODE_VERSION_PREFIX = "v";
-        };
-
         user = {
           packages = with pkgs; [
-            fnm
-            # Hardcodes? $NODE & $npm_node_execpath to the version from nixpkgs
-            # yarn
-            # nodePackages.yarn
             nodePackages.svgo
           ];
         };
 
         hm.file = {
-          # ".config/direnv/direnvrc" = {
-          #   recursive = true;
-          #   text = ''
-          #     use_fnm() {
-          #       fnm use --install-if-missing || fnm use default
-          #     }'';
-          # };
           ".npmrc" = with config.my; {
             text = ''
               # ${nix_managed}
