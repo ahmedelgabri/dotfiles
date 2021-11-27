@@ -76,8 +76,8 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
     tmux link-window -s _shared:dotfiles -t 8
   fi
 
-  if tmux has-session -t _shared:log 2>/dev/null; then
-    tmux link-window -s _shared:log -t 9
+  if tmux has-session -t _shared:notes 2>/dev/null; then
+    tmux link-window -s _shared:notes -t 9
   fi
 
   if tmux has-session -t _shared:reddit 2>/dev/null; then
