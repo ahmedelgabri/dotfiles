@@ -218,7 +218,7 @@ local servers = {
         or nvim_lsp.util.root_pattern 'mod.ts'(fname)
     end,
   },
-  -- rnix = {},
+  rnix = {},
   jsonls = {
     filetypes = { 'json', 'jsonc' },
     settings = {
