@@ -73,6 +73,37 @@ ls.snippets = {
       }),
     }, i(0)),
     ls.parser.parse_snippet(
+      { trig = 'tmux-start' },
+      [[#!/usr/bin/env sh
+
+local SESSION_NAME="${1}"
+
+# session:n.n
+#     |   | |
+#     |   | |___ pane number
+#     |   |
+#     |   |___ window number
+#     |
+#     |_____ session name
+
+tmux rename-window "\$SESSION_NAME"
+tmux split-window -h
+tmux new-window -n "\$EDITOR"
+
+# LEFT
+tmux send-keys -t"\$SESSION_NAME":1.1 '${2}' C-m
+
+# RIGHT
+tmux send-keys -t"\$SESSION_NAME":1.2 '${3}' C-m
+
+# EDITOR
+tmux select-window -t"\$SESSION_NAME":2
+tmux send-keys -t"\$SESSION_NAME":2.1 "direnv reload && \$EDITOR" C-m
+
+tmux select-window -t"\$SESSION_NAME":2.1
+${0}]]
+    ),
+    ls.parser.parse_snippet(
       { trig = 'todo' },
       string.format(
         'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
