@@ -64,7 +64,7 @@ return function()
           name = 'buffer',
           max_item_count = 10,
           keyword_length = 5,
-          opts = {
+          options = {
             get_bufnrs = vim.api.nvim_list_bufs,
             -- get_bufnrs = function()
             --   local bufs = {}
