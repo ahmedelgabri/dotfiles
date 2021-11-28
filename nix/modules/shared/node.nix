@@ -16,7 +16,7 @@ in
   config = with lib;
     mkIf cfg.enable {
       # workaround for now see https://github.com/NixOS/nixpkgs/issues/145634
-      homebrew.brews = [ "yarn" ];
+      homebrew.brews = [ "yarn" "pnpm" ];
       my = {
         user = {
           packages = with pkgs; [
