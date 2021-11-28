@@ -203,13 +203,14 @@ local servers = {
   },
   tsserver = {
     root_dir = function(fname)
-      return nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
-        or nvim_lsp.util.root_pattern(
-          'package.json',
-          'jsconfig.json',
-          '.git'
-        )(fname)
-        or nvim_lsp.util.path.dirname(fname)
+      return not nvim_lsp.util.root_pattern '.flowconfig'(fname)
+        and (
+          nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
+          or nvim_lsp.util.root_pattern('package.json', 'jsconfig.json', '.git')(
+            fname
+          )
+          or nvim_lsp.util.path.dirname(fname)
+        )
     end,
   },
   denols = {
