@@ -10,7 +10,6 @@ alias sudo="sudo "
 alias type='type -a'
 alias which='which -a'
 
-alias KABOOM="yarn global upgrade --latest;brew cleanup -s; brew doctor"
 alias c="clear "
 alias cask="brew --cask "
 alias df="df -kh"
@@ -24,6 +23,7 @@ alias history='fc -il 1'
 alias jobs="jobs -l "
 alias play='mx ϟ'
 alias y="yarn"
+alias p="pnpm"
 # https://github.com/kovidgoyal/kitty/issues/3936
 alias kitty='SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt" kitty '
 
