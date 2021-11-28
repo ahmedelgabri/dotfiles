@@ -175,7 +175,6 @@ vim.opt.fillchars = {
   foldclose = '▸',
 }
 
-vim.opt.foldtext = 'utils#NeatFoldText()'
 vim.opt.foldlevelstart = 99 -- start unfolded
 
 vim.opt.linebreak = true
