@@ -60,7 +60,6 @@ local languages = {
 return {
   -- cmd = {"efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "5"},
   init_options = { documentFormatting = false, codeAction = true },
-  root_dir = vim.loop.cwd,
   filetypes = vim.tbl_keys(languages), -- needed to work on new buffers
   settings = {
     rootMarkers = { '.git/', vim.loop.cwd() },
