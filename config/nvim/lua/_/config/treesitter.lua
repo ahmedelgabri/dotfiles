@@ -33,12 +33,28 @@ return function()
     indent = {
       enable = true,
     },
+    query_linter = {
+      enable = true,
+      use_virtual_text = true,
+      lint_events = { 'BufWrite', 'CursorHold' },
+    },
     highlight = {
       enable = true,
-      disable = { 'org' }, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+      use_languagetree = true,
+      disable = function(lang, bufnr) -- Disable in large files
+        -- Remove the org part to use TS highlighter for some of the highlights (Experimental)
+        return lang == 'org' or vim.api.nvim_buf_line_count(bufnr) > 10000
+      end,
       -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
       -- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
-      additional_vim_regex_highlighting = { 'python', 'org' }, -- (org) Required since TS highlighter doesn't support all syntax features (conceal)
+      -- Required since TS highlighter doesn't support all syntax features (conceal)
+      additional_vim_regex_highlighting = {
+        'python',
+        'org',
+        'lua',
+        'vim',
+        'zsh',
+      },
     },
     textobjects = {
       select = {
