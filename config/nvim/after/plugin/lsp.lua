@@ -14,14 +14,12 @@ if not has_lsp then
   return
 end
 
-local signs = { 'Error', 'Warning', 'Hint', 'Information' }
+local signs = { 'Error', 'Warn', 'Hint', 'Info' }
 
 for _, type in pairs(signs) do
-  -- vim.fn.sign_define('DiagnosticSign' .. type, {
-  vim.fn.sign_define('LspDiagnosticsSign' .. type, {
+  vim.fn.sign_define('DiagnosticSign' .. type, {
     text = utils.get_icon(string.lower(type)),
-    -- texthl = 'DiagnosticDefault' .. type,
-    texthl = 'LspDiagnosticsDefault' .. type,
+    texthl = 'DiagnosticSign' .. type,
     linehl = '',
     numhl = '',
   })
@@ -35,13 +33,13 @@ local mappings = {
   ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
   ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
   ['<leader>ld'] = {
-    '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ focusable = false,  border = "single" })<CR>',
+    '<cmd>lua vim.diagnostic.open_float(0, { focusable = false,  border = "single", close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
   },
   ['[d'] = {
-    '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single", focusable = false, source = "always" }})<cr>',
+    '<cmd>lua vim.diagnostic.goto_next()<cr>',
   },
   [']d'] = {
-    '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single", focusable = false, source = "always" }})<CR>',
+    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
   },
   ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
   ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
@@ -58,33 +56,17 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
   { border = 'single', focusable = false, silent = true }
 )
 
--- local diagnostic_ns = vim.api.nvim_create_namespace 'diagnostics'
--- vim.diagnostic.config({
---   virtual_text = false,
---   -- virtual_text = {
---   --   show_source = 'always',
---   --   spacing = 4,
---   --   prefix = '■', -- Could be '●', '▎', 'x'
---   -- },
---   underline = false,
---   signs = true,
---   update_in_insert = false,
--- }, diagnostic_ns)
-
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-    virtual_text = false,
-    -- virtual_text = {
-    --   show_source = 'always',
-    --   spacing = 4,
-    --   prefix = '■', -- Could be '●', '▎', 'x'
-    -- },
-    underline = false,
-    signs = true,
-    update_in_insert = false,
-  }
-)
+vim.diagnostic.config {
+  virtual_text = false,
+  -- virtual_text = {
+  --   show_source = 'always',
+  --   spacing = 4,
+  --   prefix = '■', -- Could be '●', '▎', 'x'
+  -- },
+  underline = true,
+  signs = true,
+  update_in_insert = false,
+}
 
 local on_attach = function(client)
   -- ---------------

@@ -161,7 +161,11 @@ vim.opt.listchars = {
   precedes = '«',
   trail = '␣',
 }
-vim.opt.joinspaces = false
+
+if not vim.fn.has 'nvim-0.6' then
+  vim.opt.joinspaces = false
+end
+
 vim.opt.concealcursor = 'n'
 
 vim.opt.fillchars = {
@@ -179,6 +183,7 @@ vim.opt.foldlevelstart = 99 -- start unfolded
 
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
+vim.opt.wrap = false
 vim.opt.breakindent = true
 vim.opt.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
 vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
@@ -186,7 +191,9 @@ vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-
 -- show where you are
 vim.opt.ruler = true
 
-vim.opt.hidden = true
+if not vim.fn.has 'nvim-0.6' then
+  vim.opt.hidden = true
+end
 
 -- Make tilde command behave like an operator.
 vim.opt.tildeop = true
@@ -208,8 +215,15 @@ vim.opt.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load
 vim.opt.backupcopy = 'yes' -- overwrite files to update, instead of renaming + rewriting
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.backupdir = string.format('%s%s', vim.fn.stdpath 'data', '/backup//') -- keep backup files out of the way
-vim.opt.backupdir:append '.'
+
+if not vim.fn.has 'nvim-0.6' then
+  vim.opt.backupdir = string.format(
+    '%s,%s%s',
+    '.',
+    vim.fn.stdpath 'data',
+    '/backup//'
+  ) -- keep backup files out of the way
+end
 
 vim.opt.swapfile = false
 vim.opt.directory = string.format('%s%s', vim.fn.stdpath 'data', '/swap//') -- keep swap files out of the way
@@ -245,7 +259,9 @@ else
   end)
 end
 
-vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
+if not vim.fn.has 'nvim-0.6' then
+  vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
+end
 
 -- cursor behavior:
 --   - no blinking in normal/visual mode

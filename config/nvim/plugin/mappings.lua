@@ -42,8 +42,10 @@ map.xnoremap(
   { expr = true }
 )
 
--- Make `Y` behave like `C` and `D` (to the end of line)
-map.nnoremap('Y', 'y$')
+if not vim.fn.has 'nvim-0.6' then
+  -- Make `Y` behave like `C` and `D` (to the end of line)
+  map.nnoremap('Y', 'y$')
+end
 
 -- Disable arrow keys
 map.imap('<up>', '<nop>')
