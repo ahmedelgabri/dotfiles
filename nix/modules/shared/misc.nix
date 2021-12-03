@@ -20,6 +20,10 @@ in
         ".gemrc" = { source = ../../../config/.gemrc; };
         ".curlrc" = { source = ../../../config/.curlrc; };
         ".ignore" = { source = ../../../config/.ignore; };
+        ".config/fd/ignore" = {
+          recursive = true;
+          text = builtins.readFile ../../../config/.ignore;
+        };
         ".mailcap" = { source = ../../../config/.mailcap; };
         ".psqlrc" = { source = ../../../config/.psqlrc; };
         ".urlview" = { source = ../../../config/.urlview; };
