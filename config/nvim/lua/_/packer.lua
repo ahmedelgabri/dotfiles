@@ -121,9 +121,12 @@ packer.startup {
     use { 'https://github.com/tpope/vim-repeat' }
     use { 'https://github.com/machakann/vim-sandwich' }
     use {
-      'https://github.com/tomtom/tcomment_vim',
-      keys = { 'gc' },
-      config = require '_.config.tcomment',
+      'https://github.com/numToStr/Comment.nvim',
+      requires = {
+        'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
+      },
+      keys = { 'gc', 'gb' },
+      config = require '_.config.comment',
     }
     use { 'https://github.com/wincent/loupe' }
     use {
