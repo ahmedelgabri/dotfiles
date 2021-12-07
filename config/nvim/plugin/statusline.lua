@@ -182,7 +182,7 @@ local function orgmode()
   return _G.orgmode
       and type(_G.orgmode.statusline) == 'function'
       and _G.orgmode.statusline()
-    or nil
+    or ''
 end
 
 ---------------------------------------------------------------------------------
