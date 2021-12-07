@@ -24,6 +24,8 @@ local urlDispatcherConfig = {
 
 if hs.host.localizedName() ~= 'pandoras-box' then
   urlDispatcherConfig.config.url_patterns = {
+    { 'https?://slack.com/openid/*', 'com.google.Chrome' },
+    { 'https?://github.com/miroapp/*', 'com.google.Chrome' },
     { 'https?://miro.*', 'com.google.Chrome' },
     { 'https?://dev.*.com', 'com.google.Chrome' },
     { 'https?://localhost:*', 'com.google.Chrome' },
