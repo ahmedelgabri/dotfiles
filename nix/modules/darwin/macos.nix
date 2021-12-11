@@ -73,6 +73,16 @@ in
             showhidden = true;
             static-only = true;
             tilesize = 32;
+            # Hot corners, reset them all.
+            # Not supported in nix-darwin yet
+            # wvous-tl-corner = 0;
+            # wvous-tl-modifier = 0;
+            # wvous-tr-corner = 0;
+            # wvous-tr-modifier = 0;
+            # wvous-bl-corner = 0;
+            # wvous-bl-modifier = 0;
+            # wvous-br-corner = 0;
+            # wvous-br-modifier = 0;
           };
 
           finder = {
