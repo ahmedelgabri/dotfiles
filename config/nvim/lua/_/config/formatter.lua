@@ -42,6 +42,7 @@ return function()
     ['javascript.jsx'] = { prettier },
     ['typescript.tsx'] = { prettier },
     markdown = { prettier },
+    ['markdown.mdx'] = { prettier },
     mdx = { prettier },
     css = { prettier },
     json = { prettier },
