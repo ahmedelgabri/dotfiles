@@ -56,7 +56,7 @@ packer.startup {
               nix = 'nix',
               res = 'rescript',
               py = 'python',
-              mdx = 'mdx',
+              mdx = 'markdown.mdx',
             },
             literal = {
               ['.stylelintrc'] = 'json',
@@ -376,7 +376,10 @@ packer.startup {
     }
     use { 'https://github.com/jez/vim-github-hub' }
     use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
-    use { 'https://github.com/jxnblk/vim-mdx-js', ft = { 'markdown', 'mdx' } }
+    use {
+      'https://github.com/jxnblk/vim-mdx-js',
+      ft = { 'mdx', 'markdown.mdx' },
+    }
     -- use {
     --   'https://github.com/lukas-reineke/headlines.nvim',
     --   config = function()
