@@ -5,14 +5,13 @@
 # - Inline files when possible instead of souring then
 # - User specific shell files are to override or for machine specific setup
 
-{ pkgs, lib, config, inputs, options, ... }:
+{ pkgs, lib, config, options, ... }:
 
 let
 
   cfg = config.my.modules.shell;
   inherit (config.my.user) home;
 
-  z = pkgs.callPackage ../../pkgs/z.nix { source = inputs.z; };
   local_zshrc = "${home}/.zshrc.local";
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];

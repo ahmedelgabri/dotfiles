@@ -66,7 +66,7 @@
 
   outputs = { self, ... }@inputs:
     let
-      sharedHostsConfig = { config, pkgs, lib, options, ... }: {
+      sharedHostsConfig = { config, pkgs, ... }: {
         nix = {
           nixPath = [
             "nixpkgs=${inputs.nixpkgs}"
@@ -121,15 +121,15 @@
 
     in
     {
-      overlay = (final: prev: {
-        pragmatapro = (prev.callPackage ./nix/pkgs/pragmatapro.nix { });
+      overlay = _: prev: {
+        pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix { };
 
-        zk = (prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; });
+        zk = prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; };
 
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
-      });
+      };
 
       darwinConfigurations = {
         "pandoras-box" = inputs.darwin.lib.darwinSystem {
