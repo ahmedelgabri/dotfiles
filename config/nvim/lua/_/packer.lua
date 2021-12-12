@@ -28,6 +28,9 @@ if not packer_exists then
   return
 end
 
+-- HACK: see https://github.com/wbthomason/packer.nvim/issues/180
+vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
+
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
 local PACKER_COMPILED_PATH = vim.fn.stdpath 'cache'
   .. '/packer/packer_compiled.lua'
@@ -166,10 +169,6 @@ packer.startup {
     use {
       'https://github.com/neovim/nvim-lspconfig',
       requires = {
-        {
-          'https://github.com/tjdevries/lsp_extensions.nvim',
-          config = require '_.config.lsp.lsp_extenstions',
-        },
         {
           'https://github.com/folke/todo-comments.nvim',
           config = function()
