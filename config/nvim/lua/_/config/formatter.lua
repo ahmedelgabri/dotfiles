@@ -102,6 +102,12 @@ return function()
           stdin = true,
         }
       end,
+      function()
+        return {
+          exe = 'statix fix --stdin',
+          stdin = true,
+        }
+      end,
     },
     lua = {
       function()

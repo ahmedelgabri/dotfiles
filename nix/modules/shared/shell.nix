@@ -109,6 +109,7 @@ in
               graph-easy
               graphviz
               statix
+              nix-linter # Until statix pick up, see https://github.com/nerdypepper/statix/issues/18
             ];
           };
 

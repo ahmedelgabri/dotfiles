@@ -48,6 +48,21 @@ local vint = {
   lintSource = 'vint',
 }
 
+local statix = {
+  lintCommand = 'statix check --stdin --format=errfmt',
+  lintStdin = true,
+  lintIgnoreExitCode = true,
+  lintFormats = { '%f>%l:%c:%t:%n:%m' },
+  lintSource = 'statix',
+}
+
+local nixlinter = {
+  lintCommand = 'nix-linter -',
+  lintStdin = true,
+  lintFormats = { '%m at %f:%l:%c' },
+  lintSource = 'nix-linter',
+}
+
 local languages = {
   vim = { vint },
   go = { golint },
@@ -55,6 +70,7 @@ local languages = {
   sh = { shellcheck },
   bash = { shellcheck },
   dockerfile = { hadolint },
+  nix = { nixlinter, statix },
 }
 
 return {
