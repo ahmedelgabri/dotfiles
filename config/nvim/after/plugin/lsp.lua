@@ -143,17 +143,13 @@ local on_attach = function(client)
     end)
   end
 
-  -- Formatting is handled by EFM
+  -- Formatting is handled by null
   if vim.tbl_contains({ 'tsserver', 'gopls', 'rnix' }, client.name) then
     client.resolved_capabilities.document_formatting = false
-  end
-
-  if client.resolved_capabilities.document_formatting then
-    au.augroup('__LSP_FORMATTING__', function()
-      au.autocmd('BufWritePre', '<buffer>', 'lua vim.lsp.buf.formatting_sync()')
-    end)
+    client.resolved_capabilities.document_range_formatting = false
   end
 end
+
 
 local servers = {
   cssls = {},
@@ -187,7 +183,6 @@ local servers = {
     cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
     root_dir = nvim_lsp.util.path.dirname,
   },
-  efm = require '_.config.lsp.efm',
   sumneko_lua = require '_.config.lsp.sumneko',
   rust_analyzer = {},
   gopls = {
@@ -243,7 +238,11 @@ local servers = {
             url = 'https://json.schemastore.org/eslintrc.json',
           },
           {
-            fileMatch = { '.babelrc', '.babelrc.json', 'babel.config.json' },
+            fileMatch = {
+              '.babelrc',
+              '.babelrc.json',
+              'babel.config.json',
+            },
             url = 'https://json.schemastore.org/babelrc.json',
           },
           {
@@ -310,12 +309,14 @@ for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
   if not server_disabled then
-    nvim_lsp[server].setup(
-      vim.tbl_deep_extend(
-        'force',
-        { on_attach = on_attach, capabilities = capabilities },
-        config
-      )
-    )
+    nvim_lsp[server].setup(vim.tbl_deep_extend('force', {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      flags = {
+        debounce_text_changes = 150,
+      },
+    }, config))
   end
 end
+
+require('_.config.lsp.null-ls')(on_attach)

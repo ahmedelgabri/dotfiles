@@ -170,6 +170,12 @@ packer.startup {
       'https://github.com/neovim/nvim-lspconfig',
       requires = {
         {
+          'https://github.com/jose-elias-alvarez/null-ls.nvim',
+          requires = {
+            'https://github.com/nvim-lua/plenary.nvim',
+          },
+        },
+        {
           'https://github.com/folke/todo-comments.nvim',
           config = function()
             require('todo-comments').setup {}
