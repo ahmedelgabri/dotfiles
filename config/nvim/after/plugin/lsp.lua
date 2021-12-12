@@ -142,6 +142,17 @@ local on_attach = function(client)
       )
     end)
   end
+
+  -- Formatting is handled by EFM
+  if vim.tbl_contains({ 'tsserver', 'gopls', 'rnix' }, client.name) then
+    client.resolved_capabilities.document_formatting = false
+  end
+
+  if client.resolved_capabilities.document_formatting then
+    au.augroup('__LSP_FORMATTING__', function()
+      au.autocmd('BufWritePre', '<buffer>', 'lua vim.lsp.buf.formatting_sync()')
+    end)
+  end
 end
 
 local servers = {

@@ -189,10 +189,6 @@ packer.startup {
       },
     }
     use {
-      'https://github.com/mhartington/formatter.nvim',
-      config = require '_.config.formatter',
-    }
-    use {
       'https://github.com/L3MON4D3/LuaSnip',
       requires = {
         { 'https://github.com/rafamadriz/friendly-snippets' },

@@ -74,6 +74,6 @@ au.augroup('__myautocmds__', function()
   au.autocmd('BufLeave', '*.min.*', ':LspStart')
 
   au.autocmd('BufWritePost', '*/spell/*.add', 'silent! :mkspell! %')
-  au.autocmd('BufWritePost', '*', 'FormatWrite')
+  -- au.autocmd('BufWritePost', '*', 'FormatWrite')
   au.autocmd('BufWritePost', 'packer.lua', 'PackerCompile')
 end)
