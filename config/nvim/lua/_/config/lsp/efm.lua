@@ -150,6 +150,7 @@ local nixlinter = {
   lintSource = 'nix-linter',
 }
 
+<<<<<<< HEAD
 local selene = {
   lintSource = 'selene',
   lintCommand = 'selene --quiet -',
