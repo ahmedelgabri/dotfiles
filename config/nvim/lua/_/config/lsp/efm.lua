@@ -150,6 +150,16 @@ local nixlinter = {
   lintSource = 'nix-linter',
 }
 
+local selene = {
+  lintSource = 'selene',
+  lintCommand = 'selene --quiet -',
+  lintStdin = true,
+  lintFormats = {
+    '-:%l:%c: %tarning[%.%+]: %m',
+    '-:%l:%c: %trror[%.%+]: %m',
+  },
+}
+
 local languages = {
   json = { jsonfmt },
   vim = { vint },
@@ -161,7 +171,7 @@ local languages = {
   nix = { nixfmt, statixfmt, nixlinter, statix },
   reason = { refmt },
   rust = { rustfmt },
-  lua = { stylua },
+  lua = { stylua, selene },
 }
 
 for _, value in ipairs {

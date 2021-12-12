@@ -83,6 +83,7 @@ in
             packages = with pkgs; [
               bottom # fancy version of `top` with ASCII graphs
               tealdeer # rust implementation of `tldr`
+              fzf
               ncdu
               bat
               jq
@@ -107,8 +108,6 @@ in
               # buku
               graph-easy
               graphviz
-              statix
-              nix-linter # Until statix pick up, see https://github.com/nerdypepper/statix/issues/18
             ];
           };
 

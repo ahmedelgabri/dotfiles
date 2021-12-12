@@ -1,0 +1,20 @@
+# neovim
+[vim]
+any = true
+
+[_]
+any = true
+
+[packer_plugins]
+any = true
+
+[jit]
+any = true
+
+# hammerspoon
+[spoon]
+any = true
+
+[hs]
+any = true
+
