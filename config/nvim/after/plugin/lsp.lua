@@ -150,9 +150,9 @@ local on_attach = function(client)
   end
 end
 
-
 local servers = {
   cssls = {},
+  html = {},
   bashls = {},
   vimls = {},
   pyright = {},
