@@ -319,4 +319,4 @@ for server, config in pairs(servers) do
   end
 end
 
-require('_.config.lsp.null-ls')(on_attach)
+require '_.config.lsp.null-ls'(on_attach)
