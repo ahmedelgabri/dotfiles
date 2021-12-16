@@ -31,12 +31,8 @@ map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
 map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
-local function fzf_statusline()
-  vim.cmd [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]]
-end
-
 au.augroup('__my_fzf__', function()
-  au.autocmd('User', 'FzfStatusLine', fzf_statusline)
+  au.autocmd('User', 'FzfStatusLine', [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]])
 end)
 
 function FzfSpellSink(word)
