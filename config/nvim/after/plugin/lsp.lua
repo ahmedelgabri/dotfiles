@@ -62,10 +62,13 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 vim.diagnostic.config {
   virtual_text = false,
   -- virtual_text = {
-  --   show_source = 'always',
+  --   source = 'always',
   --   spacing = 4,
   --   prefix = '■', -- Could be '●', '▎', 'x'
   -- },
+  float = {
+    source = 'always',
+  },
   underline = true,
   signs = true,
   update_in_insert = false,
@@ -117,11 +120,6 @@ local on_attach = function(client)
     au.augroup('__LSP_HIGHLIGHTS__', function()
       au.autocmd(
         'CursorHold',
-        '<buffer>',
-        'lua vim.lsp.buf.document_highlight()'
-      )
-      au.autocmd(
-        'CursorHoldI',
         '<buffer>',
         'lua vim.lsp.buf.document_highlight()'
       )
