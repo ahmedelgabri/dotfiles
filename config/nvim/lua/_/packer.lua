@@ -50,29 +50,6 @@ packer.init {
 packer.startup {
   function(use)
     use { 'https://github.com/wbthomason/packer.nvim' }
-    use {
-      'https://github.com/nathom/filetype.nvim',
-      config = function()
-        require('filetype').setup {
-          overrides = {
-            extensions = {
-              nix = 'nix',
-              res = 'rescript',
-              py = 'python',
-              mdx = 'markdown.mdx',
-            },
-            literal = {
-              ['.stylelintrc'] = 'json',
-              ['.envrc'] = 'bash',
-              ['package.json'] = 'jsonc',
-            },
-            complex = {
-              ['tsconfig*'] = 'jsonc',
-            },
-          },
-        }
-      end,
-    }
     use { 'https://github.com/windwp/nvim-autopairs' }
     use {
       'https://github.com/soywod/himalaya',
