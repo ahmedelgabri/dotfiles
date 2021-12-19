@@ -142,7 +142,10 @@ local on_attach = function(client)
   end
 
   -- Formatting is handled by null
-  if vim.tbl_contains({ 'tsserver', 'gopls', 'rnix' }, client.name) then
+  if
+    client.name ~= 'null-ls'
+    and client.resolved_capabilities.document_formatting
+  then
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
   end
