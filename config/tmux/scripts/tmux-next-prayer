@@ -10,13 +10,12 @@ import io
 import time
 from datetime import datetime
 from tempfile import gettempdir
-from urllib.request import urlopen, HTTPError, Request
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
 from random import choice
 
-CACHE = os.path.join(
-    gettempdir(),
-    ".{}.json".format(time.strftime("%d-%m-%Y", datetime.now().timetuple())),
-)
+TODAY_DATE = time.strftime("%d-%m-%Y", datetime.now().timetuple())
+CACHE = os.path.join(gettempdir(), f".{TODAY_DATE}.json")
 RED = "#[fg=red]" if os.environ["TMUX"] else "\033[1;31;40m"
 PRAYERS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
 
@@ -35,39 +34,39 @@ AGENTS = [
 
 
 def get_api():
-    url = "https://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={method}&tune=0,-18,0,0,0,0,0,12,0".format(
-        city=CITY, country=COUNTRY, method=METHOD
-    )
+    url = f"https://api.aladhan.com/v1/timingsByCity?city={CITY}&country={COUNTRY}&method={METHOD}&tune=0,-18,0,0,0,0,0,12,0"
 
     try:
         req = Request(url, data=None, headers={"User-Agent": choice(AGENTS)})
-        response = urlopen(req)
-        data = json.load(response)["data"]
+        with urlopen(req) as response:
+            data = json.load(response)["data"]
 
-        return {"timings": data["timings"], "readable_date": data["date"]["readable"]}
+            return {
+                "timings": data["timings"],
+                "readable_date": data["date"]["readable"],
+            }
     except HTTPError as err:
         if err.code == 403:
             print(err)
         else:
             print("Something happened! Error code", err.code)
+        return {}
 
 
 def get_data():
     if os.path.isfile(CACHE) and os.access(CACHE, os.R_OK):
-        with io.open(CACHE) as cache:
+        with io.open(CACHE, encoding="utf8") as cache:
             return json.load(cache)
     else:
         data = get_api()
-        with io.open(CACHE, "w") as cache:
+        with io.open(CACHE, "w", encoding="utf8") as cache:
             cache.write(json.dumps(data))
 
         return data
 
 
 def get_prayer_time(prayer, readable_date, timings):
-    return datetime.strptime(
-        "{0} {1}".format(readable_date, timings[prayer]), "%d %b %Y %H:%M"
-    )
+    return datetime.strptime(f"{readable_date} {timings[prayer]}", "%d %b %Y %H:%M")
 
 
 def get_prayer(now):
@@ -80,7 +79,7 @@ def get_prayer(now):
     if now > after_isha:
         fajr = PRAYERS[0]
 
-        result = "{prayer}: {time}".format(prayer=fajr, time=timings[fajr])
+        result = f"{fajr}: {timings[fajr]}"
     else:
         for prayer in PRAYERS:
             prayer_time = get_prayer_time(prayer, readable_date, timings)
@@ -89,12 +88,9 @@ def get_prayer(now):
                 now_timestamp = time.mktime(now.timetuple())
                 prayer_time_timestamp = time.mktime(prayer_time.timetuple())
                 time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
+                color = "" if time_remaning > 30 else RED
 
-                result = "{color}{prayer}: {time}".format(
-                    prayer=prayer,
-                    time=timings[prayer],
-                    color="" if time_remaning > 30 else RED,
-                )
+                result = f"{color}{prayer}: {timings[prayer]}"
 
                 break
 
