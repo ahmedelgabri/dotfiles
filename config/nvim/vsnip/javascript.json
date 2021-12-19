@@ -197,16 +197,6 @@
     "body": "set ${1:propertyName}(${2:value}) {\n\t${0};\n}",
     "description": "Creates a setter property inside a class in ES6 syntax"
   },
-  "describe": {
-    "prefix": "describe",
-    "body": " describe('${1}', () => {\n\t${0:${TM_SELECTED_TEXT}} })",
-    "description": "Describe block"
-  },
-  "it": {
-    "prefix": "it",
-    "body": " it('${1}', () => {\n\t${0:${TM_SELECTED_TEXT}} })",
-    "description": "it block"
-  },
   "expect": {
     "prefix": "expect",
     "body": "expect(${1}).to${2}(${3})",
