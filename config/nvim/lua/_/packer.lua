@@ -341,7 +341,6 @@ packer.startup {
     }
     use {
       'https://github.com/plasticboy/vim-markdown',
-      config = require '_.config.markdown',
       ft = { 'markdown' },
       requires = {
         { 'https://github.com/godlygeek/tabular', after = 'vim-markdown' },

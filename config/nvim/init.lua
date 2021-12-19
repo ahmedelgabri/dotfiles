@@ -270,6 +270,31 @@ vim.opt.guicursor:append 'n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-b
 -------------------------------------------------------------------------------
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------
+vim.g.markdown_fenced_languages = {
+  'css',
+  'erb=eruby',
+  'javascript',
+  'js=javascript',
+  'jsx=javascriptreact',
+  'ts=typescript',
+  'tsx=typescriptreact',
+  'json=jsonc',
+  'ruby',
+  'sass',
+  'scss=sass',
+  'xml',
+  'html',
+  'py=python',
+  'python',
+  'clojure',
+  'clj=clojure',
+  'clojurescript',
+  'cljs=clojurescript',
+  'stylus=css',
+  'less=css',
+  'viml=vim',
+  'mdx=markdown',
+}
 
 require '_.packer'
 
