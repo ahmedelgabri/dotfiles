@@ -139,7 +139,8 @@ return function(on_attach)
         },
       },
       nls.builtins.formatting.stylua,
-      nls.builtins.formatting.gofmt,
+      -- goimports runs gofmt too
+      -- https://pkg.go.dev/golang.org/x/tools/cmd/goimports
       nls.builtins.formatting.goimports,
       -- nls.builtins.diagnostics.golint,
       nls.builtins.diagnostics.shellcheck.with {
