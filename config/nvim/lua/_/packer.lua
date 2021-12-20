@@ -32,22 +32,16 @@ end
 vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
 local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
-local PACKER_COMPILED_PATH = vim.fn.stdpath 'cache'
-  .. '/packer/packer_compiled.lua'
-
-packer.init {
-  max_jobs = 70, -- https://github.com/wbthomason/packer.nvim/issues/202
-  compile_path = PACKER_COMPILED_PATH,
-  package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
-  display = {
-    non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
-    open_cmd = function()
-      return require('packer.util').float { border = 'single' }
-    end,
+return packer.startup {
+  config = {
+    max_jobs = 70, -- https://github.com/wbthomason/packer.nvim/issues/202
+    display = {
+      non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
+      open_cmd = function()
+        return require('packer.util').float { border = 'single' }
+      end,
+    },
   },
-}
-
-packer.startup {
   function(use)
     use { 'https://github.com/wbthomason/packer.nvim' }
     use { 'https://github.com/windwp/nvim-autopairs' }
@@ -434,10 +428,3 @@ packer.startup {
     -- }}}
   end,
 }
-
-if
-  not vim.g.packer_compiled_loaded and vim.loop.fs_stat(PACKER_COMPILED_PATH)
-then
-  vim.cmd(string.format('source %s', PACKER_COMPILED_PATH))
-  vim.g.packer_compiled_loaded = true
-end
