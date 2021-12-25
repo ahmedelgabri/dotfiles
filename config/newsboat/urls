@@ -237,6 +237,7 @@
   https://antfu.me/feed.xml "Blog" "Vue" "JavaScript" "TypeScript"
   https://maxschmitt.me/feed.rss "Blog" "JavaScript" "Next.js" "React"
   https://www.bram.us/feed/ "Blog" "Web"
+  https://rakyll.org/index.xml "Blog" "Go"
 # }}}
 
 # Browsers {{{
