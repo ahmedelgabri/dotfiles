@@ -7,8 +7,6 @@ require '_.notes'
 
 vim.cmd [[command! -complete=customlist,v:lua._.notes.get_notes_completion -nargs=* ONote call v:lua._.notes.note_in_obsidian(<f-args>)]]
 vim.cmd [[command! -nargs=* -bang Notes call v:lua._.notes.search_notes(<q-args>, <bang>0)]]
-vim.cmd [[command! -nargs=0 ZkIndex :lua require'lspconfig'.zk.index()]]
-vim.cmd [[command! -nargs=? ZkNew :lua require'lspconfig'.zk.new(<args>)]]
 
 map.nnoremap(
   '<leader>zn',

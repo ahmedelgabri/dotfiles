@@ -180,10 +180,6 @@ local servers = {
       end,
     },
   },
-  zk = {
-    cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
-    root_dir = nvim_lsp.util.path.dirname,
-  },
   sumneko_lua = require '_.config.lsp.sumneko',
   rust_analyzer = {},
   gopls = {
@@ -321,3 +317,26 @@ for server, config in pairs(servers) do
 end
 
 require '_.config.lsp.null-ls'(on_attach)
+
+pcall(function()
+  require('zk').setup {
+    -- create user commands such as :ZkNew
+    create_user_commands = true,
+
+    lsp = {
+      -- `config` is passed to `vim.lsp.start_client(config)`
+      config = {
+        -- cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
+        cmd = { 'zk', 'lsp' },
+        name = 'zk',
+        -- root_dir = nvim_lsp.util.path.dirname,
+        on_attach = on_attach,
+      },
+
+      auto_attach = {
+        enabled = true,
+        filetypes = { 'markdown' },
+      },
+    },
+  }
+end)
