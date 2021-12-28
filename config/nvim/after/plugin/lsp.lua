@@ -106,15 +106,16 @@ local mappings = {
   ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
 }
 
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = getBorder(), focusable = false, silent = true }
-)
-
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = getBorder(), focusable = false, silent = true }
-)
+local handlers = {
+  ['textDocument/hover'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = getBorder(), focusable = false, silent = true }
+  ),
+  ['textDocument/signatureHelp'] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    { border = getBorder(), focusable = false, silent = true }
+  ),
+}
 
 local on_attach = function(client, bufnr)
   -- ---------------
@@ -344,17 +345,20 @@ else
   }
 end
 
+local shared = {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  handlers = handlers,
+  flags = {
+    debounce_text_changes = 150,
+  },
+}
+
 for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
 
   if not server_disabled then
-    nvim_lsp[server].setup(vim.tbl_deep_extend('force', {
-      on_attach = on_attach,
-      capabilities = capabilities,
-      flags = {
-        debounce_text_changes = 150,
-      },
-    }, config))
+    nvim_lsp[server].setup(vim.tbl_deep_extend('force', shared, config))
   end
 end
 
@@ -367,13 +371,12 @@ pcall(function()
 
     lsp = {
       -- `config` is passed to `vim.lsp.start_client(config)`
-      config = {
+      config = vim.tbl_deep_extend('force', shared, {
         -- cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
         cmd = { 'zk', 'lsp' },
         name = 'zk',
         -- root_dir = nvim_lsp.util.path.dirname,
-        on_attach = on_attach,
-      },
+      }),
 
       auto_attach = {
         enabled = true,
