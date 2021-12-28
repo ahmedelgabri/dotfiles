@@ -1,4 +1,4 @@
-return function(on_attach)
+return function()
   local ok, nls = pcall(require, 'null-ls')
 
   if not ok then
@@ -94,8 +94,6 @@ return function(on_attach)
           )
         end)
       end
-
-      on_attach(client)
     end,
     sources = {
       refmt,

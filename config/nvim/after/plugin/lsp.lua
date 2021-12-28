@@ -28,36 +28,46 @@ for _, type in pairs(signs) do
   })
 end
 
-vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+local function getBorder(highlight)
+  return {
+    { '╭', highlight or 'FloatBorder' },
+    { '─', highlight or 'FloatBorder' },
+    { '╮', highlight or 'FloatBorder' },
+    { '│', highlight or 'FloatBorder' },
+    { '╯', highlight or 'FloatBorder' },
+    { '─', highlight or 'FloatBorder' },
+    { '╰', highlight or 'FloatBorder' },
+    { '│', highlight or 'FloatBorder' },
+  }
+end
 
-local mappings = {
-  ['<leader>a'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
-  ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
-  ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
-  ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
-  ['<leader>ld'] = {
-    '<cmd>lua vim.diagnostic.open_float(0, { focusable = false,  border = "single", close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
-  },
-  ['[d'] = {
-    '<cmd>lua vim.diagnostic.goto_next()<cr>',
-  },
-  [']d'] = {
-    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
-  },
-  ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
-  ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
-  ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
-}
-
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = 'single', focusable = false, silent = true }
-)
-
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = 'single', focusable = false, silent = true }
-)
+-- wrap open_float to inspect diagnostics and use the severity color for border
+-- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
+vim.diagnostic.open_float = (function(orig)
+  return function(bufnr, opts)
+    local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local opts = opts or {}
+    -- A more robust solution would check the "scope" value in `opts` to
+    -- determine where to get diagnostics from, but if you're only using
+    -- this for your own purposes you can make it as simple as you like
+    local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { lnum = lnum })
+    local max_severity = vim.diagnostic.severity.HINT
+    for _, d in ipairs(diagnostics) do
+      -- Equality is "less than" based on how the severities are encoded
+      if d.severity < max_severity then
+        max_severity = d.severity
+      end
+    end
+    local border_color = ({
+      [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+      [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+      [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+      [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+    })[max_severity]
+    opts.border = getBorder(border_color)
+    orig(bufnr, opts)
+  end
+end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
   virtual_text = false,
@@ -72,9 +82,41 @@ vim.diagnostic.config {
   underline = true,
   signs = true,
   update_in_insert = false,
+  severity_sort = true,
 }
 
-local on_attach = function(client)
+vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+local mappings = {
+  ['<leader>a'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
+  ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
+  ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
+  ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
+  ['<leader>ld'] = {
+    '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false,  close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
+  },
+  ['[d'] = {
+    '<cmd>lua vim.diagnostic.goto_next()<cr>',
+  },
+  [']d'] = {
+    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
+  },
+  ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
+  ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
+  ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
+}
+
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = getBorder(), focusable = false, silent = true }
+)
+
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = getBorder(), focusable = false, silent = true }
+)
+
+local on_attach = function(client, bufnr)
   -- ---------------
   -- GENERAL
   -- ---------------
@@ -85,7 +127,7 @@ local on_attach = function(client)
   -- ---------------
   for lhs, rhs in pairs(mappings) do
     if lhs == 'K' then
-      if vim.api.nvim_buf_get_option(0, 'filetype') ~= 'vim' then
+      if vim.api.nvim_buf_get_option(bufnr, 'filetype') ~= 'vim' then
         map.nnoremap(lhs, rhs[1], map_opts)
       end
     else
@@ -316,7 +358,7 @@ for server, config in pairs(servers) do
   end
 end
 
-require '_.config.lsp.null-ls'(on_attach)
+require '_.config.lsp.null-ls'()
 
 pcall(function()
   require('zk').setup {
