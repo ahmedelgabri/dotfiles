@@ -186,9 +186,11 @@ local on_attach = function(client, bufnr)
 
   -- Formatting is handled by null
   if
-    client.name ~= 'null-ls'
+    client.name == 'null-ls'
     and client.resolved_capabilities.document_formatting
   then
+    au.autocmd('BufWritePre', '<buffer>', 'lua vim.lsp.buf.formatting_sync()')
+  else
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
   end
@@ -362,7 +364,7 @@ for server, config in pairs(servers) do
   end
 end
 
-require '_.config.lsp.null-ls'()
+require '_.config.lsp.null-ls'(on_attach)
 
 pcall(function()
   require('zk').setup {

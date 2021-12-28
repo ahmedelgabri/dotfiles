@@ -1,4 +1,4 @@
-return function()
+return function(on_attach)
   local ok, nls = pcall(require, 'null-ls')
 
   if not ok then
@@ -6,7 +6,6 @@ return function()
   end
 
   local h = require 'null-ls.helpers'
-  local au = require '_.utils.au'
 
   local refmt = {
     method = nls.methods.FORMATTING,
@@ -84,17 +83,7 @@ return function()
   nls.setup {
     debug = true,
     debounce = 150,
-    on_attach = function(client)
-      if client.resolved_capabilities.document_formatting then
-        au.augroup('__LSP_FORMATTING__', function()
-          au.autocmd(
-            'BufWritePre',
-            '<buffer>',
-            'lua vim.lsp.buf.formatting_sync()'
-          )
-        end)
-      end
-    end,
+    on_attach = on_attach,
     sources = {
       refmt,
       nixfmt,
@@ -148,7 +137,9 @@ return function()
         filetypes = { 'sh', 'bash' },
       },
       nls.builtins.formatting.rustfmt,
-      nls.builtins.formatting.black,
+      nls.builtins.formatting.black.with {
+        extra_args = { '--fast' },
+      },
       nls.builtins.diagnostics.pylint,
       nls.builtins.diagnostics.hadolint,
       nls.builtins.diagnostics.vint,
