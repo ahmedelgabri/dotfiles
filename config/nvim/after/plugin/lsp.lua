@@ -41,6 +41,15 @@ local function getBorder(highlight)
   }
 end
 
+-- globally override borders
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or getBorder()
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
 -- wrap open_float to inspect diagnostics and use the severity color for border
 -- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
 vim.diagnostic.open_float = (function(orig)
@@ -109,11 +118,11 @@ local mappings = {
 local handlers = {
   ['textDocument/hover'] = vim.lsp.with(
     vim.lsp.handlers.hover,
-    { border = getBorder(), focusable = false, silent = true }
+    { focusable = false, silent = true }
   ),
   ['textDocument/signatureHelp'] = vim.lsp.with(
     vim.lsp.handlers.hover,
-    { border = getBorder(), focusable = false, silent = true }
+    { focusable = false, silent = true }
   ),
 }
 
