@@ -149,6 +149,12 @@ return function()
         '',
         '— Jeff Atwood',
       },
+      {
+        'Only a crisis - actual or perceived - produces real change. When that crisis occurs, the actions that are taken depend on the ideas that are lying around.',
+        'That, I believe, is our basic function: to develop alternatives to existing policies, to keep them alive and available until the politically impossible becomes the politically inevitable',
+        '',
+        '— Milton Friedman',
+      },
     }
   )
 
@@ -163,7 +169,9 @@ return function()
   vim.g.startify_lists = {
     { header = { '   Sessions' }, type = 'sessions' },
     {
-      header = { '   MRU [' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':~') .. ']' },
+      header = {
+        '   MRU [' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':~') .. ']',
+      },
       type = 'dir',
     },
     { header = { '   Files' }, type = 'files' },
