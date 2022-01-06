@@ -152,11 +152,18 @@ local on_attach = function(client, bufnr)
   -- AUTOCMDS
   -- ---------------
   au.augroup('__LSP__', function()
-    au.autocmd(
-      'CursorHold',
-      '<buffer>',
-      'lua vim.lsp.diagnostic.show_line_diagnostics()'
-    )
+    au.autocmd('CursorHold', '<buffer>', function()
+      vim.diagnostic.open_float(nil, {
+        focusable = false,
+        close_events = {
+          'BufLeave',
+          'CursorMoved',
+          'InsertEnter',
+          'FocusLost',
+        },
+        source = 'always',
+      })
+    end)
   end)
 
   if client.resolved_capabilities.document_highlight then
@@ -170,26 +177,20 @@ local on_attach = function(client, bufnr)
     )
 
     au.augroup('__LSP_HIGHLIGHTS__', function()
-      au.autocmd(
-        'CursorHold',
-        '<buffer>',
-        'lua vim.lsp.buf.document_highlight()'
-      )
-      au.autocmd(
-        'CursorMoved',
-        '<buffer>',
-        'lua vim.lsp.buf.clear_references()'
-      )
+      au.autocmd('CursorHold', '<buffer>', function()
+        vim.lsp.buf.document_highlight()
+      end)
+      au.autocmd('CursorMoved', '<buffer>', function()
+        vim.lsp.buf.clear_references()
+      end)
     end)
   end
 
   if client.resolved_capabilities.code_lens then
     au.augroup('__LSP_CODELENS__', function()
-      au.autocmd(
-        'CursorHold,BufEnter,InsertLeave',
-        '<buffer>',
-        'lua vim.lsp.codelens.refresh()'
-      )
+      au.autocmd('CursorHold,BufEnter,InsertLeave', '<buffer>', function()
+        vim.lsp.codelens.refresh()
+      end)
     end)
   end
 
