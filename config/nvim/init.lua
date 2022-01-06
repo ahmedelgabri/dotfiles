@@ -288,12 +288,10 @@ vim.g.markdown_fenced_languages = {
   'python',
   'clojure',
   'clj=clojure',
-  'clojurescript',
-  'cljs=clojurescript',
+  'cljs=clojure',
   'stylus=css',
   'less=css',
   'viml=vim',
-  'mdx=markdown',
 }
 
 require '_.packer'
