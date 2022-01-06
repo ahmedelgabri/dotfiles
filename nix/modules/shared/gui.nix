@@ -38,6 +38,7 @@ in
           "sync"
           "virtualbox"
           "visual-studio-code"
+          "logseq"
           # "vscodium"
           "zoom"
         ];
@@ -55,6 +56,7 @@ in
             brave
             firefox
             obsidian
+            logseq
             zoom-us
             signal-desktop
             vscodium
