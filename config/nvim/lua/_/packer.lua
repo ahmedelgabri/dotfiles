@@ -13,7 +13,7 @@ if not packer_exists then
 
   vim.fn.mkdir(directory, 'p')
 
-  local out = vim.fn.system(
+  OUT = vim.fn.system(
     string.format(
       'git clone %s %s',
       'https://github.com/wbthomason/packer.nvim',
@@ -21,7 +21,7 @@ if not packer_exists then
     )
   )
 
-  print(out)
+  print(OUT)
   print 'Downloading packer.nvim...'
   vim.fn.execute 'packadd packer.nvim'
 
@@ -418,5 +418,9 @@ return packer.startup {
     use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
     use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
     -- }}}
+
+    if OUT then
+      require('packer').sync()
+    end
   end,
 }
