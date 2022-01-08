@@ -3,8 +3,8 @@
 -- :lua print(vim.lsp.get_log_path())
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
 
-require('vim.lsp.log').set_level 'debug'
-require('vim.lsp.log').set_format_func(vim.inspect)
+-- require('vim.lsp.log').set_level 'debug'
+-- require('vim.lsp.log').set_format_func(vim.inspect)
 
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
 local utils = require '_.utils'
