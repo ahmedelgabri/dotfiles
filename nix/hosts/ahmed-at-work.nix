@@ -54,13 +54,13 @@
 
   # Requires to be logged in to the AppStore
   # Cleanup doesn't work automatically if you add/remove to list
-  homebrew.masApps = {
-    Twitter = 1482454543;
-    Sip = 507257563;
-    Xcode = 497799835;
-    Guidance = 412759995;
-    WireGuard = 1451685025;
-  };
+  # homebrew.masApps = {
+  #   Twitter = 1482454543;
+  #   Sip = 507257563;
+  #   Xcode = 497799835;
+  #   Guidance = 412759995;
+  #   WireGuard = 1451685025;
+  # };
 
   # Use a custom configuration.nix location.
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
