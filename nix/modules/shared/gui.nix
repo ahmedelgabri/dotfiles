@@ -41,6 +41,7 @@ in
           "logseq"
           # "vscodium"
           "zoom"
+          "docker"
         ];
 
         my.hm.file = {
@@ -61,6 +62,7 @@ in
             signal-desktop
             vscodium
             slack
+            docker
             # sqlitebrowser
             # virtualbox
           ];

@@ -45,7 +45,6 @@
     "firefox"
     "loom"
     "vagrant"
-    "docker"
   ];
 
   # Requires to be logged in to the AppStore
