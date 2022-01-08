@@ -39,16 +39,12 @@
     ];
   };
 
-  homebrew.brews = [ "lastpass-cli" ];
-
   homebrew.casks = [
     "adoptopenjdk8"
     "corretto"
     "firefox"
     "loom"
-    "ngrok"
     "vagrant"
-    "ngrok"
     "docker"
   ];
 
@@ -59,7 +55,6 @@
   #   Sip = 507257563;
   #   Xcode = 497799835;
   #   Guidance = 412759995;
-  #   WireGuard = 1451685025;
   # };
 
   # Use a custom configuration.nix location.
