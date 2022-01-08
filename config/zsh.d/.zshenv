@@ -24,6 +24,7 @@ export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 export _ZO_DATA_DIR="$XDG_CONFIG_HOME/zoxide"
+export KITTY_LISTEN_ON="unix:/tmp/kitty"
 
 ############### Telemetry
 export DO_NOT_TRACK="1" # Future proof? https://consoledonottrack.com/

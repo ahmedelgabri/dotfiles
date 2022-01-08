@@ -30,9 +30,6 @@ in
     mkIf cfg.enable (mkMerge [
       (if (builtins.hasAttr "launchd" options) then {
         launchd.user.agents."ui-mode-notify" = {
-          environment = {
-            "KITTY_LISTEN_ON" = "unix:/tmp/kitty";
-          };
           serviceConfig = {
             ProgramArguments = [
               "${home}/.config/zsh/bin/ui-mode-notify"
