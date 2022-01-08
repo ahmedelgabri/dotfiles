@@ -16,10 +16,12 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
+      # imagemagick is required to show images in the terminal
       (if (builtins.hasAttr "homebrew" options) then {
         homebrew.casks = [ "kitty" ];
+        my.user = { packages = with pkgs; [ imagemagick ]; };
       } else {
-        my.user = { packages = with pkgs; [ kitty ]; };
+        my.user = { packages = with pkgs; [ kitty imagemagick ]; };
       })
 
       {
