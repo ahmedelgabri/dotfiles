@@ -141,6 +141,10 @@ in
                   recursive = true;
                   source = ../../../config/.terminfo;
                 };
+                ".config/dircolors" = {
+                  source = pkgs.LS_COLORS.outPath + "/LS_COLORS";
+                  recursive = true;
+                };
               }
             ];
 

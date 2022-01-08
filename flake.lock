@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "LS_COLORS": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1641438086,
+        "narHash": "sha256-Ny5jeh2lZMSADfG8KuoiD3X2P8Uwk/XjsCtXoOXuHWU=",
+        "owner": "trapd00r",
+        "repo": "LS_COLORS",
+        "rev": "b2a4438a36c72df6f961aa4b210e6d4ab45cfb02",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trapd00r",
+        "repo": "LS_COLORS",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -143,6 +159,7 @@
     },
     "root": {
       "inputs": {
+        "LS_COLORS": "LS_COLORS",
         "darwin": "darwin",
         "home-manager": "home-manager",
         "n": "n",
