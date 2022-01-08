@@ -81,21 +81,10 @@ return function(on_attach)
       statixfmt,
       -- nixlinter,
       nls.builtins.formatting.prettier.with {
-        filetypes = {
-          'typescript',
-          'javascript',
+        extra_filetypes = {
           'typescript.tsx',
           'javascript.jsx',
-          'typescriptreact',
-          'javascriptreact',
-          'vue',
-          'yaml',
-          'html',
-          'scss',
-          'css',
-          'markdown',
           'mdx',
-          'json',
         },
         extra_args = {
           '--config-precedence',
