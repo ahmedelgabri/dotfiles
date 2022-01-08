@@ -35,11 +35,6 @@
       flake = false;
     };
 
-    ttrv = {
-      url = "github:tildeclub/ttrv?ref=v1.27.3";
-      flake = false;
-    };
-
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;

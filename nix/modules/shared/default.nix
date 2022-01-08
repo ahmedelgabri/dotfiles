@@ -17,7 +17,6 @@
     ./newsboat.nix
     ./ripgrep.nix
     ./tmux.nix
-    ./ttrv.nix
     ./yt-dlp.nix
     ./misc.nix
     ./vim.nix
@@ -52,7 +51,6 @@
     python.enable = true;
     ripgrep.enable = true;
     tmux.enable = true;
-    ttrv.enable = true;
     misc.enable = true;
     vim.enable = true;
     gui.enable = true;

@@ -101,7 +101,6 @@ in
               _1password # CLI
               docker
               pass
-              mosh
               translate-shell
               rename
               glow
