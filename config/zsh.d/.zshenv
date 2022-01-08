@@ -27,6 +27,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 export _ZO_DATA_DIR="$XDG_CONFIG_HOME/zoxide"
 export KITTY_LISTEN_ON="unix:/tmp/kitty"
+export EXA_COLORS="ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238"
 
 ############### Telemetry
 export DO_NOT_TRACK="1" # Future proof? https://consoledonottrack.com/
