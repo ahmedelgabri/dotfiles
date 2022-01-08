@@ -35,15 +35,6 @@ return function(on_attach)
     },
   }
 
-  local jsonfmt = {
-    method = nls.methods.FORMATTING,
-    filetypes = { 'json' },
-    generator = nls.formatter {
-      command = 'jq',
-      to_stdin = true,
-    },
-  }
-
   -- local nixlinter = {
   --   method = nls.methods.DIAGNOSTICS,
   --   filetypes = { 'nix' },
@@ -88,7 +79,6 @@ return function(on_attach)
       refmt,
       nixfmt,
       statixfmt,
-      jsonfmt,
       -- nixlinter,
       nls.builtins.formatting.prettier.with {
         filetypes = {
