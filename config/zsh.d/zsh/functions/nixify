@@ -8,7 +8,7 @@ unalias nixify 2>/dev/null
 
 nixify() {
   if [ ! -e ./.envrc ]; then
-    echo "set -x\nset +u\nuse nix\ndotenv" > .envrc
+    echo "set -e\nset +u\nuse nix\ndotenv" > .envrc
     direnv allow
   fi
 
