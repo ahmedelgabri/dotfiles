@@ -30,6 +30,7 @@ if hs.host.localizedName() ~= 'pandoras-box' then
     { 'https?://dev.*.com', 'com.google.Chrome' },
     { 'https?://localhost:*', 'com.google.Chrome' },
     { 'https?://.*devrtb.com', 'com.google.Chrome' },
+    { 'https?://docs.google.com', 'com.google.Chrome' },
   }
 end
 
