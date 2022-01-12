@@ -30,11 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    n = {
-      url = "github:tj/n";
-      flake = false;
-    };
-
     LS_COLORS = {
       url = "github:trapd00r/LS_COLORS";
       flake = false;
