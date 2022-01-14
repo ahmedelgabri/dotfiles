@@ -41,7 +41,6 @@ in
           "logseq"
           # "vscodium"
           "zoom"
-          "docker"
         ];
 
         my.hm.file = {
