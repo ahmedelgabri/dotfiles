@@ -7,34 +7,6 @@ return function(on_attach)
 
   local h = require 'null-ls.helpers'
 
-  local refmt = {
-    method = nls.methods.FORMATTING,
-    filetypes = { 'rescript', 'reason' },
-    generator = nls.formatter {
-      command = 'refmt',
-      to_stdin = true,
-    },
-  }
-
-  local nixfmt = {
-    method = nls.methods.FORMATTING,
-    filetypes = { 'nix' },
-    generator = nls.formatter {
-      command = 'nixpkgs-fmt',
-      to_stdin = true,
-    },
-  }
-
-  local statixfmt = {
-    method = nls.methods.FORMATTING,
-    filetypes = { 'nix' },
-    generator = nls.formatter {
-      command = 'statix',
-      args = { 'fix', '--stdin' },
-      to_stdin = true,
-    },
-  }
-
   -- local nixlinter = {
   --   method = nls.methods.DIAGNOSTICS,
   --   filetypes = { 'nix' },
@@ -76,48 +48,9 @@ return function(on_attach)
     debounce = 150,
     on_attach = on_attach,
     sources = {
-      refmt,
-      nixfmt,
-      statixfmt,
       -- nixlinter,
-      nls.builtins.formatting.prettier.with {
-        extra_filetypes = {
-          'typescript.tsx',
-          'javascript.jsx',
-          'mdx',
-        },
-        extra_args = {
-          '--config-precedence',
-          'prefer-file',
-          '--single-quote',
-          '--no-bracket-spacing',
-          '--prose-wrap',
-          'always',
-          '--arrow-parens',
-          'always',
-          '--trailing-comma',
-          'all',
-          '--no-semi',
-          '--end-of-line',
-          'lf',
-          '--print-width',
-          vim.bo.textwidth <= 80 and 80 or vim.bo.textwidth,
-        },
-      },
-      nls.builtins.formatting.stylua,
-      -- goimports runs gofmt too
-      -- https://pkg.go.dev/golang.org/x/tools/cmd/goimports
-      nls.builtins.formatting.goimports,
-      -- nls.builtins.diagnostics.golint,
       nls.builtins.diagnostics.shellcheck.with {
         filetypes = { 'sh', 'bash' },
-      },
-      nls.builtins.formatting.shfmt.with {
-        filetypes = { 'sh', 'bash' },
-      },
-      nls.builtins.formatting.rustfmt,
-      nls.builtins.formatting.black.with {
-        extra_args = { '--fast' },
       },
       nls.builtins.diagnostics.pylint,
       nls.builtins.diagnostics.hadolint,

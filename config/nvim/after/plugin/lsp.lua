@@ -193,27 +193,6 @@ local on_attach = function(client, bufnr)
       end)
     end)
   end
-
-  -- Formatting is handled by null
-  if
-    client.name == 'null-ls'
-    and client.resolved_capabilities.document_formatting
-  then
-    au.augroup('__LSP_FORMATTING__', function()
-      au.autocmd('BufWritePre', '<buffer>', function()
-        -- https://github.com/akinsho/dotfiles/blob/1f8fe569e2dd3560fc12020f047c91a7c070923c/.config/nvim/lua/as/plugins/lspconfig.lua?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L41-L48
-        -- BUG: folds are are removed when formatting is done, so we save the current state of the
-        -- view and re-apply it manually after formatting the buffer
-        -- @see: https://github.com/nvim-treesitter/nvim-treesitter/issues/1424#issuecomment-909181939
-        vim.cmd 'mkview!'
-        vim.lsp.buf.formatting_sync()
-        vim.cmd 'loadview'
-      end)
-    end)
-  else
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-  end
 end
 
 local servers = {
