@@ -96,6 +96,11 @@ template = "journal.md"
 filename = "{{date now '%Y-%m-%d'}}"
 template = "journal.md"
 
+[group.personal]
+
+[group.personal.note]
+template = "personal.md"
+
 # MARKDOWN SETTINGS
 [format.markdown]
 
@@ -224,4 +229,5 @@ rfc = 'zk new work --template rfc.md --title "$*"'
 # Personal
 j = 'zk new --no-input --group journal'
 t = 'zk new --no-input --group todo'
+p = 'zk new --group personal --title "$*"'
 
