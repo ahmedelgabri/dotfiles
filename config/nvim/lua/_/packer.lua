@@ -31,10 +31,20 @@ end
 -- HACK: see https://github.com/wbthomason/packer.nvim/issues/180
 vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
-local lisps = { 'lisp', 'scheme', 'clojure', 'fennel' }
+local PACKER_COMPILED_PATH = vim.fn.stdpath 'cache'
+  .. '/packer/packer_compiled.lua'
+
 return packer.startup {
   config = {
-    max_jobs = 70, -- https://github.com/wbthomason/packer.nvim/issues/202
+    -- https://github.com/wbthomason/packer.nvim/issues/202
+    max_jobs = 70,
+    -- https://github.com/wbthomason/packer.nvim/issues/201
+    -- https://github.com/wbthomason/packer.nvim/issues/274
+    -- https://github.com/wbthomason/packer.nvim/issues/554
+    -- https://github.com/soywod/himalaya/issues/188
+    compile_path = PACKER_COMPILED_PATH,
+    package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
+    -- end
     display = {
       non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
       open_cmd = function()
@@ -47,7 +57,8 @@ return packer.startup {
     use { 'https://github.com/windwp/nvim-autopairs' }
     use {
       'https://github.com/soywod/himalaya',
-      rtp = 'email-manager/vim',
+      rtp = 'vim',
+      cmd = { 'Himalaya' },
     }
     use {
       'https://github.com/junegunn/fzf.vim',
@@ -56,8 +67,6 @@ return packer.startup {
     }
     use {
       'https://github.com/kyazdani42/nvim-tree.lua',
-      keys = { '--' },
-      cmd = { 'NvimTreeToggle', 'NvimTreeFindFile' },
       config = require '_.config.nvim-tree',
     }
     use { 'https://github.com/duggiefresh/vim-easydir' }
@@ -175,7 +184,6 @@ return packer.startup {
         { 'https://github.com/andersevenrud/cmp-tmux' },
         { 'https://github.com/saadparwaiz1/cmp_luasnip' },
         { 'https://github.com/hrsh7th/cmp-path' },
-        { 'https://github.com/PaterJason/cmp-conjure', ft = lisps },
         { 'https://github.com/hrsh7th/cmp-buffer' },
         { 'https://github.com/hrsh7th/cmp-emoji' },
         { 'https://github.com/f3fora/cmp-spell' },
@@ -192,10 +200,6 @@ return packer.startup {
           'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
           after = 'nvim-treesitter',
         },
-        -- {
-        --   'https://github.com/p00f/nvim-ts-rainbow',
-        --   after = 'nvim-treesitter',
-        -- },
         {
           'https://github.com/nvim-treesitter/playground',
           cmd = 'TSPlaygroundToggle',
@@ -307,14 +311,6 @@ return packer.startup {
         },
       },
     }
-    use {
-      'https://github.com/vuki656/package-info.nvim',
-      requires = { 'https://github.com/MunifTanjim/nui.nvim' },
-      ft = { 'json' },
-      config = function()
-        require('package-info').setup { force = true }
-      end,
-    }
     -- Syntax {{{
     use {
       'https://github.com/norcalli/nvim-colorizer.lua',
@@ -353,17 +349,6 @@ return packer.startup {
     --     require('headlines').setup()
     --   end,
     -- }
-    -- Clojure
-    use { 'https://github.com/guns/vim-sexp', ft = lisps }
-    use {
-      'https://github.com/tpope/vim-sexp-mappings-for-regular-people',
-      ft = lisps,
-    }
-    use {
-      'https://github.com/Olical/conjure',
-      branch = 'master',
-      ft = lisps,
-    }
     -- }}}
 
     -- Git {{{
@@ -423,8 +408,12 @@ return packer.startup {
     use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
     -- }}}
 
-    if OUT then
-      require('packer').sync()
+    if
+      not vim.g.packer_compiled_loaded
+      and vim.loop.fs_stat(PACKER_COMPILED_PATH)
+    then
+      vim.cmd(string.format('source %s', PACKER_COMPILED_PATH))
+      vim.g.packer_compiled_loaded = true
     end
   end,
 }
