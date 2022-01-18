@@ -110,7 +110,7 @@ return packer.startup {
       requires = {
         'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
       },
-      keys = { 'gc', 'gb' },
+      keys = { 'gc', 'gx' },
       config = require '_.config.comment',
     }
     use { 'https://github.com/wincent/loupe' }

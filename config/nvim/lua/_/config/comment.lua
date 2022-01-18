@@ -6,6 +6,12 @@ return function()
     'javascript.jsx',
   }
   require('Comment').setup {
+    toggler = {
+      block = 'gxc',
+    },
+    opleader = {
+      block = 'gx',
+    },
     ---@param ctx Ctx
     pre_hook = function(ctx)
       -- Only calculate commentstring for tsx filetypes
