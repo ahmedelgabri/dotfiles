@@ -151,21 +151,6 @@ local on_attach = function(client, bufnr)
   -- ---------------
   -- AUTOCMDS
   -- ---------------
-  au.augroup('__LSP__', function()
-    au.autocmd('CursorHold', '<buffer>', function()
-      vim.diagnostic.open_float(nil, {
-        focusable = false,
-        close_events = {
-          'BufLeave',
-          'CursorMoved',
-          'InsertEnter',
-          'FocusLost',
-        },
-        source = 'always',
-      })
-    end)
-  end)
-
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
