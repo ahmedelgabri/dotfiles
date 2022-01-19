@@ -24,8 +24,12 @@ function! miro#get_url(opts, ...) abort
   let [l:domain_port, l:project, l:repo_name] = split(l:repo, '/')
   let l:repo = join([l:domain_port, l:project, 'repos', l:repo_name], '/')
   let l:root = (index(l:domains, 'http://' . matchstr(l:repo, '^[^:/]*')) >= 0 ? 'http://' : 'https://') . substitute(l:repo,':\d*','/projects','')
-  let l:head = a:opts.repo.head()
-  let l:commit = a:opts.commit =~# '^\d\=$' ? '' : a:opts.commit
+  " echom a:opts
+  let l:head = a:opts.commit
+
+  if a:opts.commit =~? '[^0-9]'
+    let l:head = fugitive#Head()
+  endif
 
   " If buffer contains directory not file, return a /tree url
   if l:type ==# 'tree' || l:p =~# '/$'
@@ -34,9 +38,9 @@ function! miro#get_url(opts, ...) abort
     " If we have ranges prefer normal view
     " otherwise go to commit view because we can't highlight lines in commit view
     let l:url = l:root . '/browse/' .  l:path . '?at=refs/heads/' . l:head
+
     if l:line1 !=# ''
       let l:url .= '#' . a:opts.line1
-
       if l:line2 !=# ''
         let l:url .= '-' . a:opts.line2
       endif
@@ -47,5 +51,6 @@ function! miro#get_url(opts, ...) abort
     endif
   endif
 
+  echom l:url
   return l:url
 endfunction
