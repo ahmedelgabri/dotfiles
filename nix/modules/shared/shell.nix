@@ -141,10 +141,6 @@ in
                   recursive = true;
                   source = ../../../config/.terminfo;
                 };
-                ".config/dircolors" = {
-                  source = pkgs.LS_COLORS.outPath + "/LS_COLORS";
-                  recursive = true;
-                };
               }
             ];
 
@@ -206,7 +202,12 @@ in
           ########################################################################
 
           # zshenv
-          shellInit = builtins.readFile ../../../config/zsh.d/.zshenv;
+          shellInit = lib.concatStringsSep "\n"
+            (map builtins.readFile [
+              "${pkgs.LS_COLORS.outPath}/lscolors.sh"
+              ../../../config/zsh.d/.zshenv
+            ]);
+
 
           # zshrc
           interactiveShellInit = lib.concatStringsSep "\n"
