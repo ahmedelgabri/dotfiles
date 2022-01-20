@@ -150,7 +150,7 @@
 	status = true
 
 [alias]
-	amend = commit --amend --no-edit
+	amend = commit --amend --no-edit --date now
 	force = push --force-with-lease
 	fam = "!f() { git add . && git amend && git force; }; f"
 	blm = blame -wMC
