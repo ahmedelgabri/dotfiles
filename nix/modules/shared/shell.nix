@@ -83,11 +83,13 @@ in
               fzf
               ncdu
               bat
-              jq
               fd
+              pastel
+              vivid
+              hyperfine
+              jq
               grc
               pure-prompt
-              hyperfine
               exa
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
@@ -98,7 +100,6 @@ in
               _1password # CLI
               docker
               pass
-              translate-shell
               rename
               glow
               # buku
@@ -204,7 +205,6 @@ in
           # zshenv
           shellInit = lib.concatStringsSep "\n"
             (map builtins.readFile [
-              "${pkgs.LS_COLORS.outPath}/lscolors.sh"
               ../../../config/zsh.d/.zshenv
             ]);
 

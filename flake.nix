@@ -30,11 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    LS_COLORS = {
-      url = "github:trapd00r/LS_COLORS";
-      flake = false;
-    };
-
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;
@@ -100,7 +95,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay inputs.rust-overlay.overlay (final: prev: { inherit (inputs) LS_COLORS; }) ];
+          overlays = [ self.overlay inputs.rust-overlay.overlay ];
         };
 
         time.timeZone = config.my.timezone;
