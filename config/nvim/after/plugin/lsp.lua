@@ -53,9 +53,9 @@ end
 -- wrap open_float to inspect diagnostics and use the severity color for border
 -- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
 vim.diagnostic.open_float = (function(orig)
-  return function(bufnr, opts)
+  return function(bufnr, options)
     local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-    local opts = opts or {}
+    local opts = options or {}
     -- A more robust solution would check the "scope" value in `opts` to
     -- determine where to get diagnostics from, but if you're only using
     -- this for your own purposes you can make it as simple as you like

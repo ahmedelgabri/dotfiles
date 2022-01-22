@@ -84,7 +84,7 @@ local function readonly()
   local line = ''
 
   if not is_modifiable and is_readonly then
-    line = utils.get_icon 'lock' .. ' RO'
+    line = string.format('%s RO', utils.get_icon 'lock')
   end
 
   if is_modifiable and is_readonly then
@@ -124,8 +124,13 @@ local mode_table = {
 }
 
 local function mode()
-  return mode_table[vim.fn.mode()]
-    or (vim.fn.mode() == 'n' and '' or 'NOT IN MAP')
+  local current_mode = vim.api.nvim_get_mode().mode
+
+  if current_mode == 'n' then
+    return ''
+  end
+
+  return mode_table[current_mode] or 'NOT IN MAP'
 end
 
 local function rhs()
@@ -185,6 +190,59 @@ local function orgmode()
     or ''
 end
 
+local function lsp()
+  local count = {}
+  local levels = {
+    errors = 'Error',
+    warnings = 'Warn',
+    info = 'Info',
+    hints = 'Hint',
+  }
+
+  for k, level in pairs(levels) do
+    count[k] = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
+  end
+
+  local errors = ''
+  local warnings = ''
+  local hints = ''
+  local info = ''
+
+  if count.errors ~= 0 then
+    errors = string.format(
+      '%%#DiagnosticSignError#%s %s',
+      utils.get_icon 'error',
+      count.errors
+    )
+  end
+
+  if count.warnings ~= 0 then
+    warnings = string.format(
+      '%%#DiagnosticSignWarn#%s %s',
+      utils.get_icon 'warn',
+      count.warnings
+    )
+  end
+
+  if count.hints ~= 0 then
+    hints = string.format(
+      '%%#DiagnosticSignHint#%s %s',
+      utils.get_icon 'hint',
+      count.hints
+    )
+  end
+
+  if count.info ~= 0 then
+    info = string.format(
+      '%%#DiagnosticSignInfo#%s %s',
+      utils.get_icon 'info',
+      count.info
+    )
+  end
+
+  return string.format('%s %s %s %s%%*', errors, warnings, hints, info)
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -205,6 +263,7 @@ function M.get_active_statusline()
     paste(),
     spell(),
     orgmode(),
+    lsp(),
     file_info(),
     rhs(),
   }
@@ -215,7 +274,6 @@ function M.get_active_statusline()
       filetype(),
       ' %f',
       line,
-      readonly(),
     }
   end
 
