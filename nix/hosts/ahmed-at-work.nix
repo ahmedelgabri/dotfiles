@@ -45,6 +45,7 @@
     "firefox"
     "loom"
     "vagrant"
+    "discord"
   ];
 
   # Requires to be logged in to the AppStore
