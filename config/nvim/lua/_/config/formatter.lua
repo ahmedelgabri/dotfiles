@@ -41,6 +41,8 @@ return function()
     vue = { prettier },
     ['javascript.jsx'] = { prettier },
     ['typescript.tsx'] = { prettier },
+    ['javascript.jest'] = { prettier },
+    ['typescript.jest'] = { prettier },
     markdown = { prettier },
     ['markdown.mdx'] = { prettier },
     mdx = { prettier },
