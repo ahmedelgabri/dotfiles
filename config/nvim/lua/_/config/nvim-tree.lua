@@ -1,5 +1,4 @@
 return function()
-  local utils = require '_.utils'
   local map = require '_.utils.map'
 
   -- 0 is supposed to be the default (ie. don't close tree when opening a file),
