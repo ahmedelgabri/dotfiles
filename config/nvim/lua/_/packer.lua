@@ -150,6 +150,20 @@ return packer.startup {
       'https://github.com/neovim/nvim-lspconfig',
       requires = {
         {
+          'https://github.com/j-hui/fidget.nvim',
+          config = function()
+            require('fidget').setup {
+              window = {
+                relative = 'editor', -- where to anchor the window, either `"win"` or `"editor"`
+                blend = 0, -- `&winblend` for the window
+              },
+              text = {
+                spinner = 'dots',
+              },
+            }
+          end,
+        },
+        {
           'https://github.com/jose-elias-alvarez/null-ls.nvim',
           requires = {
             'https://github.com/nvim-lua/plenary.nvim',
