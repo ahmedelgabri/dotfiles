@@ -27,7 +27,6 @@ in
                   black
                   setuptools
                   pylint
-                  grip
                   pynvim
                   vobject # Mutt calendar script
                 ]))

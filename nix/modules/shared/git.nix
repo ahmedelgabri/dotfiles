@@ -26,7 +26,7 @@ in
           # gitAndTools.diff-so-fancy
           gitAndTools.delta
           gitAndTools.hub
-          gitAndTools.gh
+          gitAndTools.gh # Need this too https://github.com/yusukebe/gh-markdown-preview
           gitAndTools.tig
           exiftool
         ];
