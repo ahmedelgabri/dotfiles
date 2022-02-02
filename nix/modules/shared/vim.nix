@@ -49,7 +49,6 @@ in
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           stylua
-          clojure-lsp
           nodePackages.neovim
           nodePackages.vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
