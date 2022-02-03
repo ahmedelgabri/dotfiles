@@ -210,6 +210,7 @@ return packer.startup {
       run = ':TSUpdate',
       config = require '_.config.treesitter',
       requires = {
+        { 'https://github.com/windwp/nvim-ts-autotag' },
         {
           'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
           after = 'nvim-treesitter',

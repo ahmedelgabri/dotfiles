@@ -70,6 +70,19 @@ return function()
         },
       },
     },
+    autotag = {
+      enable = true,
+      filetypes = {
+        'html',
+        'javascript',
+        'javascriptreact',
+        'typescriptreact',
+        'svelte',
+        'vue',
+        'javascript.jsx',
+        'typescript.tsx',
+      },
+    },
     move = {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
