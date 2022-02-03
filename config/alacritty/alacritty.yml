@@ -8,6 +8,8 @@ window:
     columns: 0
     lines: 0
 
+  opacity: 1.0
+
   dynamic_title: true
 
   # Window padding (changes require restart)
@@ -193,12 +195,6 @@ colors:
 bell:
   animation: EaseOutExpo
   duration: 0
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
 
 # Mouse bindings
 #
@@ -454,7 +450,6 @@ key_bindings:
   #     00000001: 64  d
   #
   # Which becomes `\x1b\x64`
-
   # Vim
   - {key: D, mods: Alt, chars: "\x1b\x64"}
     # https://github.com/jwilm/alacritty/issues/93#issuecomment-312760361
