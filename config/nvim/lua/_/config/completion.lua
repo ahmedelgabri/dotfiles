@@ -139,21 +139,6 @@ return function()
         }),
       },
     }
-
-    -- Disabled, see also https://github.com/hrsh7th/nvim-cmp/issues/485#issuecomment-962801123
-    -- cmp.setup.cmdline('/', {
-    --   sources = {
-    --     name = 'buffer',
-    --   },
-    -- })
-
-    cmp.setup.cmdline(':', {
-      sources = cmp.config.sources({
-        { name = 'path' },
-      }, {
-        { name = 'cmdline' },
-      }),
-    })
   end)
 
   if not completion_loaded then
