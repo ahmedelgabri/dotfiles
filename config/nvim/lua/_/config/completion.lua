@@ -59,6 +59,7 @@ return function()
         { name = 'nvim_lsp' },
         { name = 'calc' },
         { name = 'path' },
+        { name = 'nvim_lsp_signature_help' },
         { name = 'conjure' },
         {
           name = 'buffer',

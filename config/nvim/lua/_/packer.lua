@@ -203,6 +203,7 @@ return packer.startup {
         { 'https://github.com/f3fora/cmp-spell' },
         { 'https://github.com/hrsh7th/cmp-cmdline' },
         { 'https://github.com/hrsh7th/cmp-calc' },
+        { 'https://github.com/hrsh7th/cmp-nvim-lsp-signature-help' },
       },
     }
     use {
