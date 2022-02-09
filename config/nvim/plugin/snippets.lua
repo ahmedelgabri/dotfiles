@@ -11,6 +11,8 @@ local i = ls.insert_node
 local f = ls.function_node
 local c = ls.choice_node
 local d = ls.dynamic_node
+local fmt = require('luasnip.extras.fmt').fmt
+local rep = require('luasnip.extras').rep
 
 local function replace_each(replacer)
   return function(args)
@@ -61,29 +63,29 @@ ls.snippets = {
       d(1, function()
         local str = vim.split(vim.bo.commentstring, '%s', true)
 
-        return sn(nil, {
-          t(str[1]),
-          t ' vim:ft=',
-          i(1),
-          t ' ',
-          t(str[2] or ''),
-        })
+        return sn(nil, fmt('{} vim:ft={} {}', { str[1], i(1), str[2] or '' }))
       end, {}),
     }),
     ls.parser.parse_snippet(
       { trig = 'vimfold' },
       '${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
     ),
-    s('bang', {
-      t '#!/usr/bin/env ',
-      c(1, {
-        t 'sh',
-        t 'zsh',
-        t 'bash',
-        t 'python',
-        t 'node',
-      }),
-    }, i(0)),
+    s(
+      'bang',
+      fmt(
+        '#!/usr/bin/env {}{}',
+        {
+          c(1, {
+            t 'sh',
+            t 'zsh',
+            t 'bash',
+            t 'python',
+            t 'node',
+          }),
+          i(0),
+        }
+      )
+    ),
     ls.parser.parse_snippet(
       { trig = 'tmux-start' },
       [[#!/usr/bin/env sh
@@ -275,6 +277,8 @@ ${0}]]
 }
 
 ls.config.set_config {
+  history = true,
+  enable_autosnippets = true,
   updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
 }
 
