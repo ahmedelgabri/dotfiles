@@ -150,11 +150,16 @@ return function()
     local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
     local cmp = require 'cmp'
 
-    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+    cmp.event:on(
+      'confirm_done',
+      cmp_autopairs.on_confirm_done { map_char = { tex = '' } }
+    )
 
     require('nvim-autopairs').setup {
-      disable_filetype = { 'fzf' },
       map_cr = false,
+      close_triple_quotes = true,
+      check_ts = true,
+      disable_filetype = { 'TelescopePrompt', 'fzf' },
     }
   end)
 end
