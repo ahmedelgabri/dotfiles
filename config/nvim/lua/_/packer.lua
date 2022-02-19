@@ -225,6 +225,8 @@ return packer.startup {
           'https://github.com/kristijanhusak/orgmode.nvim',
           run = ':TSUpdate org',
           config = function()
+            require('orgmode').setup_ts_grammar()
+
             require('orgmode').setup {
               org_agenda_files = {
                 string.format('%s/org/*', vim.env.NOTES_DIR),
