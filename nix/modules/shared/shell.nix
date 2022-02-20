@@ -105,6 +105,7 @@ in
               # buku
               graph-easy
               graphviz
+              nodePackages.mermaid-cli
             ];
           };
 
