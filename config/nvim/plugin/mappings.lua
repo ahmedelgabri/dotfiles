@@ -143,3 +143,33 @@ map.xnoremap('-', 'g<C-x>')
 
 -- Execute "q" macro over visual line selections
 map.xnoremap('Q', [[:'<,'>:normal @q<CR>]])
+
+-- https://github.com/wincent/wincent/blob/47984efec93841c3979c4847ace1e592250ce1a4/aspects/nvim/files/.config/nvim/plugin/mappings/normal.lua#L8-L35
+-- Wrap all mappings related to folding so that indent-blankline.nvim can
+-- update when folds are changed. See:
+-- https://github.com/lukas-reineke/indent-blankline.nvim/issues/118
+local fold = function(mapping)
+  if vim.g.loaded_indent_blankline == 1 then
+    return mapping .. ':IndentBlanklineRefresh<CR>'
+  else
+    return mapping
+  end
+end
+
+-- Toggle fold at current position.
+map.nnoremap('<Tab>', fold 'za', { silent = true })
+
+-- Other fold-related remaps for compatibility with indent-blankline.nvim:
+map.nnoremap('zA', fold 'zA', { silent = true })
+map.nnoremap('zC', fold 'zC', { silent = true })
+map.nnoremap('zM', fold 'zM', { silent = true })
+map.nnoremap('zO', fold 'zO', { silent = true })
+map.nnoremap('zR', fold 'zR', { silent = true })
+map.nnoremap('zX', fold 'zX', { silent = true })
+map.nnoremap('za', fold 'za', { silent = true })
+map.nnoremap('zc', fold 'zc', { silent = true })
+map.nnoremap('zm', fold 'zm', { silent = true })
+map.nnoremap('zo', fold 'zo', { silent = true })
+map.nnoremap('zr', fold 'zr', { silent = true })
+map.nnoremap('zv', fold 'zv', { silent = true })
+map.nnoremap('zx', fold 'zx', { silent = true })
