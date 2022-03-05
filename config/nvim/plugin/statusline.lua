@@ -248,7 +248,7 @@ end
 ---------------------------------------------------------------------------------
 local M = {}
 
-_G._.statusline = M
+__.statusline = M
 
 function M.get_active_statusline()
   local line = table.concat {
@@ -290,7 +290,7 @@ function M.active()
   vim.api.nvim_win_set_option(
     0,
     'statusline',
-    [[%!luaeval("_.statusline.get_active_statusline()")]]
+    [[%!luaeval("__.statusline.get_active_statusline()")]]
   )
 end
 
@@ -298,7 +298,7 @@ function M.inactive()
   vim.api.nvim_win_set_option(
     0,
     'statusline',
-    [[%!luaeval("_.statusline.get_inactive_statusline()")]]
+    [[%!luaeval("__.statusline.get_inactive_statusline()")]]
   )
 end
 
@@ -313,9 +313,9 @@ function M.activate()
   )
 
   au.augroup('MyStatusLine', function()
-    au.autocmd('WinEnter,BufEnter', '*', 'lua _.statusline.active()')
-    au.autocmd('WinLeave,BufLeave', '*', 'lua _.statusline.inactive()')
+    au.autocmd('WinEnter,BufEnter', '*', 'lua __.statusline.active()')
+    au.autocmd('WinLeave,BufLeave', '*', 'lua __.statusline.inactive()')
   end)
 end
 
-_.statusline.activate()
+__.statusline.activate()

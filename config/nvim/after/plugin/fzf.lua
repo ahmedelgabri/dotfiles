@@ -2,7 +2,7 @@ if vim.fn.exists ':FZF' == 0 then
   return
 end
 
-_.fzf = {}
+__.fzf = {}
 
 local map = require '_.utils.map'
 local au = require '_.utils.au'
@@ -39,7 +39,7 @@ function FzfSpellSink(word)
   vim.fn.execute('normal! "_ciw' .. word)
 end
 
-function _.fzf.FzfSpell()
+function __.fzf.FzfSpell()
   local suggestions = vim.fn.spellsuggest(vim.fn.expand '<cword>')
   return vim.fn['fzf#run'] {
     source = suggestions,
@@ -48,10 +48,10 @@ function _.fzf.FzfSpell()
   }
 end
 
-map.nnoremap('z=', ':call v:lua._.fzf.FzfSpell()<CR>', { silent = true })
+map.nnoremap('z=', ':call v:lua.__.fzf.FzfSpell()<CR>', { silent = true })
 
 -- https://github.com/junegunn/fzf.vim/issues/907#issuecomment-554699400
-function _.fzf.RipgrepFzf(query, fullscreen)
+function __.fzf.RipgrepFzf(query, fullscreen)
   local command_fmt =
     'rg --column --line-number --no-heading --color=always -g "!*.lock" -g "!*lock.json" --smart-case %s || true'
   local initial_command = string.format(command_fmt, vim.fn.shellescape(query))
@@ -73,5 +73,5 @@ function _.fzf.RipgrepFzf(query, fullscreen)
   )
 end
 
-vim.cmd [[command! -nargs=* -bang RG call v:lua._.fzf.RipgrepFzf(<q-args>, <bang>0)]]
+vim.cmd [[command! -nargs=* -bang RG call v:lua.__.fzf.RipgrepFzf(<q-args>, <bang>0)]]
 map.nnoremap([[<leader>\]], [[:RG<CR>]])
