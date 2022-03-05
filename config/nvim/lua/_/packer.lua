@@ -119,7 +119,7 @@ return packer.startup {
       cmd = 'BufDel',
       setup = function()
         local map = require '_.utils.map'
-        map.nnoremap('<M-d>', ':BufDel<CR>')
+        map.nnoremap('<M-d>', ':BufDel!<CR>')
       end,
       config = function()
         require('bufdel').setup {
