@@ -170,6 +170,9 @@ dead-link = "error"
 #    $ zk edit recents --interactive
 recents = "--sort created- --created-after 'last two weeks'"
 work = '--group work'
+personal = '--group personal'
+journal = '--group journal'
+todo = '--group todo'
 
 
 # COMMAND ALIASES
@@ -227,7 +230,7 @@ w = 'zk new work --title "$*"'
 rfc = 'zk new work --template rfc.md --title "$*"'
 
 # Personal
-j = 'zk new --no-input --group journal'
-t = 'zk new --no-input --group todo'
-p = 'zk new --group personal --title "$*"'
+j = 'zk new --no-input journal'
+t = 'zk new --no-input todo'
+p = 'zk new personal --title "$*"'
 
