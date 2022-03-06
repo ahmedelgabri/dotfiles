@@ -21,21 +21,11 @@ local function replace_each(replacer)
   end
 end
 
-ls.filetype_extend('jinja', { 'html', 'htmldjango' })
-ls.filetype_extend('jinja2', { 'html', 'htmldjango' })
-ls.filetype_extend('html.twig', { 'html', 'htmldjango' })
+local twig = { 'html', 'twig' }
 
-ls.filetype_extend('typescript', { 'javascript' })
-ls.filetype_extend('javascriptreact', { 'javascript' })
-ls.filetype_extend('javascript.jsx', { 'javascriptreact', 'javascript' })
-ls.filetype_extend(
-  'typescriptreact',
-  { 'javascriptreact', 'typescript', 'javascript' }
-)
-ls.filetype_extend(
-  'typescript.tsx',
-  { 'javascriptreact', 'typescript', 'javascript' }
-)
+ls.filetype_extend('jinja', twig)
+ls.filetype_extend('jinja2', twig)
+ls.filetype_extend('html.twig', twig)
 
 ls.snippets = {
   all = {
@@ -72,19 +62,16 @@ ls.snippets = {
     ),
     s(
       'bang',
-      fmt(
-        '#!/usr/bin/env {}{}',
-        {
-          c(1, {
-            t 'sh',
-            t 'zsh',
-            t 'bash',
-            t 'python',
-            t 'node',
-          }),
-          i(0),
-        }
-      )
+      fmt('#!/usr/bin/env {}{}', {
+        c(1, {
+          t 'sh',
+          t 'zsh',
+          t 'bash',
+          t 'python',
+          t 'node',
+        }),
+        i(0),
+      })
     ),
     ls.parser.parse_snippet(
       { trig = 'tmux-start' },

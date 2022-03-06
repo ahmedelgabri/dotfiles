@@ -1,36 +1,4 @@
 {
-  "HTML5 Template": {
-    "prefix": ["html5"],
-    "body": [
-      "<!DOCTYPE html>",
-      "<title>${1:Title}</title>",
-      "<meta charset=\"utf8\">",
-      "<meta name=\"viewport\" content=\"initial-scale=1, width=device-width\">",
-      "<link rel=\"stylesheet\" href=\"${2:./style.css}\">",
-      "$0",
-      "<script src=\"${3:./bundle.js}\"></script>"
-    ],
-    "description": "Minimal HTML5 template"
-  },
-  "HTML Template": {
-    "prefix": ["html"],
-    "body": [
-      "<!DOCTYPE html>",
-      "<html>",
-      " <head>",
-      "   <title>${1:Title}</title>",
-      "   <meta charset=\"utf8\">",
-      "   <meta name=\"viewport\" content=\"initial-scale=1, width=device-width\">",
-      "   <link rel=\"stylesheet\" href=\"${2:./style.css}\">",
-      " </head>",
-      " <body>",
-      "   $0",
-      "   <script src=\"${3:./bundle.js}\"></script>",
-      " </body>",
-      "</html>"
-    ],
-    "description": "HTML template"
-  },
   "SVG favicon": {
     "prefix": "fav",
     "body": [
