@@ -145,26 +145,6 @@ return packer.startup {
       end,
     }
     use { 'https://github.com/kevinhwang91/nvim-bqf' }
-    use {
-      'https://github.com/lukas-reineke/indent-blankline.nvim',
-      config = function()
-        vim.g.indent_blankline_filetype_exclude = {
-          -- Defaults.
-          'lspinfo',
-          'packer',
-          'checkhealth',
-          'help',
-          '',
-
-          -- Additions.
-          'markdown',
-          'startify',
-        }
-        require('indent_blankline').setup {
-          show_current_context = true,
-        }
-      end,
-    }
     -- LSP/Autocompletion {{{
     use {
       'https://github.com/neovim/nvim-lspconfig',
@@ -437,13 +417,13 @@ return packer.startup {
 
     -- Themes, UI & eye candy {{{
     use { 'https://github.com/ahmedelgabri/vim-colors-plain', opt = true }
-    -- use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
-    -- use { 'https://github.com/logico-dev/typewriter', opt = true }
-    -- use { 'https://github.com/arzg/vim-substrata', opt = true }
-    -- use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
-    -- use { 'https://github.com/axvr/photon.vim', opt = true }
-    -- use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
-    -- use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
+    use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
+    use { 'https://github.com/logico-dev/typewriter', opt = true }
+    use { 'https://github.com/arzg/vim-substrata', opt = true }
+    use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
+    use { 'https://github.com/axvr/photon.vim', opt = true }
+    use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
+    use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
     -- }}}
 
     if
