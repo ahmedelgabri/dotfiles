@@ -417,13 +417,13 @@ return packer.startup {
 
     -- Themes, UI & eye candy {{{
     use { 'https://github.com/ahmedelgabri/vim-colors-plain', opt = true }
-    use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
-    use { 'https://github.com/logico-dev/typewriter', opt = true }
-    use { 'https://github.com/arzg/vim-substrata', opt = true }
-    use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
-    use { 'https://github.com/axvr/photon.vim', opt = true }
-    use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
-    use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
+    -- use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
+    -- use { 'https://github.com/logico-dev/typewriter', opt = true }
+    -- use { 'https://github.com/arzg/vim-substrata', opt = true }
+    -- use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
+    -- use { 'https://github.com/axvr/photon.vim', opt = true }
+    -- use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
+    -- use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
     -- }}}
 
     if
