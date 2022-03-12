@@ -1,0 +1,17 @@
+# vim:ft=zsh:
+
+emulate -L zsh
+
+command -v git >/dev/null || return 0
+
+# Usage: serve [--directory DIRECTORY] [PORT]
+#
+# Defaults to port 8000, current directory (ie. will use index.html if present).
+
+function serve() {
+  if command -v python3 &> /dev/null; then
+    python3 -m http.server "$@"
+  else
+    python -m SimpleHTTPServer "$@" || python -m http.server "$@"
+  fi
+}
