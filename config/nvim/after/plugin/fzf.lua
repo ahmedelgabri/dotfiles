@@ -26,13 +26,19 @@ map.imap('<c-x><c-f>', '<plug>(fzf-complete-path)')
 map.imap('<c-x><c-j>', '<plug>(fzf-complete-file-ag)')
 map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 
+-- Override Files to show resposnive UI depending on the window width & start with a hidden preview window
+vim.cmd [[command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left:hidden') : fzf#vim#with_preview('down:border-top'), <bang>0)]]
 map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
 map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
 map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
 
 au.augroup('__my_fzf__', function()
-  au.autocmd('User', 'FzfStatusLine', [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]])
+  au.autocmd(
+    'User',
+    'FzfStatusLine',
+    [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]]
+  )
 end)
 
 function FzfSpellSink(word)
