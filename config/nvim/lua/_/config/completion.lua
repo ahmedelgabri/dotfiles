@@ -29,6 +29,9 @@ return function()
     }
 
     cmp.setup {
+      view = {
+        entries = 'native',
+      },
       experimental = {
         ghost_text = true,
       },
@@ -65,8 +68,11 @@ return function()
           name = 'buffer',
           max_item_count = 10,
           keyword_length = 5,
-          options = {
-            get_bufnrs = vim.api.nvim_list_bufs,
+          option = {
+            get_bufnrs = function()
+              return { vim.api.nvim_get_current_buf() }
+            end,
+            -- get_bufnrs = vim.api.nvim_list_bufs,
             -- get_bufnrs = function()
             --   local bufs = {}
             --   for _, win in ipairs(vim.api.nvim_list_wins()) do
