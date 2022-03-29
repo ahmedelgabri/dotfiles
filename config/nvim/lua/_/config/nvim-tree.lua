@@ -20,16 +20,12 @@ return function()
       width = '20%',
       auto_resize = true,
     },
-    auto_close = true,
     update_focused_file = {
       enable = true,
     },
     actions = {
       open_file = {
         quit_on_open = false,
-        window_picker = {
-          enable = true,
-        },
       },
     },
     -- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
