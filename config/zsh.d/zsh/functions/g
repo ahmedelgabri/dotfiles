@@ -10,7 +10,7 @@ command -v git >/dev/null || return 0
 unalias g 2>/dev/null
 
 function time_since_last_commit() {
-  local __LAST_COMMIT=$(git log --color=always -n 1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN%Creset" --date=auto:human 2>/dev/null)
+  local __LAST_COMMIT=$(git log --color=always -1 --pretty=format:"%C(green)[%cr]%Creset %C(blue)%h%Creset %s - %C(cyan)%aN %C(red)%(describe:tags,abbrev=0)%Creset" --date=auto:human 2>/dev/null)
 
   printf "%s\n%s\n" "Last commit:" "$__LAST_COMMIT"
 }
