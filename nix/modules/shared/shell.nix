@@ -106,6 +106,7 @@ in
               graph-easy
               graphviz
               nodePackages.mermaid-cli
+              difftastic
             ];
           };
 
