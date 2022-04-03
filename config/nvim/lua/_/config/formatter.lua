@@ -117,6 +117,8 @@ return function()
             'Unix',
             '--quote-style',
             'AutoPreferSingle',
+            '--call-parentheses',
+            'None',
             '--indent-width',
             vim.bo.tabstop,
             '--column-width',
