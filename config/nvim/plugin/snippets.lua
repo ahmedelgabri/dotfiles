@@ -27,7 +27,7 @@ ls.filetype_extend('jinja', twig)
 ls.filetype_extend('jinja2', twig)
 ls.filetype_extend('html.twig', twig)
 
-ls.snippets = {
+ls.add_snippets(nil, {
   all = {
     s({ trig = 'bbox', wordTrig = true }, {
       t { '╔' },
@@ -261,7 +261,7 @@ ${0}]]
       },
     }),
   },
-}
+})
 
 ls.config.set_config {
   history = true,
