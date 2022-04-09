@@ -41,6 +41,8 @@ return require('lua-dev').setup {
           },
         },
         workspace = {
+          maxPreload = 2000,
+          preloadFileSize = 2000,
           library = {
             ['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
           },
