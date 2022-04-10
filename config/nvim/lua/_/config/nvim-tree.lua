@@ -1,8 +1,6 @@
 return function()
   local map = require '_.utils.map'
 
-  vim.g.nvim_tree_indent_markers = 1
-
   vim.g.nvim_tree_show_icons = {
     git = 1,
     folders = 0,
@@ -19,6 +17,9 @@ return function()
     view = {
       width = '20%',
       auto_resize = true,
+      nvim_tree_indent_markers = {
+        enable = true,
+      },
     },
     update_focused_file = {
       enable = true,
