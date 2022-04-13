@@ -26,7 +26,7 @@ in
 
       {
         my.env = {
-          TERMINFO_DIRS = "${pkgs.kitty.terminfo.outPath}/share/terminfo";
+          TERMINFO_DIRS = "$KITTY_INSTALLATION_DIR/terminfo";
         };
 
         my.hm.file = {
