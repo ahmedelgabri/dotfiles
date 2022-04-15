@@ -46,8 +46,8 @@ return function()
           menu = menu,
         },
       },
-      documentation = {
-        border = 'single',
+      window = {
+        documentation = cmp.config.window.bordered(),
       },
       completion = {
         completeopt = 'menu,menuone,noinsert',
