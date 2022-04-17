@@ -1,37 +1,37 @@
 #!/usr/bin/env bash
 
 _load_weather() {
-  # check for internet connection
-  ping -q -c 1 1.1.1.1 >/dev/null && {
-    weather "" "format=%l:+%c+%t+%w" >"$TMP_WEATHER_FILE"
-    printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
-  }
+	# check for internet connection
+	ping -q -c 1 1.1.1.1 >/dev/null && {
+		weather "" "format=%c+%t+%w" >"$TMP_WEATHER_FILE"
+		printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
+	}
 }
 
 # Weather data
 weather_segment() {
-  local -r TMP_WEATHER_FILE="$TMPDIR/weather.tmp"
-  local -r REFRESH_RATE=$((60 * 60)) // 60 # minutes
+	local -r TMP_WEATHER_FILE="$TMPDIR/weather.tmp"
+	local -r REFRESH_RATE=$((60 * 60)) // 60 # minutes
 
-  [[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
+	[[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
 
-  local now
-  now="$(date +'%s')"
-  local epoch
-  epoch="$(tail -n 1 "$TMP_WEATHER_FILE")"
-  local delta
-  delta="$((now - epoch))"
+	local now
+	now="$(date +'%s')"
+	local epoch
+	epoch="$(tail -n 1 "$TMP_WEATHER_FILE")"
+	local delta
+	delta="$((now - epoch))"
 
-  # check if it's time to update the data
-  [[ $delta -gt $REFRESH_RATE ]] && _load_weather
+	# check if it's time to update the data
+	[[ $delta -gt $REFRESH_RATE ]] && _load_weather
 
-  local weather
-  weather="$(head -n 1 "$TMP_WEATHER_FILE")"
-  weather="$(echo "${weather//+/}")"
+	local weather
+	weather="$(head -n 1 "$TMP_WEATHER_FILE")"
+	weather="$(echo "${weather//+/}")"
 
-  echo
+	echo
 
-  printf "%s#[fg=colour237] ⦁ " "$weather"
+	printf "%s#[fg=colour237] ⦁ " "$weather"
 }
 
 weather_segment
