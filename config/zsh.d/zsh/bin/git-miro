@@ -128,6 +128,24 @@ Succesful: $successful
 EOF
 }
 
+function open_ticket() {
+	local branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+	local re="^([A-Z]+-[0-9]+)(.*)?$"
+
+	if [[ "$branch_name" =~ $re ]]; then
+		local prefix=${BASH_REMATCH[1]}
+
+		if [[ -z "$prefix" ]]; then
+			return
+		fi
+
+		open "$(printf "https://tasks.devrtb.com/browse/%s" "$prefix")"
+	else
+		echo "Branch name doesn't contain a ticket number"
+	fi
+}
+
 function usage() {
 	cat <<HELP
 
@@ -138,6 +156,8 @@ COMMANDS:
         open [repo]               - Opens the [repo] homepage ([repo] defaults to the current repo)
 
         diff|compare [branch]     - Opens the browser with compare page for [branch] ([branch] defaults to "matser")
+
+        ticket|t                  - Opens the browser with ticket from the branch name
 
         pr|pull-request [branch]  - Opens the browser with pull-request page for [branch] ready to fill in info directly ([branch] defaults to "matser")
 
@@ -162,6 +182,9 @@ compare | diff)
 	;;
 build | ci)
 	open_build "${@:2}"
+	;;
+ticket | t)
+	open_ticket "${@:2}"
 	;;
 help | -h | --help)
 	usage
