@@ -1,7 +1,11 @@
 local map = require '_.utils.map'
 local au = require '_.utils.au'
 
-vim.cmd [[command! Reindent call utils#Preserve("normal gg=G")]]
+vim.api.nvim_create_user_command(
+  'Reindent',
+  [[call utils#Preserve("normal gg=G")]],
+  {}
+)
 
 map.nnoremap('_=', ':Reindent<cr>')
 

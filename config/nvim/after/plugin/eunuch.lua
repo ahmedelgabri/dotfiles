@@ -12,4 +12,4 @@ local map = require '_.utils.map'
 map.nmap('<leader>m', ':Move <C-R>=expand("%")<cr>')
 
 -- Delete the current file and clear the buffer
-vim.cmd [[command! Del Delete]]
+vim.api.nvim_create_user_command('Del', 'Delete', {})

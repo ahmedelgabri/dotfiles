@@ -1,18 +1,22 @@
 -- Make these commonly mistyped commands still work
-vim.cmd [[command! WQ wq]]
-vim.cmd [[command! Wq wq]]
-vim.cmd [[command! Wqa wqa]]
-vim.cmd [[command! W w]]
-vim.cmd [[command! Q q]]
+vim.api.nvim_create_user_command('WQ', 'wq', {})
+vim.api.nvim_create_user_command('Wq', 'wq', {})
+vim.api.nvim_create_user_command('Wqa', 'wqa', {})
+vim.api.nvim_create_user_command('W', 'w', {})
+vim.api.nvim_create_user_command('Q', 'q', {})
 
-vim.cmd [[command! Light set background=light]]
-vim.cmd [[command! Dark set background=dark]]
+vim.api.nvim_create_user_command('Light', 'set background=light', {})
+vim.api.nvim_create_user_command('Dark', 'set background=dark', {})
 
 -- Delete the current file and clear the buffer
-if vim.fn.exists ':Delete' then
-  vim.cmd [[command! Del :Delete]]
-else
-  vim.cmd [[command! Del :call delete(@%) | bdelete!]]
-end
+vim.api.nvim_create_user_command(
+  'Del',
+  vim.fn.exists ':Delete' and ':Delete' or [[:call delete(@%) | bdelete!]],
+  {}
+)
 
-vim.cmd [[command! ClearRegisters call utils#ClearRegisters()]]
+vim.api.nvim_create_user_command(
+  'ClearRegisters',
+  [[call utils#ClearRegisters()]],
+  {}
+)

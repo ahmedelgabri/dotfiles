@@ -27,7 +27,11 @@ map.imap('<c-x><c-j>', '<plug>(fzf-complete-file-ag)')
 map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 
 -- Override Files to show resposnive UI depending on the window width & start with a hidden preview window
-vim.cmd [[command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left:hidden') : fzf#vim#with_preview('down:border-top'), <bang>0)]]
+vim.api.nvim_create_user_command(
+  'Files',
+  [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left:hidden') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
+  { bang = true, nargs = '?', complete = 'dir' }
+)
 map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
 map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
 map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
@@ -79,5 +83,10 @@ function __.fzf.RipgrepFzf(query, fullscreen)
   )
 end
 
-vim.cmd [[command! -nargs=* -bang RG call v:lua.__.fzf.RipgrepFzf(<q-args>, <bang>0)]]
+vim.api.nvim_create_user_command(
+  'RG',
+  [[call v:lua.__.fzf.RipgrepFzf(<q-args>, <bang>0)]],
+  { bang = true, nargs = '*' }
+)
+
 map.nnoremap([[<leader>\]], [[:RG<CR>]])
