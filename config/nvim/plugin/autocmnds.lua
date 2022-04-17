@@ -1,5 +1,6 @@
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
+local hl = require '_.utils.highlight'
 
 au.augroup('__myautocmds__', {
   -- Automatically make splits equal in size
@@ -37,7 +38,10 @@ au.augroup('__myautocmds__', {
   {
     event = { 'BufEnter', 'BufWinEnter', 'BufRead', 'BufNewFile' },
     pattern = 'bookmarks.{md,txt}',
-    command = 'hi! link mkdLink Normal | set concealcursor-=n',
+    callback = function()
+      hl.group('mkdLink', { link = 'Normal' })
+      vim.cmd [[set concealcursor-=n]]
+    end,
   },
 
   {

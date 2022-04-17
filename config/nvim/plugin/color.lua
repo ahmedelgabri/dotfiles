@@ -1,5 +1,6 @@
 local utils = require '_.utils'
 local au = require '_.utils.au'
+local hl = require '_.utils.highlight'
 local cmds = require '_.autocmds'
 
 au.augroup('__MyCustomColors__', {
@@ -10,20 +11,27 @@ au.augroup('__MyCustomColors__', {
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link CmpItemAbbrMatch DiffChange',
+    callback = function()
+      print 'hi'
+      hl.group('CmpItemAbbrMatch', { link = 'DiffChange' })
+    end,
   },
   -- fuzzy match for what you typed
-  -- {event =  'ColorScheme', pattern = '*', command = 'hi! link CmpItemAbbrMatchFuzzy DiffDelete'},
+  -- {event =  'ColorScheme', pattern = '*', callback  = hl.group_cb('CmpItemAbbrMatchFuzzy', {link='DiffDelete'})},
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link CmpItemKind DiffText',
+    callback = function()
+      hl.group('CmpItemKind', { link = 'DiffText' })
+    end,
   },
   -- uncompleted item that may be good for completion
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link CmpItemAbbr Normal',
+    callback = function()
+      hl.group('CmpItemAbbr', { link = 'Normal' })
+    end,
   },
 
   ---------------------------------------------------------------
@@ -43,165 +51,207 @@ au.augroup('__MyCustomColors__', {
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! TablineSel cterm=reverse gui=reverse',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! NonText ctermbg=NONE guibg=NONE',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! NormalFloat guibg=NONE',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! link FloatBorder Number',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = [[if &background ==# 'dark' | hi! VertSplit gui=NONE guibg=NONE guifg=#333333 cterm=NONE ctermbg=NONE ctermfg=14 | endif]],
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! OverLength guibg=%s ctermbg=%s guifg=NONE ctermfg=NONE',
-          '#222222',
-          '234'
-        )
-      )
+      hl.group('TablineSel', { reverse = true })
     end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link LspDiagnosticsDefaultError DiffDelete',
+    command = 'hi! NonText cterm=NONE gui=NONE',
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link LspDiagnosticsDefaultWarning DiffChange',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! link LspDiagnosticsDefaultHint NonText',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! User5 ctermfg=red guifg=red',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'hi! User7 ctermfg=cyan guifg=cyan',
+    command = 'hi! NormalFloat cterm=NONE gui=NONE',
   },
   {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! User4 gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('NonText', 'fg', 'gui'),
-          utils.get_color('NonText', 'fg', 'cterm')
-        )
-      )
+      hl.group('FloatBorder', { link = 'Number' })
     end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('Identifier', 'fg', 'gui'),
-          utils.get_color('Identifier', 'fg', 'cterm')
-        )
-      )
+      if vim.o.background == 'dark' then
+        hl.group('VertSplit', {
+          bg = nil,
+          fg = '#333333',
+          ctermbg = nil,
+          ctermfg = 14,
+        })
+      end
     end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! StatusLineNC gui=italic cterm=italic guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('NonText', 'fg', 'gui'),
-          utils.get_color('NonText', 'fg', 'cterm')
-        )
-      )
-    end,
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    command = 'highlight PmenuSel blend=0',
-  },
-  {
-    event = 'ColorScheme',
-    pattern = '*',
-    callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! MutedImports gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('Ignore', 'fg', 'gui'),
-          utils.get_color('Ignore', 'fg', 'cterm')
-        )
-      )
+      hl.group('OverLength', {
+        fg = nil,
+        bg = '#222222',
+        ctermbg = 234,
+        ctermfg = nil,
+      })
     end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! MutedImportsInfo gui=italic,bold cterm=italic,bold guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('Comment', 'fg', 'gui'),
-          utils.get_color('Comment', 'fg', 'cterm')
-        )
-      )
+      hl.group('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
     end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitDirty DiffChange',
+    callback = function()
+      hl.group('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitStaged DiffChange',
+    callback = function()
+      hl.group('LspDiagnosticsDefaultHint', { link = 'NonText' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitMerge DiffText',
+    callback = function()
+      hl.group('User5', {
+        fg = 'red',
+        ctermfg = 'red',
+      })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitRenamed DiffChange',
+    callback = function()
+      hl.group('User7', {
+        fg = 'cyan',
+        ctermfg = 'cyan',
+      })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitNew DiffAdd',
+    callback = function()
+      hl.group('User4', {
+        bg = nil,
+        fg = utils.get_color('NonText', 'fg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('NonText', 'fg', 'cterm'),
+      })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = '*',
-    command = 'hi! link NvimTreeGitDeleted DiffDelete',
+    callback = function()
+      hl.group('StatusLine', {
+        bg = nil,
+        fg = utils.get_color('Identifier', 'fg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('Identifier', 'fg', 'cterm'),
+      })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('StatusLineNC', {
+        italic = true,
+        bg = nil,
+        fg = utils.get_color('NonText', 'fg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('NonText', 'fg', 'cterm'),
+      })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('PmenuSel', {
+        blend = 0,
+      })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('MutedImports', {
+        bg = nil,
+        fg = utils.get_color('Ignore', 'fg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('Ignore', 'fg', 'cterm'),
+      })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('MutedImportsInfo', {
+        italic = true,
+        bold = true,
+        bg = nil,
+        fg = utils.get_color('Comment', 'fg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('Comment', 'fg', 'cterm'),
+      })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitDirty', { link = 'DiffChange' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitStaged', { link = 'DiffChange' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitMerge', { link = 'DiffText' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitRenamed', { link = 'DiffChange' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitNew', { link = 'DiffAdd' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = '*',
+    callback = function()
+      hl.group('NvimTreeGitDeleted', { link = 'DiffDelete' })
+    end,
   },
 
   ---------------------------------------------------------------
@@ -209,33 +259,45 @@ au.augroup('__MyCustomColors__', {
   ---------------------------------------------------------------
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifyHeader Normal',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifyHeader', { link = 'Normal' })
+    end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifyFile Directory',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifyFile', { link = 'Directory' })
+    end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifyPath LineNr',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifyPath', { link = 'LineNr' })
+    end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifySlash StartifyPath',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifySlash', { link = 'StartifyPath' })
+    end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifyBracket StartifyPath',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifyBracket', { link = 'StartifyPath' })
+    end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'codedark,plain',
-    command = 'hi! link StartifyNumber Title',
+    pattern = { 'codedark', 'plain' },
+    callback = function()
+      hl.group('StartifyNumber', { link = 'Title' })
+    end,
   },
 
   ---------------------------------------------------------------
@@ -245,92 +307,125 @@ au.augroup('__MyCustomColors__', {
     event = 'ColorScheme',
     pattern = 'plain',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! LineNr gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%s',
-          utils.get_color('VisualNOS', 'bg', 'gui'),
-          utils.get_color('VisualNOS', 'bg', 'cterm')
-        )
-      )
+      hl.group('LineNr', {
+        bg = nil,
+        fg = utils.get_color('VisualNOS', 'bg', 'gui'),
+        ctermbg = nil,
+        ctermfg = utils.get_color('VisualNOS', 'bg', 'cterm'),
+      })
     end,
-  },
-  {
-    event = 'ColorScheme',
-    pattern = 'plain',
-    command = 'hi! Comment cterm=italic gui=italic ctermfg=236 guifg=#555555',
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
     callback = function()
-      vim.fn.execute(
-        string.format(
-          'hi! Pmenu gui=NONE cterm=NONE guibg=#222222 ctermbg=234 guifg=%s ctermfg=%s',
-          utils.get_color('Pmenu', 'fg', 'gui'),
-          utils.get_color('Pmenu', 'fg', 'cterm')
-        )
-      )
+      hl.group('Comment', {
+        italic = true,
+        bg = nil,
+        fg = '#555555',
+        ctermbg = nil,
+        ctermfg = 236,
+      })
     end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link PmenuSel ColorColumn',
+    callback = function()
+      hl.group('Pmenu', {
+        bg = '#222222',
+        fg = utils.get_color('Pmenu', 'fg', 'gui'),
+        ctermbg = 234,
+        ctermfg = utils.get_color('Pmenu', 'fg', 'cterm'),
+      })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! Whitespace ctermfg=235 guifg=#333333',
+    callback = function()
+      hl.group('PmenuSel', { link = 'ColorColumn' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link graphqlString Comment',
+    callback = function()
+      hl.group('Whitespace', {
+        fg = '#333333',
+        ctermfg = 235,
+      })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link Todo Comment',
+    callback = function()
+      hl.group('graphqlString', { link = 'Comment' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link Conceal NonText',
+    callback = function()
+      hl.group('Todo', { link = 'Comment' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link Error ErrorMsg',
+    callback = function()
+      hl.group('Conceal', { link = 'NonText' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapSelect CursorLine',
+    callback = function()
+      hl.group('Error', { link = 'ErrorMsg' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapMultiSelect DiffAdd',
+    callback = function()
+      hl.group('SnapSelect', { link = 'CursorLine' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapNormal Normal',
+    callback = function()
+      hl.group('SnapMultiSelect', { link = 'DiffAdd' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapBorder SnapNormal',
+    callback = function()
+      hl.group('SnapNormal', { link = 'Normal' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapPrompt NonText',
+    callback = function()
+      hl.group('SnapBorder', { link = 'SnapNormal' })
+    end,
   },
   {
     event = 'ColorScheme',
     pattern = 'plain',
-    command = 'hi! link SnapPosition DiffText',
+    callback = function()
+      hl.group('SnapPrompt', { link = 'NonText' })
+    end,
+  },
+  {
+    event = 'ColorScheme',
+    pattern = 'plain',
+    callback = function()
+      hl.group('SnapPosition', { link = 'DiffText' })
+    end,
   },
 
   ---------------------------------------------------------------

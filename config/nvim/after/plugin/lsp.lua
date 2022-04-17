@@ -10,6 +10,7 @@ local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
 local utils = require '_.utils'
 local au = require '_.utils.au'
 local map = require '_.utils.map'
+local hl = require '_.utils.highlight'
 local map_opts = { buffer = true, silent = true }
 
 if not has_lsp then
@@ -152,14 +153,15 @@ local on_attach = function(client, bufnr)
   -- AUTOCMDS
   -- ---------------
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
-      hi! link LspReferenceRead SpecialKey
-      hi! link LspReferenceText SpecialKey
-      hi! link LspReferenceWrite SpecialKey
-      ]],
-      false
-    )
+    hl.group('LspReferenceRead', {
+      link = 'SpecialKey',
+    })
+    hl.group('LspReferenceText', {
+      link = 'SpecialKey',
+    })
+    hl.group('LspReferenceWrite', {
+      link = 'SpecialKey',
+    })
 
     au.augroup('__LSP_HIGHLIGHTS__', {
       {

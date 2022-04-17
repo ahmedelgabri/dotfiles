@@ -1,5 +1,6 @@
 local utils = require '_.utils'
 local au = require '_.utils.au'
+local hl = require '_.utils.highlight'
 
 ---------------------------------------------------------------------------------
 -- Helpers
@@ -44,11 +45,11 @@ end
 
 local function update_filepath_highlights()
   if vim.bo.modified then
-    vim.api.nvim_command 'hi! link StatusLineFilePath DiffChange'
-    vim.api.nvim_command 'hi! link StatusLineNewFilePath DiffChange'
+    hl.group('StatusLineFilePath', { link = 'DiffChange' })
+    hl.group('StatusLineNewFilePath', { link = 'DiffChange' })
   else
-    vim.api.nvim_command 'hi! link StatusLineFilePath User6'
-    vim.api.nvim_command 'hi! link StatusLineNewFilePath User4'
+    hl.group('StatusLineFilePath', { link = 'User6' })
+    hl.group('StatusLineNewFilePath', { link = 'User4' })
   end
 
   return ''
@@ -303,14 +304,12 @@ function M.inactive()
 end
 
 function M.activate()
-  vim.api.nvim_command(
-    (
-      'hi! StatusLine gui=NONE cterm=NONE guibg=NONE ctermbg=NONE guifg=%s ctermfg=%d'
-    ):format(
-      utils.get_color('Identifier', 'fg', 'gui'),
-      utils.get_color('Identifier', 'fg', 'cterm')
-    )
-  )
+  hl.group('StatusLine', {
+    bg = nil,
+    fg = utils.get_color('Identifier', 'fg', 'gui'),
+    ctermbg = nil,
+    ctermfg = utils.get_color('Identifier', 'fg', 'cterm'),
+  })
 
   au.augroup('MyStatusLine', {
     {

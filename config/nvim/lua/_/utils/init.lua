@@ -22,7 +22,17 @@ function M.get_icon(icon_name)
 end
 
 function M.get_color(synID, what, mode)
-  return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(synID)), what, mode)
+  local value = vim.fn.synIDattr(
+    vim.fn.synIDtrans(vim.fn.hlID(synID)),
+    what,
+    mode
+  )
+
+  if mode == 'cterm' then
+    return tonumber(value)
+  else
+    return value
+  end
 end
 
 function M.t(str)

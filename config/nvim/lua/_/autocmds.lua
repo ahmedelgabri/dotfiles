@@ -1,5 +1,6 @@
 local utils = require '_.utils'
 local map = require '_.utils.map'
+local hl = require '_.utils.highlight'
 
 local M = {}
 
@@ -174,13 +175,11 @@ end
 
 function M.highlight_git_markers()
   if utils.plugin_loaded 'conflict-marker.vim' then
-    vim.cmd [[
-highlight! ConflictMarkerBegin guibg=#2f7366
-highlight! ConflictMarkerOurs guibg=#2e5049
-highlight! ConflictMarkerTheirs guibg=#344f69
-highlight! ConflictMarkerEnd guibg=#2f628e
-highlight! ConflictMarkerCommonAncestorsHunk guibg=#754a81
-]]
+    hl.group('ConflictMarkerBegin', { guibg = '#2f7366' })
+    hl.group('ConflictMarkerOurs', { guibg = '#2e5049' })
+    hl.group('ConflictMarkerTheirs', { guibg = '#344f69' })
+    hl.group('ConflictMarkerEnd', { guibg = '#2f628e' })
+    hl.group('ConflictMarkerCommonAncestorsHunk', { guibg = '#754a81' })
   else
     cleanup_marker 'w:last_git_markers'
     -- I have to escape the escape backslash to be able to pass it to vim
