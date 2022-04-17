@@ -63,9 +63,8 @@ in
           selene
           statix
           nix-linter # Until statix pick up, see https://github.com/nerdypepper/statix/issues/18
-        ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           sumneko-lua-language-server
-        ]);
+        ];
       };
 
       system.activationScripts.postUserActivation.text = ''
