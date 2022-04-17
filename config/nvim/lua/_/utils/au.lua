@@ -1,27 +1,24 @@
 local M = {}
 
-__.autocommand_callbacks = {}
+function M.autocmd(...)
+  local opts = ...
+  -- store event(s)
+  local event = opts.event
+  -- remove it from opts
+  opts.event = nil
 
-local callback_index = 0
-
-function M.autocmd(name, pattern, cmd)
-  local cmd_type = type(cmd)
-  if cmd_type == 'function' then
-    local key = '_' .. callback_index
-    callback_index = callback_index + 1
-    __.autocommand_callbacks[key] = cmd
-    cmd = 'lua __.autocommand_callbacks.' .. key .. '()'
-  elseif cmd_type ~= 'string' then
-    error('autocmd(): unsupported cmd type: ' .. cmd_type)
-  end
-  vim.cmd('autocmd ' .. name .. ' ' .. pattern .. ' ' .. cmd)
+  vim.api.nvim_create_autocmd(event, opts)
 end
 
-function M.augroup(group, fn)
-  vim.api.nvim_command('augroup ' .. group)
-  vim.api.nvim_command 'autocmd!'
-  fn()
-  vim.api.nvim_command 'augroup END'
+function M.augroup(name, autocmds, opts)
+  local augroup = vim.api.nvim_create_augroup(
+    name,
+    vim.tbl_extend('force', { clear = true }, opts or {})
+  )
+
+  for _, au in ipairs(autocmds) do
+    M.autocmd(vim.tbl_extend('force', au, { group = augroup }))
+  end
 end
 
 return M

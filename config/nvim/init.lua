@@ -249,13 +249,13 @@ else
   -- - <50 save/restore 50 lines from each register
   -- - s10 max item size 10KB
   -- - h do not save/restore 'hlsearch' setting
-  au.augroup('MyNeovimShada', function()
-    au.autocmd(
-      'CursorHold,FocusGained,FocusLost',
-      '*',
-      [[if &bt == '' | rshada|wshada | endif]]
-    )
-  end)
+  au.augroup('MyNeovimShada', {
+    {
+      event = { 'CursorHold', 'FocusGained', 'FocusLost' },
+      pattern = '*',
+      command = [[if &bt == '' | rshada|wshada | endif]],
+    },
+  })
 end
 
 if not vim.fn.has 'nvim-0.6' then

@@ -312,10 +312,18 @@ function M.activate()
     )
   )
 
-  au.augroup('MyStatusLine', function()
-    au.autocmd('WinEnter,BufEnter', '*', 'lua __.statusline.active()')
-    au.autocmd('WinLeave,BufLeave', '*', 'lua __.statusline.inactive()')
-  end)
+  au.augroup('MyStatusLine', {
+    {
+      event = { 'WinEnter', 'BufEnter' },
+      pattern = '*',
+      callback = __.statusline.active,
+    },
+    {
+      event = { 'WinLeave', 'BufLeave' },
+      pattern = '*',
+      callback = __.statusline.inactive,
+    },
+  })
 end
 
 __.statusline.activate()

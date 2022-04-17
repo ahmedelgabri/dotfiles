@@ -10,12 +10,9 @@ return function()
   local parser_config = parsers.get_parser_configs()
 
   local function get_filetypes()
-    return table.concat(
-      vim.tbl_map(function(ft)
-        return parser_config[ft].filetype or ft
-      end, parsers.available_parsers()),
-      ','
-    )
+    return vim.tbl_map(function(ft)
+      return parser_config[ft].filetype or ft
+    end, parsers.available_parsers())
   end
 
   require('nvim-treesitter.configs').setup {
@@ -115,11 +112,11 @@ return function()
     },
   }
 
-  au.augroup('__treesitter__', function()
-    au.autocmd(
-      'FileType',
-      get_filetypes(),
-      'setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()'
-    )
-  end)
+  au.augroup('__treesitter__', {
+    {
+      event = 'FileType',
+      pattern = get_filetypes(),
+      command = 'setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()',
+    },
+  })
 end

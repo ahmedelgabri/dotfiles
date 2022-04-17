@@ -8,9 +8,9 @@ function SetUpLoupeHighlight()
   vim.cmd 'highlight! link Search Underlined'
 end
 
-au.augroup('__myloupe__', function()
-  au.autocmd('ColorScheme', '*', SetUpLoupeHighlight)
-end)
+au.augroup('__myloupe__', {
+  { event = 'ColorScheme', pattern = '*', callback = SetUpLoupeHighlight },
+})
 
 SetUpLoupeHighlight()
 

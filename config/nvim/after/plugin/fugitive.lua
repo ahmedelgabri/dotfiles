@@ -24,14 +24,18 @@ map.vnoremap('gb', ':GBrowse<cr>')
 map.nnoremap('gs', ':Git<cr>')
 map.vnoremap('gs', ':Git<cr>')
 
-au.augroup('__my_fugitive__', function()
+au.augroup('__my_fugitive__', {
   -- http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
-  au.autocmd('BufReadPost', 'fugitive://*', function()
-    vim.opt.bufhidden = 'delete'
-  end)
-  au.autocmd(
-    'User',
-    'fugitive',
-    [[if get(b:, 'fugitive_type', '') =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif]]
-  )
-end)
+  {
+    event = 'BufReadPost',
+    pattern = 'fugitive://*',
+    callback = function()
+      vim.opt.bufhidden = 'delete'
+    end,
+  },
+  {
+    event = 'User',
+    pattern = 'fugitive',
+    command = [[if get(b:, 'fugitive_type', '') =~# '^\%(tree\|blob\)$' | nnoremap <buffer> .. :edit %:h<CR> | endif]],
+  },
+})

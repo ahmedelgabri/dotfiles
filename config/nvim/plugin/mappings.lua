@@ -92,11 +92,15 @@ map.tnoremap('<M-j>', '<c-><c-n><c-w>j')
 map.tnoremap('<M-k>', '<c-><c-n><c-w>k')
 map.tnoremap('<M-l>', '<c-><c-n><c-w>l')
 
-au.augroup('__MyTerm__', function()
-  au.autocmd('TermOpen', '*', 'setl nonumber norelativenumber')
-  au.autocmd('TermOpen', 'term://*', 'startinsert')
-  au.autocmd('TermClose', 'term://*', 'stopinsert')
-end)
+au.augroup('__MyTerm__', {
+  {
+    event = 'TermOpen',
+    pattern = '*',
+    command = 'setl nonumber norelativenumber',
+  },
+  { event = 'TermOpen', pattern = 'term://*', command = 'startinsert' },
+  { event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
+})
 
 map.nnoremap('<leader>z', ':call utils#ZoomToggle()<cr>', {
   silent = true,

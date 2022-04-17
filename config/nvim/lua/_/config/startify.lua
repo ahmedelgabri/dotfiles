@@ -196,7 +196,11 @@ return function()
     '.*/vimwiki/.*',
   }
 
-  au.augroup('__STARTIFY__', function()
-    au.autocmd('User', 'Startified', 'setlocal cursorline')
-  end)
+  au.augroup('__STARTIFY__', {
+    {
+      event = 'User',
+      pattern = 'Startified',
+      command = 'setlocal cursorline',
+    },
+  })
 end

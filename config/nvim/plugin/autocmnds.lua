@@ -1,79 +1,118 @@
 local au = require '_.utils.au'
+local cmds = require '_.autocmds'
 
-au.augroup('__myautocmds__', function()
+au.augroup('__myautocmds__', {
   -- Automatically make splits equal in size
-  au.autocmd('VimResized', '*', 'wincmd =')
+  { event = 'VimResized', pattern = '*', command = 'wincmd =' },
 
   -- Disable paste mode on leaving insert mode.
-  au.autocmd('InsertLeave', '*', 'set nopaste')
+  { event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
 
-  -- au.autocmd('InsertLeave,VimEnter,WinEnter', '*', 'setlocal cursorline')
-  -- au.autocmd('InsertEnter,WinLeave', '*', 'setlocal nocursorline')
+  -- {
+  --   event = { 'InsertLeave', 'VimEnter', 'WinEnter' },
+  --   pattern = '*',
+  --   command = 'setlocal cursorline',
+  -- },
+  -- {
+  --   event = { 'InsertEnter', 'WinLeave' },
+  --   pattern = '*',
+  --   command = 'setlocal nocursorline',
+  -- },
 
   -- taken from https://github.com/jeffkreeftmeijer/vim-numbertoggle/blob/cfaecb9e22b45373bb4940010ce63a89073f6d8b/plugin/number_toggle.vim
-  au.autocmd(
-    'BufEnter,FocusGained,InsertLeave,WinEnter',
-    '*',
-    [[if &nu | set rnu   | endif]]
-  )
-  au.autocmd(
-    'BufLeave,FocusLost,InsertEnter,WinLeave',
-    '*',
-    [[if &nu | set nornu | endif]]
-  )
+  {
+    event = { 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' },
+    pattern = '*',
+    command = [[if &nu | set rnu   | endif]],
+  },
+  {
+    event = { 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' },
+    pattern = '*',
+    command = [[if &nu | set nornu | endif]],
+  },
 
   -- See https://github.com/neovim/neovim/issues/7994
-  au.autocmd('InsertLeave', '*', 'set nopaste')
+  { event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
 
-  au.autocmd(
-    'BufEnter,BufWinEnter,BufRead,BufNewFile',
-    'bookmarks.{md,txt}',
-    'hi! link mkdLink Normal | set concealcursor-=n'
-  )
+  {
+    event = { 'BufEnter', 'BufWinEnter', 'BufRead', 'BufNewFile' },
+    pattern = 'bookmarks.{md,txt}',
+    command = 'hi! link mkdLink Normal | set concealcursor-=n',
+  },
 
-  if vim.fn.executable 'direnv' then
-    au.autocmd('BufWritePost', '.envrc ', 'silent !direnv allow %')
-  end
+  {
+    event = 'BufWritePost',
+    pattern = '.envrc ',
+    callback = function()
+      if vim.fn.executable 'direnv' then
+        vim.cmd [[ silent !direnv allow %]]
+      end
+    end,
+  },
 
-  au.autocmd(
-    'BufReadPre',
-    '*',
-    [[lua require'_.autocmds'.disable_heavy_plugins()]]
-  )
-  au.autocmd(
-    'BufWritePost,BufLeave,WinLeave',
-    '?*',
-    [[lua require'_.autocmds'.mkview()]]
-  )
-  au.autocmd('BufWinEnter', '?*', [[lua require'_.autocmds'.loadview()]])
+  {
+    event = 'BufReadPre',
+    pattern = '*',
+    callback = cmds.disable_heavy_plugins,
+  },
+  {
+    event = { 'BufWritePost', 'BufLeave', 'WinLeave' },
+    pattern = '?*',
+    callback = cmds.mkview,
+  },
+  {
+    event = 'BufWinEnter',
+    pattern = '?*',
+    callback = cmds.loadview,
+  },
 
   -- Close preview buffer with q
-  au.autocmd('FileType', '*', [[lua require'_.autocmds'.quit_on_q()]])
+  {
+    event = 'FileType',
+    pattern = '*',
+    callback = cmds.quit_on_q,
+  },
 
   -- Project specific override
-  au.autocmd(
-    'BufRead,BufNewFile',
-    '*',
-    [[lua require'_.autocmds'.source_project_config()]]
-  )
-  au.autocmd(
-    'DirChanged',
-    '*',
-    [[lua require'_.autocmds'.source_project_config()]]
-  )
+  {
+    event = { 'BufRead', 'BufNewFile' },
+    pattern = '*',
+    callback = cmds.source_project_config,
+  },
+  {
+    event = 'DirChanged',
+    pattern = '*',
+    callback = cmds.source_project_config,
+  },
 
-  au.autocmd(
-    'TextYankPost',
-    '*',
-    [[silent! lua vim.highlight.on_yank {higroup = "IncSearch", timeout = 200, on_visual = false}]]
-  )
+  {
+    event = 'TextYankPost',
+    pattern = '*',
+    command = [[silent! lua vim.highlight.on_yank {hievent =  "IncSearch", timeout = 200, on_visual = false}]],
+  },
 
-  au.autocmd('BufEnter,WinEnter', '*/node_modules/*', ':LspStop')
-  au.autocmd('BufLeave', '*/node_modules/*', ':LspStart')
-  au.autocmd('BufEnter,WinEnter', '*.min.*', ':LspStop')
-  au.autocmd('BufLeave', '*.min.*', ':LspStart')
+  {
+    event = { 'BufEnter', 'WinEnter' },
+    pattern = '*/node_modules/*',
+    command = ':LspStop',
+  },
+  { event = 'BufLeave', pattern = '*/node_modules/*', command = ':LspStart' },
+  {
+    event = { 'BufEnter', 'WinEnter' },
+    pattern = '*.min.*',
+    command = ':LspStop',
+  },
+  { event = 'BufLeave', pattern = '*.min.*', command = ':LspStart' },
 
-  au.autocmd('BufWritePost', '*/spell/*.add', 'silent! :mkspell! %')
-  au.autocmd('BufWritePost', '*', 'silent! FormatWrite')
-  au.autocmd('BufWritePost', 'packer.lua', 'PackerCompile')
-end)
+  {
+    event = 'BufWritePost',
+    pattern = '*/spell/*.add',
+    command = 'silent! :mkspell! %',
+  },
+  { event = 'BufWritePost', pattern = '*', command = 'silent! FormatWrite' },
+  {
+    event = 'BufWritePost',
+    pattern = 'packer.lua',
+    command = 'PackerCompile',
+  },
+})

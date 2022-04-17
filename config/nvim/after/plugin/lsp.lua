@@ -161,22 +161,34 @@ local on_attach = function(client, bufnr)
       false
     )
 
-    au.augroup('__LSP_HIGHLIGHTS__', function()
-      au.autocmd('CursorHold', '<buffer>', function()
-        vim.lsp.buf.document_highlight()
-      end)
-      au.autocmd('CursorMoved', '<buffer>', function()
-        vim.lsp.buf.clear_references()
-      end)
-    end)
+    au.augroup('__LSP_HIGHLIGHTS__', {
+      {
+        event = 'CursorHold',
+        callback = function()
+          vim.lsp.buf.document_highlight()
+        end,
+        buffer = 0,
+      },
+      {
+        event = 'CursorMoved',
+        callback = function()
+          vim.lsp.buf.clear_references()
+        end,
+        buffer = 0,
+      },
+    })
   end
 
   if client.resolved_capabilities.code_lens then
-    au.augroup('__LSP_CODELENS__', function()
-      au.autocmd('CursorHold,BufEnter,InsertLeave', '<buffer>', function()
-        vim.lsp.codelens.refresh()
-      end)
-    end)
+    au.augroup('__LSP_CODELENS__', {
+      {
+        event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
+        callback = function()
+          vim.lsp.codelens.refresh()
+        end,
+        buffer = 0,
+      },
+    })
   end
 end
 
