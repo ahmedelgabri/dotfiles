@@ -1,76 +1,86 @@
 local M = {}
 
-local function map(mode, lhs, rhs, opts, noremap)
-  local options = opts or {}
-  local buffer = options.buffer
-  options.buffer = nil
+local function remap_opts(opts)
+  return vim.tbl_extend('force', opts or {}, { remap = true })
+end
 
-  -- options.unique = true
-  if noremap == true then
-    options.noremap = true
-  end
+local function is_debug(opts)
+  local debug = opts.debug
+  opts.debug = nil
 
-  if buffer then
-    vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, options)
-  else
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  return debug
+end
+
+function M.remap(mode, lhs, rhs, opts)
+  local debug = is_debug(opts or {})
+  if debug then
+    print('remap: ', mode, lhs, rhs, vim.inspect(opts))
   end
+  vim.keymap.set(mode, lhs, rhs, remap_opts(opts))
+end
+
+function M.noremap(mode, lhs, rhs, opts)
+  local debug = is_debug(opts or {})
+  if debug then
+    print('noremap: ', mode, lhs, rhs, vim.inspect(opts))
+  end
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 function M.nmap(lhs, rhs, opts)
-  map('n', lhs, rhs, opts)
+  M.remap('n', lhs, rhs, opts)
 end
 
 function M.nnoremap(lhs, rhs, opts)
-  map('n', lhs, rhs, opts, true)
+  M.noremap('n', lhs, rhs, opts)
 end
 
 function M.vmap(lhs, rhs, opts)
-  map('v', lhs, rhs, opts)
+  M.remap('v', lhs, rhs, opts)
 end
 
 function M.vnoremap(lhs, rhs, opts)
-  map('v', lhs, rhs, opts, true)
+  M.noremap('v', lhs, rhs, opts)
 end
 
 function M.imap(lhs, rhs, opts)
-  map('i', lhs, rhs, opts)
+  M.remap('i', lhs, rhs, opts)
 end
 
 function M.inoremap(lhs, rhs, opts)
-  map('i', lhs, rhs, opts, true)
+  M.noremap('i', lhs, rhs, opts)
 end
 
 function M.smap(lhs, rhs, opts)
-  map('s', lhs, rhs, opts)
+  M.remap('s', lhs, rhs, opts)
 end
 
 function M.snoremap(lhs, rhs, opts)
-  map('s', lhs, rhs, opts, true)
+  M.noremap('s', lhs, rhs, opts)
 end
 
 function M.xmap(lhs, rhs, opts)
-  map('x', lhs, rhs, opts)
+  M.remap('x', lhs, rhs, opts)
 end
 
 function M.xnoremap(lhs, rhs, opts)
-  map('x', lhs, rhs, opts, true)
+  M.noremap('x', lhs, rhs, opts)
 end
 
 function M.tmap(lhs, rhs, opts)
-  map('t', lhs, rhs, opts)
+  M.remap('t', lhs, rhs, opts)
 end
 
 function M.tnoremap(lhs, rhs, opts)
-  map('t', lhs, rhs, opts, true)
+  M.noremap('t', lhs, rhs, opts)
 end
 
 function M.omap(lhs, rhs, opts)
-  map('o', lhs, rhs, opts)
+  M.remap('o', lhs, rhs, opts)
 end
 
 function M.onoremap(lhs, rhs, opts)
-  map('o', lhs, rhs, opts, true)
+  M.noremap('o', lhs, rhs, opts)
 end
 
 return M
