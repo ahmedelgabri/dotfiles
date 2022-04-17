@@ -57,6 +57,21 @@ return function()
           end, trigger_characters)
         end,
       },
+      sorting = {
+        comparators = {
+          -- defaults https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/compare.lua
+          cmp.config.compare.locality,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.score,
+          cmp.config.compare.offset,
+          cmp.config.compare.order,
+          cmp.config.compare.exact,
+          cmp.config.compare.scopes,
+          cmp.config.compare.kind,
+          cmp.config.compare.sort_text,
+          cmp.config.compare.length,
+        },
+      },
       sources = cmp.config.sources {
         { name = 'luasnip' },
         { name = 'nvim_lsp' },
