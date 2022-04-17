@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------
 -- GENERAL {{{1
 -------------------------------------------------------------------------------
+-- Opt-in to lua filetype detection
+-- enable filetype.lua
+vim.g.do_filetype_lua = 1
+-- disable filetype.vim
+vim.g.did_load_filetypes = 0
 
 require '_'
 
