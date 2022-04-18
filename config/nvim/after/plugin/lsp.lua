@@ -152,7 +152,7 @@ local on_attach = function(client, bufnr)
   -- ---------------
   -- AUTOCMDS
   -- ---------------
-  if client.resolved_capabilities.document_highlight then
+  if client.resolved_capabilities.documentHighlightProvider then
     hl.group('LspReferenceRead', {
       link = 'SpecialKey',
     })
@@ -181,7 +181,7 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.resolved_capabilities.code_lens then
+  if client.resolved_capabilities.codeLensProvider then
     au.augroup('__LSP_CODELENS__', {
       {
         event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
