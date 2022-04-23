@@ -1,6 +1,8 @@
+local utils = require '_.utils'
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
 local hl = require '_.utils.highlight'
+local map = require '_.utils.map'
 
 au.augroup('__myautocmds__', {
   -- Automatically make splits equal in size
@@ -118,5 +120,14 @@ au.augroup('__myautocmds__', {
     event = 'BufWritePost',
     pattern = 'packer.lua',
     command = 'PackerCompile',
+  },
+  {
+    event = { 'BufRead', 'BufNewFile' },
+    pattern = 'package.json',
+    callback = function()
+      map.nnoremap('gx', function()
+        utils.package_json_gx()
+      end, { buffer = true, silent = true })
+    end,
   },
 })

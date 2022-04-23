@@ -92,4 +92,14 @@ function M.plaintext()
   map.inoremap(',', ',<c-g>u', { buffer = true })
 end
 
+function M.package_json_gx()
+  local line = vim.fn.getline '.'
+  local _, _, package, _ = string.find(line, [[^%s*"(.*)":%s*"(.*)"]])
+
+  if package then
+    local url = 'https://www.npmjs.com/package/' .. package
+    vim.fn['netrw#BrowseX'](url, 0)
+  end
+end
+
 return M
