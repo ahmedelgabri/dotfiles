@@ -19,10 +19,10 @@ end
 vim.cmd [[call insert(g:fugitive_browse_handlers, function('miro#get_url'))]]
 
 -- Open current file on github.com
-map.nnoremap('gb', ':GBrowse<cr>')
-map.vnoremap('gb', ':GBrowse<cr>')
-map.nnoremap('gs', ':Git<cr>')
-map.vnoremap('gs', ':Git<cr>')
+map.nnoremap('<leader>gb', ':GBrowse<cr>')
+map.vnoremap('<leader>gb', ':GBrowse<cr>')
+map.nnoremap('<leader>gs', ':Git<cr>')
+map.vnoremap('<leader>gs', ':Git<cr>')
 
 au.augroup('__my_fugitive__', {
   -- http://vimcasts.org/episodes/fugitive-vim-browsing-the-git-object-database/
