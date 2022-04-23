@@ -34,7 +34,7 @@ in
         MANPAGER = "$EDITOR +Man!";
       };
 
-      environment.shellAliases.e = "NVIM_LISTEN_ADDRESS=/tmp/nvimsocket $EDITOR";
+      environment.shellAliases.e = "$EDITOR --listen /tmp/nvim.pipe";
 
       my.user = {
         packages = with pkgs; [
