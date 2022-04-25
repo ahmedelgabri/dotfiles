@@ -146,6 +146,10 @@ return packer.startup {
     }
     use { 'https://github.com/kevinhwang91/nvim-bqf' }
     use { 'https://github.com/stevearc/dressing.nvim' }
+    use {
+      'https://github.com/rgroli/other.nvim',
+      config = require '_.config.other',
+    }
     -- LSP/Autocompletion {{{
     use {
       'https://github.com/neovim/nvim-lspconfig',
