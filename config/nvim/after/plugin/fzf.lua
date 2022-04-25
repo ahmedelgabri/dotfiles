@@ -26,10 +26,10 @@ map.imap('<c-x><c-f>', '<plug>(fzf-complete-path)')
 map.imap('<c-x><c-j>', '<plug>(fzf-complete-file-ag)')
 map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
 
--- Override Files to show resposnive UI depending on the window width & start with a hidden preview window
+-- Override Files to show resposnive UI depending on the window width
 vim.api.nvim_create_user_command(
   'Files',
-  [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left:hidden') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
+  [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
   { bang = true, nargs = '?', complete = 'dir' }
 )
 map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
