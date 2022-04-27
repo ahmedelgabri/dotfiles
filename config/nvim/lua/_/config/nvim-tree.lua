@@ -15,18 +15,23 @@ return function()
 
   require('nvim-tree').setup {
     view = {
-      width = '20%',
-      auto_resize = true,
-      nvim_tree_indent_markers = {
-        enable = true,
-      },
+      width = 20,
     },
     update_focused_file = {
       enable = true,
     },
+    renderer = {
+      indent_markers = {
+        enable = false,
+      },
+    },
     actions = {
       open_file = {
         quit_on_open = false,
+        resize_window = true,
+        window_picker = {
+          enable = false,
+        },
       },
     },
     -- vim-fugitive :GBrowse depends on netrw & this has to be set as early as possible
