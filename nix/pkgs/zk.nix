@@ -6,7 +6,7 @@ buildGoModule rec {
 
   # TODO is it possibe to pin the hash in flake.lock?
   # This should be doable with https://github.com/tweag/gomod2nix
-  vendorSha256 = "sha256-m7QGv8Vx776TsN7QHXtO+yl3U1D573UMZVyg1B4UeIk=";
+  vendorSha256 = "sha256-cTbHlF2hLRM8nybUNtq+k8ueGUND6DwRUHUaSWoyI9w=";
 
   doCheck = false;
 

@@ -88,8 +88,7 @@
         };
 
         fonts = {
-          enableFontDir = true;
-          # fontDir.enable = true;
+          fontDir.enable = true;
           fonts = with pkgs; [ pragmatapro ];
         };
 
