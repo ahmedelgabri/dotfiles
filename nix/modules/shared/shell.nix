@@ -58,6 +58,8 @@ in
             XDG_CACHE_HOME = "${home}/.cache";
             XDG_CONFIG_HOME = "${home}/.config";
             XDG_DATA_HOME = "${home}/.local/share";
+            # https://github.blog/2022-04-12-git-security-vulnerability-announced/
+            GIT_CEILING_DIRECTORIES = builtins.dirOf home;
           };
           systemPackages = with pkgs;
             (if stdenv.isDarwin then darwinPackages else nixosPackages) ++ [
