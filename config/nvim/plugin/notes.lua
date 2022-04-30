@@ -1,5 +1,3 @@
-local map = require '_.utils.map'
-
 require '_.notes'
 
 -- https://vimways.org/2019/personal-notetaking-in-vim/
@@ -17,13 +15,15 @@ vim.api.nvim_create_user_command(
   { nargs = '*', bang = true }
 )
 
-map.nnoremap(
+vim.keymap.set(
+  { 'n' },
   '<leader>zn',
   ":ZkNew {dir = vim.fn.input('Target dir: '), title = vim.fn.input('Title: ') }<CR>"
 )
 
-map.nnoremap('<leader>sn', ':Notes<CR>', { silent = true })
-map.nnoremap(
+vim.keymap.set({ 'n' }, '<leader>sn', ':Notes<CR>', { silent = true })
+vim.keymap.set(
+  { 'n' },
   '<localleader>o',
   ':call v:lua.__.notes.open_in_obsidian()<CR>',
   { silent = true }

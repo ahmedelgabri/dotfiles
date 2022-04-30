@@ -9,7 +9,6 @@
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
 local utils = require '_.utils'
 local au = require '_.utils.au'
-local map = require '_.utils.map'
 local hl = require '_.utils.highlight'
 local map_opts = { buffer = true, silent = true }
 
@@ -98,22 +97,32 @@ vim.diagnostic.config {
 vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 local mappings = {
-  ['<leader>a'] = { '<cmd>lua vim.lsp.buf.code_action()<CR>' },
-  ['<leader>f'] = { '<cmd>lua vim.lsp.buf.references()<CR>' },
-  ['<leader>r'] = { '<cmd>lua vim.lsp.buf.rename()<CR>' },
-  ['K'] = { '<cmd>lua vim.lsp.buf.hover()<CR>' },
-  ['<leader>ld'] = {
+  {
+    { 'n' },
+    '<leader>a',
+    '<cmd>lua vim.lsp.buf.code_action()<CR>',
+  },
+  { { 'n' }, '<leader>f', '<cmd>lua vim.lsp.buf.references()<CR>' },
+  { { 'n' }, '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>' },
+  { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>' },
+  {
+    { 'n' },
+    '<leader>ld',
     '<cmd>lua vim.diagnostic.open_float(nil, { focusable = false,  close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
   },
-  ['[d'] = {
-    '<cmd>lua vim.diagnostic.goto_next()<cr>',
+  { { 'n' }, '[d', '<cmd>lua vim.diagnostic.goto_next()<cr>' },
+  { { 'n' }, ']d', '<cmd>lua vim.diagnostic.goto_prev()<CR>' },
+  { { 'n' }, '<C-]>', '<cmd>lua vim.lsp.buf.definition()<CR>' },
+  {
+    { 'n' },
+    '<leader>D',
+    '<cmd>lua vim.lsp.buf.declaration()<CR>',
   },
-  [']d'] = {
-    '<cmd>lua vim.diagnostic.goto_prev()<CR>',
+  {
+    { 'n' },
+    '<leader>i',
+    '<cmd>lua vim.lsp.buf.implementation()<CR>',
   },
-  ['<C-]>'] = { '<cmd>lua vim.lsp.buf.definition()<CR>' },
-  ['<leader>D'] = { '<cmd>lua vim.lsp.buf.declaration()<CR>' },
-  ['<leader>i'] = { '<cmd>lua vim.lsp.buf.implementation()<CR>' },
 }
 
 local handlers = {
@@ -136,16 +145,15 @@ local on_attach = function(client, bufnr)
   -- ---------------
   -- MAPPINGS
   -- ---------------
-  for lhs, rhs in pairs(mappings) do
+  for _, item in ipairs(mappings) do
+    local modes, lhs, rhs = item[1], item[2], item[3]
+
     if lhs == 'K' then
       if vim.api.nvim_buf_get_option(bufnr, 'filetype') ~= 'vim' then
-        map.nnoremap(lhs, rhs[1], map_opts)
+        vim.keymap.set(modes, lhs, rhs, map_opts)
       end
     else
-      map.nnoremap(lhs, rhs[1], map_opts)
-      if #rhs == 2 then
-        map.vnoremap(lhs, rhs[2], map_opts)
-      end
+      vim.keymap.set(modes, lhs, rhs, map_opts)
     end
   end
 

@@ -118,8 +118,7 @@ return packer.startup {
       'https://github.com/ojroques/nvim-bufdel',
       cmd = 'BufDel',
       setup = function()
-        local map = require '_.utils.map'
-        map.nnoremap('<M-d>', ':BufDel!<CR>')
+        vim.keymap.set({ 'n' }, '<M-d>', ':BufDel!<CR>')
       end,
       config = function()
         require('bufdel').setup {

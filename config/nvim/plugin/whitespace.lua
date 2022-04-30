@@ -1,4 +1,3 @@
-local map = require '_.utils.map'
 local au = require '_.utils.au'
 
 vim.api.nvim_create_user_command(
@@ -7,7 +6,7 @@ vim.api.nvim_create_user_command(
   {}
 )
 
-map.nnoremap('_=', ':Reindent<cr>')
+vim.keymap.set({ 'n' }, '_=', ':Reindent<cr>')
 
 au.augroup('__my_whitespace__', {
   {

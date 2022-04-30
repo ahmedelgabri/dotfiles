@@ -4,7 +4,6 @@ end
 
 __.fzf = {}
 
-local map = require '_.utils.map'
 local au = require '_.utils.au'
 
 if vim.env.FZF_CTRL_T_OPTS ~= nil then
@@ -21,10 +20,30 @@ vim.g.fzf_buffers_jump = 1
 vim.g.fzf_tags_command = 'ctags -R'
 vim.g.fzf_preview_window = 'right:border-left'
 
-map.imap('<c-x><c-k>', '<plug>(fzf-complete-word)')
-map.imap('<c-x><c-f>', '<plug>(fzf-complete-path)')
-map.imap('<c-x><c-j>', '<plug>(fzf-complete-file-ag)')
-map.imap('<c-x><c-l>', '<plug>(fzf-complete-line)')
+vim.keymap.set(
+  { 'i' },
+  '<c-x><c-k>',
+  '<plug>(fzf-complete-word)',
+  { remap = true }
+)
+vim.keymap.set(
+  { 'i' },
+  '<c-x><c-f>',
+  '<plug>(fzf-complete-path)',
+  { remap = true }
+)
+vim.keymap.set(
+  { 'i' },
+  '<c-x><c-j>',
+  '<plug>(fzf-complete-file-ag)',
+  { remap = true }
+)
+vim.keymap.set(
+  { 'i' },
+  '<c-x><c-l>',
+  '<plug>(fzf-complete-line)',
+  { remap = true }
+)
 
 -- Override Files to show resposnive UI depending on the window width
 vim.api.nvim_create_user_command(
@@ -32,10 +51,10 @@ vim.api.nvim_create_user_command(
   [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
   { bang = true, nargs = '?', complete = 'dir' }
 )
-map.nnoremap('<leader><leader>', ':Files<CR>', { silent = true })
-map.nnoremap('<Leader>b', ':Buffers<cr>', { silent = true })
-map.nnoremap('<Leader>h', ':Helptags<cr>', { silent = true })
-map.nnoremap('<Leader>o', ':History<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<leader><leader>', ':Files<CR>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>b', ':Buffers<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>h', ':Helptags<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>o', ':History<cr>', { silent = true })
 
 au.augroup('__my_fzf__', {
   {
@@ -49,7 +68,7 @@ function FzfSpellSink(word)
   vim.fn.execute('normal! "_ciw' .. word)
 end
 
-function __.fzf.FzfSpell()
+function FzfSpell()
   local suggestions = vim.fn.spellsuggest(vim.fn.expand '<cword>')
   return vim.fn['fzf#run'] {
     source = suggestions,
@@ -58,7 +77,7 @@ function __.fzf.FzfSpell()
   }
 end
 
-map.nnoremap('z=', ':call v:lua.__.fzf.FzfSpell()<CR>', { silent = true })
+vim.keymap.set({ 'n' }, 'z=', FzfSpell, { silent = true })
 
 -- https://github.com/junegunn/fzf.vim/issues/907#issuecomment-554699400
 function __.fzf.RipgrepFzf(query, fullscreen)
@@ -89,4 +108,4 @@ vim.api.nvim_create_user_command(
   { bang = true, nargs = '*' }
 )
 
-map.nnoremap([[<leader>\]], [[:RG<CR>]])
+vim.keymap.set({ 'n' }, [[<leader>\]], [[:RG<CR>]])

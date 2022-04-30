@@ -1,5 +1,4 @@
 local utils = require '_.utils'
-local map = require '_.utils.map'
 local hl = require '_.utils.highlight'
 
 local M = {}
@@ -121,7 +120,8 @@ end
 
 function M.quit_on_q()
   if should_quit_on_q() then
-    map.nnoremap(
+    vim.keymap.set(
+      { 'n' },
       'q',
       (
           (vim.wo.diff == true or vim.bo.filetype == 'man') and ':qa!'

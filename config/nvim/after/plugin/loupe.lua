@@ -1,5 +1,4 @@
 local au = require '_.utils.au'
-local map = require '_.utils.map'
 local hl = require '_.utils.highlight'
 
 function SetUpLoupeHighlight()
@@ -14,4 +13,9 @@ au.augroup('__myloupe__', {
 
 SetUpLoupeHighlight()
 
-map.nmap('<Leader>c', '<Plug>(LoupeClearHighlight)')
+vim.keymap.set(
+  { 'n' },
+  '<Leader>c',
+  '<Plug>(LoupeClearHighlight)',
+  { remap = true }
+)

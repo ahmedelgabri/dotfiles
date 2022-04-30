@@ -1,5 +1,3 @@
-local map = require '_.utils.map'
-
 local M = {}
 
 function M.get_icon(icon_name)
@@ -86,10 +84,10 @@ function M.plaintext()
 
   -- Break undo sequences into chunks (after punctuation); see: `:h i_CTRL-G_u`
   -- https://twitter.com/vimgifs/status/913390282242232320
-  map.inoremap('.', '.<c-g>u', { buffer = true })
-  map.inoremap('?', '?<c-g>u', { buffer = true })
-  map.inoremap('!', '!<c-g>u', { buffer = true })
-  map.inoremap(',', ',<c-g>u', { buffer = true })
+  vim.keymap.set({ 'i' }, '.', '.<c-g>u', { buffer = true })
+  vim.keymap.set({ 'i' }, '?', '?<c-g>u', { buffer = true })
+  vim.keymap.set({ 'i' }, '!', '!<c-g>u', { buffer = true })
+  vim.keymap.set({ 'i' }, ',', ',<c-g>u', { buffer = true })
 end
 
 function M.package_json_gx()

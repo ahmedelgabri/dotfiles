@@ -1,6 +1,4 @@
 return function()
-  local map = require '_.utils.map'
-
   vim.g.nvim_tree_show_icons = {
     git = 1,
     folders = 0,
@@ -11,7 +9,7 @@ return function()
   -- Normally README.md gets highlighted by default, which is a bit distracting.
   vim.g.nvim_tree_special_files = {}
 
-  map.nnoremap('--', ':NvimTreeFindFile<CR>', { silent = true })
+  vim.keymap.set({ 'n' }, '--', ':NvimTreeFindFile<CR>', { silent = true })
 
   require('nvim-tree').setup {
     view = {
