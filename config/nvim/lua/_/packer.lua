@@ -182,6 +182,12 @@ return packer.startup {
         },
         { 'https://github.com/folke/lua-dev.nvim' },
         { 'https://github.com/mickael-menu/zk-nvim' },
+        {
+          'https://github.com/danymat/neogen',
+          config = function()
+            require('neogen').setup {}
+          end,
+        },
       },
     }
     use {
@@ -375,6 +381,12 @@ return packer.startup {
     -- }}}
 
     -- Git {{{
+    use {
+      'https://github.com/lewis6991/gitsigns.nvim',
+      config = function()
+        require('gitsigns').setup()
+      end,
+    }
     use {
       'https://github.com/rhysd/conflict-marker.vim',
       cmd = {
