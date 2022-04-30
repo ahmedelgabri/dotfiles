@@ -6,6 +6,7 @@ return function()
     'javascript.jsx',
   }
   require('Comment').setup {
+    ignore = '^$', -- don't comment empty lines
     ---@param ctx Ctx
     pre_hook = function(ctx)
       -- Only calculate commentstring for tsx filetypes
