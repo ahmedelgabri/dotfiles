@@ -259,42 +259,42 @@ au.augroup('__MyCustomColors__', {
   ---------------------------------------------------------------
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifyHeader', { link = 'Normal' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifyFile', { link = 'Directory' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifyPath', { link = 'LineNr' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifySlash', { link = 'StartifyPath' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifyBracket', { link = 'StartifyPath' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = { 'codedark', 'plain' },
+    pattern = { 'codedark', 'plain', 'plain-lua' },
     callback = function()
       hl.group('StartifyNumber', { link = 'Title' })
     end,
@@ -305,7 +305,7 @@ au.augroup('__MyCustomColors__', {
   ---------------------------------------------------------------
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('LineNr', {
         bg = nil,
@@ -317,7 +317,7 @@ au.augroup('__MyCustomColors__', {
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Comment', {
         italic = true,
@@ -330,7 +330,7 @@ au.augroup('__MyCustomColors__', {
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Pmenu', {
         bg = '#222222',
@@ -342,14 +342,14 @@ au.augroup('__MyCustomColors__', {
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('PmenuSel', { link = 'ColorColumn' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Whitespace', {
         fg = '#333333',
@@ -359,70 +359,70 @@ au.augroup('__MyCustomColors__', {
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('graphqlString', { link = 'Comment' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Todo', { link = 'Comment' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Conceal', { link = 'NonText' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('Error', { link = 'ErrorMsg' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapSelect', { link = 'CursorLine' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapMultiSelect', { link = 'DiffAdd' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapNormal', { link = 'Normal' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapBorder', { link = 'SnapNormal' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapPrompt', { link = 'NonText' })
     end,
   },
   {
     event = 'ColorScheme',
-    pattern = 'plain',
+    pattern = { 'plain', 'plain-lua' },
     callback = function()
       hl.group('SnapPosition', { link = 'DiffText' })
     end,
@@ -450,4 +450,4 @@ au.augroup('__MyCustomColors__', {
 
 -- Order is important, so autocmds above works properly
 vim.opt.background = 'dark'
-vim.cmd [[silent! colorscheme plain]]
+vim.cmd [[silent! colorscheme plain-lua]]
