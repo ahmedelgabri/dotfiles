@@ -121,7 +121,6 @@ return packer.startup {
         }
       end,
     }
-    use { 'https://github.com/tpope/vim-apathy' }
     use {
       'https://github.com/simrat39/symbols-outline.nvim',
       cmd = 'SymbolsOutline',
@@ -376,12 +375,6 @@ return packer.startup {
 
     -- Git {{{
     use {
-      'https://github.com/lewis6991/gitsigns.nvim',
-      config = function()
-        require('gitsigns').setup()
-      end,
-    }
-    use {
       'https://github.com/rhysd/conflict-marker.vim',
       cmd = {
         'ConflictMarkerBoth',
@@ -413,11 +406,6 @@ return packer.startup {
       requires = {
         { 'https://github.com/tpope/vim-rhubarb' },
       },
-    }
-    use {
-      'https://github.com/rhysd/git-messenger.vim',
-      cmd = 'GitMessenger',
-      keys = '<Plug>(git-messenger)',
     }
     -- }}}
 
