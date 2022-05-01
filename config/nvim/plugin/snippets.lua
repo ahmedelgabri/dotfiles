@@ -13,6 +13,8 @@ local c = ls.choice_node
 local d = ls.dynamic_node
 local fmt = require('luasnip.extras.fmt').fmt
 local rep = require('luasnip.extras').rep
+-- https://github.com/L3MON4D3/LuaSnip/blob/1dbafec2379bd836bd09c4659d4c6e1a70eb380e/Examples/snippets.lua#L356=
+local l = require('luasnip.extras').lambda
 
 local function replace_each(replacer)
   return function(args)
@@ -53,7 +55,15 @@ ls.add_snippets(nil, {
       d(1, function()
         local str = vim.split(vim.bo.commentstring, '%s', true)
 
-        return sn(nil, fmt('{} vim:ft={} {}', { str[1], i(1), str[2] or '' }))
+        return sn(
+          nil,
+          fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
+            commentStart = str[1],
+            text = i(1),
+            commentEnd = str[2] or '',
+            next = i(0),
+          })
+        )
       end, {}),
     }),
     ls.parser.parse_snippet(
@@ -62,15 +72,15 @@ ls.add_snippets(nil, {
     ),
     s(
       'bang',
-      fmt('#!/usr/bin/env {}{}', {
-        c(1, {
+      fmt('#!/usr/bin/env {shell}{next}', {
+        shell = c(1, {
           t 'sh',
           t 'zsh',
           t 'bash',
           t 'python',
           t 'node',
         }),
-        i(0),
+        next = i(0),
       })
     ),
     ls.parser.parse_snippet(
@@ -179,24 +189,49 @@ ${0}]]
     ),
   },
   javascript = {
-    s({ trig = 'require', dscr = 'require statement' }, {
-      t 'const ',
-      i(1, 'ModuleName'),
-      t " = require('",
-      d(2, function(nodes)
-        return sn(1, { i(1, nodes[1][1]) })
-      end, {
-        1,
-      }),
-      t "');",
-    }),
+    -- Migrate this
+    -- {
+    --   "react boilerplate": {
+    --     "prefix": "react",
+    --     "body": [
+    --       "import * as React from 'react'",
+    --       "",
+    --       "interface ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props {\n\t\n}",
+    --       "",
+    --       "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${2:props}:${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props) {\n\t$0\n}",
+    --       "",
+    --       "export default ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}"
+    --     ],
+    --     "description": "React boilerplate"
+    --   },
+    --   "react component": {
+    --     "prefix": "comp",
+    --     "body": [
+    --       "interface ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props {\n\t\n}",
+    --       "",
+    --       "function ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}(${2:props}:${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Props) {\n\t$0\n}"
+    --     ],
+    --     "description": "React component"
+    --   }
+    -- }
+    s(
+      { trig = 'require', dscr = 'require statement' },
+      fmt('const {variable} = require("{module}"){next}', {
+        variable = i(1, 'ModuleName'),
+        module = d(2, function(nodes)
+          return sn(1, { i(1, nodes[1][1]) })
+        end, {
+          1,
+        }),
+        next = i(0),
+      })
+    ),
     s({ trig = '**', dscr = 'docblock' }, {
       t { '/**', '' },
-      f(function(args)
+      f(function(_, snip)
         local lines = vim.tbl_map(function(line)
-          print(vim.inspect(line))
           return ' * ' .. vim.trim(line)
-        end, args[1].env.TM_SELECTED_TEXT)
+        end, snip.env.TM_SELECTED_TEXT)
         if #lines == 0 then
           return ' * '
         else
@@ -208,11 +243,35 @@ ${0}]]
     }),
   },
   markdown = {
-    s({ trig = 'frontmatter', dscr = 'Document frontmatter' }, {
-      t { '---', 'tags: ' },
-      i(1, 'value'),
-      t { '', '---', '' },
-    }),
+    ls.parser.parse_snippet(
+      { trig = 'fmatter', dscr = 'Document frontmatter' },
+      [[
+---
+title: ${1:Title}
+date: ${CURRENT_DATE}-${CURRENT_MONTH}-${CURRENT_YEAR}T${CURRENT_HOUR}:${CURRENT_MINUTE}
+${3:tags}: $4
+---
+
+$0
+]]
+    ),
+    s(
+      { trig = 'img', dscr = 'Markdown image' },
+      fmt(
+        '![{alt}]({url}){next}',
+        { alt = i(1, 'alt'), url = i(2), next = i(0) }
+      )
+    ),
+    s(
+      { trig = 'link', dscr = 'Markdown link' },
+      fmt('[{text}]({url}){next}', {
+        text = f(function(_, snip)
+          return snip.env.TM_SELECTED_TEXT[1] or sn(nil, i(1, 'Text'))
+        end, {}),
+        url = i(1, 'https://example.com'),
+        next = i(0),
+      })
+    ),
     s({ trig = 'table', dscr = 'Table template' }, {
       t '| ',
       i(1, 'First Header'),
@@ -223,25 +282,66 @@ ${0}]]
         '| Content Cell  | Content Cell  |',
       },
     }),
+    ls.parser.parse_snippet(
+      { trig = 'footer', dscr = 'Project footer' },
+      [[
+**${1:projectname}** © ${$CURRENT_YEAR}+, Ahmed El Gabri Released under the [MIT] License.<br>
+Authored and maintained by Ahmed El Gabri with help from contributors ([list][contributors]).
+
+> [https://gabri.me](https://gabri.me) &nbsp;&middot;&nbsp;
+> GitHub [@ahmedelgabri](https://github.com/ahmedelgabri) &nbsp;&middot;&nbsp;
+> Twitter [@ahmedelgabri](https://twitter.com/ahmedelgabri)
+
+[MIT]: http://mit-license.org/
+[contributors]: http://github.com/ahmedelgabri/$1/contributors
+    ]]
+    ),
+    ls.parser.parse_snippet(
+      { trig = 'mit', dscr = 'MIT Licence' },
+      [[
+The MIT License (MIT)
+
+Copyright (c) ${$CURRENT_YEAR} ${0}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+    ]]
+    ),
   },
   html = {
-    s('script', {
-      t '<script',
-      c(1, {
-        sn(nil, {
-          t ' src="',
-          i(1, 'path/to/file.js'),
-          t '">',
+    s(
+      'script',
+      fmt('<script {scriptEnd}{body}</script>{next}', {
+        scriptEnd = c(1, {
+          fmt('src="{src}">', { src = i(1, 'path/to/file.js') }),
+          fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
         }),
-        sn(nil, {
-          t { '>', '\t' },
-          i(1, '// code'),
-          t { '', '' },
-        }),
-      }),
-      i(0),
-      t '</script>',
-    }),
+        body = i(2),
+        next = i(0),
+      })
+    ),
+    s(
+      { trig = 'fav', dscr = 'Add an inline SVG Emoji Favicon' },
+      fmt(
+        '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{text}</text></svg>"/>',
+        { text = i(1) }
+      )
+    ),
   },
   css = {
     s({
@@ -266,12 +366,13 @@ ${0}]]
 ls.config.set_config {
   history = true,
   enable_autosnippets = true,
+  store_selection_keys = '<Tab>', -- needed for TM_SELECTED_TEXT
   updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
 }
 
 require('luasnip.loaders.from_vscode').lazy_load {
   path = {
     '~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
-    './vsnip',
+    '~/.local-config/snippets',
   },
 }
