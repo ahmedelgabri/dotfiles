@@ -22,7 +22,6 @@
     ./vim.nix
     ./node.nix
     ./deno.nix
-    ./java.nix
     ./kotlin.nix
     ./irc.nix
     ./go.nix

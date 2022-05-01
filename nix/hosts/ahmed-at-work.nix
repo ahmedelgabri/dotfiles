@@ -7,7 +7,6 @@
     website = "https://miro.com";
     modules = {
       macos.enable = true;
-      java.enable = false;
       kotlin.enable = true;
       gpg.enable = true;
 
