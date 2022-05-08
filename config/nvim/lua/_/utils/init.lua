@@ -100,4 +100,8 @@ function M.package_json_gx()
   end
 end
 
+function M.firstToUpper(str)
+  return (str:gsub('^%l', string.upper))
+end
+
 return M
