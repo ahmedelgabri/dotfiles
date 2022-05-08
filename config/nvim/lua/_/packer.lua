@@ -197,7 +197,6 @@ return packer.startup {
       'https://github.com/hrsh7th/nvim-cmp',
       config = require '_.config.completion',
       requires = {
-        { 'https://github.com/onsails/lspkind-nvim' },
         { 'https://github.com/hrsh7th/cmp-nvim-lsp' },
         { 'https://github.com/andersevenrud/cmp-tmux' },
         { 'https://github.com/saadparwaiz1/cmp_luasnip' },

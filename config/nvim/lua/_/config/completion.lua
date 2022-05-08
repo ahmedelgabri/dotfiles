@@ -13,48 +13,150 @@ return function()
         == nil
   end
 
+  local sources = {
+    { name = 'luasnip' },
+    { name = 'nvim_lsp' },
+    { name = 'calc' },
+    { name = 'path' },
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'conjure' },
+    {
+      name = 'buffer',
+      max_item_count = 10,
+      keyword_length = 5,
+      option = {
+        -- https://github.com/hrsh7th/cmp-buffer#get_bufnrs-type-fun-number=
+        -- https://github.com/hrsh7th/cmp-buffer#performance-on-large-text-files=
+        get_bufnrs = function()
+          local LIMIT = 1024 * 1024 -- 1 Megabyte max
+          local bufs = {}
+
+          for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            local line_count = vim.api.nvim_buf_line_count(buf)
+            local byte_size = vim.api.nvim_buf_get_offset(buf, line_count)
+
+            if byte_size < LIMIT then
+              bufs[buf] = true
+            end
+          end
+
+          return vim.tbl_keys(bufs)
+        end,
+      },
+    },
+    { name = 'tmux', max_item_count = 10 },
+    { name = 'orgmode' },
+    { name = 'emoji' },
+    { name = 'spell' },
+  }
+
+  local menu = {}
+  local special_menu_case = {
+    nvim_lsp = 'LSP',
+    luasnip = 'Snip',
+    orgmode = 'Org',
+    nvim_lsp_signature_help = 'LSP',
+  }
+
+  for _, source in ipairs(sources) do
+    menu[source.name] = string.format(
+      '「%s」',
+      special_menu_case[source.name] or utils.firstToUpper(source.name)
+    )
+  end
+
+  local icons = {
+    Text = ' ',
+    Method = ' ',
+    Function = ' ',
+    Constructor = ' ',
+    Field = 'ﰠ ',
+    Variable = ' ',
+    Class = 'ﴯ ',
+    Interface = ' ',
+    Module = ' ',
+    Property = 'ﰠ ',
+    Unit = '塞 ',
+    Value = ' ',
+    Enum = ' ',
+    Keyword = ' ',
+    Snippet = ' ',
+    Color = ' ',
+    File = ' ',
+    Reference = ' ',
+    Folder = ' ',
+    EnumMember = ' ',
+    Constant = ' ',
+    Struct = 'פּ ',
+    Event = ' ',
+    Operator = ' ',
+    TypeParameter = ' ',
+  }
+
   local completion_loaded = pcall(function()
     local cmp = require 'cmp'
+    local types = require 'cmp.types'
+    local str = require 'cmp.utils.str'
     local luasnip = require 'luasnip'
-    local menu = {
-      buffer = ' Buffer',
-      nvim_lsp = ' LSP',
-      luasnip = ' Snip',
-      path = ' Path',
-      tmux = ' Tmux',
-      orgmode = ' Org',
-      emoji = ' Emoji',
-      spell = ' Spell',
-      conjure = ' Conjure',
-    }
 
     cmp.setup {
       view = {
-        entries = 'native',
+        entries = 'custom',
       },
       experimental = {
         ghost_text = true,
       },
       formatting = {
-        -- format = function(entry, vim_item)
-        --   vim_item.menu = (menu)[entry.source.name]
-        --   return vim_item
-        -- end,
-        format = require('lspkind').cmp_format {
-          with_text = true,
-          max_width = 100,
-          menu = menu,
-        },
+        format = function(entry, vim_item)
+          -- Get the full snippet (and only keep first line)
+          local word = entry:get_insert_text()
+          if
+            entry.completion_item.insertTextFormat
+            == types.lsp.InsertTextFormat.Snippet
+          then
+            word = vim.lsp.util.parse_snippet(word)
+          end
+          word = str.oneline(word)
+
+          -- concatenates the string
+          -- local max = 50
+          -- if string.len(word) >= max then
+          -- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
+          -- 	word = before .. "..."
+          -- end
+
+          if
+            entry.completion_item.insertTextFormat
+              == types.lsp.InsertTextFormat.Snippet
+            and string.sub(vim_item.abbr, -1, -1) == '~'
+          then
+            word = word .. '~'
+          end
+
+          vim_item.abbr = word
+
+          vim_item.kind = string.format(
+            '%s %s',
+            icons[vim_item.kind],
+            vim_item.kind
+          )
+
+          vim_item.menu = menu[entry.source.name] or ''
+
+          return vim_item
+        end,
       },
       window = {
         documentation = cmp.config.window.bordered(),
       },
       completion = {
         completeopt = 'menu,menuone,noinsert',
+        -- https://github.com/hrsh7th/nvim-cmp/issues/101#issuecomment-907918888
         get_trigger_characters = function(trigger_characters)
-          return vim.tbl_filter(function(char)
-            return char ~= ' '
-          end, trigger_characters)
+          local filter_characters = function(char)
+            return char ~= ' ' and char ~= '\t'
+          end
+          return vim.tbl_filter(filter_characters, trigger_characters)
         end,
       },
       sorting = {
@@ -72,36 +174,7 @@ return function()
           cmp.config.compare.length,
         },
       },
-      sources = cmp.config.sources {
-        { name = 'luasnip' },
-        { name = 'nvim_lsp' },
-        { name = 'calc' },
-        { name = 'path' },
-        { name = 'nvim_lsp_signature_help' },
-        { name = 'conjure' },
-        {
-          name = 'buffer',
-          max_item_count = 10,
-          keyword_length = 5,
-          option = {
-            get_bufnrs = function()
-              return { vim.api.nvim_get_current_buf() }
-            end,
-            -- get_bufnrs = vim.api.nvim_list_bufs,
-            -- get_bufnrs = function()
-            --   local bufs = {}
-            --   for _, win in ipairs(vim.api.nvim_list_wins()) do
-            --     bufs[vim.api.nvim_win_get_buf(win)] = true
-            --   end
-            --   return vim.tbl_keys(bufs)
-            -- end,
-          },
-        },
-        { name = 'tmux', max_item_count = 10 },
-        { name = 'orgmode' },
-        { name = 'emoji' },
-        { name = 'spell' },
-      },
+      sources = cmp.config.sources(sources),
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)

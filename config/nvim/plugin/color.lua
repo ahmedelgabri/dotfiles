@@ -12,8 +12,11 @@ au.augroup('__MyCustomColors__', {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      print 'hi'
-      hl.group('CmpItemAbbrMatch', { link = 'DiffChange' })
+      hl.group('CmpItemAbbrMatch', {
+        fg = utils.get_color('DiffAdd', 'fg', 'gui'),
+        bold = true,
+        italic = true,
+      })
     end,
   },
   -- fuzzy match for what you typed
@@ -22,7 +25,16 @@ au.augroup('__MyCustomColors__', {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      hl.group('CmpItemKind', { link = 'DiffText' })
+      local config = {
+        link = 'NonText',
+      }
+
+      -- type of completion snippet, function, etc... can also be highlighted
+      -- separately if needed
+      hl.group('CmpItemKind', config)
+
+      -- the source of the completion
+      hl.group('CmpItemMenu', config)
     end,
   },
   -- uncompleted item that may be good for completion
@@ -30,7 +42,7 @@ au.augroup('__MyCustomColors__', {
     event = 'ColorScheme',
     pattern = '*',
     callback = function()
-      hl.group('CmpItemAbbr', { link = 'Normal' })
+      hl.group('CmpItemAbbr', { link = 'NonText' })
     end,
   },
 
