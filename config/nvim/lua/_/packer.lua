@@ -416,6 +416,11 @@ return packer.startup {
 
     -- Themes, UI & eye candy {{{
     use { 'https://github.com/ahmedelgabri/vim-colors-plain', opt = true }
+    use {
+      vim.env.HOME .. '/Sites/personal/forks/vim-colors-plain',
+      opt = true,
+      as = 'plain-lua',
+    }
     -- use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
     -- use { 'https://github.com/logico-dev/typewriter', opt = true }
     -- use { 'https://github.com/arzg/vim-substrata', opt = true }
