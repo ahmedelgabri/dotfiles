@@ -5,7 +5,8 @@ with config.my;
 let
 
   cfg = config.my.modules.aerc;
-
+  homeDir = config.my.user.home;
+  inherit (config.home-manager.users."${username}") xdg;
 in
 {
   options = with lib; {
@@ -26,13 +27,13 @@ in
           };
         };
 
-        pass = {
+        keychain = {
           name = mkOption {
             default = "fastmail.com";
             type = with types; uniq str;
           };
           account = mkOption {
-            default = replaceStrings [ "@" ] [ "%40" ] email;
+            default = replaceStrings [ "@" ] [ "+mutt@" ] email;
             type = with types; uniq str;
           };
         };
@@ -77,10 +78,10 @@ in
             [${cfg.account.name}]
             smtp-starttls     = yes
             from              = ${config.my.name} <${config.my.email}>
-            source            = imaps://${cfg.pass.account}@${cfg.imap_server}
-            source-cred-cmd   = pass email/${cfg.pass.name}
-            outgoing          = smtps+plain://${cfg.pass.account}@${cfg.smtp_server}
-            outgoing-cred-cmd = pass email/${cfg.pass.name}
+            source            = imaps://${cfg.keychain.account}@${cfg.imap_server}
+            source-cred-cmd   = ${xdg.configHome}/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'
+            outgoing          = smtps+plain://${cfg.keychain.account}@${cfg.smtp_server}
+            outgoing-cred-cmd = ${xdg.configHome}/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'
             copy-to           = Sent
             postpone          = Drafts
             archive           = Archive
