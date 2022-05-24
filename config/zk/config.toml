@@ -22,6 +22,7 @@ extension = "md"
 
 # Template used to generate a note's content.
 # If not an absolute path, it is relative to .zk/templates/
+# in my case that's $NOTES_DIR/.zk/templates/
 template = "default.md"
 
 # Path globs ignored while indexing existing notes.
