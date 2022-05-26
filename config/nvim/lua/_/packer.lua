@@ -178,7 +178,7 @@ return packer.startup {
         {
           'https://github.com/danymat/neogen',
           config = function()
-            require('neogen').setup {}
+            require('neogen').setup { snippet_engine = 'luasnip' }
           end,
         },
       },
