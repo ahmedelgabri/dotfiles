@@ -109,6 +109,7 @@ in
               graphviz
               nodePackages.mermaid-cli
               difftastic
+              vale
             ];
           };
 
@@ -145,6 +146,13 @@ in
                 ".terminfo" = {
                   recursive = true;
                   source = ../../../config/.terminfo;
+                };
+                ".config/vale" = {
+                  recursive = true;
+                  source = ../../../config/vale;
+                };
+                ".vale.ini" = {
+                  source = ../../../config/.vale.ini;
                 };
               }
             ];

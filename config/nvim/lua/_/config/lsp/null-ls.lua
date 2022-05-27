@@ -55,7 +55,14 @@ return function(on_attach)
       nls.builtins.diagnostics.pylint,
       nls.builtins.diagnostics.hadolint,
       nls.builtins.diagnostics.vint,
-      nls.builtins.diagnostics.vale,
+      nls.builtins.diagnostics.vale.with {
+        filetypes = {
+          'asciidoc',
+          'markdown',
+          'tex',
+          'text',
+        },
+      },
       nls.builtins.diagnostics.statix,
     },
   }
