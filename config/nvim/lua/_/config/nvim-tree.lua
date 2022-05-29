@@ -1,14 +1,4 @@
 return function()
-  vim.g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 0,
-    files = 0,
-    folder_arrows = 0,
-  }
-
-  -- Normally README.md gets highlighted by default, which is a bit distracting.
-  vim.g.nvim_tree_special_files = {}
-
   vim.keymap.set({ 'n' }, '--', ':NvimTreeFindFile<CR>', { silent = true })
 
   require('nvim-tree').setup {
@@ -21,6 +11,16 @@ return function()
     renderer = {
       indent_markers = {
         enable = false,
+      },
+      -- Normally README.md gets highlighted by default, which is a bit distracting.
+      special_files = {},
+      icons = {
+        show = {
+          git = true,
+          file = false,
+          folder = false,
+          folder_arrow = false,
+        },
       },
     },
     actions = {
