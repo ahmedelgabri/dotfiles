@@ -80,12 +80,11 @@ in
           user = {
             shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
             packages = with pkgs; [
-              bottom # fancy version of `top` with ASCII graphs
               tealdeer # rust implementation of `tldr`
-              fzf
               ncdu
               bat
               fd
+              ripgrep
               pastel
               vivid
               hyperfine
@@ -101,7 +100,6 @@ in
               tokei
               _1password # CLI
               docker
-              pass
               rename
               glow
               # buku
@@ -110,6 +108,7 @@ in
               nodePackages.mermaid-cli
               difftastic
               vale
+              entr
             ];
           };
 

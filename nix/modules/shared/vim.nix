@@ -43,7 +43,7 @@ in
           fd
           ripgrep
           # editorconfig-checker # do I use it?
-          hadolint
+          hadolint # Docker linter
           nixpkgs-fmt
           vim-vint
           shellcheck
@@ -60,7 +60,7 @@ in
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
           rnix-lsp
-          selene
+          selene # Lua linter
           statix
           nix-linter # Until statix pick up, see https://github.com/nerdypepper/statix/issues/18
           sumneko-lua-language-server
