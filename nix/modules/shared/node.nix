@@ -18,6 +18,16 @@ in
       # workaround for now see https://github.com/NixOS/nixpkgs/issues/145634
       homebrew.brews = [ "yarn" "pnpm" ];
       my = {
+        env = with config.my; {
+          NODE_REPL_HISTORY = "$XDG_CACHE_HOME/node_repl_history";
+          NPM_CONFIG_EDITOR = "$EDITOR";
+          NPM_CONFIG_INIT_AUTHOR_NAME = name;
+          NPM_CONFIG_INIT_AUTHOR_EMAIL = email;
+          NPM_CONFIG_INIT_AUTHOR_URL = website;
+          NPM_CONFIG_INIT_LICENSE = "MIT";
+          NPM_CONFIG_INIT_VERSION = "0.0.0";
+        };
+
         user = {
           packages = with pkgs; [
             nodePackages.svgo
@@ -25,17 +35,8 @@ in
         };
 
         hm.file = {
-          ".npmrc" = with config.my; {
-            text = ''
-              # ${nix_managed}
-              # vim:ft=conf
-              ${lib.optionalString (email != "") "email=${email}"}
-              init-license=MIT
-              ${lib.optionalString (email != "") "init-author-email=${email}"}
-              ${lib.optionalString (name != "") "init-author-name=${name}"}
-              ${lib.optionalString (website != "") "init-author-url=${website}"}
-              init-version=0.0.1
-              ${builtins.readFile ../../../config/.npmrc}'';
+          ".npmrc" = {
+            source = ../../../config/.npmrc;
           };
         };
       };
