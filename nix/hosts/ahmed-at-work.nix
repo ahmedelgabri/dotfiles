@@ -9,6 +9,16 @@
       macos.enable = true;
       kotlin.enable = true;
       gpg.enable = true;
+      aerc = {
+        enable = true;
+        account = {
+          name = "Miro";
+          type = "Work";
+        };
+        keychain = { name = "gmail.com"; };
+        imap_server = "imap.gmail.com";
+        smtp_server = "smtp.gmail.com";
+      };
 
       mail = {
         enable = true;
