@@ -156,7 +156,7 @@ in
                 "+${cfg.account}/Drafts" \
                 "+${cfg.account}/Trash" \
                 "+${cfg.account}/Spam" \
-                `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afin --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+                `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afinQ --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
               ${lib.optionalString
               (lib.toLower cfg.account == "personal" && cfg.switch_to != "") ''
