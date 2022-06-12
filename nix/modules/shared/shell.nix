@@ -109,6 +109,7 @@ in
               difftastic
               vale
               entr
+              ffmpeg
             ];
           };
 
