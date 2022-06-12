@@ -136,12 +136,7 @@ end
 
 local function rhs()
   return vim.fn.winwidth(0) > 80
-      and ('%%4* %s %02d/%02d:%02d %%*'):format(
-        line_no_indicator(),
-        vim.fn.line '.',
-        vim.fn.line '$',
-        vim.fn.col '.'
-      )
+      and ('%%4* %s %%3l/%%3L:%%-2c %%*'):format(line_no_indicator())
     or line_no_indicator()
 end
 
