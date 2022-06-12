@@ -1,25 +1,22 @@
-{ lib, fetchFromGitHub, buildGoModule, icu, source }:
+{ lib, fetchFromGitHub, buildGo118Module, source }:
 
-buildGoModule rec {
+buildGo118Module rec {
   pname = "zk";
-  version = "master";
+  version = "main";
 
   # TODO is it possibe to pin the hash in flake.lock?
   # This should be doable with https://github.com/tweag/gomod2nix
-  vendorSha256 = "sha256-cTbHlF2hLRM8nybUNtq+k8ueGUND6DwRUHUaSWoyI9w=";
+  vendorSha256 = "sha256-11GzI3aEhKKTiULoWq9uIc66E3YCrW/HJQUYXRhCaek=";
 
   doCheck = false;
 
   src = source;
 
-  buildInputs = [ icu ];
-
   CGO_ENABLED = 1;
 
-  preBuild = ''buildFlagsArray+=("-tags" "fts5 icu")'';
+  tags = [ "fts5" ];
 
-  ldflags =
-    [ "-X=main.Build=${version}" "-X=main.Build=${version}" ];
+  ldflags = [ "-X=main.Version=${version}" "-X=main.Build=${version}" ];
 
   meta = with lib; {
     license = licenses.gpl3;
