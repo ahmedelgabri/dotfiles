@@ -13,6 +13,3 @@ vim.keymap.set(
   ':Move <C-R>=expand("%")<cr>',
   { remap = true }
 )
-
--- Delete the current file and clear the buffer
-vim.api.nvim_create_user_command('Del', 'Delete', {})
