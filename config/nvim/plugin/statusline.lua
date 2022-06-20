@@ -189,10 +189,10 @@ end
 local function lsp()
   local count = {}
   local levels = {
-    errors = 'Error',
-    warnings = 'Warn',
-    info = 'Info',
-    hints = 'Hint',
+    errors = vim.diagnostic.severity.ERROR,
+    warnings = vim.diagnostic.severity.WARN,
+    info = vim.diagnostic.severity.WARN,
+    hints = vim.diagnostic.severity.HINT,
   }
 
   for k, level in pairs(levels) do
