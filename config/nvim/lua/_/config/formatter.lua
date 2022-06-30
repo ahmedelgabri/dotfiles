@@ -5,6 +5,7 @@ return function()
       args = {
         '--config-precedence',
         'prefer-file',
+        '--use-tabs',
         '--single-quote',
         '--no-bracket-spacing',
         '--prose-wrap',
