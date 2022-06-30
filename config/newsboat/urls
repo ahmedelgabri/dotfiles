@@ -42,8 +42,6 @@
   http://bricss.net/rss "Blog" "CSS" "Web"
   http://christianheilmann.com/feed/ "Blog" "Web" "CSS"
   http://clearleft.com/posts/rss.xml "Blog"
-  http://code.flickr.com/blog/feed/ "Blog"
-  http://code.flickr.net/feed/ "Blog"
   http://codeascraft.etsy.com/feed/ "Blog"
   http://daverupert.com/atom.xml "Blog"
   https://dbushell.com/rss.xml "Blog"
@@ -113,8 +111,6 @@
   http://wayswework.io/feed "Blog"
   http://webuild.envato.com/atom.xml "Blog"
   http://worrydream.com/feed.xml "Blog"
-  http://www.12devsofxmas.co.uk/rss/ "Blog"
-  http://www.12devsofxmas.co.uk/rss/ "Blog"
   http://www.askdeveloper.com/feeds/posts/default "Blog"
   http://www.codinginthecrease.com/news_rss_feed?tags=930667 "Blog"
   http://www.ebaytechblog.com/feed/ "Blog"
@@ -644,7 +640,6 @@
   http://antirez.com/rss "~Antirez" "Engineering"
   https://www.devroom.io/index.xml "~Ariejan de Vroom" "Engineering"
   https://ariya.io/index.xml "~Ariya Hidayat" "Engineering"
-  http://lucumr.pocoo.org/feed.atom "~Armin Ronacher" "Engineering"
   http://feeds.feedburner.com/2ality "~Axel Rauschmayer" "Engineering"
   http://bad-concurrency.blogspot.com/feeds/posts/default "~Bad Concurrency" "Engineering"
   https://www.bfilipek.com/feeds/posts/default "~Bartlomiej Filipek" "Engineering"
@@ -723,7 +718,6 @@
   http://feeds.feedburner.com/buckblog "~Jamis Buck" "Engineering"
   https://idiosyncratic-ruby.com/feed.xml "~Jan Lelis" "Engineering"
   http://blog.jayfields.com/feeds/posts/default "~Jay Fields" "Engineering"
-  http://feeds.feedburner.com/codinghorror "~Jeff Atwood" "Engineering"
   http://preshing.com/feed "~Jeff Preshing" "Engineering"
   https://jeremykun.com/feed/ "~Jeremy Kun" "Engineering"
   https://jerrygamblin.com/feed/ "~Jerry Gamblin" "Engineering"
@@ -737,7 +731,6 @@
   http://www.jonkensy.com/feed/ "~Jon Kensy" "Engineering"
   https://codeblog.jonskeet.uk/feed/ "~Jon Skeet" "Engineering"
   https://blog.cugu.eu/index.xml "~Jonas Plum" "Engineering"
-  https://snook.ca/jonathan/index.rdf "~Jonathan Snook" "Engineering"
   http://blog.reverberate.org/feed.xml "~Josh Haberman" "Engineering"
   https://joshtronic.com/atom.xml "~Josh Sherman" "Engineering"
   https://jvns.ca/atom.xml "~Julia Evans" "Engineering"
@@ -855,7 +848,6 @@
   http://yifan.lu/feed.xml "~Yifan Lu" "Engineering"
   https://zachholman.com/atom.xml "~Zach Holman" "Engineering"
   https://zolmeister.com/feeds/posts/default "~Zolmeister" "Engineering"
-  http://blog.atom.io/feed.xml "~Atom.io" "Engineering"
   https://blog.getbootstrap.com/feed.xml "~Bootstrap.com" "Engineering"
   https://crystal-lang.org/feed.xml "~Crystal" "Engineering"
   https://blog.golang.org/feed.atom "~Go" "Engineering"
@@ -921,7 +913,6 @@
 # Tech {{{
   http://randsinrepose.com/feed/ "Tech"
   https://code.facebook.com/posts/rss "Tech"
-  http://martinfowler.com/feed.atom "Tech"
   http://swannodette.github.com/atom.xml "Tech"
 # }}}
 
@@ -957,6 +948,7 @@
 # }}}
 
 # xmas {{{
+  http://www.12devsofxmas.co.uk/rss/ "xmas"
   http://feeds.feedburner.com/24ways?format=xml "xmas"
   https://calendar.perfplanet.com/feed/ "xmas"
   https://vimways.org/index.xml "xmas" "Vim"
