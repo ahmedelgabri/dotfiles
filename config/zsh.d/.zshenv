@@ -14,7 +14,6 @@ export PROJECTS="$HOME/Sites/personal/dev"
 export WORK="$HOME/Sites/work"
 export PERSONAL_STORAGE="$HOME/Sync"
 export NOTES_DIR="$PERSONAL_STORAGE/notes"
-export ZK_NOTEBOOK_DIR="$NOTES_DIR"
 # I use a single zk notes dir, so set it and forget
 export ZK_NOTEBOOK_DIR=$NOTES_DIR
 
