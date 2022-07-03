@@ -22,7 +22,6 @@ These are the main configs:
 - [Zsh][zsh]
 - [Git][git]
 - [Kitty][kitty] as my terminal
-- [newsboat][newsboat] for RSS
 - [weechat][weechat] IRC client
 - [hammerspoon][hammerspoon] macOS automation, using it for window management &
   other stuff
@@ -127,7 +126,6 @@ On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
 [zsh]: http://www.zsh.org/
 [git]: http://git-scm.com/
 [kitty]: https://github.com/kovidgoyal/kitty
-[newsboat]: http://newsboat.org/
 [weechat]: https://weechat.org/
 [hammerspoon]: http://www.hammerspoon.org/
 [node]: https://nodejs.org

@@ -6,22 +6,29 @@ SESSION='_shared'
 create_session() {
 	tmux new-session -d -s "$SESSION"
 
-	if command -v neomutt &>/dev/null; then
+	if
+		command -v neomutt &>/dev/null
+	then
 		tmux new-window -n 'mail'
 		tmux send-keys "neomutt" C-m
 	fi
 
-	if command -v newsboat &>/dev/null; then
+	if
+		command -v newsboat &>/dev/null
+	then
 		tmux new-window -n 'rss'
 		tmux send-keys "newsboat" C-m
 	fi
 
-	if command -v ttrv &>/dev/null; then
+	if
+		command -v ttrv &>/dev/null
+	then
 		tmux new-window -n 'reddit'
 		tmux send-keys "ttrv" C-m
 	fi
 
-	if command -v weechat &>/dev/null; then
+	if command -v weechat &>/dev/null
+	then
 		tmux new-window -n 'weechat'
 		# Stop Weechat from renaming the window
 		tmux set-option allow-rename off

@@ -14,7 +14,6 @@
     ./bat.nix
     ./lf.nix
     ./mpv.nix
-    ./newsboat.nix
     ./ripgrep.nix
     ./tmux.nix
     ./yt-dlp.nix

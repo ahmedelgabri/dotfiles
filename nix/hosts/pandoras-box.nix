@@ -19,7 +19,6 @@
       irc.enable = true;
       rescript.enable = false;
       clojure.enable = true;
-      newsboat.enable = true;
       gpg.enable = true;
       discord.enable = true;
       hledger.enable = true;
