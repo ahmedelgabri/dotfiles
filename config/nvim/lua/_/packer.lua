@@ -281,7 +281,6 @@ return packer.startup {
         },
         {
           'https://github.com/kristijanhusak/orgmode.nvim',
-          run = ':TSUpdate org',
           config = function()
             require('orgmode').setup_ts_grammar()
 
@@ -400,18 +399,6 @@ return packer.startup {
           css = true,
         })
       end,
-    }
-    use {
-      'https://github.com/plasticboy/vim-markdown',
-      ft = { 'markdown' },
-      requires = {
-        { 'https://github.com/godlygeek/tabular', after = 'vim-markdown' },
-        {
-          'https://github.com/npxbr/glow.nvim',
-          cmd = 'Glow',
-          after = 'vim-markdown',
-        },
-      },
     }
     use { 'https://github.com/jez/vim-github-hub' }
     use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
