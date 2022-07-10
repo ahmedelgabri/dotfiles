@@ -61,61 +61,6 @@ return packer.startup {
       requires = { { 'https://github.com/junegunn/fzf' } },
     }
     use {
-      'https://github.com/ibhagwan/fzf-lua',
-      config = function()
-        -- https://github.com/ibhagwan/fzf-lua/wiki#how-do-i-get-maximum-performance-out-of-fzf-lua
-        require('fzf-lua').setup {
-          winopts = {
-            default = {
-              preview = 'bat_native',
-            },
-          },
-          fzf_opts = {
-            ['--prompt'] = '» ',
-            ['--pointer'] = '▶',
-            ['--marker'] = '✓ ',
-            ['--color'] = 'bg+:-1,marker:010',
-          },
-          keymap = {
-            builtin = {
-              ['?'] = 'toggle-preview',
-            },
-          },
-          files = {
-            prompt = ' ',
-            git_icons = false,
-            file_icons = false,
-            cmd = vim.env.FZF_DEFAULT_COMMAND,
-            actions = {
-              ['default'] = require('fzf-lua.actions').file_edit,
-            },
-          },
-          buffers = {
-            file_icons = false,
-          },
-        }
-
-        vim.keymap.set(
-          { 'n' },
-          '<leader><leader>',
-          [[<cmd>lua require 'fzf-lua'.files()<cr>]],
-          { silent = true }
-        )
-        vim.keymap.set(
-          { 'n' },
-          '<leader>b',
-          [[<cmd>lua require 'fzf-lua'.buffers()<cr>]],
-          { silent = true }
-        )
-        vim.keymap.set(
-          { 'n' },
-          '<leader>h',
-          [[<cmd>lua require 'fzf-lua'.help_tags()<cr>]],
-          { silent = true }
-        )
-      end,
-    }
-    use {
       'https://github.com/kyazdani42/nvim-tree.lua',
       config = require '_.config.nvim-tree',
     }

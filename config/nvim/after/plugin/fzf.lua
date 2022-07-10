@@ -51,10 +51,10 @@ vim.api.nvim_create_user_command(
   [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
   { bang = true, nargs = '?', complete = 'dir' }
 )
--- vim.keymap.set({ 'n' }, '<leader><leader>', ':Files<CR>', { silent = true })
--- vim.keymap.set({ 'n' }, '<Leader>b', ':Buffers<cr>', { silent = true })
--- vim.keymap.set({ 'n' }, '<Leader>h', ':Helptags<cr>', { silent = true })
--- vim.keymap.set({ 'n' }, '<Leader>o', ':History<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<leader><leader>', ':Files<CR>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>b', ':Buffers<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>h', ':Helptags<cr>', { silent = true })
+vim.keymap.set({ 'n' }, '<Leader>o', ':History<cr>', { silent = true })
 
 au.augroup('__my_fzf__', {
   {
