@@ -19,10 +19,8 @@ return function()
   }
   vim.g.startify_custom_header =
     [[map(startify#fortune#boxed() + g:startify_ascii, "repeat(' ', 5).v:val")]]
-  vim.g.startify_custom_header_quotes = vim.tbl_extend(
-    'force',
-    vim.fn['startify#fortune#predefined_quotes'](),
-    {
+  vim.g.startify_custom_header_quotes =
+    vim.tbl_extend('force', vim.fn['startify#fortune#predefined_quotes'](), {
       {
         'Simplicity is a great virtue but it requires hard work to achieve it',
         'and education to appreciate it. And to make matters worse: complexity sells better.',
@@ -160,8 +158,12 @@ return function()
         '',
         '— Donald Knuth',
       },
-    }
-  )
+      {
+        'When a measure becomes a target, it ceases to be a good measure',
+        '',
+        "— Goodhart's law",
+      },
+    })
 
   vim.g.startify_bookmarks = { { t = '.git/todo.md' } }
 
