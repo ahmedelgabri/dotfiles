@@ -19,14 +19,6 @@ in
       environment.systemPackages = with pkgs; [ gnupg ];
       my.env = { GNUPGHOME = "$XDG_CONFIG_HOME/gnupg"; };
 
-      my.user = {
-        packages = with pkgs;
-          [
-            keybase
-            # keybase-gui # ???
-          ];
-      };
-
       programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
