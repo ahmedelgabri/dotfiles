@@ -48,7 +48,7 @@ vim.keymap.set(
 -- Override Files to show resposnive UI depending on the window width
 vim.api.nvim_create_user_command(
   'Files',
-  [[call fzf#vim#files(<q-args>, &columns > 90 ? fzf#vim#with_preview('right:border-left') : fzf#vim#with_preview('down:border-top'), <bang>0)]],
+  [[call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:border-left,<70(down:border-top)'), <bang>0)]],
   { bang = true, nargs = '?', complete = 'dir' }
 )
 vim.keymap.set({ 'n' }, '<leader><leader>', ':Files<CR>', { silent = true })
