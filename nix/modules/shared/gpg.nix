@@ -26,8 +26,15 @@ in
 
       my.hm.file = {
         ".config/gnupg/gpg-agent.conf".text = ''
-          default-cache-ttl 600
-          max-cache-ttl 7200'';
+          # ${config.my.nix_managed}
+
+          allow-preset-passphrase
+
+          # Default: 600 seconds
+          default-cache-ttl 86400
+
+          # Default: 7200 seconds
+          max-cache-ttl 86400'';
 
         ".config/gnupg/gpg.conf" = {
           text = ''
