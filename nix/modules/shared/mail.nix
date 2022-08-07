@@ -85,7 +85,6 @@ in
       {
         my.user = {
           packages = with pkgs; [
-            lbdb
             neomutt
             msmtp
             isync
@@ -119,8 +118,6 @@ in
             recursive = true;
             source = ../../../config/neomutt;
           };
-
-          ".lbdbrc" = { source = ../../../config/.lbdbrc; };
 
           ".config/neomutt/accounts/${lib.toLower cfg.account}" = {
             text = ''
@@ -210,9 +207,7 @@ in
               #!/usr/bin/env sh
               # ${nix_managed}
 
-              ${pkgs.coreutils}/bin/timeout 2m ${pkgs.isync}/bin/mbsync -q -a
-
-              ${pkgs.findutils}/bin/find ${homeDir}/.mail/*/INBOX -type f -mtime -30 -print -exec sh -c 'cat {} | ${pkgs.lbdb}/bin/lbdb-fetchaddr' \; 2>/dev/null'';
+              ${pkgs.coreutils}/bin/timeout 2m ${pkgs.isync}/bin/mbsync -q -a'';
           };
 
           ".config/notmuch/config" = {
