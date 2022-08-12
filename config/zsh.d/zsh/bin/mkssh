@@ -6,13 +6,13 @@
 # $2 = Email ID used
 
 mkssh() {
-  NAME=${2:-id_rsa}
+	NAME=${1:-id_rsa}
 
-  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$NAME" -C "$1"
-  pbcopy <"$HOME"/.ssh/"$NAME".pub
-  echo "------------------------------------------------------------\n"
-  echo "($NAME.pub) has been created & copied to your clipboard \n"
-  echo "------------------------------------------------------------\n"
+	ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/"$NAME" -C "$2"
+	pbcopy <"$HOME"/.ssh/"$NAME".pub
+	echo "------------------------------------------------------------"
+	echo "($NAME.pub) has been created & copied to your clipboard"
+	echo "------------------------------------------------------------"
 }
 
 mkssh "$@"
