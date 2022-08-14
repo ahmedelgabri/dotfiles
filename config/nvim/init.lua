@@ -66,8 +66,8 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 -- spaces per tab (when shifting)
 vim.opt.shiftwidth = 2
--- always use spaces instead of tabs
-vim.opt.expandtab = true
+-- always use tabs
+vim.opt.expandtab = false
 
 vim.opt.signcolumn = 'yes'
 
