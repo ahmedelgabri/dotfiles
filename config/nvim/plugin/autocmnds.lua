@@ -129,4 +129,10 @@ au.augroup('__myautocmds__', {
       end, { buffer = true, silent = true })
     end,
   },
+  {
+    event = 'InsertLeave',
+    pattern = '*',
+    command = [[execute 'normal! mI']],
+    desc = 'global mark I for last edit',
+  },
 })
