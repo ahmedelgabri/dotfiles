@@ -12,26 +12,26 @@ require 'window-managment'
 -- layout.layoutWatcher:start()
 
 Install:andUse('Caffeine', {
-  start = true,
+	start = true,
 })
 
 local urlDispatcherConfig = {
-  start = true,
-  config = {
-    default_handler = 'com.brave.Browser',
-  },
+	start = true,
+	config = {
+		default_handler = 'com.brave.Browser',
+	},
 }
 
 if hs.host.localizedName() ~= 'pandoras-box' then
-  urlDispatcherConfig.config.url_patterns = {
-    { 'https?://slack.com/openid/*', 'com.google.Chrome' },
-    { 'https?://github.com/miroapp/*', 'com.google.Chrome' },
-    { 'https?://miro.*', 'com.google.Chrome' },
-    { 'https?://dev.*.com', 'com.google.Chrome' },
-    { 'https?://localhost:*', 'com.google.Chrome' },
-    { 'https?://.*devrtb.com', 'com.google.Chrome' },
-    { 'https?://docs.google.com', 'com.google.Chrome' },
-  }
+	urlDispatcherConfig.config.url_patterns = {
+		{ 'https?://slack.com/openid/*', 'com.google.Chrome' },
+		{ 'https?://github.com/miroapp/*', 'com.google.Chrome' },
+		{ 'https?://miro.*', 'com.google.Chrome' },
+		{ 'https?://dev.*.com', 'com.google.Chrome' },
+		{ 'https?://localhost:*', 'com.google.Chrome' },
+		{ 'https?://.*devrtb.com', 'com.google.Chrome' },
+		{ 'https?://docs.google.com', 'com.google.Chrome' },
+	}
 end
 
 Install:andUse('URLDispatcher', urlDispatcherConfig)
@@ -41,20 +41,18 @@ Install:andUse('URLDispatcher', urlDispatcherConfig)
 --
 
 function ReloadConfig(files)
-  local doReload = false
-  for _, file in pairs(files) do
-    if file:sub(-4) == '.lua' then
-      doReload = true
-    end
-  end
-  if doReload then
-    hs.reload()
-  end
+	local doReload = false
+	for _, file in pairs(files) do
+		if file:sub(-4) == '.lua' then
+			doReload = true
+		end
+	end
+	if doReload then
+		hs.reload()
+	end
 end
 
-MyWatcher = hs.pathwatcher.new(
-  os.getenv 'HOME' .. '/.hammerspoon/',
-  ReloadConfig
-):start()
+MyWatcher =
+	hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig):start()
 
 hs.alert 'Config loaded'

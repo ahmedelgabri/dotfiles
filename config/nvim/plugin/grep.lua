@@ -1,5 +1,5 @@
 if vim.fn.executable 'rg' == 0 then
-  return
+	return
 end
 
 vim.opt.grepprg = 'rg --vimgrep --smart-case --hidden'

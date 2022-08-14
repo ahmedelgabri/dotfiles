@@ -7,16 +7,16 @@ local au = require '_.utils.au'
 -- and make sure n will go forward when searching with ? or #
 -- https://vi.stackexchange.com/a/2366/4600
 vim.keymap.set(
-  { 'n' },
-  'n',
-  [[(v:searchforward ? 'n' : 'N') . 'zzzv']],
-  { expr = true }
+	{ 'n' },
+	'n',
+	[[(v:searchforward ? 'n' : 'N') . 'zzzv']],
+	{ expr = true }
 )
 vim.keymap.set(
-  { 'n' },
-  'N',
-  [[(v:searchforward ? 'N' : 'n') . 'zzzv']],
-  { expr = true }
+	{ 'n' },
+	'N',
+	[[(v:searchforward ? 'N' : 'n') . 'zzzv']],
+	{ expr = true }
 )
 
 -- Center { & } movements
@@ -31,33 +31,33 @@ vim.keymap.set({ 'n' }, 'gV', [[`[v`]']])
 -- Move by 'display lines' rather than 'logical lines' if no v:count was
 -- provided.  When a v:count is provided, move by logical lines.
 vim.keymap.set(
-  { 'n' },
-  'j',
-  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
-  { expr = true }
+	{ 'n' },
+	'j',
+	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
+	{ expr = true }
 )
 vim.keymap.set(
-  { 'x' },
-  'j',
-  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
-  { expr = true }
+	{ 'x' },
+	'j',
+	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
+	{ expr = true }
 )
 vim.keymap.set(
-  { 'n' },
-  'k',
-  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
-  { expr = true }
+	{ 'n' },
+	'k',
+	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
+	{ expr = true }
 )
 vim.keymap.set(
-  { 'x' },
-  'k',
-  [[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
-  { expr = true }
+	{ 'x' },
+	'k',
+	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
+	{ expr = true }
 )
 
 if not vim.fn.has 'nvim-0.6' then
-  -- Make `Y` behave like `C` and `D` (to the end of line)
-  vim.keymap.set({ 'n' }, 'Y', 'y$')
+	-- Make `Y` behave like `C` and `D` (to the end of line)
+	vim.keymap.set({ 'n' }, 'Y', 'y$')
 end
 
 -- Disable arrow keys
@@ -95,10 +95,10 @@ vim.keymap.set({ 'v' }, '.', ':norm.<CR>')
 -- For neovim terminal :term
 -- nnoremap <leader>t  :vsplit +terminal<cr>
 vim.keymap.set(
-  { 't' },
-  '<esc>',
-  [[&filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"]],
-  { expr = true }
+	{ 't' },
+	'<esc>',
+	[[&filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"]],
+	{ expr = true }
 )
 
 vim.keymap.set({ 't' }, '<M-h>', '<c-><c-n><c-w>h')
@@ -107,34 +107,34 @@ vim.keymap.set({ 't' }, '<M-k>', '<c-><c-n><c-w>k')
 vim.keymap.set({ 't' }, '<M-l>', '<c-><c-n><c-w>l')
 
 au.augroup('__MyTerm__', {
-  {
-    event = 'TermOpen',
-    pattern = '*',
-    command = 'setl nonumber norelativenumber',
-  },
-  { event = 'TermOpen', pattern = 'term://*', command = 'startinsert' },
-  { event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
+	{
+		event = 'TermOpen',
+		pattern = '*',
+		command = 'setl nonumber norelativenumber',
+	},
+	{ event = 'TermOpen', pattern = 'term://*', command = 'startinsert' },
+	{ event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
 })
 
 vim.keymap.set({ 'n' }, '<leader>z', ':call utils#ZoomToggle()<cr>', {
-  silent = true,
+	silent = true,
 })
 
 vim.keymap.set({ 'n' }, '<c-g>', ':call utils#SynStack()<cr>')
 
 vim.keymap.set({ 'v' }, '<Leader>hu', ':call utils#HtmlUnEscape()<cr>', {
-  remap = true,
-  silent = true,
+	remap = true,
+	silent = true,
 })
 
 vim.keymap.set({ 'v' }, '<Leader>he', ':call utils#HtmlEscape()<cr>', {
-  remap = true,
-  silent = true,
+	remap = true,
+	silent = true,
 })
 
 -- maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 vim.keymap.set({ 'n' }, 'gof', ':call utils#OpenFileFolder()<cr>', {
-  silent = true,
+	silent = true,
 })
 
 -- Allows you to visually select a section and then hit @ to run a macro on all lines
@@ -147,18 +147,18 @@ endfunction]]
 vim.keymap.set({ 'x' }, '@', ':<C-u>call ExecuteMacroOverVisualRange()<CR>')
 
 vim.keymap.set(
-  { 'n' },
-  'K',
-  [[:<C-U>exe 'help '. utils#helptopic()<CR>]],
-  { silent = true, buffer = true }
+	{ 'n' },
+	'K',
+	[[:<C-U>exe 'help '. utils#helptopic()<CR>]],
+	{ silent = true, buffer = true }
 )
 
 -- Quick note taking per project
 vim.keymap.set(
-  { 'n' },
-  '<Localleader>t',
-  ':tab drop .git/todo.md<CR>',
-  { remap = true }
+	{ 'n' },
+	'<Localleader>t',
+	':tab drop .git/todo.md<CR>',
+	{ remap = true }
 )
 
 -- More easier increment/decrement mappings

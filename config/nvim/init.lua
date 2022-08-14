@@ -36,21 +36,21 @@ vim.g.loaded_python_provider = 0
 vim.g.python3_host_skip_check = 1
 
 if vim.fn.executable 'python3' == 1 then
-  vim.g.python3_host_prog = vim.fn.exepath 'python3'
+	vim.g.python3_host_prog = vim.fn.exepath 'python3'
 else
-  vim.g.loaded_python3_provider = 0
+	vim.g.loaded_python3_provider = 0
 end
 
 if vim.fn.executable 'neovim-node-host' == 1 then
-  vim.g.node_host_prog = vim.fn.exepath 'neovim-node-host'
+	vim.g.node_host_prog = vim.fn.exepath 'neovim-node-host'
 else
-  vim.g.loaded_node_provider = 0
+	vim.g.loaded_node_provider = 0
 end
 
 if vim.fn.executable 'neovim-ruby-host' == 1 then
-  vim.g.ruby_host_prog = vim.fn.exepath 'neovim-ruby-host'
+	vim.g.ruby_host_prog = vim.fn.exepath 'neovim-ruby-host'
 else
-  vim.g.loaded_ruby_provider = 0
+	vim.g.loaded_ruby_provider = 0
 end
 
 vim.g.loaded_perl_provider = 0
@@ -95,11 +95,8 @@ vim.opt.pumheight = 50
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 vim.opt.spelllang = 'en,nl'
 vim.opt.spellsuggest = '30'
-vim.opt.spellfile = string.format(
-  '%s%s',
-  vim.fn.stdpath 'config',
-  '/spell/spell.add'
-)
+vim.opt.spellfile =
+	string.format('%s%s', vim.fn.stdpath 'config', '/spell/spell.add')
 
 vim.opt.complete:append 'kspell'
 
@@ -158,29 +155,29 @@ vim.opt.clipboard = 'unnamed'
 -- show trailing whitespace
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = '⋅ ',
-  -- tab = '| ',
-  nbsp = '░',
-  extends = '»',
-  precedes = '«',
-  trail = '␣',
+	tab = '⋅ ',
+	-- tab = '| ',
+	nbsp = '░',
+	extends = '»',
+	precedes = '«',
+	trail = '␣',
 }
 
 if not vim.fn.has 'nvim-0.6' then
-  vim.opt.joinspaces = false
+	vim.opt.joinspaces = false
 end
 
 vim.opt.concealcursor = 'n'
 
 vim.opt.fillchars = {
-  diff = '⣿', -- BOX DRAWINGS
-  vert = '┃', -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-  fold = '─',
-  msgsep = '‾',
-  eob = ' ', -- Hide end of buffer ~
-  foldopen = '▾',
-  foldsep = '│',
-  foldclose = '▸',
+	diff = '⣿', -- BOX DRAWINGS
+	vert = '┃', -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+	fold = '─',
+	msgsep = '‾',
+	eob = ' ', -- Hide end of buffer ~
+	foldopen = '▾',
+	foldsep = '│',
+	foldclose = '▸',
 }
 
 vim.opt.foldlevelstart = 99 -- start unfolded
@@ -196,7 +193,7 @@ vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-
 vim.opt.ruler = true
 
 if not vim.fn.has 'nvim-0.6' then
-  vim.opt.hidden = true
+	vim.opt.hidden = true
 end
 
 -- Make tilde command behave like an operator.
@@ -221,12 +218,8 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 
 if not vim.fn.has 'nvim-0.6' then
-  vim.opt.backupdir = string.format(
-    '%s,%s%s',
-    '.',
-    vim.fn.stdpath 'data',
-    '/backup//'
-  ) -- keep backup files out of the way
+	vim.opt.backupdir =
+		string.format('%s,%s%s', '.', vim.fn.stdpath 'data', '/backup//') -- keep backup files out of the way
 end
 
 vim.opt.swapfile = false
@@ -237,34 +230,34 @@ vim.opt.updatetime = 1000
 vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars (I don't use swap files anymore)
 
 if root then
-  vim.opt.undofile = false -- don't create root-owned files
+	vim.opt.undofile = false -- don't create root-owned files
 else
-  vim.opt.undofile = true -- actually use undo files
-  vim.opt.undodir:append '.'
+	vim.opt.undofile = true -- actually use undo files
+	vim.opt.undodir:append '.'
 end
 
 if root then -- don't create root-owned files then
-  vim.opt.shada = ''
-  vim.opt.shadafile = 'NONE'
+	vim.opt.shada = ''
+	vim.opt.shadafile = 'NONE'
 else
-  -- Defaults:
-  --   Neovim: !,'100,<50,s10,h
-  -- - ! save/restore global variables (only all-uppercase variables)
-  -- - '100 save/restore marks from last 100 files
-  -- - <50 save/restore 50 lines from each register
-  -- - s10 max item size 10KB
-  -- - h do not save/restore 'hlsearch' setting
-  au.augroup('MyNeovimShada', {
-    {
-      event = { 'CursorHold', 'FocusGained', 'FocusLost' },
-      pattern = '*',
-      command = [[if &bt == '' | rshada|wshada | endif]],
-    },
-  })
+	-- Defaults:
+	--   Neovim: !,'100,<50,s10,h
+	-- - ! save/restore global variables (only all-uppercase variables)
+	-- - '100 save/restore marks from last 100 files
+	-- - <50 save/restore 50 lines from each register
+	-- - s10 max item size 10KB
+	-- - h do not save/restore 'hlsearch' setting
+	au.augroup('MyNeovimShada', {
+		{
+			event = { 'CursorHold', 'FocusGained', 'FocusLost' },
+			pattern = '*',
+			command = [[if &bt == '' | rshada|wshada | endif]],
+		},
+	})
 end
 
 if not vim.fn.has 'nvim-0.6' then
-  vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
+	vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
 end
 
 -- cursor behavior:
@@ -276,27 +269,27 @@ vim.opt.guicursor:append 'n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-b
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------
 vim.g.markdown_fenced_languages = {
-  'css',
-  'erb=eruby',
-  'javascript',
-  'js=javascript',
-  'jsx=javascriptreact',
-  'ts=typescript',
-  'tsx=typescriptreact',
-  'json=jsonc',
-  'ruby',
-  'sass',
-  'scss=sass',
-  'xml',
-  'html',
-  'py=python',
-  'python',
-  'clojure',
-  'clj=clojure',
-  'cljs=clojure',
-  'stylus=css',
-  'less=css',
-  'viml=vim',
+	'css',
+	'erb=eruby',
+	'javascript',
+	'js=javascript',
+	'jsx=javascriptreact',
+	'ts=typescript',
+	'tsx=typescriptreact',
+	'json=jsonc',
+	'ruby',
+	'sass',
+	'scss=sass',
+	'xml',
+	'html',
+	'py=python',
+	'python',
+	'clojure',
+	'clj=clojure',
+	'cljs=clojure',
+	'stylus=css',
+	'less=css',
+	'viml=vim',
 }
 
 require '_.packer'
@@ -308,7 +301,7 @@ require '_.packer'
 local vimrc_local = string.format('%s%s', vim.env.HOME, '/.nvimrc.lua')
 
 if vim.fn.filereadable(vimrc_local) == 1 then
-  vim.cmd(string.format('silent source %s', vimrc_local))
+	vim.cmd(string.format('silent source %s', vimrc_local))
 end
 
 -------------------------------------------------------------------------------

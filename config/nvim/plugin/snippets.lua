@@ -1,7 +1,7 @@
 local has_ls, ls = pcall(require, 'luasnip')
 
 if not has_ls then
-  return
+	return
 end
 
 local s = ls.snippet
@@ -19,29 +19,29 @@ local l = require('luasnip.extras').lambda
 local types = require 'luasnip.util.types'
 
 ls.config.set_config {
-  history = true,
-  enable_autosnippets = true,
-  store_selection_keys = '<Tab>', -- needed for TM_SELECTED_TEXT
-  updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
-  ext_opts = {
-    [types.choiceNode] = {
-      active = {
-        virt_text = { { '← Choice', 'Todo' } },
-      },
-    },
-    -- [types.insertNode] = {
-    --   active = {
-    --     virt_text = { { '← ...', 'Todo' } },
-    --   },
-    -- },
-  },
+	history = true,
+	enable_autosnippets = true,
+	store_selection_keys = '<Tab>', -- needed for TM_SELECTED_TEXT
+	updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
+	ext_opts = {
+		[types.choiceNode] = {
+			active = {
+				virt_text = { { '← Choice', 'Todo' } },
+			},
+		},
+		-- [types.insertNode] = {
+		--   active = {
+		--     virt_text = { { '← ...', 'Todo' } },
+		--   },
+		-- },
+	},
 }
 
 require('luasnip.loaders.from_vscode').lazy_load {
-  path = {
-    '~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
-    '~/.local-config/snippets',
-  },
+	path = {
+		'~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
+		'~/.local-config/snippets',
+	},
 }
 -- Get a list of  the property names given an `interface_declaration`
 -- treesitter *tsx* node.
@@ -54,29 +54,29 @@ require('luasnip.loaders.from_vscode').lazy_load {
 ---@param id_node {} Stands for "interface declaration node"
 ---@return string[]
 local function get_prop_names(id_node)
-  local object_type_node = id_node:child(2)
-  if object_type_node:type() ~= 'object_type' then
-    return {}
-  end
+	local object_type_node = id_node:child(2)
+	if object_type_node:type() ~= 'object_type' then
+		return {}
+	end
 
-  local prop_names = {}
+	local prop_names = {}
 
-  for prop_signature in object_type_node:iter_children() do
-    if prop_signature:type() == 'property_signature' then
-      local prop_iden = prop_signature:child(0)
-      local prop_name = vim.treesitter.query.get_node_text(prop_iden, 0)
-      prop_names[#prop_names + 1] = prop_name
-    end
-  end
+	for prop_signature in object_type_node:iter_children() do
+		if prop_signature:type() == 'property_signature' then
+			local prop_iden = prop_signature:child(0)
+			local prop_name = vim.treesitter.query.get_node_text(prop_iden, 0)
+			prop_names[#prop_names + 1] = prop_name
+		end
+	end
 
-  return prop_names
+	return prop_names
 end
 
 local react = {
-  s(
-    { trig = 'rcomp' },
-    fmt(
-      [[
+	s(
+		{ trig = 'rcomp' },
+		fmt(
+			[[
 {}interface {}Props {{
   {}
 }}
@@ -85,102 +85,102 @@ local react = {
   return {}
 }}
 ]],
-      {
-        i(1, 'export '),
-        -- Initialize component name to file name
-        d(2, function(_, snip)
-          return sn(nil, {
-            i(1, vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')),
-          })
-        end, { 1 }),
-        i(3, '// props'),
-        rep(1),
-        rep(2),
-        f(function(_, snip, _)
-          local pos_begin = snip.nodes[6].mark:pos_begin()
-          local pos_end = snip.nodes[6].mark:pos_end()
-          local parser = vim.treesitter.get_parser(0, 'tsx')
-          local tstree = parser:parse()
+			{
+				i(1, 'export '),
+				-- Initialize component name to file name
+				d(2, function(_, snip)
+					return sn(nil, {
+						i(1, vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')),
+					})
+				end, { 1 }),
+				i(3, '// props'),
+				rep(1),
+				rep(2),
+				f(function(_, snip, _)
+					local pos_begin = snip.nodes[6].mark:pos_begin()
+					local pos_end = snip.nodes[6].mark:pos_end()
+					local parser = vim.treesitter.get_parser(0, 'tsx')
+					local tstree = parser:parse()
 
-          local node = tstree[1]:root():named_descendant_for_range(
-            pos_begin[1],
-            pos_begin[2],
-            pos_end[1],
-            pos_end[2]
-          )
+					local node = tstree[1]:root():named_descendant_for_range(
+						pos_begin[1],
+						pos_begin[2],
+						pos_end[1],
+						pos_end[2]
+					)
 
-          while node ~= nil and node:type() ~= 'interface_declaration' do
-            node = node:parent()
-          end
+					while node ~= nil and node:type() ~= 'interface_declaration' do
+						node = node:parent()
+					end
 
-          if node == nil then
-            return ''
-          end
+					if node == nil then
+						return ''
+					end
 
-          -- `node` is now surely of type "interface_declaration"
-          local prop_names = get_prop_names(node)
+					-- `node` is now surely of type "interface_declaration"
+					local prop_names = get_prop_names(node)
 
-          return table.concat(prop_names, ', ')
-        end, { 3 }),
-        rep(2),
-        i(5, "'Hello World!'"),
-      }
-    )
-  ),
+					return table.concat(prop_names, ', ')
+				end, { 3 }),
+				rep(2),
+				i(5, "'Hello World!'"),
+			}
+		)
+	),
 }
 
 local js_ts = {
-  s(
-    { trig = 'import', dscr = 'import statement' },
-    fmt("import {} from '{}{}';", {
-      i(1, 'name'),
-      i(2),
-      d(3, function(nodes)
-        local text = nodes[1][1]
-        local _, _, typish, target = text:find '^%s*(%a*)%s*{?%s*(%a+).*}?%s*$'
-        if typish == 'type' and target then
-          return sn(1, { i(1, target) })
-        elseif typish and target then
-          return sn(1, { i(1, typish .. target) })
-        else
-          return sn(1, { i(1, 'specifier') })
-        end
-      end, { 1 }),
-    })
-  ),
-  s(
-    { trig = 'require', dscr = 'require statement' },
-    fmt("const {} = require('{}{}');", {
-      i(1, 'name'),
-      i(2),
-      d(3, function(nodes)
-        local text = nodes[1][1]
-        return sn(1, { i(1, text) })
-      end, { 1 }),
-    })
-  ),
-  s({ trig = '**', dscr = 'docblock' }, {
-    t { '/**', '' },
-    f(function(_args, snip)
-      local lines = vim.tbl_map(function(line)
-        return ' * ' .. vim.trim(line)
-      end, snip.env.SELECT_RAW)
-      if #lines == 0 then
-        return ' * '
-      else
-        return lines
-      end
-    end, {}),
-    i(1),
-    t { '', ' */' },
-  }),
+	s(
+		{ trig = 'import', dscr = 'import statement' },
+		fmt("import {} from '{}{}';", {
+			i(1, 'name'),
+			i(2),
+			d(3, function(nodes)
+				local text = nodes[1][1]
+				local _, _, typish, target = text:find '^%s*(%a*)%s*{?%s*(%a+).*}?%s*$'
+				if typish == 'type' and target then
+					return sn(1, { i(1, target) })
+				elseif typish and target then
+					return sn(1, { i(1, typish .. target) })
+				else
+					return sn(1, { i(1, 'specifier') })
+				end
+			end, { 1 }),
+		})
+	),
+	s(
+		{ trig = 'require', dscr = 'require statement' },
+		fmt("const {} = require('{}{}');", {
+			i(1, 'name'),
+			i(2),
+			d(3, function(nodes)
+				local text = nodes[1][1]
+				return sn(1, { i(1, text) })
+			end, { 1 }),
+		})
+	),
+	s({ trig = '**', dscr = 'docblock' }, {
+		t { '/**', '' },
+		f(function(_args, snip)
+			local lines = vim.tbl_map(function(line)
+				return ' * ' .. vim.trim(line)
+			end, snip.env.SELECT_RAW)
+			if #lines == 0 then
+				return ' * '
+			else
+				return lines
+			end
+		end, {}),
+		i(1),
+		t { '', ' */' },
+	}),
 }
 
 local function replace_each(replacer)
-  return function(args)
-    local len = #args[1][1]
-    return { replacer:rep(len) }
-  end
+	return function(args)
+		local len = #args[1][1]
+		return { replacer:rep(len) }
+	end
 end
 
 local twig = { 'html', 'twig' }
@@ -190,62 +190,62 @@ ls.filetype_extend('jinja2', twig)
 ls.filetype_extend('html.twig', twig)
 
 ls.add_snippets(nil, {
-  all = {
-    s({ trig = 'bbox', wordTrig = true }, {
-      t { '╔' },
-      f(replace_each '═', { 1 }),
-      t { '╗', '║' },
-      i(1, { 'content' }),
-      t { '║', '╚' },
-      f(replace_each '═', { 1 }),
-      t { '╝' },
-      i(0),
-    }),
-    s({ trig = 'sbox', wordTrig = true }, {
-      t { '*' },
-      f(replace_each '-', { 1 }),
-      t { '*', '|' },
-      i(1, { 'content' }),
-      t { '|', '*' },
-      f(replace_each '-', { 1 }),
-      t { '*' },
-      i(0),
-    }),
-    s('modeline', {
-      d(1, function()
-        local str = vim.split(vim.bo.commentstring, '%s', true)
+	all = {
+		s({ trig = 'bbox', wordTrig = true }, {
+			t { '╔' },
+			f(replace_each '═', { 1 }),
+			t { '╗', '║' },
+			i(1, { 'content' }),
+			t { '║', '╚' },
+			f(replace_each '═', { 1 }),
+			t { '╝' },
+			i(0),
+		}),
+		s({ trig = 'sbox', wordTrig = true }, {
+			t { '*' },
+			f(replace_each '-', { 1 }),
+			t { '*', '|' },
+			i(1, { 'content' }),
+			t { '|', '*' },
+			f(replace_each '-', { 1 }),
+			t { '*' },
+			i(0),
+		}),
+		s('modeline', {
+			d(1, function()
+				local str = vim.split(vim.bo.commentstring, '%s', true)
 
-        return sn(
-          nil,
-          fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
-            commentStart = str[1],
-            text = i(1),
-            commentEnd = str[2] or '',
-            next = i(0),
-          })
-        )
-      end, {}),
-    }),
-    ls.parser.parse_snippet(
-      { trig = 'vimfold' },
-      '${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
-    ),
-    s(
-      'bang',
-      fmt('#!/usr/bin/env {shell}{next}', {
-        shell = c(1, {
-          t 'sh',
-          t 'zsh',
-          t 'bash',
-          t 'python',
-          t 'node',
-        }),
-        next = i(0),
-      })
-    ),
-    ls.parser.parse_snippet(
-      { trig = 'tmux-start' },
-      [[#!/usr/bin/env sh
+				return sn(
+					nil,
+					fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
+						commentStart = str[1],
+						text = i(1),
+						commentEnd = str[2] or '',
+						next = i(0),
+					})
+				)
+			end, {}),
+		}),
+		ls.parser.parse_snippet(
+			{ trig = 'vimfold' },
+			'${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
+		),
+		s(
+			'bang',
+			fmt('#!/usr/bin/env {shell}{next}', {
+				shell = c(1, {
+					t 'sh',
+					t 'zsh',
+					t 'bash',
+					t 'python',
+					t 'node',
+				}),
+				next = i(0),
+			})
+		),
+		ls.parser.parse_snippet(
+			{ trig = 'tmux-start' },
+			[[#!/usr/bin/env sh
 
 local SESSION_NAME="${1}"
 
@@ -273,47 +273,47 @@ tmux send-keys -t"\$SESSION_NAME":2.1 "direnv reload && \$EDITOR" C-m
 
 tmux select-window -t"\$SESSION_NAME":2.1
 ${0}]]
-    ),
-    ls.parser.parse_snippet(
-      { trig = 'todo' },
-      string.format(
-        'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
-        vim.env.GITHUB_USER
-      )
-    ),
-    s({ trig = 'fn' }, {
-      c(1, {
-        t 'public ',
-        t 'private ',
-      }),
-      c(2, {
-        t 'void',
-        i(nil, { '' }),
-        t 'String',
-        t 'char',
-        t 'int',
-        t 'double',
-        t 'boolean',
-      }),
-      t ' ',
-      i(3, { 'myFunc' }),
-      t '(',
-      i(4),
-      t ')',
-      c(5, {
-        t '',
-        sn(nil, {
-          t { '', ' throws ' },
-          i(1),
-        }),
-      }),
-      t { ' {', '\t' },
-      i(0),
-      t { '', '}' },
-    }),
-    ls.parser.parse_snippet(
-      { trig = 'dumpenv' },
-      [[
+		),
+		ls.parser.parse_snippet(
+			{ trig = 'todo' },
+			string.format(
+				'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
+				vim.env.GITHUB_USER
+			)
+		),
+		s({ trig = 'fn' }, {
+			c(1, {
+				t 'public ',
+				t 'private ',
+			}),
+			c(2, {
+				t 'void',
+				i(nil, { '' }),
+				t 'String',
+				t 'char',
+				t 'int',
+				t 'double',
+				t 'boolean',
+			}),
+			t ' ',
+			i(3, { 'myFunc' }),
+			t '(',
+			i(4),
+			t ')',
+			c(5, {
+				t '',
+				sn(nil, {
+					t { '', ' throws ' },
+					i(1),
+				}),
+			}),
+			t { ' {', '\t' },
+			i(0),
+			t { '', '}' },
+		}),
+		ls.parser.parse_snippet(
+			{ trig = 'dumpenv' },
+			[[
   ${$TM_SELECTED_TEXT} --  TM_SELECTED_TEXT The currently selected text or the empty string
   ${$TM_CURRENT_LINE} --  TM_CURRENT_LINE The contents of the current line
   ${$TM_CURRENT_WORD} --  TM_CURRENT_WORD The contents of the word under cursor or the empty string
@@ -346,16 +346,16 @@ ${0}]]
   ${$BLOCK_COMMENT_END} --  BLOCK_COMMENT_END Example output: in PHP */ or in HTML -->
   ${$LINE_COMMENT} --  LINE_COMMENT Example output: in PHP //
     ]]
-    ),
-  },
-  javascript = js_ts,
-  typescript = js_ts,
-  javascriptreact = vim.tbl_extend('force', {}, js_ts, react),
-  typescriptreact = vim.tbl_extend('force', {}, js_ts, react),
-  markdown = {
-    ls.parser.parse_snippet(
-      { trig = 'fmatter', dscr = 'Document frontmatter' },
-      [[
+		),
+	},
+	javascript = js_ts,
+	typescript = js_ts,
+	javascriptreact = vim.tbl_extend('force', {}, js_ts, react),
+	typescriptreact = vim.tbl_extend('force', {}, js_ts, react),
+	markdown = {
+		ls.parser.parse_snippet(
+			{ trig = 'fmatter', dscr = 'Document frontmatter' },
+			[[
 ---
 title: ${1:Title}
 date: ${CURRENT_DATE}-${CURRENT_MONTH}-${CURRENT_YEAR}T${CURRENT_HOUR}:${CURRENT_MINUTE}
@@ -364,37 +364,37 @@ ${3:tags}: $4
 
 $0
 ]]
-    ),
-    s(
-      { trig = 'img', dscr = 'Markdown image' },
-      fmt(
-        '![{alt}]({url}){next}',
-        { alt = i(1, 'alt'), url = i(2), next = i(0) }
-      )
-    ),
-    s(
-      { trig = 'link', dscr = 'Markdown link' },
-      fmt('[{text}]({url}){next}', {
-        text = f(function(_, snip)
-          return snip.env.TM_SELECTED_TEXT[1] or sn(nil, i(1, 'Text'))
-        end, {}),
-        url = i(1, 'https://example.com'),
-        next = i(0),
-      })
-    ),
-    s({ trig = 'table', dscr = 'Table template' }, {
-      t '| ',
-      i(1, 'First Header'),
-      t {
-        '  | Second Header |',
-        '| ------------- | ------------- |',
-        '| Content Cell  | Content Cell  |',
-        '| Content Cell  | Content Cell  |',
-      },
-    }),
-    ls.parser.parse_snippet(
-      { trig = 'footer', dscr = 'Project footer' },
-      [[
+		),
+		s(
+			{ trig = 'img', dscr = 'Markdown image' },
+			fmt(
+				'![{alt}]({url}){next}',
+				{ alt = i(1, 'alt'), url = i(2), next = i(0) }
+			)
+		),
+		s(
+			{ trig = 'link', dscr = 'Markdown link' },
+			fmt('[{text}]({url}){next}', {
+				text = f(function(_, snip)
+					return snip.env.TM_SELECTED_TEXT[1] or sn(nil, i(1, 'Text'))
+				end, {}),
+				url = i(1, 'https://example.com'),
+				next = i(0),
+			})
+		),
+		s({ trig = 'table', dscr = 'Table template' }, {
+			t '| ',
+			i(1, 'First Header'),
+			t {
+				'  | Second Header |',
+				'| ------------- | ------------- |',
+				'| Content Cell  | Content Cell  |',
+				'| Content Cell  | Content Cell  |',
+			},
+		}),
+		ls.parser.parse_snippet(
+			{ trig = 'footer', dscr = 'Project footer' },
+			[[
 **${1:projectname}** © ${$CURRENT_YEAR}+, Ahmed El Gabri Released under the [MIT] License.<br>
 Authored and maintained by Ahmed El Gabri with help from contributors ([list][contributors]).
 
@@ -405,10 +405,10 @@ Authored and maintained by Ahmed El Gabri with help from contributors ([list][co
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/ahmedelgabri/$1/contributors
     ]]
-    ),
-    ls.parser.parse_snippet(
-      { trig = 'mit', dscr = 'MIT Licence' },
-      [[
+		),
+		ls.parser.parse_snippet(
+			{ trig = 'mit', dscr = 'MIT Licence' },
+			[[
 The MIT License (MIT)
 
 Copyright (c) ${$CURRENT_YEAR} ${0}
@@ -431,44 +431,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
     ]]
-    ),
-  },
-  html = {
-    s(
-      'script',
-      fmt('<script {scriptEnd}{body}</script>{next}', {
-        scriptEnd = c(1, {
-          fmt('src="{src}">', { src = i(1, 'path/to/file.js') }),
-          fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
-        }),
-        body = i(2),
-        next = i(0),
-      })
-    ),
-    s(
-      { trig = 'fav', dscr = 'Add an inline SVG Emoji Favicon' },
-      fmt(
-        '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{text}</text></svg>"/>',
-        { text = i(1) }
-      )
-    ),
-  },
-  css = {
-    s({
-      trig = 'debug',
-      dscr = 'Print box model from https://dev.to/gajus/my-favorite-css-hack-32g3',
-    }, {
-      t {
-        '* { background-color: rgba(255,0,0,.2); }',
-        '* * { background-color: rgba(0,255,0,.2); }',
-        '* * * { background-color: rgba(0,0,255,.2); }',
-        '* * * * { background-color: rgba(255,0,255,.2); }',
-        '* * * * * { background-color: rgba(0,255,255,.2); }',
-        '* * * * * * { background-color: rgba(255,255,0,.2); }',
-        '* * * * * * * { background-color: rgba(255,0,0,.2); }',
-        '* * * * * * * * { background-color: rgba(0,255,0,.2); }',
-        '* * * * * * * * * { background-color: rgba(0,0,255,.2); }',
-      },
-    }),
-  },
+		),
+	},
+	html = {
+		s(
+			'script',
+			fmt('<script {scriptEnd}{body}</script>{next}', {
+				scriptEnd = c(1, {
+					fmt('src="{src}">', { src = i(1, 'path/to/file.js') }),
+					fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
+				}),
+				body = i(2),
+				next = i(0),
+			})
+		),
+		s(
+			{ trig = 'fav', dscr = 'Add an inline SVG Emoji Favicon' },
+			fmt(
+				'<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{text}</text></svg>"/>',
+				{ text = i(1) }
+			)
+		),
+	},
+	css = {
+		s({
+			trig = 'debug',
+			dscr = 'Print box model from https://dev.to/gajus/my-favorite-css-hack-32g3',
+		}, {
+			t {
+				'* { background-color: rgba(255,0,0,.2); }',
+				'* * { background-color: rgba(0,255,0,.2); }',
+				'* * * { background-color: rgba(0,0,255,.2); }',
+				'* * * * { background-color: rgba(255,0,255,.2); }',
+				'* * * * * { background-color: rgba(0,255,255,.2); }',
+				'* * * * * * { background-color: rgba(255,255,0,.2); }',
+				'* * * * * * * { background-color: rgba(255,0,0,.2); }',
+				'* * * * * * * * { background-color: rgba(0,255,0,.2); }',
+				'* * * * * * * * * { background-color: rgba(0,0,255,.2); }',
+			},
+		}),
+	},
 })

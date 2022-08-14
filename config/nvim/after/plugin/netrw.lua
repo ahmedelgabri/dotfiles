@@ -16,6 +16,6 @@ vim.g.netrw_hide = 1
 -- (reproduce bug by opening netrw, :e ., :q)
 vim.g.netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' -- default
 vim.g.netrw_bufsettings = vim.g.netrw_bufsettings
-  .. ' buftype=nofile bufhidden=wipe'
+	.. ' buftype=nofile bufhidden=wipe'
 
 vim.keymap.set({ 'n' }, '<leader>L', ':20Lex<CR>', { silent = true })
