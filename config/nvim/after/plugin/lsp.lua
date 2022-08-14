@@ -87,6 +87,11 @@ vim.diagnostic.config {
   -- },
   float = {
     source = 'always',
+    focusable = false,
+    style = 'minimal',
+    border = getBorder(),
+    -- header = '',
+    -- prefix = '',
   },
   underline = true,
   signs = true,
