@@ -1,4 +1,4 @@
-# vim:noexpandtab
+# vim:noexpandtab:ft=gitconfig
 
 [commit]
 	verbose = true
