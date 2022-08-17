@@ -45,8 +45,14 @@
   my.user = {
     packages = with pkgs; [
       emacs
+      go-task
     ];
   };
+
+  homebrew.taps = [
+    "wez/wezterm"
+    "helix-editor/helix"
+  ];
 
   homebrew.casks = [
     "adoptopenjdk8"
@@ -56,6 +62,16 @@
     "vagrant"
     "discord"
     "docker"
+    "wez/wezterm/wezterm"
+  ];
+
+  homebrew.brews = [
+    "amp"
+    "helix"
+    "git"
+    "git-filter-repo"
+    "git-lfs"
+    "git-sizer"
   ];
 
   # Requires to be logged in to the AppStore
