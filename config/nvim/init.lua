@@ -155,7 +155,9 @@ vim.opt.clipboard = 'unnamed'
 -- show trailing whitespace
 vim.opt.list = true
 vim.opt.listchars = {
-	tab = '⋅ ',
+	multispace = '⋅ ',
+	lead = '⋅',
+	tab = '  ',
 	-- tab = '| ',
 	nbsp = '░',
 	extends = '»',
