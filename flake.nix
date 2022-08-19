@@ -94,7 +94,7 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay inputs.rust-overlay.overlay ];
+          overlays = [ self.overlay inputs.rust-overlay.overlays.default ];
         };
 
         time.timeZone = config.my.timezone;
