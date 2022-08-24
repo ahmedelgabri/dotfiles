@@ -169,6 +169,7 @@
 	unhide-all = update-index --really-refresh
 	hidden = !git ls-files -v | grep \"^[a-z]\"
 	l = log --color=always --graph --pretty=format:\"%C(blue)%h %Creset- %C(green)%>(12)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d\" --date=auto:human
+	lf = l --numstat
 	lme = "!sh -c \"git l $@ --author=\"$NAME\"\""
 	la = l --all --simplify-by-decoration
 	lastchange = log -p --follow -n 1
