@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  users.nix.configureBuildUsers = true;
+  nix.configureBuildUsers = true;
 
   homebrew.enable = true;
   homebrew.autoUpdate = true;
