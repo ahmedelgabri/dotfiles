@@ -379,9 +379,7 @@ require '_.config.lsp.null-ls'(on_attach)
 
 pcall(function()
 	require('zk').setup {
-		-- create user commands such as :ZkNew
-		create_user_commands = true,
-
+		picker = 'fzf',
 		lsp = {
 			-- `config` is passed to `vim.lsp.start_client(config)`
 			config = vim.tbl_deep_extend('force', shared, {
