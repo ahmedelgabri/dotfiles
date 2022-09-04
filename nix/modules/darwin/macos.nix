@@ -47,7 +47,7 @@ in
             NSNavPanelExpandedStateForSaveMode2 = true;
             NSTableViewDefaultSizeMode = 2;
             NSTextShowsControlCharacters = true;
-            NSWindowResizeTime = "0.001";
+            NSWindowResizeTime = 0.001;
             PMPrintingExpandedStateForPrint = true;
             PMPrintingExpandedStateForPrint2 = true;
             _HIHideMenuBar = true;
@@ -59,10 +59,10 @@ in
 
           dock = {
             autohide = true;
-            autohide-delay = "0";
-            autohide-time-modifier = "0";
+            autohide-delay = 0.0;
+            autohide-time-modifier = 0.0;
             dashboard-in-overlay = true;
-            expose-animation-duration = "0.1";
+            expose-animation-duration = 0.1;
             expose-group-by-app = false;
             launchanim = false;
             mineffect = "genie";
