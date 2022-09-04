@@ -1,55 +1,30 @@
--- Only required if you have packer in your `opt` pack
-local packer_exists, packer = pcall(require, 'packer')
+local ensure_packer = function()
+	local install_path = vim.fn.stdpath 'data'
+		.. '/site/pack/packer/start/packer.nvim'
 
-if not packer_exists then
-	if vim.fn.input 'Download Packer? (y for yes) ' ~= 'y' then
-		return
-	end
-
-	local directory =
-		string.format('%s/pack/packer/start/', vim.fn.stdpath 'config')
-
-	vim.fn.mkdir(directory, 'p')
-
-	OUT = vim.fn.system(
-		string.format(
-			'git clone %s %s',
+	-- local install_path =
+	-- 	string.format('%s/pack/packer/start/packer.nvim', vim.fn.stdpath 'config')
+	if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+		vim.fn.system {
+			'git',
+			'clone',
+			'--depth',
+			'1',
 			'https://github.com/wbthomason/packer.nvim',
-			directory .. 'packer.nvim'
-		)
-	)
-
-	print(OUT)
-	print 'Downloading packer.nvim...'
-	vim.fn.execute 'packadd packer.nvim'
-
-	return
+			install_path,
+		}
+		vim.cmd [[packadd packer.nvim]]
+		return true
+	end
+	return false
 end
+
+local packer_bootstrap = ensure_packer()
 
 -- HACK: see https://github.com/wbthomason/packer.nvim/issues/180
 vim.fn.setenv('MACOSX_DEPLOYMENT_TARGET', '10.15')
 
-local PACKER_COMPILED_PATH = vim.fn.stdpath 'cache'
-	.. '/packer/packer_compiled.lua'
-
-return packer.startup {
-	config = {
-		-- https://github.com/wbthomason/packer.nvim/issues/202
-		max_jobs = 70,
-		-- https://github.com/wbthomason/packer.nvim/issues/201
-		-- https://github.com/wbthomason/packer.nvim/issues/274
-		-- https://github.com/wbthomason/packer.nvim/issues/554
-		-- https://github.com/soywod/himalaya/issues/188
-		compile_path = PACKER_COMPILED_PATH,
-		package_root = string.format('%s/pack', vim.fn.stdpath 'config'),
-		-- end
-		display = {
-			non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
-			open_cmd = function()
-				return require('packer.util').float { border = 'single' }
-			end,
-		},
-	},
+return require('packer').startup {
 	function(use)
 		use { 'https://github.com/wbthomason/packer.nvim' }
 		use { 'https://github.com/windwp/nvim-autopairs' }
@@ -414,12 +389,21 @@ return packer.startup {
 		-- use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
 		-- }}}
 
-		if
-			not vim.g.packer_compiled_loaded
-			and vim.loop.fs_stat(PACKER_COMPILED_PATH)
-		then
-			vim.cmd(string.format('source %s', PACKER_COMPILED_PATH))
-			vim.g.packer_compiled_loaded = true
+		if packer_bootstrap then
+			require('packer').sync()
 		end
 	end,
+	config = {
+		-- https://github.com/wbthomason/packer.nvim/issues/202
+		max_jobs = 70,
+		-- https://github.com/wbthomason/packer.nvim/issues/201#issuecomment-1011066526
+		compile_path = vim.fn.stdpath 'data'
+			.. '/site/pack/loader/start/packer.nvim/plugin/packer_compiled.lua',
+		display = {
+			non_interactive = vim.env.PACKER_NON_INTERACTIVE or false,
+			open_cmd = function()
+				return require('packer.util').float { border = 'single' }
+			end,
+		},
+	},
 }

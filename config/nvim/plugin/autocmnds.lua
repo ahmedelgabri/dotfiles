@@ -118,7 +118,7 @@ au.augroup('__myautocmds__', {
 	{
 		event = 'BufWritePost',
 		pattern = 'packer.lua',
-		command = 'PackerCompile',
+		command = 'source <afile> | PackerCompile',
 	},
 	{
 		event = { 'BufRead', 'BufNewFile' },
