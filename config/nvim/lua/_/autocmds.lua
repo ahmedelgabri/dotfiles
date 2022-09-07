@@ -174,13 +174,7 @@ function M.highlight_overlength()
 end
 
 function M.highlight_git_markers()
-	if utils.plugin_loaded 'conflict-marker.vim' then
-		hl.group('ConflictMarkerBegin', { guibg = '#2f7366' })
-		hl.group('ConflictMarkerOurs', { guibg = '#2e5049' })
-		hl.group('ConflictMarkerTheirs', { guibg = '#344f69' })
-		hl.group('ConflictMarkerEnd', { guibg = '#2f628e' })
-		hl.group('ConflictMarkerCommonAncestorsHunk', { guibg = '#754a81' })
-	else
+	if not utils.plugin_loaded 'git-conflict.nvim' then
 		cleanup_marker 'w:last_git_markers'
 		-- I have to escape the escape backslash to be able to pass it to vim
 		-- Ex: I want "\(" I have to do it in Lua as "\\("

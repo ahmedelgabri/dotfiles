@@ -339,20 +339,9 @@ return require('packer').startup {
 
 		-- Git {{{
 		use {
-			'https://github.com/rhysd/conflict-marker.vim',
-			cmd = {
-				'ConflictMarkerBoth',
-				'ConflictMarkerNone',
-				'ConflictMarkerOurselves',
-				'ConflictMarkerThemselves',
-			},
+			'https://github.com/akinsho/git-conflict.nvim',
 			config = function()
-				-- disable the default highlight group
-				vim.g.conflict_marker_highlight_group = ''
-
-				-- Include text after begin and end markers
-				vim.g.conflict_marker_begin = '^<<<<<<< .*$'
-				vim.g.conflict_marker_end = '^>>>>>>> .*$'
+				require('git-conflict').setup {}
 			end,
 		}
 		use {
