@@ -236,7 +236,33 @@ local servers = {
 			end,
 		},
 	},
-	sumneko_lua = require '_.config.lsp.sumneko',
+	sumneko_lua = {
+		Lua = {
+			diagnostics = {
+				globals = {
+					'vim',
+					'describe',
+					'it',
+					'before_each',
+					'after_each',
+					'pending',
+					'teardown',
+					'packer_plugins',
+					'spoon',
+					'hs',
+				},
+			},
+			workspace = {
+				maxPreload = 2000,
+				preloadFileSize = 2000,
+				library = {
+					['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
+				},
+			},
+			completion = { keywordSnippet = 'Replace', callSnippet = 'Replace' },
+			telemetry = { enable = false },
+		},
+	},
 	rust_analyzer = {},
 	gopls = {
 		cmd = { 'gopls', 'serve' },

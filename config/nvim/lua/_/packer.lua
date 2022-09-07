@@ -146,7 +146,12 @@ return require('packer').startup {
 						require('todo-comments').setup {}
 					end,
 				},
-				{ 'https://github.com/folke/lua-dev.nvim' },
+				{
+					'https://github.com/folke/lua-dev.nvim',
+					config = function()
+						require('lua-dev').setup {}
+					end,
+				},
 				{ 'https://github.com/mickael-menu/zk-nvim' },
 				{
 					'https://github.com/danymat/neogen',
