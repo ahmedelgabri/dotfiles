@@ -8,18 +8,18 @@ unalias nixify 2>/dev/null
 
 nixify() {
   if [ ! -e ./.envrc ]; then
-    echo "set -e\nset +u\nuse nix\ndotenv" > .envrc
+    echo "set -e\nset +u\nuse nix\n# dotenv" > .envrc
     direnv allow
   fi
 
-  if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
+  if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flakes.nix ]]; then
     # Make a default shell.nix and then pop open an editor
     cat > shell.nix <<'EOF'
-    with import <nixpkgs> {};
-    mkShell {
-    # name = "";
-    buildInputs = [];
-  }
+with import <nixpkgs> {};
+mkShell {
+	# name = "";
+	buildInputs = [];
+}
 EOF
 $EDITOR shell.nix
   fi
