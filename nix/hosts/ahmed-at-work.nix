@@ -72,6 +72,7 @@
     "git-filter-repo"
     "git-lfs"
     "git-sizer"
+    "awscli"
   ];
 
   # Requires to be logged in to the AppStore
