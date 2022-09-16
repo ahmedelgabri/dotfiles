@@ -14,20 +14,28 @@
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	; https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
-	pager = delta_
 	; hash (#) conflicts with Markdown when I use hb to open PRs etc...
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
+	pager = delta_
+
+[interactive]
+	diffFilter = delta_ --color-only --features=interactive
+
+[add.interactive]
+	useBuiltin = false # required for delta with git 2.37.0
 
 [delta]
 	syntax-theme = none
+	navigate = true # use n and N to move between diff sections
+	hyperlinks = true
 	file-modified-label = MODIFIED:
 	file-removed-label  = REMOVED:
 	file-added-label    = ADDED:
 	file-renamed-label  = RENAMED:
-	features = labels customization
+	features = labels decorations
 
-[delta "customization"]
+[delta "decorations"]
 	whitespace-error-style = 22 reverse
 	zero-style = 8
 	commit-decoration-style = bold yellow box
@@ -42,9 +50,6 @@
 	line-numbers-zero-style = 235
 	line-numbers-minus-style = 088
 	line-numbers-plus-style = 034
-
-[interactive]
-	diffFilter = delta_ --color-only
 
 [branch]
 	autosetupmerge = always
