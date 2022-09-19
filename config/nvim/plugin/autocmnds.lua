@@ -8,6 +8,7 @@ au.augroup('__myautocmds__', {
 	{ event = 'VimResized', pattern = '*', command = 'wincmd =' },
 
 	-- Disable paste mode on leaving insert mode.
+	-- See https://github.com/neovim/neovim/issues/7994
 	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
 
 	-- {
@@ -32,9 +33,6 @@ au.augroup('__myautocmds__', {
 		pattern = '*',
 		command = [[if &nu | set nornu | endif]],
 	},
-
-	-- See https://github.com/neovim/neovim/issues/7994
-	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
 
 	{
 		event = { 'BufEnter', 'BufWinEnter', 'BufRead', 'BufNewFile' },
