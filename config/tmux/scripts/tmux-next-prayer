@@ -16,7 +16,7 @@ from random import choice
 
 TODAY_DATE = time.strftime("%d-%m-%Y", datetime.now().timetuple())
 CACHE = os.path.join(gettempdir(), f".{TODAY_DATE}.json")
-RED = "#[fg=red]" if os.environ["TMUX"] else "\033[1;31;40m"
+RED = "#[fg=red]" if "TMUX" in os.environ else "\033[1;31;40m"
 PRAYERS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
 
 # https://aladhan.com/prayer-times-api#GetCalendarByCitys
@@ -74,27 +74,24 @@ def get_prayer(now):
     timings = data["timings"]
     readable_date = data["readable_date"]
     after_isha = get_prayer_time(PRAYERS[-1], readable_date, timings)
-    result = ""
 
     if now > after_isha:
         fajr = PRAYERS[0]
 
-        result = f"{fajr}: {timings[fajr]}"
-    else:
-        for prayer in PRAYERS:
-            prayer_time = get_prayer_time(prayer, readable_date, timings)
+        return f"{fajr}: {timings[fajr]}"
 
-            if prayer_time >= now:
-                now_timestamp = time.mktime(now.timetuple())
-                prayer_time_timestamp = time.mktime(prayer_time.timetuple())
-                time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
-                color = "" if time_remaning > 30 else RED
+    for prayer in PRAYERS:
+        prayer_time = get_prayer_time(prayer, readable_date, timings)
 
-                result = f"{color}{prayer}: {timings[prayer]}"
+        if prayer_time >= now:
+            now_timestamp = time.mktime(now.timetuple())
+            prayer_time_timestamp = time.mktime(prayer_time.timetuple())
+            time_remaning = int(prayer_time_timestamp - now_timestamp) / 60
+            color = "" if time_remaning > 30 else RED
 
-                break
+            return f"{color}{prayer}: {timings[prayer]}"
 
-    return result
+    return f"{RED} NO RESULTS"
 
 
 if __name__ == "__main__":
