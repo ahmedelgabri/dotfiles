@@ -70,6 +70,7 @@ function M.plaintext()
 	vim.cmd [[setlocal linebreak]]
 	vim.cmd [[setlocal nolist]]
 	vim.cmd [[setlocal wrap]]
+	vim.cmd [[setlocal expandtab]]
 
 	if vim.bo.filetype == 'gitcommit' then
 		-- Git commit messages body are constraied to 72 characters
