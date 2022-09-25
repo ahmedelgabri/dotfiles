@@ -6,34 +6,9 @@ local hl = require '_.utils.highlight'
 au.augroup('__myautocmds__', {
 	-- Automatically make splits equal in size
 	{ event = 'VimResized', pattern = '*', command = 'wincmd =' },
-
 	-- Disable paste mode on leaving insert mode.
 	-- See https://github.com/neovim/neovim/issues/7994
 	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
-
-	-- {
-	--   event = { 'InsertLeave', 'VimEnter', 'WinEnter' },
-	--   pattern = '*',
-	--   command = 'setlocal cursorline',
-	-- },
-	-- {
-	--   event = { 'InsertEnter', 'WinLeave' },
-	--   pattern = '*',
-	--   command = 'setlocal nocursorline',
-	-- },
-
-	-- taken from https://github.com/jeffkreeftmeijer/vim-numbertoggle/blob/cfaecb9e22b45373bb4940010ce63a89073f6d8b/plugin/number_toggle.vim
-	{
-		event = { 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' },
-		pattern = '*',
-		command = [[if &nu | set rnu   | endif]],
-	},
-	{
-		event = { 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' },
-		pattern = '*',
-		command = [[if &nu | set nornu | endif]],
-	},
-
 	{
 		event = { 'BufEnter', 'BufWinEnter', 'BufRead', 'BufNewFile' },
 		pattern = 'bookmarks.{md,txt}',
@@ -45,7 +20,15 @@ au.augroup('__myautocmds__', {
 
 	{
 		event = 'BufWritePost',
-		pattern = '.envrc ',
+		pattern = '*/spell/*.add',
+		callback = function()
+			vim.cmd [[ silent! :mkspell! %]]
+		end,
+	},
+
+	{
+		event = 'BufWritePost',
+		pattern = '.envrc',
 		callback = function()
 			if vim.fn.executable 'direnv' then
 				vim.cmd [[ silent !direnv allow %]]

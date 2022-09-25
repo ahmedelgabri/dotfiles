@@ -101,7 +101,8 @@ function M.mkview()
 		end)
 		if not success then
 			if
-				err:find '%f[%w]E186%f[%W]' == nil -- No previous directory: probably a `git` operation.
+				err ~= nil
+				and err:find '%f[%w]E186%f[%W]' == nil -- No previous directory: probably a `git` operation.
 				and err:find '%f[%w]E190%f[%W]' == nil -- Could be name or path length exceeding NAME_MAX or PATH_MAX.
 				and err:find '%f[%w]E5108%f[%W]' == nil
 			then
