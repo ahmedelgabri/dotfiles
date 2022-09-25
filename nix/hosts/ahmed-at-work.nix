@@ -32,6 +32,8 @@
   };
 
   networking = { hostName = "ahmed-at-work"; };
+  # enable sudo authentication with Touch ID
+  security.pam.enableSudoTouchIdAuth = true;
 
   nix = {
     gc = { user = config.my.username; };
