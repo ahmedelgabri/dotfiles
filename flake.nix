@@ -117,6 +117,10 @@
 
         zk = prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; };
 
+        next-prayer = prev.callPackage
+          ./config/tmux/scripts/next-prayer/next-prayer.nix
+          { };
+
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });

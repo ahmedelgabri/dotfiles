@@ -16,7 +16,13 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      my.user = { packages = with pkgs; [ tmux tmuxPlugins.urlview ]; };
+      my.user = {
+        packages = with pkgs; [
+          tmux
+          tmuxPlugins.urlview
+          next-prayer
+        ];
+      };
 
       my.hm.file = {
         ".config/tmux" = {
