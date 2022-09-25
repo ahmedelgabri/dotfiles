@@ -52,7 +52,6 @@
   };
 
   homebrew.taps = [
-    "wez/wezterm"
     "helix-editor/helix"
   ];
 
@@ -64,7 +63,6 @@
     "vagrant"
     "discord"
     "docker"
-    "wez/wezterm/wezterm"
   ];
 
   homebrew.brews = [

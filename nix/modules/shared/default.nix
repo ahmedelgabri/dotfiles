@@ -10,7 +10,7 @@
     ./ssh.nix
     ./git.nix
     ./kitty.nix
-    ./alacritty.nix
+    ./wezterm.nix
     ./bat.nix
     ./lf.nix
     ./mpv.nix
@@ -42,7 +42,7 @@
     syncthing.enable = true;
 
     kitty.enable = true;
-    alacritty.enable = true;
+    wezterm.enable = true;
     bat.enable = true;
     lf.enable = true;
     mpv.enable = true;
