@@ -248,9 +248,7 @@ __.statusline = M
 
 function M.get_active_statusline()
 	local line = table.concat {
-		git_info(),
-		'%<',
-		filepath(),
+		-- filepath(),
 		word_count(),
 		readonly(),
 		'%9*%=%* ',
@@ -265,15 +263,18 @@ function M.get_active_statusline()
 	}
 
 	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
-		line = table.concat {
+		return table.concat {
 			'%#StatusLineNC# ',
-			filetype(),
-			' %f',
+			filepath(),
 			line,
 		}
 	end
 
-	return line
+	return table.concat {
+		git_info(),
+		'%<',
+		line,
+	}
 end
 
 function M.get_inactive_statusline()
@@ -299,13 +300,6 @@ function M.inactive()
 end
 
 function M.activate()
-	hl.group('StatusLine', {
-		bg = nil,
-		fg = utils.get_color('Identifier', 'fg', 'gui'),
-		ctermbg = nil,
-		ctermfg = utils.get_color('Identifier', 'fg', 'cterm'),
-	})
-
 	au.augroup('MyStatusLine', {
 		{
 			event = { 'WinEnter', 'BufEnter' },
@@ -319,5 +313,8 @@ function M.activate()
 		},
 	})
 end
+
+vim.opt.laststatus = 3
+vim.opt.winbar = '%=%#LineNr#%f%* '
 
 __.statusline.activate()
