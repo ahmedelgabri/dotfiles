@@ -3,11 +3,6 @@
 -------------------------------------------------------------------------------
 -- GENERAL {{{1
 -------------------------------------------------------------------------------
--- Opt-in to lua filetype detection
--- enable filetype.lua
-vim.g.do_filetype_lua = 1
--- disable filetype.vim
-vim.g.did_load_filetypes = 0
 
 require '_'
 
@@ -92,7 +87,11 @@ vim.opt.tags:prepend './.git/tags;'
 vim.opt.pumblend = 5
 vim.opt.pumheight = 50
 
+-- Hide command line
+vim.opt.cmdheight = 0
+
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
+vim.opt.spell = true
 vim.opt.spelllang = 'en,nl'
 vim.opt.spellsuggest = '30'
 vim.opt.spellfile =

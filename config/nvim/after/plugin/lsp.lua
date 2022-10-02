@@ -99,8 +99,6 @@ vim.diagnostic.config {
 	severity_sort = true,
 }
 
-vim.api.nvim_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
 local mappings = {
 	{
 		{ 'n' },
@@ -165,7 +163,7 @@ local on_attach = function(client, bufnr)
 	-- ---------------
 	-- AUTOCMDS
 	-- ---------------
-	if client.resolved_capabilities.documentHighlightProvider then
+	if client.server_capabilities.documentHighlightProvider then
 		hl.group('LspReferenceRead', {
 			link = 'SpecialKey',
 		})
@@ -194,7 +192,7 @@ local on_attach = function(client, bufnr)
 		})
 	end
 
-	if client.resolved_capabilities.codeLensProvider then
+	if client.server_capabilities.codeLensProvider then
 		au.augroup('__LSP_CODELENS__', {
 			{
 				event = { 'CursorHold', 'BufEnter', 'InsertLeave' },

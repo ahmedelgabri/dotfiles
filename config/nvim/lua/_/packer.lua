@@ -65,7 +65,6 @@ return require('packer').startup {
 			event = 'BufEnter',
 			config = require '_.config.startify',
 		}
-		use { 'https://github.com/nelstrom/vim-visual-star-search' }
 		use {
 			'https://github.com/tpope/tpope-vim-abolish',
 			cmd = { 'Abolish', 'S', 'Subvert' },
