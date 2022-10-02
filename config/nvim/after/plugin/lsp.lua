@@ -273,21 +273,19 @@ local servers = {
 	},
 	tsserver = {
 		root_dir = function(fname)
-			return not nvim_lsp.util.root_pattern '.flowconfig'(fname)
-				and (
-					nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
-					or nvim_lsp.util.root_pattern('package.json', 'jsconfig.json', '.git')(
-						fname
-					)
-					or nvim_lsp.util.path.dirname(fname)
-				)
+			return not nvim_lsp.util.root_pattern(
+				'.flowconfig',
+				'deno.json',
+				'deno.jsonc'
+			)(fname) and (nvim_lsp.util.root_pattern 'tsconfig.json'(fname) or nvim_lsp.util.root_pattern(
+				'package.json',
+				'jsconfig.json',
+				'.git'
+			)(fname) or nvim_lsp.util.path.dirname(fname))
 		end,
 	},
 	denols = {
-		root_dir = function(fname)
-			return nvim_lsp.util.root_pattern 'deno.json'(fname)
-				or nvim_lsp.util.root_pattern 'deno.jsonc'(fname)
-		end,
+		root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
 	},
 	rnix = {},
 	jsonls = {
