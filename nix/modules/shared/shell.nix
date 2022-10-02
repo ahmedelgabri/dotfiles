@@ -52,7 +52,7 @@ in
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
         environment = {
-          shells = [ pkgs.bashInteractive_5 pkgs.zsh ];
+          shells = [ pkgs.bashInteractive pkgs.zsh ];
           variables = {
             # NOTE: Darwin doesn't set them by default, unlike NixOS. So we have to set them.
             XDG_CACHE_HOME = "${home}/.cache";

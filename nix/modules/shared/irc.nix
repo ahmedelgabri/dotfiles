@@ -28,7 +28,7 @@ in
                     [
                       (perl.withPackages (p: [ p.PodParser ]))
                       (python.withPackages (ps: [
-                        ps.websocket_client
+                        ps.websocket-client
                         # ps.pync # requires 2.x
                       ]))
                     ];

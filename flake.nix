@@ -63,7 +63,7 @@
             "darwin=${inputs.darwin}"
             "home-manager=${inputs.home-manager}"
           ];
-          package = pkgs.nixFlakes;
+          package = pkgs.nixVersions.unstable;
           extraOptions = "experimental-features = nix-command flakes";
           settings = {
             substituters = [
