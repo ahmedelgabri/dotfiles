@@ -22,7 +22,6 @@ in
         [
           vim
           neovim
-          ninja # used to build lua-language-server
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
