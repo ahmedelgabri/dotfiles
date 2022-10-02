@@ -9,5 +9,5 @@ buildGo118Module rec {
 
   src = ./.;
 
-  ldflags = [ "-X=main.version=${version}" ];
+  ldflags = [ "-w" "-s" "-X=main.version=${version}" ];
 }

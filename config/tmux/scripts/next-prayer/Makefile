@@ -6,7 +6,7 @@ export GOBIN ?= /usr/local/bin/
 
 VERSION=$(shell git rev-parse --short HEAD)
 
-GO_FLAGS=-ldflags "-X main.gitCommit=$(VERSION)"
+GO_FLAGS=-ldflags "-w -s -X main.version=$(VERSION)"
 
 all: build
 
