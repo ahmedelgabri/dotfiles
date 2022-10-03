@@ -283,38 +283,25 @@ function M.get_inactive_statusline()
 	return line
 end
 
-function M.active()
-	vim.api.nvim_win_set_option(
-		0,
-		'statusline',
-		[[%!luaeval("__.statusline.get_active_statusline()")]]
-	)
-end
-
-function M.inactive()
-	vim.api.nvim_win_set_option(
-		0,
-		'statusline',
-		[[%!luaeval("__.statusline.get_inactive_statusline()")]]
-	)
-end
-
 function M.activate()
 	au.augroup('MyStatusLine', {
 		{
 			event = { 'WinEnter', 'BufEnter' },
 			pattern = '*',
-			callback = __.statusline.active,
+			callback = function()
+				vim.opt_local.statusline =
+					[[%!luaeval("__.statusline.get_active_statusline()")]]
+			end,
 		},
 		{
 			event = { 'WinLeave', 'BufLeave' },
 			pattern = '*',
-			callback = __.statusline.inactive,
+			callback = function()
+				vim.opt_local.statusline =
+					[[%!luaeval("__.statusline.get_inactive_statusline()")]]
+			end,
 		},
 	})
 end
-
-vim.opt.laststatus = 3
-vim.opt.winbar = '%=%#LineNr#%f%* '
 
 __.statusline.activate()
