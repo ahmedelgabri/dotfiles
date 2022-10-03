@@ -91,7 +91,6 @@ vim.opt.pumheight = 50
 vim.opt.cmdheight = 0
 
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
-vim.opt.spell = true
 vim.opt.spelllang = 'en,nl'
 vim.opt.spellsuggest = '30'
 vim.opt.spellfile =
