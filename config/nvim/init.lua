@@ -219,11 +219,11 @@ vim.opt.writebackup = false
 
 if not vim.fn.has 'nvim-0.6' then
 	vim.opt.backupdir =
-		string.format('%s,%s%s', '.', vim.fn.stdpath 'data', '/backup//') -- keep backup files out of the way
+		string.format('%s,%s%s', '.', vim.fn.stdpath 'state', '/backup//') -- keep backup files out of the way
 end
 
 vim.opt.swapfile = false
-vim.opt.directory = string.format('%s%s', vim.fn.stdpath 'data', '/swap//') -- keep swap files out of the way
+vim.opt.directory = string.format('%s%s', vim.fn.stdpath 'state', '/swap//') -- keep swap files out of the way
 vim.opt.directory:append '.'
 
 vim.opt.updatetime = 1000
