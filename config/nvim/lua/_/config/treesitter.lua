@@ -121,9 +121,7 @@ return function()
 			-- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
 			-- Required since TS highlighter doesn't support all syntax features (conceal)
 			additional_vim_regex_highlighting = {
-				'python',
 				'org',
-				'lua',
 				'vim',
 				'zsh',
 			},
