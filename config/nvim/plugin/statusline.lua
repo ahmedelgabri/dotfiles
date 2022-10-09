@@ -248,7 +248,7 @@ __.statusline = M
 
 function M.get_active_statusline()
 	local line = table.concat {
-		-- filepath(),
+		filepath(),
 		word_count(),
 		readonly(),
 		'%9*%=%* ',

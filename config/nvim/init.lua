@@ -87,9 +87,6 @@ vim.opt.tags:prepend './.git/tags;'
 vim.opt.pumblend = 5
 vim.opt.pumheight = 50
 
--- Hide command line
-vim.opt.cmdheight = 0
-
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 vim.opt.spelllang = 'en,nl'
 vim.opt.spellsuggest = '30'
