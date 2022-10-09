@@ -209,7 +209,9 @@ local servers = {
 	cssls = {},
 	html = {},
 	bashls = {},
-	vimls = {},
+	vimls = {
+		init_options = { isNeovim = true },
+	},
 	pyright = {},
 	dockerls = {},
 	clojure_lsp = {},
