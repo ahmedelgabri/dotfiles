@@ -7,6 +7,6 @@ vim.filetype.add {
 		['.stylelintrc'] = 'json',
 	},
 	pattern = {
-		['tsconfig%.?%a*%.json'] = 'jsonc',
+		['tsconfig.*%.json'] = 'jsonc',
 	},
 }
