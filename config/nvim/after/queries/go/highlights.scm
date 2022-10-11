@@ -1,5 +1,5 @@
-; extends
+;; extends
 
-;; Functions
+; Functions
 ("func" @keyword.function (set! conceal "ƒ"))
 
