@@ -370,7 +370,7 @@ local servers = {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 if pcall(require, 'cmp_nvim_lsp') then
-	capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 else
 	capabilities.textDocument.completion.completionItem.snippetSupport = true
 	capabilities.textDocument.completion.completionItem.resolveSupport = {

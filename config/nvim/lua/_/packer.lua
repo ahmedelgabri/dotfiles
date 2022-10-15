@@ -146,9 +146,9 @@ return require('packer').startup {
 					end,
 				},
 				{
-					'https://github.com/folke/lua-dev.nvim',
+					'https://github.com/folke/neodev.nvim',
 					config = function()
-						require('lua-dev').setup {}
+						require('neodev').setup {}
 					end,
 				},
 				{ 'https://github.com/mickael-menu/zk-nvim' },
