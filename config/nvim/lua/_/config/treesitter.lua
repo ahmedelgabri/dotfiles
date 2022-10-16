@@ -122,7 +122,6 @@ return function()
 			-- Required since TS highlighter doesn't support all syntax features (conceal)
 			additional_vim_regex_highlighting = {
 				'org',
-				'vim',
 				'zsh',
 			},
 		},
