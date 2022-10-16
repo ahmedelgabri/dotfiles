@@ -85,16 +85,14 @@ au.augroup('__myautocmds__', {
 
 	{
 		event = { 'BufEnter', 'WinEnter' },
-		pattern = '*/node_modules/*',
+		pattern = { '*/node_modules/*', '*.min.*' },
 		command = ':LspStop',
 	},
-	{ event = 'BufLeave', pattern = '*/node_modules/*', command = ':LspStart' },
 	{
-		event = { 'BufEnter', 'WinEnter' },
-		pattern = '*.min.*',
-		command = ':LspStop',
+		event = 'BufLeave',
+		pattern = { '*/node_modules/*', '*.min.*' },
+		command = ':LspStart',
 	},
-	{ event = 'BufLeave', pattern = '*.min.*', command = ':LspStart' },
 
 	{
 		event = 'BufWritePost',
