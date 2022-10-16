@@ -6,6 +6,7 @@ let
 
   cfg = config.my.modules.vim;
   inherit (config.my.user) home;
+  inherit (config.my) hm;
 in
 {
   options = with lib; {
@@ -70,16 +71,16 @@ in
         echo ":: -> Running vim activationScript..."
         # Creating needed folders
 
-        if [ ! -e "${home}/.local/share/nvim/undo" ]; then
-          echo "Creating vim swap/backup/undo/view folders inside ${home}/.local/share/nvim ..."
-          mkdir -p ${home}/.local/share/nvim/{backup,swap,undo,view}
+        if [ ! -e "${hm.stateHome}/nvim/undo" ]; then
+          echo "Creating vim swap/backup/undo/view folders inside ${hm.stateHome}/nvim ..."
+          mkdir -p ${hm.stateHome}/nvim/{backup,swap,undo,view}
         fi
 
         # Handle mutable configs
 
-        if [ ! -e "${home}/.config/nvim/" ]; then
+        if [ ! -e "${hm.configHome}/nvim/" ]; then
           echo "Linking vim folders..."
-          ln -sf ${home}/.dotfiles/config/nvim ${home}/.config/nvim
+          ln -sf ${home}/.dotfiles/config/nvim ${hm.configHome}/nvim
         fi
       '';
     };

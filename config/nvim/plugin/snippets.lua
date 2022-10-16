@@ -40,7 +40,12 @@ ls.config.set_config {
 require('luasnip.loaders.from_vscode').lazy_load {
 	path = {
 		'~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
-		'~/.local-config/snippets',
+		string.format(
+			'%s/%s%s',
+			vim.env.XDG_DATA_HOME,
+			vim.fn.hostname(),
+			'/snippets'
+		),
 	},
 }
 -- Get a list of  the property names given an `interface_declaration`

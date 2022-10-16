@@ -11,8 +11,10 @@ let
 
   cfg = config.my.modules.shell;
   inherit (config.my.user) home;
+  inherit (config.my) hm;
+  inherit (config.my) hostConfigHome;
 
-  local_zshrc = "${home}/.zshrc.local";
+  local_zshrc = "${hostConfigHome}/zshrc";
 
   darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
   nixosPackages = with pkgs; [ dwm dmenu xclip ];
@@ -55,10 +57,13 @@ in
           shells = [ pkgs.bashInteractive pkgs.zsh ];
           variables = {
             # NOTE: Darwin doesn't set them by default, unlike NixOS. So we have to set them.
-            XDG_CACHE_HOME = "${home}/.cache";
-            XDG_CONFIG_HOME = "${home}/.config";
-            XDG_DATA_HOME = "${home}/.local/share";
-            XDG_STATE_HOME = "${home}/.local/state";
+            # This is just using what's inside home-manager. Defaults are here
+            # https://github.com/nix-community/home-manager/blob/a4b0a3faa4055521f2a20cfafe26eb85e6954751/modules/misc/xdg.nix#L14-L17
+            XDG_CACHE_HOME = hm.cacheHome;
+            XDG_CONFIG_HOME = hm.configHome;
+            XDG_DATA_HOME = hm.dataHome;
+            XDG_STATE_HOME = hm.stateHome;
+            HOST_CONFIGS = "${hostConfigHome}";
             # https://github.blog/2022-04-12-git-security-vulnerability-announced/
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
           };
@@ -195,14 +200,14 @@ in
           # Creating needed folders
 
           if [ ! -e "${local_zshrc}" ]; then
-            echo '# vim:ft=zsh:' > ${local_zshrc}
-            echo '[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"' >> ${local_zshrc}
-            echo '[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"' >> ${local_zshrc}
-            echo '[[ -z "$WEECHAT_PASSPHRASE" ]] && echo "⚠ WEECHAT_PASSPHRASE is not set"' >> ${local_zshrc}
-            echo '[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
-            echo '[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
-            echo '[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"' >> ${local_zshrc}
-            echo 'exit 1' >> ${local_zshrc}
+          	mkdir -p $(dirname "${local_zshrc}")
+          	echo '# vim:ft=zsh:' > ${local_zshrc}
+          	echo '[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"' >> ${local_zshrc}
+          	echo '[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"' >> ${local_zshrc}
+          	echo '[[ -z "$WEECHAT_PASSPHRASE" ]] && echo "⚠ WEECHAT_PASSPHRASE is not set"' >> ${local_zshrc}
+          	echo '[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
+          	echo '[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
+          	echo '[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"' >> ${local_zshrc}
           fi
         '';
 

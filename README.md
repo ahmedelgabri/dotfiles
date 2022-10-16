@@ -47,7 +47,7 @@ $ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/inst
 
 ### Notes
 
-- zsh: add these to `~/.zshrc.local`
+- zsh: add these to `${XDG_DATA_HOME}/$(hostname)/zshrc`
 
 ```zsh
 export HOMEBREW_GITHUB_API_TOKEN =
@@ -55,7 +55,7 @@ export GITHUB_TOKEN =
 export WEECHAT_PASSPHRASE =
 ```
 
-- For git add your GPG key info in `~/.gitconfig.local`
+- For git add your GPG key info in `${XDG_DATA_HOME}/$(hostname)/gitconfig`
 
 ```
 [user]

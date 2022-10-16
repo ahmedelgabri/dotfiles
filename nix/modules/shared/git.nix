@@ -17,7 +17,6 @@ in
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with pkgs; [ git ];
-
       homebrew.brews = [ "transcrypt" ];
 
       my.user = {
@@ -41,21 +40,24 @@ in
             [user]
             ${optionalString (name != "") "  name = ${name}"}
             ${optionalString (email != "") "  email = ${email}"}
-              useconfigonly = true
+            useconfigonly = true
 
             ${optionalString (github_username != "") ''
-              [github]
-                username = ${github_username}''}
+             [github]
+             	username = ${github_username}''}
 
             [gpg]
-              program = ${pkgs.gnupg}/bin/gpg
+            	program = ${pkgs.gnupg}/bin/gpg
 
             [diff "exif"]
-              textconv = ${pkgs.exiftool}/bin/exiftool
+            	textconv = ${pkgs.exiftool}/bin/exiftool
 
             ${optionalString pkgs.stdenv.isDarwin ''
-              [diff "plist"]
-                textconv = plutil -convert xml1 -o -''}
+             [diff "plist"]
+             	textconv = plutil -convert xml1 -o -''}
+
+            [include]
+            	path = ${hostConfigHome}/gitconfig
           '';
         };
 

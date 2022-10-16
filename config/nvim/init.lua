@@ -295,7 +295,12 @@ require '_.packer'
 -- OVERRIDES {{{1
 -------------------------------------------------------------------------------
 
-local vimrc_local = string.format('%s%s', vim.env.HOME, '/.nvimrc.lua')
+local vimrc_local = string.format(
+	'%s/%s%s',
+	vim.env.XDG_DATA_HOME,
+	vim.fn.hostname(),
+	'/nvimrc.lua'
+)
 
 if vim.fn.filereadable(vimrc_local) == 1 then
 	vim.cmd(string.format('silent source %s', vimrc_local))

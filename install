@@ -210,7 +210,7 @@ all() {
 	if [ $? -eq 0 ]; then
 		log_success "Done."
 		log_info "Don't forget to generate SSH keys & import gpg keys"
-		# command vim -u NONE $HOME/.{gitconfig,zshrc}.local
+		# command vim -u NONE $XDG_DATA_HOME/$(hostname)/{gitconfig,zshrc}
 	else
 		log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
 	fi

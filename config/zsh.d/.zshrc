@@ -123,13 +123,8 @@ eval "$(zoxide init zsh --hook pwd)"
 # LOCAL.
 ##############################################################
 
-if [ -f ${HOME}/.zshrc.local ]; then
-  source ${HOME}/.zshrc.local
-else
-  [[ -z "${HOMEBREW_GITHUB_API_TOKEN}" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN not set." && _has_unset_config=yes
-  [[ -z "${GITHUB_TOKEN}" ]] && echo "⚠ GITHUB_TOKEN not set." && _has_unset_config=yes
-  [[ -z "${WEECHAT_PASSPHRASE}" ]] && echo "⚠ WEECHAT_PASSPHRASE not set." && _has_unset_config=yes
-  [[ ${_has_unset_config:-no} == "yes" ]] && echo "Set the missing configs in ~/.zshrc.local"
+if [ -f $HOST_CONFIGS/zshrc ]; then
+	source $HOST_CONFIGS/zshrc
 fi
 
 if [ -e /etc/motd ]; then
