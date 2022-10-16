@@ -22,16 +22,10 @@ local urlDispatcherConfig = {
 	},
 }
 
-if hs.host.localizedName() ~= 'pandoras-box' then
-	urlDispatcherConfig.config.url_patterns = {
-		{ 'https?://slack.com/openid/*', 'com.google.Chrome' },
-		{ 'https?://github.com/[mM]iroapp.*', 'com.google.Chrome' },
-		{ 'https?://[mM]iro.*', 'com.google.Chrome' },
-		{ 'https?://dev.*.com', 'com.google.Chrome' },
-		{ 'https?://localhost:*', 'com.google.Chrome' },
-		{ 'https?://.*devrtb.com', 'com.google.Chrome' },
-		{ 'https?://docs.google.com', 'com.google.Chrome' },
-	}
+local ok, url_patterns = pcall(require, 'hosts.' .. hs.host.localizedName())
+
+if ok then
+	urlDispatcherConfig.config.url_patterns = url_patterns
 end
 
 Install:andUse('URLDispatcher', urlDispatcherConfig)
