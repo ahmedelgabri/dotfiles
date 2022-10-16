@@ -74,7 +74,13 @@ au.augroup('__myautocmds__', {
 	{
 		event = 'TextYankPost',
 		pattern = '*',
-		command = [[silent! lua vim.highlight.on_yank {higroup =  "IncSearch", timeout = 200, on_visual = false}]],
+		callback = function()
+			vim.highlight.on_yank {
+				higroup = 'IncSearch',
+				timeout = 200,
+				on_visual = false,
+			}
+		end,
 	},
 
 	{
