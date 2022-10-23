@@ -52,8 +52,8 @@
 	line-numbers-plus-style = 034
 
 [branch]
-	autosetupmerge = always
-	autosetuprebase = always
+	autoSetupMerge = always
+	autoSetupRebase = always
 
 [branch "main"]
 	rebase = true
@@ -67,6 +67,7 @@
 [push]
 	default = simple
 	followTags = true
+	autoSetupRemote = true
 
 [fetch]
 	prune = true
@@ -119,6 +120,7 @@
 
 [tag]
 	forceSignAnnotated = true
+	gpgsign = true
 
 [apply]
 	whitespace = nowarn
@@ -162,7 +164,7 @@
 	br = branch -vv --sort=-committerdate --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) %(if:equals=*)%(HEAD)%(then)%(color:cyan)%(end)%(align:15,left)%(refname:short)%(end)%(color:reset)%(align:21,left)%(color:green)%(committerdate:auto:human)%(color:reset)%(end)%(contents:subject)'
 	brs = br -a
 	cb = checkout -b
-	cm = commit
+	cm = commit -S
 	co = checkout
 	d = diff --patch-with-stat
 	dc = d --staged
@@ -179,6 +181,7 @@
 	la = l --all --simplify-by-decoration
 	lastchange = log -p --follow -n 1
 	ll = log --cc
+	ls = l --show-signature
 	lnm = l --no-merges
 	patch = !git --no-pager diff --no-color | pbcopy | echo "Patch copied to clipboard"
 	rb = "!sh -c \"git rebase -i HEAD~$1\" -"
@@ -205,6 +208,7 @@
 	review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\"
 	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\"
 	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\"
+	tag = tag -s
 
 [filter "media"]
 	clean = git-media-clean %f
