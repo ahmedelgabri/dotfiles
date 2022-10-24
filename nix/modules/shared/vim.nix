@@ -64,6 +64,7 @@ in
           statix
           nix-linter # Until statix pick up, see https://github.com/nerdypepper/statix/issues/18
           sumneko-lua-language-server
+          tree-sitter # required for treesitter "auto-install" option to work
         ];
       };
 
