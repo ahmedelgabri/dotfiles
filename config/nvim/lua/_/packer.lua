@@ -158,6 +158,12 @@ return require('packer').startup {
 						require('neogen').setup { snippet_engine = 'luasnip' }
 					end,
 				},
+				{
+					'https://github.com/simrat39/inlay-hints.nvim',
+					config = function()
+						require('inlay-hints').setup {}
+					end,
+				},
 			},
 		}
 		use {
