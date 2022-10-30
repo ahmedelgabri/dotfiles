@@ -84,7 +84,8 @@ vim.opt.wildignore:append '*.swp,*~,*/.DS_Store'
 vim.opt.tagcase = 'followscs'
 vim.opt.tags:prepend './.git/tags;'
 
-vim.opt.pumblend = 5
+-- Messes up with icons https://github.com/onsails/lspkind.nvim/issues/55
+-- vim.opt.pumblend = 5
 vim.opt.pumheight = 50
 
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion

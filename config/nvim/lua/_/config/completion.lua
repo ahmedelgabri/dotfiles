@@ -101,9 +101,6 @@ return function()
 		local luasnip = require 'luasnip'
 
 		cmp.setup {
-			view = {
-				entries = 'custom',
-			},
 			experimental = {
 				ghost_text = true,
 			},
@@ -145,6 +142,7 @@ return function()
 				end,
 			},
 			window = {
+				completion = cmp.config.window.bordered(),
 				documentation = cmp.config.window.bordered(),
 			},
 			completion = {
