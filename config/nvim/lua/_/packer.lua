@@ -164,6 +164,9 @@ return require('packer').startup {
 						require('inlay-hints').setup {}
 					end,
 				},
+				{
+					'https://github.com/b0o/SchemaStore.nvim',
+				},
 			},
 		}
 		use {
