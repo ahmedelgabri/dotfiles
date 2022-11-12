@@ -48,6 +48,7 @@
     packages = with pkgs; [
       emacs
       go-task
+      localstack
     ];
   };
 
