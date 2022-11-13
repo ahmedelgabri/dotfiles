@@ -2,8 +2,6 @@ if vim.fn.exists ':FZF' == 0 then
 	return
 end
 
-__.fzf = {}
-
 local au = require '_.utils.au'
 
 if vim.env.FZF_CTRL_T_OPTS ~= nil then
@@ -62,11 +60,21 @@ vim.keymap.set(
 )
 
 -- Override Files to show resposnive UI depending on the window width
-vim.api.nvim_create_user_command(
-	'Files',
-	[[call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:border-left,<70(down:border-top)'), <bang>0)]],
-	{ bang = true, nargs = '?', complete = 'dir' }
-)
+vim.api.nvim_create_user_command('Files', function(o)
+	vim.fn['fzf#vim#files'](
+		o.args,
+		vim.fn['fzf#vim#with_preview'] {
+			options = {
+				'--preview-window',
+				'right:border-left,<70(down:border-top)',
+				'--prompt',
+				'» ',
+			},
+		},
+		o.bang
+	)
+end, { bang = true, nargs = '?', complete = 'dir' })
+
 vim.keymap.set({ 'n' }, '<leader><leader>', ':Files<CR>', { silent = true })
 vim.keymap.set({ 'n' }, '<Leader>b', ':Buffers<cr>', { silent = true })
 vim.keymap.set({ 'n' }, '<Leader>h', ':Helptags<cr>', { silent = true })
@@ -76,7 +84,12 @@ au.augroup('__my_fzf__', {
 	{
 		event = 'User',
 		pattern = 'FzfStatusLine',
-		command = [[setlocal statusline=%4*\ fzf\ %6*V:\ ctrl-v,\ H:\ ctrl-x,\ Tab:\ ctrl-t]],
+		callback = function()
+			vim.opt_local.statusline = table.concat(
+				{ '%4*', 'fzf', '%6*', 'V: ctrl-v', 'H: ctrl-x', 'Tab: ctrl-t' },
+				' '
+			)
+		end,
 	},
 })
 
@@ -96,7 +109,7 @@ end
 vim.keymap.set({ 'n' }, 'z=', FzfSpell, { silent = true })
 
 -- https://github.com/junegunn/fzf.vim/issues/907#issuecomment-554699400
-function __.fzf.RipgrepFzf(query, fullscreen)
+local function ripgrepFzf(query, fullscreen)
 	local command_fmt =
 		'rg --column --line-number --no-heading --color=always -g "!*.lock" -g "!*lock.json" --smart-case %s || true'
 	local initial_command = string.format(command_fmt, vim.fn.shellescape(query))
@@ -118,10 +131,8 @@ function __.fzf.RipgrepFzf(query, fullscreen)
 	)
 end
 
-vim.api.nvim_create_user_command(
-	'RG',
-	[[call v:lua.__.fzf.RipgrepFzf(<q-args>, <bang>0)]],
-	{ bang = true, nargs = '*' }
-)
+vim.api.nvim_create_user_command('RG', function(o)
+	ripgrepFzf(o.args, o.bang)
+end, { bang = true, nargs = '*' })
 
 vim.keymap.set({ 'n' }, [[<leader>\]], [[:RG<CR>]])
