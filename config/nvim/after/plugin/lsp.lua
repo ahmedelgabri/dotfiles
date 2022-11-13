@@ -249,9 +249,9 @@ local servers = {
 	sumneko_lua = {
 		settings = {
 			Lua = {
-				hint = {
-					enable = true,
-				},
+				-- hint = {
+				-- 	enable = true,
+				-- },
 				diagnostics = {
 					globals = {
 						'vim',
@@ -312,30 +312,30 @@ local servers = {
 				'.git'
 			)(fname) or nvim_lsp.util.path.dirname(fname))
 		end,
-		settings = {
-			javascript = {
-				inlayHints = {
-					includeInlayEnumMemberValueHints = true,
-					includeInlayFunctionLikeReturnTypeHints = true,
-					includeInlayFunctionParameterTypeHints = true,
-					includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-					includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-					includeInlayPropertyDeclarationTypeHints = true,
-					includeInlayVariableTypeHints = true,
-				},
-			},
-			typescript = {
-				inlayHints = {
-					includeInlayEnumMemberValueHints = true,
-					includeInlayFunctionLikeReturnTypeHints = true,
-					includeInlayFunctionParameterTypeHints = true,
-					includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-					includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-					includeInlayPropertyDeclarationTypeHints = true,
-					includeInlayVariableTypeHints = true,
-				},
-			},
-		},
+		-- settings = {
+		-- 	javascript = {
+		-- 		inlayHints = {
+		-- 			includeInlayEnumMemberValueHints = true,
+		-- 			includeInlayFunctionLikeReturnTypeHints = true,
+		-- 			includeInlayFunctionParameterTypeHints = true,
+		-- 			includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+		-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+		-- 			includeInlayPropertyDeclarationTypeHints = true,
+		-- 			includeInlayVariableTypeHints = true,
+		-- 		},
+		-- 	},
+		-- 	typescript = {
+		-- 		inlayHints = {
+		-- 			includeInlayEnumMemberValueHints = true,
+		-- 			includeInlayFunctionLikeReturnTypeHints = true,
+		-- 			includeInlayFunctionParameterTypeHints = true,
+		-- 			includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+		-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+		-- 			includeInlayPropertyDeclarationTypeHints = true,
+		-- 			includeInlayVariableTypeHints = true,
+		-- 		},
+		-- 	},
+		-- },
 	},
 	denols = {
 		root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
