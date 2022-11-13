@@ -67,6 +67,10 @@ vim.api.nvim_create_user_command('Files', function(o)
 			options = {
 				'--preview-window',
 				'right:border-left,<70(down:border-top)',
+				'--border-label',
+				vim.fn.fnamemodify(vim.env.PWD, ':~'),
+				'--border-label-pos',
+				3,
 				'--prompt',
 				'» ',
 			},

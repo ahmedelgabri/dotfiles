@@ -182,8 +182,7 @@ in
               FZF_CTRL_T_COMMAND =
                 "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
               FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
-              FZF_DEFAULT_OPTS =
-                "--border --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --bind '?:toggle-preview'";
+              FZF_DEFAULT_OPTS = "--border --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview'";
               FZF_CTRL_T_OPTS =
                 "--preview '(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --preview-window down:60%";
               FZF_CTRL_R_OPTS =
