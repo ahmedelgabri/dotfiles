@@ -1,14 +1,14 @@
-__.notes = {}
+local M = {}
 
 local utils = require '_.utils'
 
-function __.notes.get_dir()
+function M.get_dir()
 	return vim.env.NOTES_DIR
 end
 
-function __.notes.note_info(fpath, ...)
+function M.note_info(fpath, ...)
 	local args = { ... }
-	local path = __.notes.get_dir() .. '/'
+	local path = M.get_dir() .. '/'
 	local starts_with_a_path = vim.fn.fnamemodify(fpath, ':h')
 	local starts_with_name = vim.fn.fnamemodify(fpath, ':t')
 	local where = string.gsub(starts_with_a_path .. '/', '^\\.', '')
@@ -35,7 +35,7 @@ function __.notes.note_info(fpath, ...)
 end
 
 -- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
-function __.notes.search_notes(query, fullscreen)
+function M.search_notes(query, fullscreen)
 	local command_fmt =
 		'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
 	local initial_command =
@@ -43,7 +43,7 @@ function __.notes.search_notes(query, fullscreen)
 	local reload_command = string.format(command_fmt, '{q}')
 
 	local opts = {
-		dir = __.notes.get_dir(),
+		dir = M.get_dir(),
 		options = {
 			'--phony',
 			'--query',
@@ -61,7 +61,7 @@ function __.notes.search_notes(query, fullscreen)
 	)
 end
 
-function __.notes.open_in_obsidian()
+function M.open_in_obsidian()
 	local str = string.format(
 		'obsidian://open?path=%s',
 		utils.urlencode(vim.fn.expand '%:p')
@@ -77,8 +77,8 @@ function __.notes.open_in_obsidian()
 	)
 end
 
-function __.notes.note_in_obsidian(...)
-	local data = __.notes.note_info(...)
+function M.note_in_obsidian(...)
+	local data = M.note_info(...)
 	local path = data[1]
 	local fname = data[2]
 	local formatted_date = data[3]
@@ -109,3 +109,5 @@ tags:
 		)
 	)
 end
+
+return M

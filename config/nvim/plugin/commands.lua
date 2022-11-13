@@ -15,8 +15,6 @@ vim.api.nvim_create_user_command(
 	{}
 )
 
-vim.api.nvim_create_user_command(
-	'ClearRegisters',
-	[[call utils#ClearRegisters()]],
-	{}
-)
+vim.api.nvim_create_user_command('ClearRegisters', function()
+	vim.fn['utils#ClearRegisters']()
+end, {})

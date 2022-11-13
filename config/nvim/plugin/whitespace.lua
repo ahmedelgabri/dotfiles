@@ -1,10 +1,8 @@
 local au = require '_.utils.au'
 
-vim.api.nvim_create_user_command(
-	'Reindent',
-	[[call utils#Preserve("normal gg=G")]],
-	{}
-)
+vim.api.nvim_create_user_command('Reindent', function()
+	vim.fn['utils#Preserve'] 'normal gg=G'
+end, {})
 
 vim.keymap.set({ 'n' }, '_=', ':Reindent<cr>')
 
