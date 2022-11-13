@@ -110,4 +110,13 @@ tags:
 	)
 end
 
+function M.get_notes_completion()
+	return vim.fn.map(
+		vim.fn.getcompletion(M.get_dir() .. '/*', 'dir'),
+		function(_, v)
+			return string.gsub(v, M.get_dir() .. '/', '')
+		end
+	)
+end
+
 return M

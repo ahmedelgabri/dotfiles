@@ -1,8 +1,8 @@
 local notes = require '_.notes'
 
-__.notes = {}
-
-__.notes.get_notes_completion = notes.get_notes_completion
+__.notes = {
+	get_notes_completion = notes.get_notes_completion,
+}
 
 -- https://vimways.org/2019/personal-notetaking-in-vim/
 -- https://danishpraka.sh/2020/02/23/journaling-in-vim.html
