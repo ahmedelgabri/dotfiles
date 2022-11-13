@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, buildGo118Module, source }:
+{ lib, buildGo118Module, source }:
 
 buildGo118Module rec {
   pname = "zk";

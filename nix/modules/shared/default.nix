@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -36,29 +36,29 @@
   ];
 
   my.modules = {
-    shell.enable = true;
-    git.enable = true;
-    ssh.enable = true;
-    syncthing.enable = true;
+    shell.enable = lib.mkDefault true;
+    git.enable = lib.mkDefault true;
+    ssh.enable = lib.mkDefault true;
+    syncthing.enable = lib.mkDefault true;
 
-    kitty.enable = true;
-    wezterm.enable = true;
-    bat.enable = true;
-    lf.enable = true;
-    mpv.enable = true;
-    python.enable = true;
-    ripgrep.enable = true;
-    tmux.enable = true;
-    misc.enable = true;
-    vim.enable = true;
-    gui.enable = true;
-    yt-dlp.enable = true;
+    kitty.enable = lib.mkDefault true;
+    wezterm.enable = lib.mkDefault true;
+    bat.enable = lib.mkDefault true;
+    lf.enable = lib.mkDefault true;
+    mpv.enable = lib.mkDefault true;
+    python.enable = lib.mkDefault true;
+    ripgrep.enable = lib.mkDefault true;
+    tmux.enable = lib.mkDefault true;
+    misc.enable = lib.mkDefault true;
+    vim.enable = lib.mkDefault true;
+    gui.enable = lib.mkDefault true;
+    yt-dlp.enable = lib.mkDefault true;
 
-    node.enable = true;
-    deno.enable = true;
-    go.enable = true;
-    rust.enable = true;
-    zk.enable = true;
+    node.enable = lib.mkDefault true;
+    deno.enable = lib.mkDefault true;
+    go.enable = lib.mkDefault true;
+    rust.enable = lib.mkDefault true;
+    zk.enable = lib.mkDefault true;
   };
 
 }
