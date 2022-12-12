@@ -73,6 +73,10 @@ return require('packer').startup {
 		use { 'https://github.com/tpope/vim-repeat' }
 		use { 'https://github.com/machakann/vim-sandwich' }
 		use {
+			'https://github.com/nullchilly/fsread.nvim',
+			cmd = { 'FSRead', 'FSToggle', 'FSClear' },
+		}
+		use {
 			'https://github.com/numToStr/Comment.nvim',
 			requires = {
 				'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
@@ -166,6 +170,13 @@ return require('packer').startup {
 				},
 				{
 					'https://github.com/b0o/SchemaStore.nvim',
+				},
+				{
+					'https://github.com/DNLHC/glance.nvim',
+					cmd = { 'Glance' },
+					config = function()
+						require('glance').setup {}
+					end,
 				},
 			},
 		}
@@ -382,13 +393,6 @@ return require('packer').startup {
 			opt = true,
 			as = 'plain-lua',
 		}
-		-- use { 'https://github.com/rakr/vim-two-firewatch', opt = true }
-		-- use { 'https://github.com/logico-dev/typewriter', opt = true }
-		-- use { 'https://github.com/arzg/vim-substrata', opt = true }
-		-- use { 'https://github.com/bluz71/vim-moonfly-colors', opt = true }
-		-- use { 'https://github.com/axvr/photon.vim', opt = true }
-		-- use { 'https://github.com/owickstrom/vim-colors-paramount', opt = true }
-		-- use { 'https://github.com/YorickPeterse/vim-paper', opt = true }
 		-- }}}
 
 		if packer_bootstrap then
