@@ -163,6 +163,11 @@ return function()
 				'',
 				"— Goodhart's law",
 			},
+			{
+				'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+				'',
+				'— Martin Fowler',
+			},
 		})
 
 	vim.g.startify_bookmarks = { { t = '.git/todo.md' } }
