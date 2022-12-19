@@ -8,7 +8,6 @@ alias rm="${aliases[rm]:-rm} -i"
 alias mkdir="${aliases[mkdir]:-mkdir} -p"
 alias sudo="sudo "
 alias type='type -a'
-alias which='which -a'
 
 alias c="clear "
 alias cask="brew --cask "
