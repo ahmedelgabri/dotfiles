@@ -45,6 +45,10 @@ au.augroup('__MyCustomColors__', {
 			vim.cmd [[hi! NonText cterm=NONE gui=NONE]]
 			vim.cmd [[hi! NormalFloat cterm=NONE gui=NONE]]
 			hl.group('FloatBorder', { link = 'Number' })
+			hl.group('Normal', {
+				fg = nil,
+				bg = nil,
+			})
 
 			if vim.o.background == 'dark' then
 				hl.group('VertSplit', {
