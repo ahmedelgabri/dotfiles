@@ -46,7 +46,7 @@
 
   my.user = {
     packages = with pkgs; [
-      emacs
+      emacsMacport
       go-task
       localstack
     ];
