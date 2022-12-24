@@ -15,7 +15,7 @@ language = "en"
 default-title = "Scratch"
 
 # Template used to generate a note's filename, without extension.
-filename = "{{date now 'timestamp'}} {{title}}"
+filename = "{{format-date now 'timestamp'}} {{title}}"
 
 # The file extension used for the notes.
 extension = "md"
@@ -88,13 +88,13 @@ employer = "miro"
 [group.journal]
 
 [group.journal.note]
-filename = "{{date now '%Y-%m-%d'}}"
+filename = "{{format-date now '%Y-%m-%d'}}"
 template = "journal.md"
 
 [group.todo]
 
 [group.todo.note]
-filename = "{{date now '%Y-%m-%d'}}"
+filename = "{{format-date now '%Y-%m-%d'}}"
 template = "journal.md"
 
 [group.personal]
