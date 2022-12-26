@@ -42,10 +42,15 @@ return require('packer').startup {
 			'https://github.com/ojroques/vim-oscyank',
 			event = { 'TextYankPost *' },
 			config = function()
-				vim.cmd [[augroup __oscyank__]]
-				vim.cmd [[autocmd!]]
-				vim.cmd [[autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif]]
-				vim.cmd [[augroup END]]
+				local au = require '_.utils.au'
+
+				au.augroup('__oscyank__', {
+					{
+						event = { 'TextYankPost' },
+						pattern = '*',
+						command = [[if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif]],
+					},
+				})
 			end,
 		}
 		use {
