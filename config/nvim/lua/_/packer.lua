@@ -293,9 +293,17 @@ return require('packer').startup {
 		}
 
 		-- Themes, UI & eye candy {{{
-		use { 'https://github.com/ahmedelgabri/vim-colors-plain', opt = true }
+		use {
+			'https://github.com/ahmedelgabri/vim-colors-plain',
+			-- Disable on my personal machine, use the local fork instead
+			disable = vim.fn.hostname() == 'pandoras-box',
+			opt = true,
+			branch = 'lua',
+		}
 		use {
 			vim.env.HOME .. '/Sites/personal/forks/vim-colors-plain',
+			-- Disable on my work machine, use the git repo instead
+			disable = vim.fn.hostname() ~= 'pandoras-box',
 			opt = true,
 			as = 'plain-lua',
 		}
