@@ -39,7 +39,10 @@ ls.config.set_config {
 
 require('luasnip.loaders.from_vscode').lazy_load {
 	path = {
-		'~/.config/nvim/pack/packer/start/friendly-snippets/snippets',
+		string.format(
+			'%s/pack/packer/start/friendly-snippets/snippets',
+			vim.fn.stdpath 'data'
+		),
 		string.format(
 			'%s/%s%s',
 			vim.env.XDG_DATA_HOME,
