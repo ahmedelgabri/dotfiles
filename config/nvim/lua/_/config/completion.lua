@@ -190,7 +190,7 @@ return function()
 					if cmp.abort() then
 						return
 					elseif luasnip.choice_active() then
-						luasnip.jump(1)
+						luasnip.change_choice(1)
 					else
 						fallback()
 					end
