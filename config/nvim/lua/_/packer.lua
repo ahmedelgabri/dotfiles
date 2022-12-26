@@ -235,111 +235,6 @@ return require('packer').startup {
 					cmd = 'TSPlaygroundToggle',
 					after = 'nvim-treesitter',
 				},
-				{
-					'https://github.com/kristijanhusak/orgmode.nvim',
-					config = function()
-						require('orgmode').setup_ts_grammar()
-
-						require('orgmode').setup {
-							org_agenda_files = {
-								string.format('%s/org/*', vim.env.NOTES_DIR),
-							},
-							org_default_notes_file = string.format(
-								'%s/org/refile.org',
-								vim.env.NOTES_DIR
-							),
-							mappings = {
-								agenda = {
-									org_agenda_later = '>',
-									org_agenda_earlier = '<',
-								},
-								capture = {
-									org_capture_finalize = '<Leader>w',
-									org_capture_refile = 'R',
-									org_capture_kill = 'Q',
-								},
-								org = {
-									org_timestamp_up = '+',
-									org_timestamp_down = '-',
-								},
-							},
-							org_hide_emphasis_markers = true,
-							-- org_agenda_start_on_weekday = false,
-							org_todo_keywords = {
-								'TODO(t)',
-								'PROGRESS(p)',
-								'|',
-								'DONE(d)',
-								'REJECTED(r)',
-							},
-							org_agenda_templates = {
-								T = {
-									description = 'Todo',
-									template = '* TODO %?\n  DEADLINE: %T',
-									target = string.format('%s/org/todos.org', vim.env.NOTES_DIR),
-								},
-								w = {
-									description = 'Work todo',
-									template = '* TODO %?\n  DEADLINE: %T',
-									target = string.format('%s/org/work.org', vim.env.NOTES_DIR),
-								},
-							},
-							-- notifications = {
-							--   reminder_time = { 0, 1, 5, 10 },
-							--   repeater_reminder_time = { 0, 1, 5, 10 },
-							--   deadline_warning_reminder_time = { 0 },
-							--   cron_notifier = function(tasks)
-							--     for _, task in ipairs(tasks) do
-							--       local title = string.format(
-							--         '%s (%s)',
-							--         task.category,
-							--         task.humanized_duration
-							--       )
-							--       local subtitle = string.format(
-							--         '%s %s %s',
-							--         string.rep('*', task.level),
-							--         task.todo,
-							--         task.title
-							--       )
-							--       local date = string.format(
-							--         '%s: %s',
-							--         task.type,
-							--         task.time:to_string()
-							--       )
-							--
-							--       if vim.fn.executable 'terminal-notifier' == 1 then
-							--         vim.loop.spawn('terminal-notifier', {
-							--           args = {
-							--             '-title',
-							--             title,
-							--             '-subtitle',
-							--             subtitle,
-							--             '-message',
-							--             date,
-							--           },
-							--         })
-							--       end
-							--
-							--       if vim.fn.executable 'osascript' == 1 then
-							--         vim.loop.spawn('osascript', {
-							--           args = {
-							--             '-e',
-							--             string.format(
-							--               "display notification '%s - %s' with title '%s'",
-							--               subtitle,
-							--               date,
-							--               title
-							--             ),
-							--           },
-							--         })
-							--       end
-							--     end
-							--   end,
-							-- },
-						}
-					end,
-					requires = { { 'https://github.com/akinsho/org-bullets.nvim' } },
-				},
 			},
 		}
 		-- Syntax {{{
@@ -361,17 +256,10 @@ return require('packer').startup {
 			end,
 		}
 		use { 'https://github.com/jez/vim-github-hub' }
-		use { 'https://github.com/lumiliet/vim-twig', ft = { 'twig' } }
 		use {
 			'https://github.com/jxnblk/vim-mdx-js',
 			ft = { 'mdx', 'markdown.mdx' },
 		}
-		-- use {
-		--   'https://github.com/lukas-reineke/headlines.nvim',
-		--   config = function()
-		--     require('headlines').setup()
-		--   end,
-		-- }
 		-- }}}
 
 		-- Git {{{
