@@ -18,7 +18,7 @@ Install:andUse('Caffeine', {
 local urlDispatcherConfig = {
 	start = true,
 	config = {
-		default_handler = 'com.brave.Browser',
+		default_handler = 'company.thebrowser.Browser',
 	},
 }
 
