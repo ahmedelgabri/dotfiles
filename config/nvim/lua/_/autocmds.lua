@@ -127,6 +127,7 @@ function M.quit_on_q()
 			(
 				(vim.wo.diff == true or vim.bo.filetype == 'man') and ':qa!'
 				or (vim.bo.filetype == 'qf') and ':cclose'
+				or (vim.bo.buftype == 'nofile') and ':q'
 				or ':q'
 			) .. '<cr>',
 			{ buffer = true, silent = true }
