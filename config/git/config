@@ -77,6 +77,11 @@
 	instructionFormat = [%cn <%ce> %G?] %s
 	autoStash = true
 
+[blame]
+	ignoreRevsFile = ".git-blame-ignore-revs"
+	markIgnoredLines = true
+	markUnblamableLines = true
+
 [diff]
 	# Detect copies as well as renames
 	renames = copies
