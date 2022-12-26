@@ -150,8 +150,16 @@ return require('packer').startup {
 				},
 				{
 					'https://github.com/folke/todo-comments.nvim',
+					cmd = { 'Todocomment' },
 					config = function()
 						require('todo-comments').setup {}
+					end,
+				},
+				{
+					'https://github.com/folke/trouble.nvim',
+					cmd = { 'Trouble' },
+					config = function()
+						require('trouble').setup { icons = false }
 					end,
 				},
 				{
@@ -163,6 +171,7 @@ return require('packer').startup {
 				{ 'https://github.com/mickael-menu/zk-nvim' },
 				{
 					'https://github.com/danymat/neogen',
+					cmd = { 'Neogen' },
 					config = function()
 						require('neogen').setup { snippet_engine = 'luasnip' }
 					end,
@@ -335,16 +344,20 @@ return require('packer').startup {
 		}
 		-- Syntax {{{
 		use {
-			'https://github.com/norcalli/nvim-colorizer.lua',
+			'https://github.com/NvChad/nvim-colorizer.lua',
 			config = function()
 				-- https://github.com/norcalli/nvim-colorizer.lua/issues/4#issuecomment-543682160
-				require('colorizer').setup({
-					'*',
-					'!vim',
-					'!packer',
-				}, {
-					css = true,
-				})
+				require('colorizer').setup {
+					filetypes = {
+						'*',
+						'!vim',
+						'!packer',
+					},
+					user_default_options = {
+						tailwind = 'lsp',
+						css = true,
+					},
+				}
 			end,
 		}
 		use { 'https://github.com/jez/vim-github-hub' }
