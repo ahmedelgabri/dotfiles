@@ -16,7 +16,7 @@ in
   config = with lib;
     mkIf cfg.enable {
       my = {
-        env = { PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/config.py"; };
+        env = { PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py"; };
 
         user = {
           packages = with pkgs;

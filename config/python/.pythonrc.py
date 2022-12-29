@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Best goddamn .pythonrc file in the whole world.
+""".pythonrc for history/completion & Django dev
 
 This file is executed when the Python interactive shell is started if
 $PYTHONSTARTUP is in your environment and points to this file. It's just
@@ -7,9 +7,12 @@ regular Python commands, so do what you will. Your ~/.inputrc file can greatly
 complement this file.
 
 """
+# original https://github.com/whiteinge/dotfiles/blob/master/.pythonrc.py
+
 # Imports we need
 import sys
 import os
+import re
 import readline, rlcompleter
 import atexit
 from pprint import pprint
@@ -20,7 +23,6 @@ from code import InteractiveConsole
 import datetime
 import pdb
 
-AUTHOR = "Seth House <seth@eseth.com>"
 
 # Color Support
 ###############
@@ -76,7 +78,7 @@ _c = TermColors()
 # Enable a History
 ##################
 
-HISTFILE = "%s/.pyhistory" % os.environ["HOME"]
+HISTFILE = f"""{os.environ["XDG_CACHE_HOME"]}/.pyhistory"""
 
 # Read the existing history if there is one
 if os.path.exists(HISTFILE):
@@ -96,8 +98,8 @@ atexit.register(savehist)
 # Enable Color Prompts
 ######################
 
-sys.ps1 = "%s❯%s❯%s❯ %s" % (_c["Red"], _c["Yellow"], _c["Green"], _c["Normal"])
-sys.ps2 = "%s... %s" % (_c["Red"], _c["Normal"])
+sys.ps1 = f"""{_c["Red"]}❯{_c["Yellow"]}❯{_c["Green"]}❯ {_c["Normal"]}"""
+sys.ps2 = f"""{_c["Red"]}... {_c["Normal"]}"""
 
 # Enable Pretty Printing for stdout
 ###################################
@@ -248,7 +250,7 @@ if "SALT_MINION_CONFIG" in os.environ:
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/438813/
 
 EDITOR = os.environ.get("EDITOR", "vi")
-EDIT_CMD = "\e"
+EDIT_CMD = r"\e"
 
 
 class EditableBufferInteractiveConsole(InteractiveConsole):
