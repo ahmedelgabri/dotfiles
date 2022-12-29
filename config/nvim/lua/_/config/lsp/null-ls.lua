@@ -5,6 +5,8 @@ return function(on_attach)
 		return
 	end
 
+	local h = require 'null-ls.helpers'
+
 	nls.setup {
 		debug = true,
 		debounce = 150,
@@ -13,6 +15,11 @@ return function(on_attach)
 			-- nixlinter,
 			nls.builtins.diagnostics.shellcheck.with {
 				filetypes = { 'sh', 'bash' },
+				runtime_condition = h.cache.by_bufnr(function(params)
+					-- don't run on .env files, which are also set to sh
+					return params.bufname:match '%.env.*' == nil
+						or params.bufname:match '%.env' == nil
+				end),
 			},
 			nls.builtins.diagnostics.pylint,
 			nls.builtins.diagnostics.hadolint,
@@ -26,6 +33,7 @@ return function(on_attach)
 				},
 			},
 			nls.builtins.diagnostics.statix,
+			nls.builtins.diagnostics.dotenv_linter,
 		},
 	}
 end

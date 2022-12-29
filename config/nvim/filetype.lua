@@ -8,5 +8,8 @@ vim.filetype.add {
 	},
 	pattern = {
 		['tsconfig.*%.json'] = 'jsonc',
+		-- .env.* files to match the filetype for .env, needed also to make sure
+		-- dotenv-linter with null-ls works correctly
+		['%.env%..*'] = 'sh',
 	},
 }

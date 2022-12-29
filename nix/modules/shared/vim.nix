@@ -44,12 +44,12 @@ in
           ripgrep
           # editorconfig-checker # do I use it?
           hadolint # Docker linter
+          dotenv-linter
           nixpkgs-fmt
           vim-vint
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           stylua
-          nodePackages.neovim
           nodePackages.vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
           nodePackages.bash-language-server
