@@ -292,6 +292,14 @@ return require('packer').startup {
 			config = require '_.config.zenmode',
 		}
 
+		use {
+			'https://github.com/phaazon/mind.nvim',
+			requires = { { 'https://github.com/nvim-lua/plenary.nvim' } },
+			config = function()
+				require('mind').setup {}
+			end,
+		}
+
 		-- Themes, UI & eye candy {{{
 		use {
 			'https://github.com/ahmedelgabri/vim-colors-plain',
