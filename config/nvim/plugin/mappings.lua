@@ -169,3 +169,6 @@ vim.keymap.set({ 'x' }, '-', 'g<C-x>')
 
 -- Execute "q" macro over visual line selections
 vim.keymap.set({ 'x' }, 'Q', [[:'<,'>:normal @q<CR>]])
+
+-- Use / to search inside a visual selection
+vim.keymap.set('x', '/', '<Esc>/\\%V')
