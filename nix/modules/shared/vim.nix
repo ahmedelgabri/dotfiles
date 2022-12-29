@@ -22,13 +22,13 @@ in
       environment.systemPackages = with pkgs;
         [
           vim
-          neovim
+          neovim-unwrapped
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
 
       my.env = rec {
-        EDITOR = "${pkgs.neovim}/bin/nvim";
+        EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";
