@@ -15,7 +15,6 @@
       macos.enable = true;
 
       mail = { enable = true; };
-      aerc = { enable = true; };
       irc.enable = true;
       rescript.enable = false;
       clojure.enable = true;

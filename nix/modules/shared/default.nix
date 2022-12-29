@@ -4,7 +4,6 @@
   imports = [
     ./settings.nix
     ./shell.nix
-    ./aerc.nix
     ./mail.nix
     ./gpg.nix
     ./ssh.nix
