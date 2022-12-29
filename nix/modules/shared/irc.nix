@@ -29,7 +29,7 @@ in
                       (perl.withPackages (p: [ p.PodParser ]))
                       (python.withPackages (ps: [
                         ps.websocket-client
-                        # ps.pync # requires 2.x
+                        ps.pync
                       ]))
                     ];
                   scripts = with pkgs.weechatScripts;
