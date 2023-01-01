@@ -41,10 +41,6 @@
     ];
   };
 
-  homebrew.taps = [
-    "helix-editor/helix"
-  ];
-
   homebrew.casks = [
     "adoptopenjdk8"
     "corretto"
@@ -57,7 +53,6 @@
 
   homebrew.brews = [
     "amp"
-    "helix"
     "git"
     "git-filter-repo"
     "git-lfs"
