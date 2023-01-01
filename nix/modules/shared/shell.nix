@@ -116,7 +116,6 @@ in
               vale
               entr
               ffmpeg
-              helix-unwrapped
             ];
           };
 

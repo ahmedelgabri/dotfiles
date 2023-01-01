@@ -1,0 +1,37 @@
+theme = "hex_lavender"
+
+[editor]
+line-number = "relative"
+cursorline = true
+completion-trigger-len = 1
+true-color = true
+color-modes = true
+auto-pairs = true
+auto-format = true
+bufferline = "multiple"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "▏"
+
+[editor.lsp]
+display-messages = true
+
+[editor.file-picker]
+hidden = false
+git-exclude = false
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "none"
+
+[editor.statusline]
+left = ["file-name", "file-type", "file-encoding"]
+right = ["mode", "spinner", "diagnostics", "workspace-diagnostics", "selections", "primary-selection-length", "position", "position-percentage"]
+

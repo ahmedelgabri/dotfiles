@@ -32,6 +32,7 @@
     ./discord.nix
     ./hledger.nix
     ./zk.nix
+    ./helix.nix
   ];
 
   my.modules = {
@@ -58,6 +59,7 @@
     go.enable = lib.mkDefault true;
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
+    helix.enable = lib.mkDefault true;
   };
 
 }
