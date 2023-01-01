@@ -38,6 +38,10 @@
       emacsMacport
       go-task
       localstack
+      glow
+      graph-easy
+      graphviz
+      nodePackages.mermaid-cli
     ];
   };
 
