@@ -62,6 +62,8 @@ autoload -Uz _zinit
 # }}}
 
 # Utilities & enhancements {{{
+  zinit light https://github.com/Aloxaf/fzf-tab
+
   zinit ice wait lucid
   zinit light https://github.com/zsh-users/zsh-history-substring-search
   # bind UP and DOWN keys
