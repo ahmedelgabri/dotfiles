@@ -35,8 +35,6 @@
       flake = false;
     };
 
-    rnix-lsp = {
-      url = "github:nix-community/rnix-lsp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

@@ -357,7 +357,7 @@ local servers = {
 	denols = {
 		root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
 	},
-	rnix = {},
+	nil_ls = {},
 	jsonls = {
 		filetypes = { 'json', 'jsonc' },
 		settings = {
