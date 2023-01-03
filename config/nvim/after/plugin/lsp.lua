@@ -315,19 +315,15 @@ local servers = {
 	},
 	tsserver = {
 		root_dir = function(fname)
-			return vim.fn.executable 'tsserver' == 1
-				and not nvim_lsp.util.root_pattern(
-					'.flowconfig',
-					'deno.json',
-					'deno.jsonc'
-				)(fname)
-				and (
-					nvim_lsp.util.root_pattern 'tsconfig.json'(fname)
-					or nvim_lsp.util.root_pattern('package.json', 'jsconfig.json', '.git')(
-						fname
-					)
-					or nvim_lsp.util.path.dirname(fname)
-				)
+			return not nvim_lsp.util.root_pattern(
+				'.flowconfig',
+				'deno.json',
+				'deno.jsonc'
+			)(fname) and (nvim_lsp.util.root_pattern 'tsconfig.json'(fname) or nvim_lsp.util.root_pattern(
+				'package.json',
+				'jsconfig.json',
+				'.git'
+			)(fname) or nvim_lsp.util.path.dirname(fname))
 		end,
 		-- settings = {
 		-- 	javascript = {
