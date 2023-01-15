@@ -187,7 +187,6 @@ return require('packer').startup {
 				},
 				{
 					'https://github.com/DNLHC/glance.nvim',
-					cmd = { 'Glance' },
 					config = function()
 						require('glance').setup {}
 					end,
