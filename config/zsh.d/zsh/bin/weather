@@ -10,7 +10,7 @@
 # Check curl wttr.in/:help for more info
 
 weather() {
-	local location="${1:-$(corelocationcli -format '%locality' 2>/dev/null)}"
+	local location="${1:-$(CoreLocationCLI --json | jq -r '.locality' 2>/dev/null)}"
 	curl -fGsS --compressed "wttr.in/${location}"?"m&lang=en&${2:-0qm}"
 }
 
