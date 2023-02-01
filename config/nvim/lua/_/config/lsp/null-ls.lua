@@ -21,7 +21,7 @@ return function(on_attach)
 						or params.bufname:match '%.env' == nil
 				end),
 			},
-			nls.builtins.diagnostics.pylint,
+			nls.builtins.diagnostics.ruff,
 			nls.builtins.diagnostics.hadolint,
 			nls.builtins.diagnostics.vint,
 			nls.builtins.diagnostics.vale.with {

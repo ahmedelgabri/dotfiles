@@ -77,8 +77,8 @@ return function()
 		python = {
 			function()
 				return {
-					exe = 'black',
-					args = { '--quiet', '-' },
+					exe = 'ruff',
+					args = { '--fix', '-' },
 					stdin = true,
 				}
 			end,

@@ -24,9 +24,8 @@ in
               (python3.withPackages (ps:
                 with ps; [
                   pip
-                  black
                   setuptools
-                  pylint
+                  ruff
                   pynvim
                   vobject # Mutt calendar script
                 ]))
