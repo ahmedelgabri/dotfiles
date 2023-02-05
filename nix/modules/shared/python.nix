@@ -25,11 +25,11 @@ in
                 with ps; [
                   pip
                   setuptools
-                  ruff
                   pynvim
                   vobject # Mutt calendar script
                 ]))
               # nixos.python38Packages.httpx
+              ruff
             ];
         };
 
