@@ -50,6 +50,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Nix LSP https://github.com/oxalica/nil
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -96,7 +103,11 @@
 
         nixpkgs = {
           config = { allowUnfree = true; };
-          overlays = [ self.overlay inputs.rust-overlay.overlays.default ];
+          overlays = [
+            self.overlay
+            inputs.rust-overlay.overlays.default
+            inputs.nil.overlays.default
+          ];
         };
 
         time.timeZone = config.my.timezone;

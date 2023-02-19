@@ -27,7 +27,7 @@ in
           gcc # Requried for treesitter parsers
         ]);
 
-      my.env = rec {
+      my.env = {
         EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
@@ -63,7 +63,7 @@ in
           statix
           sumneko-lua-language-server
           tree-sitter # required for treesitter "auto-install" option to work
-          nil # Nix LSP https://github.com/oxalica/nil
+          nil
         ];
       };
 
