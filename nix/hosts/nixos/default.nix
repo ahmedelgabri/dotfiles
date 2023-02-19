@@ -30,17 +30,20 @@
 
     modules = {
       mail = { enable = true; };
-      youtube-dl.enable = true;
+      yt-dlp.enable = true;
       irc.enable = true;
       rescript.enable = true;
       clojure.enable = true;
       discord.enable = true;
+      wezterm.enable = false;
     };
   };
 
   nix = {
+    settings = {
+      auto-optimise-store = true;
+    };
     gc = { dates = "daily"; };
-    autoOptimiseStore = true;
     registry = {
       nixos.flake = inputs.nixpkgs;
       nixpkgs.flake = inputs.nixpkgs;
@@ -51,9 +54,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # https://www.arthurkoziel.com/installing-nixos-on-a-macbookpro/
+  # the default governor constantly runs all cores on max frequency
+  # schedutil will run at a lower frequency and boost when needed
+  powerManagement.cpuFreqGovernor = "schedutil";
+
   networking.hostName = "nixos"; # Define your hostname.
   # Enables wireless support via wpa_supplicant.
-  networking.wireless.enable = false;
+  # networking.wireless.enable = true;
   # Only one needs to be enabled, this or wireless
   networking.networkmanager.enable = true;
 
@@ -72,8 +80,8 @@
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s20u2.useDHCP = true;
+  # networking.useDHCP = false;
+  # networking.interfaces.enp0s20u2.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -85,53 +93,53 @@
     extraLocaleSettings = { LC_TIME = "en_GB.UTF-8"; };
   };
 
-  console = {
-    font = "PragmataPro Mono Liga16";
-    keyMap = "us";
-  };
+  # console = {
+  #   font = "PragmataPro Mono Liga16";
+  #   keyMap = "us";
+  # };
 
-  # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    # Configure keymap in X11
-    layout = "us,ar,nl";
-    # xkbOptions = "eurosign:e";
-    # Enable touchpad support (enabled default in most desktopManager).
-    libinput = {
-      enable = true;
-      touchpad = {
-        tapping = true;
-        naturalScrolling = true;
-      };
-      #      accelProfile = "flat";
-      #      additionalOptions = ''MatchIsTouchpad "on"'';
-    };
-    windowManager.dwm.enable = true;
-    windowManager.i3 = {
-      enable = true;
-      package = pkgs.i3-gaps;
-      extraPackages = with pkgs; [ i3lock dmenu i3blocks ];
-      # extraSessionCommands = ''
-      # ${pkgs.xset}/bin/xset r rate 200 60
-      # ${inputs.nixpgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
-      # ${pkgs.dunst}/bin/dunst &
-      # '';
-    };
-    displayManager.defaultSession = "none+i3";
-    # displayManager.setupCommands = ''
-    # ${inputs.nixpkgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
-    # ${pkgs.dunst}/bin/dunst &
-    # '';
-    # displayManager.startx.enable = true;
+  # # Enable the X11 windowing system.
+  # services.xserver = {
+  #   enable = true;
+  #   # Configure keymap in X11
+  #   layout = "us,ar,nl";
+  #   # xkbOptions = "eurosign:e";
+  #   # Enable touchpad support (enabled default in most desktopManager).
+  #   libinput = {
+  #     enable = true;
+  #     touchpad = {
+  #       tapping = true;
+  #       naturalScrolling = true;
+  #     };
+  #     #      accelProfile = "flat";
+  #     #      additionalOptions = ''MatchIsTouchpad "on"'';
+  #   };
+  #   windowManager.dwm.enable = true;
+  #   windowManager.i3 = {
+  #     enable = true;
+  #     package = pkgs.i3-gaps;
+  #     extraPackages = with pkgs; [ i3lock dmenu i3blocks ];
+  #     # extraSessionCommands = ''
+  #     # ${pkgs.xset}/bin/xset r rate 200 60
+  #     # ${inputs.nixpgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
+  #     # ${pkgs.dunst}/bin/dunst &
+  #     # '';
+  #   };
+  #   displayManager.defaultSession = "none+i3";
+  #   # displayManager.setupCommands = ''
+  #   # ${inputs.nixpkgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
+  #   # ${pkgs.dunst}/bin/dunst &
+  #   # '';
+  #   # displayManager.startx.enable = true;
 
-    # Enable the Plasma 5 Desktop Environment.
-    displayManager.sddm.enable = true;
-    desktopManager.plasma5.enable = true;
-  };
+  #   # Enable the Plasma 5 Desktop Environment.
+  #   displayManager.sddm.enable = true;
+  #   desktopManager.plasma5.enable = true;
+  # };
 
-  services.nextdns.enable = true;
+  # services.nextdns.enable = true;
 
-  nixpkgs.config.dwm.patches = [ ./dwm.patch ];
+  # nixpkgs.config.dwm.patches = [ ./dwm.patch ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -153,24 +161,34 @@
     wirelesstools
     # python3
     libnotify
-    x11
-    gnome3.networkmanagerapplet # needed for i3m to be able to use networkmanager through nm-applet
+    # x11
+    # https://github.com/NixOS/nixpkgs/commit/3c478e4b5db3bb02d981980e00b6470f6addea6f
+    freetype
+    fontconfig
+    xorg.xorgproto
+    xorg.libX11
+    xorg.libXt
+    xorg.libXft
+    xorg.libXext
+    xorg.libSM
+    xorg.libICE
+    # gnome3.networkmanagerapplet # needed for i3m to be able to use networkmanager through nm-applet
   ];
 
   environment.shellAliases.l = null;
 
-  fonts.fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    # liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts
-    dina-font
-    proggyfonts
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
-  ];
+  # fonts.fonts = with pkgs; [
+  #   noto-fonts
+  #   noto-fonts-cjk
+  #   noto-fonts-emoji
+  #   # liberation_ttf
+  #   fira-code
+  #   fira-code-symbols
+  #   mplus-outline-fonts
+  #   dina-font
+  #   proggyfonts
+  #   (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -178,7 +196,7 @@
   programs = {
     gnupg.agent = { pinentryFlavor = "pinentry"; };
 
-    java.enable = true;
+    # java.enable = true;
     less.enable = true;
     mosh.enable = true;
     # TODO: check if I still need gnome3.networkmanagerapplet or not
@@ -195,9 +213,9 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  services.tailscale.enable = true;
+  # services.tailscale.enable = true;
 
-  services.avahi.enable = true;
+  # services.avahi.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -212,5 +230,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   # https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "22.11"; # Did you read the comment?
 }
