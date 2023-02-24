@@ -124,9 +124,10 @@ install_homebrew() {
 
 package_manager() {
 	if [ "$(uname)" == "Darwin" ]; then
-		xcode-select --install &&
-			install_homebrew &&
-			true | sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume &&
+		# fails if already installed
+		# xcode-select --install &&
+		install_homebrew &&
+			true | sh <(curl -L https://nixos.org/nix/install) &&
 			source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 		if command -v nix-build >/dev/null; then

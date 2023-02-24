@@ -36,13 +36,13 @@ These are the main configs:
 1. Install Command line tools.
 
 ```bash
-$ xcode-select --install
+xcode-select --install
 ```
 
 2. Run the following command
 
 ```bash
-$ bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
+bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
 ```
 
 ### Notes
