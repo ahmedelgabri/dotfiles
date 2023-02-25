@@ -159,6 +159,17 @@
             ./nix/hosts/ahmed-at-work.nix
           ];
         };
+
+        "rocket" = inputs.darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          inherit inputs;
+          modules = [
+            inputs.home-manager.darwinModules.home-manager
+            ./nix/modules/shared
+            sharedHostsConfig
+            ./nix/hosts/rocket.nix
+          ];
+        };
       };
 
       # for convenience
@@ -168,6 +179,7 @@
       # Move them to `outputs.packages.<system>.name`
       pandoras-box = self.darwinConfigurations.pandoras-box.system;
       ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
+      rocket = self.darwinConfigurations.rocket.system;
 
       nixosConfigurations = {
         "nixos" = inputs.nixpkgs.lib.nixosSystem {

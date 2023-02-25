@@ -93,5 +93,6 @@ path=(
   # ${CARGO_HOME}/bin(N-/)
   ${GOBIN}(N-/)
   $path
+  /opt/homebrew/bin(N-/) # For M1/2 machines
   /usr/local/{bin,sbin}
 )
