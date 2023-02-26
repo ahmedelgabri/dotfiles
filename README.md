@@ -28,8 +28,9 @@ These are the main configs:
 
 ## Officially supported OSs
 
-- macOS (tested on BigSur)
-- NixOS (tested on 20.09)
+- Intel macOS Monterey
+- ARM macOS Ventura
+- [Experimental] NixOS (tested on 22.11)
 
 ## Installation
 
