@@ -196,17 +196,21 @@ in
 
           # zshrc
           interactiveShellInit = lib.concatStringsSep "\n"
-            (map builtins.readFile [
-              ../../../config/zsh.d/zsh/config/options.zsh
-              ../../../config/zsh.d/zsh/config/input.zsh
-              ../../../config/zsh.d/zsh/config/completion.zsh
-              ../../../config/zsh.d/zsh/config/utility.zsh
-              ../../../config/zsh.d/zsh/config/aliases.zsh
-              "${pkgs.grc}/etc/grc.zsh"
-              "${pkgs.fzf}/share/fzf/completion.zsh"
-              "${pkgs.fzf}/share/fzf/key-bindings.zsh"
-              ../../../config/zsh.d/.zshrc
-            ]);
+            [
+              (lib.concatStringsSep "\n"
+                (map builtins.readFile [
+                  ../../../config/zsh.d/zsh/config/options.zsh
+                  ../../../config/zsh.d/zsh/config/input.zsh
+                  ../../../config/zsh.d/zsh/config/completion.zsh
+                  ../../../config/zsh.d/zsh/config/utility.zsh
+                  ../../../config/zsh.d/zsh/config/aliases.zsh
+                  "${pkgs.grc}/etc/grc.zsh"
+                  "${pkgs.fzf}/share/fzf/completion.zsh"
+                  "${pkgs.fzf}/share/fzf/key-bindings.zsh"
+                  ../../../config/zsh.d/.zshrc
+                ]))
+              "fpath+=${pkgs.pure-prompt}/share/zsh/site-functions"
+            ];
 
 
           promptInit = "autoload -U promptinit; promptinit; prompt pure";
