@@ -35,16 +35,13 @@
   # Cleanup doesn't work automatically if you add/remove to list
   # homebrew.masApps = {
   #   Guidance = 412759995;
-  #   NextDNS = 1464122853;
   #   Dato = 1470584107;
   #   "Day One" = 1055511498;
-  #   WireGuard = 1451685025;
   #   Tweetbot = 1384080005;
   #   Todoist = 585829637;
   #   Sip = 507257563;
   #   Irvue = 1039633667;
   #   Telegram = 747648890;
-  #   Tailscale = 1475387142;
   # };
 
   networking = { hostName = "pandoras-box"; };

@@ -69,7 +69,6 @@
   # homebrew.masApps = {
   #   Twitter = 1482454543;
   #   Sip = 507257563;
-  #   Xcode = 497799835;
   #   Guidance = 412759995;
   # };
 

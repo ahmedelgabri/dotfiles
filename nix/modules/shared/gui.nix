@@ -39,8 +39,8 @@ in
           "virtualbox"
           "visual-studio-code"
           "logseq"
-          # "vscodium"
           "zoom"
+          "cron"
         ];
 
         my.hm.file = {
