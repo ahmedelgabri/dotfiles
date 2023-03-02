@@ -177,12 +177,6 @@ return require('packer').startup {
 					end,
 				},
 				{
-					'https://github.com/simrat39/inlay-hints.nvim',
-					config = function()
-						require('inlay-hints').setup {}
-					end,
-				},
-				{
 					'https://github.com/b0o/SchemaStore.nvim',
 				},
 				{

@@ -7,7 +7,6 @@
 -- require('vim.lsp.log').set_format_func(vim.inspect)
 
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
-local has_ih, ih = pcall(require, 'inlay-hints')
 local utils = require '_.utils'
 local au = require '_.utils.au'
 local hl = require '_.utils.highlight'
@@ -159,15 +158,6 @@ local on_attach = function(client, bufnr)
 	-- ---------------
 	client.config.flags.allow_incremental_sync = true
 
-	-- https://github.com/simrat39/inlay-hints.nvim
-	if
-		has_ih and client.name == 'sumneko_lua'
-		or client.name == 'tsserver'
-		or client.name == 'gopls'
-	then
-		ih.on_attach(client, bufnr)
-	end
-
 	-- ---------------
 	-- MAPPINGS
 	-- ---------------
@@ -259,12 +249,9 @@ local servers = {
 			end,
 		},
 	},
-	sumneko_lua = {
+	lua_ls = {
 		settings = {
 			Lua = {
-				-- hint = {
-				-- 	enable = true,
-				-- },
 				diagnostics = {
 					globals = {
 						'vim',
@@ -298,20 +285,6 @@ local servers = {
 			return nvim_lsp.util.root_pattern('go.mod', '.git')(fname)
 				or nvim_lsp.util.path.dirname(fname)
 		end,
-		settings = {
-			-- @NOTE: LSP[gopls] unexpected gopls setting "hints"???
-			-- gopls = {
-			-- 	hints = {
-			-- 		assignVariableTypes = true,
-			-- 		compositeLiteralFields = true,
-			-- 		compositeLiteralTypes = true,
-			-- 		constantValues = true,
-			-- 		functionTypeParameters = true,
-			-- 		parameterNames = true,
-			-- 		rangeVariableTypes = true,
-			-- 	},
-			-- },
-		},
 	},
 	tsserver = {
 		root_dir = function(fname)
@@ -325,30 +298,6 @@ local servers = {
 				'.git'
 			)(fname) or nvim_lsp.util.path.dirname(fname))
 		end,
-		-- settings = {
-		-- 	javascript = {
-		-- 		inlayHints = {
-		-- 			includeInlayEnumMemberValueHints = true,
-		-- 			includeInlayFunctionLikeReturnTypeHints = true,
-		-- 			includeInlayFunctionParameterTypeHints = true,
-		-- 			includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-		-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-		-- 			includeInlayPropertyDeclarationTypeHints = true,
-		-- 			includeInlayVariableTypeHints = true,
-		-- 		},
-		-- 	},
-		-- 	typescript = {
-		-- 		inlayHints = {
-		-- 			includeInlayEnumMemberValueHints = true,
-		-- 			includeInlayFunctionLikeReturnTypeHints = true,
-		-- 			includeInlayFunctionParameterTypeHints = true,
-		-- 			includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-		-- 			includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-		-- 			includeInlayPropertyDeclarationTypeHints = true,
-		-- 			includeInlayVariableTypeHints = true,
-		-- 		},
-		-- 	},
-		-- },
 	},
 	denols = {
 		root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
