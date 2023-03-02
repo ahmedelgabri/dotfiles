@@ -25,8 +25,6 @@
   security.pam.enableSudoTouchIdAuth = true;
 
   nix = {
-    # @TODO: enable globally?
-    useDaemon = true;
     gc = { user = config.my.username; };
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;

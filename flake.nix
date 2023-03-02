@@ -13,6 +13,8 @@
 # https://www.reddit.com/r/NixOS/comments/k8zobm/nixos_preferred_packages_flow/
 # https://www.reddit.com/r/NixOS/comments/j4k2zz/does_anyone_use_flakes_to_manage_their_entire/
 # https://serokell.io/blog/practical-nix-flakes
+# https://stephank.nl/p/2023-02-28-using-flakes-for-nixos-configs.html
+# https://zero-to-nix.com/
 
 {
   description = "~ 🍭 ~";
@@ -65,6 +67,7 @@
     let
       sharedHostsConfig = { config, pkgs, ... }: {
         nix = {
+          useDaemon = true;
           nixPath = [
             "nixpkgs=${inputs.nixpkgs}"
             "darwin=${inputs.darwin}"
