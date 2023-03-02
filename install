@@ -5,6 +5,19 @@ set -Eueo pipefail
 
 SUDO_USER=$(whoami)
 
+# Intell by default becaue my personal machine
+ARCH="i386"
+
+if [[ $(arch) == 'arm64' ]]; then
+	ARCH="$(arch)"
+fi
+
+HOMEBREW_BIN="/usr/local/bin/"
+
+if [[ "$ARCH" == 'arm64' ]]; then
+	HOMEBREW_BIN="/opt/homebrew/bin"
+fi
+
 # =======================================================================
 # = Helpers & setting some variables
 # =======================================================================
@@ -61,6 +74,8 @@ $GREEN
                       (_)__,_|\___/ \__|_| |_|_|\___||___/
 
 
+                          bootstrapping an $ARCH machine
+
 $RESET
 EOF
 
@@ -116,37 +131,43 @@ print_prompt() {
 # =======================================================================
 
 install_homebrew() {
-	if ! command -v brew >/dev/null; then
+	if [ -f "$HOMEBREW_BIN" ]; then
+		log_info "Homebrew already installed"
+	else
 		log_success "Installing Homebrew"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		"$HOMEBREW_BIN" install transcrypt
 	fi
+}
+
+install_xcode() {
+	if command -v xcode-select >/dev/null; then
+		log_info "Xcode already installed"
+	else
+		log_success "Installing Xcode"
+		xcode-select --install
+		if [[ "$ARCH" == 'arm64' ]]; then
+			log_success "Installing Rosetta"
+			sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
+		fi
+	fi
+}
+
+install_nix() {
+	if command -v nix >/dev/null; then
+		log_info "Nix already installed"
+	else
+		log_success "Installing Nix"
+		true | sh <(curl -L https://nixos.org/nix/install)
+	fi
+
 }
 
 package_manager() {
 	if [ "$(uname)" == "Darwin" ]; then
-		# fails if already installed
-		# xcode-select --install &&
-		install_homebrew &&
-			true | sh <(curl -L https://nixos.org/nix/install) &&
-			source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-
-		if command -v nix-build >/dev/null; then
-			nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-			./result/bin/darwin-installer
-			# make just installed `darwin-rebuild` command available in current script
-			[ -f /etc/static/bashrc ] && source /etc/static/bashrc
-		else
-			echo "You need to install Nix Darwin https://github.com/LnL7/nix-darwin"
-			exit 1
-		fi
-
-		if command -v nix-env >/dev/null; then
-			nix-env -iA nixpkgs.nixFlakes
-		else
-			echo "Check your Nix installation, nix-env is not availbe to install nixpkgs.nixFlakes"
-			exit 1
-		fi
-
+		install_xcode
+		install_homebrew
+		install_nix
 	fi
 }
 
@@ -169,35 +190,54 @@ clone_dotfiles() {
 		git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
 
 		# Setup repo origin & mirrors
-		cd "$DOTFILES_DIR" &&
-			git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
-			git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
-			git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
+		# This is stupid, because we don't have SSH keys at this point
+		# cd "$DOTFILES_DIR" &&
+		# 	git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
+		# 	git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
+		# 	git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
 
 		decrypt_repo
 	else
-		cd "$DOTFILES_DIR" &&
-			git stash -u &&
-			git checkout main &&
-			git reset --hard origin/main &&
-			git submodule update --init --recursive &&
-			git checkout - &&
-			git stash pop
+		cd "$DOTFILES_DIR"
+		git stash -u || true
+		git checkout main
+		git reset --hard origin/main
+		git submodule update --init --recursive
+		git checkout -
+		git stash pop || true
 	fi
 }
 
 install() {
 	if [ "$(uname)" == "Darwin" ]; then
-		sudo -u "$SUDO_USER" mv /etc/shells /etc/shells.old
-		sudo -u "$SUDO_USER" mv /etc/zshenv /etc/zshenv.old
-		sudo -u "$SUDO_USER" mv /etc/zshrc /etc/zshrc.old
-		sudo -u "$SUDO_USER" mv /etc/zprofile /etc/zprofile.old
+		if command -v nix >/dev/null; then
+			log_info "Building flakes..."
 
-		cd "$DOTFILES_DIR" &&
-			nix --experimental-features 'nix-command flakes' build "./#$(hostname)" &&
-			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname)"
+			cd "$DOTFILES_DIR"
+
+			nix --experimental-features 'nix-command flakes' build "./#$(hostname -s)"
+
+			# Needed for nix-darwin to work, copied verbatium from the install script, since we build with flakes we have to do this manually
+			# https://github.com/abathur/nix-darwin/blob/44da835ac40dab5fd231298b59d83487382d2fab/pkgs/darwin-installer/configuration.nix#L45-L51
+			if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
+				echo "setting up /etc/synthetic.conf..."
+				echo -e "run\tprivate/var/run" | sudo tee -a /etc/synthetic.conf >/dev/null
+				/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -B &>/dev/null ||
+					/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t &>/dev/null ||
+					echo "warning: failed to execute apfs.util"
+			fi
+
+			# Needed otherwise nix-darwin will complain
+			sudo -u "$SUDO_USER" mv /etc/shells /etc/shells.old
+			sudo -u "$SUDO_USER" mv /etc/zshenv /etc/zshenv.old
+			sudo -u "$SUDO_USER" mv /etc/zshrc /etc/zshrc.old
+			sudo -u "$SUDO_USER" mv /etc/zprofile /etc/zprofile.old
+			sudo -u "$SUDO_USER" mv /etc/nix/nix.conf /etc/nix/nix.conf.old
+
+			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname -s)"
+		fi
 	else
-		sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname)"
+		sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname -s)"
 	fi
 }
 
