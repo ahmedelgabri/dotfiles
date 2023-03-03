@@ -299,7 +299,6 @@ return require('packer').startup {
 			-- Disable on my personal machine, use the local fork instead
 			disable = vim.fn.hostname() == 'pandoras-box',
 			opt = true,
-			branch = 'lua',
 		}
 		use {
 			vim.env.HOME .. '/Sites/personal/forks/vim-colors-plain',
