@@ -101,11 +101,6 @@ au.augroup('__myautocmds__', {
 	},
 	{ event = 'BufWritePost', pattern = '*', command = 'silent! FormatWrite' },
 	{
-		event = 'BufWritePost',
-		pattern = 'packer.lua',
-		command = 'source <afile> | PackerCompile',
-	},
-	{
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = 'package.json',
 		callback = function()

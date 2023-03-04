@@ -290,7 +290,7 @@ vim.g.markdown_fenced_languages = {
 	'viml=vim',
 }
 
-require '_.packer'
+require '_.plugin_manager'
 
 -------------------------------------------------------------------------------
 -- OVERRIDES {{{1
