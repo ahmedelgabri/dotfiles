@@ -33,6 +33,7 @@
     ./hledger.nix
     ./zk.nix
     ./helix.nix
+    ./zellij.nix
   ];
 
   my.modules = {
@@ -60,6 +61,7 @@
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
     helix.enable = lib.mkDefault true;
+    zellij.enable = lib.mkDefault true;
   };
 
 }
