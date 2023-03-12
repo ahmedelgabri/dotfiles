@@ -214,6 +214,11 @@
 	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\"
 	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\"
 	tag = tag -s
+	default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+	bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"
+	# https://twitter.com/mitsuhiko/status/1554562541132603395
+	# https://twitter.com/mitsuhiko/status/1554562650645864448
+	mainalias = "!f() { if (git show-ref --verify -q refs/heads/main && !git show-ref --verify -q refs/heads/master); then (git symbolic-ref refs/heads/master refs/heads/main); else (git symbolic-ref refs/heads/main refs/heads/master); fi }; f"
 
 [filter "media"]
 	clean = git-media-clean %f
