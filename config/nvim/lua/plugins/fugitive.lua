@@ -5,11 +5,10 @@ return {
 	},
 	keys = {
 		-- Open current file on github.com
-		{ '<leader>gb', ':GBrowse<cr>' },
-		{ '<leader>gb', ':GBrowse<cr>' },
-		{ '<leader>gs', ':Git<cr>' },
-		{ '<leader>gs', ':Git<cr>' },
+		{ '<leader>gb', ':GBrowse<cr>', mode = { 'n', 'v' } },
+		{ '<leader>gs', ':Git<cr>', mode = { 'n', 'v' } },
 	},
+	cmd = { 'Git' },
 	config = function()
 		local au = require '_.utils.au'
 
