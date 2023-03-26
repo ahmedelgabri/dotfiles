@@ -72,6 +72,7 @@ in
               htop
               fzf
               direnv
+              nix-direnv
               nix-zsh-completions
               zsh
               zoxide
@@ -127,6 +128,9 @@ in
             };
             ".vale.ini" = {
               source = ../../../config/.vale.ini;
+            };
+            ".config/direnv/direnvrc" = {
+              text = "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
             };
           };
 
