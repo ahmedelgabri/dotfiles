@@ -27,7 +27,7 @@ return {
 		},
 		opts = {
 			view = {
-				width = 20,
+				side = 'right',
 			},
 			update_focused_file = {
 				enable = true,
@@ -49,7 +49,7 @@ return {
 			},
 			actions = {
 				open_file = {
-					quit_on_open = false,
+					quit_on_open = true,
 					resize_window = true,
 					window_picker = {
 						enable = false,
