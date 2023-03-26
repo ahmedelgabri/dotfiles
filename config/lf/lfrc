@@ -3,7 +3,8 @@
 #
 
 set incsearch
-set previewer ~/.config/lf/preview.sh
+set previewer ~/.config/lf/previewer
+set cleaner ~/.config/lf/cleaner
 set promptfmt "\033[34;1m%w\033[0m"
 set shellopts '-eu'
 set ifs "\n"
