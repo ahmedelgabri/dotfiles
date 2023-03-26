@@ -3,7 +3,7 @@
 _load_weather() {
 	# check for internet connection
 	ping -q -c 1 1.1.1.1 >/dev/null && {
-		weather "" "format=%c+%t+%w" >"$TMP_WEATHER_FILE"
+		weather "" "format=%c+%t+%h+%w+%m" >"$TMP_WEATHER_FILE"
 		printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
 	}
 }
