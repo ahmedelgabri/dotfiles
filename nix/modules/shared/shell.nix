@@ -110,7 +110,6 @@ in
               # buku
               difftastic
               vale
-              entr
               ffmpeg
             ];
           };
