@@ -15,9 +15,6 @@ let
   inherit (config.my) hostConfigHome;
 
   local_zshrc = "${hostConfigHome}/zshrc";
-
-  darwinPackages = with pkgs; [ openssl gawk gnused coreutils findutils ];
-  nixosPackages = with pkgs; [ dwm dmenu xclip ];
 in
 {
   options = with lib; {
@@ -68,7 +65,7 @@ in
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
           };
           systemPackages = with pkgs;
-            (if stdenv.isDarwin then darwinPackages else nixosPackages) ++ [
+            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
               curl
               wget
               cachix
@@ -108,6 +105,7 @@ in
               docker
               rename
               # buku
+              # monolith
               difftastic
               vale
               ffmpeg

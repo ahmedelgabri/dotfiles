@@ -16,7 +16,7 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      my.user = { packages = with pkgs; [ lf chafa fzf ]; };
+      my.user = { packages = with pkgs; [ lf zoxide fzf ]; };
 
       my.hm.file = {
         ".config/lf" = {
