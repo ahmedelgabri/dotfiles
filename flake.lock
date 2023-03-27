@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "ast-grep": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1679719479,
-        "narHash": "sha256-4uIDl7mb60JdAavRPcy+bfwax7JC59W68fihHyvSav8=",
-        "owner": "ast-grep",
-        "repo": "ast-grep",
-        "rev": "6a50d230f0681a483404596844c1575aa63a614b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ast-grep",
-        "repo": "ast-grep",
-        "type": "github"
-      }
-    },
     "crane": {
       "flake": false,
       "locked": {
@@ -357,7 +341,6 @@
     },
     "root": {
       "inputs": {
-        "ast-grep": "ast-grep",
         "darwin": "darwin",
         "helix": "helix",
         "home-manager": "home-manager",
