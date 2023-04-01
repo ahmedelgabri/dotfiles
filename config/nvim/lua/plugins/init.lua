@@ -32,6 +32,9 @@ return {
 			update_focused_file = {
 				enable = true,
 			},
+			git = {
+				ignore = false,
+			},
 			renderer = {
 				indent_markers = {
 					enable = false,
