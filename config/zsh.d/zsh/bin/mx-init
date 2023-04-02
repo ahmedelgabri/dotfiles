@@ -20,13 +20,6 @@ create_session() {
 		tmux send-keys "newsboat" C-m
 	fi
 
-	if
-		command -v ttrv &>/dev/null
-	then
-		tmux new-window -n 'reddit'
-		tmux send-keys "ttrv" C-m
-	fi
-
 	if command -v weechat &>/dev/null
 	then
 		tmux new-window -n 'weechat'
