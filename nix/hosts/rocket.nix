@@ -54,6 +54,7 @@
     "discord"
     "docker"
     "ngrok"
+    "figma"
   ];
 
   homebrew.brews = [

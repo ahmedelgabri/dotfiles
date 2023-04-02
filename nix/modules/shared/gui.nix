@@ -25,8 +25,6 @@ in
           "anki"
           "appcleaner"
           "corelocationcli"
-          "db-browser-for-sqlite"
-          "figma"
           "brave-browser"
           "google-chrome"
           "hammerspoon"

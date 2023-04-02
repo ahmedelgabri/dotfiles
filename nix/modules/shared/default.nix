@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -28,7 +28,6 @@
     ./gui.nix
     ./clojure.nix
     ./python.nix
-    ./syncthing.nix
     ./discord.nix
     ./hledger.nix
     ./zk.nix
@@ -40,7 +39,6 @@
     shell.enable = lib.mkDefault true;
     git.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
-    syncthing.enable = lib.mkDefault true;
 
     kitty.enable = lib.mkDefault true;
     wezterm.enable = lib.mkDefault true;

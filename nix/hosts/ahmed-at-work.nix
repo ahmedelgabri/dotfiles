@@ -53,6 +53,7 @@
     "vagrant"
     "discord"
     "docker"
+    "figma"
   ];
 
   homebrew.brews = [
