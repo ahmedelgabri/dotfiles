@@ -48,7 +48,7 @@ return {
 				'dockerfile',
 				'embedded_template', -- ERB, EJS, etc…
 				'go',
-				'help',
+				'vimdoc',
 				'html',
 				'javascript',
 				'jsdoc',
