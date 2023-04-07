@@ -106,7 +106,8 @@ in
               docker
               rename
               # buku
-              # monolith
+              monolith
+              wallabag
               difftastic
               vale
               ffmpeg
