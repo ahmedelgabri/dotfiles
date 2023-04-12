@@ -111,6 +111,7 @@ in
               difftastic
               vale
               ffmpeg
+              slides # CLI markdown presentation tool
             ];
           };
 
