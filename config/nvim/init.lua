@@ -18,13 +18,13 @@ local root = vim.env.USER == 'root'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
--- Skip vim plugins menu.vim, saves ~100ms
+-- Skip vim plugins menu.vim, saves ~100ms, disabled by lazy.nvim in plugin_manager.lua
 vim.g.did_install_default_menus = 1
-vim.g.loaded_getscript = 1
-vim.g.loaded_getscriptPlugin = 1
-vim.g.loaded_vimball = 1
-vim.g.loaded_vimballPlugin = 1
-vim.g.loaded_rrhelper = 1
+-- vim.g.loaded_getscript = 1
+-- vim.g.loaded_getscriptPlugin = 1
+-- vim.g.loaded_vimball = 1
+-- vim.g.loaded_vimballPlugin = 1
+-- vim.g.loaded_rrhelper = 1
 
 -- vim.opt. them directly if they are installed, otherwise disable them. To avoid the then
 -- runtime check cost, which can be slow.

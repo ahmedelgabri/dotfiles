@@ -20,6 +20,17 @@ return require('lazy').setup('plugins', {
 		patterns = { 'ahmedelgabri' }, -- For example {"folke"}
 		fallback = true, -- Fallback to git when local plugin doesn't exist
 	},
+	rtp = {
+		disabled_plugins = {
+			'getscript',
+			'getscriptPlugin',
+			'vimball',
+			'vimballPlugin',
+			'rrhelper',
+			'netrw',
+			'netrwPlugin',
+		},
+	},
 	ui = {
 		icons = {
 			cmd = '⌘',

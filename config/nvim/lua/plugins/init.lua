@@ -167,7 +167,6 @@ return {
 		end,
 	},
 	{ 'https://github.com/kevinhwang91/nvim-bqf' },
-	{ 'https://github.com/stevearc/dressing.nvim' },
 	{
 		'https://github.com/rgroli/other.nvim',
 		cmd = { 'Other', 'OtherSplit', 'OtherVSplit' },

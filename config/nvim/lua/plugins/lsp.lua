@@ -76,20 +76,7 @@ return {
 		},
 		{ 'https://github.com/mickael-menu/zk-nvim' },
 		{
-			'https://github.com/danymat/neogen',
-			cmd = { 'Neogen' },
-			opts = { snippet_engine = 'luasnip' },
-		},
-		{
-			'https://github.com/simrat39/inlay-hints.nvim',
-			opts = {},
-		},
-		{
 			'https://github.com/b0o/SchemaStore.nvim',
-		},
-		{
-			'https://github.com/DNLHC/glance.nvim',
-			opts = {},
 		},
 	},
 	config = function()
@@ -357,9 +344,14 @@ return {
 			lua_ls = {
 				settings = {
 					Lua = {
-						-- hint = {
-						-- 	enable = true,
-						-- },
+						codeLens = { enable = true },
+						hint = {
+							enable = true,
+							arrayIndex = 'Disable',
+							setType = true,
+							paramName = 'Disable',
+						},
+						format = { enable = false },
 						diagnostics = {
 							globals = {
 								'vim',
@@ -375,6 +367,7 @@ return {
 							},
 						},
 						workspace = {
+							checkThirdParty = false,
 							maxPreload = 2000,
 							preloadFileSize = 2000,
 							library = {

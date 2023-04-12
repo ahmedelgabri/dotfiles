@@ -145,6 +145,7 @@ return {
 				enable = true,
 				disable = disable,
 			},
+			context_commentstring = { enable = true },
 		}
 	end,
 }
