@@ -146,13 +146,5 @@ return {
 				disable = disable,
 			},
 		}
-
-		au.augroup('__treesitter__', {
-			{
-				event = 'FileType',
-				pattern = get_filetypes(),
-				command = 'setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()',
-			},
-		})
 	end,
 }

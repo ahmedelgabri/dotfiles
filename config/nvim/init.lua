@@ -1,5 +1,10 @@
 -- vim: foldmethod=marker
 
+-- Enable the Lua loader byte-compilation cache.
+if vim.loader then
+	vim.loader.enable()
+end
+
 -------------------------------------------------------------------------------
 -- GENERAL {{{1
 -------------------------------------------------------------------------------
@@ -180,6 +185,9 @@ vim.opt.fillchars = {
 
 vim.opt.foldlevelstart = 99 -- start unfolded
 
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
 vim.opt.wrap = false
@@ -199,6 +207,10 @@ vim.opt.tildeop = true
 
 -- Make sure diffs are always opened in vertical splits, also match my git settings
 vim.opt.diffopt:append 'vertical,algorithm:histogram,indent-heuristic,hiddenoff'
+
+if vim.fn.has 'nvim-0.9' > 0 then
+	vim.opt.diffopt:append 'linematch:60'
+end
 
 vim.opt.shortmess:append 'A'
 vim.opt.shortmess:append 'I'
