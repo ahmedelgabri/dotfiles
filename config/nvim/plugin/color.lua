@@ -45,12 +45,8 @@ au.augroup('__MyCustomColors__', {
 			vim.cmd [[hi! NonText cterm=NONE gui=NONE]]
 			vim.cmd [[hi! NormalFloat cterm=NONE gui=NONE]]
 			hl.group('FloatBorder', { link = 'Number' })
-			hl.group('Normal', {
-				fg = nil,
-				bg = nil,
-			})
 
-			if vim.o.background == 'dark' then
+			if vim.opt.background:get() == 'dark' then
 				hl.group('VertSplit', {
 					bg = nil,
 					fg = '#333333',
@@ -125,7 +121,7 @@ au.augroup('__MyCustomColors__', {
 	---------------------------------------------------------------
 	{
 		event = 'ColorScheme',
-		pattern = { 'codedark', 'plain', 'plain-lua' },
+		pattern = { 'codedark', 'plain' },
 		callback = function()
 			hl.group('StartifyHeader', { link = 'Normal' })
 			hl.group('StartifyFile', { link = 'Directory' })
