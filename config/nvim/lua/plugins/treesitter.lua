@@ -7,10 +7,6 @@ return {
 		{
 			'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
 		},
-		{
-			'https://github.com/nvim-treesitter/playground',
-			cmd = 'TSPlaygroundToggle',
-		},
 	},
 	config = function()
 		-- https://github.com/nvim-treesitter/nvim-treesitter/issues/3356#issuecomment-1226348556
@@ -148,12 +144,6 @@ return {
 			autopairs = {
 				enable = true,
 				disable = disable,
-			},
-			playground = {
-				enable = true,
-				disable = {},
-				updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-				persist_queries = false, -- Whether the query persists across vim sessions
 			},
 		}
 
