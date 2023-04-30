@@ -141,10 +141,6 @@ return {
 						and p ~= 'query'
 				end, parsers.available_parsers()),
 			},
-			autopairs = {
-				enable = true,
-				disable = disable,
-			},
 			context_commentstring = { enable = true },
 		}
 	end,

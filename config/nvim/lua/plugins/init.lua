@@ -1,5 +1,4 @@
 return {
-	{ 'https://github.com/windwp/nvim-autopairs' },
 	{ 'https://github.com/duggiefresh/vim-easydir' },
 	{
 		'https://github.com/ojroques/vim-oscyank',
@@ -11,7 +10,11 @@ return {
 				{
 					event = { 'TextYankPost' },
 					pattern = '*',
-					command = [[if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif]],
+					callback = function()
+						if vim.v.event.operator == 'y' and vim.v.event.regname == '' then
+							vim.cmd [[OSCYankReg "]]
+						end
+					end,
 				},
 			})
 		end,
@@ -96,7 +99,6 @@ return {
 		},
 	},
 	{ 'https://github.com/tpope/vim-repeat' },
-	{ 'https://github.com/machakann/vim-sandwich' },
 	{
 		'https://github.com/nullchilly/fsread.nvim',
 		cmd = { 'FSRead', 'FSToggle', 'FSClear' },
@@ -106,7 +108,10 @@ return {
 		dependencies = {
 			'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
 		},
-		keys = { 'gc', 'gb' },
+		keys = {
+			{ 'gc', mode = { 'n', 'x' } },
+			{ 'gb', mode = { 'n', 'x' } },
+		},
 		opts = {
 			ignore = '^$', -- don't comment empty lines
 			---@param ctx Ctx
@@ -145,16 +150,6 @@ return {
 		},
 	},
 	{ 'https://github.com/wincent/loupe' },
-	{
-		'https://github.com/ojroques/nvim-bufdel',
-		cmd = 'BufDel',
-		keys = {
-			{ '<M-d>', ':BufDel!<CR>' },
-		},
-		opts = {
-			quit = false,
-		},
-	},
 	{
 		'https://github.com/simrat39/symbols-outline.nvim',
 		cmd = 'SymbolsOutline',

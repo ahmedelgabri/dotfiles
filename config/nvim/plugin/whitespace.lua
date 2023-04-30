@@ -12,7 +12,9 @@ au.augroup('__my_whitespace__', {
 		pattern = '*',
 		callback = function()
 			if vim.fn['utils#should_strip_whitespace'] { 'markdown', 'diff' } then
-				vim.fn['utils#Preserve'] '%s/\\s\\+$//e'
+				-- vim.fn['utils#Preserve'] '%s/\\s\\+$//e'
+				MiniTrailspace.trim()
+				MiniTrailspace.trim_last_lines()
 			end
 		end,
 	},
