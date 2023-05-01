@@ -15,7 +15,7 @@ language = "en"
 default-title = "Scratch"
 
 # Template used to generate a note's filename, without extension.
-filename = "{{format-date now 'timestamp'}} {{title}}"
+filename = "{{title}}"
 
 # The file extension used for the notes.
 extension = "md"
@@ -234,4 +234,3 @@ rfc = 'zk new work --template rfc.md --title "$*"'
 j = 'zk new --no-input journal'
 t = 'zk new --no-input todo'
 p = 'zk new personal --title "$*"'
-
