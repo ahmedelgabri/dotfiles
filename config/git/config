@@ -22,9 +22,6 @@
 [interactive]
 	diffFilter = delta_ --color-only --features=interactive
 
-[add.interactive]
-	useBuiltin = false # required for delta with git 2.37.0
-
 [delta]
 	syntax-theme = none
 	navigate = true # use n and N to move between diff sections
