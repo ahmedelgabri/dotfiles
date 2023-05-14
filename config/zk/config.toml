@@ -86,14 +86,9 @@ template = "work.md"
 employer = "miro"
 
 [group.journal]
+paths = ["journal"]
 
 [group.journal.note]
-filename = "{{format-date now '%Y-%m-%d'}}"
-template = "journal.md"
-
-[group.todo]
-
-[group.todo.note]
 filename = "{{format-date now '%Y-%m-%d'}}"
 template = "journal.md"
 
@@ -232,6 +227,4 @@ rfc = 'zk new work --template rfc.md --title "$*"'
 
 # Personal
 j = 'zk new --no-input journal'
-t = 'zk new --no-input todo'
-p = 'zk new personal --title "$*"'
-
+p = 'zk new --no-input personal --title "$*"'
