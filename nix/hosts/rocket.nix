@@ -42,6 +42,7 @@
       graph-easy
       graphviz
       nodePackages.mermaid-cli
+      emanote
     ];
   };
 

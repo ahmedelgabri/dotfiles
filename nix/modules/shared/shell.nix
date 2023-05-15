@@ -112,6 +112,7 @@ in
               vale
               ffmpeg
               slides # CLI markdown presentation tool
+              # emanote # Only aarch64-darwin
             ];
           };
 
