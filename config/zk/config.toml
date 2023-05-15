@@ -86,7 +86,6 @@ template = "work.md"
 employer = "miro"
 
 [group.journal]
-paths = ["journal"]
 
 [group.journal.note]
 filename = "{{format-date now '%Y-%m-%d'}}"
