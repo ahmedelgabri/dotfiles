@@ -178,21 +178,6 @@ return {
 		end,
 	},
 	-- Syntax {{{
-	{
-		'https://github.com/NvChad/nvim-colorizer.lua',
-		-- https://github.com/norcalli/nvim-colorizer.lua/issues/4#issuecomment-543682160
-		opts = {
-			filetypes = {
-				'*',
-				'!vim',
-				'!packer',
-			},
-			user_default_options = {
-				tailwind = 'lsp',
-				css = true,
-			},
-		},
-	},
 	{ 'https://github.com/jez/vim-github-hub' },
 	{
 		'https://github.com/jxnblk/vim-mdx-js',

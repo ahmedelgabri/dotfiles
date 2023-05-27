@@ -61,11 +61,6 @@ return {
 			},
 		},
 		{
-			'https://github.com/folke/todo-comments.nvim',
-			cmd = { 'Todocomment' },
-			opts = {},
-		},
-		{
 			'https://github.com/folke/trouble.nvim',
 			cmd = { 'Trouble' },
 			opts = { icons = false },
