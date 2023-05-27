@@ -203,15 +203,6 @@ return {
 	-- Git {{{
 	{
 		'https://github.com/akinsho/git-conflict.nvim',
-		cmd = {
-			'GitConflictChooseOurs',
-			'GitConflictChooseTheirs',
-			'GitConflictChooseBoth',
-			'GitConflictChooseNone',
-			'GitConflictNextConflict',
-			'GitConflictPrevConflict',
-			'GitConflictListQf',
-		},
 		opts = {},
 	},
 	{
