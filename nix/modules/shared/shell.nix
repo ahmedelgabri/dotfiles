@@ -113,6 +113,7 @@ in
               ffmpeg
               slides # CLI markdown presentation tool
               # emanote # Only aarch64-darwin
+              ast-grep
             ];
           };
 
