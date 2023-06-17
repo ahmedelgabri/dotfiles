@@ -85,7 +85,9 @@ in
       {
         my.user = {
           packages = with pkgs; [
-            neomutt
+            (neomutt.override {
+              enableLua = true;
+            })
             msmtp
             isync
             w3m
