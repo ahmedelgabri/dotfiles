@@ -26,7 +26,7 @@ extension = "md"
 template = "default.md"
 
 # Path globs ignored while indexing existing notes.
-ignore = [
+exclude = [
   "drafts/*",
   "log.md",
   ".neuron",
@@ -64,6 +64,8 @@ id-length = 12
 [extra]
 author = "Ahmed El Gabri"
 
+# [notebook]
+# dir = "$NOTES_DIR" # same as "$HOME/notebook"
 
 # GROUP OVERRIDES
 #
