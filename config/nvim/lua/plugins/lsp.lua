@@ -44,6 +44,7 @@ return {
 	dependencies = {
 		{
 			'https://github.com/j-hui/fidget.nvim',
+			tag = 'legacy',
 			opts = {
 				window = {
 					relative = 'editor', -- where to anchor the window, either `"win"` or `"editor"`
