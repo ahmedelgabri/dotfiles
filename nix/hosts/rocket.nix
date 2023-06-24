@@ -65,6 +65,8 @@
     "git-lfs"
     "git-sizer"
     "awscli"
+    "k9s"
+    "aws-vault"
   ];
 
   # Requires to be logged in to the AppStore
