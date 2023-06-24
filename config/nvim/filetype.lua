@@ -10,6 +10,7 @@ vim.filetype.add {
 		['.envrc'] = 'bash',
 		['.stylelintrc'] = 'json',
 		Brewfile = 'ruby',
+		['turbo.json'] = 'jsonc',
 	},
 	pattern = {
 		['tsconfig.*%.json'] = 'jsonc',
