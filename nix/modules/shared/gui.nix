@@ -34,7 +34,6 @@ in
           "obsidian"
           "slack"
           "sync"
-          "virtualbox"
           "visual-studio-code"
           "logseq"
           "zoom"
