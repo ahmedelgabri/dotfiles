@@ -74,6 +74,35 @@ return {
 		{
 			'https://github.com/b0o/SchemaStore.nvim',
 		},
+		{
+			'https://github.com/lewis6991/hover.nvim',
+			config = function()
+				require('hover').setup {
+					init = function()
+						require 'hover.providers.lsp'
+						require 'hover.providers.gh'
+						require '_.hover.github_user'
+						require 'hover.providers.jira'
+						require 'hover.providers.man'
+						require 'hover.providers.dictionary'
+					end,
+				}
+
+				-- Setup keymaps
+				vim.keymap.set(
+					'n',
+					'K',
+					require('hover').hover,
+					{ desc = 'hover.nvim' }
+				)
+				vim.keymap.set(
+					'n',
+					'gK',
+					require('hover').hover_select,
+					{ desc = 'hover.nvim (select)' }
+				)
+			end,
+		},
 	},
 	config = function()
 		-- for debugging
@@ -185,7 +214,7 @@ return {
 			},
 			{ { 'n' }, '<leader>f', '<cmd>lua vim.lsp.buf.references()<CR>' },
 			{ { 'n' }, '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>' },
-			{ { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>' },
+			-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>' },
 			{
 				{ 'n' },
 				'<leader>ld',
