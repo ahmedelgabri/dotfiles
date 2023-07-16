@@ -3,10 +3,30 @@ return {
 	-- I have the bin globally, so don't build, and just grab plugin directory
 	dependencies = { { 'https://github.com/junegunn/fzf' } },
 	keys = {
-		{ '<leader><leader>', vim.cmd.Files, { silent = true } },
-		{ '<Leader>b', vim.cmd.Buffers, { silent = true } },
-		{ '<Leader>h', vim.cmd.Helptags, { silent = true } },
-		{ '<Leader>o', vim.cmd.History, { silent = true } },
+		{
+			'<leader><leader>',
+			vim.cmd.Files,
+			{ silent = true },
+			desc = 'Search Files',
+		},
+		{
+			'<Leader>b',
+			vim.cmd.Buffers,
+			{ silent = true },
+			desc = 'Search [B]uffers',
+		},
+		{
+			'<Leader>h',
+			vim.cmd.Helptags,
+			{ silent = true },
+			desc = 'Search [H]elp',
+		},
+		{
+			'<Leader>o',
+			vim.cmd.History,
+			{ silent = true },
+			desc = 'Search [O]ldfiles',
+		},
 	},
 	config = function()
 		if vim.fn.exists ':FZF' == 0 then
@@ -117,7 +137,12 @@ return {
 			}
 		end
 
-		vim.keymap.set({ 'n' }, 'z=', FzfSpell, { silent = true })
+		-- vim.keymap.set(
+		-- 	{ 'n' },
+		-- 	'z=',
+		-- 	FzfSpell,
+		-- 	{ silent = true, desc = 'Spell check' }
+		-- )
 
 		-- https://github.com/junegunn/fzf.vim/issues/907#issuecomment-554699400
 		local function ripgrepFzf(query, fullscreen)
@@ -147,6 +172,11 @@ return {
 			ripgrepFzf(o.args, o.bang)
 		end, { bang = true, nargs = '*' })
 
-		vim.keymap.set({ 'n' }, [[<leader>\]], [[:RG<CR>]])
+		vim.keymap.set(
+			{ 'n' },
+			[[<leader>\]],
+			[[:RG<CR>]],
+			{ desc = 'Search using ripgrep' }
+		)
 	end,
 }

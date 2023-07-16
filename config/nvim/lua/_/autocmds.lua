@@ -130,7 +130,7 @@ function M.quit_on_q()
 				or (vim.bo.buftype == 'nofile') and ':q'
 				or ':q'
 			) .. '<cr>',
-			{ buffer = true, silent = true }
+			{ buffer = true, silent = true, desc = '[Q]uit on q' }
 		)
 	end
 end

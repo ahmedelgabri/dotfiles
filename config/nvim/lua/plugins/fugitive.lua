@@ -5,8 +5,13 @@ return {
 	},
 	keys = {
 		-- Open current file on github.com
-		{ '<leader>gb', ':GBrowse<cr>', mode = { 'n', 'v' } },
-		{ '<leader>gs', ':Git<cr>', mode = { 'n', 'v' } },
+		{
+			'<leader>gb',
+			':GBrowse<cr>',
+			mode = { 'n', 'v' },
+			desc = '[G]it [B]rowse file',
+		},
+		{ '<leader>gs', ':Git<cr>', mode = { 'n', 'v' }, desc = '[G]it [S]tatus' },
 	},
 	cmd = { 'Git' },
 	config = function()

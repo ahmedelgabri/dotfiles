@@ -84,11 +84,16 @@ return {
 				'x',
 				'S',
 				[[:<C-u>lua MiniSurround.add('visual')<CR>]],
-				{ silent = true }
+				{ silent = true, desc = '[S]urround in visual mode' }
 			)
 
 			-- Make special mapping for "add surrounding for line"
-			vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+			vim.keymap.set(
+				'n',
+				'yss',
+				'ys_',
+				{ remap = true, desc = 'Add surrounding for line' }
+			)
 		end,
 	},
 	{

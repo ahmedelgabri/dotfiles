@@ -18,4 +18,9 @@ vim.g.netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' -- default
 vim.g.netrw_bufsettings = vim.g.netrw_bufsettings
 	.. ' buftype=nofile bufhidden=wipe'
 
-vim.keymap.set({ 'n' }, '<leader>L', ':20Lex<CR>', { silent = true })
+vim.keymap.set(
+	{ 'n' },
+	'<leader>L',
+	':20Lex<CR>',
+	{ silent = true, desc = 'Open Netrw' }
+)

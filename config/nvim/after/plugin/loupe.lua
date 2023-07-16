@@ -17,5 +17,5 @@ vim.keymap.set(
 	{ 'n' },
 	'<Leader>c',
 	'<Plug>(LoupeClearHighlight)',
-	{ remap = true }
+	{ remap = true, desc = '[C]lear Highlight' }
 )

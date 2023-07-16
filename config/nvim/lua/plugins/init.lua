@@ -26,6 +26,7 @@ return {
 				'--',
 				':NvimTreeFindFile<CR>',
 				{ silent = true },
+				desc = 'Open Nvimtree',
 			},
 		},
 		opts = {
@@ -69,17 +70,29 @@ return {
 		},
 	},
 	{
-		'https://github.com/junegunn/vim-peekaboo',
-		event = 'BufReadPre',
-		config = function()
-			vim.g.peekaboo_window = 'vertical botright 60new'
+		'https://github.com/folke/which-key.nvim',
+		event = 'VeryLazy',
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
 		end,
+		opts = {
+			window = {
+				border = 'single',
+			},
+		},
 	},
 	{
 		'https://github.com/mbbill/undotree',
 		cmd = 'UndotreeToggle',
 		keys = {
-			{ '<leader>u', vim.cmd.UndotreeToggle, silent = true, noremap = true },
+			{
+				'<leader>u',
+				vim.cmd.UndotreeToggle,
+				silent = true,
+				noremap = true,
+				desc = 'Toggle [U]ndotree',
+			},
 		},
 		config = function()
 			vim.g.undotree_WindowLayout = 2
@@ -95,7 +108,12 @@ return {
 		'https://github.com/tpope/vim-eunuch',
 		cmd = { 'Delete' },
 		keys = {
-			{ '<leader>m', ':Move <C-R>=expand("%")<cr>', { remap = true } },
+			{
+				'<leader>m',
+				':Move <C-R>=expand("%")<cr>',
+				{ remap = true },
+				desc = '[M]ove file',
+			},
 		},
 	},
 	{ 'https://github.com/tpope/vim-repeat' },

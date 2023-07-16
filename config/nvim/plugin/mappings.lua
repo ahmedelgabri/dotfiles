@@ -31,25 +31,13 @@ vim.keymap.set({ 'n' }, 'gV', [[`[v`]']])
 -- Move by 'display lines' rather than 'logical lines' if no v:count was
 -- provided.  When a v:count is provided, move by logical lines.
 vim.keymap.set(
-	{ 'n' },
+	{ 'n', 'x' },
 	'j',
 	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
 	{ expr = true }
 )
 vim.keymap.set(
-	{ 'x' },
-	'j',
-	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj']],
-	{ expr = true }
-)
-vim.keymap.set(
-	{ 'n' },
-	'k',
-	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
-	{ expr = true }
-)
-vim.keymap.set(
-	{ 'x' },
+	{ 'n', 'x' },
 	'k',
 	[[v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk']],
 	{ expr = true }
@@ -57,7 +45,7 @@ vim.keymap.set(
 
 if not vim.fn.has 'nvim-0.6' then
 	-- Make `Y` behave like `C` and `D` (to the end of line)
-	vim.keymap.set({ 'n' }, 'Y', 'y$')
+	vim.keymap.set({ 'n' }, 'Y', 'y$', { desc = '[Y]ank till end of line' })
 end
 
 -- Disable arrow keys
@@ -81,16 +69,26 @@ vim.keymap.set({ 'x' }, '<', '<gv')
 vim.keymap.set({ 'x' }, '>', '>gv')
 
 -- new file in current directory
-vim.keymap.set({ 'n' }, '<Leader>n', [[:e <C-R>=expand("%:p:h") . "/" <CR>]])
+vim.keymap.set(
+	{ 'n' },
+	'<Leader>n',
+	[[:e <C-R>=expand("%:p:h") . "/" <CR>]],
+	{ desc = 'Create [n]ew file in CWD' }
+)
 
 vim.keymap.set({ 'n' }, '<Leader>p', [[:t.<left><left>]])
-vim.keymap.set({ 'n' }, '<leader>e', [[:exe getline(line('.'))<cr>]])
+vim.keymap.set(
+	{ 'n' },
+	'<leader>e',
+	[[:exe getline(line('.'))<cr>]],
+	{ desc = '[E]xecute current line' }
+)
 
 -- qq to record, Q to replay
-vim.keymap.set({ 'n' }, 'Q', '@@')
+vim.keymap.set({ 'n' }, 'Q', '@@', { desc = 'Replay [Q] macro' })
 
 -- Make dot work in visual mode
-vim.keymap.set({ 'v' }, '.', ':norm.<CR>')
+vim.keymap.set({ 'v' }, '.', ':norm.<CR>', { desc = 'Repeat in visual mode' })
 
 -- For neovim terminal :term
 -- nnoremap <leader>t  :vsplit +terminal<cr>
@@ -118,23 +116,33 @@ au.augroup('__MyTerm__', {
 
 vim.keymap.set({ 'n' }, '<leader>z', ':call utils#ZoomToggle()<cr>', {
 	silent = true,
+	desc = 'Toggle buffer [z]ooming',
 })
 
-vim.keymap.set({ 'n' }, '<c-g>', ':call utils#SynStack()<cr>')
+-- Do I need this? seems like not useful with treesitter
+vim.keymap.set(
+	{ 'n' },
+	'<c-g>',
+	':call utils#SynStack()<cr>',
+	{ desc = 'Show highlighting groups for current word' }
+)
 
 vim.keymap.set({ 'v' }, '<Leader>hu', ':call utils#HtmlUnEscape()<cr>', {
 	remap = true,
 	silent = true,
+	desc = '[H]tml [U]nescape',
 })
 
 vim.keymap.set({ 'v' }, '<Leader>he', ':call utils#HtmlEscape()<cr>', {
 	remap = true,
 	silent = true,
+	desc = '[H]tml [E]scape',
 })
 
 -- maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 vim.keymap.set({ 'n' }, 'gof', ':call utils#OpenFileFolder()<cr>', {
 	silent = true,
+	desc = '[G]o [o]pen [f]older',
 })
 
 -- Allows you to visually select a section and then hit @ to run a macro on all lines
@@ -144,13 +152,19 @@ vim.cmd [[function! ExecuteMacroOverVisualRange()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction]]
 
-vim.keymap.set({ 'x' }, '@', ':<C-u>call ExecuteMacroOverVisualRange()<CR>')
+vim.keymap.set(
+	{ 'x' },
+	'@',
+	':<C-u>call ExecuteMacroOverVisualRange()<CR>',
+	{ desc = 'Execute macro over visual range' }
+)
 
+-- Conflicts with LSP K, LSP takes precenedence, so this is a fallback?
 vim.keymap.set(
 	{ 'n' },
 	'K',
 	[[:<C-U>exe 'help '. utils#helptopic()<CR>]],
-	{ silent = true, buffer = true }
+	{ silent = true, buffer = true, desc = 'Show help topic if available' }
 )
 
 -- Quick note taking per project
@@ -158,7 +172,7 @@ vim.keymap.set(
 	{ 'n' },
 	'<Localleader>t',
 	':tab drop .git/todo.md<CR>',
-	{ remap = true }
+	{ remap = true, desc = 'Add project [t]odos' }
 )
 
 -- More easier increment/decrement mappings

@@ -93,13 +93,13 @@ return {
 					'n',
 					'K',
 					require('hover').hover,
-					{ desc = 'hover.nvim' }
+					{ desc = 'Open hover popup' }
 				)
 				vim.keymap.set(
 					'n',
 					'gK',
 					require('hover').hover_select,
-					{ desc = 'hover.nvim (select)' }
+					{ desc = 'Select hover popup source' }
 				)
 			end,
 		},
@@ -211,27 +211,56 @@ return {
 				{ 'n' },
 				'<leader>a',
 				'<cmd>lua vim.lsp.buf.code_action()<CR>',
+				{ desc = 'Code [A]ctions' },
 			},
-			{ { 'n' }, '<leader>f', '<cmd>lua vim.lsp.buf.references()<CR>' },
-			{ { 'n' }, '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>' },
-			-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>' },
+			{
+				{ 'n' },
+				'<leader>f',
+				'<cmd>lua vim.lsp.buf.references()<CR>',
+				{ desc = 'Show Re[f]erences' },
+			},
+			{
+				{ 'n' },
+				'<leader>r',
+				'<cmd>lua vim.lsp.buf.rename()<CR>',
+				{ desc = '[R]ename Symbol' },
+			},
+			-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {desc = "Open Hover popup"} },
 			{
 				{ 'n' },
 				'<leader>ld',
 				'<cmd>lua vim.diagnostic.open_float(nil, { focusable = false,  close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
+				{ desc = '[L]ist [D]iagnostics' },
 			},
-			{ { 'n' }, '[d', '<cmd>lua vim.diagnostic.goto_next()<cr>' },
-			{ { 'n' }, ']d', '<cmd>lua vim.diagnostic.goto_prev()<CR>' },
-			{ { 'n' }, '<C-]>', '<cmd>lua vim.lsp.buf.definition()<CR>' },
+			{
+				{ 'n' },
+				'[d',
+				'<cmd>lua vim.diagnostic.goto_next()<cr>',
+				{ desc = 'Next diagnostic' },
+			},
+			{
+				{ 'n' },
+				']d',
+				'<cmd>lua vim.diagnostic.goto_prev()<CR>',
+				{ desc = 'Prev diagnostic' },
+			},
+			{
+				{ 'n' },
+				'<C-]>',
+				'<cmd>lua vim.lsp.buf.definition()<CR>',
+				{ desc = 'Go To Definition' },
+			},
 			{
 				{ 'n' },
 				'<leader>D',
 				'<cmd>lua vim.lsp.buf.declaration()<CR>',
+				{ desc = 'Go to [D]eclaration' },
 			},
 			{
 				{ 'n' },
 				'<leader>i',
 				'<cmd>lua vim.lsp.buf.implementation()<CR>',
+				{ desc = 'Go to [I]mplementation' },
 			},
 		}
 
@@ -269,15 +298,14 @@ return {
 			-- MAPPINGS
 			-- ---------------
 			for _, item in ipairs(mappings) do
-				local modes, lhs, rhs = item[1], item[2], item[3]
+				local extra_opts = table.remove(item, 4)
+				local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
 
-				if lhs == 'K' then
-					if vim.api.nvim_buf_get_option(bufnr, 'filetype') ~= 'vim' then
-						vim.keymap.set(modes, lhs, rhs, map_opts)
-					end
-				else
-					vim.keymap.set(modes, lhs, rhs, map_opts)
-				end
+				table.insert(item, 4, merged_opts)
+
+				local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
+
+				vim.keymap.set(modes, lhs, rhs, opts)
 			end
 
 			-- ---------------

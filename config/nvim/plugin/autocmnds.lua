@@ -104,9 +104,9 @@ au.augroup('__myautocmds__', {
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = 'package.json',
 		callback = function()
-			vim.keymap.set({ 'n' }, 'gx', function()
+			vim.keymap.set({ 'n' }, '<leader>gx', function()
 				utils.package_json_gx()
-			end, { buffer = true, silent = true })
+			end, { buffer = true, silent = true, desc = '[G]o to [p]ackage' })
 		end,
 	},
 	{

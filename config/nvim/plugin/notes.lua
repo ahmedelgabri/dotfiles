@@ -22,10 +22,16 @@ end, { nargs = '*', bang = true })
 vim.keymap.set(
 	{ 'n' },
 	'<leader>zn',
-	":ZkNew {dir = vim.fn.input('Target dir: '), title = vim.fn.input('Title: ') }<CR>"
+	":ZkNew {dir = vim.fn.input('Target dir: '), title = vim.fn.input('Title: ') }<CR>",
+	{ desc = 'Create new ZK note' }
 )
 
-vim.keymap.set({ 'n' }, '<leader>sn', ':Notes<CR>', { silent = true })
+vim.keymap.set(
+	{ 'n' },
+	'<leader>sn',
+	':Notes<CR>',
+	{ silent = true, desc = '[S]earch [N]otes' }
+)
 vim.keymap.set({ 'n' }, '<localleader>o', function()
 	notes.open_in_obsidian()
-end, { silent = true })
+end, { silent = true, desc = '[O]pen in Obsidian' })
