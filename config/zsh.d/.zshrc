@@ -95,18 +95,7 @@ autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.z
 
 zinit cdreplay -q
 
-############### Kitty
-if test -n "$KITTY_INSTALLATION_DIR"; then
-  export KITTY_SHELL_INTEGRATION="no-cursor"
-  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
-  kitty-integration
-  unfunction kitty-integration
-fi
-
-if [[ ! -z "${KITTY_WINDOW_ID}" ]]; then
-  kitty + complete setup zsh | source /dev/stdin
-fi
-
+############### Misc
 if [ "$(uname)" = "Darwin" ]; then
   # For context https://github.com/github/hub/pull/1962
   # I run in the background to not affect startup time.
