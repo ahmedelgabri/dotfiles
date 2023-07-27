@@ -52,13 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Nix LSP https://github.com/oxalica/nil
-    nil = {
-      url = "github:oxalica/nil";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-    };
-
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -109,7 +102,6 @@
           overlays = [
             self.overlay
             inputs.rust-overlay.overlays.default
-            inputs.nil.overlays.default
           ];
         };
 
