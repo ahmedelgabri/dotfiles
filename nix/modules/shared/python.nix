@@ -30,6 +30,7 @@ in
                 ]))
               # nixos.python38Packages.httpx
               ruff
+              # nodePackages.pyright
             ];
         };
 

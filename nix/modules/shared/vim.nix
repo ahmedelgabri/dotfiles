@@ -56,7 +56,6 @@ in
           nodePackages.dockerfile-language-server-nodejs
           nodePackages.typescript-language-server
           nodePackages.vim-language-server
-          nodePackages.pyright
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
           selene # Lua linter

@@ -360,7 +360,6 @@ return {
 			vimls = {
 				init_options = { isNeovim = true },
 			},
-			pyright = {},
 			dockerls = {},
 			clojure_lsp = {},
 			eslint = {},
