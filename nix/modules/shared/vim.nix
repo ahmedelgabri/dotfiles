@@ -34,8 +34,6 @@ in
         MANPAGER = "$EDITOR +Man!";
       };
 
-      environment.shellAliases.e = "$EDITOR --listen /tmp/nvim.pipe";
-
       my.user = {
         packages = with pkgs; [
           fzf

@@ -10,6 +10,7 @@ alias sudo="sudo "
 alias type='type -a'
 
 alias c="clear "
+alias e='$EDITOR --listen /tmp/nvim.pipe'
 alias cask="brew --cask "
 alias df="df -kh"
 alias du="du -kh"
