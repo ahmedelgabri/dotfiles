@@ -24,74 +24,72 @@
 
 set -e
 
-if ! (tmux list-sessions | cut -d ':' -f 1 | grep -q ^"$SESSION"\$); then
-  mx-init
-fi
-
 MX_START="./.mx-start"
 
 get_session() {
-  if [ -z "$1" ]; then
-    # tmux 1.9a+ doesn't like .'s in session names
-    pwd | awk -F"/" '{print $NF}'
-  else
-    echo "$1" | awk -F"/" '{print $NF}'
-  fi
+	if [ -z "$1" ]; then
+		# tmux 1.9a+ doesn't like .'s in session names
+		pwd | awk -F"/" '{print $NF}'
+	else
+		echo "$1" | awk -F"/" '{print $NF}'
+	fi
 }
 
 SESSION="$(get_session "$1")"
 
 if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
-  WORKINGDIR=""
+	mx-init
 
-  if [ -d "$WORK/$SESSION/$2" ]; then
-    WORKINGDIR="$WORK/$SESSION/$2"
-  elif [ -d "$WORK/$SESSION" ]; then
-    WORKINGDIR="$WORK/$SESSION"
-  elif [ -d "$PROJECTS/$SESSION" ]; then
-    WORKINGDIR="$PROJECTS/$SESSION"
-  else
-    WORKINGDIR="$HOME"
-  fi
+	WORKINGDIR=""
 
-  if [ -n "$WORKINGDIR" ]; then
-    cd "$WORKINGDIR"
-    tmux new-session -d -s "$SESSION"
-    tmux select-window -t "$SESSION"
-    # Sometimes I need to setup some project specific stuff & run some commands
-    if [ -x "$MX_START" ]; then
-      tmux send-keys "$MX_START" C-m
-    fi
-  fi
+	if [ -d "$WORK/$SESSION/$2" ]; then
+		WORKINGDIR="$WORK/$SESSION/$2"
+	elif [ -d "$WORK/$SESSION" ]; then
+		WORKINGDIR="$WORK/$SESSION"
+	elif [ -d "$PROJECTS/$SESSION" ]; then
+		WORKINGDIR="$PROJECTS/$SESSION"
+	else
+		WORKINGDIR="$HOME"
+	fi
 
-  if tmux has-session -t _shared:mail 2>/dev/null; then
-    tmux link-window -s _shared:mail -t 6
-  fi
+	if [ -n "$WORKINGDIR" ]; then
+		cd "$WORKINGDIR"
+		tmux new-session -d -s "$SESSION"
+		tmux select-window -t "$SESSION"
+		# Sometimes I need to setup some project specific stuff & run some commands
+		if [ -x "$MX_START" ]; then
+			tmux send-keys "$MX_START" C-m
+		fi
+	fi
 
-  if tmux has-session -t _shared:rss 2>/dev/null; then
-    tmux link-window -s _shared:rss -t 7
-  fi
+	if tmux has-session -t _shared:mail 2>/dev/null; then
+		tmux link-window -s _shared:mail -t 6
+	fi
 
-  if tmux has-session -t _shared:dotfiles 2>/dev/null; then
-    tmux link-window -s _shared:dotfiles -t 8
-  fi
+	if tmux has-session -t _shared:rss 2>/dev/null; then
+		tmux link-window -s _shared:rss -t 7
+	fi
 
-  if tmux has-session -t _shared:notes 2>/dev/null; then
-    tmux link-window -s _shared:notes -t 9
-  fi
+	if tmux has-session -t _shared:dotfiles 2>/dev/null; then
+		tmux link-window -s _shared:dotfiles -t 8
+	fi
 
-  if tmux has-session -t _shared:reddit 2>/dev/null; then
-    tmux link-window -s _shared:reddit -t 10
-  fi
+	if tmux has-session -t _shared:notes 2>/dev/null; then
+		tmux link-window -s _shared:notes -t 9
+	fi
 
-  if tmux has-session -t _shared:weechat 2>/dev/null; then
-    tmux link-window -s _shared:weechat -t 11
-  fi
-  tmux select-window -t 1
+	if tmux has-session -t _shared:reddit 2>/dev/null; then
+		tmux link-window -s _shared:reddit -t 10
+	fi
+
+	if tmux has-session -t _shared:weechat 2>/dev/null; then
+		tmux link-window -s _shared:weechat -t 11
+	fi
+	tmux select-window -t 1
 fi
 
 if [ -z "$TMUX" ]; then
-  tmux attach -t "$SESSION"
+	tmux attach -t "$SESSION"
 else
-  tmux switch-client -t "$SESSION"
+	tmux switch-client -t "$SESSION"
 fi
