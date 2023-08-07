@@ -21,6 +21,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -56,7 +57,7 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = { self, ... }@inputs:
+  outputs = { self, flake-utils, ... }@inputs:
     let
       sharedHostsConfig = { config, pkgs, ... }: {
         nix = {
@@ -190,5 +191,14 @@
           ];
         };
       };
-    };
+    } // flake-utils.lib.eachDefaultSystem (system: {
+      devShells = let pkgs = inputs.nixpkgs.legacyPackages.${system}; in {
+        default = pkgs.mkShell {
+          name = "dotfiles";
+          buildInputs = with pkgs; [ hello ];
+        };
+      };
+
+      # default = (pkgs.writeShellScriptBin "foo" ''echo "foo" ''));
+    });
 }
