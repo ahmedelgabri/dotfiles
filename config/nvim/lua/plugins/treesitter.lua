@@ -141,7 +141,10 @@ return {
 						and p ~= 'query'
 				end, parsers.available_parsers()),
 			},
-			context_commentstring = { enable = true },
+			context_commentstring = {
+				enable = true,
+				enable_autocmd = false,
+			},
 		}
 	end,
 }
