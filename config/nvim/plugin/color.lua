@@ -114,6 +114,9 @@ au.augroup('__MyCustomColors__', {
 			hl.group('NvimTreeGitRenamed', { link = 'DiffChange' })
 			hl.group('NvimTreeGitNew', { link = 'DiffAdd' })
 			hl.group('NvimTreeGitDeleted', { link = 'DiffDelete' })
+
+			hl.group('MiniIndentscopeSymbol', { link = 'Comment' })
+			hl.group('MiniIndentscopeSymbolOff', { link = 'MiniIndentscopeSymbol' })
 		end,
 	},
 	---------------------------------------------------------------

@@ -21,9 +21,6 @@ return {
 	{
 		'https://github.com/echasnovski/mini.indentscope',
 		config = function()
-			vim.cmd [[hi! link MiniIndentscopeSymbol Comment]]
-			vim.cmd [[hi! link MiniIndentscopeSymbolOff Comment]]
-
 			-- disable in some buffers
 			vim.api.nvim_create_autocmd('FileType', {
 				pattern = {
