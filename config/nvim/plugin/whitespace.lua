@@ -18,14 +18,4 @@ au.augroup('__my_whitespace__', {
 			end
 		end,
 	},
-	-- {
-	--   event = 'BufWritePre',
-	--   pattern = '*',
-	--   command = [[v/\_s*\S/d']],
-	-- },
-	-- {
-	--   event = 'BufWritePre',
-	--   pattern = '*',
-	--   command = [[call utils#Preserve("%s#\($\n\s*\)\+\%$##")]],
-	-- },
 })
