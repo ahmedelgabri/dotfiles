@@ -393,6 +393,9 @@ return {
 							setType = true,
 							paramName = 'Disable',
 						},
+						doc = {
+							privateName = { '^_' },
+						},
 						format = { enable = false },
 						diagnostics = {
 							globals = {
@@ -410,8 +413,8 @@ return {
 						},
 						workspace = {
 							checkThirdParty = false,
-							maxPreload = 2000,
-							preloadFileSize = 2000,
+							maxPreload = 1000,
+							preloadFileSize = 1000,
 							library = {
 								['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
 							},
