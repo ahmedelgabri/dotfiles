@@ -27,5 +27,26 @@ in
       } else {
         my.user = { packages = with pkgs; [ wezterm ]; };
       })
+
+
+      {
+        my.env = {
+          TERMINFO_DIRS = [
+            "${pkgs.wezterm.terminfo}/share/terminfo"
+          ];
+        };
+
+        my.hm.file = {
+          ".config/wezterm" = {
+            recursive = true;
+            source = ../../../config/wezterm;
+          };
+
+          ".config/wezterm/terminfo.lua" = {
+            text = ''return "${"${pkgs.wezterm.terminfo}/share/terminfo"}"'';
+          };
+        };
+      }
     ]);
+
 }
