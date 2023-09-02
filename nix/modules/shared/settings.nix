@@ -61,7 +61,11 @@ in
         type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
         apply = mapAttrs (n: v:
           if isList v then
-            concatMapStringsSep ":" toString v
+            if n == "TERMINFO_DIRS" then
+            # Home-manager and sets it before nix-darwin so instead of overriding it we append to it
+              "$TERMINFO_DIRS:" + concatMapStringsSep ":" toString v
+            else
+              concatMapStringsSep ":" toString v
           else
             (toString v));
         default = { };
