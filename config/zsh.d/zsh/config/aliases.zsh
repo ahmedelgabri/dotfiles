@@ -29,14 +29,14 @@ alias kitty='SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt" kitty '
 
 (( $+commands[htop] )) && alias top=htop
 
-if (( $+commands[exa] )); then
-  alias ls="exa "
-  alias ll='exa --tree --group-directories-first -I "node_modules" '
+if (( $+commands[eza] )); then
+  alias ls="eza "
+  alias ll='eza --tree --group-directories-first -I "node_modules" '
 elif (( $+commands[tree] )); then
   alias ll="type tree >/dev/null && tree --dirsfirst -a -L 1 || l -d .*/ */ "
   alias tree='tree -I  "node_modules" '
 else
-  alias ll="echo 'You have to install exa or tree'"
+  alias ll="echo 'You have to install eza or tree'"
 fi
 
 if (( $+commands[jq] )) then;
