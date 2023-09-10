@@ -23,6 +23,7 @@ in
           "1password"
           "raycast"
           "anki"
+          # "arc"
           "appcleaner"
           "corelocationcli"
           "brave-browser"
