@@ -7,7 +7,6 @@
     website = "https://miro.com";
     modules = {
       macos.enable = true;
-      kotlin.enable = true;
       gpg.enable = true;
       mail = {
         enable = true;
@@ -42,6 +41,8 @@
       graph-easy
       graphviz
       nodePackages.mermaid-cli
+      kotlin
+      klint
     ];
   };
 

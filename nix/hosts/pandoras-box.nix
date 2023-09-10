@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }: {
+{ config, ... }: {
   imports = [ ../modules/darwin ];
 
   nix = {
@@ -16,8 +16,6 @@
 
       mail = { enable = true; };
       irc.enable = true;
-      rescript.enable = false;
-      clojure.enable = true;
       gpg.enable = true;
       discord.enable = true;
       hledger.enable = true;

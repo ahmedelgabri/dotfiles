@@ -15,8 +15,7 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      # workaround for now see https://github.com/NixOS/nixpkgs/issues/145634
-      homebrew.brews = [ "yarn" "pnpm" ];
+      # I don't install any packages here because I use shell.nix for each project, so no need for globals
       my = {
         env = with config.my; {
           NODE_REPL_HISTORY = "$XDG_CACHE_HOME/node_repl_history";
@@ -26,12 +25,6 @@ in
           NPM_CONFIG_INIT_AUTHOR_URL = website;
           NPM_CONFIG_INIT_LICENSE = "MIT";
           NPM_CONFIG_INIT_VERSION = "0.0.0";
-        };
-
-        user = {
-          packages = with pkgs; [
-            nodePackages.svgo
-          ];
         };
 
         hm.file = {

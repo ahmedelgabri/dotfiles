@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 let
 
@@ -19,14 +19,6 @@ in
       my.env = {
         RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
         CARGO_HOME = "$XDG_DATA_HOME/cargo";
-      };
-
-      my.user = {
-        packages = with pkgs; [
-          rust-bin.stable.latest.default
-          rust-analyzer-unwrapped
-          # rustup rustc cargo
-        ];
       };
     };
 }

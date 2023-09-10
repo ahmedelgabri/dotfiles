@@ -20,7 +20,5 @@ in
         GOPATH = "$XDG_DATA_HOME/go";
         GOBIN = "${GOPATH}/bin";
       };
-
-      my.user = { packages = with pkgs; [ go ]; };
     };
 }

@@ -19,14 +19,10 @@
     ./misc.nix
     ./vim.nix
     ./node.nix
-    ./deno.nix
-    ./kotlin.nix
     ./irc.nix
     ./go.nix
     ./rust.nix
-    ./rescript.nix
     ./gui.nix
-    ./clojure.nix
     ./python.nix
     ./discord.nix
     ./hledger.nix
@@ -54,7 +50,6 @@
     yt-dlp.enable = lib.mkDefault true;
 
     node.enable = lib.mkDefault true;
-    deno.enable = lib.mkDefault true;
     go.enable = lib.mkDefault true;
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;

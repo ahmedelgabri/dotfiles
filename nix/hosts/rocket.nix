@@ -7,7 +7,6 @@
     website = "https://miro.com";
     modules = {
       macos.enable = true;
-      kotlin.enable = true;
       gpg.enable = true;
       mail = {
         enable = true;
@@ -44,6 +43,8 @@
       nodePackages.mermaid-cli
       emanote
       # go-jira
+      kotlin
+      klint
       jira-cli-go
     ];
   };

@@ -48,11 +48,6 @@
       flake = false;
     };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -102,7 +97,6 @@
           config = { allowUnfree = true; };
           overlays = [
             self.overlay
-            inputs.rust-overlay.overlays.default
           ];
         };
 

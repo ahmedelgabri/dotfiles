@@ -32,8 +32,6 @@
       mail = { enable = true; };
       youtube-dl.enable = true;
       irc.enable = true;
-      rescript.enable = true;
-      clojure.enable = true;
       discord.enable = true;
     };
   };
