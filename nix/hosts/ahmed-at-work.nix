@@ -41,8 +41,6 @@
       graph-easy
       graphviz
       nodePackages.mermaid-cli
-      kotlin
-      klint
     ];
   };
 

@@ -43,8 +43,6 @@
       nodePackages.mermaid-cli
       emanote
       # go-jira
-      kotlin
-      klint
       jira-cli-go
     ];
   };
