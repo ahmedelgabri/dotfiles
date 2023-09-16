@@ -24,14 +24,6 @@ local function setup_null(on_attach)
 			nls.builtins.diagnostics.ruff,
 			nls.builtins.diagnostics.hadolint,
 			nls.builtins.diagnostics.vint,
-			nls.builtins.diagnostics.vale.with {
-				filetypes = {
-					'asciidoc',
-					'markdown',
-					'tex',
-					'text',
-				},
-			},
 			nls.builtins.diagnostics.statix,
 			nls.builtins.diagnostics.dotenv_linter,
 		},

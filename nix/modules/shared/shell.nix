@@ -109,7 +109,6 @@ in
               monolith
               wallabag
               difftastic
-              vale
               ffmpeg
               slides # CLI markdown presentation tool
               # emanote # Only aarch64-darwin
@@ -125,13 +124,6 @@ in
             ".terminfo" = {
               recursive = true;
               source = ../../../config/.terminfo;
-            };
-            ".config/vale" = {
-              recursive = true;
-              source = ../../../config/vale;
-            };
-            ".vale.ini" = {
-              source = ../../../config/.vale.ini;
             };
             ".config/direnv/direnvrc" = {
               text = "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
