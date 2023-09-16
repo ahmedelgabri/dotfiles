@@ -5,8 +5,6 @@ local function setup_null(on_attach)
 		return
 	end
 
-	local h = require 'null-ls.helpers'
-
 	nls.setup {
 		debug = true,
 		debounce = 150,
