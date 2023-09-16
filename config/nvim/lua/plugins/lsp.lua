@@ -26,6 +26,12 @@ local function setup_null(on_attach)
 			nls.builtins.diagnostics.vint,
 			nls.builtins.diagnostics.statix,
 			nls.builtins.diagnostics.dotenv_linter,
+			nls.builtins.diagnostics.actionlint.with {
+				condition = function()
+					local cwd = vim.fn.expand '%:p:.'
+					return cwd:find '.github/workflows'
+				end,
+			},
 		},
 	}
 end
