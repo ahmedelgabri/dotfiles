@@ -15,17 +15,15 @@ local function setup_null(on_attach)
 			-- nixlinter,
 			nls.builtins.diagnostics.shellcheck.with {
 				filetypes = { 'sh', 'bash' },
-				runtime_condition = h.cache.by_bufnr(function(params)
-					-- don't run on .env files, which are also set to sh
-					return params.bufname:match '%.env.*' == nil
-						or params.bufname:match '%.env' == nil
-				end),
 			},
 			nls.builtins.diagnostics.ruff,
 			nls.builtins.diagnostics.hadolint,
 			nls.builtins.diagnostics.vint,
 			nls.builtins.diagnostics.statix,
-			nls.builtins.diagnostics.dotenv_linter,
+			nls.builtins.diagnostics.dotenv_linter.with {
+				filetypes = { 'dotenv' },
+				extra_args = { '--skip', 'UnorderedKey' },
+			},
 			nls.builtins.diagnostics.actionlint.with {
 				condition = function()
 					local cwd = vim.fn.expand '%:p:.'

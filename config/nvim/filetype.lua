@@ -4,19 +4,24 @@ end
 
 vim.filetype.add {
 	extension = {
-		mdx = 'markdown.mdx',
+		mdx = 'mdx',
+		log = 'log',
+		conf = 'conf',
+		env = 'dotenv',
 	},
 	filename = {
 		['.envrc'] = 'bash',
+		['.env'] = 'dotenv',
 		['.stylelintrc'] = 'json',
 		Brewfile = 'ruby',
 		['turbo.json'] = 'jsonc',
+		['nx.json'] = 'jsonc',
 	},
 	pattern = {
 		['tsconfig.*%.json'] = 'jsonc',
-		-- .env.* files to match the filetype for .env, needed also to make sure
-		-- dotenv-linter with null-ls works correctly
-		['%.env%..*'] = 'sh',
+		-- INFO: Match filenames like - ".env.example", ".env.local" and so on
+		-- needed to make dotenv-linter with null-ls works correctly
+		['%.env%.[%w_.-]+'] = 'dotenv',
 		['.*%.gradle'] = 'groovy',
 	},
 }
