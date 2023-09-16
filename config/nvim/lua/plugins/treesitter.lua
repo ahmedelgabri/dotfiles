@@ -138,5 +138,7 @@ return {
 				enable_autocmd = false,
 			},
 		}
+
+		vim.treesitter.language.register('markdown', 'mdx')
 	end,
 }

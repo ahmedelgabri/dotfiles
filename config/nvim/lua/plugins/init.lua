@@ -168,10 +168,6 @@ return {
 	},
 	-- Syntax {{{
 	{ 'https://github.com/jez/vim-github-hub' },
-	{
-		'https://github.com/jxnblk/vim-mdx-js',
-		ft = { 'mdx', 'markdown.mdx' },
-	},
 	-- }}}
 
 	-- Git {{{
