@@ -55,6 +55,8 @@
   outputs = { self, flake-utils, ... }@inputs:
     let
       sharedHostsConfig = { config, pkgs, ... }: {
+        # enable sudo authentication with Touch ID
+        security.pam.enableSudoTouchIdAuth = pkgs.stdenv.isDarwin;
         nix = {
           useDaemon = true;
           nixPath = [
@@ -90,7 +92,19 @@
 
         fonts = {
           fontDir.enable = true;
-          fonts = with pkgs; [ pragmatapro ];
+          fonts = with pkgs; [ pragmatapro ] ++ (lib.optionals
+            pkgs.stdenv.isLinux [
+            noto-fonts
+            noto-fonts-cjk
+            noto-fonts-emoji
+            # liberation_ttf
+            fira-code
+            fira-code-symbols
+            mplus-outline-fonts
+            dina-font
+            proggyfonts
+            (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+          ]);
         };
 
         nixpkgs = {
@@ -109,8 +123,18 @@
           # generateCaches = true;
         };
 
-      };
+        # Used for backwards compatibility, please read the changelog before changing.
+        # $ darwin-rebuild changelog
 
+        # This value determines the NixOS release from which the default
+        # settings for stateful data, like file locations and database versions
+        # on your system were taken. It‘s perfectly fine and recommended to leave
+        # this value at the release version of the first install of this system.
+        # Before changing this value read the documentation for this option
+        # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+        # https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
+        system.stateVersion = if pkgs.stdenv.isDarwin then 4 else "20.09"; # Did you read the comment?
+      };
     in
     {
       overlay = _: prev: {
@@ -190,12 +214,19 @@
         };
       };
     } // flake-utils.lib.eachDefaultSystem (system: {
-      devShells = let pkgs = inputs.nixpkgs.legacyPackages.${system}; in {
-        default = pkgs.mkShell {
-          name = "dotfiles";
-          buildInputs = with pkgs; [ hello ];
+      # @TODO: move the logic inside ./install here
+      devShells =
+        let
+          pkgs = inputs.nixpkgs.legacyPackages.${system};
+          homebrewInstall = pkgs.writeShellScriptBin "homebrewInstall" ''${pkgs.bash}/bin/bash -c "$(${pkgs.curl}/bin/curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'';
+        in
+        {
+          default = pkgs.mkShell {
+            name = "dotfiles";
+            buildInputs = with pkgs; [ hello ] ++ (lib.optionals pkgs.stdenv.isDarwin [ homebrewInstall ]);
+            # shellHook = ''echo "hi"'';
+          };
         };
-      };
 
       # default = (pkgs.writeShellScriptBin "foo" ''echo "foo" ''));
     });

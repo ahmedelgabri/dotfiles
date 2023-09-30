@@ -157,19 +157,6 @@
 
   environment.shellAliases.l = null;
 
-  fonts.fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    # liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts
-    dina-font
-    proggyfonts
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
-  ];
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -202,13 +189,4 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  # https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
-  system.stateVersion = "20.09"; # Did you read the comment?
 }
