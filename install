@@ -209,8 +209,8 @@ clone_dotfiles() {
 }
 
 install() {
-	if [ "$(uname)" == "Darwin" ]; then
-		if command -v nix >/dev/null; then
+	if command -v nix >/dev/null; then
+		if [ "$(uname)" == "Darwin" ]; then
 			log_info "Building flakes..."
 
 			cd "$DOTFILES_DIR"
@@ -235,9 +235,9 @@ install() {
 			sudo -u "$SUDO_USER" mv /etc/nix/nix.conf /etc/nix/nix.conf.old
 
 			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname -s)"
+		else
+			sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname -s)"
 		fi
-	else
-		sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname -s)"
 	fi
 }
 
