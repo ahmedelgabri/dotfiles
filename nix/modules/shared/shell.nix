@@ -113,6 +113,7 @@ in
               slides # CLI markdown presentation tool
               # emanote # Only aarch64-darwin
               ast-grep
+              glow
             ];
           };
 
