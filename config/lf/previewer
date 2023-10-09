@@ -23,7 +23,13 @@ text/troff)
 	man ./ "$1" | col -b
 	;;
 text/* | */xml | application/json)
-	bat --style=numbers,changes --terminal-width "$WIDTH" --wrap never --color always "$FILE"
+	if [[ $FILE == *.md ]]; then
+		# Need `-s dark` to force color outside of interactive shell:
+		# https://github.com/charmbracelet/glow/issues/440
+		glow -s dark --width "$WIDTH" "$FILE"
+	else
+		bat --style=numbers,changes --terminal-width "$WIDTH" --wrap never --color always "$FILE"
+	fi
 	;;
 application/pdf)
 	termpdf.py "$FILE"
