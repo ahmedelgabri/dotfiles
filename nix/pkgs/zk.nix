@@ -1,6 +1,6 @@
-{ lib, buildGo118Module, source }:
+{ lib, buildGo121Module, source }:
 
-buildGo118Module rec {
+buildGo121Module rec {
   pname = "zk";
   version = "main";
 
