@@ -23,5 +23,6 @@ vim.filetype.add {
 		-- needed to make dotenv-linter with null-ls works correctly
 		['%.env%.[%w_.-]+'] = 'dotenv',
 		['.*%.gradle'] = 'groovy',
+		['.*/%.github/.*%.y*ml'] = 'yaml.github',
 	},
 }
