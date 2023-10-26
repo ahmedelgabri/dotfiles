@@ -23,30 +23,14 @@
 	diffFilter = delta_ --color-only --features=interactive
 
 [delta]
-	syntax-theme = none
+	syntax-theme = ansi
 	navigate = true # use n and N to move between diff sections
 	hyperlinks = true
 	file-modified-label = MODIFIED:
 	file-removed-label  = REMOVED:
 	file-added-label    = ADDED:
 	file-renamed-label  = RENAMED:
-	features = labels decorations
-
-[delta "decorations"]
-	whitespace-error-style = 22 reverse
-	zero-style = 8
-	commit-decoration-style = bold yellow box
-	hunk-header-style = 8
-	hunk-header-decoration-style = black box
-	file-style = yellow italic
-	file-decoration-style = none
-	minus-style = strike 088
-	minus-emph-style = 001 052
-	plus-style = italic 034
-	plus-emph-style = italic black 034
-	line-numbers-zero-style = 235
-	line-numbers-minus-style = 088
-	line-numbers-plus-style = 034
+	features = labels
 
 [branch]
 	autoSetupMerge = always
