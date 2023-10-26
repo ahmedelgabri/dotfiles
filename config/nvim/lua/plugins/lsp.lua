@@ -6,7 +6,7 @@ local function setup_null(on_attach)
 	end
 
 	nls.setup {
-		debug = true,
+		debug = false,
 		debounce = 150,
 		on_attach = on_attach,
 		sources = {
