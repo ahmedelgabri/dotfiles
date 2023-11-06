@@ -352,8 +352,7 @@ in
           };
 
           ".mbsyncrc" = {
-            text = ''
-              # ${nix_managed}
+            text = ''# ${nix_managed}
               # Settings for isync, a program to syncronise IMAP mailboxes
               # This file defines the syncronisation for two accounts, Personal and Work
               # The remote for each account is a server somewhere, and the local is a folder
@@ -366,6 +365,7 @@ in
               ########################################
               Create Near
               Expunge Both
+              CopyArrivalDate yes
               SyncState *
               # TODO: support multiple accounts
               # {% for account in mail_accounts %}
@@ -374,6 +374,7 @@ in
               # ${cfg.account}
               ########################################
               IMAPAccount ${cfg.account}
+              PipelineDepth 100
               Host ${cfg.imap_server}
               User ${email}
               # Get the account password from the system Keychain
