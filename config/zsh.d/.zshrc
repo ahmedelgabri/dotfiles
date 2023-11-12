@@ -129,12 +129,6 @@ if [ -f $HOST_CONFIGS/zshrc ]; then
 	source $HOST_CONFIGS/zshrc
 fi
 
-if [ -e /etc/motd ]; then
-  if ! cmp -s ${HOME}/.hushlogin /etc/motd; then
-    tee ${HOME}/.hushlogin < /etc/motd
-  fi
-fi
-
 #
 # End profiling (uncomment when necessary)
 #

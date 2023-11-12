@@ -129,6 +129,10 @@ in
             ".config/direnv/direnvrc" = {
               text = "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
             };
+            # This is an emptyfile that's needed to get rid of the "Last login..." message when opening a new shell
+            ".hushlogin" = {
+              text = "";
+            };
           };
 
           env =
