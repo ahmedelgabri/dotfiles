@@ -19,7 +19,6 @@ in
       my.user = {
         packages = with pkgs; [
           tmux
-          tmuxPlugins.urlview
           next-prayer
         ];
       };
