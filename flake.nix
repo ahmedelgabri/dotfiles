@@ -223,7 +223,17 @@
         {
           default = pkgs.mkShell {
             name = "dotfiles";
-            buildInputs = with pkgs; [ hello ] ++ (lib.optionals pkgs.stdenv.isDarwin [ homebrewInstall ]);
+            buildInputs = with pkgs; [
+              delve # dlv
+              go
+              go-tools # staticcheck
+              gomodifytags
+              gopls
+              gotests
+              gotools # goimports
+              impl
+              revive
+            ] ++ (lib.optionals pkgs.stdenv.isDarwin [ homebrewInstall ]);
             # shellHook = ''echo "hi"'';
           };
         };
