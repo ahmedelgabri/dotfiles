@@ -4,7 +4,7 @@ buildGo121Module rec {
   name = "next-prayer";
   version = "latest";
 
-  vendorSha256 = null;
+  vendorHash = null;
 
   src = ./.;
 
