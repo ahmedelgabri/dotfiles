@@ -26,6 +26,8 @@ return {
 			return lang == 'org' or ok and stats and stats.size > max_filesize
 		end
 
+		-- See https://github.com/andreaswachowski/dotfiles/commit/853fbc1e06595ecd18490cdfad64823be8bb9971
+		--- @diagnostic disable-next-line: missing-fields
 		require('nvim-treesitter.configs').setup {
 			sync_install = false,
 			auto_install = true,
