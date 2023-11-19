@@ -12,6 +12,8 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+vim.g.skip_ts_context_commentstring_module = true
+
 return require('lazy').setup('plugins', {
 	dev = {
 		-- directory where you store your local plugin projects
