@@ -150,7 +150,7 @@ return {
 			vim.g.tmux_navigator_disable_when_zoomed = 1
 		end,
 	},
-	{ 'https://github.com/kevinhwang91/nvim-bqf' },
+	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
 	{
 		'https://github.com/rgroli/other.nvim',
 		cmd = { 'Other', 'OtherSplit', 'OtherVSplit' },
