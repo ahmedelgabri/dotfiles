@@ -125,10 +125,22 @@ return {
 			local str = require 'cmp.utils.str'
 			local luasnip = require 'luasnip'
 
+			--- @diagnostic disable-next-line: missing-fields
 			cmp.setup {
 				experimental = {
 					ghost_text = true,
 				},
+				bufIsBig = function(bufnr)
+					local max_filesize = 300 * 1024 -- 300 KB
+					local ok, stats =
+						pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+					if ok and stats and stats.size > max_filesize then
+						return true
+					else
+						return false
+					end
+				end,
+				--- @diagnostic disable-next-line: missing-fields
 				formatting = {
 					format = function(entry, vim_item)
 						-- Get the full snippet (and only keep first line)
