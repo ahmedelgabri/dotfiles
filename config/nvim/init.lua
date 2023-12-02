@@ -188,7 +188,7 @@ vim.opt.fillchars = {
 vim.opt.foldlevelstart = 99 -- start unfolded
 
 vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
