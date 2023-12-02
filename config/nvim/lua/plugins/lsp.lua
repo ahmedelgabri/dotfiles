@@ -427,6 +427,10 @@ return {
 				end,
 			},
 			tsserver = {
+				-- Prevents colliding with deno LSP, since both operate on the same filetypes
+				-- https://github.com/neovim/nvim-lspconfig/issues/2508
+				-- https://github.com/neovim/nvim-lspconfig/issues/2507
+				single_file_support = false,
 				root_dir = function(fname)
 					return not nvim_lsp.util.root_pattern(
 						'.flowconfig',
