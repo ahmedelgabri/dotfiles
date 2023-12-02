@@ -421,6 +421,19 @@ return {
 			rust_analyzer = {},
 			gopls = {
 				cmd = { 'gopls', 'serve' },
+				settings = {
+					gopls = {
+						experimentalPostfixCompletions = true,
+						analyses = {
+							unusedparams = true,
+							shadow = true,
+						},
+						staticcheck = true,
+					},
+				},
+				init_options = {
+					usePlaceholders = true,
+				},
 				root_dir = function(fname)
 					return nvim_lsp.util.root_pattern('go.mod', '.git')(fname)
 						or nvim_lsp.util.path.dirname(fname)
