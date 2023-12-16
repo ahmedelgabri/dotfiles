@@ -53,3 +53,6 @@ if [[ "$(uname)" == linux* ]]; then
   alias chmod='chmod --preserve-root -v'
   alias chown='chown --preserve-root -v'
 fi
+
+# https://github.com/neomutt/neomutt/issues/4058#issuecomment-1751682305
+alias neomutt="TERM=xterm-direct neomutt"

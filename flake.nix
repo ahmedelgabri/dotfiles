@@ -138,8 +138,6 @@
     in
     {
       overlay = _: prev: {
-        neomutt = prev.callPackage ./nix/pkgs/neomutt/default.nix { };
-
         pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix { };
 
         zk = prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; };
