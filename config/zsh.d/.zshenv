@@ -41,7 +41,7 @@ export HOMEBREW_INSTALL_BADGE="⚽️"
 ############### Pure
 export PURE_GIT_UP_ARROW="🠥"
 export PURE_GIT_DOWN_ARROW="🠧"
-export PURE_GIT_BRANCH="  "
+export PURE_GIT_BRANCH=" "
 
 # Remove path separtor from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}
