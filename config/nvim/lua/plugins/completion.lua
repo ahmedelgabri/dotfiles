@@ -9,7 +9,15 @@ return {
 		{ 'https://github.com/hrsh7th/cmp-emoji' },
 		{ 'https://github.com/f3fora/cmp-spell' },
 		{ 'https://github.com/hrsh7th/cmp-cmdline' },
-		{ 'https://github.com/hrsh7th/cmp-calc' },
+		{
+			'https://github.com/petertriho/cmp-git',
+			dependencies = {
+				'https://github.com/nvim-lua/plenary.nvim',
+			},
+			opts = {
+				filetypes = { 'gitcommit', 'octo' },
+			},
+		},
 		{ 'https://github.com/hrsh7th/cmp-nvim-lsp-signature-help' },
 	},
 	config = function()
@@ -31,7 +39,7 @@ return {
 		local sources = {
 			{ name = 'luasnip' },
 			{ name = 'nvim_lsp' },
-			{ name = 'calc' },
+			{ name = 'git' },
 			{ name = 'path' },
 			{ name = 'nvim_lsp_signature_help' },
 			{ name = 'conjure' },
