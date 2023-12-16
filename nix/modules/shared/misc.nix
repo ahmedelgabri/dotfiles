@@ -26,7 +26,6 @@ in
         };
         ".mailcap" = { source = ../../../config/.mailcap; };
         ".psqlrc" = { source = ../../../config/.psqlrc; };
-        ".urlview" = { source = ../../../config/.urlview; };
       };
     };
 }

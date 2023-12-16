@@ -92,7 +92,7 @@ in
             isync
             w3m
             notmuch
-            tmuxPlugins.urlview
+            urlscan
             tree
             pass
           ];

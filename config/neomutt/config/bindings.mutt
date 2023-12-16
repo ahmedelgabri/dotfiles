@@ -66,7 +66,7 @@ macro index *r "<untag-pattern>~T<enter><tag-pattern>~R<enter>" "select read"
 macro index *u "<untag-pattern>~T<enter><tag-pattern>~U<enter>" "select unread"
 macro pager t "<exit><tag-thread>" "tag thread"
 
-macro pager \Cu "<enter-command>set pipe_decode = yes<enter>|urlview<enter><enter-command>set pipe_decode = no<enter>" "view URLs"
+macro pager \Cu "<pipe-message> TERM=xterm-256color urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
 macro pager m "<save-message>?<toggle-mailboxes>" "move to..."
 macro index m ";<save-message>?<toggle-mailboxes>" "move to..."
@@ -88,4 +88,3 @@ macro pager A ,@aoh= "toggle alternative order"
 ## Make quick html view macro
 bind index,pager V  noop  ## Unbinds V from version
 macro index,pager V "<view-attachments><search>html<enter><view-mailcap><exit>" "Open html email in browser"
-
