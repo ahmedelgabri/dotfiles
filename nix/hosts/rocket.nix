@@ -32,8 +32,7 @@
       graph-easy
       graphviz
       nodePackages.mermaid-cli
-      emanote
-      # go-jira
+      # emanote
       jira-cli-go
     ];
   };
