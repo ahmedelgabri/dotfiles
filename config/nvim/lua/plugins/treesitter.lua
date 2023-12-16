@@ -20,10 +20,10 @@ return {
 
 		local parsers = require 'nvim-treesitter.parsers'
 
-		local disable = function(lang, buf)
-			local max_filesize = 500 * 1024 -- 500 KB
+		local is_big_file = function(_, buf)
+			local max_filesize = 100 * 1024 -- 100 KB
 			local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-			return lang == 'org' or ok and stats and stats.size > max_filesize
+			return ok and stats and stats.size > max_filesize
 		end
 
 		-- See https://github.com/andreaswachowski/dotfiles/commit/853fbc1e06595ecd18490cdfad64823be8bb9971
@@ -69,7 +69,9 @@ return {
 			highlight = {
 				enable = true,
 				use_languagetree = true,
-				disable = disable,
+				disable = function(lang, buf)
+					return lang == 'org' or is_big_file(buf)
+				end,
 				-- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
 				-- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
 				-- Required since TS highlighter doesn't support all syntax features (conceal)
