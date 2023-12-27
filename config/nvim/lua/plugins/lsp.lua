@@ -1,37 +1,3 @@
-local function setup_null(on_attach)
-	local ok, nls = pcall(require, 'null-ls')
-
-	if not ok then
-		return
-	end
-
-	nls.setup {
-		debug = false,
-		debounce = 150,
-		on_attach = on_attach,
-		sources = {
-			-- nixlinter,
-			nls.builtins.diagnostics.shellcheck.with {
-				filetypes = { 'sh', 'bash' },
-			},
-			nls.builtins.diagnostics.ruff,
-			nls.builtins.diagnostics.hadolint,
-			nls.builtins.diagnostics.vint,
-			nls.builtins.diagnostics.statix,
-			nls.builtins.diagnostics.dotenv_linter.with {
-				filetypes = { 'dotenv' },
-				extra_args = { '--skip', 'UnorderedKey' },
-			},
-			nls.builtins.diagnostics.actionlint.with {
-				condition = function()
-					local cwd = vim.fn.expand '%:p:.'
-					return cwd:find '.github/workflows'
-				end,
-			},
-		},
-	}
-end
-
 return {
 	'https://github.com/neovim/nvim-lspconfig',
 	event = { 'BufReadPre' },
@@ -54,6 +20,39 @@ return {
 			dependencies = {
 				'https://github.com/nvim-lua/plenary.nvim',
 			},
+			event = 'LspAttach',
+			config = function()
+				local ok, nls = pcall(require, 'null-ls')
+
+				if not ok then
+					return
+				end
+
+				nls.setup {
+					debug = false,
+					debounce = 150,
+					sources = {
+						-- nixlinter,
+						nls.builtins.diagnostics.shellcheck.with {
+							filetypes = { 'sh', 'bash' },
+						},
+						nls.builtins.diagnostics.ruff,
+						nls.builtins.diagnostics.hadolint,
+						nls.builtins.diagnostics.vint,
+						nls.builtins.diagnostics.statix,
+						nls.builtins.diagnostics.dotenv_linter.with {
+							filetypes = { 'dotenv' },
+							extra_args = { '--skip', 'UnorderedKey' },
+						},
+						nls.builtins.diagnostics.actionlint.with {
+							condition = function()
+								local cwd = vim.fn.expand '%:p:.'
+								return cwd:find '.github/workflows'
+							end,
+						},
+					},
+				}
+			end,
 		},
 		{
 			'https://github.com/folke/trouble.nvim',
