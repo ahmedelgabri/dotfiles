@@ -268,83 +268,87 @@ return {
 			),
 		}
 
-		local on_attach = function(client, bufnr)
-			local bufname = vim.api.nvim_buf_get_name(bufnr)
+		vim.api.nvim_create_autocmd('LspAttach', {
+			desc = 'LSP actions',
+			callback = function(event)
+				local client = vim.lsp.get_client_by_id(event.data.client_id)
+				local bufname = vim.api.nvim_buf_get_name(event.buf)
 
-			-- Don't run bash-lsp on .env files
-			-- Has to be in-sync with null-ls config for shellcheck
-			if
-				client.name == 'bashls'
-				and bufname:match '%.env' ~= nil
-				and bufname:match '%.env.*' ~= nil
-			then
-				vim.cmd.LspStop()
-				return
-			end
+				-- Don't run bash-lsp on .env files
+				-- Has to be in-sync with null-ls config for shellcheck
+				if
+					client.name == 'bashls'
+					and bufname:match '%.env' ~= nil
+					and bufname:match '%.env.*' ~= nil
+				then
+					vim.cmd.LspStop()
+					return
+				end
 
-			-- ---------------
-			-- GENERAL
-			-- ---------------
-			client.config.flags.allow_incremental_sync = true
+				-- ---------------
+				-- GENERAL
+				-- ---------------
+				client.config.flags.allow_incremental_sync = true
 
-			-- ---------------
-			-- MAPPINGS
-			-- ---------------
-			for _, item in ipairs(mappings) do
-				local extra_opts = table.remove(item, 4)
-				local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
+				-- ---------------
+				-- MAPPINGS
+				-- ---------------
+				for _, item in ipairs(mappings) do
+					local extra_opts = table.remove(item, 4)
+					local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
 
-				table.insert(item, 4, merged_opts)
+					table.insert(item, 4, merged_opts)
 
-				local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
+					local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
 
-				vim.keymap.set(modes, lhs, rhs, opts)
-			end
+					vim.keymap.set(modes, lhs, rhs, opts)
+				end
 
-			-- ---------------
-			-- AUTOCMDS
-			-- ---------------
-			if client.server_capabilities.documentHighlightProvider then
-				hl.group('LspReferenceRead', {
-					link = 'SpecialKey',
-				})
-				hl.group('LspReferenceText', {
-					link = 'SpecialKey',
-				})
-				hl.group('LspReferenceWrite', {
-					link = 'SpecialKey',
-				})
+				-- ---------------
+				-- AUTOCMDS
+				-- ---------------
+				if client.server_capabilities.documentHighlightProvider then
+					hl.group('LspReferenceRead', {
+						link = 'SpecialKey',
+					})
+					hl.group('LspReferenceText', {
+						link = 'SpecialKey',
+					})
+					hl.group('LspReferenceWrite', {
+						link = 'SpecialKey',
+					})
 
-				au.augroup('__LSP_HIGHLIGHTS__', {
-					{
-						event = 'CursorHold',
-						callback = function()
-							vim.lsp.buf.document_highlight()
-						end,
-						buffer = 0,
-					},
-					{
-						event = 'CursorMoved',
-						callback = function()
-							vim.lsp.buf.clear_references()
-						end,
-						buffer = 0,
-					},
-				})
-			end
+					au.augroup('__LSP_HIGHLIGHTS__', {
+						{
+							event = 'CursorHold',
+							callback = function()
+								vim.lsp.buf.document_highlight()
+							end,
+							buffer = 0,
+						},
+						{
+							event = 'CursorMoved',
+							callback = function()
+								vim.lsp.buf.clear_references()
+							end,
+							buffer = 0,
+						},
+					})
+				end
 
-			if client.server_capabilities.codeLensProvider then
-				au.augroup('__LSP_CODELENS__', {
-					{
-						event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-						callback = function()
-							vim.lsp.codelens.refresh()
-						end,
-						buffer = 0,
-					},
-				})
-			end
-		end
+				if client.server_capabilities.codeLensProvider then
+					au.augroup('__LSP_CODELENS__', {
+						{
+							event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
+							callback = function()
+								vim.lsp.codelens.refresh()
+							end,
+							buffer = 0,
+						},
+					})
+				end
+			end,
+		})
 
 		local servers = {
 			cssls = {},
@@ -509,7 +513,6 @@ return {
 		end
 
 		local shared = {
-			on_attach = on_attach,
 			capabilities = capabilities,
 			handlers = handlers,
 			flags = {
@@ -525,8 +528,6 @@ return {
 				nvim_lsp[server].setup(vim.tbl_deep_extend('force', shared, config))
 			end
 		end
-
-		setup_null(on_attach)
 
 		pcall(function()
 			require('zk').setup {
