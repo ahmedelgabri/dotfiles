@@ -22,7 +22,7 @@ config.set_environment_variables = {
 config.term = 'wezterm'
 
 config.font = wezterm.font_with_fallback {
-	'PragmataPro Mono Liga',
+	'PragmataPro Liga',
 	'Apple Color Emoji',
 }
 config.color_scheme = color_scheme
