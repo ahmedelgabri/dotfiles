@@ -43,11 +43,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zk = {
-      url = "github:mickael-menu/zk";
-      flake = false;
-    };
-
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -139,8 +134,6 @@
     {
       overlay = _: prev: {
         pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix { };
-
-        zk = prev.callPackage ./nix/pkgs/zk.nix { source = inputs.zk; };
 
         next-prayer = prev.callPackage
           ./config/tmux/scripts/next-prayer/next-prayer.nix
