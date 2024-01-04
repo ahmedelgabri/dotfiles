@@ -9,6 +9,7 @@ return {
 		{ 'https://github.com/hrsh7th/cmp-emoji' },
 		{ 'https://github.com/f3fora/cmp-spell' },
 		{ 'https://github.com/hrsh7th/cmp-cmdline' },
+		{ 'https://github.com/hrsh7th/cmp-calc' },
 		{
 			'https://github.com/petertriho/cmp-git',
 			dependencies = {
@@ -43,6 +44,7 @@ return {
 			{ name = 'path' },
 			{ name = 'nvim_lsp_signature_help' },
 			{ name = 'conjure' },
+			{ name = 'calc' },
 			{
 				name = 'buffer',
 				max_item_count = 10,
@@ -125,6 +127,8 @@ return {
 			Unit = '塞 ',
 			Value = ' ',
 			Variable = ' ',
+
+			calc = '󰃬 ',
 		}
 
 		local completion_loaded = pcall(function()
