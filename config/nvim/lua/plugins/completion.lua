@@ -154,6 +154,7 @@ return {
 				end,
 				--- @diagnostic disable-next-line: missing-fields
 				formatting = {
+					fields = { 'kind', 'abbr', 'menu' },
 					format = function(entry, vim_item)
 						-- Get the full snippet (and only keep first line)
 						local word = entry:get_insert_text()
@@ -182,17 +183,41 @@ return {
 
 						vim_item.abbr = word
 
-						vim_item.kind =
-							string.format('%s %s', icons[vim_item.kind], vim_item.kind)
+						if entry.source.name == 'calc' then
+							-- Get the custom icon for 'calc' source
+							-- Replace the kind glyph with the custom icon
+							vim_item.kind = icons.calc
+						else
+							vim_item.kind =
+								string.format('%s %s', icons[vim_item.kind], vim_item.kind)
+						end
 
-						vim_item.menu = menu[entry.source.name] or ''
+						local strings = vim.split(vim_item.kind, ' ', { trimempty = true })
+
+						vim_item.kind = (strings[1] or '') .. ' '
+
+						vim_item.menu = string.format(
+							' %s %s',
+							strings[3] and '(' .. strings[3] .. ')' or '',
+							menu[entry.source.name] or ''
+						)
 
 						return vim_item
 					end,
 				},
 				window = {
-					completion = cmp.config.window.bordered(),
-					documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered {
+						winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
+						col_offset = -3,
+						side_padding = 0,
+						scrollbar = false,
+					},
+					documentation = cmp.config.window.bordered {
+						winhighlight = 'Nomral:Normal,FloatBorder:Pmenu,Search:None',
+						col_offset = -3,
+						side_padding = 0,
+						scrollbar = false,
+					},
 				},
 				completion = {
 					completeopt = 'menu,menuone,noinsert',
