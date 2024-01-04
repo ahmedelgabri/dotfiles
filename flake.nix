@@ -43,6 +43,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    neovim = {
+      url = "github:neovim/neovim?dir=contrib&ref=v0.9.5";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -142,6 +148,8 @@
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
+
+        neovim-git = inputs.neovim.defaultPackage.${prev.system};
 
         notmuch = prev.notmuch.override {
           withEmacs = false;
