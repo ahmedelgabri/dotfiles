@@ -266,14 +266,12 @@ return {
 	dependencies = {
 		{
 			'https://github.com/j-hui/fidget.nvim',
-			tag = 'legacy',
 			opts = {
-				window = {
-					relative = 'editor', -- where to anchor the window, either `"win"` or `"editor"`
-					blend = 0, -- `&winblend` for the window
-				},
-				text = {
-					spinner = 'dots',
+				notification = {
+					window = {
+						relative = 'editor',
+						winblend = 0,
+					},
 				},
 			},
 		},
