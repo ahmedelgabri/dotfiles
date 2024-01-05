@@ -229,9 +229,4 @@ return {
 			},
 		},
 	},
-	-- Themes, UI & eye candy {{{
-	-- Will load from local machine on personal, from git otherwise.
-	-- Check lazy.nvim config.dev
-	{ 'ahmedelgabri/vim-colors-plain', lazy = true, dev = true },
-	-- }}}
 }

@@ -19,6 +19,5 @@ au.augroup('__MyCustomColors__', {
 	},
 })
 
--- Order is important, so autocmds above works properly
 vim.opt.background = 'dark'
-vim.cmd [[silent! colorscheme plain-lua]]
+vim.cmd [[colorscheme plain]]
