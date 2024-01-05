@@ -1,5 +1,4 @@
 local utils = require '_.utils'
-local hl = require '_.utils.highlight'
 
 local M = {}
 
