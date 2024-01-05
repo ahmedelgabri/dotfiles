@@ -319,7 +319,29 @@ return {
 			'https://github.com/folke/neodev.nvim',
 			opts = {},
 		},
-		{ 'https://github.com/mickael-menu/zk-nvim' },
+		{
+			'https://github.com/mickael-menu/zk-nvim',
+			event = 'LspAttach',
+			config = function()
+				require('zk').setup {
+					picker = 'fzf',
+					lsp = {
+						-- `config` is passed to `vim.lsp.start_client(config)`
+						config = vim.tbl_deep_extend('force', shared, {
+							-- cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
+							cmd = { 'zk', 'lsp' },
+							name = 'zk',
+							-- root_dir = nvim_lsp.util.path.dirname,
+						}),
+
+						auto_attach = {
+							enabled = true,
+							filetypes = { 'markdown' },
+						},
+					},
+				}
+			end,
+		},
 		{
 			'https://github.com/b0o/SchemaStore.nvim',
 		},
@@ -524,25 +546,5 @@ return {
 				nvim_lsp[server].setup(vim.tbl_deep_extend('force', shared, config))
 			end
 		end
-
-		pcall(function()
-			require('zk').setup {
-				picker = 'fzf',
-				lsp = {
-					-- `config` is passed to `vim.lsp.start_client(config)`
-					config = vim.tbl_deep_extend('force', shared, {
-						-- cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
-						cmd = { 'zk', 'lsp' },
-						name = 'zk',
-						-- root_dir = nvim_lsp.util.path.dirname,
-					}),
-
-					auto_attach = {
-						enabled = true,
-						filetypes = { 'markdown' },
-					},
-				},
-			}
-		end)
 	end,
 }
