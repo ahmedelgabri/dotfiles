@@ -1,3 +1,265 @@
+local au = require '_.utils.au'
+local hl = require '_.utils.highlight'
+local utils = require '_.utils'
+local map_opts = { buffer = true, silent = true }
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local handlers = {
+	['textDocument/hover'] = vim.lsp.with(
+		vim.lsp.handlers.hover,
+		{ focusable = false, silent = true }
+	),
+	['textDocument/signatureHelp'] = vim.lsp.with(
+		vim.lsp.handlers.hover,
+		{ focusable = false, silent = true }
+	),
+}
+
+if pcall(require, 'cmp_nvim_lsp') then
+	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+else
+	capabilities.textDocument.completion.completionItem.snippetSupport = true
+	capabilities.textDocument.completion.completionItem.resolveSupport = {
+		properties = {
+			'documentation',
+			'detail',
+			'additionalTextEdits',
+		},
+	}
+end
+
+local shared = {
+	capabilities = capabilities,
+	handlers = handlers,
+	flags = {
+		debounce_text_changes = 150,
+	},
+}
+
+local mappings = {
+	{
+		{ 'n' },
+		'<leader>a',
+		'<cmd>lua vim.lsp.buf.code_action()<CR>',
+		{ desc = 'Code [A]ctions' },
+	},
+	{
+		{ 'n' },
+		'<leader>f',
+		'<cmd>lua vim.lsp.buf.references()<CR>',
+		{ desc = 'Show Re[f]erences' },
+	},
+	{
+		{ 'n' },
+		'<leader>r',
+		'<cmd>lua vim.lsp.buf.rename()<CR>',
+		{ desc = '[R]ename Symbol' },
+	},
+	-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {desc = "Open Hover popup"} },
+	{
+		{ 'n' },
+		'<leader>ld',
+		'<cmd>lua vim.diagnostic.open_float(nil, { focusable = false,  close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
+		{ desc = '[L]ist [D]iagnostics' },
+	},
+	{
+		{ 'n' },
+		'[d',
+		'<cmd>lua vim.diagnostic.goto_next()<cr>',
+		{ desc = 'Next diagnostic' },
+	},
+	{
+		{ 'n' },
+		']d',
+		'<cmd>lua vim.diagnostic.goto_prev()<CR>',
+		{ desc = 'Prev diagnostic' },
+	},
+	{
+		{ 'n' },
+		'<C-]>',
+		'<cmd>lua vim.lsp.buf.definition()<CR>',
+		{ desc = 'Go To Definition' },
+	},
+	{
+		{ 'n' },
+		'<leader>D',
+		'<cmd>lua vim.lsp.buf.declaration()<CR>',
+		{ desc = 'Go to [D]eclaration' },
+	},
+	{
+		{ 'n' },
+		'<leader>i',
+		'<cmd>lua vim.lsp.buf.implementation()<CR>',
+		{ desc = 'Go to [I]mplementation' },
+	},
+}
+
+local function getBorder(highlight)
+	return {
+		{ '╭', highlight or 'FloatBorder' },
+		{ '─', highlight or 'FloatBorder' },
+		{ '╮', highlight or 'FloatBorder' },
+		{ '│', highlight or 'FloatBorder' },
+		{ '╯', highlight or 'FloatBorder' },
+		{ '─', highlight or 'FloatBorder' },
+		{ '╰', highlight or 'FloatBorder' },
+		{ '│', highlight or 'FloatBorder' },
+	}
+end
+
+-- globally override borders
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or getBorder()
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
+
+-- wrap open_float to inspect diagnostics and use the severity color for border
+-- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
+vim.diagnostic.open_float = (function(orig)
+	return function(bufnr, options)
+		local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+		local opts = options or {}
+		-- A more robust solution would check the "scope" value in `opts` to
+		-- determine where to get diagnostics from, but if you're only using
+		-- this for your own purposes you can make it as simple as you like
+		local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { lnum = lnum })
+		local max_severity = vim.diagnostic.severity.HINT
+		for _, d in ipairs(diagnostics) do
+			-- Equality is "less than" based on how the severities are encoded
+			if d.severity < max_severity then
+				max_severity = d.severity
+			end
+		end
+		local border_color = ({
+			[vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+			[vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+			[vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+			[vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+		})[max_severity]
+		opts.border = getBorder(border_color)
+		orig(bufnr, opts)
+	end
+end)(vim.diagnostic.open_float)
+
+vim.diagnostic.config {
+	virtual_text = false,
+	-- virtual_text = {
+	--   source = 'always',
+	--   spacing = 4,
+	--   prefix = '■', -- Could be '●', '▎', 'x'
+	-- },
+	float = {
+		source = 'always',
+		focusable = false,
+		style = 'minimal',
+		border = getBorder(),
+		-- header = '',
+		-- prefix = '',
+	},
+	underline = true,
+	signs = true,
+	update_in_insert = false,
+	severity_sort = true,
+}
+
+local signs = { 'Error', 'Warn', 'Hint', 'Info' }
+
+for _, type in pairs(signs) do
+	vim.fn.sign_define('DiagnosticSign' .. type, {
+		text = utils.get_icon(string.lower(type)),
+		texthl = 'DiagnosticSign' .. type,
+		linehl = '',
+		numhl = '',
+	})
+end
+
+au.autocmd {
+	event = 'LspAttach',
+	desc = 'LSP actions',
+	callback = function(event)
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
+		local bufname = vim.api.nvim_buf_get_name(event.buf)
+
+		-- Don't run bash-lsp on .env files
+		-- Has to be in-sync with null-ls config for shellcheck
+		if
+			client.name == 'bashls'
+			and bufname:match '%.env' ~= nil
+			and bufname:match '%.env.*' ~= nil
+		then
+			vim.cmd.LspStop()
+			return
+		end
+
+		-- ---------------
+		-- GENERAL
+		-- ---------------
+		client.config.flags.allow_incremental_sync = true
+
+		-- ---------------
+		-- MAPPINGS
+		-- ---------------
+		for _, item in ipairs(mappings) do
+			local extra_opts = table.remove(item, 4)
+			local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
+
+			table.insert(item, 4, merged_opts)
+
+			local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
+
+			vim.keymap.set(modes, lhs, rhs, opts)
+		end
+
+		-- ---------------
+		-- AUTOCMDS
+		-- ---------------
+		if client.server_capabilities.documentHighlightProvider then
+			hl.group('LspReferenceRead', {
+				link = 'SpecialKey',
+			})
+			hl.group('LspReferenceText', {
+				link = 'SpecialKey',
+			})
+			hl.group('LspReferenceWrite', {
+				link = 'SpecialKey',
+			})
+
+			au.augroup('__LSP_HIGHLIGHTS__', {
+				{
+					event = 'CursorHold',
+					callback = function()
+						vim.lsp.buf.document_highlight()
+					end,
+					buffer = 0,
+				},
+				{
+					event = 'CursorMoved',
+					callback = function()
+						vim.lsp.buf.clear_references()
+					end,
+					buffer = 0,
+				},
+			})
+		end
+
+		if client.server_capabilities.codeLensProvider then
+			au.augroup('__LSP_CODELENS__', {
+				{
+					event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
+					callback = function()
+						vim.lsp.codelens.refresh()
+					end,
+					buffer = 0,
+				},
+			})
+		end
+	end,
+}
+
 return {
 	'https://github.com/neovim/nvim-lspconfig',
 	event = { 'BufReadPre' },
@@ -22,11 +284,7 @@ return {
 			},
 			event = 'LspAttach',
 			config = function()
-				local ok, nls = pcall(require, 'null-ls')
-
-				if not ok then
-					return
-				end
+				local nls = require 'null-ls'
 
 				nls.setup {
 					debug = false,
@@ -107,248 +365,11 @@ return {
 		-- require('vim.lsp.log').set_format_func(vim.inspect)
 
 		local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
-		local utils = require '_.utils'
-		local au = require '_.utils.au'
-		local hl = require '_.utils.highlight'
-		local map_opts = { buffer = true, silent = true }
 
 		if not has_lsp then
 			utils.notify 'LSP config failed to setup'
 			return
 		end
-
-		local signs = { 'Error', 'Warn', 'Hint', 'Info' }
-
-		for _, type in pairs(signs) do
-			vim.fn.sign_define('DiagnosticSign' .. type, {
-				text = utils.get_icon(string.lower(type)),
-				texthl = 'DiagnosticSign' .. type,
-				linehl = '',
-				numhl = '',
-			})
-		end
-
-		local function getBorder(highlight)
-			return {
-				{ '╭', highlight or 'FloatBorder' },
-				{ '─', highlight or 'FloatBorder' },
-				{ '╮', highlight or 'FloatBorder' },
-				{ '│', highlight or 'FloatBorder' },
-				{ '╯', highlight or 'FloatBorder' },
-				{ '─', highlight or 'FloatBorder' },
-				{ '╰', highlight or 'FloatBorder' },
-				{ '│', highlight or 'FloatBorder' },
-			}
-		end
-
-		-- globally override borders
-		-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-		local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-			opts = opts or {}
-			opts.border = opts.border or getBorder()
-			return orig_util_open_floating_preview(contents, syntax, opts, ...)
-		end
-
-		-- wrap open_float to inspect diagnostics and use the severity color for border
-		-- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
-		vim.diagnostic.open_float = (function(orig)
-			return function(bufnr, options)
-				local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
-				local opts = options or {}
-				-- A more robust solution would check the "scope" value in `opts` to
-				-- determine where to get diagnostics from, but if you're only using
-				-- this for your own purposes you can make it as simple as you like
-				local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { lnum = lnum })
-				local max_severity = vim.diagnostic.severity.HINT
-				for _, d in ipairs(diagnostics) do
-					-- Equality is "less than" based on how the severities are encoded
-					if d.severity < max_severity then
-						max_severity = d.severity
-					end
-				end
-				local border_color = ({
-					[vim.diagnostic.severity.HINT] = 'DiagnosticHint',
-					[vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
-					[vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
-					[vim.diagnostic.severity.ERROR] = 'DiagnosticError',
-				})[max_severity]
-				opts.border = getBorder(border_color)
-				orig(bufnr, opts)
-			end
-		end)(vim.diagnostic.open_float)
-
-		vim.diagnostic.config {
-			virtual_text = false,
-			-- virtual_text = {
-			--   source = 'always',
-			--   spacing = 4,
-			--   prefix = '■', -- Could be '●', '▎', 'x'
-			-- },
-			float = {
-				source = 'always',
-				focusable = false,
-				style = 'minimal',
-				border = getBorder(),
-				-- header = '',
-				-- prefix = '',
-			},
-			underline = true,
-			signs = true,
-			update_in_insert = false,
-			severity_sort = true,
-		}
-
-		local mappings = {
-			{
-				{ 'n' },
-				'<leader>a',
-				'<cmd>lua vim.lsp.buf.code_action()<CR>',
-				{ desc = 'Code [A]ctions' },
-			},
-			{
-				{ 'n' },
-				'<leader>f',
-				'<cmd>lua vim.lsp.buf.references()<CR>',
-				{ desc = 'Show Re[f]erences' },
-			},
-			{
-				{ 'n' },
-				'<leader>r',
-				'<cmd>lua vim.lsp.buf.rename()<CR>',
-				{ desc = '[R]ename Symbol' },
-			},
-			-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {desc = "Open Hover popup"} },
-			{
-				{ 'n' },
-				'<leader>ld',
-				'<cmd>lua vim.diagnostic.open_float(nil, { focusable = false,  close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" }, source = "always" })<CR>',
-				{ desc = '[L]ist [D]iagnostics' },
-			},
-			{
-				{ 'n' },
-				'[d',
-				'<cmd>lua vim.diagnostic.goto_next()<cr>',
-				{ desc = 'Next diagnostic' },
-			},
-			{
-				{ 'n' },
-				']d',
-				'<cmd>lua vim.diagnostic.goto_prev()<CR>',
-				{ desc = 'Prev diagnostic' },
-			},
-			{
-				{ 'n' },
-				'<C-]>',
-				'<cmd>lua vim.lsp.buf.definition()<CR>',
-				{ desc = 'Go To Definition' },
-			},
-			{
-				{ 'n' },
-				'<leader>D',
-				'<cmd>lua vim.lsp.buf.declaration()<CR>',
-				{ desc = 'Go to [D]eclaration' },
-			},
-			{
-				{ 'n' },
-				'<leader>i',
-				'<cmd>lua vim.lsp.buf.implementation()<CR>',
-				{ desc = 'Go to [I]mplementation' },
-			},
-		}
-
-		local handlers = {
-			['textDocument/hover'] = vim.lsp.with(
-				vim.lsp.handlers.hover,
-				{ focusable = false, silent = true }
-			),
-			['textDocument/signatureHelp'] = vim.lsp.with(
-				vim.lsp.handlers.hover,
-				{ focusable = false, silent = true }
-			),
-		}
-
-		vim.api.nvim_create_autocmd('LspAttach', {
-			desc = 'LSP actions',
-			callback = function(event)
-				local client = vim.lsp.get_client_by_id(event.data.client_id)
-				local bufname = vim.api.nvim_buf_get_name(event.buf)
-
-				-- Don't run bash-lsp on .env files
-				-- Has to be in-sync with null-ls config for shellcheck
-				if
-					client.name == 'bashls'
-					and bufname:match '%.env' ~= nil
-					and bufname:match '%.env.*' ~= nil
-				then
-					vim.cmd.LspStop()
-					return
-				end
-
-				-- ---------------
-				-- GENERAL
-				-- ---------------
-				client.config.flags.allow_incremental_sync = true
-
-				-- ---------------
-				-- MAPPINGS
-				-- ---------------
-				for _, item in ipairs(mappings) do
-					local extra_opts = table.remove(item, 4)
-					local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
-
-					table.insert(item, 4, merged_opts)
-
-					local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
-
-					vim.keymap.set(modes, lhs, rhs, opts)
-				end
-
-				-- ---------------
-				-- AUTOCMDS
-				-- ---------------
-				if client.server_capabilities.documentHighlightProvider then
-					hl.group('LspReferenceRead', {
-						link = 'SpecialKey',
-					})
-					hl.group('LspReferenceText', {
-						link = 'SpecialKey',
-					})
-					hl.group('LspReferenceWrite', {
-						link = 'SpecialKey',
-					})
-
-					au.augroup('__LSP_HIGHLIGHTS__', {
-						{
-							event = 'CursorHold',
-							callback = function()
-								vim.lsp.buf.document_highlight()
-							end,
-							buffer = 0,
-						},
-						{
-							event = 'CursorMoved',
-							callback = function()
-								vim.lsp.buf.clear_references()
-							end,
-							buffer = 0,
-						},
-					})
-				end
-
-				if client.server_capabilities.codeLensProvider then
-					au.augroup('__LSP_CODELENS__', {
-						{
-							event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-							callback = function()
-								vim.lsp.codelens.refresh()
-							end,
-							buffer = 0,
-						},
-					})
-				end
-			end,
-		})
 
 		local servers = {
 			cssls = {},
@@ -494,29 +515,6 @@ return {
 						},
 					},
 				},
-			},
-		}
-
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-		if pcall(require, 'cmp_nvim_lsp') then
-			capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-		else
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
-			capabilities.textDocument.completion.completionItem.resolveSupport = {
-				properties = {
-					'documentation',
-					'detail',
-					'additionalTextEdits',
-				},
-			}
-		end
-
-		local shared = {
-			capabilities = capabilities,
-			handlers = handlers,
-			flags = {
-				debounce_text_changes = 150,
 			},
 		}
 
