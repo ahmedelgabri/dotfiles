@@ -100,6 +100,7 @@ return {
 						return {
 							exe = 'stylua',
 							args = {
+								'--sort-requires',
 								'--line-endings',
 								'Unix',
 								'--quote-style',
