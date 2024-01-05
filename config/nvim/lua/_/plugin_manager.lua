@@ -23,17 +23,27 @@ return require('lazy').setup('plugins', {
 		fallback = true, -- Fallback to git when local plugin doesn't exist
 	},
 	rtp = {
+		-- Stuff I don't use.
 		disabled_plugins = {
 			'getscript',
 			'getscriptPlugin',
-			'vimball',
-			'vimballPlugin',
-			'rrhelper',
+			-- 'gzip',
 			'netrw',
 			'netrwPlugin',
+			'rplugin',
+			'rrhelper',
+			-- 'tarPlugin',
+			'tohtml',
+			'tutor',
+			'vimball',
+			'vimballPlugin',
+			-- 'zipPlugin',
 		},
 	},
+	-- Don't bother me when tweaking plugins.
+	change_detection = { notify = false },
 	ui = {
+		{ border = 'rounded' },
 		icons = {
 			cmd = '⌘',
 			config = '🛠',
