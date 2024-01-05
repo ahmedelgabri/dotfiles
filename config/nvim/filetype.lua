@@ -18,7 +18,8 @@ vim.filetype.add {
 		['nx.json'] = 'jsonc',
 	},
 	pattern = {
-		['tsconfig.*%.json'] = 'jsonc',
+		['tsconfig*.json'] = 'jsonc',
+		['.*/%.vscode/.*%.json'] = 'jsonc',
 		-- INFO: Match filenames like - ".env.example", ".env.local" and so on
 		-- needed to make dotenv-linter with null-ls works correctly
 		['%.env%.[%w_.-]+'] = 'dotenv',
