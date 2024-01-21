@@ -1,4 +1,4 @@
 ;; extends
 
 ;; Functions
-("lambda" @keyword.function (set! conceal "λ"))
+("lambda" @keyword.function (#set! conceal "λ"))
