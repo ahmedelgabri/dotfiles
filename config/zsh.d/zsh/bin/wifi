@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 ON_ICON=" "
-OFF_ICON=" "
+OFF_ICON="󰖪 "
 
 WIFI_NAME="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')"
 
