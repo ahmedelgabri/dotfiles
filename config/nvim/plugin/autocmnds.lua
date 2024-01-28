@@ -1,7 +1,7 @@
-local utils = require '_.utils'
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
 local hl = require '_.utils.highlight'
+local utils = require '_.utils'
 
 au.augroup('__myautocmds__', {
 	-- Automatically make splits equal in size
@@ -40,6 +40,18 @@ au.augroup('__myautocmds__', {
 		event = 'BufReadPre',
 		pattern = '*',
 		callback = cmds.disable_heavy_plugins,
+	},
+	{
+		desc = 'Open file at the last position it was edited earlier',
+		event = 'BufReadPost',
+		pattern = '*',
+		callback = function()
+			local row, col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
+
+			if { row, col } ~= { 0, 0 } then
+				vim.api.nvim_win_set_cursor(0, { row, 0 })
+			end
+		end,
 	},
 	{
 		event = { 'BufWritePost', 'BufLeave', 'WinLeave' },
