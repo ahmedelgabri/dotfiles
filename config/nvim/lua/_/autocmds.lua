@@ -89,18 +89,19 @@ end
 function M.mkview()
 	if should_mkview() then
 		local success, err = pcall(function()
-			if vim.fn.exists '*haslocaldir' and vim.fn.haslocaldir() then
+			if vim.fn.haslocaldir() == 1 then
 				-- We never want to save an :lcd command, so hack around it...
-				vim.api.nvim_command 'cd -'
-				vim.api.nvim_command 'mkview'
-				vim.api.nvim_command 'lcd -'
+				vim.cmd.cd '-'
+				vim.cmd.mkview()
+				vim.cmd.lcd '-'
 			else
-				vim.api.nvim_command 'mkview'
+				vim.cmd.mkview()
 			end
 		end)
 		if not success then
 			if
 				err ~= nil
+				and err:find '%f[%w]E32%f[%W]' == nil -- No file name; could be no buffer (eg. :checkhealth)
 				and err:find '%f[%w]E186%f[%W]' == nil -- No previous directory: probably a `git` operation.
 				and err:find '%f[%w]E190%f[%W]' == nil -- Could be name or path length exceeding NAME_MAX or PATH_MAX.
 				and err:find '%f[%w]E5108%f[%W]' == nil
@@ -113,8 +114,8 @@ end
 
 function M.loadview()
 	if should_mkview() then
-		vim.api.nvim_command 'silent! loadview'
-		vim.api.nvim_command('silent! ' .. vim.fn.line '.' .. 'foldopen!')
+		vim.cmd 'silent! loadview'
+		vim.cmd('silent! ' .. vim.fn.line '.' .. 'foldopen!')
 	end
 end
 
