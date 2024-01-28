@@ -21,6 +21,7 @@
 
 [interactive]
 	diffFilter = delta_ --color-only --features=interactive
+	singleKey = true
 
 [delta]
 	syntax-theme = ansi
