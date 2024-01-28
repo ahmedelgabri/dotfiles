@@ -33,7 +33,7 @@ vim.keymap.set('n', '--', function()
 	-- ! is to open it on the right side
 	vim.cmd('20Lexplore! ' .. relative_path)
 
-	if startPos > 1 then
+	if startPos and startPos > 1 then
 		while startPos ~= nil do
 			startPos, endPos = string.find(relative_path, '/', endPos + 1)
 			vim.fn['netrw#Call']('NetrwBrowseUpDir', 1)
