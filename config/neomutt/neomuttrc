@@ -16,7 +16,7 @@ set editor = "$EDITOR +/^$ +nohlsearch"
 
 # Sidebar -------------------------------------------------------------------------------------------------------
 set mail_check_stats
-set mail_check_stats_interval = 1
+set mail_check_stats_interval = 10
 set sidebar_width=30
 set sidebar_divider_char='│'
 set sidebar_format = "%B %?N?(%N)?%*"
@@ -38,7 +38,7 @@ timeout-hook 'exec sync-mailbox'
 startup-hook 'exec sync-mailbox'
 shutdown-hook 'exec sync-mailbox'
 set ts_enabled
-set mail_check = 0       # minimum time between scans
+set mail_check = 5       # minimum time between scans
 set delete               # don't ask, just do
 unset confirmappend      # don't ask, just do!
 set quit                 # don't ask, just do!!
