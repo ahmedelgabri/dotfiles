@@ -453,6 +453,9 @@ return {
 							checkThirdParty = false,
 							maxPreload = 1000,
 							preloadFileSize = 1000,
+							ignoreDir = {
+								'.direnv',
+							},
 							library = {
 								['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
 							},
