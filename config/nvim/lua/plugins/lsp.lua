@@ -278,7 +278,7 @@ return {
 			},
 		},
 		{
-			'https://github.com/jose-elias-alvarez/null-ls.nvim',
+			'https://github.com/nvimtools/none-ls.nvim',
 			dependencies = {
 				'https://github.com/nvim-lua/plenary.nvim',
 			},
