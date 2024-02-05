@@ -12,7 +12,7 @@ end
 
 function M.augroup(name, autocmds, opts)
 	local augroup = vim.api.nvim_create_augroup(
-		name,
+		'__/' .. name,
 		vim.tbl_extend('force', { clear = true }, opts or {})
 	)
 
