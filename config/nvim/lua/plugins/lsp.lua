@@ -148,7 +148,7 @@ vim.diagnostic.open_float = (function(orig)
 end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
-	virtual_text = false,
+	virtual_text = true,
 	-- virtual_text = {
 	--   source = 'always',
 	--   spacing = 4,
