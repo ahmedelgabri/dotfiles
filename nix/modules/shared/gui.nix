@@ -38,7 +38,7 @@ in
           "visual-studio-code"
           "logseq"
           "zoom"
-          "cron"
+          "notion-calendar"
         ];
 
         my.hm.file = {
