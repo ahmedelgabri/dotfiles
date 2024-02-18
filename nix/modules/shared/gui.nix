@@ -39,6 +39,7 @@ in
           "logseq"
           "zoom"
           "notion-calendar"
+          "superlist"
         ];
 
         my.hm.file = {
