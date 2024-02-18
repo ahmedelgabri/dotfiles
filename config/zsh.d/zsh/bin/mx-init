@@ -40,7 +40,7 @@ create_session() {
 	if [ -d "${DOTFILES-}" ]; then
 		tmux new-window -n 'dotfiles' -c "$DOTFILES"
 		tmux send-keys "$EDITOR" C-m
-		tmux split-window -h -p 15 -c "$DOTFILES"
+		tmux split-window -h -l 15% -c "$DOTFILES"
 	fi
 }
 
