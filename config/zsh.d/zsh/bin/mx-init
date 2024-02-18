@@ -1,5 +1,9 @@
-#!/usr/bin/env sh
-set -e
+#!/usr/bin/env bash
+set -ue -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
 
 SESSION='_shared'
 
@@ -21,20 +25,19 @@ create_session() {
 		tmux send-keys "newsboat" C-m
 	fi
 
-	if command -v weechat &>/dev/null
-	then
+	if command -v weechat &>/dev/null; then
 		tmux new-window -n 'weechat'
 		# Stop Weechat from renaming the window
 		tmux set-option allow-rename off
 		tmux send-keys "weechat" C-m
 	fi
 
-	if [ -d "$NOTES_DIR" ]; then
+	if [ -d "${NOTES_DIR-}" ]; then
 		tmux new-window -n 'notes' -c "$NOTES_DIR"
 		tmux send-keys "$EDITOR" C-m
 	fi
 
-	if [ -d "$DOTFILES" ]; then
+	if [ -d "${DOTFILES-}" ]; then
 		tmux new-window -n 'dotfiles' -c "$DOTFILES"
 		tmux send-keys "$EDITOR" C-m
 		tmux split-window -h -p 15 -c "$DOTFILES"

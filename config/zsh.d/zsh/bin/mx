@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # mx
 # version 1.1
@@ -22,12 +22,16 @@
 # $PROJECTS, a new tmux session will be initialized in the current working
 # directory with a name of <session>
 
-set -e
+set -ue -o pipefail
 
-MX_START="./.mx-start"
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
+
+MX_START=${MX_START:-"./.mx-start"}
 
 get_session() {
-	if [ -z "$1" ]; then
+	if [ -z "${1-}" ]; then
 		# tmux 1.9a+ doesn't like .'s in session names
 		pwd | awk -F"/" '{print $NF}'
 	else
@@ -35,14 +39,14 @@ get_session() {
 	fi
 }
 
-SESSION="$(get_session "$1")"
+SESSION="$(get_session "${1-}")"
 
 if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
 	mx-init
 
 	WORKINGDIR=""
 
-	if [ -d "$WORK/$SESSION/$2" ]; then
+	if [ -d "$WORK/$SESSION/${2-}" ]; then
 		WORKINGDIR="$WORK/$SESSION/$2"
 	elif [ -d "$WORK/$SESSION" ]; then
 		WORKINGDIR="$WORK/$SESSION"
@@ -88,7 +92,7 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
 	tmux select-window -t 1
 fi
 
-if [ -z "$TMUX" ]; then
+if [ -z "${TMUX-}" ]; then
 	tmux attach -t "$SESSION"
 else
 	tmux switch-client -t "$SESSION"
