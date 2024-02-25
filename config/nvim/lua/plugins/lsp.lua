@@ -537,6 +537,8 @@ return {
 					},
 				},
 			},
+			-- TOML
+			taplo = {},
 			yamlls = {
 				settings = {
 					yaml = {

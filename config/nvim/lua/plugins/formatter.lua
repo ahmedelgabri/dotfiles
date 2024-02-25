@@ -117,6 +117,9 @@ return {
 						}
 					end,
 				},
+				toml = {
+					require('formatter.filetypes.toml').taplo,
+				},
 			},
 		}
 	end,
