@@ -33,5 +33,13 @@ newline = "none"
 
 [editor.statusline]
 left = ["file-name", "file-type", "file-encoding"]
-right = ["mode", "spinner", "diagnostics", "workspace-diagnostics", "selections", "primary-selection-length", "position", "position-percentage"]
-
+right = [
+  "mode",
+  "spinner",
+  "diagnostics",
+  "workspace-diagnostics",
+  "selections",
+  "primary-selection-length",
+  "position",
+  "position-percentage",
+]

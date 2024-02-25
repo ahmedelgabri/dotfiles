@@ -37,7 +37,7 @@ exclude = [
   ".syncinfo",
   "static",
   ".mods",
-  ".zk"
+  ".zk",
 ]
 
 # Configure random ID generation.
