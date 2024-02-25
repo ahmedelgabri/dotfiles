@@ -291,10 +291,6 @@ return {
 					debounce = 150,
 					sources = {
 						-- nixlinter,
-						nls.builtins.diagnostics.shellcheck.with {
-							filetypes = { 'sh', 'bash' },
-						},
-						nls.builtins.diagnostics.ruff,
 						nls.builtins.diagnostics.hadolint,
 						nls.builtins.diagnostics.vint,
 						nls.builtins.diagnostics.statix,
@@ -403,6 +399,7 @@ return {
 			dockerls = {},
 			clojure_lsp = {},
 			eslint = {},
+			ruff_lsp = {},
 			tailwindcss = {
 				init_options = {
 					userLanguages = {
