@@ -1,0 +1,17 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[manager]
+linemode       = "size"
+ratio          = [ 0, 2, 6 ]
+sort_by = "natural"
+sort_dir_first = true
+show_hidden    = true
+
+[preview]
+max_width = 1200
+max_height = 1800
+
+[plugin]
+prepend_previewers = [
+  { name = "*.md", exec = "glow" },
+]

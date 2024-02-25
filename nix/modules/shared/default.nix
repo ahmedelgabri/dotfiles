@@ -11,7 +11,7 @@
     ./kitty.nix
     ./wezterm.nix
     ./bat.nix
-    ./lf.nix
+    ./yazi.nix
     ./mpv.nix
     ./ripgrep.nix
     ./tmux.nix
@@ -39,7 +39,7 @@
     kitty.enable = lib.mkDefault true;
     wezterm.enable = lib.mkDefault true;
     bat.enable = lib.mkDefault true;
-    lf.enable = lib.mkDefault true;
+    yazi.enable = lib.mkDefault true;
     mpv.enable = lib.mkDefault true;
     python.enable = lib.mkDefault true;
     ripgrep.enable = lib.mkDefault true;
