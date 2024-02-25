@@ -1,6 +1,8 @@
 return {
 	'https://github.com/L3MON4D3/LuaSnip',
 	lazy = true,
+	-- Build Step is needed for regex support in snippets
+	build = 'make install_jsregexp',
 	dependencies = {
 		{ 'https://github.com/rafamadriz/friendly-snippets' },
 	},
