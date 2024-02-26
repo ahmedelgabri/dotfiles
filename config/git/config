@@ -18,6 +18,7 @@
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
 	pager = delta_
+	fsmonitor = true
 
 [interactive]
 	diffFilter = delta_ --color-only --features=interactive
@@ -33,9 +34,13 @@
 	file-renamed-label  = RENAMED:
 	features = labels
 
+[column]
+	ui = auto
+
 [branch]
 	autoSetupMerge = always
 	autoSetupRebase = always
+	sort = -committerdate
 
 [branch "main"]
 	rebase = true
@@ -147,6 +152,7 @@
 	amend = commit --amend --no-edit --date now
 	force = push --force-with-lease
 	fam = "!f() { git add . && git amend && git force; }; f"
+	blame = git blame -w -C -C -C
 	blm = blame -wMC
 	br = branch -vv --sort=-committerdate --format='%(HEAD) %(color:red)%(objectname:short)%(color:reset) %(if:equals=*)%(HEAD)%(then)%(color:cyan)%(end)%(align:15,left)%(refname:short)%(end)%(color:reset)%(align:21,left)%(color:green)%(committerdate:auto:human)%(color:reset)%(end)%(contents:subject)'
 	brs = br -a
