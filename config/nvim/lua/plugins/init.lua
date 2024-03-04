@@ -111,6 +111,9 @@ return {
 			{ 'gc', mode = { 'n', 'x' } },
 			{ 'gb', mode = { 'n', 'x' } },
 		},
+		init = function()
+			vim.g.skip_ts_context_commentstring_module = true
+		end,
 		opts = function()
 			return {
 				pre_hook = function()
