@@ -214,18 +214,14 @@ au.autocmd {
 
 			au.augroup('__LSP_HIGHLIGHTS__', {
 				{
-					event = 'CursorHold',
-					callback = function()
-						vim.lsp.buf.document_highlight()
-					end,
-					buffer = 0,
+					event = { 'CursorHold', 'CursorHoldI' },
+					callback = vim.lsp.buf.document_highlight,
+					buffer = event.buf,
 				},
 				{
-					event = 'CursorMoved',
-					callback = function()
-						vim.lsp.buf.clear_references()
-					end,
-					buffer = 0,
+					event = { 'CursorMoved', 'CursorMovedI' },
+					callback = vim.lsp.buf.clear_references,
+					buffer = event.buf,
 				},
 			})
 		end
@@ -237,7 +233,7 @@ au.autocmd {
 					callback = function()
 						vim.lsp.codelens.refresh()
 					end,
-					buffer = 0,
+					buffer = event.buf,
 				},
 			})
 		end
@@ -405,18 +401,19 @@ return {
 			lua_ls = {
 				settings = {
 					Lua = {
+						runtime = { version = 'LuaJIT' },
 						codeLens = { enable = true },
 						hint = {
 							enable = true,
 							arrayIndex = 'Disable',
-							setType = true,
-							paramName = 'Disable',
 						},
 						doc = {
 							privateName = { '^_' },
 						},
 						format = { enable = false },
 						diagnostics = {
+							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+							disable = { 'missing-fields' },
 							globals = {
 								'vim',
 								'describe',
@@ -438,6 +435,8 @@ return {
 								'.direnv',
 							},
 							library = {
+								'${3rd}/luv/library',
+								unpack(vim.api.nvim_get_runtime_file('', true)),
 								['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
 							},
 						},
