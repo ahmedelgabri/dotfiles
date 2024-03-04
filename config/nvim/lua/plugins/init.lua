@@ -1,4 +1,35 @@
+local enable_ai = function()
+	local current_dir = vim.fn.getcwd()
+
+	-- if git repo is not under ~/Sites/work, do not allow AI
+	local work_path = os.getenv 'WORK' or os.getenv 'HOME' .. '/Sites/work'
+	local is_work_code = string.find(current_dir, work_path) == 1
+
+	return is_work_code
+end
+
 return {
+	{
+		'https://github.com/github/copilot.vim',
+		-- build = ':Copilot auth',
+		event = 'InsertEnter',
+		config = function()
+			-- https://github.com/orgs/community/discussions/82729#discussioncomment-8098207
+			vim.g.copilot_ignore_node_version = true
+			vim.g.copilot_no_tab_map = true
+			vim.keymap.set(
+				'i',
+				'<Plug>(vimrc:copilot-dummy-map)',
+				'copilot#Accept("")',
+				{ silent = true, expr = true, desc = 'Copilot dummy accept' }
+			)
+
+			-- disable copilot outside of work folders and if node is not in $PATH
+			if not enable_ai() or vim.fn.executable 'node' == 0 then
+				vim.cmd 'Copilot disable'
+			end
+		end,
+	},
 	{ 'https://github.com/duggiefresh/vim-easydir' },
 	{
 		'https://github.com/ojroques/vim-oscyank',

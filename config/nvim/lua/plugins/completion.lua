@@ -140,7 +140,7 @@ return {
 			--- @diagnostic disable-next-line: missing-fields
 			cmp.setup {
 				experimental = {
-					ghost_text = true,
+					ghost_text = false, -- this feature conflict with copilot.vim's preview.
 				},
 				bufIsBig = function(bufnr)
 					local max_filesize = 300 * 1024 -- 300 KB
@@ -251,6 +251,16 @@ return {
 					end,
 				},
 				mapping = {
+					-- For copilot
+					['<C-g>'] = cmp.mapping(function(_)
+						vim.api.nvim_feedkeys(
+							vim.fn['copilot#Accept'](
+								vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
+							),
+							'n',
+							true
+						)
+					end),
 					['<C-n>'] = cmp.mapping.select_next_item {
 						behavior = cmp.SelectBehavior.Insert,
 					},
