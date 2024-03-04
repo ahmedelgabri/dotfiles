@@ -131,10 +131,7 @@ vim.opt.splitright = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- fix slight delay after pressing ESC then O http://ksjoberg.com/vim-esckeys.html
--- vim.opt.timeout timeoutlen=500 ttimeoutlen=100
-vim.opt.timeoutlen = 1000
-vim.opt.ttimeoutlen = 0
+vim.opt.timeoutlen = 300
 
 vim.opt.formatoptions:append 'n'
 vim.opt.formatoptions:append 'r1'
@@ -153,7 +150,7 @@ vim.opt.sidescrolloff = 5
 vim.opt.sidescroll = 3
 
 -- yank and paste with the system clipboard
-vim.opt.clipboard = 'unnamed'
+vim.opt.clipboard = 'unnamedplus'
 
 -- show trailing whitespace
 vim.opt.list = true
@@ -238,8 +235,7 @@ vim.opt.swapfile = false
 vim.opt.directory = string.format('%s%s', vim.fn.stdpath 'state', '/swap//') -- keep swap files out of the way
 vim.opt.directory:append '.'
 
-vim.opt.updatetime = 1000
-vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars (I don't use swap files anymore)
+vim.opt.updatetime = 250
 
 if root then
 	vim.opt.undofile = false -- don't create root-owned files
@@ -268,9 +264,7 @@ else
 	})
 end
 
-if not vim.fn.has 'nvim-0.6' then
-	vim.opt.inccommand = 'nosplit' -- incremental command live feedback"
-end
+vim.opt.inccommand = 'split' -- incremental command live feedback"
 
 -- cursor behavior:
 --   - no blinking in normal/visual mode
