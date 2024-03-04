@@ -34,20 +34,15 @@ return {
 			auto_install = true,
 			ensure_installed = {
 				'bash',
-				'comment',
 				'css',
-				'dockerfile',
 				'embedded_template', -- ERB, EJS, etc…
-				'go',
-				'vimdoc',
 				'html',
+				'go',
 				'javascript',
 				'jsdoc',
 				'json',
-				'json5',
 				'jsonc',
 				'lua',
-				'make',
 				'markdown',
 				'markdown_inline',
 				'nix',
@@ -57,6 +52,7 @@ return {
 				'tsx',
 				'typescript',
 				'vim',
+				'vimdoc',
 				'yaml',
 			},
 			indent = {
@@ -78,7 +74,6 @@ return {
 				-- Required since TS highlighter doesn't support all syntax features (conceal)
 				additional_vim_regex_highlighting = {
 					'org',
-					'zsh',
 				},
 			},
 			textobjects = {
@@ -128,18 +123,9 @@ return {
 					['[]'] = '@class.outer',
 				},
 			},
-			rainbow = {
-				enable = true,
-				-- Enable only for lisp like languages
-				disable = vim.tbl_filter(function(p)
-					return p ~= 'clojure'
-						and p ~= 'commonlisp'
-						and p ~= 'fennel'
-						and p ~= 'query'
-				end, parsers.available_parsers()),
-			},
 		}
 
 		vim.treesitter.language.register('markdown', 'mdx')
+		vim.treesitter.language.register('bash', 'zsh')
 	end,
 }
