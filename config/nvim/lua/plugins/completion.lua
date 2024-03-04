@@ -1,5 +1,6 @@
 return {
 	'https://github.com/hrsh7th/nvim-cmp',
+	event = 'InsertEnter',
 	dependencies = {
 		{ 'https://github.com/hrsh7th/cmp-nvim-lsp' },
 		{ 'https://github.com/andersevenrud/cmp-tmux' },
@@ -137,7 +138,6 @@ return {
 			local str = require 'cmp.utils.str'
 			local luasnip = require 'luasnip'
 
-			--- @diagnostic disable-next-line: missing-fields
 			cmp.setup {
 				experimental = {
 					ghost_text = false, -- this feature conflict with copilot.vim's preview.
@@ -152,7 +152,6 @@ return {
 						return false
 					end
 				end,
-				--- @diagnostic disable-next-line: missing-fields
 				formatting = {
 					fields = { 'kind', 'abbr', 'menu' },
 					format = function(entry, vim_item)
@@ -250,7 +249,7 @@ return {
 						luasnip.lsp_expand(args.body)
 					end,
 				},
-				mapping = {
+				mapping = cmp.mapping.preset.insert {
 					-- For copilot
 					['<C-g>'] = cmp.mapping(function(_)
 						vim.api.nvim_feedkeys(
@@ -267,9 +266,9 @@ return {
 					['<C-p>'] = cmp.mapping.select_prev_item {
 						behavior = cmp.SelectBehavior.Insert,
 					},
-					['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-					['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-					['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+					['<C-d>'] = cmp.mapping.scroll_docs(-4),
+					['<C-f>'] = cmp.mapping.scroll_docs(4),
+					['<C-Space>'] = cmp.mapping.complete(),
 					['<C-e>'] = cmp.mapping(function(fallback)
 						if cmp.abort() then
 							return
