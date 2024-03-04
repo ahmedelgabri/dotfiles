@@ -89,8 +89,6 @@ au.augroup('__myautocmds__', {
 		callback = function()
 			vim.highlight.on_yank {
 				higroup = 'IncSearch',
-				timeout = 200,
-				on_visual = false,
 			}
 		end,
 	},
