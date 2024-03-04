@@ -12,10 +12,3 @@ au.augroup('__myloupe__', {
 })
 
 SetUpLoupeHighlight()
-
-vim.keymap.set(
-	{ 'n' },
-	'<Leader>c',
-	'<Plug>(LoupeClearHighlight)',
-	{ remap = true, desc = '[C]lear Highlight' }
-)

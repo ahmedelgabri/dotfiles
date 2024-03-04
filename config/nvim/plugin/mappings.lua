@@ -94,7 +94,7 @@ vim.keymap.set({ 'v' }, '.', ':norm.<CR>', { desc = 'Repeat in visual mode' })
 -- nnoremap <leader>t  :vsplit +terminal<cr>
 vim.keymap.set(
 	{ 't' },
-	'<esc>',
+	'<Esc>',
 	[[&filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"]],
 	{ expr = true }
 )
@@ -186,3 +186,46 @@ vim.keymap.set({ 'x' }, 'Q', [[:'<,'>:normal @q<CR>]])
 
 -- Use / to search inside a visual selection
 vim.keymap.set('x', '/', '<Esc>/\\%V')
+
+vim.keymap.set(
+	'n',
+	'<Esc>',
+	vim.g.LoupeLoaded == 1 and '<Plug>(LoupeClearHighlight)'
+		or '<cmd>nohlsearch<CR>',
+	{ remap = true, desc = 'Clear Search highlight' }
+)
+
+-- Diagnostic keymaps
+vim.keymap.set(
+	'n',
+	'[d',
+	vim.diagnostic.goto_prev,
+	{ desc = 'Go to previous [D]iagnostic message' }
+)
+
+vim.keymap.set(
+	'n',
+	']d',
+	vim.diagnostic.goto_next,
+	{ desc = 'Go to next [D]iagnostic message' }
+)
+
+vim.keymap.set('n', '<leader>ld', function()
+	vim.diagnostic.open_float(nil, {
+		focusable = false,
+		close_events = {
+			'BufLeave',
+			'CursorMoved',
+			'InsertEnter',
+			'FocusLost',
+		},
+		source = 'always',
+	})
+end, { desc = 'Show diagnostic [E]rror messages' })
+
+vim.keymap.set(
+	'n',
+	'<leader>q',
+	vim.diagnostic.setloclist,
+	{ desc = 'Open diagnostic [Q]uickfix list' }
+)
