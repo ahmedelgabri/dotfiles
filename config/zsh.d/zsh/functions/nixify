@@ -15,10 +15,16 @@ nixify() {
   if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flakes.nix ]]; then
     # Make a default shell.nix and then pop open an editor
     cat > shell.nix <<'EOF'
+let
+ # Grab node version from .nvmrc file
+  nodeVersion = builtins.concatStringsSep "_" [ "nodejs" (builtins.head (builtins.splitVersion (builtins.readFile ./.nvmrc))) ];
+in
 with import <nixpkgs> {};
 mkShell {
-	# name = "";
-	buildInputs = [];
+ # name = "";
+ buildInputs = with pkgs; [
+   pkgs.${nodeVersion}
+ ];
 }
 EOF
 $EDITOR shell.nix
