@@ -1,7 +1,7 @@
 local hl = require '_.utils.highlight'
 
 -- I set this to % to be able to write Markdown in PRs & Issues
-vim.fn.cmd [[syn match diffComment "^%.*]]
+vim.cmd [[syn match diffComment "^%.*"]]
 
 hl.group('diffAdded', {
 	fg = 'darkgreen',
