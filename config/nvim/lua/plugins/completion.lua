@@ -25,59 +25,6 @@ return {
 	config = function()
 		local utils = require '_.utils'
 
-		local sources = {
-			{ name = 'luasnip' },
-			{ name = 'nvim_lsp' },
-			{ name = 'git' },
-			{ name = 'path' },
-			{ name = 'nvim_lsp_signature_help' },
-			{ name = 'conjure' },
-			{ name = 'calc' },
-			{
-				name = 'buffer',
-				max_item_count = 10,
-				keyword_length = 5,
-				option = {
-					-- https://github.com/hrsh7th/cmp-buffer#get_bufnrs-type-fun-number=
-					-- https://github.com/hrsh7th/cmp-buffer#performance-on-large-text-files=
-					get_bufnrs = function()
-						local LIMIT = 1024 * 1024 -- 1 Megabyte max
-						local bufs = {}
-
-						for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-							local line_count = vim.api.nvim_buf_line_count(buf)
-							local byte_size = vim.api.nvim_buf_get_offset(buf, line_count)
-
-							if byte_size < LIMIT then
-								bufs[buf] = true
-							end
-						end
-
-						return vim.tbl_keys(bufs)
-					end,
-				},
-			},
-			{ name = 'tmux', max_item_count = 10 },
-			{ name = 'orgmode' },
-			{ name = 'emoji' },
-			{ name = 'spell' },
-		}
-
-		local menu = {}
-		local special_menu_case = {
-			nvim_lsp = 'LSP',
-			luasnip = 'Snip',
-			orgmode = 'Org',
-			nvim_lsp_signature_help = 'LSP',
-		}
-
-		for _, source in ipairs(sources) do
-			menu[source.name] = string.format(
-				'「%s」',
-				special_menu_case[source.name] or utils.firstToUpper(source.name)
-			)
-		end
-
 		local icons = {
 			Array = ' ',
 			Boolean = '◩ ',
@@ -140,7 +87,7 @@ return {
 					end
 				end,
 				formatting = {
-					fields = { 'kind', 'abbr', 'menu' },
+					fields = { 'kind', 'abbr' },
 					format = function(entry, vim_item)
 						-- Get the full snippet (and only keep first line)
 						local word = entry:get_insert_text()
@@ -182,23 +129,19 @@ return {
 
 						vim_item.kind = (strings[1] or '') .. ' '
 
-						vim_item.menu = string.format(
-							' %s %s',
-							strings[3] and '(' .. strings[3] .. ')' or '',
-							menu[entry.source.name] or ''
-						)
-
 						return vim_item
 					end,
 				},
 				window = {
 					completion = cmp.config.window.bordered {
+						border = 'rounded',
 						winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
 						col_offset = -3,
 						side_padding = 0,
 						scrollbar = false,
 					},
 					documentation = cmp.config.window.bordered {
+						border = 'rounded',
 						winhighlight = 'Nomral:Normal,FloatBorder:Pmenu,Search:None',
 						col_offset = -3,
 						side_padding = 0,
@@ -223,7 +166,42 @@ return {
 						cmp.config.compare.length,
 					},
 				},
-				sources = cmp.config.sources(sources),
+				sources = cmp.config.sources({
+					{ name = 'luasnip' },
+					{ name = 'nvim_lsp' },
+					{ name = 'git' },
+					{ name = 'path' },
+					{ name = 'nvim_lsp_signature_help' },
+				}, {
+					{ name = 'calc' },
+					{
+						name = 'buffer',
+						max_item_count = 10,
+						keyword_length = 5,
+						option = {
+							-- https://github.com/hrsh7th/cmp-buffer#get_bufnrs-type-fun-number=
+							-- https://github.com/hrsh7th/cmp-buffer#performance-on-large-text-files=
+							get_bufnrs = function()
+								local LIMIT = 1024 * 1024 -- 1 Megabyte max
+								local bufs = {}
+
+								for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+									local line_count = vim.api.nvim_buf_line_count(buf)
+									local byte_size = vim.api.nvim_buf_get_offset(buf, line_count)
+
+									if byte_size < LIMIT then
+										bufs[buf] = true
+									end
+								end
+
+								return vim.tbl_keys(bufs)
+							end,
+						},
+					},
+					{ name = 'tmux', max_item_count = 10 },
+					{ name = 'emoji' },
+					{ name = 'spell' },
+				}),
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
