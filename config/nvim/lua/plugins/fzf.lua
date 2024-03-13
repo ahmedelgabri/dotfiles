@@ -1,5 +1,7 @@
 return {
 	'https://github.com/junegunn/fzf.vim',
+	-- Load it in Markdown files because zk LSP needs to use it
+	ft = { 'markdown' },
 	-- I have the bin globally, so don't build, and just grab plugin directory
 	dependencies = { { 'https://github.com/junegunn/fzf' } },
 	keys = {
