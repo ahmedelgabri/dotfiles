@@ -46,39 +46,30 @@ get_wifi_ssid() {
 	echo -n "$ssid"
 }
 
-# Function to get icon based on network interface
-# the codes here are PragmataPro related
-get_interface_icon() {
-	local interface="$1"
-	if is_wifi "$interface"; then
-		echo -ne "\UF05A9 " # Icon for Wi-Fi
-	elif is_ethernet "$interface"; then
-		echo -ne "\UF0200 " # Icon for Ethernet
+# icon codes here are PragmataPro related
+get_formatted_output() {
+	local interface
+	interface=$(get_current_interface)
+
+	if [ -n "$interface" ]; then
+		if is_wifi "$interface"; then
+			ssid=$(get_wifi_ssid)
+			echo -ne "\UF05A9  $ssid"
+		elif is_ethernet "$interface"; then
+			# echo -ne "\UF0200  $interface"
+			echo -ne "\UF0200 "
+		else
+			# echo -ne "\UF06F5  $interface"
+			echo -ne "\UF06F5 " # Icon for other interfaces
+		fi
 	else
-		echo -ne "\UF06F5 " # Icon for other interfaces
+		if [ -n "${TMUX-}" ]; then
+			echo -ne "#[fg=red]\UF0C9C "
+		else
+			echo -ne "\UF0C9C "
+		fi
 	fi
 }
 
-# Get the currently used network interface
-CURRENT_INTERFACE=$(get_current_interface)
-
 # Print the currently used network interface and its status with icon
-if [ -n "$CURRENT_INTERFACE" ]; then
-	icon=$(get_interface_icon "$CURRENT_INTERFACE")
-	msg=""
-
-	if is_wifi "$CURRENT_INTERFACE"; then
-		ssid=$(get_wifi_ssid)
-		msg="$icon $ssid"
-	else
-		msg="$icon"
-	fi
-
-	echo -ne "$msg"
-else
-	if [ -n "${TMUX-}" ]; then
-		echo -ne "#[fg=red]\UF0C9C "
-	else
-		echo -ne "\UF0C9C "
-	fi
-fi
+echo -ne "$(get_formatted_output)"
