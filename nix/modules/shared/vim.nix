@@ -64,6 +64,7 @@ in
           nil
           actionlint
           taplo # TOML linter and formatter
+          ltex-ls
         ];
       };
 

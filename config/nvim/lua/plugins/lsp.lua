@@ -367,6 +367,39 @@ return {
 			return
 		end
 
+		local en_spell_words = {}
+		for word in
+			io.open(vim.fn.stdpath 'config' .. '/spell/spell.add', 'r'):lines()
+		do
+			table.insert(en_spell_words, word)
+		end
+
+		local ltex_filetypes = {
+			-- defaults
+			'bib',
+			'gitcommit',
+			'markdown',
+			'org',
+			'plaintex',
+			'rst',
+			'rnoweb',
+			'tex',
+			'pandoc',
+			'quarto',
+			'rmd',
+			'context',
+			'html',
+			'xhtml',
+			-- enabling for programming languages
+			'javascript',
+			'javascriptreact',
+			'typescript',
+			'typescriptreact',
+			'go',
+			'lua',
+			'shellscript',
+		}
+
 		local servers = {
 			cssls = {},
 			html = {},
@@ -378,6 +411,29 @@ return {
 			clojure_lsp = {},
 			eslint = {},
 			ruff_lsp = {},
+			-- marksman = {},
+			ltex = {
+				filetypes = ltex_filetypes,
+				settings = {
+					ltex = {
+						enabled = ltex_filetypes,
+						-- checkFrequency = 'edit',
+						language = 'en-US',
+						dictionary = {
+							['en-US'] = en_spell_words,
+						},
+						markdown = {
+							-- https://javadoc.io/static/com.vladsch.flexmark/flexmark/0.62.2/com/vladsch/flexmark/ast/package-summary.html
+							nodes = {
+								CodeBlock = 'ignore',
+								FencedCodeBlock = 'ignore',
+								AutoLink = 'dummy',
+								Code = 'dummy',
+							},
+						},
+					},
+				},
+			},
 			tailwindcss = {
 				init_options = {
 					userLanguages = {
