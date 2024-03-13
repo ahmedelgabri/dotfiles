@@ -296,7 +296,7 @@ return {
 			opts = {},
 		},
 		{
-			'https://github.com/mickael-menu/zk-nvim',
+			'https://github.com/zk-org/zk-nvim',
 			event = 'LspAttach',
 			config = function()
 				require('zk').setup {
