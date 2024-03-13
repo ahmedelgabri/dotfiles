@@ -32,16 +32,8 @@ get_current_interface() {
 
 	for interface in $interfaces; do
 		if is_connected "$interface"; then
-			if is_wifi "$interface"; then
-				echo -n "$interface"
-				return
-			elif is_ethernet "$interface"; then
-				echo -n "$interface"
-				return
-			else
-				echo -n "$interface"
-				return
-			fi
+			echo -n "$interface"
+			return
 		fi
 	done
 }
