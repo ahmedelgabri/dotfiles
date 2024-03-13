@@ -1,8 +1,92 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -ue -o pipefail
 
-ON_ICON=" "
-OFF_ICON="󰖪 "
+# Function to check if the interface is Wi-Fi
+is_wifi() {
+	local interface="$1"
+	local wifi_status
+	wifi_status=$(networksetup -getinfo "$interface" | grep "Wi-Fi ID" || true)
+	[ -n "$wifi_status" ]
+}
 
-WIFI_NAME="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk -F': ' '/ SSID/{print $2}')"
+# Function to check if the interface is Ethernet
+is_ethernet() {
+	local interface="$1"
+	local ethernet_status
+	ethernet_status=$(networksetup -getinfo "$interface" | grep "Ethernet Address" || true)
+	[ -n "$ethernet_status" ]
+}
 
-[ "$WIFI_NAME" = "" ] && printf "%s" "$OFF_ICON" || printf "%s" "$ON_ICON $WIFI_NAME"
+# Function to check if the interface is connected
+is_connected() {
+	local interface="$1"
+	local other_status
+	other_status=$(networksetup -getinfo "$interface" | grep -E "IP address: [0-9]+" || true)
+	[ -n "$other_status" ]
+}
+
+# Function to get the currently used network interface
+get_current_interface() {
+	local interfaces
+	interfaces=$(networksetup -listnetworkserviceorder | grep -E "^\([0-9]+\)" | awk -F'[()]' '{gsub(/^[ \t]+|[ \t]+$/, "", $3); print $3}')
+
+	for interface in $interfaces; do
+		if is_connected "$interface"; then
+			if is_wifi "$interface"; then
+				echo -n "$interface"
+				return
+			elif is_ethernet "$interface"; then
+				echo -n "$interface"
+				return
+			else
+				echo -n "$interface"
+				return
+			fi
+		fi
+	done
+}
+
+# Function to get SSID of the connected Wi-Fi network
+get_wifi_ssid() {
+	local ssid
+	ssid=$(networksetup -getairportnetwork en0 | awk -F ": " '{print $2}')
+
+	echo -n "$ssid"
+}
+
+# Function to get icon based on network interface
+# the codes here are PragmataPro related
+get_interface_icon() {
+	local interface="$1"
+	if is_wifi "$interface"; then
+		echo -ne "\UF05A9 " # Icon for Wi-Fi
+	elif is_ethernet "$interface"; then
+		echo -ne "\UF0200 " # Icon for Ethernet
+	else
+		echo -ne "\UF06F5 " # Icon for other interfaces
+	fi
+}
+
+# Get the currently used network interface
+CURRENT_INTERFACE=$(get_current_interface)
+
+# Print the currently used network interface and its status with icon
+if [ -n "$CURRENT_INTERFACE" ]; then
+	icon=$(get_interface_icon "$CURRENT_INTERFACE")
+	msg=""
+
+	if is_wifi "$CURRENT_INTERFACE"; then
+		ssid=$(get_wifi_ssid)
+		msg="$icon $ssid"
+	else
+		msg="$icon"
+	fi
+
+	echo -ne "$msg"
+else
+	if [ -n "${TMUX-}" ]; then
+		echo -ne "#[fg=red]\UF0C9C "
+	else
+		echo -ne "\UF0C9C "
+	fi
+fi
