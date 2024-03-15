@@ -30,12 +30,12 @@ get_current_interface() {
 	local interfaces
 	interfaces=$(networksetup -listnetworkserviceorder | grep -E "^\([0-9]+\)" | awk -F'[()]' '{gsub(/^[ \t]+|[ \t]+$/, "", $3); print $3}')
 
-	for interface in $interfaces; do
+	while IFS= read -r interface; do
 		if is_connected "$interface"; then
 			echo -n "$interface"
 			return
 		fi
-	done
+	done <<<"$interfaces"
 }
 
 # Function to get SSID of the connected Wi-Fi network
