@@ -390,14 +390,14 @@ return {
 			'context',
 			'html',
 			'xhtml',
-			-- enabling for programming languages
-			'javascript',
-			'javascriptreact',
-			'typescript',
-			'typescriptreact',
-			'go',
-			'lua',
-			'shellscript',
+			-- too noisy
+			-- 'javascript',
+			-- 'javascriptreact',
+			-- 'typescript',
+			-- 'typescriptreact',
+			-- 'go',
+			-- 'lua',
+			-- 'shellscript',
 		}
 
 		local servers = {
