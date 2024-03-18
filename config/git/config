@@ -18,7 +18,7 @@
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
 	pager = delta_
-	fsmonitor = true
+	; fsmonitor = true
 
 [interactive]
 	diffFilter = delta_ --color-only --features=interactive

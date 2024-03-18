@@ -13,5 +13,7 @@ if [[ -n "$CONFLICTS" ]]; then
 	echo "$CONFLICTS"
 	exit 1
 else
-	[[ -f "$GIT_DIR/hooks/pre-commit" ]] && exec "$GIT_DIR/hooks/pre-commit" "$@"
+	if [[ -f "$GIT_DIR/hooks/pre-commit" ]]; then
+		exec "$GIT_DIR/hooks/pre-commit" "$@"
+	fi
 fi
