@@ -74,13 +74,7 @@ return {
 					require('formatter.filetypes.rust').rustfmt,
 				},
 				python = {
-					function()
-						return {
-							exe = 'ruff',
-							args = { '--fix', '-' },
-							stdin = true,
-						}
-					end,
+					require('formatter.filetypes.python').ruff,
 				},
 				go = {
 					-- this will run gofmt too
