@@ -39,11 +39,14 @@ return {
 	opts = function()
 		return {
 			logging = false,
+			log_level = vim.log.levels.WARN,
 			filetype = {
 				javascript = { prettier },
 				typescript = { prettier },
 				javascriptreact = { prettier },
+				['javascriptreact.jest'] = { prettier },
 				typescriptreact = { prettier },
+				['typescriptreact.jest'] = { prettier },
 				vue = { prettier },
 				['javascript.jsx'] = { prettier },
 				['typescript.tsx'] = { prettier },
