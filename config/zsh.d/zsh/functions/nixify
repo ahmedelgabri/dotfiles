@@ -15,16 +15,33 @@ nixify() {
   if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flakes.nix ]]; then
     # Make a default shell.nix and then pop open an editor
     cat > shell.nix <<'EOF'
+with import <nixpkgs> { };
 let
- # Grab node version from .nvmrc file
-  nodeVersion = builtins.concatStringsSep "_" [ "nodejs" (builtins.head (builtins.splitVersion (builtins.readFile ./.nvmrc))) ];
+  projectPathList = builtins.split "/" (builtins.toString ./.);
+  projectName = builtins.elemAt projectPathList (builtins.length projectPathList - 1);
+  # Grab node version from .nvmrc file if exits otherwise fallback to latest node
+  nodeVersion =
+    if builtins.pathExists ./.nvmrc then
+      builtins.concatStringsSep
+        "_" [
+        "nodejs"
+        (builtins.head (builtins.splitVersion (builtins.readFile
+          ./.nvmrc)))
+      ] else "nodejs";
+
+  packageManager =
+    if builtins.pathExists ./yarn.lock then
+      pkgs.yarn else
+      if builtins.pathExists ./pnpm-lock.yaml then
+        nodePackages.pnpm
+      else "";
 in
-with import <nixpkgs> {};
 mkShell {
- # name = "";
- buildInputs = with pkgs; [
-   pkgs.${nodeVersion}
- ];
+  name = projectName;
+  buildInputs = with pkgs; [
+    pkgs.${nodeVersion}
+    packageManager
+  ];
 }
 EOF
 $EDITOR shell.nix
