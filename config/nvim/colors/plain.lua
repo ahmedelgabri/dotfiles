@@ -341,6 +341,21 @@ highlight('NvimTreeGitDeleted', { link = 'DiffDelete' })
 highlight('MiniIndentscopeSymbol', { link = 'Comment' })
 highlight('MiniIndentscopeSymbolOff', { link = 'MiniIndentscopeSymbol' })
 
+highlight('MiniDiffSignAdd', { link = 'DiffAdd' })
+highlight('MiniDiffSignChange', { link = 'DiffChange' })
+highlight('MiniDiffSignDelete', { link = 'DiffDelete' })
+highlight('MiniDiffOverAdd', { link = 'DiffAdd' })
+highlight('MiniDiffOverChange', { link = 'DiffChange' })
+highlight('MiniDiffOverContext', { link = 'DiffText' })
+highlight('MiniDiffOverDelete', { link = 'DiffDelete' })
+
+highlight('MiniStarterCurrent', { link = 'Normal' })
+highlight('MiniStarterInactive', { link = 'Comment' })
+highlight('MiniStarterItem', { link = 'EndOfBuffer' })
+highlight('MiniStarterItemBullet', { link = 'Comment' })
+highlight('MiniStarterItemPrefix', { link = 'MiniStarterHeader' })
+highlight('MiniStarterQuery', { link = 'DiffDelete' })
+
 -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md#highlights
 highlight('@annotation', { link = 'Cursor' })
 highlight('@attribute', { link = 'Constant' })

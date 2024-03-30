@@ -133,55 +133,168 @@ return {
 			}
 		end,
 	},
-	-- {
-	-- 	'https://github.com/echasnovski/mini.starter',
-	-- 	config = function()
-	-- 		local starter = require 'mini.starter'
+	{
+		'https://github.com/echasnovski/mini.diff',
+		config = function()
+			require('mini.diff').setup {
+				view = {
+					signs = {
+						add = '│',
+						change = '│',
+						delete = '_',
+					},
+				},
+			}
+		end,
+	},
+	{
+		'https://github.com/echasnovski/mini.starter',
+		config = function()
+			local starter = require 'mini.starter'
+			local au = require '_.utils.au'
 
-	-- 		local my_items = {}
+			local format_text = function(str)
+				local n = 60
+				local formatted_str = str == '' and '\n' or ''
+				local len = #str
+				local i = 1
+				while i < len do
+					local pos
+					if str:sub(i + n, i + n) == ' ' then
+						pos = i + n
+					else
+						pos = str:find(' ', i + n) or len
+					end
+					formatted_str = formatted_str
+						.. str:sub(i, pos):gsub('^%s*(.-)%s*$', '%1')
+						.. '\n'
+					i = pos
+				end
+				return formatted_str
+			end
 
-	-- 		starter.setup {
-	-- 			evaluate_single = true,
-	-- 			items = {
-	-- 				-- Use this if you set up 'mini.sessions'
-	-- 				-- starter.sections.sessions(5, true),
-	-- 				starter.sections.builtin_actions(),
-	-- 				starter.sections.recent_files(10, false),
-	-- 				starter.sections.recent_files(10, true),
-	-- 				{
-	-- 					name = 'Lazy Sync',
-	-- 					action = 'Lazy sync',
-	-- 					section = 'Commands',
-	-- 				},
-	-- 				{
-	-- 					name = 'Lazy Update',
-	-- 					action = 'Lazy update',
-	-- 					section = 'Commands',
-	-- 				},
-	-- 				{
-	-- 					name = 'Lazy Clean',
-	-- 					action = 'Lazy clean',
-	-- 					section = 'Commands',
-	-- 				},
-	-- 				{
-	-- 					name = 'Lazy Profile',
-	-- 					action = 'Lazy Profile',
-	-- 					section = 'Commands',
-	-- 				},
-	-- 				{
-	-- 					name = '.git/todo.md',
-	-- 					action = 'e .git/todo.md',
-	-- 					section = 'Bookmarks',
-	-- 				},
-	-- 			},
-	-- 			content_hooks = {
-	-- 				starter.gen_hook.adding_bullet '• ',
-	-- 				starter.gen_hook.indexing('all', { 'Builtin actions' }),
-	-- 				starter.gen_hook.padding(3, 2),
-	-- 			},
-	-- 		}
-	-- 	end,
-	-- },
+			local random_quote = function()
+				local quotes = require '_.quotes'
+				math.randomseed(os.time())
+
+				local quote = vim.tbl_map(format_text, quotes[math.random(#quotes)])
+
+				local s = ''
+				for _, sub in ipairs(quote) do
+					s = s .. sub
+				end
+				return s
+			end
+
+			local my_items = {
+				-- Use this if you set up 'mini.sessions'
+				-- starter.sections.sessions(5, true),
+				starter.sections.builtin_actions(),
+				starter.sections.recent_files(10),
+				starter.sections.recent_files(10, true, false),
+				{
+					name = 'Sync',
+					action = 'Lazy sync',
+					section = 'Commands',
+				},
+				{
+					name = 'Update',
+					action = 'Lazy update',
+					section = 'Commands',
+				},
+				{
+					name = 'Clean',
+					action = 'Lazy clean',
+					section = 'Commands',
+				},
+				{
+					name = 'Profile',
+					action = 'Lazy profile',
+					section = 'Commands',
+				},
+				{
+					name = 'Git Todo',
+					action = 'e .git/todo.md',
+					section = 'Bookmarks',
+				},
+			}
+
+			local function findHighestValue(tbl, cb)
+				if cb == nil then
+					cb = function(x)
+						return x
+					end
+				end
+				local highest = cb(tbl[1])
+				for i = 2, #tbl do
+					highest = math.max(highest, cb(tbl[i]))
+				end
+				return highest
+			end
+
+			local function centeredHeader(header)
+				local mid = math.floor(vim.o.tw / 2)
+				local midStr = math.floor(findHighestValue(header, string.len) / 4)
+				local space = math.floor(mid - midStr)
+
+				return vim.tbl_map(function(a)
+					return vim.fn['repeat'](' ', space) .. a
+				end, header)
+			end
+
+			starter.setup {
+				evaluate_single = true,
+				items = my_items,
+				header = table.concat({
+					table.concat(
+						centeredHeader {
+							-- https://github.com/NvChad/NvChad/discussions/2755#discussioncomment-8960250
+							'           ▄ ▄                   ',
+							'       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ',
+							'       █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     ',
+							'    ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     ',
+							'  ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ',
+							'  █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄',
+							'▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █',
+							'█▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █',
+							'    █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█    ',
+						},
+						'\n'
+					),
+					'',
+					vim.fn['repeat']('▁', vim.o.textwidth),
+					'',
+					random_quote(),
+					vim.fn['repeat']('▔', vim.o.textwidth),
+				}, '\n'),
+				footer = 'ϟ ' .. (vim.fn.has 'nvim' and 'nvim' or 'vim') .. '.',
+				content_hooks = {
+					starter.gen_hook.adding_bullet '  ',
+					starter.gen_hook.aligning('center', 'center'),
+					starter.gen_hook.indexing(
+						'all',
+						{ 'Builtin actions', 'Bookmarks', 'Commands' }
+					),
+				},
+			}
+
+			au.augroup('__mini_start__', {
+				{
+					event = 'User',
+					pattern = 'MiniStarterOpened',
+					callback = function(args)
+						vim.cmd [[setlocal cursorline]]
+						vim.keymap.set('n', 'j', function()
+							MiniStarter.update_current_item 'next'
+						end, { buffer = args.buf })
+						vim.keymap.set('n', 'k', function()
+							MiniStarter.update_current_item 'prev'
+						end, { buffer = args.buf })
+					end,
+				},
+			})
+		end,
+	},
 	-- {
 	-- 	'https://github.com/echasnovski/mini.sessions',
 	-- 	config = function()
