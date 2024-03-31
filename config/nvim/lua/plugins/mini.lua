@@ -186,12 +186,92 @@ return {
 				return s
 			end
 
+			-- https://github.com/echasnovski/mini.nvim/discussions/776#discussioncomment-8959196
+			local function recent_files(n, current_dir, show_path)
+				n = n or 5
+				if current_dir == nil then
+					current_dir = false
+				end
+
+				if show_path == nil then
+					show_path = true
+				end
+				if show_path == false then
+					show_path = function()
+						return ''
+					end
+				end
+				if show_path == true then
+					show_path = function(path)
+						return string.format(' (%s)', vim.fn.fnamemodify(path, ':~:.'))
+					end
+				end
+				if not vim.is_callable(show_path) then
+					H.error '`show_path` should be boolean or callable.'
+				end
+
+				return function()
+					local section = string.format(
+						'Recent files%s',
+						current_dir and ' (current directory)' or ''
+					)
+
+					-- Use only actual readable files
+					local files = vim.tbl_filter(function(f)
+						return vim.fn.filereadable(f) == 1
+					end, vim.v.oldfiles or {})
+
+					if #files == 0 then
+						return {
+							{
+								name = 'There are no recent files (`v:oldfiles` is empty)',
+								action = '',
+								section = section,
+							},
+						}
+					end
+
+					-- Possibly filter files from current directory
+					if current_dir then
+						local sep = vim.loop.os_uname().sysname == 'Windows_NT' and [[%\]]
+							or '%/'
+						local cwd_pattern = '^' .. vim.pesc(vim.fn.getcwd()) .. sep
+						-- Use only files from current directory and its subdirectories
+						files = vim.tbl_filter(function(f)
+							return f:find(cwd_pattern) ~= nil
+						end, files)
+					end
+
+					if #files == 0 then
+						return {
+							{
+								name = 'There are no recent files in current directory',
+								action = '',
+								section = section,
+							},
+						}
+					end
+
+					-- Create items
+					local items = {}
+					for _, f in ipairs(vim.list_slice(files, 1, n)) do
+						local name = vim.fn.fnamemodify(f, ':t') .. show_path(f)
+						table.insert(
+							items,
+							{ action = 'edit ' .. f, name = name, section = section }
+						)
+					end
+
+					return items
+				end
+			end
+
 			local my_items = {
 				-- Use this if you set up 'mini.sessions'
 				-- starter.sections.sessions(5, true),
 				starter.sections.builtin_actions(),
-				starter.sections.recent_files(10),
-				starter.sections.recent_files(10, true, false),
+				recent_files(10),
+				recent_files(10, true, false),
 				{
 					name = 'Sync',
 					action = 'Lazy sync',
