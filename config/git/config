@@ -111,7 +111,6 @@
 	color = true
 
 [tag]
-	forceSignAnnotated = true
 	gpgsign = true
 
 [apply]
