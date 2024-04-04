@@ -8,6 +8,7 @@ vim.filetype.add {
 		log = 'log',
 		conf = 'conf',
 		env = 'dotenv',
+		['code-workspace'] = 'jsonc',
 	},
 	filename = {
 		['.envrc'] = 'bash',
