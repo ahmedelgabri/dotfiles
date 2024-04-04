@@ -88,16 +88,6 @@ function M.plaintext()
 	vim.keymap.set({ 'i' }, ',', ',<c-g>u', { buffer = true })
 end
 
-function M.package_json_gx()
-	local line = vim.fn.getline '.'
-	local _, _, package, _ = string.find(line, [[^%s*"(.*)":%s*"(.*)"]])
-
-	if package then
-		local url = 'https://www.npmjs.com/package/' .. package
-		vim.fn['netrw#BrowseX'](url, 0)
-	end
-end
-
 function M.firstToUpper(str)
 	return (str:gsub('^%l', string.upper))
 end

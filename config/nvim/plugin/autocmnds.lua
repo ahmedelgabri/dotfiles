@@ -114,8 +114,14 @@ au.augroup('__myautocmds__', {
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = 'package.json',
 		callback = function()
-			vim.keymap.set({ 'n' }, '<leader>gx', function()
-				utils.package_json_gx()
+			vim.keymap.set({ 'n' }, 'gx', function()
+				local line = vim.fn.getline '.'
+				local _, _, package, _ = string.find(line, [[^%s*"(.*)":%s*"(.*)"]])
+
+				if package then
+					local url = 'https://www.npmjs.com/package/' .. package
+					vim.fn['netrw#BrowseX'](url, 0)
+				end
 			end, { buffer = true, silent = true, desc = '[G]o to [p]ackage' })
 		end,
 	},
