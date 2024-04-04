@@ -269,7 +269,6 @@ return {
 			local my_items = {
 				-- Use this if you set up 'mini.sessions'
 				-- starter.sections.sessions(5, true),
-				starter.sections.builtin_actions(),
 				recent_files(10),
 				recent_files(10, true, false),
 				{
@@ -297,6 +296,7 @@ return {
 					action = 'e .git/todo.md',
 					section = 'Bookmarks',
 				},
+				starter.sections.builtin_actions(),
 			}
 
 			local function findHighestValue(tbl, cb)
