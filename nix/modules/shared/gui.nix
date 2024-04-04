@@ -36,10 +36,8 @@ in
           "slack"
           "sync"
           "visual-studio-code"
-          "logseq"
           "zoom"
-          "notion-calendar"
-          "superlist"
+          "orion"
         ];
 
         my.hm.file = {
@@ -55,7 +53,6 @@ in
             brave
             firefox
             obsidian
-            logseq
             zoom-us
             signal-desktop
             vscodium
