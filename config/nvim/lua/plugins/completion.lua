@@ -76,6 +76,11 @@ return {
 				experimental = {
 					ghost_text = false, -- this feature conflict with copilot.vim's preview.
 				},
+				view = {
+					entries = {
+						follow_cursor = true,
+					},
+				},
 				bufIsBig = function(bufnr)
 					local max_filesize = 300 * 1024 -- 300 KB
 					local ok, stats =
