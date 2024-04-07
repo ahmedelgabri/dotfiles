@@ -27,7 +27,6 @@
     ./discord.nix
     ./hledger.nix
     ./zk.nix
-    ./zellij.nix
   ];
 
   my.modules = {
@@ -52,7 +51,6 @@
     go.enable = lib.mkDefault true;
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
-    zellij.enable = lib.mkDefault true;
   };
 
 }
