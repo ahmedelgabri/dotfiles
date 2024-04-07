@@ -12,4 +12,4 @@ max_width = 1200
 max_height = 1800
 
 [plugin]
-prepend_previewers = [{ name = "*.md", exec = "glow" }]
+prepend_previewers = [{ name = "*.md", run = "glow" }]
