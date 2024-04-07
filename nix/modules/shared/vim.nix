@@ -57,7 +57,6 @@ in
           nodePackages.vim-language-server
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
-          selene # Lua linter
           statix
           sumneko-lua-language-server
           tree-sitter # required for treesitter "auto-install" option to work
