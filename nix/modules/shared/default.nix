@@ -51,6 +51,7 @@
     go.enable = lib.mkDefault true;
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
+    discord.enable = lib.mkDefault true;
   };
 
 }

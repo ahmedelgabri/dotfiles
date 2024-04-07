@@ -43,7 +43,6 @@
     "firefox"
     "loom"
     "vagrant"
-    "discord"
     "docker"
     "ngrok"
     "figma"
