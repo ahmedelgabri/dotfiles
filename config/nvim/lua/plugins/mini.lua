@@ -186,6 +186,20 @@ return {
 				return s
 			end
 
+			local exclude = {
+				'COMMIT_EDITMSG',
+				'/tmp',
+				string.gsub(
+					vim.fn.escape(
+						vim.fn.fnamemodify(vim.fn.resolve(vim.env.VIMRUNTIME), ':p'),
+						'\\'
+					) .. 'doc',
+					'%-',
+					'%%-'
+				),
+				'/vimwiki/',
+			}
+
 			-- https://github.com/echasnovski/mini.nvim/discussions/776#discussioncomment-8959196
 			local function recent_files(n, current_dir, show_path)
 				n = n or 5
@@ -207,7 +221,7 @@ return {
 					end
 				end
 				if not vim.is_callable(show_path) then
-					H.error '`show_path` should be boolean or callable.'
+					vim.api.nvim_err_writeln '`show_path` should be boolean or callable.'
 				end
 
 				return function()
@@ -254,7 +268,16 @@ return {
 
 					-- Create items
 					local items = {}
-					for _, f in ipairs(vim.list_slice(files, 1, n)) do
+
+					local data = vim.tbl_filter(function(f)
+						local filtered = vim.tbl_filter(function(ex)
+							return string.match(f, ex) == nil
+						end, exclude)
+
+						return #filtered == #exclude
+					end, files)
+
+					for _, f in ipairs(vim.list_slice(data, 1, n)) do
 						local name = vim.fn.fnamemodify(f, ':t') .. show_path(f)
 						table.insert(
 							items,
