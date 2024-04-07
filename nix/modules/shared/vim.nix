@@ -60,10 +60,9 @@ in
           statix
           sumneko-lua-language-server
           tree-sitter # required for treesitter "auto-install" option to work
-          nil
+          nil # nix lsp
           actionlint
           taplo # TOML linter and formatter
-          ltex-ls
         ];
       };
 

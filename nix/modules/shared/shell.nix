@@ -89,7 +89,6 @@ in
               bat
               fd
               ripgrep
-              pastel
               vivid
               hyperfine
               jq
@@ -103,11 +102,9 @@ in
               scc
               tokei
               _1password # CLI
-              docker
               rename
               # buku
               monolith
-              wallabag
               difftastic
               ffmpeg
               slides # CLI markdown presentation tool
