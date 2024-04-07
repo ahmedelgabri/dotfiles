@@ -38,11 +38,6 @@
       flake = false;
     };
 
-    helix = {
-      url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     neovim = {
       url = "github:neovim/neovim?dir=contrib&ref=v0.9.5";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -27,7 +27,6 @@
     ./discord.nix
     ./hledger.nix
     ./zk.nix
-    ./helix.nix
     ./zellij.nix
   ];
 
@@ -53,7 +52,6 @@
     go.enable = lib.mkDefault true;
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
-    helix.enable = lib.mkDefault true;
     zellij.enable = lib.mkDefault true;
   };
 
