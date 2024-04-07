@@ -163,17 +163,6 @@
           ];
         };
 
-        "ahmed-at-work" = inputs.darwin.lib.darwinSystem {
-          system = "x86_64-darwin";
-          inherit inputs;
-          modules = [
-            inputs.home-manager.darwinModules.home-manager
-            ./nix/modules/shared
-            sharedHostsConfig
-            ./nix/hosts/ahmed-at-work.nix
-          ];
-        };
-
         "rocket" = inputs.darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           inherit inputs;
