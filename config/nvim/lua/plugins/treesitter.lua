@@ -8,6 +8,10 @@ return {
 			'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
 		},
 	},
+	init = function()
+		vim.opt.foldmethod = 'expr'
+		vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+	end,
 	config = function()
 		-- https://github.com/nvim-treesitter/nvim-treesitter/issues/3356#issuecomment-1226348556
 		-- N.B! CC needs to be unset (not set to clang as in nix shells)

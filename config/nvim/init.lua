@@ -174,16 +174,23 @@ vim.opt.concealcursor = 'n'
 vim.opt.fillchars = {
 	diff = '⣿', -- BOX DRAWINGS
 	vert = '┃', -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
-	fold = '─',
 	msgsep = '‾',
 	eob = ' ', -- Hide end of buffer ~
+	fold = '─',
 	foldopen = '▾',
-	foldsep = '│',
+	foldsep = ' ',
 	foldclose = '▸',
 }
 
-vim.opt.foldlevelstart = 99 -- start unfolded
+if not vim.fn.has 'nvim-0.10' then
+	-- it means that the first line of the fold will be syntax highlighted, rather than all be one colour.
+	vim.opt.foldtext = ''
+end
 
+vim.opt.foldcolumn = '0'
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 1
+vim.opt.foldnestmax = 4
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
