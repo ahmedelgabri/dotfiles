@@ -84,7 +84,7 @@ func get_api(flags Flags) (ApiData, error) {
 		return ApiData{}, err
 	}
 
-	rand.Seed(time.Now().Unix())
+	rand.New(rand.NewSource(time.Now().Unix()))
 	req.Header.Add("User-Agent", agents[rand.Intn(len(agents))])
 
 	resp, err := client.Do(req)
@@ -125,21 +125,21 @@ func get_data(now time.Time, flags Flags) ([]byte, error) {
 	body, err := os.ReadFile(cache)
 
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			data, err := get_api(flags)
-
-			if err != nil {
-				return []byte{}, err
-			}
-
-			file, _ := json.MarshalIndent(data, "", " ")
-
-			_ = os.WriteFile(cache, file, 0644)
-
-			return file, nil
-		} else {
+		if !errors.Is(err, os.ErrNotExist) {
 			return []byte{}, err
 		}
+
+		data, err := get_api(flags)
+
+		if err != nil {
+			return []byte{}, err
+		}
+
+		file, _ := json.MarshalIndent(data, "", " ")
+
+		_ = os.WriteFile(cache, file, 0644)
+
+		return file, nil
 	}
 
 	return body, nil
