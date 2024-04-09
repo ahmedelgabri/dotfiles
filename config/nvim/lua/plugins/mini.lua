@@ -1,3 +1,5 @@
+local au = require '_.utils.au'
+
 return {
 	{
 		'https://github.com/echasnovski/mini.align',
@@ -22,7 +24,8 @@ return {
 		'https://github.com/echasnovski/mini.indentscope',
 		config = function()
 			-- disable in some buffers
-			vim.api.nvim_create_autocmd('FileType', {
+			au.autocmd {
+				event = { 'FileType' },
 				pattern = {
 					'fzf',
 					'startify',
@@ -38,7 +41,7 @@ return {
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,
-			})
+			}
 
 			require('mini.indentscope').setup {
 				draw = {
@@ -138,6 +141,7 @@ return {
 		config = function()
 			require('mini.diff').setup {
 				view = {
+					style = 'sign',
 					signs = {
 						add = '│',
 						change = '│',
@@ -151,8 +155,6 @@ return {
 		'https://github.com/echasnovski/mini.starter',
 		config = function()
 			local starter = require 'mini.starter'
-			local au = require '_.utils.au'
-
 			local format_text = function(str)
 				local n = 60
 				local formatted_str = str == '' and '\n' or ''
