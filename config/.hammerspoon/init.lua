@@ -18,14 +18,17 @@ Install:andUse('Caffeine', {
 local urlDispatcherConfig = {
 	start = true,
 	config = {
+		-- Arc
 		default_handler = 'company.thebrowser.Browser',
 	},
 }
 
-local ok, url_patterns = pcall(require, 'hosts.' .. hs.host.localizedName())
+local ok, local_config = pcall(require, 'hosts.' .. hs.host.localizedName())
 
-if ok then
-	urlDispatcherConfig.config.url_patterns = url_patterns
+if ok and local_config ~= nil then
+	for k, v in pairs(local_config) do
+		urlDispatcherConfig[k] = v
+	end
 end
 
 Install:andUse('URLDispatcher', urlDispatcherConfig)
