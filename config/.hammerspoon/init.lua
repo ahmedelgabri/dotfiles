@@ -2,6 +2,7 @@ hs.ipc.cliInstall() -- Ensure the IPC command line client is available
 hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
 hs.loadSpoon 'SpoonInstall'
+hs.loadSpoon 'EmmyLua'
 
 Install = spoon.SpoonInstall
 
