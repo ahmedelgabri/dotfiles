@@ -4,6 +4,7 @@ return {
 	ft = { 'markdown' },
 	-- I have the bin globally, so don't build, and just grab plugin directory
 	dependencies = { { 'https://github.com/junegunn/fzf' } },
+	cmd = { 'MyFiles' },
 	keys = {
 		{
 			'<leader><leader>',
@@ -35,8 +36,13 @@ return {
 			vim.g.fzf_commits_log_options = vim.env.VIM_FZF_LOG
 		end
 
-		vim.g.fzf_layout =
-			{ window = { width = 0.9, height = 0.8, relative = false } }
+		if vim.env.TMUX ~= nil then
+			vim.g.fzf_layout = { tmux = '-p90%,60%' }
+		else
+			vim.g.fzf_layout =
+				{ window = { width = 0.9, height = 0.8, relative = false } }
+		end
+
 		vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
 		vim.g.fzf_buffers_jump = 1
 		vim.g.fzf_tags_command = 'ctags -R'
@@ -86,35 +92,66 @@ return {
 			{ remap = true }
 		)
 
-		local function with_preview(spec)
+		local function with_preview(options, placeholder)
+			local cmd = vim.env.FZF_PREVIEW_COMMAND
+				or 'echo "vim.env.FZF_PREVIEW_COMMAND is not set {}"'
+
+			if placeholder ~= nil then
+				cmd = cmd:gsub('{}', placeholder)
+			end
+
 			local previewer = {
 				'--preview-window',
 				vim.g.fzf_preview_window[1],
 				'--preview',
-				vim.env.FZF_PREVIEW_COMMAND
-					or 'echo "vim.env.FZF_PREVIEW_COMMAND is not set {}"',
+				cmd,
 			}
 
-			for _, v in ipairs(spec) do
+			for _, v in ipairs(options) do
 				table.insert(previewer, v)
 			end
 
-			return {
-				options = previewer,
-			}
+			return previewer
 		end
 
 		-- Override Files to show resposnive UI depending on the window width
 		vim.api.nvim_create_user_command('Files', function(o)
-			vim.fn['fzf#vim#files'](
-				o.args,
-				with_preview {
+			vim.fn['fzf#vim#files'](o.args, {
+				options = with_preview {
 					'--border-label',
 					vim.fn.fnamemodify(vim.env.PWD, ':~'),
 					'--border-label-pos',
 					3,
 					'--prompt',
 					'» ',
+				},
+			}, o.bang)
+		end, { bang = true, nargs = '?', complete = 'dir' })
+
+		vim.api.nvim_create_user_command('MyFiles', function(o)
+			-- https://github.com/junegunn/fzf/blob/a4745626dd5c5f697dbbc5e3aa1796d5016c1faf/README-VIM.md
+			vim.fn['fzf#run'](
+				vim.fn['fzf#wrap'] {
+					source = vim.env.FZF_DEFAULT_COMMAND ~= nil
+							and vim.env.FZF_DEFAULT_COMMAND .. [[ -x printf "\e[38;5;240m{}\e[m {/} %s\n"]]
+						or [[git ls-files]],
+					sink = 'e',
+					dir = o.args,
+					options = with_preview({
+						'--ansi',
+						'--with-nth',
+						'2,1',
+						'--delimiter',
+						'\\s',
+						'--tiebreak',
+						'begin,index',
+						'--border-label',
+						vim.fn.fnamemodify(o.args or vim.env.PWD, ':~'),
+						'--border-label-pos',
+						3,
+						'--prompt',
+						'» ',
+					}, '{1}'),
 				},
 				o.bang
 			)
