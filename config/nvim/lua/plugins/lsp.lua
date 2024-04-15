@@ -463,7 +463,6 @@ return {
 							library = {
 								'${3rd}/luv/library',
 								unpack(vim.api.nvim_get_runtime_file('', true)),
-								['/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/'] = true,
 								[vim.env.HOME .. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations'] = true,
 							},
 						},
