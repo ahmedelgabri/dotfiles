@@ -7,6 +7,7 @@ hs.loadSpoon 'EmmyLua'
 Install = spoon.SpoonInstall
 
 local layout = require 'layout'
+local utils = require 'utils'
 require 'mappings'
 require 'window-managment'
 
@@ -19,17 +20,21 @@ Install:andUse('Caffeine', {
 local urlDispatcherConfig = {
 	start = true,
 	config = {
-		-- Arc
 		default_handler = 'company.thebrowser.Browser',
+		decode_slack_redir_urls = true,
+		set_system_handler = true,
+		url_patterns = {
+			-- App links
+			{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
+			{ 'https?://.*%.slack%.com', 'com.tinyspeck.slackmacgap' },
+		},
 	},
 }
 
 local ok, local_config = pcall(require, 'hosts.' .. hs.host.localizedName())
 
 if ok and local_config ~= nil then
-	for k, v in pairs(local_config) do
-		urlDispatcherConfig[k] = v
-	end
+	urlDispatcherConfig = utils.deepMerge(urlDispatcherConfig, local_config)
 end
 
 Install:andUse('URLDispatcher', urlDispatcherConfig)
