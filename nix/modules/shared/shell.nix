@@ -111,6 +111,7 @@ in
               # emanote # Only aarch64-darwin
               ast-grep
               glow
+              hcron
             ];
           };
 

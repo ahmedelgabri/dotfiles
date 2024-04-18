@@ -135,16 +135,17 @@
     {
       overlay = _: prev: {
         pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix { };
+        hcron = prev.callPackage ./nix/pkgs/hcron.nix { };
 
         next-prayer = prev.callPackage
           ./config/tmux/scripts/next-prayer/next-prayer.nix
           { };
 
         pure-prompt = prev.pure-prompt.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
+          patches = (old.patches or[ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
 
-        neovim-git = inputs.neovim.defaultPackage.${prev.system};
+        neovim-git = inputs.neovim.defaultPackage.${ prev.system};
 
         notmuch = prev.notmuch.override {
           withEmacs = false;
