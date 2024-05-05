@@ -57,6 +57,7 @@
     "awscli"
     "k9s"
     "aws-vault"
+    "httpstat"
   ];
 
   # Requires to be logged in to the AppStore
