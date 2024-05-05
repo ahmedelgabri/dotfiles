@@ -279,7 +279,7 @@ return {
 						nls.builtins.diagnostics.actionlint.with {
 							condition = function()
 								local cwd = vim.fn.expand '%:p:.'
-								return cwd:find '.github/workflows'
+								return cwd:find '.github/'
 							end,
 						},
 					},
