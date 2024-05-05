@@ -271,8 +271,6 @@ else
 	})
 end
 
-vim.opt.inccommand = 'split' -- incremental command live feedback"
-
 -- cursor behavior:
 --   - no blinking in normal/visual mode
 --   - blinking in insert-mode
