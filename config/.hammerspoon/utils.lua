@@ -1,33 +1,20 @@
 local M = {}
 
 function M.deepMerge(tbl1, tbl2)
-	local merged = {}
-
-	-- Merge values from tbl1
-	for k, v in pairs(tbl1) do
-		if type(v) == 'table' and type(tbl2[k]) == 'table' then
-			-- If both values are tables, recursively merge them
-			merged[k] = M.deepMerge(v, tbl2[k])
-		else
-			-- Otherwise, overwrite or add the value
-			merged[k] = v
-		end
-	end
-
-	-- Merge values from tbl2
 	for k, v in pairs(tbl2) do
 		if type(v) == 'table' and type(tbl1[k]) == 'table' then
-			-- If both values are tables, they've been handled in the first loop
-		elseif merged[k] ~= nil then
-			-- If the key already exists in merged, overwrite it
-			merged[k] = v
+			-- If it's a list, then concat
+			if v[1] ~= nil and tbl1[k][1] ~= nil then
+				tbl1[k] = hs.fnutils.concat(tbl1[k], v)
+			else
+				-- Otherwise it's a map
+				tbl1[k] = M.deepMerge(tbl1[k], v)
+			end
 		else
-			-- Otherwise, add the value
-			merged[k] = v
+			tbl1[k] = v
 		end
 	end
-
-	return merged
+	return tbl1
 end
 
 return M
