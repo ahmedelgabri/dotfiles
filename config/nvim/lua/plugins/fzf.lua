@@ -36,12 +36,8 @@ return {
 			vim.g.fzf_commits_log_options = vim.env.VIM_FZF_LOG
 		end
 
-		if vim.env.TMUX ~= nil then
-			vim.g.fzf_layout = { tmux = '-p90%,60%' }
-		else
-			vim.g.fzf_layout =
-				{ window = { width = 0.9, height = 0.8, relative = false } }
-		end
+		vim.g.fzf_layout =
+			{ window = { width = 0.9, height = 0.8, relative = false } }
 
 		vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
 		vim.g.fzf_buffers_jump = 1
