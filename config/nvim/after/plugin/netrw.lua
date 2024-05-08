@@ -21,7 +21,7 @@ vim.g.netrw_bufsettings = vim.g.netrw_bufsettings
 -- :NvimTreeFindFile like functionality
 -- https://superuser.com/a/1814266
 vim.keymap.set('n', '--', function()
-	local relative_path = vim.fn.expand '%:h'
+	local relative_path = vim.fn.fnamemodify(vim.fn.expand '%:h', ':~:.')
 	local startPos, endPos = string.find(relative_path, '/')
 
 	if startPos == 1 then
