@@ -77,7 +77,10 @@ return {
 					ghost_text = false, -- this feature conflict with copilot.vim's preview.
 				},
 				view = {
+					-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#custom-menu-direction
 					entries = {
+						name = 'custom',
+						selection_order = 'near_cursor',
 						follow_cursor = true,
 					},
 				},
@@ -141,15 +144,13 @@ return {
 					completion = cmp.config.window.bordered {
 						border = 'rounded',
 						winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
-						col_offset = -3,
-						side_padding = 0,
+						winblend = 0,
 						scrollbar = false,
 					},
 					documentation = cmp.config.window.bordered {
 						border = 'rounded',
 						winhighlight = 'Nomral:Normal,FloatBorder:Pmenu,Search:None',
-						col_offset = -3,
-						side_padding = 0,
+						winblend = 0,
 						scrollbar = false,
 					},
 				},
