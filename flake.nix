@@ -39,7 +39,7 @@
     };
 
     neovim = {
-      url = "github:neovim/neovim?dir=contrib&ref=v0.9.5";
+      url = "github:neovim/neovim?dir=contrib&ref=v0.10.0";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
@@ -145,7 +145,7 @@
           patches = (old.patches or[ ]) ++ [ ./nix/hosts/pure-zsh.patch ];
         });
 
-        neovim-git = inputs.neovim.defaultPackage.${ prev.system};
+        neovim-git = inputs.neovim.defaultPackage.${prev.system};
 
         notmuch = prev.notmuch.override {
           withEmacs = false;

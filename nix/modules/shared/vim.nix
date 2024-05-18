@@ -22,8 +22,8 @@ in
       environment.systemPackages = with pkgs;
         [
           vim
-          # neovim-unwrapped
-          neovim-git
+          neovim-unwrapped
+          # neovim-git
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
