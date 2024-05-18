@@ -120,7 +120,7 @@ au.augroup('__myautocmds__', {
 
 				if package then
 					local url = 'https://www.npmjs.com/package/' .. package
-					vim.fn['netrw#BrowseX'](url, 0)
+					vim.ui.open(url)
 				end
 			end, { buffer = true, silent = true, desc = '[G]o to [p]ackage' })
 		end,
