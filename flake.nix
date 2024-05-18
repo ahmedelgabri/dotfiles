@@ -63,6 +63,7 @@
           package = pkgs.nixVersions.git;
           extraOptions = "experimental-features = nix-command flakes";
           settings = {
+            auto-optimise-store = true;
             substituters = [
               "https://cache.nixos.org"
               "https://nix-community.cachix.org"
