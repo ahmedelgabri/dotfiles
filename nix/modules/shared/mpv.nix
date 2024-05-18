@@ -17,12 +17,11 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (if (builtins.hasAttr "homebrew" options) then {
-        homebrew.casks = [ "mpv" "iina" ];
-      } else {
-        my.user = { packages = with pkgs; [ mpv ]; };
-      })
+        homebrew.casks = [ "iina" ];
+      } else { })
 
       {
+        my.user = { packages = with pkgs; [ mpv ]; };
         my.hm.file = {
           ".config/mpv" = {
             recursive = true;
