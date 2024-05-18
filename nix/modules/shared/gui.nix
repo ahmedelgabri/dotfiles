@@ -37,7 +37,6 @@ in
           "sync"
           "visual-studio-code"
           "zoom"
-          "orion"
         ];
 
         my.hm.file = {
