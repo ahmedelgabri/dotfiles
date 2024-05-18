@@ -159,14 +159,6 @@ vim.keymap.set(
 	{ desc = 'Execute macro over visual range' }
 )
 
--- Conflicts with LSP K, LSP takes precenedence, so this is a fallback?
-vim.keymap.set(
-	{ 'n' },
-	'K',
-	[[:<C-U>exe 'help '. utils#helptopic()<CR>]],
-	{ silent = true, buffer = true, desc = 'Show help topic if available' }
-)
-
 -- Quick note taking per project
 vim.keymap.set(
 	{ 'n' },
@@ -196,20 +188,6 @@ vim.keymap.set(
 )
 
 -- Diagnostic keymaps
-vim.keymap.set(
-	'n',
-	'[d',
-	vim.diagnostic.goto_prev,
-	{ desc = 'Go to previous [D]iagnostic message' }
-)
-
-vim.keymap.set(
-	'n',
-	']d',
-	vim.diagnostic.goto_next,
-	{ desc = 'Go to next [D]iagnostic message' }
-)
-
 vim.keymap.set('n', '<leader>ld', function()
 	vim.diagnostic.open_float(nil, {
 		focusable = false,

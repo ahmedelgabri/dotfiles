@@ -56,7 +56,6 @@ local mappings = {
 		vim.lsp.buf.rename,
 		{ desc = '[R]ename Symbol' },
 	},
-	-- { { 'n' }, 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {desc = "Open Hover popup"} },
 	{
 		{ 'n' },
 		'<C-]>',
@@ -112,54 +111,47 @@ vim.diagnostic.open_float = (function(orig)
 		-- this for your own purposes you can make it as simple as you like
 		local diagnostics = vim.diagnostic.get(opts.bufnr or 0, { lnum = lnum })
 		local max_severity = vim.diagnostic.severity.HINT
+
 		for _, d in ipairs(diagnostics) do
 			-- Equality is "less than" based on how the severities are encoded
 			if d.severity < max_severity then
 				max_severity = d.severity
 			end
 		end
+
 		local border_color = ({
 			[vim.diagnostic.severity.HINT] = 'DiagnosticHint',
 			[vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
 			[vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
 			[vim.diagnostic.severity.ERROR] = 'DiagnosticError',
 		})[max_severity]
+
 		opts.border = getBorder(border_color)
+
 		orig(bufnr, opts)
 	end
 end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
-	virtual_text = true,
+	severity_sort = true,
 	-- virtual_text = {
 	--   source = 'always',
 	--   spacing = 4,
 	--   prefix = '■', -- Could be '●', '▎', 'x'
 	-- },
 	float = {
-		source = 'always',
+		source = 'if_many',
 		focusable = false,
-		style = 'minimal',
-		border = getBorder(),
-		-- header = '',
-		-- prefix = '',
 	},
-	underline = true,
-	signs = true,
-	update_in_insert = false,
-	severity_sort = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = utils.get_icon 'error',
+			[vim.diagnostic.severity.WARN] = utils.get_icon 'warn',
+			[vim.diagnostic.severity.HINT] = utils.get_icon 'hint',
+			[vim.diagnostic.severity.INFO] = utils.get_icon 'info',
+		},
+	},
 }
-
-local signs = { 'Error', 'Warn', 'Hint', 'Info' }
-
-for _, type in pairs(signs) do
-	vim.fn.sign_define('DiagnosticSign' .. type, {
-		text = utils.get_icon(string.lower(type)),
-		texthl = 'DiagnosticSign' .. type,
-		linehl = '',
-		numhl = '',
-	})
-end
 
 au.autocmd {
 	event = 'LspAttach',
@@ -171,7 +163,8 @@ au.autocmd {
 		-- Don't run bash-lsp on .env files
 		-- Has to be in-sync with null-ls config for shellcheck
 		if
-			client.name == 'bashls'
+			client ~= nil
+			and client.name == 'bashls'
 			and bufname:match '%.env' ~= nil
 			and bufname:match '%.env.*' ~= nil
 		then
@@ -182,7 +175,9 @@ au.autocmd {
 		-- ---------------
 		-- GENERAL
 		-- ---------------
-		client.config.flags.allow_incremental_sync = true
+		if client ~= nil then
+			client.config.flags.allow_incremental_sync = true
+		end
 
 		-- ---------------
 		-- MAPPINGS
@@ -201,7 +196,13 @@ au.autocmd {
 		-- ---------------
 		-- AUTOCMDS
 		-- ---------------
-		if client and client.server_capabilities.documentHighlightProvider then
+		--
+		if
+			client ~= nil
+			and client.supports_method(
+				vim.lsp.protocol.Methods.textDocument_documentHighlight
+			)
+		then
 			hl.group('LspReferenceRead', {
 				link = 'SpecialKey',
 			})
@@ -226,16 +227,50 @@ au.autocmd {
 			})
 		end
 
-		if client.server_capabilities.codeLensProvider then
+		if
+			client ~= nil
+			and client.supports_method(vim.lsp.protocol.Methods.textDocument_codeLens)
+		then
 			au.augroup('__LSP_CODELENS__', {
 				{
 					event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-					callback = function()
-						vim.lsp.codelens.refresh()
-					end,
+					callback = vim.lsp.codelens.refresh,
 					buffer = event.buf,
 				},
 			})
+		end
+
+		if
+			vim.lsp.inlay_hint
+			and client ~= nil
+			and client.supports_method(
+				vim.lsp.protocol.Methods.textDocument_inlayHint
+			)
+		then
+			au.augroup('__LSP_INLAY_HINTS__', {
+				{
+					event = { 'InsertEnter', 'InsertLeave' },
+					desc = 'Enable/Disable inlay hints',
+					buffer = event.buf,
+					callback = function()
+						local opts = { bufnr = event.buf }
+						vim.lsp.inlay_hint.enable(
+							not vim.lsp.inlay_hint.is_enabled(opts),
+							opts
+						)
+					end,
+				},
+			}, { clear = false })
+			-- Initial inlay hint display.
+			-- Idk why but without the delay inlay hints aren't displayed at the very start.
+			vim.defer_fn(function()
+				local mode = vim.api.nvim_get_mode().mode
+
+				vim.lsp.inlay_hint.enable(
+					mode == 'n' or mode == 'v',
+					{ bufnr = event.buf }
+				)
+			end, 500)
 		end
 	end,
 }
@@ -504,6 +539,15 @@ return {
 							shadow = true,
 						},
 						staticcheck = true,
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
 					},
 				},
 				init_options = {
@@ -530,6 +574,30 @@ return {
 						'.git'
 					)(fname) or nvim_lsp.util.path.dirname(fname))
 				end,
+				settings = {
+					javascript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = true,
+						},
+					},
+					typescript = {
+						inlayHints = {
+							includeInlayEnumMemberValueHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayVariableTypeHints = true,
+						},
+					},
+				},
 			},
 			denols = {
 				root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
