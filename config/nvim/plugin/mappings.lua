@@ -207,3 +207,10 @@ vim.keymap.set(
 	vim.diagnostic.setloclist,
 	{ desc = 'Open diagnostic [Q]uickfix list' }
 )
+
+vim.keymap.set(
+	'n',
+	'\\',
+	[[:silent grep!  | cwindow<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>]],
+	{ desc = 'Grep' }
+)
