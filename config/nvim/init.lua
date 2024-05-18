@@ -182,11 +182,6 @@ vim.opt.fillchars = {
 	foldclose = '▸',
 }
 
-if not vim.fn.has 'nvim-0.10' then
-	-- it means that the first line of the fold will be syntax highlighted, rather than all be one colour.
-	vim.opt.foldtext = ''
-end
-
 vim.opt.foldcolumn = '0'
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 1

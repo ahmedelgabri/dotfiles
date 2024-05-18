@@ -193,13 +193,7 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>ld', function()
 	vim.diagnostic.open_float(nil, {
 		focusable = false,
-		close_events = {
-			'BufLeave',
-			'CursorMoved',
-			'InsertEnter',
-			'FocusLost',
-		},
-		source = 'always',
+		source = 'if_many',
 	})
 end, { desc = 'Show diagnostic [E]rror messages' })
 
