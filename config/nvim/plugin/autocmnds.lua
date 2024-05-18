@@ -1,7 +1,6 @@
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
 local hl = require '_.utils.highlight'
-local utils = require '_.utils'
 
 au.augroup('__myautocmds__', {
 	-- Automatically make splits equal in size

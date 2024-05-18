@@ -102,26 +102,6 @@ return {
 		'https://github.com/nullchilly/fsread.nvim',
 		cmd = { 'FSRead', 'FSToggle', 'FSClear' },
 	},
-	{
-		'https://github.com/numToStr/Comment.nvim',
-		dependencies = {
-			'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
-		},
-		keys = {
-			{ 'gc', mode = { 'n', 'x' } },
-			{ 'gb', mode = { 'n', 'x' } },
-		},
-		init = function()
-			vim.g.skip_ts_context_commentstring_module = true
-		end,
-		opts = function()
-			return {
-				pre_hook = function()
-					return vim.bo.commentstring
-				end,
-			}
-		end,
-	},
 	{ 'https://github.com/wincent/loupe' },
 	{
 		'https://github.com/simrat39/symbols-outline.nvim',
