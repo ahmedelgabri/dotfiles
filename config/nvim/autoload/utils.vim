@@ -59,25 +59,8 @@ function! utils#HtmlUnEscape() abort
   silent s/&amp;/\&/eg
 endfunction
 
-function! utils#OpenFileFolder() abort
-  silent call system(utils#open() . ' '.expand('%:p:h:~'))
-endfunction
-
 function! utils#should_strip_whitespace(filetypelist) abort
   return index(a:filetypelist, &filetype) == -1
-endfunction
-
-function! utils#open() abort
-  " Linux/BSD
-  if executable('xdg-open')
-    return 'xdg-open'
-  endif
-  " MacOS
-  if executable('open')
-    return 'open'
-  endif
-  " Windows
-  return 'explorer'
 endfunction
 
 function! utils#is_git() abort

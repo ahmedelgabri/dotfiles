@@ -140,7 +140,9 @@ vim.keymap.set({ 'v' }, '<Leader>he', ':call utils#HtmlEscape()<cr>', {
 })
 
 -- maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
-vim.keymap.set({ 'n' }, 'gof', ':call utils#OpenFileFolder()<cr>', {
+vim.keymap.set({ 'n' }, 'gof', function()
+	vim.ui.open(vim.fn.expand '%:p:h:~')
+end, {
 	silent = true,
 	desc = '[G]o [o]pen [f]older',
 })
