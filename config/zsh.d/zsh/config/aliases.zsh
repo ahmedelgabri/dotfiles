@@ -56,3 +56,5 @@ fi
 
 # https://github.com/neomutt/neomutt/issues/4058#issuecomment-1751682305
 alias neomutt="TERM=xterm-direct neomutt"
+# https://github.com/direnv/direnv/wiki/Tmux
+alias tmux='direnv exec / tmux'

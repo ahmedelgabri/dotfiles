@@ -125,7 +125,11 @@ in
               source = ../../../config/.terminfo;
             };
             ".config/direnv/direnvrc" = {
-              text = "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
+              text = lib.concatStringsSep "\n"
+                [
+                  "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
+                  (builtins.readFile ../../../config/direnv/direnvrc)
+                ];
             };
             # This is an emptyfile that's needed to get rid of the "Last login..." message when opening a new shell
             ".hushlogin" = {

@@ -1,0 +1,22 @@
+# vim:ft=zsh:
+
+# Flakify the current directory
+
+emulate -L zsh
+
+unalias flakify 2>/dev/null
+
+flakify() {
+  if [ ! -e ./.envrc ]; then
+    echo "set -e\nset +u\nuse flake\ndotenv_if_exists" > .envrc
+    direnv allow
+  fi
+
+  if [ ! -e flake.nix ]; then
+    nix flake new -t github:nix-community/nix-direnv .
+  fi
+
+  ${EDITOR:-vim} flake.nix
+}
+
+flakify "$@"
