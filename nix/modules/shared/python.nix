@@ -31,6 +31,7 @@ in
               # nixos.python38Packages.httpx
               ruff
               ruff-lsp
+              rye
             ];
         };
 
