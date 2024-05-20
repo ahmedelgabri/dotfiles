@@ -1,16 +1,54 @@
+local icons = {
+	Array = ' ',
+	Boolean = '◩ ',
+	Class = ' ',
+	Color = '󰏘 ',
+	Constant = ' ',
+	-- Constructor = ' ',
+	Constructor = ' ',
+	Enum = ' ',
+	EnumMember = ' ',
+	Event = ' ',
+	Field = ' ',
+	File = '󰈙 ',
+	Folder = '󰉋 ',
+	Function = '󰊕 ',
+	-- Interface = ' ',
+	Interface = '練',
+	Key = '󰌋 ',
+	Keyword = '󰌋 ',
+	Method = ' ',
+	Module = ' ',
+	Namespace = ' ',
+	Null = 'ﳠ ',
+	Number = '󰎠 ',
+	Object = ' ',
+	Operator = '󰆕 ',
+	Package = ' ',
+	Property = ' ',
+	Reference = '󰈇 ',
+	Snippet = ' ',
+	String = ' ',
+	Struct = '󰙅 ',
+	Text = '󰉿 ',
+	TypeParameter = ' ',
+	Unit = '塞 ',
+	Value = ' ',
+	Variable = ' ',
+
+	calc = '󰃬 ',
+}
+
 return {
 	'https://github.com/hrsh7th/nvim-cmp',
 	event = 'InsertEnter',
 	dependencies = {
 		{ 'https://github.com/hrsh7th/cmp-nvim-lsp' },
-		{ 'https://github.com/andersevenrud/cmp-tmux' },
 		{ 'https://github.com/saadparwaiz1/cmp_luasnip' },
 		{ 'https://github.com/hrsh7th/cmp-path' },
 		{ 'https://github.com/hrsh7th/cmp-buffer' },
 		{ 'https://github.com/hrsh7th/cmp-emoji' },
 		{ 'https://github.com/f3fora/cmp-spell' },
-		{ 'https://github.com/hrsh7th/cmp-cmdline' },
-		{ 'https://github.com/hrsh7th/cmp-calc' },
 		{
 			'https://github.com/petertriho/cmp-git',
 			dependencies = {
@@ -25,47 +63,6 @@ return {
 	config = function()
 		local utils = require '_.utils'
 
-		local icons = {
-			Array = ' ',
-			Boolean = '◩ ',
-			Class = ' ',
-			Color = '󰏘 ',
-			Constant = ' ',
-			-- Constructor = ' ',
-			Constructor = ' ',
-			Enum = ' ',
-			EnumMember = ' ',
-			Event = ' ',
-			Field = ' ',
-			File = '󰈙 ',
-			Folder = '󰉋 ',
-			Function = '󰊕 ',
-			-- Interface = ' ',
-			Interface = '練',
-			Key = '󰌋 ',
-			Keyword = '󰌋 ',
-			Method = ' ',
-			Module = ' ',
-			Namespace = ' ',
-			Null = 'ﳠ ',
-			Number = '󰎠 ',
-			Object = ' ',
-			Operator = '󰆕 ',
-			Package = ' ',
-			Property = ' ',
-			Reference = '󰈇 ',
-			Snippet = ' ',
-			String = ' ',
-			Struct = '󰙅 ',
-			Text = '󰉿 ',
-			TypeParameter = ' ',
-			Unit = '塞 ',
-			Value = ' ',
-			Variable = ' ',
-
-			calc = '󰃬 ',
-		}
-
 		local completion_loaded = pcall(function()
 			local cmp = require 'cmp'
 			local types = require 'cmp.types'
@@ -73,9 +70,6 @@ return {
 			local luasnip = require 'luasnip'
 
 			cmp.setup {
-				experimental = {
-					ghost_text = false, -- this feature conflict with copilot.vim's preview.
-				},
 				view = {
 					-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#custom-menu-direction
 					entries = {
@@ -99,12 +93,13 @@ return {
 					format = function(entry, vim_item)
 						-- Get the full snippet (and only keep first line)
 						local word = entry:get_insert_text()
-						if
-							entry.completion_item.insertTextFormat
-							== types.lsp.InsertTextFormat.Snippet
-						then
-							word = vim.lsp.util.parse_snippet(word)
-						end
+						-- if
+						-- 	entry.completion_item.insertTextFormat
+						-- 	== types.lsp.InsertTextFormat.Snippet
+						-- then
+						-- 	-- parse_snippet is deprecated, need to find an alternative
+						-- 	word = vim.lsp.util.parse_snippet(word)
+						-- end
 						word = str.oneline(word)
 
 						-- concatenates the string
@@ -164,7 +159,6 @@ return {
 					{ name = 'path' },
 					{ name = 'nvim_lsp_signature_help' },
 				}, {
-					{ name = 'calc' },
 					{
 						name = 'buffer',
 						max_item_count = 10,
@@ -189,9 +183,7 @@ return {
 							end,
 						},
 					},
-					{ name = 'tmux', max_item_count = 10 },
 					{ name = 'emoji' },
-					{ name = 'spell' },
 				}),
 				snippet = {
 					expand = function(args)
