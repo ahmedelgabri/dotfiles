@@ -15,6 +15,13 @@ vim.api.nvim_create_user_command(
 	{}
 )
 
+-- http://stackoverflow.com/a/39348498/2103996
 vim.api.nvim_create_user_command('ClearRegisters', function()
-	vim.fn['utils#ClearRegisters']()
+	local regs = vim.split(
+		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"',
+		''
+	)
+	for _, r in ipairs(regs) do
+		vim.fn.setreg(r, {})
+	end
 end, {})

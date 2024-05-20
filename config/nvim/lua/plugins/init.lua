@@ -152,6 +152,14 @@ return {
 	{
 		'https://github.com/folke/zen-mode.nvim',
 		cmd = { 'ZenMode' },
+		keys = {
+			{
+				'<leader>z',
+				vim.cmd.ZenMode,
+				noremap = true,
+				desc = 'Toggle buffer [z]en/[z]oom mode',
+			},
+		},
 		opts = {
 			on_close = function()
 				local is_last_buffer = #vim.fn.filter(

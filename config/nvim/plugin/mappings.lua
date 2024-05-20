@@ -114,30 +114,10 @@ au.augroup('__MyTerm__', {
 	{ event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
 })
 
-vim.keymap.set({ 'n' }, '<leader>z', ':call utils#ZoomToggle()<cr>', {
-	silent = true,
-	desc = 'Toggle buffer [z]ooming',
-})
-
--- Do I need this? seems like not useful with treesitter
-vim.keymap.set(
-	{ 'n' },
-	'<c-g>',
-	':call utils#SynStack()<cr>',
-	{ desc = 'Show highlighting groups for current word' }
-)
-
-vim.keymap.set({ 'v' }, '<Leader>hu', ':call utils#HtmlUnEscape()<cr>', {
-	remap = true,
-	silent = true,
-	desc = '[H]tml [U]nescape',
-})
-
-vim.keymap.set({ 'v' }, '<Leader>he', ':call utils#HtmlEscape()<cr>', {
-	remap = true,
-	silent = true,
-	desc = '[H]tml [E]scape',
-})
+vim.keymap.set({ 'n' }, '<c-g>', function()
+	local result = vim.treesitter.get_captures_at_cursor(0)
+	print(vim.inspect(result))
+end, { desc = 'Show treesitter capture group for textobject under cursor.' })
 
 -- maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
 vim.keymap.set({ 'n' }, 'gof', function()
