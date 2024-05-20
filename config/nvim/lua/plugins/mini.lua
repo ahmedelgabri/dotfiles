@@ -294,8 +294,8 @@ return {
 			local my_items = {
 				-- Use this if you set up 'mini.sessions'
 				-- starter.sections.sessions(5, true),
-				recent_files(10),
 				recent_files(10, true, false),
+				recent_files(10),
 				{
 					name = 'Sync',
 					action = 'Lazy sync',
