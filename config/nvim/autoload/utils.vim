@@ -22,21 +22,6 @@ function! utils#SynStack() abort
   echo map(synstack(line('.'), col('.')), "synIDattr(v:val, 'name')")
 endfunc
 
-" strips trailing whitespace at the end of files.
-function! utils#Preserve(command) abort
-  " Preparation: save last search, and cursor position.
-  let l:pos=winsaveview()
-  let l:search=@/
-  " Do the business:
-  keeppatterns execute a:command
-  " Trim trailing blank lines
-  " keeppatterns %s#\($\n\s*\)\+\%$##
-  " Clean up: restore previous search history, and cursor position
-  let @/=l:search
-  nohlsearch
-  call winrestview(l:pos)
-endfunction
-
 function! utils#ClearRegisters() abort
   let l:regs='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-="*+'
   let l:i=0
@@ -57,10 +42,6 @@ function! utils#HtmlUnEscape() abort
   silent s/&lt;/</eg
   silent s/&gt;/>/eg
   silent s/&amp;/\&/eg
-endfunction
-
-function! utils#should_strip_whitespace(filetypelist) abort
-  return index(a:filetypelist, &filetype) == -1
 endfunction
 
 function! utils#is_git() abort

@@ -45,6 +45,18 @@ return {
 			logging = false,
 			log_level = vim.log.levels.WARN,
 			filetype = {
+				-- Use the special "*" filetype for defining formatter configurations on
+				-- any filetype
+				['*'] = {
+					function()
+						if MiniTrailspace ~= nil then
+							MiniTrailspace.trim()
+							MiniTrailspace.trim_last_lines()
+						else
+							require('formatter.filetypes.any').remove_trailing_whitespace()
+						end
+					end,
+				},
 				javascript = { jsFormatter },
 				typescript = { jsFormatter },
 				javascriptreact = { jsFormatter },
