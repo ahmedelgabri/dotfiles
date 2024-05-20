@@ -2,4 +2,4 @@ local utils = require '_.utils'
 
 utils.plaintext()
 
-vim.cmd [[setlocal formatoptions+="t"]]
+vim.opt_local.formatoptions:append 't'

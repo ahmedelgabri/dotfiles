@@ -1,2 +1,2 @@
-vim.cmd [[setlocal iskeyword-="#"]]
-vim.cmd [[setlocal conceallevel=2]]
+vim.opt_local.iskeyword:remove '#'
+vim.opt_local.conceallevel = 2

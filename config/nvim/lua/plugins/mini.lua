@@ -388,7 +388,7 @@ return {
 					event = 'User',
 					pattern = 'MiniStarterOpened',
 					callback = function(args)
-						vim.cmd [[setlocal cursorline]]
+						vim.opt_local.cursorline = true
 						vim.keymap.set('n', 'j', function()
 							MiniStarter.update_current_item 'next'
 						end, { buffer = args.buf })

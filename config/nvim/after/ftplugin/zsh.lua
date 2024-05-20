@@ -1,2 +1,2 @@
-vim.cmd [[setlocal foldmethod=marker]]
-vim.cmd [[setlocal conceallevel=2]]
+vim.opt_local.foldmethod = 'marker'
+vim.opt_local.conceallevel = 2

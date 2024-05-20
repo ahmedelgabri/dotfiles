@@ -1,6 +1,6 @@
 -- Wrap quickfix window
-vim.cmd [[setlocal wrap]]
-vim.cmd [[setlocal linebreak]]
+vim.opt_local.wrap = true
+vim.opt_local.linebreak = true
 
 -- Some settings.
 vim.wo.nu = true

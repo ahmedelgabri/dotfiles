@@ -46,4 +46,4 @@ vim.opt_local.include =
 	[=[\v<((do|load)file|require)\s*\(?['"]\zs[^'"]+\ze['"]]=]
 vim.opt_local.includeexpr = 'v:lua.Find_required_path(v:fname)'
 
-vim.cmd [[setlocal conceallevel=2]]
+vim.opt_local.conceallevel = 2

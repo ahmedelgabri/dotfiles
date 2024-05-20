@@ -1,1 +1,1 @@
-vim.cmd [[setlocal commentstring=#\ \ %s]]
+vim.opt_local.commentstring = '# %s'

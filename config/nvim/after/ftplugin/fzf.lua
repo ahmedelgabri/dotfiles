@@ -1,2 +1,2 @@
 vim.cmd [[silent! match None]]
-vim.cmd [[setlocal nonumber]]
+vim.opt_local.number = false
