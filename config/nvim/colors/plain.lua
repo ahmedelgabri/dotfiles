@@ -126,6 +126,7 @@ highlight('Define', { link = 'PreProc' })
 highlight('Macro', { link = 'PreProc' })
 highlight('PreCondit', { link = 'PreProc' })
 highlight('VertSplit', { bg = nil, fg = colors.visual })
+highlight('WinSeparator', { link = 'VertSplit' })
 
 -- __Operator__
 highlight('Noise', { fg = colors.norm_subtle })
