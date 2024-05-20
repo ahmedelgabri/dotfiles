@@ -29,6 +29,8 @@ vim.o.termguicolors = true
 vim.g.colors_name = 'plain'
 
 local function highlight(name, opts)
+	-- Force links
+	opts.force = true
 	vim.api.nvim_set_hl(0, name, opts)
 end
 
@@ -127,6 +129,7 @@ highlight('Macro', { link = 'PreProc' })
 highlight('PreCondit', { link = 'PreProc' })
 highlight('VertSplit', { bg = nil, fg = colors.visual })
 highlight('WinSeparator', { link = 'VertSplit' })
+highlight('SpecialKey', { fg = colors.cyan })
 
 -- __Operator__
 highlight('Noise', { fg = colors.norm_subtle })
@@ -481,6 +484,7 @@ highlight(
 highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
 highlight('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
 highlight('LspDiagnosticsDefaultHint', { link = 'NonText' })
+highlight('LspInlayHint', { fg = lighter_black, bg = colors.selection_fg })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })
