@@ -59,6 +59,7 @@ return {
 			},
 		},
 		{ 'https://github.com/hrsh7th/cmp-nvim-lsp-signature-help' },
+		{ 'https://github.com/roobert/tailwindcss-colorizer-cmp.nvim' },
 	},
 	config = function()
 		local utils = require '_.utils'
@@ -68,6 +69,7 @@ return {
 			local types = require 'cmp.types'
 			local str = require 'cmp.utils.str'
 			local luasnip = require 'luasnip'
+			local cmp_tailwind = require 'tailwindcss-colorizer-cmp'
 
 			cmp.setup {
 				view = {
@@ -131,6 +133,7 @@ return {
 						local strings = vim.split(vim_item.kind, ' ', { trimempty = true })
 
 						vim_item.kind = (strings[1] or '') .. ' '
+						cmp_tailwind.formatter(entry, vim_item)
 
 						return vim_item
 					end,
