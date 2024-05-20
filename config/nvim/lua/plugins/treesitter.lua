@@ -132,5 +132,100 @@ return {
 
 		vim.treesitter.language.register('markdown', 'mdx')
 		vim.treesitter.language.register('bash', 'zsh')
+
+		vim.treesitter.query.add_directive(
+			'offset-first-n!',
+			function(match, _, _, pred, metadata)
+				---@cast pred integer[]
+				local capture_id = pred[2]
+				if not metadata[capture_id] then
+					metadata[capture_id] = {}
+				end
+
+				local range = metadata[capture_id].range
+					---@diagnostic disable-next-line: undefined-field
+					or { match[capture_id]:range() }
+				local offset = pred[3] or 0
+
+				range[4] = range[2] + offset
+				metadata[capture_id].range = range
+			end,
+			true
+		)
+
+		local non_filetype_match_injection_language_aliases = {
+			ex = 'elixir',
+			pl = 'perl',
+			bash = 'sh', -- reversing these two from the treesitter source
+			uxn = 'uxntal',
+			ts = 'typescript',
+			js = 'javascript',
+			tsx = 'typescriptreact',
+			jsx = 'javascriptreact',
+			py = 'python',
+			rb = 'ruby',
+			md = 'markdown',
+			html5 = 'html',
+			scss = 'sass',
+		}
+
+		-- https://fabrizioschiavi.github.io/pragmatapro-semiotics/
+		local icons = {
+			mermaid = '󰈺 ',
+			plantuml = ' ',
+			chart = ' ',
+			javascript = '󰌞 ',
+			javascriptreact = '󰌞 ',
+			typescript = '󰛦 ',
+			typescriptreact = '󰛦 ',
+			python = '󰌠 ',
+			ruby = ' ',
+			json = ' ',
+			json5 = ' ',
+			jsonc = ' ',
+			markdown = ' ',
+			html = '󰌝 ',
+			go = '󰟓 ',
+			php = ' ',
+			swift = '󰛥 ',
+			nix = '󱄅 ',
+			css = '󰌜 ',
+			sass = ' ',
+			less = ' ',
+			xml = '󰗀 ',
+			r = '󰟔 ',
+			rust = '󱘗 ',
+			lua = '󰢱 ',
+			kotlin = '󱈙 ',
+			java = ' ',
+			conf = ' ',
+			toml = ' ',
+			clojure = ' ',
+			wasm = ' ',
+			zsh = '󱆃 ',
+			console = '󰞷 ',
+		}
+
+		vim.treesitter.query.add_directive(
+			'ft-conceal!',
+			function(match, _, source, pred, metadata)
+				---@cast pred integer[]
+				local capture_id = pred[2]
+				if not metadata[capture_id] then
+					metadata[capture_id] = {}
+				end
+
+				local node = match[pred[2]]
+				local node_text = vim.treesitter.get_node_text(node, source)
+
+				local ft = vim.filetype.match { filename = 'a.' .. node_text }
+				node_text = ft
+					or non_filetype_match_injection_language_aliases[node_text]
+					or node_text
+
+				metadata.conceal = icons[node_text] or '󰡯 '
+			end,
+			true
+		)
 	end,
 }

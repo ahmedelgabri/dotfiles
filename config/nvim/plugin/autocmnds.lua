@@ -1,6 +1,5 @@
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
-local hl = require '_.utils.highlight'
 
 au.augroup('__myautocmds__', {
 	-- Automatically make splits equal in size
@@ -8,15 +7,6 @@ au.augroup('__myautocmds__', {
 	-- Disable paste mode on leaving insert mode.
 	-- See https://github.com/neovim/neovim/issues/7994
 	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
-	{
-		event = { 'BufEnter', 'BufWinEnter', 'BufRead', 'BufNewFile' },
-		pattern = 'bookmarks.{md,txt}',
-		callback = function()
-			hl.group('mkdLink', { link = 'Normal' })
-			vim.cmd [[set concealcursor-=n]]
-		end,
-	},
-
 	{
 		event = 'BufWritePost',
 		pattern = '*/spell/*.add',
