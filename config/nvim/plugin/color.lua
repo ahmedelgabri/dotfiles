@@ -15,7 +15,13 @@ au.augroup('__MyCustomColors__', {
 	{
 		event = { 'BufWinEnter', 'BufEnter' },
 		pattern = '*',
-		callback = cmds.highlight_git_markers,
+		callback = function()
+			if package.loaded['git-conflict.nvim'] then
+				return
+			end
+
+			cmds.highlight_git_markers()
+		end,
 	},
 })
 

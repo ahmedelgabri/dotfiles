@@ -176,18 +176,16 @@ function M.highlight_overlength()
 end
 
 function M.highlight_git_markers()
-	if not utils.plugin_loaded 'git-conflict.nvim' then
-		cleanup_marker 'w:last_git_markers'
-		-- I have to escape the escape backslash to be able to pass it to vim
-		-- Ex: I want "\(" I have to do it in Lua as "\\("
-		local overlength_pattern = '^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
-		-- [TODO]: figure out how to convert this to Lua
-		vim.api.nvim_command(
-			"let w:last_overlength = matchadd('ErrorMsg','"
-				.. overlength_pattern
-				.. "')"
-		)
-	end
+	cleanup_marker 'w:last_git_markers'
+	-- I have to escape the escape backslash to be able to pass it to vim
+	-- Ex: I want "\(" I have to do it in Lua as "\\("
+	local overlength_pattern = '^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
+	-- [TODO]: figure out how to convert this to Lua
+	vim.api.nvim_command(
+		"let w:last_overlength = matchadd('ErrorMsg','"
+			.. overlength_pattern
+			.. "')"
+	)
 end
 
 function M.disable_heavy_plugins()

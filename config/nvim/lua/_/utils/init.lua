@@ -47,20 +47,6 @@ function M.urlencode(str)
 	return str
 end
 
-function M.plugin_installed(name)
-	local has_packer = pcall(require, 'packer')
-
-	if not has_packer then
-		return
-	end
-
-	return has_packer and packer_plugins ~= nil and packer_plugins[name]
-end
-
-function M.plugin_loaded(name)
-	return M.plugin_installed(name) and packer_plugins[name].loaded
-end
-
 function M.notify(msg, level)
 	vim.notify(msg, level or vim.log.levels.INFO, { title = ':: Local ::' })
 end
