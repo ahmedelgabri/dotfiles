@@ -234,7 +234,9 @@ au.autocmd {
 			au.augroup('__LSP_CODELENS__', {
 				{
 					event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-					callback = vim.lsp.codelens.refresh,
+					callback = function()
+						vim.lsp.codelens.refresh()
+					end,
 					buffer = event.buf,
 				},
 			})
