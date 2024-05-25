@@ -32,25 +32,6 @@ return {
 	},
 	{ 'https://github.com/duggiefresh/vim-easydir' },
 	{
-		'https://github.com/ojroques/vim-oscyank',
-		event = { 'TextYankPost *' },
-		config = function()
-			local au = require '_.utils.au'
-
-			au.augroup('__oscyank__', {
-				{
-					event = { 'TextYankPost' },
-					pattern = '*',
-					callback = function()
-						if vim.v.event.operator == 'y' and vim.v.event.regname == '' then
-							vim.cmd [[OSCYankRegister "]]
-						end
-					end,
-				},
-			})
-		end,
-	},
-	{
 		'https://github.com/folke/which-key.nvim',
 		event = 'VeryLazy',
 		init = function()
@@ -103,10 +84,6 @@ return {
 		cmd = { 'FSRead', 'FSToggle', 'FSClear' },
 	},
 	{ 'https://github.com/wincent/loupe' },
-	{
-		'https://github.com/simrat39/symbols-outline.nvim',
-		cmd = 'SymbolsOutline',
-	},
 	{
 		'https://github.com/christoomey/vim-tmux-navigator',
 		lazy = false,
