@@ -4,9 +4,6 @@ return {
 	build = ':TSUpdate',
 	dependencies = {
 		{ 'https://github.com/windwp/nvim-ts-autotag' },
-		{
-			'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
-		},
 	},
 	-- init = function()
 	-- 	-- So slow on large files
@@ -81,20 +78,6 @@ return {
 					'org',
 				},
 			},
-			textobjects = {
-				select = {
-					enable = true,
-					lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-					keymaps = {
-						['af'] = '@function.outer',
-						['if'] = '@function.inner',
-						['ac'] = '@class.outer',
-						['ic'] = '@class.inner',
-						['aC'] = '@conditional.outer',
-						['iC'] = '@conditional.inner',
-					},
-				},
-			},
 			autotag = {
 				enable = true,
 				filetypes = {
@@ -106,26 +89,6 @@ return {
 					'vue',
 					'javascript.jsx',
 					'typescript.tsx',
-				},
-			},
-			move = {
-				enable = true,
-				set_jumps = true, -- whether to set jumps in the jumplist
-				goto_next_start = {
-					[']m'] = '@function.outer',
-					[']]'] = '@class.outer',
-				},
-				goto_next_end = {
-					[']M'] = '@function.outer',
-					[']['] = '@class.outer',
-				},
-				goto_previous_start = {
-					['[m'] = '@function.outer',
-					['[['] = '@class.outer',
-				},
-				goto_previous_end = {
-					['[M'] = '@function.outer',
-					['[]'] = '@class.outer',
 				},
 			},
 		}

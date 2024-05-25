@@ -59,6 +59,12 @@ return {
 		end,
 	},
 	{
+		'https://github.com/echasnovski/mini.ai',
+		config = function()
+			require('mini.ai').setup {}
+		end,
+	},
+	{
 		'https://github.com/echasnovski/mini.surround',
 		config = function()
 			require('mini.surround').setup {
