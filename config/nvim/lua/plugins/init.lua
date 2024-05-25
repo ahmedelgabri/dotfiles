@@ -32,6 +32,36 @@ return {
 	},
 	{ 'https://github.com/duggiefresh/vim-easydir' },
 	{
+		'https://github.com/stevearc/oil.nvim',
+		keys = {
+			{
+				'-',
+				'<CMD>Oil<CR>',
+				noremap = true,
+				desc = 'Open parent directory',
+			},
+			{
+				'<leader>-',
+				function()
+					require('oil').toggle_float()
+				end,
+				noremap = true,
+				desc = 'Open parent directory in floating window',
+			},
+		},
+		config = function()
+			require('oil').setup {
+				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
+				-- Set to false if you still want to use netrw.
+				default_file_explorer = false,
+				view_options = {
+					show_hidden = true,
+				},
+				delete_to_trash = true,
+			}
+		end,
+	},
+	{
 		'https://github.com/folke/which-key.nvim',
 		event = 'VeryLazy',
 		init = function()
