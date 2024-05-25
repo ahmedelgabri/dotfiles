@@ -12,6 +12,7 @@ function M.get_icon(icon_name)
 		warn = '!',
 		hint = '›',
 		lock = '',
+		conflict = ' ',
 		success = ' ',
 		-- success = ' '
 	}

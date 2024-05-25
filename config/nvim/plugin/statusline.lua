@@ -239,6 +239,26 @@ local function lsp()
 	return string.format('%s %s %s %s%%*', errors, warnings, hints, info)
 end
 
+local function git_conflicts()
+	local ok, git_conflict = pcall(require, 'git-conflict')
+
+	if not ok then
+		return ''
+	end
+
+	local count = git_conflict.conflict_count(0)
+
+	if count == 0 then
+		return ''
+	end
+
+	return string.format(
+		'%%#DiagnosticSignError#%s %s %%*',
+		utils.get_icon 'conflict',
+		count
+	)
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -258,6 +278,7 @@ function M.get_active_statusline()
 		spell(),
 		orgmode(),
 		lsp(),
+		git_conflicts(),
 		file_info(),
 		rhs(),
 	}
