@@ -151,18 +151,13 @@ in
 
               FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
               # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
-              FZF_PREVIEW_COMMAND =
-                "COLORTERM=truecolor ${pkgs.bat}/bin/bat --style=changes --wrap never --color always {} || cat {} || (${pkgs.eza}/bin/eza --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {})";
-              FZF_CTRL_T_COMMAND =
-                "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
+              FZF_PREVIEW_COMMAND = "COLORTERM=truecolor ${pkgs.bat}/bin/bat --style=changes --wrap never --color always {} || cat {} || (${pkgs.eza}/bin/eza --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {})";
+              FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --hidden --follow --no-ignore-vcs";
               FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
               FZF_DEFAULT_OPTS = "--border --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview'";
-              FZF_CTRL_T_OPTS =
-                "--preview '(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --preview-window down:60%";
-              FZF_CTRL_R_OPTS =
-                "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-              FZF_ALT_C_OPTS =
-                "--preview '(${pkgs.eza}/bin/eza --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {}) 2> /dev/null'";
+              FZF_CTRL_T_OPTS = "--preview-window right:border-left:60% --preview='previewer {}'";
+              FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
+              FZF_ALT_C_OPTS = "--preview '(${pkgs.eza}/bin/eza --tree --group-directories-first {} || ${pkgs.tree}/bin/tree -C {}) 2> /dev/null'";
             };
         };
 

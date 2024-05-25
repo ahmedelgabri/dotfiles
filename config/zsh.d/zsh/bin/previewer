@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+FILE="$1"
+WIDTH="$FZF_PREVIEW_COLUMNS"
+HEIGHT="$FZF_PREVIEW_LINES"
+X="$FZF_PREVIEW_TOP"
+Y="$FZF_PREVIEW_LEFT"
+
+case $(file --brief --mime-type "$FILE") in
+image/*)
+	kitty icat --clear --transfer-mode=memory --stdin=no --place="${WIDTH}x${HEIGHT}@${X}x${Y}" "$FILE"
+	;;
+text/troff)
+	man ./ "$1" | col -b
+	;;
+text/* | */xml | application/json)
+	if [[ $FILE == *.md ]]; then
+		# Need `-s dark` to force color outside of interactive shell:
+		# https://github.com/charmbracelet/glow/issues/440
+		glow -s dark --width "$WIDTH" "$FILE"
+	else
+		bat --style=plain,changes --terminal-width "$WIDTH" --wrap never --color always "$FILE"
+	fi
+	;;
+# application/pdf)
+# 	termpdf.py "$FILE"
+# 	;;
+application/zip)
+	unzip -l "$FILE"
+	;;
+application/x-tar | application/gzip)
+	tar tf "$FILE"
+	;;
+*)
+	file --brief "$FILE"
+	;;
+esac
