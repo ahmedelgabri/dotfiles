@@ -151,7 +151,7 @@ fzf-preview = "bat -p --color always {-1}"
 # Each diagnostic can have for value: none, hint, info, warning, error
 
 # Report titles of wiki-links as hints.
-wiki-title = "hint"
+wiki-title = "none"
 # Warn for dead links between notes.
 dead-link = "error"
 
