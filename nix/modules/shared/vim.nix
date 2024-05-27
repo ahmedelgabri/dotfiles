@@ -23,7 +23,6 @@ in
         [
           vim
           neovim-unwrapped
-          # neovim-git
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Requried for treesitter parsers
         ]);
