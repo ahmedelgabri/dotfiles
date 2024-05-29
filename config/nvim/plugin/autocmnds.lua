@@ -98,7 +98,6 @@ au.augroup('__myautocmds__', {
 		pattern = '*/spell/*.add',
 		command = 'silent! :mkspell! %',
 	},
-	{ event = 'BufWritePost', pattern = '*', command = 'silent! FormatWrite' },
 	{
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = 'package.json',

@@ -473,7 +473,6 @@ return {
 						doc = {
 							privateName = { '^_' },
 						},
-						format = { enable = false },
 						diagnostics = {
 							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 							disable = { 'missing-fields' },
