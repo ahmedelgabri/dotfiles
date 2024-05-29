@@ -71,8 +71,6 @@ vim.opt.expandtab = false
 
 vim.opt.signcolumn = 'yes'
 
-vim.opt.cmdheight = 0
-
 vim.opt.emoji = false
 
 -- start highlighting from 256 lines backwards
