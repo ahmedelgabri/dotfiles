@@ -38,6 +38,8 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks from each command line being added to the history list.
 setopt APPEND_HISTORY            # append to history file
 setopt HIST_NO_STORE             # Don't store history commands
+setopt HIST_NO_FUNCTIONS         # Don't store function definitions
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks from each command line being added to the history list.
 
 
 ##############################################################
@@ -58,4 +60,3 @@ setopt AUTOPARAMSLASH    # tab completing directory appends a slash
 setopt EXTENDED_GLOB     # Treat the ‘#’, ‘~’ and ‘^’ characters as part of patterns for filename generation, etc. (An initial unquoted ‘~’ always produces named directory expansion.)
 setopt MULTIOS           # Perform implicit tees or cats when multiple redirections are attempted.
 setopt NO_CLOBBER        # Disallow ‘>’ redirection to overwrite existing files. ‘>|’ or ‘>!’ must be used to overwrite a file.
-
