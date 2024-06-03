@@ -176,7 +176,7 @@ au.autocmd {
 		-- GENERAL
 		-- ---------------
 		if client ~= nil then
-			client.config.flags.allow_incremental_sync = true
+			client.flags.allow_incremental_sync = true
 		end
 
 		-- ---------------
@@ -235,7 +235,7 @@ au.autocmd {
 				{
 					event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
 					callback = function()
-						vim.lsp.codelens.refresh()
+						vim.lsp.codelens.refresh { bufnr = event.buf }
 					end,
 					buffer = event.buf,
 				},
