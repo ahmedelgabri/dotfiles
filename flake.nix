@@ -57,7 +57,8 @@
           package = pkgs.nixVersions.git;
           extraOptions = "experimental-features = nix-command flakes";
           settings = {
-            auto-optimise-store = true;
+            # disabled, because some buggy behaviour: https://github.com/NixOS/nix/issues/7273
+            auto-optimise-store = false;
             substituters = [
               "https://cache.nixos.org"
               "https://nix-community.cachix.org"
