@@ -111,6 +111,8 @@ in
               # emanote # Only aarch64-darwin
               ast-grep
               glow
+              gum # https://github.com/charmbracelet/gum
+              mods # https://github.com/charmbracelet/mods
               hcron
             ];
           };
