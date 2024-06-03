@@ -1,16 +1,11 @@
-local enable_ai = function()
-	local current_dir = vim.fn.getcwd()
-
-	-- if git repo is not under ~/Sites/work, do not allow AI
-	local work_path = os.getenv 'WORK' or os.getenv 'HOME' .. '/Sites/work'
-	local is_work_code = string.find(current_dir, work_path) == 1
-
-	return is_work_code
+local is_work_machine = function()
+	return vim.fn.hostname() == 'rocket'
 end
 
 return {
 	{
 		'https://github.com/github/copilot.vim',
+		enabled = is_work_machine(),
 		-- build = ':Copilot auth',
 		event = 'InsertEnter',
 		config = function()
@@ -25,10 +20,23 @@ return {
 			)
 
 			-- disable copilot outside of work folders and if node is not in $PATH
-			if not enable_ai() or vim.fn.executable 'node' == 0 then
+			if vim.fn.executable 'node' == 0 then
 				vim.cmd 'Copilot disable'
 			end
 		end,
+	},
+	{
+		'https://github.com/supermaven-inc/supermaven-nvim',
+		enabled = not is_work_machine(),
+		opts = {
+			keymaps = {
+				accept_suggestion = '<C-g>',
+				-- clear_suggestion = '<C-]>',
+				-- accept_word = '<C-j>',
+			},
+			disable_inline_completion = false, -- disables inline completion for use with cmp
+			disable_keymaps = false, -- disables built in keymaps for more manual control
+		},
 	},
 	{ 'https://github.com/duggiefresh/vim-easydir' },
 	{

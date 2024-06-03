@@ -37,6 +37,7 @@ local icons = {
 	Variable = ' ',
 
 	calc = '󰃬 ',
+	Supermaven = '',
 }
 
 return {
@@ -156,6 +157,7 @@ return {
 					completeopt = 'menu,menuone,noinsert',
 				},
 				sources = cmp.config.sources({
+					{ name = 'supermaven' },
 					{ name = 'luasnip' },
 					{ name = 'nvim_lsp' },
 					{ name = 'git' },
@@ -195,14 +197,18 @@ return {
 				},
 				mapping = cmp.mapping.preset.insert {
 					-- For copilot
-					['<C-g>'] = cmp.mapping(function(_)
-						vim.api.nvim_feedkeys(
-							vim.fn['copilot#Accept'](
-								vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
-							),
-							'n',
-							true
-						)
+					['<C-g>'] = cmp.mapping(function(fallback)
+						if vim.fn.exists 'g:copilot_mode' == 1 then
+							vim.api.nvim_feedkeys(
+								vim.fn['copilot#Accept'](
+									vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
+								),
+								'n',
+								true
+							)
+						else
+							fallback()
+						end
 					end),
 					['<C-n>'] = cmp.mapping.select_next_item {
 						behavior = cmp.SelectBehavior.Insert,
