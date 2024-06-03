@@ -485,7 +485,7 @@ highlight(
 highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
 highlight('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
 highlight('LspDiagnosticsDefaultHint', { link = 'NonText' })
-highlight('LspInlayHint', { fg = lighter_black, bg = colors.selection_fg })
+highlight('LspInlayHint', { fg = lighter_black, bg = nil, italic = true })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })
