@@ -58,6 +58,7 @@
     "k9s"
     "aws-vault"
     "httpstat"
+    "jordanbaird-ice"
   ];
 
   # Requires to be logged in to the AppStore
