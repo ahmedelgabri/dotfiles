@@ -122,6 +122,10 @@ in
               recursive = true;
               source = ../../../config/zsh.d/zsh;
             };
+            ".config/mods" = {
+              recursive = true;
+              source = ../../../config/mods;
+            };
             ".terminfo" = {
               recursive = true;
               source = ../../../config/.terminfo;
