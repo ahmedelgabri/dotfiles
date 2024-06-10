@@ -31,6 +31,10 @@ return {
 		opts = {
 			keymaps = {
 				accept_suggestion = '<C-g>',
+				ignore_filetypes = {
+					starter = true,
+					dotenv = true,
+				},
 				-- clear_suggestion = '<C-]>',
 				-- accept_word = '<C-j>',
 			},
