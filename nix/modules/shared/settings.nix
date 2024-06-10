@@ -111,7 +111,7 @@ in
         # Necessary for home-manager to work with flakes, otherwise it will
         # look for a nixpkgs channel.
         stateVersion =
-          if pkgs.stdenv.isDarwin then "21.11" else config.system.stateVersion;
+          if pkgs.stdenv.isDarwin then "24.05" else config.system.stateVersion;
         inherit (config.my) username;
         file = mkAliasDefinitions options.my.hm.file;
       };
