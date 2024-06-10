@@ -93,7 +93,7 @@ in
               hyperfine
               jq
               grc
-              pure-prompt
+              zsh-powerlevel10k
               eza
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
@@ -202,6 +202,11 @@ in
           # zshrc
           interactiveShellInit = lib.concatStringsSep "\n"
             [
+              ''
+                if [[ -r "$${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$${(%):-%n}.zsh" ]]; then
+                  source "$${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$${(%):-%n}.zsh"
+                fi
+              ''
               (lib.concatStringsSep "\n"
                 (map builtins.readFile [
                   ../../../config/zsh.d/zsh/config/options.zsh
@@ -215,10 +220,11 @@ in
                   ../../../config/zsh.d/.zshrc
                 ]))
               "fpath+=${pkgs.pure-prompt}/share/zsh/site-functions"
+              (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
             ];
 
 
-          promptInit = "autoload -U promptinit; promptinit; prompt pure";
+          promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
         };
       }
     ]);
