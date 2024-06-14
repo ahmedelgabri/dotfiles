@@ -198,7 +198,7 @@ return {
 				mapping = cmp.mapping.preset.insert {
 					-- For copilot
 					['<C-g>'] = cmp.mapping(function(fallback)
-						if vim.fn.exists 'g:copilot_mode' == 1 then
+						if vim.fn.exists ':Copilot' ~= 0 then
 							vim.api.nvim_feedkeys(
 								vim.fn['copilot#Accept'](
 									vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
