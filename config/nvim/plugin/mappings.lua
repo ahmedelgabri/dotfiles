@@ -114,7 +114,7 @@ au.augroup('__MyTerm__', {
 	{ event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
 })
 
-vim.keymap.set({ 'n' }, '<c-g>', function()
+vim.keymap.set({ 'n' }, '<Localleader> g', function()
 	local result = vim.treesitter.get_captures_at_cursor(0)
 	print(vim.inspect(result))
 end, { desc = 'Show treesitter capture group for textobject under cursor.' })
