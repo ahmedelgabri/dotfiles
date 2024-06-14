@@ -13,7 +13,7 @@ image/*)
 text/troff)
 	man ./ "$1" | col -b
 	;;
-text/* | */xml | application/json)
+text/* | */xml | application/json | application/javascript)
 	if [[ $FILE == *.md ]]; then
 		# Need `-s dark` to force color outside of interactive shell:
 		# https://github.com/charmbracelet/glow/issues/440
