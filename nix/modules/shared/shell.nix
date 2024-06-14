@@ -219,7 +219,6 @@ in
                   "${pkgs.fzf}/share/fzf/key-bindings.zsh"
                   ../../../config/zsh.d/.zshrc
                 ]))
-              "fpath+=${pkgs.pure-prompt}/share/zsh/site-functions"
               (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
             ];
 
