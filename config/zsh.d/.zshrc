@@ -61,46 +61,37 @@ source "$__ZINIT"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Shell {{{
-  # zinit snippet OMZP::gpg-agent
+# zinit snippet OMZP::gpg-agent
 
-  PURE_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸" "◗")
-  # Arrays in zsh starts from 1
-  export PURE_PROMPT_SYMBOL="${PURE_SYMBOLS[$RANDOM % ${#PURE_SYMBOLS[@]} + 1]}"
-  zstyle :prompt:pure:path color 240
-  zstyle :prompt:pure:git:branch color blue
-  zstyle :prompt:pure:git:dirty color red
-  zstyle :prompt:pure:git:action color 005
-  zstyle :prompt:pure:prompt:success color 003
-# }}}
+PURE_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
+# Arrays in zsh starts from 1
+export PURE_PROMPT_SYMBOL="${PURE_SYMBOLS[$RANDOM % ${#PURE_SYMBOLS[@]} + 1]}"
+# zstyle :prompt:pure:path color 240
+# zstyle :prompt:pure:git:branch color blue
+# zstyle :prompt:pure:git:dirty color red
+# zstyle :prompt:pure:git:action color 005
+# zstyle :prompt:pure:prompt:success color 003
 
-# Utilities & enhancements {{{
-  zinit ice wait lucid
-  zinit light https://github.com/zsh-users/zsh-history-substring-search
-  # bind UP and DOWN keys
-  bindkey "${terminfo[kcuu1]}" history-substring-search-up
-  bindkey "${terminfo[kcud1]}" history-substring-search-down
+zinit ice wait lucid
+zinit light https://github.com/zsh-users/zsh-history-substring-search
 
-  # bind UP and DOWN arrow keys (compatibility fallback)
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
-# }}}
+zinit ice wait blockf lucid atpull'zinit creinstall -q .'
+zinit light https://github.com/zsh-users/zsh-completions
 
-# Recommended be loaded last {{{
-  zinit ice wait blockf lucid atpull'zinit creinstall -q .'
-  zinit light https://github.com/zsh-users/zsh-completions
+zinit ice wait lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay' \
+ atload'unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"'
+zinit light https://github.com/zdharma-continuum/fast-syntax-highlighting
 
-  zinit ice wait lucid atinit'ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay' \
-    atload'unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"'
-  zinit light https://github.com/zdharma-continuum/fast-syntax-highlighting
+zinit ice wait lucid atload'_zsh_autosuggest_start'
+zinit light https://github.com/zsh-users/zsh-autosuggestions
 
-  zinit ice wait lucid atload'_zsh_autosuggest_start'
-  zinit light https://github.com/zsh-users/zsh-autosuggestions
+# bind UP and DOWN keys
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
 
-  ############### Autosuggest
-  export ZSH_AUTOSUGGEST_USE_ASYNC="true"
-  export ZSH_AUTOSUGGEST_STRATEGY=("match_prev_cmd" "completion")
-# }}}
+# bind UP and DOWN arrow keys (compatibility fallback)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
 
