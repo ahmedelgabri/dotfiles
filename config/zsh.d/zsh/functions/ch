@@ -8,7 +8,7 @@ ch() {
   cols=$(( COLUMNS / 3 ))
   sep='{::}'
 
-  if [ "$(uname)" = "Darwin" ]; then
+  if [[ "$OSTYPE" = "darwin"* ]]; then
     google_history="$HOME/Library/Application Support/Google/Chrome Canary/Default/History"
     open=open
   else

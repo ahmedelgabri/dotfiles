@@ -14,6 +14,8 @@
 # zmodload zsh/datetime
 # setopt promptsubst
 # PS4='+$EPOCHREALTIME %N:%i> '
+# # More human readable
+# PS4=$'%D{%S.%.} %N:%i> '
 # exec 3>&2 2> startlog.$$
 # setopt xtrace prompt_subst
 
@@ -42,7 +44,7 @@ autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
 ZINIT[HOME_DIR]="$XDG_CACHE_HOME/zsh/zinit"
 ZINIT[BIN_DIR]="$ZINIT[HOME_DIR]/bin"
 ZINIT[PLUGINS_DIR]="$ZINIT[HOME_DIR]/plugins"
-ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
+ZINIT[ZCOMPDUMP_PATH]="${ZDOTDIR}/.zcompdump"
 # export ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
 export ZPFX="$ZINIT[HOME_DIR]/polaris"
 
@@ -72,6 +74,34 @@ export PURE_PROMPT_SYMBOL="${PURE_SYMBOLS[$RANDOM % ${#PURE_SYMBOLS[@]} + 1]}"
 # zstyle :prompt:pure:git:action color 005
 # zstyle :prompt:pure:prompt:success color 003
 
+# bind UP and DOWN keys
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+# bind UP and DOWN arrow keys (compatibility fallback)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# For speed:
+# https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+export ZSH_AUTOSUGGEST_USE_ASYNC="true"
+export ZSH_AUTOSUGGEST_STRATEGY=("match_prev_cmd" "completion")
+
+# Note that this will only ensure unique history if we supply a prefix
+# before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
+# won't prevent dupes from appearing when just hitting "up" without a
+# prefix (ie. that's "zle up-line-or-history" and not classified as a
+# "search"). So, we have HIST_IGNORE_DUPS to make life bearable for that
+# case.
+#
+# https://superuser.com/a/1494647/322531
+export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+
+# NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
+autoload -U select-word-style
+select-word-style bash # only alphanumeric chars are considered WORDCHARS
+
 zinit ice wait lucid
 zinit light https://github.com/zsh-users/zsh-history-substring-search
 
@@ -85,20 +115,12 @@ zinit light https://github.com/zdharma-continuum/fast-syntax-highlighting
 zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light https://github.com/zsh-users/zsh-autosuggestions
 
-# bind UP and DOWN keys
-bindkey "${terminfo[kcuu1]}" history-substring-search-up
-bindkey "${terminfo[kcud1]}" history-substring-search-down
-
-# bind UP and DOWN arrow keys (compatibility fallback)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
+autoload -Uz compinit compdef && compinit -C -d "$ZINIT[ZCOMPDUMP_PATH]"
 
 zinit cdreplay -q
 
 ############### Misc
-if [ "$(uname)" = "Darwin" ]; then
+if [[ "$OSTYPE" = "darwin"* ]]; then
   # For context https://github.com/github/hub/pull/1962
   # I run in the background to not affect startup time.
   # https://github.com/ahmedelgabri/dotfiles/commit/c8156c2f0cf74917392a0e700668005b8f1bbbdb#r33940655

@@ -73,7 +73,6 @@ in
               fzf
               direnv
               nix-direnv
-              nix-zsh-completions
               zsh
               zoxide
               rsync
@@ -186,7 +185,12 @@ in
 
         programs.zsh = {
           enable = true;
+          # This will also add nix-zsh-completions to the systemPackages.
+          # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L117
           enableCompletion = true;
+          # Default is the value of enableCompletion but I want to handle it myself
+          # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L76
+          enableGlobalCompInit = false;
 
           ########################################################################
           # Instead of sourcing, I can read the files & save startiup time instead
