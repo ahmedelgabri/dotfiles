@@ -1,3 +1,3 @@
-module example.com/next-prayer
+module github.com/ahmedelgabri/dotfiles/config/tmux/scripts/next-prayer
 
-go 1.18
+go 1.21
