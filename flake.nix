@@ -83,8 +83,7 @@
         };
 
         fonts = {
-          fontDir.enable = true;
-          fonts = with pkgs; [ pragmatapro ] ++ (lib.optionals
+          packages = with pkgs; [ pragmatapro ] ++ (lib.optionals
             pkgs.stdenv.isLinux [
             noto-fonts
             noto-fonts-cjk
