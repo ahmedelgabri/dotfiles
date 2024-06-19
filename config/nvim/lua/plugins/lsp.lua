@@ -282,6 +282,45 @@ return {
 	event = { 'BufReadPre' },
 	dependencies = {
 		{
+			'https://github.com/pmizio/typescript-tools.nvim',
+			event = {
+				'BufReadPost *.ts,*.mts,*.cts,*.tsx,*.js,*.mjs,*.cjs,*.jsx',
+				'BufNewFile *.ts,*.mts,*.cts,*.tsx,*.js,*.mjs,*.cjs,*.jsx',
+			},
+			dependencies = {
+				'https://github.com/nvim-lua/plenary.nvim',
+			},
+			opts = {
+				single_file_support = false,
+				handlers = shared.handlers,
+				root_dir = function(fname)
+					local nvim_lsp = require 'lspconfig'
+
+					return not nvim_lsp.util.root_pattern(
+						'.flowconfig',
+						'deno.json',
+						'deno.jsonc'
+					)(fname) and (nvim_lsp.util.root_pattern 'tsconfig.json'(fname) or nvim_lsp.util.root_pattern(
+						'package.json',
+						'jsconfig.json',
+						'.git'
+					)(fname) or nvim_lsp.util.path.dirname(fname))
+				end,
+				settings = {
+					tsserver_file_preferences = {
+						includeCompletionsForModuleExports = true,
+						includeInlayParameterNameHints = 'all',
+						includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+						includeInlayFunctionParameterTypeHints = true,
+						includeInlayVariableTypeHints = true,
+						includeInlayPropertyDeclarationTypeHints = true,
+						includeInlayFunctionLikeReturnTypeHints = true,
+						includeInlayEnumMemberValueHints = true,
+					},
+				},
+			},
+		},
+		{
 			'https://github.com/j-hui/fidget.nvim',
 			opts = {
 				notification = {
@@ -537,47 +576,6 @@ return {
 					return nvim_lsp.util.root_pattern('go.mod', '.git')(fname)
 						or nvim_lsp.util.path.dirname(fname)
 				end,
-			},
-			tsserver = {
-				-- Prevents colliding with deno LSP, since both operate on the same filetypes
-				-- https://github.com/neovim/nvim-lspconfig/issues/2508
-				-- https://github.com/neovim/nvim-lspconfig/issues/2507
-				single_file_support = false,
-				root_dir = function(fname)
-					return not nvim_lsp.util.root_pattern(
-						'.flowconfig',
-						'deno.json',
-						'deno.jsonc'
-					)(fname) and (nvim_lsp.util.root_pattern 'tsconfig.json'(fname) or nvim_lsp.util.root_pattern(
-						'package.json',
-						'jsconfig.json',
-						'.git'
-					)(fname) or nvim_lsp.util.path.dirname(fname))
-				end,
-				settings = {
-					javascript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
-					},
-					typescript = {
-						inlayHints = {
-							includeInlayEnumMemberValueHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
-							includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayVariableTypeHints = true,
-						},
-					},
-				},
 			},
 			denols = {
 				root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
