@@ -366,35 +366,6 @@ return {
 		{
 			'https://github.com/b0o/SchemaStore.nvim',
 		},
-		{
-			'https://github.com/lewis6991/hover.nvim',
-			config = function()
-				require('hover').setup {
-					init = function()
-						require 'hover.providers.lsp'
-						require 'hover.providers.gh'
-						require '_.hover.github_user'
-						require 'hover.providers.jira'
-						require 'hover.providers.man'
-						require 'hover.providers.dictionary'
-					end,
-				}
-
-				-- Setup keymaps
-				vim.keymap.set(
-					'n',
-					'K',
-					require('hover').hover,
-					{ desc = 'Open hover popup' }
-				)
-				vim.keymap.set(
-					'n',
-					'gK',
-					require('hover').hover_select,
-					{ desc = 'Select hover popup source' }
-				)
-			end,
-		},
 	},
 	config = function()
 		-- for debugging
