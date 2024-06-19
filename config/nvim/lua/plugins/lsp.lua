@@ -422,13 +422,6 @@ return {
 			return
 		end
 
-		local en_spell_words = {}
-		for word in
-			io.open(vim.fn.stdpath 'config' .. '/spell/spell.add', 'r'):lines()
-		do
-			table.insert(en_spell_words, word)
-		end
-
 		local servers = {
 			cssls = {},
 			html = {},
