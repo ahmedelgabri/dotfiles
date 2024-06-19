@@ -3,7 +3,16 @@ return {
 	event = { 'BufReadPost' },
 	build = ':TSUpdate',
 	dependencies = {
-		{ 'https://github.com/windwp/nvim-ts-autotag' },
+		{
+			'https://github.com/windwp/nvim-ts-autotag',
+			opts = {
+				opts = {
+					enable_close = true, -- Auto close tags
+					enable_rename = true, -- Auto rename pairs of tags
+					enable_close_on_slash = true, -- Auto close on trailing </
+				},
+			},
+		},
 	},
 	-- init = function()
 	-- 	-- So slow on large files
@@ -76,19 +85,6 @@ return {
 				-- Required since TS highlighter doesn't support all syntax features (conceal)
 				additional_vim_regex_highlighting = {
 					'org',
-				},
-			},
-			autotag = {
-				enable = true,
-				filetypes = {
-					'html',
-					'javascript',
-					'javascriptreact',
-					'typescriptreact',
-					'svelte',
-					'vue',
-					'javascript.jsx',
-					'typescript.tsx',
 				},
 			},
 		}
