@@ -4,6 +4,12 @@ return {
 	build = ':TSUpdate',
 	dependencies = {
 		{
+			'https://github.com/MeanderingProgrammer/markdown.nvim',
+			config = function()
+				require('render-markdown').setup {}
+			end,
+		},
+		{
 			'https://github.com/windwp/nvim-ts-autotag',
 			opts = {
 				opts = {
