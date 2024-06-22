@@ -151,9 +151,9 @@ vim.keymap.set(
 
 -- More easier increment/decrement mappings
 vim.keymap.set({ 'n' }, '+', '<C-a>')
-vim.keymap.set({ 'n' }, '-', '<C-x>')
+vim.keymap.set({ 'n' }, '_', '<C-x>')
 vim.keymap.set({ 'x' }, '+', 'g<C-a>')
-vim.keymap.set({ 'x' }, '-', 'g<C-x>')
+vim.keymap.set({ 'x' }, '_', 'g<C-x>')
 
 -- Execute "q" macro over visual line selections
 vim.keymap.set({ 'x' }, 'Q', [[:'<,'>:normal @q<CR>]])
