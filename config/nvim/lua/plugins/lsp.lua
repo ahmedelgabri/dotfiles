@@ -241,39 +241,6 @@ au.autocmd {
 				},
 			})
 		end
-
-		if
-			vim.lsp.inlay_hint
-			and client ~= nil
-			and client.supports_method(
-				vim.lsp.protocol.Methods.textDocument_inlayHint
-			)
-		then
-			au.augroup('__LSP_INLAY_HINTS__', {
-				{
-					event = { 'InsertEnter', 'InsertLeave' },
-					desc = 'Enable/Disable inlay hints',
-					buffer = event.buf,
-					callback = function()
-						local opts = { bufnr = event.buf }
-						vim.lsp.inlay_hint.enable(
-							not vim.lsp.inlay_hint.is_enabled(opts),
-							opts
-						)
-					end,
-				},
-			}, { clear = false })
-			-- Initial inlay hint display.
-			-- Idk why but without the delay inlay hints aren't displayed at the very start.
-			vim.defer_fn(function()
-				local mode = vim.api.nvim_get_mode().mode
-
-				vim.lsp.inlay_hint.enable(
-					mode == 'n' or mode == 'v',
-					{ bufnr = event.buf }
-				)
-			end, 500)
-		end
 	end,
 }
 
