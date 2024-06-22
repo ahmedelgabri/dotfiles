@@ -160,6 +160,27 @@ return {
 	{
 		'https://github.com/echasnovski/mini.starter',
 		config = function()
+			vim.api.nvim_create_autocmd('User', {
+				pattern = 'LazyVimStarted',
+				callback = function()
+					local starter = require 'mini.starter'
+					local stats = require('lazy').stats()
+					local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+					starter.config.footer = function()
+						return 'ϟ Lazy\n'
+							.. 'plugins: '
+							.. stats.loaded
+							.. '/'
+							.. stats.count
+							.. '\nStartup time: '
+							.. ms
+							.. ' ms'
+					end
+					-- https://github.com/LazyVim/LazyVim/commit/dc66887b57ecdee8d33b5e07ca031288260e2971
+					vim.cmd [[do VimResized]]
+				end,
+			})
+
 			local starter = require 'mini.starter'
 			local format_text = function(str)
 				local n = 60
@@ -330,48 +351,54 @@ return {
 				starter.sections.builtin_actions(),
 			}
 
-			local function findHighestValue(tbl, cb)
-				if cb == nil then
-					cb = function(x)
-						return x
+			-- A workaround to centralize everything.
+			-- `aligning("center", "center")` will centralize the longest line in
+			-- `content`, then left align other items to its beginning.
+			-- It causes the header to not be truly centralized and have a variable
+			-- shift to the left.
+			-- This function will use `aligning` and pad the header accordingly.
+			local centralize = function()
+				return function(content, buf_id)
+					-- Get max line width, same as in `aligning`
+					local max_line_width = math.max(unpack(vim.tbl_map(function(l)
+						return vim.fn.strdisplaywidth(l)
+					end, starter.content_to_lines(content))))
+
+					-- Align
+					content =
+						starter.gen_hook.aligning('center', 'center')(content, buf_id)
+
+					-- Iterate over header items and pad with relative missing spaces
+					local coords = starter.content_coords(content, 'header')
+					for _, c in ipairs(coords) do
+						local unit = content[c.line][c.unit]
+						local pad = (max_line_width - vim.fn.strdisplaywidth(unit.string))
+							/ 2
+						if unit.string ~= '' then
+							unit.string = string.rep(' ', pad) .. unit.string
+						end
 					end
-				end
-				local highest = cb(tbl[1])
-				for i = 2, #tbl do
-					highest = math.max(highest, cb(tbl[i]))
-				end
-				return highest
-			end
 
-			local function centeredHeader(header)
-				local mid = math.floor(vim.o.tw / 2)
-				local midStr = math.floor(findHighestValue(header, string.len) / 4)
-				local space = math.floor(mid - midStr)
-
-				return vim.tbl_map(function(a)
-					return vim.fn['repeat'](' ', space) .. a
-				end, header)
+					return content
+				end
 			end
 
 			starter.setup {
 				evaluate_single = true,
 				items = my_items,
 				header = table.concat({
-					table.concat(
-						centeredHeader {
-							-- https://github.com/NvChad/NvChad/discussions/2755#discussioncomment-8960250
-							'           ▄ ▄                   ',
-							'       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ',
-							'       █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     ',
-							'    ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     ',
-							'  ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ',
-							'  █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄',
-							'▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █',
-							'█▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █',
-							'    █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█    ',
-						},
-						'\n'
-					),
+					table.concat({
+						-- https://github.com/NvChad/NvChad/discussions/2755#discussioncomment-8960250
+						'           ▄ ▄                   ',
+						'       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ',
+						'       █ ▄ █▄█ ▄▄▄ █ █▄█ █ █     ',
+						'    ▄▄ █▄█▄▄▄█ █▄█▄█▄▄█▄▄█ █     ',
+						'  ▄ █▄▄█ ▄ ▄▄ ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄  ',
+						'  █▄▄▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄ ▄▄▄ ▄ ▄ █ ▄',
+						'▄ █ █▄█ █▄█ █ █ █▄█ █ █▄█ ▄▄▄ █ █',
+						'█▄█ ▄ █▄▄█▄▄█ █ ▄▄█ █ ▄ █ █▄█▄█ █',
+						'    █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ █▄█▄▄▄█    ',
+					}, '\n'),
 					'',
 					vim.fn['repeat']('▁', vim.o.textwidth),
 					'',
@@ -381,7 +408,7 @@ return {
 				footer = 'ϟ ' .. (vim.fn.has 'nvim' and 'nvim' or 'vim') .. '.',
 				content_hooks = {
 					starter.gen_hook.adding_bullet '  ',
-					starter.gen_hook.aligning('center', 'center'),
+					centralize(),
 					starter.gen_hook.indexing(
 						'all',
 						{ 'Builtin actions', 'Bookmarks', 'Commands' }
