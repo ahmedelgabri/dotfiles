@@ -13,12 +13,16 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.bufremove',
+		opts = {},
 		keys = {
-			{ '<M-d>', ':lua MiniBufremove.delete(0, true)<CR>' },
+			{
+				'<M-d>',
+				function()
+					require('mini.bufremove').delete(0, false)
+				end,
+				desc = 'Delete current buffer',
+			},
 		},
-		config = function()
-			require('mini.bufremove').setup {}
-		end,
 	},
 	{
 		'https://github.com/echasnovski/mini.indentscope',
@@ -60,6 +64,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.ai',
+		event = 'VeryLazy',
 		config = function()
 			require('mini.ai').setup {}
 		end,
@@ -110,35 +115,26 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.hipatterns',
+		event = 'BufReadPost',
 		config = function()
 			local hipatterns = require 'mini.hipatterns'
-			hipatterns.setup {
-				highlighters = {
-					-- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE', 'BUG'
-					fixme = {
-						pattern = '%f[%w]()FIXME()%f[%W]',
-						group = 'MiniHipatternsFixme',
-					},
-					bug = {
-						pattern = '%f[%w]()BUG()%f[%W]',
-						group = 'MiniHipatternsFixme',
-					},
-					hack = {
-						pattern = '%f[%w]()HACK()%f[%W]',
-						group = 'MiniHipatternsHack',
-					},
-					todo = {
-						pattern = '%f[%w]()TODO()%f[%W]',
-						group = 'MiniHipatternsTodo',
-					},
-					note = {
-						pattern = '%f[%w]()NOTE()%f[%W]',
-						group = 'MiniHipatternsNote',
-					},
 
+			local highlighters = {}
+			for _, word in ipairs { 'todo', 'note', 'hack', 'fixme', 'warn', 'bug' } do
+				highlighters[word] = {
+					pattern = string.format('%%f[%%w]()%s()%%f[%%W]', word:upper()),
+					group = string.format(
+						'MiniHipatterns%s',
+						word:sub(1, 1):upper() .. word:sub(2)
+					),
+				}
+			end
+
+			hipatterns.setup {
+				highlighters = vim.tbl_extend('force', highlighters, {
 					-- Highlight hex color strings (`#rrggbb`) using that color
 					hex_color = hipatterns.gen_highlighter.hex_color(),
-				},
+				}),
 			}
 		end,
 	},
