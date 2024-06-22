@@ -120,12 +120,24 @@ return {
 			local hipatterns = require 'mini.hipatterns'
 
 			local highlighters = {}
-			for _, word in ipairs { 'todo', 'note', 'hack', 'fixme', 'warn', 'bug' } do
-				highlighters[word] = {
-					pattern = string.format('%%f[%%w]()%s()%%f[%%W]', word:upper()),
+			for _, word in ipairs {
+				'todo',
+				'note',
+				'hack',
+				'fixme',
+				{ 'warn', 'hack' },
+				{ 'bug', 'fixme' },
+			} do
+				local w = type(word) == 'table' and word[1] or word
+				local hl = type(word) == 'table' and word[2] or word
+
+				highlighters[w] = {
+					-- pattern = string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
+					-- Highlights patterns like FOO, @FOO, @FOO: FOO:
+					pattern = string.format('()@?%s%%s?:?()', w:upper()),
 					group = string.format(
 						'MiniHipatterns%s',
-						word:sub(1, 1):upper() .. word:sub(2)
+						hl:sub(1, 1):upper() .. hl:sub(2)
 					),
 				}
 			end
