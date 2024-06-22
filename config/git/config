@@ -14,7 +14,7 @@
 	whitespace=fix,space-before-tab,tab-in-indent,trailing-space,cr-at-eol
 	; https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
-	; hash (#) conflicts with Markdown when I use hb to open PRs etc...
+	; hash (#) conflicts with Markdown when I use hub to open PRs etc...
 	commentChar = %
 	hooksPath = ~/.config/git/hooks
 	pager = delta_
