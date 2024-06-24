@@ -132,9 +132,16 @@ return {
 				local hl = type(word) == 'table' and word[2] or word
 
 				highlighters[w] = {
-					-- pattern = string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
-					-- Highlights patterns like FOO, @FOO, @FOO: FOO:
-					pattern = string.format('()@?%s%%s?:?()', w:upper()),
+					-- pattern = {
+					-- 	string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
+					-- 	string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w),
+					-- },
+					--
+					-- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
+					pattern = {
+						string.format('()@?%s%%s?:?()', w),
+						string.format('()@?%s%%s?:?()', w:upper()),
+					},
 					group = string.format(
 						'MiniHipatterns%s',
 						hl:sub(1, 1):upper() .. hl:sub(2)
