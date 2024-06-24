@@ -28,6 +28,7 @@ return {
 	{
 		'https://github.com/supermaven-inc/supermaven-nvim',
 		enabled = not is_work_machine(),
+		event = 'InsertEnter',
 		opts = {
 			keymaps = {
 				accept_suggestion = '<C-g>',
