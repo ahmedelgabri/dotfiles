@@ -271,7 +271,7 @@ function M.get_active_statusline()
 		filepath(),
 		word_count(),
 		readonly(),
-		'%9*%=%* ',
+		'%= ',
 		mode(),
 		' %*',
 		paste(),

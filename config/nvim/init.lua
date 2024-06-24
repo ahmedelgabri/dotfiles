@@ -171,13 +171,21 @@ vim.opt.concealcursor = 'n'
 
 vim.opt.fillchars = {
 	diff = '⣿', -- BOX DRAWINGS
-	vert = '┃', -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
 	msgsep = '‾',
 	eob = ' ', -- Hide end of buffer ~
 	fold = '─',
 	foldopen = '▾',
 	foldsep = ' ',
 	foldclose = '▸',
+	stl = '⣿',
+	stlnc = '⣿',
+	horiz = '━',
+	horizup = '┻',
+	horizdown = '┳',
+	vert = '┃', -- HEAVY VERTICAL (U+2503, UTF-8: E2 94 83)
+	vertleft = '┫',
+	vertright = '┣',
+	verthoriz = '╋',
 }
 
 vim.opt.foldcolumn = '0'

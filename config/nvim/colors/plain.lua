@@ -212,13 +212,10 @@ highlight('helpHyperTextEntry', { link = 'Title' })
 highlight('helpHyperTextJump', { link = 'String' })
 
 -- __StatusLine__
-highlight('StatusLine', { bg = nil, fg = colors.norm })
+highlight('StatusLine', { bg = nil, fg = colors.cursor_line })
 
 -- __StatusLineNC__
-highlight(
-	'StatusLineNC',
-	{ italic = true, bg = nil, fg = colors.norm_very_subtle }
-)
+highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.cursor_line })
 
 -- __WildMenu__
 highlight(
