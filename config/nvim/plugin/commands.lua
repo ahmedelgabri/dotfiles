@@ -5,8 +5,16 @@ vim.api.nvim_create_user_command('Wqa', 'wqa', {})
 vim.api.nvim_create_user_command('W', 'w', {})
 vim.api.nvim_create_user_command('Q', 'q', {})
 
-vim.api.nvim_create_user_command('Light', 'set background=light', {})
-vim.api.nvim_create_user_command('Dark', 'set background=dark', {})
+vim.api.nvim_create_user_command(
+	'Light',
+	'set background=light',
+	{ desc = 'Set background to light' }
+)
+vim.api.nvim_create_user_command(
+	'Dark',
+	'set background=dark',
+	{ desc = 'Set background to dark' }
+)
 
 -- Delete the current file and clear the buffer
 vim.api.nvim_create_user_command(
@@ -24,4 +32,4 @@ vim.api.nvim_create_user_command('ClearRegisters', function()
 	for _, r in ipairs(regs) do
 		vim.fn.setreg(r, {})
 	end
-end, {})
+end, { desc = 'Clear all registers' })
