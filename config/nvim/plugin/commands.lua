@@ -19,8 +19,8 @@ vim.api.nvim_create_user_command(
 -- Delete the current file and clear the buffer
 vim.api.nvim_create_user_command(
 	'Del',
-	vim.fn.exists ':Delete' and ':Delete!' or [[:call delete(@%) | bdelete!]],
-	{}
+	vim.fn.exists ':Delete' ~= 0 and ':Delete!' or [[:call delete(@%) | bdelete!]],
+	{ desc = 'Delete the current file and clear the buffer' }
 )
 
 -- http://stackoverflow.com/a/39348498/2103996
