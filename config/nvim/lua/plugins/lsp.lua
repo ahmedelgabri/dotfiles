@@ -474,11 +474,11 @@ return {
 							ignoreDir = {
 								'.direnv',
 							},
-							library = {
-								'${3rd}/luv/library',
-								unpack(vim.api.nvim_get_runtime_file('', true)),
-								[vim.env.HOME .. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations'] = true,
-							},
+						},
+						library = {
+							'${3rd}/luv/library',
+							unpack(vim.api.nvim_get_runtime_file('', true)),
+							vim.env.HOME .. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',
 						},
 						completion = { keywordSnippet = 'Replace', callSnippet = 'Replace' },
 						telemetry = { enable = false },
