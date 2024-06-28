@@ -4,7 +4,30 @@ return {
 		cmd = { 'Abolish', 'S', 'Subvert' },
 	},
 	{ 'https://github.com/tpope/vim-repeat' },
-	{ 'https://github.com/wincent/loupe' },
+	{
+		'https://github.com/wincent/loupe',
+		event = 'VeryLazy',
+		init = function()
+			local au = require '_.utils.au'
+			local hl = require '_.utils.highlight'
+
+			function SetUpLoupeHighlight()
+				hl.group('QuickFixLine', { link = 'PmenuSel' })
+				vim.cmd 'highlight! clear Search'
+				hl.group('Search', { link = 'Underlined' })
+			end
+
+			au.augroup('__myloupe__', {
+				{
+					event = 'ColorScheme',
+					pattern = '*',
+					callback = SetUpLoupeHighlight,
+				},
+			})
+
+			SetUpLoupeHighlight()
+		end,
+	},
 	{
 		'https://github.com/christoomey/vim-tmux-navigator',
 		lazy = false,
