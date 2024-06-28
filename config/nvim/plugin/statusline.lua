@@ -1,6 +1,6 @@
-local utils = require '_.utils'
 local au = require '_.utils.au'
 local hl = require '_.utils.highlight'
+local utils = require '_.utils'
 
 ---------------------------------------------------------------------------------
 -- Helpers
@@ -240,6 +240,10 @@ local function lsp()
 end
 
 local function git_conflicts()
+	if vim.bo.filetype == 'starter' then
+		return ''
+	end
+
 	local ok, git_conflict = pcall(require, 'git-conflict')
 
 	if not ok then

@@ -338,7 +338,7 @@ return {
 		config = function()
 			vim.api.nvim_create_autocmd('User', {
 				pattern = 'LazyVimStarted',
-				callback = function()
+				callback = function(ev)
 					local starter = require 'mini.starter'
 					local stats = require('lazy').stats()
 					local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
@@ -352,8 +352,10 @@ return {
 							.. ms
 							.. ' ms'
 					end
-					-- https://github.com/LazyVim/LazyVim/commit/dc66887b57ecdee8d33b5e07ca031288260e2971
-					vim.cmd [[do VimResized]]
+					-- https://github.com/LazyVim/LazyVim/commit/eb6c9fb5784a8001c876203de174cd79e96bb637
+					if vim.bo[ev.buf].filetype == 'starter' then
+						pcall(starter.refresh)
+					end
 				end,
 			})
 

@@ -16,7 +16,7 @@ au.augroup('__MyCustomColors__', {
 		event = { 'BufWinEnter', 'BufEnter' },
 		pattern = '*',
 		callback = function()
-			if package.loaded['git-conflict.nvim'] then
+			if vim.fn.exists ':GitConflictRefresh' > 0 then
 				return
 			end
 
