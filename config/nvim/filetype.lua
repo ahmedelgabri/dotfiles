@@ -5,6 +5,7 @@ end
 vim.filetype.add {
 	extension = {
 		mdx = 'mdx',
+		http = 'http',
 		log = 'log',
 		conf = 'conf',
 		env = 'dotenv',
