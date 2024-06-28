@@ -17,6 +17,9 @@ vim.filetype.add {
 		Brewfile = 'ruby',
 		['turbo.json'] = 'jsonc',
 		['nx.json'] = 'jsonc',
+		PULLREQ_EDITMSG = 'markdown.ghpull',
+		ISSUE_EDITMSG = 'markdown.ghissue',
+		RELEASE_EDITMSG = 'markdown.ghrelease',
 	},
 	pattern = {
 		['tsconfig*.json'] = 'jsonc',

@@ -1,6 +1,5 @@
 return {
 	'https://github.com/mbbill/undotree',
-	event = 'VeryLazy',
 	cmd = 'UndotreeToggle',
 	keys = {
 		{

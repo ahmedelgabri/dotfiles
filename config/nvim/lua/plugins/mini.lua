@@ -26,6 +26,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.indentscope',
+		event = 'VeryLazy',
 		config = function()
 			-- disable in some buffers
 			au.autocmd {
@@ -58,6 +59,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.pairs',
+		event = 'VeryLazy',
 		config = function()
 			require('mini.pairs').setup {}
 		end,
@@ -71,6 +73,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.surround',
+		event = 'VeryLazy',
 		config = function()
 			require('mini.surround').setup {
 				mappings = {
@@ -109,6 +112,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.trailspace',
+		event = 'VeryLazy',
 		config = function()
 			require('mini.trailspace').setup {}
 		end,
@@ -159,6 +163,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.diff',
+		event = 'VeryLazy',
 		config = function()
 			require('mini.diff').setup {
 				view = {

@@ -1,7 +1,12 @@
 return {
-	{ 'https://github.com/jez/vim-github-hub' },
+	{
+		'https://github.com/jez/vim-github-hub',
+		-- Hub filetypes, also chceck filetypes.lua
+		ft = { 'markdown.ghpull', 'markdown.ghissue', 'markdown.ghrelease' },
+	},
 	{
 		'https://github.com/akinsho/git-conflict.nvim',
+		event = 'VeryLazy',
 		opts = {},
 	},
 	{
