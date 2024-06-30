@@ -1,5 +1,3 @@
-local utils = require '_.utils'
-
 local M = {}
 
 M.mkview_filetype_blocklist = {
@@ -42,28 +40,16 @@ M.colorcolumn_blocklist = {
 }
 
 M.heavy_plugins_blocklist = {
-	preview = true,
-	qf = true,
-	fzf = true,
-	netrw = true,
-	help = true,
 	taskedit = true,
-	diff = true,
-	man = true,
-	startify = true,
-	gitcommit = true,
-	hgcommit = true,
-	vimfiler = true,
-	dos = true,
 	minpacprgs = true,
+	starter = true,
 }
 
 --  Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
 --  from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
-local function should_mkview()
-	return vim.bo.buftype == ''
-		and vim.fn.getcmdwintype() == ''
-		and M.mkview_filetype_blocklist[vim.bo.filetype] == nil
+local function should_mkview(event)
+	return vim.bo[event.buf].buftype == ''
+		and M.mkview_filetype_blocklist[vim.bo[event.buf].filetype] == nil
 		and vim.fn.exists '$SUDO_USER' == 0 -- Don't create root-owned files.
 end
 
@@ -86,8 +72,8 @@ local function cleanup_marker(marker)
 	end
 end
 
-function M.mkview()
-	if should_mkview() then
+function M.mkview(event)
+	if should_mkview(event) then
 		local success, err = pcall(function()
 			if vim.fn.haslocaldir() == 1 then
 				-- We never want to save an :lcd command, so hack around it...
@@ -112,9 +98,9 @@ function M.mkview()
 	end
 end
 
-function M.loadview()
-	if should_mkview() then
-		vim.cmd 'silent! loadview'
+function M.loadview(event)
+	if should_mkview(event) then
+		vim.cmd.loadview { mods = { emsg_silent = true } }
 		vim.cmd('silent! ' .. vim.fn.line '.' .. 'foldopen!')
 	end
 end
@@ -188,14 +174,20 @@ function M.highlight_git_markers()
 	)
 end
 
-function M.disable_heavy_plugins()
+function M.disable_heavy_plugins(event)
+	local bufsize = vim.fn.getfsize(vim.fn.expand '%')
+	local isMinified = vim.regex('\\.min\\..*$'):match_str(vim.fn.expand '%:t')
+
 	if
-		M.heavy_plugins_blocklist[vim.bo.filetype] ~= nil
-		or vim.regex('\\.min\\..*$'):match_str(vim.fn.expand '%:t') ~= nil
-		or vim.fn.getfsize(vim.fn.expand '%') > 200000
+		M.heavy_plugins_blocklist[vim.bo[event.buf].filetype] ~= nil
+		or isMinified ~= nil
+		or bufsize > 200000
 	then
-		if vim.fn.exists ':ALEDisableBuffer' == 2 then
-			vim.api.nvim_command ':ALEDisableBuffer'
+		if type(vim.cmd.LspStop) == 'function' then
+			vim.cmd.LspStop()
+		end
+		if type(vim.cmd.TSBufDisable) == 'function' then
+			vim.cmd.TSBufDisable 'highlight'
 		end
 	end
 end

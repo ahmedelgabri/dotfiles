@@ -9,18 +9,10 @@ au.augroup('__myautocmds__', {
 	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
 	{
 		event = 'BufWritePost',
-		pattern = '*/spell/*.add',
-		callback = function()
-			vim.cmd [[ silent! :mkspell! %]]
-		end,
-	},
-
-	{
-		event = 'BufWritePost',
 		pattern = '.envrc',
 		callback = function()
 			if vim.fn.executable 'direnv' then
-				vim.cmd [[ silent !direnv allow %]]
+				vim.cmd [[silent !direnv allow %]]
 			end
 		end,
 	},
@@ -71,7 +63,6 @@ au.augroup('__myautocmds__', {
 		pattern = '*',
 		callback = cmds.source_project_config,
 	},
-
 	{
 		event = 'TextYankPost',
 		pattern = '*',
@@ -81,18 +72,6 @@ au.augroup('__myautocmds__', {
 			}
 		end,
 	},
-
-	{
-		event = { 'BufEnter', 'WinEnter' },
-		pattern = { '*/node_modules/*', '*.min.*' },
-		command = ':LspStop',
-	},
-	{
-		event = 'BufLeave',
-		pattern = { '*/node_modules/*', '*.min.*' },
-		command = ':LspStart',
-	},
-
 	{
 		event = 'BufWritePost',
 		pattern = '*/spell/*.add',
