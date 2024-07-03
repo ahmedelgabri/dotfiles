@@ -240,7 +240,7 @@ local function lsp()
 end
 
 local function git_conflicts()
-	if vim.bo.filetype == 'starter' then
+	if vim.bo.filetype == 'ministarter' then
 		return ''
 	end
 

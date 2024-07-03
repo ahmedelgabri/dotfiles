@@ -34,7 +34,7 @@ return {
 				pattern = {
 					'fzf',
 					'startify',
-					'starter',
+					'ministarter',
 					'help',
 					'alpha',
 					'dashboard',
@@ -353,7 +353,7 @@ return {
 							.. ' ms'
 					end
 					-- https://github.com/LazyVim/LazyVim/commit/eb6c9fb5784a8001c876203de174cd79e96bb637
-					if vim.bo[ev.buf].filetype == 'starter' then
+					if vim.bo[ev.buf].filetype == 'ministarter' then
 						pcall(starter.refresh)
 					end
 				end,
