@@ -13,9 +13,7 @@ return {
 		'https://github.com/sindrets/diffview.nvim',
 		dependencies = { { 'https://github.com/nvim-lua/plenary.nvim' } },
 		cmd = { 'DiffviewOpen' },
-		opts = {
-			use_icons = false,
-		},
+		opts = {},
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',

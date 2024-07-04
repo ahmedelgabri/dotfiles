@@ -127,8 +127,12 @@ return {
 							-- Replace the kind glyph with the custom icon
 							vim_item.kind = icons.calc
 						else
-							vim_item.kind =
-								string.format('%s %s', icons[vim_item.kind], vim_item.kind)
+							vim_item.kind = string.format(
+								'%s %s',
+								require('mini.icons').get('lsp', vim_item.kind)
+									or icons[vim_item.kind],
+								vim_item.kind
+							)
 						end
 
 						local strings = vim.split(vim_item.kind, ' ', { trimempty = true })

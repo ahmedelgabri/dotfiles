@@ -334,6 +334,13 @@ return {
 		end,
 	},
 	{
+		'https://github.com/echasnovski/mini.icons',
+		config = function()
+			require('mini.icons').setup {}
+			require('mini.icons').mock_nvim_web_devicons()
+		end,
+	},
+	{
 		'https://github.com/echasnovski/mini.starter',
 		config = function()
 			vim.api.nvim_create_autocmd('User', {
