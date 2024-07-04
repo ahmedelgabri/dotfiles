@@ -41,20 +41,6 @@ return require('lazy').setup('plugins', {
 	-- Don't bother me when tweaking plugins.
 	change_detection = { notify = false },
 	ui = {
-		{ border = 'rounded' },
-		icons = {
-			cmd = '⌘',
-			config = '🛠',
-			event = '📅',
-			ft = '📂',
-			init = '⚙',
-			keys = '🗝',
-			plugin = '🔌',
-			runtime = '💻',
-			source = '📄',
-			start = '🚀',
-			task = '📌',
-			lazy = '💤 ',
-		},
+		border = 'rounded',
 	},
 })
