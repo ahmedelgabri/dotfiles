@@ -19,6 +19,7 @@ Install:andUse('Caffeine', {
 
 local urlDispatcherConfig = {
 	start = true,
+	loglevel = 'debug',
 	config = {
 		default_handler = 'company.thebrowser.Browser',
 		decode_slack_redir_urls = true,
