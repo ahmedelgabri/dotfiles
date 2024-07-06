@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+set -ue -o pipefail
+
+CMD="git"
+if [[ -n "${DEUBG-}" ]]; then
+	set -x
+
+	CMD="echo git"
+fi
+
+case $1 in
+# This is an extra command that I added to handle cloning a repo and setting it
+# up as a worktree
+clone)
+	shift
+	FOLDER_NAME=${2:-$(basename "$1" ".git")}
+
+	mkdir -p "$FOLDER_NAME"
+
+	cd "$FOLDER_NAME"
+
+	$CMD clone --bare "$1" .bare
+
+	echo "gitdir: ./.bare" >.git
+
+	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+	;;
+add)
+	shift
+	$CMD worktree add "$@"
+	# Do I need to handle this?
+	# git worktree add -b origin/ahmed/foo foo
+	# $CMD branch --set-upstream-to=origin/"$branch" "$branch"
+
+	$CMD fetch --all --prune
+	;;
+remove)
+	shift
+
+	if [[ -z "${1-}" ]]; then
+		git worktree list | grep -v ".bare" | fzf \
+			--header $'CTRL-X (remove worktree)\n\n' \
+			--bind 'enter:become(git worktree remove -f {1} && git branch -D $(echo {3} | sed -E "s/\[(.*)\]/\1/g"))' \
+			--bind 'ctrl-x:reload(git worktree remove -f {1} && git branch -D $(echo {3} | sed -E "s/\[(.*)\]/\1/g"); git worktree list)' \
+			--preview "
+				git -c color.status=always -C {1} status --short --branch
+				echo
+				git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' {2} --
+			"
+	fi
+	# We get grep for the worktree name, then we extract the branch name from the result
+	# Because a worktree name is not always the branch name
+	# We do this _BEFORE_ we remove the worktree, otherwise we won't be able to get the branch name
+	BRANCH_TO_DELETE=$(git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g')
+
+	$CMD worktree remove -f "$@"
+	$CMD branch -D "$BRANCH_TO_DELETE"
+	;;
+list | lock | unlock | move | prune | repair)
+	$CMD worktree "$@"
+	;;
+*)
+	# Let git worktree handle the errors
+	$CMD worktree "$@"
+	;;
+esac
