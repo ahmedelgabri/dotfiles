@@ -4,9 +4,11 @@ return {
 	build = ':TSUpdate',
 	dependencies = {
 		{
-			'https://github.com/MeanderingProgrammer/markdown.nvim',
+			-- 'https://github.com/MeanderingProgrammer/markdown.nvim',
+			'https://github.com/OXY2DEV/markview.nvim',
 			config = function()
-				require('render-markdown').setup {}
+				-- require('render-markdown').setup {}
+				require('markview').setup {}
 			end,
 		},
 		{
