@@ -131,20 +131,16 @@ return {
 				'fixme',
 				{ 'warn', 'hack' },
 				{ 'bug', 'fixme' },
+				{ 'xxx', 'fixme' },
 			} do
 				local w = type(word) == 'table' and word[1] or word
 				local hl = type(word) == 'table' and word[2] or word
 
 				highlighters[w] = {
-					-- pattern = {
-					-- 	string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
-					-- 	string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w),
-					-- },
-					--
 					-- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
 					pattern = {
-						string.format('()@?%s%%s?:?()', w),
-						string.format('()@?%s%%s?:?()', w:upper()),
+						string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w),
+						string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
 					},
 					group = string.format(
 						'MiniHipatterns%s',
