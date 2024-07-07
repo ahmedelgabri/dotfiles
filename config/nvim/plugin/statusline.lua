@@ -99,14 +99,22 @@ local function readonly()
 	return string.format('%%5* %s %%w %%*', line)
 end
 
-local mode_table = {
+-- Custom `^V` and `^S` symbols to make this file appropriate for copy-paste
+-- (otherwise those symbols are not displayed and when managed to display them they turn the file into a binary format).
+-- file --mime-type statusline.lua -> application/octet-stream
+local CTRL_S = vim.keycode '<C-S>'
+local CTRL_V = vim.keycode '<C-V>'
+
+local MODES = setmetatable({
 	no = 'N-Operator Pending',
+	nov = 'N-Operator Block',
+	noV = 'N-Operator Line',
 	v = 'V.',
 	V = 'V·Line',
-	[''] = 'V·Block', -- this is not ^V, but it's , they're different
+	[CTRL_V] = 'V·Block',
 	s = 'S.',
 	S = 'S·Line',
-	[''] = 'S·Block',
+	[CTRL_S] = 'S·Block',
 	i = 'I.',
 	ic = 'I·Compl',
 	ix = 'I·X-Compl',
@@ -122,7 +130,13 @@ local mode_table = {
 	['r?'] = 'Confirm',
 	['!'] = 'Sh',
 	t = 'T.',
-}
+	nt = 'TN.',
+}, {
+	-- By default return 'Unknown' but this shouldn't be needed
+	__index = function()
+		return 'Unknown'
+	end,
+})
 
 local function mode()
 	local current_mode = vim.api.nvim_get_mode().mode
@@ -131,7 +145,7 @@ local function mode()
 		return ''
 	end
 
-	return mode_table[current_mode] or 'NOT IN MAP'
+	return MODES[current_mode]
 end
 
 local function rhs()
@@ -173,10 +187,6 @@ local function word_count()
 	end
 
 	return ''
-end
-
-local function filetype()
-	return vim.bo.filetype
 end
 
 local function orgmode()
