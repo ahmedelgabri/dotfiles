@@ -273,6 +273,48 @@ local function git_conflicts()
 	)
 end
 
+local function treesitter_context()
+	local ok, ts = pcall(require, 'nvim-treesitter')
+
+	if not ok then
+		return ''
+	end
+
+	local ctx = ts.statusline {
+		indicator_size = vim.fn.winwidth(0),
+		type_patterns = {
+			'class',
+			'function',
+			'method',
+			'interface',
+			'type_spec',
+			'table',
+			'if_statement',
+			'for_statement',
+			'for_in_statement',
+		},
+	}
+
+	return string.format('%%#Constant#%s%%* ', ctx)
+end
+
+local function copilot()
+	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
+
+	if ok then
+		return supermaven.is_running() and string.format('%%#MoreMsg#%s%%*', ' ')
+			or ''
+	end
+
+	if vim.fn.exists ':Copilot status' ~= 0 then
+		return vim.fn['copilot#RunningClient'] ~= nil
+				and string.format('%s', ' ')
+			or ''
+	end
+
+	return ''
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -286,6 +328,7 @@ function M.get_active_statusline()
 		word_count(),
 		readonly(),
 		'%= ',
+		treesitter_context(),
 		mode(),
 		' %*',
 		paste(),
@@ -294,6 +337,7 @@ function M.get_active_statusline()
 		lsp(),
 		git_conflicts(),
 		file_info(),
+		copilot(),
 		rhs(),
 	}
 
