@@ -274,6 +274,10 @@ local function git_conflicts()
 end
 
 local function treesitter_context()
+	if vim.bo.filetype == 'ministarter' then
+		return ''
+	end
+
 	local ok, ts = pcall(require, 'nvim-treesitter')
 
 	if not ok then
@@ -299,6 +303,10 @@ local function treesitter_context()
 end
 
 local function copilot()
+	if vim.bo.filetype == 'ministarter' then
+		return ''
+	end
+
 	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
 
 	if ok then
@@ -307,7 +315,7 @@ local function copilot()
 	end
 
 	if vim.fn.exists ':Copilot status' ~= 0 then
-		return vim.fn['copilot#RunningClient'] ~= nil
+		return vim.fn['copilot#RunningClient']() ~= nil
 				and string.format('%s', ' ')
 			or ''
 	end
@@ -330,7 +338,7 @@ function M.get_active_statusline()
 		'%= ',
 		treesitter_context(),
 		mode(),
-		' %*',
+		'%*',
 		paste(),
 		spell(),
 		orgmode(),
