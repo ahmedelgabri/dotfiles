@@ -314,13 +314,7 @@ local function copilot()
 			or ''
 	end
 
-	if vim.fn.exists ':Copilot status' ~= 0 then
-		return vim.fn['copilot#RunningClient']() ~= nil
-				and string.format('%s', ' ')
-			or ''
-	end
-
-	return ''
+	return vim.g.loaded_copilot == 1 and string.format('%s', ' ') or ''
 end
 
 ---------------------------------------------------------------------------------
