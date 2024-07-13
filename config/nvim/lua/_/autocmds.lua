@@ -4,6 +4,7 @@ M.mkview_filetype_blocklist = {
 	diff = true,
 	gitcommit = true,
 	hgcommit = true,
+	ministarter = true,
 }
 
 M.quit_on_q_allowlist = {
@@ -37,12 +38,13 @@ M.colorcolumn_blocklist = {
 	minpacprgs = true,
 	gitcommit = true,
 	GrepperSide = true,
+	ministarter = true,
 }
 
 M.heavy_plugins_blocklist = {
 	taskedit = true,
 	minpacprgs = true,
-	starter = true,
+	ministarter = true,
 }
 
 --  Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
@@ -139,7 +141,7 @@ function M.source_project_config()
 end
 
 function M.highlight_overlength()
-	if vim.bo.filetype == 'help' then
+	if M.colorcolumn_blocklist[vim.bo.filetype] == true then
 		return
 	end
 
