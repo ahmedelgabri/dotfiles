@@ -12,12 +12,6 @@ if [[ $(arch) == 'arm64' ]]; then
 	ARCH="$(arch)"
 fi
 
-HOMEBREW_BIN="/usr/local/bin/"
-
-if [[ "$ARCH" == 'arm64' ]]; then
-	HOMEBREW_BIN="/opt/homebrew/bin"
-fi
-
 # =======================================================================
 # = Helpers & setting some variables
 # =======================================================================
@@ -130,16 +124,6 @@ print_prompt() {
 # = Main functions
 # =======================================================================
 
-install_homebrew() {
-	if [ -f "$HOMEBREW_BIN" ]; then
-		log_info "Homebrew already installed"
-	else
-		log_success "Installing Homebrew"
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-		"$HOMEBREW_BIN" install transcrypt
-	fi
-}
-
 install_xcode() {
 	if command -v xcode-select >/dev/null; then
 		log_info "Xcode already installed"
@@ -166,7 +150,6 @@ install_nix() {
 package_manager() {
 	if [ "$(uname)" == "Darwin" ]; then
 		install_xcode
-		install_homebrew
 		install_nix
 	fi
 }

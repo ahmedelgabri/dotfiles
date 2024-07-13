@@ -28,10 +28,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
 
     weechat-scripts = {
       url = "github:weechat/scripts";
@@ -57,8 +60,8 @@
           package = pkgs.nixVersions.git;
           extraOptions = "experimental-features = nix-command flakes";
           settings = {
-            # disabled, because some buggy behaviour: https://github.com/NixOS/nix/issues/7273
-            auto-optimise-store = false;
+            # disabled on Darwin because some buggy behaviour: https://github.com/NixOS/nix/issues/7273
+            auto-optimise-store = !pkgs.stdenv.isDarwin;
             substituters = [
               "https://cache.nixos.org"
               "https://nix-community.cachix.org"
@@ -145,8 +148,10 @@
         "pandoras-box" = inputs.darwin.lib.darwinSystem {
           system = "x86_64-darwin";
           inherit inputs;
+          specialArgs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
+            inputs.nix-homebrew.darwinModules.nix-homebrew
             ./nix/modules/shared
             sharedHostsConfig
             ./nix/hosts/pandoras-box.nix
@@ -155,9 +160,10 @@
 
         "rocket" = inputs.darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          inherit inputs;
+          specialArgs = inputs;
           modules = [
             inputs.home-manager.darwinModules.home-manager
+            inputs.nix-homebrew.darwinModules.nix-homebrew
             ./nix/modules/shared
             sharedHostsConfig
             ./nix/hosts/rocket.nix
@@ -171,13 +177,12 @@
       # nix build './#pandoras-box'
       # Move them to `outputs.packages.<system>.name`
       pandoras-box = self.darwinConfigurations.pandoras-box.system;
-      ahmed-at-work = self.darwinConfigurations.ahmed-at-work.system;
       rocket = self.darwinConfigurations.rocket.system;
 
       nixosConfigurations = {
         "nixos" = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = inputs;
           modules = [
             inputs.home-manager.nixosModules.home-manager
             ./nix/modules/shared
@@ -191,7 +196,6 @@
       devShells =
         let
           pkgs = inputs.nixpkgs.legacyPackages.${system};
-          homebrewInstall = pkgs.writeShellScriptBin "homebrewInstall" ''${pkgs.bash}/bin/bash -c "$(${pkgs.curl}/bin/curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'';
         in
         {
           default = pkgs.mkShell {
@@ -206,7 +210,7 @@
               gotools # goimports
               impl
               revive
-            ] ++ (lib.optionals pkgs.stdenv.isDarwin [ homebrewInstall ]);
+            ];
             # shellHook = ''echo "hi"'';
           };
         };

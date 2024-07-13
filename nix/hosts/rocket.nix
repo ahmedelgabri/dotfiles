@@ -1,5 +1,11 @@
-{ config, pkgs, lib, inputs, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ../modules/darwin ];
+
+  networking = { hostName = "rocket"; };
+
+  nix = {
+    gc = { user = config.my.username; };
+  };
 
   my = {
     username = "ahmedelgabri";
@@ -17,59 +23,58 @@
         smtp_server = "smtp.gmail.com";
       };
     };
+    user = {
+      packages = with pkgs; [
+        # emacsMacport
+        go-task
+        localstack
+        graph-easy
+        graphviz
+        nodePackages.mermaid-cli
+        # emanote
+        jira-cli-go
+      ];
+    };
   };
 
-  networking = { hostName = "rocket"; };
-  nix = {
-    gc = { user = config.my.username; };
+  nix-homebrew = {
+    enable = true;
+    enableRosetta = true;
+    user = config.my.username;
+    autoMigrate = true;
   };
 
-  my.user = {
-    packages = with pkgs; [
-      # emacsMacport
-      go-task
-      localstack
-      graph-easy
-      graphviz
-      nodePackages.mermaid-cli
-      # emanote
-      jira-cli-go
+  homebrew = {
+    casks = [
+      "temurin8" # -> adoptopenjdk8
+      "corretto"
+      "firefox"
+      "loom"
+      "vagrant"
+      "docker"
+      "ngrok"
+      "figma"
+      "jordanbaird-ice"
     ];
+
+    brews = [
+      "amp"
+      "git"
+      "git-filter-repo"
+      "git-lfs"
+      "git-sizer"
+      "awscli"
+      "k9s"
+      "aws-vault"
+      "httpstat"
+    ];
+
+    # Requires to be logged in to the AppStore
+    # Cleanup doesn't work automatically if you add/remove to list
+    # masApps = {
+    #   Twitter = 1482454543;
+    #   Sip = 507257563;
+    #   Guidance = 412759995;
+    # }
   };
-
-  homebrew.casks = [
-    "temurin8" # -> adoptopenjdk8
-    "corretto"
-    "firefox"
-    "loom"
-    "vagrant"
-    "docker"
-    "ngrok"
-    "figma"
-    "jordanbaird-ice"
-  ];
-
-  homebrew.brews = [
-    "amp"
-    "git"
-    "git-filter-repo"
-    "git-lfs"
-    "git-sizer"
-    "awscli"
-    "k9s"
-    "aws-vault"
-    "httpstat"
-  ];
-
-  # Requires to be logged in to the AppStore
-  # Cleanup doesn't work automatically if you add/remove to list
-  # homebrew.masApps = {
-  #   Twitter = 1482454543;
-  #   Sip = 507257563;
-  #   Guidance = 412759995;
-  # };
-
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
-  # environment.darwinConfig = "$HOME/.config/nixpkgs/darwin/configuration.nix";
 }
