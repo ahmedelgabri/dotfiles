@@ -37,6 +37,7 @@
   };
 
   nix = {
+    useDaemon = true;
     gc = { dates = "daily"; };
     autoOptimiseStore = true;
     registry = {

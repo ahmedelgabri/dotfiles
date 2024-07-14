@@ -1,29 +1,14 @@
-{ config, ... }: {
-  imports = [ ../modules/darwin ];
-
+_: {
   networking = { hostName = "pandoras-box"; };
-
-  nix = {
-    gc = { user = config.my.username; };
-  };
 
   my = {
     modules = {
-      macos.enable = true;
-
       mail = { enable = true; };
       irc.enable = true;
       gpg.enable = true;
       discord.enable = true;
       hledger.enable = true;
     };
-  };
-
-  nix-homebrew = {
-    enable = true;
-    enableRosetta = false;
-    user = config.my.username;
-    autoMigrate = true;
   };
 
   homebrew = {

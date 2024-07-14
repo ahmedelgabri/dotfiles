@@ -1,18 +1,11 @@
-{ config, pkgs, ... }: {
-  imports = [ ../modules/darwin ];
-
+{ pkgs, ... }: {
   networking = { hostName = "rocket"; };
-
-  nix = {
-    gc = { user = config.my.username; };
-  };
 
   my = {
     username = "ahmedelgabri";
     email = "ahmed@miro.com";
     website = "https://miro.com";
     modules = {
-      macos.enable = true;
       gpg.enable = true;
       mail = {
         enable = true;
@@ -35,13 +28,6 @@
         jira-cli-go
       ];
     };
-  };
-
-  nix-homebrew = {
-    enable = true;
-    enableRosetta = true;
-    user = config.my.username;
-    autoMigrate = true;
   };
 
   homebrew = {
