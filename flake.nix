@@ -211,15 +211,9 @@
           default = pkgs.mkShell {
             name = "dotfiles";
             buildInputs = with pkgs; [
-              delve # dlv
               go
-              go-tools # staticcheck
-              gomodifytags
               gopls
-              gotests
               gotools # goimports
-              impl
-              revive
             ];
             # shellHook = ''echo "hi"'';
           };
