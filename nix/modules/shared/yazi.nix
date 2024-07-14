@@ -24,7 +24,7 @@ in
           fd
           ripgrep
           # https://yazi-rs.github.io/docs/quick-start#shell-wrapper
-          (pkgs.writeShellScriptBin "ya" ''
+          (pkgs.writeShellScriptBin "yy" ''
             set -ue -o pipefail
 
             function ya() {
