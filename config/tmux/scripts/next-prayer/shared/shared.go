@@ -46,6 +46,14 @@ func get_field(v *ApiData, field string) string {
 	return string(f.String())
 }
 
+// @TODO
+// CHange how we cache the data so we can check if the location changed and
+// update the cache accordingly.
+//
+// Also we need to define what does a location change mean, lat/long can change
+// easily instead we want to check the city and/or country
+//
+// So cache key should probably be the city and country like this "city_country"
 func get_data(source Source, now time.Time) ([]byte, error) {
 	today_date := now.Format("02-01-2006")
 	cache := path.Join(os.TempDir(), "."+today_date+".json")

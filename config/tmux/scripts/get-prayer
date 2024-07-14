@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+printf "$(next-prayer mawaqit $(CoreLocationCLI --json | jq -r '. | "-latitude \(.latitude) -longitude \(.longitude)"'))"
