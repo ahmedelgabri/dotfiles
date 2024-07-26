@@ -21,6 +21,13 @@ vim.g.netrw_bufsettings = vim.g.netrw_bufsettings
 -- :NvimTreeFindFile like functionality
 -- https://superuser.com/a/1814266
 vim.keymap.set('n', '<leader>-', function()
+	-- enable netrw because oil.nvim disables it
+	vim.cmd [[
+    unlet! g:loaded_netrw
+    unlet! g:loaded_netrwPlugin
+    runtime! plugin/netrwPlugin.vim
+  ]]
+
 	local relative_path = vim.fn.fnamemodify(vim.fn.expand '%:h', ':~:.')
 	local startPos, endPos = string.find(relative_path, '/')
 
@@ -42,4 +49,8 @@ vim.keymap.set('n', '<leader>-', function()
 	end
 
 	vim.cmd.normal 'n<CR>zz'
+
+	-- disable netrw to enable oil.nvim again becoming the default file explorer
+	vim.g.loaded_netrw = 1
+	vim.g.loaded_netrwPlugin = 1
 end)

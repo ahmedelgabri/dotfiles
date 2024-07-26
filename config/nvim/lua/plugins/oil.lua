@@ -1,6 +1,8 @@
 return {
 	{
 		'https://github.com/stevearc/oil.nvim',
+		-- avoid lazy loading oil in order to use it as a file explorer instead of netrw
+		lazy = false,
 		keys = {
 			{
 				'-',
@@ -16,11 +18,14 @@ return {
 			require('oil').setup {
 				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 				-- Set to false if you still want to use netrw.
-				default_file_explorer = false,
+				default_file_explorer = true,
 				view_options = {
 					show_hidden = true,
 				},
 				delete_to_trash = true,
+				win_options = {
+					cursorline = true,
+				},
 				keymaps = {
 					['gd'] = {
 						desc = 'Toggle file detail view',
