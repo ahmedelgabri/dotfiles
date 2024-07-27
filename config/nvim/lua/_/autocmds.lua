@@ -67,12 +67,17 @@ local function should_turn_off_colorcolumn()
 		or M.colorcolumn_blocklist[vim.bo.filetype] == true
 		or vim.bo.buftype == 'terminal'
 		or vim.bo.readonly == true
+		or vim.wo.previewwindow == true
 end
 
-local function cleanup_marker(marker)
-	if vim.fn.exists(marker) == 1 then
-		vim.api.nvim_command('silent! call matchdelete(' .. marker .. ')')
-		vim.api.nvim_command('silent! unlet ' .. marker)
+function M.toggleHighlightPattern(name, pattern)
+	local match_id = nil
+
+	if match_id ~= nil then
+		-- vim.cmd('highlight clear ' .. name)
+		vim.fn.matchdelete(match_id)
+	else
+		match_id = vim.fn.matchadd(name, pattern)
 	end
 end
 
@@ -140,42 +145,6 @@ function M.source_project_config()
 			vim.api.nvim_command(string.format('silent source %s', current_file))
 		end
 	end
-end
-
-function M.highlight_overlength()
-	if M.colorcolumn_blocklist[vim.bo.filetype] == true then
-		return
-	end
-
-	cleanup_marker 'w:last_overlength'
-
-	if should_turn_off_colorcolumn() then
-		vim.api.nvim_command 'match NONE'
-	else
-		-- Use tw + 1 so invisble characters are not marked
-		-- I have to escape the escape backslash to be able to pass it to vim
-		-- Ex: I want "\(" I have to do it in Lua as "\\("
-		local overlength_pattern = '\\%>' .. (vim.bo.textwidth + 1) .. 'v.\\+'
-		-- [TODO]: figure out how to convert this to Lua
-		vim.api.nvim_command(
-			"let w:last_overlength = matchadd('OverLength', '"
-				.. overlength_pattern
-				.. "')"
-		)
-	end
-end
-
-function M.highlight_git_markers()
-	cleanup_marker 'w:last_git_markers'
-	-- I have to escape the escape backslash to be able to pass it to vim
-	-- Ex: I want "\(" I have to do it in Lua as "\\("
-	local overlength_pattern = '^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
-	-- [TODO]: figure out how to convert this to Lua
-	vim.api.nvim_command(
-		"let w:last_overlength = matchadd('ErrorMsg','"
-			.. overlength_pattern
-			.. "')"
-	)
 end
 
 function M.disable_heavy_plugins(event)

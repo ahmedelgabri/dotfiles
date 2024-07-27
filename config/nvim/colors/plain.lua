@@ -477,6 +477,7 @@ highlight(
 	'OverLength',
 	{ fg = nil, bg = colors.selection_fg, ctermbg = 234, ctermfg = nil }
 )
+highlight('GitMarker', { link = 'OverLength' })
 
 -- LspDiagnostics --
 highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
