@@ -274,7 +274,15 @@ local function git_conflicts()
 end
 
 local function treesitter_context()
-	if vim.bo.filetype == 'ministarter' then
+	-- Hide if window size is too small, or we have more than two splits,
+	-- or if we are in a ministarter buffer
+	--
+	-- @TODO: check how to get split width instead of using tabpage list
+	if
+		vim.fn.winwidth(0) < 120
+		or #vim.api.nvim_tabpage_list_wins(0) > 2
+		or vim.bo.filetype == 'ministarter'
+	then
 		return ''
 	end
 
