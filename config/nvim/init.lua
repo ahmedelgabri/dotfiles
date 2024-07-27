@@ -190,10 +190,10 @@ vim.opt.fillchars = {
 
 vim.opt.foldcolumn = '0'
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 1
 vim.opt.foldnestmax = 4
 vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+-- So slow on large files?
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
@@ -280,6 +280,9 @@ vim.opt.smoothscroll = true
 -------------------------------------------------------------------------------
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------
+-- Fix markdown indentation settings
+vim.g.markdown_recommended_style = 0
+
 vim.g.markdown_fenced_languages = {
 	'css',
 	'erb=eruby',
