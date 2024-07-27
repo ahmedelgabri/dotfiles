@@ -56,7 +56,9 @@ local function should_mkview(event)
 end
 
 local function should_quit_on_q()
-	return vim.wo.diff == true or M.quit_on_q_allowlist[vim.bo.filetype] == true
+	return vim.wo.diff == true
+		or vim.wo.previewwindow == true
+		or M.quit_on_q_allowlist[vim.bo.filetype] == true
 end
 
 local function should_turn_off_colorcolumn()
