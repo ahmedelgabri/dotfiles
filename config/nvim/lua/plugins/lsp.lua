@@ -261,18 +261,17 @@ return {
 			opts = {
 				single_file_support = false,
 				handlers = shared.handlers,
-				root_dir = function(fname)
-					local nvim_lsp = require 'lspconfig'
-
-					return not nvim_lsp.util.root_pattern(
-						'.flowconfig',
-						'deno.json',
-						'deno.jsonc'
-					)(fname) and (nvim_lsp.util.root_pattern 'tsconfig.json'(fname) or nvim_lsp.util.root_pattern(
-						'package.json',
+				root_dir = function()
+					return not vim.fs.root(
+						0,
+						{ '.flowconfig', 'deno.json', 'deno.jsonc' }
+					) and vim.fs.root(0, {
+						'tsconfig.json',
 						'jsconfig.json',
-						'.git'
-					)(fname) or nvim_lsp.util.path.dirname(fname))
+						'package.json',
+						'.git',
+						vim.api.nvim_buf_get_name(0),
+					})
 				end,
 				settings = {
 					tsserver_file_preferences = {
@@ -382,13 +381,6 @@ return {
 
 		-- require('vim.lsp.log').set_level 'debug'
 		-- require('vim.lsp.log').set_format_func(vim.inspect)
-
-		local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
-
-		if not has_lsp then
-			utils.notify 'LSP config failed to setup'
-			return
-		end
 
 		local servers = {
 			cssls = {},
@@ -533,13 +525,17 @@ return {
 				init_options = {
 					usePlaceholders = true,
 				},
-				root_dir = function(fname)
-					return nvim_lsp.util.root_pattern('go.mod', '.git')(fname)
-						or nvim_lsp.util.path.dirname(fname)
+				root_dir = function()
+					return vim.fs.root(
+						0,
+						{ 'go.mod', '.git', vim.api.nvim_buf_get_name(0) }
+					)
 				end,
 			},
 			denols = {
-				root_dir = nvim_lsp.util.root_pattern('deno.json', 'deno.jsonc'),
+				root_dir = function()
+					return vim.fs.root(0, { 'deno.json', 'deno.jsonc' })
+				end,
 			},
 			nil_ls = {},
 			jsonls = {
@@ -579,7 +575,9 @@ return {
 				or false
 
 			if not server_disabled then
-				nvim_lsp[server].setup(vim.tbl_deep_extend('force', shared, config))
+				require('lspconfig')[server].setup(
+					vim.tbl_deep_extend('force', shared, config)
+				)
 			end
 		end
 	end,
