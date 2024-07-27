@@ -59,6 +59,14 @@ remove)
 list | lock | unlock | move | prune | repair)
 	$CMD worktree "$@"
 	;;
+
+help | --help)
+	$CMD worktree --help
+	echo "--------------------------"
+	cat <<-EOF
+		git-wt clone <repo>
+	EOF
+	;;
 *)
 	# Let git worktree handle the errors
 	$CMD worktree "$@"
