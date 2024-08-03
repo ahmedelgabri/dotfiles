@@ -71,14 +71,13 @@ local function should_turn_off_colorcolumn()
 end
 
 function M.toggleHighlightPattern(name, pattern)
-	local match_id = nil
+	local key = name .. '_match_id'
 
-	if match_id ~= nil then
-		-- vim.cmd('highlight clear ' .. name)
-		vim.fn.matchdelete(match_id)
-	else
-		match_id = vim.fn.matchadd(name, pattern)
+	if vim.b[key] ~= nil and vim.b[key] > 0 then
+		vim.b[key] = vim.fn.matchdelete(vim.b[key])
 	end
+
+	vim.b[key] = vim.fn.matchadd(name, pattern)
 end
 
 function M.mkview(event)

@@ -27,18 +27,43 @@ au.augroup('__MyCustomColors__', {
 		pattern = 'textwidth',
 		callback = toggleOverLength,
 	},
+	-- Not needed since I have git-conflict.nvim
+	-- {
+	-- 	event = { 'BufWinEnter', 'BufEnter' },
+	-- 	pattern = '*',
+	-- 	callback = function()
+	-- 		cmds.toggleHighlightPattern(
+	-- 			'GitMarkers',
+	-- 			'^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
+	-- 		)
+	-- 	end,
+	-- },
+	-- https://www.reddit.com/r/neovim/comments/1ehidxy/you_can_remove_padding_around_neovim_instance/
 	{
-		event = { 'BufWinEnter', 'BufEnter' },
-		pattern = '*',
+		event = { 'UIEnter', 'ColorScheme' },
 		callback = function()
-			if vim.fn.exists ':GitConflictRefresh' > 0 then
+			local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
+			if not normal.bg then
 				return
 			end
 
-			cmds.toggleHighlightPattern(
-				'GitMarkers',
-				'^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
-			)
+			if vim.env.TMUX then
+				io.write(
+					string.format('\027Ptmux;\027\027]11;#%06x\007\027\\', normal.bg)
+				)
+			else
+				io.write(string.format('\027]11;#%06x\027\\', normal.bg))
+			end
+		end,
+	},
+	{
+		event = 'UILeave',
+		callback = function()
+			if vim.env.TMUX then
+				io.write '\027Ptmux;\027\027]111;\007\027\\'
+			else
+				io.write '\027]111\027\\'
+			end
 		end,
 	},
 })
