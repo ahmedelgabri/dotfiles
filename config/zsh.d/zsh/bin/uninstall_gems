@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-# Uninstall all Ruby gems
-# http://stackoverflow.com/questions/8095209/uninstall-all-installed-gems-in-osx
-
-for i in $(gem list --no-versions); do
-  gem uninstall -aIx "$i"
-done
