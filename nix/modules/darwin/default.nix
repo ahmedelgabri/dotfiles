@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  # Auto upgrade nix package and the daemon service.
   # affects nix.useDaemon
   services.nix-daemon.enable = true;
 
@@ -9,19 +10,20 @@
 
   nix = {
     configureBuildUsers = true;
-    gc = { user = config.my.username; };
   };
 
   nix-homebrew = {
     enable = true;
-    enableRosetta = pkgs.stdenv.hostPlatform.system == "aarch64-darwin";
+    enableRosetta = pkgs.stdenv.hostPlatform.isAarch64;
     user = config.my.username;
     autoMigrate = true;
   };
 
   homebrew = {
     enable = true;
-    global.brewfile = true;
+    global = {
+      brewfile = true;
+    };
     onActivation = {
       autoUpdate = true;
       upgrade = true;

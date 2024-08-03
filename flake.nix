@@ -68,14 +68,18 @@
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           nix = {
-            nixPath = [
-              "nixpkgs=${inputs.nixpkgs}"
-              "darwin=${inputs.darwin}"
-              "home-manager=${inputs.home-manager}"
-            ];
+            nixPath = {
+              inherit (inputs) nixpkgs;
+              inherit (inputs) darwin;
+              inherit (inputs) home-manager;
+            };
             package = pkgs.nixVersions.git;
-            extraOptions = "experimental-features = nix-command flakes";
             settings = {
+              trusted-users = [ "@admin" ];
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
               # disabled on Darwin because some buggy behaviour: https://github.com/NixOS/nix/issues/7273
               auto-optimise-store = !pkgs.stdenv.isDarwin;
               substituters = [
@@ -94,10 +98,17 @@
                 "nix-linter.cachix.org-1:BdTne5LEHQfIoJh4RsoVdgvqfObpyHO5L0SCjXFShlE="
                 "statix.cachix.org-1:Z9E/g1YjCjU117QOOt07OjhljCoRZddiAm4VVESvais="
               ];
+              # Recommended when using `direnv` etc.
+              keep-derivations = true;
+              keep-outputs = true;
             };
             gc = {
               automatic = true;
               options = "--delete-older-than 3d";
+            };
+            optimise = {
+              # Enable store optimization because we can't set `auto-optimise-store` to true on macOS.
+              automatic = pkgs.stdenv.isDarwin;
             };
           };
 

@@ -51,6 +51,7 @@ in
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
         environment = {
+          loginShell = "${pkgs.zsh}/bin/zsh -l";
           shells = [ pkgs.bashInteractive pkgs.zsh ];
           variables = {
             # NOTE: Darwin doesn't set them by default, unlike NixOS. So we have to set them.
@@ -63,6 +64,7 @@ in
             HOST_CONFIGS = "${hostConfigHome}";
             # https://github.blog/2022-04-12-git-security-vulnerability-announced/
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
+            SHELL = "${pkgs.zsh}/bin/zsh";
           };
           systemPackages = with pkgs;
             (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
@@ -103,7 +105,6 @@ in
               _1password # CLI
               rename
               # buku
-              monolith
               difftastic
               ffmpeg
               slides # CLI markdown presentation tool
