@@ -176,7 +176,8 @@ in
                 lib.toLower cfg.account
               }<enter>" "sync inbox"
               macro index,pager y "<save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
-              macro index,pager Y "<tag-thread><save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
+              # https://github.com/neomutt/neomutt/issues/4349#issuecomment-2268713737
+              macro index,pager Y ":set resolve=no<enter><tag-thread>:set resolve=yes<enter><tag-prefix><save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
 
               color status ${cfg.accent} default
               color sidebar_highlight black ${cfg.accent}
