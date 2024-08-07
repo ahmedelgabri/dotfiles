@@ -32,7 +32,7 @@
 
   homebrew = {
     casks = [
-      "temurin8" # -> adoptopenjdk8
+      "temurin" # -> adoptopenjdk8
       "corretto"
       "firefox"
       "loom"
