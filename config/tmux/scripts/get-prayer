@@ -1,3 +1,9 @@
-#!/usr/bin/env bash
+set -ue -o pipefail
 
-printf "$(next-prayer mawaqit $(CoreLocationCLI --json | jq -r '. | "-latitude \(.latitude) -longitude \(.longitude)"'))"
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
+
+if ! printf "%s" "$(next-prayer mawaqit $(CoreLocationCLI --json | jq -r '. | "-latitude \(.latitude) -longitude \(.longitude)"'))"; then
+	printf "%s" "$(next-prayer aladhan)"
+fi
