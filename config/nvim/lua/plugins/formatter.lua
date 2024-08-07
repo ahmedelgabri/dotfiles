@@ -22,6 +22,9 @@ return {
 				end
 			end
 
+			local denoOrPrettier =
+				{ vim.fn.executable 'deno_fmt' ~= 0 and 'deno_fmt' or 'prettier' }
+
 			require('conform').setup {
 				formatters = {
 					stylua = {
@@ -80,19 +83,19 @@ return {
 						'trim_whitespace',
 						'trim_newlines',
 					},
-					javascript = { { 'deno_fmt', 'prettier' } },
-					typescript = { { 'deno_fmt', 'prettier' } },
-					javascriptreact = { { 'deno_fmt', 'prettier' } },
-					['javascriptreact.jest'] = { { 'deno_fmt', 'prettier' } },
-					typescriptreact = { { 'deno_fmt', 'prettier' } },
-					['typescriptreact.jest'] = { { 'deno_fmt', 'prettier' } },
-					['javascript.jsx'] = { { 'deno_fmt', 'prettier' } },
-					['typescript.tsx'] = { { 'deno_fmt', 'prettier' } },
-					['javascript.jest'] = { { 'deno_fmt', 'prettier' } },
-					['typescript.jest'] = { { 'deno_fmt', 'prettier' } },
-					json = { { 'deno_fmt', 'prettier' } },
-					jsonc = { { 'deno_fmt', 'prettier' } },
-					markdown = { { 'deno_fmt', 'prettier' }, 'injected' },
+					javascript = denoOrPrettier,
+					typescript = denoOrPrettier,
+					javascriptreact = denoOrPrettier,
+					['javascriptreact.jest'] = denoOrPrettier,
+					typescriptreact = denoOrPrettier,
+					['typescriptreact.jest'] = denoOrPrettier,
+					['javascript.jsx'] = denoOrPrettier,
+					['typescript.tsx'] = denoOrPrettier,
+					['javascript.jest'] = denoOrPrettier,
+					['typescript.jest'] = denoOrPrettier,
+					json = denoOrPrettier,
+					jsonc = denoOrPrettier,
+					markdown = vim.tbl_extend('keep', denoOrPrettier, { 'injected' }),
 					['markdown.mdx'] = { 'prettier', 'injected' },
 					mdx = { 'prettier', 'injected' },
 					css = { 'prettier' },
