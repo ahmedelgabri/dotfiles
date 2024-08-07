@@ -100,7 +100,7 @@
 	cmd = $EDITOR -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [mergetool "fugitivediff"]
-	cmd = $EDITOR -f -c "Gdiff" "$MERGED"
+	cmd = $EDITOR -f -c "Git diff" "$MERGED"
 
 [log]
 	decorate = short
