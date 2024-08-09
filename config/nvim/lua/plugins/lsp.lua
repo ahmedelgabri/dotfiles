@@ -538,6 +538,7 @@ return {
 				end,
 			},
 			nil_ls = {},
+			ast_grep = {},
 			jsonls = {
 				filetypes = { 'json', 'jsonc' },
 				settings = {
