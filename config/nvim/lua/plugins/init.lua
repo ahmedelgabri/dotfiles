@@ -29,12 +29,22 @@ return {
 		end,
 	},
 	{
-		'https://github.com/christoomey/vim-tmux-navigator',
-		lazy = false,
-		init = function()
-			vim.g.tmux_navigator_disable_when_zoomed = 1
+		'https://github.com/alexghergh/nvim-tmux-navigation',
+		config = function()
+			require('nvim-tmux-navigation').setup {
+				disable_when_zoomed = true,
+				keybindings = {
+					left = '<C-h>',
+					down = '<C-j>',
+					up = '<C-k>',
+					right = '<C-l>',
+					last_active = '<C-\\>',
+					next = '<C-Space>',
+				},
+			}
 		end,
 	},
 	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
+	{ 'https://github.com/stevearc/quicker.nvim', config = true },
 	{ 'https://github.com/mistweaverco/kulala.nvim', ft = 'http' },
 }
