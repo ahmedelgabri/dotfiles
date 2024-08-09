@@ -2,6 +2,54 @@ local au = require '_.utils.au'
 
 return {
 	{
+		'https://github.com/echasnovski/mini.icons',
+		config = function()
+			require('mini.icons').setup {}
+			require('mini.icons').mock_nvim_web_devicons()
+		end,
+	},
+	{
+		'https://github.com/echasnovski/mini.files',
+		lazy = false,
+		keys = {
+			{
+				'-',
+				function()
+					MiniFiles.open()
+				end,
+				noremap = true,
+				desc = 'Open current directory',
+			},
+			{
+				'<leader>-',
+				function()
+					MiniFiles.open(
+						vim.api.nvim_buf_get_name(0),
+						true,
+						{ windows = { preview = false } }
+					)
+					MiniFiles.reveal_cwd()
+				end,
+				noremap = true,
+				desc = 'Open current buffer',
+			},
+		},
+		config = function()
+			require('mini.files').setup {
+				mappings = {
+					go_in_plus = '<CR>',
+					show_help = '?',
+				},
+				windows = {
+					preview = true,
+					width_focus = 50,
+					width_nofocus = 50,
+					width_preview = 50,
+				},
+			}
+		end,
+	},
+	{
 		'https://github.com/echasnovski/mini.align',
 		keys = {
 			{ 'ga', mode = { 'n', 'x' } },
@@ -327,13 +375,6 @@ return {
 					end,
 				},
 			}
-		end,
-	},
-	{
-		'https://github.com/echasnovski/mini.icons',
-		config = function()
-			require('mini.icons').setup {}
-			require('mini.icons').mock_nvim_web_devicons()
 		end,
 	},
 	{
