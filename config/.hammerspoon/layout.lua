@@ -12,14 +12,20 @@ local screens = {
 --
 
 local apps = {
-	brave = 'com.brave.Browser',
-	chrome = 'com.google.Chrome',
-	slack = 'com.tinyspeck.slackmacgap',
-	tweetbot = 'com.tapbots.Tweetbot3Mac',
-	twitter = 'maccatalyst.com.atebits.Tweetie2',
-	terminal = 'net.kovidgoyal.kitty',
-	discord = 'com.hnc.Discord',
+	'brave',
+	'chrome',
+	'orion',
+	'slack',
+	'twitter',
+	'terminal',
+	'discord',
 }
+
+local appMap = {}
+
+for _, app in pairs(apps) do
+	appMap[app] = hs.application(app):bundleID()
+end
 
 ---
 -- Screen watcher
@@ -32,7 +38,7 @@ local function SwitchLayout()
 
 	local layout = {
 		{
-			apps.chrome,
+			appMap.chrome,
 			nil,
 			(moreThanOneScreen and (contains(allScreens, screens.LG) or contains(
 				allScreens,
@@ -42,11 +48,11 @@ local function SwitchLayout()
 			nil,
 			nil,
 		},
-		{ apps.twitter, nil, screens.main, hs.layout.right30, nil, nil },
-		{ apps.tweetbot, nil, screens.main, hs.layout.right30, nil, nil },
-		{ apps.slack, nil, screens.main, hs.layout.maximized, nil, nil },
+		{ appMap.twitter, nil, screens.main, hs.layout.right30, nil, nil },
+		{ appMap.tweetbot, nil, screens.main, hs.layout.right30, nil, nil },
+		{ appMap.slack, nil, screens.main, hs.layout.maximized, nil, nil },
 		-- {
-		--   apps.brave,
+		--   appMap.brave,
 		--   nil,
 		--   screens.main,
 		--   hs.layout.maximized,
