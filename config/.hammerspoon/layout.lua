@@ -24,7 +24,9 @@ local apps = {
 local appMap = {}
 
 for _, app in pairs(apps) do
-	appMap[app] = hs.application(app):bundleID()
+	if hs.application.get(app) ~= nil then
+		appMap[app] = hs.application(app):bundleID()
+	end
 end
 
 ---
