@@ -1,9 +1,15 @@
+#!/usr/bin/env bash
+
 set -ue -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
 	set -x
 fi
 
-if ! printf "%s" "$(next-prayer mawaqit $(CoreLocationCLI --json | jq -r '. | "-latitude \(.latitude) -longitude \(.longitude)"'))"; then
+FLAGS="$(CoreLocationCLI --format "-latitude %latitude -longitude %longitude")"
+
+if grep -qP "\-latitude (\d+\.?\d+) \-longitude (\d+\.?\d+)" <<<"$FLAGS"; then
+	printf "%s %s" "󰩷 " "$(next-prayer mawaqit <<<"$FLAGS")"
+else
 	printf "%s" "$(next-prayer aladhan)"
 fi
