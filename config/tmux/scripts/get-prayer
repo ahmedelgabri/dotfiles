@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -ue -o pipefail
+# Intentionally not setting -e because we want the script to continue if CoreLocationCLI fails.
+set -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
 	set -x
