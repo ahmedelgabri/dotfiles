@@ -342,7 +342,12 @@ return {
 			ft = 'lua',
 			opts = {
 				library = {
-					vim.env.HOME .. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',
+					{ path = 'wezterm-types', mods = { 'wezterm' } },
+					{
+						path = vim.env.HOME
+							.. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',
+						words = { 'hs' },
+					},
 				},
 			},
 		},
@@ -435,7 +440,6 @@ return {
 			lua_ls = {
 				settings = {
 					Lua = {
-						runtime = { version = 'LuaJIT' },
 						codeLens = { enable = true },
 						hint = {
 							enable = true,
@@ -445,8 +449,7 @@ return {
 							privateName = { '^_' },
 						},
 						diagnostics = {
-							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							disable = { 'missing-fields' },
+							disable = { 'trailing-space' },
 							globals = {
 								'vim',
 								'describe',
@@ -459,19 +462,12 @@ return {
 								'spoon',
 								'hs',
 							},
+							unusedLocalExclude = { '_*' },
 						},
 						workspace = {
-							checkThirdParty = false,
-							maxPreload = 1000,
-							preloadFileSize = 1000,
 							ignoreDir = {
 								'.direnv',
 							},
-						},
-						library = {
-							'${3rd}/luv/library',
-							unpack(vim.api.nvim_get_runtime_file('', true)),
-							vim.env.HOME .. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',
 						},
 						completion = { keywordSnippet = 'Replace', callSnippet = 'Replace' },
 						telemetry = { enable = false },

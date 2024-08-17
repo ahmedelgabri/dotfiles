@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+
 local icons = {
 	Array = ' ',
 	Boolean = '◩ ',
