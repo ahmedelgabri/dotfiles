@@ -1,41 +1,22 @@
 local au = require '_.utils.au'
 local cmds = require '_.autocmds'
 
-local function toggleOverLength()
-	if
-		vim.wo.diff == true
-		or vim.wo.previewwindow == true
-		or cmds.colorcolumn_blocklist[vim.bo.filetype] == true
-	then
-		return
-	end
-
-	cmds.toggleHighlightPattern(
-		'OverLength',
-		string.format('\\%%>%dv.\\+', vim.bo.textwidth + 1) -- \%>81v.\+
-	)
-end
-
 au.augroup('__MyCustomColors__', {
-	{
-		event = { 'BufWinEnter', 'BufEnter' },
-		pattern = '?*',
-		callback = toggleOverLength,
-	},
-	{
-		event = 'OptionSet',
-		pattern = 'textwidth',
-		callback = toggleOverLength,
-	},
 	-- Not needed since I have git-conflict.nvim
 	-- {
 	-- 	event = { 'BufWinEnter', 'BufEnter' },
 	-- 	pattern = '*',
 	-- 	callback = function()
-	-- 		cmds.toggleHighlightPattern(
-	-- 			'GitMarkers',
-	-- 			'^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
-	-- 		)
+	-- 		local name = 'GitMarkers'
+	-- 		local pattern = '^\\(<\\|=\\|>\\)\\{7\\}\\([^=].\\+\\)\\?$'
+	--
+	-- 		local key = name .. '_match_id'
+	--
+	-- 		if vim.b[key] ~= nil and vim.b[key] > 0 then
+	-- 			vim.b[key] = vim.fn.matchdelete(vim.b[key])
+	-- 		end
+	--
+	-- 		vim.b[key] = vim.fn.matchadd(name, pattern)
 	-- 	end,
 	-- },
 	-- https://www.reddit.com/r/neovim/comments/1ehidxy/you_can_remove_padding_around_neovim_instance/

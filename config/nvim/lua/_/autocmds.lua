@@ -70,16 +70,6 @@ local function should_turn_off_colorcolumn()
 		or vim.wo.previewwindow == true
 end
 
-function M.toggleHighlightPattern(name, pattern)
-	local key = name .. '_match_id'
-
-	if vim.b[key] ~= nil and vim.b[key] > 0 then
-		vim.b[key] = vim.fn.matchdelete(vim.b[key])
-	end
-
-	vim.b[key] = vim.fn.matchadd(name, pattern)
-end
-
 function M.mkview(event)
 	if should_mkview(event) then
 		local success, err = pcall(function()
