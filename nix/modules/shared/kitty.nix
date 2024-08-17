@@ -47,6 +47,16 @@ in
               recursive = true;
               source = ../../../config/kitty;
             };
+
+
+            ".config/kitty/kitty-nix.conf" = with config.my; {
+              text = ''
+                ; ${nix_managed}
+                ; vim: ft=gitconfig
+
+                shell ${pkgs.zsh}/bin/zsh
+              '';
+            };
           };
 
         };
