@@ -15,7 +15,9 @@ nixify() {
   if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flakes.nix ]]; then
     # Make a default shell.nix and then pop open an editor
     cat > shell.nix <<'EOF'
-with import <nixpkgs> { };
+with import <nixpkgs> {
+	config.allowUnfree = true;
+};
 let
   projectPathList = builtins.split "/" (builtins.toString ./.);
   projectName = builtins.elemAt projectPathList (builtins.length projectPathList - 1);
