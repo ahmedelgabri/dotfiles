@@ -9,8 +9,9 @@ fi
 
 FLAGS="$(CoreLocationCLI --format "-latitude %latitude -longitude %longitude")"
 
-if grep -qP "\-latitude (\d+\.?\d+) \-longitude (\d+\.?\d+)" <<<"$FLAGS"; then
-	printf "%s %s" "󰩷 " "$(next-prayer mawaqit <<<"$FLAGS")"
+# Can't use -P (regex pattern) because macOS has the BSD grep while -P works on GNU grep.
+if grep -q "\-latitude .* -longitude .*" <<<"$FLAGS"; then
+	printf "%s" "󰩷 $(next-prayer mawaqit $FLAGS)"
 else
 	printf "%s" "$(next-prayer aladhan)"
 fi
