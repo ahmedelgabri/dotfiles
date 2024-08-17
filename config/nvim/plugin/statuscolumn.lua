@@ -1,5 +1,8 @@
+local au = require '_.utils.au'
+
 local M = {}
-_G.Status = M
+
+__.statuscolumn = M
 
 function M.get_signs()
 	return vim.api.nvim_buf_get_extmarks(
@@ -38,7 +41,7 @@ function M.get_filtered_signs(signs, condition)
 	return '  '
 end
 
-function M.column()
+function M.render()
 	local signs = M.get_signs()
 
 	return table.concat({
@@ -57,6 +60,10 @@ function M.column()
 	}, '')
 end
 
-vim.opt.statuscolumn = [[%!v:lua.Status.column()]]
+-- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+-- FWIW if you use vim.o.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
+-- then you can just use nvim_get_current_buf() and in the context of StatusColFunc that will be equal to get_buf(statusline_winid) trick.
+-- You can see :help stl-%{ but essentially in the context of %{} the buffer is changed to that of the window for which the status(line/col)
+-- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
 
-return M
+vim.opt.statuscolumn = '%{%v:lua.__.statuscolumn.render()%}'

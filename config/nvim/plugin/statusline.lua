@@ -332,7 +332,7 @@ local M = {}
 
 __.statusline = M
 
-function M.get_active_statusline()
+function M.render_active()
 	local line = table.concat {
 		filepath(),
 		word_count(),
@@ -366,31 +366,30 @@ function M.get_active_statusline()
 	}
 end
 
-function M.get_inactive_statusline()
+function M.render_inactive()
 	local line = '%#StatusLineNC#%f%*'
 
 	return line
 end
 
-function M.activate()
-	au.augroup('MyStatusLine', {
-		{
-			event = { 'WinEnter', 'BufEnter' },
-			pattern = '*',
-			callback = function()
-				vim.opt_local.statusline =
-					[[%!luaeval("__.statusline.get_active_statusline()")]]
-			end,
-		},
-		{
-			event = { 'WinLeave', 'BufLeave' },
-			pattern = '*',
-			callback = function()
-				vim.opt_local.statusline =
-					[[%!luaeval("__.statusline.get_inactive_statusline()")]]
-			end,
-		},
-	})
-end
-
-__.statusline.activate()
+-- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+-- FWIW if you use vim.o.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
+-- then you can just use nvim_get_current_buf() and in the context of StatusColFunc that will be equal to get_buf(statusline_winid) trick.
+-- You can see :help stl-%{ but essentially in the context of %{} the buffer is changed to that of the window for which the status(line/col)
+-- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
+au.augroup('MyStatusLine', {
+	{
+		event = { 'WinEnter', 'BufEnter' },
+		pattern = '*',
+		callback = function()
+			vim.opt_local.statusline = '%{%v:lua.__.statusline.render_active()%}'
+		end,
+	},
+	{
+		event = { 'WinLeave', 'BufLeave' },
+		pattern = '*',
+		callback = function()
+			vim.opt_local.statusline = '%{%v:lua.__.statusline.render_inactive()%}'
+		end,
+	},
+})
