@@ -21,13 +21,12 @@ local urlDispatcherConfig = {
 	start = true,
 	loglevel = 'debug',
 	config = {
-		default_handler = 'company.thebrowser.Browser',
+		default_handler = 'org.mozilla.firefox',
 		decode_slack_redir_urls = true,
 		set_system_handler = true,
 		url_patterns = {
 			-- App links
 			{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
-			{ 'https?://.*%.slack%.com', 'com.tinyspeck.slackmacgap' },
 		},
 	},
 }
