@@ -34,18 +34,15 @@
     casks = [
       "temurin" # -> adoptopenjdk8
       "corretto"
-      "firefox"
+      "orion"
       "loom"
       "vagrant"
       "docker"
       "ngrok"
       "figma"
-      "jordanbaird-ice"
     ];
 
     brews = [
-      "amp"
-      "git"
       "git-filter-repo"
       "git-lfs"
       "git-sizer"

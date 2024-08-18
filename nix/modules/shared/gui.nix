@@ -29,7 +29,6 @@ in
           "brave-browser"
           "firefox"
           # "google-chrome"
-          "orion"
           "hammerspoon"
           "imageoptim"
           "kap"
