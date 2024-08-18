@@ -1,8 +1,10 @@
-{ fetchurl, stdenv, }:
+{ fetchurl, stdenvNoCC, }:
 
-stdenv.mkDerivation rec {
+stdenvNoCC.mkDerivation rec {
   name = "hcron";
   version = "1.1.1";
+  dontBuild = true;
+  dontConfigure = true;
 
   src = fetchurl {
     url = "https://github.com/lnquy/cron/releases/download/v${version}/cron_${version}_darwin_amd64.tar.gz";
@@ -12,8 +14,6 @@ stdenv.mkDerivation rec {
   # Work around the "unpacker appears to have produced no directories"
   # case that happens when the archive doesn't have a subdirectory.
   sourceRoot = ".";
-
-  phases = [ "unpackPhase" "installPhase" "patchPhase" ];
 
   installPhase = ''
     mkdir -p $out/bin
