@@ -36,8 +36,8 @@ in
           "obsidian"
           "slack"
           "sync"
-          "visual-studio-code"
           "zoom"
+          "zed"
         ];
 
         my.hm.file = {

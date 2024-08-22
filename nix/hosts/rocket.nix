@@ -40,6 +40,8 @@
       "docker"
       "ngrok"
       "figma"
+      "visual-studio-code"
+      "google-chrome"
     ];
 
     brews = [
