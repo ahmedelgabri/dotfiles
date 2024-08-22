@@ -12,7 +12,7 @@ flakify() {
     direnv allow
   fi
 
-  if [ ! -e flake.nix ]; then
+  if [ ! -e ./flake.nix ]; then
     nix flake new -t github:nix-community/nix-direnv .
   fi
 
