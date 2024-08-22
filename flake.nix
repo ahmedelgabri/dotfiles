@@ -35,6 +35,10 @@
     };
 
 
+    # https://github.com/NixOS/nixpkgs/issues/327836#issuecomment-2292084100
+    darwin-nixpkgs.url = "github:nixos/nixpkgs?rev=2e92235aa591abc613504fde2546d6f78b18c0cd";
+
+
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;
@@ -143,6 +147,16 @@
                   withEmacs = false;
                 };
               })
+
+              # fix for swift 8
+              # https://github.com/NixOS/nixpkgs/issues/327836#issuecomment-2292084100
+              (final: prev:
+                let
+                  pkgsDarwin = import inputs.darwin-nixpkgs { inherit (prev) system; };
+                in
+                prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
+                  inherit (pkgsDarwin) swift;
+                })
             ];
           };
 
