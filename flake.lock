@@ -24,16 +24,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1723859949,
-        "narHash": "sha256-kiaGz4deGYKMjJPOji/JVvSP/eTefrIA3rAjOnOpXl4=",
+        "lastModified": 1724299755,
+        "narHash": "sha256-P5zMA17kD9tqiqMuNXwupkM7buM3gMNtoZ1VuJTRDE4=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "076b9a905af8a52b866c8db068d6da475839d97b",
+        "rev": "a8968d88e5a537b0491f68ce910749cd870bdbef",
         "type": "github"
       },
       "original": {
         "owner": "LnL7",
         "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "darwin-nixpkgs": {
+      "locked": {
+        "lastModified": 1718182942,
+        "narHash": "sha256-7IAIo8dA+XxC9ARKl/xTXUWy5Y0p+JTRxJG6S11sKZg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2e92235aa591abc613504fde2546d6f78b18c0cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2e92235aa591abc613504fde2546d6f78b18c0cd",
         "type": "github"
       }
     },
@@ -162,11 +178,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1723891200,
-        "narHash": "sha256-uljX21+D/DZgb9uEFFG2dkkQbPZN+ig4Z6+UCLWFVAk=",
+        "lastModified": 1724300212,
+        "narHash": "sha256-x3jl6OWTs+L9C7EtscuWZmGZWI0iSBDafvg3X7JMa1A=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "a0d6390cb3e82062a35d0288979c45756e481f60",
+        "rev": "4de4818c1ffa76d57787af936e8a23648bda6be4",
         "type": "github"
       },
       "original": {
@@ -179,6 +195,7 @@
     "root": {
       "inputs": {
         "darwin": "darwin",
+        "darwin-nixpkgs": "darwin-nixpkgs",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "nix-homebrew": "nix-homebrew",
@@ -219,11 +236,11 @@
     "weechat-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1721543367,
-        "narHash": "sha256-r7ggkmWScAScy27MbwWvi8djc1j1oaWxTfBH6PXtdpE=",
+        "lastModified": 1724067668,
+        "narHash": "sha256-BEU1ql5nXZ+Vm9U1RYBba+6hZDpsXm5wDwZU6Jk3nFc=",
         "owner": "weechat",
         "repo": "scripts",
-        "rev": "f7faf047d28078af072910671ae9a2f4f4e032c5",
+        "rev": "e29e77698904c923120f5dbc3da90c00871f2a33",
         "type": "github"
       },
       "original": {
