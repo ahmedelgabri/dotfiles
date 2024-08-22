@@ -45,6 +45,6 @@ return {
 		end,
 	},
 	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
-	{ 'https://github.com/stevearc/quicker.nvim', config = true },
-	{ 'https://github.com/mistweaverco/kulala.nvim', ft = 'http' },
+	{ 'https://github.com/stevearc/quicker.nvim', ft = 'qf', config = true },
+	{ 'https://github.com/mistweaverco/kulala.nvim', ft = 'http', config = true },
 }
