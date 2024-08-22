@@ -65,6 +65,7 @@ in
             # https://github.blog/2022-04-12-git-security-vulnerability-announced/
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
             SHELL = "${pkgs.zsh}/bin/zsh";
+            CDPATH = ".:~:~/Sites";
           };
           systemPackages = with pkgs;
             (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
