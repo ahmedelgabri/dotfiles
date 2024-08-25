@@ -55,18 +55,69 @@ set resolve
 
 # Index View Options ---------------------------------
 set date_format = "%d/%m/%y at %H:%M"
+
+##########################################
+# Nice icon fonts
+##########################################
+tag-transforms "attachment" " " \
+               "encrypted"  " " \
+               "signed"     " " \
+               "amazon"     " " \
+               "gitlab"     " " \
+               "git"        " " \
+               "youtube"    " " \
+               "calendar"   " " \
+               "list"       " " \
+               "replied"    " " \
+               "sent"       " " \
+               "flagged"    " " \
+               "unread"     " " \
+               "killed"     " " \
+               "spam"       " " \
+               "draft"      " " \
+               "inbox"      " "
+
+##########################################
+# Notmuch tag to format tag mapping
+##########################################
+tag-formats    "attachment" "Ga" \
+               "encrypted"  "Ge" \
+               "signed"     "GS" \
+               "amazon"     "GA" \
+               "gitlab"     "GG" \
+               "git"        "Gg" \
+               "youtube"    "Gy" \
+               "calendar"   "Gc" \
+               "list"       "Gl" \
+               "replied"    "Gr" \
+               "sent"       "Gn" \
+               "flagged"    "Gf" \
+               "unread"     "Gu" \
+               "killed"     "Gk" \
+               "spam"       "Gs" \
+               "draft"      "Gd" \
+               "inbox"      "Gi"
+
+set flag_chars = " "
+set to_chars=' 󰙅󰉹󰑚' #  󰙅   󰉹 󰑚
+# set to_chars    = '»›-‹L'                  # to match Gmail
 # Default: %4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s
 # set index_format = "%4C %Z %?M?⋯ & ? %[%b %d %R] %-30.30L (%?l?%4l&%4c?) %s"
 # set index_format = " %Z %?M?⋯& ? %[%b %d %R] %-30.30L [%<M?%M Msgs&%c>] %s%> %Y %y"
 # set index_format = "[%Z] %<[y?%<[7d?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%Y %b %d]>  %-30.30F %<M?[%M Msgs] >%<X?[%X attchs] >%s%> %g %4c"
-set index_format = "%zc %zs %zt  | %-35.35L   %<X?[%X ]>%?M10?~(%1M) ?%-30.100s %> %?Y?%Y ? %<[y?%<[7d?%<[d?%[%H:%M ]&%[%a %d]>&%[%b %d]>&%[%Y %b %d]> %g %4c"
+set index_format = "%zc %zs %zt  | %-35.35L   %@attachment_info@ %<M?~(%1M) >%-30.100s %> %?Y?%Y ? %(!%a %d %h %H:%M) %g %4c"
+index-format-hook attachment_info '~M text/calendar ~X > 0' '  '
+index-format-hook attachment_info '~M text/calendar' "   "
+index-format-hook attachment_info '~X > 0' "   "
+index-format-hook attachment_info '~A' "   "
+set attach_format = "%u%D  %T%-75.75d %<T?&   > %5s · %m/%M"
+
 set use_threads = reverse
 set sort = 'last-date'
 set collapse_all
 set uncollapse_new = no
 set uncollapse_jump = yes
 set thread_received = yes
-set to_chars    = '»›-‹L'                  # to match Gmail
 set move = no  #Stop asking to "move read messages to mbox"!
 set auto_tag = yes # always apply actions for all tagged emails (no need to use tag-prefix)
 
