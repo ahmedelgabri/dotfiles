@@ -5,7 +5,7 @@
 For setting up development environment on any Unix machine (Darwin/Linux). The
 config officially supports macOS & NixOS & managed by [nix][nix]
 
-![screenshot](https://raw.githubusercontent.com/ahmedelgabri/dotfiles/main/screenshot.png)
+![screenshot](./screenshot.png)
 
 > _Font is [Pragmata Pro](https://fsd.it/shop/fonts/pragmatapro/), theme is a
 > [my own](./config/nvim/colors/plain.lua) fork of
