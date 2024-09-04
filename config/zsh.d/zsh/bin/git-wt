@@ -34,7 +34,7 @@ add)
 
 	$CMD fetch --all --prune
 	;;
-remove)
+remove | rm)
 	shift
 
 	if [[ -z "${1-}" ]]; then
