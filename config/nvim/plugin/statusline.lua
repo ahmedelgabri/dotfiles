@@ -282,6 +282,7 @@ local function treesitter_context()
 		vim.fn.winwidth(0) < 120
 		or #vim.api.nvim_tabpage_list_wins(0) > 2
 		or vim.bo.filetype == 'ministarter'
+		or vim.bo.filetype == 'markdown' -- very slow in markdown files
 	then
 		return ''
 	end
