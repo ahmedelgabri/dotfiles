@@ -51,9 +51,13 @@ in
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
         environment = {
+          # doesn't do what you think...
+          # https://github.com/LnL7/nix-darwin/issues/779#issuecomment-1720066939
           loginShell = "${pkgs.zsh}/bin/zsh -l";
           shells = [ pkgs.bashInteractive pkgs.zsh ];
           variables = {
+            LANG = "en_US.UTF-8";
+            LC_TIME = "en_GB.UTF-8";
             # NOTE: Darwin doesn't set them by default, unlike NixOS. So we have to set them.
             # This is just using what's inside home-manager. Defaults are here
             # https://github.com/nix-community/home-manager/blob/a4b0a3faa4055521f2a20cfafe26eb85e6954751/modules/misc/xdg.nix#L14-L17
@@ -183,6 +187,10 @@ in
           	echo '[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"' >> ${local_zshrc}
           	echo '[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"' >> ${local_zshrc}
           fi
+
+          echo ":: -> Changing Shell..."
+          # @TODO: wrapp it in an if
+          sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
         '';
 
         programs.zsh = {
