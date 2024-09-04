@@ -58,13 +58,6 @@ local mappings = {
 	},
 	{
 		{ 'n' },
-		'<C-]>',
-		-- open definition in new vertical split
-		'<C-w><C-v><C-]>',
-		{ desc = 'Go To Definition' },
-	},
-	{
-		{ 'n' },
 		'<leader>D',
 		vim.lsp.buf.declaration,
 		{ desc = 'Go to [D]eclaration' },
