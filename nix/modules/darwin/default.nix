@@ -31,12 +31,9 @@
     };
   };
 
-  environment.variables = {
-    LANG = "en_US.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
-  };
-
   system = {
+    startup.chime = false;
+
     defaults = {
       # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";
       LaunchServices.LSQuarantine = false;
@@ -100,15 +97,34 @@
         # wvous-br-modifier = 0;
       };
 
+      menuExtraClock = {
+        Show24Hour = true;
+        ShowDate = 1; # always
+        ShowDayOfWeek = true;
+      };
+
       finder = {
         AppleShowAllExtensions = true;
         # QuitMenuItem = true;
         _FXShowPosixPathInTitle = false; # In Big Sur this is so UGLY!
+        FXPreferredViewStyle = "Nlsv"; # List view
+        ShowStatusBar = true;
       };
 
       trackpad = {
         Clicking = true;
         TrackpadRightClick = true;
+      };
+
+      screencapture = {
+        disable-shadow = true;
+        show-thumbnail = false;
+        location = "/Users/${config.my.username}/Desktop/screenshots";
+      };
+
+      universalaccess = {
+        reduceMotion = true;
+        reduceTransparency = true;
       };
     };
 
