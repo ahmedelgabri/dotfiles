@@ -6,9 +6,9 @@ return {
 	{
 		'https://github.com/github/copilot.vim',
 		enabled = is_work_machine(),
-		-- build = ':Copilot auth',
+		build = ':Copilot auth',
 		event = 'InsertEnter',
-		config = function()
+		init = function()
 			-- https://github.com/orgs/community/discussions/82729#discussioncomment-8098207
 			vim.g.copilot_ignore_node_version = true
 			vim.g.copilot_no_tab_map = true
@@ -18,11 +18,6 @@ return {
 				'copilot#Accept("")',
 				{ silent = true, expr = true, desc = 'Copilot dummy accept' }
 			)
-
-			-- disable copilot outside of work folders and if node is not in $PATH
-			if vim.fn.executable 'node' == 0 then
-				vim.cmd 'Copilot disable'
-			end
 		end,
 	},
 	{
