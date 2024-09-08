@@ -28,13 +28,6 @@ in
 
       {
         my = {
-          user = {
-            packages = with pkgs; [
-              imagemagick # w3m kitty image support depends on imagemagick
-              termpdfpy # only works with kitty
-            ];
-          };
-
           env = {
             TERMINFO_DIRS = [
               # "${pkgs.kitty.terminfo}/share/terminfo"
@@ -46,16 +39,6 @@ in
             ".config/kitty" = {
               recursive = true;
               source = ../../../config/kitty;
-            };
-
-
-            ".config/kitty/kitty-nix.conf" = with config.my; {
-              text = ''
-                # ${nix_managed}
-                # vim: ft=gitconfig
-
-                shell ${pkgs.zsh}/bin/zsh
-              '';
             };
           };
 
