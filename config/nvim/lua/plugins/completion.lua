@@ -1,47 +1,5 @@
 ---@diagnostic disable: missing-fields
 
-local icons = {
-	Array = ' ',
-	Boolean = '◩ ',
-	Class = ' ',
-	Color = '󰏘 ',
-	Constant = ' ',
-	-- Constructor = ' ',
-	Constructor = ' ',
-	Enum = ' ',
-	EnumMember = ' ',
-	Event = ' ',
-	Field = ' ',
-	File = '󰈙 ',
-	Folder = '󰉋 ',
-	Function = '󰊕 ',
-	-- Interface = ' ',
-	Interface = '練',
-	Key = '󰌋 ',
-	Keyword = '󰌋 ',
-	Method = ' ',
-	Module = ' ',
-	Namespace = ' ',
-	Null = 'ﳠ ',
-	Number = '󰎠 ',
-	Object = ' ',
-	Operator = '󰆕 ',
-	Package = ' ',
-	Property = ' ',
-	Reference = '󰈇 ',
-	Snippet = ' ',
-	String = ' ',
-	Struct = '󰙅 ',
-	Text = '󰉿 ',
-	TypeParameter = ' ',
-	Unit = '塞 ',
-	Value = ' ',
-	Variable = ' ',
-
-	calc = '󰃬 ',
-	Supermaven = '',
-}
-
 return {
 	'https://github.com/hrsh7th/nvim-cmp',
 	event = 'InsertEnter',
@@ -115,18 +73,11 @@ return {
 
 						vim_item.abbr = word
 
-						if entry.source.name == 'calc' then
-							-- Get the custom icon for 'calc' source
-							-- Replace the kind glyph with the custom icon
-							vim_item.kind = icons.calc
-						else
-							vim_item.kind = string.format(
-								'%s %s',
-								require('mini.icons').get('lsp', vim_item.kind)
-									or icons[vim_item.kind],
-								vim_item.kind
-							)
-						end
+						vim_item.kind = string.format(
+							'%s %s',
+							require('mini.icons').get('lsp', vim_item.kind),
+							vim_item.kind
+						)
 
 						local strings = vim.split(vim_item.kind, ' ', { trimempty = true })
 

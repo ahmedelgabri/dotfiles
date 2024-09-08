@@ -318,12 +318,23 @@ local function copilot()
 
 	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
 
+	local highlighted_icon = '%%#MoreMsg#%s%%* '
+
 	if ok then
-		return supermaven.is_running() and string.format('%%#MoreMsg#%s%%*', ' ')
+		return supermaven.is_running()
+				and string.format(
+					highlighted_icon,
+					require('mini.icons').get('lsp', 'supermaven')
+				)
 			or ''
 	end
 
-	return vim.g.loaded_copilot == 1 and string.format('%s', ' ') or ''
+	return vim.g.loaded_copilot == 1
+			and string.format(
+				highlighted_icon,
+				require('mini.icons').get('lsp', 'copilot')
+			)
+		or ''
 end
 
 ---------------------------------------------------------------------------------

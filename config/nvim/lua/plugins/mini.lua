@@ -4,7 +4,37 @@ return {
 	{
 		'https://github.com/echasnovski/mini.icons',
 		config = function()
-			require('mini.icons').setup {}
+			local test_icon = ''
+			local js_table = { glyph = test_icon, hl = 'MiniIconsYellow' }
+			local jsx_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
+			local ts_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
+			local tsx_table = { glyph = test_icon, hl = 'MiniIconsBlue' }
+
+			require('mini.icons').setup {
+				extension = {
+					['test.js'] = js_table,
+					['test.jsx'] = jsx_table,
+					['test.ts'] = ts_table,
+					['test.tsx'] = tsx_table,
+					['spec.js'] = js_table,
+					['spec.jsx'] = jsx_table,
+					['spec.ts'] = ts_table,
+					['spec.tsx'] = tsx_table,
+				},
+				lsp = {
+					copilot = { glyph = '', hl = 'MiniIconsOrange' },
+					supermaven = { glyph = '', hl = 'MiniIconsYellow' },
+					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
+				},
+				directory = {
+					['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
+					['.github'] = { glyph = '󰊤', hl = 'MiniIconsAzure' },
+				},
+				file = {
+					README = { glyph = '󰈙', hl = 'MiniIconsYellow' },
+					['README.md'] = { glyph = '󰈙', hl = 'MiniIconsYellow' },
+				},
+			}
 			require('mini.icons').mock_nvim_web_devicons()
 		end,
 	},
