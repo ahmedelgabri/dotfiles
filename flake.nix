@@ -245,7 +245,9 @@
             buildInputs = with pkgs; [
               go
               gopls
-              go-tools # goimports, staticcheck, etc...
+              go-tools # staticcheck, etc...
+              gomodifytags
+              gotools # goimports
             ];
             # shellHook = ''echo "hi"'';
           };
