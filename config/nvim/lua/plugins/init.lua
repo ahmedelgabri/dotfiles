@@ -84,4 +84,10 @@ return {
 	},
 	{ 'https://github.com/pteroctopus/faster.nvim' },
 	{ 'https://github.com/fladson/vim-kitty', ft = 'kitty' },
+	{
+		'https://github.com/MagicDuck/grug-far.nvim',
+		event = 'FileType grug-far',
+		cmd = { 'GrugFar' },
+		config = true,
+	},
 }
