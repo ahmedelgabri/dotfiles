@@ -53,11 +53,7 @@ return {
 			{
 				'<leader>-',
 				function()
-					MiniFiles.open(
-						vim.api.nvim_buf_get_name(0),
-						true,
-						{ windows = { preview = false } }
-					)
+					MiniFiles.open(vim.api.nvim_buf_get_name(0), true)
 					MiniFiles.reveal_cwd()
 				end,
 				noremap = true,
@@ -65,16 +61,19 @@ return {
 			},
 		},
 		config = function()
+			-- Add space after the icon
+			local prefix = function(fs_entry)
+				local icon, hl = MiniFiles.default_prefix(fs_entry)
+				return icon .. ' ', hl
+			end
+
 			require('mini.files').setup {
 				mappings = {
 					go_in_plus = '<CR>',
 					show_help = '?',
 				},
-				windows = {
-					preview = true,
-					width_focus = 50,
-					width_nofocus = 50,
-					width_preview = 50,
+				content = {
+					prefix = prefix,
 				},
 			}
 		end,
