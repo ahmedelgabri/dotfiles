@@ -96,8 +96,18 @@ return {
 				'<M-d>',
 				function()
 					require('mini.bufremove').delete(0, false)
+
+					local buf_id = vim.api.nvim_get_current_buf()
+					local is_empty = vim.api.nvim_buf_get_name(buf_id) == ''
+						and vim.bo[buf_id].filetype == ''
+
+					if not is_empty then
+						return
+					end
+
+					require('mini.starter').open()
 				end,
-				desc = 'Delete current buffer',
+				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
 			},
 		},
 	},
