@@ -491,7 +491,10 @@ return {
 			}
 
 			-- https://github.com/echasnovski/mini.nvim/discussions/776#discussioncomment-8959196
-			local function recent_files(n, current_dir, show_path)
+			local function recent_files(opts)
+				local n, current_dir, show_path, skip_current_dir =
+					opts.n, opts.current_dir, opts.show_path, opts.skip_current_dir
+
 				n = n or 5
 				if current_dir == nil then
 					current_dir = false
@@ -500,16 +503,19 @@ return {
 				if show_path == nil then
 					show_path = true
 				end
+
 				if show_path == false then
 					show_path = function()
 						return ''
 					end
 				end
+
 				if show_path == true then
 					show_path = function(path)
 						return string.format(' (%s)', vim.fn.fnamemodify(path, ':~:.'))
 					end
 				end
+
 				if not vim.is_callable(show_path) then
 					vim.api.nvim_err_writeln '`show_path` should be boolean or callable.'
 				end
@@ -517,7 +523,9 @@ return {
 				return function()
 					local section = string.format(
 						'Recent files%s',
-						current_dir and ' (current directory)' or ''
+						current_dir
+								and ' (' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':~') .. ')'
+							or ''
 					)
 
 					-- Use only actual readable files
@@ -535,14 +543,22 @@ return {
 						}
 					end
 
+					local sep = vim.loop.os_uname().sysname == 'Windows_NT' and [[%\]]
+						or '%/'
+					local cwd_pattern = '^' .. vim.pesc(vim.fn.getcwd()) .. sep
+
 					-- Possibly filter files from current directory
 					if current_dir then
-						local sep = vim.loop.os_uname().sysname == 'Windows_NT' and [[%\]]
-							or '%/'
-						local cwd_pattern = '^' .. vim.pesc(vim.fn.getcwd()) .. sep
 						-- Use only files from current directory and its subdirectories
 						files = vim.tbl_filter(function(f)
 							return f:find(cwd_pattern) ~= nil
+						end, files)
+					end
+
+					if skip_current_dir then
+						-- Use only files from current directory and its subdirectories
+						files = vim.tbl_filter(function(f)
+							return f:find(cwd_pattern) == nil
 						end, files)
 					end
 
@@ -579,39 +595,6 @@ return {
 				end
 			end
 
-			local my_items = {
-				-- Use this if you set up 'mini.sessions'
-				-- starter.sections.sessions(5, true),
-				recent_files(10, true, false),
-				recent_files(10),
-				{
-					name = 'Sync',
-					action = 'Lazy sync',
-					section = 'Commands',
-				},
-				{
-					name = 'Update',
-					action = 'Lazy update',
-					section = 'Commands',
-				},
-				{
-					name = 'Clean',
-					action = 'Lazy clean',
-					section = 'Commands',
-				},
-				{
-					name = 'Profile',
-					action = 'Lazy profile',
-					section = 'Commands',
-				},
-				{
-					name = 'Git Todo',
-					action = 'e .git/todo.md',
-					section = 'Bookmarks',
-				},
-				starter.sections.builtin_actions(),
-			}
-
 			-- A workaround to centralize everything.
 			-- `aligning("center", "center")` will centralize the longest line in
 			-- `content`, then left align other items to its beginning.
@@ -646,7 +629,38 @@ return {
 
 			starter.setup {
 				evaluate_single = true,
-				items = my_items,
+				items = {
+					-- Use this if you set up 'mini.sessions'
+					-- starter.sections.sessions(5, true),
+					recent_files { n = 10, current_dir = true, show_path = false },
+					recent_files { n = 10, skip_current_dir = true },
+					{
+						name = 'Sync',
+						action = 'Lazy sync',
+						section = 'Commands',
+					},
+					{
+						name = 'Update',
+						action = 'Lazy update',
+						section = 'Commands',
+					},
+					{
+						name = 'Clean',
+						action = 'Lazy clean',
+						section = 'Commands',
+					},
+					{
+						name = 'Profile',
+						action = 'Lazy profile',
+						section = 'Commands',
+					},
+					{
+						name = 'Git Todo',
+						action = 'e .git/todo.md',
+						section = 'Bookmarks',
+					},
+					starter.sections.builtin_actions(),
+				},
 				header = table.concat({
 					table.concat({
 						-- https://github.com/NvChad/NvChad/discussions/2755#discussioncomment-8960250
@@ -668,7 +682,7 @@ return {
 				}, '\n'),
 				footer = 'ϟ ' .. (vim.fn.has 'nvim' and 'nvim' or 'vim') .. '.',
 				content_hooks = {
-					starter.gen_hook.adding_bullet '  ',
+					starter.gen_hook.adding_bullet '',
 					centralize(),
 					starter.gen_hook.indexing(
 						'all',
