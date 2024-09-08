@@ -84,4 +84,5 @@ return {
 		},
 	},
 	{ 'https://github.com/pteroctopus/faster.nvim' },
+	{ 'https://github.com/fladson/vim-kitty', ft = 'kitty' },
 }
