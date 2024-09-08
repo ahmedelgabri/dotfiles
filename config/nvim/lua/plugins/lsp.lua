@@ -128,6 +128,7 @@ end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
+	virtual_text = false,
 	-- virtual_text = {
 	--   source = 'always',
 	--   spacing = 4,
@@ -365,10 +366,19 @@ return {
 						},
 					},
 				}
+
+				local cmds = require 'zk.commands'
 			end,
 		},
 		{
 			'https://github.com/b0o/SchemaStore.nvim',
+		},
+		{
+			'https://github.com/rachartier/tiny-inline-diagnostic.nvim',
+			event = 'VeryLazy',
+			config = function()
+				require('tiny-inline-diagnostic').setup()
+			end,
 		},
 	},
 	config = function()
