@@ -16,12 +16,6 @@ au.augroup('__myautocmds__', {
 			end
 		end,
 	},
-
-	{
-		event = 'BufReadPre',
-		pattern = '*',
-		callback = cmds.disable_heavy_plugins,
-	},
 	{
 		desc = 'Open file at the last position it was edited earlier',
 		event = 'BufReadPost',

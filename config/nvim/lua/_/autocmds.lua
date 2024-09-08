@@ -136,22 +136,4 @@ function M.source_project_config()
 	end
 end
 
-function M.disable_heavy_plugins(event)
-	local bufsize = vim.fn.getfsize(vim.fn.expand '%')
-	local isMinified = vim.regex('\\.min\\..*$'):match_str(vim.fn.expand '%:t')
-
-	if
-		M.heavy_plugins_blocklist[vim.bo[event.buf].filetype] ~= nil
-		or isMinified ~= nil
-		or bufsize > 200000
-	then
-		if type(vim.cmd.LspStop) == 'function' then
-			vim.cmd.LspStop()
-		end
-		if type(vim.cmd.TSBufDisable) == 'function' then
-			vim.cmd.TSBufDisable 'highlight'
-		end
-	end
-end
-
 return M
