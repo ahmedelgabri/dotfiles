@@ -273,44 +273,6 @@ local function git_conflicts()
 	)
 end
 
-local function treesitter_context()
-	-- Hide if window size is too small, or we have more than two splits,
-	-- or if we are in a ministarter buffer
-	--
-	-- @TODO: check how to get split width instead of using tabpage list
-	if
-		vim.fn.winwidth(0) < 120
-		or #vim.api.nvim_tabpage_list_wins(0) > 2
-		or vim.bo.filetype == 'ministarter'
-		or vim.bo.filetype == 'markdown' -- very slow in markdown files
-	then
-		return ''
-	end
-
-	local ok, ts = pcall(require, 'nvim-treesitter')
-
-	if not ok then
-		return ''
-	end
-
-	local ctx = ts.statusline {
-		indicator_size = vim.fn.winwidth(0),
-		type_patterns = {
-			'class',
-			'function',
-			'method',
-			'interface',
-			'type_spec',
-			'table',
-			'if_statement',
-			'for_statement',
-			'for_in_statement',
-		},
-	}
-
-	return string.format('%%#Constant#%s%%* ', ctx)
-end
-
 local function copilot()
 	if vim.bo.filetype == 'ministarter' then
 		return ''
@@ -350,7 +312,6 @@ function M.render_active()
 		word_count(),
 		readonly(),
 		'%= ',
-		treesitter_context(),
 		mode(),
 		'%*',
 		paste(),
