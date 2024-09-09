@@ -1,0 +1,20 @@
+/* Hide top toolbar */
+#TabsToolbar {
+	visibility: collapse;
+}
+
+/* Move the sidebar header to the bottom and hide the close button */
+#sidebar-box {
+	flex-direction: column-reverse;
+}
+
+#sidebar-box #sidebar-header {
+	font-size: 1em !important;
+	padding: 5px !important;
+	border: none !important;
+}
+
+#sidebar-box #sidebar-close,
+#sidebar-box #sidebar-spacer {
+	display: none;
+}

@@ -51,6 +51,10 @@
       flake = false;
     };
 
+    nur = {
+      url = "github:nix-community/nur";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -142,6 +146,7 @@
           nixpkgs = {
             config = { allowUnfree = true; };
             overlays = [
+              inputs.nur.overlay
               (final: prev: {
                 pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix { };
                 hcron = prev.callPackage ./nix/pkgs/hcron.nix { };
@@ -208,11 +213,11 @@
             specialArgs = { inherit inputs; };
             inherit system;
             modules = [
+              sharedConfiguration
               inputs.home-manager.darwinModules.home-manager
               inputs.nix-homebrew.darwinModules.nix-homebrew
               ./nix/modules/darwin
               ./nix/modules/shared
-              sharedConfiguration
               ./nix/hosts/${host}.nix
             ];
           }))
@@ -225,9 +230,9 @@
             specialArgs = { inherit inputs; };
             inherit system;
             modules = [
+              sharedConfiguration
               inputs.home-manager.nixosModules.home-manager
               ./nix/modules/shared
-              sharedConfiguration
               ./nix/hosts/${host}
             ];
           }

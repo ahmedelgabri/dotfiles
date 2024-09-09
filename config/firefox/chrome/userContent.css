@@ -1,0 +1,29 @@
+.devtools-monospace {
+	font-family: "PragmataPro Liga" !important;
+	font-size: 9pt !important;
+}
+
+@-moz-document url-prefix(chrome://devtools/content/)
+{
+	* {
+		font-family: "PragmataPro Liga" !important;
+		font-size: 9pt !important;
+	}
+}
+
+[platform="macos"]:root {
+	font-family: "PragmataPro Liga" !important;
+	font-size: 9pt !important;
+}
+
+html#devtools-webconsole {
+	font-family: "PragmataPro Liga" !important;
+	font-size: 9pt !important;
+}
+
+.CodeMirror,
+.CodeMirror-linenumber,
+.CodeMirror-line {
+	font-family: "PragmataPro Liga" !important;
+	font-size: 9pt !important;
+}
