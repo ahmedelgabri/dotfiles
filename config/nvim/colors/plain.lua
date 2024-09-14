@@ -484,6 +484,9 @@ highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
 highlight('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
 highlight('LspDiagnosticsDefaultHint', { link = 'NonText' })
 highlight('LspInlayHint', { fg = lighter_black, bg = nil, italic = true })
+highlight('LspReferenceRead', { link = 'SpecialKey' })
+highlight('LspReferenceText', { link = 'SpecialKey' })
+highlight('LspReferenceWrite', { link = 'SpecialKey' })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })

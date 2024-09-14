@@ -192,16 +192,6 @@ au.autocmd {
 				vim.lsp.protocol.Methods.textDocument_documentHighlight
 			)
 		then
-			hl.group('LspReferenceRead', {
-				link = 'SpecialKey',
-			})
-			hl.group('LspReferenceText', {
-				link = 'SpecialKey',
-			})
-			hl.group('LspReferenceWrite', {
-				link = 'SpecialKey',
-			})
-
 			au.augroup('__LSP_HIGHLIGHTS__', {
 				{
 					event = { 'CursorHold', 'CursorHoldI' },
