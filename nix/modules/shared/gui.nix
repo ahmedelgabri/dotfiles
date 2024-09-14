@@ -39,6 +39,7 @@ in
           "sync"
           "zoom"
           "zed"
+          "visual-studio-code"
         ];
 
         my.hm.file = {
