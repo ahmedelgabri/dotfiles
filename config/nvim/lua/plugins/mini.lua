@@ -60,6 +60,48 @@ return {
 				desc = 'Open current buffer',
 			},
 		},
+		init = function()
+			-- https://github.com/echasnovski/mini.nvim/discussions/563
+			local file_on_rename = function(from, to)
+				local ok, clients = pcall(vim.lsp.get_clients)
+
+				if not ok or type(clients) ~= 'table' then
+					return
+				end
+
+				clients = vim.tbl_filter(function(x)
+					return x.supports_method 'workspace/willRenameFiles'
+				end, clients)
+
+				for _, client in ipairs(clients) do
+					local resp = client.request_sync('workspace/willRenameFiles', {
+						files = {
+							{
+								oldUri = vim.uri_from_fname(from),
+								newUri = vim.uri_from_fname(to),
+							},
+						},
+					}, 1000, 0)
+
+					if resp and resp.result ~= nil then
+						vim.lsp.util.apply_workspace_edit(
+							resp.result,
+							client.offset_encoding
+						)
+					end
+				end
+			end
+
+			au.augroup('__mini_files__', {
+				{
+					event = { 'User' },
+					pattern = 'MiniFilesActionRename',
+					callback = function(event)
+						file_on_rename(event.data.from, event.data.to)
+					end,
+				},
+			})
+		end,
 		config = function()
 			-- Add space after the icon
 			local prefix = function(fs_entry)
