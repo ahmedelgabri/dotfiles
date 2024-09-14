@@ -419,7 +419,7 @@ return {
 				},
 				handlers = {
 					['tailwindcss/getConfiguration'] = function(_, _, context)
-						-- tailwindcss lang server waits for this repsonse before providing hover
+						-- tailwindcss lang server waits for this response before providing hover
 						vim.lsp.buf_notify(
 							context.bufnr,
 							'tailwindcss/getConfigurationResponse',

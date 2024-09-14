@@ -43,7 +43,7 @@ export PURE_GIT_UP_ARROW="🠥"
 export PURE_GIT_DOWN_ARROW="🠧"
 export PURE_GIT_BRANCH="  "
 
-# Remove path separtor from WORDCHARS.
+# Remove path separator from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}
 
 ############### PAGER

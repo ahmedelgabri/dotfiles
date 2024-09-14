@@ -189,7 +189,7 @@ in
           fi
 
           echo ":: -> Changing Shell..."
-          # @TODO: wrapp it in an if
+          # @TODO: wrap it in an if
           sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
         '';
 

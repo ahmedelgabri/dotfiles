@@ -113,7 +113,7 @@ in
                 };
 
 
-                # NOTE: WILL OVERRIDE ALL CURRENT BOOMARKS
+                # NOTE: WILL OVERRIDE ALL CURRENT BOOKMARKS
                 # bookmarks = [
                 #   {
                 #     name = "wikipedia";

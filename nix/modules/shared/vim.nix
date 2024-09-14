@@ -24,7 +24,7 @@ in
           vim
           neovim-unwrapped
         ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
-          gcc # Requried for treesitter parsers
+          gcc # Required for treesitter parsers
         ]);
 
       my.env = {

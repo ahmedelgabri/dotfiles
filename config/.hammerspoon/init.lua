@@ -9,7 +9,7 @@ Install = spoon.SpoonInstall
 local layout = require 'layout'
 local utils = require 'utils'
 require 'mappings'
-require 'window-managment'
+require 'window-management'
 
 -- layout.layoutWatcher:start()
 

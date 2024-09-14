@@ -1,5 +1,5 @@
 -- -------------------------------------------------------------------
--- Window managment & Grid
+-- Window management & Grid
 -- -------------------------------------------------------------------
 
 -- https://github.com/wincent/wincent/blob/a33430e43464842c067016e507ab91abd6569948/roles/dotfiles/files/.hammerspoon/init.lua

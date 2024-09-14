@@ -58,7 +58,7 @@ return {
 
 						vim.cmd [[setlocal ve=all]]
 
-						-- draw a line on HJKL keystokes
+						-- draw a line on HJKL keystrokes
 						vim.keymap.set('n', 'J', '<C-v>j:VBox<CR>', { buffer = true })
 						vim.keymap.set('n', 'K', '<C-v>k:VBox<CR>', { buffer = true })
 						vim.keymap.set('n', 'L', '<C-v>l:VBox<CR>', { buffer = true })

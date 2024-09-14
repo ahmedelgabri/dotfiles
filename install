@@ -5,7 +5,7 @@ set -Eueo pipefail
 
 SUDO_USER=$(whoami)
 
-# Intell by default becaue my personal machine
+# Intell by default because my personal machine
 ARCH="i386"
 
 if [[ $(arch) == 'arm64' ]]; then
@@ -200,7 +200,7 @@ install() {
 
 			nix --experimental-features 'nix-command flakes' build "./#$(hostname -s)"
 
-			# Needed for nix-darwin to work, copied verbatium from the install script, since we build with flakes we have to do this manually
+			# Needed for nix-darwin to work, copied verbatim from the install script, since we build with flakes we have to do this manually
 			# https://github.com/abathur/nix-darwin/blob/44da835ac40dab5fd231298b59d83487382d2fab/pkgs/darwin-installer/configuration.nix#L45-L51
 			if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
 				echo "setting up /etc/synthetic.conf..."

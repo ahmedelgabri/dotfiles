@@ -54,7 +54,7 @@ vim.keymap.set({ 'i' }, '<down>', '<nop>', { remap = true })
 vim.keymap.set({ 'i' }, '<left>', '<nop>', { remap = true })
 vim.keymap.set({ 'i' }, '<right>', '<nop>', { remap = true })
 
--- Make arrowkey do something usefull, resize the viewports accordingly
+-- Make arrowkey do something useful, resize the viewports accordingly
 vim.keymap.set({ 'n' }, '<Right>', ':vertical resize -2<CR>')
 vim.keymap.set({ 'n' }, '<Left>', ':vertical resize +2<CR>')
 vim.keymap.set({ 'n' }, '<Down>', ':resize -2<CR>')
@@ -119,7 +119,7 @@ vim.keymap.set({ 'n' }, '<Localleader> g', function()
 	print(vim.inspect(result))
 end, { desc = 'Show treesitter capture group for textobject under cursor.' })
 
--- maintain the same shortcut as vim-gtfo becasue it's in my muscle memory.
+-- maintain the same shortcut as vim-gtfo because it's in my muscle memory.
 vim.keymap.set({ 'n' }, 'gof', function()
 	vim.ui.open(vim.fn.expand '%:p:h:~')
 end, {

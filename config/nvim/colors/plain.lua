@@ -159,7 +159,7 @@ highlight('Title', { link = 'Constant' })
 -- __Statement__
 highlight('Statement', { fg = colors.norm, bold = true })
 highlight('Include', { link = 'Statement' })
-highlight('Conditonal', { link = 'Statement' })
+highlight('Conditional', { link = 'Statement' })
 highlight('Repeat', { link = 'Statement' })
 highlight('Label', { link = 'Statement' })
 highlight('Keyword', { link = 'Statement' })

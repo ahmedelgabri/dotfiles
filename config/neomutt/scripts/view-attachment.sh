@@ -80,7 +80,7 @@ rm -f $tmpdir/*
 # This gets the basic filename from the full pathname.
 filename=$(basename $1)
 
-# get rid of the extenson and save the name for later.
+# get rid of the extension and save the name for later.
 file=$(echo $filename | cut -d"." -f1)
 
 if [ $debug = "yes" ]; then

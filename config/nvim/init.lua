@@ -28,7 +28,7 @@ vim.g.did_install_default_menus = 1
 
 -- vim.opt. them directly if they are installed, otherwise disable them. To avoid the then
 -- runtime check cost, which can be slow.
--- Python This must be here becasue it makes loading vim VERY SLOW otherwise
+-- Python This must be here because it makes loading vim VERY SLOW otherwise
 vim.g.python_host_skip_check = 1
 -- Disable python2 provider
 vim.g.loaded_python_provider = 0

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Usage: git-edit [conflicted|staged|edited|commited]
+# Usage: git-edit [conflicted|staged|edited|committed]
 
 main() {
   action="$1"
@@ -7,7 +7,7 @@ main() {
   conflict | conflicts | conflicted)
     $EDITOR $(git-conflicts)
     ;;
-  commited)
+  committed)
     $EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)
     ;;
   staged)

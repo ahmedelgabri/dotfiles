@@ -354,11 +354,11 @@ in
 
           ".mbsyncrc" = {
             text = ''# ${nix_managed}
-              # Settings for isync, a program to syncronise IMAP mailboxes
-              # This file defines the syncronisation for two accounts, Personal and Work
+              # Settings for isync, a program to synchronise IMAP mailboxes
+              # This file defines the synchronisation for two accounts, Personal and Work
               # The remote for each account is a server somewhere, and the local is a folder
               # in ~/.mail
-              # Syncronise everything with `mbsync -a`
+              # Synchronise everything with `mbsync -a`
 
               ########################################
               # Default settings
