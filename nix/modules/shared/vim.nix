@@ -65,6 +65,8 @@ in
           # neovim luarocks support requires lua 5.1
           # https://github.com/folke/lazy.nvim/issues/1570#issuecomment-2194329169
           lua51Packages.luarocks
+          typos
+          typos-lsp
         ];
       };
 

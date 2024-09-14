@@ -253,6 +253,8 @@
               go-tools # staticcheck, etc...
               gomodifytags
               gotools # goimports
+              typos
+              typos-lsp
             ];
             # shellHook = ''echo "hi"'';
           };
