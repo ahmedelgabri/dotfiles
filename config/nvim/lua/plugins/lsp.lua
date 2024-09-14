@@ -266,17 +266,6 @@ return {
 			},
 		},
 		{
-			'https://github.com/j-hui/fidget.nvim',
-			opts = {
-				notification = {
-					window = {
-						relative = 'editor',
-						winblend = 0,
-					},
-				},
-			},
-		},
-		{
 			'https://github.com/nvimtools/none-ls.nvim',
 			dependencies = {
 				'https://github.com/nvim-lua/plenary.nvim',

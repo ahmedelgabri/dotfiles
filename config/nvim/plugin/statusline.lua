@@ -196,7 +196,7 @@ local function orgmode()
 		or ''
 end
 
-local function lsp()
+local function lsp_diagnostics()
 	local count = {}
 	local levels = {
 		errors = vim.diagnostic.severity.ERROR,
@@ -246,7 +246,13 @@ local function lsp()
 		)
 	end
 
-	return string.format('%s %s %s %s%%*', errors, warnings, hints, info)
+	return string.format(
+		'%s %s %s %s%%*',
+		errors ~= '' and ' ' .. errors or errors,
+		warnings,
+		hints,
+		info
+	)
 end
 
 local function git_conflicts()
@@ -299,6 +305,40 @@ local function copilot()
 		or ''
 end
 
+---Mostly taken from https://github.com/MariaSolOs/dotfiles/blob/34c5df39e6576357a2b90e25673e44f4d33afe38/.config/nvim/lua/statusline.lua#L121-L172
+---@type table<string, string?>
+local progress_status = {
+	client = nil,
+	kind = nil,
+	title = nil,
+}
+
+local function lsp_progress_component()
+	local lsp_icon = require('mini.icons').get('lsp', 'event')
+
+	if not progress_status.client or not progress_status.title then
+		local ok, clients = pcall(vim.lsp.get_clients)
+
+		if ok and type(clients) == 'table' and #clients >= 1 then
+			return lsp_icon .. ' '
+		end
+
+		return ''
+	end
+
+	-- Avoid noisy messages while typing.
+	if vim.startswith(vim.api.nvim_get_mode().mode, 'i') then
+		return ''
+	end
+
+	return string.format(
+		'%s %s %%#DiagnosticSignInfo#%s',
+		'%#DiagnosticSignWarn#' .. lsp_icon .. ' %*',
+		progress_status.client,
+		progress_status.title
+	)
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -317,7 +357,8 @@ function M.render_active()
 		paste(),
 		spell(),
 		orgmode(),
-		lsp(),
+		lsp_progress_component(),
+		lsp_diagnostics(),
 		git_conflicts(),
 		file_info(),
 		copilot(),
@@ -352,17 +393,44 @@ end
 -- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
 au.augroup('MyStatusLine', {
 	{
+		event = 'LspProgress',
+		pattern = { 'begin', 'end' },
+		desc = 'Update LSP progress in statusline',
+		callback = function(args)
+			-- This should in theory never happen, but I've seen weird errors.
+			if not args.data then
+				return
+			end
+
+			progress_status = {
+				client = vim.lsp.get_client_by_id(args.data.client_id).name,
+				kind = args.data.params.value.kind,
+				title = args.data.params.value.title,
+			}
+
+			if progress_status.kind == 'end' then
+				progress_status.title = nil
+				-- Wait a bit before clearing the status.
+				vim.defer_fn(function()
+					vim.cmd.redrawstatus()
+				end, 3000)
+			else
+				vim.cmd.redrawstatus()
+			end
+		end,
+	},
+	{
 		event = { 'WinEnter', 'BufEnter' },
 		pattern = '*',
 		callback = function()
-			vim.opt_local.statusline = '%{%v:lua.__.statusline.render_active()%}'
+			vim.opt_local.statusline = '%!v:lua.__.statusline.render_active()'
 		end,
 	},
 	{
 		event = { 'WinLeave', 'BufLeave' },
 		pattern = '*',
 		callback = function()
-			vim.opt_local.statusline = '%{%v:lua.__.statusline.render_inactive()%}'
+			vim.opt_local.statusline = '%!v:lua.__.statusline.render_inactive()'
 		end,
 	},
 })
