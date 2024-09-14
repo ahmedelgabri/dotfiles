@@ -3,7 +3,27 @@ local hl = require '_.utils.highlight'
 local utils = require '_.utils'
 local map_opts = { buffer = true, silent = true }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities =
+	vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
+		textDocument = {
+			completion = {
+				completionItem = {
+					snippetSupport = true,
+					resolveSupport = {
+						properties = {
+							'documentation',
+							'detail',
+							'additionalTextEdits',
+						},
+					},
+				},
+			},
+		},
+	})
+
+if pcall(require, 'cmp_nvim_lsp') then
+	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+end
 
 local handlers = {
 	['textDocument/hover'] = vim.lsp.with(
@@ -15,19 +35,6 @@ local handlers = {
 		{ focusable = false, silent = true }
 	),
 }
-
-if pcall(require, 'cmp_nvim_lsp') then
-	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-else
-	capabilities.textDocument.completion.completionItem.snippetSupport = true
-	capabilities.textDocument.completion.completionItem.resolveSupport = {
-		properties = {
-			'documentation',
-			'detail',
-			'additionalTextEdits',
-		},
-	}
-end
 
 local shared = {
 	capabilities = capabilities,
@@ -153,7 +160,6 @@ au.autocmd {
 	desc = 'LSP actions',
 	callback = function(event)
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
-		local bufname = vim.api.nvim_buf_get_name(event.buf)
 
 		-- ---------------
 		-- GENERAL
