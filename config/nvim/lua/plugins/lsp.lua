@@ -155,18 +155,6 @@ au.autocmd {
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		local bufname = vim.api.nvim_buf_get_name(event.buf)
 
-		-- Don't run bash-lsp on .env files
-		-- Has to be in-sync with null-ls config for shellcheck
-		if
-			client ~= nil
-			and client.name == 'bashls'
-			and bufname:match '%.env' ~= nil
-			and bufname:match '%.env.*' ~= nil
-		then
-			vim.cmd.LspStop()
-			return
-		end
-
 		-- ---------------
 		-- GENERAL
 		-- ---------------
