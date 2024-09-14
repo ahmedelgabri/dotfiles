@@ -1,5 +1,4 @@
 local au = require '_.utils.au'
-local hl = require '_.utils.highlight'
 local utils = require '_.utils'
 local map_opts = { buffer = true, silent = true }
 
@@ -26,13 +25,13 @@ if pcall(require, 'cmp_nvim_lsp') then
 end
 
 local handlers = {
-	['textDocument/hover'] = vim.lsp.with(
+	[vim.lsp.protocol.Methods.textDocument_hover] = vim.lsp.with(
 		vim.lsp.handlers.hover,
-		{ focusable = false, silent = true }
+		{ focusable = true, silent = true, border = 'rounded' }
 	),
-	['textDocument/signatureHelp'] = vim.lsp.with(
+	[vim.lsp.protocol.Methods.textDocument_signatureHelp] = vim.lsp.with(
 		vim.lsp.handlers.hover,
-		{ focusable = false, silent = true }
+		{ focusable = false, silent = true, border = 'rounded' }
 	),
 }
 
@@ -116,7 +115,7 @@ vim.diagnostic.open_float = (function(orig)
 		for _, d in ipairs(diagnostics) do
 			-- Equality is "less than" based on how the severities are encoded
 			if d.severity < max_severity then
-				max_severity = d.severity
+				max_severity = d.severity --[[@as integer]]
 			end
 		end
 
@@ -135,15 +134,40 @@ end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
-	virtual_text = false,
-	-- virtual_text = {
-	--   source = 'always',
-	--   spacing = 4,
-	--   prefix = '■', -- Could be '●', '▎', 'x'
-	-- },
+	virtual_text = {
+		-- source = 'always',
+		spacing = 2,
+		prefix = '', -- Could be '●', '▎', 'x'
+		format = function(diagnostic)
+			local source = diagnostic.source
+
+			if source then
+				local icon =
+					utils.get_icon(vim.diagnostic.severity[diagnostic.severity]:lower())
+
+				return string.format(
+					'%s %s %s',
+					icon,
+					source,
+					'['
+						.. (diagnostic.code ~= nil and diagnostic.code or diagnostic.message)
+						.. ']'
+				)
+			end
+
+			return string.format('%s ', diagnostic.message)
+		end,
+	},
 	float = {
 		source = 'if_many',
 		focusable = false,
+		prefix = function(diag)
+			local level = vim.diagnostic.severity[diag.severity]
+			local icon = utils.get_icon(level:lower())
+			local prefix = string.format(' %s ', icon)
+
+			return prefix, 'Diagnostic' .. level:gsub('^%l', string.upper)
+		end,
 	},
 	signs = {
 		text = {
@@ -345,13 +369,6 @@ return {
 		},
 		{
 			'https://github.com/b0o/SchemaStore.nvim',
-		},
-		{
-			'https://github.com/rachartier/tiny-inline-diagnostic.nvim',
-			event = 'VeryLazy',
-			config = function()
-				require('tiny-inline-diagnostic').setup()
-			end,
 		},
 	},
 	config = function()
