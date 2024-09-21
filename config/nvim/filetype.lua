@@ -9,6 +9,7 @@ vim.filetype.add {
 		log = 'log',
 		conf = 'conf',
 		env = 'dotenv',
+		sb = 'scheme', -- Apple sandbox rules
 		['code-workspace'] = 'jsonc',
 	},
 	filename = {
