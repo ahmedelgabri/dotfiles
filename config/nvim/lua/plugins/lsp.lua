@@ -227,7 +227,7 @@ au.autocmd {
 					callback = vim.lsp.buf.clear_references,
 					buffer = event.buf,
 				},
-			})
+			}, { clear = false })
 		end
 
 		if
