@@ -5,11 +5,11 @@ emulate -L zsh
 unalias l 2> /dev/null
 
 if (( $+commands[eza] )); then
-  eza --all --long --color-scale=all --group-directories-first --sort=type --octal-permissions "$@"
+  eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions "$@"
 elif [[ -x "/run/current-system/sw/bin/ls" ]]; then
   # https://github.com/paulirish/dotfiles/blob/7c46f8c25015c2632894dbe5fea20014ab37fd89/.functions#L14-L25
   # [TODO]: Check why this is not picked up from $PATH?
-  /run/current-system/sw/bin/ls --almost-all -l --human-readable --classify -alph --group-directories-first --color=always --hyperlink=auto "$@" | awk '
+  /run/current-system/sw/bin/ls --almost-all -l --human-readable --classify --group-directories-first --color=auto --hyperlink=auto "$@" | awk '
   {
     k=0;
     for (i=0;i<=8;i++)
