@@ -73,16 +73,25 @@ in
           };
           systemPackages = with pkgs;
             (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
-              curl
-              wget
+              ast-grep
               cachix
-              htop
-              fzf
+              curl
               direnv
+              diskonaut
+              fzf
+              grc
+              htop
+              hyperfine
+              jq
+              # lnav # System Log file navigator
+              # ncdu
               nix-direnv
-              zsh
-              zoxide
+              pandoc
+              ripgrep
               rsync
+              wget
+              zoxide
+              zsh-powerlevel10k
             ];
         };
 
@@ -90,35 +99,26 @@ in
           user = {
             shell = if pkgs.stdenv.isDarwin then [ pkgs.zsh ] else pkgs.zsh;
             packages = with pkgs; [
-              tealdeer # rust implementation of `tldr`
-              ncdu
-              bat
-              fd
-              ripgrep
-              vivid
-              hyperfine
-              jq
-              grc
-              zsh-powerlevel10k
-              eza
-              shellcheck
-              shfmt # Doesn't work with zsh, only sh & bash
-              lnav # System Log file navigator
-              pandoc
-              scc
-              tokei
               _1password # CLI
-              rename
+              bat
               # buku
               difftastic
-              ffmpeg
-              slides # CLI markdown presentation tool
               # emanote # Only aarch64-darwin
-              ast-grep
+              eza
+              fd
+              ffmpeg
               glow
               gum # https://github.com/charmbracelet/gum
-              mods # https://github.com/charmbracelet/mods
               hcron
+              mods # https://github.com/charmbracelet/mods
+              rename
+              scc
+              shellcheck
+              shfmt # Doesn't work with zsh, only sh & bash
+              slides # CLI markdown presentation tool
+              tealdeer # rust implementation of `tldr`
+              tokei
+              vivid
             ];
           };
 
