@@ -72,7 +72,14 @@ in
             CDPATH = ".:~:~/Sites";
           };
           systemPackages = with pkgs;
-            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
+            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ])
+            ++
+            # Packages broken on Intel
+            (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin") [
+              lnav # System Log file navigator
+            ])
+            ++
+            [
               ast-grep
               cachix
               curl
@@ -83,7 +90,6 @@ in
               htop
               hyperfine
               jq
-              # lnav # System Log file navigator
               # ncdu
               nix-direnv
               pandoc
