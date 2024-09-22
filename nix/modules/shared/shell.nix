@@ -146,6 +146,10 @@ in
             ".hushlogin" = {
               text = "";
             };
+            ".config/vivid" = {
+              recursive = true;
+              source = ../../../config/vivid;
+            };
           };
 
           env =
