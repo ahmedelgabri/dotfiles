@@ -44,7 +44,7 @@ return {
 			}
 		end,
 	},
-	{ 'https://github.com/kevinhwang91/nvim-bqf', event = 'FileType qf' },
+	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
 	{ 'https://github.com/mistweaverco/kulala.nvim', ft = 'http', config = true },
 	{
 		'https://github.com/jbyuki/venn.nvim',
