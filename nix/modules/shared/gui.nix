@@ -18,7 +18,6 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (if (builtins.hasAttr "homebrew" options) then {
-        # TODO: (automate) Requires homebrew to be installed
         homebrew.taps = [ "homebrew/cask-versions" ];
         homebrew.casks = [
           "1password"

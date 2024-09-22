@@ -16,7 +16,6 @@
     enable = true;
     enableRosetta = pkgs.stdenv.hostPlatform.isAarch64;
     user = config.my.username;
-    autoMigrate = true;
   };
 
   homebrew = {
