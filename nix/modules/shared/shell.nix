@@ -198,9 +198,10 @@ in
           EOF
           fi
 
-          echo ":: -> Changing Shell..."
-          # @TODO: wrap it in an if
-          sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
+          if dscl . -read /Users/${config.my.username} UserShell | grep -qv "/run/current-system/sw/bin/zsh"; then
+            echo ":: -> Changing Shell..."
+            sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
+          fi
         '';
 
         programs.zsh = {
