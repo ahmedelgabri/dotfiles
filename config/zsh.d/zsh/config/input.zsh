@@ -2,12 +2,6 @@
 # Editor and input char assignment
 #
 
-
-# Return if requirements are not found.
-if [[ ${TERM} == 'dumb' ]]; then
-  return 1
-fi
-
 bindkey -v
 
 # Use human-friendly identifiers.
@@ -88,8 +82,6 @@ zle-line-finish() {
 }
 zle -N zle-line-init
 zle -N zle-line-finish
-
-export KEYTIMEOUT=1
 
 autoload -Uz edit-command-line
 zle -N edit-command-line

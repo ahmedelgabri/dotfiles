@@ -6,8 +6,9 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
 # Remove -X and -F (exit if the content fits on one screen) to enable it.
 export LESS="-F -g -i -M -R -S -w -X -z-4"
-export KEYTIMEOUT="1"
+export KEYTIMEOUT=1
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZCOMPDUMP_PATH="$ZDOTDIR/.zcompdump"
 
 export DOTFILES="$HOME/.dotfiles"
 export PROJECTS="$HOME/Sites/personal/dev"
@@ -48,14 +49,14 @@ export PURE_GIT_BRANCH="  "
 WORDCHARS=${WORDCHARS//[\/]}
 
 ############### PAGER
-# Set less or more as the default pager.
-if (( ! ${+PAGER} )); then
-  if (( ${+commands[less]} )); then
-    export PAGER=less
-  else
-    export PAGER=more
-  fi
-fi
+export PAGER=less
+export LESS_TERMCAP_mb=$'\E[1;31m'   # Begins blinking.
+export LESS_TERMCAP_md=$'\E[1;31m'   # Begins bold.
+export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
+export LESS_TERMCAP_se=$'\E[0m'      # Ends standout-mode.
+export LESS_TERMCAP_so=$'\E[7m'      # Begins standout-mode.
+export LESS_TERMCAP_ue=$'\E[0m'      # Ends underline.
+export LESS_TERMCAP_us=$'\E[1;32m'   # Begins underline.
 
 # Set the Less input preprocessor.
 # Try both `lesspipe` and `lesspipe.sh` as either might exist on a system.
@@ -63,14 +64,17 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-############### Temporary Files
-if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$LOGNAME"
-  mkdir -p -m 700 "$TMPDIR"
-fi
 
-TMPPREFIX="${TMPDIR%/}/zsh";
+############### PLUGINS
 
+PURE_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
+# Arrays in zsh starts from 1
+export PURE_PROMPT_SYMBOL="${PURE_SYMBOLS[$RANDOM % ${#PURE_SYMBOLS[@]} + 1]}"
+# zstyle :prompt:pure:path color 240
+# zstyle :prompt:pure:git:branch color blue
+# zstyle :prompt:pure:git:dirty color red
+# zstyle :prompt:pure:git:action color 005
+# zstyle :prompt:pure:prompt:success color 003
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath manpath path
@@ -97,3 +101,10 @@ path=(
   /opt/homebrew/bin(N-/) # For M1/2 machines
   /usr/local/{bin,sbin}
 )
+
+fpath=(
+  ${ZDOTDIR}/functions
+  $fpath
+)
+
+autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)

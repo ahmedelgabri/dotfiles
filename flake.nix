@@ -158,6 +158,28 @@
                 notmuch = prev.notmuch.override {
                   withEmacs = false;
                 };
+
+                # Nixpkgs is outdated
+                zsh-completions = prev.zsh-completions.overrideAttrs (oldAttrs: rec{
+                  version = "master";
+                  src = pkgs.fetchFromGitHub {
+                    owner = "zsh-users";
+                    repo = oldAttrs.pname;
+                    rev = version;
+                    sha256 = "sha256-+NWfTiiqZ7orLYRgpj7Qi1wktCHdR7mw5ohDGYleK0c=";
+                  };
+                });
+
+                # Nixpkgs is outdated
+                zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (oldAttrs: rec {
+                  version = "master";
+                  src = pkgs.fetchFromGitHub {
+                    owner = "zsh-users";
+                    repo = "zsh-history-substring-search";
+                    rev = version;
+                    sha256 = "sha256-1+w0AeVJtu1EK5iNVwk3loenFuIyVlQmlw8TWliHZGI=";
+                  };
+                });
               })
 
               # fix for swift 8

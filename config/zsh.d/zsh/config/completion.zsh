@@ -2,16 +2,6 @@
 # Completion enhancements
 #
 
-
-#
-# initialization
-#
-
-# if it's a dumb terminal, return.
-if [[ ${TERM} == 'dumb' ]]; then
-  return 1
-fi
-
 #
 # zsh options
 #

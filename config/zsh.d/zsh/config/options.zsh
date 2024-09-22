@@ -12,7 +12,7 @@ setopt NO_FLOW_CONTROL      # disable start (C-s) and stop (C-q) characters
 setopt CORRECT              # Suggest command corrections
 setopt LONG_LIST_JOBS       # List jobs in the long format by default.
 setopt NOTIFY               # Report the status of background jobs immediately, rather than waiting until just before printing a prompt.
-setopt NO_BG_NICE           # Prevent runing all background jobs at a lower priority.
+setopt NO_BG_NICE           # Prevent running all background jobs at a lower priority.
 setopt NO_CHECK_JOBS        # Prevent reporting the status of background and suspended jobs before exiting a shell with job control. NO_CHECK_JOBS is best used only in combination with NO_HUP, else such jobs will be killed automatically.
 setopt NO_HUP               # Prevent sending the HUP signal to running jobs when the shell exits.
 setopt NO_BEEP              # Don't beep on errors (overrides /etc/zshrc in Catalina)
