@@ -44,7 +44,6 @@ fi
 
 (( $+commands[bat] )) && alias cat='bat '
 (( $+commands[fd] )) && alias fd='fd --hidden '
-(( $+commands[yarn] )) && alias y=yarn
 
 if [[ "$(uname)" == linux* ]]; then
   alias chmod='chmod --preserve-root -v'
