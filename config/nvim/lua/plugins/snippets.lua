@@ -210,6 +210,9 @@ return {
 		ls.filetype_extend('jinja2', twig)
 		ls.filetype_extend('html.twig', twig)
 
+		ls.filetype_extend('typescriptreact', { 'html' })
+		ls.filetype_extend('javascriptreact', { 'html' })
+
 		ls.add_snippets(nil, {
 			all = {
 				s({ trig = 'bbox', wordTrig = true }, {
