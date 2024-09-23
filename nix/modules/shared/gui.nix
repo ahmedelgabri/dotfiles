@@ -37,7 +37,6 @@ in
           "slack"
           "sync"
           "zoom"
-          "zed"
           "visual-studio-code"
         ];
 
