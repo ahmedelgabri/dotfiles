@@ -30,3 +30,5 @@ Session.vim
 *.vim-rplugin~
 .netrwhist
 .git-fuzzy-snapshots
+
+.env
