@@ -185,12 +185,14 @@ au.autocmd {
 	callback = function(event)
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 
+		if client == nil then
+			return
+		end
+
 		-- ---------------
 		-- GENERAL
 		-- ---------------
-		if client ~= nil then
-			client.flags.allow_incremental_sync = true
-		end
+		client.flags.allow_incremental_sync = true
 
 		-- ---------------
 		-- MAPPINGS
@@ -211,8 +213,7 @@ au.autocmd {
 		-- ---------------
 		--
 		if
-			client ~= nil
-			and client.supports_method(
+			client.supports_method(
 				vim.lsp.protocol.Methods.textDocument_documentHighlight
 			)
 		then
@@ -231,8 +232,7 @@ au.autocmd {
 		end
 
 		if
-			client ~= nil
-			and client.supports_method(vim.lsp.protocol.Methods.textDocument_codeLens)
+			client.supports_method(vim.lsp.protocol.Methods.textDocument_codeLens)
 		then
 			au.augroup('__LSP_CODELENS__', {
 				{
