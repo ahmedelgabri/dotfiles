@@ -492,3 +492,6 @@ highlight('LspReferenceWrite', { link = 'SpecialKey' })
 highlight('User5', { fg = colors.red })
 highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
+
+-- Winbar
+highlight('WinBar', { bg = nil, fg = 'NvimLightGrey4' })

@@ -252,6 +252,20 @@ return {
 	event = { 'BufReadPre' },
 	dependencies = {
 		{
+			'https://github.com/SmiteshP/nvim-navic',
+			event = 'LspAttach',
+			init = function()
+				vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+			end,
+			opts = {
+				click = true,
+				highlight = true,
+				lsp = {
+					auto_attach = true,
+				},
+			},
+		},
+		{
 			'https://github.com/pmizio/typescript-tools.nvim',
 			event = {
 				'BufReadPost *.ts,*.mts,*.cts,*.tsx,*.js,*.mjs,*.cjs,*.jsx',
