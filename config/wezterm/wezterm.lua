@@ -209,6 +209,16 @@ config.keys = {
 		mods = 'CMD',
 		action = wezterm.action_callback(theme_switcher),
 	},
+	{
+		key = 'RightArrow',
+		mods = 'CMD',
+		action = wezterm.action.ActivateTabRelative(1),
+	},
+	{
+		key = 'LeftArrow',
+		mods = 'CMD',
+		action = wezterm.action.ActivateTabRelative(-1),
+	},
 }
 
 -----------------------------------------------------------------------------
