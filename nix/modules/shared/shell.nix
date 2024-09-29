@@ -72,14 +72,7 @@ in
             CDPATH = ".:~:~/Sites";
           };
           systemPackages = with pkgs;
-            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ])
-            ++
-            # Packages broken on Intel
-            (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin") [
-              lnav # System Log file navigator
-            ])
-            ++
-            [
+            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++ [
               ast-grep
               cachix
               curl
@@ -98,7 +91,12 @@ in
               wget
               zoxide
               zsh-powerlevel10k
-            ];
+            ] ++
+            # Packages broken on Intel
+            (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin") [
+              lnav # System Log file navigator
+            ])
+          ;
         };
 
         my = {
