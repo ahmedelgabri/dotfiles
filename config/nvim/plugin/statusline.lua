@@ -5,6 +5,22 @@ local utils = require '_.utils'
 ---------------------------------------------------------------------------------
 -- Helpers
 ---------------------------------------------------------------------------------
+local function get_parts(parts)
+	return table.concat(
+		vim.tbl_filter(function(item)
+			return type(item) == 'string'
+		end, parts),
+		' '
+	)
+end
+
+local function get_filepath_parts()
+	local base = vim.fn.expand '%:~:.:h'
+	local filename = vim.fn.expand '%:~:.:t'
+	local prefix = (vim.fn.empty(base) == 1 or base == '.') and '' or base .. '/'
+
+	return { base, filename, prefix }
+end
 
 -- display lineNoIndicator (from drzel/vim-line-no-indicator)
 local function line_no_indicator()
@@ -25,13 +41,17 @@ local function line_no_indicator()
 	return line_no_indicator_chars[index]
 end
 
+local function firstToUpper(str)
+	return (str:gsub('^%l', string.upper))
+end
+
 ---------------------------------------------------------------------------------
 -- Main functions
 ---------------------------------------------------------------------------------
 
 local function git_info()
 	if not vim.g.loaded_fugitive then
-		return ''
+		return nil
 	end
 
 	local out = vim.fn.FugitiveHead(10)
@@ -40,10 +60,17 @@ local function git_info()
 		out = string.format('%s %s', utils.get_icon 'branch', out)
 	end
 
-	return string.format('%%6* %s %%*', out)
+	return type(out) == 'string'
+			and out ~= ''
+			and string.format('%%6* %s%%*', out)
+		or nil
 end
 
-local function update_filepath_highlights()
+local function filepath()
+	local parts = get_filepath_parts()
+	local prefix = parts[3]
+	local filename = parts[2]
+
 	if vim.bo.modified then
 		hl.group('StatusLineFilePath', { link = 'DiffChange' })
 		hl.group('StatusLineNewFilePath', { link = 'DiffChange' })
@@ -52,28 +79,11 @@ local function update_filepath_highlights()
 		hl.group('StatusLineNewFilePath', { link = 'User4' })
 	end
 
-	return ''
-end
-
-local function get_filepath_parts()
-	local base = vim.fn.expand '%:~:.:h'
-	local filename = vim.fn.expand '%:~:.:t'
-	local prefix = (vim.fn.empty(base) == 1 or base == '.') and '' or base .. '/'
-
-	return { base, filename, prefix }
-end
-
-local function filepath()
-	local parts = get_filepath_parts()
-	local prefix = parts[3]
-	local filename = parts[2]
-
-	update_filepath_highlights()
-
-	local line = string.format('%s%%*%%#StatusLineFilePath#%s', prefix, filename)
+	local line =
+		string.format('%s%%*%%#StatusLineFilePath#%s%%*', prefix, filename)
 
 	if vim.fn.empty(prefix) == 1 and vim.fn.empty(filename) == 1 then
-		line = '%#StatusLineNewFilePath# %f %*'
+		line = '%#StatusLineNewFilePath#%f%%*'
 	end
 
 	return string.format('%%4*%s%%*', line)
@@ -82,7 +92,7 @@ end
 local function readonly()
 	local is_modifiable = vim.bo.modifiable == true
 	local is_readonly = vim.bo.readonly == true
-	local line = ''
+	local line = nil
 
 	if not is_modifiable and is_readonly then
 		line = string.format('%s RO', utils.get_icon 'lock')
@@ -96,7 +106,7 @@ local function readonly()
 		line = utils.get_icon 'lock'
 	end
 
-	return string.format('%%5* %s %%w %%*', line)
+	return line and string.format('%%5* %s %%w %%*', line) or nil
 end
 
 -- Custom `^V` and `^S` symbols to make this file appropriate for copy-paste
@@ -142,7 +152,7 @@ local function mode()
 	local current_mode = vim.api.nvim_get_mode().mode
 
 	if current_mode == 'n' then
-		return ''
+		return nil
 	end
 
 	return MODES[current_mode]
@@ -150,50 +160,50 @@ end
 
 local function rhs()
 	return vim.fn.winwidth(0) > 80
-			and ('%%4* %s %%3l/%%3L:%%-2c %%*'):format(line_no_indicator())
+			and get_parts {
+				'%4*' .. line_no_indicator() .. '%*',
+				'%4*%3l/%3L:%-2c%*',
+			}
 		or line_no_indicator()
 end
 
 local function spell()
 	if vim.wo.spell then
-		return string.format('%%#WarningMsg# %s %%*', utils.get_icon 'spell')
+		return string.format('%%#WarningMsg#%s%%*', utils.get_icon 'spell')
 	end
-	return ''
+	return nil
 end
 
 local function paste()
 	if vim.o.paste then
-		return string.format('%%#ErrorMsg# %s %%*', utils.get_icon 'paste')
+		return string.format('%%#ErrorMsg#%s%%*', utils.get_icon 'paste')
 	end
-	return ''
+	return nil
 end
 
 local function file_info()
-	local line = vim.bo.filetype
-	if vim.bo.fileformat ~= 'unix' then
-		line = string.format('%s %s', line, vim.bo.fileformat)
-	end
+	local data = {
+		vim.bo.filetype,
+		vim.bo.fileformat ~= 'unix' and vim.bo.fileformat or nil,
+		vim.bo.fileencoding ~= 'utf-8' and vim.bo.fileencoding or nil,
+	}
 
-	if vim.bo.fileencoding ~= 'utf-8' then
-		line = string.format('%s %s', line, vim.bo.fileencoding)
-	end
-
-	return string.format('%%4* %s %%*', line)
+	return get_parts(data)
 end
 
 local function word_count()
 	if vim.bo.filetype == 'markdown' or vim.bo.filetype == 'text' then
-		return string.format('%%4* %d %s %%*', vim.fn.wordcount()['words'], 'words')
+		return string.format('%%4*%d %s%%*', vim.fn.wordcount()['words'], 'words')
 	end
 
-	return ''
+	return nil
 end
 
 local function orgmode()
 	return _G.orgmode
 			and type(_G.orgmode.statusline) == 'function'
 			and _G.orgmode.statusline()
-		or ''
+		or nil
 end
 
 local function lsp_diagnostics()
@@ -205,75 +215,47 @@ local function lsp_diagnostics()
 		hints = vim.diagnostic.severity.HINT,
 	}
 
+	local label_mapping = {
+		errors = 'error',
+		warnings = 'warn',
+		hints = 'hint',
+	}
+
 	for k, level in pairs(levels) do
-		count[k] = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
+		local n = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
+		local label = label_mapping[k] or k
+
+		if n ~= 0 then
+			count[k] = string.format(
+				'%%#DiagnosticSign' .. firstToUpper(label) .. '#%s %s%%*',
+				utils.get_icon(label),
+				n
+			)
+		end
 	end
 
-	local errors = ''
-	local warnings = ''
-	local hints = ''
-	local info = ''
-
-	if count.errors ~= 0 then
-		errors = string.format(
-			'%%#DiagnosticSignError#%s %s',
-			utils.get_icon 'error',
-			count.errors
-		)
-	end
-
-	if count.warnings ~= 0 then
-		warnings = string.format(
-			'%%#DiagnosticSignWarn#%s %s',
-			utils.get_icon 'warn',
-			count.warnings
-		)
-	end
-
-	if count.hints ~= 0 then
-		hints = string.format(
-			'%%#DiagnosticSignHint#%s %s',
-			utils.get_icon 'hint',
-			count.hints
-		)
-	end
-
-	if count.info ~= 0 then
-		info = string.format(
-			'%%#DiagnosticSignInfo#%s %s',
-			utils.get_icon 'info',
-			count.info
-		)
-	end
-
-	return string.format(
-		'%s %s %s %s%%*',
-		errors ~= '' and ' ' .. errors or errors,
-		warnings,
-		hints,
-		info
-	)
+	return get_parts(count)
 end
 
 local function git_conflicts()
 	if vim.bo.filetype == 'ministarter' then
-		return ''
+		return nil
 	end
 
 	local ok, git_conflict = pcall(require, 'git-conflict')
 
 	if not ok then
-		return ''
+		return nil
 	end
 
 	local count = git_conflict.conflict_count(0)
 
 	if count == 0 then
-		return ''
+		return nil
 	end
 
 	return string.format(
-		'%%#DiagnosticSignError#%s %s %%*',
+		'%%#DiagnosticSignError#%s%s%%*',
 		utils.get_icon 'conflict',
 		count
 	)
@@ -281,12 +263,12 @@ end
 
 local function copilot()
 	if vim.bo.filetype == 'ministarter' then
-		return ''
+		return nil
 	end
 
 	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
 
-	local highlighted_icon = '%%#MoreMsg#%s%%* '
+	local highlighted_icon = '%%#MoreMsg#%s%%*'
 
 	if ok then
 		return supermaven.is_running()
@@ -294,7 +276,7 @@ local function copilot()
 					highlighted_icon,
 					require('mini.icons').get('lsp', 'supermaven')
 				)
-			or ''
+			or nil
 	end
 
 	return vim.g.loaded_copilot == 1
@@ -302,7 +284,7 @@ local function copilot()
 				highlighted_icon,
 				require('mini.icons').get('lsp', 'copilot')
 			)
-		or ''
+		or nil
 end
 
 ---Mostly taken from https://github.com/MariaSolOs/dotfiles/blob/34c5df39e6576357a2b90e25673e44f4d33afe38/.config/nvim/lua/statusline.lua#L121-L172
@@ -314,26 +296,26 @@ local progress_status = {
 }
 
 local function lsp_progress_component()
-	local lsp_icon = require('mini.icons').get('lsp', 'event')
+	local lsp_icon = require('mini.icons').get('lsp', 'event') .. ' '
 
 	if not progress_status.client or not progress_status.title then
 		local ok, clients = pcall(vim.lsp.get_clients)
 
 		if ok and type(clients) == 'table' and #clients >= 1 then
-			return lsp_icon .. ' '
+			return lsp_icon
 		end
 
-		return ''
+		return nil
 	end
 
 	-- Avoid noisy messages while typing.
 	if vim.startswith(vim.api.nvim_get_mode().mode, 'i') then
-		return ''
+		return nil
 	end
 
 	return string.format(
-		'%s %s %%#DiagnosticSignInfo#%s',
-		'%#DiagnosticSignWarn#' .. lsp_icon .. ' %*',
+		'%s %s %%#DiagnosticSignInfo#%s%%*',
+		'%#DiagnosticSignWarn#' .. lsp_icon .. '%*',
 		progress_status.client,
 		progress_status.title
 	)
@@ -347,13 +329,12 @@ local M = {}
 __.statusline = M
 
 function M.render_active()
-	local line = table.concat {
+	local line = get_parts {
 		filepath(),
 		word_count(),
 		readonly(),
-		'%= ',
+		'%=',
 		mode(),
-		'%*',
 		paste(),
 		spell(),
 		orgmode(),
@@ -366,14 +347,14 @@ function M.render_active()
 	}
 
 	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
-		return table.concat {
-			'%#StatusLineNC# ',
+		return get_parts {
+			'%#StatusLineNC#',
 			filepath(),
 			line,
 		}
 	end
 
-	return table.concat {
+	return get_parts {
 		git_info(),
 		'%<',
 		line,
@@ -381,7 +362,7 @@ function M.render_active()
 end
 
 function M.render_inactive()
-	local line = '%#StatusLineNC#%f%*'
+	local line = '%#StatusLineNC#%f%* '
 
 	return line
 end
