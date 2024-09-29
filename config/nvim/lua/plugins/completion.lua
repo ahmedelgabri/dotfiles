@@ -89,13 +89,13 @@ return {
 				},
 				window = {
 					completion = cmp.config.window.bordered {
-						border = 'rounded',
+						border = utils.get_border(),
 						winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
 						winblend = 0,
 						scrollbar = false,
 					},
 					documentation = cmp.config.window.bordered {
-						border = 'rounded',
+						border = utils.get_border(),
 						winhighlight = 'Nomral:Normal,FloatBorder:Pmenu,Search:None',
 						winblend = 0,
 						scrollbar = false,
