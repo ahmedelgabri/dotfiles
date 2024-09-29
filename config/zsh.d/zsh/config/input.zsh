@@ -2,6 +2,8 @@
 # Editor and input char assignment
 #
 
+stty -ixon # allow C-s and C-q to be used for things
+
 bindkey -v
 
 # Use human-friendly identifiers.
