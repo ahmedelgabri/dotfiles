@@ -24,6 +24,8 @@ clone)
 	echo "gitdir: ./.bare" >.git
 
 	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+	git fetch --all
 	;;
 add)
 	shift
