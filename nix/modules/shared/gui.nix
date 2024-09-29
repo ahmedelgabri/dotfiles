@@ -186,6 +186,7 @@ in
 
                 # @NOTE: I NEED TO REVISE THIS FOR PERSONAL USE
                 settings = {
+                  "accessibility.typeaheadfind.flashBar" = 0;
                   # https://mozilla.github.io/normandy/
                   # Disable Normandy, telemetry study stuff
                   "app.normandy.enabled" = false;
@@ -195,11 +196,15 @@ in
                   "beacon.enabled" = false;
                   "browser.aboutConfig.showWarning" = false;
                   "browser.bookmarks.showMobileBookmarks" = true;
+                  "browser.bookmarks.editDialog.confirmationHintShowCount" = 3;
                   "browser.contentblocking.category" = "strict";
+                  "browser.contentblocking.report.hide_vpn_banner" = true;
                   "browser.ctrlTab.recentlyUsedOrder" = false;
                   "browser.discovery.enabled" = false;
-                  "browser.download.alwaysOpenPanel" = false;
+                  "browser.download.panel.shown" = true;
                   "browser.formfill.enable" = false;
+                  "browser.ml.chat.enabled" = true;
+                  "browser.ml.chat.provider" = "https://claude.ai/new";
                   "browser.newtabpage.activity-stream.feeds.discoverystreamfeed" = false;
                   "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
                   "browser.newtabpage.activity-stream.feeds.snippets" = false;
@@ -220,12 +225,16 @@ in
                   "browser.sessionstore.warnOnQuit" = true;
                   "browser.shell.checkDefaultBrowser" = false;
                   "browser.startup.homepage" = "about:blank";
-                  "browser.tabs.inTitlebar" = 2;
+                  "browser.tabs.inTitlebar" = 1;
+                  "browser.theme.content-theme" = 0;
+                  "browser.theme.toolbar-theme" = 0;
                   "browser.tabs.warnOnClose" = false;
                   "browser.theme.dark-private-windows" = true;
-                  "browser.toolbars.bookmarks.visibility" = "always";
+                  "browser.toolbars.bookmarks.visibility" = "never";
+                  "browser.translations.panelShown" = true;
                   "browser.uidensity" = 0;
                   "browser.urlbar.placeholderName" = "DuckDuckGo";
+                  "browser.urlbar.quicksuggest.scenario" = "history";
                   "browser.urlbar.trimURLs" = false;
                   "browser.urlbar.update" = true;
                   "browser.xul.error_pages.expert_bad_cert" = true;
@@ -233,13 +242,25 @@ in
                   "datareporting.healthreport.service.enabled" = false;
                   "datareporting.healthreport.uploadEnabled" = false;
                   "datareporting.policy.dataSubmissionEnabled" = false;
+                  "devtools.cache.disabled" = true;
+                  "devtools.chrome.enabled" = true;
+                  "devtools.command-button-measure.enabled" = true;
+                  "devtools.command-button-rulers.enabled" = true;
+                  "devtools.custom-formatters.enabled" = true;
+                  "devtools.debugger.features.windowless-service-workers" = true;
+                  "devtools.inspector.showUserAgentStyles" = true;
+                  "devtools.inspector.simple-highlighters.message-dismissed" = true;
+                  "devtools.toolbox.tabsOrder" = "inspector,webconsole,jsdebugger,netmonitor,styleeditor,performance,memory,storage,accessibility,application,dom";
+                  "devtools.webconsole.input.editorOnboarding" = false;
                   "devtools.theme" = "auto";
                   "devtools.toolbox.host" = "bottom";
                   "distribution.searchplugins.defaultLocale" = "en-US";
+                  "doh-rollout.disable-heuristics" = true;
                   "dom.disable_window_move_resize" = true;
                   "dom.forms.autocomplete.formautofill" = false;
                   "dom.payments.defaults.saveAddress" = false;
                   "dom.security.https_only_mode" = true;
+                  "dom.security.https_only_mode_ever_enabled" = true;
                   "dom.storage.next_gen" = true;
                   "extensions.formautofill.addresses.enabled" = false;
                   "extensions.formautofill.available" = "off";
@@ -251,9 +272,13 @@ in
                   "extensions.htmlaboutaddons.recommendations.enabled" = false;
                   "extensions.pocket.enabled" = false;
                   "extensions.webservice.discoverURL" = "";
+                  "findbar.highlightAll" = true;
+                  "font.name.monospace.x-western" = "PragmataPro";
                   "general.useragent.locale" = "en-US";
                   "general.smoothScroll" = false;
                   "identity.fxaccounts.account.device.name" = config.networking.hostName;
+                  "identity.fxaccounts.toolbar.accessed" = true;
+                  "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
                   "privacy.clearOnShutdown.cache" = true;
                   "privacy.clearOnShutdown.cookies" = false;
                   "privacy.clearOnShutdown.downloads" = true;
@@ -262,8 +287,14 @@ in
                   "privacy.clearOnShutdown.sessions" = false;
                   "privacy.donottrackheader.enabled" = true;
                   "privacy.donottrackheader.value" = 1;
+                  "privacy.fingerprintingProtection" = true;
+                  "privacy.fingerprintingProtection.overrides" = "-FontVisibilityBaseSystem,-FontVisibilityLangPack";
+                  "privacy.globalprivacycontrol.enabled" = true;
+                  "privacy.query_stripping.enabled" = true;
+                  "privacy.query_stripping.enabled.pbmode" = true;
                   "privacy.trackingprotection.cryptomining.enabled" = true;
                   "privacy.trackingprotection.enabled" = true;
+                  "privacy.trackingprotection.emailtracking.enabled" = true;
                   "privacy.trackingprotection.fingerprinting.enabled" = true;
                   "privacy.trackingprotection.socialtracking.annotate.enabled" = true;
                   "privacy.trackingprotection.socialtracking.enabled" = true;
@@ -273,13 +304,15 @@ in
                   "privacy.window.name.update.enabled" = true;
                   "reader.color_scheme" = "auto";
                   "services.sync.engine.addons" = true;
+                  "services.sync.engine.creditcards" = false;
                   "services.sync.engine.passwords" = true;
                   "services.sync.engine.prefs" = true;
                   "services.sync.engineStatusChanged.addons" = true;
                   "services.sync.engineStatusChanged.prefs" = true;
-                  "signon.rememberSignons" = true;
+                  "signon.rememberSignons" = false;
                   "signon.autofillForms" = false;
                   "signon.formlessCapture.enabled" = false;
+                  "svg.context-properties.content.enabled" = true;
                   "toolkit.coverage.endpoint.base" = "";
                   "toolkit.coverage.opt-out" = true;
                   "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
