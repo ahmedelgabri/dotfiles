@@ -1,6 +1,6 @@
-{ buildGo121Module }:
+{ buildGoModule }:
 
-buildGo121Module rec {
+buildGoModule rec {
   name = "next-prayer";
   version = "latest";
 
