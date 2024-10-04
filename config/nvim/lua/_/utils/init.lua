@@ -79,8 +79,12 @@ function M.firstToUpper(str)
 	return (str:gsub('^%l', string.upper))
 end
 
-M.is_work_machine = function()
+function M.is_rocket()
 	return vim.fn.hostname() == 'rocket'
+end
+
+function M.is_x86_64()
+	return vim.loop.os_uname().machine == 'x86_64'
 end
 
 function M.get_border(highlight)
