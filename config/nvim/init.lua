@@ -192,6 +192,8 @@ vim.opt.foldcolumn = '0'
 vim.opt.foldlevel = 99
 vim.opt.foldnestmax = 4
 vim.opt.foldmethod = 'expr'
+-- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
+vim.opt.foldtext = ''
 -- So slow on large files?
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
