@@ -1,3 +1,15 @@
+local has_words_before = function()
+	if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
+		return false
+	end
+	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+	return col ~= 0
+		and vim.api
+				.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]
+				:match '^%s*$'
+			== nil
+end
+
 ---@diagnostic disable: missing-fields
 
 return {
@@ -24,6 +36,9 @@ return {
 			local cmp_tailwind = require 'tailwindcss-colorizer-cmp'
 
 			cmp.setup {
+				experimental = {
+					ghost_text = true,
+				},
 				view = {
 					-- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#custom-menu-direction
 					entries = {
@@ -105,7 +120,7 @@ return {
 					completeopt = 'menu,menuone,noinsert',
 				},
 				sources = cmp.config.sources({
-					{ name = 'supermaven' },
+					{ name = utils.is_work_machine() and 'copilot' or 'supermaven' },
 					{ name = 'luasnip' },
 					{ name = 'nvim_lsp' },
 					{ name = 'path' },
@@ -143,20 +158,6 @@ return {
 					end,
 				},
 				mapping = cmp.mapping.preset.insert {
-					-- For copilot
-					['<C-g>'] = cmp.mapping(function(fallback)
-						if vim.fn.exists ':Copilot' ~= 0 then
-							vim.api.nvim_feedkeys(
-								vim.fn['copilot#Accept'](
-									vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
-								),
-								'n',
-								true
-							)
-						else
-							fallback()
-						end
-					end),
 					['<C-n>'] = cmp.mapping.select_next_item {
 						behavior = cmp.SelectBehavior.Insert,
 					},
@@ -182,7 +183,7 @@ return {
 						select = true,
 					},
 					['<Tab>'] = cmp.mapping(function(fallback)
-						if cmp.visible() then
+						if cmp.visible() and has_words_before() then
 							cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
 						elseif luasnip.expand_or_locally_jumpable() then
 							luasnip.expand_or_jump()

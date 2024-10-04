@@ -1,41 +1,72 @@
-local is_work_machine = function()
-	return vim.fn.hostname() == 'rocket'
-end
+local utils = require '_.utils'
+local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
 
 return {
 	{
-		'https://github.com/github/copilot.vim',
-		enabled = is_work_machine(),
-		build = ':Copilot auth',
-		event = 'InsertEnter',
-		init = function()
-			-- https://github.com/orgs/community/discussions/82729#discussioncomment-8098207
-			vim.g.copilot_ignore_node_version = true
-			vim.g.copilot_no_tab_map = true
-			vim.keymap.set(
-				'i',
-				'<Plug>(vimrc:copilot-dummy-map)',
-				'copilot#Accept("")',
-				{ silent = true, expr = true, desc = 'Copilot dummy accept' }
-			)
-		end,
-	},
-	{
-		'https://github.com/supermaven-inc/supermaven-nvim',
-		enabled = not is_work_machine(),
-		event = 'InsertEnter',
-		opts = {
-			keymaps = {
-				accept_suggestion = '<C-g>',
-				ignore_filetypes = {
-					starter = true,
-					dotenv = true,
-				},
-				-- clear_suggestion = '<C-]>',
-				-- accept_word = '<C-j>',
 			},
-			disable_inline_completion = false, -- disables inline completion for use with cmp
-			disable_keymaps = false, -- disables built in keymaps for more manual control
 		},
 	},
+	{
+		'https://github.com/zbirenbaum/copilot.lua',
+		dependencies = {
+			'https://github.com/zbirenbaum/copilot-cmp',
+			opts = {},
+		},
+		enabled = utils.is_rocket(),
+		build = ':Copilot auth',
+		event = 'InsertEnter',
+		opts = {
+			suggestion = { enabled = false },
+			panel = { enabled = false },
+			filetypes = {
+				yaml = true,
+				markdown = true,
+				['*'] = function()
+					if
+						string.match(
+							vim.fs.basename(vim.api.nvim_buf_get_name(0)),
+							'^%.env.*'
+						)
+					then
+						-- disable for .env files
+						return false
+					end
+					return true
+				end,
+			},
+		},
+	},
+	-- https://github.com/supermaven-inc/supermaven-nvim/issues/85
+	-- {
+	-- 	'https://github.com/supermaven-inc/supermaven-nvim',
+	-- 	enabled = not utils.is_rocket(),
+	-- 	event = 'InsertEnter',
+	-- 	opts = {
+	-- 		keymaps = {
+	-- 			accept_suggestion = '<C-g>',
+	-- 			ignore_filetypes = {
+	-- 				ministarter = true,
+	-- 				dotenv = true,
+	-- 				['grug-far'] = true,
+	-- 				['grug-far-history'] = true,
+	-- 				['grug-far-help'] = true,
+	-- 			},
+	-- 			-- clear_suggestion = '<C-]>',
+	-- 			-- accept_word = '<C-j>',
+	-- 		},
+	-- 		condition = function()
+	-- 			local match = vim.bo.filetype == ''
+	-- 				or vim.fn.expand '%:t:r' == '.envrc'
+	-- 				or vim.fn.expand '%:t:r' == '.env'
+	-- 				or vim.tbl_contains(
+	-- 					{ vim.fn.expand '$HOST_CONFIGS/zshrc' },
+	-- 					vim.fn.expand '%'
+	-- 				)
+	--
+	-- 			return match
+	-- 		end,
+	-- 		disable_inline_completion = false, -- disables inline completion for use with cmp
+	-- 		disable_keymaps = false, -- disables built in keymaps for more manual control
+	-- 	},
+	-- },
 }
