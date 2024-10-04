@@ -17,7 +17,6 @@ _: {
       "transmit"
       "jdownloader"
       "signal"
-      "cursor"
     ];
 
     # Requires to be logged in to the AppStore
