@@ -321,6 +321,24 @@ local function lsp_progress_component()
 	)
 end
 
+local function diff_source()
+	local bufnr, source, icon
+	bufnr = vim.api.nvim_get_current_buf()
+	source = vim.b[bufnr].diffCompGit
+
+	if not source then
+		return nil
+	end
+
+	if source == 'git' then
+		icon = require('mini.icons').get('directory', '.github')
+	elseif source == 'codecompanion' then
+		icon = require('mini.icons').get('lsp', 'codecompanion')
+	end
+
+	return icon
+end
+
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -338,6 +356,7 @@ function M.render_active()
 		paste(),
 		spell(),
 		orgmode(),
+		diff_source(),
 		lsp_progress_component(),
 		lsp_diagnostics(),
 		git_conflicts(),
