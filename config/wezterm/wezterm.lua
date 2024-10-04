@@ -68,10 +68,6 @@ config.front_end = 'WebGpu'
 config.freetype_load_flags = 'NO_HINTING'
 -- config.freetype_load_target = 'HorizontalLcd'
 -- config.freetype_render_target = 'HorizontalLcd'
-
--- NOTE: Not sure I like this or not, let's try
-config.window_background_opacity = 0.99
-config.macos_window_background_blur = 30
 --
 -- config.set_environment_variables = {
 -- 	TERMINFO_DIRS = require 'terminfo',
@@ -170,7 +166,7 @@ config.window_frame = {
 	active_titlebar_bg = colors.background,
 	inactive_titlebar_bg = colors.background,
 }
-config.window_decorations = 'RESIZE'
+config.window_decorations = 'RESIZE|MACOS_FORCE_DISABLE_SHADOW'
 config.window_padding = {
 	left = '2cell',
 	right = '2cell',
