@@ -53,15 +53,6 @@ in
           ".config/weechat/perl/autoload/highmon.pl".source =
             "${inputs.weechat-scripts}/perl/highmon.pl";
 
-          ".config/weechat/perl/autoload/iset.pl".source =
-            "${inputs.weechat-scripts}/perl/iset.pl";
-
-          ".config/weechat/perl/autoload/multiline.pl".source =
-            "${inputs.weechat-scripts}/perl/multiline.pl";
-
-          ".config/weechat/python/autoload/autojoin.py".source =
-            "${inputs.weechat-scripts}/python/autojoin.py";
-
           ".config/weechat/python/autoload/bitlbee_completion.py".source =
             "${inputs.weechat-scripts}/python/bitlbee_completion.py";
 
