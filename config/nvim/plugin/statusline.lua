@@ -347,6 +347,20 @@ local M = {}
 __.statusline = M
 
 function M.render_active()
+	if vim.bo.filetype == 'fzf' then
+		return table.concat({
+			'%4*',
+			'fzf',
+			'%6*',
+			'V: ctrl-v',
+			'H: ctrl-s',
+			'Tab: ctrl-t',
+			'%*',
+			'%=',
+			file_info(),
+		}, ' ') .. ' '
+	end
+
 	local line = get_parts {
 		filepath(),
 		word_count(),

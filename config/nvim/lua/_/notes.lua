@@ -34,33 +34,6 @@ function M.note_info(fpath, ...)
 	}
 end
 
--- https://github.com/junegunn/fzf.vim#example-advanced-ripgrep-integration
-function M.search_notes(query, fullscreen)
-	local command_fmt =
-		'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-	local initial_command =
-		string.format(command_fmt, string.gsub(query, query, "'%1'"))
-	local reload_command = string.format(command_fmt, '{q}')
-
-	local opts = {
-		dir = M.get_dir(),
-		options = {
-			'--phony',
-			'--query',
-			query,
-			'--bind',
-			'change:reload:' .. reload_command,
-		},
-	}
-
-	vim.fn['fzf#vim#grep'](
-		initial_command,
-		1,
-		vim.fn['fzf#vim#with_preview'](opts),
-		fullscreen
-	)
-end
-
 function M.open_in_obsidian()
 	local str = string.format(
 		'obsidian://open?path=%s',
