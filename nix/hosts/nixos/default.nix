@@ -37,6 +37,7 @@
   };
 
   nix = {
+    use-xdg-base-directories = true;
     useDaemon = true;
     gc = { dates = "daily"; };
     autoOptimiseStore = true;
