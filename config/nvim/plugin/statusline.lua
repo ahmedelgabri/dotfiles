@@ -83,7 +83,7 @@ local function filepath()
 		string.format('%s%%*%%#StatusLineFilePath#%s%%*', prefix, filename)
 
 	if vim.fn.empty(prefix) == 1 and vim.fn.empty(filename) == 1 then
-		line = '%#StatusLineNewFilePath#%f%%*'
+		line = '%#StatusLineNewFilePath#%f%*'
 	end
 
 	return string.format('%%4*%s%%*', line)
