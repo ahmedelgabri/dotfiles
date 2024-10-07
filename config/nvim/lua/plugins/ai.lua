@@ -20,38 +20,54 @@ return {
 		init = function()
 			vim.cmd [[cab cc CodeCompanion]]
 		end,
-		dependencies = {
-			-- "https://github.com/nvim-lua/plenary.nvim",
-			-- "nvim-treesitter/nvim-treesitter",
-			-- "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
-			-- "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
-			-- { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
-		},
-		opts = {
-			strategies = {
-				chat = {
-					adapter = adapter,
-					roles = {
-						-- llm = 'CodeCompanion', -- The markdown header content for the LLM's responses
-						user = vim.env.USER,
+		config = function()
+			local icon = adapter == 'copilot'
+					and require('mini.icons').get('directory', '.github')
+				or require('mini.icons').get('lsp', 'codecompanion')
+
+			require('codecompanion').setup {
+				strategies = {
+					chat = {
+						adapter = adapter,
+						roles = {
+							llm = icon .. ' ',
+							user = vim.env.USER,
+						},
+						slash_commands = {
+							['buffer'] = {
+								opts = {
+									provider = 'fzf_lua',
+								},
+							},
+							['file'] = {
+								opts = {
+									provider = 'fzf_lua',
+								},
+							},
+							['help'] = {
+								opts = {
+									provider = 'fzf_lua',
+								},
+							},
+						},
+					},
+					inline = {
+						adapter = adapter,
+					},
+					agent = {
+						adapter = adapter,
 					},
 				},
-				inline = {
-					adapter = adapter,
+				display = {
+					diff = {
+						provider = 'mini_diff',
+					},
 				},
-				agent = {
-					adapter = adapter,
-				},
-			},
-			display = {
-				diff = {
-					provider = 'mini_diff',
-				},
-			},
-			-- opts = {
-			-- 	log_level = 'DEBUG',
-			-- },
-		},
+				-- opts = {
+				-- 	log_level = 'DEBUG',
+				-- },
+			}
+		end,
 	},
 	{
 		'https://github.com/zbirenbaum/copilot.lua',

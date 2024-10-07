@@ -120,7 +120,7 @@ return {
 					completeopt = 'menu,menuone,noinsert',
 				},
 				sources = cmp.config.sources({
-					{ name = utils.is_work_machine() and 'copilot' or 'supermaven' },
+					{ name = utils.is_rocket() and 'copilot' or 'supermaven' },
 					{ name = 'luasnip' },
 					{ name = 'nvim_lsp' },
 					{ name = 'path' },
