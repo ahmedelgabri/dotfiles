@@ -83,6 +83,8 @@
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
           nix = {
+            # Disable channels since we are using flakes
+            channel.enable = false;
             nixPath = {
               inherit (inputs) nixpkgs;
               inherit (inputs) darwin;
