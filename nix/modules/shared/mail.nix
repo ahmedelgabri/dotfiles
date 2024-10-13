@@ -1,4 +1,4 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, ... }:
 
 with config.my;
 
@@ -7,6 +7,7 @@ let
   cfg = config.my.modules.mail;
   homeDir = config.my.user.home;
   inherit (config.home-manager.users."${username}") xdg;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
 in
 {
@@ -58,7 +59,7 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (if (builtins.hasAttr "launchd" options) then {
+      (mkIf isDarwin {
         launchd.user.agents."isync" = {
           # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
           # Check `.mail/.notmuch/hooks/`
@@ -77,10 +78,11 @@ in
             };
           };
         };
-      } else
-        {
-          # systemd
-        })
+      })
+
+      (mkIf isLinux {
+        # systemd
+      })
 
       {
         my.user = {

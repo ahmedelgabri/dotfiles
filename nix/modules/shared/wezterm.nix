@@ -1,8 +1,9 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, ... }:
 
 let
 
   cfg = config.my.modules.wezterm;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
 in
 {
@@ -16,28 +17,25 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (if (builtins.hasAttr "homebrew" options) then {
+      (mkIf isDarwin {
         homebrew.casks = [ "wezterm" ];
-      } else {
-        my.user = { packages = with pkgs; [ wezterm ]; };
+      })
+      (mkIf isLinux {
+        my = {
+          user = { packages = with pkgs; [ wezterm ]; };
+          env = {
+            TERMINFO_DIRS = [
+              "${pkgs.wezterm.terminfo}/share/terminfo"
+            ];
+          };
+        };
       })
 
-
       {
-        my.env = {
-          TERMINFO_DIRS = [
-            "${pkgs.wezterm.terminfo}/share/terminfo"
-          ];
-        };
-
         my.hm.file = {
           ".config/wezterm" = {
             recursive = true;
             source = ../../../config/wezterm;
-          };
-
-          ".config/wezterm/terminfo.lua" = {
-            text = ''return "${"${pkgs.wezterm.terminfo}/share/terminfo"}"'';
           };
         };
       }

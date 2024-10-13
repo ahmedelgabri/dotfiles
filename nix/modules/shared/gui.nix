@@ -1,9 +1,9 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, ... }:
 
 let
 
   cfg = config.my.modules.gui;
-  inherit (pkgs.stdenv.hostPlatform) isDarwin;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
 in
 {
@@ -17,19 +17,16 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (if (builtins.hasAttr "homebrew" options) then {
+      (mkIf isDarwin {
         homebrew.taps = [ "homebrew/cask-versions" ];
         homebrew.casks = [
           "1password"
           "raycast"
           "anki"
-          "arc"
           "appcleaner"
           "corelocationcli"
           "brave-browser"
           "firefox"
-          # "google-chrome"
-          "hammerspoon"
           "imageoptim"
           "kap"
           "launchcontrol"
@@ -39,27 +36,24 @@ in
           "zoom"
           "visual-studio-code"
         ];
-
-        my.hm.file = {
-          ".hammerspoon" = {
-            recursive = true;
-            source = ../../../config/.hammerspoon;
-          };
-        };
-      } else {
+      })
+      (mkIf isLinux {
         my.user = {
           packages = with pkgs; [
-            anki
+            # _1password-gui # broken
+            # anki # broken
+            docker
+            firefox
+            # sqlitebrowser
             brave
+            docker
             firefox
             obsidian
-            zoom-us
             signal-desktop
-            vscodium
             slack
-            docker
-            # sqlitebrowser
-            # virtualbox
+            vscode
+            vscodium
+            zoom-us
           ];
         };
       })

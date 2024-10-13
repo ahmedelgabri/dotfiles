@@ -5,7 +5,7 @@
 # - Inline files when possible instead of souring then
 # - User specific shell files are to override or for machine specific setup
 
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, ... }:
 
 let
 
@@ -13,6 +13,7 @@ let
   inherit (config.my.user) home;
   inherit (config.my) hm;
   inherit (config.my) hostConfigHome;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
   local_zshrc = "${hostConfigHome}/zshrc";
 in
@@ -27,7 +28,7 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (if (builtins.hasAttr "launchd" options) then {
+      (mkIf isDarwin {
         launchd.user.agents."ui-mode-notify" = {
           serviceConfig = {
             ProgramArguments = [
@@ -41,10 +42,11 @@ in
             StandardErrorPath = "${home}/Library/Logs/ui-mode-notify-error.log";
           };
         };
-      } else
-        {
-          # systemd
-        })
+      })
+
+      (mkIf isLinux {
+        # systemd
+      })
 
       {
 

@@ -1,8 +1,9 @@
-{ pkgs, lib, config, options, ... }:
+{ pkgs, lib, config, ... }:
 
 let
 
   cfg = config.my.modules.kitty;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
 in
 {
@@ -16,25 +17,35 @@ in
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
-      (if (builtins.hasAttr "homebrew" options) then {
+      (mkIf isDarwin {
         homebrew.casks = [ "kitty" ];
-      } else {
-        my.user = {
-          packages = with pkgs; [
-            kitty
-          ];
+        my = {
+          env = {
+            TERMINFO_DIRS = [
+              "$KITTY_INSTALLATION_DIR/terminfo"
+            ];
+          };
+        };
+      })
+      (mkIf isLinux {
+        my = {
+          user = {
+            packages = with pkgs; [
+              kitty
+            ];
+          };
+
+          env = {
+            TERMINFO_DIRS = [
+              "${pkgs.kitty.terminfo}/share/terminfo"
+            ];
+          };
+
         };
       })
 
       {
         my = {
-          env = {
-            TERMINFO_DIRS = [
-              # "${pkgs.kitty.terminfo}/share/terminfo"
-              "$KITTY_INSTALLATION_DIR/terminfo"
-            ];
-          };
-
           hm.file = {
             ".config/kitty" = {
               recursive = true;
