@@ -115,6 +115,12 @@ in
       programs = {
         # Let Home Manager install and manage itself.
         home-manager.enable = true;
+        man.enable = true;
+      };
+
+      manual = {
+        html.enable = true; # adds home-manager-help
+        manpages.enable = true;
       };
     };
 
