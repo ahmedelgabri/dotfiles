@@ -1,10 +1,7 @@
 hs.ipc.cliInstall() -- Ensure the IPC command line client is available
 hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
-hs.loadSpoon 'SpoonInstall'
 hs.loadSpoon 'EmmyLua'
-
-Install = spoon.SpoonInstall
 
 local layout = require 'layout'
 local utils = require 'utils'
@@ -13,21 +10,17 @@ require 'window-management'
 
 -- layout.layoutWatcher:start()
 
-Install:andUse('Caffeine', {
-	start = true,
-})
+hs.loadSpoon 'Caffeine'
+spoon.Caffeine:start()
 
 local urlDispatcherConfig = {
-	start = true,
 	loglevel = 'debug',
-	config = {
-		default_handler = 'org.mozilla.firefox',
-		decode_slack_redir_urls = true,
-		set_system_handler = true,
-		url_patterns = {
-			-- App links
-			{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
-		},
+	default_handler = 'org.mozilla.firefox',
+	decode_slack_redir_urls = true,
+	set_system_handler = true,
+	url_patterns = {
+		-- App links
+		{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
 	},
 }
 
@@ -37,7 +30,9 @@ if ok and local_config ~= nil then
 	urlDispatcherConfig = utils.deepMerge(urlDispatcherConfig, local_config)
 end
 
-Install:andUse('URLDispatcher', urlDispatcherConfig)
+hs.loadSpoon 'URLDispatcher'
+spoon.URLDispatcher = utils.deepMerge(spoon.URLDispatcher, urlDispatcherConfig)
+spoon.URLDispatcher:start()
 
 --
 -- Auto-reload config on change.

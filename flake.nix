@@ -55,6 +55,11 @@
       url = "github:nix-community/nur";
     };
 
+    spoons = {
+      url = "github:Hammerspoon/Spoons";
+      flake = false;
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

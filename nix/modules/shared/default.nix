@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
@@ -27,6 +27,7 @@
     ./discord.nix
     ./hledger.nix
     ./zk.nix
+    ./hammerspoon.nix
   ];
 
   my.modules = {
@@ -52,6 +53,7 @@
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
     discord.enable = lib.mkDefault true;
+    hammerspoon.enable = lib.mkDefault pkgs.stdenv.isDarwin;
   };
 
 }
