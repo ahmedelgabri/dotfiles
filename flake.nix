@@ -95,7 +95,7 @@
               inherit (inputs) darwin;
               inherit (inputs) home-manager;
             };
-            package = pkgs.nixVersions.git;
+            package = pkgs.nix;
             settings = {
               trusted-users = [ "@admin" ];
               experimental-features = [
