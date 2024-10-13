@@ -18,40 +18,28 @@
     };
     user = {
       packages = with pkgs; [
-        # emacsMacport
         go-task
-        localstack
         graph-easy
         graphviz
         nodePackages.mermaid-cli
-        # emanote
         jira-cli-go
+        git-filter-repo
+        git-lfs
+        git-sizer
+        httpstat
+        k9s
       ];
     };
   };
 
   homebrew = {
     casks = [
-      "temurin" # -> adoptopenjdk8
-      "corretto"
-      "orion"
       "loom"
-      "vagrant"
       "docker"
       "ngrok"
       "figma"
       "visual-studio-code"
       "google-chrome"
-    ];
-
-    brews = [
-      "git-filter-repo"
-      "git-lfs"
-      "git-sizer"
-      "awscli"
-      "k9s"
-      "aws-vault"
-      "httpstat"
     ];
 
     # Requires to be logged in to the AppStore

@@ -9,6 +9,7 @@ _: {
       discord.enable = true;
       hledger.enable = true;
     };
+
   };
 
   homebrew = {
@@ -16,8 +17,10 @@ _: {
       # "arq" # I need a specific version so I will handle it myself.
       "transmit"
       "jdownloader"
+      "brave-browser"
       "signal"
     ];
+
 
     # Requires to be logged in to the AppStore
     # Cleanup doesn't work automatically if you add/remove to list
@@ -32,5 +35,4 @@ _: {
     #   Telegram = 747648890;
     # };
   };
-
 }
