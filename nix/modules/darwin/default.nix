@@ -32,7 +32,6 @@
 
   system = {
     startup.chime = false;
-
     defaults = {
       # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";
       LaunchServices.LSQuarantine = false;
@@ -69,6 +68,8 @@
       };
 
       dock = {
+        # I like an empty dock, I don't use it.
+        persistent-apps = [ ];
         autohide = true;
         autohide-delay = 0.0;
         autohide-time-modifier = 0.0;
