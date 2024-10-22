@@ -215,6 +215,10 @@ in
           # Default is the value of enableCompletion but I want to handle it myself
           # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L76
           enableGlobalCompInit = false;
+          enableBashCompletion = false;
+
+          # I use fast-syntax-highlighting instead of zsh-syntax-highlighting
+          enableSyntaxHighlighting = false;
 
           ########################################################################
           # Instead of sourcing, I can read the files & save startiup time instead
@@ -225,6 +229,7 @@ in
             (map builtins.readFile [
               ../../../config/zsh.d/.zshenv
             ] ++ [
+              /* zsh */
               "fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)"
             ]);
 
@@ -232,17 +237,47 @@ in
           # zshrc
           interactiveShellInit = lib.concatStringsSep "\n"
             ([
+              /* zsh */
               ''
-                # Return if requirements are not found.
-                if [[ $${TERM} == 'dumb' ]]; then
-                  return 1
+                # Enable instant prompt
+                if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
+                  source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
                 fi
 
-                if [[ -r "$${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$${(%):-%n}.zsh" ]]; then
-                  source "$${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$${(%):-%n}.zsh"
-                fi
+                # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
+                autoload -U select-word-style
+                select-word-style bash # only alphanumeric chars are considered WORDCHARS
+
+                autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
               ''
+            ] ++ map builtins.readFile [
+              ../../../config/zsh.d/zsh/config/options.zsh
+              ../../../config/zsh.d/zsh/config/input.zsh
+              ../../../config/zsh.d/zsh/config/completion.zsh
+              ../../../config/zsh.d/zsh/config/aliases.zsh
+              "${pkgs.fzf}/share/fzf/completion.zsh"
+              "${pkgs.fzf}/share/fzf/key-bindings.zsh"
+              "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+              "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+            ] ++ [
+              /* zsh */
               ''
+                # I have to source this file instead of reading it because it depends on reading files in its own directory
+                # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
+                #
+                # It must be sourced before history-substring-search https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#usage
+                source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
+
+                # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
+                unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
+
+                # bind UP and DOWN keys
+                bindkey '^[[A' history-substring-search-up
+                bindkey '^[[B' history-substring-search-down
+                # In vi mode
+                bindkey -M vicmd 'k' history-substring-search-up
+                bindkey -M vicmd 'j' history-substring-search-down
+
                 # Note that this will only ensure unique history if we supply a prefix
                 # before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
                 # won't prevent dupes from appearing when just hitting "up" without a
@@ -251,44 +286,19 @@ in
                 # case.
                 #
                 # https://superuser.com/a/1494647/322531
-                export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+                HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
                 # For speed:
                 # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
-                export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-                export ZSH_AUTOSUGGEST_USE_ASYNC="true"
-                export ZSH_AUTOSUGGEST_STRATEGY=("match_prev_cmd" "completion")
+                ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+                ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
 
-                # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
-                autoload -U select-word-style
-                select-word-style bash # only alphanumeric chars are considered WORDCHARS
-
-                # bind UP and DOWN keys
-                bindkey "$${terminfo[kcuu1]}" history-substring-search-up
-                bindkey "$${terminfo[kcud1]}" history-substring-search-down
-
-                # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
-                unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
-
-                # I have to source this file instead of reading it because it depends on reading files in its own directory
-                # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
+                # This breaks p10k instant prompt if I inline the file, but sourcing works fine
+                source "${pkgs.grc}/etc/grc.zsh"
               ''
-            ] ++ map builtins.readFile [
-              ../../../config/zsh.d/zsh/config/options.zsh
-              ../../../config/zsh.d/zsh/config/input.zsh
-              ../../../config/zsh.d/zsh/config/completion.zsh
-              ../../../config/zsh.d/zsh/config/aliases.zsh
-              "${pkgs.grc}/etc/grc.zsh"
-              "${pkgs.fzf}/share/fzf/completion.zsh"
-              "${pkgs.fzf}/share/fzf/key-bindings.zsh"
-              "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-              "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-              ../../../config/zsh.d/.zshrc
-            ] ++ [
-              ''source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"''
+              (builtins.readFile ../../../config/zsh.d/.zshrc)
               (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
             ]);
-
 
           promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
         };

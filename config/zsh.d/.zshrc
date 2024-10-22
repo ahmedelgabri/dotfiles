@@ -28,20 +28,7 @@ export HISTSIZE=1000000
 export SAVEHIST="$HISTSIZE"
 export HISTFILE="${XDG_DATA_HOME}/.zsh_history"
 
-autoload -Uz compinit && compinit -C -d "$ZCOMPDUMP_PATH"
-
 ############### Misc
-if [[ "$OSTYPE" = "darwin"* ]]; then
-  # For context https://github.com/github/hub/pull/1962
-  # I run in the background to not affect startup time.
-  # https://github.com/ahmedelgabri/dotfiles/commit/c8156c2f0cf74917392a0e700668005b8f1bbbdb#r33940655
-  (
-    if [ -e /usr/local/share/zsh/site-functions/_git ]; then
-      command mv -f /usr/local/share/zsh/site-functions/{,disabled.}_git
-    fi
-  ) &!
-fi
-
 eval "$(direnv hook zsh)"
 eval "$(zoxide init zsh --hook pwd)"
 
