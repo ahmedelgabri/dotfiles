@@ -307,7 +307,7 @@ print_status() {
   elif ((output_zsh)); then
     printf "%%B%s%s %s" "$COLOR" "$BATT_PCT%" "$GRAPH"
   else
-    printf "\e[0;%sm%s %s \e[m\n" "$COLOR" "$BATT_PCT%" "$GRAPH"
+    printf "\e[0;%sm%s %s \e[0m\n" "$COLOR" "$BATT_PCT%" "$GRAPH"
   fi
 }
 
