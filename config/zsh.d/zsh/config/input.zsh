@@ -2,7 +2,9 @@
 # Editor and input char assignment
 #
 
-stty -ixon # allow C-s and C-q to be used for things
+if [ -t 0 ]; then
+	stty -ixon # allow C-s and C-q to be used for things
+fi
 
 bindkey -v
 
