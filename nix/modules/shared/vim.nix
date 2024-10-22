@@ -62,6 +62,7 @@ in
           nil # nix lsp
           actionlint
           taplo # TOML linter and formatter
+          selene # Lua linter
           # neovim luarocks support requires lua 5.1
           # https://github.com/folke/lazy.nvim/issues/1570#issuecomment-2194329169
           lua51Packages.luarocks

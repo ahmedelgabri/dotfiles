@@ -1,14 +1,15 @@
+[selene]
+base = 'lua51'
+name = 'neovim'
+
 # neovim
 [vim]
 any = true
 
-[_]
+[__]
 any = true
 
-[packer_plugins]
-any = true
-
-[jit]
+[MiniStarter]
 any = true
 
 # hammerspoon
@@ -16,4 +17,8 @@ any = true
 any = true
 
 [hs]
+any = true
+
+# WezTerm
+[wezterm]
 any = true

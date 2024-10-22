@@ -215,8 +215,8 @@ return {
 					sources = {
 						-- nixlinter,
 						nls.builtins.diagnostics.hadolint,
-						nls.builtins.diagnostics.vint,
 						nls.builtins.diagnostics.statix,
+						nls.builtins.diagnostics.selene,
 						nls.builtins.diagnostics.dotenv_linter.with {
 							filetypes = { 'dotenv' },
 							extra_args = { '--skip', 'UnorderedKey' },
