@@ -104,6 +104,7 @@ return {
 						or defaults.defaults.files.cmd,
 					actions = {
 						['ctrl-g'] = false,
+						['default'] = actions.file_edit,
 					},
 				},
 				grep = {
