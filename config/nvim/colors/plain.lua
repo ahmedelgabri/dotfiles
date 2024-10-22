@@ -495,6 +495,7 @@ highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
 -- Winbar
 highlight('WinBar', { bg = nil, fg = 'NvimLightGrey4' })
+highlight('WinBarNC', { link = 'WinBar' })
 
 -- FzfLua
 highlight('FzfLuaBorder', { link = 'Comment' })
