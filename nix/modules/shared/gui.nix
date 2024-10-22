@@ -25,7 +25,6 @@ in
           "anki"
           "appcleaner"
           "corelocationcli"
-          "brave-browser"
           "firefox"
           "imageoptim"
           "kap"
