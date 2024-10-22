@@ -190,6 +190,7 @@ in
                   "browser.aboutConfig.showWarning" = false;
                   "browser.bookmarks.showMobileBookmarks" = true;
                   "browser.bookmarks.editDialog.confirmationHintShowCount" = 3;
+                  "browser.compactmode.show" = true;
                   "browser.contentblocking.category" = "strict";
                   "browser.contentblocking.report.hide_vpn_banner" = true;
                   "browser.ctrlTab.recentlyUsedOrder" = false;
@@ -209,6 +210,7 @@ in
                   "browser.newtabpage.enabled" = false;
                   "browser.ping-centre.telemetry" = false;
                   "browser.privatebrowsing.forceMediaMemoryCache" = true;
+                  "browser.profiles.enabled" = true;
                   "browser.safebrowsing.downloads.remote.enabled" = false;
                   "browser.safebrowsing.downloads.remote.url" = "";
                   "browser.search.countryCode" = "US";
@@ -226,6 +228,8 @@ in
                   "browser.toolbars.bookmarks.visibility" = "never";
                   "browser.translations.panelShown" = true;
                   "browser.uidensity" = 0;
+                  "browser.urlbar.suggest.calculator" = true;
+                  "browser.urlbar.unitConversion.enabled" = true;
                   "browser.urlbar.placeholderName" = "DuckDuckGo";
                   "browser.urlbar.quicksuggest.scenario" = "history";
                   "browser.urlbar.trimURLs" = false;
