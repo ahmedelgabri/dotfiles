@@ -1,8 +1,10 @@
 local au = require '_.utils.au'
+local utils = require '_.utils'
 
 return {
 	{
 		'https://github.com/echasnovski/mini.icons',
+		event = utils.LazyFile,
 		config = function()
 			local test_icon = ''
 			local js_table = { glyph = test_icon, hl = 'MiniIconsYellow' }
@@ -156,7 +158,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.indentscope',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			-- disable in some buffers
 			au.autocmd {
@@ -189,21 +191,21 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.pairs',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			require('mini.pairs').setup {}
 		end,
 	},
 	{
 		'https://github.com/echasnovski/mini.ai',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			require('mini.ai').setup {}
 		end,
 	},
 	{
 		'https://github.com/echasnovski/mini.surround',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			require('mini.surround').setup {
 				mappings = {
@@ -242,14 +244,14 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.trailspace',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			require('mini.trailspace').setup {}
 		end,
 	},
 	{
 		'https://github.com/echasnovski/mini.hipatterns',
-		event = 'BufReadPost',
+		event = utils.LazyFile,
 		config = function()
 			local hipatterns = require 'mini.hipatterns'
 
@@ -289,7 +291,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.diff',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			require('mini.diff').setup {
 				view = {
@@ -305,7 +307,7 @@ return {
 	},
 	{
 		'https://github.com/echasnovski/mini.clue',
-		event = 'VeryLazy',
+		event = utils.LazyFile,
 		config = function()
 			local miniclue = require 'mini.clue'
 

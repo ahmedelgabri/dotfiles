@@ -146,7 +146,7 @@ au.autocmd {
 
 return {
 	'https://github.com/neovim/nvim-lspconfig',
-	event = { 'BufReadPre' },
+	event = utils.LazyFile,
 	dependencies = {
 		{
 			'https://github.com/SmiteshP/nvim-navic',
