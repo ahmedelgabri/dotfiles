@@ -93,6 +93,7 @@ typeset -gU cdpath fpath mailpath manpath path
 ##############################################################
 
 path=(
+  ${GHOSTTY_BIN_DIR}(N-/)
   ${ZDOTDIR}/bin
   ${HOME}/.local/bin(N-/)
   # ${CARGO_HOME}/bin(N-/)

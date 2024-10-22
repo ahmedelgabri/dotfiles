@@ -1,0 +1,41 @@
+cursor-color=#20bbfc
+foreground=#c5c8c6
+background=#111111
+selection-foreground=#000000
+selection-background=#FFFACD
+
+# The 16 terminal colors. There are 8 basic colors, each color has a dull and
+# bright version. You can also set the remaining colors from the 256 color table
+# as color16 to color256.
+
+# black
+palette = 0=#1d1f21
+palette = 8=#333333
+
+# red
+palette = 1=#cc6666
+palette = 9=#f2777a
+
+# green
+palette = 2=#b5bd68
+palette = 10=#99cc99
+
+# yellow
+palette = 3=#f0c674
+palette = 11=#ffcc66
+
+# blue
+palette = 4=#81a2be
+palette = 12=#6699cc
+
+# magenta
+palette = 5=#b294bb
+palette = 13=#cc99cc
+
+# cyan
+palette = 6=#8abeb7
+palette = 14=#66cccc
+
+# white
+palette = 7=#c5c8c6
+palette = 15=#dddddd

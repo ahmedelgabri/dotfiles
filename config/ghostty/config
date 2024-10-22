@@ -1,0 +1,26 @@
+font-family = PragmataPro Liga
+font-family-bold = PragmataPro Liga
+font-family-italic = PragmataPro Liga
+font-family-bold-italic = PragmataPro Liga
+font-size = 12
+font-thicken = true
+theme = mine
+cursor-style = block
+cursor-style-blink = true
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+click-repeat-interval = 500
+confirm-close-surface = false
+shell-integration-features = no-cursor,no-sudo,title
+macos-window-shadow = false
+
+# Doesn't work with window-decoration = false
+# But works with macos-non-native-fullscreen = true
+# But then it appears behind the notch, which I don't like much
+# So I have to exit fullscreen and maximise it manually.
+#
+# Not perfect but works.
+fullscreen = true
+macos-non-native-fullscreen = true
+window-decoration = false
