@@ -166,6 +166,10 @@
                   withEmacs = false;
                 };
 
+                neomutt = prev.neomutt.override {
+                  enableLua = true;
+                };
+
                 # Nixpkgs is outdated
                 zsh-completions = prev.zsh-completions.overrideAttrs (oldAttrs: rec{
                   version = "master";
