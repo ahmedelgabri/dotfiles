@@ -114,6 +114,8 @@ return {
 						winhighlight = 'Nomral:Normal,FloatBorder:Pmenu,Search:None',
 						winblend = 0,
 						scrollbar = false,
+						max_width = 0,
+						max_height = 0,
 					},
 				},
 				completion = {
