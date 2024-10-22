@@ -31,6 +31,9 @@ application/zip)
 application/x-tar | application/gzip)
 	tar tf "$FILE"
 	;;
+inode/directory)
+	eza --color=always --tree --group-directories-first "$FILE"
+	;;
 *)
 	file --brief "$FILE"
 	;;
