@@ -11,23 +11,15 @@ local screens = {
 -- Apps
 --
 
-local apps = {
-	'brave',
-	'chrome',
-	'orion',
-	'slack',
-	'twitter',
-	'terminal',
-	'discord',
+local appMap = {
+	'com.google.Chrome',
+	'org.mozilla.firefox',
+	'com.tinyspeck.slackmacgap',
+	'com.google.Chrome.app.lodlkdfmihgonocnmddehnfgiljnadcf', -- X  Chrome App
+	'net.kovidgoyal.kitty',
+	'com.github.wez.wezterm',
+	'com.hnc.Discord',
 }
-
-local appMap = {}
-
-for _, app in pairs(apps) do
-	if hs.application.get(app) ~= nil then
-		appMap[app] = hs.application(app):bundleID()
-	end
-end
 
 ---
 -- Screen watcher
