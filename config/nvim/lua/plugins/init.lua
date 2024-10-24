@@ -1,5 +1,3 @@
-local utils = require '_.utils'
-
 return {
 	{
 		'https://github.com/tpope/tpope-vim-abolish',
@@ -8,7 +6,7 @@ return {
 	{ 'https://github.com/tpope/vim-repeat' },
 	{
 		'https://github.com/wincent/loupe',
-		event = utils.LazyFile,
+		event = 'VeryLazy',
 		init = function()
 			vim.g.LoupeClearHighlightMap = 0
 
