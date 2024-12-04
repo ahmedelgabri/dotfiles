@@ -327,7 +327,7 @@ return {
 					},
 				},
 			},
-			ruff_lsp = {
+			ruff = {
 				init_options = {
 					settings = {},
 				},
