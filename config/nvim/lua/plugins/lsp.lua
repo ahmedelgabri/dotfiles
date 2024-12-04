@@ -173,7 +173,7 @@ return {
 			},
 			opts = {
 				single_file_support = false,
-				handlers = shared.handlers,
+				handlers = handlers,
 				root_dir = function()
 					return not vim.fs.root(
 						0,
