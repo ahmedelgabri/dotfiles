@@ -147,6 +147,14 @@ fzf-preview = "bat -p --color always {-1}"
 #
 [lsp]
 
+[lsp.completion]
+# Show the note title in the completion pop-up, or fallback on its path if empty.
+note-label = "{{title-or-path}}"
+# Filter out the completion pop-up using the note title or its path or its metadata.
+note-filter-text = "{{title}} {{path}} {{metadata}}"
+# Show the note filename without extension as detail.
+note-detail = "{{filename-stem}}"
+
 [lsp.diagnostics]
 # Each diagnostic can have for value: none, hint, info, warning, error
 
