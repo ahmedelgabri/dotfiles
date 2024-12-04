@@ -73,6 +73,44 @@ in
             SHELL = "${pkgs.zsh}/bin/zsh";
             CDPATH = ".:~:~/Sites";
           };
+
+          shellAliases = lib.mkMerge [
+            {
+              cp = "cp -iv";
+              ln = "ln -iv";
+              mv = "mv -iv";
+              rm = "rm -i";
+              mkdir = "mkdir -p";
+              sudo = "sudo ";
+              type = "type -a";
+              c = "clear ";
+              df = "df -kh";
+              du = "du -kh";
+              emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
+              fd = "${pkgs.fd}/bin/fd --hidden ";
+              flushdns = "sudo killall -HUP mDNSResponder";
+              fs = "stat -f '%z bytes'";
+              history-stat = "fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head";
+              history = "fc -il 1";
+              jobs = "jobs -l ";
+              play = "mx ϟ";
+              y = "yarn";
+              p = "pnpm";
+              top = "${pkgs.htop}/bin/htop";
+              ls = "l";
+              ll = "${pkgs.eza}/bin/eza --tree --group-directories-first --almost-all -I 'node_modules' ";
+              formatJSON = "${pkgs.jq}/bin/jq .";
+              cat = "${pkgs.bat}/bin/bat ";
+              grep = "grep --color=auto";
+              get = "${pkgs.wget}/bin/wget --continue --progress=bar --timestamping";
+            }
+
+            (lib.mkIf isLinux {
+              chmod = "chmod --preserve-root -v";
+              chown = "chown --preserve-root -v";
+            })
+          ];
+
           systemPackages = with pkgs;
             (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++
             # Packages broken on Intel
@@ -254,7 +292,6 @@ in
               ../../../config/zsh.d/zsh/config/options.zsh
               ../../../config/zsh.d/zsh/config/input.zsh
               ../../../config/zsh.d/zsh/config/completion.zsh
-              ../../../config/zsh.d/zsh/config/aliases.zsh
               "${pkgs.fzf}/share/fzf/completion.zsh"
               "${pkgs.fzf}/share/fzf/key-bindings.zsh"
               "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
