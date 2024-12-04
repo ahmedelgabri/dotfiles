@@ -291,6 +291,13 @@
         ))
         linuxHosts;
 
+      formatter = forAllSystems (system:
+        let
+          pkgs = inputs.nixpkgs.legacyPackages.${system};
+        in
+        pkgs.nixpkgs-fmt
+      );
+
       # @TODO: move the logic inside ./install here
       devShells = forAllSystems (system:
         let
@@ -313,7 +320,7 @@
         });
     in
     {
-      inherit darwinConfigurations nixosConfigurations devShells;
+      inherit darwinConfigurations nixosConfigurations devShells formatter;
     } // mapHosts
       # for convenience
       # nix build './#darwinConfigurations.pandoras-box.system'

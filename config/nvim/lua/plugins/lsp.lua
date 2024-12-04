@@ -343,17 +343,9 @@ return {
 						eelixir = 'html-eex',
 						['javascript.jsx'] = 'javascriptreact',
 						['typescript.tsx'] = 'typescriptreact',
+						['javascript.jest'] = 'javascriptreact',
+						['typescript.jest'] = 'typescriptreact',
 					},
-				},
-				handlers = {
-					['tailwindcss/getConfiguration'] = function(_, _, context)
-						-- tailwindcss lang server waits for this response before providing hover
-						vim.lsp.buf_notify(
-							context.bufnr,
-							'tailwindcss/getConfigurationResponse',
-							{ _id = context.params._id }
-						)
-					end,
 				},
 			},
 			lua_ls = {
@@ -498,16 +490,37 @@ return {
 			},
 			ast_grep = {},
 			jsonls = {
-				filetypes = { 'json', 'jsonc' },
 				settings = {
 					json = {
-						schemas = require('schemastore').json.schemas {},
 						validate = { enable = true },
+						format = { enable = true },
+					},
+				},
+				-- Lazy-load schemas.
+				on_new_config = function(config)
+					config.settings.json.schemas = config.settings.json.schemas or {}
+					vim.list_extend(
+						config.settings.json.schemas,
+						require('schemastore').json.schemas {}
+					)
+				end,
+			},
+			taplo = {
+				settings = {
+					-- Use the defaults that the VSCode extension uses: https://github.com/tamasfe/taplo/blob/2e01e8cca235aae3d3f6d4415c06fd52e1523934/editors/vscode/package.json
+					taplo = {
+						configFile = { enabled = true },
+						schema = {
+							enabled = true,
+							catalogs = { 'https://www.schemastore.org/api/json/catalog.json' },
+							cache = {
+								memoryExpiration = 60,
+								diskExpiration = 600,
+							},
+						},
 					},
 				},
 			},
-			-- TOML
-			taplo = {},
 			yamlls = {
 				settings = {
 					yaml = {
