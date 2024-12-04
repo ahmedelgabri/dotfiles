@@ -282,9 +282,8 @@ return {
 				local cmds = require 'zk.commands'
 			end,
 		},
-		{
-			'https://github.com/b0o/SchemaStore.nvim',
-		},
+		{ 'https://github.com/b0o/SchemaStore.nvim' },
+		{ 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
 	},
 	config = function()
 		-- for debugging
