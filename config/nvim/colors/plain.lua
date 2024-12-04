@@ -105,7 +105,7 @@ local themes = {
 	},
 }
 
-local colors = themes[vim.opt.background:get()] or themes.dark
+local colors = themes[vim.o.background] or themes.dark
 
 -- __Normal__
 highlight('Normal', { fg = colors.norm, bg = colors.bg })
