@@ -290,10 +290,20 @@ return {
 
 		-- require('vim.lsp.log').set_level 'debug'
 		-- require('vim.lsp.log').set_format_func(vim.inspect)
+		local web_roots =
+			vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
 
 		local servers = {
-			cssls = {},
-			html = {},
+			cssls = {
+				root_dir = function()
+					return web_roots
+				end,
+			},
+			html = {
+				root_dir = function()
+					return web_roots
+				end,
+			},
 			bashls = {},
 			dockerls = {},
 			clojure_lsp = {},
