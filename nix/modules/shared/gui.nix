@@ -33,6 +33,8 @@ in {
           "sync"
           "zoom"
           "visual-studio-code"
+          "whatsapp"
+          "telegram"
           "zen-browser"
         ];
       })
