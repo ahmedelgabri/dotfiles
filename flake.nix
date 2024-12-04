@@ -230,7 +230,7 @@
       # https://nixos.org/manual/nixos/stable/index.html#sec-upgrading
       system.stateVersion =
         if pkgs.stdenv.isDarwin
-        then 4
+        then 5
         else "24.05"; # Did you read the comment?
 
       home-manager.users."${config.my.username}" = {
