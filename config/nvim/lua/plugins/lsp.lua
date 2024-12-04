@@ -1,6 +1,4 @@
-local au = require '_.utils.au'
 local utils = require '_.utils'
-local map_opts = { buffer = true, silent = true }
 
 local capabilities =
 	vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
@@ -24,129 +22,11 @@ if pcall(require, 'cmp_nvim_lsp') then
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 end
 
--- Globally override borders
--- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-
----@diagnostic disable-next-line: duplicate-set-field
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-	opts = opts or {}
-	opts.border = opts.border or utils.get_border()
-	return orig_util_open_floating_preview(contents, syntax, opts, ...)
-end
-
 local shared = {
 	capabilities = capabilities,
 	flags = {
 		debounce_text_changes = 150,
 	},
-}
-
-local mappings = {
-	{
-		{ 'n' },
-		'<leader>a',
-		vim.lsp.buf.code_action,
-		{ desc = 'Code [A]ctions' },
-	},
-	{
-		{ 'n' },
-		'<leader>f',
-		vim.lsp.buf.references,
-		{ desc = 'Show Re[f]erences' },
-	},
-	{
-		{ 'n' },
-		'<leader>r',
-		vim.lsp.buf.rename,
-		{ desc = '[R]ename Symbol' },
-	},
-	{
-		{ 'n' },
-		'<leader>D',
-		vim.lsp.buf.declaration,
-		{ desc = 'Go to [D]eclaration' },
-	},
-	{
-		{ 'n' },
-		'<leader>i',
-		vim.lsp.buf.implementation,
-		{ desc = 'Go to [I]mplementation' },
-	},
-}
-
-au.autocmd {
-	event = 'LspAttach',
-	desc = 'LSP actions',
-	callback = function(event)
-		local client = vim.lsp.get_client_by_id(event.data.client_id)
-
-		if client == nil then
-			return
-		end
-
-		-- ---------------
-		-- GENERAL
-		-- ---------------
-		client.flags.allow_incremental_sync = true
-
-		-- ---------------
-		-- MAPPINGS
-		-- ---------------
-		for _, item in ipairs(mappings) do
-			local extra_opts = table.remove(item, 4)
-			local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
-
-			table.insert(item, 4, merged_opts)
-
-			local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
-
-			vim.keymap.set(modes, lhs, rhs, opts)
-		end
-
-		-- ---------------
-		-- AUTOCMDS
-		-- ---------------
-		--
-		if
-			client.supports_method(
-				vim.lsp.protocol.Methods.textDocument_documentHighlight
-			)
-		then
-			local group = '__LSP_HIGHLIGHTS__'
-			vim.api.nvim_create_augroup(group, {
-				clear = false,
-			})
-			vim.api.nvim_clear_autocmds {
-				buffer = event.buf,
-				group = group,
-			}
-			vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-				group = group,
-				buffer = event.buf,
-				callback = vim.lsp.buf.document_highlight,
-			})
-			vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-				group = group,
-				buffer = event.buf,
-				callback = vim.lsp.buf.clear_references,
-			})
-		end
-
-		if
-			client.supports_method(vim.lsp.protocol.Methods.textDocument_codeLens)
-		then
-			au.augroup('__LSP_CODELENS__', {
-				{
-					event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-					callback = function()
-						vim.lsp.codelens.refresh { bufnr = event.buf }
-					end,
-					buffer = event.buf,
-				},
-			})
-		end
-	end,
 }
 
 return {
@@ -293,6 +173,131 @@ return {
 
 		-- require('vim.lsp.log').set_level 'debug'
 		-- require('vim.lsp.log').set_format_func(vim.inspect)
+		local au = require '_.utils.au'
+		local map_opts = { buffer = true, silent = true }
+
+		-- Globally override borders
+		-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
+		local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+
+		---@diagnostic disable-next-line: duplicate-set-field
+		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+			opts = opts or {}
+			opts.border = opts.border or utils.get_border()
+			return orig_util_open_floating_preview(contents, syntax, opts, ...)
+		end
+
+		au.autocmd {
+			event = 'LspAttach',
+			desc = 'LSP actions',
+			callback = function(event)
+				local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+				if client == nil then
+					return
+				end
+
+				-- ---------------
+				-- GENERAL
+				-- ---------------
+				client.flags.allow_incremental_sync = true
+
+				-- ---------------
+				-- MAPPINGS
+				-- ---------------
+				for _, item in ipairs {
+					{
+						{ 'n' },
+						'<C-]>',
+						vim.lsp.buf.code_action,
+						{ desc = 'Go to Definition' },
+					},
+					{
+						{ 'n' },
+						'<leader>a',
+						vim.lsp.buf.code_action,
+						{ desc = 'Code [A]ctions' },
+					},
+					{
+						{ 'n' },
+						'<leader>f',
+						vim.lsp.buf.references,
+						{ desc = 'Show Re[f]erences' },
+					},
+					{
+						{ 'n' },
+						'<leader>r',
+						vim.lsp.buf.rename,
+						{ desc = '[R]ename Symbol' },
+					},
+					{
+						{ 'n' },
+						'<leader>D',
+						vim.lsp.buf.declaration,
+						{ desc = 'Go to [D]eclaration' },
+					},
+					{
+						{ 'n' },
+						'<leader>i',
+						vim.lsp.buf.implementation,
+						{ desc = 'Go to [I]mplementation' },
+					},
+				} do
+					local extra_opts = table.remove(item, 4)
+					local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
+
+					table.insert(item, 4, merged_opts)
+
+					local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
+
+					vim.keymap.set(modes, lhs, rhs, opts)
+				end
+
+				-- ---------------
+				-- AUTOCMDS
+				-- ---------------
+				--
+				if
+					client.supports_method(
+						vim.lsp.protocol.Methods.textDocument_documentHighlight
+					)
+				then
+					local group = '__LSP_HIGHLIGHTS__'
+					vim.api.nvim_create_augroup(group, {
+						clear = false,
+					})
+					vim.api.nvim_clear_autocmds {
+						buffer = event.buf,
+						group = group,
+					}
+					vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+						group = group,
+						buffer = event.buf,
+						callback = vim.lsp.buf.document_highlight,
+					})
+					vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+						group = group,
+						buffer = event.buf,
+						callback = vim.lsp.buf.clear_references,
+					})
+				end
+
+				if
+					client.supports_method(vim.lsp.protocol.Methods.textDocument_codeLens)
+				then
+					au.augroup('__LSP_CODELENS__', {
+						{
+							event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
+							callback = function()
+								vim.lsp.codelens.refresh { bufnr = event.buf }
+							end,
+							buffer = event.buf,
+						},
+					})
+				end
+			end,
+		}
+
 		local web_roots =
 			vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
 
