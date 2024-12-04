@@ -43,6 +43,11 @@ get_wifi_ssid() {
 	local ssid
 	ssid=$(networksetup -getairportnetwork en0 | awk -F ": " '{print $2}')
 
+	if [ -z "$ssid" ]; then
+		# Sequoia has a bug with networksetup command. But the following works
+		ssid=$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')
+	fi
+
 	echo -n "$ssid"
 }
 
