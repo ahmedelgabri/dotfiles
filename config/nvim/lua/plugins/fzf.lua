@@ -78,7 +78,7 @@ return {
 					preview = {
 						winopts = {
 							number = false,
-							cursorline = false,
+							cursorline = true,
 						},
 					},
 					on_create = function()
