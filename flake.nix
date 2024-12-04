@@ -65,6 +65,7 @@
   outputs = {self, ...} @ inputs: let
     darwinHosts = {
       "pandoras-box" = "x86_64-darwin";
+      "alcantara" = "aarch64-darwin";
       "rocket" = "aarch64-darwin";
     };
 
