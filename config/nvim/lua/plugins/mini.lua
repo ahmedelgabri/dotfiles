@@ -244,6 +244,7 @@ return {
 				'fixme',
 				{ 'warn', 'hack' },
 				{ 'bug', 'fixme' },
+				{ 'fix', 'fixme' },
 				{ 'xxx', 'fixme' },
 			} do
 				local w = type(word) == 'table' and word[1] or word
@@ -252,8 +253,8 @@ return {
 				comments[w] = {
 					-- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
 					pattern = {
-						string.format('()@?%s%%s?:?.*()$', w),
-						string.format('()@?%s%%s?:?.*()$', w:upper()),
+						'%f[%w]()' .. w .. '()%f[%W]',
+						'%f[%w]()' .. w:upper() .. '()%f[%W]',
 					},
 					group = highlight_if_ts_capture(
 						'comment',
