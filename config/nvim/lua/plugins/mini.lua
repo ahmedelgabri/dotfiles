@@ -66,6 +66,7 @@ return {
 						return
 					end
 
+					---@diagnostic disable-next-line: undefined-global
 					Snacks.dashboard.open()
 				end,
 				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
