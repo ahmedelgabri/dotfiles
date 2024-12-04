@@ -34,15 +34,11 @@ get_session() {
 	echo "$1" | awk -F"/" '{print $NF}'
 }
 
-# tmux 1.9a+ doesn't like .'s in session names
-get_tmux_session_name() {
-	get_session "${1//./_}"
-}
-
 SESSION="$(get_session "${1:-$(pwd)}")"
-TMUX_SESSION_NAME="$(get_tmux_session_name "$SESSION")"
+# tmux 1.9a+ doesn't like .'s in session names
+TMUX_SESSION_NAME="${SESSION//./_}"
 
-if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
+if ! (tmux has-session -t "$SESSION" &>/dev/null); then
 	mx-init
 
 	WORKINGDIR=""
