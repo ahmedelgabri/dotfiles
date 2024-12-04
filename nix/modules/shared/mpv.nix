@@ -21,7 +21,7 @@ in
       })
 
       {
-        # my.user = { packages = with pkgs; [ mpv ]; };
+        my.user = { packages = with pkgs; [ mpv ]; };
         my.hm.file = {
           ".config/mpv" = {
             recursive = true;

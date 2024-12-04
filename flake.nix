@@ -40,11 +40,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-
-    # https://github.com/NixOS/nixpkgs/issues/327836#issuecomment-2292084100
-    darwin-nixpkgs.url = "github:nixos/nixpkgs?rev=2e92235aa591abc613504fde2546d6f78b18c0cd";
-
-
     weechat-scripts = {
       url = "github:weechat/scripts";
       flake = false;
@@ -112,17 +107,11 @@
                 "https://cache.nixos.org"
                 "https://nix-community.cachix.org"
                 "https://nixpkgs.cachix.org"
-                "https://srid.cachix.org"
-                "https://nix-linter.cachix.org"
-                "https://statix.cachix.org"
               ];
               trusted-public-keys = [
                 "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
                 "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
                 "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
-                "srid.cachix.org-1:MTQ6ksbfz3LBMmjyPh0PLmos+1x+CdtJxA/J2W+PQxI="
-                "nix-linter.cachix.org-1:BdTne5LEHQfIoJh4RsoVdgvqfObpyHO5L0SCjXFShlE="
-                "statix.cachix.org-1:Z9E/g1YjCjU117QOOt07OjhljCoRZddiAm4VVESvais="
               ];
               # Recommended when using `direnv` etc.
               keep-derivations = true;
@@ -210,16 +199,6 @@
                   ];
                 });
               })
-
-              # fix for swift 8
-              # https://github.com/NixOS/nixpkgs/issues/327836#issuecomment-2292084100
-              (final: prev:
-                let
-                  pkgsDarwin = import inputs.darwin-nixpkgs { inherit (prev) system; };
-                in
-                prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
-                  inherit (pkgsDarwin) swift;
-                })
             ];
           };
 
