@@ -66,6 +66,10 @@ in {
         echo ":: -> Running weechat activationScript..."
         # Handle mutable configs
 
+        if [ ! -e "${home}/.config/weechat" ]; then
+          mkdir -p "${home}/.config/weechat"
+        fi
+
         if [ ! -e "${home}/.config/weechat/irc.conf" ]; then
           echo "Linking weechat/irc.conf..."
           ln -sf ${home}/.dotfiles/config/weechat/irc.conf ${home}/.config/weechat/irc.conf
