@@ -139,8 +139,104 @@ return {
 		event = utils.LazyFile,
 		config = function()
 			local hipatterns = require 'mini.hipatterns'
+			local color_icon = utils.get_icon 'info' .. ' '
 
-			local highlighters = {}
+			local function highlight_if_ts_capture(capture, hl_group)
+				return function(buf_id, _match, data)
+					local captures = vim.treesitter.get_captures_at_pos(
+						buf_id,
+						data.line - 1,
+						data.from_col - 1
+					)
+
+					local pred = function(t)
+						return t.capture == capture
+					end
+
+					local not_in_capture = vim.tbl_isempty(vim.tbl_filter(pred, captures))
+
+					if not_in_capture then
+						return nil
+					end
+
+					return hl_group
+				end
+			end
+
+			-- Returns hex color group for matching short hex color.
+			--
+			---@param match string
+			---@return string
+			local function get_hex_short(match)
+				local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
+				local hex = string.format('#%s%s%s%s%s%s', r, r, g, g, b, b)
+				return hex
+			end
+
+			-- Returns hex color group for matching rgb() color.
+			--
+			---@param match string
+			---@return string
+			local function rgb_color(match)
+				local red, green, blue = match:match 'rgb%((%d+), ?(%d+), ?(%d+)%)'
+				local hex = string.format('#%02x%02x%02x', red, green, blue)
+				return hex
+			end
+
+			-- Returns hex color group for matching rgba() color
+			-- or false if alpha is nil or out of range.
+			-- The use of the alpha value refers to a black background.
+			--
+			---@param match string
+			---@return string|false
+			local function rgba_color(match)
+				local red, green, blue, alpha =
+					match:match 'rgba%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)'
+				alpha = tonumber(alpha)
+				if alpha == nil or alpha < 0 or alpha > 1 then
+					return false
+				end
+				local hex = string.format(
+					'#%02x%02x%02x',
+					red * alpha,
+					green * alpha,
+					blue * alpha
+				)
+
+				return hex
+			end
+
+			-- Returns extmark opts for highlights with virtual inline text.
+			--
+			---@param data table Includes `hl_group`, `full_match` and more.
+			---@return table
+			local function extmark_opts_inline(_, _, data)
+				return {
+					virt_text = { { color_icon, data.hl_group } },
+					virt_text_pos = 'inline',
+					-- priority = 200,
+					right_gravity = false,
+				}
+			end
+
+			local function get_highlight(cb)
+				return function(_, match)
+					local style = 'fg' -- 'fg' or 'bg', for extmark_opts_inline use 'fg'
+					return hipatterns.compute_hex_color_group(cb(match), style)
+				end
+			end
+
+			local function censor_extmark_opts(_, match, _)
+				local mask = string.rep('*', vim.fn.strchars(match))
+				return {
+					virt_text = { { mask, 'Comment' } },
+					virt_text_pos = 'overlay',
+					priority = 200,
+					right_gravity = false,
+				}
+			end
+
+			local comments = {}
 			for _, word in ipairs {
 				'todo',
 				'note',
@@ -153,23 +249,59 @@ return {
 				local w = type(word) == 'table' and word[1] or word
 				local hl = type(word) == 'table' and word[2] or word
 
-				highlighters[w] = {
+				comments[w] = {
 					-- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
 					pattern = {
-						string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w),
-						string.format('%%f[%%w]()@?%s%%s?:?()%%f[%%W]', w:upper()),
+						string.format('()@?%s%%s?:?.*()$', w),
+						string.format('()@?%s%%s?:?.*()$', w:upper()),
 					},
-					group = string.format(
-						'MiniHipatterns%s',
-						hl:sub(1, 1):upper() .. hl:sub(2)
+					group = highlight_if_ts_capture(
+						'comment',
+						string.format('MiniHipatterns%s', hl:sub(1, 1):upper() .. hl:sub(2))
 					),
 				}
 			end
 
+			local secrets = {
+				pattern = {
+					'_TOKEN=()%S+()',
+					'_PASSWORD=()%S+()',
+					'_SECRET=()%S+()',
+					'_KEY=()%S+()',
+					'pass ()%S+()',
+				},
+				group = '',
+				extmark_opts = censor_extmark_opts,
+			}
+
 			hipatterns.setup {
-				highlighters = vim.tbl_extend('force', highlighters, {
+				highlighters = vim.tbl_extend('force', comments, {
 					-- Highlight hex color strings (`#rrggbb`) using that color
-					hex_color = hipatterns.gen_highlighter.hex_color(),
+					hex_color = hipatterns.gen_highlighter.hex_color {
+						style = 'inline',
+						inline_text = color_icon,
+					},
+					-- `#rgb`
+					hex_color_short = {
+						pattern = '#%x%x%x%f[%X]',
+						group = get_highlight(get_hex_short),
+						extmark_opts = extmark_opts_inline,
+					},
+					-- `rgb(255, 255, 255)`
+					rgb_color = {
+						pattern = 'rgb%(%d+, ?%d+, ?%d+%)',
+						group = get_highlight(rgb_color),
+						extmark_opts = extmark_opts_inline,
+					},
+					-- `rgba(255, 255, 255, 0.5)`
+					rgba_color = {
+						pattern = 'rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)',
+						group = get_highlight(rgba_color),
+						extmark_opts = extmark_opts_inline,
+					},
+
+					-- Mask tokens and password
+					tokens = secrets,
 				}),
 			}
 		end,
