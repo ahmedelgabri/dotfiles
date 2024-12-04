@@ -102,7 +102,7 @@ in
           user = {
             shell = pkgs.zsh;
             packages = with pkgs; [
-              _1password # CLI
+              _1password-cli
               bat
               # buku
               difftastic
