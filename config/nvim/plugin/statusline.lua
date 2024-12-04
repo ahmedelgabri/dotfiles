@@ -361,6 +361,18 @@ function M.render_active()
 		}, ' ') .. ' '
 	end
 
+	if vim.bo.filetype == 'oil' then
+		return table.concat({
+			git_info(),
+			(function()
+				local path = vim.fn.expand '%'
+				path = path:gsub('oil://', '')
+
+				return vim.fn.fnamemodify(path, ':.')
+			end)(),
+		}, ' ') .. ' '
+	end
+
 	local line = get_parts {
 		filepath(),
 		word_count(),
@@ -436,6 +448,11 @@ au.augroup('MyStatusLine', {
 		event = { 'WinEnter', 'BufEnter' },
 		pattern = '*',
 		callback = function()
+			if vim.bo.filetype == 'oil' then
+				vim.o.laststatus = 0
+				return
+			end
+			vim.o.laststatus = 2
 			vim.opt_local.statusline = '%!v:lua.__.statusline.render_active()'
 		end,
 	},
@@ -443,6 +460,11 @@ au.augroup('MyStatusLine', {
 		event = { 'WinLeave', 'BufLeave' },
 		pattern = '*',
 		callback = function()
+			if vim.bo.filetype == 'oil' then
+				vim.o.laststatus = 0
+				return
+			end
+			vim.o.laststatus = 2
 			vim.opt_local.statusline = '%!v:lua.__.statusline.render_inactive()'
 		end,
 	},

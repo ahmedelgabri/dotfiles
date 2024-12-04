@@ -15,6 +15,7 @@ return {
 		},
 		config = function()
 			local detail = false
+
 			require('oil').setup {
 				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 				-- Set to false if you still want to use netrw.
@@ -25,6 +26,7 @@ return {
 				delete_to_trash = true,
 				win_options = {
 					cursorline = true,
+					winbar = '%!v:lua.__.statusline.render_active()',
 				},
 				keymaps = {
 					['gd'] = {
