@@ -90,7 +90,6 @@ return {
 			'https://github.com/folke/lazydev.nvim',
 			dependencies = {
 				{ 'https://github.com/Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
-				{ 'https://github.com/justinsgithub/wezterm-types' },
 			},
 			ft = 'lua',
 			enabled = function(root_dir)
@@ -100,7 +99,6 @@ return {
 			end,
 			opts = {
 				library = {
-					{ path = 'wezterm-types', mods = { 'wezterm' } },
 					{
 						path = vim.env.HOME
 							.. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',

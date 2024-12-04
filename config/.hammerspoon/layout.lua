@@ -17,7 +17,7 @@ local appMap = {
 	'com.tinyspeck.slackmacgap',
 	'com.google.Chrome.app.lodlkdfmihgonocnmddehnfgiljnadcf', -- X  Chrome App
 	'net.kovidgoyal.kitty',
-	'com.github.wez.wezterm',
+	'com.mitchellh.ghostty',
 	'com.hnc.Discord',
 }
 

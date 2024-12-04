@@ -11,7 +11,6 @@
     ./ssh.nix
     ./git.nix
     ./kitty.nix
-    ./wezterm.nix
     ./bat.nix
     ./yazi.nix
     ./mpv.nix
@@ -39,7 +38,6 @@
     ssh.enable = lib.mkDefault true;
 
     kitty.enable = lib.mkDefault true;
-    wezterm.enable = lib.mkDefault true;
     bat.enable = lib.mkDefault true;
     yazi.enable = lib.mkDefault true;
     mpv.enable = lib.mkDefault true;

@@ -18,7 +18,3 @@ any = true
 
 [hs]
 any = true
-
-# WezTerm
-[wezterm]
-any = true
