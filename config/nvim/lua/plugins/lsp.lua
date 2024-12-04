@@ -114,26 +114,17 @@ return {
 		{
 			'https://github.com/zk-org/zk-nvim',
 			event = 'LspAttach',
+			cmd = { 'Zk', 'ZkToggle', 'ZkNotes' },
 			config = function()
 				require('zk').setup {
 					picker = 'fzf_lua',
 					lsp = {
 						-- `config` is passed to `vim.lsp.start_client(config)`
-						config = vim.tbl_deep_extend('force', shared, {
-							-- cmd = { 'zk', 'lsp', '--log', '/tmp/zk-lsp.log' },
-							cmd = { 'zk', 'lsp' },
-							name = 'zk',
-							-- root_dir = nvim_lsp.util.path.dirname,
-						}),
-
-						auto_attach = {
-							enabled = true,
-							filetypes = { 'markdown' },
-						},
+						config = vim.tbl_deep_extend('force', shared, {}),
 					},
 				}
 
-				local cmds = require 'zk.commands'
+				-- local cmds = require 'zk.commands'
 			end,
 		},
 		{ 'https://github.com/b0o/SchemaStore.nvim' },
