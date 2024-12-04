@@ -77,7 +77,7 @@
         autohide-time-modifier = 0.0;
         dashboard-in-overlay = true;
         expose-animation-duration = 0.1;
-        expose-group-by-app = false;
+        expose-group-apps = false;
         launchanim = false;
         mineffect = "genie";
         minimize-to-application = true;
