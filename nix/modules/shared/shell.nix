@@ -185,7 +185,7 @@ in
         system.activationScripts.postUserActivation.text = ''
           echo ":: -> Running shell activationScript..."
           if [ ! -e "${local_zshrc}" ]; then
-          	mkdir -p $(dirname "${local_zshrc}")
+          	mkdir -p "$(dirname "${local_zshrc}")"
 
             cat > ${local_zshrc}<< EOF
           	# vim:ft=zsh:
