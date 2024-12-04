@@ -117,14 +117,19 @@ return {
 	-- 			-- clear_suggestion = '<C-]>',
 	-- 			-- accept_word = '<C-j>',
 	-- 		},
+	-- 		-- Disable supermaven on condition https://github.com/supermaven-inc/supermaven-nvim/pull/58
 	-- 		condition = function()
 	-- 			local match = vim.bo.filetype == ''
-	-- 				or vim.fn.expand '%:t:r' == '.envrc'
-	-- 				or vim.fn.expand '%:t:r' == '.env'
-	-- 				or vim.tbl_contains(
-	-- 					{ vim.fn.expand '$HOST_CONFIGS/zshrc' },
-	-- 					vim.fn.expand '%'
-	-- 				)
+	-- 				-- Disable on .env files
+	-- 				or (vim.fn.expand '%:t:r'):match '^.env.*' ~= nil
+	-- 				-- Disable on ZSH shell files
+	-- 				or (vim.fn.expand '%:t'):match '^.?zsh.*' ~= nil
+	-- 				-- Disable on all shell files
+	-- 				or vim.tbl_contains({
+	-- 					'sh',
+	-- 					'bash',
+	-- 					'zsh',
+	-- 				}, vim.bo.filetype)
 	--
 	-- 			return match
 	-- 		end,
