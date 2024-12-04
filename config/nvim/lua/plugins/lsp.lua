@@ -209,19 +209,34 @@ return {
 					{
 						{ 'n' },
 						'<C-]>',
-						vim.lsp.buf.code_action,
+						function()
+							require('fzf-lua').lsp_definitions {
+								-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
+								jump_to_single_result = true,
+								jump_to_single_result_action = require('fzf-lua.actions').file_vsplit,
+							}
+						end,
 						{ desc = 'Go to Definition' },
 					},
 					{
 						{ 'n' },
 						'<leader>a',
-						vim.lsp.buf.code_action,
+						function()
+							require('fzf-lua').lsp_code_actions {}
+						end,
 						{ desc = 'Code [A]ctions' },
 					},
 					{
 						{ 'n' },
 						'<leader>f',
-						vim.lsp.buf.references,
+						function()
+							require('fzf-lua').lsp_references {
+								-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
+								ignore_current_line = true,
+								-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-declaration
+								-- includeDeclaration = false
+							}
+						end,
 						{ desc = 'Show Re[f]erences' },
 					},
 					{
@@ -233,13 +248,13 @@ return {
 					{
 						{ 'n' },
 						'<leader>D',
-						vim.lsp.buf.declaration,
+						require('fzf-lua').lsp_declarations,
 						{ desc = 'Go to [D]eclaration' },
 					},
 					{
 						{ 'n' },
 						'<leader>i',
-						vim.lsp.buf.implementation,
+						require('fzf-lua').lsp_implementations,
 						{ desc = 'Go to [I]mplementation' },
 					},
 				} do

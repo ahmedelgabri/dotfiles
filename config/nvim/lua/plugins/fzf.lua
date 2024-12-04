@@ -133,17 +133,6 @@ return {
 					cmd = log_cmd(defaults.defaults.git.bcommits.cmd, '{file}'),
 				},
 				-- These can only be set inline?
-				-- lsp_definitions = {
-				-- 	-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
-				-- 	jump_to_single_result = true,
-				-- 	jump_to_single_result_action = require('fzf-lua.actions').file_vsplit,
-				-- },
-				-- lsp_references = {
-				-- 	-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
-				-- 	ignore_current_line = true,
-				-- 	-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-declaration
-				-- 	-- includeDeclaration = false
-				-- },
 				-- lsp_document_symbols = {
 				-- 	-- https://github.com/ibhagwan/fzf-lua/wiki#disable-or-hide-filename-fuzzy-search
 				-- 	fzf_cli_args = '--nth 2..',
