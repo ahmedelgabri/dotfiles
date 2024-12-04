@@ -338,7 +338,11 @@ return {
 			eslint = {},
 			ruff = {
 				init_options = {
-					settings = {},
+					settings = {
+						configurationPreference = 'filesystemFirst',
+						fixAll = true,
+						organizeImports = true,
+					},
 				},
 			},
 			-- marksman = {},

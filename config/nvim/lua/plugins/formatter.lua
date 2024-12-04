@@ -105,7 +105,9 @@ return {
 				less = { 'prettier' },
 				graphql = { 'prettier' },
 				lua = { 'stylua' },
-				python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
+				-- Ideally I'd use the LSP for this, but I'd lose organize imports and the autofix
+				-- https://github.com/astral-sh/ruff/issues/12778#issuecomment-2279374570
+				python = { 'ruff_fix', 'ruff_organize_imports', lsp_format = 'first' },
 				go = {
 					-- this will run gofmt too
 					-- I'm using this instead of LSP format because it cleans up imports too
