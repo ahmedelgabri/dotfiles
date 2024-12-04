@@ -246,9 +246,9 @@ vim.o.directory =
 vim.o.updatetime = 250
 
 if root then
-	vim.o.undofile = false -- don't create root-owned files
+	vim.opt.undofile = false -- don't create root-owned files
 else
-	vim.o.undofile = true -- actually use undo files
+	vim.opt.undofile = true -- actually use undo files
 	vim.opt.undodir:append '.'
 end
 
