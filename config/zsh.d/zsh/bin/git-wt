@@ -8,6 +8,12 @@ if [[ -n "${DEUBG-}" ]]; then
 	CMD="echo git"
 fi
 
+get_worktree_branch() {
+	# We get grep for the worktree name, then we extract the branch name from the result
+	# Because a worktree name is not always the branch name
+	git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g'
+}
+
 case $1 in
 # This is an extra command that I added to handle cloning a repo and setting it
 # up as a worktree
@@ -50,13 +56,28 @@ remove | rm)
 				git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' {2} --
 			"
 	fi
-	# We get grep for the worktree name, then we extract the branch name from the result
-	# Because a worktree name is not always the branch name
-	# We do this _BEFORE_ we remove the worktree, otherwise we won't be able to get the branch name
-	BRANCH_TO_DELETE=$(git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g')
 
-	$CMD worktree remove -f "$@"
+	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
+
+	$CMD worktree remove -f "$1"
 	$CMD branch -D "$BRANCH_TO_DELETE"
+	;;
+# Same as remove, but this time we also delete the branch from remote
+destroy)
+	shift
+
+	printf "Are you sure you want to destroy %s? [y/N]: " "$1"
+	read -r CONFIRMATION
+
+	if [[ "$CONFIRMATION" != "y" ]]; then
+		exit 1
+	fi
+
+	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
+
+	$CMD worktree remove -f "$1"
+	$CMD branch -D "$BRANCH_TO_DELETE"
+	$CMD push origin --delete "$BRANCH_TO_DELETE"
 	;;
 list | lock | unlock | move | prune | repair)
 	$CMD worktree "$@"
