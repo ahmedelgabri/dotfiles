@@ -114,18 +114,24 @@ au.autocmd {
 				vim.lsp.protocol.Methods.textDocument_documentHighlight
 			)
 		then
-			au.augroup('__LSP_HIGHLIGHTS__', {
-				{
-					event = { 'CursorHold', 'CursorHoldI' },
-					callback = vim.lsp.buf.document_highlight,
-					buffer = event.buf,
-				},
-				{
-					event = { 'CursorMoved', 'CursorMovedI' },
-					callback = vim.lsp.buf.clear_references,
-					buffer = event.buf,
-				},
-			}, { clear = false })
+			local group = '__LSP_HIGHLIGHTS__'
+			vim.api.nvim_create_augroup(group, {
+				clear = false,
+			})
+			vim.api.nvim_clear_autocmds {
+				buffer = event.buf,
+				group = group,
+			}
+			vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+				group = group,
+				buffer = event.buf,
+				callback = vim.lsp.buf.document_highlight,
+			})
+			vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+				group = group,
+				buffer = event.buf,
+				callback = vim.lsp.buf.clear_references,
+			})
 		end
 
 		if
