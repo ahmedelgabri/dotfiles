@@ -27,8 +27,8 @@ alias p="pnpm"
 (( $+commands[htop] )) && alias top=htop
 
 if (( $+commands[eza] )); then
-  alias ls="eza "
-  alias ll='eza --tree --group-directories-first -I "node_modules" '
+  alias ls="l"
+  alias ll='eza --tree --group-directories-first --almost-all -I "node_modules" '
 elif (( $+commands[tree] )); then
   alias ll="tree --dirsfirst -a -L 1 || l -d .*/ */ "
   alias tree='tree -I  "node_modules" '
