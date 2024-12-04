@@ -25,10 +25,6 @@ in
           gcc # Required for treesitter parsers
         ]);
 
-      environment.shellAliases = {
-        e = "${pkgs.neovim-unwrapped}/bin/nvim --listen /tmp/nvim.pipe";
-      };
-
       my.env = {
         EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
         VISUAL = "$EDITOR";

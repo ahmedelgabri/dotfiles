@@ -16,11 +16,6 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      environment.shellAliases = {
-        # https://github.com/direnv/direnv/wiki/Tmux
-        tmux = "${pkgs.direnv}/bin/direnv exec / ${pkgs.tmux}/bin/tmux";
-      };
-
       my.user = {
         packages = with pkgs; [
           tmux
