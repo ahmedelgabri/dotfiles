@@ -34,6 +34,7 @@ in
           "sync"
           "zoom"
           "visual-studio-code"
+          "zen-browser"
         ];
       })
       (mkIf isLinux {
