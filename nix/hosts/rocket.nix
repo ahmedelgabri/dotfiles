@@ -18,7 +18,6 @@
     };
     user = {
       packages = with pkgs; [
-        go-task
         graph-easy
         graphviz
         nodePackages.mermaid-cli
@@ -40,6 +39,10 @@
       "figma"
       "visual-studio-code"
       "google-chrome"
+    ];
+
+    brews = [
+      "go-task"
     ];
 
     # Requires to be logged in to the AppStore
