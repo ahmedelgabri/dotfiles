@@ -27,7 +27,7 @@ return {
 					copilot = { glyph = '', hl = 'MiniIconsOrange' },
 					supermaven = { glyph = '', hl = 'MiniIconsYellow' },
 					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
-					codecompanion = { glyph = '', hl = 'MiniIconsGrey' },
+					codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
 				},
 				directory = {
 					['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
