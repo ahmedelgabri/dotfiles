@@ -34,8 +34,31 @@ end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
-	virtual_lines = true,
 	virtual_text = false,
+	-- virtual_text = {
+	-- 	-- source = 'always',
+	-- 	spacing = 2,
+	-- 	prefix = '', -- Could be '●', '▎', 'x'
+	-- 	format = function(diagnostic)
+	-- 		local source = diagnostic.source
+	--
+	-- 		if source then
+	-- 			local icon =
+	-- 				utils.get_icon(vim.diagnostic.severity[diagnostic.severity]:lower())
+	--
+	-- 			return string.format(
+	-- 				'%s %s %s',
+	-- 				icon,
+	-- 				source,
+	-- 				'['
+	-- 					.. (diagnostic.code ~= nil and diagnostic.code or diagnostic.message)
+	-- 					.. ']'
+	-- 			)
+	-- 		end
+	--
+	-- 		return string.format('%s ', diagnostic.message)
+	-- 	end,
+	-- },
 	float = {
 		source = 'if_many',
 		focusable = false,

@@ -128,7 +128,7 @@ return {
 			end,
 		},
 		{ 'https://github.com/b0o/SchemaStore.nvim' },
-		{ 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', opts = {} },
+		{ 'https://github.com/rachartier/tiny-inline-diagnostic.nvim', opts = {} },
 	},
 	config = function()
 		-- for debugging
