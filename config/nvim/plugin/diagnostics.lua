@@ -1,16 +1,5 @@
 local utils = require '_.utils'
 
--- globally override borders
--- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-
----@diagnostic disable-next-line: duplicate-set-field
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-	opts = opts or {}
-	opts.border = opts.border or utils.get_border()
-	return orig_util_open_floating_preview(contents, syntax, opts, ...)
-end
-
 -- wrap open_float to inspect diagnostics and use the severity color for border
 -- https://neovim.discourse.group/t/lsp-diagnostics-how-and-where-to-retrieve-severity-level-to-customise-border-color/1679
 vim.diagnostic.open_float = (function(orig)
