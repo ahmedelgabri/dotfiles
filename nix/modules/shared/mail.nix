@@ -460,11 +460,11 @@ in {
               Channel ${cfg.account}-inbox
               Channel ${cfg.account}-archive
               Channel ${cfg.account}-drafts
-              ${lib.optionalString (cfg.keychain.name == "gmail.com") ''Channel ${cfg.account}-starred''}
               Channel ${cfg.account}-sent
               Channel ${cfg.account}-spam
               Channel ${cfg.account}-trash
               Channel ${cfg.account}-folders
+              ${lib.optionalString (cfg.keychain.name == "gmail.com") ''Channel ${cfg.account}-starred''}
 
               # For doing a quick sync of just the INBOX with `mbsync ${
                 lib.toLower cfg.account
