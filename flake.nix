@@ -31,7 +31,6 @@
       url = "github:zhaofengli-wip/nix-homebrew";
       inputs = {
         nix-darwin.follows = "darwin";
-        flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -69,7 +68,7 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = { self, flake-utils, ... }@inputs:
+  outputs = { self, ... }@inputs:
     let
       darwinHosts = {
         "pandoras-box" = "x86_64-darwin";
