@@ -306,7 +306,6 @@ return {
 			},
 			bashls = {},
 			dockerls = {},
-			clojure_lsp = {},
 			eslint = {},
 			pyright = {
 				settings = {
