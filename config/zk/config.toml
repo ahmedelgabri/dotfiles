@@ -98,6 +98,11 @@ template = "journal.md"
 [group.personal.note]
 template = "personal.md"
 
+[group.til]
+
+[group.til.note]
+template = "til.md"
+
 # MARKDOWN SETTINGS
 [format.markdown]
 
@@ -237,3 +242,6 @@ rfc = 'zk new work --template rfc.md --title "$*"'
 # Personal
 j = 'zk new --no-input journal'
 p = 'zk new --no-input personal --title "$*"'
+
+# TIL
+til = 'zk new --no-input til --title "$*"'
