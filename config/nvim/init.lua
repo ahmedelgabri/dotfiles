@@ -124,7 +124,6 @@ vim.o.mouse = 'a'
 -- More natural splitting
 vim.o.splitbelow = true
 vim.o.splitright = true
-vim.o.cmdheight = 0
 
 -- Ignore case in search.
 vim.o.ignorecase = true
