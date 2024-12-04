@@ -13,7 +13,7 @@ return {
 			},
 		},
 		build = function()
-			vim.cmd [[Lazy load markdown-preview.nvim]]
+			require('lazy').load { plugins = { 'markdown-preview.nvim' } }
 			vim.fn['mkdp#util#install']()
 		end,
 	},
