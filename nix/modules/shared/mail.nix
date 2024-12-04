@@ -352,7 +352,8 @@ in
           };
 
           ".mbsyncrc" = {
-            text = ''# ${nix_managed}
+            text = ''
+              # ${nix_managed}
               # Settings for isync, a program to synchronise IMAP mailboxes
               # This file defines the synchronisation for two accounts, Personal and Work
               # The remote for each account is a server somewhere, and the local is a folder
@@ -453,11 +454,8 @@ in
               Group ${lib.toLower cfg.account}
               Channel ${cfg.account}-inbox
               Channel ${cfg.account}-archive
-              Channel ${cfg.account}-drafts ${
-                lib.optionalString (cfg.keychain.name == "gmail.com") ''
-
-                  Channel ${cfg.account}-starred''
-              }
+              Channel ${cfg.account}-drafts
+              ${lib.optionalString (cfg.keychain.name == "gmail.com") ''Channel ${cfg.account}-starred''}
               Channel ${cfg.account}-sent
               Channel ${cfg.account}-spam
               Channel ${cfg.account}-trash
