@@ -25,4 +25,5 @@ fullscreen = true
 macos-non-native-fullscreen = true
 window-decoration = false
 
+macos-option-as-alt = left
 keybind = global:super+space=toggle_quick_terminal
