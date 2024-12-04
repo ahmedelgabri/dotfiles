@@ -15,7 +15,7 @@ end
 
 require '_'
 
-local au = require '_.utils.au'
+local utils = require '_.utils'
 
 local root = vim.env.USER == 'root'
 
@@ -317,7 +317,11 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup('plugins', {
+require('lazy').setup {
+	spec = {
+		{ import = 'plugins' },
+	},
+	---@diagnostic disable-next-line: assign-type-mismatch
 	dev = {
 		-- directory where you store your local plugin projects
 		path = '~/Sites/personal/forks',
@@ -325,24 +329,34 @@ require('lazy').setup('plugins', {
 		patterns = { 'ahmedelgabri' }, -- For example {"folke"}
 		fallback = true, -- Fallback to git when local plugin doesn't exist
 	},
-	rtp = {
-		-- Stuff I don't use.
-		disabled_plugins = {
-			'getscript',
-			'getscriptPlugin',
-			'netrw',
-			'netrwPlugin',
-			'rplugin',
-			'rrhelper',
-			'tohtml',
-			'tutor',
-			'vimball',
-			'vimballPlugin',
+	ui = {
+		border = utils.get_border(),
+		backdrop = 0,
+	},
+	performance = {
+		rtp = {
+			-- Stuff I don't use.
+			disabled_plugins = {
+				'getscript',
+				'getscriptPlugin',
+				'netrw',
+				'netrwPlugin',
+				'rplugin',
+				'rrhelper',
+				'tohtml',
+				'tutor',
+				'vimball',
+				'vimballPlugin',
+			},
 		},
 	},
 	-- Don't bother me when tweaking plugins.
 	change_detection = { notify = false },
-})
+	profiling = {
+		-- Track each new require in the Lazy profiling tab
+		require = true,
+	},
+}
 
 -------------------------------------------------------------------------------
 -- OVERRIDES {{{1
