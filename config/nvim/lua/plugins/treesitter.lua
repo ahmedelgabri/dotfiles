@@ -1,6 +1,8 @@
+local utils = require '_.utils'
+
 return {
 	'https://github.com/nvim-treesitter/nvim-treesitter',
-	event = { 'BufReadPost' },
+	event = utils.LazyFile,
 	build = ':TSUpdate',
 	dependencies = {
 		{

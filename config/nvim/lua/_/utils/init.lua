@@ -102,4 +102,8 @@ function M.get_border(highlight)
 	}
 end
 
+-- Event for buffer loaded
+-- See https://github.com/LazyVim/LazyVim/discussions/1583
+M.LazyFile = { 'BufReadPost', 'BufNewFile', 'BufWritePre' }
+
 return M
