@@ -3,6 +3,7 @@ local fmt = string.format
 
 -- Look at first line of `package.config` for directory separator.
 -- See: http://www.lua.org/manual/5.2/manual.html#pdf-package.config
+-- selene: allow(incorrect_standard_library_use)
 local separator = string.match(package.config, '^[^\n]')
 
 -- Search in Lua `package.path` locations.
@@ -34,6 +35,7 @@ local search_runtimepath = function(fname, ext)
 end
 
 -- Global function that searches the path for the required file
+-- selene: allow(unused_variable)
 function Find_required_path(fname)
 	fname = vim.fn.substitute(fname, '\\.', separator, 'g')
 	return search_package_path(fname)
