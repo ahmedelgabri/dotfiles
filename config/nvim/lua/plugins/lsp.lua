@@ -24,20 +24,19 @@ if pcall(require, 'cmp_nvim_lsp') then
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 end
 
-local handlers = {
-	[vim.lsp.protocol.Methods.textDocument_hover] = vim.lsp.with(
-		vim.lsp.handlers.hover,
-		{ focusable = true, silent = true, border = utils.get_border() }
-	),
-	[vim.lsp.protocol.Methods.textDocument_signatureHelp] = vim.lsp.with(
-		vim.lsp.handlers.hover,
-		{ focusable = false, silent = true, border = utils.get_border() }
-	),
-}
+-- Globally override borders
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+
+---@diagnostic disable-next-line: duplicate-set-field
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or utils.get_border()
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
 
 local shared = {
 	capabilities = capabilities,
-	handlers = handlers,
 	flags = {
 		debounce_text_changes = 150,
 	},
@@ -179,7 +178,6 @@ return {
 			},
 			opts = {
 				single_file_support = false,
-				handlers = handlers,
 				root_dir = function()
 					return not vim.fs.root(
 						0,
