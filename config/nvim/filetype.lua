@@ -17,6 +17,7 @@ vim.filetype.add {
 		['.env'] = 'dotenv',
 		['.stylelintrc'] = 'json',
 		['.eslintrc.json'] = 'jsonc',
+		['.luarc.json'] = 'jsonc',
 		Brewfile = 'ruby',
 		['turbo.json'] = 'jsonc',
 		['nx.json'] = 'jsonc',
