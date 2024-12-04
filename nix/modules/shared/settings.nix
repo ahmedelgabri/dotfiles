@@ -88,6 +88,7 @@ in {
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
+      backupFileExtension = "bk";
     };
 
     # I only need a subset of home-manager's capabilities. That is, access to
