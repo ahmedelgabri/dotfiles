@@ -2,11 +2,12 @@ local au = require '_.utils.au'
 local cmds = require '_.autocmds'
 
 au.augroup('__myautocmds__', {
-	-- Automatically make splits equal in size
-	{ event = 'VimResized', pattern = '*', command = 'wincmd =' },
-	-- Disable paste mode on leaving insert mode.
-	-- See https://github.com/neovim/neovim/issues/7994
-	{ event = 'InsertLeave', pattern = '*', command = 'set nopaste' },
+	{
+		event = 'VimResized',
+		desc = 'Make splits equal in size',
+		pattern = '*',
+		command = 'wincmd =',
+	},
 	{
 		event = 'BufWritePost',
 		pattern = '.envrc',
@@ -17,14 +18,15 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
-		desc = 'Open file at the last position it was edited earlier',
+		desc = 'Go to the last location when opening a buffer',
 		event = 'BufReadPost',
 		pattern = '*',
-		callback = function()
-			local row, col = unpack(vim.api.nvim_buf_get_mark(0, '"'))
+		callback = function(args)
+			local row, col = unpack(vim.api.nvim_buf_get_mark(args.buf, '"'))
+			local line_count = vim.api.nvim_buf_line_count(args.buf)
 
-			if row ~= 0 and col ~= 0 then
-				vim.api.nvim_win_set_cursor(0, { row, 0 })
+			if row > 0 and col <= line_count then
+				vim.api.nvim_win_set_cursor(0, { row, col })
 			end
 		end,
 	},
@@ -38,12 +40,36 @@ au.augroup('__myautocmds__', {
 		pattern = '?*',
 		callback = cmds.loadview,
 	},
-
-	-- Close preview buffer with q
 	{
 		event = 'FileType',
-		pattern = '*',
-		callback = cmds.quit_on_q,
+		pattern = {
+			'diff',
+			'fzf',
+			'grepper',
+			'help',
+			'man',
+			'netrw',
+			'preview',
+			'qf',
+			'query',
+			'scratch',
+			'taskedit',
+		},
+		desc = 'Close with <q>',
+		callback = function(args)
+			vim.keymap.set(
+				'n',
+				'q',
+				-- (
+				-- 	(vim.wo.diff == true or vim.bo.filetype == 'man') and ':qa!'
+				-- 	or (vim.bo.filetype == 'qf') and ':cclose'
+				-- 	or (vim.bo.buftype == 'nofile') and ':q'
+				-- 	or ':q'
+				-- ) .. '<cr>',
+				'<cmd>quit<cr>',
+				{ buffer = args.buf, desc = '[Q]uit on q' }
+			)
+		end,
 	},
 
 	-- Project specific override
@@ -104,6 +130,27 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
+		event = 'TermOpen',
+		pattern = '*',
+		command = 'setl nonumber norelativenumber',
+	},
+	{ event = 'TermOpen', pattern = 'term://*', command = 'startinsert' },
+	{ event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
+
+	-- Copied from https://github.com/duggiefresh/vim-easydir/blob/2efbed9e24438f626971a526d19af719b89e8040/plugin/easydir.vim
+	{
+		event = { 'BufWritePre', 'FileWritePre' },
+		desc = [[Create required folders if they don't exist]],
+		pattern = '*',
+		callback = function()
+			local directory = vim.fn.expand '<afile>:p:h'
+
+			if not directory:match '^%w+:' and vim.fn.isdirectory(directory) == 0 then
+				vim.fn.mkdir(directory, 'p')
+			end
+		end,
+	},
+	{
 		event = { 'FileType' },
 		desc = 'Disable features in big files',
 		pattern = 'bigfile',
@@ -130,5 +177,10 @@ au.augroup('__myautocmds__', {
 				vim.wo[0][0].foldmethod = 'indent'
 			end
 		end,
+	},
+	{
+		event = { 'BufDelete', 'BufWipeout' },
+		desc = 'Write to ShaDa when deleting/wiping out buffers',
+		command = 'wshada',
 	},
 })
