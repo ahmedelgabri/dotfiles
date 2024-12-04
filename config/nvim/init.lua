@@ -192,6 +192,7 @@ vim.opt.fillchars = {
 vim.o.foldcolumn = '0'
 vim.o.foldlevel = 99
 vim.o.foldnestmax = 4
+vim.o.foldlevelstart = 99
 vim.o.foldmethod = 'expr'
 -- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
 vim.o.foldtext = ''
