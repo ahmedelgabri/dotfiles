@@ -5,6 +5,7 @@ M.mkview_filetype_blocklist = {
 	gitcommit = true,
 	hgcommit = true,
 	ministarter = true,
+	snacks_dashboard = true,
 }
 
 M.colorcolumn_blocklist = {
@@ -27,12 +28,14 @@ M.colorcolumn_blocklist = {
 	gitcommit = true,
 	GrepperSide = true,
 	ministarter = true,
+	snacks_dashboard = true,
 }
 
 M.heavy_plugins_blocklist = {
 	taskedit = true,
 	minpacprgs = true,
 	ministarter = true,
+	snacks_dashboard = true,
 }
 
 --  Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic

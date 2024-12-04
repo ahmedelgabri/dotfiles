@@ -221,7 +221,9 @@ local function lsp_diagnostics()
 end
 
 local function git_conflicts()
-	if vim.bo.filetype == 'ministarter' then
+	if
+		vim.bo.filetype == 'ministarter' or vim.bo.filetype == 'snacks_dashboard'
+	then
 		return nil
 	end
 
@@ -245,7 +247,9 @@ local function git_conflicts()
 end
 
 local function copilot()
-	if vim.bo.filetype == 'ministarter' then
+	if
+		vim.bo.filetype == 'ministarter' or vim.bo.filetype == 'snacks_dashboard'
+	then
 		return nil
 	end
 

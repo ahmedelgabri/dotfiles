@@ -155,10 +155,6 @@ au.augroup('__myautocmds__', {
 		desc = 'Disable features in big files',
 		pattern = 'bigfile',
 		callback = function(args)
-			vim.schedule(function()
-				vim.bo[args.buf].syntax = vim.filetype.match { buf = args.buf } or ''
-			end)
-
 			local bufnr = args.buf
 
 			-- Enable Treesitter folding when not in huge files and when Treesitter
