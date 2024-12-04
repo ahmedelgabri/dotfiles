@@ -31,7 +31,7 @@ weather_segment() {
 
 	echo
 
-	printf "%s#[fg=colour237] ⦁ " "$weather"
+	printf "%s" "$weather"
 }
 
 weather_segment
