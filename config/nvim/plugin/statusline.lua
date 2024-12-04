@@ -57,7 +57,7 @@ local function git_info()
 	local out = vim.fn.FugitiveHead(10)
 
 	if out ~= '' then
-		out = string.format('%s %s', utils.get_icon 'branch', out)
+		out = string.format('%s %s', utils.get_icon 'branch' .. ' ', out)
 	end
 
 	return type(out) == 'string'
@@ -389,7 +389,6 @@ function M.render_active()
 
 	return get_parts {
 		git_info(),
-		'%<',
 		line,
 	}
 end

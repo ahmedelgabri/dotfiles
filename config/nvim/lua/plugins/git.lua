@@ -1,3 +1,5 @@
+local utils = require '_.utils'
+
 return {
 	{
 		'https://github.com/jez/vim-github-hub',
@@ -17,6 +19,7 @@ return {
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',
+		event = utils.LazyFile,
 		dependencies = {
 			{ 'https://github.com/tpope/vim-rhubarb' },
 		},
@@ -35,7 +38,6 @@ return {
 				desc = '[G]it [S]tatus',
 			},
 		},
-		cmd = { 'Git' },
 		init = function()
 			local au = require '_.utils.au'
 
