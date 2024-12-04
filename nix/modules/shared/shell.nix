@@ -53,9 +53,6 @@ in
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
         environment = {
-          # doesn't do what you think...
-          # https://github.com/LnL7/nix-darwin/issues/779#issuecomment-1720066939
-          loginShell = "${pkgs.zsh}/bin/zsh -l";
           shells = [ pkgs.bashInteractive pkgs.zsh ];
           variables = {
             LANG = "en_US.UTF-8";
