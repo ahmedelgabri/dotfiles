@@ -36,7 +36,7 @@ return {
 			},
 		},
 		cmd = { 'Git' },
-		config = function()
+		init = function()
 			local au = require '_.utils.au'
 
 			au.augroup('__my_fugitive__', {
