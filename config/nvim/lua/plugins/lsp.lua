@@ -295,9 +295,6 @@ return {
 			cssls = {},
 			html = {},
 			bashls = {},
-			vimls = {
-				init_options = { isNeovim = true },
-			},
 			dockerls = {},
 			clojure_lsp = {},
 			eslint = {},

@@ -1,6 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
-
-with config.my;
+{ pkgs, lib, config, ... }:
 
 let
 
@@ -44,11 +42,9 @@ in
           par
           fd
           ripgrep
-          # editorconfig-checker # do I use it?
           hadolint # Docker linter
           dotenv-linter
           nixpkgs-fmt
-          vim-vint
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           stylua
@@ -57,7 +53,6 @@ in
           nodePackages.bash-language-server
           nodePackages.dockerfile-language-server-nodejs
           nodePackages.typescript-language-server
-          nodePackages.vim-language-server
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
           statix
