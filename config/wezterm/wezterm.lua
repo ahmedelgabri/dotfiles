@@ -9,6 +9,7 @@ local mux = wezterm.mux
 local config = wezterm.config_builder and wezterm.config_builder() or {}
 
 config.term = 'wezterm'
+config.enable_kitty_graphics = true
 
 -- replace TMUX? but I have issues with neovim scrolling/redrawing and Wezterm
 -- config.unix_domains = {
