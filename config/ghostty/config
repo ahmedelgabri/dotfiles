@@ -24,3 +24,5 @@ macos-window-shadow = false
 fullscreen = true
 macos-non-native-fullscreen = true
 window-decoration = false
+
+keybind = global:super+space=toggle_quick_terminal
