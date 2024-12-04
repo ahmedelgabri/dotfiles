@@ -322,6 +322,11 @@ return {
 					return web_roots
 				end,
 			},
+			stylelint_lsp = {
+				root_dir = function()
+					return web_roots
+				end,
+			},
 			html = {
 				root_dir = function()
 					return web_roots
@@ -329,6 +334,7 @@ return {
 			},
 			bashls = {},
 			dockerls = {},
+			docker_compose_language_service = {},
 			eslint = {},
 			ruff = {
 				init_options = {

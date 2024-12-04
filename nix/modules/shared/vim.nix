@@ -47,7 +47,8 @@ in
           nodePackages.vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
           nodePackages.bash-language-server
-          nodePackages.dockerfile-language-server-nodejs
+          dockerfile-language-server-nodejs
+          docker-compose-language-service
           nodePackages.typescript-language-server
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"

@@ -23,6 +23,11 @@ vim.filetype.add {
 		PULLREQ_EDITMSG = 'markdown.ghpull',
 		ISSUE_EDITMSG = 'markdown.ghissue',
 		RELEASE_EDITMSG = 'markdown.ghrelease',
+		-- For dockder compose-language-service
+		['docker-compose.yaml'] = 'yaml.docker-compose',
+		['docker-compose.yml'] = 'yaml.docker-compose',
+		['compose.yaml'] = 'yaml.docker-compose',
+		['compose.yml'] = 'yaml.docker-compose',
 	},
 	pattern = {
 		['tsconfig*.json'] = 'jsonc',
