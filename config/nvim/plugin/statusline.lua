@@ -261,10 +261,13 @@ local function copilot()
 			or nil
 	end
 
-	local c = utils.lazy_require 'copilot.client'
+	local okcopilot, c = pcall(require, 'copilot.client')
 
 	if
-		c.is_disabled() or not c.buf_is_attached(vim.api.nvim_get_current_buf())
+		okcopilot
+		and (
+			c.is_disabled() or not c.buf_is_attached(vim.api.nvim_get_current_buf())
+		)
 	then
 		return nil
 	end
