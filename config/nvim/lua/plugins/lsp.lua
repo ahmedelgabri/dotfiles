@@ -122,10 +122,16 @@ return {
 		},
 		{
 			'https://github.com/folke/lazydev.nvim',
-			-- dependencies = {
-			-- 	{ 'https://github.com/Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
-			-- },
+			dependencies = {
+				{ 'https://github.com/Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
+				{ 'https://github.com/justinsgithub/wezterm-types' },
+			},
 			ft = 'lua',
+			enabled = function(root_dir)
+				return (vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled)
+					-- disable when a .luarc.json file is found
+					or not vim.uv.fs_stat(root_dir .. '/.luarc.json')
+			end,
 			opts = {
 				library = {
 					{ path = 'wezterm-types', mods = { 'wezterm' } },
@@ -134,6 +140,8 @@ return {
 							.. '/.hammerspoon/Spoons/EmmyLua.spoon/annotations',
 						words = { 'hs' },
 					},
+					-- Only load luvit types when the `vim.uv` word is found
+					{ path = 'luvit-meta/library', words = { 'vim%.uv' } },
 				},
 			},
 		},
@@ -371,18 +379,6 @@ return {
 						},
 						diagnostics = {
 							disable = { 'trailing-space' },
-							globals = {
-								'vim',
-								'describe',
-								'it',
-								'before_each',
-								'after_each',
-								'pending',
-								'teardown',
-								'packer_plugins',
-								'spoon',
-								'hs',
-							},
 							unusedLocalExclude = { '_*' },
 						},
 						workspace = {
