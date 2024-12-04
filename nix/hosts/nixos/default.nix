@@ -1,7 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 # Notes from MBA NixOS installation
 #
 # - Wifi requires network manager & this can't be enabled if wireless is enabled also
@@ -10,12 +9,14 @@
 # - bluetooth requires some setup https://nixos.wiki/wiki/Bluetooth & also running this command `systemctl --user daemon-reload; systemctl --user restart pulseaudio`
 # - printf in i3blocks scripts should be replaced with echo & colors need to change too. (edits need to happen for tmux/scripts because I will use those)
 # - mtui to debug network issues
-
 # https://github.com/AbhinavGeorge/configs/blob/master/.i3/config#L274-L281
-
-{ config, pkgs, lib, inputs, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -25,11 +26,11 @@
     # Define a user account. Don't forget to set a password with ‘passwd’.
     user = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+      extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
     };
 
     modules = {
-      mail = { enable = true; };
+      mail = {enable = true;};
       youtube-dl.enable = true;
       irc.enable = true;
       discord.enable = true;
@@ -39,7 +40,7 @@
   nix = {
     use-xdg-base-directories = true;
     useDaemon = true;
-    gc = { dates = "daily"; };
+    gc = {dates = "daily";};
     autoOptimiseStore = true;
     registry = {
       nixos.flake = inputs.nixpkgs;
@@ -82,7 +83,7 @@
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = { LC_TIME = "en_GB.UTF-8"; };
+    extraLocaleSettings = {LC_TIME = "en_GB.UTF-8";};
   };
 
   console = {
@@ -110,7 +111,7 @@
     windowManager.i3 = {
       enable = true;
       package = pkgs.i3-gaps;
-      extraPackages = with pkgs; [ i3lock dmenu i3blocks ];
+      extraPackages = with pkgs; [i3lock dmenu i3blocks];
       # extraSessionCommands = ''
       # ${pkgs.xset}/bin/xset r rate 200 60
       # ${inputs.nixpgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
@@ -131,7 +132,7 @@
 
   services.nextdns.enable = true;
 
-  nixpkgs.config.dwm.patches = [ ./dwm.patch ];
+  nixpkgs.config.dwm.patches = [./dwm.patch];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -163,7 +164,7 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   programs = {
-    gnupg.agent = { pinentryFlavor = "pinentry"; };
+    gnupg.agent = {pinentryFlavor = "pinentry";};
 
     java.enable = true;
     less.enable = true;

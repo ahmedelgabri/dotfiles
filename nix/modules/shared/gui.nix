@@ -1,12 +1,12 @@
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.gui;
   inherit (pkgs.stdenv) isDarwin isLinux;
-
-in
-{
+in {
   options = with lib; {
     my.modules.gui = {
       enable = mkEnableOption ''
@@ -18,7 +18,7 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        homebrew.taps = [ "homebrew/cask-versions" ];
+        homebrew.taps = ["homebrew/cask-versions"];
         homebrew.casks = [
           "1password"
           "raycast"
@@ -64,11 +64,11 @@ in
           programs.firefox = {
             enable = false;
             package =
-              if isDarwin then
-              # NOTE: firefox install is handled via homebrew
-                pkgs.runCommand "firefox-0.0.0" { } "mkdir $out"
-              else
-                pkgs.firefox;
+              if isDarwin
+              then
+                # NOTE: firefox install is handled via homebrew
+                pkgs.runCommand "firefox-0.0.0" {} "mkdir $out"
+              else pkgs.firefox;
 
             profiles = {
               "${config.my.username}" = {
@@ -80,23 +80,31 @@ in
                   force = true;
                   engines = {
                     "Nix Packages" = {
-                      urls = [{
-                        template = "https://search.nixos.org/packages";
-                        params = [
-                          { name = "type"; value = "packages"; }
-                          { name = "query"; value = "{searchTerms}"; }
-                        ];
-                      }];
+                      urls = [
+                        {
+                          template = "https://search.nixos.org/packages";
+                          params = [
+                            {
+                              name = "type";
+                              value = "packages";
+                            }
+                            {
+                              name = "query";
+                              value = "{searchTerms}";
+                            }
+                          ];
+                        }
+                      ];
 
                       icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                      definedAliases = [ "@np" ];
+                      definedAliases = ["@np"];
                     };
 
                     "NixOS Wiki" = {
-                      urls = [{ template = "https://wiki.nixos.org/index.php?search={searchTerms}"; }];
+                      urls = [{template = "https://wiki.nixos.org/index.php?search={searchTerms}";}];
                       iconUpdateURL = "https://wiki.nixos.org/favicon.png";
                       updateInterval = 24 * 60 * 60 * 1000; # every day
-                      definedAliases = [ "@nw" ];
+                      definedAliases = ["@nw"];
                     };
 
                     "Qwant".metaData.hidden = true;
@@ -104,7 +112,6 @@ in
                     "Google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
                   };
                 };
-
 
                 # NOTE: WILL OVERRIDE ALL CURRENT BOOKMARKS
                 # bookmarks = [
@@ -154,29 +161,27 @@ in
 
                 # @NOTE: THESE ARE CURRENTLY WORK ONLY, I NEED TO MAKE IT DYNAMIC
                 # ALSO IT INSTALLS THEM BUT DOESN'T ENABLE THEM
-                extensions = with pkgs.nur.repos.rycee.firefox-addons;
-                  [
-                    ublock-origin
-                    onepassword-password-manager
-                    ghostery
-                    grammarly
-                    notifier-for-github
-                    okta-browser-plugin
-                    omnivore
-                    sidebery
-                    sponsorblock
+                extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+                  ublock-origin
+                  onepassword-password-manager
+                  ghostery
+                  grammarly
+                  notifier-for-github
+                  okta-browser-plugin
+                  omnivore
+                  sidebery
+                  sponsorblock
 
-                    multi-account-containers
+                  multi-account-containers
 
-                    # @NOTE: DO I NEED THESE WITH userChrome.css and userPerfs.js???
-                    stylus
-                    violentmonkey
+                  # @NOTE: DO I NEED THESE WITH userChrome.css and userPerfs.js???
+                  stylus
+                  violentmonkey
 
-                    # @NOTE Missing
-                    # wikipedia-reading-list
-                    # omnivore-list-popup
-                  ];
-
+                  # @NOTE Missing
+                  # wikipedia-reading-list
+                  # omnivore-list-popup
+                ];
 
                 # @NOTE: I NEED TO REVISE THIS FOR PERSONAL USE
                 settings = {

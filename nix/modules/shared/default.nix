@@ -1,6 +1,8 @@
-{ pkgs, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./settings.nix
     ./shell.nix
@@ -57,5 +59,4 @@
     hammerspoon.enable = lib.mkDefault pkgs.stdenv.isDarwin;
     ghostty.enable = lib.mkDefault true;
   };
-
 }

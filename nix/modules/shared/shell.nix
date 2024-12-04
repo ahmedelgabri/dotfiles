@@ -4,11 +4,12 @@
 # - Setup things as early as possible when the shell runs
 # - Inline files when possible instead of souring then
 # - User specific shell files are to override or for machine specific setup
-
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.shell;
   inherit (config.my.user) home;
   inherit (config.my) hm;
@@ -16,8 +17,7 @@ let
   inherit (pkgs.stdenv) isDarwin isLinux;
 
   local_zshrc = "${hostConfigHome}/zshrc";
-in
-{
+in {
   options = with lib; {
     my.modules.shell = {
       enable = mkEnableOption ''
@@ -49,11 +49,10 @@ in
       })
 
       {
-
         # List packages installed in system profile. To search by name, run:
         # $ nix-env -qaP | grep wget
         environment = {
-          shells = [ pkgs.bashInteractive pkgs.zsh ];
+          shells = [pkgs.bashInteractive pkgs.zsh];
           variables = {
             LANG = "en_US.UTF-8";
             LC_TIME = "en_GB.UTF-8";
@@ -72,11 +71,18 @@ in
           };
 
           systemPackages = with pkgs;
-            (if stdenv.isDarwin then [ openssl gawk gnused coreutils findutils ] else [ dwm dmenu xclip ]) ++
+            (
+              if stdenv.isDarwin
+              then [openssl gawk gnused coreutils findutils]
+              else [dwm dmenu xclip]
+            )
+            ++
             # Packages broken on Intel
-            (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin")
+            (
+              lib.optional (stdenv.hostPlatform.system == "aarch64-darwin")
               lnav # System Log file navigator
-            ) ++ [
+            )
+            ++ [
               ast-grep
               cachix
               curl
@@ -143,7 +149,8 @@ in
               source = ../../../config/.terminfo;
             };
             ".config/direnv/direnvrc" = {
-              text = lib.concatStringsSep "\n"
+              text =
+                lib.concatStringsSep "\n"
                 [
                   "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
                   (builtins.readFile ../../../config/direnv/direnvrc)
@@ -165,7 +172,10 @@ in
             # So care needs to be taken if two env vars depend on each other
             # ====================================================
             rec {
-              BROWSER = if pkgs.stdenv.isDarwin then "open" else "xdg-open";
+              BROWSER =
+                if pkgs.stdenv.isDarwin
+                then "open"
+                else "xdg-open";
               GITHUB_USER = config.my.github_username;
 
               VIM_FZF_LOG = ''
@@ -223,81 +233,91 @@ in
           ########################################################################
 
           # zshenv
-          shellInit = lib.concatStringsSep "\n"
+          shellInit =
+            lib.concatStringsSep "\n"
             (map builtins.readFile [
-              ../../../config/zsh.d/.zshenv
-            ] ++ [
-              /* zsh */
-              "fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)"
-            ]);
-
+                ../../../config/zsh.d/.zshenv
+              ]
+              ++ [
+                /*
+                zsh
+                */
+                "fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)"
+              ]);
 
           # zshrc
-          interactiveShellInit = lib.concatStringsSep "\n"
+          interactiveShellInit =
+            lib.concatStringsSep "\n"
             ([
-              /* zsh */
-              ''
-                # Enable instant prompt
-                if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
-                  source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
-                fi
+                /*
+                zsh
+                */
+                ''
+                  # Enable instant prompt
+                  if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
+                    source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
+                  fi
 
-                # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
-                autoload -U select-word-style
-                # only alphanumeric chars are considered WORDCHARS
-                select-word-style bash
+                  # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
+                  autoload -U select-word-style
+                  # only alphanumeric chars are considered WORDCHARS
+                  select-word-style bash
 
-                autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
-              ''
-            ] ++ map builtins.readFile [
-              ../../../config/zsh.d/zsh/config/options.zsh
-              ../../../config/zsh.d/zsh/config/input.zsh
-              ../../../config/zsh.d/zsh/config/completion.zsh
-              ../../../config/zsh.d/zsh/config/aliases.zsh
-              "${pkgs.fzf}/share/fzf/completion.zsh"
-              "${pkgs.fzf}/share/fzf/key-bindings.zsh"
-              "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-              "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-            ] ++ [
-              /* zsh */
-              ''
-                # I have to source this file instead of reading it because it depends on reading files in its own directory
-                # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
-                #
-                # It must be sourced before history-substring-search https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#usage
-                source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
+                  autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
+                ''
+              ]
+              ++ map builtins.readFile [
+                ../../../config/zsh.d/zsh/config/options.zsh
+                ../../../config/zsh.d/zsh/config/input.zsh
+                ../../../config/zsh.d/zsh/config/completion.zsh
+                ../../../config/zsh.d/zsh/config/aliases.zsh
+                "${pkgs.fzf}/share/fzf/completion.zsh"
+                "${pkgs.fzf}/share/fzf/key-bindings.zsh"
+                "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+                "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+              ]
+              ++ [
+                /*
+                zsh
+                */
+                ''
+                  # I have to source this file instead of reading it because it depends on reading files in its own directory
+                  # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
+                  #
+                  # It must be sourced before history-substring-search https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#usage
+                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
 
-                # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
-                unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
+                  # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
+                  unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
 
-                # bind UP and DOWN keys
-                bindkey '^[[A' history-substring-search-up
-                bindkey '^[[B' history-substring-search-down
-                # In vi mode
-                bindkey -M vicmd 'k' history-substring-search-up
-                bindkey -M vicmd 'j' history-substring-search-down
+                  # bind UP and DOWN keys
+                  bindkey '^[[A' history-substring-search-up
+                  bindkey '^[[B' history-substring-search-down
+                  # In vi mode
+                  bindkey -M vicmd 'k' history-substring-search-up
+                  bindkey -M vicmd 'j' history-substring-search-down
 
-                # Note that this will only ensure unique history if we supply a prefix
-                # before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
-                # won't prevent dupes from appearing when just hitting "up" without a
-                # prefix (ie. that's "zle up-line-or-history" and not classified as a
-                # "search"). So, we have HIST_IGNORE_DUPS to make life bearable for that
-                # case.
-                #
-                # https://superuser.com/a/1494647/322531
-                HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+                  # Note that this will only ensure unique history if we supply a prefix
+                  # before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
+                  # won't prevent dupes from appearing when just hitting "up" without a
+                  # prefix (ie. that's "zle up-line-or-history" and not classified as a
+                  # "search"). So, we have HIST_IGNORE_DUPS to make life bearable for that
+                  # case.
+                  #
+                  # https://superuser.com/a/1494647/322531
+                  HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
-                # For speed:
-                # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
-                ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-                ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
+                  # For speed:
+                  # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
+                  ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+                  ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
 
-                # This breaks p10k instant prompt if I inline the file, but sourcing works fine
-                source "${pkgs.grc}/etc/grc.zsh"
-              ''
-              (builtins.readFile ../../../config/zsh.d/.zshrc)
-              (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
-            ]);
+                  # This breaks p10k instant prompt if I inline the file, but sourcing works fine
+                  source "${pkgs.grc}/etc/grc.zsh"
+                ''
+                (builtins.readFile ../../../config/zsh.d/.zshrc)
+                (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
+              ]);
 
           promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
         };

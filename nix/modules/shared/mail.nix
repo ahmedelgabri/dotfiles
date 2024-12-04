@@ -1,16 +1,15 @@
-{ pkgs, lib, config, ... }:
-
-with config.my;
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with config.my; let
   cfg = config.my.modules.mail;
   homeDir = config.my.user.home;
   inherit (config.home-manager.users."${username}") xdg;
   inherit (pkgs.stdenv) isDarwin isLinux;
-
-in
-{
+in {
   options = with lib; {
     my.modules = {
       mail = {
@@ -32,7 +31,7 @@ in
             type = with types; uniq str;
           };
           account = mkOption {
-            default = replaceStrings [ "@" ] [ "+mutt@" ] email;
+            default = replaceStrings ["@"] ["+mutt@"] email;
             type = with types; uniq str;
           };
         };
@@ -53,7 +52,6 @@ in
           type = with types; uniq str;
         };
       };
-
     };
   };
 
@@ -63,8 +61,7 @@ in
         launchd.user.agents."isync" = {
           # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
           # Check `.mail/.notmuch/hooks/`
-          command =
-            "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
+          command = "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
           serviceConfig = {
             ProcessType = "Background";
             LowPriorityIO = true;
@@ -98,8 +95,7 @@ in
         };
 
         my.env = {
-          MAILDIR =
-            "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
+          MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
           NOTMUCH_CONFIG = "$XDG_CONFIG_HOME/notmuch/config";
           # MAILCAP="$XDG_CONFIG_HOME/mailcap"; # elinks, w3m
           # MAILCAPS="$MAILCAP";   # Mutt, pine
@@ -121,68 +117,72 @@ in
           };
 
           ".config/neomutt/accounts/${lib.toLower cfg.account}" = {
-            text = /* muttrc */ ''
-              # ${nix_managed}
-              # vi:syntax=muttrc
+            text =
+              /*
+              muttrc
+              */
+              ''
+                # ${nix_managed}
+                # vi:syntax=muttrc
 
-              set realname = "${name}"
-              set signature = ""
-              # can't use pkgs.msmtp because it breaks in neomutt
-              set sendmail = "msmtp -a ${lib.toLower cfg.account}"
-              ${lib.optionalString (cfg.alias_path != "") ''
-                set alias_file = "${cfg.alias_path}"
-                source ${cfg.alias_path}''}
-              set from = "${email}"
-              set spoolfile = "+${cfg.account}/INBOX"
-              ${if cfg.keychain.name == "fastmail.com" then
-              ''set record =  "+${cfg.account}/Sent"''
-              else
-              ''unset record # don't save messages, gmail already does this.''}
-              set postponed = "+${cfg.account}/Drafts"
-              set mbox = "+${cfg.account}/Archive"
-              set trash = "+${cfg.account}/Trash"
-              set header_cache = "${xdg.cacheHome}/neomutt/headers/${cfg.account}/"
-              set message_cachedir = "${xdg.cacheHome}/neomutt/messages/${cfg.account}/"
-              unmailboxes *
-              mailboxes "+${cfg.account}/INBOX" ${
-                if cfg.keychain.name == "gmail.com" then
-                  ''"+${cfg.account}/Starred" \''
-                else
-                  "\\"
-              }
-                "+${cfg.account}/Sent" \
-                "+${cfg.account}/Drafts" \
-                "+${cfg.account}/Trash" \
-                "+${cfg.account}/Spam" \
-                `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afinQ --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+                set realname = "${name}"
+                set signature = ""
+                # can't use pkgs.msmtp because it breaks in neomutt
+                set sendmail = "msmtp -a ${lib.toLower cfg.account}"
+                ${lib.optionalString (cfg.alias_path != "") ''
+                  set alias_file = "${cfg.alias_path}"
+                  source ${cfg.alias_path}''}
+                set from = "${email}"
+                set spoolfile = "+${cfg.account}/INBOX"
+                ${
+                  if cfg.keychain.name == "fastmail.com"
+                  then ''set record =  "+${cfg.account}/Sent"''
+                  else ''unset record # don't save messages, gmail already does this.''
+                }
+                set postponed = "+${cfg.account}/Drafts"
+                set mbox = "+${cfg.account}/Archive"
+                set trash = "+${cfg.account}/Trash"
+                set header_cache = "${xdg.cacheHome}/neomutt/headers/${cfg.account}/"
+                set message_cachedir = "${xdg.cacheHome}/neomutt/messages/${cfg.account}/"
+                unmailboxes *
+                mailboxes "+${cfg.account}/INBOX" ${
+                  if cfg.keychain.name == "gmail.com"
+                  then ''"+${cfg.account}/Starred" \''
+                  else "\\"
+                }
+                  "+${cfg.account}/Sent" \
+                  "+${cfg.account}/Drafts" \
+                  "+${cfg.account}/Trash" \
+                  "+${cfg.account}/Spam" \
+                  `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afinQ --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
-              ${lib.optionalString
-              (lib.toLower cfg.account == "personal" && cfg.switch_to != "") ''
-                macro index,pager gw "<change-folder>=${cfg.switch_to}/INBOX<enter>" "Switch account to ${cfg.switch_to}"''}
+                ${lib.optionalString
+                  (lib.toLower cfg.account == "personal" && cfg.switch_to != "") ''
+                    macro index,pager gw "<change-folder>=${cfg.switch_to}/INBOX<enter>" "Switch account to ${cfg.switch_to}"''}
 
-              ${lib.optionalString (cfg.keychain.name == "gmail.com") ''
-                macro index,pager gs "<change-folder>=${cfg.account}/Starred<enter>" "go to Starred"
-                macro browser gs "<exit><change-folder>=${cfg.account}/Starred<enter>" "go to Starred"''}
+                ${lib.optionalString (cfg.keychain.name == "gmail.com") ''
+                  macro index,pager gs "<change-folder>=${cfg.account}/Starred<enter>" "go to Starred"
+                  macro browser gs "<exit><change-folder>=${cfg.account}/Starred<enter>" "go to Starred"''}
 
-              macro index,pager gt "<change-folder>=${cfg.account}/Sent<enter>" "go to Sent"
-              macro browser gt "<exit><change-folder>=${cfg.account}/Sent<enter>" "go to Sent"
-              macro index,pager gd "<change-folder>=${cfg.account}/Drafts<enter>" "go to Drafts"
-              macro browser gd "<exit><change-folder>=${cfg.account}/Drafts<enter>" "go to Drafts"
+                macro index,pager gt "<change-folder>=${cfg.account}/Sent<enter>" "go to Sent"
+                macro browser gt "<exit><change-folder>=${cfg.account}/Sent<enter>" "go to Sent"
+                macro index,pager gd "<change-folder>=${cfg.account}/Drafts<enter>" "go to Drafts"
+                macro browser gd "<exit><change-folder>=${cfg.account}/Drafts<enter>" "go to Drafts"
 
-              macro index,pager / "<vfolder-from-query>path:${cfg.account}/** " "Searching ${cfg.account} mailbox with notmuch integration in neomutt"
+                macro index,pager / "<vfolder-from-query>path:${cfg.account}/** " "Searching ${cfg.account} mailbox with notmuch integration in neomutt"
 
-              macro index SI "<shell-escape>mbsync --pull ${
-                lib.toLower cfg.account
-              }<enter>" "sync inbox"
-              macro index,pager y "<save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
-              # https://github.com/neomutt/neomutt/issues/4349#issuecomment-2268713737
-              macro index,pager Y ":set resolve=no<enter><tag-thread>:set resolve=yes<enter><tag-prefix><save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
+                macro index SI "<shell-escape>mbsync --pull ${
+                  lib.toLower cfg.account
+                }<enter>" "sync inbox"
+                macro index,pager y "<save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
+                # https://github.com/neomutt/neomutt/issues/4349#issuecomment-2268713737
+                macro index,pager Y ":set resolve=no<enter><tag-thread>:set resolve=yes<enter><tag-prefix><save-message>=${cfg.account}/Archive<enter>" "Archive conversation"
 
-              color status ${cfg.accent} default
-              color sidebar_highlight black ${cfg.accent}
-              color sidebar_indicator ${cfg.accent} color0
-              color indicator black ${cfg.accent} # currently selected message
-            '';
+                color status ${cfg.accent} default
+                color sidebar_highlight black ${cfg.accent}
+                color sidebar_indicator ${cfg.accent} color0
+                color indicator black ${cfg.accent} # currently selected message
+              '';
           };
 
           ".config/neomutt/config/hooks.mutt" = {
@@ -339,9 +339,9 @@ in
 
               account ${lib.toLower cfg.account}
               ${lib.optionalString (cfg.keychain.name == "fastmail.com")
-              "tls_starttls on"}
+                "tls_starttls on"}
               ${lib.optionalString (cfg.keychain.name == "fastmail.com")
-              "port 587"}
+                "port 587"}
               host ${cfg.smtp_server}
               from ${email}
               user ${email}
@@ -400,17 +400,19 @@ in
               Near :${cfg.account}-local:INBOX
 
               Channel ${cfg.account}-archive
-              ${if cfg.keychain.name == "fastmail.com" then
-                "Far :${cfg.account}-remote:Archive"
-              else
-                ''Far :${cfg.account}-remote:"[Gmail]/All Mail"''}
+              ${
+                if cfg.keychain.name == "fastmail.com"
+                then "Far :${cfg.account}-remote:Archive"
+                else ''Far :${cfg.account}-remote:"[Gmail]/All Mail"''
+              }
               Near :${cfg.account}-local:Archive
 
               Channel ${cfg.account}-drafts
-              ${if cfg.keychain.name == "fastmail.com" then
-                "Far :${cfg.account}-remote:Drafts"
-              else
-                ''Far :${cfg.account}-remote:"[Gmail]/Drafts"''}
+              ${
+                if cfg.keychain.name == "fastmail.com"
+                then "Far :${cfg.account}-remote:Drafts"
+                else ''Far :${cfg.account}-remote:"[Gmail]/Drafts"''
+              }
               Near :${cfg.account}-local:Drafts
 
               ${lib.optionalString (cfg.keychain.name == "gmail.com") ''
@@ -419,24 +421,27 @@ in
                 Near :${cfg.account}-local:Starred''}
 
               Channel ${cfg.account}-sent
-              ${if cfg.keychain.name == "fastmail.com" then
-                "Far :${cfg.account}-remote:Sent"
-              else
-                ''Far :${cfg.account}-remote:"[Gmail]/Sent Mail"''}
+              ${
+                if cfg.keychain.name == "fastmail.com"
+                then "Far :${cfg.account}-remote:Sent"
+                else ''Far :${cfg.account}-remote:"[Gmail]/Sent Mail"''
+              }
               Near :${cfg.account}-local:Sent
 
               Channel ${cfg.account}-spam
-              ${if cfg.keychain.name == "fastmail.com" then
-                "Far :${cfg.account}-remote:Spam"
-              else
-                ''Far :${cfg.account}-remote:"[Gmail]/Spam"''}
+              ${
+                if cfg.keychain.name == "fastmail.com"
+                then "Far :${cfg.account}-remote:Spam"
+                else ''Far :${cfg.account}-remote:"[Gmail]/Spam"''
+              }
               Near :${cfg.account}-local:Spam
 
               Channel ${cfg.account}-trash
-              ${if cfg.keychain.name == "fastmail.com" then
-                "Far :${cfg.account}-remote:Trash"
-              else
-                ''Far :${cfg.account}-remote:"[Gmail]/Trash"''}
+              ${
+                if cfg.keychain.name == "fastmail.com"
+                then "Far :${cfg.account}-remote:Trash"
+                else ''Far :${cfg.account}-remote:"[Gmail]/Trash"''
+              }
               Near :${cfg.account}-local:Trash
 
               Channel ${cfg.account}-folders

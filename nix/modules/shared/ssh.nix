@@ -1,11 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.ssh;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.ssh;
+in {
   options = with lib; {
     my.modules.ssh = {
       enable = mkEnableOption ''
@@ -17,7 +17,7 @@ in
   config = with lib;
     mkIf cfg.enable {
       my.hm.file = {
-        ".ssh/config" = { source = ../../../config/.ssh/config; };
+        ".ssh/config" = {source = ../../../config/.ssh/config;};
       };
     };
 }

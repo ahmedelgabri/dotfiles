@@ -1,12 +1,12 @@
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.discord;
   inherit (pkgs.stdenv) isDarwin isLinux;
-
-in
-{
+in {
   options = with lib; {
     my.modules.discord = {
       enable = mkEnableOption ''
@@ -18,10 +18,10 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        homebrew.casks = [ "discord" ];
+        homebrew.casks = ["discord"];
       })
       (mkIf isLinux {
-        my.user = { packages = with pkgs; [ discord ]; };
+        my.user = {packages = with pkgs; [discord];};
       })
     ]);
 }

@@ -1,5 +1,7 @@
-{ fetchurl, stdenvNoCC, }:
-
+{
+  fetchurl,
+  stdenvNoCC,
+}:
 stdenvNoCC.mkDerivation rec {
   name = "hcron";
   version = "1.1.1";

@@ -1,11 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-
-let
-
-  cfg = config.my.modules.hledger;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.my.modules.hledger;
+in {
   options = with lib; {
     my.modules.hledger = {
       enable = mkEnableOption ''

@@ -1,11 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.bat;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.bat;
+in {
   options = with lib; {
     my.modules.bat = {
       enable = mkEnableOption ''
@@ -16,9 +16,9 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      my.env = { BAT_CONFIG_PATH = "$XDG_CONFIG_HOME/bat/config"; };
+      my.env = {BAT_CONFIG_PATH = "$XDG_CONFIG_HOME/bat/config";};
 
-      my.user = { packages = with pkgs; [ bat ]; };
+      my.user = {packages = with pkgs; [bat];};
 
       my.hm.file = {
         ".config/bat" = {

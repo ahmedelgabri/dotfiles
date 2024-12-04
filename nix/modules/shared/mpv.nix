@@ -1,11 +1,12 @@
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.mpv;
   inherit (pkgs.stdenv) isDarwin;
-in
-{
+in {
   options = with lib; {
     my.modules.mpv = {
       enable = mkEnableOption ''
@@ -17,11 +18,11 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        homebrew.casks = [ "iina" ];
+        homebrew.casks = ["iina"];
       })
 
       {
-        my.user = { packages = with pkgs; [ mpv ]; };
+        my.user = {packages = with pkgs; [mpv];};
         my.hm.file = {
           ".config/mpv" = {
             recursive = true;

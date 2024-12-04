@@ -480,7 +480,7 @@ return {
 								),
 						},
 						formatting = {
-							command = { 'nixpkgs-fmt' },
+							command = { 'alejandra' },
 						},
 						options = vim.tbl_extend('force', {
 							-- home_manager = {

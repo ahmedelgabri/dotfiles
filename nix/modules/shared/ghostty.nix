@@ -1,11 +1,10 @@
-{ lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.ghostty;
-
-in
 {
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.ghostty;
+in {
   options = with lib; {
     my.modules.ghostty = {
       enable = mkEnableOption ''
@@ -29,7 +28,6 @@ in
               source = ../../../config/ghostty;
             };
           };
-
         };
       }
     ]);

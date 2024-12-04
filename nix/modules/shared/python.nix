@@ -1,10 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.python;
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.python;
+in {
   options = with lib; {
     my.modules.python = {
       enable = mkEnableOption ''
@@ -16,22 +17,21 @@ in
   config = with lib;
     mkIf cfg.enable {
       my = {
-        env = { PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py"; };
+        env = {PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py";};
 
         user = {
-          packages = with pkgs;
-            [
-              (python3.withPackages (ps:
-                with ps; [
-                  pip
-                  setuptools
-                  pynvim
-                  vobject # Mutt calendar script
-                ]))
-              # nixos.python38Packages.httpx
-              ruff
-              rye
-            ];
+          packages = with pkgs; [
+            (python3.withPackages (ps:
+              with ps; [
+                pip
+                setuptools
+                pynvim
+                vobject # Mutt calendar script
+              ]))
+            # nixos.python38Packages.httpx
+            ruff
+            rye
+          ];
         };
 
         hm.file = {

@@ -1,12 +1,13 @@
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.vim;
   inherit (config.my.user) home;
   inherit (config.my) hm;
-in
-{
+in {
   options = with lib; {
     my.modules.vim = {
       enable = mkEnableOption ''
@@ -21,7 +22,8 @@ in
         [
           vim
           neovim-unwrapped
-        ] ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
+        ]
+        ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
           gcc # Required for treesitter parsers
         ]);
 
@@ -40,7 +42,7 @@ in
           ripgrep
           hadolint # Docker linter
           dotenv-linter
-          nixpkgs-fmt
+          alejandra
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           stylua

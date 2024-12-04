@@ -1,11 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.yt-dlp;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.yt-dlp;
+in {
   options = with lib; {
     my.modules.yt-dlp = {
       enable = mkEnableOption ''
@@ -18,7 +18,7 @@ in
     mkIf cfg.enable {
       my.user = {
         packages = with pkgs; [
-          (yt-dlp.override { withAlias = true; })
+          (yt-dlp.override {withAlias = true;})
         ];
       };
 

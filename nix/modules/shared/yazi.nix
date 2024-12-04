@@ -1,11 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
-
-let
-
-  cfg = config.my.modules.yazi;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
+  cfg = config.my.modules.yazi;
+in {
   options = with lib; {
     my.modules.yazi = {
       enable = mkEnableOption ''

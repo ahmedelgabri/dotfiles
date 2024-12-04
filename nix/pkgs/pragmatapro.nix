@@ -1,5 +1,9 @@
-{ stdenvNoCC, requireFile, lib, pkgs }:
-
+{
+  stdenvNoCC,
+  requireFile,
+  lib,
+  pkgs,
+}:
 stdenvNoCC.mkDerivation rec {
   name = "PragmataPro${version}";
   version = "0.830";
@@ -17,7 +21,7 @@ stdenvNoCC.mkDerivation rec {
       $ nix-hash --flat --base32 --type sha256 /path/to/${name}.zip'';
   };
 
-  buildInputs = [ pkgs.unzip ];
+  buildInputs = [pkgs.unzip];
 
   # Work around the "unpacker appears to have produced no directories"
   # case that happens when the archive doesn't have a subdirectory.

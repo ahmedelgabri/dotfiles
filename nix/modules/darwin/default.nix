@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Auto upgrade nix package and the daemon service.
   # affects nix.useDaemon
   services.nix-daemon.enable = true;
@@ -69,7 +71,7 @@
 
       dock = {
         # I like an empty dock, I don't use it.
-        persistent-apps = [ ];
+        persistent-apps = [];
         autohide = true;
         autohide-delay = 0.0;
         autohide-time-modifier = 0.0;

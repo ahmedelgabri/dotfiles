@@ -1,11 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.gpg;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.gpg;
+in {
   options = with lib; {
     my.modules.gpg = {
       enable = mkEnableOption ''
@@ -16,8 +16,8 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ gnupg ];
-      my.env = { GNUPGHOME = "$XDG_CONFIG_HOME/gnupg"; };
+      environment.systemPackages = with pkgs; [gnupg];
+      my.env = {GNUPGHOME = "$XDG_CONFIG_HOME/gnupg";};
 
       programs.gnupg.agent = {
         enable = true;

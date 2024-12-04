@@ -1,13 +1,14 @@
 # TODO: https://github.com/balsoft/nixos-config/blob/64e3aeb311f1e0c5c2ccaef94f04d51a72e48b48/modules/applications/weechat.nix
-{ pkgs, lib, config, inputs, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   cfg = config.my.modules.irc;
   inherit (config.my.user) home;
-
-in
-{
+in {
   options = with lib; {
     my.modules.irc = {
       enable = mkEnableOption ''
@@ -23,19 +24,18 @@ in
           packages = with pkgs; [
             (weechat.override
               {
-                configure = { availablePlugins, ... }: {
-                  plugins = with availablePlugins;
-                    [
-                      (perl.withPackages (p: [ p.PodParser ]))
-                      (python.withPackages (ps: [
-                        ps.websocket-client
-                        ps.pync
-                      ]))
-                    ];
+                configure = {availablePlugins, ...}: {
+                  plugins = with availablePlugins; [
+                    (perl.withPackages (p: [p.PodParser]))
+                    (python.withPackages (ps: [
+                      ps.websocket-client
+                      ps.pync
+                    ]))
+                  ];
                   scripts = with pkgs.weechatScripts;
-                    [ wee-slack weechat-autosort colorize_nicks ]
+                    [wee-slack weechat-autosort colorize_nicks]
                     ++ lib.optionals (!pkgs.stdenv.isDarwin)
-                      [ weechat-notify-send ];
+                    [weechat-notify-send];
                 };
               })
           ];
@@ -47,25 +47,18 @@ in
         };
 
         hm.file = {
-          ".config/weechat/perl/autoload/atcomplete.pl".source =
-            "${inputs.weechat-scripts}/perl/atcomplete.pl";
+          ".config/weechat/perl/autoload/atcomplete.pl".source = "${inputs.weechat-scripts}/perl/atcomplete.pl";
 
-          ".config/weechat/perl/autoload/highmon.pl".source =
-            "${inputs.weechat-scripts}/perl/highmon.pl";
+          ".config/weechat/perl/autoload/highmon.pl".source = "${inputs.weechat-scripts}/perl/highmon.pl";
 
-          ".config/weechat/python/autoload/bitlbee_completion.py".source =
-            "${inputs.weechat-scripts}/python/bitlbee_completion.py";
+          ".config/weechat/python/autoload/bitlbee_completion.py".source = "${inputs.weechat-scripts}/python/bitlbee_completion.py";
 
-          ".config/weechat/python/autoload/go.py".source =
-            "${inputs.weechat-scripts}/python/go.py";
+          ".config/weechat/python/autoload/go.py".source = "${inputs.weechat-scripts}/python/go.py";
 
-          ".config/weechat/python/autoload/screen_away.py".source =
-            "${inputs.weechat-scripts}/python/screen_away.py";
+          ".config/weechat/python/autoload/screen_away.py".source = "${inputs.weechat-scripts}/python/screen_away.py";
 
           # Note: DARWIN ONLY
-          ".config/weechat/python/autoload/notification_center.py".source =
-            "${inputs.weechat-scripts}/python/notification_center.py";
-
+          ".config/weechat/python/autoload/notification_center.py".source = "${inputs.weechat-scripts}/python/notification_center.py";
         };
       };
 
@@ -98,6 +91,5 @@ in
           ln -sf ${home}/.dotfiles/config/weechat/buflist.conf ${home}/.config/weechat/buflist.conf
         fi
       '';
-
     };
 }

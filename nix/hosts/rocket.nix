@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  networking = { hostName = "rocket"; };
+{pkgs, ...}: {
+  networking = {hostName = "rocket";};
 
   my = {
     username = "ahmedelgabri";
@@ -11,7 +11,7 @@
         enable = true;
         account = "Work";
         alias_path = "";
-        keychain = { name = "gmail.com"; };
+        keychain = {name = "gmail.com";};
         imap_server = "imap.gmail.com";
         smtp_server = "smtp.gmail.com";
       };

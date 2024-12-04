@@ -1,15 +1,14 @@
 _: {
-  networking = { hostName = "pandoras-box"; };
+  networking = {hostName = "pandoras-box";};
 
   my = {
     modules = {
-      mail = { enable = true; };
+      mail = {enable = true;};
       irc.enable = true;
       gpg.enable = true;
       discord.enable = true;
       hledger.enable = true;
     };
-
   };
 
   homebrew = {
@@ -20,7 +19,6 @@ _: {
       "brave-browser"
       "signal"
     ];
-
 
     # Requires to be logged in to the AppStore
     # Cleanup doesn't work automatically if you add/remove to list

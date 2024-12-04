@@ -1,12 +1,12 @@
-{ pkgs, lib, config, ... }:
-
-let
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   cfg = config.my.modules.kitty;
   inherit (pkgs.stdenv) isDarwin isLinux;
-
-in
-{
+in {
   options = with lib; {
     my.modules.kitty = {
       enable = mkEnableOption ''
@@ -18,7 +18,7 @@ in
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        homebrew.casks = [ "kitty" ];
+        homebrew.casks = ["kitty"];
         my = {
           env = {
             TERMINFO_DIRS = [
@@ -40,7 +40,6 @@ in
               "${pkgs.kitty.terminfo}/share/terminfo"
             ];
           };
-
         };
       })
 
@@ -52,7 +51,6 @@ in
               source = ../../../config/kitty;
             };
           };
-
         };
       }
     ]);

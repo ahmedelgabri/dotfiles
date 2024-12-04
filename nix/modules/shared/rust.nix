@@ -1,11 +1,10 @@
-{ lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.rust;
-
-in
 {
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.rust;
+in {
   options = with lib; {
     my.modules.rust = {
       enable = mkEnableOption ''

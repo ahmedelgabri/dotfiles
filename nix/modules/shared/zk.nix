@@ -1,11 +1,12 @@
-{ pkgs, lib, config, options, ... }:
-
-let
-
-  cfg = config.my.modules.zk;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}: let
+  cfg = config.my.modules.zk;
+in {
   options = with lib; {
     my.modules.zk = {
       enable = mkEnableOption ''
@@ -16,7 +17,7 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      my.user = { packages = with pkgs; [ zk ]; };
+      my.user = {packages = with pkgs; [zk];};
       my.env = {
         # I set this in zshenv, because of the loading order. Until I figure this out
         # ZK_NOTEBOOK_DIR = "$NOTES_DIR";

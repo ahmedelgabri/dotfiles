@@ -1,11 +1,11 @@
-{ pkgs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.git;
-
-in
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.git;
+in {
   options = with lib; {
     my.modules.git = {
       enable = mkEnableOption ''
@@ -16,8 +16,8 @@ in
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ git ];
-      homebrew.brews = [ "transcrypt" ];
+      environment.systemPackages = with pkgs; [git];
+      homebrew.brews = ["transcrypt"];
 
       my.user = {
         packages = with pkgs; [
@@ -43,8 +43,8 @@ in
             useconfigonly = true
 
             ${optionalString (github_username != "") ''
-             [github]
-             	username = ${github_username}''}
+              [github]
+              	username = ${github_username}''}
 
             [gpg]
             	program = ${pkgs.gnupg}/bin/gpg
@@ -53,8 +53,8 @@ in
             	textconv = ${pkgs.exiftool}/bin/exiftool
 
             ${optionalString pkgs.stdenv.isDarwin ''
-             [diff "plist"]
-             	textconv = plutil -convert xml1 -o -''}
+              [diff "plist"]
+              	textconv = plutil -convert xml1 -o -''}
 
             [include]
             	path = ${hostConfigHome}/gitconfig

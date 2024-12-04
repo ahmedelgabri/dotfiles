@@ -1,11 +1,11 @@
-{ inputs, lib, config, ... }:
-
-let
-
-  cfg = config.my.modules.hammerspoon;
-
-in
 {
+  inputs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.my.modules.hammerspoon;
+in {
   options = with lib; {
     my.modules.hammerspoon = {
       enable = mkEnableOption ''
