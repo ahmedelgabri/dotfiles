@@ -28,6 +28,7 @@
     ./hledger.nix
     ./zk.nix
     ./hammerspoon.nix
+    ./ghostty.nix
   ];
 
   my.modules = {
@@ -54,6 +55,7 @@
     zk.enable = lib.mkDefault true;
     discord.enable = lib.mkDefault true;
     hammerspoon.enable = lib.mkDefault pkgs.stdenv.isDarwin;
+    ghostty.enable = lib.mkDefault true;
   };
 
 }
