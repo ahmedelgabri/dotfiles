@@ -1,3 +1,4 @@
+local utils = require 'utils'
 -- -------------------------------------------------------------------
 -- Layout management
 -- -------------------------------------------------------------------
@@ -5,20 +6,6 @@ local screens = {
 	main = hs.screen.primaryScreen(),
 	samsung = hs.screen 'S24R65x',
 	LG = hs.screen 'LG HDR 4K',
-}
-
---
--- Apps
---
-
-local appMap = {
-	'com.google.Chrome',
-	'org.mozilla.firefox',
-	'com.tinyspeck.slackmacgap',
-	'com.google.Chrome.app.lodlkdfmihgonocnmddehnfgiljnadcf', -- X  Chrome App
-	'net.kovidgoyal.kitty',
-	'com.mitchellh.ghostty',
-	'com.hnc.Discord',
 }
 
 ---
@@ -32,7 +19,7 @@ local function SwitchLayout()
 
 	local layout = {
 		{
-			appMap.chrome,
+			utils.appMap.chrome,
 			nil,
 			(moreThanOneScreen and (contains(allScreens, screens.LG) or contains(
 				allScreens,
@@ -42,9 +29,8 @@ local function SwitchLayout()
 			nil,
 			nil,
 		},
-		{ appMap.twitter, nil, screens.main, hs.layout.right30, nil, nil },
-		{ appMap.tweetbot, nil, screens.main, hs.layout.right30, nil, nil },
-		{ appMap.slack, nil, screens.main, hs.layout.maximized, nil, nil },
+		{ utils.appMap.x, nil, screens.main, hs.layout.right30, nil, nil },
+		{ utils.appMap.slack, nil, screens.main, hs.layout.maximized, nil, nil },
 		-- {
 		--   appMap.brave,
 		--   nil,

@@ -1,27 +1,26 @@
+local utils = require 'utils'
+
 -- https://github.com/mhartington/dotfiles/blob/7dafb67c7be40f373e20c3f443216347c20534ea/hammerspoon/init.lua
 local modalKey = { 'alt' }
+
 local focusKeys = {
 	-- [g]oogle chrome
-	g = 'Google Chrome',
+	g = utils.appMap.chrome,
 	-- [b]rowser (main)
-	b = 'Brave Browser',
+	b = utils.appMap.browser,
 	-- [s]lack
-	s = 'Slack',
+	s = utils.appMap.slack,
 	-- [t]erminal
-	t = 'open -a kitty',
-	-- tweet[b]ot
-	-- b='Tweetbot',
+	t = utils.appMap.terminal,
 	-- i[m]essage
-	m = 'Messages',
+	m = utils.appMap.imessage,
+	-- [C]alendar
+	c = utils.appMap.calendar,
 }
 
 for key in pairs(focusKeys) do
 	hs.hotkey.bind(modalKey, key, function()
-		if key == 't' then
-			hs.execute(focusKeys[key])
-		else
-			hs.application.launchOrFocus(focusKeys[key])
-		end
+		hs.application.launchOrFocusByBundleID(focusKeys[key])
 	end)
 end
 

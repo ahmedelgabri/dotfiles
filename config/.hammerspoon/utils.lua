@@ -17,4 +17,22 @@ function M.deepMerge(tbl1, tbl2)
 	return tbl1
 end
 
+local firefox = 'org.mozilla.firefox'
+local ghostty = 'com.mitchellh.ghostty'
+
+M.appMap = {
+	chrome = 'com.google.Chrome',
+	firefox = firefox,
+	slack = 'com.tinyspeck.slackmacgap',
+	x = 'com.google.Chrome.app.lodlkdfmihgonocnmddehnfgiljnadcf', -- X  Chrome App
+	kitty = 'net.kovidgoyal.kitty',
+	ghostty = ghostty,
+	discord = 'com.hnc.Discord',
+
+	browser = firefox,
+	terminal = ghostty,
+	imessage = 'com.apple.MobileSMS',
+	calendar = '220419yyo1ujiy9', -- Rise
+}
+
 return M
