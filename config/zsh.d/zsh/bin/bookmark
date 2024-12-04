@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -ue -o pipefail
+
+bookmark() {
+	local url="${1:-}"
+	local output_dir="${2:-$NOTES_DIR/saved-articles}"
+	local file
+	file="$(basename "$url")"
+
+	pandoc \
+		--standalone "${url}" \
+		--from html-native_divs-native_spans-auto_identifiers+smart+gfm_auto_identifiers \
+		--to gfm-gfm_auto_identifiers+smart-raw_html \
+		--output "$output_dir/$file.saved.md" \
+		--metadata=source:"$url" \
+		--markdown-headings=atx \
+		--lua-filter="$DOTFILES/config/pandoc/bookmark.lua"
+}
+
+bookmark "$@"
