@@ -113,7 +113,7 @@ return {
 					-- I'm using this instead of LSP format because it cleans up imports too
 					'goimports',
 				},
-				nix = { 'statix', lsp_format = 'first' },
+				nix = { 'nixpkgs_fmt', 'statix' },
 			}, js_formats),
 			format_on_save = function(bufnr)
 				-- Disable with a global or buffer-local variable

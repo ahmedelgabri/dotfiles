@@ -63,7 +63,6 @@ return {
 					debug = false,
 					debounce = 150,
 					sources = {
-						-- nixlinter,
 						nls.builtins.diagnostics.hadolint,
 						nls.builtins.diagnostics.statix,
 						nls.builtins.diagnostics.selene,
