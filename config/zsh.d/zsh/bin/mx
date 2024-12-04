@@ -31,15 +31,16 @@ fi
 MX_START=${MX_START:-"./.mx-start"}
 
 get_session() {
-	if [ -z "${1-}" ]; then
-		# tmux 1.9a+ doesn't like .'s in session names
-		pwd | awk -F"/" '{print $NF}'
-	else
-		echo "$1" | awk -F"/" '{print $NF}'
-	fi
+	echo "$1" | awk -F"/" '{print $NF}'
 }
 
-SESSION="$(get_session "${1-}")"
+# tmux 1.9a+ doesn't like .'s in session names
+get_tmux_session_name() {
+	get_session "${1//./_}"
+}
+
+SESSION="$(get_session "${1:-$(pwd)}")"
+TMUX_SESSION_NAME="$(get_tmux_session_name "$SESSION")"
 
 if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
 	mx-init
@@ -53,13 +54,13 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
 	elif [ -d "$PROJECTS/$SESSION" ]; then
 		WORKINGDIR="$PROJECTS/$SESSION"
 	else
-		WORKINGDIR="$HOME"
+		WORKINGDIR="$PWD"
 	fi
 
 	if [ -n "$WORKINGDIR" ]; then
 		cd "$WORKINGDIR"
-		tmux new-session -d -s "$SESSION"
-		tmux select-window -t "$SESSION"
+		tmux new-session -d -s "$TMUX_SESSION_NAME"
+		tmux select-window -t "$TMUX_SESSION_NAME"
 		# Sometimes I need to setup some project specific stuff & run some commands
 		if [ -x "$MX_START" ]; then
 			tmux send-keys "$MX_START" C-m
@@ -93,7 +94,7 @@ if ! (tmux list-sessions | cut -d':' -f1 | grep -q ^"$SESSION"\$); then
 fi
 
 if [ -z "${TMUX-}" ]; then
-	tmux attach -t "$SESSION"
+	tmux attach -t "$TMUX_SESSION_NAME"
 else
-	tmux switch-client -t "$SESSION"
+	tmux switch-client -t "$TMUX_SESSION_NAME"
 fi
