@@ -351,7 +351,7 @@ in
               account default : ${lib.toLower cfg.account}'';
           };
 
-          ".mbsyncrc" = {
+          ".config/isyncrc" = {
             text = ''
               # ${nix_managed}
               # Settings for isync, a program to synchronise IMAP mailboxes
@@ -382,8 +382,8 @@ in
               # PassCmd "${pkgs.pass}/bin/pass email/${cfg.keychain.name}"
               PassCmd "~/.config/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'"
               AuthMechs LOGIN
-              SSLType IMAPS
-              SSLVersions TLSv1.2
+              TLSType IMAPS
+              TLSVersions +1.2
 
               # Remote storage (where the mail is retrieved from)
               IMAPStore ${cfg.account}-remote
