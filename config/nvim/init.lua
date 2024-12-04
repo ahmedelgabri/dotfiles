@@ -336,8 +336,6 @@ require('lazy').setup {
 			disabled_plugins = {
 				'getscript',
 				'getscriptPlugin',
-				'netrw',
-				'netrwPlugin',
 				'rplugin',
 				'rrhelper',
 				'tohtml',
