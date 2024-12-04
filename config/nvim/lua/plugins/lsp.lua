@@ -1,8 +1,9 @@
 local utils = require '_.utils'
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-if pcall(require, 'cmp_nvim_lsp') then
-	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+if pcall(require, 'blink.cmp') then
+	capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 end
 
 local shared = {

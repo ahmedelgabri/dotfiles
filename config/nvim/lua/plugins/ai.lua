@@ -71,15 +71,23 @@ return {
 	},
 	{
 		'https://github.com/zbirenbaum/copilot.lua',
-		dependencies = {
-			'https://github.com/zbirenbaum/copilot-cmp',
-			opts = {},
-		},
+		-- dependencies = {
+		-- 	'https://github.com/zbirenbaum/copilot-cmp',
+		-- 	opts = {},
+		-- },
 		enabled = utils.is_rocket(),
 		build = ':Copilot auth',
 		event = 'InsertEnter',
 		opts = {
-			suggestion = { enabled = false },
+			-- suggestion = { enabled = false },
+			suggestion = {
+				auto_trigger = true,
+				keymap = {
+					accept = '<c-g>',
+					next = '<C-j>',
+					prev = '<C-k>',
+				},
+			},
 			panel = { enabled = false },
 			filetypes = {
 				yaml = true,
