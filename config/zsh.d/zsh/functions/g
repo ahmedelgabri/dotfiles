@@ -16,7 +16,7 @@ function time_since_last_commit() {
 }
 
 # Hack because otherwise compdef doesn't work with zinit for some reason.
-autoload -Uz compinit compdef && compinit -C -d "${ZDOTDIR}/${zcompdump_file:-.zcompdump}"
+autoload -Uz compinit compdef && compinit -C -d "$ZCOMPDUMP_PATH"
 
 function g() {
   local __CMD=""
