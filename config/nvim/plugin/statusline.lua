@@ -109,22 +109,17 @@ local function readonly()
 	return line and string.format('%%5* %s %%w %%*', line) or nil
 end
 
--- Custom `^V` and `^S` symbols to make this file appropriate for copy-paste
--- (otherwise those symbols are not displayed and when managed to display them they turn the file into a binary format).
--- file --mime-type statusline.lua -> application/octet-stream
-local CTRL_S = vim.keycode '<C-S>'
-local CTRL_V = vim.keycode '<C-V>'
-
-local MODES = setmetatable({
+-- Note that: \19 = ^S and \22 = ^V.
+local MODES = {
 	no = 'N-Operator Pending',
 	nov = 'N-Operator Block',
 	noV = 'N-Operator Line',
 	v = 'V.',
 	V = 'V·Line',
-	[CTRL_V] = 'V·Block',
+	['\22'] = 'V·Block',
 	s = 'S.',
 	S = 'S·Line',
-	[CTRL_S] = 'S·Block',
+	['\19'] = 'S·Block',
 	i = 'I.',
 	ic = 'I·Compl',
 	ix = 'I·X-Compl',
@@ -141,12 +136,7 @@ local MODES = setmetatable({
 	['!'] = 'Sh',
 	t = 'T.',
 	nt = 'TN.',
-}, {
-	-- By default return 'Unknown' but this shouldn't be needed
-	__index = function()
-		return 'Unknown'
-	end,
-})
+}
 
 local function mode()
 	local current_mode = vim.api.nvim_get_mode().mode
@@ -155,7 +145,7 @@ local function mode()
 		return nil
 	end
 
-	return MODES[current_mode]
+	return MODES[current_mode] or 'Unknown'
 end
 
 local function rhs()
@@ -197,13 +187,6 @@ local function word_count()
 	end
 
 	return nil
-end
-
-local function orgmode()
-	return _G.orgmode
-			and type(_G.orgmode.statusline) == 'function'
-			and _G.orgmode.statusline()
-		or nil
 end
 
 local function lsp_diagnostics()
@@ -381,7 +364,6 @@ function M.render_active()
 		mode(),
 		paste(),
 		spell(),
-		orgmode(),
 		diff_source(),
 		lsp_progress_component(),
 		lsp_diagnostics(),
