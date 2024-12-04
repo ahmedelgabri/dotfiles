@@ -5,12 +5,10 @@ return {
 	dependacies = {
 		'https://github.com/nvim-treesitter/nvim-treesitter',
 	},
-	config = function()
-		require('go-tags').setup {
-			commands = {
-				['GoTagsAddJSON'] = { '-add-tags', 'json' },
-				['GoTagsRemoveJSON'] = { '-remove-tags', 'json' },
-			},
-		}
-	end,
+	opts = {
+		commands = {
+			['GoTagsAddJSON'] = { '-add-tags', 'json' },
+			['GoTagsRemoveJSON'] = { '-remove-tags', 'json' },
+		},
+	},
 }

@@ -47,9 +47,7 @@ return {
 			{ 'ga', mode = { 'n', 'x' } },
 			{ 'gA', mode = { 'n', 'x' } },
 		},
-		config = function()
-			require('mini.align').setup {}
-		end,
+		opts = {},
 	},
 	{
 		'https://github.com/echasnovski/mini.bufremove',
@@ -77,7 +75,7 @@ return {
 	{
 		'https://github.com/echasnovski/mini.indentscope',
 		event = utils.LazyFile,
-		config = function()
+		init = function()
 			-- disable in some buffers
 			au.autocmd {
 				event = { 'FileType' },
@@ -97,7 +95,8 @@ return {
 					vim.b.miniindentscope_disable = true
 				end,
 			}
-
+		end,
+		config = function()
 			require('mini.indentscope').setup {
 				draw = {
 					delay = 50,
@@ -110,16 +109,12 @@ return {
 	{
 		'https://github.com/echasnovski/mini.pairs',
 		event = utils.LazyFile,
-		config = function()
-			require('mini.pairs').setup {}
-		end,
+		opts = {},
 	},
 	{
 		'https://github.com/echasnovski/mini.ai',
 		event = utils.LazyFile,
-		config = function()
-			require('mini.ai').setup {}
-		end,
+		opts = {},
 	},
 	{
 		'https://github.com/echasnovski/mini.surround',
@@ -163,9 +158,7 @@ return {
 	{
 		'https://github.com/echasnovski/mini.trailspace',
 		event = utils.LazyFile,
-		config = function()
-			require('mini.trailspace').setup {}
-		end,
+		opts = {},
 	},
 	{
 		'https://github.com/echasnovski/mini.hipatterns',
@@ -210,18 +203,16 @@ return {
 	{
 		'https://github.com/echasnovski/mini.diff',
 		event = utils.LazyFile,
-		config = function()
-			require('mini.diff').setup {
-				view = {
-					style = 'sign',
-					signs = {
-						add = '│',
-						change = '│',
-						delete = '_',
-					},
+		opts = {
+			view = {
+				style = 'sign',
+				signs = {
+					add = '│',
+					change = '│',
+					delete = '_',
 				},
-			}
-		end,
+			},
+		},
 	},
 	{
 		'https://github.com/echasnovski/mini.clue',
