@@ -164,6 +164,9 @@ in {
               recursive = true;
               source = ../../../config/vivid;
             };
+            ".config/atuin" = {
+              source = ../../../config/atuin;
+            };
           };
 
           env =
