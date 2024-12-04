@@ -21,13 +21,6 @@ return {
 		-- N.B! CC needs to be unset (not set to clang as in nix shells)
 		vim.env.CC = ''
 
-		local is_big_file = function(_, buf)
-			local max_filesize = 100 * 1024 -- 100 KB
-			local ok, stats =
-				pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf or 0))
-			return ok and stats and stats.size > max_filesize
-		end
-
 		-- See https://github.com/andreaswachowski/dotfiles/commit/853fbc1e06595ecd18490cdfad64823be8bb9971
 		--- @diagnostic disable-next-line: missing-fields
 		require('nvim-treesitter.configs').setup {
@@ -67,15 +60,6 @@ return {
 			highlight = {
 				enable = true,
 				use_languagetree = true,
-				disable = function(lang, buf)
-					return lang == 'org' or is_big_file(buf)
-				end,
-				-- https://github.com/nvim-treesitter/nvim-treesitter/pull/1042
-				-- https://www.reddit.com/r/neovim/comments/ok9frp/v05_treesitter_does_anyone_have_python_indent/h57kxuv/?context=3
-				-- Required since TS highlighter doesn't support all syntax features (conceal)
-				additional_vim_regex_highlighting = {
-					'org',
-				},
 			},
 		}
 

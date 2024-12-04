@@ -16,6 +16,7 @@ vim.filetype.add {
 		['.envrc'] = 'bash',
 		['.env'] = 'dotenv',
 		['.stylelintrc'] = 'json',
+		['.eslintrc.json'] = 'jsonc',
 		Brewfile = 'ruby',
 		['turbo.json'] = 'jsonc',
 		['nx.json'] = 'jsonc',
@@ -31,5 +32,15 @@ vim.filetype.add {
 		['%.env%.[%w_.-]+'] = 'dotenv',
 		['.*%.gradle'] = 'groovy',
 		['.*/%.github/.*%.y*ml'] = 'yaml.github',
+		-- Borrowed from LazyVim. Mark huge files to disable features later.
+		['.*'] = function(path, bufnr)
+			return (
+				vim.bo[bufnr]
+				and vim.bo[bufnr].filetype ~= 'bigfile'
+				and path
+				and vim.fn.getfsize(path) > (1024 * 500) -- 500 KB
+				and 'bigfile'
+			) or nil
+		end,
 	},
 }
