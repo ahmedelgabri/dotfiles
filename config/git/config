@@ -213,6 +213,19 @@
 	# https://twitter.com/mitsuhiko/status/1554562650645864448
 	mainalias = "!f() { if (git show-ref --verify -q refs/heads/main && !git show-ref --verify -q refs/heads/master); then (git symbolic-ref refs/heads/master refs/heads/main); else (git symbolic-ref refs/heads/main refs/heads/master); fi }; f"
 
+	grep = grep --break --heading
+	count = !git --no-pager log --oneline | wc -l
+	cp = cherry-pick
+
+	# http://stackoverflow.com/questions/224687/git-find-duplicate-blobs-files-in-this-tree/8408640#8408640
+	dupes = !"f() { \
+		git ls-tree -r HEAD --format='%(objecttype)%x09%(path)%x09%(objectname)' | \
+		awk '$1 == \"blob\"' | \
+		sort | \
+		uniq -D -f 2 | \
+		awk '{ print $3 \" \" $2 }'; \
+	}; f"
+
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
