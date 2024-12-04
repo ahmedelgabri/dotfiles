@@ -18,7 +18,6 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        homebrew.taps = ["homebrew/cask-versions"];
         homebrew.casks = [
           "1password"
           "raycast"
