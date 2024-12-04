@@ -103,6 +103,7 @@ in
             shell = pkgs.zsh;
             packages = with pkgs; [
               _1password-cli
+              atuin
               bat
               # buku
               difftastic
