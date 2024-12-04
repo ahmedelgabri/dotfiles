@@ -127,7 +127,7 @@ return {
 					return nil
 				end
 
-				return { lsp_format = 'fallback', timeout_ms = 500 }
+				return { lsp_format = 'fallback' }
 			end,
 		},
 		init = function()
