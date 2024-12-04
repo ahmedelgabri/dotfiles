@@ -109,7 +109,6 @@ in
               bat
               # buku
               difftastic
-              # emanote # Only aarch64-darwin
               eza
               fd
               ffmpeg
@@ -247,7 +246,8 @@ in
 
                 # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
                 autoload -U select-word-style
-                select-word-style bash # only alphanumeric chars are considered WORDCHARS
+                # only alphanumeric chars are considered WORDCHARS
+                select-word-style bash
 
                 autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
               ''
