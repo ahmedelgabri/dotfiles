@@ -7,7 +7,7 @@ function M.info()
 	local color = ''
 
 	for _, battery in ipairs(wezterm.battery_info()) do
-		local icon = icons[math.ceil(battery.charge / 25)]
+		local icon = icons[math.ceil(battery.state_of_charge / 25)]
 
 		if battery.state_of_charge < 0.25 then
 			color = 'red'
