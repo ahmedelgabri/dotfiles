@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 let
 
@@ -45,6 +45,26 @@ in
         ".config/yazi" = {
           recursive = true;
           source = ../../../config/yazi;
+        };
+
+        ".config/yazi/plugins/max-preview.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/max-preview.yazi";
+        };
+
+        ".config/yazi/plugins/hide-preview.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/hide-preview.yazi";
+        };
+
+        ".config/yazi/plugins/full-border.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/full-border.yazi";
+        };
+
+        ".config/yazi/plugins/git.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/git.yazi";
         };
       };
     };

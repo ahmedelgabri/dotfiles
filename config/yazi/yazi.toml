@@ -1,5 +1,15 @@
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id = "git"
+name = "*/"
+run = "git"
+
 [manager]
 linemode = "size"
 ratio = [0, 2, 6]
@@ -8,8 +18,8 @@ sort_dir_first = true
 show_hidden = true
 
 [preview]
-max_width = 1200
-max_height = 1800
+max_width = 3024  # default = 600
+max_height = 1964 # default = 900
 
 [plugin]
 prepend_previewers = [{ name = "*.md", run = "glow" }]

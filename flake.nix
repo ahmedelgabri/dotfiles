@@ -51,6 +51,11 @@
       flake = false;
     };
 
+    yazi-plugins = {
+      url = "github:yazi-rs/plugins";
+      flake = false;
+    };
+
     nur = {
       url = "github:nix-community/nur";
     };

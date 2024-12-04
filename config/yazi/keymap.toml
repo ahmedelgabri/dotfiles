@@ -1,4 +1,40 @@
+# Default keymaps: https://github.com/sxyazi/yazi/blob/shipped/yazi-config/preset/keymap.toml
+
 [[manager.prepend_keymap]]
-on = ["l"]
+# (Normally, "Open selected files".)
+# See: https://yazi-rs.github.io/docs/tips#smart-enter
+on = "o"
 run = "plugin --sync smart-enter"
 desc = "Enter the child directory, or open the file"
+
+[[manager.prepend_keymap]]
+# (Normally, "Open selected files".)
+# See: https://yazi-rs.github.io/docs/tips#smart-enter
+on = "<Enter>"
+run = "plugin --sync smart-enter"
+desc = "Enter the child directory, or open the file"
+
+[[manager.prepend_keymap]]
+# See: https://yazi-rs.github.io/docs/tips/#smart-paste
+on = "p"
+run = "plugin --sync smart-paste"
+desc = "Paste into the hovered directory or CWD"
+
+[[manager.prepend_keymap]]
+# Mnemonic: "[s]how"
+# (Normally, "Search files by name via fd".)
+on = "s"
+run = "plugin --sync reveal-in-finder"
+desc = "Reveal in Finder"
+
+[[manager.prepend_keymap]]
+# Mnemonic: "[T]oggle preview"
+on = "T"
+run = "plugin --sync hide-preview"
+desc = "Hide or show preview"
+
+[[manager.prepend_keymap]]
+# Mnemonic: "[F]ull-size preview"
+on = "F"
+run = "plugin --sync max-preview"
+desc = "Maximize or restore preview"
