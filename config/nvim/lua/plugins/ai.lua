@@ -22,7 +22,7 @@ return {
 		end,
 		config = function()
 			local icon = adapter == 'copilot'
-					and require('mini.icons').get('directory', '.github')
+					and require('mini.icons').get('lsp', 'copilot')
 				or require('mini.icons').get('lsp', 'codecompanion')
 
 			require('codecompanion').setup {

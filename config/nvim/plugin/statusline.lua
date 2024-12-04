@@ -255,23 +255,21 @@ local function copilot()
 
 	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
 
-	local highlighted_icon = '%%#MoreMsg#%s%%*'
-
 	if ok then
 		return supermaven.is_running()
-				and string.format(
-					highlighted_icon,
-					require('mini.icons').get('lsp', 'supermaven')
-				)
+				and string.format(require('mini.icons').get('lsp', 'supermaven'))
 			or nil
 	end
 
-	return vim.g.loaded_copilot == 1
-			and string.format(
-				highlighted_icon,
-				require('mini.icons').get('lsp', 'copilot')
-			)
-		or nil
+	local c = utils.lazy_require 'copilot.client'
+
+	if
+		c.is_disabled() or not c.buf_is_attached(vim.api.nvim_get_current_buf())
+	then
+		return nil
+	end
+
+	return string.format(require('mini.icons').get('lsp', 'copilot')) .. ' '
 end
 
 ---Mostly taken from https://github.com/MariaSolOs/dotfiles/blob/34c5df39e6576357a2b90e25673e44f4d33afe38/.config/nvim/lua/statusline.lua#L121-L172
@@ -335,7 +333,7 @@ __.statusline = M
 
 function M.render_active()
 	if vim.bo.filetype == 'fzf' then
-		return table.concat({
+		return get_parts {
 			'%4*',
 			'fzf',
 			'%6*',
@@ -345,11 +343,11 @@ function M.render_active()
 			'%*',
 			'%=',
 			file_info(),
-		}, ' ') .. ' '
+		}
 	end
 
 	if vim.bo.filetype == 'oil' then
-		return table.concat({
+		return get_parts {
 			git_info(),
 			(function()
 				local path = vim.fn.expand '%'
@@ -357,7 +355,7 @@ function M.render_active()
 
 				return vim.fn.fnamemodify(path, ':.')
 			end)(),
-		}, ' ') .. ' '
+		}
 	end
 
 	local line = get_parts {
