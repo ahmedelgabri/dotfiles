@@ -49,7 +49,7 @@ in
           nodePackages.bash-language-server
           dockerfile-language-server-nodejs
           docker-compose-language-service
-          nodePackages.typescript-language-server
+          vtsls # js/ts LSP
           nodePackages.yaml-language-server
           nodePackages."@tailwindcss/language-server"
           statix

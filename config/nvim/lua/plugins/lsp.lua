@@ -1,7 +1,17 @@
 local utils = require '_.utils'
 
-local capabilities =
-	vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), {
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+if pcall(require, 'cmp_nvim_lsp') then
+	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+end
+
+local shared = {
+	capabilities = vim.tbl_deep_extend('force', capabilities, {
+		workspace = {
+			didChangeWatchedFiles = {
+				dynamicRegistration = true,
+			},
+		},
 		textDocument = {
 			completion = {
 				completionItem = {
@@ -16,14 +26,7 @@ local capabilities =
 				},
 			},
 		},
-	})
-
-if pcall(require, 'cmp_nvim_lsp') then
-	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-end
-
-local shared = {
-	capabilities = capabilities,
+	}),
 	flags = {
 		debounce_text_changes = 150,
 	},
@@ -44,43 +47,6 @@ return {
 				highlight = true,
 				lsp = {
 					auto_attach = true,
-				},
-			},
-		},
-		{
-			'https://github.com/pmizio/typescript-tools.nvim',
-			event = {
-				'BufReadPost *.ts,*.mts,*.cts,*.tsx,*.js,*.mjs,*.cjs,*.jsx',
-				'BufNewFile *.ts,*.mts,*.cts,*.tsx,*.js,*.mjs,*.cjs,*.jsx',
-			},
-			dependencies = {
-				'https://github.com/nvim-lua/plenary.nvim',
-			},
-			opts = {
-				single_file_support = false,
-				root_dir = function()
-					return not vim.fs.root(
-						0,
-						{ '.flowconfig', 'deno.json', 'deno.jsonc' }
-					) and vim.fs.root(0, {
-						'tsconfig.json',
-						'jsconfig.json',
-						'package.json',
-						'.git',
-						vim.api.nvim_buf_get_name(0),
-					})
-				end,
-				settings = {
-					tsserver_file_preferences = {
-						includeCompletionsForModuleExports = true,
-						includeInlayParameterNameHints = 'all',
-						includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-						includeInlayFunctionParameterTypeHints = true,
-						includeInlayVariableTypeHints = true,
-						includeInlayPropertyDeclarationTypeHints = true,
-						includeInlayFunctionLikeReturnTypeHints = true,
-						includeInlayEnumMemberValueHints = true,
-					},
 				},
 			},
 		},
@@ -324,6 +290,16 @@ return {
 		local web_roots =
 			vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
 
+		-- Use the same settings for JS and TS.
+		local lang_settings = {
+			suggest = { completeFunctionCalls = true },
+			inlayHints = {
+				functionLikeReturnTypes = { enabled = true },
+				parameterNames = { enabled = 'literals' },
+				variableTypes = { enabled = true },
+			},
+		}
+
 		local servers = {
 			cssls = {
 				root_dir = function()
@@ -344,6 +320,48 @@ return {
 			dockerls = {},
 			docker_compose_language_service = {},
 			eslint = {},
+			vtsls = {
+				root_dir = function()
+					return not vim.fs.root(
+						0,
+						{ '.flowconfig', 'deno.json', 'deno.jsonc' }
+					) and vim.fs.root(0, {
+						'tsconfig.json',
+						'jsconfig.json',
+						'package.json',
+						'.git',
+						vim.api.nvim_buf_get_name(0),
+					})
+				end,
+				settings = {
+					typescript = vim.tbl_deep_extend('force', lang_settings, {
+						tsserver = { maxTsServerMemory = 8192 },
+					}),
+					javascript = lang_settings,
+					vtsls = {
+						-- Automatically use workspace version of TypeScript lib on startup.
+						autoUseWorkspaceTsdk = true,
+						experimental = {
+							-- Inlay hint truncation.
+							maxInlayHintLength = 30,
+							-- For completion performance.
+							completion = {
+								enableServerSideFuzzyMatch = true,
+							},
+						},
+					},
+					-- tsserver_file_preferences = {
+					-- 	includeCompletionsForModuleExports = true,
+					-- 	includeInlayParameterNameHints = 'all',
+					-- 	includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+					-- 	includeInlayFunctionParameterTypeHints = true,
+					-- 	includeInlayVariableTypeHints = true,
+					-- 	includeInlayPropertyDeclarationTypeHints = true,
+					-- 	includeInlayFunctionLikeReturnTypeHints = true,
+					-- 	includeInlayEnumMemberValueHints = true,
+					-- },
+				},
+			},
 			ruff = {
 				init_options = {
 					settings = {
@@ -353,7 +371,6 @@ return {
 					},
 				},
 			},
-			-- marksman = {},
 			tailwindcss = {
 				init_options = {
 					userLanguages = {
