@@ -121,7 +121,7 @@ in
           };
 
           ".config/neomutt/accounts/${lib.toLower cfg.account}" = {
-            text = ''
+            text = /* muttrc */ ''
               # ${nix_managed}
               # vi:syntax=muttrc
 
