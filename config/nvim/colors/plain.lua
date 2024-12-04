@@ -421,23 +421,20 @@ highlight('@variable.parameter', { link = 'Statement' })
 highlight('@variable.parameter.reference', { link = 'Statement' }) -- ???
 
 -- nvim-cmp menu
--- matched item (what you typed until present)
-highlight('CmpItemAbbrMatch', { link = 'DiffAdd', bold = true, italic = true })
 
 -- type of completion snippet, function, etc... can also be highlighted
 -- separately if needed
 highlight('CmpItemKind', { link = 'NonText' })
 
--- the source of the completion
-highlight('CmpItemMenu', { link = 'NonText' })
-
 -- uncompleted item that may be good for completion
 highlight('CmpItemAbbr', { link = 'NonText' })
 
 highlight('CmpItemAbbrDeprecated', { strikethrough = true })
-highlight('CmpItemAbbrMatch', { bold = true })
-highlight('CmpItemAbbrMatchFuzzy', { bold = true })
-highlight('CmpItemMenu', { italic = true })
+-- matched item (what you typed until present)
+highlight('CmpItemAbbrMatch', { link = 'DiffAdd', bold = true, italic = true })
+highlight('CmpItemAbbrMatchFuzzy', { link = 'CmpItemAbbrMatch' })
+-- the source of the completion
+highlight('CmpItemMenu', { link = 'NonText' })
 
 highlight('CmpItemKindField', { fg = light_red })
 highlight('CmpItemKindProperty', { fg = light_red })
