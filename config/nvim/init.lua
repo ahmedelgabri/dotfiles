@@ -255,24 +255,17 @@ else
 	vim.opt.undodir:append '.'
 end
 
+-- Shada Defaults:
+--   Neovim: !,'100,<50,s10,h
+-- - ! save/restore global variables (only all-uppercase variables)
+-- - '100 save/restore marks from last 100 files
+-- - <50 save/restore 50 lines from each register
+-- - s10 max item size 10KB
+-- - h do not save/restore 'hlsearch' setting
+
 if root then -- don't create root-owned files then
 	vim.o.shada = ''
 	vim.o.shadafile = 'NONE'
-else
-	-- Defaults:
-	--   Neovim: !,'100,<50,s10,h
-	-- - ! save/restore global variables (only all-uppercase variables)
-	-- - '100 save/restore marks from last 100 files
-	-- - <50 save/restore 50 lines from each register
-	-- - s10 max item size 10KB
-	-- - h do not save/restore 'hlsearch' setting
-	au.augroup('MyNeovimShada', {
-		{
-			event = { 'CursorHold', 'FocusGained', 'FocusLost' },
-			pattern = '*',
-			command = [[if &bt == '' | rshada|wshada | endif]],
-		},
-	})
 end
 
 -- cursor behavior:
