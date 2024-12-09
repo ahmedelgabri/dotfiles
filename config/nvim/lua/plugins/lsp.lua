@@ -190,11 +190,11 @@ return {
 				event = 'LspAttach',
 				desc = 'LSP actions',
 				callback = function(event)
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-
-					if client == nil then
-						return
-					end
+					local bufnr = event.buf
+					local client = assert(
+						vim.lsp.get_client_by_id(event.data.client_id),
+						'must have valid client'
+					)
 
 					-- ---------------
 					-- GENERAL
@@ -287,17 +287,17 @@ return {
 							clear = false,
 						})
 						vim.api.nvim_clear_autocmds {
-							buffer = event.buf,
+							buffer = bufnr,
 							group = group,
 						}
 						vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
 							group = group,
-							buffer = event.buf,
+							buffer = bufnr,
 							callback = vim.lsp.buf.document_highlight,
 						})
 						vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
 							group = group,
-							buffer = event.buf,
+							buffer = bufnr,
 							callback = vim.lsp.buf.clear_references,
 						})
 					end
@@ -311,9 +311,9 @@ return {
 							{
 								event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
 								callback = function()
-									vim.lsp.codelens.refresh { bufnr = event.buf }
+									vim.lsp.codelens.refresh { bufnr = bufnr }
 								end,
-								buffer = event.buf,
+								buffer = bufnr,
 							},
 						})
 					end
