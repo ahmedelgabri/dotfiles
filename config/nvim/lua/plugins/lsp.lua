@@ -421,13 +421,15 @@ return {
 				},
 				tailwindcss = {
 					init_options = {
-						userLanguages = {
-							eruby = 'erb',
-							eelixir = 'html-eex',
-							['javascript.jsx'] = 'javascriptreact',
-							['typescript.tsx'] = 'typescriptreact',
-							['javascript.jest'] = 'javascriptreact',
-							['typescript.jest'] = 'typescriptreact',
+						tailwindCSS = {
+							userLanguages = {
+								eruby = 'erb',
+								eelixir = 'html-eex',
+								['javascript.jsx'] = 'javascriptreact',
+								['typescript.tsx'] = 'typescriptreact',
+								['javascript.jest'] = 'javascriptreact',
+								['typescript.jest'] = 'typescriptreact',
+							},
 						},
 					},
 				},
