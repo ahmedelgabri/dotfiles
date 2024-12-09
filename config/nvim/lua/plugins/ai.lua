@@ -79,15 +79,7 @@ return {
 		build = ':Copilot auth',
 		event = 'InsertEnter',
 		opts = {
-			-- suggestion = { enabled = false },
-			suggestion = {
-				auto_trigger = true,
-				keymap = {
-					accept = '<c-g>',
-					next = '<C-j>',
-					prev = '<C-k>',
-				},
-			},
+			suggestion = { enabled = false },
 			panel = { enabled = false },
 			filetypes = {
 				yaml = true,

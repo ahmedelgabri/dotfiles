@@ -21,7 +21,7 @@ return {
 		dependencies = {
 			'https://github.com/saadparwaiz1/cmp_luasnip',
 			{ 'https://github.com/hrsh7th/cmp-emoji', lazy = true },
-			{ 'https://github.com/roobert/tailwindcss-colorizer-cmp.nvim' },
+			{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
 			{
 				'https://github.com/saghen/blink.compat',
 				opts = { impersonate_nvim_cmp = true },
@@ -102,9 +102,8 @@ return {
 						border = utils.get_border(),
 					},
 				},
-				-- Displays a preview of the selected item on the current line
 				ghost_text = {
-					enabled = false, -- So copilot works
+					enabled = true,
 				},
 			},
 
@@ -118,25 +117,31 @@ return {
 
 			sources = {
 				completion = {
-					enabled_providers = {
+					enabled_providers = vim.tbl_filter(function(item)
+						return type(item) == 'string'
+					end, {
 						'lsp',
 						'luasnip',
 						'path',
 						'snippets',
 						'buffer',
+						pcall(require, 'copilot.api') and 'copilot' or nil,
 						'lazydev',
 						'emoji',
-					},
+					}),
 				},
 				providers = {
 					-- dont show LuaLS require statements when lazydev has items
 					lsp = { fallback_for = { 'lazydev' } },
 					lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+					copilot = {
+						name = 'copilot',
+						module = 'blink-cmp-copilot',
+					},
 					emoji = {
 						name = 'emoji',
 						module = 'blink.compat.source',
 						transform_items = function(_ctx, items)
-							-- TODO: check https://github.com/Saghen/blink.cmp/pull/253#issuecomment-2454984622
 							local kind = require('blink.cmp.types').CompletionItemKind.Text
 
 							for i = 1, #items do
