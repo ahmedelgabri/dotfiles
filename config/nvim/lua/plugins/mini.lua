@@ -269,7 +269,6 @@ return {
 					'_PASSWORD=()%S+()',
 					'_SECRET=()%S+()',
 					'_KEY=()%S+()',
-					'pass ()%S+()',
 				},
 				group = '',
 				extmark_opts = censor_extmark_opts,
