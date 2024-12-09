@@ -28,15 +28,6 @@ return {
 			},
 		},
 		opts = {
-			accept = {
-				expand_snippet = function(snippet)
-					require('luasnip').lsp_expand(snippet)
-				end,
-				-- experimental auto-brackets support
-				auto_brackets = { enabled = true },
-			},
-			-- experimental signature help support
-			trigger = { signature_help = { enabled = true } },
 			keymap = {
 				preset = 'default',
 				['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
@@ -46,7 +37,7 @@ return {
 							return
 						end
 
-						if cmp.is_in_snippet() then
+						if cmp.snippet_active() then
 							return cmp.accept()
 						else
 							return cmp.select_next()
@@ -57,18 +48,31 @@ return {
 				},
 				['<CR>'] = { 'accept', 'fallback' },
 			},
-			windows = {
-				ghost_text = {
-					enabled = false, -- So copilot works
+
+			snippets = {
+				expand = function(snippet)
+					require('luasnip').lsp_expand(snippet)
+				end,
+				active = function(filter)
+					if filter and filter.direction then
+						return require('luasnip').jumpable(filter.direction)
+					end
+					return require('luasnip').in_snippet()
+				end,
+				jump = function(direction)
+					require('luasnip').jump(direction)
+				end,
+			},
+
+			completion = {
+				accept = {
+					-- Experimental auto-brackets support
+					auto_brackets = {
+						enabled = true,
+					},
 				},
-				documentation = {
-					border = utils.get_border(),
-					auto_show = true,
-				},
-				signature_help = {
-					border = utils.get_border(),
-				},
-				autocomplete = {
+
+				menu = {
 					border = utils.get_border(),
 					draw = {
 						components = {
@@ -91,10 +95,27 @@ return {
 						},
 					},
 				},
-				highlight = {
-					use_nvim_cmp_as_default = true,
+
+				documentation = {
+					auto_show = true,
+					window = {
+						border = utils.get_border(),
+					},
+				},
+				-- Displays a preview of the selected item on the current line
+				ghost_text = {
+					enabled = false, -- So copilot works
 				},
 			},
+
+			-- Experimental signature help support
+			signature = {
+				enabled = true,
+				window = {
+					border = utils.get_border(),
+				},
+			},
+
 			sources = {
 				completion = {
 					enabled_providers = {
@@ -111,15 +132,6 @@ return {
 					-- dont show LuaLS require statements when lazydev has items
 					lsp = { fallback_for = { 'lazydev' } },
 					lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
-					luasnip = {
-						name = 'luasnip',
-						module = 'blink.compat.source',
-						score_offset = -3,
-						opts = {
-							use_show_condition = false,
-							show_autosnippets = true,
-						},
-					},
 					emoji = {
 						name = 'emoji',
 						module = 'blink.compat.source',
