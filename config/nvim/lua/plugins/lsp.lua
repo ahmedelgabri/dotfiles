@@ -160,6 +160,32 @@ return {
 				return orig_util_open_floating_preview(contents, syntax, opts, ...)
 			end
 
+			local configs = require 'lspconfig.configs'
+			local util = require 'lspconfig.util'
+
+			configs.oxc_language_server = {
+				default_config = {
+					cmd = { 'oxc_language_server' },
+					filetypes = {
+						'javascript',
+						'javascript.jsx',
+						'javascript.jest',
+						'javascriptreact',
+						'typescript',
+						'typescript.tsx',
+						'typescript.jest',
+						'typescriptreact',
+					},
+					root_dir = util.root_pattern '.oxlintrc.json',
+					single_file_support = false,
+					settings = {
+						['enable'] = true,
+						['run'] = 'onType',
+						['config'] = '.oxlintrc.json',
+					},
+				},
+			}
+
 			au.autocmd {
 				event = 'LspAttach',
 				desc = 'LSP actions',
@@ -327,6 +353,7 @@ return {
 				dockerls = {},
 				docker_compose_language_service = {},
 				eslint = {},
+				oxc_language_server = {},
 				vtsls = {
 					root_dir = function()
 						return not vim.fs.root(
