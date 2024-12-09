@@ -46,14 +46,14 @@ in {
           shellcheck
           shfmt # Doesn't work with zsh, only sh & bash
           stylua
-          nodePackages.vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
+          vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
-          nodePackages.bash-language-server
+          bash-language-server
           dockerfile-language-server-nodejs
           docker-compose-language-service
           vtsls # js/ts LSP
-          nodePackages.yaml-language-server
-          nodePackages."@tailwindcss/language-server"
+          yaml-language-server
+          tailwindcss-language-server
           statix
           sumneko-lua-language-server
           tree-sitter # required for treesitter "auto-install" option to work
