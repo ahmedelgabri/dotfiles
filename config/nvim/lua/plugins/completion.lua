@@ -116,23 +116,21 @@ return {
 			},
 
 			sources = {
-				completion = {
-					enabled_providers = vim.tbl_filter(function(item)
-						return type(item) == 'string'
-					end, {
-						'lsp',
-						'luasnip',
-						'path',
-						'snippets',
-						'buffer',
-						pcall(require, 'copilot.api') and 'copilot' or nil,
-						'lazydev',
-						'emoji',
-					}),
-				},
+				default = vim.tbl_filter(function(item)
+					return type(item) == 'string'
+				end, {
+					'lsp',
+					'luasnip',
+					'path',
+					'snippets',
+					'buffer',
+					pcall(require, 'copilot.api') and 'copilot' or nil,
+					'lazydev',
+					'emoji',
+				}),
 				providers = {
 					-- dont show LuaLS require statements when lazydev has items
-					lsp = { fallback_for = { 'lazydev' } },
+					lsp = { fallback = { 'lazydev' } },
 					lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
 					copilot = {
 						name = 'copilot',
