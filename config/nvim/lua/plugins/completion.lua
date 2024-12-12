@@ -13,20 +13,19 @@ local has_words_before = function()
 end
 
 return {
+
+	{ 'https://github.com/saadparwaiz1/cmp_luasnip' },
+	{ 'https://github.com/hrsh7th/cmp-emoji', lazy = true },
+	{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
+	{
+		'https://github.com/saghen/blink.compat',
+		opts = { impersonate_nvim_cmp = true },
+	},
 	{
 		'https://github.com/Saghen/blink.cmp',
 		event = { 'VeryLazy' },
 		-- version = 'v0.*',
 		build = 'nix run .#build-plugin',
-		dependencies = {
-			'https://github.com/saadparwaiz1/cmp_luasnip',
-			{ 'https://github.com/hrsh7th/cmp-emoji', lazy = true },
-			{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
-			{
-				'https://github.com/saghen/blink.compat',
-				opts = { impersonate_nvim_cmp = true },
-			},
-		},
 		opts = {
 			keymap = {
 				preset = 'default',
@@ -83,6 +82,7 @@ return {
 									local label = ctx.item.label
 									local icon = source == 'LSP'
 											and MiniIcons.get('lsp', ctx.kind)
+										or source == 'copilot' and MiniIcons.get('lsp', source)
 										or source == 'Path' and (label:match '%.[^/]+$' and MiniIcons.get(
 											'file',
 											label
@@ -116,26 +116,19 @@ return {
 			},
 
 			sources = {
-				default = vim.tbl_filter(function(item)
-					return type(item) == 'string'
-				end, {
+				default = {
 					'lsp',
 					'luasnip',
 					'path',
 					'snippets',
 					'buffer',
-					pcall(require, 'copilot.api') and 'copilot' or nil,
 					'lazydev',
 					'emoji',
-				}),
+				},
 				providers = {
 					-- dont show LuaLS require statements when lazydev has items
-					lsp = { fallback = { 'lazydev' } },
+					lsp = { fallbacks = { 'lazydev' } },
 					lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
-					copilot = {
-						name = 'copilot',
-						module = 'blink-cmp-copilot',
-					},
 					emoji = {
 						name = 'emoji',
 						module = 'blink.compat.source',
@@ -152,5 +145,18 @@ return {
 				},
 			},
 		},
+		config = function(_, opts)
+			local ok = pcall(require, 'copilot.api')
+
+			if ok then
+				table.insert(opts.sources.default, 'copilot')
+				opts.sources.providers.copilot = {
+					name = 'copilot',
+					module = 'blink-cmp-copilot',
+				}
+			end
+
+			require('blink.cmp').setup(opts)
+		end,
 	},
 }
