@@ -27,17 +27,17 @@ template = "default.md"
 
 # Path globs ignored while indexing existing notes.
 exclude = [
-  "drafts/*",
-  "log.md",
-  ".neuron",
-  "neuron.dhall",
-  ".neuronignore",
-  ".obsidian",
-  ".obsidian.vimrc",
-  ".syncinfo",
-  "static",
-  ".mods",
-  ".zk",
+	"drafts/*",
+	"log.md",
+	".neuron",
+	"neuron.dhall",
+	".neuronignore",
+	".obsidian",
+	".obsidian.vimrc",
+	".syncinfo",
+	"static",
+	".mods",
+	".zk",
 ]
 
 # Configure random ID generation.
