@@ -34,7 +34,13 @@ function M.get_filtered_signs(signs, condition)
 	for _, sign in ipairs(signs) do
 		local data = sign[4]
 		if data and data.sign_hl_group and cond(data) then
-			return '%#' .. data.sign_hl_group .. '#' .. data.sign_text .. '%*'
+			local str = '%#' .. data.sign_hl_group .. '#'
+
+			if data.sign_text then
+				str = str .. data.sign_text .. '%*'
+			end
+
+			return str
 		end
 	end
 
