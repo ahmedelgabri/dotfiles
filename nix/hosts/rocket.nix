@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   networking = {hostName = "rocket";};
+  ids.gids.nixbld = 30000;
 
   my = {
     username = "ahmedelgabri";
