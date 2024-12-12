@@ -41,6 +41,7 @@ function Meta(m)
 		m.date = os.date '%Y-%m-%d'
 	end
 
+	m.id = os.date '%Y%m%d%H%M%S'
 	m.published = ''
 	m.tags = { 'saved-articles' }
 	m.category = '"[[saved-articles]]"'
