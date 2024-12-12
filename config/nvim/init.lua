@@ -167,6 +167,8 @@ if not vim.fn.has 'nvim-0.6' then
 	vim.o.joinspaces = false
 end
 
+vim.o.cmdheight = 0
+
 vim.o.concealcursor = 'n'
 
 vim.opt.fillchars = {
