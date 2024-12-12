@@ -175,7 +175,7 @@
                 owner = "zsh-users";
                 repo = oldAttrs.pname;
                 rev = version;
-                sha256 = "sha256-m3C+njGAtXeJHo3uctBn/2WqcumXb6tFhUxtbNqx0Yo=";
+                sha256 = "sha256-JnJRmSkmYUBdv9zGlgmFAwAVIo29wixlEnWC5OAOA84=";
               };
             });
 
