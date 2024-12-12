@@ -528,3 +528,12 @@ highlight('WinBarNC', { link = 'WinBar' })
 
 -- FzfLua
 highlight('FzfLuaBorder', { link = 'Comment' })
+
+-- Render Markdown
+
+highlight('RenderMarkdownH1Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH2Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH3Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH4Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH5Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH6Bg', { fg = light_green, bold = true })
