@@ -8,8 +8,8 @@ function M.get_icon(icon_name)
 			vim.env.PURE_GIT_BRANCH
 		) or ' ',
 		error = '×',
-		info = '●',
-		warn = '!',
+		info = '𝒾',
+		warn = '⚐',
 		hint = '›',
 		lock = '',
 		conflict = ' ',
