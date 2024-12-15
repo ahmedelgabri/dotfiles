@@ -1,4 +1,6 @@
+local au = require '_.utils.au'
 local utils = require '_.utils'
+
 local top_header = table.concat({
 	-- https://github.com/NvChad/NvChad/discussions/2755#discussioncomment-8960250
 	'           ▄ ▄                   ',
@@ -67,26 +69,113 @@ local header = table.concat({
 
 return {
 	'https://github.com/folke/snacks.nvim',
-	lazy = false,
+	event = { 'UIEnter' },
 	keys = {
 		{
 			'<leader>.',
 			function()
-				Snacks.scratch()
+				vim.ui.input({
+					prompt = 'Enter filetype for the scratch buffer: ',
+					default = 'markdown',
+					completion = 'filetype',
+				}, function(ft)
+					local snacks = require 'snacks'
+
+					snacks.scratch.open {
+						ft = ft,
+						win = {
+							width = 150,
+							height = 40,
+							border = utils.get_border(),
+							title = 'Scratch Buffer',
+						},
+					}
+				end)
 			end,
 			{ desc = 'Toggle Scratch Buffer' },
 		},
 		{
 			'<leader>S',
 			function()
-				Snacks.scratch.select()
+				local snacks = require 'snacks'
+
+				snacks.scratch.select()
 			end,
 			{ desc = 'Select Scratch Buffer' },
 		},
 	},
+	init = function()
+		vim.api.nvim_create_autocmd('User', {
+			pattern = 'VeryLazy',
+			callback = function()
+				-- Setup some globals for debugging (lazy-loaded)
+				_G.dd = function(...)
+					Snacks.debug.inspect(...)
+				end
+				_G.bt = function()
+					Snacks.debug.backtrace()
+				end
+				vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+				-- Create some toggle mappings
+				Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>uw'
+				Snacks.toggle.diagnostics():map '<leader>ud'
+				Snacks.toggle.inlay_hints():map '<leader>uh'
+				Snacks.toggle.dim():map '<leader>uD'
+			end,
+		})
+		-- disable in some buffers
+		au.autocmd {
+			event = { 'FileType' },
+			pattern = {
+				'fzf',
+				'startify',
+				'ministarter',
+				'snacks_dashboard',
+				'help',
+				'alpha',
+				'dashboard',
+				'neo-tree',
+				'Trouble',
+				'lazy',
+				'grug-far',
+				'mason',
+			},
+			callback = function()
+				vim.b.snacks_indent = true
+			end,
+		}
+	end,
 	opts = {
+		quickfile = { enabled = false },
+		scroll = { enabled = false },
+		statuscolumn = { enabled = false },
+
+		bigfile = {
+			enabled = true,
+			size = 1024 * 500, -- 500KB
+		},
 		notifier = { enabled = true },
 		debug = { enabled = true },
+		indent = {
+			animate = {
+				enabled = false,
+			},
+			indent = {
+				char = '┆', -- alts: ┊│┆ ┊  ▎││ ▏▏
+				only_scope = true,
+			},
+			chunk = {
+				enabled = true,
+				char = {
+					corner_top = '┏',
+					corner_bottom = '┗',
+					horizontal = '━',
+					vertical = '┃',
+					arrow = '>',
+				},
+			},
+		},
 		input = {
 			win = {
 				style = {
@@ -101,7 +190,6 @@ return {
 				},
 			},
 		},
-		bigfile = { size = 1024 * 500 }, -- 500KB
 		dashboard = {
 			preset = {
 				keys = {

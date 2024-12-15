@@ -537,3 +537,8 @@ highlight('RenderMarkdownH3Bg', { fg = light_green, bold = true })
 highlight('RenderMarkdownH4Bg', { fg = light_green, bold = true })
 highlight('RenderMarkdownH5Bg', { fg = light_green, bold = true })
 highlight('RenderMarkdownH6Bg', { fg = light_green, bold = true })
+
+-- Snacks
+highlight('SnacksIndent', { link = 'Comment' })
+highlight('SnacksIndentChunk', { link = 'Comment' })
+highlight('SnacksIndentScope', { link = 'Comment' })

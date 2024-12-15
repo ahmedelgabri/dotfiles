@@ -82,8 +82,9 @@ return {
 						},
 					},
 					on_create = function()
-						-- disable miniindentscope
+						-- disable indent plugins
 						vim.b.miniindentscope_disable = true
+						vim.b.snacks_indent = true
 					end,
 				},
 				fzf_opts = {
