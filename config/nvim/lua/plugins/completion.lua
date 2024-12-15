@@ -27,6 +27,9 @@ return {
 		-- version = 'v0.*',
 		build = 'nix run .#build-plugin',
 		opts = {
+			enabled = function()
+				return vim.bo.buftype ~= 'prompt' or vim.b.filetype ~= 'snacks_input'
+			end,
 			keymap = {
 				preset = 'default',
 				['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
@@ -154,6 +157,7 @@ return {
 				opts.sources.providers.copilot = {
 					name = 'copilot',
 					module = 'blink-cmp-copilot',
+					score_offset = 10000, -- push to the top
 				}
 			end
 
