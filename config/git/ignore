@@ -32,3 +32,4 @@ Session.vim
 .git-fuzzy-snapshots
 
 .env
+!.envrc

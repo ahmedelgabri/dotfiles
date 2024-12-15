@@ -311,6 +311,12 @@
   in
     {
       inherit darwinConfigurations nixosConfigurations devShells formatter;
+      templates = {
+        node = {
+          path = ./templates/node;
+          description = "A simple template node/js/ts workflows using pnpm and fnm";
+        };
+      };
     }
     // mapHosts
     # for convenience
