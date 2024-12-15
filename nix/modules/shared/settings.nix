@@ -47,7 +47,7 @@ in {
       nix_managed =
         mkOptStr
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
-      user = mkOption {type = options.users.users.type.functor.wrapped;};
+      user = mkOption {type = options.users.users.type.functor.payload.elemType;};
       hostConfigHome = mkOptStr "";
       hm = {
         file = mkOpt' attrs {} "Files to place directly in $HOME";
