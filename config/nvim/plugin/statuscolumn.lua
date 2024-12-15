@@ -1,5 +1,3 @@
-local au = require '_.utils.au'
-
 local M = {}
 
 __.statuscolumn = M
