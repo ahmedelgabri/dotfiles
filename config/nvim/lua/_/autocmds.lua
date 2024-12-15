@@ -46,15 +46,6 @@ local function should_mkview(event)
 		and vim.fn.exists '$SUDO_USER' == 0 -- Don't create root-owned files.
 end
 
-local function should_turn_off_colorcolumn()
-	return vim.bo.textwidth == 0
-		or vim.wo.diff == true
-		or M.colorcolumn_blocklist[vim.bo.filetype] == true
-		or vim.bo.buftype == 'terminal'
-		or vim.bo.readonly == true
-		or vim.wo.previewwindow == true
-end
-
 function M.mkview(event)
 	if should_mkview(event) then
 		local success, err = pcall(function()
