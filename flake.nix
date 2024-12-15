@@ -150,7 +150,7 @@
       nixpkgs = {
         config = {allowUnfree = true;};
         overlays = [
-          inputs.nur.overlay
+          inputs.nur.overlays.default
           (final: prev: {
             pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix {};
             hcron = prev.callPackage ./nix/pkgs/hcron.nix {};
