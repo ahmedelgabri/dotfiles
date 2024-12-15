@@ -66,8 +66,10 @@ return {
 						return
 					end
 
-					---@diagnostic disable-next-line: undefined-global
-					Snacks.dashboard.open()
+					local ok, snacks = pcall(require, 'snacks')
+					if ok then
+						snacks.dashboard.open()
+					end
 				end,
 				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
 			},
