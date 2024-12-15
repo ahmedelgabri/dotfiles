@@ -150,6 +150,7 @@ return {
 		quickfile = { enabled = false },
 		scroll = { enabled = false },
 		statuscolumn = { enabled = false },
+		indent = { enabled = false },
 
 		bigfile = {
 			enabled = true,
@@ -157,25 +158,6 @@ return {
 		},
 		notifier = { enabled = true },
 		debug = { enabled = true },
-		indent = {
-			animate = {
-				enabled = false,
-			},
-			indent = {
-				char = '┆', -- alts: ┊│┆ ┊  ▎││ ▏▏
-				only_scope = true,
-			},
-			chunk = {
-				enabled = true,
-				char = {
-					corner_top = '┏',
-					corner_bottom = '┗',
-					horizontal = '━',
-					vertical = '┃',
-					arrow = '>',
-				},
-			},
-		},
 		input = {
 			win = {
 				style = {

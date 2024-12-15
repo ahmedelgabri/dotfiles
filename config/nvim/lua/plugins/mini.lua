@@ -76,6 +76,41 @@ return {
 		},
 	},
 	{
+		'https://github.com/echasnovski/mini.indentscope',
+		event = utils.LazyFile,
+		init = function()
+			-- disable in some buffers
+			au.autocmd {
+				event = { 'FileType' },
+				pattern = {
+					'fzf',
+					'startify',
+					'ministarter',
+					'snacks_dashboard',
+					'help',
+					'alpha',
+					'dashboard',
+					'neo-tree',
+					'Trouble',
+					'lazy',
+					'mason',
+				},
+				callback = function()
+					vim.b.miniindentscope_disable = true
+				end,
+			}
+		end,
+		config = function()
+			require('mini.indentscope').setup {
+				draw = {
+					delay = 50,
+					animation = require('mini.indentscope').gen_animation.none(),
+				},
+				symbol = '▎', -- default ╎, -- alts: ┊│┆ ┊  ▎││ ▏▏
+			}
+		end,
+	},
+	{
 		'https://github.com/echasnovski/mini.pairs',
 		event = utils.LazyFile,
 		opts = {},
