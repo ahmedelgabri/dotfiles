@@ -18,6 +18,7 @@ _: {
       "jdownloader"
       "brave-browser"
       "signal"
+      "monodraw"
     ];
 
     # Requires to be logged in to the AppStore
