@@ -22,10 +22,8 @@ change_background() {
 	# Change kitty & neovim
 	if [ "$mode" == "dark" ]; then
 		nvim --server /tmp/nvim.pipe --remote-send ':set background=dark<cr>'
-		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/themes/color.conf
 	elif [ "$mode" == "light" ]; then
 		nvim --server /tmp/nvim.pipe --remote-send ':set background=light<cr>'
-		kitty @ --to="$KITTY_LISTEN_ON" set-colors -a ~/.config/kitty/themes/atom-one-light.conf
 	fi
 }
 
