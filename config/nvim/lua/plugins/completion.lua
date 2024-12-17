@@ -13,17 +13,15 @@ local has_words_before = function()
 end
 
 return {
-
-	{ 'https://github.com/saadparwaiz1/cmp_luasnip' },
 	{ 'https://github.com/hrsh7th/cmp-emoji', lazy = true },
 	{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
 	{
-		'https://github.com/saghen/blink.compat',
-		opts = { impersonate_nvim_cmp = true },
-	},
-	{
 		'https://github.com/Saghen/blink.cmp',
-		event = { 'VeryLazy' },
+		dependencies = {
+			{ 'https://github.com/rafamadriz/friendly-snippets' },
+			{ 'https://github.com/saghen/blink.compat' },
+		},
+		event = { 'InsertEnter' },
 		-- version = 'v0.*',
 		build = 'nix run .#build-plugin',
 		opts = {
@@ -77,7 +75,15 @@ return {
 				menu = {
 					border = utils.get_border(),
 					draw = {
+						treesitter = { 'lsp' },
+						columns = {
+							{ 'kind_icon' },
+							{ 'label', 'label_description', 'kind', gap = 1 },
+						},
+
 						components = {
+							label = { width = { fill = false } }, -- default is true
+							label_description = { width = { fill = true } },
 							kind_icon = {
 								text = function(ctx)
 									local MiniIcons = require 'mini.icons'
@@ -157,7 +163,9 @@ return {
 				opts.sources.providers.copilot = {
 					name = 'copilot',
 					module = 'blink-cmp-copilot',
-					score_offset = 10000, -- push to the top
+					score_offset = 100, -- push to the top
+					kind = 'Copilot',
+					async = true,
 				}
 			end
 
