@@ -151,30 +151,6 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
-		event = { 'FileType' },
-		desc = 'Disable features in big files',
-		pattern = 'bigfile',
-		callback = function(args)
-			local bufnr = args.buf
-
-			-- Enable Treesitter folding when not in huge files and when Treesitter
-			-- is working.
-			if
-				vim.bo[bufnr].filetype ~= 'bigfile'
-				and pcall(vim.treesitter.start, bufnr)
-			then
-				vim.api.nvim_buf_call(bufnr, function()
-					vim.wo[0][0].foldmethod = 'expr'
-					vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-					vim.cmd.normal 'zx'
-				end)
-			else
-				-- Else just fallback to using indentation.
-				vim.wo[0][0].foldmethod = 'indent'
-			end
-		end,
-	},
-	{
 		event = { 'BufDelete', 'BufWipeout' },
 		desc = 'Write to ShaDa when deleting/wiping out buffers',
 		command = 'wshada',

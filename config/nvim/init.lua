@@ -194,6 +194,8 @@ vim.o.foldnestmax = 4
 vim.o.foldlevelstart = 99
 -- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
 vim.o.foldtext = ''
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 vim.o.linebreak = true
 vim.o.textwidth = 80
