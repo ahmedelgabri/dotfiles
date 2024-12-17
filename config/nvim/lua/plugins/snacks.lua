@@ -105,6 +105,9 @@ return {
 		},
 	},
 	init = function()
+		-- disable all animations
+		vim.g.snacks_animate = false
+
 		vim.api.nvim_create_autocmd('User', {
 			pattern = 'VeryLazy',
 			callback = function()
