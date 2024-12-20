@@ -26,6 +26,7 @@
             nodePackages.pnpm
           ];
           shellHook = ''
+            eval "$(${pkgs.fnm}/bin/fnm env)"
             ${pkgs.fnm}/bin/fnm use --install-if-missing --version-file-strategy=recursive
           '';
         };
