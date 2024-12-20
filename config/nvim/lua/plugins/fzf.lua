@@ -30,12 +30,7 @@ return {
 			{
 				'<Leader>o',
 				function()
-					-- show all file history when in ~, otherwise show current directory only
-					require('fzf-lua').oldfiles {
-						cwd_only = function()
-							return vim.api.nvim_command 'pwd' ~= vim.env.HOME
-						end,
-					}
+					require('fzf-lua').oldfiles {}
 				end,
 				{ silent = true },
 				desc = 'Search [O]ldfiles',
@@ -95,6 +90,14 @@ return {
 					builtin = {
 						['?'] = 'toggle-preview',
 					},
+				},
+				oldfiles = {
+					-- show all file history when in ~, otherwise show current directory only
+					-- cwd_only = function()
+					-- 	return vim.api.nvim_command 'pwd' ~= vim.env.HOME
+					-- end,
+					include_current_session = true,
+					stat_file = true, -- verify files exist on disk
 				},
 				files = {
 					cwd_prompt = false,
