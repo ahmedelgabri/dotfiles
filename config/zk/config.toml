@@ -108,7 +108,7 @@ template = "til.md"
 
 # Format used to generate links between notes.
 # Either "wiki", "markdown" or a custom template. Default is "markdown".
-link-format = "[[{{metadata.id}}|{{title}}]]"
+link-format = "markdown"
 # Indicates whether a link's path will be percent-encoded.
 # Defaults to true for "markdown" format and false for "wiki" format.
 link-encode-path = true
