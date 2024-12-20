@@ -164,7 +164,6 @@ return {
 					name = 'copilot',
 					module = 'blink-cmp-copilot',
 					score_offset = 100, -- push to the top
-					kind = 'Copilot',
 					async = true,
 				}
 			end
