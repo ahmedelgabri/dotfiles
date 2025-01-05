@@ -68,9 +68,12 @@ return {
 
 			fzf.setup {
 				defaults = {
-					-- very slow in large codea bases and not very useful
+					-- Git icons are very slow in large codea bases and not very useful
 					-- https://github.com/ibhagwan/fzf-lua/wiki#how-do-i-get-maximum-performance-out-of-fzf-lua
 					git_icons = false,
+					-- I don't care about icons, I care more about speed
+					file_icons = false,
+					color_icons = false,
 					-- prompt = '» ',
 				},
 				file_icon_padding = ' ',
