@@ -862,4 +862,9 @@ return {
 		'',
 		'—  Bill Gates',
 	},
+	{
+		"Good intentions don't work; mechanisms do.",
+		'',
+		'—  Jeff Bezos',
+	},
 }
