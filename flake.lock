@@ -163,6 +163,7 @@
         "nur": "nur",
         "spoons": "spoons",
         "weechat-scripts": "weechat-scripts",
+        "yazi-glow": "yazi-glow",
         "yazi-plugins": "yazi-plugins"
       }
     },
@@ -216,6 +217,22 @@
       "original": {
         "owner": "weechat",
         "repo": "scripts",
+        "type": "github"
+      }
+    },
+    "yazi-glow": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735285454,
+        "narHash": "sha256-UljcrXXO5DZbufRfavBkiNV3IGUNct31RxCujRzC9D4=",
+        "owner": "Reledia",
+        "repo": "glow.yazi",
+        "rev": "5ce76dc92ddd0dcef36e76c0986919fda3db3cf5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Reledia",
+        "repo": "glow.yazi",
         "type": "github"
       }
     },

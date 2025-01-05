@@ -67,6 +67,11 @@ in {
           recursive = true;
           source = "${inputs.yazi-plugins}/git.yazi";
         };
+
+        ".config/yazi/plugins/glow.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-glow}/glow.yazi";
+        };
       };
     };
 }

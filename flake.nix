@@ -49,6 +49,11 @@
       flake = false;
     };
 
+    yazi-glow = {
+      url = "github:Reledia/glow.yazi";
+      flake = false;
+    };
+
     nur = {
       url = "github:nix-community/nur";
     };
