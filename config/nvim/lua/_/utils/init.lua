@@ -14,6 +14,8 @@ function M.get_icon(icon_name)
 		lock = '',
 		conflict = ' ',
 		success = ' ',
+		virtual = '●',
+
 		-- success = ' '
 	}
 

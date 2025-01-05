@@ -141,7 +141,7 @@ return {
 		event = utils.LazyFile,
 		config = function()
 			local hipatterns = require 'mini.hipatterns'
-			local color_icon = utils.get_icon 'info' .. ' '
+			local color_icon = utils.get_icon 'virtual' .. ' '
 
 			local function highlight_if_ts_capture(capture, hl_group)
 				return function(buf_id, _match, data)
