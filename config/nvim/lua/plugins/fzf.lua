@@ -43,6 +43,15 @@ return {
 				{ silent = true },
 				desc = 'grep project',
 			},
+			{
+				-- Overrides default z=
+				'z=',
+				function()
+					require('fzf-lua').spell_suggest {}
+				end,
+				{ silent = true },
+				desc = 'Spelling Suggestions',
+			},
 		},
 		init = function()
 			vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
