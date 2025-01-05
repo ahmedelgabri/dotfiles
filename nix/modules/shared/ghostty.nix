@@ -1,9 +1,11 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.my.modules.ghostty;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in {
   options = with lib; {
     my.modules.ghostty = {
@@ -15,6 +17,19 @@ in {
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
+      (mkIf isDarwin {
+        homebrew.casks = [
+          "ghostty"
+        ];
+      })
+      (mkIf isLinux {
+        my.user = {
+          packages = with pkgs; [
+            # Broken on Darwin that's why we have two branches
+            ghostty
+          ];
+        };
+      })
       {
         my = {
           # user = {
