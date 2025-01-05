@@ -19,6 +19,7 @@ _: {
       "brave-browser"
       "signal"
       "monodraw"
+      "cursor"
     ];
 
     # Requires to be logged in to the AppStore
