@@ -266,13 +266,13 @@ local function copilot()
 	if
 		okcopilot
 		and (
-			c.is_disabled() or not c.buf_is_attached(vim.api.nvim_get_current_buf())
+			not c.is_disabled() or c.buf_is_attached(vim.api.nvim_get_current_buf())
 		)
 	then
-		return nil
+		return string.format(require('mini.icons').get('lsp', 'copilot')) .. ' '
 	end
 
-	return string.format(require('mini.icons').get('lsp', 'copilot')) .. ' '
+	return nil
 end
 
 ---Mostly taken from https://github.com/MariaSolOs/dotfiles/blob/34c5df39e6576357a2b90e25673e44f4d33afe38/.config/nvim/lua/statusline.lua#L121-L172
