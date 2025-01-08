@@ -2,14 +2,18 @@
 -- Window management & Grid
 -- -------------------------------------------------------------------
 
+local log = require 'log'
+
 -- https://github.com/wincent/wincent/blob/a33430e43464842c067016e507ab91abd6569948/roles/dotfiles/files/.hammerspoon/init.lua
 local lastSeenChain = nil
 local lastSeenWindow = nil
 local lastSeenAt = nil
 
+hs.grid.ui.textSize = 24
+hs.grid.ui.fontName = 'PragmataPro Mono'
+
 hs.grid.setGrid '12x12'
-hs.grid.MARGINX = 0
-hs.grid.MARGINY = 0
+hs.grid.setMargins(hs.geometry.size(0, 0))
 
 local grid = {
 	topHalf = '0,0 12x6',
@@ -41,8 +45,9 @@ local grid = {
 --  - A chain will be reset after 2 seconds of inactivity, or on switching from
 --    one chain to another, or on switching from one app to another, or from one
 --    window to another.
---
-local function chain(movements)
+local chain = nil
+
+chain = function(movements)
 	local chainResetInterval = 2 -- seconds
 	local cycleLength = #movements
 	local sequenceNumber = 1
@@ -70,10 +75,6 @@ local function chain(movements)
 		hs.grid.set(win, movements[sequenceNumber], screen)
 		sequenceNumber = sequenceNumber % cycleLength + 1
 	end
-end
-
-local function alertCannotManipulateWindow()
-	hs.alert.show "Can't move window"
 end
 
 --
@@ -140,17 +141,17 @@ hs.hotkey.bind(
 hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'left', function()
 	local win = hs.window.focusedWindow()
 	if not win then
-		alertCannotManipulateWindow()
+		log.w "Can't move window"
 		return
 	end
-	win:moveOneScreenWest()
+	win:moveOneScreenWest(false, true)
 end)
 
 hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'right', function()
 	local win = hs.window.focusedWindow()
 	if not win then
-		alertCannotManipulateWindow()
+		log.w "Can't move window"
 		return
 	end
-	win:moveOneScreenEast()
+	win:moveOneScreenEast(false, true)
 end)
