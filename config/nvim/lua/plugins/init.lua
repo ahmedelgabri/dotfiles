@@ -84,6 +84,11 @@ return {
 	},
 	{ 'https://github.com/fladson/vim-kitty', ft = 'kitty' },
 	{
+		'ghostty',
+		dir = '/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/',
+		lazy = false,
+	},
+	{
 		'https://github.com/MagicDuck/grug-far.nvim',
 		event = 'FileType grug-far',
 		cmd = { 'GrugFar' },
