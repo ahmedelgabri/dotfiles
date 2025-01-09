@@ -13,7 +13,7 @@ local has_words_before = function()
 end
 
 return {
-	{ 'https://github.com/hrsh7th/cmp-emoji', lazy = true },
+	{ 'https://github.com/moyiz/blink-emoji.nvim' },
 	{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
 	{
 		'https://github.com/Saghen/blink.cmp',
@@ -49,20 +49,7 @@ return {
 				['<CR>'] = { 'accept', 'fallback' },
 			},
 
-			snippets = {
-				expand = function(snippet)
-					require('luasnip').lsp_expand(snippet)
-				end,
-				active = function(filter)
-					if filter and filter.direction then
-						return require('luasnip').jumpable(filter.direction)
-					end
-					return require('luasnip').in_snippet()
-				end,
-				jump = function(direction)
-					require('luasnip').jump(direction)
-				end,
-			},
+			snippets = { preset = 'luasnip' },
 
 			completion = {
 				accept = {
@@ -127,7 +114,6 @@ return {
 			sources = {
 				default = {
 					'lsp',
-					'luasnip',
 					'path',
 					'snippets',
 					'buffer',
@@ -136,21 +122,55 @@ return {
 				},
 				cmdline = {},
 				providers = {
-					-- dont show LuaLS require statements when lazydev has items
-					lsp = { fallbacks = { 'lazydev' } },
-					lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+					lsp = {
+						name = 'lsp',
+						enabled = true,
+						module = 'blink.cmp.sources.lsp',
+						-- When linking markdown notes, I would get snippets and text in the
+						-- suggestions, I want those to show only if there are no LSP
+						-- suggestions
+						-- Disabling fallbacks as my snippets wouldn't show up
+						-- Enabled fallbacks as this seems to be working now
+						fallbacks = { 'lazydev', 'snippets', 'buffer' },
+					},
+					path = {
+						name = 'Path',
+						module = 'blink.cmp.sources.path',
+						-- When typing a path, I would get snippets and text in the
+						-- suggestions, I want those to show only if there are no path
+						-- suggestions
+						fallbacks = { 'snippets', 'buffer' },
+						opts = {
+							trailing_slash = false,
+							label_trailing_slash = true,
+							get_cwd = function(context)
+								return vim.fn.expand(('#%d:p:h'):format(context.bufnr))
+							end,
+							show_hidden_files_by_default = true,
+						},
+					},
+					buffer = {
+						name = 'Buffer',
+						enabled = true,
+						max_items = 3,
+						module = 'blink.cmp.sources.buffer',
+						min_keyword_length = 4,
+					},
+					lazydev = {
+						name = 'LazyDev',
+						module = 'lazydev.integrations.blink',
+					},
 					emoji = {
-						name = 'emoji',
-						module = 'blink.compat.source',
-						transform_items = function(_ctx, items)
-							local kind = require('blink.cmp.types').CompletionItemKind.Text
-
-							for i = 1, #items do
-								items[i].kind = kind
-							end
-
-							return items
-						end,
+						module = 'blink-emoji',
+						name = 'Emoji',
+						opts = { insert = true },
+					},
+					snippets = {
+						name = 'snippets',
+						enabled = true,
+						max_items = 8,
+						min_keyword_length = 2,
+						module = 'blink.cmp.sources.snippets',
 					},
 				},
 			},
@@ -162,7 +182,9 @@ return {
 				table.insert(opts.sources.default, 'copilot')
 				opts.sources.providers.copilot = {
 					name = 'copilot',
+					enabled = true,
 					module = 'blink-cmp-copilot',
+					min_keyword_length = 6,
 					score_offset = 100, -- push to the top
 					async = true,
 				}
