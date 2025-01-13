@@ -61,6 +61,7 @@ return {
 				debug = false,
 				debounce = 150,
 				sources = {
+					nls.builtins.diagnostics.zsh,
 					nls.builtins.diagnostics.hadolint,
 					nls.builtins.diagnostics.statix,
 					nls.builtins.diagnostics.selene,

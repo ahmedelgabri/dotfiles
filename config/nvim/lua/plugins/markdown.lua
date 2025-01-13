@@ -19,7 +19,7 @@ return {
 	},
 	{
 		'https://github.com/MeanderingProgrammer/markdown.nvim',
-		ft = { 'markdown' },
+		ft = { 'markdown', 'codecompanion' },
 		config = function()
 			require('render-markdown').setup {
 				render_modes = { 'n', 'c', 'i', 'v', 'V', '\22' },
