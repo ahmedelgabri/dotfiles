@@ -4,6 +4,7 @@ local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
 return {
 	{
 		'https://github.com/olimorris/codecompanion.nvim',
+		lazy = false,
 		keys = {
 			{
 				'<localleader>ca',
@@ -30,7 +31,7 @@ return {
 					chat = {
 						adapter = adapter,
 						roles = {
-							llm = icon .. ' ',
+							llm = icon .. ' ' .. adapter,
 							user = vim.env.USER,
 						},
 						slash_commands = {

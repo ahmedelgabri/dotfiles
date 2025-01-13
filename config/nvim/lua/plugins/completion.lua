@@ -94,6 +94,7 @@ return {
 
 				documentation = {
 					auto_show = true,
+					treesitter_highlighting = true,
 					window = {
 						border = utils.get_border(),
 					},
@@ -119,6 +120,7 @@ return {
 					'buffer',
 					'lazydev',
 					'emoji',
+					'codecompanion',
 				},
 				cmdline = {},
 				providers = {
@@ -131,7 +133,7 @@ return {
 						-- suggestions
 						-- Disabling fallbacks as my snippets wouldn't show up
 						-- Enabled fallbacks as this seems to be working now
-						fallbacks = { 'lazydev', 'snippets', 'buffer' },
+						fallbacks = { 'lazydev', 'buffer' },
 					},
 					path = {
 						name = 'Path',
