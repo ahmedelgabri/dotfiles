@@ -3,9 +3,89 @@ local utils = require '_.utils'
 
 return {
 	{
-		'https://github.com/echasnovski/mini.icons',
-		event = utils.LazyFile,
+		'https://github.com/echasnovski/mini.nvim',
+		keys = {
+			-- Bufremove
+			{
+				'<M-d>',
+				function()
+					require('mini.bufremove').delete(0, false)
+
+					local buf_id = vim.api.nvim_get_current_buf()
+					local is_empty = vim.api.nvim_buf_get_name(buf_id) == ''
+						and vim.bo[buf_id].filetype == ''
+
+					if not is_empty then
+						return
+					end
+
+					local ok, snacks = pcall(require, 'snacks')
+					if ok then
+						snacks.dashboard.open()
+					end
+				end,
+				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
+			},
+		},
+
+		init = function()
+			-- Indentscope: disable in some buffers
+			au.autocmd {
+				event = { 'FileType' },
+				pattern = {
+					'fzf',
+					'startify',
+					'ministarter',
+					'snacks_dashboard',
+					'help',
+					'alpha',
+					'dashboard',
+					'neo-tree',
+					'Trouble',
+					'lazy',
+					'mason',
+				},
+				callback = function()
+					vim.b.miniindentscope_disable = true
+				end,
+			}
+		end,
 		config = function()
+			require('mini.pairs').setup {}
+			require('mini.ai').setup {}
+			require('mini.trailspace').setup {}
+
+			-- Indentscope
+			require('mini.indentscope').setup {
+				draw = {
+					delay = 50,
+					animation = require('mini.indentscope').gen_animation.none(),
+				},
+				symbol = '▎', -- default ╎, -- alts: ┊│┆ ┊  ▎││ ▏▏
+			}
+
+			-- Surround
+			require('mini.surround').setup {
+				-- How to search for surrounding (first inside current line, then inside
+				-- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
+				-- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
+				-- see `:h MiniSurround.config`.
+				search_method = 'cover_or_next',
+			}
+
+			-- Diff
+			require('mini.diff').setup {
+				view = {
+					style = 'sign',
+					signs = {
+						add = '│',
+						change = '│',
+						delete = '_',
+					},
+				},
+			}
+
+			-- Icons
 			local test_icon = ''
 			local js_table = { glyph = test_icon, hl = 'MiniIconsYellow' }
 			local jsx_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
@@ -39,107 +119,8 @@ return {
 				},
 			}
 			require('mini.icons').mock_nvim_web_devicons()
-		end,
-	},
-	{
-		'https://github.com/echasnovski/mini.align',
-		keys = {
-			{ 'ga', mode = { 'n', 'x' } },
-			{ 'gA', mode = { 'n', 'x' } },
-		},
-		opts = {},
-	},
-	{
-		'https://github.com/echasnovski/mini.bufremove',
-		opts = {},
-		keys = {
-			{
-				'<M-d>',
-				function()
-					require('mini.bufremove').delete(0, false)
 
-					local buf_id = vim.api.nvim_get_current_buf()
-					local is_empty = vim.api.nvim_buf_get_name(buf_id) == ''
-						and vim.bo[buf_id].filetype == ''
-
-					if not is_empty then
-						return
-					end
-
-					local ok, snacks = pcall(require, 'snacks')
-					if ok then
-						snacks.dashboard.open()
-					end
-				end,
-				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
-			},
-		},
-	},
-	{
-		'https://github.com/echasnovski/mini.indentscope',
-		event = utils.LazyFile,
-		init = function()
-			-- disable in some buffers
-			au.autocmd {
-				event = { 'FileType' },
-				pattern = {
-					'fzf',
-					'startify',
-					'ministarter',
-					'snacks_dashboard',
-					'help',
-					'alpha',
-					'dashboard',
-					'neo-tree',
-					'Trouble',
-					'lazy',
-					'mason',
-				},
-				callback = function()
-					vim.b.miniindentscope_disable = true
-				end,
-			}
-		end,
-		config = function()
-			require('mini.indentscope').setup {
-				draw = {
-					delay = 50,
-					animation = require('mini.indentscope').gen_animation.none(),
-				},
-				symbol = '▎', -- default ╎, -- alts: ┊│┆ ┊  ▎││ ▏▏
-			}
-		end,
-	},
-	{
-		'https://github.com/echasnovski/mini.pairs',
-		event = utils.LazyFile,
-		opts = {},
-	},
-	{
-		'https://github.com/echasnovski/mini.ai',
-		event = utils.LazyFile,
-		opts = {},
-	},
-	{
-		'https://github.com/echasnovski/mini.surround',
-		event = utils.LazyFile,
-		opts = {
-			-- How to search for surrounding (first inside current line, then inside
-			-- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
-			-- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
-			-- see `:h MiniSurround.config`.
-			search_method = 'cover_or_next',
-		},
-	},
-	{
-		'https://github.com/echasnovski/mini.trailspace',
-		event = utils.LazyFile,
-		opts = {},
-	},
-	{
-		'https://github.com/echasnovski/mini.hipatterns',
-		event = utils.LazyFile,
-		config = function()
+			-- Hipatterns
 			local hipatterns = require 'mini.hipatterns'
 			local color_icon = utils.get_icon 'virtual' .. ' '
 
@@ -306,26 +287,8 @@ return {
 					tokens = secrets,
 				}),
 			}
-		end,
-	},
-	{
-		'https://github.com/echasnovski/mini.diff',
-		event = utils.LazyFile,
-		opts = {
-			view = {
-				style = 'sign',
-				signs = {
-					add = '│',
-					change = '│',
-					delete = '_',
-				},
-			},
-		},
-	},
-	{
-		'https://github.com/echasnovski/mini.clue',
-		event = utils.LazyFile,
-		config = function()
+
+			-- Clue
 			local miniclue = require 'mini.clue'
 
 			-- https://github.com/MariaSolOs/dotfiles/blob/8479ce37bc9bac5f8383d38aa3ead36dc935bdf1/.config/nvim/lua/plugins/miniclue.lua#L50
@@ -478,10 +441,4 @@ return {
 			}
 		end,
 	},
-	-- {
-	-- 	'https://github.com/echasnovski/mini.sessions',
-	-- 	config = function()
-	-- 		require('mini.sessions').setup {}
-	-- 	end,
-	-- },
 }
