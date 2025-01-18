@@ -30,7 +30,7 @@ export HISTFILE="${XDG_DATA_HOME}/.zsh_history"
 
 ############### Misc
 eval "$(direnv hook zsh)"
-eval "$(atuin init zsh --disable-up-arrow)"
+eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 eval "$(zoxide init zsh --hook pwd)"
 
 ##############################################################
