@@ -19,15 +19,11 @@ return {
 		'https://github.com/Saghen/blink.cmp',
 		dependencies = {
 			{ 'https://github.com/rafamadriz/friendly-snippets' },
-			{ 'https://github.com/saghen/blink.compat' },
 		},
 		event = { 'InsertEnter' },
 		-- version = 'v0.*',
 		build = 'nix run .#build-plugin',
 		opts = {
-			enabled = function()
-				return vim.bo.buftype ~= 'prompt' or vim.b.filetype ~= 'snacks_input'
-			end,
 			keymap = {
 				preset = 'default',
 				['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
