@@ -68,9 +68,9 @@ in {
           source = "${inputs.yazi-plugins}/git.yazi";
         };
 
-        ".config/yazi/plugins/glow.yazi" = {
+        ".config/yazi/plugins/glow.yazi/init.lua" = {
           recursive = true;
-          source = "${inputs.yazi-glow}/glow.yazi";
+          source = "${inputs.yazi-glow}/init.lua";
         };
       };
     };
