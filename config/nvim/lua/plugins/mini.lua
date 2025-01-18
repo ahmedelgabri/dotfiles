@@ -417,7 +417,7 @@ return {
 					macro_clues,
 				},
 				window = {
-					delay = 500,
+					delay = 150,
 					scroll_down = '<C-f>',
 					scroll_up = '<C-b>',
 					config = function(bufnr)
