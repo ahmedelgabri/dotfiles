@@ -341,6 +341,23 @@ return {
 							},
 						})
 					end
+
+					if
+						client.name == 'gopls'
+						and not client.server_capabilities.semanticTokensProvider
+					then
+						local semantic =
+							client.config.capabilities.textDocument.semanticTokens
+
+						client.server_capabilities.semanticTokensProvider = {
+							full = true,
+							legend = {
+								tokenModifiers = semantic.tokenModifiers,
+								tokenTypes = semantic.tokenTypes,
+							},
+							range = true,
+						}
+					end
 				end,
 			}
 
@@ -495,6 +512,7 @@ return {
 								prefix = 'self',
 							},
 							cargo = {
+								allFeatures = true,
 								buildScripts = {
 									enable = true,
 								},
@@ -503,7 +521,19 @@ return {
 								enable = true,
 							},
 							checkOnSave = {
+								-- default: `cargo check`
 								command = 'clippy',
+								allFeatures = true,
+							},
+							assist = {
+								importEnforceGranularity = true,
+								importPrefix = 'create',
+							},
+							inlayHints = {
+								lifetimeElisionHints = {
+									enable = true,
+									useParameterNames = true,
+								},
 							},
 						},
 					},
@@ -516,8 +546,28 @@ return {
 							analyses = {
 								unusedparams = true,
 								shadow = true,
+
+								fieldalignment = false, -- find structs that would use less memory if their fields were sorted
+								nilness = true,
+								unusedwrite = true,
+								useany = true,
 							},
-							staticcheck = true,
+							-- DISABLED: staticcheck
+							--
+							-- gopls doesn't invoke the staticcheck binary.
+							-- Instead it imports the analyzers directly.
+							-- This means it can report on issues the binary can't.
+							-- But it's not a good thing (like it initially sounds).
+							-- You can't then use line directives to ignore issues.
+							--
+							-- Instead of using staticcheck via gopls.
+							-- We have golangci-lint execute it instead.
+							--
+							-- For more details:
+							-- https://github.com/golang/go/issues/36373#issuecomment-570643870
+							-- https://github.com/golangci/golangci-lint/issues/741#issuecomment-1488116634
+							--
+							-- staticcheck = true,
 							hints = {
 								assignVariableTypes = true,
 								compositeLiteralFields = true,
@@ -527,6 +577,19 @@ return {
 								parameterNames = true,
 								rangeVariableTypes = true,
 							},
+							codelenses = {
+								gc_details = false,
+								generate = true,
+								regenerate_cgo = true,
+								run_govulncheck = true,
+								test = true,
+								tidy = true,
+								upgrade_dependency = true,
+								vendor = true,
+							},
+							gofumpt = true,
+							semanticTokens = true,
+							usePlaceholders = true,
 						},
 					},
 					init_options = {
