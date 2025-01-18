@@ -30,6 +30,10 @@
         k9s
       ];
     };
+    env = {
+      WORK = "$HOME/dev/work";
+      CDPATH = ".:~:~/dev";
+    };
   };
 
   homebrew = {
