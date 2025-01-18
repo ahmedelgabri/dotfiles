@@ -118,7 +118,6 @@ return {
 				_G.bt = function()
 					Snacks.debug.backtrace()
 				end
-				vim.print = _G.dd -- Override print to use snacks for `:=` command
 
 				-- Create some toggle mappings
 				Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>uw'
@@ -149,94 +148,95 @@ return {
 			end,
 		}
 	end,
-	opts = {
-		quickfile = { enabled = false },
-		scroll = { enabled = false },
-		statuscolumn = { enabled = false },
-		indent = { enabled = false },
+	opts = function(_, opts)
+		return vim.tbl_deep_extend('force', opts or {}, {
+			quickfile = { enabled = false },
+			scroll = { enabled = false },
+			statuscolumn = { enabled = false },
+			indent = { enabled = false },
+			bigfile = {
+				enabled = true,
+				size = 1024 * 500, -- 500KB
+			},
+			notifier = { enabled = true },
+			input = {
+				win = {
+					style = {
+						border = utils.get_border(),
+						relative = 'cursor',
+						width = 45,
+						row = -3,
+						col = 0,
+						wo = {
+							winhighlight = 'NormalFloat:SnacksInputNormal,FloatBorder:Comment,FloatTitle:Normal',
+						},
+					},
+				},
+			},
 
-		bigfile = {
-			enabled = true,
-			size = 1024 * 500, -- 500KB
-		},
-		notifier = { enabled = true },
-		debug = { enabled = true },
-		input = {
-			win = {
-				style = {
-					border = utils.get_border(),
-					relative = 'cursor',
-					width = 45,
-					row = -3,
-					col = 0,
-					wo = {
-						winhighlight = 'NormalFloat:SnacksInputNormal,FloatBorder:Comment,FloatTitle:Normal',
+			dashboard = {
+				preset = {
+					keys = {
+						{
+							key = 'e',
+							desc = 'New File',
+							action = ':ene',
+						},
+						{
+							desc = 'Sync',
+							action = ':Lazy sync',
+							key = 's',
+							enabled = package.loaded.lazy ~= nil,
+						},
+						{
+							desc = 'Update',
+							action = ':Lazy update',
+							key = 'u',
+							enabled = package.loaded.lazy ~= nil,
+						},
+						{
+							desc = 'Clean',
+							action = ':Lazy clean',
+							key = 'c',
+							enabled = package.loaded.lazy ~= nil,
+						},
+						{
+							desc = 'Profile',
+							action = ':Lazy profile',
+							key = 'p',
+							enabled = package.loaded.lazy ~= nil,
+						},
+						{
+							desc = 'Git Todo',
+							action = ':e .git/todo.md',
+							key = 't',
+						},
+						{ key = 'q', desc = 'Quit', action = ':qa' },
 					},
+					header = header,
+				},
+				formats = {
+					key = function(item)
+						return {
+							{ '[', hl = 'special' },
+							{ item.key, hl = 'key' },
+							{ ']', hl = 'special' },
+						}
+					end,
+				},
+				sections = {
+					{ section = 'header' },
+					{ title = 'MRU', padding = 1 },
+					{ section = 'recent_files', limit = 8, padding = 1 },
+					{ title = 'MRU ', file = vim.fn.fnamemodify('.', ':~'), padding = 1 },
+					{ section = 'recent_files', cwd = true, limit = 8, padding = 1 },
+					{ title = 'Sessions', padding = 1 },
+					{ section = 'projects', padding = 1 },
+					{ title = 'Bookmarks', padding = 1 },
+					{ section = 'keys' },
+					{ section = 'startup' },
 				},
 			},
-		},
-		dashboard = {
-			preset = {
-				keys = {
-					{
-						key = 'e',
-						desc = 'New File',
-						action = ':ene',
-					},
-					{
-						desc = 'Sync',
-						action = ':Lazy sync',
-						key = 's',
-						enabled = package.loaded.lazy ~= nil,
-					},
-					{
-						desc = 'Update',
-						action = ':Lazy update',
-						key = 'u',
-						enabled = package.loaded.lazy ~= nil,
-					},
-					{
-						desc = 'Clean',
-						action = ':Lazy clean',
-						key = 'c',
-						enabled = package.loaded.lazy ~= nil,
-					},
-					{
-						desc = 'Profile',
-						action = ':Lazy profile',
-						key = 'p',
-						enabled = package.loaded.lazy ~= nil,
-					},
-					{
-						desc = 'Git Todo',
-						action = ':e .git/todo.md',
-						key = 't',
-					},
-					{ key = 'q', desc = 'Quit', action = ':qa' },
-				},
-				header = header,
-			},
-			formats = {
-				key = function(item)
-					return {
-						{ '[', hl = 'special' },
-						{ item.key, hl = 'key' },
-						{ ']', hl = 'special' },
-					}
-				end,
-			},
-			sections = {
-				{ section = 'header' },
-				{ title = 'MRU', padding = 1 },
-				{ section = 'recent_files', limit = 8, padding = 1 },
-				{ title = 'MRU ', file = vim.fn.fnamemodify('.', ':~'), padding = 1 },
-				{ section = 'recent_files', cwd = true, limit = 8, padding = 1 },
-				{ title = 'Sessions', padding = 1 },
-				{ section = 'projects', padding = 1 },
-				{ title = 'Bookmarks', padding = 1 },
-				{ section = 'keys' },
-				{ section = 'startup' },
-			},
-		},
-	},
+		})
+	end,
 }
