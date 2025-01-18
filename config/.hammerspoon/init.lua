@@ -1,3 +1,10 @@
+-- Add a new path to Lua's package.path
+local new_path = os.getenv 'HOME'
+	.. '/.local/share/'
+	.. hs.host.localizedName()
+	.. '/hammerspoon/?.lua'
+package.path = package.path .. ';' .. new_path
+
 hs.ipc.cliInstall() -- Ensure the IPC command line client is available
 hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
@@ -24,7 +31,7 @@ local urlDispatcherConfig = {
 	},
 }
 
-local ok, local_config = pcall(require, 'hosts.' .. hs.host.localizedName())
+local ok, local_config = pcall(require, hs.host.localizedName())
 
 if ok and local_config ~= nil then
 	urlDispatcherConfig = utils.deepMerge(urlDispatcherConfig, local_config)
@@ -32,6 +39,7 @@ end
 
 hs.loadSpoon 'URLDispatcher'
 spoon.URLDispatcher = utils.deepMerge(spoon.URLDispatcher, urlDispatcherConfig)
+-- spoon.URLDispatcher.logger.setLogLevel("debug")
 spoon.URLDispatcher:start()
 
 --
