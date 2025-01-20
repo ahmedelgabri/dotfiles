@@ -1,4 +1,4 @@
-local au = require '_.utils.au'
+---@diagnostic disable: missing-fields
 local utils = require '_.utils'
 
 local top_header = table.concat({
@@ -103,6 +103,56 @@ return {
 			end,
 			{ desc = 'Select Scratch Buffer' },
 		},
+		{
+			'<leader><leader>',
+			function()
+				require('snacks').picker.files {}
+			end,
+			{ silent = true },
+			desc = 'Search Files',
+		},
+		{
+			'<leader>b',
+			function()
+				require('snacks').picker.buffers {}
+			end,
+			{ silent = true },
+			desc = 'Search [B]uffers',
+		},
+		{
+			'<leader>h',
+			function()
+				require('snacks').picker.help {}
+			end,
+			{ silent = true },
+			desc = 'Search [H]elp',
+		},
+		{
+			'<Leader>o',
+			function()
+				require('snacks').picker.recent {}
+			end,
+			{ silent = true },
+			desc = 'Search [O]ldfiles',
+		},
+		{
+			'\\',
+			function()
+				require('snacks').picker.grep {}
+			end,
+			{ silent = true },
+			desc = 'grep project',
+		},
+		-- Overrides default z=
+		{
+			'z=',
+			function()
+				---@diagnostic disable-next-line: undefined-field
+				require('snacks').picker.spelling {}
+			end,
+			{ silent = true },
+			desc = 'Spelling Suggestions',
+		},
 	},
 	init = function()
 		-- disable all animations
@@ -149,6 +199,9 @@ return {
 		}
 	end,
 	opts = function(_, opts)
+		-- Show select prompts relative to cursor position
+		require('snacks.picker.config.layouts').select.layout.relative = 'cursor'
+
 		return vim.tbl_deep_extend('force', opts or {}, {
 			quickfile = { enabled = false },
 			scroll = { enabled = false },
@@ -235,6 +288,88 @@ return {
 					{ title = 'Bookmarks', padding = 1 },
 					{ section = 'keys' },
 					{ section = 'startup' },
+				},
+			},
+			picker = {
+				icons = {
+					ui = {
+						live = '󰐰 ',
+						hidden = '',
+						ignored = '',
+						unselected = '',
+						selected = '✓ ',
+					},
+				},
+				win = {
+					preview = {
+						wo = {
+							foldcolumn = '0',
+							number = false,
+							relativenumber = false,
+							statuscolumn = '',
+						},
+					},
+					input = {
+						keys = {
+							['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+							['<c-t>'] = {
+								'trouble_open',
+								mode = { 'n', 'i' },
+							},
+						},
+					},
+					list = {
+						wo = {
+							conceallevel = 0,
+						},
+					},
+				},
+				prompt = utils.get_icon 'search',
+				actions = require('trouble.sources.snacks').actions,
+				previewers = {
+					git = {
+						native = true,
+					},
+				},
+				sources = {
+					files = {
+						-- fd flags
+						args = vim.fn.split(
+							vim.fn.split(vim.env.FZF_DEFAULT_COMMAND, '/fd ')[2],
+							' '
+						),
+					},
+					buffers = {
+						current = false,
+						sort_lastused = true,
+					},
+					spelling = {
+						layout = { preset = 'select' },
+					},
+				},
+				formatters = {
+					selected = {
+						unselected = false,
+					},
+				},
+				layouts = {
+					default = {
+						layout = {
+							box = 'horizontal',
+							width = 0.8,
+							min_width = 120,
+							height = 0.8,
+							{
+								box = 'vertical',
+								border = utils.get_border(),
+								title = '{source} {live}',
+								title_pos = 'center',
+								{ win = 'input', height = 1, border = 'bottom' },
+								{ win = 'list', border = 'none' },
+							},
+							{ win = 'preview', border = utils.get_border(), width = 0.5 },
+						},
+					},
 				},
 			},
 		})

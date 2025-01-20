@@ -6,7 +6,7 @@ vim.o.grepprg = 'rg --vimgrep --smart-case --hidden'
 vim.o.grepformat = '%f:%l:%c:%m,%f:%l:%m'
 vim.keymap.set(
 	'n',
-	'\\',
+	'<leader>\\',
 	[[:silent grep!  | cwindow<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>]],
 	{ desc = 'Grep' }
 )

@@ -36,7 +36,6 @@ return {
 					'fzf',
 					'startify',
 					'ministarter',
-					'snacks_dashboard',
 					'help',
 					'alpha',
 					'dashboard',

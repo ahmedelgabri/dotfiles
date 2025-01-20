@@ -8,12 +8,11 @@ vim.api.nvim_create_user_command('ONote', function(o)
 end, { nargs = '*', complete = notes.get_notes_completion })
 
 vim.api.nvim_create_user_command('Notes', function(o)
-	require('fzf-lua').live_grep_glob {
-		prompt = 'Notes: ',
-		exec_empty_query = true,
-		search = o.args,
-		cwd = notes.get_dir(),
-		winopts = { fullscreen = o.bang },
+	require('snacks').picker.grep {
+		search = o.args or '',
+		-- search = o.args,
+		dirs = { notes.get_dir() },
+		-- winopts = { fullscreen = o.bang },
 	}
 end, { nargs = '*', bang = true })
 

@@ -113,7 +113,7 @@ return {
 		ft = { 'markdown' },
 		config = function()
 			require('zk').setup {
-				picker = 'fzf_lua',
+				-- picker = 'fzf_lua',
 				lsp = {
 					-- `config` is passed to `vim.lsp.start_client(config)`
 					config = vim.tbl_deep_extend('force', shared, {}),
@@ -233,32 +233,21 @@ return {
 							{ 'n' },
 							'<C-]>',
 							function()
-								require('fzf-lua').lsp_definitions {
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
-									jump_to_single_result = true,
-									jump_to_single_result_action = require('fzf-lua.actions').file_vsplit,
-								}
+								require('snacks').picker.lsp_definitions {}
 							end,
 							{ desc = 'Go to Definition' },
 						},
 						{
 							{ 'n' },
 							'<leader>a',
-							function()
-								require('fzf-lua').lsp_code_actions {}
-							end,
+							vim.lsp.buf.code_action,
 							{ desc = 'Code [A]ctions' },
 						},
 						{
 							{ 'n' },
 							'<leader>f',
 							function()
-								require('fzf-lua').lsp_references {
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
-									ignore_current_line = true,
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-declaration
-									-- includeDeclaration = false
-								}
+								require('snacks').picker.lsp_references {}
 							end,
 							{ desc = 'Show Re[f]erences' },
 						},
@@ -271,13 +260,13 @@ return {
 						{
 							{ 'n' },
 							'<leader>D',
-							require('fzf-lua').lsp_declarations,
+							require('snacks').picker.lsp_declarations,
 							{ desc = 'Go to [D]eclaration' },
 						},
 						{
 							{ 'n' },
 							'<leader>i',
-							require('fzf-lua').lsp_implementations,
+							require('snacks').picker.lsp_implementations,
 							{ desc = 'Go to [I]mplementation' },
 						},
 						{
