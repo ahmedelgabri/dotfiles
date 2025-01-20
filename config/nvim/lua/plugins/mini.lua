@@ -44,8 +44,16 @@ return {
 					'lazy',
 					'mason',
 				},
-				callback = function()
-					vim.b.miniindentscope_disable = true
+				callback = function(args)
+					vim.b[args.buf].miniindentscope_disable = true
+				end,
+			}
+
+			au.autocmd {
+				event = { 'User' },
+				pattern = 'SnacksDashboardOpened',
+				callback = function(args)
+					vim.b[args.buf].miniindentscope_disable = true
 				end,
 			}
 		end,

@@ -176,27 +176,6 @@ return {
 				Snacks.toggle.dim():map '<leader>uD'
 			end,
 		})
-		-- disable in some buffers
-		au.autocmd {
-			event = { 'FileType' },
-			pattern = {
-				'fzf',
-				'startify',
-				'ministarter',
-				'snacks_dashboard',
-				'help',
-				'alpha',
-				'dashboard',
-				'neo-tree',
-				'Trouble',
-				'lazy',
-				'grug-far',
-				'mason',
-			},
-			callback = function()
-				vim.b.snacks_indent = true
-			end,
-		}
 	end,
 	opts = function(_, opts)
 		-- Show select prompts relative to cursor position
