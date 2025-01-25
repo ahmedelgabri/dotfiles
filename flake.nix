@@ -305,6 +305,14 @@
           path = ./templates/node;
           description = "A simple template node/js/ts workflows using pnpm and fnm";
         };
+        deno = {
+          path = ./templates/deno;
+          description = "A simple template for Deno";
+        };
+        bun = {
+          path = ./templates/bun;
+          description = "A simple template for Bun";
+        };
       };
     }
     // mapHosts
