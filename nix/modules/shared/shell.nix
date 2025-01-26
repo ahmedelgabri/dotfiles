@@ -87,7 +87,6 @@ in {
               cachix
               curl
               direnv
-              diskonaut
               fzf
               grc
               htop
