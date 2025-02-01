@@ -313,6 +313,10 @@
           path = ./templates/bun;
           description = "A simple template for Bun";
         };
+        python = {
+          path = ./templates/python;
+          description = "A simple template for Python";
+        };
       };
     }
     // mapHosts
