@@ -6,6 +6,8 @@ local new_path = os.getenv 'HOME'
 package.path = package.path .. ';' .. new_path
 
 hs.ipc.cliInstall() -- Ensure the IPC command line client is available
+hs.ipc.cliSaveHistory(true) -- save CLI history
+
 hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
 hs.loadSpoon 'EmmyLua'
