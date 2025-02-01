@@ -49,13 +49,5 @@
     brews = [
       "go-task"
     ];
-
-    # Requires to be logged in to the AppStore
-    # Cleanup doesn't work automatically if you add/remove to list
-    # masApps = {
-    #   Twitter = 1482454543;
-    #   Sip = 507257563;
-    #   Guidance = 412759995;
-    # }
   };
 }

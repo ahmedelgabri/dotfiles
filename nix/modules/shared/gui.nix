@@ -28,6 +28,7 @@ in {
           "imageoptim"
           "kap"
           "launchcontrol"
+          "notion-calendar"
           "obsidian"
           "slack"
           "sync"
