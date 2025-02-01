@@ -18,7 +18,7 @@ vim.g.netrw_bufsettings = 'noma nomod nonu nobl nowrap ro' -- default
 vim.g.netrw_bufsettings = vim.g.netrw_bufsettings
 	.. ' buftype=nofile bufhidden=wipe'
 
-if not package.loaded['mini.files'] then
+if not vim.g.custom_explorer then
 	-- :NvimTreeFindFile like functionality
 	-- https://superuser.com/a/1814266
 	vim.keymap.set('n', '<leader>-', function()

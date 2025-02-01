@@ -136,6 +136,14 @@ return {
 			desc = 'Search [O]ldfiles',
 		},
 		{
+			'<Leader>-',
+			function()
+				require('snacks').picker.explorer {}
+			end,
+			{ silent = true },
+			desc = 'Open file explorer',
+		},
+		{
 			'\\',
 			function()
 				require('snacks').picker.grep {}
@@ -155,6 +163,7 @@ return {
 		},
 	},
 	init = function()
+		vim.g.custom_explorer = true
 		-- disable all animations
 		vim.g.snacks_animate = false
 
@@ -180,6 +189,8 @@ return {
 	opts = function(_, opts)
 		-- Show select prompts relative to cursor position
 		require('snacks.picker.config.layouts').select.layout.relative = 'cursor'
+		-- Move explorer to the right
+		require('snacks.picker.config.layouts').sidebar.layout.position = 'right'
 
 		return vim.tbl_deep_extend('force', opts or {}, {
 			quickfile = { enabled = false },
