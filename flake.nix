@@ -318,6 +318,10 @@
           path = ./templates/python;
           description = "A simple template for Python";
         };
+        go = {
+          path = ./templates/go;
+          description = "A simple template for Go";
+        };
       };
     }
     // mapHosts
