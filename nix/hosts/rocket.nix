@@ -1,4 +1,7 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  localConfigPath = /. + (builtins.concatStringsSep "/" [(builtins.getEnv "HOST_CONFIGS") "local.nix"]);
+  localConfig = import localConfigPath {_ = null;};
+in {
   networking = {hostName = "rocket";};
   ids.gids.nixbld = 30000;
 
@@ -28,6 +31,7 @@
         git-sizer
         httpstat
         k9s
+        lazydocker
       ];
     };
     env = {
@@ -37,6 +41,8 @@
   };
 
   homebrew = {
+    inherit (localConfig.homebrew) taps;
+
     casks = [
       "loom"
       "docker"
@@ -46,8 +52,10 @@
       "google-chrome"
     ];
 
-    brews = [
-      "go-task"
-    ];
+    brews =
+      localConfig.homebrew.brews
+      ++ [
+        "go-task"
+      ];
   };
 }
