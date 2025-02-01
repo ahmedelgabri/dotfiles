@@ -33,7 +33,7 @@ M.appMap = {
 	browser = firefox,
 	terminal = ghostty,
 	imessage = 'com.apple.MobileSMS',
-	calendar = '220419yyo1ujiy9', -- Rise
+	calendar = 'com.cron.electron', -- Notion Calendar
 }
 
 return M
