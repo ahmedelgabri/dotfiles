@@ -304,6 +304,7 @@
         node = {
           path = ./templates/node;
           description = "A simple template node/js/ts workflows using pnpm and fnm";
+          welcomeText = ''Welcome to nix node template, using Volta and pnpm'';
         };
         deno = {
           path = ./templates/deno;
