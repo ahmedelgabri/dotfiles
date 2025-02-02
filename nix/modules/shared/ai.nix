@@ -28,7 +28,7 @@ in {
             ExitTimeOut = 30;
             Disabled = false;
             RunAtLoad = true;
-            KeepAlive = false;
+            KeepAlive = true;
             StandardOutPath = "${homeDir}/Library/Logs/ollama-output.log";
             StandardErrorPath = "${homeDir}/Library/Logs/ollama-error.log";
             EnvironmentVariables = {
@@ -52,6 +52,7 @@ in {
         my.user = {
           packages = with pkgs; [
             ollama
+            llamma-cpp
           ];
         };
       }
