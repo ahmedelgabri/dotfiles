@@ -17,23 +17,30 @@ function M.deepMerge(tbl1, tbl2)
 	return tbl1
 end
 
-local firefox = 'org.mozilla.firefox'
-local ghostty = 'com.mitchellh.ghostty'
+-- Returns the bundle ID of an application, given its path.
+function M.appID(app)
+	if hs.application.infoForBundlePath(app) then
+		return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+	end
+end
+
+local firefox = M.appID '/Applications/Firefox.app'
+local ghostty = M.appID '/Applications/Ghostty.app'
 
 M.appMap = {
-	chrome = 'com.google.Chrome',
+	chrome = M.appID '/Applications/Chrome.app',
 	firefox = firefox,
-	slack = 'com.tinyspeck.slackmacgap',
-	x = 'com.atebits.Tweetie2', -- X  Chrome App
-	bluesky = 'dev.mozzius.graysky',
-	kitty = 'net.kovidgoyal.kitty',
+	slack = M.appID '/Applications/Slack.app',
+	x = M.appID '/Applications/X.app',
+	-- bluesky = 'dev.mozzius.graysky',
+	kitty = M.appID '/Applications/kitty.app',
 	ghostty = ghostty,
-	discord = 'com.hnc.Discord',
+	discord = M.appID '/Applications/Discord.app',
 
 	browser = firefox,
 	terminal = ghostty,
-	imessage = 'com.apple.MobileSMS',
-	calendar = 'com.cron.electron', -- Notion Calendar
+	imessage = M.appID '/System/Applications/Messages.app',
+	calendar = M.appID '/Applications/Notion Calendar.app',
 }
 
 return M
