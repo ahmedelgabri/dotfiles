@@ -13,7 +13,7 @@
 --
 local logLevel = 'info'
 
-local log = hs.logger.new('wincent', logLevel)
+local log = hs.logger.new('ahmed', logLevel)
 
 local module = {
 	d = log.d,
