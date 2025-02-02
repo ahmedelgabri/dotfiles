@@ -18,14 +18,14 @@ end, { nargs = '*', bang = true })
 
 vim.keymap.set(
 	{ 'n' },
-	'<leader>zn',
+	'<localleader>zn',
 	":ZkNew {dir = vim.fn.input('Target dir: '), title = vim.fn.input('Title: ') }<CR>",
 	{ desc = 'Create new ZK note' }
 )
 
 vim.keymap.set(
 	{ 'n' },
-	'<leader>sn',
+	'<localleader>sn',
 	':Notes<CR>',
 	{ silent = true, desc = '[S]earch [N]otes' }
 )

@@ -223,7 +223,29 @@ local mode_keymaps = {
 		{
 			modes = { 'n' },
 			action = '"_x',
-			desc = 'delete a character without storing it in the clipboard',
+			opts = {
+				desc = 'delete a character without storing it in the clipboard',
+			},
+		},
+	},
+	['<leader>z'] = {
+		{
+			modes = { 'n' },
+			action = function()
+				local window = vim.api.nvim_get_current_win()
+				local is_zoomed = vim.w[window].is_zoomed == true
+				if is_zoomed then
+					vim.cmd 'wincmd =' -- Equalize size (`: help CTRL-W_=`).
+					vim.w[window].is_zoomed = nil
+				else
+					vim.w[window].is_zoomed = true
+					vim.cmd 'wincmd |' -- Maximize horizontal size (`:help CTRL-W__`).
+					vim.cmd 'wincmd _' -- Maximize vertical size (`:help CTRL-W_bar`).
+				end
+			end,
+			opts = {
+				desc = 'Toggle buffer [z]oom mode',
+			},
 		},
 	},
 }
