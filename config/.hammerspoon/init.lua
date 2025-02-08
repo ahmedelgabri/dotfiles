@@ -13,9 +13,12 @@ hs.application.enableSpotlightForNameSearches(true)
 hs.loadSpoon 'EmmyLua'
 
 local layout = require 'layout'
+local mappings = require 'mappings'
 local utils = require 'utils'
-require 'mappings'
-require 'window-management'
+local window = require 'window-management'
+
+mappings.setup()
+window.setup()
 
 -- layout.layoutWatcher:start()
 

@@ -24,23 +24,35 @@ function M.appID(app)
 	end
 end
 
-local firefox = M.appID '/Applications/Firefox.app'
-local ghostty = M.appID '/Applications/Ghostty.app'
-
 M.appMap = {
+	-- Browsers
 	chrome = M.appID '/Applications/Chrome.app',
-	firefox = firefox,
-	slack = M.appID '/Applications/Slack.app',
-	x = M.appID '/Applications/X.app',
-	-- bluesky = 'dev.mozzius.graysky',
-	kitty = M.appID '/Applications/kitty.app',
-	ghostty = ghostty,
-	discord = M.appID '/Applications/Discord.app',
+	firefox = M.appID '/Applications/Firefox.app',
+	zen = M.appID '/Applications/Zen Browser.app',
+	safari = M.appID '/Applications/Safari.app',
 
-	browser = firefox,
-	terminal = ghostty,
+	-- Terminals
+	kitty = M.appID '/Applications/kitty.app',
+	ghostty = M.appID '/Applications/Ghostty.app',
+
+	-- Socials
+	-- Both suck
+	x = M.appID '/Applications/X.app'
+		or M.appID '~/Applications/Chrome Apps.localized/X.app',
+	-- bluesky = 'dev.mozzius.graysky',
+
+	-- Chat
+	discord = M.appID '/Applications/Discord.app',
+	slack = M.appID '/Applications/Slack.app',
 	imessage = M.appID '/System/Applications/Messages.app',
+
+	-- Productivity
 	calendar = M.appID '/Applications/Notion Calendar.app',
+	['1password'] = M.appID '/Applications/1Password.app',
+
+	-- Meetings
+	zoom = M.appID '/Applications/zoom.us.app',
+	meet = M.appID '~/Applications/Chrome Apps.localized/Google Meet.app',
 }
 
 return M

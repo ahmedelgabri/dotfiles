@@ -1,36 +1,120 @@
+local M = {}
+local log = require 'log'
 local utils = require 'utils'
 
--- https://github.com/mhartington/dotfiles/blob/7dafb67c7be40f373e20c3f443216347c20534ea/hammerspoon/init.lua
-local modalKey = { 'alt', 'cmd' }
+M.hyperKey = { 'shift', 'ctrl', 'alt', 'cmd' }
 
-local focusKeys = {
-	-- [g]oogle chrome
-	g = utils.appMap.chrome,
-	-- [b]rowser (main)
-	b = utils.appMap.browser,
-	-- [s]lack
-	s = utils.appMap.slack,
-	-- [t]erminal
-	t = utils.appMap.terminal,
-	-- i[m]essage
-	m = utils.appMap.imessage,
-	-- [C]alendar
-	c = utils.appMap.calendar,
+M.layers = {
+	-- [b]rowse
+	-- b = {},
+	-- [o]pen
+	o = {
+		-- [1]Password
+		['1'] = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap['1password'])
+		end,
+		-- [g]oogle chrome
+		g = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.chrome)
+		end,
+		-- [f]irefox
+		b = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.firefox)
+		end,
+		-- s[l]ack
+		s = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.slack)
+		end,
+		-- i[m]essage
+		m = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.imessage)
+		end,
+		-- [t]erminal
+		t = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.ghostty)
+		end,
+		-- [C]alendar
+		c = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.calendar)
+		end,
+		-- [z]oom
+		z = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.zoom)
+		end,
+		-- [d]iscord
+		d = function()
+			hs.application.launchOrFocusByBundleID(utils.appMap.discord)
+		end,
+	},
 }
 
-for key in pairs(focusKeys) do
-	hs.hotkey.bind(modalKey, key, function()
-		hs.application.launchOrFocusByBundleID(focusKeys[key])
+function M.setup()
+	log.info()
+	for layer in pairs(M.layers) do
+		local m = hs.hotkey.modal.new(M.hyperKey, layer)
+		local subLayer = M.layers[layer]
+
+		function m:entered()
+			local msg = m.k.msg .. ' mode on'
+
+			log.i(msg)
+			hs.alert(msg)
+		end
+
+		function m:exited()
+			local msg = m.k.msg .. ' mode off'
+
+			log.i(msg)
+			hs.alert(msg)
+		end
+
+		m:bind('', 'escape', function()
+			m:exit()
+		end)
+
+		for subLayerKey in pairs(subLayer) do
+			m:bind('', subLayerKey, function()
+				log.i(m.k.msg .. ' + ' .. subLayerKey .. ' pressed')
+				subLayer[subLayerKey]()
+				m:exit()
+			end)
+		end
+	end
+
+	-- local resizeMappings = {
+	-- 	h = { x = 0, y = 0, w = 0.5, h = 1 },
+	-- 	j = { x = 0, y = 0.5, w = 1, h = 0.5 },
+	-- 	k = { x = 0, y = 0, w = 1, h = 0.5 },
+	-- 	l = { x = 0.5, y = 0, w = 0.5, h = 1 },
+	-- 	m = { x = 0, y = 0, w = 1, h = 1 },
+	-- 	u = { x = 0, y = 0, w = 0.33, h = 1 },
+	-- 	i = { x = 0.33, y = 0, w = 0.33, h = 1 },
+	-- 	o = { x = 0.66, y = 0, w = 0.33, h = 1 },
+	-- }
+	--
+	-- for key in pairs(resizeMappings) do
+	-- 	hs.hotkey.bind(modalKey, key, function()
+	-- 		local win = hs.window.focusedWindow()
+	-- 		if win then
+	-- 			win:moveToUnit(resizeMappings[key])
+	-- 		end
+	-- 	end)
+	-- end
+
+	hs.hotkey.bind({}, 'f10', hs.openConsole)
+
+	--  Mute Zoom (requires enabling global keyboard shortcut in Zoom)/Google Meet
+	if hs.application.find(utils.appMap.zoom) then
+		hs.application.get(utils.appMap.zoom):activate()
+		hs.eventtap.keyStroke({ 'CMD', 'SHIFT' }, 'a')
+	elseif hs.application.find(utils.appMap.meet) then
+		hs.application.get(utils.appMap.meet):activate()
+		hs.eventtap.keyStroke({ 'CMD' }, 'd')
+	end
+
+	hs.hotkey.bind({ 'alt', 'cmd' }, 'r', function()
+		hs.reload()
 	end)
 end
 
-hs.hotkey.bind({}, 'f10', hs.openConsole)
-
---  Mute Zoom (requires enabling global keyboard shortcut in Zoom)
-hs.hotkey.bind({}, '§', function()
-	hs.eventtap.keyStroke({ 'CMD', 'SHIFT' }, 'a')
-end)
-
-hs.hotkey.bind(modalKey, 'r', function()
-	hs.reload()
-end)
+return M

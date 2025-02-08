@@ -2,6 +2,7 @@
 -- Window management & Grid
 -- -------------------------------------------------------------------
 
+local M = {}
 local log = require 'log'
 
 -- https://github.com/wincent/wincent/blob/a33430e43464842c067016e507ab91abd6569948/roles/dotfiles/files/.hammerspoon/init.lua
@@ -15,7 +16,7 @@ hs.grid.ui.fontName = 'PragmataPro Mono'
 hs.grid.setGrid '12x12'
 hs.grid.setMargins(hs.geometry.size(0, 0))
 
-local grid = {
+M.grid = {
 	topHalf = '0,0 12x6',
 	topThird = '0,0 12x4',
 	topTwoThirds = '0,0 12x8',
@@ -77,81 +78,81 @@ chain = function(movements)
 	end
 end
 
---
--- Key bindings.
---
+function M.setup()
+	hs.hotkey.bind(
+		{ 'cmd', 'alt' },
+		'up',
+		chain {
+			M.grid.topHalf,
+			M.grid.topThird,
+			M.grid.topTwoThirds,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'cmd', 'alt' },
-	'up',
-	chain {
-		grid.topHalf,
-		grid.topThird,
-		grid.topTwoThirds,
-	}
-)
+	hs.hotkey.bind(
+		{ 'cmd', 'alt' },
+		'right',
+		chain {
+			M.grid.rightHalf,
+			M.grid.rightThird,
+			M.grid.rightTwoThirds,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'cmd', 'alt' },
-	'right',
-	chain {
-		grid.rightHalf,
-		grid.rightThird,
-		grid.rightTwoThirds,
-	}
-)
+	hs.hotkey.bind(
+		{ 'cmd', 'alt' },
+		'down',
+		chain {
+			M.grid.bottomHalf,
+			M.grid.bottomThird,
+			M.grid.bottomTwoThirds,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'cmd', 'alt' },
-	'down',
-	chain {
-		grid.bottomHalf,
-		grid.bottomThird,
-		grid.bottomTwoThirds,
-	}
-)
+	hs.hotkey.bind(
+		{ 'cmd', 'alt' },
+		'left',
+		chain {
+			M.grid.leftHalf,
+			M.grid.leftThird,
+			M.grid.leftTwoThirds,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'cmd', 'alt' },
-	'left',
-	chain {
-		grid.leftHalf,
-		grid.leftThird,
-		grid.leftTwoThirds,
-	}
-)
+	hs.hotkey.bind(
+		{ 'alt', 'cmd' },
+		'c',
+		chain {
+			M.grid.centeredBig,
+			M.grid.centeredSmall,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'alt', 'cmd' },
-	'c',
-	chain {
-		grid.centeredBig,
-		grid.centeredSmall,
-	}
-)
+	hs.hotkey.bind(
+		{ 'alt', 'cmd' },
+		'f',
+		chain {
+			M.grid.fullScreen,
+		}
+	)
 
-hs.hotkey.bind(
-	{ 'alt', 'cmd' },
-	'f',
-	chain {
-		grid.fullScreen,
-	}
-)
+	hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'left', function()
+		local win = hs.window.focusedWindow()
+		if not win then
+			log.w "Can't move window"
+			return
+		end
+		win:moveOneScreenWest(false, true)
+	end)
 
-hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'left', function()
-	local win = hs.window.focusedWindow()
-	if not win then
-		log.w "Can't move window"
-		return
-	end
-	win:moveOneScreenWest(false, true)
-end)
+	hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'right', function()
+		local win = hs.window.focusedWindow()
+		if not win then
+			log.w "Can't move window"
+			return
+		end
+		win:moveOneScreenEast(false, true)
+	end)
+end
 
-hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'right', function()
-	local win = hs.window.focusedWindow()
-	if not win then
-		log.w "Can't move window"
-		return
-	end
-	win:moveOneScreenEast(false, true)
-end)
+return M
