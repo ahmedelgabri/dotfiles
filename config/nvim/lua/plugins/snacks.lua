@@ -272,6 +272,9 @@ return {
 				},
 			},
 			picker = {
+				matcher = {
+					frecency = true,
+				},
 				icons = {
 					ui = {
 						live = '󰐰 ',
