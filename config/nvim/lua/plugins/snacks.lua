@@ -258,15 +258,6 @@ return {
 					},
 					header = header,
 				},
-				formats = {
-					key = function(item)
-						return {
-							{ '[', hl = 'special' },
-							{ item.key, hl = 'key' },
-							{ ']', hl = 'special' },
-						}
-					end,
-				},
 				sections = {
 					{ section = 'header' },
 					{ title = 'MRU', padding = 1 },
