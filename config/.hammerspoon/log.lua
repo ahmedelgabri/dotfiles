@@ -21,6 +21,8 @@ local module = {
 	i = log.i,
 	w = log.w,
 	wf = log.wf,
+	e = log.e,
+	ef = log.ef,
 
 	-- Convenience methods, simpler than doing this in the console:
 	--
