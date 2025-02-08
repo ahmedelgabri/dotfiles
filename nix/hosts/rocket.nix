@@ -1,7 +1,4 @@
-{pkgs, ...}: let
-  localConfigPath = /. + (builtins.concatStringsSep "/" [(builtins.getEnv "HOST_CONFIGS") "local.nix"]);
-  localConfig = import localConfigPath {_ = null;};
-in {
+{pkgs, ...}: {
   networking = {hostName = "rocket";};
   ids.gids.nixbld = 30000;
 
@@ -41,8 +38,6 @@ in {
   };
 
   homebrew = {
-    inherit (localConfig.homebrew) taps;
-
     casks = [
       "loom"
       "docker"
@@ -52,10 +47,8 @@ in {
       "google-chrome"
     ];
 
-    brews =
-      localConfig.homebrew.brews
-      ++ [
-        "go-task"
-      ];
+    brews = [
+      "go-task"
+    ];
   };
 }
