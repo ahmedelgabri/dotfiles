@@ -23,7 +23,6 @@ in {
           "raycast"
           "anki"
           "appcleaner"
-          "corelocationcli"
           "firefox"
           "imageoptim"
           "kap"

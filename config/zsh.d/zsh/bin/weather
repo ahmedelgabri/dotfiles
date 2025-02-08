@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Modified version of the generated one from `curl wttr.in/:bash.function`
 #
 # Simple function to get weather data
@@ -9,8 +8,22 @@
 #   $ weather <city>
 # Check curl wttr.in/:help for more info
 
+# Intentionally not setting -e because we want the script to continue if getting the location data fails
+set -u -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
+
+LOCATION_DATA="$TMPDIR/.location.json"
+FALLBACK=""
+
+if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
+	FALLBACK=$(jq -r '.locality' "$LOCATION_DATA")
+fi
+
 weather() {
-	local location="${1:-$(CoreLocationCLI --json | jq -r '.locality' 2>/dev/null)}"
+	local location="${1:-$FALLBACK}"
 	curl -fGsS --compressed "wttr.in/${location}"?"m&lang=en&${2:-0qm}"
 }
 

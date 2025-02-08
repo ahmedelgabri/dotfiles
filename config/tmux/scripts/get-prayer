@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
-# Intentionally not setting -e because we want the script to continue if CoreLocationCLI fails.
+# Intentionally not setting -e because we want the script to continue if getting the location data fails
 set -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
 	set -x
 fi
 
-FLAGS="$(CoreLocationCLI --format "-latitude %latitude -longitude %longitude")"
+LOCATION_DATA="$TMPDIR/.location.json"
 
-# Can't use -P (regex pattern) because macOS has the BSD grep while -P works on GNU grep.
-if grep -q "\-latitude .* -longitude .*" <<<"$FLAGS"; then
+# Validate the JSON syntax
+if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
+	FLAGS=$(jq -r '"-latitude \(.location.latitude) -longitude \(.location.longitude)"' "$LOCATION_DATA")
+
 	printf "%s" "󰩷 $(next-prayer mawaqit $FLAGS)"
 else
 	printf "%s" "$(next-prayer aladhan)"
