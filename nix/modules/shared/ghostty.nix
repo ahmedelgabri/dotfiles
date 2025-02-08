@@ -19,7 +19,7 @@ in {
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
         homebrew.casks = [
-          "ghostty"
+          "ghostty@tip"
         ];
       })
       (mkIf isLinux {
