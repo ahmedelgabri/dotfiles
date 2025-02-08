@@ -52,7 +52,8 @@ in {
         my.user = {
           packages = with pkgs; [
             ollama
-            llamma-cpp
+            llama-cpp
+            llm
           ];
         };
       }
