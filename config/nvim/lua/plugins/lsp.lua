@@ -110,8 +110,6 @@ return {
 	},
 	{
 		'https://github.com/zk-org/zk-nvim',
-		cmd = { 'Zk', 'ZkToggle', 'ZkNotes' },
-		ft = { 'markdown' },
 		config = function()
 			require('zk').setup {
 				-- picker = 'fzf_lua',
