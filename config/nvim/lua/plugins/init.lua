@@ -91,6 +91,22 @@ return {
 		'https://github.com/MagicDuck/grug-far.nvim',
 		event = 'FileType grug-far',
 		cmd = { 'GrugFar' },
-		config = true,
+		opts = function(_, opts)
+			local utils = require '_.utils'
+			local node_modules_ast_grep = utils.get_lsp_bin 'sg'
+
+			-- Prefer local binaries over global ones
+			if node_modules_ast_grep then
+				return vim.tbl_deep_extend('force', opts or {}, {
+					engines = {
+						astgrep = {
+							path = utils.get_lsp_bin 'sg',
+						},
+					},
+				})
+			end
+
+			return opts
+		end,
 	},
 }

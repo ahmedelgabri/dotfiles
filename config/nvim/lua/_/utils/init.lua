@@ -123,4 +123,27 @@ function M.lazy_require(require_path)
 	})
 end
 
+-- Some LSP are part of npm packages, so the binaries live inside node_modules/.bin
+-- this function helps getting the correct path to the binary and falling
+-- back to a global binary if none is found in the local node_modules
+function M.get_lsp_bin(bin)
+	-- Get the closest `node_modules` first
+	local root = vim.fs.root(0, 'node_modules/.bin')
+	local bin_path = string.format('%s/.bin/%s', root, bin)
+
+	if vim.uv.fs_stat(bin_path) ~= nil then
+		return bin_path
+	end
+
+	-- Then maybe we might be in a monorepo, so get the root `node_modules`, maybe it's hoisted up there
+	root = vim.fs.root(0, '.git')
+	bin_path = string.format('%s/node_modules/.bin/%s', root, bin)
+
+	if vim.uv.fs_stat(bin_path) ~= nil then
+		return bin_path
+	end
+
+	return bin
+end
+
 return M

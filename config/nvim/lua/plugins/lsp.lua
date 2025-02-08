@@ -165,32 +165,9 @@ return {
 			local configs = require 'lspconfig.configs'
 			local util = require 'lspconfig.util'
 
-			-- Some LSP are part of npm packages, so the binaries live inside node_modules/.bin
-			-- this function helps getting the correct path to the binary and falling
-			-- back to a global binary if none is found in the local node_modules
-			local function get_lsp_bin(bin)
-				-- Get the closest `node_modules` first
-				local root = vim.fs.root(0, 'node_modules/.bin')
-				local bin_path = string.format('%s/.bin/%s', root, bin)
-
-				if vim.uv.fs_stat(bin_path) ~= nil then
-					return bin_path
-				end
-
-				-- Then maybe we might be in a monorepo, so get the root `node_modules`, maybe it's hoisted up there
-				root = vim.fs.root(0, '.git')
-				bin_path = string.format('%s/node_modules/.bin/%s', root, bin)
-
-				if vim.uv.fs_stat(bin_path) ~= nil then
-					return bin_path
-				end
-
-				return bin
-			end
-
 			configs.oxc_language_server = {
 				default_config = {
-					cmd = { get_lsp_bin 'oxc_language_server' },
+					cmd = { utils.get_lsp_bin 'oxc_language_server' },
 					filetypes = {
 						'javascript',
 						'javascript.jsx',
@@ -451,9 +428,10 @@ return {
 					},
 				},
 				tailwindcss = {
-					init_options = {
+					settings = {
 						tailwindCSS = {
-							userLanguages = {
+							validate = true,
+							includeLanguages = {
 								eruby = 'erb',
 								eelixir = 'html-eex',
 								['javascript.jsx'] = 'javascriptreact',
@@ -642,7 +620,7 @@ return {
 					},
 				},
 				ast_grep = {
-					cmd = { get_lsp_bin 'ast-grep', 'lsp' },
+					cmd = { utils.get_lsp_bin 'ast-grep', 'lsp' },
 					filetypes = { -- https://ast-grep.github.io/reference/languages.html
 						'c',
 						'cpp',
