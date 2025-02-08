@@ -1,7 +1,3 @@
-#sidebar-main {
-	visibility: collapse !important;
-}
-
 /* Move the sidebar header to the bottom and hide the close button */
 #sidebar-box {
 	flex-direction: column-reverse !important;
