@@ -77,5 +77,11 @@ vim.diagnostic.config {
 			[vim.diagnostic.severity.HINT] = utils.get_icon 'hint',
 			[vim.diagnostic.severity.INFO] = utils.get_icon 'info',
 		},
+		numhl = {
+			[vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+			[vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+			[vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+			[vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+		},
 	},
 }
