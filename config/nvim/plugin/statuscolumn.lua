@@ -45,10 +45,25 @@ function M.get_filtered_signs(signs, condition)
 	return '  '
 end
 
+function M.num()
+	if vim.wo.number then
+		if vim.wo.relativenumber then
+			return vim.v.relnum
+		end
+		return vim.v.lnum
+	elseif vim.wo.relativenumber then
+		return vim.v.relnum
+	else
+		return ''
+	end
+end
+
 function M.render()
 	local signs = M.get_signs()
 
 	return table.concat({
+		M.num(),
+		[[%=]],
 		-- Fold marker
 		M.get_fold(vim.v.lnum),
 		[[%=]],
