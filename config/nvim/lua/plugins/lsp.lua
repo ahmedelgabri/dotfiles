@@ -112,7 +112,7 @@ return {
 		'https://github.com/zk-org/zk-nvim',
 		config = function()
 			require('zk').setup {
-				-- picker = 'fzf_lua',
+				picker = 'snacks_picker', -- fzf_lua
 				lsp = {
 					-- `config` is passed to `vim.lsp.start_client(config)`
 					config = vim.tbl_deep_extend('force', shared, {}),
