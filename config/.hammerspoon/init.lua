@@ -46,24 +46,20 @@ Install:andUse('Caffeine', {
 -- ║URLDispatcher║
 -- ╚═════════════╝
 local urlDispatcherConfig = {
-	loglevel = 'debug',
-	default_handler = 'org.mozilla.firefox',
-	decode_slack_redir_urls = true,
-	set_system_handler = true,
-	url_patterns = {
-		-- App links
-		{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
+	start = true,
+	config = {
+		default_handler = utils.appMap.firefox,
+		decode_slack_redir_urls = true,
+		set_system_handler = true,
+		url_patterns = {
+			-- App links
+			{ 'https?://%w+.zoom.us/j/', 'us.zoom.xos' },
+		},
 	},
 }
 
-local ok, local_config = pcall(require, hs.host.localizedName())
-
-if ok and local_config ~= nil then
-	urlDispatcherConfig = utils.deepMerge(urlDispatcherConfig, local_config)
-end
-
-Install:andUse('URLDispatcher', { config = urlDispatcherConfig })
--- spoon.URLDispatcher.logger.setLogLevel("debug")
+Install:andUse('URLDispatcher', urlDispatcherConfig)
+spoon.URLDispatcher.logger.setLogLevel 'debug'
 
 -- ╔═════════════════════════════════════════════════════════════════╗
 -- ║Custom location logic, I use the generated file in other scripts ║
@@ -139,3 +135,5 @@ MyWatcher =
 	hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig):start()
 
 hs.alert 'Config loaded'
+
+pcall(require, hs.host.localizedName())
