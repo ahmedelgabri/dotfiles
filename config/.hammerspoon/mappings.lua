@@ -6,7 +6,35 @@ M.hyperKey = { 'shift', 'ctrl', 'alt', 'cmd' }
 
 M.layers = {
 	-- [b]rowse
-	-- b = {},
+	b = {
+		-- [m]ail
+		m = function()
+			hs.urlevent.openURL 'https://fastmail.com'
+		end,
+		-- [r]eddit
+		r = function()
+			hs.urlevent.openURL 'https://reddit.com'
+		end,
+		-- [h]ackernews
+		h = function()
+			hs.urlevent.openURL 'raycast://extensions/thomas/hacker-news/frontpage'
+		end,
+		-- [f]acebook
+		f = function()
+			hs.urlevent.openURL 'https://facebook.com'
+		end,
+		-- [y]outube
+		y = function()
+			hs.urlevent.openURL 'https://youtube.com'
+		end,
+		x = function()
+			hs.urlevent.openURL 'https://x.com'
+		end,
+		-- [c]ode
+		c = function()
+			hs.urlevent.openURL 'https://github.com'
+		end,
+	},
 	-- [o]pen
 	o = {
 		-- [1]Password
