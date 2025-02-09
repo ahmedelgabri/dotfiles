@@ -134,4 +134,10 @@ end
 MyWatcher =
 	hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig):start()
 
+-- ╔════════════════════╗
+-- ║ Extra local config ║
+-- ╚════════════════════╝
+
+pcall(require, 'local-config')
+
 hs.alert 'Config loaded'
