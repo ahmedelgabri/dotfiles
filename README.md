@@ -33,8 +33,7 @@ These are the main configs:
 
 ## Officially supported OSs
 
-- Intel macOS Monterey
-- ARM macOS Ventura
+- ARM macOS Sonoma
 - [Experimental] NixOS (tested on 22.11)
 
 ## Installation
@@ -45,11 +44,38 @@ These are the main configs:
 xcode-select --install
 ```
 
-2. Run the following command
+2. Install `nix` (I tested mostly with
+   <https://github.com/DeterminateSystems/nix-installer>, but I think everything
+   should work fine with the default nix installer)
 
 ```bash
-bash -c "$(curl -fsSL https://raw.github.com/ahmedelgabri/dotfiles/master/install)"
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
+
+3. Build
+
+> [!NOTE]
+>
+> The flake attribute in my case is usually the host machine name
+
+online:
+
+```bash
+nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "github:ahmedelgabri/dotfiles#<flake attribute>"
+```
+
+local:
+
+```bash
+nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "~/path/to/dotfiles#<flake attribute>"
+```
+
+### Homebrew
+
+I still use it mostly for GUI apps, since Nix and/or Home-manager support for
+GUI applications have problems with symlinking to the `Applications/` folder.
+Homebrew is fully managed by `nix` it gets installed and run through nix using
+[`nix-homebrew`](https://github.com/zhaofengli/nix-homebrew)
 
 ### Notes
 

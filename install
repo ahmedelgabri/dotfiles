@@ -5,6 +5,8 @@ set -Eueo pipefail
 
 SUDO_USER=$(whoami)
 
+FLAKE=${1:$(hostname -s)}
+
 # Intell by default because my personal machine
 ARCH="i386"
 
@@ -154,38 +156,23 @@ package_manager() {
 	fi
 }
 
-decrypt_repo() {
-	cd "$DOTFILES_DIR"
-
-	echo "decrypting dotfiles..."
-	echo -n "transcrypt cipher: "
-	read -r cipher
-	echo -n "transcrypt password: "
-	read -sr password
-	echo
-
-	transcrypt -c "$cipher" -p "$password"
-}
-
 clone_dotfiles() {
 	if [[ ! -d $DOTFILES_DIR ]]; then
 		log_success "Cloning dotfiles..."
 		git clone --recursive https://github.com/ahmedelgabri/dotfiles.git "$DOTFILES_DIR"
 
 		# Setup repo origin & mirrors
-		# This is stupid, because we don't have SSH keys at this point
-		# cd "$DOTFILES_DIR" &&
-		# 	git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
-		# 	git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
-		# 	git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
+		cd "$DOTFILES_DIR" &&
+			git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
+			git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
+			git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
 
-		decrypt_repo
 	else
 		cd "$DOTFILES_DIR"
 		git stash -u || true
 		git checkout main
 		git reset --hard origin/main
-		git submodule update --init --recursive
+		git submodule update --init --recursive || true
 		git checkout -
 		git stash pop || true
 	fi
@@ -195,31 +182,9 @@ install() {
 	if command -v nix >/dev/null; then
 		if [ "$(uname)" == "Darwin" ]; then
 			log_info "Building flakes..."
-
-			cd "$DOTFILES_DIR"
-
-			nix --experimental-features 'nix-command flakes' build "./#$(hostname -s)"
-
-			# Needed for nix-darwin to work, copied verbatim from the install script, since we build with flakes we have to do this manually
-			# https://github.com/abathur/nix-darwin/blob/44da835ac40dab5fd231298b59d83487382d2fab/pkgs/darwin-installer/configuration.nix#L45-L51
-			if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
-				echo "setting up /etc/synthetic.conf..."
-				echo -e "run\tprivate/var/run" | sudo tee -a /etc/synthetic.conf >/dev/null
-				/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -B &>/dev/null ||
-					/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t &>/dev/null ||
-					echo "warning: failed to execute apfs.util"
-			fi
-
-			# Needed otherwise nix-darwin will complain
-			sudo -u "$SUDO_USER" mv /etc/shells /etc/shells.old
-			sudo -u "$SUDO_USER" mv /etc/zshenv /etc/zshenv.old
-			sudo -u "$SUDO_USER" mv /etc/zshrc /etc/zshrc.old
-			sudo -u "$SUDO_USER" mv /etc/zprofile /etc/zprofile.old
-			sudo -u "$SUDO_USER" mv /etc/nix/nix.conf /etc/nix/nix.conf.old
-
-			"$DOTFILES_DIR"/result/sw/bin/darwin-rebuild switch --flake "./#$(hostname -s)"
+			nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "$DOTFILES_DIR#$FLAKE"
 		else
-			sudo -u "$SUDO_USER" nixos-rebuild switch --flake "./#$(hostname -s)"
+			sudo -u "$SUDO_USER" nixos-rebuild switch --flake "$DOTFILES_DIR#$FLAKE"
 		fi
 	fi
 }
