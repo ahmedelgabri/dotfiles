@@ -98,6 +98,7 @@ return {
 					return true
 				end,
 			},
+			copilot_node_command = vim.fn.expand '~/.volta/bin/node',
 		},
 	},
 	-- https://github.com/supermaven-inc/supermaven-nvim/issues/85
