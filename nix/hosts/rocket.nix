@@ -6,6 +6,7 @@
     username = "ahmedelgabri";
     email = "ahmed@miro.com";
     website = "https://miro.com";
+    devFolder = "dev";
     modules = {
       gpg.enable = true;
       mail = {
@@ -30,10 +31,6 @@
         k9s
         lazydocker
       ];
-    };
-    env = {
-      WORK = "$HOME/dev/work";
-      CDPATH = ".:~:~/dev";
     };
   };
 

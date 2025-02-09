@@ -43,7 +43,8 @@ in {
       website = mkOptStr "https://gabri.me";
       github_username = mkOptStr "ahmedelgabri";
       email = mkOptStr "ahmed@gabri.me";
-      terminal = mkOptStr "kitty";
+      # NOTE: Change this?
+      devFolder = mkOptStr "Sites";
       nix_managed =
         mkOptStr
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
@@ -70,7 +71,7 @@ in {
             else concatMapStringsSep ":" toString v
           else (toString v));
         default = {};
-        description = "TODO";
+        description = "Set environment variables";
       };
     };
   };

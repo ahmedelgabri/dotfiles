@@ -11,8 +11,6 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZCOMPDUMP_PATH="$ZDOTDIR/.zcompdump"
 
 export DOTFILES="$HOME/.dotfiles"
-export PROJECTS="$HOME/Sites/personal/dev"
-export WORK="$HOME/Sites/work"
 export PERSONAL_STORAGE="$HOME/Sync"
 export NOTES_DIR="$PERSONAL_STORAGE/notes"
 # I use a single zk notes dir, so set it and forget

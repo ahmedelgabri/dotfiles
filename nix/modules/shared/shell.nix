@@ -12,8 +12,7 @@
 }: let
   cfg = config.my.modules.shell;
   inherit (config.my.user) home;
-  inherit (config.my) hm;
-  inherit (config.my) hostConfigHome;
+  inherit (config.my) hm devFolder hostConfigHome;
   inherit (pkgs.stdenv) isDarwin isLinux;
 
   local_zshrc = "${hostConfigHome}/zshrc";
@@ -67,7 +66,6 @@ in {
             # https://github.blog/2022-04-12-git-security-vulnerability-announced/
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
             SHELL = "${pkgs.zsh}/bin/zsh";
-            CDPATH = ".:~:~/Sites";
           };
 
           systemPackages = with pkgs;
@@ -192,6 +190,9 @@ in {
               FZF_CTRL_T_OPTS = "--preview-window right:border-left:60% --preview='(${FZF_PREVIEW_COMMAND})'";
               FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
               FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null'";
+              CDPATH = ".:~:~/${devFolder}";
+              PROJECTS = "$HOME/${devFolder}/personal/dev";
+              WORK = "$HOME/${devFolder}/work";
             };
         };
 
