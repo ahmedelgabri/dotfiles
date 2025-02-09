@@ -151,6 +151,14 @@ return {
 			{ silent = true },
 			desc = 'grep project',
 		},
+		{
+			'<leader>z',
+			function()
+				require('snacks').zen.zoom()
+			end,
+			{ silent = true },
+			desc = 'Toggle buffer [z]oom mode',
+		},
 		-- Overrides default z=
 		{
 			'z=',
@@ -183,6 +191,22 @@ return {
 				Snacks.toggle.diagnostics():map '<leader>ud'
 				Snacks.toggle.inlay_hints():map '<leader>uh'
 				Snacks.toggle.dim():map '<leader>uD'
+			end,
+		})
+
+		vim.api.nvim_create_user_command('Zen', function()
+			require('snacks').zen()
+		end, { desc = 'Toggle Zen Mode' })
+
+		vim.api.nvim_create_autocmd('User', {
+			pattern = 'OilActionsPost',
+			callback = function(event)
+				if event.data.actions.type == 'move' then
+					require('snacks').rename.on_rename_file(
+						event.data.actions.src_url,
+						event.data.actions.dest_url
+					)
+				end
 			end,
 		})
 	end,
