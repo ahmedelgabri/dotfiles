@@ -161,26 +161,9 @@
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "nur": "nur",
-        "spoons": "spoons",
         "weechat-scripts": "weechat-scripts",
         "yazi-glow": "yazi-glow",
         "yazi-plugins": "yazi-plugins"
-      }
-    },
-    "spoons": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1728549662,
-        "narHash": "sha256-igHFHcNo/+5nYiBNa+VBddx9Pe2y7N6y7wEl7kSjHWY=",
-        "owner": "Hammerspoon",
-        "repo": "Spoons",
-        "rev": "c12db871a179e6af29c1a290222aeb1ad9f34ffb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Hammerspoon",
-        "repo": "Spoons",
-        "type": "github"
       }
     },
     "treefmt-nix": {

@@ -1,9 +1,9 @@
 {
-  inputs,
   lib,
   config,
   ...
 }: let
+  inherit (config.my.user) home;
   cfg = config.my.modules.hammerspoon;
 in {
   options = with lib; {
@@ -20,26 +20,18 @@ in {
         "hammerspoon"
       ];
 
-      my.hm.file = {
-        ".hammerspoon" = {
-          recursive = true;
-          source = ../../../config/.hammerspoon;
-        };
+      system.activationScripts.postUserActivation.text =
+        /*
+        bash
+        */
+        ''
+          echo ":: -> Running hammerspoon activationScript..."
 
-        ".hammerspoon/Spoons/EmmyLua.spoon" = {
-          source = "${inputs.spoons}/Source/EmmyLua.spoon";
-          recursive = true;
-        };
-
-        ".hammerspoon/Spoons/Caffeine.spoon" = {
-          source = "${inputs.spoons}/Source/Caffeine.spoon";
-          recursive = true;
-        };
-
-        ".hammerspoon/Spoons/URLDispatcher.spoon" = {
-          source = "${inputs.spoons}/Source/URLDispatcher.spoon";
-          recursive = true;
-        };
-      };
+          # Handle mutable configs
+          if [ ! -e "${home}/.hammerspoon/" ]; then
+            echo "Linking hammerspoon folders..."
+            ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
+          fi
+        '';
     };
 }

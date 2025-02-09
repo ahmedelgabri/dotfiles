@@ -15,7 +15,12 @@ hs.ipc.cliSaveHistory(true) -- save CLI history
 
 hs.window.animationDuration = 0 -- disable animations
 hs.application.enableSpotlightForNameSearches(true)
-hs.loadSpoon 'EmmyLua'
+hs.loadSpoon 'SpoonInstall'
+
+Install = spoon.SpoonInstall
+Install:updateAllRepos()
+
+Install:andUse 'EmmyLua'
 
 -- ╔══════════════════╗
 -- ║setting up modules║
@@ -33,8 +38,9 @@ window.setup()
 -- ╔════════╗
 -- ║Caffeine║
 -- ╚════════╝
-hs.loadSpoon 'Caffeine'
-spoon.Caffeine:start()
+Install:andUse('Caffeine', {
+	start = true,
+})
 
 -- ╔═════════════╗
 -- ║URLDispatcher║
@@ -56,10 +62,8 @@ if ok and local_config ~= nil then
 	urlDispatcherConfig = utils.deepMerge(urlDispatcherConfig, local_config)
 end
 
-hs.loadSpoon 'URLDispatcher'
-spoon.URLDispatcher = utils.deepMerge(spoon.URLDispatcher, urlDispatcherConfig)
+Install:andUse('URLDispatcher', { config = urlDispatcherConfig })
 -- spoon.URLDispatcher.logger.setLogLevel("debug")
-spoon.URLDispatcher:start()
 
 -- ╔═════════════════════════════════════════════════════════════════╗
 -- ║Custom location logic, I use the generated file in other scripts ║
@@ -133,11 +137,5 @@ end
 
 MyWatcher =
 	hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig):start()
-
--- ╔════════════════════╗
--- ║ Extra local config ║
--- ╚════════════════════╝
-
-pcall(require, 'local-config')
 
 hs.alert 'Config loaded'
