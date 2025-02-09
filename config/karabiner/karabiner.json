@@ -1,58 +1,63 @@
 {
-    "global": { "show_in_menu_bar": false },
-    "profiles": [
-        {
-            "complex_modifications": {
-                "rules": [
-                    {
-                        "description": "M: caps_lock to Hyper/Escape",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "caps_lock",
-                                    "modifiers": { "optional": ["any"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "right_shift",
-                                        "lazy": true,
-                                        "modifiers": ["right_command", "right_control", "right_option"]
-                                    }
-                                ],
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "escape",
-                                        "lazy": true
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "",
-                        "manipulators": [
-                            {
-                                "description": "M: Change fn to hyper key (command+control+option+shift)",
-                                "from": {
-                                    "key_code": "fn",
-                                    "modifiers": { "optional": ["any"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "left_shift",
-                                        "modifiers": ["left_command", "left_control", "left_option"]
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "name": "Default profile",
-            "selected": true,
-            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
-        }
-    ]
+	"global": {"show_in_menu_bar": false},
+	"profiles": [
+		{
+			"complex_modifications": {
+				"rules": [
+					{
+						"description": "M: caps_lock to Hyper/Escape",
+						"manipulators": [
+							{
+								"from": {
+									"key_code": "caps_lock",
+									"modifiers": {"optional": ["any"]}
+								},
+								"to": [
+									{
+										"key_code": "right_shift",
+										"lazy": true,
+										"modifiers": [
+											"right_command",
+											"right_control",
+											"right_option"
+										]
+									}
+								],
+								"to_if_alone": [
+									{
+										"key_code": "escape",
+										"lazy": true
+									}
+								],
+								"type": "basic"
+							}
+						]
+					},
+					{
+						"description": "",
+						"manipulators": [
+							{
+								"description": "M: Change fn to hyper key (command+control+option+shift)",
+								"from": {
+									"key_code": "fn",
+									"modifiers": {"optional": ["any"]}
+								},
+								"to": [
+									{
+										"key_code": "left_shift",
+										"modifiers": ["left_command", "left_control", "left_option"]
+									}
+								],
+								"type": "basic"
+							}
+						]
+					}
+				]
+			},
+			"name": "Default profile",
+			"selected": true,
+			"virtual_hid_keyboard": {"keyboard_type_v2": "ansi"}
+		}
+	]
 }
+
