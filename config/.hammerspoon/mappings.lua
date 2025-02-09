@@ -86,14 +86,12 @@ function M.setup()
 			local msg = m.k.msg .. ' mode on'
 
 			log.i(msg)
-			hs.alert(msg)
 		end
 
 		function m:exited()
 			local msg = m.k.msg .. ' mode off'
 
 			log.i(msg)
-			hs.alert(msg)
 		end
 
 		m:bind('', 'escape', function()
@@ -132,13 +130,15 @@ function M.setup()
 	hs.hotkey.bind({}, 'f10', hs.openConsole)
 
 	--  Mute Zoom (requires enabling global keyboard shortcut in Zoom)/Google Meet
-	if hs.application.find(utils.appMap.zoom) then
-		hs.application.get(utils.appMap.zoom):activate()
-		hs.eventtap.keyStroke({ 'CMD', 'SHIFT' }, 'a')
-	elseif hs.application.find(utils.appMap.meet) then
-		hs.application.get(utils.appMap.meet):activate()
-		hs.eventtap.keyStroke({ 'CMD' }, 'd')
-	end
+	hs.hotkey.bind({}, '§', function()
+		if hs.application.find(utils.appMap.zoom) then
+			hs.application.get(utils.appMap.zoom):activate()
+			hs.eventtap.keyStroke({ 'CMD', 'SHIFT' }, 'a')
+		elseif hs.application.find(utils.appMap.meet) then
+			hs.application.get(utils.appMap.meet):activate()
+			hs.eventtap.keyStroke({ 'CMD' }, 'd')
+		end
+	end)
 
 	hs.hotkey.bind({ 'alt', 'cmd' }, 'r', function()
 		hs.reload()
