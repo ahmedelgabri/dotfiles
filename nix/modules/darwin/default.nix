@@ -3,16 +3,8 @@
   pkgs,
   ...
 }: {
-  # Auto upgrade nix package and the daemon service.
-  # affects nix.useDaemon
-  services.nix-daemon.enable = true;
-
   # enable sudo authentication with Touch ID
   security.pam.enableSudoTouchIdAuth = true;
-
-  nix = {
-    configureBuildUsers = true;
-  };
 
   nix-homebrew = {
     enable = true;

@@ -89,6 +89,8 @@
       system.configurationRevision = self.rev or self.dirtyRev or null;
 
       nix = {
+        # @NOTE: for `nix-darwin` this will enable these old options `services.nix-daemon.enable` and `nix.configureBuildUsers'
+        enable = true;
         # Disable channels since we are using flakes
         channel.enable = false;
         nixPath = {
