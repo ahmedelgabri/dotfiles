@@ -334,6 +334,8 @@ local M = {}
 
 __.statusline = M
 
+vim.o.laststatus = 2
+
 function M.render_active()
 	if vim.bo.filetype == 'fzf' then
 		return get_parts {
@@ -354,9 +356,7 @@ function M.render_active()
 			git_info(),
 			(function()
 				local path = vim.fn.expand '%'
-				path = path:gsub('oil://', '')
-
-				return vim.fn.fnamemodify(path, ':.')
+				return path
 			end)(),
 		}
 	end
@@ -435,11 +435,6 @@ au.augroup('MyStatusLine', {
 		event = { 'WinEnter', 'BufEnter' },
 		pattern = '*',
 		callback = function()
-			if vim.bo.filetype == 'oil' then
-				vim.o.laststatus = 0
-				return
-			end
-			vim.o.laststatus = 2
 			vim.opt_local.statusline = '%!v:lua.__.statusline.render_active()'
 		end,
 	},
@@ -447,11 +442,6 @@ au.augroup('MyStatusLine', {
 		event = { 'WinLeave', 'BufLeave' },
 		pattern = '*',
 		callback = function()
-			if vim.bo.filetype == 'oil' then
-				vim.o.laststatus = 0
-				return
-			end
-			vim.o.laststatus = 2
 			vim.opt_local.statusline = '%!v:lua.__.statusline.render_inactive()'
 		end,
 	},

@@ -26,7 +26,6 @@ return {
 				delete_to_trash = true,
 				win_options = {
 					cursorline = true,
-					winbar = '%!v:lua.__.statusline.render_active()',
 				},
 				keymaps = {
 					['gd'] = {
