@@ -1,7 +1,7 @@
 font-family = PragmataPro Liga
 font-size = 12
 font-thicken = true
-theme = mine
+theme = dark:mine,light:neobones_light
 window-padding-x = 10
 window-padding-y = 10
 window-padding-balance = true
