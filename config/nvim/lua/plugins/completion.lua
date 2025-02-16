@@ -108,6 +108,8 @@ return {
 				},
 			},
 
+			cmdline = { enabled = false },
+
 			sources = {
 				default = {
 					'lsp',
@@ -118,7 +120,6 @@ return {
 					'emoji',
 					'codecompanion',
 				},
-				cmdline = {},
 				providers = {
 					lsp = {
 						name = 'lsp',
