@@ -75,23 +75,12 @@ in {
         */
         ''
           echo ":: -> Running vim activationScript..."
-
-          # Creating needed folders
-          if [ ! -e "${hm.configHome}/nvim" ]; then
-            echo "Creating ${hm.configHome}/nvim ..."
-            mkdir -p ${hm.configHome}/nvim/
-          fi
-
-          if [ ! -e "${hm.stateHome}/nvim/undo" ]; then
-            echo "Creating vim swap/backup/undo/view folders inside ${hm.stateHome}/nvim ..."
-            mkdir -p ${hm.stateHome}/nvim/{backup,swap,undo,view}
-          fi
-
           # Handle mutable configs
-          if [ ! -e "${hm.configHome}/nvim/" ]; then
-            echo "Linking vim folders..."
-            ln -sf ${home}/.dotfiles/config/nvim ${hm.configHome}
-          fi
+          echo "Linking vim folders..."
+          ln -sf ${home}/.dotfiles/config/nvim ${hm.configHome}
+
+          echo "Creating vim swap/backup/undo/view folders inside ${hm.stateHome}/nvim ..."
+          mkdir -p ${hm.stateHome}/nvim/{backup,swap,undo,view}
         '';
     };
 }

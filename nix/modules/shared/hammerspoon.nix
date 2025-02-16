@@ -28,10 +28,8 @@ in {
           echo ":: -> Running hammerspoon activationScript..."
 
           # Handle mutable configs
-          if [ ! -e "${home}/.hammerspoon/" ]; then
-            echo "Linking hammerspoon folders..."
-            ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
-          fi
+          echo "Linking hammerspoon folders..."
+          ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
         '';
     };
 }

@@ -37,10 +37,8 @@ in {
           echo ":: -> Running karabiner activationScript..."
 
           # Handle mutable configs
-          if [ ! -e "${hm.configHome}/karabiner/" ]; then
-            echo "Linking karabiner folders..."
-            ln -sf ${home}/.dotfiles/config/karabiner ${hm.configHome}
-          fi
+          echo "Linking karabiner folders..."
+          ln -sf ${home}/.dotfiles/config/karabiner ${hm.configHome}
         '';
     };
 }
