@@ -228,6 +228,19 @@ local mode_keymaps = {
 			},
 		},
 	},
+	-- Center movements
+	['<C-d>'] = {
+		{
+			modes = { 'n' },
+			action = '<C-d>zz',
+		},
+	},
+	['<C-u>'] = {
+		{
+			modes = { 'n' },
+			action = '<C-u>zz',
+		},
+	},
 }
 
 for key, mappings in pairs(mode_keymaps) do
