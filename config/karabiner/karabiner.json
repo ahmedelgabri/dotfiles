@@ -3,6 +3,7 @@
 	"profiles": [
 		{
 			"complex_modifications": {
+				"parameters": {"basic.to_if_alone_timeout_milliseconds": 500},
 				"rules": [
 					{
 						"description": "M: caps_lock to Hyper/Escape",
