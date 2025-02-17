@@ -16,14 +16,10 @@ local js_formats = {}
 for _, ft in ipairs {
 	'javascript',
 	'javascript.jsx',
-	'javascript.jest',
+	'javascriptreact',
 	'typescript',
 	'typescript.tsx',
-	'typescript.jest',
-	'javascriptreact',
-	'javascriptreact.jest',
 	'typescriptreact',
-	'typescriptreact.jest',
 } do
 	js_formats[ft] = {
 		'deno_fmt',

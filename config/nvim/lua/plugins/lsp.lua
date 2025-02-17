@@ -169,11 +169,9 @@ return {
 					filetypes = {
 						'javascript',
 						'javascript.jsx',
-						'javascript.jest',
 						'javascriptreact',
 						'typescript',
 						'typescript.tsx',
-						'typescript.jest',
 						'typescriptreact',
 					},
 					root_dir = util.root_pattern '.oxlintrc.json',
