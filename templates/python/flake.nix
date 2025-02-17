@@ -29,7 +29,8 @@
           ];
           shellHook = ''
             if [ ! -f ./pyproject.toml ]; then
-                uv init
+              # in order to make sure pyright LSP plays well
+              uv init && echo '\n[tool.pyright]\nvenvPath = "."\nvenv = ".venv"' >> pyproject.toml
             fi
           '';
         };
