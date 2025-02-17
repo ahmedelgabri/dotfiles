@@ -225,7 +225,12 @@ return {
 				enabled = true,
 				size = 1024 * 500, -- 500KB
 			},
-			notifier = { enabled = true },
+			image = {
+				doc = {
+					float = true,
+					inline = false,
+				},
+			},
 			input = {
 				win = {
 					style = {
@@ -253,12 +258,6 @@ return {
 							desc = 'Sync',
 							action = ':Lazy sync',
 							key = 's',
-							enabled = package.loaded.lazy ~= nil,
-						},
-						{
-							desc = 'Update',
-							action = ':Lazy update',
-							key = 'u',
 							enabled = package.loaded.lazy ~= nil,
 						},
 						{
