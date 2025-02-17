@@ -2,6 +2,7 @@
 
 require('full-border'):setup()
 require('git'):setup()
+require('smart-enter'):setup { open_multi = true }
 
 ---@return unknown
 -- https://yazi-rs.github.io/docs/tips#show-symlink-in-status-bar

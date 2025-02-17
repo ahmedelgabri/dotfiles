@@ -48,6 +48,11 @@ in {
           source = ../../../config/yazi;
         };
 
+        ".config/yazi/plugins/smart-enter.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/smart-enter.yazi";
+        };
+
         ".config/yazi/plugins/max-preview.yazi" = {
           recursive = true;
           source = "${inputs.yazi-plugins}/max-preview.yazi";
@@ -68,7 +73,7 @@ in {
           source = "${inputs.yazi-plugins}/git.yazi";
         };
 
-        ".config/yazi/plugins/glow.yazi/init.lua" = {
+        ".config/yazi/plugins/glow.yazi/main.lua" = {
           recursive = true;
           source = "${inputs.yazi-glow}/init.lua";
         };
