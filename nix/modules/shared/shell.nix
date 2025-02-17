@@ -129,6 +129,7 @@ in {
               zsh-completions
               zsh-fast-syntax-highlighting
               zsh-history-substring-search
+              imagemagick
             ];
           };
 
