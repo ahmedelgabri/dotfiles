@@ -423,21 +423,7 @@ return {
 						},
 					},
 				},
-				tailwindcss = {
-					settings = {
-						tailwindCSS = {
-							validate = true,
-							includeLanguages = {
-								eruby = 'erb',
-								eelixir = 'html-eex',
-								['javascript.jsx'] = 'javascriptreact',
-								['typescript.tsx'] = 'typescriptreact',
-								['javascript.jest'] = 'javascriptreact',
-								['typescript.jest'] = 'typescriptreact',
-							},
-						},
-					},
-				},
+				tailwindcss = {},
 				lua_ls = {
 					settings = {
 						Lua = {
