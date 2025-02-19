@@ -48,6 +48,29 @@ end
 ---------------------------------------------------------------------------------
 -- Main functions
 ---------------------------------------------------------------------------------
+local function format_diff_summary(data)
+	local summary = vim.b[data.buf].minidiff_summary
+
+	if summary == nil then
+		return nil
+	end
+
+	local t = {}
+
+	if summary.add > 0 then
+		table.insert(t, '%#DiagnosticSignHint#+' .. summary.add .. '%*')
+	end
+
+	if summary.change > 0 then
+		table.insert(t, '%#DiagnosticSignWarn#~' .. summary.change .. '%*')
+	end
+
+	if summary.delete > 0 then
+		table.insert(t, '%#DiagnosticSignError#-' .. summary.delete .. '%*')
+	end
+
+	vim.b[data.buf].minidiff_summary_string = table.concat(t, ' ')
+end
 
 local function git_info()
 	if not vim.g.loaded_fugitive then
@@ -388,6 +411,7 @@ function M.render_active()
 
 	return get_parts {
 		git_info(),
+		vim.b.minidiff_summary_string,
 		line,
 	}
 end
@@ -430,6 +454,11 @@ au.augroup('MyStatusLine', {
 				vim.cmd.redrawstatus()
 			end
 		end,
+	},
+	{
+		event = 'User',
+		pattern = 'MiniDIffUpdated',
+		callback = format_diff_summary,
 	},
 	{
 		event = { 'WinEnter', 'BufEnter' },
