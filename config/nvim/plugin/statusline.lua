@@ -457,7 +457,7 @@ au.augroup('MyStatusLine', {
 	},
 	{
 		event = 'User',
-		pattern = 'MiniDIffUpdated',
+		pattern = 'MiniDiffUpdated',
 		callback = format_diff_summary,
 	},
 	{
