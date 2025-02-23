@@ -85,6 +85,7 @@ return {
 	{ 'https://github.com/fladson/vim-kitty', ft = 'kitty' },
 	{
 		'ghostty',
+		ft = { 'ghostty' },
 		dir = '/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/',
 	},
 	{
