@@ -58,7 +58,51 @@ return {
 			}
 		end,
 		config = function()
-			require('mini.pairs').setup {}
+			require('mini.pairs').setup {
+				-- https://github.com/echasnovski/mini.nvim/issues/835
+				-- alternative? https://gist.github.com/tmerse/dc21ec932860013e56882f23ee9ad8d2
+				mappings = {
+					-- Prevents the action if the cursor is just before any character or next to a "\".
+					['('] = {
+						action = 'open',
+						pair = '()',
+						neigh_pattern = '[^\\][%s%)%]%}]',
+					},
+					['['] = {
+						action = 'open',
+						pair = '[]',
+						neigh_pattern = '[^\\][%s%)%]%}]',
+					},
+					['{'] = {
+						action = 'open',
+						pair = '{}',
+						neigh_pattern = '[^\\][%s%)%]%}]',
+					},
+					-- This is default (prevents the action if the cursor is just next to a "\").
+					[')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
+					[']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
+					['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
+					-- Prevents the action if the cursor is just before or next to any character.
+					['"'] = {
+						action = 'closeopen',
+						pair = '""',
+						neigh_pattern = '[^%w][^%w]',
+						register = { cr = false },
+					},
+					["'"] = {
+						action = 'closeopen',
+						pair = "''",
+						neigh_pattern = '[^%w][^%w]',
+						register = { cr = false },
+					},
+					['`'] = {
+						action = 'closeopen',
+						pair = '``',
+						neigh_pattern = '[^%w][^%w]',
+						register = { cr = false },
+					},
+				},
+			}
 			require('mini.ai').setup {}
 			require('mini.trailspace').setup {}
 
