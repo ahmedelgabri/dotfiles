@@ -18,10 +18,10 @@ return {
 		end,
 	},
 	{
-		'https://github.com/MeanderingProgrammer/markdown.nvim',
-		ft = { 'markdown', 'codecompanion' },
-		config = function()
-			require('render-markdown').setup {
+		'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+		ft = { 'markdown', 'codecompanion', 'gitcommit' },
+		opts = function(_, opts)
+			return vim.tbl_deep_extend('force', opts or {}, {
 				render_modes = { 'n', 'c', 'i', 'v', 'V', '\22' },
 				-- anti_conceal = { enabled = false },
 				sign = { enabled = false },
@@ -64,7 +64,7 @@ return {
 					-- position = 'overlay',
 					checked = { scope_highlight = '@markup.strikethrough' },
 				},
-			}
+			})
 		end,
 	},
 }
