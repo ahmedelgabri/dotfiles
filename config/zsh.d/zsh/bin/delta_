@@ -8,9 +8,9 @@ unalias delta_ 2>/dev/null
 
 function delta_() {
   if [[ $COLUMNS -ge 120 ]]; then
-    command delta -w "$COLUMNS" --side-by-side --line-numbers-left-format "{nm:^4} " --line-numbers-right-format "{np:^4} " "$@"
+    command delta -w "$COLUMNS" --diff-so-fancy --side-by-side --line-numbers-left-format "{nm:^4} " --line-numbers-right-format "{np:^4} " "$@"
   else
-    command delta "$@" -w "$COLUMNS"
+    command delta "$@" -w "$COLUMNS" --diff-so-fancy
   fi
 }
 
