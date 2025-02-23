@@ -56,7 +56,6 @@ function M.notify(msg, level)
 end
 
 function M.plaintext()
-	vim.opt_local.spell = true
 	vim.opt_local.linebreak = true
 	vim.opt_local.list = false
 	vim.opt_local.wrap = true
