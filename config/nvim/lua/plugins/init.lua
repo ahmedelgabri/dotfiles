@@ -93,14 +93,14 @@ return {
 		cmd = { 'GrugFar' },
 		opts = function(_, opts)
 			local utils = require '_.utils'
-			local node_modules_ast_grep = utils.get_lsp_bin 'sg'
+			local node_modules_ast_grep = utils.get_lsp_bin 'ast-grep'
 
 			-- Prefer local binaries over global ones
 			if node_modules_ast_grep then
 				return vim.tbl_deep_extend('force', opts or {}, {
 					engines = {
 						astgrep = {
-							path = utils.get_lsp_bin 'sg',
+							path = node_modules_ast_grep,
 						},
 					},
 				})
