@@ -79,9 +79,7 @@ return {
 					default = 'markdown',
 					completion = 'filetype',
 				}, function(ft)
-					local snacks = require 'snacks'
-
-					snacks.scratch.open {
+					require('snacks').scratch.open {
 						ft = ft,
 						win = {
 							width = 150,
@@ -97,9 +95,7 @@ return {
 		{
 			'<leader>S',
 			function()
-				local snacks = require 'snacks'
-
-				snacks.scratch.select()
+				require('snacks').scratch.select()
 			end,
 			{ desc = 'Select Scratch Buffer' },
 		},
@@ -158,6 +154,65 @@ return {
 			end,
 			{ silent = true },
 			desc = 'Toggle buffer [z]oom mode',
+		},
+		{
+			'<leader>ta',
+			function()
+				Snacks.picker.grep {
+					title = 'Tasks',
+					-- pass your desired search as a static pattern
+					search = '^\\s*- \\[ \\]',
+					-- we enable regex so the pattern is interpreted as a regex
+					regex = true,
+					-- no “live grep” needed here since we have a fixed pattern
+					live = false,
+					-- restrict search to the current working directory
+					dirs = { vim.fn.getcwd() },
+					-- include files ignored by .gitignore
+					args = { '--no-ignore' },
+					finder = 'grep',
+					format = 'file',
+					show_empty = true,
+					supports_live = false,
+					-- Start in normal mode
+					on_show = function()
+						vim.cmd.stopinsert()
+					end,
+				}
+			end,
+			desc = 'Search for incomplete t[a]sks',
+		},
+		{
+			'<leader>to',
+			function()
+				Snacks.picker.grep {
+					title = 'TODOs',
+					-- Single pattern that matches:
+					-- 1. Comment starters: //, #, --, %, ;, /*
+					-- 2. Optional whitespace
+					-- 3. Optional @ prefix
+					-- 4. Markers: todo, note, bug, fixme (case insensitive)
+					-- 5. Optional : suffix
+					-- 6. Word boundary
+					search = [[^\s*?(//|#|--|%|;|/\*)\s*@?(todo|note|hack|bug|fixme|fix|warn|xxx):?\b]],
+					-- we enable regex so the pattern is interpreted as a regex
+					regex = true,
+					-- true to pass the complex regex to `rg`
+					live = true,
+					-- restrict search to the current working directory
+					dirs = { vim.fn.getcwd() },
+					-- include files ignored by .gitignore
+					args = { '--no-ignore' },
+					format = 'file',
+					show_empty = true,
+					supports_live = false,
+					-- Start in normal mode
+					on_show = function()
+						vim.cmd.stopinsert()
+					end,
+				}
+			end,
+			desc = 'Search for t[o]dos',
 		},
 		-- Overrides default z=
 		{
