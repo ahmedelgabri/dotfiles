@@ -1,6 +1,7 @@
 return {
 	{
 		'https://github.com/stevearc/oil.nvim',
+		enabled = false,
 		-- avoid lazy loading oil in order to use it as a file explorer instead of netrw
 		lazy = false,
 		keys = {
