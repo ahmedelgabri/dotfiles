@@ -130,6 +130,8 @@ in {
               zsh-fast-syntax-highlighting
               zsh-history-substring-search
               imagemagick
+              mermaid-cli
+              ghostscript # to preview PDFs
             ];
           };
 

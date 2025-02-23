@@ -69,7 +69,8 @@ local header = table.concat({
 
 return {
 	'https://github.com/folke/snacks.nvim',
-	event = { 'UIEnter' },
+	priority = 1000,
+	lazy = false,
 	keys = {
 		{
 			'<leader>.',
