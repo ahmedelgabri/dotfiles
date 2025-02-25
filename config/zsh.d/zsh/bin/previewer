@@ -6,6 +6,10 @@ HEIGHT="$FZF_PREVIEW_LINES"
 X="$FZF_PREVIEW_TOP"
 Y="$FZF_PREVIEW_LEFT"
 
+if [ -n "${DEBUG-}" ]; then
+	echo "FILE: $FILE WIDTH: $WIDTH HEIGHT: $HEIGHT X: $X Y: $Y"
+fi
+
 case $(file --brief --mime-type "$FILE") in
 image/*)
 	kitty icat --clear --transfer-mode=memory --stdin=no --place="${WIDTH}x${HEIGHT}@${X}x${Y}" "$FILE"
@@ -22,9 +26,24 @@ text/* | */xml | application/json | application/javascript)
 		bat --style=plain,changes --terminal-width "$WIDTH" --wrap never --color always "$FILE"
 	fi
 	;;
-# application/pdf)
-# 	termpdf.py "$FILE"
-# 	;;
+application/pdf)
+	file_name=$(basename "$FILE" .pdf)
+	temp_image="$TMPDIR/$file_name.png"
+
+	if [ ! -e "$temp_image" ]; then
+		# Convert the first page of the PDF to an image
+		magick "$FILE[0]" -thumbnail x300 "$temp_image"
+	fi
+
+	# Display the image and text side by side
+	kitty icat --clear --transfer-mode=memory --stdin=no --align=left "$temp_image"
+
+	padding=$(identify -format "%w" "$temp_image")
+	padding=$(awk -v n="$padding" 'BEGIN{print int(n/10)}')
+
+	# Extract the first 100 lines of text from the PDF
+	pdftotext "$FILE" - 2>/dev/null | head -100 | pr -T -o "$padding"
+	;;
 application/zip)
 	unzip -l "$FILE"
 	;;
