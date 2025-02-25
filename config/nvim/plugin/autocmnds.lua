@@ -54,6 +54,7 @@ au.augroup('__myautocmds__', {
 			'query',
 			'scratch',
 			'taskedit',
+			'grug-far',
 		},
 		desc = 'Close with <q>',
 		callback = function(args)
