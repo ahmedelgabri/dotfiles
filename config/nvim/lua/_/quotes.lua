@@ -867,4 +867,14 @@ return {
 		'',
 		'—  Jeff Bezos',
 	},
+	{
+		'I love deadlines. I love the whooshing noise they make as they go by.',
+		'',
+		'—  Douglas Adams',
+	},
+	{
+		"Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+		'',
+		'—  Albert Einstein',
+	},
 }
