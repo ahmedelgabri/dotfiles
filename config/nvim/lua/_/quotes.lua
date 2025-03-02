@@ -877,4 +877,10 @@ return {
 		'',
 		'—  Albert Einstein',
 	},
+	{
+
+		'The amount of energy needed to refute bullshit is an order of magnitude bigger than that needed to produce it.',
+		'',
+		"—  Brandolini's Law",
+	},
 }
