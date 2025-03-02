@@ -20,6 +20,6 @@ macos-non-native-fullscreen = true
 macos-option-as-alt = left
 window-colorspace = display-p3
 
-keybind = global:super+space=toggle_quick_terminal
+keybind = global:alt+space=toggle_quick_terminal
 
 config-file = ?config.local
