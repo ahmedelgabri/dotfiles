@@ -4,7 +4,7 @@
   ...
 }: {
   # enable sudo authentication with Touch ID
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   nix-homebrew = {
     enable = true;
