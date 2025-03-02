@@ -27,6 +27,17 @@ return {
 				or require('mini.icons').get('lsp', 'codecompanion')
 
 			require('codecompanion').setup {
+				adapters = {
+					anthropic = function()
+						return require('codecompanion.adapters').extend('anthropic', {
+							schema = {
+								model = {
+									default = 'claude-3-5-sonnet-20241022',
+								},
+							},
+						})
+					end,
+				},
 				strategies = {
 					chat = {
 						adapter = adapter,
