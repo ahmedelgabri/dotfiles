@@ -135,6 +135,7 @@ in {
               mermaid-cli
               ghostscript # to preview PDFs as images
               poppler_utils # to preview PDFs as text
+              aider-chat
             ];
           };
 
