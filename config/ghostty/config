@@ -2,8 +2,8 @@ font-family = PragmataPro Liga
 font-size = 12
 font-thicken = true
 theme = dark:mine,light:neobones_light
-window-padding-x = 10
-window-padding-y = 10
+window-padding-x = 5
+window-padding-y = 5
 window-padding-balance = true
 click-repeat-interval = 500
 confirm-close-surface = false
@@ -19,7 +19,5 @@ macos-icon-screen-color = 000000
 macos-non-native-fullscreen = true
 macos-option-as-alt = left
 window-colorspace = display-p3
-
-keybind = global:alt+space=toggle_quick_terminal
 
 config-file = ?config.local
