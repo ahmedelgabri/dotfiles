@@ -1,5 +1,4 @@
 local utils = require '_.utils'
-local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
 
 return {
 	{
@@ -21,12 +20,10 @@ return {
 		init = function()
 			vim.cmd [[cab cc CodeCompanion]]
 		end,
-		config = function()
-			local icon = adapter == 'copilot'
-					and require('mini.icons').get('lsp', 'copilot')
-				or require('mini.icons').get('lsp', 'codecompanion')
+		opts = function(_, opts)
+			local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
 
-			require('codecompanion').setup {
+			return vim.tbl_deep_extend('force', opts or {}, {
 				adapters = {
 					anthropic = function()
 						return require('codecompanion.adapters').extend('anthropic', {
@@ -41,24 +38,32 @@ return {
 				strategies = {
 					chat = {
 						adapter = adapter,
-						roles = {
-							llm = icon .. ' ' .. adapter,
-							user = vim.env.USER,
-						},
+						-- roles = {
+						-- 	---The header name for the LLM's messages
+						-- 	---@type string|fun(a: CodeCompanion.Adapter): string
+						-- 	llm = function(a)
+						-- 		local icon = require('mini.icons').get(
+						-- 			'lsp',
+						-- 			a.name == 'anthropic' and 'claude' or a.name
+						-- 		)
+						-- 		return ' ' .. icon .. ' ' .. a.formatted_name
+						-- 	end,
+						-- 	user = ' Me',
+						-- },
 						slash_commands = {
-							['buffer'] = {
+							buffer = {
 								opts = {
-									provider = 'fzf_lua',
+									provider = 'snacks',
 								},
 							},
-							['file'] = {
+							file = {
 								opts = {
-									provider = 'fzf_lua',
+									provider = 'snacks',
 								},
 							},
-							['help'] = {
+							help = {
 								opts = {
-									provider = 'fzf_lua',
+									provider = 'snacks',
 								},
 							},
 						},
@@ -71,6 +76,13 @@ return {
 					},
 				},
 				display = {
+					chat = {
+						-- show_header_separator = true,
+						-- start_in_insert_mode = true, -- Open the chat buffer in insert mode?
+						-- window = {
+						-- 	position = 'right', -- left|right|top|bottom (nil will default depending on vim.opt.plitright|vim.opt.splitbelow)
+						-- },
+					},
 					diff = {
 						provider = 'mini_diff',
 					},
@@ -78,7 +90,7 @@ return {
 				-- opts = {
 				-- 	log_level = 'DEBUG',
 				-- },
-			}
+			})
 		end,
 	},
 	{
@@ -94,8 +106,6 @@ return {
 			suggestion = { enabled = false },
 			panel = { enabled = false },
 			filetypes = {
-				yaml = true,
-				markdown = true,
 				['*'] = function()
 					if
 						string.match(
