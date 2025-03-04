@@ -25,7 +25,19 @@ return {
 		build = 'nix run .#build-plugin',
 		opts = {
 			keymap = {
-				preset = 'default',
+				-- Set my own, and get rid of the ones I don't use
+				preset = 'none',
+				['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+				['<C-c>'] = { 'hide' },
+
+				['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+				['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+
+				['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+				['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+				-- Not sure about this one 🤔
+				['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
 				['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
 				['<Tab>'] = {
 					function(cmp)
@@ -33,16 +45,14 @@ return {
 							return
 						end
 
-						if cmp.snippet_active() then
-							return cmp.accept()
-						else
+						if cmp.is_menu_visible() then
 							return cmp.select_next()
 						end
 					end,
 					'snippet_forward',
 					'fallback',
 				},
-				['<CR>'] = { 'accept', 'fallback' },
+				['<CR>'] = { 'select_and_accept', 'fallback' },
 			},
 
 			snippets = { preset = 'luasnip' },
