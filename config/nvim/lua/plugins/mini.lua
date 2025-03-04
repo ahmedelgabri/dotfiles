@@ -159,6 +159,8 @@ return {
 					supermaven = { glyph = '', hl = 'MiniIconsYellow' },
 					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
 					codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
+					gemini = { glyph = '⯌', hl = 'MiniIconsGrey' },
+					claude = { glyph = '', hl = 'MiniIconsGrey' },
 				},
 				directory = {
 					['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
