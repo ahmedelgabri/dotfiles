@@ -379,6 +379,7 @@ return {
 								'trouble_open',
 								mode = { 'n', 'i' },
 							},
+							['?'] = { 'toggle_preview', mode = { 'i', 'n' } },
 						},
 					},
 					list = {
@@ -413,6 +414,10 @@ return {
 				formatters = {
 					selected = {
 						unselected = false,
+					},
+					file = {
+						-- Don't truncate file paths
+						truncate = 100,
 					},
 				},
 				layouts = {
