@@ -38,18 +38,24 @@ return {
 				strategies = {
 					chat = {
 						adapter = adapter,
-						-- roles = {
-						-- 	---The header name for the LLM's messages
-						-- 	---@type string|fun(a: CodeCompanion.Adapter): string
-						-- 	llm = function(a)
-						-- 		local icon = require('mini.icons').get(
-						-- 			'lsp',
-						-- 			a.name == 'anthropic' and 'claude' or a.name
-						-- 		)
-						-- 		return ' ' .. icon .. ' ' .. a.formatted_name
-						-- 	end,
-						-- 	user = ' Me',
-						-- },
+						roles = {
+							---The header name for the LLM's messages
+							---@type string|fun(a: CodeCompanion.Adapter): string
+							llm = function(a)
+								local icon = require('mini.icons').get(
+									'lsp',
+									a.name == 'anthropic' and 'claude' or a.name
+								)
+
+								return string.format(
+									' %s %s (%s)',
+									icon,
+									a.formatted_name,
+									a.schema.model.default
+								)
+							end,
+							user = vim.env.USER,
+						},
 						slash_commands = {
 							buffer = {
 								opts = {
@@ -77,11 +83,11 @@ return {
 				},
 				display = {
 					chat = {
-						-- show_header_separator = true,
-						-- start_in_insert_mode = true, -- Open the chat buffer in insert mode?
-						-- window = {
-						-- 	position = 'right', -- left|right|top|bottom (nil will default depending on vim.opt.plitright|vim.opt.splitbelow)
-						-- },
+						show_header_separator = true,
+						start_in_insert_mode = true,
+						window = {
+							position = 'right',
+						},
 					},
 					diff = {
 						provider = 'mini_diff',
