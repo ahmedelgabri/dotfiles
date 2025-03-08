@@ -110,6 +110,7 @@ return {
 	},
 	{
 		'https://github.com/zk-org/zk-nvim',
+		ft = { 'markdown' },
 		config = function()
 			require('zk').setup {
 				picker = 'snacks_picker', -- fzf_lua

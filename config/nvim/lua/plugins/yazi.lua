@@ -1,6 +1,5 @@
 return {
 	'https://github.com/mikavilpas/yazi.nvim',
-	event = 'VeryLazy',
 	keys = {
 		{
 			'<leader>-',

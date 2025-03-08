@@ -26,7 +26,7 @@ return {
 				-- anti_conceal = { enabled = false },
 				sign = { enabled = false },
 				indent = { enabled = false },
-				dash = { icon = '━' },
+				dash = { icon = '🬋' },
 				heading = { position = 'inline' },
 				code = {
 					position = 'right',
