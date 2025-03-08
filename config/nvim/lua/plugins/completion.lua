@@ -13,15 +13,16 @@ local has_words_before = function()
 end
 
 return {
-	{ 'https://github.com/moyiz/blink-emoji.nvim' },
-	{ 'https://github.com/giuxtaposition/blink-cmp-copilot' },
 	{
 		'https://github.com/Saghen/blink.cmp',
 		dependencies = {
-			{ 'https://github.com/rafamadriz/friendly-snippets' },
+			'https://github.com/rafamadriz/friendly-snippets',
+			'https://github.com/moyiz/blink-emoji.nvim',
+			'https://github.com/olimorris/codecompanion.nvim',
+			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+			'https://github.com/folke/lazydev.nvim',
 		},
 		event = { 'InsertEnter' },
-		-- version = 'v0.*',
 		build = 'nix run .#build-plugin',
 		opts = {
 			keymap = {
@@ -129,6 +130,7 @@ return {
 					'lazydev',
 					'emoji',
 					'codecompanion',
+					'markdown',
 				},
 				providers = {
 					lsp = {
@@ -180,6 +182,11 @@ return {
 						max_items = 8,
 						min_keyword_length = 2,
 						module = 'blink.cmp.sources.snippets',
+					},
+					markdown = {
+						name = 'RenderMarkdown',
+						module = 'render-markdown.integ.blink',
+						fallbacks = { 'lsp' },
 					},
 				},
 			},

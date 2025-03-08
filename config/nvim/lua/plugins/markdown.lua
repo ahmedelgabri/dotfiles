@@ -22,7 +22,12 @@ return {
 		ft = { 'markdown', 'codecompanion', 'gitcommit' },
 		opts = function(_, opts)
 			return vim.tbl_deep_extend('force', opts or {}, {
-				render_modes = { 'n', 'c', 'i', 'v', 'V', '\22' },
+				completions = {
+					lsp = {
+						enabled = true,
+					},
+				},
+				render_modes = { 'n', 'c', 'i', 'v', 'V', '\22', 't' },
 				-- anti_conceal = { enabled = false },
 				sign = { enabled = false },
 				indent = { enabled = false },

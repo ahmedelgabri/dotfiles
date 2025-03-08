@@ -101,10 +101,9 @@ return {
 	},
 	{
 		'https://github.com/zbirenbaum/copilot.lua',
-		-- dependencies = {
-		-- 	'https://github.com/zbirenbaum/copilot-cmp',
-		-- 	opts = {},
-		-- },
+		dependacies = {
+			'https://github.com/giuxtaposition/blink-cmp-copilot',
+		},
 		enabled = utils.is_rocket(),
 		build = ':Copilot auth',
 		event = 'InsertEnter',
