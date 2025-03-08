@@ -72,4 +72,49 @@ return {
 			})
 		end,
 	},
+	{
+		'https://github.com/obsidian-nvim/obsidian.nvim',
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		event = {
+			string.format('BufReadPre %s/*.md', vim.env.NOTES_DIR),
+			string.format('BufNewFile %s/*.md', vim.env.NOTES_DIR),
+		},
+		dependencies = {
+			-- Required.
+			'https://github.com/nvim-lua/plenary.nvim',
+		},
+		opts = function(_, opts)
+			return vim.tbl_deep_extend('force', opts or {}, {
+				workspaces = {
+					{
+						name = 'notes',
+						path = vim.env.NOTES_DIR,
+					},
+				},
+
+				daily_notes = {
+					folder = 'journal',
+					default_tags = { 'daily-notes' },
+					template = vim.fn.expand '~/.config/zk/templates/journal.md',
+				},
+
+				completion = {
+					nvim_cmp = false,
+					blink = false,
+				},
+
+				picker = {
+					name = 'snacks.pick',
+				},
+
+				ui = {
+					enable = false,
+				},
+
+				attachments = {
+					img_folder = 'assets',
+				},
+			})
+		end,
+	},
 }
