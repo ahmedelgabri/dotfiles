@@ -30,22 +30,7 @@
             /*
             bash
             */
-            ''
-              if [ ! -f ./pyproject.toml ]; then
-                uv init --author-from git
-
-                # in order to make sure pyright LSP plays well
-                cat <<EOF >> pyproject.toml
-
-                [tool.pyright]
-                venvPath = "."
-                venv = ".venv"
-                EOF
-
-                uv tool install ruff
-                uv tool install pyright
-              fi
-            '';
+            ''uv init --script main.py'';
         };
       }
     );

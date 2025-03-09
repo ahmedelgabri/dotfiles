@@ -314,6 +314,12 @@
         python = {
           path = ./templates/python;
           description = "A simple template for Python";
+          welcomeText = ''Welcome to python project template'';
+        };
+        python-script = {
+          path = ./templates/python-script;
+          description = "A simple template for one-off Python scripts";
+          welcomeText = ''Welcome to python uv script mode template'';
         };
         go = {
           path = ./templates/go;
