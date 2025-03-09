@@ -84,7 +84,6 @@ return {
 				display = {
 					chat = {
 						show_header_separator = true,
-						start_in_insert_mode = true,
 						window = {
 							position = 'right',
 						},
