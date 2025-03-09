@@ -41,7 +41,6 @@ return {
 					left_pad = 2,
 					right_pad = 2,
 				},
-				bullet = { right_pad = 1 },
 				link = {
 					custom = {
 						github = {
