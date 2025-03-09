@@ -9,10 +9,11 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     flake-utils,
     ...
-  }:
+  } @ inputs:
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {
@@ -20,10 +21,7 @@
           config.allowUnfree = true;
         };
       in {
-        formatter = let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-          pkgs.alejandra;
+        formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             go

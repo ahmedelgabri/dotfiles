@@ -306,10 +306,12 @@
         deno = {
           path = ./templates/deno;
           description = "A simple template for Deno";
+          welcomeText = ''Welcome to Deno template'';
         };
         bun = {
           path = ./templates/bun;
           description = "A simple template for Bun";
+          welcomeText = ''Welcome to Bun template'';
         };
         python = {
           path = ./templates/python;
@@ -324,6 +326,7 @@
         go = {
           path = ./templates/go;
           description = "A simple template for Go";
+          welcomeText = ''Welcome to Go template'';
         };
       };
     }
