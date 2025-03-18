@@ -1,6 +1,7 @@
 ---
 id: '{{format-date now "timestamp"}}'
 title: 'RFC - {{title}}'
+aliases: ['RFC - {{title}}']
 date: '{{format-date now "%Y-%m-%dT%H:%M"}}'
 tags:
   - work
@@ -9,7 +10,7 @@ tags:
   - {{title}}'
 ---
 
-# [RFC] {{title}}
+# [RFC] - {{title}}
 
 - **Author**:
 - **Created**: {{format-date now "long"}}

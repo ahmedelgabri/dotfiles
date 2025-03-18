@@ -80,6 +80,7 @@ author = "Ahmed El Gabri"
 # directory it applies to.
 
 [group.work]
+paths = ["work/**"]
 
 [group.work.note]
 template = "work.md"
@@ -88,17 +89,20 @@ template = "work.md"
 employer = "miro"
 
 [group.journal]
+paths = ["journal/**"]
 
 [group.journal.note]
 filename = "{{format-date now '%Y-%m-%d'}}"
 template = "journal.md"
 
 [group.personal]
+paths = ["personal/**"]
 
 [group.personal.note]
 template = "personal.md"
 
 [group.til]
+paths = ["til/**"]
 
 [group.til.note]
 template = "til.md"
@@ -166,7 +170,7 @@ note-detail = "{{filename-stem}}"
 # Report titles of wiki-links as hints.
 wiki-title = "none"
 # Warn for dead links between notes.
-dead-link = "error"
+dead-link = "none"
 
 
 # NAMED FILTERS
