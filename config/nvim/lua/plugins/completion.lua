@@ -19,6 +19,7 @@ return {
 			'https://github.com/rafamadriz/friendly-snippets',
 			'https://github.com/moyiz/blink-emoji.nvim',
 			'https://github.com/olimorris/codecompanion.nvim',
+			'https://github.com/giuxtaposition/blink-cmp-copilot',
 			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 			'https://github.com/folke/lazydev.nvim',
 		},
