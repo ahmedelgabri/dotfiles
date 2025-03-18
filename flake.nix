@@ -328,6 +328,11 @@
           description = "A simple template for Go";
           welcomeText = ''Welcome to Go template'';
         };
+        plain = {
+          path = ./templates/plain;
+          description = "An empty flake template";
+          welcomeText = ''Welcome to Plain template'';
+        };
       };
     }
     // mapHosts
