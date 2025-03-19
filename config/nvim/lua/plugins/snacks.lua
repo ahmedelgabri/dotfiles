@@ -132,14 +132,14 @@ return {
 			{ silent = true },
 			desc = 'Search [O]ldfiles',
 		},
-		-- {
-		-- 	'<Leader>-',
-		-- 	function()
-		-- 		require('snacks').picker.explorer {}
-		-- 	end,
-		-- 	{ silent = true },
-		-- 	desc = 'Open file explorer',
-		-- },
+		{
+			'<Leader>-',
+			function()
+				require('snacks').picker.explorer {}
+			end,
+			{ silent = true },
+			desc = 'Open file explorer',
+		},
 		{
 			'\\',
 			function()

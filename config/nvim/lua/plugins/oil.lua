@@ -1,7 +1,6 @@
 return {
 	{
 		'https://github.com/stevearc/oil.nvim',
-		enabled = false,
 		-- avoid lazy loading oil in order to use it as a file explorer instead of netrw
 		lazy = false,
 		keys = {
@@ -14,10 +13,10 @@ return {
 				desc = 'Open parent directory',
 			},
 		},
-		config = function()
+		opts = function(_, opts)
 			local detail = false
 
-			require('oil').setup {
+			return vim.tbl_deep_extend('force', opts or {}, {
 				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 				-- Set to false if you still want to use netrw.
 				default_file_explorer = true,
@@ -46,7 +45,7 @@ return {
 						end,
 					},
 				},
-			}
+			})
 		end,
 	},
 }
