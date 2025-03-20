@@ -328,6 +328,11 @@
           description = "A simple template for Go";
           welcomeText = ''Welcome to Go template'';
         };
+        rust = {
+          path = ./templates/rust;
+          description = "A simple template for Rust";
+          welcomeText = ''Welcome to Rust template'';
+        };
         plain = {
           path = ./templates/plain;
           description = "An empty flake template";
