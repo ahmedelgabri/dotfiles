@@ -103,7 +103,15 @@ return {
 		{
 			'<Leader>-',
 			function()
-				require('snacks').picker.explorer {}
+				require('snacks').picker.explorer {
+					win = {
+						list = {
+							keys = {
+								['o'] = { { 'pick_win', 'jump' }, mode = { 'n', 'i' } },
+							},
+						},
+					},
+				}
 			end,
 			{ silent = true },
 			desc = 'Open file explorer',
