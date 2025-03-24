@@ -98,6 +98,24 @@ in {
               wget
               zoxide
               zsh-powerlevel10k
+              (pkgs.writeScriptBin "nixup"
+                /*
+                bash
+                */
+                ''
+                  pushd $DOTFILES/
+                  nix flake update
+                  popd
+                '')
+              (pkgs.writeScriptBin "nixsw"
+                /*
+                bash
+                */
+                ''
+                  pushd $DOTFILES/
+                  darwin-rebuild switch --flake .
+                  popd
+                '')
             ];
         };
 
