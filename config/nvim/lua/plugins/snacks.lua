@@ -101,52 +101,12 @@ return {
 			{ desc = 'Select Scratch Buffer' },
 		},
 		{
-			'<leader><leader>',
-			function()
-				require('snacks').picker.files {}
-			end,
-			{ silent = true },
-			desc = 'Search Files',
-		},
-		{
-			'<leader>b',
-			function()
-				require('snacks').picker.buffers {}
-			end,
-			{ silent = true },
-			desc = 'Search [B]uffers',
-		},
-		{
-			'<leader>h',
-			function()
-				require('snacks').picker.help {}
-			end,
-			{ silent = true },
-			desc = 'Search [H]elp',
-		},
-		{
-			'<Leader>o',
-			function()
-				require('snacks').picker.recent {}
-			end,
-			{ silent = true },
-			desc = 'Search [O]ldfiles',
-		},
-		{
 			'<Leader>-',
 			function()
 				require('snacks').picker.explorer {}
 			end,
 			{ silent = true },
 			desc = 'Open file explorer',
-		},
-		{
-			'\\',
-			function()
-				require('snacks').picker.grep {}
-			end,
-			{ silent = true },
-			desc = 'grep project',
 		},
 		{
 			'<leader>z',
@@ -156,75 +116,65 @@ return {
 			{ silent = true },
 			desc = 'Toggle buffer [z]oom mode',
 		},
-		{
-			'<leader>ta',
-			function()
-				Snacks.picker.grep {
-					title = 'Tasks',
-					-- pass your desired search as a static pattern
-					search = '^\\s*- \\[ \\]',
-					-- we enable regex so the pattern is interpreted as a regex
-					regex = true,
-					-- no “live grep” needed here since we have a fixed pattern
-					live = false,
-					-- restrict search to the current working directory
-					dirs = { vim.fn.getcwd() },
-					-- include files ignored by .gitignore
-					args = { '--no-ignore' },
-					finder = 'grep',
-					format = 'file',
-					show_empty = true,
-					supports_live = false,
-					-- Start in normal mode
-					on_show = function()
-						vim.cmd.stopinsert()
-					end,
-				}
-			end,
-			desc = 'Search for incomplete t[a]sks',
-		},
-		{
-			'<leader>to',
-			function()
-				Snacks.picker.grep {
-					title = 'TODOs',
-					-- Single pattern that matches:
-					-- 1. Comment starters: //, #, --, %, ;, /*
-					-- 2. Optional whitespace
-					-- 3. Optional @ prefix
-					-- 4. Markers: todo, note, bug, fixme (case insensitive)
-					-- 5. Optional : suffix
-					-- 6. Word boundary
-					search = [[^\s*?(//|#|--|%|;|/\*)\s*@?(todo|note|hack|bug|fixme|fix|warn|xxx):?\b]],
-					-- we enable regex so the pattern is interpreted as a regex
-					regex = true,
-					-- true to pass the complex regex to `rg`
-					live = true,
-					-- restrict search to the current working directory
-					dirs = { vim.fn.getcwd() },
-					-- include files ignored by .gitignore
-					args = { '--no-ignore' },
-					format = 'file',
-					show_empty = true,
-					supports_live = false,
-					-- Start in normal mode
-					on_show = function()
-						vim.cmd.stopinsert()
-					end,
-				}
-			end,
-			desc = 'Search for t[o]dos',
-		},
-		-- Overrides default z=
-		{
-			'z=',
-			function()
-				---@diagnostic disable-next-line: undefined-field
-				require('snacks').picker.spelling {}
-			end,
-			{ silent = true },
-			desc = 'Spelling Suggestions',
-		},
+		-- {
+		-- 	'<leader>ta',
+		-- 	function()
+		-- 		Snacks.picker.grep {
+		-- 			title = 'Tasks',
+		-- 			-- pass your desired search as a static pattern
+		-- 			search = '^\\s*- \\[ \\]',
+		-- 			-- we enable regex so the pattern is interpreted as a regex
+		-- 			regex = true,
+		-- 			-- no “live grep” needed here since we have a fixed pattern
+		-- 			live = false,
+		-- 			-- restrict search to the current working directory
+		-- 			dirs = { vim.fn.getcwd() },
+		-- 			-- include files ignored by .gitignore
+		-- 			args = { '--no-ignore' },
+		-- 			finder = 'grep',
+		-- 			format = 'file',
+		-- 			show_empty = true,
+		-- 			supports_live = false,
+		-- 			-- Start in normal mode
+		-- 			on_show = function()
+		-- 				vim.cmd.stopinsert()
+		-- 			end,
+		-- 		}
+		-- 	end,
+		-- 	desc = 'Search for incomplete t[a]sks',
+		-- },
+		-- {
+		-- 	'<leader>to',
+		-- 	function()
+		-- 		Snacks.picker.grep {
+		-- 			title = 'TODOs',
+		-- 			-- Single pattern that matches:
+		-- 			-- 1. Comment starters: //, #, --, %, ;, /*
+		-- 			-- 2. Optional whitespace
+		-- 			-- 3. Optional @ prefix
+		-- 			-- 4. Markers: todo, note, bug, fixme (case insensitive)
+		-- 			-- 5. Optional : suffix
+		-- 			-- 6. Word boundary
+		-- 			search = [[^\s*?(//|#|--|%|;|/\*)\s*@?(todo|note|hack|bug|fixme|fix|warn|xxx):?\b]],
+		-- 			-- we enable regex so the pattern is interpreted as a regex
+		-- 			regex = true,
+		-- 			-- true to pass the complex regex to `rg`
+		-- 			live = true,
+		-- 			-- restrict search to the current working directory
+		-- 			dirs = { vim.fn.getcwd() },
+		-- 			-- include files ignored by .gitignore
+		-- 			args = { '--no-ignore' },
+		-- 			format = 'file',
+		-- 			show_empty = true,
+		-- 			supports_live = false,
+		-- 			-- Start in normal mode
+		-- 			on_show = function()
+		-- 				vim.cmd.stopinsert()
+		-- 			end,
+		-- 		}
+		-- 	end,
+		-- 	desc = 'Search for t[o]dos',
+		-- },
 	},
 	init = function()
 		vim.g.custom_explorer = true
@@ -348,96 +298,6 @@ return {
 					{ title = 'Bookmarks', padding = 1 },
 					{ section = 'keys' },
 					{ section = 'startup' },
-				},
-			},
-			picker = {
-				matcher = {
-					frecency = true,
-				},
-				icons = {
-					ui = {
-						live = '󰐰 ',
-						hidden = '',
-						ignored = '',
-						unselected = '',
-						selected = '✓ ',
-					},
-				},
-				win = {
-					preview = {
-						wo = {
-							foldcolumn = '0',
-							number = false,
-							relativenumber = false,
-							statuscolumn = '',
-						},
-					},
-					input = {
-						keys = {
-							['<Esc>'] = { 'close', mode = { 'n', 'i' } },
-							['<c-t>'] = {
-								'trouble_open',
-								mode = { 'n', 'i' },
-							},
-							['?'] = { 'toggle_preview', mode = { 'i', 'n' } },
-						},
-					},
-					list = {
-						wo = {
-							conceallevel = 0,
-						},
-					},
-				},
-				prompt = utils.get_icon 'search',
-				actions = require('trouble.sources.snacks').actions,
-				previewers = {
-					git = {
-						native = true,
-					},
-				},
-				sources = {
-					files = {
-						-- fd flags
-						args = vim.fn.split(
-							vim.fn.split(vim.env.FZF_DEFAULT_COMMAND, '/fd ')[2],
-							' '
-						),
-					},
-					buffers = {
-						current = false,
-						sort_lastused = true,
-					},
-					spelling = {
-						layout = { preset = 'select' },
-					},
-				},
-				formatters = {
-					selected = {
-						unselected = false,
-					},
-					file = {
-						-- Don't truncate file paths
-						truncate = 100,
-					},
-				},
-				layouts = {
-					default = {
-						layout = {
-							box = 'horizontal',
-							width = 0.8,
-							min_width = 120,
-							height = 0.8,
-							{
-								box = 'vertical',
-								border = utils.get_border(),
-								title = '{source} {live}',
-								title_pos = 'center',
-								{ win = 'input', height = 1, border = 'bottom' },
-								{ win = 'list', border = 'none' },
-							},
-							{ win = 'preview', border = utils.get_border(), width = 0.5 },
-						},
-					},
 				},
 			},
 		})
