@@ -55,15 +55,16 @@
         PMPrintingExpandedStateForPrint = true;
         PMPrintingExpandedStateForPrint2 = true;
         _HIHideMenuBar = true;
-        # com.apple.mouse.tapBehavior = 1;
-        # com.apple.sound.beep.feedback = 0;
-        # com.apple.springing.delay = 0;
-        # com.apple.springing.enabled = true;
+        "com.apple.mouse.tapBehavior" = 1;
+        "com.apple.sound.beep.feedback" = 0;
+        "com.apple.springing.delay" = 0.0;
+        "com.apple.springing.enabled" = true;
       };
 
       dock = {
         # I like an empty dock, I don't use it.
         persistent-apps = [];
+        orientation = "bottom";
         autohide = true;
         autohide-delay = 0.0;
         autohide-time-modifier = 0.0;
@@ -79,15 +80,14 @@
         showhidden = true;
         static-only = true;
         tilesize = 32;
-        # Hot corners, reset them all.
-        # Not supported in nix-darwin yet
-        # wvous-tl-corner = 0;
+        # Hot corners, disable all of them.
+        wvous-tl-corner = 1;
         # wvous-tl-modifier = 0;
-        # wvous-tr-corner = 0;
+        wvous-tr-corner = 1;
         # wvous-tr-modifier = 0;
-        # wvous-bl-corner = 0;
+        wvous-bl-corner = 1;
         # wvous-bl-modifier = 0;
-        # wvous-br-corner = 0;
+        wvous-br-corner = 1;
         # wvous-br-modifier = 0;
       };
 
