@@ -388,7 +388,7 @@ return {
 					end,
 					settings = {
 						typescript = vim.tbl_deep_extend('force', lang_settings, {
-							tsserver = { maxTsServerMemory = 8192 },
+							tsserver = { maxTsServerMemory = 12288 },
 						}),
 						javascript = lang_settings,
 						vtsls = {
