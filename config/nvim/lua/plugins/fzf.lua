@@ -44,6 +44,39 @@ return {
 				desc = 'grep project',
 			},
 			{
+				'<leader>ta',
+				function()
+					require('fzf-lua').grep_project {
+						winopts = { title = ' Tasks ' },
+						search = '^\\s*- \\[ \\]',
+						no_esc = true,
+						no_ignore = true,
+						hidden = true,
+					}
+				end,
+				desc = 'Search for incomplete t[a]sks',
+			},
+			{
+				'<leader>to',
+				function()
+					require('fzf-lua').grep_project {
+						winopts = { title = ' TODOs ' },
+						-- Single pattern that matches:
+						-- 1. Comment starters: //, #, --, %, ;, /*
+						-- 2. Optional whitespace
+						-- 3. Optional @ prefix
+						-- 4. Markers: todo, note, bug, fixme (case insensitive)
+						-- 5. Optional : suffix
+						-- 6. Word boundary
+						search = [[^\s*?(//|#|--|%|;|/\*)\s*@?(todo|note|hack|bug|fixme|fix|warn|xxx):?\b]],
+						no_esc = true,
+						no_ignore = true,
+						hidden = true,
+					}
+				end,
+				desc = 'Search for t[o]dos',
+			},
+			{
 				-- Overrides default z=
 				'z=',
 				function()
@@ -125,6 +158,8 @@ return {
 					cmd = vim.env.FZF_DEFAULT_COMMAND ~= nil
 							and vim.env.FZF_DEFAULT_COMMAND
 						or defaults.defaults.files.cmd,
+					no_ignore = true,
+					hidden = true,
 					actions = {
 						['ctrl-g'] = false,
 						['default'] = actions.file_edit,
