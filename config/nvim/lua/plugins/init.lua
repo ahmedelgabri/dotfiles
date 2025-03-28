@@ -9,6 +9,8 @@ return {
 		event = 'VeryLazy',
 		init = function()
 			vim.g.LoupeClearHighlightMap = 0
+			-- Not needed in Neovim (see `:help hl-CurSearch`).
+			vim.g.LoupeHighlightGroup = ''
 
 			local au = require '_.utils.au'
 			local hl = require '_.utils.highlight'
