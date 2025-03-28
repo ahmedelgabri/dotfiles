@@ -281,7 +281,8 @@ return {
 
 					if
 						client.supports_method(
-							vim.lsp.protocol.Methods.textDocument_documentHighlight
+							vim.lsp.protocol.Methods.textDocument_documentHighlight,
+							{ bufnr = bufnr }
 						)
 					then
 						local group = '__LSP_HIGHLIGHTS__'
@@ -306,7 +307,8 @@ return {
 
 					if
 						client.supports_method(
-							vim.lsp.protocol.Methods.textDocument_codeLens
+							vim.lsp.protocol.Methods.textDocument_codeLens,
+							{ bufnr = bufnr }
 						)
 					then
 						au.augroup('__LSP_CODELENS__', {
@@ -318,6 +320,16 @@ return {
 								buffer = bufnr,
 							},
 						})
+					end
+
+					if
+						client.supports_method(
+							vim.lsp.protocol.Methods.textDocument_foldingRange,
+							{ bufnr = bufnr }
+						)
+					then
+						local win = vim.api.nvim_get_current_win()
+						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
 					end
 
 					if
