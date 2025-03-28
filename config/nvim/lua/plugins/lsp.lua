@@ -125,18 +125,6 @@ return {
 	},
 	{ 'https://github.com/b0o/SchemaStore.nvim' },
 	{
-		'https://github.com/rachartier/tiny-inline-diagnostic.nvim',
-		event = 'LspAttach',
-		opts = {
-			preset = 'nonerdfont',
-			options = {
-				show_source = true,
-				multiple_diag_under_cursor = true,
-				softwrap = 80,
-			},
-		},
-	},
-	{
 		'https://github.com/neovim/nvim-lspconfig',
 		event = utils.LazyFile,
 		config = function()
