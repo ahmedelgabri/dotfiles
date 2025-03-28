@@ -210,7 +210,7 @@ return {
 							function()
 								require('fzf-lua').lsp_definitions {
 									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
-									jump_to_single_result = true,
+									jump1 = true,
 								}
 							end,
 							{ desc = 'Go to Definition' },
