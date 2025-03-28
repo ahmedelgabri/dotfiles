@@ -34,6 +34,7 @@ end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
+	virtual_lines = { current_line = true },
 	virtual_text = false,
 	-- virtual_text = {
 	-- 	-- source = 'always',
