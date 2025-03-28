@@ -1,38 +1,5 @@
 local utils = require '_.utils'
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-if pcall(require, 'blink.cmp') then
-	capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-end
-
-local shared = {
-	capabilities = vim.tbl_deep_extend('force', capabilities, {
-		workspace = {
-			didChangeWatchedFiles = {
-				dynamicRegistration = true,
-			},
-		},
-		textDocument = {
-			completion = {
-				completionItem = {
-					snippetSupport = true,
-					resolveSupport = {
-						properties = {
-							'documentation',
-							'detail',
-							'additionalTextEdits',
-						},
-					},
-				},
-			},
-		},
-	}),
-	flags = {
-		debounce_text_changes = 150,
-	},
-}
-
 return {
 	{
 		'https://github.com/SmiteshP/nvim-navic',
@@ -114,41 +81,14 @@ return {
 		config = function()
 			require('zk').setup {
 				picker = 'fzf_lua',
-				lsp = {
-					-- `config` is passed to `vim.lsp.start_client(config)`
-					config = vim.tbl_deep_extend('force', shared, {}),
-				},
 			}
-
-			-- local cmds = require 'zk.commands'
 		end,
 	},
 	{ 'https://github.com/b0o/SchemaStore.nvim' },
 	{
 		'https://github.com/neovim/nvim-lspconfig',
 		event = utils.LazyFile,
-		config = function()
-			-- for debugging
-			-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
-			-- :lua print(vim.lsp.get_log_path())
-			-- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
-
-			-- require('vim.lsp.log').set_level 'debug'
-			-- require('vim.lsp.log').set_format_func(vim.inspect)
-			local au = require '_.utils.au'
-			local map_opts = { buffer = true, silent = true }
-
-			-- Globally override borders
-			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-			local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-
-			---@diagnostic disable-next-line: duplicate-set-field
-			function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-				opts = opts or {}
-				opts.border = opts.border or utils.get_border()
-				return orig_util_open_floating_preview(contents, syntax, opts, ...)
-			end
-
+		opts = function(_, opts)
 			local configs = require 'lspconfig.configs'
 			local util = require 'lspconfig.util'
 
@@ -171,172 +111,6 @@ return {
 						['config'] = '.oxlintrc.json',
 					},
 				},
-			}
-
-			au.autocmd {
-				event = 'LspAttach',
-				desc = 'LSP actions',
-				callback = function(event)
-					local bufnr = event.buf
-					local client = assert(
-						vim.lsp.get_client_by_id(event.data.client_id),
-						'must have valid client'
-					)
-
-					-- ---------------
-					-- GENERAL
-					-- ---------------
-					client.flags.allow_incremental_sync = true
-
-					-- ---------------
-					-- MAPPINGS
-					-- ---------------
-					for _, item in ipairs {
-						{
-							{ 'n' },
-							'<C-]>',
-							function()
-								require('fzf-lua').lsp_definitions {
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
-									jump1 = true,
-								}
-							end,
-							{ desc = 'Go to Definition' },
-						},
-						{
-							{ 'n' },
-							'<leader>a',
-							function()
-								require('fzf-lua').lsp_code_actions {}
-							end,
-							{ desc = 'Code [A]ctions' },
-						},
-						{
-							{ 'n' },
-							'<leader>f',
-							function()
-								require('fzf-lua').lsp_references {
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
-									ignore_current_line = true,
-									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-declaration
-									-- includeDeclaration = false
-								}
-							end,
-							{ desc = 'Show Re[f]erences' },
-						},
-						{
-							{ 'n' },
-							'<leader>r',
-							vim.lsp.buf.rename,
-							{ desc = '[R]ename Symbol' },
-						},
-						{
-							{ 'n' },
-							'<leader>D',
-							function()
-								require('fzf-lua').lsp_declarations {}
-							end,
-							{ desc = 'Go to [D]eclaration' },
-						},
-						{
-							{ 'n' },
-							'<leader>i',
-							function()
-								require('fzf-lua').lsp_implementations {}
-							end,
-							{ desc = 'Go to [I]mplementation' },
-						},
-						{
-							{ 'n' },
-							'<leader>dq',
-							vim.diagnostic.setloclist,
-							{ desc = 'Open diagnostics list' },
-						},
-					} do
-						local extra_opts = table.remove(item, 4)
-						local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
-
-						table.insert(item, 4, merged_opts)
-
-						local modes, lhs, rhs, opts = item[1], item[2], item[3], item[4]
-
-						vim.keymap.set(modes, lhs, rhs, opts)
-					end
-
-					-- ---------------
-					-- AUTOCMDS
-					-- ---------------
-
-					if
-						client.supports_method(
-							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							{ bufnr = bufnr }
-						)
-					then
-						local group = '__LSP_HIGHLIGHTS__'
-						vim.api.nvim_create_augroup(group, {
-							clear = false,
-						})
-						vim.api.nvim_clear_autocmds {
-							buffer = bufnr,
-							group = group,
-						}
-						vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-							group = group,
-							buffer = bufnr,
-							callback = vim.lsp.buf.document_highlight,
-						})
-						vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-							group = group,
-							buffer = bufnr,
-							callback = vim.lsp.buf.clear_references,
-						})
-					end
-
-					if
-						client.supports_method(
-							vim.lsp.protocol.Methods.textDocument_codeLens,
-							{ bufnr = bufnr }
-						)
-					then
-						au.augroup('__LSP_CODELENS__', {
-							{
-								event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-								callback = function()
-									vim.lsp.codelens.refresh { bufnr = bufnr }
-								end,
-								buffer = bufnr,
-							},
-						})
-					end
-
-					if
-						client.supports_method(
-							vim.lsp.protocol.Methods.textDocument_foldingRange,
-							{ bufnr = bufnr }
-						)
-					then
-						local win = vim.api.nvim_get_current_win()
-						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
-					end
-
-					if
-						client.name == 'gopls'
-						and not client.server_capabilities.semanticTokensProvider
-					then
-						local semantic =
-							client.config.capabilities.textDocument.semanticTokens
-
-						client.server_capabilities.semanticTokensProvider = {
-							full = true,
-							legend = {
-								tokenModifiers = semantic.tokenModifiers,
-								tokenTypes = semantic.tokenTypes,
-							},
-							range = true,
-						}
-					end
-				end,
 			}
 
 			local web_roots =
@@ -708,8 +482,247 @@ return {
 					},
 				},
 			}
+			if vim.fn.executable 'marksman' ~= 0 then
+				servers.marksman = {}
+			end
 
-			for server, config in pairs(servers) do
+			if vim.fn.executable 'markdown-oxide' ~= 0 then
+				servers.markdown_oxide = {}
+			end
+
+			return vim.tbl_deep_extend('force', opts or {}, {
+				servers = servers,
+			})
+		end,
+		config = function(_, opts)
+			-- for debugging
+			-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
+			-- :lua print(vim.lsp.get_log_path())
+			-- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
+
+			-- require('vim.lsp.log').set_level 'debug'
+			-- require('vim.lsp.log').set_format_func(vim.inspect)
+			local au = require '_.utils.au'
+			local map_opts = { buffer = true, silent = true }
+
+			-- Globally override borders
+			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
+			local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+
+			---@diagnostic disable-next-line: duplicate-set-field
+			function vim.lsp.util.open_floating_preview(
+				contents,
+				syntax,
+				options,
+				...
+			)
+				options = options or {}
+				options.border = options.border or utils.get_border()
+				return orig_util_open_floating_preview(contents, syntax, options, ...)
+			end
+
+			au.autocmd {
+				event = 'LspAttach',
+				desc = 'LSP actions',
+				callback = function(event)
+					local bufnr = event.buf
+					local client = assert(
+						vim.lsp.get_client_by_id(event.data.client_id),
+						'must have valid client'
+					)
+
+					-- ---------------
+					-- GENERAL
+					-- ---------------
+					client.flags.allow_incremental_sync = true
+
+					-- ---------------
+					-- MAPPINGS
+					-- ---------------
+					for _, item in ipairs {
+						{
+							{ 'n' },
+							'<C-]>',
+							function()
+								require('fzf-lua').lsp_definitions {
+									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
+									jump1 = true,
+								}
+							end,
+							{ desc = 'Go to Definition' },
+						},
+						{
+							{ 'n' },
+							'<leader>a',
+							function()
+								require('fzf-lua').lsp_code_actions {}
+							end,
+							{ desc = 'Code [A]ctions' },
+						},
+						{
+							{ 'n' },
+							'<leader>f',
+							function()
+								require('fzf-lua').lsp_references {
+									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
+									ignore_current_line = true,
+									-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-declaration
+									-- includeDeclaration = false
+								}
+							end,
+							{ desc = 'Show Re[f]erences' },
+						},
+						{
+							{ 'n' },
+							'<leader>r',
+							vim.lsp.buf.rename,
+							{ desc = '[R]ename Symbol' },
+						},
+						{
+							{ 'n' },
+							'<leader>D',
+							function()
+								require('fzf-lua').lsp_declarations {}
+							end,
+							{ desc = 'Go to [D]eclaration' },
+						},
+						{
+							{ 'n' },
+							'<leader>i',
+							function()
+								require('fzf-lua').lsp_implementations {}
+							end,
+							{ desc = 'Go to [I]mplementation' },
+						},
+						{
+							{ 'n' },
+							'<leader>dq',
+							vim.diagnostic.setloclist,
+							{ desc = 'Open diagnostics list' },
+						},
+					} do
+						local extra_opts = table.remove(item, 4)
+						local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
+
+						table.insert(item, 4, merged_opts)
+
+						local modes, lhs, rhs, opt = item[1], item[2], item[3], item[4]
+
+						vim.keymap.set(modes, lhs, rhs, opt)
+					end
+
+					-- ---------------
+					-- AUTOCMDS
+					-- ---------------
+
+					if
+						client.supports_method(
+							vim.lsp.protocol.Methods.textDocument_documentHighlight,
+							{ bufnr = bufnr }
+						)
+					then
+						local group = '__LSP_HIGHLIGHTS__'
+						vim.api.nvim_create_augroup(group, {
+							clear = false,
+						})
+						vim.api.nvim_clear_autocmds {
+							buffer = bufnr,
+							group = group,
+						}
+						vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+							group = group,
+							buffer = bufnr,
+							callback = vim.lsp.buf.document_highlight,
+						})
+						vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+							group = group,
+							buffer = bufnr,
+							callback = vim.lsp.buf.clear_references,
+						})
+					end
+
+					if
+						client.supports_method(
+							vim.lsp.protocol.Methods.textDocument_codeLens,
+							{ bufnr = bufnr }
+						)
+					then
+						au.augroup('__LSP_CODELENS__', {
+							{
+								event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
+								callback = function()
+									vim.lsp.codelens.refresh { bufnr = bufnr }
+								end,
+								buffer = bufnr,
+							},
+						})
+					end
+
+					if
+						client.supports_method(
+							vim.lsp.protocol.Methods.textDocument_foldingRange,
+							{ bufnr = bufnr }
+						)
+					then
+						local win = vim.api.nvim_get_current_win()
+						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+					end
+
+					if
+						client.name == 'gopls'
+						and not client.server_capabilities.semanticTokensProvider
+					then
+						local semantic =
+							client.config.capabilities.textDocument.semanticTokens
+
+						assert(semantic, "doesn't support semantic tokens")
+
+						client.server_capabilities.semanticTokensProvider = {
+							full = true,
+							legend = {
+								tokenModifiers = semantic.tokenModifiers,
+								tokenTypes = semantic.tokenTypes,
+							},
+							range = true,
+						}
+					end
+				end,
+			}
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+			if pcall(require, 'blink.cmp') then
+				capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+			end
+
+			local shared = {
+				capabilities = vim.tbl_deep_extend('force', capabilities, {
+					workspace = {
+						didChangeWatchedFiles = {
+							dynamicRegistration = true,
+						},
+					},
+					textDocument = {
+						completion = {
+							completionItem = {
+								snippetSupport = true,
+								resolveSupport = {
+									properties = {
+										'documentation',
+										'detail',
+										'additionalTextEdits',
+									},
+								},
+							},
+						},
+					},
+				}),
+				flags = {
+					debounce_text_changes = 150,
+				},
+			}
+
+			for server, config in pairs(opts.servers) do
 				local server_disabled = (config.disabled ~= nil and config.disabled)
 					or false
 
