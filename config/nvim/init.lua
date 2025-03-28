@@ -110,7 +110,7 @@ vim.o.virtualedit = 'block'
 -- allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 vim.o.whichwrap = 'b,h,l,s,<,>,[,],~'
 
-vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- don't bother updating screen during macro playback
 vim.o.lazyredraw = true
