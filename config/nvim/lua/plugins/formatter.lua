@@ -128,7 +128,7 @@ return {
 		},
 		init = function()
 			-- Use conform for gq.
-			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+			vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
 
 			-- Define a command to run async formatting
 			vim.api.nvim_create_user_command('Format', function(args)

@@ -30,7 +30,7 @@ vim.g.did_install_default_menus = 1
 -- vim.g.loaded_vimballPlugin = 1
 -- vim.g.loaded_rrhelper = 1
 
--- vim.o. them directly if they are installed, otherwise disable them. To avoid the then
+-- vim.opt. them directly if they are installed, otherwise disable them. To avoid the then
 -- runtime check cost, which can be slow.
 -- Python This must be here because it makes loading vim VERY SLOW otherwise
 vim.g.python_host_skip_check = 1
@@ -64,94 +64,94 @@ vim.g.loaded_perl_provider = 0
 -------------------------------------------------------------------------------
 
 -- use guifg/guibg instead of ctermfg/ctermbg in terminal
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 -- spaces per tab
-vim.o.tabstop = 2
-vim.o.softtabstop = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 -- spaces per tab (when shifting), Zero means use tabstop value
-vim.o.shiftwidth = 0
+vim.opt.shiftwidth = 0
 -- always use tabs
-vim.o.expandtab = false
+vim.opt.expandtab = false
 
-vim.o.signcolumn = 'yes'
+vim.opt.signcolumn = 'yes'
 
-vim.o.emoji = false
+vim.opt.emoji = false
 
 -- start highlighting from 256 lines backwards
 vim.cmd 'syntax sync minlines=256'
 -- do not highlight very long lines
-vim.o.synmaxcol = 300
+vim.opt.synmaxcol = 300
 
 -- Don't Display the mode you're in. since it's already shown on the statusline
-vim.o.showmode = false
+vim.opt.showmode = false
 
 -- show a navigable menu for tab completion
-vim.o.wildmode = 'longest:full,list,full'
+vim.opt.wildmode = 'longest:full,list,full'
 vim.opt.wildignore:append '*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.pyc'
 vim.opt.wildignore:append '*.swp,*~,*/.DS_Store'
 
-vim.o.tagcase = 'followscs'
+vim.opt.tagcase = 'followscs'
 vim.opt.tags:prepend './.git/tags;'
 
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
-vim.o.spelllang = 'en,nl'
-vim.o.spellsuggest = '30'
-vim.o.spellfile =
+vim.opt.spelllang = 'en,nl'
+vim.opt.spellsuggest = '30'
+vim.opt.spellfile =
 	string.format('%s%s', vim.fn.stdpath 'config', '/spell/spell.add')
 
 vim.opt.complete:append 'kspell'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
-vim.o.secure = true
+vim.opt.secure = true
 
 -- allow cursor to move where there is no text in visual block mode
-vim.o.virtualedit = 'block'
+vim.opt.virtualedit = 'block'
 
 -- allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
-vim.o.whichwrap = 'b,h,l,s,<,>,[,],~'
+vim.opt.whichwrap = 'b,h,l,s,<,>,[,],~'
 
-vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
+vim.opt.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- don't bother updating screen during macro playback
-vim.o.lazyredraw = true
+vim.opt.lazyredraw = true
 
 -- highlight matching [{()}]
-vim.o.showmatch = true
+vim.opt.showmatch = true
 
-vim.o.title = true
-vim.o.mouse = 'a'
+vim.opt.title = true
+vim.opt.mouse = 'a'
 
 -- More natural splitting
-vim.o.splitbelow = true
-vim.o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 -- Ignore case in search.
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-vim.o.timeoutlen = 300
+vim.opt.timeoutlen = 300
 
 vim.opt.formatoptions:append 'n'
 vim.opt.formatoptions:append 'r1'
 
 -- No beeping.
-vim.o.visualbell = false
+vim.opt.visualbell = false
 
 -- No flashing.
-vim.o.errorbells = false
+vim.opt.errorbells = false
 
 -- Start scrolling slightly before the cursor reaches an edge
-vim.o.scrolloff = 5
-vim.o.sidescrolloff = 5
+vim.opt.scrolloff = 5
+vim.opt.sidescrolloff = 5
 
 -- Scroll sideways a character at a time, rather than a screen at a time
-vim.o.sidescroll = 3
+vim.opt.sidescroll = 3
 
 -- yank and paste with the system clipboard
-vim.o.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamedplus'
 
 -- show trailing whitespace
-vim.o.list = true
+vim.opt.list = true
 vim.opt.listchars = {
 	multispace = '⋅ ',
 	lead = '⋅',
@@ -164,10 +164,10 @@ vim.opt.listchars = {
 }
 
 if not vim.fn.has 'nvim-0.6' then
-	vim.o.joinspaces = false
+	vim.opt.joinspaces = false
 end
 
-vim.o.concealcursor = 'n'
+vim.opt.concealcursor = 'n'
 
 vim.opt.fillchars = {
 	diff = '⣿', -- BOX DRAWINGS
@@ -186,32 +186,33 @@ vim.opt.fillchars = {
 	verthoriz = '╋',
 }
 
-vim.o.foldcolumn = '0'
-vim.o.foldlevel = 99
-vim.o.foldnestmax = 4
-vim.o.foldlevelstart = 99 -- start unfolded
+vim.opt.foldcolumn = '0'
+vim.opt.foldlevel = 99
+vim.opt.foldnestmax = 4
+vim.opt.foldlevelstart = 99 -- start unfolded
 vim.opt.foldminlines = 0 -- Allow closing even 1-line folds.
 -- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
-vim.o.foldtext = ''
-vim.wo.foldmethod = 'expr'
-vim.wo.foldexpr = 'v:lua.__.foldexpr(v:lnum)'
+vim.opt.foldtext = ''
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.__.foldexpr(v:lnum)'
+-- vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
-vim.o.linebreak = true
-vim.o.textwidth = 80
-vim.o.wrap = false
-vim.o.breakindent = true
-vim.o.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
-vim.o.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
+vim.opt.linebreak = true
+vim.opt.textwidth = 80
+vim.opt.wrap = false
+vim.opt.breakindent = true
+vim.opt.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
+vim.opt.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
 
 -- show where you are
-vim.o.ruler = true
+vim.opt.ruler = true
 
 if not vim.fn.has 'nvim-0.6' then
-	vim.o.hidden = true
+	vim.opt.hidden = true
 end
 
 -- Make tilde command behave like an operator.
-vim.o.tildeop = true
+vim.opt.tildeop = true
 
 -- Make sure diffs are always opened in vertical splits, also match my git settings
 vim.opt.diffopt:append 'vertical,algorithm:histogram,indent-heuristic,hiddenoff'
@@ -229,22 +230,22 @@ vim.opt.shortmess:append 'a'
 vim.opt.shortmess:append 'o'
 vim.opt.shortmess:append 't'
 
-vim.o.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}view`)
+vim.opt.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}view`)
 
-vim.o.backupcopy = 'yes' -- overwrite files to update, instead of renaming + rewriting
-vim.o.backup = false
-vim.o.writebackup = false
+vim.opt.backupcopy = 'yes' -- overwrite files to update, instead of renaming + rewriting
+vim.opt.backup = false
+vim.opt.writebackup = false
 
 if not vim.fn.has 'nvim-0.6' then
-	vim.o.backupdir =
+	vim.opt.backupdir =
 		string.format('%s,%s%s', '.', vim.fn.stdpath 'state', '/backup//') -- keep backup files out of the way
 end
 
-vim.o.swapfile = false
-vim.o.directory =
+vim.opt.swapfile = false
+vim.opt.directory =
 	string.format('%s%s,%s', vim.fn.stdpath 'state', '/swap//', '.') -- keep swap files out of the way
 
-vim.o.updatetime = 250
+vim.opt.updatetime = 250
 
 if root then
 	vim.opt.undofile = false -- don't create root-owned files
@@ -262,15 +263,15 @@ end
 -- - h do not save/restore 'hlsearch' setting
 
 if root then -- don't create root-owned files then
-	vim.o.shada = ''
-	vim.o.shadafile = 'NONE'
+	vim.opt.shada = ''
+	vim.opt.shadafile = 'NONE'
 end
 
 -- cursor behavior:
 --   - no blinking in normal/visual mode
 --   - blinking in insert-mode
 vim.opt.guicursor:append 'n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100'
-vim.o.smoothscroll = true
+vim.opt.smoothscroll = true
 
 vim.opt.tabclose = 'uselast'
 

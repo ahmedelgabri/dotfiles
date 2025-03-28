@@ -30,5 +30,5 @@ au.augroup('__MyCustomColors__', {
 	},
 })
 
-vim.o.background = 'dark'
+vim.opt.background = 'dark'
 vim.cmd.colorscheme 'plain'

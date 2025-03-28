@@ -80,9 +80,9 @@ function M.render()
 end
 
 -- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
--- FWIW if you use vim.o.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
+-- FWIW if you use vim.opt.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
 -- then you can just use nvim_get_current_buf() and in the context of StatusColFunc that will be equal to get_buf(statusline_winid) trick.
 -- You can see :help stl-%{ but essentially in the context of %{} the buffer is changed to that of the window for which the status(line/col)
 -- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
 
-vim.o.statuscolumn = '%{%v:lua.__.statuscolumn.render()%}'
+vim.opt.statuscolumn = '%{%v:lua.__.statuscolumn.render()%}'
