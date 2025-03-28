@@ -130,11 +130,6 @@ au.augroup('__myautocmds__', {
 				:gsub('%%s(%S)', '%%s %1')
 		end,
 	},
-	{
-		event = 'TermOpen',
-		pattern = '*',
-		command = 'setl nonumber norelativenumber',
-	},
 	{ event = 'TermOpen', pattern = 'term://*', command = 'startinsert' },
 	{ event = 'TermClose', pattern = 'term://*', command = 'stopinsert' },
 
