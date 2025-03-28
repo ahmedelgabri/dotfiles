@@ -271,6 +271,10 @@ end
 --   - blinking in insert-mode
 vim.opt.guicursor:append 'n-v-c:blinkon0,i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100'
 vim.o.smoothscroll = true
+
+vim.opt.tabclose = 'uselast'
+
+vim.opt.winborder = 'solid'
 -------------------------------------------------------------------------------
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------
