@@ -28,24 +28,10 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        launchd.user.agents."ui-mode-notify" = {
-          serviceConfig = {
-            ProgramArguments = [
-              "${home}/.config/zsh/bin/ui-mode-notify"
-              "${pkgs.zsh}/bin/zsh"
-              "-c"
-              "change-background"
-            ];
-            KeepAlive = true;
-            StandardOutPath = "${home}/Library/Logs/ui-mode-notify-output.log";
-            StandardErrorPath = "${home}/Library/Logs/ui-mode-notify-error.log";
-          };
-        };
-      })
+        })
 
       (mkIf isLinux {
-        # systemd
-      })
+        })
 
       {
         # List packages installed in system profile. To search by name, run:
