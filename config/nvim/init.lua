@@ -275,7 +275,7 @@ vim.opt.smoothscroll = true
 
 vim.opt.tabclose = 'uselast'
 
-vim.opt.winborder = 'solid'
+vim.opt.winborder = 'single' -- bold when this is released https://github.com/neovim/neovim/pull/33189
 -------------------------------------------------------------------------------
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------

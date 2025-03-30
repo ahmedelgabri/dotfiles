@@ -62,7 +62,6 @@ vim.diagnostic.config {
 	-- },
 	float = {
 		source = 'if_many',
-		focusable = false,
 		prefix = function(diag)
 			local level = vim.diagnostic.severity[diag.severity]
 			local icon = utils.get_icon(level:lower())

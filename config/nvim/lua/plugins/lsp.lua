@@ -505,22 +505,6 @@ return {
 			local au = require '_.utils.au'
 			local map_opts = { buffer = true, silent = true }
 
-			-- Globally override borders
-			-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders
-			local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-
-			---@diagnostic disable-next-line: duplicate-set-field
-			function vim.lsp.util.open_floating_preview(
-				contents,
-				syntax,
-				options,
-				...
-			)
-				options = options or {}
-				options.border = options.border or utils.get_border()
-				return orig_util_open_floating_preview(contents, syntax, options, ...)
-			end
-
 			au.autocmd {
 				event = 'LspAttach',
 				desc = 'LSP actions',
