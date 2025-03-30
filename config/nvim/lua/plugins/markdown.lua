@@ -103,7 +103,7 @@ return {
 				},
 
 				picker = {
-					name = 'snacks.pick',
+					name = 'fzf-lua',
 				},
 
 				ui = {
