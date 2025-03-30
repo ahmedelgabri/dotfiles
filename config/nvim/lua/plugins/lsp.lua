@@ -600,9 +600,9 @@ return {
 					-- ---------------
 
 					if
-						client.supports_method(
+						client:supports_method(
 							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							{ bufnr = bufnr }
+							bufnr
 						)
 					then
 						local group = '__LSP_HIGHLIGHTS__'
@@ -626,9 +626,9 @@ return {
 					end
 
 					if
-						client.supports_method(
+						client:supports_method(
 							vim.lsp.protocol.Methods.textDocument_codeLens,
-							{ bufnr = bufnr }
+							bufnr
 						)
 					then
 						au.augroup('__LSP_CODELENS__', {
@@ -643,13 +643,27 @@ return {
 					end
 
 					if
-						client.supports_method(
+						client:supports_method(
 							vim.lsp.protocol.Methods.textDocument_foldingRange,
-							{ bufnr = bufnr }
+							bufnr
 						)
 					then
 						local win = vim.api.nvim_get_current_win()
 						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+					end
+
+					if
+						client:supports_method(
+							vim.lsp.protocol.Methods.textDocument_completion,
+							bufnr
+						) and not package.loaded['blink.cmp']
+					then
+						vim.lsp.completion.enable(
+							true,
+							client.id,
+							bufnr,
+							{ autotrigger = true }
+						)
 					end
 
 					if
