@@ -30,4 +30,4 @@ au.augroup('__MyCustomColors__', {
 	},
 })
 
-vim.cmd.colorscheme 'plain'
+-- vim.cmd.colorscheme 'plain'

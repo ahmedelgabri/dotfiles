@@ -112,4 +112,69 @@ return {
 			return opts
 		end,
 	},
+	{
+		'https://github.com/slugbyte/lackluster.nvim',
+		lazy = false,
+		priority = 1000,
+		init = function()
+			vim.cmd.colorscheme 'lackluster'
+		end,
+		opts = function(_, opts)
+			local color = require 'lackluster.color'
+
+			return vim.tbl_deep_extend('force', opts or {}, {
+				tweak_highlight = {
+					['@diff.delta'] = {
+						fg = color.yellow,
+					},
+					Changed = {
+						fg = color.yellow,
+					},
+					DiagnosticSignInfo = {
+						fg = color.blue,
+					},
+					DiagnosticInfo = {
+						fg = color.blue,
+					},
+					DiagnosticSignHint = {
+						fg = color.lack,
+					},
+					DiagnosticHint = {
+						fg = color.lack,
+					},
+					DiagnosticSignWarn = {
+						fg = color.yellow,
+					},
+					DiagnosticWarn = {
+						fg = color.yellow,
+					},
+					StatusLine = {
+						fg = color.lack,
+						bg = 'NONE',
+					},
+					StatusLineNC = {
+						bg = 'NONE',
+					},
+					TabLine = {
+						bg = 'NONE',
+					},
+					WinBar = {
+						bg = 'NONE',
+					},
+					WinBarNC = {
+						bg = 'NONE',
+					},
+					User4 = {
+						fg = color.gray5,
+					},
+					User6 = {
+						fg = color.lack,
+					},
+				},
+				disable_plugin = {
+					navic = true,
+				},
+			})
+		end,
+	},
 }
