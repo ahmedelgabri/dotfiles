@@ -234,7 +234,7 @@ return {
 					{ section = 'header' },
 					vim.tbl_map(function(line)
 						return {
-							text = { wrap_text({ line }, 60), hl = 'Constant' },
+							text = { wrap_text({ line }, 60), hl = 'Comment' },
 							gap = 1,
 						}
 					end, random_quote()),
