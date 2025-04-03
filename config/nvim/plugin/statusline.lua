@@ -1,5 +1,4 @@
 local au = require '_.utils.au'
-local hl = require '_.utils.highlight'
 local utils = require '_.utils'
 
 ---------------------------------------------------------------------------------
@@ -58,15 +57,15 @@ local function format_diff_summary(data)
 	local t = {}
 
 	if summary.add > 0 then
-		table.insert(t, '%#DiagnosticSignHint#+' .. summary.add .. '%*')
+		table.insert(t, '%#@diff.plus#+' .. summary.add .. '%*')
 	end
 
 	if summary.change > 0 then
-		table.insert(t, '%#DiagnosticSignWarn#~' .. summary.change .. '%*')
+		table.insert(t, '%#@diff.delta#~' .. summary.change .. '%*')
 	end
 
 	if summary.delete > 0 then
-		table.insert(t, '%#DiagnosticSignError#-' .. summary.delete .. '%*')
+		table.insert(t, '%#@diff.minus#-' .. summary.delete .. '%*')
 	end
 
 	vim.b[data.buf].minidiff_summary_string = table.concat(t, ' ')
@@ -93,23 +92,19 @@ local function filepath()
 	local parts = get_filepath_parts()
 	local prefix = parts[3]
 	local filename = parts[2]
+	local highlight = 'User6'
 
 	if vim.bo.modified then
-		hl.group('StatusLineFilePath', { link = 'DiffChange' })
-		hl.group('StatusLineNewFilePath', { link = 'DiffChange' })
-	else
-		hl.group('StatusLineFilePath', { link = 'User6' })
-		hl.group('StatusLineNewFilePath', { link = 'User4' })
+		highlight = 'DiffChange'
 	end
 
-	local line =
-		string.format('%s%%*%%#StatusLineFilePath#%s%%*', prefix, filename)
+	local line = '%#' .. highlight .. '#%f%*'
 
-	if vim.fn.empty(prefix) == 1 and vim.fn.empty(filename) == 1 then
-		line = '%#StatusLineNewFilePath#%f%*'
+	if vim.fn.empty(prefix) ~= 1 and vim.fn.empty(filename) ~= 1 then
+		line = string.format('%s%%*%%#%s#%s%%*', prefix, highlight, filename)
 	end
 
-	return string.format('%%4*%s%%*', line)
+	return string.format('%%#%s#%s%%*', 'LineNr', line)
 end
 
 local function readonly()
@@ -174,8 +169,8 @@ end
 local function rhs()
 	return vim.fn.winwidth(0) > 80
 			and get_parts {
-				'%4*' .. line_no_indicator() .. '%*',
-				'%4*%3l/%3L:%-2c%*',
+				'%#LineNr#' .. line_no_indicator() .. '%*',
+				'%#LineNr#%3l/%3L:%-2c%*',
 			}
 		or line_no_indicator()
 end
@@ -206,7 +201,11 @@ end
 
 local function word_count()
 	if vim.bo.filetype == 'markdown' or vim.bo.filetype == 'text' then
-		return string.format('%%4*%d %s%%*', vim.fn.wordcount()['words'], 'words')
+		return string.format(
+			'%%#LineNr#%d %s%%*',
+			vim.fn.wordcount()['words'],
+			'words'
+		)
 	end
 
 	return nil
@@ -362,7 +361,7 @@ vim.opt.laststatus = 2
 function M.render_active()
 	if vim.bo.filetype == 'fzf' then
 		return get_parts {
-			'%4*',
+			'%#LineNr#*',
 			'fzf',
 			'%6*',
 			'V: ctrl-v',
@@ -386,6 +385,8 @@ function M.render_active()
 
 	local line = get_parts {
 		filepath(),
+		file_info(),
+		vim.b.minidiff_summary_string,
 		word_count(),
 		readonly(),
 		'%=',
@@ -396,22 +397,16 @@ function M.render_active()
 		lsp_progress_component(),
 		lsp_diagnostics(),
 		git_conflicts(),
-		file_info(),
 		copilot(),
 		rhs(),
 	}
 
 	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
-		return get_parts {
-			'%#StatusLineNC#',
-			filepath(),
-			line,
-		}
+		return '%#StatusLineNC#%f%*'
 	end
 
 	return get_parts {
 		git_info(),
-		vim.b.minidiff_summary_string,
 		line,
 	}
 end
