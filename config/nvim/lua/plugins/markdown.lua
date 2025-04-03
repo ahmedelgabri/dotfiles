@@ -19,7 +19,7 @@ return {
 	},
 	{
 		'https://github.com/MeanderingProgrammer/render-markdown.nvim',
-		ft = { 'markdown', 'codecompanion', 'gitcommit' },
+		ft = { 'markdown', 'codecompanion' },
 		opts = function(_, opts)
 			return vim.tbl_deep_extend('force', opts or {}, {
 				completions = {
