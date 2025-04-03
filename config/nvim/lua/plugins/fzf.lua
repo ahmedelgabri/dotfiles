@@ -141,6 +141,7 @@ return {
 					['--pointer'] = '▶',
 					['--marker'] = '✓ ',
 					['--no-scrollbar'] = true,
+					['--info'] = 'inline-right',
 				},
 				keymap = {
 					builtin = {
