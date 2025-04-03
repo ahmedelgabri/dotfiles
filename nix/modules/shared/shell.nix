@@ -197,10 +197,10 @@ in {
               FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
               FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
               FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
-              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview'";
-              FZF_CTRL_T_OPTS = "--preview-window right:border-left:60% --preview='(${FZF_PREVIEW_COMMAND})'";
+              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview' --info inline-right";
+              FZF_CTRL_T_OPTS = "--preview-window right:border-left:60% --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
               FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-              FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null'";
+              FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --walker-skip .git,node_modules";
               CDPATH = ".:~:~/${devFolder}";
               PROJECTS = "$HOME/${devFolder}/personal/dev";
               WORK = "$HOME/${devFolder}/work";
@@ -267,10 +267,39 @@ in {
                 zsh
                 */
                 ''
+
+                  ##############################################################
+                  # Profiling.
+                  ##############################################################
+
+                  # Start profiling (uncomment when necessary)
+                  #
+                  # See: https://stackoverflow.com/a/4351664/2103996
+
+                  # Per-command profiling:
+
+                  # zmodload zsh/datetime
+                  # setopt promptsubst
+                  # PS4='+$EPOCHREALTIME %N:%i> '
+                  # # More human readable
+                  # PS4=$'%D{%S.%.} %N:%i> '
+                  # exec 3>&2 2> startlog.$$
+                  # setopt xtrace prompt_subst
+
+                  # Per-function profiling:
+
+                  # zmodload zsh/zprof
+
                   # Enable instant prompt
                   if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
                     source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
                   fi
+
+                  # Must be here because nix-darwin defaults are set in zshrc https://github.com/LnL7/nix-darwin/blob/bd7d1e3912d40f799c5c0f7e5820ec950f1e0b3d/modules/programs/zsh/default.nix#L174-L177
+                  export HISTFILE="${"$"}{ZDOTDIR}/.zsh_history"
+                  export HISTSIZE=10000000
+                  export SAVEHIST=${"$"}HISTSIZE
+                  export HISTFILESIZE=${"$"}HISTSIZE
 
                   # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
                   autoload -U select-word-style
@@ -285,8 +314,6 @@ in {
                 ../../../config/zsh.d/zsh/config/input.zsh
                 ../../../config/zsh.d/zsh/config/completion.zsh
                 ../../../config/zsh.d/zsh/config/aliases.zsh
-                "${pkgs.fzf}/share/fzf/completion.zsh"
-                "${pkgs.fzf}/share/fzf/key-bindings.zsh"
                 "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
                 "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
               ]
@@ -328,9 +355,33 @@ in {
 
                   # This breaks p10k instant prompt if I inline the file, but sourcing works fine
                   source "${pkgs.grc}/etc/grc.zsh"
+
+                  source <(${pkgs.fzf}/bin/fzf --zsh)
+
+                  eval "${"$"}(${pkgs.direnv}/bin/direnv hook zsh)"
+                  eval "${"$"}(${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow --disable-ctrl-r)"
+                  eval "${"$"}(${pkgs.zoxide}/bin/zoxide init zsh --hook pwd)"
+
+                  # Per machine config
+                  if [ -f ${"$"}HOST_CONFIGS/zshrc ]; then
+                  	source ${"$"}HOST_CONFIGS/zshrc
+                  fi
                 ''
-                (builtins.readFile ../../../config/zsh.d/.zshrc)
                 (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
+                ''
+                  #
+                  # End profiling (uncomment when necessary)
+                  #
+
+                  # Per-command profiling:
+
+                  # unsetopt xtrace
+                  # exec 2>&3 3>&-
+
+                  # Per-function profiling:
+
+                  # zprof
+                ''
               ]);
 
           promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
