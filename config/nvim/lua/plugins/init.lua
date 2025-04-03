@@ -123,53 +123,48 @@ return {
 			local color = require 'lackluster.color'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
+				tweak_color = {
+					-- I don't like the default warning colors, etc...
+					orange = color.yellow,
+					red = color.orange,
+				},
 				tweak_highlight = {
-					['@diff.delta'] = {
-						fg = color.yellow,
-					},
-					Changed = {
-						fg = color.yellow,
-					},
-					DiagnosticSignInfo = {
-						fg = color.blue,
-					},
-					DiagnosticInfo = {
-						fg = color.blue,
-					},
-					DiagnosticSignHint = {
-						fg = color.lack,
-					},
-					DiagnosticHint = {
-						fg = color.lack,
-					},
-					DiagnosticSignWarn = {
-						fg = color.yellow,
-					},
-					DiagnosticWarn = {
-						fg = color.yellow,
-					},
-					StatusLine = {
-						fg = color.lack,
-						bg = 'NONE',
-					},
-					StatusLineNC = {
-						bg = 'NONE',
-					},
-					TabLine = {
-						bg = 'NONE',
-					},
-					WinBar = {
-						bg = 'NONE',
-					},
-					WinBarNC = {
-						bg = 'NONE',
-					},
-					User4 = {
-						fg = color.gray5,
-					},
-					User6 = {
-						fg = color.lack,
-					},
+					Comment = { italic = true },
+					['@comment'] = { link = 'Comment' },
+
+					Removed = { fg = color.orange },
+					DiffRemove = { link = 'Removed' },
+					DiffRemoved = { link = 'Removed' },
+					DiffDelete = { link = 'Removed' },
+					['@diff.minus'] = { link = 'Removed' },
+
+					Changed = { fg = color.yellow },
+					Change = { link = 'Changed' },
+					DiffChange = { link = 'Changed' },
+					['@diff.delta'] = { link = 'Changed' },
+
+					DiagnosticInfo = { fg = color.blue },
+					DiagnosticSignInfo = { link = 'DiagnosticInfo' },
+					DiagnosticHint = { fg = color.lack },
+					DiagnosticSignHint = { link = 'DiagnosticHint' },
+					DiagnosticWarn = { link = 'Changed' },
+					DiagnosticSignWarn = { link = 'DiagnosticWarn' },
+
+					['@markup.italic'] = { italic = true },
+					['@markup.emphasis'] = { link = '@markup.italic' },
+					['@markup.strong'] = { bold = true, fg = 'NONE' },
+
+					StatusLine = { fg = color.gray4, bg = 'NONE' },
+					StatusLineNC = { bg = 'NONE' },
+
+					TabLine = { bg = 'NONE' },
+
+					WinBar = { bg = 'NONE' },
+					WinBarNC = { bg = 'NONE' },
+
+					User6 = { fg = color.gray6 },
+
+					MiniIndentScopeSymbol = { fg = color.gray3 },
 				},
 				disable_plugin = {
 					navic = true,
