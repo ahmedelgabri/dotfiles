@@ -75,8 +75,8 @@ return {
 		'https://github.com/obsidian-nvim/obsidian.nvim',
 		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
 		event = {
-			string.format('BufReadPre %s/*.md', vim.env.NOTES_DIR),
-			string.format('BufNewFile %s/*.md', vim.env.NOTES_DIR),
+			string.format('BufReadPre %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
+			string.format('BufNewFile %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
 		},
 		dependencies = {
 			-- Required.
