@@ -22,6 +22,7 @@ return {
 			'https://github.com/giuxtaposition/blink-cmp-copilot',
 			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 			'https://github.com/folke/lazydev.nvim',
+			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
 		event = { 'InsertEnter' },
 		build = 'nix run .#build-plugin',
@@ -70,14 +71,21 @@ return {
 				menu = {
 					border = utils.get_border(),
 					draw = {
-						treesitter = { 'lsp' },
-						columns = {
-							{ 'kind_icon' },
-							{ 'label', 'label_description', 'kind', gap = 1 },
-						},
-
+						padding = 1,
+						gap = 2,
+						columns = { { 'kind_icon' }, { 'label', 'kind', gap = 2 } },
 						components = {
-							label = { width = { fill = false } }, -- default is true
+							label = {
+								width = { fill = true },
+								text = function(ctx)
+									return require('colorful-menu').blink_components_text(ctx)
+								end,
+								highlight = function(ctx)
+									return require('colorful-menu').blink_components_highlight(
+										ctx
+									)
+								end,
+							},
 							label_description = { width = { fill = true } },
 							kind_icon = {
 								text = function(ctx)
