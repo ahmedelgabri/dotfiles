@@ -241,6 +241,13 @@ local mode_keymaps = {
 			action = '<C-u>zz',
 		},
 	},
+	-- will also handle path/to/file:13
+	['gf'] = {
+		{
+			modes = { 'n' },
+			action = 'gF',
+		},
+	},
 }
 
 for key, mappings in pairs(mode_keymaps) do
