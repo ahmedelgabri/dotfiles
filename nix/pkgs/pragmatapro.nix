@@ -6,19 +6,19 @@
 }:
 stdenvNoCC.mkDerivation rec {
   name = "PragmataPro${version}";
-  version = "0.830";
+  version = "0.9";
   dontBuild = true;
   dontConfigure = true;
 
   src = requireFile {
     url = "file://path/to/${name}.zip";
-    sha256 = "0cna4wavnhnb8j8vg119ap8mqkckx04z2gms2hsz4daywc51ghr8";
+    sha256 = "17apwzsvbmfaiq6d00ip9lchxrc3v9r3k7dhiw1k60rjsl6fjy1i";
     message = ''
       ${name} font not found in nix store, to add it run:
       $ nix-store --add-fixed sha256 /path/to/${name}.zip
 
       Did you change the file? maybe you need to update the sha256
-      $ nix-hash --flat --base32 --type sha256 /path/to/${name}.zip'';
+      $ nix-hash --flat --base32 --type sha256 /path/to/${name}.zip | pbcopy'';
   };
 
   buildInputs = [pkgs.unzip];
