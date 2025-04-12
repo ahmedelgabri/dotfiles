@@ -39,7 +39,7 @@ setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks from each command l
 setopt APPEND_HISTORY            # append to history file
 setopt HIST_NO_STORE             # Don't store history commands
 setopt HIST_NO_FUNCTIONS         # Don't store function definitions
-
+setopt HIST_SAVE_BY_COPY         # When writing out a copy of the history file, zsh preserves the old file’s permissions and group information
 
 ##############################################################
 # Directory navigation options
