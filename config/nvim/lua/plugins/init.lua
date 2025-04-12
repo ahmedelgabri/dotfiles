@@ -150,6 +150,8 @@ return {
 					DiagnosticWarn = { link = 'Changed' },
 					DiagnosticSignWarn = { link = 'DiagnosticWarn' },
 
+					DiagnosticDeprecated = { strikethrough = true },
+
 					['@markup.italic'] = { italic = true },
 					['@markup.emphasis'] = { link = '@markup.italic' },
 					['@markup.strong'] = { bold = true, fg = 'NONE' },
