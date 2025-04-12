@@ -214,6 +214,10 @@ return {
 				end,
 			},
 			copilot_node_command = vim.fn.expand '~/.volta/bin/node',
+			server = {
+				type = 'binary',
+				custom_server_filepath = 'copilot-language-server',
+			},
 		},
 	},
 	-- https://github.com/supermaven-inc/supermaven-nvim/issues/85

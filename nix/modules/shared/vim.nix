@@ -66,6 +66,7 @@ in {
           lua51Packages.luarocks
           typos
           typos-lsp
+          copilot-language-server
         ];
       };
 
