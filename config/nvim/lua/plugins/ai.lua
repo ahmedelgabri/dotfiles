@@ -220,42 +220,4 @@ return {
 			},
 		},
 	},
-	-- https://github.com/supermaven-inc/supermaven-nvim/issues/85
-	-- {
-	-- 	'https://github.com/supermaven-inc/supermaven-nvim',
-	-- 	enabled = not utils.is_rocket(),
-	-- 	event = 'InsertEnter',
-	-- 	opts = {
-	-- 		keymaps = {
-	-- 			accept_suggestion = '<C-g>',
-	-- 			ignore_filetypes = {
-	-- 				ministarter = true,
-	-- 				dotenv = true,
-	-- 				['grug-far'] = true,
-	-- 				['grug-far-history'] = true,
-	-- 				['grug-far-help'] = true,
-	-- 			},
-	-- 			-- clear_suggestion = '<C-]>',
-	-- 			-- accept_word = '<C-j>',
-	-- 		},
-	-- 		-- Disable supermaven on condition https://github.com/supermaven-inc/supermaven-nvim/pull/58
-	-- 		condition = function()
-	-- 			local match = vim.bo.filetype == ''
-	-- 				-- Disable on .env files
-	-- 				or (vim.fn.expand '%:t:r'):match '^.env.*' ~= nil
-	-- 				-- Disable on ZSH shell files
-	-- 				or (vim.fn.expand '%:t'):match '^.?zsh.*' ~= nil
-	-- 				-- Disable on all shell files
-	-- 				or vim.tbl_contains({
-	-- 					'sh',
-	-- 					'bash',
-	-- 					'zsh',
-	-- 				}, vim.bo.filetype)
-	--
-	-- 			return match
-	-- 		end,
-	-- 		disable_inline_completion = false, -- disables inline completion for use with cmp
-	-- 		disable_keymaps = false, -- disables built in keymaps for more manual control
-	-- 	},
-	-- },
 }
