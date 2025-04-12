@@ -349,6 +349,37 @@ local function diff_source()
 	return icon
 end
 
+local llm_info = {
+	processing = false,
+}
+
+local function get_codecompanion_status()
+	local _, mini_icons = pcall(require, 'mini.icons')
+
+	local icon, hl =
+		mini_icons and mini_icons.get('lsp', 'codecompanion') .. ' ' or '', ''
+
+	if llm_info.processing then
+		return string.format('%s Thinking...', icon)
+	end
+
+	local bufnr = vim.api.nvim_get_current_buf()
+	local info = llm_info[bufnr]
+
+	if not info or not info.name then
+		return ''
+	end
+
+	icon, hl = mini_icons.get('lsp', info.name)
+	hl = hl
+
+	local llm_name = string.format('%%#%s#%s%%*', hl, icon or info.name)
+	local model_info = info.model and (' ' .. info.model) or ''
+	local status = llm_name .. ' ' .. model_info
+	return vim.bo.filetype == 'codecompanion'
+			and string.format('%%#StatusLineLSP# %s ', status)
+		or ''
+end
 ---------------------------------------------------------------------------------
 -- Statusline
 ---------------------------------------------------------------------------------
@@ -359,6 +390,10 @@ __.statusline = M
 vim.opt.laststatus = 2
 
 function M.render_active()
+	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
+		return '%#StatusLineNC#%f%*'
+	end
+
 	if vim.bo.filetype == 'fzf' then
 		return get_parts {
 			'%#LineNr#*',
@@ -398,12 +433,9 @@ function M.render_active()
 		lsp_diagnostics(),
 		git_conflicts(),
 		copilot(),
+		get_codecompanion_status(),
 		rhs(),
 	}
-
-	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
-		return '%#StatusLineNC#%f%*'
-	end
 
 	return get_parts {
 		git_info(),
@@ -417,12 +449,30 @@ function M.render_inactive()
 	return line
 end
 
--- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
--- FWIW if you use vim.opt.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
--- then you can just use nvim_get_current_buf() and in the context of StatusColFunc that will be equal to get_buf(statusline_winid) trick.
--- You can see :help stl-%{ but essentially in the context of %{} the buffer is changed to that of the window for which the status(line/col)
--- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
 au.augroup('MyStatusLine', {
+	{
+		event = 'User',
+		pattern = {
+			'CodeCompanionChatAdapter',
+			'CodeCompanionChatModel',
+			'CodeCompanionRequest*',
+		},
+		callback = function(args)
+			if args.match == 'CodeCompanionRequestStarted' then
+				llm_info.processing = true
+			elseif args.match == 'CodeCompanionRequestFinished' then
+				llm_info.processing = false
+			elseif not vim.tbl_isempty(args.data) then
+				local bufnr = args.data.bufnr
+				llm_info[bufnr] = llm_info[bufnr] or {}
+				if args.match == 'CodeCompanionChatAdapter' and args.data.adapter then
+					llm_info[bufnr].name = args.data.adapter.name
+				elseif args.match == 'CodeCompanionChatModel' and args.data.model then
+					llm_info[bufnr].model = args.data.model
+				end
+			end
+		end,
+	},
 	{
 		event = 'LspProgress',
 		pattern = { 'begin', 'end' },
@@ -455,6 +505,12 @@ au.augroup('MyStatusLine', {
 		pattern = 'MiniDiffUpdated',
 		callback = format_diff_summary,
 	},
+
+	-- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+	-- FWIW if you use vim.opt.statuscolumn = '%{%StatusColFunc()%}' emphasis on the percent signs,
+	-- then you can just use nvim_get_current_buf() and in the context of StatusColFunc that will be equal to get_buf(statusline_winid) trick.
+	-- You can see :help stl-%{ but essentially in the context of %{} the buffer is changed to that of the window for which the status(line/col)
+	-- is being drawn and the extra %} is so that the StatusColFunc can return things like %t and that gets evaluated to the filename
 	{
 		event = { 'WinEnter', 'BufEnter' },
 		pattern = '*',

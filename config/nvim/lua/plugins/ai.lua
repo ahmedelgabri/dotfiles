@@ -27,6 +27,7 @@ return {
 				opts = {
 					visible = true,
 					language = "the same language of user's question",
+					log_level = 'TRACE', -- TRACE|DEBUG|ERROR|INFO
 				},
 				adapters = {
 					gemini = function()
@@ -131,19 +132,17 @@ return {
 					chat = {
 						adapter = adapter,
 						roles = {
-							---The header name for the LLM's messages
-							---@type string|fun(a: CodeCompanion.Adapter): string
-							llm = function(a)
+							llm = function(adp)
 								local icon = require('mini.icons').get(
 									'lsp',
-									a.name == 'anthropic' and 'claude' or a.name
+									adp.name == 'anthropic' and 'claude' or adp.name
 								)
 
 								return string.format(
 									' %s %s (%s)',
-									icon,
-									a.name,
-									a.schema.model.default
+									icon .. ' ',
+									adp.name,
+									adp.schema.model.default
 								)
 							end,
 							user = vim.env.USER,
@@ -166,9 +165,8 @@ return {
 							},
 						},
 					},
-					inline = {
-						adapter = adapter,
-					},
+					cmd = { adapter = adapter },
+					inline = { adapter = adapter },
 					agent = {
 						adapter = adapter == 'copilot' and 'copilot' or 'anthropic',
 					},
@@ -177,6 +175,10 @@ return {
 					chat = {
 						intro_message = 'Press ? for options',
 						show_setting = true,
+						show_token_count = true,
+						token_count = function(tokens, _adp)
+							return ' (' .. tokens .. ' tokens) '
+						end,
 						show_header_separator = true,
 						window = {
 							position = 'right',
@@ -186,9 +188,6 @@ return {
 						provider = 'mini_diff',
 					},
 				},
-				-- opts = {
-				-- 	log_level = 'DEBUG',
-				-- },
 			})
 		end,
 	},
