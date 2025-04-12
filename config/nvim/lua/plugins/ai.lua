@@ -24,16 +24,108 @@ return {
 			local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
+				opts = {
+					visible = true,
+					language = "the same language of user's question",
+				},
 				adapters = {
-					anthropic = function()
-						return require('codecompanion.adapters').extend('anthropic', {
+					gemini = function()
+						return require('codecompanion.adapters').extend('gemini', {
 							schema = {
 								model = {
-									default = 'claude-3-5-sonnet-20241022',
+									default = 'gemini-2.5-pro-exp-03-25',
 								},
 							},
 						})
 					end,
+					openrouter = function()
+						return require('codecompanion.adapters').extend(
+							'openai_compatible',
+							{
+								env = {
+									api_key = vim.env.OPENROUTER_API_KEY,
+								},
+								url = 'https://openrouter.ai/api/v1/chat/completions',
+								schema = {
+									temperature = {
+										default = 0.6,
+									},
+									model = {
+										default = 'deepseek/deepseek-chat-v3-0324:free',
+										choices = {
+											'deepseek/deepseek-r1-zero:free',
+											'deepseek/deepseek-chat-v3-0324:free',
+										},
+									},
+									num_ctx = {
+										default = 200000,
+									},
+								},
+							}
+						)
+					end,
+					-- https://github.com/olimorris/codecompanion.nvim/discussions/263#discussioncomment-10793002
+					groq = function()
+						return require('codecompanion.adapters').extend('openai', {
+							env = {
+								api_key = vim.env.GROQ_API_KEY,
+							},
+							name = 'Groq',
+							url = 'https://api.groq.com/openai/v1/chat/completions',
+							schema = {
+								model = {
+									default = 'deepseek-r1-distill-llama-70b',
+									choices = {
+										'deepseek-r1-distill-llama-70b',
+										'meta-llama/llama-4-maverick-17b-128e-instruct',
+									},
+								},
+							},
+							max_tokens = {
+								default = 8192,
+							},
+							temperature = {
+								default = 1,
+							},
+							handlers = {
+								form_messages = function(_, messages)
+									for _, msg in ipairs(messages) do
+										-- Remove 'id' and 'opts' properties from all messages
+										msg.id = nil
+										msg.opts = nil
+
+										-- Ensure 'name' is a string if present, otherwise remove it
+										if msg.name then
+											msg.name = tostring(msg.name)
+										else
+											msg.name = nil
+										end
+
+										-- Ensure only supported properties are present
+										local supported_props =
+											{ role = true, content = true, name = true }
+										for prop in pairs(msg) do
+											if not supported_props[prop] then
+												msg[prop] = nil
+											end
+										end
+									end
+									return { messages = messages }
+								end,
+							},
+						})
+					end,
+				},
+				prompt_library = {
+					['Generate a Commit Message'] = {
+						opts = {
+							adapter = {
+								name = adapter,
+								model = adapter == 'anthropic' and 'claude-3-5-sonnet-20241022'
+									or nil,
+							},
+						},
+					},
 				},
 				strategies = {
 					chat = {
@@ -50,7 +142,7 @@ return {
 								return string.format(
 									' %s %s (%s)',
 									icon,
-									a.formatted_name,
+									a.name,
 									a.schema.model.default
 								)
 							end,
@@ -59,17 +151,17 @@ return {
 						slash_commands = {
 							buffer = {
 								opts = {
-									provider = 'snacks',
+									provider = 'default',
 								},
 							},
 							file = {
 								opts = {
-									provider = 'snacks',
+									provider = 'default',
 								},
 							},
 							help = {
 								opts = {
-									provider = 'snacks',
+									provider = 'default',
 								},
 							},
 						},
@@ -78,11 +170,13 @@ return {
 						adapter = adapter,
 					},
 					agent = {
-						adapter = adapter,
+						adapter = adapter == 'copilot' and 'copilot' or 'anthropic',
 					},
 				},
 				display = {
 					chat = {
+						intro_message = 'Press ? for options',
+						show_setting = true,
 						show_header_separator = true,
 						window = {
 							position = 'right',
