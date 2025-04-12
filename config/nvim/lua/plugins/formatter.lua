@@ -110,6 +110,8 @@ return {
 					'goimports',
 				},
 				nix = { 'alejandra', 'statix' },
+				-- not 100% supported but does the job as long as I'm writing POSIX and not fancy zsh
+				zsh = { 'shfmt' },
 			}, js_formats),
 			format_on_save = function(bufnr)
 				-- Disable with a global or buffer-local variable
