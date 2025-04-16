@@ -91,7 +91,6 @@ return {
 				},
 			}
 			require('mini.ai').setup {}
-			require('mini.trailspace').setup {}
 
 			-- Indentscope
 			require('mini.indentscope').setup {

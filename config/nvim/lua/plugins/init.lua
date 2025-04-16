@@ -1,8 +1,4 @@
 return {
-	{
-		'https://github.com/tpope/tpope-vim-abolish',
-		cmd = { 'Abolish', 'S', 'Subvert' },
-	},
 	{ 'https://github.com/tpope/vim-repeat' },
 	{
 		'https://github.com/wincent/loupe',
@@ -47,7 +43,6 @@ return {
 		},
 	},
 	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
-	{ 'https://github.com/mistweaverco/kulala.nvim', ft = 'http', config = true },
 	{
 		'https://github.com/jbyuki/venn.nvim',
 		keys = {

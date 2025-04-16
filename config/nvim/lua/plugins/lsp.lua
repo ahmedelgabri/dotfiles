@@ -47,11 +47,6 @@ return {
 		end,
 	},
 	{
-		'https://github.com/folke/trouble.nvim',
-		cmd = { 'Trouble' },
-		opts = {},
-	},
-	{
 		'https://github.com/folke/lazydev.nvim',
 		dependencies = {
 			{ 'https://github.com/Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
