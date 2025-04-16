@@ -642,6 +642,28 @@ return {
 							vim.diagnostic.setloclist,
 							{ desc = 'Open diagnostics list' },
 						},
+						{
+							{ 'n' },
+							']e',
+							function()
+								vim.diagnostic.jump {
+									count = 1,
+									severity = vim.diagnostic.severity.ERROR,
+								}
+							end,
+							{ desc = 'Next [E]rror' },
+						},
+						{
+							{ 'n' },
+							'[e',
+							function()
+								vim.diagnostic.jump {
+									count = -1,
+									severity = vim.diagnostic.severity.ERROR,
+								}
+							end,
+							{ desc = 'Previous [E]rror' },
+						},
 					} do
 						local extra_opts = table.remove(item, 4)
 						local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
