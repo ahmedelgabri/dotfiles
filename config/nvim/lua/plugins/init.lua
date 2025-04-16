@@ -42,7 +42,18 @@ return {
 			},
 		},
 	},
-	{ 'https://github.com/kevinhwang91/nvim-bqf', ft = 'qf' },
+	{
+		'https://github.com/kevinhwang91/nvim-bqf',
+		ft = 'qf',
+		dependencies = {
+			-- https://github.com/kevinhwang91/nvim-bqf/issues/83#issuecomment-1296321476
+			{
+				'https://github.com/junegunn/fzf',
+				name = 'fzf',
+				config = function() end,
+			},
+		},
+	},
 	{
 		'https://github.com/jbyuki/venn.nvim',
 		keys = {
