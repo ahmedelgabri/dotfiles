@@ -307,7 +307,7 @@ return {
 				highlighters = vim.tbl_extend('force', comments, {
 					-- Highlight hex color strings (`#rrggbb`) using that color
 					hex_color = hipatterns.gen_highlighter.hex_color {
-						style = 'inline',
+						style = 'bg',
 						inline_text = color_icon,
 					},
 					-- `#rgb`
