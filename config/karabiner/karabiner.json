@@ -33,25 +33,6 @@
 								"type": "basic"
 							}
 						]
-					},
-					{
-						"description": "",
-						"manipulators": [
-							{
-								"description": "M: Change fn to hyper key (command+control+option+shift)",
-								"from": {
-									"key_code": "fn",
-									"modifiers": {"optional": ["any"]}
-								},
-								"to": [
-									{
-										"key_code": "left_shift",
-										"modifiers": ["left_command", "left_control", "left_option"]
-									}
-								],
-								"type": "basic"
-							}
-						]
 					}
 				]
 			},
