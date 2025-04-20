@@ -60,6 +60,7 @@
 
     nur = {
       url = "github:nix-community/nur";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Extras
@@ -184,7 +185,7 @@
                 owner = "zsh-users";
                 repo = oldAttrs.pname;
                 rev = version;
-                sha256 = "sha256-JnJRmSkmYUBdv9zGlgmFAwAVIo29wixlEnWC5OAOA84=";
+                sha256 = "sha256-cowscXUIpm6OviEPc4m4Nizl8Tv57Y8DQ2wohY5FWgE=";
               };
             });
 
@@ -193,7 +194,7 @@
               version = "master";
               src = pkgs.fetchFromGitHub {
                 owner = "zsh-users";
-                repo = "zsh-history-substring-search";
+                repo = oldAttrs.pname;
                 rev = version;
                 sha256 = "sha256-1+w0AeVJtu1EK5iNVwk3loenFuIyVlQmlw8TWliHZGI=";
               };
