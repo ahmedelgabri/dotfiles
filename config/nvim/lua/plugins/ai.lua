@@ -216,10 +216,7 @@ return {
 			copilot_node_command = vim.fn.expand '~/.volta/bin/node',
 			server = {
 				type = 'binary',
-				custom_server_filepath = string.format(
-					'/etc/profiles/per-user/%s/bin/copilot-language-server',
-					vim.env.USER
-				),
+				custom_server_filepath = vim.fn.exepath 'copilot-language-server',
 			},
 		},
 	},
