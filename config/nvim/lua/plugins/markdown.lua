@@ -72,6 +72,11 @@ return {
 		end,
 	},
 	{
+		'https://github.com/davidmh/mdx.nvim',
+		event = { 'BufEnter *.mdx' },
+		opts = {},
+	},
+	{
 		'https://github.com/obsidian-nvim/obsidian.nvim',
 		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
 		event = {
