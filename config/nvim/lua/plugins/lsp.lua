@@ -597,7 +597,16 @@ return {
 							{ 'n' },
 							'<leader>a',
 							function()
-								require('fzf-lua').lsp_code_actions {}
+								require('fzf-lua').lsp_code_actions {
+									winopts = {
+										preview = { hidden = 'hidden' },
+										relative = 'cursor',
+										row = 1.01,
+										col = 0,
+										height = 0.2,
+										width = 0.4,
+									},
+								}
 							end,
 							{ desc = 'Code [A]ctions' },
 						},

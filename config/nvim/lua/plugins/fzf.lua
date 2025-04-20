@@ -122,10 +122,11 @@ return {
 				file_icons = 'mini',
 				winopts = {
 					border = utils.get_border(),
-					width = 0.9,
-					height = 0.8,
+					width = 0.6,
+					height = 0.5,
 					preview = {
 						border = utils.get_border(),
+						hidden = true,
 						winopts = {
 							number = false,
 							cursorline = true,
