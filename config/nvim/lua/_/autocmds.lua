@@ -31,13 +31,6 @@ M.colorcolumn_blocklist = {
 	snacks_dashboard = true,
 }
 
-M.heavy_plugins_blocklist = {
-	taskedit = true,
-	minpacprgs = true,
-	ministarter = true,
-	snacks_dashboard = true,
-}
-
 --  Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
 --  from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
 local function should_mkview(event)
