@@ -54,6 +54,8 @@ in {
             ollama
             llama-cpp
             llm
+            claude-code
+            aider-chat
           ];
         };
       }
