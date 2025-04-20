@@ -53,14 +53,9 @@ in {
           source = "${inputs.yazi-plugins}/smart-enter.yazi";
         };
 
-        ".config/yazi/plugins/max-preview.yazi" = {
+        ".config/yazi/plugins/toggle-pane.yazi" = {
           recursive = true;
-          source = "${inputs.yazi-plugins}/max-preview.yazi";
-        };
-
-        ".config/yazi/plugins/hide-preview.yazi" = {
-          recursive = true;
-          source = "${inputs.yazi-plugins}/hide-preview.yazi";
+          source = "${inputs.yazi-plugins}/toggle-pane.yazi";
         };
 
         ".config/yazi/plugins/full-border.yazi" = {

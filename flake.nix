@@ -44,6 +44,10 @@
       flake = false;
     };
 
+    yazi = {
+      url = "github:sxyazi/yazi";
+    };
+
     yazi-plugins = {
       url = "github:yazi-rs/plugins";
       flake = false;
@@ -111,11 +115,13 @@
             "https://cache.nixos.org"
             "https://nix-community.cachix.org"
             "https://nixpkgs.cachix.org"
+            "https://yazi.cachix.org"
           ];
           trusted-public-keys = [
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
             "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
+            "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
           ];
           # Recommended when using `direnv` etc.
           keep-derivations = true;
@@ -152,6 +158,7 @@
       nixpkgs = {
         config = {allowUnfree = true;};
         overlays = [
+          inputs.yazi.overlays.default
           inputs.nur.overlays.default
           (final: prev: {
             pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix {};

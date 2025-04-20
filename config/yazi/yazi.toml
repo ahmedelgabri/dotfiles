@@ -1,15 +1,5 @@
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
-[[plugin.prepend_fetchers]]
-id = "git"
-name = "*"
-run = "git"
-
-[[plugin.prepend_fetchers]]
-id = "git"
-name = "*/"
-run = "git"
-
 [manager]
 linemode = "size"
 ratio = [0, 2, 6]
@@ -20,6 +10,27 @@ show_hidden = true
 [preview]
 max_width = 3024  # default = 600
 max_height = 1964 # default = 900
+# https://yazi-rs.github.io/docs/tips#make-yazi-even-faster
+image_delay = 0
 
 [plugin]
 prepend_previewers = [{ name = "*.md", run = "glow" }]
+prepend_fetchers = [
+  { id = "git", name = "*", run = "git" },
+  { id = "git", name = "*/", run = "git" },
+]
+
+[opener]
+play = [
+  { run = 'mpv --force-window "$@"' },
+  { run = 'iina --no-stdin "$@"' },
+  { run = '''mediainfo "$1"; echo "Press enter to exit"; read''', block = true, desc = "Show media info" },
+]
+
+[open]
+prepend_rules = [
+  { name = "*.{ass,srt,ssa,sty,sup,vtt}", use = [
+    "subtitle",
+    "edit",
+  ] },
+]

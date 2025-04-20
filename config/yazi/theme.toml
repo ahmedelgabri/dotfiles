@@ -1,0 +1,13 @@
+[status]
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+[mode]
+normal_main = { fg = "blue", bg = "233" }
+normal_alt = { fg = "blue", bg = "233" }
+
+select_main = { fg = "red", bg = "233" }
+select_alt = { fg = "red", bg = "233" }
+
+unset_main = { fg = "red", bg = "233" }
+unset_alt = { fg = "red", bg = "233" }
