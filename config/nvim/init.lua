@@ -13,7 +13,9 @@ end
 -- GENERAL {{{1
 -------------------------------------------------------------------------------
 
-require '_'
+-- My global namespace
+-- selene: allow(global_usage)
+_G.__ = {}
 
 local utils = require '_.utils'
 
@@ -22,41 +24,20 @@ local root = vim.env.USER == 'root'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
--- Skip vim plugins menu.vim, saves ~100ms, disabled by lazy.nvim in plugin_manager.lua
+-- Skip vim plugins menu.vim, saves ~100ms, disabled by lazy later in this file
 vim.g.did_install_default_menus = 1
--- vim.g.loaded_getscript = 1
--- vim.g.loaded_getscriptPlugin = 1
--- vim.g.loaded_vimball = 1
--- vim.g.loaded_vimballPlugin = 1
--- vim.g.loaded_rrhelper = 1
 
 -- vim.opt. them directly if they are installed, otherwise disable them. To avoid the then
 -- runtime check cost, which can be slow.
 -- Python This must be here because it makes loading vim VERY SLOW otherwise
 vim.g.python_host_skip_check = 1
--- Disable python2 provider
 vim.g.loaded_python_provider = 0
 
 vim.g.python3_host_skip_check = 1
+vim.g.loaded_python3_provider = 0
 
-if vim.fn.executable 'python3' == 1 then
-	vim.g.python3_host_prog = vim.fn.exepath 'python3'
-else
-	vim.g.loaded_python3_provider = 0
-end
-
-if vim.fn.executable 'neovim-node-host' == 1 then
-	vim.g.node_host_prog = vim.fn.exepath 'neovim-node-host'
-else
-	vim.g.loaded_node_provider = 0
-end
-
-if vim.fn.executable 'neovim-ruby-host' == 1 then
-	vim.g.ruby_host_prog = vim.fn.exepath 'neovim-ruby-host'
-else
-	vim.g.loaded_ruby_provider = 0
-end
-
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
 -------------------------------------------------------------------------------

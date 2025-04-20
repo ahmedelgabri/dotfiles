@@ -68,9 +68,11 @@ return {
 			pattern = 'VeryLazy',
 			callback = function()
 				-- Setup some globals for debugging (lazy-loaded)
-				_G.dd = function(...)
+				-- selene: allow(global_usage)
+				_G.P = function(...)
 					Snacks.debug.inspect(...)
 				end
+				-- selene: allow(global_usage)
 				_G.bt = function()
 					Snacks.debug.backtrace()
 				end
