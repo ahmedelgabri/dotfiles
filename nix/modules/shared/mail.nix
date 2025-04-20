@@ -91,6 +91,7 @@ in {
             notmuch
             urlscan
             pass
+            nur.repos.Freed-Wu.mutt-language-server
           ];
         };
 
