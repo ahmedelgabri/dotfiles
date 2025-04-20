@@ -12,12 +12,11 @@ window-decoration = false
 working-directory = home
 mouse-hide-while-typing = false
 
-macos-icon = custom-style
-macos-icon-frame = plastic
-macos-icon-ghost-color = ffffff
-macos-icon-screen-color = 000000
 macos-non-native-fullscreen = true
 macos-option-as-alt = left
+macos-window-shadow = false
 window-colorspace = display-p3
+
+auto-update = download
 
 config-file = ?config.local
