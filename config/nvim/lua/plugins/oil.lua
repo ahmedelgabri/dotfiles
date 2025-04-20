@@ -20,14 +20,13 @@ return {
 				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
 				-- Set to false if you still want to use netrw.
 				default_file_explorer = true,
-				view_options = {
-					show_hidden = true,
-				},
+				watch_for_changes = true,
 				delete_to_trash = true,
-				win_options = {
-					cursorline = true,
-				},
+				view_options = { show_hidden = true },
+				win_options = { cursorline = true },
 				keymaps = {
+					['q'] = { 'actions.close', mode = 'n' },
+					['?'] = 'actions.preview',
 					['gd'] = {
 						desc = 'Toggle file detail view',
 						callback = function()
