@@ -54,6 +54,7 @@ in {
             ollama
             llama-cpp
             llm
+            codex
             claude-code
             aider-chat
           ];
