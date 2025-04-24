@@ -275,18 +275,10 @@ local function copilot()
 		return nil
 	end
 
-	local ok, supermaven = pcall(require, 'supermaven-nvim.api')
-
-	if ok then
-		return supermaven.is_running()
-				and string.format(require('mini.icons').get('lsp', 'supermaven'))
-			or nil
-	end
-
-	local okcopilot, c = pcall(require, 'copilot.client')
+	local ok, c = pcall(require, 'copilot.client')
 
 	if
-		okcopilot
+		ok
 		and (
 			not c.is_disabled() or c.buf_is_attached(vim.api.nvim_get_current_buf())
 		)
