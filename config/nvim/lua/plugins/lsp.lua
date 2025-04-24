@@ -481,11 +481,11 @@ return {
 				'cssls',
 				'stylelint_lsp',
 				'html',
-				-- 'eslint',
+				'eslint',
 				-- 'oxlint',
 				'vtsls',
 				'denols',
-				-- 'tailwindcss',
+				'tailwindcss',
 
 				'dockerls',
 				'docker_compose_language_service',
@@ -512,11 +512,9 @@ return {
 			-- @NOTE LEGACY: will be removed when the LSP are migrated, check
 			-- https://github.com/neovim/nvim-lspconfig/issues/3705
 			local legacy_servers = {
-				eslint = {},
 				oxlint = {
 					cmd = { utils.get_lsp_bin 'oxc_language_server' },
 				},
-				tailwindcss = {},
 			}
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
