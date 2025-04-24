@@ -73,7 +73,7 @@ return {
 	},
 	{
 		'https://github.com/davidmh/mdx.nvim',
-		event = { 'BufEnter *.mdx' },
+		ft = { 'mdx' },
 		opts = {},
 	},
 	{
