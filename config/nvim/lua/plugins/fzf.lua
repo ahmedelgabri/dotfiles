@@ -122,8 +122,6 @@ return {
 				file_icons = 'mini',
 				winopts = {
 					border = utils.get_border(),
-					width = 0.6,
-					height = 0.5,
 					preview = {
 						border = utils.get_border(),
 						hidden = true,
