@@ -18,7 +18,7 @@ return {
 			{ '<localleader>cd', '<cmd>CodeCompanionChat Add<cr>', mode = { 'v' } },
 		},
 		init = function()
-			vim.cmd [[cab cc CodeCompanion]]
+			vim.cmd.cabbrev { 'cc', 'CodeCompanion' }
 		end,
 		opts = function(_, opts)
 			local adapter = utils.is_rocket() and 'copilot' or 'anthropic'

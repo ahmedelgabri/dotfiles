@@ -64,7 +64,7 @@ return {
 					if venn_enabled == 'nil' then
 						vim.b.venn_enabled = true
 
-						vim.cmd [[setlocal ve=all]]
+						vim.wo.virtualedit = 'all'
 
 						-- draw a line on HJKL keystrokes
 						vim.keymap.set('n', 'J', '<C-v>j:VBox<CR>', { buffer = true })
@@ -74,7 +74,7 @@ return {
 						-- draw a box by pressing "f" with visual selection
 						vim.keymap.set('v', 'f', ':VBox<CR>', { buffer = true })
 					else
-						vim.cmd [[setlocal ve=]]
+						vim.wo.virtualedit = ''
 
 						vim.keymap.del('n', 'J', { buffer = true })
 						vim.keymap.del('n', 'K', { buffer = true })
