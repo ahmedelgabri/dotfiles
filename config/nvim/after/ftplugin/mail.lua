@@ -10,4 +10,4 @@ local utils = require '_.utils'
 -- was previously set to 0.
 utils.plaintext()
 
-vim.opt_local.formatprg = 'par rTbgqR B=.,?_A_a_0 Q=_s>'
+vim.bo.formatprg = 'par rTbgqR B=.,?_A_a_0 Q=_s>'

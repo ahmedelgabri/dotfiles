@@ -1,9 +1,9 @@
 local utils = require '_.utils'
 
-vim.opt_local.conceallevel = 2
-vim.opt_local.concealcursor = 'c'
+vim.wo.conceallevel = 2
+vim.wo.concealcursor = 'c'
 
-vim.opt_local.foldmethod = 'expr'
-vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 utils.plaintext()

@@ -56,17 +56,17 @@ function M.notify(msg, level)
 end
 
 function M.plaintext()
-	vim.opt_local.linebreak = true
-	vim.opt_local.list = false
-	vim.opt_local.wrap = true
-	vim.opt_local.expandtab = true
+	vim.wo.linebreak = true
+	vim.wo.list = false
+	vim.wo.wrap = true
+	vim.bo.expandtab = true
 
 	if vim.bo.filetype == 'gitcommit' then
 		-- Git commit messages body are constraied to 72 characters
-		vim.opt_local.textwidth = 72
+		vim.bo.textwidth = 72
 	else
-		vim.opt_local.textwidth = 0
-		vim.opt_local.wrapmargin = 0
+		vim.bo.textwidth = 0
+		vim.bo.wrapmargin = 0
 	end
 
 	-- Break undo sequences into chunks (after punctuation); see: `:h i_CTRL-G_u`

@@ -1,2 +1,2 @@
 -- vim.cmd [[silent! match None]]
--- vim.opt_local.number = false
+-- vim.wo.number = false
