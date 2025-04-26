@@ -24,7 +24,7 @@ if vim.fn.exists 'syntax_on' then
 end
 
 -- Enable terminal true-color support.
-vim.opt.termguicolors = true
+vim.o.termguicolors = true
 
 vim.g.colors_name = 'plain'
 

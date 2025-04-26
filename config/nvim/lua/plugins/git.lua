@@ -47,7 +47,7 @@ return {
 					event = 'BufReadPost',
 					pattern = 'fugitive://*',
 					callback = function()
-						vim.opt.bufhidden = 'delete'
+						vim.bo.bufhidden = 'delete'
 					end,
 				},
 				{

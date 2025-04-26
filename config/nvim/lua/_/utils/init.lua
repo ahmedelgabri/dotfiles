@@ -145,4 +145,21 @@ function M.get_lsp_bin(bin)
 	return bin
 end
 
+function M.append(option, list)
+	return table.concat({ vim.o[option], unpack(list) }, ',')
+end
+
+function M.prepend(option, list)
+	return table.concat({ unpack(list), vim.o[option] }, ',')
+end
+
+function M.remove(option, item)
+	return vim
+		.iter(vim.split(vim.o[option], ','))
+		:filter(function(p)
+			return p ~= item
+		end)
+		:join ','
+end
+
 return M

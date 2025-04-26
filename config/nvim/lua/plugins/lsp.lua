@@ -5,7 +5,7 @@ return {
 		'https://github.com/SmiteshP/nvim-navic',
 		event = 'LspAttach',
 		init = function()
-			vim.opt.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+			vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 		end,
 		opts = {
 			click = true,
