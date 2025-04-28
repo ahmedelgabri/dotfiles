@@ -6,6 +6,46 @@ return {
 	build = ':TSUpdate',
 	dependencies = {
 		{
+			'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
+			opts = {
+				enable_autocmd = false,
+			},
+			init = function()
+				local get_option = vim.filetype.get_option
+
+				---@diagnostic disable-next-line: duplicate-set-field
+				vim.filetype.get_option = function(filetype, option)
+					return option == 'commentstring'
+							and require('ts_context_commentstring.internal').calculate_commentstring()
+						or get_option(filetype, option)
+				end
+			end,
+		},
+		{
+			'https://github.com/HiPhish/rainbow-delimiters.nvim',
+			config = function()
+				require('rainbow-delimiters.setup').setup {
+					query = {
+						javascript = 'rainbow-tags-react',
+						typescript = 'rainbow-tags-react',
+						tsx = 'rainbow-tags-react',
+						jsx = 'rainbow-tags-react',
+					},
+					highlight = {
+						-- I reversed the default order, probably I might even change the
+						-- colors completely
+						'RainbowDelimiterCyan',
+						'RainbowDelimiterViolet',
+						'RainbowDelimiterGreen',
+						'RainbowDelimiterOrange',
+						'RainbowDelimiterBlue',
+						'RainbowDelimiterYellow',
+						'RainbowDelimiterRed',
+					},
+				}
+			end,
+		},
+		{
 			'https://github.com/windwp/nvim-ts-autotag',
 			opts = {
 				opts = {
@@ -63,11 +103,6 @@ return {
 			},
 			indent = {
 				enable = true,
-			},
-			query_linter = {
-				enable = true,
-				use_virtual_text = true,
-				lint_events = { 'BufWrite', 'CursorHold' },
 			},
 			highlight = {
 				enable = true,
