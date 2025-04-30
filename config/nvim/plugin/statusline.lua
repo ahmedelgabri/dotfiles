@@ -56,15 +56,15 @@ local function format_diff_summary(data)
 
 	local t = {}
 
-	if summary.add > 0 then
+	if summary.add and summary.add > 0 then
 		table.insert(t, '%#@diff.plus#+' .. summary.add .. '%*')
 	end
 
-	if summary.change > 0 then
+	if summary.change and summary.change > 0 then
 		table.insert(t, '%#@diff.delta#~' .. summary.change .. '%*')
 	end
 
-	if summary.delete > 0 then
+	if summary.delete and summary.delete > 0 then
 		table.insert(t, '%#@diff.minus#-' .. summary.delete .. '%*')
 	end
 
