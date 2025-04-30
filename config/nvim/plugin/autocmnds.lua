@@ -88,7 +88,7 @@ au.augroup('__myautocmds__', {
 		event = 'TextYankPost',
 		pattern = '*',
 		callback = function()
-			vim.highlight.on_yank {
+			vim.hl.on_yank {
 				higroup = 'IncSearch',
 			}
 		end,
