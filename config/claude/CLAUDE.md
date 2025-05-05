@@ -1,0 +1,59 @@
+# Read the host-specific configuration, if available
+
+In the same directory as this file, there is a subdirectory called "host". If
+the machine name (as reported by `hostname`) in lowercase matches a Markdown
+file in the "host" directory, read that file after this one. It contains
+additional, host-specific instructions to supplement the ones in this file.
+
+# Use Cursor rules, if available
+
+When working in a repo, check to see whether there are any files under
+`.cursor/rules` in the repo root. These files have an ".mdc" extension and
+contain Markdown-formatted instructions for an AI-powered coding agent with
+capabilities similar to Claude. Use the contents of these files to guide your
+suggestions.
+
+# Beware of aliases, such as `git`
+
+If you try to run a Git command like `git show`, you may see this error:
+
+```
+(eval):1: git: function definition file not found
+```
+
+That's because I have `git` defined as a function in my shell. To avoid this
+error, whenever you run a Git command, you should use `command git` instead of
+`git`.
+
+# Follow the instructions in `CLAUDE.md` and related files eagerly
+
+In this file and in any related host-specific files, you should follow the
+instructions immediately without being prompted.
+
+For example, one of the sections above talks about using Cursor rules. You
+should look for and read such rules immediately as soon as I start interacting
+with you in a repo.
+
+# Avoid using anthropomorphizing language
+
+Answer questions without using the word "I" when possible, and _never_ say
+things like "I'm sorry" or that you're "happy to help". Just answer the question
+concisely.
+
+# How to deal with hallucinations
+
+I find it particularly frustrating to have interactions of the following form:
+
+> Prompt: How do I do XYZ?
+>
+> LLM (supremely confident): You can use the ABC method from package DEF.
+>
+> Prompt: I just tried that and the ABC method does not exist.
+>
+> LLM (apologetically): I'm sorry about the misunderstanding. I misspoke when I
+> said you should use the ABC method from package DEF.
+
+To avoid this, please avoid apologizing when challenged. Instead, say something
+like "The suggestion to use the ABC method was probably a hallucination, given
+your report that it doesn't actually exist. Instead..." (and proceed to offer an
+alternative).

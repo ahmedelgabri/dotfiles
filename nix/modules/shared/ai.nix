@@ -38,6 +38,7 @@ in {
         };
         homebrew.casks = [
           "msty"
+          "claude"
         ];
       })
       (mkIf isLinux {
@@ -49,15 +50,27 @@ in {
       })
 
       {
-        my.user = {
-          packages = with pkgs; [
-            ollama
-            llama-cpp
-            llm
-            codex
-            claude-code
-            aider-chat
-          ];
+        environment = {
+          shellAliases = {
+            aider = "${pkgs.aider-chat}/bin/aider --config ~/.dotfiles/config/aider/config.yml";
+          };
+        };
+        my = {
+          user = {
+            packages = with pkgs; [
+              ollama
+              llama-cpp
+              llm
+              codex
+              claude-code
+              aider-chat
+            ];
+          };
+          hm.file = {
+            ".claude/CLAUDE.md" = {
+              source = ../../../config/claude/CLAUDE.md;
+            };
+          };
         };
       }
     ]);
