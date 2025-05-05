@@ -1,42 +1,39 @@
-# vim:ft=zsh:
+#!/usr/bin/env bash
 
 # https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
 # Wrap git with hub
 
-emulate -L zsh
-
 command -v git >/dev/null || return 0
 
-unalias g 2>/dev/null
+time_since_last_commit() {
+	local __LAST_COMMIT
+	__LAST_COMMIT=$(git log --color=always -1 --pretty=format:"%C(238)%cr%Creset %C(blue)%h%Creset %s - %C(cyan)%aN %C(238)%(describe:tags,abbrev=0)%Creset" --date=auto:human 2>/dev/null)
 
-function time_since_last_commit() {
-  local __LAST_COMMIT=$(git log --color=always -1 --pretty=format:"%C(238)%cr%Creset %C(blue)%h%Creset %s - %C(cyan)%aN %C(238)%(describe:tags,abbrev=0)%Creset" --date=auto:human 2>/dev/null)
-
-  printf "%s\n" "$__LAST_COMMIT"
+	printf "%s\n" "$__LAST_COMMIT"
 }
 
-# Hack because otherwise compdef doesn't work with zinit for some reason.
-autoload -Uz compinit compdef && compinit -C -d "$ZCOMPDUMP_PATH"
+g() {
+	local __CMD=""
 
-function g() {
-  local __CMD=""
+	if command -v hub >/dev/null 2>&1; then
+		__CMD=$(command -v hub)
+	elif command -v git >/dev/null 2>&1; then
+		__CMD=$(command -v git)
+	fi
 
-  if (( $+commands[hub] )); then
-    compdef g=hub
-    __CMD=$commands[hub]
-  elif (( $+commands[git] )); then
-    compdef g=git
-    __CMD=$commands[git]
-  fi
+	[[ $__CMD != "" ]] || return
 
-  [[ $__CMD != "" ]] || return
-
-  if [ $# -eq 0 ]; then
-    printf "%s\n\n" "$(time_since_last_commit)"
-    "$__CMD" st 2> /dev/null || "$__CMD" status --short --branch
-  else
-    "$__CMD" "$@"
-  fi
+	if [ $# -eq 0 ]; then
+		printf "%s\n\n" "$(time_since_last_commit)"
+		"$__CMD" st 2>/dev/null || "$__CMD" status --short --branch
+	else
+		"$__CMD" "$@"
+	fi
 }
+
+# Bash completion for g
+if declare -F __git_complete >/dev/null; then
+	__git_complete g _git
+fi
 
 g "$@"

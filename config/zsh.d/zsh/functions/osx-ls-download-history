@@ -1,14 +1,16 @@
-# vim:ft=zsh:
-
-emulate -L zsh
+#!/usr/bin/env bash
 
 function osx-ls-download-history {
-  local db
-  for db in ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV*; do
-    if grep -q 'LSQuarantineEvent' < <(sqlite3 "$db" .tables); then
+local db
+for db in ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV*; do
+  # Check if the database file exists and is readable before proceeding
+  if [[ -r "$db" ]]; then
+    # Check if the table exists using .schema instead of .tables for better compatibility/clarity
+    if sqlite3 "$db" ".schema LSQuarantineEvent" 2>/dev/null | grep -q 'CREATE TABLE'; then
       sqlite3 "$db" 'SELECT LSQuarantineDataURLString FROM LSQuarantineEvent'
     fi
-  done
+  fi
+done
 }
 
 osx-ls-download-history "$@"

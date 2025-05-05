@@ -1,11 +1,9 @@
-# vim:ft=zsh:
-
-emulate -L zsh
-
+#!/usr/bin/env bash
+#
 function mkcd {
-  if [[ -n ${1} ]]; then
-    mkdir -p -- ${1} && builtin cd -- ${1}
-  fi
+	if [[ -n ${1} ]]; then
+		mkdir -p -- "${1}" && (builtin cd -- "${1}" || exit)
+	fi
 }
 
 mkcd "$@"

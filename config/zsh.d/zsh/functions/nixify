@@ -1,20 +1,25 @@
-# vim:ft=zsh:
+#!/usr/bin/env bash
 
 # Nixify the current directory
 
-emulate -L zsh
+# Check for .envrc file
+if [ ! -e ./.envrc ]; then
+	echo "Creating default .envrc..."
+	# Use printf for potentially better handling of special characters and portability
+	printf '%s\n' "set -e" "set +u" "use nix" "dotenv_if_exists" >.envrc
+	# Check if direnv command exists before running
+	if command -v direnv &>/dev/null; then
+		direnv allow
+	else
+		echo "Warning: direnv command not found. Please run 'direnv allow' manually."
+	fi
+fi
 
-unalias nixify 2>/dev/null
-
-nixify() {
-  if [ ! -e ./.envrc ]; then
-    echo "set -e\nset +u\nuse nix\ndotenv_if_exists" > .envrc
-    direnv allow
-  fi
-
-  if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flakes.nix ]]; then
-    # Make a default shell.nix and then pop open an editor
-    cat > shell.nix <<'EOF'
+# Check for Nix configuration files
+if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]] && [[ ! -e flake.nix ]]; then
+	echo "Creating default shell.nix..."
+	# Make a default shell.nix and then pop open an editor
+	cat >shell.nix <<'EOF'
 with import <nixpkgs> {
 	config.allowUnfree = true;
 };
@@ -46,8 +51,12 @@ mkShell {
   ];
 }
 EOF
-$EDITOR shell.nix
-  fi
-}
-
-nixify "$@"
+	# Use ${EDITOR:-vim} for safety if EDITOR is unset
+	if [[ -n "$EDITOR" ]]; then
+		"$EDITOR" shell.nix
+	else
+		vim shell.nix
+	fi
+else
+	echo "Nix configuration file (shell.nix, default.nix, or flake.nix) already exists."
+fi
