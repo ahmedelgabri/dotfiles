@@ -120,6 +120,7 @@ return {
 	},
 	{
 		'https://github.com/slugbyte/lackluster.nvim',
+		enabled = false,
 		lazy = false,
 		priority = 1000,
 		init = function()
