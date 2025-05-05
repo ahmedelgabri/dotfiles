@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 #
 function mkcd {
 	if [[ -n ${1} ]]; then

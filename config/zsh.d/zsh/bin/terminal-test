@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Test truecolor support in a terminal emulator
 # from https://gist.github.com/XVilka/8346728
 

@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ue -o pipefail
 
 if [ $# -ne 2 ]; then
   echo "Usage: $0 ACCOUNT SERVER"

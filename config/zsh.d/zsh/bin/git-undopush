@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ue -o pipefail
 
 if [ -n "$1" ]; then
   BRANCH="$1"

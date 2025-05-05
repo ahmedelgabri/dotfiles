@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # only exit if we're not on the last pane
 # https://github.com/fatih/dotfiles/blob/706e1d26a1b8526755bee92c8093ab61be077894/zshrc#L238-L254
 

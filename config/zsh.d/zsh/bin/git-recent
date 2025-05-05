@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ue -o pipefail
 # https://github.com/paulirish/git-recent
 
 ##

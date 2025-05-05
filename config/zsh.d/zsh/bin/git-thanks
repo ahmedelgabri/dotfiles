@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ue -o pipefail
 # Usage: git-thanks <since>..<until>
 #
 # All commits on master, ever:

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 
 # Runs `git rebase --continue`, `git cherry-pick --continue` as appropriate,
 # based on context.

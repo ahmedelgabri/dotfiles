@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ue -o pipefail
 
 if [[ "$1" == '--raw' ]]; then
     RAW=1

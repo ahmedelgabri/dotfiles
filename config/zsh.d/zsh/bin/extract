@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 
 # Extract most know archives with one command
 # http://alias.sh/extract-most-know-archives-one-command

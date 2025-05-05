@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 
 if command -v eza >/dev/null 2>&1; then
 	eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions "$@"

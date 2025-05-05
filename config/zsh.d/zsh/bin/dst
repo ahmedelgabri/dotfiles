@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 
 # Check daylight savings
 # https://superuser.com/a/805205/26670

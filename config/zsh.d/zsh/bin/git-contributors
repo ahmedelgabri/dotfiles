@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ue -o pipefail
 # Usage: git-contributors
 # Show list of contributors sorted by line count
 

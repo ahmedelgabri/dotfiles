@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ue -o pipefail
 
 R='\x1b[31;01m'
 G='\x1b[32;01m'

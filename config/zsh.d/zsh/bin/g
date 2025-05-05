@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ue -o pipefail
+
 # https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
 # Wrap git with hub
 
@@ -12,28 +14,21 @@ time_since_last_commit() {
 	printf "%s\n" "$__LAST_COMMIT"
 }
 
-g() {
-	local __CMD=""
+__CMD=""
 
-	if command -v hub >/dev/null 2>&1; then
-		__CMD=$(command -v hub)
-	elif command -v git >/dev/null 2>&1; then
-		__CMD=$(command -v git)
-	fi
+if command -v hub >/dev/null 2>&1; then
+	__CMD=$(command -v hub)
+elif command -v git >/dev/null 2>&1; then
+	__CMD=$(command -v git)
+fi
 
-	[[ $__CMD != "" ]] || return
+[[ $__CMD != "" ]] || return
 
-	if [ $# -eq 0 ]; then
-		printf "%s\n\n" "$(time_since_last_commit)"
-		"$__CMD" st 2>/dev/null || "$__CMD" status --short --branch
-	else
-		"$__CMD" "$@"
-	fi
-}
-
-# Bash completion for g
-if declare -F __git_complete >/dev/null; then
-	__git_complete g _git
+if [ $# -eq 0 ]; then
+	printf "%s\n\n" "$(time_since_last_commit)"
+	"$__CMD" st 2>/dev/null || "$__CMD" status --short --branch
+else
+	"$__CMD" "$@"
 fi
 
 g "$@"

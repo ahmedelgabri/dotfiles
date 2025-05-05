@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ue -o pipefail
 
 # Copied from https://github.com/Goles/Battery with some edits from me check for the history https://github.com/ahmedelgabri/Battery
 

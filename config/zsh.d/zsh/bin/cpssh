@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Copy SSH key to your clipboard
 
 pbcopy <"$HOME/.ssh/$1.pub"

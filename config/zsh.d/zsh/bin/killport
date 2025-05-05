@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Kills all processes running on the specified port (e.g. 'killport 8080')
 
 killport() {

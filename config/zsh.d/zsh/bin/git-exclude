@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ue -o pipefail
 
 mkdir -p .git/info
 for pattern in "$@"

@@ -1,3 +1,4 @@
 #!/bin/sh
+set -ue -o pipefail
 
 curl https://api.github.com/octocat?s="$1"

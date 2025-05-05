@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 # Code from: https://github.com/rec/gitz/blob/11b2604827fe85f261f3bceaa99fdcea621c41f3/git-st
 # Found on: https://www.reddit.com/r/git/comments/cfykfu/better_git_status/
 

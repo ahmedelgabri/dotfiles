@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ue -o pipefail
 #
 # [B]ranches [B]y [D]ate: List branches used in a specific date
 #

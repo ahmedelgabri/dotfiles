@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # https://twitter.com/mgechev/status/1130441471105093632
 
 changeMac() {

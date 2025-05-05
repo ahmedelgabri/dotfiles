@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 
 # No arguments: `open .`
 # With arguments: acts like `open`

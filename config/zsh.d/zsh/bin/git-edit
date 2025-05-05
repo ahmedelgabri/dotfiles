@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Usage: git-edit [conflicted|staged|edited|committed]
 
 main() {

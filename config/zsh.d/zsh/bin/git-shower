@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run GC + prune. Optimized for a huge (~100k files) repository, might not work for you.
-set -e
+set -ue -o pipefail
 
 # read -p "This will remove all dangling commits. Are you sure you want to proceed? [y/N] " yn
 # case $yn in

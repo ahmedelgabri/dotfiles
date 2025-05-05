@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Show stats about files edited, lines deleted/added & total lines modified
 # from https://gist.github.com/eyecatchup/3fb7ef0c0cbdb72412fc
 

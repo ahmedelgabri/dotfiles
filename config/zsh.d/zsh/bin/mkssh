@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -ue -o pipefail
 # Create and copy SSH key using Ed25519 to your clipboard
 #   author: @ahmedelgabri
 #   version: 2.0.0

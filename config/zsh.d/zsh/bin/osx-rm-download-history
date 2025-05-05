@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:ft=bash:
+set -ue -o pipefail
 
 function osx-rm-download-history {
 	local db

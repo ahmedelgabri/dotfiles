@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ue -o pipefail
 # Finds files matching a pattern (arg1) and executes a command (arg2, default: file) on them.
 
 # Default pattern to empty string if $1 is not provided
