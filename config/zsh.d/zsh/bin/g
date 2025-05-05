@@ -30,5 +30,3 @@ if [ $# -eq 0 ]; then
 else
 	"$__CMD" "$@"
 fi
-
-g "$@"

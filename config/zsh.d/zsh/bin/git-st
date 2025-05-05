@@ -27,7 +27,7 @@ for i in $(seq 0 $((${#status[@]} - 1))); do
   if [ "$i" -eq 0 ]; then
     echo "${status[0]}" | cut -d ' ' -f 2-
   else
-    if [ -n "${diff[i - 1]}" ]; then
+    if [ -n "${diff[i - 1]-}" ]; then
       currDiff="|${diff[i - 1]}"
     else
       currDiff=""

@@ -306,6 +306,13 @@ in {
                   select-word-style bash
 
                   autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
+
+                  # Autocomplete the g script
+                  if (( ${"$"}+commands[hub] )); then
+                    compdef g=hub
+                  elif (( ${"$"}+commands[git] )); then
+                    compdef g=git
+                  fi
                 ''
               ]
               ++ map builtins.readFile [
