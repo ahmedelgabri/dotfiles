@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 # Code from: https://github.com/rec/gitz/blob/11b2604827fe85f261f3bceaa99fdcea621c41f3/git-st
 # Found on: https://www.reddit.com/r/git/comments/cfykfu/better_git_status/
 
@@ -15,7 +15,7 @@ IFS=$'\n' diff=($diff)
 
 len=-1
 for i in $(seq 1 $((${#status[@]} - 1))); do
-  if [ ${#status[i]} -gt $len ]; then
+  if [ ${#status[i]} -gt "$len" ]; then
     len=${#status[i]}
   fi
 done
@@ -23,10 +23,10 @@ done
 
 for i in $(seq 0 $((${#status[@]} - 1))); do
   currStatus=${status[i]}
-  if [ $i -eq 0 ]; then
+  if [ "$i" -eq 0 ]; then
     echo "${status[0]}" | cut -d ' ' -f 2-
   else
-    if [ ! -z ${diff[i - 1]} ]; then
+    if [ -n "${diff[i - 1]}" ]; then
       currDiff="|${diff[i - 1]}"
     else
       currDiff=""
