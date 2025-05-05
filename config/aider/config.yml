@@ -18,7 +18,7 @@
 # Main model:
 
 ## Specify the model to use for the main chat
-#model: xxx
+model: gemini/gemini-2.5-pro-exp-03-25
 
 ########################
 # API Keys and settings:
