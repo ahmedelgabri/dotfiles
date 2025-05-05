@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -ue -o pipefail
 #
-function mkcd {
-	if [[ -n ${1} ]]; then
-		mkdir -p -- "${1}" && (builtin cd -- "${1}" || exit)
-	fi
-}
-
-mkcd "$@"
+if [[ -n ${1-} ]]; then
+	mkdir -p -- "${1}" && (builtin cd -- "${1}" || exit)
+else
+	exit 1
+fi

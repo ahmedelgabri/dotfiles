@@ -4,14 +4,8 @@ set -ue -o pipefail
 # No arguments: `open .`
 # With arguments: acts like `open`
 
-unalias o 2>/dev/null
-
-o() {
-	if [[ $# -eq 0 ]]; then
-		open .
-	else
-		open "$@"
-	fi
-}
-
-o "$@"
+if [[ $# -eq 0 ]]; then
+	open .
+else
+	open "$@"
+fi

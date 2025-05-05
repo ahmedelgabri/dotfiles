@@ -2,8 +2,4 @@
 set -ue -o pipefail
 # Displays user owned processes status.
 
-function psu {
-	ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${@:2}"
-}
-
-psu "$@"
+ps -U "${1:-$LOGNAME}" -o 'pid,%cpu,%mem,command' "${@:2}"

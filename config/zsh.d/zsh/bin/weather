@@ -22,9 +22,4 @@ if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
 	FALLBACK=$(jq -r '.locality' "$LOCATION_DATA")
 fi
 
-weather() {
-	local location="${1:-$FALLBACK}"
-	curl -fGsS --compressed "wttr.in/${location}"?"m&lang=en&${2:-0qm}"
-}
-
-weather "$@"
+curl -fGsS --compressed "wttr.in/${1:-$FALLBACK}"?"m&lang=en&${2:-0qm}"
