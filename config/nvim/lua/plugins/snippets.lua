@@ -7,11 +7,14 @@ return {
 		{ 'https://github.com/rafamadriz/friendly-snippets' },
 	},
 	config = function()
-		local has_ls, ls = pcall(require, 'luasnip')
+		local ls = require 'luasnip'
 
-		if not has_ls then
-			return
-		end
+		-- Setup toggle choice
+		vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+			if ls.choice_active() then
+				ls.change_choice(1)
+			end
+		end, { silent = true })
 
 		local s = ls.snippet
 		local sn = ls.snippet_node
