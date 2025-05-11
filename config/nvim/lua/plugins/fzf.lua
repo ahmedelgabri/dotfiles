@@ -160,6 +160,7 @@ return {
 						or defaults.defaults.files.cmd,
 					no_ignore = true,
 					hidden = true,
+					follow = true,
 					actions = {
 						['ctrl-g'] = false,
 						['default'] = actions.file_edit,
