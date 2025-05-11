@@ -68,21 +68,22 @@ vim.o.showmode = false
 
 -- show a navigable menu for tab completion
 vim.o.wildmode = 'longest:full,list,full'
-vim.o.wildignore = utils.append('wildignore', {
-	'*.o',
-	'*.out',
-	'*.obj',
-	'.git',
-	'*.rbc',
-	'*.rbo',
-	'*.class',
-	'.svn',
-	'*.gem',
-	'*.pyc',
-	'*.swp',
-	'*~',
-	'*/.DS_Store',
-})
+vim.o.wildignore = vim.o.wildignore
+	.. table.concat({
+		'*.o',
+		'*.out',
+		'*.obj',
+		'.git',
+		'*.rbc',
+		'*.rbo',
+		'*.class',
+		'.svn',
+		'*.gem',
+		'*.pyc',
+		'*.swp',
+		'*~',
+		'*/.DS_Store',
+	}, ',')
 
 vim.o.tagcase = 'followscs'
 vim.o.tags = utils.prepend('tags', { './.git/tags;' })
