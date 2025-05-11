@@ -482,7 +482,7 @@ return {
 				'stylelint_lsp',
 				'html',
 				'eslint',
-				-- 'oxlint',
+				'oxlint',
 				'vtsls',
 				'denols',
 				'tailwindcss',
@@ -508,60 +508,6 @@ return {
 			}
 
 			vim.lsp.enable(servers)
-
-			-- @NOTE LEGACY: will be removed when the LSP are migrated, check
-			-- https://github.com/neovim/nvim-lspconfig/issues/3705
-			local legacy_servers = {
-				oxlint = {
-					cmd = { utils.get_lsp_bin 'oxc_language_server' },
-				},
-			}
-
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-			if pcall(require, 'blink.cmp') then
-				capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-			end
-
-			local shared = {
-				capabilities = vim.tbl_deep_extend('force', capabilities, {
-					workspace = {
-						didChangeWatchedFiles = {
-							dynamicRegistration = true,
-						},
-					},
-					textDocument = {
-						completion = {
-							completionItem = {
-								snippetSupport = true,
-								resolveSupport = {
-									properties = {
-										'documentation',
-										'detail',
-										'additionalTextEdits',
-									},
-								},
-							},
-						},
-					},
-				}),
-				flags = {
-					debounce_text_changes = 150,
-				},
-			}
-
-			for server, config in pairs(legacy_servers) do
-				local server_disabled = (config.disabled ~= nil and config.disabled)
-					or false
-
-				if not server_disabled then
-					require('lspconfig')[server].setup(
-						vim.tbl_deep_extend('force', shared, config)
-					)
-				end
-			end
-
-			-- END LEGACY
 
 			au.autocmd {
 				event = 'LspAttach',
