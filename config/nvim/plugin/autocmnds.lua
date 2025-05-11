@@ -13,7 +13,7 @@ au.augroup('__myautocmds__', {
 		pattern = '.envrc',
 		callback = function()
 			if vim.fn.executable 'direnv' then
-				vim.cmd.silent '!direnv allow %'
+				vim.cmd [[silent !direnv allow %]]
 			end
 		end,
 	},
