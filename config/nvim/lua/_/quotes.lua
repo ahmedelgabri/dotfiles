@@ -1,5 +1,6 @@
 return {
-	-- Copied from startify https://github.com/mhinz/vim-startify/blob/4e089dffdad46f3f5593f34362d530e8fe823dcf/autoload/startify/fortune.vim#L85-L239
+	-- Copied most of it from startify https://github.com/mhinz/vim-startify/blob/4e089dffdad46f3f5593f34362d530e8fe823dcf/autoload/startify/fortune.vim#L85-L239
+	-- and then added my own
 	{
 		'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
 		'',
@@ -882,5 +883,15 @@ return {
 		'The amount of energy needed to refute bullshit is an order of magnitude bigger than that needed to produce it.',
 		'',
 		"—  Brandolini's Law",
+	},
+	{
+		'Simplicity and elegance are unpopular because they require hard work and discipline to achieve',
+		'',
+		'—  Edsger Dijkstra',
+	},
+	{
+		'the simple and elegant systems tend to be easier and faster to design and get right, more efficient in execution, and much more reliable',
+		'',
+		'—  Edsger Dijkstra',
 	},
 }
