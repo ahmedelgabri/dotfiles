@@ -78,47 +78,112 @@ return {
 	},
 	{
 		'https://github.com/obsidian-nvim/obsidian.nvim',
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		cmd = { 'Obsidian' },
 		event = {
 			string.format('BufReadPre %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
 			string.format('BufNewFile %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
 		},
 		dependencies = {
-			-- Required.
 			'https://github.com/nvim-lua/plenary.nvim',
 		},
-		opts = function(_, opts)
-			return vim.tbl_deep_extend('force', opts or {}, {
-				workspaces = {
-					{
-						name = 'notes',
-						path = vim.env.NOTES_DIR,
-					},
+		opts = {
+			workspaces = {
+				{
+					name = 'notes',
+					path = vim.env.NOTES_DIR,
+					strict = true,
 				},
+			},
 
-				daily_notes = {
-					folder = 'journal',
-					default_tags = { 'daily-notes' },
-					template = vim.fn.expand '~/.config/zk/templates/journal.md',
+			templates = {
+				folder = vim.fn.expand '~/.config/zk/templates',
+				date_format = '%Y-%m-%d',
+				time_format = '%H:%M',
+				-- A map for custom variables, the key should be the variable and the value a function
+				substitutions = {
+					-- zk compatibility
+					-- https://zk-org.github.io/zk/notes/template.html#date-formatting-helper
+					['format-date now "%Y-%m-%dT%H:%M"'] = function()
+						return os.date '%Y-%m-%dT%H:%M' -- 2025-04-01T12:05
+					end,
+					['format-date now "timestamp"'] = function()
+						return os.date '%Y%m%d%H%M' -- 202504011205
+					end,
+					["format-date now '%Y-%m-%d'"] = function()
+						return os.date '%Y-%m-%d' -- 2025-04-01
+					end,
+					['format-date now "long"'] = function()
+						return os.date '%B %d, %Y' -- April 1, 2025
+					end,
+					['content'] = function()
+						return ''
+					end,
+					['extra.employer'] = function()
+						return vim.env.COMPANY or 'NO COMPANY'
+					end,
 				},
+			},
 
-				completion = {
-					nvim_cmp = false,
-					blink = false,
-				},
+			---@param title string|?
+			---@return string
+			note_id_func = function(title)
+				local note_name = tostring(os.date '%Y%m%d%H%M')
 
-				picker = {
-					name = 'fzf-lua',
-				},
+				if title ~= nil then
+					note_name = note_name
+						.. ' '
+						.. title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+				end
 
-				ui = {
-					enable = false,
-				},
+				return note_name
+			end,
 
-				attachments = {
-					img_folder = 'assets',
-				},
-			})
-		end,
+			-- Optional, alternatively you can customize the frontmatter data.
+			---@return table
+			note_frontmatter_func = function(note)
+				-- Add the title of the note as an alias.
+				if note.title then
+					note:add_alias(note.title)
+				end
+
+				local out = {
+					id = tostring(os.date '%Y%m%d%H%M'),
+					aliases = note.aliases,
+					tags = note.tags,
+				}
+
+				-- `note.metadata` contains any manually added fields in the frontmatter.
+				-- So here we just make sure those fields are kept in the frontmatter.
+				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+					for k, v in pairs(note.metadata) do
+						out[k] = v
+					end
+				end
+
+				return out
+			end,
+
+			daily_notes = {
+				folder = 'journal',
+				workdays_only = false,
+				default_tags = { 'journal' },
+				template = vim.fn.expand '~/.config/zk/templates/journal.md',
+			},
+
+			completion = {
+				nvim_cmp = false,
+				blink = false,
+			},
+
+			ui = {
+				enable = false,
+			},
+
+			attachments = {
+				img_folder = 'assets',
+			},
+
+			open_app_foreground = true,
+		},
 	},
 }

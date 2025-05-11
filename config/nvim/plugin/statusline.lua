@@ -200,7 +200,7 @@ local function file_info()
 end
 
 local function word_count()
-	if vim.bo.filetype == 'markdown' or vim.bo.filetype == 'text' then
+	if vim.bo.filetype == 'text' then
 		return string.format(
 			'%%#LineNr#%d %s%%*',
 			vim.fn.wordcount()['words'],
@@ -208,7 +208,7 @@ local function word_count()
 		)
 	end
 
-	return nil
+	return vim.g.obsidian
 end
 
 local function lsp_diagnostics()
@@ -415,9 +415,9 @@ function M.render_active()
 		file_info(),
 		vim.b.minidiff_summary_string,
 		git_conflicts(),
-		word_count(),
 		readonly(),
 		'%=',
+		word_count(),
 		mode(),
 		paste(),
 		spell(),

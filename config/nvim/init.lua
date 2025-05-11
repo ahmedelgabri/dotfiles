@@ -274,6 +274,8 @@ vim.o.winborder = 'bold'
 -------------------------------------------------------------------------------
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+-- disable frontmatter highlighting
+vim.g.vim_markdown_frontmatter = 1
 
 vim.g.markdown_fenced_languages = {
 	'css',

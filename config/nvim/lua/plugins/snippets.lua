@@ -392,6 +392,21 @@ ${3:tags}: $4
 $0
 ]]
 				),
+				ls.parser.parse_snippet(
+					{
+						trig = 'oto',
+						dscr = 'One to one section',
+					},
+					[=[## [[${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}]]
+$0
+
+### My topics
+
+### Their topics
+
+### Actions
+]=]
+				),
 				s(
 					{ trig = 'img', dscr = 'Markdown image' },
 					fmt('![{alt}]({url}){next}', {

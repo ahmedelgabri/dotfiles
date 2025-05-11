@@ -43,6 +43,7 @@ in {
       website = mkOptStr "https://gabri.me";
       github_username = mkOptStr "ahmedelgabri";
       email = mkOptStr "ahmed@gabri.me";
+      company = mkOptStr "";
       # NOTE: Change this?
       devFolder = mkOptStr "Sites";
       nix_managed =

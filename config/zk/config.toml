@@ -27,17 +27,17 @@ template = "default.md"
 
 # Path globs ignored while indexing existing notes.
 exclude = [
-	"drafts/*",
-	"log.md",
-	".neuron",
-	"neuron.dhall",
-	".neuronignore",
-	".obsidian",
-	".obsidian.vimrc",
-	".syncinfo",
-	"static",
-	".mods",
-	".zk",
+  "drafts/*",
+  "log.md",
+  ".neuron",
+  "neuron.dhall",
+  ".neuronignore",
+  ".obsidian",
+  ".obsidian.vimrc",
+  ".syncinfo",
+  "static",
+  ".mods",
+  ".zk",
 ]
 
 # Configure random ID generation.
@@ -236,10 +236,9 @@ hist = "zk list --format path --delimiter0 --quiet $@ | xargs -t -0 git log --pa
 conf = '$EDITOR "$ZK_NOTEBOOK_DIR/.zk/config.toml"'
 
 # Work related
-lc = 'zk new work --extra lc=true --title "$*"'
-sd = 'zk new work --extra sd=true --title "$*"'
-interview = 'zk new work --extra interview=true --title "$*"'
-oto = 'zk new work --template 1-1.md --extra with="$*" --title "$*"'
+lc = 'zk new work --template live-coding.md --title "$*"'
+sd = 'zk new work --template system-design.md --title "$*"'
+interview = 'zk new work --template interview.md --title "$*"'
 w = 'zk new work --title "$*"'
 rfc = 'zk new work --template rfc.md --title "$*"'
 

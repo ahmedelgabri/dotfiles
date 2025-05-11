@@ -6,6 +6,7 @@
     username = "ahmedelgabri";
     email = "ahmed@miro.com";
     website = "https://miro.com";
+    company = "Miro";
     devFolder = "dev";
     modules = {
       gpg.enable = true;

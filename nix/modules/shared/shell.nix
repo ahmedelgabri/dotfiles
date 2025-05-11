@@ -12,7 +12,7 @@
 }: let
   cfg = config.my.modules.shell;
   inherit (config.my.user) home;
-  inherit (config.my) hm devFolder hostConfigHome;
+  inherit (config.my) hm devFolder hostConfigHome company;
   inherit (pkgs.stdenv) isDarwin isLinux;
 
   local_zshrc = "${hostConfigHome}/zshrc";
@@ -182,6 +182,7 @@ in {
             # So care needs to be taken if two env vars depend on each other
             # ====================================================
             rec {
+              COMPANY = company;
               BROWSER =
                 if pkgs.stdenv.isDarwin
                 then "open"
