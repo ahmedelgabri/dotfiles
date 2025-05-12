@@ -78,11 +78,9 @@ return {
 	},
 	{
 		'https://github.com/obsidian-nvim/obsidian.nvim',
+		version = '*', -- recommended, use latest release instead of latest commit
 		cmd = { 'Obsidian' },
-		event = {
-			string.format('BufReadPre %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
-			string.format('BufNewFile %s/*.md', vim.fn.resolve(vim.env.NOTES_DIR)),
-		},
+		ft = { 'markdown' },
 		dependencies = {
 			'https://github.com/nvim-lua/plenary.nvim',
 		},
@@ -92,6 +90,38 @@ return {
 					name = 'notes',
 					path = vim.env.NOTES_DIR,
 					strict = true,
+					overrides = {
+						attachments = {
+							img_folder = vim.env.NOTES_DIR .. '/assets',
+							img_name_func = function()
+								return string.format(
+									'%s/%s/Pasted image %s',
+									vim.env.NOTES_DIR .. '/assets',
+									vim.fn.expand '%:t:r',
+									os.date '%Y%m%d%H%M%S'
+								)
+							end,
+						},
+					},
+				},
+				{
+					name = 'no-vault',
+					path = function()
+						-- alternatively use the CWD:
+						-- return assert(vim.fn.getcwd())
+						return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
+					end,
+					overrides = {
+						disable_frontmatter = true,
+						notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
+						new_notes_location = 'current_dir',
+						templates = {
+							folder = vim.NIL,
+						},
+						attachments = {
+							img_folder = 'assets',
+						},
+					},
 				},
 			},
 
