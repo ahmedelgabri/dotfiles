@@ -557,3 +557,17 @@ highlight('SnacksDashboardFooter', { link = 'Comment' })
 highlight('SnacksDashboardDir', { link = 'Comment' })
 highlight('SnacksDashboardKey', { fg = colors.bg_subtle })
 highlight('SnacksDashboardTitle', { fg = colors.bg_subtle })
+
+-- Diffview
+highlight('DiffviewDiffAdd', {
+	bg = '#0e2119',
+})
+highlight('DiffviewDiffChange', {
+	bg = '#49450f',
+})
+highlight('DiffviewDiffDelete', {
+	fg = '#37222c',
+})
+highlight('DiffviewDiffAddAsDelete', { link = 'DiffviewDiffDelete' })
+highlight('DiffviewDiffDeleteDim', { link = 'Comment' })
+highlight('DiffviewDiffText', { link = 'DiffText' })

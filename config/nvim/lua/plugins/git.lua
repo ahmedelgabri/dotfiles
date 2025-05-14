@@ -9,13 +9,31 @@ return {
 	{
 		'https://github.com/akinsho/git-conflict.nvim',
 		event = { 'BufReadPre' },
-		opts = {},
+		opts = {
+			disable_diagnostics = true,
+			highlights = { -- They must have background color, otherwise the default color will be used
+				incoming = 'DiffviewDiffAdd',
+				current = 'DiffviewDiffText',
+			},
+		},
 	},
 	{
 		'https://github.com/sindrets/diffview.nvim',
 		dependencies = { { 'https://github.com/nvim-lua/plenary.nvim' } },
 		cmd = { 'DiffviewOpen' },
-		opts = {},
+		opts = {
+			view = {
+				default = {
+					disable_diagnostics = true,
+					winbar_info = true,
+				},
+			},
+			file_panel = {
+				win_config = {
+					position = 'right',
+				},
+			},
+		},
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',

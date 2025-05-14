@@ -164,7 +164,7 @@ end
 vim.o.concealcursor = 'n'
 
 vim.o.fillchars = table.concat({
-	'diff:⣿', -- BOX DRAWINGS
+	'diff:╱',
 	'msgsep:‾',
 	'eob: ', -- Hide end of buffer ~
 	'fold:─',
