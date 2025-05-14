@@ -23,7 +23,7 @@ end
 
 function M.get_filtered_signs(signs, condition)
 	local cond = function(data)
-		if condition ~= nil then
+		if type(condition) == 'function' then
 			return condition(data)
 		end
 		return true
