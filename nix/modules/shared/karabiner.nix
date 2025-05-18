@@ -29,7 +29,7 @@ in {
 
       # The config should be "live" because it can be modified from the app GUI
       # At least for now and until I reach a stable state, I'd like to symlink it instead
-      system.activationScripts.postUserActivation.text =
+      system.activationScripts.postActivation.text =
         /*
         bash
         */

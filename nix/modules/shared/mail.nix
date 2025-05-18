@@ -102,7 +102,7 @@ in {
           # MAILCAPS="$MAILCAP";   # Mutt, pine
         };
 
-        system.activationScripts.postUserActivation.text = ''
+        system.activationScripts.postActivation.text = ''
           echo ":: -> Running mail activationScript..."
 
           if [ ! -e "${homeDir}/.mail/${cfg.account}" ]; then

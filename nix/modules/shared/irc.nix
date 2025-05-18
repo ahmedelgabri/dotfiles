@@ -62,7 +62,7 @@ in {
         };
       };
 
-      system.activationScripts.postUserActivation.text = ''
+      system.activationScripts.postActivation.text = ''
         echo ":: -> Running weechat activationScript..."
         # Handle mutable configs
 

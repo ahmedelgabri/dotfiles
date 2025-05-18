@@ -3,6 +3,8 @@
   pkgs,
   ...
 }: {
+  system.primaryUser = config.my.username;
+
   # enable sudo authentication with Touch ID
   security.pam.services.sudo_local.touchIdAuth = true;
 

@@ -72,7 +72,7 @@ in {
         ];
       };
 
-      system.activationScripts.postUserActivation.text =
+      system.activationScripts.postActivation.text =
         /*
         bash
         */

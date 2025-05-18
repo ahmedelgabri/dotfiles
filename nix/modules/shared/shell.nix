@@ -207,7 +207,7 @@ in {
             };
         };
 
-        system.activationScripts.postUserActivation.text = ''
+        system.activationScripts.postActivation.text = ''
           echo ":: -> Running shell activationScript..."
           if [ ! -e "${local_zshrc}" ]; then
           	mkdir -p "$(dirname "${local_zshrc}")"
