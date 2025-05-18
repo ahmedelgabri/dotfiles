@@ -68,6 +68,7 @@ in {
           typos-lsp
           copilot-language-server
           pngpaste # For Obsidian paste_img command
+          stylelint-lsp
         ];
       };
 
