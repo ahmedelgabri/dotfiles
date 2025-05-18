@@ -171,13 +171,46 @@ return {
 			-- Optional, alternatively you can customize the frontmatter data.
 			---@return table
 			note_frontmatter_func = function(note)
+				local function convert_date(date_string)
+					local year, month, day, hour, min
+
+					-- Try to match date with time
+					year, month, day, hour, min =
+						date_string:match '(%d+)-(%d+)-(%d+)[T ](%d+):(%d+)'
+
+					if not year then
+						-- Try to match date only
+						year, month, day = date_string:match '(%d+)-(%d+)-(%d+)'
+						hour, min = 0, 0
+					end
+
+					if year then
+						-- Create date table for os.time
+						local date_table = {
+							year = tonumber(year),
+							month = tonumber(month),
+							day = tonumber(day),
+							hour = tonumber(hour) or 0,
+							min = tonumber(min) or 0,
+							sec = 0,
+						}
+
+						-- Convert to timestamp
+						local timestamp = os.time(date_table)
+
+						-- Format using os.date
+						return os.date('%Y%m%d%H%M', timestamp)
+					else
+						return nil, 'Invalid date format'
+					end
+				end
+
 				-- Add the title of the note as an alias.
 				if note.title then
 					note:add_alias(note.title)
 				end
 
 				local out = {
-					id = tostring(os.date '%Y%m%d%H%M'),
 					aliases = note.aliases,
 					tags = note.tags,
 				}
@@ -189,6 +222,11 @@ return {
 						out[k] = v
 					end
 				end
+
+				-- We run this at the end so we have access to metadata too
+				out.id = note.id
+					or tostring(convert_date(note.metadata.date))
+					or tostring(os.date '%Y%m%d%H%M')
 
 				return out
 			end,
