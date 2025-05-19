@@ -35,7 +35,7 @@ in {
           "visual-studio-code"
           "whatsapp"
           "telegram"
-          "zen-browser"
+          "zen"
         ];
       })
       (mkIf isLinux {
