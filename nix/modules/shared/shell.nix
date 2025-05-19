@@ -99,7 +99,7 @@ in {
                 */
                 ''
                   pushd $DOTFILES/
-                  darwin-rebuild switch --flake .
+                  sudo darwin-rebuild switch --flake .
                   popd
                 '')
             ];
