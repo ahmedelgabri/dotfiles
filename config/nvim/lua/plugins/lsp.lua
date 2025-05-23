@@ -520,11 +520,6 @@ return {
 					)
 
 					-- ---------------
-					-- GENERAL
-					-- ---------------
-					client.flags.allow_incremental_sync = true
-
-					-- ---------------
 					-- MAPPINGS
 					-- ---------------
 					for _, item in ipairs {
@@ -631,13 +626,13 @@ return {
 					end
 
 					-- ---------------
-					-- AUTOCMDS
+					-- GENERAL
 					-- ---------------
+					client.flags.allow_incremental_sync = true
 
 					if
 						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							bufnr
+							vim.lsp.protocol.Methods.textDocument_documentHighlight
 						)
 					then
 						local group = '__LSP_HIGHLIGHTS__'
@@ -662,8 +657,7 @@ return {
 
 					if
 						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_codeLens,
-							bufnr
+							vim.lsp.protocol.Methods.textDocument_codeLens
 						)
 					then
 						au.augroup('__LSP_CODELENS__', {
@@ -679,8 +673,7 @@ return {
 
 					if
 						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_foldingRange,
-							bufnr
+							vim.lsp.protocol.Methods.textDocument_foldingRange
 						)
 					then
 						local win = vim.api.nvim_get_current_win()
@@ -689,8 +682,7 @@ return {
 
 					if
 						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_completion,
-							bufnr
+							vim.lsp.protocol.Methods.textDocument_completion
 						) and not package.loaded['blink.cmp']
 					then
 						vim.lsp.completion.enable(
