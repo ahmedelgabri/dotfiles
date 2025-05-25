@@ -26,7 +26,6 @@
     ./gui.nix
     ./python.nix
     ./discord.nix
-    ./hledger.nix
     ./zk.nix
     ./hammerspoon.nix
     ./ghostty.nix
