@@ -43,18 +43,18 @@ local subtle_black = '#303030'
 local light_gray = '#999999'
 local lighter_gray = '#CCCCCC'
 local lightest_gray = '#E5E5E5'
-local dark_red = '#C30771'
-local light_red = '#E32791'
-local dark_blue = '#008EC4'
-local light_blue = '#B6D6FD'
-local dark_cyan = '#20A5BA'
-local light_cyan = '#4FB8CC'
-local dark_green = '#10A778'
-local light_green = '#5FD7A7'
-local dark_purple = '#523C79'
-local light_purple = '#6855DE'
-local light_yellow = '#F3E430'
-local dark_yellow = '#A89C14'
+local dark_red = 'NvimDarkRed'
+local light_red = 'NvimLightRed'
+local dark_blue = 'NvimDarkBlue'
+local light_blue = 'NvimLightBlue'
+local dark_cyan = 'NvimDarkCyan'
+local light_cyan = 'NvimLightCyan'
+local dark_green = 'NvimDarkGreen'
+local light_green = 'NvimLightGreen'
+local dark_purple = 'NvimDarkMagenta'
+local light_purple = 'NvimLightMagenta'
+local light_yellow = 'NvimLightYellow'
+local dark_yellow = 'NvimDarkYellow'
 
 local themes = {
 	dark = {
@@ -68,10 +68,10 @@ local themes = {
 		cursor_line = subtle_black,
 		constant = light_blue,
 		comment = light_gray,
-		selection = dark_yellow,
+		selection = light_yellow,
 		selection_fg = black,
 		ok = dark_green,
-		-- warning = yellow,
+		warning = dark_yellow,
 		error = light_red,
 		purple = light_purple,
 		cyan = light_cyan,
@@ -94,7 +94,7 @@ local themes = {
 		selection = light_yellow,
 		selection_fg = light_black,
 		ok = light_green,
-		-- warning = yellow,
+		warning = light_yellow,
 		error = dark_red,
 		purple = dark_purple,
 		cyan = dark_cyan,
@@ -195,11 +195,11 @@ highlight('VisualNOS', { bg = colors.bg_subtle })
 highlight('Ignore', { fg = colors.bg })
 
 -- __DiffAdd__
-highlight('DiffAdd', { fg = colors.green })
+highlight('DiffAdd', { fg = 'NvimLightGreen' })
 -- __DiffDelete__
-highlight('DiffDelete', { fg = colors.red })
+highlight('DiffDelete', { fg = 'NvimLightRed' })
 -- __DiffChange__
-highlight('DiffChange', { fg = colors.yellow })
+highlight('DiffChange', { fg = 'NvimLightYellow' })
 -- __DiffText__
 highlight('DiffText', { fg = colors.constant })
 
@@ -212,7 +212,7 @@ highlight('helpHyperTextEntry', { link = 'Title' })
 highlight('helpHyperTextJump', { link = 'String' })
 
 -- __StatusLine__
-highlight('StatusLine', { bg = nil, fg = colors.cursor_line })
+highlight('StatusLine', { bg = nil, fg = 'NvimLightGray4' })
 
 -- __StatusLineNC__
 highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.cursor_line })
@@ -560,13 +560,15 @@ highlight('SnacksDashboardTitle', { fg = colors.bg_subtle })
 
 -- Diffview
 highlight('DiffviewDiffAdd', {
-	bg = '#0e2119',
+	bg = colors.green,
+	fg = colors.ok,
 })
 highlight('DiffviewDiffChange', {
-	bg = '#49450f',
+	bg = colors.yellow,
+	fg = colors.warning,
 })
 highlight('DiffviewDiffDelete', {
-	fg = '#37222c',
+	fg = colors.red,
 })
 highlight('DiffviewDiffAddAsDelete', { link = 'DiffviewDiffDelete' })
 highlight('DiffviewDiffDeleteDim', { link = 'Comment' })
