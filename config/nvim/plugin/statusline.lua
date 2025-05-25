@@ -23,7 +23,8 @@ end
 
 -- display lineNoIndicator (from drzel/vim-line-no-indicator)
 local function line_no_indicator()
-	local line_no_indicator_chars = { '⎺', '⎻', '─', '⎼', '⎽' }
+	local line_no_indicator_chars =
+		{ '󰋙', '󰫃', '󰫄', '󰫅', '󰫆', '󰫇', '󰫈' }
 	local current_line = vim.fn.line '.'
 	local total_lines = vim.fn.line '$'
 	local index = current_line
@@ -92,7 +93,7 @@ local function filepath()
 	local parts = get_filepath_parts()
 	local prefix = parts[3]
 	local filename = parts[2]
-	local highlight = 'User6'
+	local highlight = 'User4'
 
 	if vim.bo.modified then
 		highlight = 'DiffChange'
@@ -169,8 +170,9 @@ end
 local function rhs()
 	return vim.fn.winwidth(0) > 80
 			and get_parts {
-				'%#LineNr#' .. line_no_indicator() .. '%*',
-				'%#LineNr#%3l/%3L:%-2c%*',
+				'%#User4#%3l/%3L:%-2c%*',
+				'%#User4#' .. line_no_indicator() .. '%*',
+				' ',
 			}
 		or line_no_indicator()
 end
@@ -191,7 +193,7 @@ end
 
 local function file_info()
 	local data = {
-		vim.bo.filetype,
+		vim.bo.filetype:upper(),
 		vim.bo.fileformat ~= 'unix' and vim.bo.fileformat or nil,
 		vim.bo.fileencoding ~= 'utf-8' and vim.bo.fileencoding or nil,
 	}
@@ -202,7 +204,7 @@ end
 local function word_count()
 	if vim.bo.filetype == 'text' then
 		return string.format(
-			'%%#LineNr#%d %s%%*',
+			'%%#User4#%d %s%%*',
 			vim.fn.wordcount()['words'],
 			'words'
 		)
@@ -212,7 +214,8 @@ local function word_count()
 end
 
 local function lsp_diagnostics()
-	local count = {}
+	local data = {}
+	local result = nil
 	local levels = {
 		errors = vim.diagnostic.severity.ERROR,
 		warnings = vim.diagnostic.severity.WARN,
@@ -231,15 +234,21 @@ local function lsp_diagnostics()
 		local label = label_mapping[k] or k
 
 		if n ~= 0 then
-			count[k] = string.format(
-				'%%#DiagnosticSign' .. firstToUpper(label) .. '#%s %s%%*',
+			data[k] = string.format(
+				'%%#DiagnosticSign' .. firstToUpper(label) .. '#%s%s%%*',
 				utils.get_icon(label),
 				n
 			)
 		end
 	end
 
-	return get_parts(count)
+	if not vim.tbl_isempty(data) then
+		for _, msg in pairs(data) do
+			result = (result or ' ‹›') .. ' ' .. msg
+		end
+	end
+
+	return result
 end
 
 local function git_conflicts()
@@ -359,7 +368,7 @@ local function get_codecompanion_status()
 	local info = llm_info[bufnr]
 
 	if not info or not info.name then
-		return ''
+		return nil
 	end
 
 	icon, hl = mini_icons.get('lsp', info.name)
@@ -370,7 +379,7 @@ local function get_codecompanion_status()
 	local status = llm_name .. ' ' .. model_info
 	return vim.bo.filetype == 'codecompanion'
 			and string.format('%%#StatusLineLSP# %s ', status)
-		or ''
+		or nil
 end
 ---------------------------------------------------------------------------------
 -- Statusline
@@ -388,7 +397,7 @@ function M.render_active()
 
 	if vim.bo.filetype == 'fzf' then
 		return get_parts {
-			'%#LineNr#*',
+			'%#User4#*',
 			'fzf',
 			'%6*',
 			'V: ctrl-v',
@@ -412,20 +421,20 @@ function M.render_active()
 
 	local line = get_parts {
 		filepath(),
-		file_info(),
+		readonly(),
 		vim.b.minidiff_summary_string,
 		git_conflicts(),
-		readonly(),
 		'%=',
 		word_count(),
 		mode(),
 		paste(),
 		spell(),
 		diff_source(),
-		lsp_progress_component(),
 		lsp_diagnostics(),
+		lsp_progress_component(),
 		copilot(),
 		get_codecompanion_status(),
+		file_info(),
 		rhs(),
 	}
 
