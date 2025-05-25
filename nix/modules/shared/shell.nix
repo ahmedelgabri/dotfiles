@@ -121,12 +121,10 @@ in {
               gum # https://github.com/charmbracelet/gum
               hcron
               mods # https://github.com/charmbracelet/mods
-              rename
               scc
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
-              slides # CLI markdown presentation tool
-              tealdeer # rust implementation of `tldr`
+              presenterm # CLI markdown presentation tool
               tokei
               vivid
               zsh-autosuggestions
