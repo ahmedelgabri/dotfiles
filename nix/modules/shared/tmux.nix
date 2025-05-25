@@ -20,7 +20,6 @@ in {
         packages = with pkgs; [
           tmux
           next-prayer
-          nur.repos.Freed-Wu.tmux-language-server
         ];
       };
 

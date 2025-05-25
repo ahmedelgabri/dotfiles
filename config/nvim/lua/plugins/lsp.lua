@@ -504,7 +504,6 @@ return {
 				'yamlls',
 				'typos_lsp',
 				'mutt_ls',
-				'tmux_ls',
 			}
 
 			vim.lsp.enable(servers)
