@@ -16,6 +16,7 @@ vim.filetype.add {
 		['.envrc'] = 'bash',
 		['.env'] = 'dotenv',
 		['.stylelintrc'] = 'json',
+		['.stylelintignore'] = 'gitignore',
 		['.eslintrc.json'] = 'jsonc',
 		['.luarc.json'] = 'jsonc',
 		['.oxlintrc.json'] = 'jsonc',
