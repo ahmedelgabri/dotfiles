@@ -397,15 +397,12 @@ function M.render_active()
 
 	if vim.bo.filetype == 'fzf' then
 		return get_parts {
-			'%#User4#*',
+			'%#Statusline#',
 			'fzf',
-			'%6*',
 			'V: ctrl-v',
 			'H: ctrl-s',
 			'Tab: ctrl-t',
 			'%*',
-			'%=',
-			file_info(),
 		}
 	end
 
@@ -420,6 +417,7 @@ function M.render_active()
 	end
 
 	local line = get_parts {
+		git_info(),
 		filepath(),
 		readonly(),
 		vim.b.minidiff_summary_string,
@@ -438,10 +436,7 @@ function M.render_active()
 		rhs(),
 	}
 
-	return get_parts {
-		git_info(),
-		line,
-	}
+	return line
 end
 
 function M.render_inactive()

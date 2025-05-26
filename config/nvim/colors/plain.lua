@@ -212,7 +212,7 @@ highlight('helpHyperTextEntry', { link = 'Title' })
 highlight('helpHyperTextJump', { link = 'String' })
 
 -- __StatusLine__
-highlight('StatusLine', { bg = nil, fg = 'NvimLightGray4' })
+highlight('StatusLine', { link = 'Comment' })
 
 -- __StatusLineNC__
 highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.cursor_line })
@@ -420,86 +420,44 @@ highlight('@variable.member', { link = 'Normal' })
 highlight('@variable.parameter', { link = 'Statement' })
 highlight('@variable.parameter.reference', { link = 'Statement' }) -- ???
 
--- nvim-cmp menu
-
--- type of completion snippet, function, etc... can also be highlighted
--- separately if needed
-highlight('CmpItemKind', { link = 'NonText' })
-
--- uncompleted item that may be good for completion
-highlight('CmpItemAbbr', { link = 'NonText' })
-
-highlight('CmpItemAbbrDeprecated', { strikethrough = true })
--- matched item (what you typed until present)
-highlight('CmpItemAbbrMatch', { link = 'DiffAdd', bold = true, italic = true })
-highlight('CmpItemAbbrMatchFuzzy', { link = 'CmpItemAbbrMatch' })
--- the source of the completion
-highlight('CmpItemMenu', { link = 'NonText' })
-
-highlight('CmpItemKindField', { fg = light_red })
-highlight('CmpItemKindProperty', { fg = light_red })
-highlight('CmpItemKindEvent', { fg = light_red })
-
-highlight('CmpItemKindText', { fg = light_green })
-highlight('CmpItemKindEnum', { fg = light_green })
-highlight('CmpItemKindKeyword', { fg = light_green })
-
-highlight('CmpItemKindConstant', { fg = light_yellow })
-highlight('CmpItemKindConstructor', { fg = light_yellow })
-highlight('CmpItemKindReference', { fg = light_yellow })
-
-highlight('CmpItemKindFunction', { fg = light_purple })
-highlight('CmpItemKindStruct', { fg = light_purple })
-highlight('CmpItemKindClass', { fg = light_purple })
-highlight('CmpItemKindModule', { fg = light_purple })
-highlight('CmpItemKindOperator', { fg = light_purple })
-
-highlight('CmpItemKindVariable', { fg = medium_gray })
-highlight('CmpItemKindFile', { fg = medium_gray })
-
-highlight('CmpItemKindUnit', { fg = dark_yellow })
-highlight('CmpItemKindSnippet', { fg = dark_yellow })
-highlight('CmpItemKindFolder', { fg = dark_yellow })
-
-highlight('CmpItemKindMethod', { fg = light_blue })
-highlight('CmpItemKindValue', { fg = light_blue })
-highlight('CmpItemKindEnumMember', { fg = light_blue })
-
-highlight('CmpItemKindInterface', { fg = light_cyan })
-highlight('CmpItemKindColor', { fg = light_cyan })
-highlight('CmpItemKindTypeParameter', { fg = light_cyan })
-
 -- blink.cmp
 highlight('BlinkCmpLabelDeprecated', { strikethrough = true })
-highlight('BlinkCmpMenuSelection', { link = 'CursorLine' })
-highlight('BlinkCmpLabel', { link = 'CmpItemAbbr' })
-highlight('BlinkCmpLabelMatch', { link = 'CmpItemAbbrMatch' })
-highlight('BlinkCmpKind', { link = 'CmpItemKind' })
-highlight('BlinkCmpKindField', { link = 'CmpItemKindField' })
-highlight('BlinkCmpKindProperty', { link = 'CmpItemKindProperty' })
-highlight('BlinkCmpKindEvent', { link = 'CmpItemKindEvent' })
-highlight('BlinkCmpKindText', { link = 'CmpItemKindText' })
-highlight('BlinkCmpKindEnum', { link = 'CmpItemKindEnum' })
-highlight('BlinkCmpKindKeyword', { link = 'CmpItemKindKeyword' })
-highlight('BlinkCmpKindConstant', { link = 'CmpItemKindConstant' })
-highlight('BlinkCmpKindConstructor', { link = 'CmpItemKindConstructor' })
-highlight('BlinkCmpKindReference', { link = 'CmpItemKindReference' })
-highlight('BlinkCmpKindFunction', { link = 'CmpItemKindFunction' })
-highlight('BlinkCmpKindStruct', { link = 'CmpItemKindStruct' })
-highlight('BlinkCmpKindClass', { link = 'CmpItemKindClass' })
-highlight('BlinkCmpKindModule', { link = 'CmpItemKindModule' })
-highlight('BlinkCmpKindOperator', { link = 'CmpItemKindOperator' })
-highlight('BlinkCmpKindVariable', { link = 'CmpItemKindVariable' })
-highlight('BlinkCmpKindFile', { link = 'CmpItemKindFile' })
-highlight('BlinkCmpKindUnit', { link = 'CmpItemKindUnit' })
-highlight('BlinkCmpKindSnippet', { link = 'CmpItemKindSnippet' })
-highlight('BlinkCmpKindFolder', { link = 'CmpItemKindFolder' })
-highlight('BlinkCmpKindMethod', { link = 'CmpItemKindMethod' })
-highlight('BlinkCmpKindValue', { link = 'CmpItemKindValue' })
-highlight('BlinkCmpKindEnumMember', { link = 'CmpItemKindEnumMember' })
-highlight('BlinkCmpKindInterface', { link = 'CmpItemKindInterface' })
-highlight('BlinkCmpKindColor', { link = 'CmpItemKindColor' })
-highlight('BlinkCmpKindTypeParameter', { link = 'CmpItemKindTypeParameter' })
+highlight(
+	'BlinkCmpMenuSelection',
+	{ bg = colors.cursor_line, fg = colors.norm }
+)
+highlight('BlinkCmpLabel', { link = 'NoneText' })
+highlight('BlinkCmpScrollBarThumb', { link = 'CursorLine' })
+highlight(
+	'BlinkCmpLabelMatch',
+	{ link = 'DiffAdd', bold = true, italic = true }
+)
+highlight('BlinkCmpKind', { link = 'NoneText' })
+highlight('BlinkCmpKindField', { fg = colors.red })
+highlight('BlinkCmpKindProperty', { link = 'BlinkCmpKindField' })
+highlight('BlinkCmpKindEvent', { link = 'BlinkCmpKindField' })
+highlight('BlinkCmpKindText', { fg = colors.green })
+highlight('BlinkCmpKindEnum', { link = 'BlinkCmpKindText' })
+highlight('BlinkCmpKindKeyword', { link = 'BlinkCmpKindText' })
+highlight('BlinkCmpKindConstant', { fg = colors.yellow })
+highlight('BlinkCmpKindConstructor', { link = 'BlinkCmpKindConstant' })
+highlight('BlinkCmpKindReference', { link = 'BlinkCmpKindConstant' })
+highlight('BlinkCmpKindFunction', { fg = colors.purple })
+highlight('BlinkCmpKindStruct', { link = 'BlinkCmpKindFunction' })
+highlight('BlinkCmpKindClass', { link = 'BlinkCmpKindFunction' })
+highlight('BlinkCmpKindModule', { link = 'BlinkCmpKindFunction' })
+highlight('BlinkCmpKindOperator', { link = 'BlinkCmpKindFunction' })
+highlight('BlinkCmpKindVariable', { fg = colors.blue })
+highlight('BlinkCmpKindFile', { link = 'BlinkCmpKindVariable' })
+highlight('BlinkCmpKindUnit', { fg = colors.yellow })
+highlight('BlinkCmpKindSnippet', { link = 'BlinkCmpKindUnit' })
+highlight('BlinkCmpKindFolder', { link = 'BlinkCmpKindUnit' })
+highlight('BlinkCmpKindMethod', { fg = colors.blue })
+highlight('BlinkCmpKindValue', { link = 'BlinkCmpKindMethod' })
+highlight('BlinkCmpKindEnumMember', { link = 'BlinkCmpKindMethod' })
+highlight('BlinkCmpKindInterface', { fg = colors.cyan })
+highlight('BlinkCmpKindColor', { link = 'BlinkCmpKindInterface' })
+highlight('BlinkCmpKindTypeParameter', { link = 'BlinkCmpKindInterface' })
 
 -- Misc. mainly my custom stuff --
 highlight(
@@ -519,6 +477,7 @@ highlight('LspReferenceWrite', { link = 'SpecialKey' })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })
+highlight('User6', { fg = colors.norm, italic = true })
 highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
