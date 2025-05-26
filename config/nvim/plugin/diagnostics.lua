@@ -1,3 +1,4 @@
+local au = require '_.utils.au'
 local utils = require '_.utils'
 
 -- wrap open_float to inspect diagnostics and use the severity color for border
@@ -34,32 +35,16 @@ end)(vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
-	virtual_lines = { current_line = true },
-	virtual_text = false,
-	-- virtual_text = {
-	-- 	-- source = 'always',
-	-- 	spacing = 2,
-	-- 	prefix = '', -- Could be '●', '▎', 'x'
-	-- 	format = function(diagnostic)
-	-- 		local source = diagnostic.source
-	--
-	-- 		if source then
-	-- 			local icon =
-	-- 				utils.get_icon(vim.diagnostic.severity[diagnostic.severity]:lower())
-	--
-	-- 			return string.format(
-	-- 				'%s %s %s',
-	-- 				icon,
-	-- 				source,
-	-- 				'['
-	-- 					.. (diagnostic.code ~= nil and diagnostic.code or diagnostic.message)
-	-- 					.. ']'
-	-- 			)
-	-- 		end
-	--
-	-- 		return string.format('%s ', diagnostic.message)
-	-- 	end,
-	-- },
+	virtual_text = {
+		spacing = 0,
+		prefix = '',
+		virt_text_pos = 'eol_right_align',
+		format = function(diagnostic)
+			return utils.get_icon(
+				vim.diagnostic.severity[diagnostic.severity]:lower()
+			)
+		end,
+	},
 	float = {
 		source = 'if_many',
 		prefix = function(diag)
@@ -70,18 +55,14 @@ vim.diagnostic.config {
 			return prefix, 'Diagnostic' .. level:gsub('^%l', string.upper)
 		end,
 	},
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = utils.get_icon 'error',
-			[vim.diagnostic.severity.WARN] = utils.get_icon 'warn',
-			[vim.diagnostic.severity.HINT] = utils.get_icon 'hint',
-			[vim.diagnostic.severity.INFO] = utils.get_icon 'info',
-		},
-		numhl = {
-			[vim.diagnostic.severity.HINT] = 'DiagnosticHint',
-			[vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
-			[vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
-			[vim.diagnostic.severity.ERROR] = 'DiagnosticError',
-		},
-	},
+	signs = false,
 }
+
+au.augroup('__DIAGNOSTICS__', {
+	{
+		event = { 'CursorHold' },
+		callback = function()
+			vim.diagnostic.open_float()
+		end,
+	},
+})
