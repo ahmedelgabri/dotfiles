@@ -57,12 +57,3 @@ vim.diagnostic.config {
 	},
 	signs = false,
 }
-
-au.augroup('__DIAGNOSTICS__', {
-	{
-		event = { 'CursorHold' },
-		callback = function()
-			vim.diagnostic.open_float()
-		end,
-	},
-})
