@@ -313,6 +313,25 @@ return {
 				},
 			}
 
+			local tsgo = vim.fn.executable 'tsgo' ~= 0
+
+			vim.lsp.config('tsgo', {
+				cmd = { 'tsgo', 'lsp', '--stdio' },
+				workspace_required = true,
+				root_dir = function(_bufnr, on_dir)
+					on_dir(
+						not vim.fs.root(0, { '.flowconfig', 'deno.json', 'deno.jsonc' })
+							and vim.fs.root(0, {
+								'tsconfig.json',
+								'jsconfig.json',
+								'package.json',
+								'.git',
+								vim.api.nvim_buf_get_name(0),
+							})
+					)
+				end,
+			})
+
 			vim.lsp.config('vtsls', {
 				root_dir = function(_bufnr, on_dir)
 					on_dir(
@@ -478,35 +497,54 @@ return {
 			})
 
 			local servers = {
-				'cssls',
-				'stylelint_lsp',
-				'html',
-				'eslint',
-				'oxlint',
-				'vtsls',
-				'denols',
-				'tailwindcss',
+				{ 'cssls', 'vscode-css-language-server' },
+				{ 'stylelint_lsp', 'stylelint-lsp' },
+				{ 'html', 'vscode-html-language-server' },
+				{ 'eslint', 'vscode-eslint-language-server' },
+				{ 'oxlint', utils.get_lsp_bin 'oxc_language_server' },
+				{ 'tsgo', tsgo },
+				{ 'vtsls', not tsgo },
+				{ 'denols', 'deno' },
+				{ 'tailwindcss', 'tailwindcss-language-server' },
 
-				'dockerls',
-				'docker_compose_language_service',
+				{ 'dockerls', 'docker-langserver' },
+				{ 'docker_compose_language_service' },
 
-				'pyright',
-				'ruff',
+				{ 'pyright', 'pyright-langserver' },
+				{ 'ruff' },
 
-				'bashls',
-				'lua_ls',
-				'rust_analyzer',
-				'gopls',
-				'nixd',
-				'ast_grep',
-				'taplo',
-				'jsonls',
-				'yamlls',
-				'typos_lsp',
-				'mutt_ls',
+				{ 'bashls', 'bash-language-server' },
+				{ 'lua_ls', 'lua-language-server' },
+				{ 'rust_analyzer' },
+				{ 'gopls' },
+				{ 'nixd' },
+				{ 'ast_grep', utils.get_lsp_bin 'ast-grep' },
+				{ 'taplo' },
+				{ 'jsonls', 'vscode-json-language-server' },
+				{ 'yamlls', 'yaml-language-server' },
+				{ 'typos_lsp', 'typos-lsp' },
+				{ 'mutt_ls', 'mutt-language-server' },
 			}
 
-			vim.lsp.enable(servers)
+			for _, value in ipairs(servers) do
+				local lsp, enableOrExecutable = value[1], value[2]
+				local enable = true
+
+				if type(enableOrExecutable) == 'boolean' then
+					enable = enableOrExecutable
+				end
+
+				if type(enableOrExecutable) == 'string' then
+					enable = vim.fn.executable(enableOrExecutable) ~= 0
+				end
+
+				if type(enableOrExecutable) == 'nil' then
+					enable = vim.fn.executable(lsp) ~= 0
+				end
+
+				-- only enable the ones that have their executable available
+				vim.lsp.enable(lsp, enable)
+			end
 
 			au.autocmd {
 				event = 'LspAttach',
