@@ -44,3 +44,6 @@ if [[ "$(uname)" == linux* ]]; then
   alias chmod='chmod --preserve-root -v'
   alias chown='chown --preserve-root -v'
 fi
+
+# Avoid ssh issues with ssh and terminfo with new terminal apps
+[[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"
