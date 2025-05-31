@@ -34,7 +34,7 @@ return {
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',
-		event = utils.LazyFile,
+		event = 'VeryLazy',
 		dependencies = {
 			{ 'https://github.com/tpope/vim-rhubarb' },
 		},

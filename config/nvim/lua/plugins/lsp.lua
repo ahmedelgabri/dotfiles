@@ -73,7 +73,7 @@ return {
 	{ 'https://github.com/b0o/SchemaStore.nvim' },
 	{
 		'https://github.com/neovim/nvim-lspconfig',
-		event = utils.LazyFile,
+		event = 'VeryLazy',
 		config = function()
 			-- for debugging
 			-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
