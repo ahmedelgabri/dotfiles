@@ -28,10 +28,6 @@
 
     nix-homebrew = {
       url = "github:zhaofengli-wip/nix-homebrew";
-      inputs = {
-        nix-darwin.follows = "darwin";
-        nixpkgs.follows = "nixpkgs";
-      };
     };
 
     darwin = {
