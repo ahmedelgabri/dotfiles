@@ -70,15 +70,6 @@ return {
 			},
 		},
 	},
-	{
-		'https://github.com/zk-org/zk-nvim',
-		ft = { 'markdown' },
-		config = function()
-			require('zk').setup {
-				picker = 'fzf_lua',
-			}
-		end,
-	},
 	{ 'https://github.com/b0o/SchemaStore.nvim' },
 	{
 		'https://github.com/neovim/nvim-lspconfig',

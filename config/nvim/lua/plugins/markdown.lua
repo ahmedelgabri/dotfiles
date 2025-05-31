@@ -77,6 +77,14 @@ return {
 		opts = {},
 	},
 	{
+		'https://github.com/zk-org/zk-nvim',
+		config = function()
+			require('zk').setup {
+				picker = 'fzf_lua',
+			}
+		end,
+	},
+	{
 		'https://github.com/obsidian-nvim/obsidian.nvim',
 		version = '*', -- recommended, use latest release instead of latest commit
 		cmd = { 'Obsidian' },
