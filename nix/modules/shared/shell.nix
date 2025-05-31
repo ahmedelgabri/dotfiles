@@ -52,6 +52,7 @@ in {
             # https://github.blog/2022-04-12-git-security-vulnerability-announced/
             GIT_CEILING_DIRECTORIES = builtins.dirOf home;
             SHELL = "${pkgs.zsh}/bin/zsh";
+            NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
           };
 
           systemPackages = with pkgs;
