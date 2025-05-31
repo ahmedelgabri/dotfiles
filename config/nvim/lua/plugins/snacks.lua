@@ -243,6 +243,8 @@ return {
 					{ text = '', padding = 1 },
 					{ title = 'Bookmarks', padding = 1 },
 					{ section = 'keys', padding = 1 },
+					{ title = 'MRU ', file = vim.fn.fnamemodify('.', ':~'), padding = 1 },
+					{ section = 'recent_files', cwd = true, limit = 8, padding = 1 },
 					{ title = 'MRU', padding = 1 },
 					{ section = 'recent_files', limit = 8, padding = 1 },
 					{ title = 'Sessions', padding = 1 },
