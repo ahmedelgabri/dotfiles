@@ -3,16 +3,18 @@ local au = require '_.utils.au'
 -- Heavily influnced by https://github.com/fabridamicelli/cronex.nvim and some code are copied from there
 local M = {}
 
+local mark_id = nil
 M._cache = {}
 
---Define s to match cronexp in a line. One of three possible lengths (7,6,5)
-local first = '[\'"]%s?[%d%-%/%*,]+%s' -- Should we allow letters here too?
-local part = '[%a%d%-%/%*,%?#]+%s'
-local last = '[%a%d%-%/%*,%?#]+%s?[\'"]'
-local nparts2pat = {
-	[7] = first .. part .. part .. part .. part .. part .. last,
-	[6] = first .. part .. part .. part .. part .. last,
-	[5] = first .. part .. part .. part .. last,
+-- Define patterns for the content of cron expressions of different lengths.
+-- The first field is typically numeric (minute, second), subsequent fields can be more general.
+local field_numeric = '[%d%-%/%*,]+'
+local field_general = '[%a%d%-%/%*,%?#]+'
+
+local cron_content_patterns_by_length = {
+	[5] = field_numeric .. ('%s+' .. field_general):rep(4),
+	[6] = field_numeric .. ('%s+' .. field_general):rep(5),
+	[7] = field_numeric .. ('%s+' .. field_general):rep(6),
 }
 
 -- "0 15 * * 1-5"
@@ -57,53 +59,23 @@ M.explain = function(cron_expression)
 	return vim.fn.split(output, ': ')[2]
 end
 
-M.get_cron_for_pat = function(line, pat)
-	-- Only allow 1 expression per line
-	local n_quotes = 0
-	for _ in string.gmatch(line, '[\'"]') do
-		n_quotes = n_quotes + 1
-	end
-	if n_quotes > 2 then
-		return nil
-	end
-
-	-- Build match and count as we go
-	local match = ''
-	local n_matches = 0
-	for m in string.gmatch(line, pat) do
-		n_matches = n_matches + 1
-		match = match .. m
-	end
-	if match == '' or n_matches > 1 then
-		return nil
-	end
-
-	-- Remove " and '
-	local clean = ''
-	for i = 1, #match do
-		local c = string.sub(match, i, i)
-		if c ~= "'" and c ~= '"' then
-			clean = clean .. c
-		end
-	end
-
-	-- Strip white space at beginning and end
-	if string.sub(clean, 1, 1) == ' ' then
-		clean = string.sub(clean, 2)
-	end
-	if string.sub(clean, -1, -1) == ' ' then
-		clean = string.sub(clean, 0, -2)
-	end
-
-	return clean
-end
-
 M.cron_from_line = function(line)
 	for n = 7, 5, -1 do
-		local pat = nparts2pat[n]
-		local match = M.get_cron_for_pat(line, pat)
-		if match then
-			return match
+		local content_pattern = cron_content_patterns_by_length[n]
+		if content_pattern then
+			-- Try to match with double quotes
+			local full_pattern_dq = '"%s*(' .. content_pattern .. ')%s*"'
+			local match = line:match(full_pattern_dq)
+			if match then
+				return match -- string.match with a capture returns the captured part
+			end
+
+			-- Try to match with single quotes
+			local full_pattern_sq = "'%s*(" .. content_pattern .. ")%s*'"
+			match = line:match(full_pattern_sq)
+			if match then
+				return match -- string.match with a capture returns the captured part
+			end
 		end
 	end
 	return nil
@@ -123,11 +95,10 @@ M.render = function(info)
 	)
 end
 
-local mark_id = nil
-
 vim.keymap.set({ 'n' }, '<leader>ec', function()
 	if mark_id then
 		vim.api.nvim_buf_del_extmark(0, ns, mark_id)
+		mark_id = nil -- Clear the stored ID after deleting the mark
 	end
 
 	local expression = M.cron_from_line(vim.fn.getline '.')
@@ -144,13 +115,12 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 	end
 end, { desc = 'Explain a cron expression' })
 
--- @TODO: Why is it not working?
--- au.augroup('cron-explainer', {
--- 	{
--- 		event = { 'CursorMoved', 'CursorMovedI' },
--- 		callback = function()
--- 			vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
--- 		end,
--- 		buffer = 0,
--- 	},
--- })
+au.augroup('cron-explainer', {
+	{
+		event = { 'CursorMoved', 'CursorMovedI' },
+		callback = function(ev)
+			vim.api.nvim_buf_clear_namespace(ev.buf, ns, 0, -1)
+			mark_id = nil -- Reset mark_id as the extmark is now cleared
+		end,
+	},
+})
