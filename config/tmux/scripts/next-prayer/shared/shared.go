@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"reflect"
 	"time"
 )
 
@@ -28,8 +27,8 @@ type Output struct {
 }
 
 type ApiData struct {
-	Mosque  interface{} `json:"mosque"`
-	Timings AllTimes    `json:"timings"`
+	Mosque  any      `json:"mosque"`
+	Timings AllTimes `json:"timings"`
 }
 
 type Source interface {
@@ -38,12 +37,6 @@ type Source interface {
 
 func get_prayer_time(timeStr string) (time.Time, error) {
 	return time.ParseInLocation("02 Jan 2006 15:04", timeStr, time.Local)
-}
-
-func get_field(v *ApiData, field string) string {
-	r := reflect.ValueOf(v.Timings)
-	f := reflect.Indirect(r).FieldByName(field)
-	return string(f.String())
 }
 
 // @TODO
@@ -105,16 +98,37 @@ func Get_prayer(source Source) Output {
 		}
 	}
 
-	for _, prayer := range prayers {
-		prayer_time := get_field(&jsonData, prayer)
-		prayer_time_formatted, _ := get_prayer_time(fmt.Sprintf("%s %s", nowFormatted, prayer_time))
+	for _, prayer_name := range prayers {
+		var prayer_time_str string
+		switch prayer_name {
+		case "Fajr":
+			prayer_time_str = jsonData.Timings.Fajr
+		case "Dhuhr":
+			prayer_time_str = jsonData.Timings.Dhuhr
+		case "Asr":
+			prayer_time_str = jsonData.Timings.Asr
+		case "Maghrib":
+			prayer_time_str = jsonData.Timings.Maghrib
+		case "Isha":
+			prayer_time_str = jsonData.Timings.Isha
+		default:
+			// This case should ideally not be reached if `prayers` array is consistent with AllTimes struct
+			continue // Skip if prayer name is unknown
+		}
+
+		prayer_time_formatted, err := get_prayer_time(fmt.Sprintf("%s %s", nowFormatted, prayer_time_str))
+		if err != nil {
+			// Handle error, e.g., log it or return an error Output
+			// For now, let's skip this prayer time if parsing fails
+			continue
+		}
 
 		if prayer_time_formatted.After(now) {
 			time_remaining := prayer_time_formatted.Sub(now)
 			time_remaining_diff := (time_remaining).Minutes()
 
 			return Output{
-				Item:          fmt.Sprintf("%s: %s", prayer, prayer_time),
+				Item:          fmt.Sprintf("%s: %s", prayer_name, prayer_time_str),
 				TimeRemaining: int(time_remaining_diff),
 			}
 		}
