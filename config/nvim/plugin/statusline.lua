@@ -219,7 +219,7 @@ local function lsp_diagnostics()
 	local levels = {
 		errors = vim.diagnostic.severity.ERROR,
 		warnings = vim.diagnostic.severity.WARN,
-		info = vim.diagnostic.severity.WARN,
+		info = vim.diagnostic.severity.INFO,
 		hints = vim.diagnostic.severity.HINT,
 	}
 
