@@ -83,7 +83,7 @@ function M.source_project_config()
 	for _, file in pairs(files) do
 		local current_file = vim.fn.findfile(file, vim.fn.expand '%:p' .. ';')
 
-		if vim.fn.filereadable(current_file) == 1 then
+		if vim.uv.fs_stat(current_file) then
 			vim.api.nvim_command(string.format('silent source %s', current_file))
 		end
 	end

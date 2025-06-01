@@ -367,7 +367,7 @@ local vimrc_local = string.format(
 	'/nvimrc.lua'
 )
 
-if vim.fn.filereadable(vimrc_local) == 1 then
+if vim.uv.fs_stat(vimrc_local) then
 	vim.cmd(string.format('silent source %s', vimrc_local))
 end
 
