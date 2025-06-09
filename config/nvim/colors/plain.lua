@@ -519,12 +519,10 @@ highlight('SnacksDashboardTitle', { fg = colors.bg_subtle })
 
 -- Diffview
 highlight('DiffviewDiffAdd', {
-	bg = colors.green,
-	fg = colors.ok,
+	fg = colors.green,
 })
 highlight('DiffviewDiffChange', {
-	bg = colors.yellow,
-	fg = colors.warning,
+	fg = colors.yellow,
 })
 highlight('DiffviewDiffDelete', {
 	fg = colors.red,
