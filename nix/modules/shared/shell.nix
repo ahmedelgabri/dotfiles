@@ -313,36 +313,6 @@ in {
                   elif (( ${"$"}+commands[git] )); then
                     compdef g=git
                   fi
-                ''
-              ]
-              ++ map builtins.readFile [
-                ../../../config/zsh.d/zsh/config/options.zsh
-                ../../../config/zsh.d/zsh/config/input.zsh
-                ../../../config/zsh.d/zsh/config/completion.zsh
-                ../../../config/zsh.d/zsh/config/aliases.zsh
-                "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-                "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-              ]
-              ++ [
-                /*
-                zsh
-                */
-                ''
-                  # I have to source this file instead of reading it because it depends on reading files in its own directory
-                  # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
-                  #
-                  # It must be sourced before history-substring-search https://github.com/zsh-users/zsh-history-substring-search?tab=readme-ov-file#usage
-                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
-
-                  # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
-                  unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
-
-                  # bind UP and DOWN keys
-                  bindkey '^[[A' history-substring-search-up
-                  bindkey '^[[B' history-substring-search-down
-                  # In vi mode
-                  bindkey -M vicmd 'k' history-substring-search-up
-                  bindkey -M vicmd 'j' history-substring-search-down
 
                   # Note that this will only ensure unique history if we supply a prefix
                   # before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
@@ -358,6 +328,34 @@ in {
                   # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
                   ZSH_AUTOSUGGEST_MANUAL_REBIND=1
                   ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
+                ''
+              ]
+              ++ map builtins.readFile [
+                ../../../config/zsh.d/zsh/config/options.zsh
+                ../../../config/zsh.d/zsh/config/input.zsh
+                ../../../config/zsh.d/zsh/config/completion.zsh
+                ../../../config/zsh.d/zsh/config/aliases.zsh
+                "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+                "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+              ]
+              ++ [
+                /*
+                zsh
+                */
+                ''
+                  # bind UP and DOWN keys
+                  bindkey '^[[A' history-substring-search-up
+                  bindkey '^[[B' history-substring-search-down
+                  # In vi mode
+                  bindkey -M vicmd 'k' history-substring-search-up
+                  bindkey -M vicmd 'j' history-substring-search-down
+
+                  # I have to source this file instead of reading it because it depends on reading files in its own directory
+                  # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
+                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
+
+                  # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
+                  unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
 
                   # This breaks p10k instant prompt if I inline the file, but sourcing works fine
                   source "${pkgs.grc}/etc/grc.zsh"
@@ -367,14 +365,14 @@ in {
                   eval "${"$"}(${pkgs.direnv}/bin/direnv hook zsh)"
                   eval "${"$"}(${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow --disable-ctrl-r)"
                   eval "${"$"}(${pkgs.zoxide}/bin/zoxide init zsh --hook pwd)"
-
+                ''
+                (builtins.readFile ../../../config/zsh.d/zsh/config/extras.zsh)
+                (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
+                ''
                   # Per machine config
                   if [ -f ${"$"}HOST_CONFIGS/zshrc ]; then
                   	source ${"$"}HOST_CONFIGS/zshrc
                   fi
-                ''
-                (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
-                ''
                   #
                   # End profiling (uncomment when necessary)
                   #
