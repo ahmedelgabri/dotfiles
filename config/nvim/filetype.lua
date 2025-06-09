@@ -1,6 +1,7 @@
 vim.filetype.add {
 	extension = {
 		mdx = 'mdx',
+		mdc = 'markdown',
 		log = 'log',
 		env = 'dotenv',
 		sb = 'scheme', -- Apple sandbox rules
