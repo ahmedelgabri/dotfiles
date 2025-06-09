@@ -76,57 +76,147 @@ return {
 		-- N.B! CC needs to be unset (not set to clang as in nix shells)
 		vim.env.CC = ''
 
-		-- See https://github.com/andreaswachowski/dotfiles/commit/853fbc1e06595ecd18490cdfad64823be8bb9971
-		--- @diagnostic disable-next-line: missing-fields
-		require('nvim-treesitter').setup {
-			sync_install = false,
-			auto_install = true,
-			ensure_installed = {
-				'bash',
-				'css',
-				'diff',
-				'embedded_template', -- ERB, EJS, etc…
-				'git_config',
-				'git_rebase',
-				'gitattributes',
-				'gitcommit', -- requires git_rebase and diff
-				'gitignore',
-				'go',
-				'html',
-				'ini',
-				'javascript',
-				'jsdoc',
-				'json',
-				'jsonc',
-				'lua',
-				'make',
-				'markdown',
-				'markdown_inline',
-				'muttrc',
-				'nix',
-				'python',
-				'query', -- For treesitter quereies
-				'regex',
-				'ssh_config',
-				'tmux',
-				'toml',
-				'tsx',
-				'typescript',
-				'vim',
-				'vimdoc',
-				'yaml',
-			},
-			indent = {
-				enable = true,
-			},
-			highlight = {
-				enable = true,
-				use_languagetree = true,
-				additional_vim_regex_highlighting = { 'markdown' }, -- for the obsidian style %% comments
-			},
-		}
+		-- https://github.com/lewis6991/ts-install.nvim/issues/9#issuecomment-2924799227
+		local treesitter = require 'nvim-treesitter'
+		local ts_config = require 'nvim-treesitter.config'
+
+		treesitter.setup {}
 
 		vim.treesitter.language.register('markdown', 'mdx')
 		vim.treesitter.language.register('bash', 'zsh')
+
+		local ensure_installed = {
+			'bash',
+			'css',
+			'diff',
+			'embedded_template', -- ERB, EJS, etc…
+			'git_config',
+			'git_rebase',
+			'gitattributes',
+			'gitcommit', -- requires git_rebase and diff
+			'gitignore',
+			'go',
+			'html',
+			'ini',
+			'javascript',
+			'jsdoc',
+			'json',
+			'jsonc',
+			'lua',
+			'make',
+			'markdown',
+			'markdown_inline',
+			'muttrc',
+			'nix',
+			'python',
+			'query', -- For treesitter quereies
+			'regex',
+			'ssh_config',
+			'tmux',
+			'toml',
+			'tsx',
+			'typescript',
+			'vim',
+			'vimdoc',
+			'yaml',
+		}
+
+		local syntax_map = {}
+
+		local already_installed = ts_config.get_installed 'parsers'
+
+		local parsers_to_install = vim
+			.iter(ensure_installed)
+			:filter(function(parser)
+				return not vim.tbl_contains(already_installed, parser)
+			end)
+			:totable()
+
+		if #parsers_to_install > 0 then
+			treesitter.install(parsers_to_install)
+		end
+
+		local function ts_start(bufnr, parser_name)
+			vim.treesitter.start(bufnr, parser_name)
+
+			-- Use regex based syntax-highlighting as fallback as some plugins might need it
+			if vim.bo[bufnr].filetype == 'markdown' then
+				vim.bo[bufnr].syntax = 'ON'
+			end
+
+			-- Use treesitter for folds
+			vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+			-- Use treesitter for indentation
+			vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		end
+
+		-- Auto-install and start parsers for any buffer
+		vim.api.nvim_create_autocmd({ 'BufRead', 'FileType' }, {
+			desc = 'Enable Treesitter',
+			callback = function(event)
+				local bufnr = event.buf
+				local filetype =
+					vim.api.nvim_get_option_value('filetype', { buf = bufnr })
+
+				-- Skip if no filetype
+				if filetype == '' then
+					return
+				end
+
+				-- Get parser name based on filetype
+				local lang = vim.tbl_get(syntax_map, filetype)
+
+				if lang == nil then
+					lang = filetype
+				else
+					vim.notify('Using language override ' .. lang)
+				end
+
+				local parser_name = vim.treesitter.language.get_lang(lang)
+
+				if not parser_name then
+					vim.notify(
+						vim.inspect('No treesitter parser found for filetype: ' .. lang),
+						vim.log.levels.WARN
+					)
+					return
+				end
+
+				-- Try to get existing parser
+				local parser_configs = require 'nvim-treesitter.parsers'
+				if not parser_configs[parser_name] then
+					return -- Parser not available, skip silently
+				end
+
+				local parser_exists =
+					pcall(vim.treesitter.get_parser, bufnr, parser_name)
+
+				if not parser_exists then
+					-- Check if parser is already installed
+					if vim.tbl_contains(already_installed, parser_name) then
+						vim.notify(
+							'Parser for ' .. parser_name .. ' already installed.',
+							vim.log.levels.INFO
+						)
+					else
+						-- If not installed, install parser asynchronously and start treesitter
+						vim.notify(
+							'Installing parser for ' .. parser_name,
+							vim.log.levels.INFO
+						)
+
+						treesitter.install({ parser_name }):await(function()
+							ts_start(bufnr, parser_name)
+						end)
+
+						return
+					end
+				end
+
+				-- Start treesitter for this buffer
+				ts_start(bufnr, parser_name)
+			end,
+		})
 	end,
 }
