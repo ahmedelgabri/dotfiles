@@ -19,7 +19,7 @@ return {
 	},
 	{
 		'https://github.com/MeanderingProgrammer/render-markdown.nvim',
-		ft = { 'markdown', 'codecompanion' },
+		ft = { 'markdown', 'codecompanion', 'gitcommit' },
 		opts = function(_, opts)
 			return vim.tbl_deep_extend('force', opts or {}, {
 				completions = {
@@ -67,6 +67,22 @@ return {
 				checkbox = {
 					-- position = 'overlay',
 					checked = { scope_highlight = '@markup.strikethrough' },
+				},
+				overrides = {
+					filetype = {
+						gitcommit = { heading = { enabled = false } },
+					},
+				},
+				injections = {
+					gitcommit = {
+						enabled = true,
+						query = [[
+                ((message) @injection.content
+                    (#set! injection.combined)
+                    (#set! injection.include-children)
+                    (#set! injection.language "markdown"))
+            ]],
+					},
 				},
 			})
 		end,
