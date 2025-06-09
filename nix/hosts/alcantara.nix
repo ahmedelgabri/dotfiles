@@ -19,6 +19,7 @@ _: {
       "signal"
       "monodraw"
       "cursor"
+      "sony-ps-remote-play"
     ];
 
     # Requires to be logged in to the AppStore
