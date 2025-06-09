@@ -259,7 +259,14 @@ return {
 				img_folder = 'assets',
 			},
 
-			open_app_foreground = true,
+			open = {
+				func = function(uri)
+					vim.ui.open(
+						uri,
+						{ cmd = { 'open', '-a', '/Applications/Obsidian.app' } }
+					)
+				end,
+			},
 		},
 	},
 }
