@@ -26,6 +26,9 @@ return {
 					lsp = {
 						enabled = true,
 					},
+					blink = {
+						enabled = true,
+					},
 				},
 				render_modes = { 'n', 'c', 'i', 'v', 'V', '\22', 't' },
 				-- anti_conceal = { enabled = false },
