@@ -124,7 +124,6 @@ return {
 					border = utils.get_border(),
 					preview = {
 						border = utils.get_border(),
-						hidden = true,
 						winopts = {
 							number = false,
 							cursorline = true,
