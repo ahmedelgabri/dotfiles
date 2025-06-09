@@ -1,3 +1,4 @@
+local start = hs.timer.absoluteTime()
 -- ╔═════════════════════════════════════════════╗
 -- ║Add a new path to Lua's package.path         ║
 -- ╚═════════════════════════════════════════════╝
@@ -134,6 +135,11 @@ end
 MyWatcher =
 	hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig):start()
 
-hs.alert 'Config loaded'
-
 pcall(require, hs.host.localizedName())
+
+local elapsed = math.floor((hs.timer.absoluteTime() - start) / 1000000)
+
+log.i(string.format('Configuration initialized (%dms)', elapsed))
+
+hs.notify.show('Hammerspoon', '', string.format('Initialized in %dms', elapsed))
+hs.alert 'Config loaded'
