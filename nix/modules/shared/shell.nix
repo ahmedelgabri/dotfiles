@@ -114,7 +114,6 @@ in {
               atuin
               bat
               # buku
-              difftastic
               eza
               fd
               ffmpeg

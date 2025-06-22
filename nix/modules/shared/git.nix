@@ -23,10 +23,13 @@ in {
         packages = with pkgs; [
           # gitAndTools.transcrypt # old version
           # gitAndTools.diff-so-fancy
-          gitAndTools.delta
-          gitAndTools.hub
-          gitAndTools.gh # Need this too https://github.com/yusukebe/gh-markdown-preview
-          gitAndTools.tig
+          difftastic
+          delta
+          hub
+          gh
+          gh-dash
+          gh-gfm-preview
+          tig
           exiftool
         ];
       };

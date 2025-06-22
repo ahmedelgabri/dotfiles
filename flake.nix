@@ -59,6 +59,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    gh-gfm-preview = {
+      url = "github:thiagokokada/gh-gfm-preview";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -195,6 +200,8 @@
                 sha256 = "sha256-1+w0AeVJtu1EK5iNVwk3loenFuIyVlQmlw8TWliHZGI=";
               };
             });
+
+            inherit (inputs.gh-gfm-preview.packages.${prev.system}) gh-gfm-preview;
           })
         ];
       };
