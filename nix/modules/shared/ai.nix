@@ -60,9 +60,9 @@ in {
             packages = with pkgs; [
               ollama
               llama-cpp
-              codex
               claude-code
               aider-chat
+              repomix
               (llm.withPlugins
                 {
                   # LLM access to models by Anthropic, including the Claude series <https://github.com/simonw/llm-anthropic>
