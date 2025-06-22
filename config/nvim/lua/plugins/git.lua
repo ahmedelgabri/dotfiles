@@ -1,5 +1,3 @@
-local utils = require '_.utils'
-
 return {
 	{
 		'https://github.com/jez/vim-github-hub',
@@ -7,12 +5,14 @@ return {
 		ft = { 'markdown.ghpull', 'markdown.ghissue', 'markdown.ghrelease' },
 	},
 	{
-		'https://github.com/akinsho/git-conflict.nvim',
-		version = '*',
-		event = { 'BufReadPre' },
-		opts = {
-			disable_diagnostics = true,
-		},
+		'https://github.com/rhysd/conflict-marker.vim',
+		init = function()
+			-- disable the default highlight group
+			vim.g.conflict_marker_highlight_group = ''
+			-- Include text after begin and end markers
+			vim.g.conflict_marker_begin = '^<<<<<<< .*$'
+			vim.g.conflict_marker_end = '^>>>>>>> .*$'
+		end,
 	},
 	{
 		'https://github.com/sindrets/diffview.nvim',
