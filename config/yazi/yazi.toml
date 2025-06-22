@@ -1,6 +1,6 @@
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 
-[manager]
+[mgr]
 linemode = "size"
 ratio = [0, 2, 6]
 sort_by = "natural"
