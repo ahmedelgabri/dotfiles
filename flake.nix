@@ -344,7 +344,7 @@
           description = "A simple template for Rust";
           welcomeText = ''Welcome to Rust template'';
         };
-        plain = {
+        empty = {
           path = ./templates/plain;
           description = "An empty flake template";
           welcomeText = ''Welcome to Plain template'';
