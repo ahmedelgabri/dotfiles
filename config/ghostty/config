@@ -12,6 +12,7 @@ window-decoration = false
 working-directory = home
 mouse-hide-while-typing = false
 
+macos-non-native-fullscreen=padded-notch
 macos-non-native-fullscreen = true
 macos-option-as-alt = left
 macos-window-shadow = false
