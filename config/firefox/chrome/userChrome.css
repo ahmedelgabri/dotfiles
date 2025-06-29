@@ -10,6 +10,7 @@
 }
 
 #sidebar-box #sidebar-close,
-#sidebar-box #sidebar-spacer {
+#sidebar-box #sidebar-spacer,
+#sidebar-panel-header {
 	display: none !important;
 }
