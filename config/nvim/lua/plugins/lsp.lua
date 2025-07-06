@@ -538,12 +538,7 @@ return {
 							-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
 							url = '',
 						},
-						-- Schemas https://www.schemastore.org
-						schemas = require('schemastore').yaml.schemas {
-							-- ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = {
-							-- 	'docker-compose*.{yml,yaml}',
-							-- },
-						},
+						schemas = require('schemastore').yaml.schemas {},
 					},
 				},
 			})
