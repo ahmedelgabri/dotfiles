@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 require('git'):setup()
 require('smart-enter'):setup { open_multi = true }
 require('folder-rules'):setup()

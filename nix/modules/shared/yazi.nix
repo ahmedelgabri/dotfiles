@@ -68,6 +68,11 @@ in {
           source = "${inputs.yazi-plugins}/git.yazi";
         };
 
+        ".config/yazi/plugins/types.yazi" = {
+          recursive = true;
+          source = "${inputs.yazi-plugins}/types.yazi";
+        };
+
         ".config/yazi/plugins/glow.yazi/main.lua" = {
           recursive = true;
           source = "${inputs.yazi-glow}/init.lua";
