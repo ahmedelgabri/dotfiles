@@ -21,7 +21,6 @@ return {
 			'https://github.com/olimorris/codecompanion.nvim',
 			'https://github.com/giuxtaposition/blink-cmp-copilot',
 			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
-			'https://github.com/folke/lazydev.nvim',
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
 		event = { 'InsertEnter' },
@@ -136,7 +135,6 @@ return {
 					'path',
 					'snippets',
 					'buffer',
-					'lazydev',
 					'emoji',
 					'codecompanion',
 					'markdown',
@@ -151,7 +149,7 @@ return {
 						-- suggestions
 						-- Disabling fallbacks as my snippets wouldn't show up
 						-- Enabled fallbacks as this seems to be working now
-						fallbacks = { 'lazydev', 'buffer' },
+						fallbacks = { 'buffer' },
 					},
 					path = {
 						name = 'Path',
@@ -175,10 +173,6 @@ return {
 						max_items = 3,
 						module = 'blink.cmp.sources.buffer',
 						min_keyword_length = 4,
-					},
-					lazydev = {
-						name = 'LazyDev',
-						module = 'lazydev.integrations.blink',
 					},
 					emoji = {
 						module = 'blink-emoji',
