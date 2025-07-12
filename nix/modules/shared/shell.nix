@@ -29,7 +29,11 @@ in {
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
         environment = {
-          shells = [pkgs.bashInteractive pkgs.zsh];
+          shellAliases = {
+            emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
+            flushdns = "sudo killall -HUP mDNSResponder";
+          };
+
           variables = {
             LANG = "en_US.UTF-8";
             LC_TIME = "en_GB.UTF-8";
@@ -92,6 +96,45 @@ in {
                   popd
                 '')
             ];
+      (mkIf isLinux {
+        environment = {
+
+          shellAliases = {
+            chmod = "chmod --preserve-root -v";
+            chown = "chown --preserve-root -v";
+          };
+        };
+      })
+
+      {
+        environment = {
+          shellAliases = {
+            cp = "cp -iv";
+            ln = "ln -iv";
+            mv = "mv -iv";
+            rm = "rm -i";
+            mkdir = "mkdir -p";
+            sudo = "sudo ";
+            type = "type -a";
+            c = "clear";
+            df = "df -kh";
+            du = "du -kh";
+            fd = "${pkgs.fd}/bin/fd --hidden";
+            history-stat = ''fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head'';
+            history = "fc -il 1";
+            jobs = "jobs -l";
+            play = "mx ϟ";
+            y = "yarn";
+            p = "pnpm";
+            b = "bun";
+            top = "${pkgs.htop}/bin/htop";
+            l = "${pkgs.eza}/bin/eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
+            ll = "${pkgs.eza}/bin/eza --tree --group-directories-first --almost-all -I 'node_modules'";
+            cat = "${pkgs.bat}/bin/bat";
+            grep = "grep --color=auto";
+            get = "wget --continue --progress=bar --timestamping";
+          };
+
           variables =
             # ====================================================
             # This list gets set in alphabetical order.
@@ -374,7 +417,6 @@ in {
                 ../../../config/zsh.d/zsh/config/options.zsh
                 ../../../config/zsh.d/zsh/config/input.zsh
                 ../../../config/zsh.d/zsh/config/completion.zsh
-                ../../../config/zsh.d/zsh/config/aliases.zsh
                 "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
                 "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
               ]

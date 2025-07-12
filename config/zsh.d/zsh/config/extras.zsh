@@ -43,3 +43,6 @@ fi
 zf() {
 	cd $(zoxide query --list --score | fzf --height 40% --layout reverse --info inline --border --preview "eza --all --group-directories-first --header --long --no-user --no-permissions --color=always {2}" --no-sort | awk '{print $2}')
 }
+
+# Avoid ssh issues with ssh and terminfo with new terminal apps
+[[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"

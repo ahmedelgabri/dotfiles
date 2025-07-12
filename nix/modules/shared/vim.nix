@@ -18,14 +18,20 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs;
-        [
-          vim
-          neovim-unwrapped
-        ]
-        ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
-          gcc # Required for treesitter parsers
-        ]);
+      environment = {
+        shellAliases = {
+          e = "$EDITOR";
+        };
+
+        systemPackages = with pkgs;
+          [
+            vim
+            neovim-unwrapped
+          ]
+          ++ (lib.optionals (!pkgs.stdenv.isDarwin) [
+            gcc # Required for treesitter parsers
+          ]);
+      };
 
       my.env = {
         EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";

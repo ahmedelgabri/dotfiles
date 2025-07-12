@@ -82,6 +82,13 @@ in {
       })
 
       {
+        environment = {
+          shellAliases = {
+            # https://github.com/neomutt/neomutt/issues/4058#issuecomment-1751682305
+            neomutt = "TERM=xterm-direct ${pkgs.neomutt}/bin/neomutt";
+          };
+        };
+
         my.user = {
           packages = with pkgs; [
             neomutt
