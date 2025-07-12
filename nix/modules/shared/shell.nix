@@ -48,44 +48,12 @@ in {
           };
 
           systemPackages = with pkgs;
-            (
-              if stdenv.isDarwin
-              then [openssl gawk gnused coreutils findutils]
-              else [dwm dmenu xclip]
-            )
-            ++
-            # Packages broken on Intel
-            (
-              lib.optional (stdenv.hostPlatform.system == "aarch64-darwin")
-              lnav # System Log file navigator
-            )
-            ++ [
-              ast-grep
-              cachix
-              curl
-              direnv
-              fzf
-              grc
-              htop
-              hyperfine
-              jq
-              # ncdu
-              nix-direnv
-              pandoc
-              ripgrep
-              rsync
-              wget
-              zoxide
-              zsh-powerlevel10k
-              (pkgs.writeScriptBin "nixup"
-                /*
-                bash
-                */
-                ''
-                  pushd $DOTFILES/
-                  nix flake update
-                  popd
-                '')
+            [
+              openssl
+              gawk
+              gnused
+              coreutils
+              findutils
               (pkgs.writeScriptBin "nixsw"
                 /*
                 bash
@@ -95,9 +63,19 @@ in {
                   sudo darwin-rebuild switch --flake .
                   popd
                 '')
-            ];
+            ]
+            ++
+            # Packages broken on Intel
+            (
+              lib.optional (stdenv.hostPlatform.system == "aarch64-darwin")
+              lnav # System Log file navigator
+            );
+        };
+      })
+
       (mkIf isLinux {
         environment = {
+          systemPackages = with pkgs; [dwm dmenu xclip];
 
           shellAliases = {
             chmod = "chmod --preserve-root -v";
@@ -108,6 +86,7 @@ in {
 
       {
         environment = {
+          shells = [pkgs.bashInteractive pkgs.zsh];
           shellAliases = {
             cp = "cp -iv";
             ln = "ln -iv";
@@ -201,6 +180,35 @@ in {
               WORK = "$HOME/${devFolder}/work";
               _ZO_DATA_DIR = "${hm.configHome}/zoxide";
             };
+
+          systemPackages = with pkgs; [
+            ast-grep
+            cachix
+            curl
+            direnv
+            fzf
+            grc
+            htop
+            hyperfine
+            jq
+            # ncdu
+            nix-direnv
+            pandoc
+            ripgrep
+            rsync
+            wget
+            zoxide
+            zsh-powerlevel10k
+            (pkgs.writeScriptBin "nixup"
+              /*
+              bash
+              */
+              ''
+                pushd $DOTFILES/
+                nix flake update
+                popd
+              '')
+          ];
         };
 
         my = {
