@@ -62,12 +62,12 @@ in {
       };
       env = mkOption {
         type = attrsOf (oneOf [str path (listOf (either str path))]);
-        apply = mapAttrs (n: v:
+        apply = mapAttrs (k: v:
           if isList v
           then
-            if n == "TERMINFO_DIRS"
+            if k == "TERMINFO_DIRS"
             then
-              # Home-manager and sets it before nix-darwin so instead of overriding it we append to it
+              # Home-manager sets it before nix-darwin so instead of overriding it we append to it
               "$TERMINFO_DIRS:" + concatMapStringsSep ":" toString v
             else concatMapStringsSep ":" toString v
           else (toString v));

@@ -4,9 +4,9 @@ function M.get_icon(icon_name)
 	local ICONS = {
 		paste = '⍴',
 		spell = '✎',
-		branch = vim.env.PURE_GIT_BRANCH ~= '' and vim.fn.trim(
-			vim.env.PURE_GIT_BRANCH
-		) or ' ',
+		branch = vim.env.PROMPT_GIT_BRANCH ~= nil and vim.fn.trim(
+			vim.env.PROMPT_GIT_BRANCH
+		) or '',
 		error = '×',
 		info = '𝒾',
 		warn = '⚐',

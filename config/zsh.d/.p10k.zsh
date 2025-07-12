@@ -22,6 +22,10 @@
 () {
   emulate -L zsh -o extended_glob
 
+  PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
+  # Arrays in zsh starts from 1
+  PROMPT_SYMBOL=${PROMPT_SYMBOLS[$RANDOM % ${#PROMPT_SYMBOLS[@]} + 1]}
+
   # Unset all configuration options. This allows you to apply configuration changes without
   # restarting zsh. Edit ~/.p10k.zsh and type `source ~/.p10k.zsh`.
   unset -m '(POWERLEVEL9K_*|DEFAULT_USER)~POWERLEVEL9K_GITSTATUS_DIR'
@@ -198,7 +202,7 @@
   # Red prompt symbol if the last command failed.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=009
   # Default prompt symbol.
-  typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION="${PURE_PROMPT_SYMBOL}"
+  typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION="${PROMPT_SYMBOL}"
   # Prompt symbol in command vi mode.
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION='❮'
   # Prompt symbol in visual vi mode.

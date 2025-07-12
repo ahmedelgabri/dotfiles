@@ -28,19 +28,12 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        })
-
-      (mkIf isLinux {
-        })
-
-      {
-        # List packages installed in system profile. To search by name, run:
-        # $ nix-env -qaP | grep wget
         environment = {
           shells = [pkgs.bashInteractive pkgs.zsh];
           variables = {
             LANG = "en_US.UTF-8";
             LC_TIME = "en_GB.UTF-8";
+            NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
             # NOTE: Darwin doesn't set them by default, unlike NixOS. So we have to set them.
             # This is just using what's inside home-manager. Defaults are here
             # https://github.com/nix-community/home-manager/blob/a4b0a3faa4055521f2a20cfafe26eb85e6954751/modules/misc/xdg.nix#L14-L17
@@ -48,11 +41,6 @@ in {
             XDG_CONFIG_HOME = hm.configHome;
             XDG_DATA_HOME = hm.dataHome;
             XDG_STATE_HOME = hm.stateHome;
-            HOST_CONFIGS = "${hostConfigHome}";
-            # https://github.blog/2022-04-12-git-security-vulnerability-announced/
-            GIT_CEILING_DIRECTORIES = builtins.dirOf home;
-            SHELL = "${pkgs.zsh}/bin/zsh";
-            NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
           };
 
           systemPackages = with pkgs;
@@ -104,6 +92,72 @@ in {
                   popd
                 '')
             ];
+          variables =
+            # ====================================================
+            # This list gets set in alphabetical order.
+            # So care needs to be taken if two env vars depend on each other
+            #
+            # Allowed variables is only $HOME
+            # Everything else has to be explicit
+            # ====================================================
+            rec {
+              ADBLOCK = "true";
+              AWS_CONFIG_FILE = "${hm.configHome}/aws/config";
+              AWS_SHARED_CREDENTIALS_FILE = "${hm.configHome}/aws/credentials";
+              BROWSER =
+                if pkgs.stdenv.isDarwin
+                then "open"
+                else "xdg-open";
+              CDPATH = ".:~:~/${devFolder}";
+              COLORTERM = "truecolor";
+              COMPANY = company;
+              DOCKER_CONFIG = "${hm.configHome}/docker";
+              DOTFILES = "$HOME/.dotfiles";
+              DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
+              ELINKS_CONFDIR = "${hm.configHome}/elinks";
+              EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
+              EZA_ICON_SPACING = "2";
+              FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
+              FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --walker-skip .git,node_modules";
+              FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
+              FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
+              FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
+              FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
+              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview' --info inline-right";
+              # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
+              FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
+              GATSBY_TELEMETRY_DISABLED = "1";
+              GITHUB_USER = config.my.github_username;
+              # https://github.blog/2022-04-12-git-security-vulnerability-announced/
+              GIT_CEILING_DIRECTORIES = builtins.dirOf home;
+              HOMEBREW_INSTALL_BADGE = "⚽️";
+              HOMEBREW_NO_ANALYTICS = "1";
+              HOST_CONFIGS = "${hostConfigHome}";
+              KEYTIMEOUT = "1";
+              KITTY_LISTEN_ON = "unix:/tmp/kitty";
+              # Set the default Less options.
+              # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+              # Remove -X and -F (exit if the content fits on one screen) to enable it.
+              LESS = "-F -g -i -M -R -S -w -X -z-4";
+              # LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
+              LS_COLORS = "$(${pkgs.vivid}/bin/vivid generate ~/.config/vivid/theme.yml)";
+              NEXT_TELEMETRY_DISABLED = "1";
+              NOTES_DIR = "${PERSONAL_STORAGE}/notes";
+              PAGER = "less";
+              PERSONAL_STORAGE = "$HOME/Sync";
+              PROJECTS = "$HOME/${devFolder}/personal/dev";
+              RLWRAP_HOME = "${hm.dataHome}/rlwrap";
+              # Better spell checking & auto correction prompt
+              SHELL = "${pkgs.zsh}/bin/zsh";
+              SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
+              VIM_FZF_LOG = ''"$(${pkgs.git}/bin/git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
+              ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
+              ZDOTDIR = "${hm.configHome}/zsh";
+              # I use a single zk notes dir, so set it and forget
+              ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
+              WORK = "$HOME/${devFolder}/work";
+              _ZO_DATA_DIR = "${hm.configHome}/zoxide";
+            };
         };
 
         my = {
@@ -174,36 +228,6 @@ in {
               source = ../../../config/atuin;
             };
           };
-
-          env =
-            # ====================================================
-            # This list gets set in alphabetical order.
-            # So care needs to be taken if two env vars depend on each other
-            # ====================================================
-            rec {
-              COMPANY = company;
-              BROWSER =
-                if pkgs.stdenv.isDarwin
-                then "open"
-                else "xdg-open";
-              GITHUB_USER = config.my.github_username;
-
-              VIM_FZF_LOG = ''
-                "$(${pkgs.git}/bin/git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
-
-              FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
-              # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
-              FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
-              FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
-              FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
-              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview' --info inline-right";
-              FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
-              FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-              FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --walker-skip .git,node_modules";
-              CDPATH = ".:~:~/${devFolder}";
-              PROJECTS = "$HOME/${devFolder}/personal/dev";
-              WORK = "$HOME/${devFolder}/work";
-            };
         };
 
         system.activationScripts.postActivation.text = ''
@@ -248,9 +272,25 @@ in {
           # zshenv
           shellInit =
             lib.concatStringsSep "\n"
-            (map builtins.readFile [
-                ../../../config/zsh.d/.zshenv
+            ([
+                /*
+                zsh
+                */
+                ''
+                  export LESS_TERMCAP_mb=$'\E[1;31m'   # Begins blinking.
+                  export LESS_TERMCAP_md=$'\E[1;31m'   # Begins bold.
+                  export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
+                  export LESS_TERMCAP_se=$'\E[0m'      # Ends standout-mode.
+                  export LESS_TERMCAP_so=$'\E[7m'      # Begins standout-mode.
+                  export LESS_TERMCAP_ue=$'\E[0m'      # Ends underline.
+                  export LESS_TERMCAP_us=$'\E[1;32m'   # Begins underline.
+                  # Remove path separator from WORDCHARS.
+                  WORDCHARS=${"$"}{WORDCHARS//[\/]}
+                ''
               ]
+              ++ (map builtins.readFile [
+                ../../../config/zsh.d/.zshenv
+              ])
               ++ [
                 /*
                 zsh
