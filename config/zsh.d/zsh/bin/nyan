@@ -9,7 +9,7 @@ RED="$e[0;91m"
 YELLOW="$e[0;93m"
 GREEN="$e[0;92m"
 
-if [ "$1" = "-alt" ]; then
+if [ "${1-}" = "-alt" ]; then
 	echo -en $RED'`·.,¸,.·*·.'
 	echo -e $RESET$BOLD'╭━━━━╮'$RESET
 	echo -en $YELLOW'`·.,¸,.·*·.'
