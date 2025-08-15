@@ -197,28 +197,6 @@ local mode_keymaps = {
 		{ modes = { 'n' }, action = '<C-x>', opts = { desc = 'Decrement' } },
 		{ modes = { 'x' }, action = 'g<C-x>', opts = { desc = 'Decrement' } },
 	},
-
-	['<leader>ld'] = {
-		{
-			modes = { 'n' },
-			action = function()
-				vim.diagnostic.open_float(
-					nil,
-					{ focusable = false, source = 'if_many' }
-				)
-			end,
-			opts = { desc = 'Show diagnostic [E]rror messages' },
-		},
-	},
-
-	['<leader>q'] = {
-		{
-			modes = { 'n' },
-			action = vim.diagnostic.setloclist,
-			opts = { desc = 'Open diagnostic [Q]uickfix list' },
-		},
-	},
-
 	['x'] = {
 		{
 			modes = { 'n' },

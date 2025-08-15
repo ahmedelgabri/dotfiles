@@ -622,6 +622,17 @@ return {
 					for _, item in ipairs {
 						{
 							{ 'n' },
+							'K',
+							function()
+								vim.lsp.buf.hover {
+									width = 50,
+									max_width = 300,
+								}
+							end,
+							{ desc = 'Hover' },
+						},
+						{
+							{ 'n' },
 							'<C-]>',
 							function()
 								require('fzf-lua').lsp_definitions {
@@ -687,7 +698,27 @@ return {
 							{ 'n' },
 							'<leader>dq',
 							vim.diagnostic.setloclist,
-							{ desc = 'Open diagnostics list' },
+							{ desc = 'Open diagnostic [Q]uickfix list' },
+						},
+						{
+							{ 'n' },
+							'<leader>k',
+							function()
+								if vim.diagnostic.config().virtual_lines then
+									vim.diagnostic.config { virtual_lines = false }
+								else
+									vim.diagnostic.config { virtual_lines = true }
+								end
+							end,
+							{ desc = 'Toggle virtual lines' },
+						},
+						{
+							{ 'n' },
+							'<leader>ld',
+							function()
+								vim.diagnostic.open_float(nil)
+							end,
+							{ desc = 'Show diagnostic [E]rror messages' },
 						},
 						{
 							{ 'n' },
