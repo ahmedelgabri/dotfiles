@@ -19,7 +19,7 @@ in {
       environment = {
         shellAliases = {
           # https://github.com/direnv/direnv/wiki/Tmux
-          tmux = "${pkgs.direnv}/bin/direnv exec / ${pkgs.tmux}/bin/tmux";
+          tmux = "direnv exec / tmux";
         };
       };
 
