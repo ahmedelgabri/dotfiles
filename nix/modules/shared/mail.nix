@@ -85,7 +85,7 @@ in {
         environment = {
           shellAliases = {
             # https://github.com/neomutt/neomutt/issues/4058#issuecomment-1751682305
-            neomutt = "TERM=xterm-direct ${pkgs.neomutt}/bin/neomutt";
+            neomutt = "TERM=xterm-direct neomutt";
           };
         };
 

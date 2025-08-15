@@ -98,7 +98,7 @@ in {
             c = "clear";
             df = "df -kh";
             du = "du -kh";
-            fd = "${pkgs.fd}/bin/fd --hidden";
+            fd = "fd --hidden";
             history-stat = ''fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head'';
             history = "fc -il 1";
             jobs = "jobs -l";
@@ -106,10 +106,10 @@ in {
             y = "yarn";
             p = "pnpm";
             b = "bun";
-            top = "${pkgs.htop}/bin/htop";
-            l = "${pkgs.eza}/bin/eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
-            ll = "${pkgs.eza}/bin/eza --tree --group-directories-first --almost-all -I 'node_modules'";
-            cat = "${pkgs.bat}/bin/bat";
+            top = "htop";
+            l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
+            ll = "eza --tree --group-directories-first --almost-all -I 'node_modules'";
+            cat = "bat";
             grep = "grep --color=auto";
             get = "wget --continue --progress=bar --timestamping";
           };
