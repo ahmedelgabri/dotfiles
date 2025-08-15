@@ -106,6 +106,7 @@ return {
 			'make',
 			'markdown',
 			'markdown_inline',
+			'mermaid',
 			'muttrc',
 			'nix',
 			'python',
