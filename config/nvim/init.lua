@@ -150,7 +150,6 @@ vim.o.listchars = table.concat({
 	'multispace:⋅ ',
 	'lead:⋅',
 	'tab:  ',
-	-- 'tab:| ',
 	'nbsp:░',
 	'extends:»',
 	'precedes:«',
