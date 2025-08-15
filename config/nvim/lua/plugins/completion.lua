@@ -93,7 +93,7 @@ return {
 									local label = ctx.item.label
 									local icon = source == 'LSP'
 											and MiniIcons.get('lsp', ctx.kind)
-										or source == 'copilot' and MiniIcons.get('lsp', source)
+										or source == 'copilot' and MiniIcons.get('filetype', source)
 										or source == 'Path' and (label:match '%.[^/]+$' and MiniIcons.get(
 											'file',
 											label

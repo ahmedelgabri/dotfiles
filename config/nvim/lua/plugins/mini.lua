@@ -140,14 +140,12 @@ return {
 					['spec.ts'] = ts_table,
 					['spec.tsx'] = tsx_table,
 				},
-				lsp = {
+				filetype = {
 					copilot = { glyph = '', hl = 'MiniIconsGrey' },
 					supermaven = { glyph = '', hl = 'MiniIconsGrey' },
-					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
 					codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
 					gemini = { glyph = '⯌', hl = 'MiniIconsGrey' },
 					claude = { glyph = '', hl = 'MiniIconsGrey' },
-					ellipsis_char = { glyph = '… ', hl = 'MiniIconsGrey' },
 					codeium = { glyph = '', hl = 'MiniIconsGray' },
 					anthropic = { glyph = '', hl = 'MiniIconsGray' },
 					openai = { glyph = '󰊲', hl = 'MiniIconsGrey' },
@@ -155,11 +153,16 @@ return {
 					xai = { glyph = '', hl = 'MiniIconsGrey' },
 					huggingface = { glyph = '', hl = 'MiniIconsGrey' },
 				},
+				lsp = {
+					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
+				},
 				directory = {
 					['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
 					['.github'] = { glyph = '󰊤', hl = 'MiniIconsAzure' },
 				},
 				file = {
+					-- https://github.com/echasnovski/mini.nvim/issues/1384#issuecomment-2523472949
+					['init.lua'] = { glyph = '󰢱', hl = 'MiniIconsAzure' },
 					README = { glyph = '󰈙', hl = 'MiniIconsYellow' },
 					['README.md'] = { glyph = '󰈙', hl = 'MiniIconsYellow' },
 				},

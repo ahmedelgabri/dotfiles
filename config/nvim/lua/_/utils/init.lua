@@ -10,13 +10,13 @@ function M.get_icon(icon_name)
 		error = '×',
 		info = '𝒾',
 		warn = '⚐',
-		-- hint = '›',
-		hint = ' ',
+		hint = '•',
 		lock = '',
 		conflict = ' ',
 		success = ' ',
 		virtual = '●',
 		search = '   ',
+		ellipsis = '… ',
 		-- success = ' '
 	}
 

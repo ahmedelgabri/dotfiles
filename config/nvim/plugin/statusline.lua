@@ -292,7 +292,8 @@ local function copilot()
 			not c.is_disabled() or c.buf_is_attached(vim.api.nvim_get_current_buf())
 		)
 	then
-		return string.format(require('mini.icons').get('lsp', 'copilot')) .. ' '
+		return string.format(require('mini.icons').get('filetype', 'copilot'))
+			.. ' '
 	end
 
 	return nil
@@ -344,7 +345,7 @@ local function diff_source()
 	if source == 'git' then
 		icon = require('mini.icons').get('directory', '.github')
 	elseif source == 'codecompanion' then
-		icon = require('mini.icons').get('lsp', 'codecompanion')
+		icon = require('mini.icons').get('filetype', 'codecompanion')
 	end
 
 	return icon
@@ -358,7 +359,7 @@ local function get_codecompanion_status()
 	local _, mini_icons = pcall(require, 'mini.icons')
 
 	local icon, hl =
-		mini_icons and mini_icons.get('lsp', 'codecompanion') .. ' ' or '', ''
+		mini_icons and mini_icons.get('filetype', 'codecompanion') .. ' ' or '', ''
 
 	if llm_info.processing then
 		return string.format('%s Thinking...', icon)
@@ -371,7 +372,7 @@ local function get_codecompanion_status()
 		return nil
 	end
 
-	icon, hl = mini_icons.get('lsp', info.name)
+	icon, hl = mini_icons.get('filetype', info.name)
 	hl = hl
 
 	local llm_name = string.format('%%#%s#%s%%*', hl, icon or info.name)
