@@ -1,20 +1,12 @@
-# As a first step, I will try to symlink my configs as much as possible then
-# migrate the configs to Nix
+# Some useful resources
 #
-# https://nixcloud.io/ for Nix syntax
 # https://nix.dev/
 # https://nixos.org/guides/nix-pills/
 # https://nix-community.github.io/awesome-nix/
-# https://discourse.nixos.org/t/home-manager-equivalent-of-apt-upgrade/8424/3
-# https://www.reddit.com/r/NixOS/comments/jmom4h/new_neofetch_nixos_logo/gayfal2/
-# https://www.youtube.com/user/elitespartan117j27/videos?view=0&sort=da&flow=grid
-# https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs
-# https://www.reddit.com/r/NixOS/comments/k9xwht/best_resources_for_learning_nixos/
-# https://www.reddit.com/r/NixOS/comments/k8zobm/nixos_preferred_packages_flow/
-# https://www.reddit.com/r/NixOS/comments/j4k2zz/does_anyone_use_flakes_to_manage_their_entire/
 # https://serokell.io/blog/practical-nix-flakes
-# https://stephank.nl/p/2023-02-28-using-flakes-for-nixos-configs.html
 # https://zero-to-nix.com/
+# https://wiki.nixos.org/wiki/Flakes
+# https://rconybea.github.io/web/nix/nix-for-your-own-project.html
 {
   description = "~ 🍭 ~";
 
@@ -242,8 +234,6 @@
       };
     };
 
-    # default = (pkgs.writeShellScriptBin "foo" ''echo "foo" ''));
-
     darwinConfigurations =
       mapHosts
       (host: system: (inputs.darwin.lib.darwinSystem
@@ -286,6 +276,13 @@
         pkgs.alejandra
     );
 
+    packages = forAllSystems (system: let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+    in {
+      ${system}.foo = pkgs.writeShellScriptBin "foo" ''echo "foo" '';
+      ${system}.default = self.packages.${system}.foo;
+    });
+
     # @TODO: move the logic inside ./install here
     devShells = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -308,48 +305,7 @@
   in
     {
       inherit darwinConfigurations nixosConfigurations devShells formatter;
-      templates = {
-        node = {
-          path = ./templates/node;
-          description = "A simple template node/js/ts workflows using pnpm and fnm";
-          welcomeText = ''Welcome to nix node template, using Volta and pnpm'';
-        };
-        deno = {
-          path = ./templates/deno;
-          description = "A simple template for Deno";
-          welcomeText = ''Welcome to Deno template'';
-        };
-        bun = {
-          path = ./templates/bun;
-          description = "A simple template for Bun";
-          welcomeText = ''Welcome to Bun template'';
-        };
-        python = {
-          path = ./templates/python;
-          description = "A simple template for Python";
-          welcomeText = ''Welcome to python project template'';
-        };
-        python-script = {
-          path = ./templates/python-script;
-          description = "A simple template for one-off Python scripts";
-          welcomeText = ''Welcome to python uv script mode template'';
-        };
-        go = {
-          path = ./templates/go;
-          description = "A simple template for Go";
-          welcomeText = ''Welcome to Go template'';
-        };
-        rust = {
-          path = ./templates/rust;
-          description = "A simple template for Rust";
-          welcomeText = ''Welcome to Rust template'';
-        };
-        empty = {
-          path = ./templates/plain;
-          description = "An empty flake template";
-          welcomeText = ''Welcome to Plain template'';
-        };
-      };
+      templates = import ./templates;
     }
     // mapHosts
     # for convenience
