@@ -41,6 +41,10 @@ return {
 							return cwd:find '.github/'
 						end,
 					},
+
+					nls.builtins.code_actions.gitrebase,
+					nls.builtins.code_actions.statix,
+					nls.builtins.hover.dictionary,
 				},
 			}
 		end,
