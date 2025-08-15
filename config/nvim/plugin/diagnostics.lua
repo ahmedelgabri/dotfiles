@@ -1,4 +1,3 @@
-local au = require '_.utils.au'
 local utils = require '_.utils'
 
 -- wrap open_float to inspect diagnostics and use the severity color for border
@@ -33,26 +32,45 @@ vim.diagnostic.open_float = (function(orig)
 	end
 end)(vim.diagnostic.open_float)
 
+local clean_src_names = {
+	['Lua Diagnostics.'] = 'lua',
+	['Lua Syntax Check.'] = 'lua',
+}
+
 vim.diagnostic.config {
 	severity_sort = true,
 	virtual_text = {
 		spacing = 0,
-		prefix = '',
-		virt_text_pos = 'eol_right_align',
-		format = function(diagnostic)
-			return utils.get_icon(
-				vim.diagnostic.severity[diagnostic.severity]:lower()
-			)
+		prefix = function(diag, _, total)
+			local icon =
+				utils.get_icon(vim.diagnostic.severity[diag.severity]:lower())
+
+			return total > 1 and ' ' .. icon or icon
+		end,
+		format = function(_)
+			return ''
 		end,
 	},
 	float = {
-		source = 'if_many',
-		prefix = function(diag)
+		source = false, -- I handle this in the custom format
+		header = '',
+		suffix = '',
+		prefix = function(diag, _, _)
 			local level = vim.diagnostic.severity[diag.severity]
 			local icon = utils.get_icon(level:lower())
 			local prefix = string.format(' %s ', icon)
 
 			return prefix, 'Diagnostic' .. level:gsub('^%l', string.upper)
+		end,
+		format = function(diag)
+			local msg = string.format(
+				'[%s] %s',
+				(clean_src_names[diag.source] or diag.source)
+					.. (diag.code and ' -> ' .. diag.code or ''),
+				diag.message
+			)
+
+			return msg
 		end,
 	},
 	signs = false,
