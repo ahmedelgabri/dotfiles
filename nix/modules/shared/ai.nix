@@ -34,10 +34,8 @@ in {
             StandardErrorPath = "${homeDir}/Library/Logs/swama-error.log";
           };
         };
-        homebrew.brews = [
-          "swama"
-        ];
         homebrew.casks = [
+          "swama"
           "claude"
         ];
       })
