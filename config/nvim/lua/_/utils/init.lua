@@ -158,4 +158,10 @@ function M.remove(option, item)
 		:join ','
 end
 
+function M.web_roots(_, on_dir)
+	on_dir(
+		vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
+	)
+end
+
 return M
