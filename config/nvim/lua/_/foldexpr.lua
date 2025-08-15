@@ -1,21 +1,10 @@
--- https://github.com/wincent/wincent/blob/5cbf5067950cbbd8f1777f39281f8e83c6609fa3/aspects/nvim/files/.config/nvim/lua/wincent/foldexpr.lua
-__.retained = {}
-
--- Permanently stop `value` from getting garbage-collected.
---
--- @generic T
--- @param value T
--- @return T
-local retain = function(value)
-	__.retained[#__.retained + 1] = value
-	return value
-end
+-- https://github.com/wincent/wincent/blob/6ba49774cfddae34fa19ce3294b43d6b470a9871/aspects/nvim/files/.config/nvim/lua/wincent/foldexpr.lua
 
 -- Cache to store per-buffer record of fold markers.
 -- Given that we don't expect there to be many markers in any given file, we
 -- just store them in a simple list as opposed to a fancier data structure (like
 -- a search tree).
-local cache = retain {}
+local cache = {}
 
 -- Don't bother trying to compute marker-based folds for buffers with more than
 -- this number of lines.
