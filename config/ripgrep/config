@@ -2,3 +2,35 @@
 # global ignores are in ~/.ignore so it can be picked up by fd & other tools too
 --hidden
 --smart-case
+
+# Automatically switch to PCRE2 when needed; eg. for:
+#
+# | Lookaround          | Example     | Description                 |
+# | ------------------- | ----------- | --------------------------- |
+# | Negative lookbehind | (?<!foo)bar | "bar" not preceded by "foo" |
+# | Negative lookahead  | foo(?!bar)  | "foo" not followed by "bar" |
+# | Positive lookbehind | (?<=foo)bar | "bar" preceded by "foo"     |
+# | Positive lookahead  | foo(?=bar)  | "foo" followed by "bar"     |
+#
+# --engine=ENGINE
+#     Specify which regular expression engine to use. When you choose a
+#     regex engine, it applies that choice for every regex provided to
+#     ripgrep (e.g., via multiple -e/--regexp or -f/--file flags).
+#
+#     Accepted values are default, pcre2, or auto.
+#
+#     The default value is default, which is usually the fastest and
+#     should be good for most use cases. The pcre2 engine is generally
+#     useful when you want to use features such as look-around or
+#     backreferences. auto will dynamically choose between supported
+#     regex engines depending on the features used in a pattern on a
+#     best effort basis.
+#
+#     Note that the pcre2 engine is an optional ripgrep feature. If
+#     PCRE2 wasn't included in your build of ripgrep, then using this
+#     flag will result in ripgrep printing an error message and exiting.
+#
+#     This overrides previous uses of the -P/--pcre2 and --auto-hybrid-regex
+#     flags.
+#
+--engine=auto
