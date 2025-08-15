@@ -36,6 +36,7 @@ return {
 		---@module "conform"
 		---@type conform.setupOpts
 		opts = {
+			log_level = vim.log.levels.DEBUG,
 			formatters = {
 				injected = {
 					options = {
@@ -103,7 +104,7 @@ return {
 				lua = { 'stylua' },
 				-- Ideally I'd use the LSP for this, but I'd lose organize imports and the autofix
 				-- https://github.com/astral-sh/ruff/issues/12778#issuecomment-2279374570
-				python = { 'ruff_fix', 'ruff_organize_imports', lsp_format = 'first' },
+				python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
 				go = {
 					-- this will run gofmt too
 					-- I'm using this instead of LSP format because it cleans up imports too
@@ -112,6 +113,7 @@ return {
 				nix = { 'alejandra', 'statix' },
 				-- not 100% supported but does the job as long as I'm writing POSIX and not fancy zsh
 				zsh = { 'shfmt' },
+				toml = { 'taplo' },
 			}, js_formats),
 			format_on_save = function(bufnr)
 				-- Disable with a global or buffer-local variable
@@ -152,23 +154,24 @@ return {
 				}
 			end, { range = true })
 
-			vim.api.nvim_create_user_command('FormatDisable', function(args)
+			vim.api.nvim_create_user_command('FormatToggle', function(args)
+				-- FormatToggle! will toggle formatting globally
 				if args.bang then
-					-- FormatDisable! will disable formatting just for this buffer
-					vim.b.disable_autoformat = true
+					if vim.g.disable_autoformat == true then
+						vim.g.disable_autoformat = nil
+					else
+						vim.g.disable_autoformat = true
+					end
 				else
-					vim.g.disable_autoformat = true
+					if vim.b.disable_autoformat == true then
+						vim.b.disable_autoformat = nil
+					else
+						vim.b.disable_autoformat = true
+					end
 				end
 			end, {
-				desc = 'Disable autoformat-on-save',
+				desc = 'Toggle autoformat-on-save',
 				bang = true,
-			})
-
-			vim.api.nvim_create_user_command('FormatEnable', function()
-				vim.b.disable_autoformat = false
-				vim.g.disable_autoformat = false
-			end, {
-				desc = 'Re-enable autoformat-on-save',
 			})
 		end,
 	},
