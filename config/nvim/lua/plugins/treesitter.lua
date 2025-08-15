@@ -46,17 +46,6 @@ return {
 						tsx = 'rainbow-tags-react',
 						jsx = 'rainbow-tags-react',
 					},
-					highlight = {
-						-- I reversed the default order, probably I might even change the
-						-- colors completely
-						'RainbowDelimiterCyan',
-						'RainbowDelimiterViolet',
-						'RainbowDelimiterGreen',
-						'RainbowDelimiterOrange',
-						'RainbowDelimiterBlue',
-						'RainbowDelimiterYellow',
-						'RainbowDelimiterRed',
-					},
 				}
 			end,
 		},
