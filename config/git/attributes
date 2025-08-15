@@ -1,4 +1,8 @@
-* text=auto
+* text=auto eol=lf
+
+*.json diff=json
+*.lock diff=lockfile
+
 *.png diff=exif
 *.jpg diff=exif
 *.jpeg diff=exif
