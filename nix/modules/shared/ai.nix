@@ -19,31 +19,32 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        launchd.daemons.ollama = {
-          command = "${pkgs.ollama}/bin/ollama serve";
+        launchd.daemons.swama = {
+          # Not sure about passing the flags here, double check
+          command = "${pkgs.ollama}/bin/swama serve --host 0.0.0.0 --port 28100";
           serviceConfig = {
-            Label = "ollama";
+            Label = "swama";
             UserName = config.my.username;
             GroupName = "staff";
             ExitTimeOut = 30;
             Disabled = false;
             RunAtLoad = true;
             KeepAlive = true;
-            StandardOutPath = "${homeDir}/Library/Logs/ollama-output.log";
-            StandardErrorPath = "${homeDir}/Library/Logs/ollama-error.log";
-            EnvironmentVariables = {
-              "OLLAMA_HOST" = "0.0.0.0:11434";
-            };
+            StandardOutPath = "${homeDir}/Library/Logs/swama-output.log";
+            StandardErrorPath = "${homeDir}/Library/Logs/swama-error.log";
           };
         };
+        homebrew.brews = [
+          "swama"
+        ];
         homebrew.casks = [
-          "msty"
           "claude"
         ];
       })
       (mkIf isLinux {
         my.user = {
           packages = with pkgs; [
+            ollama
             open-webui
           ];
         };
@@ -52,13 +53,12 @@ in {
       {
         environment = {
           shellAliases = {
-            aider = "${pkgs.aider-chat}/bin/aider --config ~/.dotfiles/config/aider/config.yml";
+            aider = "aider --config ~/.dotfiles/config/aider/config.yml";
           };
         };
         my = {
           user = {
             packages = with pkgs; [
-              ollama
               llama-cpp
               claude-code
               aider-chat
