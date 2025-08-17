@@ -38,7 +38,7 @@ return {
 			{
 				'<Leader>\\',
 				function()
-					require('fzf-lua').live_grep_glob { exec_empty_query = true }
+					require('fzf-lua').live_grep { exec_empty_query = true }
 				end,
 				{ silent = true },
 				desc = 'grep project',
