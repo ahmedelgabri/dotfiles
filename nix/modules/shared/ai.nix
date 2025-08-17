@@ -40,13 +40,7 @@ in {
         ];
       })
       (mkIf isLinux {
-        my.user = {
-          packages = with pkgs; [
-            ollama
-            open-webui
-          ];
-        };
-      })
+        })
 
       {
         environment = {
