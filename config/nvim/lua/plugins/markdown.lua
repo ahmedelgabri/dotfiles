@@ -155,6 +155,7 @@ return {
 			'https://github.com/nvim-lua/plenary.nvim',
 		},
 		opts = {
+			legacy_commands = false,
 			workspaces = {
 				{
 					name = 'notes',
@@ -319,15 +320,6 @@ return {
 
 			attachments = {
 				img_folder = 'assets',
-			},
-
-			open = {
-				func = function(uri)
-					vim.ui.open(
-						uri,
-						{ cmd = { 'open', '-a', '/Applications/Obsidian.app' } }
-					)
-				end,
 			},
 		},
 	},
