@@ -90,7 +90,13 @@ return {
 					},
 				},
 			}
-			require('mini.ai').setup {}
+			require('mini.ai').setup {
+				-- Table with textobject id as fields, textobject specification as values.
+				-- Also use this to disable builtin textobjects. See |MiniAi.config|.
+				custom_textobjects = nil,
+				-- Number of lines within which textobject is searched
+				n_lines = 200,
+			}
 
 			-- Indentscope
 			require('mini.indentscope').setup {
