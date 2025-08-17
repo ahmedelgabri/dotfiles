@@ -391,6 +391,119 @@ return {
 							range = true,
 						}
 					end
+
+					local function lsp_status()
+						local clients = vim.lsp.get_clients { bufnr = bufnr }
+
+						if #clients == 0 then
+							print '󰅚 No LSP clients attached'
+							return
+						end
+
+						print('󰒋 LSP Status for buffer ' .. bufnr .. ':')
+						print '─────────────────────────────────'
+
+						for i, c in ipairs(clients) do
+							print(
+								string.format('󰌘 Client %d: %s (ID: %d)', i, c.name, c.id)
+							)
+							print('  Root: ' .. (c.config.root_dir or 'N/A'))
+							print(
+								'  Filetypes: ' .. table.concat(c.config.filetypes or {}, ', ')
+							)
+
+							-- Check capabilities
+							local caps = c.server_capabilities
+							local features = {}
+							if caps.completionProvider then
+								table.insert(features, 'completion')
+							end
+							if caps.hoverProvider then
+								table.insert(features, 'hover')
+							end
+							if caps.definitionProvider then
+								table.insert(features, 'definition')
+							end
+							if caps.referencesProvider then
+								table.insert(features, 'references')
+							end
+							if caps.renameProvider then
+								table.insert(features, 'rename')
+							end
+							if caps.codeActionProvider then
+								table.insert(features, 'code_action')
+							end
+							if caps.documentFormattingProvider then
+								table.insert(features, 'formatting')
+							end
+
+							print('  Features: ' .. table.concat(features, ', '))
+							print ''
+						end
+					end
+
+					vim.api.nvim_create_user_command(
+						'LspStatus',
+						lsp_status,
+						{ desc = 'Show detailed LSP status' }
+					)
+
+					local function check_lsp_capabilities()
+						local clients = vim.lsp.get_clients { bufnr = bufnr }
+
+						if #clients == 0 then
+							print 'No LSP clients attached'
+							return
+						end
+
+						for _, c in ipairs(clients) do
+							print('Capabilities for ' .. c.name .. ':')
+							local caps = c.server_capabilities
+
+							if caps == nil then
+								return
+							end
+
+							local capability_list = {
+								{ 'Completion', caps.completionProvider },
+								{ 'Hover', caps.hoverProvider },
+								{ 'Signature Help', caps.signatureHelpProvider },
+								{ 'Go to Definition', caps.definitionProvider },
+								{ 'Go to Declaration', caps.declarationProvider },
+								{ 'Go to Implementation', caps.implementationProvider },
+								{ 'Go to Type Definition', caps.typeDefinitionProvider },
+								{ 'Find References', caps.referencesProvider },
+								{ 'Document Highlight', caps.documentHighlightProvider },
+								{ 'Document Symbol', caps.documentSymbolProvider },
+								{ 'Workspace Symbol', caps.workspaceSymbolProvider },
+								{ 'Code Action', caps.codeActionProvider },
+								{ 'Code Lens', caps.codeLensProvider },
+								{
+									'Document Formatting',
+									caps.documentFormattingProvider,
+								},
+								{
+									'Document Range Formatting',
+									caps.documentRangeFormattingProvider,
+								},
+								{ 'Rename', caps.renameProvider },
+								{ 'Folding Range', caps.foldingRangeProvider },
+								{ 'Selection Range', caps.selectionRangeProvider },
+							}
+
+							for _, cap in ipairs(capability_list) do
+								local status = cap[2] and '✓' or '✗'
+								print(string.format('  %s %s', status, cap[1]))
+							end
+							print ''
+						end
+					end
+
+					vim.api.nvim_create_user_command(
+						'LspCapabilities',
+						check_lsp_capabilities,
+						{ desc = 'Show LSP capabilities' }
+					)
 				end,
 			}
 
