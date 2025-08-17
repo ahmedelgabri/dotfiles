@@ -50,6 +50,7 @@ end
 return {
 	root_markers = {
 		{
+			'.emmyrc.json',
 			'.luarc.json',
 			'.luarc.jsonc',
 			'.luacheckrc',
@@ -60,7 +61,6 @@ return {
 	},
 	settings = {
 		Lua = {
-			telemetry = { enable = false },
 			workspace = {
 				ignoreDir = {
 					'.direnv',
@@ -73,7 +73,8 @@ return {
 			-- Found a root marker.
 			local path = client.workspace_folders[1].name
 			if
-				vim.uv.fs_stat(path .. '/.luarc.json')
+				vim.uv.fs_stat(path .. '/.emmyrc.json')
+				or vim.uv.fs_stat(path .. '/.luarc.json')
 				or vim.uv.fs_stat(path .. '/.luarc.jsonc')
 			then
 				return
@@ -98,9 +99,8 @@ return {
 								enable = true,
 								globals = { 'vim' },
 							},
-							filetypes = { 'lua' },
 							runtime = {
-								path = {
+								requirePattern = {
 									-- Load modules the same was as Neovim does (see `:help lua-module-load`).
 									'lua/?.lua',
 									'lua/?/init.lua',
@@ -110,9 +110,6 @@ return {
 							workspace = {
 								-- Make the server aware of Neovim runtime files.
 								library = get_library_directories { filter = true },
-								-- Stop "Do you need to configure your work environment as
-								-- `luassert`?" spam.
-								checkThirdParty = false,
 							},
 						})
 

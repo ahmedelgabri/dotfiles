@@ -112,7 +112,7 @@ return {
 				{ 'ruff' },
 
 				{ 'bashls', 'bash-language-server' },
-				{ 'lua_ls', 'lua-language-server' },
+				{ 'emmylua_ls' },
 				{ 'rust_analyzer' },
 				{ 'gopls' },
 				{ 'nixd' },

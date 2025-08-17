@@ -56,6 +56,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emmylua-analyzer-rust = {
+      url = "github:EmmyLuaLs/emmylua-analyzer-rust";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -194,6 +199,8 @@
             });
 
             inherit (inputs.gh-gfm-preview.packages.${prev.system}) gh-gfm-preview;
+
+            inherit (inputs.emmylua-analyzer-rust.packages.${prev.system}) emmylua_ls emmylua_check;
           })
         ];
       };

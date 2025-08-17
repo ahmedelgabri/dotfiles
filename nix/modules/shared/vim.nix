@@ -61,7 +61,8 @@ in {
           yaml-language-server
           tailwindcss-language-server
           statix
-          sumneko-lua-language-server
+          emmylua_ls
+          emmylua_check
           tree-sitter # required for treesitter "auto-install" option to work
           nixd # nix lsp
           actionlint
