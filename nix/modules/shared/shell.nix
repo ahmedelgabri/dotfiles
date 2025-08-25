@@ -191,7 +191,8 @@ in {
             htop
             hyperfine
             jq
-            # ncdu
+            pass
+            ncdu
             nix-direnv
             pandoc
             ripgrep
