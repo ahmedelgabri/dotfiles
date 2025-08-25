@@ -96,14 +96,37 @@ return {
 							}
 						)
 					end,
-					gemini = function()
-						return require('codecompanion.adapters').extend('gemini', {
-							schema = {
-								model = {
-									default = 'gemini-2.5-pro-preview-03-25',
+					llamacpp = function()
+						return require('codecompanion.adapters').extend(
+							'openai_compatible',
+							{
+								name = 'llamacpp',
+								formatted_name = 'Llamacpp',
+								schema = {
+									model = {
+										default = 'unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF',
+									},
 								},
-							},
-						})
+								env = {
+									url = 'http://localhost:8080',
+									api_key = 'TERM',
+								},
+								handlers = {
+									inline_output = function(self, data)
+										local openai = require 'codecompanion.adapters.openai'
+										return openai.handlers.inline_output(self, data)
+									end,
+									chat_output = function(self, data)
+										local openai = require 'codecompanion.adapters.openai'
+										local result = openai.handlers.chat_output(self, data)
+										if result ~= nil then
+											result.output.role = 'assistant'
+										end
+										return result
+									end,
+								},
+							}
+						)
 					end,
 					openrouter = function()
 						return require('codecompanion.adapters').extend(
