@@ -58,18 +58,35 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        launchd.user.agents."isync" = {
-          # This will call notmuch `pre-new` hook that will fetch new mail & addresses too
-          # Check `.mail/.notmuch/hooks/`
-          command = "${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new";
+        launchd.user.agents."mailsync" = {
+          command =
+            pkgs.writeShellScript "mailsync"
+            /*
+            bash
+            */
+            ''
+              set -ue -o pipefail
+
+              echo "--- Starting mail sync at $(date) ---"
+              ${pkgs.coreutils}/bin/timeout ${
+                if cfg.keychain.name == "gmail.com"
+                then "5m"
+                else "2m"
+              } ${pkgs.isync}/bin/mbsync -q -a
+
+              echo "mbsync finished successfully. Indexing new mail..."
+              ${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new
+
+              echo "Sync finished at $(date)"'';
+
           serviceConfig = {
             ProcessType = "Background";
             LowPriorityIO = true;
             StartInterval = 2 * 60;
             RunAtLoad = true;
             KeepAlive = false;
-            StandardOutPath = "${homeDir}/Library/Logs/isync-output.log";
-            StandardErrorPath = "${homeDir}/Library/Logs/isync-error.log";
+            StandardOutPath = "${homeDir}/Library/Logs/mailsync-output.log";
+            StandardErrorPath = "${homeDir}/Library/Logs/mailsync-error.log";
             EnvironmentVariables = {
               "SSL_CERT_FILE" = "/etc/ssl/certs/ca-certificates.crt";
             };
@@ -209,15 +226,6 @@ in {
               source ${xdg.configHome}/neomutt/accounts/${
                 lib.toLower cfg.account
               }'';
-          };
-
-          ".mail/.notmuch/hooks/pre-new" = {
-            executable = true;
-            text = ''
-              #!/usr/bin/env sh
-              # ${nix_managed}
-
-              ${pkgs.coreutils}/bin/timeout 2m ${pkgs.isync}/bin/mbsync -q -a'';
           };
 
           ".config/notmuch/config" = {
@@ -375,6 +383,13 @@ in {
               Create Near
               Expunge Both
               CopyArrivalDate yes
+
+              # - Pull: Get changes from the server (Master) to local (Slave).
+              Sync Pull
+
+              # - Remove: If a folder is deleted on the server, also delete it locally.
+              Remove Near
+
               SyncState *
               # TODO: support multiple accounts
               # {% for account in mail_accounts %}
@@ -392,6 +407,7 @@ in {
               AuthMechs LOGIN
               TLSType IMAPS
               TLSVersions +1.2
+              ${lib.optionalString (cfg.keychain.name == "gmail.com") ''PipelineDepth 1''}
 
               # Remote storage (where the mail is retrieved from)
               IMAPStore ${cfg.account}-remote
@@ -407,13 +423,12 @@ in {
               Far :${cfg.account}-remote:INBOX
               Near :${cfg.account}-local:INBOX
 
-              Channel ${cfg.account}-archive
-              ${
-                if cfg.keychain.name == "fastmail.com"
-                then "Far :${cfg.account}-remote:Archive"
-                else ''Far :${cfg.account}-remote:"[Gmail]/All Mail"''
-              }
-              Near :${cfg.account}-local:Archive
+
+              ${lib.optionalString (cfg.keychain.name == "fastmail.com") ''
+                Channel ${cfg.account}-archive
+                Far :${cfg.account}-remote:Archive
+                Near :${cfg.account}-local:Archive''}
+
 
               Channel ${cfg.account}-drafts
               ${
@@ -458,7 +473,7 @@ in {
               # All folders except those defined above
               Patterns * !INBOX !Archive !Drafts ${
                 lib.optionalString (cfg.keychain.name == "gmail.com")
-                "!Starred "
+                ''!Starred !"Version Control" !"Version Control/*" !GitHub !GitHub/* !"Inbox - CC" "!Inbox - CC/*" ''
               }!Sent !Spam !Trash ![Gmail]*
 
               # Group the channels, so that all channels can be sync'd with `mbsync ${
