@@ -179,7 +179,7 @@
             # Nixpkgs is outdated
             zsh-completions = prev.zsh-completions.overrideAttrs (oldAttrs: rec {
               version = "master";
-              src = pkgs.fetchFromGitHub {
+              src = prev.fetchFromGitHub {
                 owner = "zsh-users";
                 repo = oldAttrs.pname;
                 rev = version;
@@ -190,7 +190,7 @@
             # Nixpkgs is outdated
             zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (oldAttrs: rec {
               version = "master";
-              src = pkgs.fetchFromGitHub {
+              src = prev.fetchFromGitHub {
                 owner = "zsh-users";
                 repo = oldAttrs.pname;
                 rev = version;
