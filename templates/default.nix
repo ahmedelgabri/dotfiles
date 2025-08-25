@@ -2,7 +2,7 @@
   node = {
     path = ./node;
     description = "A simple template node/js/ts workflows using pnpm and fnm";
-    welcomeText = ''Welcome to nix node template, using Volta and pnpm'';
+    welcomeText = ''Welcome to nix node template with pnpm'';
   };
   deno = {
     path = ./deno;

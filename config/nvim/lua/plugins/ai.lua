@@ -302,7 +302,7 @@ return {
 					return true
 				end,
 			},
-			copilot_node_command = vim.fn.expand '~/.volta/bin/node',
+			copilot_node_command = vim.fn.expand '~/.local/share/mise/installs/node/latest/bin/node',
 			server = {
 				type = 'binary',
 				custom_server_filepath = vim.fn.exepath 'copilot-language-server',

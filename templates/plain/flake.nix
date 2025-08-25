@@ -23,13 +23,13 @@
       in {
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [hello];
+          buildInputs = with pkgs; [mise];
           shellHook =
             /*
             bash
             */
             ''
-              ${pkgs.hello}/bin/hello
+              eval "$(mise activate)"
             '';
         };
       }
