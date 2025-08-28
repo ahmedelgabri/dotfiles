@@ -30,181 +30,183 @@ return {
 					log_level = 'TRACE', -- TRACE|DEBUG|ERROR|INFO
 				},
 				adapters = {
-					swama = function()
-						return require('codecompanion.adapters').extend(
-							'openai_compatible',
-							{
-								env = {
-									url = 'http://localhost:28100',
-								},
-								schema = {
-									model = {
-										default = 'mlx-community/Qwen3-32B-4bit',
+					http = {
+						swama = function()
+							return require('codecompanion.adapters').extend(
+								'openai_compatible',
+								{
+									env = {
+										url = 'http://localhost:28100',
 									},
-									temperature = {
-										order = 2,
-										mapping = 'parameters',
-										type = 'number',
-										optional = true,
-										default = 0.8,
-										desc = 'What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.',
-										validate = function(n)
-											return n >= 0 and n <= 2, 'Must be between 0 and 2'
-										end,
-									},
-									max_completion_tokens = {
-										order = 3,
-										mapping = 'parameters',
-										type = 'integer',
-										optional = true,
-										default = nil,
-										desc = 'An upper bound for the number of tokens that can be generated for a completion.',
-										validate = function(n)
-											return n > 0, 'Must be greater than 0'
-										end,
-									},
-									stop = {
-										order = 4,
-										mapping = 'parameters',
-										type = 'string',
-										optional = true,
-										default = nil,
-										desc = 'Sets the stop sequences to use. When this pattern is encountered the LLM will stop generating text and return. Multiple stop patterns may be set by specifying multiple separate stop parameters in a modelfile.',
-										validate = function(s)
-											return s:len() > 0, 'Cannot be an empty string'
-										end,
-									},
-									logit_bias = {
-										order = 5,
-										mapping = 'parameters',
-										type = 'map',
-										optional = true,
-										default = nil,
-										desc = 'Modify the likelihood of specified tokens appearing in the completion. Maps tokens (specified by their token ID) to an associated bias value from -100 to 100. Use https://platform.openai.com/tokenizer to find token IDs.',
-										subtype_key = {
-											type = 'integer',
+									schema = {
+										model = {
+											default = 'mlx-community/Qwen3-32B-4bit',
 										},
-										subtype = {
-											type = 'integer',
+										temperature = {
+											order = 2,
+											mapping = 'parameters',
+											type = 'number',
+											optional = true,
+											default = 0.8,
+											desc = 'What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.',
 											validate = function(n)
-												return n >= -100 and n <= 100,
-													'Must be between -100 and 100'
+												return n >= 0 and n <= 2, 'Must be between 0 and 2'
 											end,
 										},
-									},
-								},
-							}
-						)
-					end,
-					llamacpp = function()
-						return require('codecompanion.adapters').extend(
-							'openai_compatible',
-							{
-								name = 'llamacpp',
-								formatted_name = 'Llamacpp',
-								schema = {
-									model = {
-										default = 'unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF',
-									},
-								},
-								env = {
-									url = 'http://localhost:8080',
-									api_key = 'TERM',
-								},
-								handlers = {
-									inline_output = function(self, data)
-										local openai = require 'codecompanion.adapters.openai'
-										return openai.handlers.inline_output(self, data)
-									end,
-									chat_output = function(self, data)
-										local openai = require 'codecompanion.adapters.openai'
-										local result = openai.handlers.chat_output(self, data)
-										if result ~= nil then
-											result.output.role = 'assistant'
-										end
-										return result
-									end,
-								},
-							}
-						)
-					end,
-					openrouter = function()
-						return require('codecompanion.adapters').extend(
-							'openai_compatible',
-							{
-								env = {
-									api_key = vim.env.OPENROUTER_API_KEY,
-								},
-								url = 'https://openrouter.ai/api/v1/chat/completions',
-								schema = {
-									temperature = {
-										default = 0.6,
-									},
-									model = {
-										default = 'deepseek/deepseek-chat-v3-0324:free',
-										choices = {
-											'deepseek/deepseek-r1-zero:free',
-											'deepseek/deepseek-chat-v3-0324:free',
+										max_completion_tokens = {
+											order = 3,
+											mapping = 'parameters',
+											type = 'integer',
+											optional = true,
+											default = nil,
+											desc = 'An upper bound for the number of tokens that can be generated for a completion.',
+											validate = function(n)
+												return n > 0, 'Must be greater than 0'
+											end,
+										},
+										stop = {
+											order = 4,
+											mapping = 'parameters',
+											type = 'string',
+											optional = true,
+											default = nil,
+											desc = 'Sets the stop sequences to use. When this pattern is encountered the LLM will stop generating text and return. Multiple stop patterns may be set by specifying multiple separate stop parameters in a modelfile.',
+											validate = function(s)
+												return s:len() > 0, 'Cannot be an empty string'
+											end,
+										},
+										logit_bias = {
+											order = 5,
+											mapping = 'parameters',
+											type = 'map',
+											optional = true,
+											default = nil,
+											desc = 'Modify the likelihood of specified tokens appearing in the completion. Maps tokens (specified by their token ID) to an associated bias value from -100 to 100. Use https://platform.openai.com/tokenizer to find token IDs.',
+											subtype_key = {
+												type = 'integer',
+											},
+											subtype = {
+												type = 'integer',
+												validate = function(n)
+													return n >= -100 and n <= 100,
+														'Must be between -100 and 100'
+												end,
+											},
 										},
 									},
-									num_ctx = {
-										default = 200000,
+								}
+							)
+						end,
+						llamacpp = function()
+							return require('codecompanion.adapters').extend(
+								'openai_compatible',
+								{
+									name = 'llamacpp',
+									formatted_name = 'Llamacpp',
+									schema = {
+										model = {
+											default = 'unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF',
+										},
+									},
+									env = {
+										url = 'http://localhost:8080',
+										api_key = 'TERM',
+									},
+									handlers = {
+										inline_output = function(self, data)
+											local openai = require 'codecompanion.adapters.openai'
+											return openai.handlers.inline_output(self, data)
+										end,
+										chat_output = function(self, data)
+											local openai = require 'codecompanion.adapters.openai'
+											local result = openai.handlers.chat_output(self, data)
+											if result ~= nil then
+												result.output.role = 'assistant'
+											end
+											return result
+										end,
+									},
+								}
+							)
+						end,
+						openrouter = function()
+							return require('codecompanion.adapters').extend(
+								'openai_compatible',
+								{
+									env = {
+										api_key = vim.env.OPENROUTER_API_KEY,
+									},
+									url = 'https://openrouter.ai/api/v1/chat/completions',
+									schema = {
+										temperature = {
+											default = 0.6,
+										},
+										model = {
+											default = 'deepseek/deepseek-chat-v3-0324:free',
+											choices = {
+												'deepseek/deepseek-r1-zero:free',
+												'deepseek/deepseek-chat-v3-0324:free',
+											},
+										},
+										num_ctx = {
+											default = 200000,
+										},
+									},
+								}
+							)
+						end,
+						-- https://github.com/olimorris/codecompanion.nvim/discussions/263#discussioncomment-10793002
+						groq = function()
+							return require('codecompanion.adapters').extend('openai', {
+								env = {
+									api_key = vim.env.GROQ_API_KEY,
+								},
+								name = 'Groq',
+								url = 'https://api.groq.com/openai/v1/chat/completions',
+								schema = {
+									model = {
+										default = 'deepseek-r1-distill-llama-70b',
+										choices = {
+											'deepseek-r1-distill-llama-70b',
+											'meta-llama/llama-4-maverick-17b-128e-instruct',
+										},
 									},
 								},
-							}
-						)
-					end,
-					-- https://github.com/olimorris/codecompanion.nvim/discussions/263#discussioncomment-10793002
-					groq = function()
-						return require('codecompanion.adapters').extend('openai', {
-							env = {
-								api_key = vim.env.GROQ_API_KEY,
-							},
-							name = 'Groq',
-							url = 'https://api.groq.com/openai/v1/chat/completions',
-							schema = {
-								model = {
-									default = 'deepseek-r1-distill-llama-70b',
-									choices = {
-										'deepseek-r1-distill-llama-70b',
-										'meta-llama/llama-4-maverick-17b-128e-instruct',
-									},
+								max_tokens = {
+									default = 8192,
 								},
-							},
-							max_tokens = {
-								default = 8192,
-							},
-							temperature = {
-								default = 1,
-							},
-							handlers = {
-								form_messages = function(_, messages)
-									for _, msg in ipairs(messages) do
-										-- Remove 'id' and 'opts' properties from all messages
-										msg.id = nil
-										msg.opts = nil
+								temperature = {
+									default = 1,
+								},
+								handlers = {
+									form_messages = function(_, messages)
+										for _, msg in ipairs(messages) do
+											-- Remove 'id' and 'opts' properties from all messages
+											msg.id = nil
+											msg.opts = nil
 
-										-- Ensure 'name' is a string if present, otherwise remove it
-										if msg.name then
-											msg.name = tostring(msg.name)
-										else
-											msg.name = nil
-										end
+											-- Ensure 'name' is a string if present, otherwise remove it
+											if msg.name then
+												msg.name = tostring(msg.name)
+											else
+												msg.name = nil
+											end
 
-										-- Ensure only supported properties are present
-										local supported_props =
-											{ role = true, content = true, name = true }
-										for prop in pairs(msg) do
-											if not supported_props[prop] then
-												msg[prop] = nil
+											-- Ensure only supported properties are present
+											local supported_props =
+												{ role = true, content = true, name = true }
+											for prop in pairs(msg) do
+												if not supported_props[prop] then
+													msg[prop] = nil
+												end
 											end
 										end
-									end
-									return { messages = messages }
-								end,
-							},
-						})
-					end,
+										return { messages = messages }
+									end,
+								},
+							})
+						end,
+					},
 				},
 				prompt_library = {
 					['Generate a Commit Message'] = {
