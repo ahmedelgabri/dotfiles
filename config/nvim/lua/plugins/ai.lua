@@ -240,17 +240,7 @@ return {
 						end,
 					},
 				},
-				prompt_library = {
-					['Generate a Commit Message'] = {
-						opts = {
-							adapter = {
-								name = adapter,
-								model = adapter == 'anthropic' and 'claude-3-5-sonnet-20241022'
-									or nil,
-							},
-						},
-					},
-				},
+				-- prompt_library = {},
 				strategies = {
 					chat = {
 						adapter = adapter,
@@ -288,7 +278,7 @@ return {
 					cmd = { adapter = adapter },
 					inline = { adapter = adapter },
 					agent = {
-						adapter = adapter == 'copilot' and 'copilot' or 'anthropic',
+						adapter = adapter,
 					},
 				},
 				display = {
