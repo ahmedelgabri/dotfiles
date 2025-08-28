@@ -180,7 +180,7 @@ return {
 					path = function()
 						-- alternatively use the CWD:
 						-- return assert(vim.fn.getcwd())
-						return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
+						return vim.fs.dirname(vim.api.nvim_buf_get_name(0))
 					end,
 					overrides = {
 						disable_frontmatter = true,
@@ -192,12 +192,15 @@ return {
 						attachments = {
 							img_folder = 'assets',
 						},
+						daily_notes = {
+							folder = vim.NIL,
+						},
 					},
 				},
 			},
 
 			templates = {
-				folder = vim.fn.expand '~/.config/zk/templates',
+				folder = '.zk/templates',
 				date_format = '%Y-%m-%d',
 				time_format = '%H:%M',
 				-- A map for custom variables, the key should be the variable and the value a function
@@ -306,7 +309,7 @@ return {
 				folder = 'journal',
 				workdays_only = false,
 				default_tags = { 'journal' },
-				template = vim.fn.expand '~/.config/zk/templates/journal.md',
+				template = 'journal.md',
 			},
 
 			completion = {
@@ -320,6 +323,10 @@ return {
 
 			attachments = {
 				img_folder = 'assets',
+			},
+
+			footer = {
+				enabled = false,
 			},
 		},
 	},
