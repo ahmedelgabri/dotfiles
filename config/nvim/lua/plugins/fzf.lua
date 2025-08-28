@@ -160,6 +160,7 @@ return {
 					no_ignore = true,
 					hidden = true,
 					follow = true,
+					line_query = true,
 					actions = {
 						['ctrl-g'] = false,
 						['default'] = actions.file_edit,
