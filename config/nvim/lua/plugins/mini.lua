@@ -3,7 +3,7 @@ local utils = require '_.utils'
 
 return {
 	{
-		'https://github.com/echasnovski/mini.nvim',
+		'https://github.com/nvim-mini/mini.nvim',
 		keys = {
 			-- Bufremove
 			{
