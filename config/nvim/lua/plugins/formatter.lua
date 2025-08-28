@@ -113,6 +113,8 @@ return {
 				nix = { 'alejandra', 'statix' },
 				-- not 100% supported but does the job as long as I'm writing POSIX and not fancy zsh
 				zsh = { 'shfmt' },
+				sh = { 'shfmt' },
+				bash = { 'shfmt' },
 				toml = { 'taplo' },
 			}, js_formats),
 			format_on_save = function(bufnr)
