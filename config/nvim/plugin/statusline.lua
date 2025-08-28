@@ -375,8 +375,10 @@ local function get_codecompanion_status()
 	icon, hl = mini_icons.get('filetype', info.name)
 	hl = hl
 
+	local model = type(info.model) == 'table' and info.model[1] or info.model
+
 	local llm_name = string.format('%%#%s#%s%%*', hl, icon or info.name)
-	local model_info = info.model and (' ' .. info.model) or ''
+	local model_info = model and (' ' .. model) or ''
 	local status = llm_name .. ' ' .. model_info
 	return vim.bo.filetype == 'codecompanion'
 			and string.format('%%#StatusLineLSP# %s ', status)

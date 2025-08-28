@@ -233,7 +233,7 @@ return {
 									' %s %s (%s)',
 									icon .. ' ',
 									adp.name,
-									adp.schema.model.default
+									adp.model and adp.model.name or adp.formatted_name
 								)
 							end,
 							user = vim.env.USER,
