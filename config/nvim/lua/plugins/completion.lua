@@ -19,7 +19,7 @@ return {
 			'https://github.com/rafamadriz/friendly-snippets',
 			'https://github.com/moyiz/blink-emoji.nvim',
 			'https://github.com/olimorris/codecompanion.nvim',
-			'https://github.com/giuxtaposition/blink-cmp-copilot',
+			'https://github.com/fang2hou/blink-copilot',
 			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
@@ -202,8 +202,8 @@ return {
 				opts.sources.providers.copilot = {
 					name = 'copilot',
 					enabled = true,
-					module = 'blink-cmp-copilot',
-					min_keyword_length = 6,
+					module = 'blink-copilot',
+					-- min_keyword_length = 6,
 					score_offset = 100, -- push to the top
 					async = true,
 				}
