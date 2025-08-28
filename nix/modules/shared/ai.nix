@@ -53,6 +53,7 @@ in {
             packages = with pkgs; [
               llama-cpp
               claude-code
+              gemini-cli
               aider-chat
               repomix
               (llm.withPlugins
