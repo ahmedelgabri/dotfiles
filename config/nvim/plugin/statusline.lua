@@ -375,7 +375,7 @@ local function get_codecompanion_status()
 	icon, hl = mini_icons.get('filetype', info.name)
 	hl = hl
 
-	local model = type(info.model) == 'table' and info.model[1] or info.model
+	local model = info.model or info.name
 
 	local llm_name = string.format('%%#%s#%s%%*', hl, icon or info.name)
 	local model_info = model and (' ' .. model) or ''
@@ -467,7 +467,9 @@ au.augroup('MyStatusLine', {
 				if args.match == 'CodeCompanionChatAdapter' and args.data.adapter then
 					llm_info[bufnr].name = args.data.adapter.name
 				elseif args.match == 'CodeCompanionChatModel' and args.data.model then
-					llm_info[bufnr].model = args.data.model
+					llm_info[bufnr].model = type(args.data.model) == 'table'
+							and args.data.model[1]
+						or args.data.model
 				end
 			end
 		end,
