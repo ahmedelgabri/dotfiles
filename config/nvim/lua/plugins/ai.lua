@@ -256,10 +256,7 @@ return {
 						adapter = adapter,
 						roles = {
 							llm = function(adp)
-								local icon = require('mini.icons').get(
-									'filetype',
-									adp.name == 'anthropic' and 'claude' or adp.name
-								)
+								local icon = require('mini.icons').get('filetype', adp.name)
 
 								return string.format(
 									' %s %s (%s)',
