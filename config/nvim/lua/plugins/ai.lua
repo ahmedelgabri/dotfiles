@@ -21,7 +21,7 @@ return {
 			vim.cmd.cabbrev { 'cc', 'CodeCompanion' }
 		end,
 		opts = function(_, opts)
-			local adapter = utils.is_rocket() and 'copilot' or 'anthropic'
+			local adapter = utils.is_rocket() and 'gemini_cli' or 'gemini_cli'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
 				opts = {
@@ -30,6 +30,38 @@ return {
 					log_level = 'TRACE', -- TRACE|DEBUG|ERROR|INFO
 				},
 				adapters = {
+					acp = {
+						gemini_cli = function()
+							return require('codecompanion.adapters').extend('gemini_cli', {
+								commands = {
+									default = {
+										'gemini',
+										'--experimental-acp',
+										'-m',
+										'gemini-2.5-flash',
+									},
+									flash = {
+										'gemini',
+										'--experimental-acp',
+										'-m',
+										'gemini-2.5-flash',
+									},
+									pro = {
+										'gemini',
+										'--experimental-acp',
+										'-m',
+										'gemini-2.5-pro',
+									},
+								},
+								defaults = {
+									-- auth_method = "gemini-api-key", -- "oauth-personal" | "gemini-api-key" | "vertex-ai"
+									auth_method = utils.is_rocket() and 'oauth-personal'
+										or 'gemini-api-key',
+									-- mcpServers = {}
+								},
+							})
+						end,
+					},
 					http = {
 						swama = function()
 							return require('codecompanion.adapters').extend(
