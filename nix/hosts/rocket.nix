@@ -38,11 +38,12 @@
   homebrew = {
     casks = [
       "loom"
-      "docker"
+      "docker-desktop"
       "ngrok"
       "figma"
       "visual-studio-code"
       "google-chrome"
+      "cursor"
     ];
 
     brews = [
