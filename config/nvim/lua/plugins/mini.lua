@@ -264,16 +264,6 @@ return {
 				end
 			end
 
-			local function censor_extmark_opts(_, match, _)
-				local mask = string.rep('*', vim.fn.strchars(match))
-				return {
-					virt_text = { { mask, 'Comment' } },
-					virt_text_pos = 'overlay',
-					priority = 200,
-					right_gravity = false,
-				}
-			end
-
 			local comments = {}
 			for _, word in ipairs {
 				'todo',
@@ -301,17 +291,6 @@ return {
 				}
 			end
 
-			local secrets = {
-				pattern = {
-					'_TOKEN=()%S+()',
-					'_PASSWORD=()%S+()',
-					'_SECRET=()%S+()',
-					'_KEY=()%S+()',
-				},
-				group = '',
-				extmark_opts = censor_extmark_opts,
-			}
-
 			hipatterns.setup {
 				highlighters = vim.tbl_extend('force', comments, {
 					-- Highlight hex color strings (`#rrggbb`) using that color
@@ -337,9 +316,6 @@ return {
 						group = get_highlight(rgba_color),
 						extmark_opts = extmark_opts_inline,
 					},
-
-					-- Mask tokens and password
-					tokens = secrets,
 				}),
 			}
 
