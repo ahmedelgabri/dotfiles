@@ -386,12 +386,12 @@ in {
               # Default settings
               # Applied to all channels
               ########################################
-              Create Near
+              Create Both
               Expunge Both
               CopyArrivalDate yes
 
-              # - Pull: Get changes from the server (Master) to local (Slave).
-              Sync Pull
+              # Sync mailboxes both ways
+              Sync All
 
               # - Remove: If a folder is deleted on the server, also delete it locally.
               Remove Near
