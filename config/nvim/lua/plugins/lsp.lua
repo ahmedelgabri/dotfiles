@@ -103,6 +103,7 @@ return {
 				{ 'tsgo', tsgo },
 				{ 'vtsls', not tsgo },
 				{ 'denols', 'deno' },
+				{ 'biome', utils.get_lsp_bin 'biome' },
 				{ 'tailwindcss', 'tailwindcss-language-server' },
 
 				{ 'dockerls', 'docker-langserver' },
