@@ -58,6 +58,7 @@
 
 [fetch]
 	prune = true
+	all = true
 
 [rebase]
 	autosquash = true
@@ -113,6 +114,7 @@
 
 [tag]
 	gpgsign = true
+	sort = version:refname
 
 [apply]
 	whitespace = nowarn
