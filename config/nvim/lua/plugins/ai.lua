@@ -4,6 +4,9 @@ return {
 	{
 		'https://github.com/olimorris/codecompanion.nvim',
 		lazy = false,
+		dependencies = {
+			'https://github.com/ravitemer/codecompanion-history.nvim',
+		},
 		keys = {
 			{
 				'<localleader>ca',
@@ -28,6 +31,14 @@ return {
 					visible = true,
 					language = "the same language of user's question",
 					log_level = 'TRACE', -- TRACE|DEBUG|ERROR|INFO
+				},
+				extensions = {
+					history = {
+						enabled = true,
+						opts = {
+							dir_to_save = vim.env.XDG_CONFIG_HOME .. '/codecompanion-history',
+						},
+					},
 				},
 				adapters = {
 					acp = {
