@@ -24,10 +24,10 @@
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            bun
+            mise
           ];
           shellHook = ''
-            bun -e 'console.log(`You are running Bun v${"$"}{Bun.version}`)'
+            eval "$(mise activate)"
           '';
         };
       }
