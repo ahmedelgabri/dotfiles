@@ -507,16 +507,6 @@ return {
 					)
 				end,
 			}
-
-			au.autocmd {
-				event = 'LspNotify',
-				desc = 'Auto fold imports',
-				callback = function(args)
-					if args.data.method == 'textDocument/didOpen' then
-						vim.lsp.foldclose('imports', vim.fn.bufwinid(args.buf))
-					end
-				end,
-			}
 		end,
 	},
 }
