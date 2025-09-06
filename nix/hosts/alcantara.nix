@@ -13,12 +13,10 @@ _: {
   homebrew = {
     casks = [
       # "arq" # I need a specific version so I will handle it myself.
-      "transmit"
       "jdownloader"
       "brave-browser"
       "signal"
       "monodraw"
-      "cursor"
       "sony-ps-remote-play"
     ];
 
