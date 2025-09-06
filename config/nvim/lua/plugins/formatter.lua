@@ -23,6 +23,7 @@ for _, ft in ipairs {
 } do
 	js_formats[ft] = {
 		'deno_fmt',
+		'biome',
 		'prettier',
 		stop_after_first = true,
 	}
@@ -80,12 +81,14 @@ return {
 				['*'] = { 'trim_whitespace', 'trim_newlines' },
 				json = {
 					'deno_fmt',
+					'biome',
 					'prettier',
 					'jq',
 					stop_after_first = true,
 				},
 				jsonc = {
 					'deno_fmt',
+					'biome',
 					'prettier',
 					stop_after_first = true,
 				},
@@ -96,7 +99,7 @@ return {
 				mdx = { 'prettier', 'injected' },
 				html = { 'prettier', 'injected' },
 				yaml = { 'prettier', 'injected' },
-				css = { 'prettier' },
+				css = { 'biome', 'prettier', stop_after_first = true },
 				vue = { 'prettier' },
 				scss = { 'prettier' },
 				less = { 'prettier' },
