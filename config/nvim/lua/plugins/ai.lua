@@ -21,7 +21,7 @@ return {
 			vim.cmd.cabbrev { 'cc', 'CodeCompanion' }
 		end,
 		opts = function(_, opts)
-			local adapter = utils.is_rocket() and 'gemini_cli' or 'gemini_cli'
+			local adapter = utils.is_rocket() and 'gemini_cli' or 'claude_code'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
 				opts = {
@@ -31,6 +31,20 @@ return {
 				},
 				adapters = {
 					acp = {
+						claude_code = function()
+							return require('codecompanion.adapters').extend('claude_code', {
+								commands = {
+									default = {
+										'bunx',
+										'--silent',
+										'@zed-industries/claude-code-acp',
+									},
+								},
+								env = {
+									ANTHROPIC_API_KEY = vim.env.ANTHROPIC_API_KEY,
+								},
+							})
+						end,
 						gemini_cli = function()
 							return require('codecompanion.adapters').extend('gemini_cli', {
 								commands = {
@@ -252,7 +266,7 @@ return {
 									' %s %s (%s)',
 									icon .. ' ',
 									adp.name,
-									adp.model and adp.model.name or adp.formatted_name
+									adp.type == 'acp' and adp.formatted_name or adp.model.name
 								)
 							end,
 							user = vim.env.USER,
