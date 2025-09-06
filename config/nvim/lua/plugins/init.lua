@@ -179,4 +179,9 @@ return {
 			})
 		end,
 	},
+	{
+		'https://github.com/hedyhli/outline.nvim',
+		cmd = { 'Outline', 'OutlineOpen' },
+		opts = {},
+	},
 }
