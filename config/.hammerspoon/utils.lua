@@ -55,4 +55,25 @@ M.appMap = {
 	meet = M.appID '~/Applications/Chrome Apps.localized/Google Meet.app',
 }
 
+-- ╔════════════════════════════╗
+-- ║Auto reload config on change║
+-- ╚════════════════════════════╝
+local function ReloadConfig(files)
+	local doReload = false
+	for _, file in pairs(files) do
+		if file:sub(-4) == '.lua' then
+			doReload = true
+		end
+	end
+	if doReload then
+		hs.reload()
+	end
+end
+
+function M.reloadConfig()
+	M.fileWacher =
+		hs.pathwatcher.new(os.getenv 'HOME' .. '/.hammerspoon/', ReloadConfig)
+	M.fileWacher:start()
+end
+
 return M

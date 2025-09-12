@@ -1,8 +1,9 @@
 local utils = require 'utils'
+local M = {}
 -- -------------------------------------------------------------------
 -- Layout management
 -- -------------------------------------------------------------------
-local screens = {
+M.screens = {
 	main = hs.screen.primaryScreen(),
 	samsung = hs.screen 'S24R65x',
 	LG = hs.screen 'LG HDR 4K',
@@ -12,7 +13,7 @@ local screens = {
 -- Screen watcher
 ---
 
-local function SwitchLayout()
+function M.switchLayout()
 	local allScreens = hs.screen.allScreens()
 	local moreThanOneScreen = #allScreens > 1
 	local contains = hs.fnutils.contains
@@ -21,16 +22,16 @@ local function SwitchLayout()
 		{
 			utils.appMap.chrome,
 			nil,
-			(moreThanOneScreen and (contains(allScreens, screens.LG) or contains(
+			(moreThanOneScreen and (contains(allScreens, M.screens.LG) or contains(
 				allScreens,
-				screens.samsung
-			))) and (screens.LG or screens.samsung) or screens.main,
+				M.screens.samsung
+			))) and (M.screens.LG or M.screens.samsung) or M.screens.main,
 			hs.layout.maximized,
 			nil,
 			nil,
 		},
-		{ utils.appMap.x, nil, screens.main, hs.layout.right30, nil, nil },
-		{ utils.appMap.slack, nil, screens.main, hs.layout.maximized, nil, nil },
+		{ utils.appMap.x, nil, M.screens.main, hs.layout.right30, nil, nil },
+		{ utils.appMap.slack, nil, M.screens.main, hs.layout.maximized, nil, nil },
 		-- {
 		--   appMap.brave,
 		--   nil,
@@ -45,15 +46,15 @@ local function SwitchLayout()
 		hs.notify.show(
 			'Hammerspoon',
 			#allScreens .. ' monitor layout activated',
-			(screens.LG or screens.samsung or screens.main):name()
+			(M.screens.LG or M.screens.samsung or M.screens.main):name()
 		)
 	end
 
 	hs.layout.apply(layout)
 end
 
-SwitchLayout()
+M.switchLayout()
 
-return {
-	layoutWatcher = hs.screen.watcher.newWithActiveScreen(SwitchLayout),
-}
+M.layoutWatcher = hs.screen.watcher.newWithActiveScreen(M.switchLayout)
+
+return M
