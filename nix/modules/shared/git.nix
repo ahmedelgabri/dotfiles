@@ -22,7 +22,6 @@ in {
       my.user = {
         packages = with pkgs; [
           # gitAndTools.transcrypt # old version
-          # gitAndTools.diff-so-fancy
           difftastic
           delta
           hub
@@ -31,6 +30,7 @@ in {
           gh-gfm-preview
           tig
           exiftool
+          jujutsu
         ];
       };
 
@@ -72,6 +72,22 @@ in {
         ".config/tig" = {
           recursive = true;
           source = ../../../config/tig;
+        };
+
+        ".config/jj" = {
+          recursive = true;
+          source = ../../../config/jj;
+        };
+
+        ".config/jj/config.d/nix.toml" = with config.my; {
+          text = ''
+            # ${nix_managed}
+            "$schema" = "https://jj-vcs.github.io/jj/prerelease/config-schema.json"
+
+            [user]
+            ${optionalString (name != "") "  name = ${name}"}
+            ${optionalString (email != "") "  email = ${email}"}
+          '';
         };
       };
     };

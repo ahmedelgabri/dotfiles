@@ -1,0 +1,9 @@
+"$schema" = "https://jj-vcs.github.io/jj/prerelease/config-schema.json"
+
+[ui]
+default-command = "log"
+# https://difftastic.wilfred.me.uk/jj.html
+# diff-formatter = ["difft", "--color=always", "$left", "$right"]
+
+[revsets]
+log = "present(@) | ancestors(immutable_heads().., 10) | present(trunk())"
