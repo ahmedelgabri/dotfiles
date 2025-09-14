@@ -108,7 +108,8 @@ in {
             b = "bun";
             top = "htop";
             l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
-            ll = "eza --tree --group-directories-first --almost-all -I 'node_modules'";
+            ll = "eza --icons --tree --group-directories-first --all --level=2";
+            lt = "eza --tree --group-directories-first --all";
             cat = "bat";
             grep = "grep --color=auto";
             get = "wget --continue --progress=bar --timestamping";
