@@ -24,7 +24,7 @@ return {
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
 		event = { 'InsertEnter' },
-		build = 'nix run .#build-plugin',
+		version = '*',
 		opts = {
 			keymap = {
 				-- Set my own, and get rid of the ones I don't use

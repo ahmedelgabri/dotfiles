@@ -79,10 +79,7 @@ return {
 									},
 								},
 								defaults = {
-									-- auth_method = "gemini-api-key", -- "oauth-personal" | "gemini-api-key" | "vertex-ai"
-									auth_method = utils.is_rocket() and 'oauth-personal'
-										or 'gemini-api-key',
-									-- mcpServers = {}
+									auth_method = 'gemini-api-key',
 								},
 							})
 						end,
@@ -314,7 +311,6 @@ return {
 						token_count = function(tokens, _adp)
 							return ' (' .. tokens .. ' tokens) '
 						end,
-						show_header_separator = true,
 						window = {
 							position = 'right',
 						},
