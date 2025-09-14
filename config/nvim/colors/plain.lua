@@ -489,13 +489,19 @@ highlight('WinBarNC', { link = 'WinBar' })
 highlight('FzfLuaBorder', { link = 'Comment' })
 
 -- Render Markdown
+highlight('RenderMarkdownH1Bg', { bg = subtle_black })
+highlight('RenderMarkdownH2Bg', { bg = subtle_black })
+highlight('RenderMarkdownH3Bg', { bg = subtle_black })
+highlight('RenderMarkdownH4Bg', { bg = subtle_black })
+highlight('RenderMarkdownH5Bg', { bg = subtle_black })
+highlight('RenderMarkdownH6Bg', { bg = subtle_black })
 
-highlight('RenderMarkdownH1Bg', { fg = light_green, bold = true })
-highlight('RenderMarkdownH2Bg', { fg = light_green, bold = true })
-highlight('RenderMarkdownH3Bg', { fg = light_green, bold = true })
-highlight('RenderMarkdownH4Bg', { fg = light_green, bold = true })
-highlight('RenderMarkdownH5Bg', { fg = light_green, bold = true })
-highlight('RenderMarkdownH6Bg', { fg = light_green, bold = true })
+highlight('RenderMarkdownH1Bg_border', { link = 'RenderMarkdownH1Bg' })
+highlight('RenderMarkdownH2Bg_border', { link = 'RenderMarkdownH2Bg' })
+highlight('RenderMarkdownH3Bg_border', { link = 'RenderMarkdownH3Bg' })
+highlight('RenderMarkdownH4Bg_border', { link = 'RenderMarkdownH4Bg' })
+highlight('RenderMarkdownH5Bg_border', { link = 'RenderMarkdownH5Bg' })
+highlight('RenderMarkdownH6Bg_border', { link = 'RenderMarkdownH6Bg' })
 
 -- Snacks
 highlight('SnacksIndent', { link = 'Comment' })

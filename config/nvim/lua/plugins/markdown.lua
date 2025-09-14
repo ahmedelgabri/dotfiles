@@ -5,6 +5,34 @@ return {
 		opts = function(_, opts)
 			return vim.tbl_deep_extend('force', opts or {}, {
 				preset = 'obsidian',
+				render_modes = true,
+				win_options = {
+					-- disable ability to conceal text
+					conceallevel = { rendered = 0 },
+					concealcursor = { rendered = 'nvic' },
+				},
+				anti_conceal = {
+					enabled = true,
+					above = 1000,
+					below = 1000,
+					ignore = {
+						head_icon = false,
+						head_background = true,
+						head_border = true,
+						code_language = true,
+						code_background = true,
+						code_border = true,
+						dash = true,
+						bullet = true,
+						check_icon = true,
+						check_scope = true,
+						quote = true,
+						table_border = true,
+						callout = true,
+						link = true,
+						sign = false,
+					},
+				},
 				completions = {
 					lsp = {
 						enabled = true,
@@ -17,6 +45,8 @@ return {
 				heading = {
 					position = 'inline',
 					icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
+					border = true,
+					border_virtual = true,
 				},
 				code = {
 					width = 'block',
@@ -141,9 +171,8 @@ return {
 	{
 		'https://github.com/zk-org/zk-nvim',
 		config = function()
-			require('zk').setup {
-				picker = 'fzf_lua',
-			}
+			-- I don't need the LSP I use markdown-oxide for that, I only need the commands. This is why I don't call .setup()
+			require 'zk.commands.builtin'
 		end,
 	},
 	{
@@ -200,7 +229,7 @@ return {
 			},
 
 			templates = {
-				folder = '.zk/templates',
+				folder = '.zk/templates', -- must be relative to the root of the vault
 				date_format = '%Y-%m-%d',
 				time_format = '%H:%M',
 				-- A map for custom variables, the key should be the variable and the value a function
