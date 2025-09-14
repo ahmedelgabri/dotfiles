@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -ue -o pipefail
-#
-if [[ -n ${1-} ]]; then
-	mkdir -p -- "${1}" && (builtin cd -- "${1}" || exit)
-else
-	exit 1
-fi

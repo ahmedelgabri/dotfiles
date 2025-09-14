@@ -48,6 +48,11 @@ get_wifi_ssid() {
 		ssid=$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')
 	fi
 
+	# Thanks Apple... final way out. Using hammerspoon CLI to get the network SSID
+	if [ "$ssid" = "<redacted>" ] && command -v hs &>/dev/null; then
+		ssid=$(hs -c "hs.wifi.currentNetwork()")
+	fi
+
 	echo -n "$ssid"
 }
 
