@@ -56,7 +56,6 @@ in {
               llama-cpp
               claude-code
               gemini-cli
-              aider-chat
               repomix
               (llm.withPlugins
                 {
