@@ -55,7 +55,7 @@ in {
           vscode-langservers-extracted # HTML, CSS, JSON & ESLint LSPs
           nodePackages.prettier
           bash-language-server
-          dockerfile-language-server-nodejs
+          dockerfile-language-server
           docker-compose-language-service
           vtsls # js/ts LSP
           yaml-language-server
