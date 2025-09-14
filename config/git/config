@@ -65,6 +65,14 @@
 	instructionFormat = [%cn <%ce> %G?] %s
 	autoStash = true
 
+; https://github.com/jj-vcs/jj/issues/5913
+; https://lore.kernel.org/git/20241129-wt_relative_options-v6-0-44e4e0bec8c3@pm.me/
+; https://git-scm.com/docs/git-worktree#Documentation/git-worktree.txt---no-relative-paths
+;
+; requires running git worktree repair in current worktrees
+[worktree]
+	useRelativePaths = true;
+
 ; [blame]
 ; 	ignoreRevsFile = ".git-blame-ignore-revs"
 ; 	markIgnoredLines = true
