@@ -65,6 +65,7 @@
     nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
     nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
     nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
+    mise                    # https://github.com/jdx/mise
     node_version          # node.js version
     go_version            # go version (https://golang.org)
     rust_version          # rustc version (https://www.rust-lang.org)
@@ -1665,6 +1666,37 @@
   function instant_prompt_example() {
 		prompt_my_jobs
   }
+
+	# https://github.com/romkatv/powerlevel10k/issues/2212#issuecomment-2503717818
+	# https://github.com/2KAbhishek/dots2k/blob/12ca49474558c1861044f6114c1c51a6ef13b440/config/zsh/prompt/p10k.mise.zsh
+	function prompt_mise() {
+		local plugins=("${(@f)$(mise ls --current --offline 2>/dev/null | awk '!/\(symlink\)/ && $3!="~/.tool-versions" && $3!="~/.config/mise/config.toml" && $3!="(missing)" {if ($1) print $1, $2}')}")
+		local plugin
+		for plugin in ${(k)plugins}; do
+			local parts=("${(@s/ /)plugin}")
+			local tool=${(U)parts[1]}
+			local version=${parts[2]}
+			p10k segment -r -i "${tool}_ICON" -s "$tool" -t "$version"
+		done
+	}
+
+	typeset -g POWERLEVEL9K_MISE_NODE_FOREGROUND=70 #same as nvm
+	typeset -g POWERLEVEL9K_MISE_DOTNET_CORE_FOREGROUND=93
+	typeset -g POWERLEVEL9K_MISE_ELIXIR_FOREGROUND=129
+	typeset -g POWERLEVEL9K_MISE_ERLANG_FOREGROUND=160
+	typeset -g POWERLEVEL9K_MISE_FLUTTER_FOREGROUND=33
+	typeset -g POWERLEVEL9K_MISE_GO_FOREGROUND=81
+	typeset -g POWERLEVEL9K_MISE_HASKELL_FOREGROUND=99
+	typeset -g POWERLEVEL9K_MISE_JAVA_FOREGROUND=196
+	typeset -g POWERLEVEL9K_MISE_JULIA_FOREGROUND=34
+	typeset -g POWERLEVEL9K_MISE_LUA_FOREGROUND=33
+	typeset -g POWERLEVEL9K_MISE_PERL_FOREGROUND=33
+	typeset -g POWERLEVEL9K_MISE_PHP_FOREGROUND=93
+	typeset -g POWERLEVEL9K_MISE_POSTGRES_FOREGROUND=33
+	typeset -g POWERLEVEL9K_MISE_PYTHON_FOREGROUND=33
+	typeset -g POWERLEVEL9K_MISE_RUBY_FOREGROUND=168 #same as rbenv
+	typeset -g POWERLEVEL9K_MISE_RUST_FOREGROUND=208
+
 
   # User-defined prompt segments can be customized the same way as built-in segments.
   # typeset -g POWERLEVEL9K_MY_JOBS_FOREGROUND=208
