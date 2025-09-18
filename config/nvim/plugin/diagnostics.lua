@@ -65,7 +65,7 @@ vim.diagnostic.config {
 		format = function(diag)
 			local msg = string.format(
 				'[%s] %s',
-				(clean_src_names[diag.source] or diag.source)
+				(clean_src_names[diag.source] or diag.source or '')
 					.. (diag.code and ' -> ' .. diag.code or ''),
 				diag.message
 			)
