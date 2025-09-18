@@ -12,7 +12,7 @@ stdenvNoCC.mkDerivation rec {
 
   src = requireFile {
     url = "file://path/to/${name}.zip";
-    sha256 = "17apwzsvbmfaiq6d00ip9lchxrc3v9r3k7dhiw1k60rjsl6fjy1i";
+    sha256 = "166pw1spgnw1zsav2y4hpkq8pxyd17gp4wqs5ndrs8gw6ijwxwa7";
     message = ''
       ${name} font not found in nix store, to add it run:
       $ nix-store --add-fixed sha256 /path/to/${name}.zip
