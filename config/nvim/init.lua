@@ -209,14 +209,14 @@ end
 vim.o.tildeop = true
 
 -- Make sure diffs are always opened in vertical splits, also match my git settings
-vim.o.diffopt = utils.append(
-	'diffopt',
-	{ 'vertical', 'algorithm:histogram', 'indent-heuristic', 'hiddenoff' }
-)
-
-if vim.fn.has 'nvim-0.9' > 0 then
-	vim.o.diffopt = utils.append('diffopt', { 'linematch:60' })
-end
+vim.o.diffopt = utils.append('diffopt', {
+	'vertical',
+	'algorithm:histogram',
+	'indent-heuristic',
+	'hiddenoff',
+	'foldcolumn:0',
+	'linematch:60',
+})
 
 vim.o.shortmess = vim.o.shortmess .. 'AIOTWaot'
 
