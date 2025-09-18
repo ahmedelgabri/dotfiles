@@ -324,7 +324,7 @@ require('lazy').setup {
 	---@diagnostic disable-next-line: assign-type-mismatch
 	dev = {
 		-- directory where you store your local plugin projects
-		path = '~/Sites/personal/forks',
+		path = '~/code/personal/forks',
 		---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
 		patterns = { 'ahmedelgabri' }, -- For example {"folke"}
 		fallback = true, -- Fallback to git when local plugin doesn't exist

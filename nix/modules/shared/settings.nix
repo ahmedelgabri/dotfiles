@@ -44,8 +44,7 @@ in {
       github_username = mkOptStr "ahmedelgabri";
       email = mkOptStr "ahmed@gabri.me";
       company = mkOptStr "";
-      # NOTE: Change this?
-      devFolder = mkOptStr "Sites";
+      devFolder = mkOptStr "code";
       nix_managed =
         mkOptStr
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
