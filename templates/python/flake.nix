@@ -1,26 +1,26 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    systems.url = "github:nix-systems/default";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = {
-    self,
+  outputs = inputs @ {
+    flake-parts,
     nixpkgs,
-    flake-utils,
     ...
-  } @ inputs:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: {
+        # This sets `pkgs` to a nixpkgs with allowUnfree option set.
+        _module.args.pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-      in {
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -31,22 +31,28 @@
             bash
             */
             ''
-              if [ ! -f ./pyproject.toml ]; then
-                uv init --author-from git
+              if [ ! -f pyproject.toml ]; then
+                ${pkgs.uv}/bin/uv init --author-from git
 
                 # in order to make sure pyright LSP plays well
-                cat <<EOF >> pyproject.toml
+                echo '[tool.pyright]\nvenvPath = "."\nvenv = ".venv"' >> pyproject.toml
 
-                [tool.pyright]
-                venvPath = "."
-                venv = ".venv"
-                EOF
-
-                uv tool install ruff
-                uv tool install pyright
+                ${pkgs.uv}/bin/uv tool install ruff
+                ${pkgs.uv}/bin/uv tool install pyright
               fi
+
+              # Activate Python virtual environment
+              if [ ! -d .venv ]; then
+                ${pkgs.uv}/bin/uv venv
+              fi
+              source .venv/bin/activate
+
+              # Install project dependencies
+              ${pkgs.uv}/bin/uv sync
+
+              echo "Development environment ready!"
             '';
         };
-      }
-    );
+      };
+    };
 }

@@ -1,26 +1,26 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    systems.url = "github:nix-systems/default";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = {
-    self,
+  outputs = inputs @ {
+    flake-parts,
     nixpkgs,
-    flake-utils,
     ...
-  } @ inputs:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {
+  }:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: {
+        # This sets `pkgs` to a nixpkgs with allowUnfree option set.
+        _module.args.pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-      in {
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -32,6 +32,6 @@
             */
             ''uv init --script main.py'';
         };
-      }
-    );
+      };
+    };
 }
