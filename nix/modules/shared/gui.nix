@@ -32,7 +32,6 @@ in {
           "slack"
           "sync"
           "zoom"
-          "visual-studio-code"
           "whatsapp"
           "telegram"
         ];
@@ -51,8 +50,6 @@ in {
             obsidian
             signal-desktop
             slack
-            vscode
-            vscodium
             zoom-us
           ];
         };
