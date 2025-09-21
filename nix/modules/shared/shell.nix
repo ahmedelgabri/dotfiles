@@ -180,6 +180,7 @@ in {
               ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
               WORK = "$HOME/${devFolder}/work";
               _ZO_DATA_DIR = "${hm.configHome}/zoxide";
+              CARAPACE_BRIDGES = "zsh,bash,fish,inshellisense";
             };
 
           systemPackages = with pkgs; [
@@ -235,9 +236,8 @@ in {
               tokei
               vivid
               zsh-autosuggestions
-              zsh-completions
+              carapace
               zsh-fast-syntax-highlighting
-              zsh-history-substring-search
               (imagemagick.override {
                 ghostscriptSupport = true;
               })
@@ -326,7 +326,8 @@ in {
           # zshenv
           shellInit =
             lib.concatStringsSep "\n"
-            ([
+            (
+              [
                 /*
                 zsh
                 */
@@ -345,12 +346,7 @@ in {
               ++ (map builtins.readFile [
                 ../../../config/zsh.d/.zshenv
               ])
-              ++ [
-                /*
-                zsh
-                */
-                "fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)"
-              ]);
+            );
 
           # zshrc
           interactiveShellInit =
@@ -394,7 +390,6 @@ in {
                   export SAVEHIST=${"$"}HISTSIZE
                   export HISTFILESIZE=${"$"}HISTSIZE
 
-                  # NOTE: must come before zsh-history-substring-search & zsh-syntax-highlighting.
                   autoload -U select-word-style
                   # only alphanumeric chars are considered WORDCHARS
                   select-word-style bash
@@ -408,16 +403,6 @@ in {
                     compdef g=git
                   fi
 
-                  # Note that this will only ensure unique history if we supply a prefix
-                  # before hitting "up" (ie. we perform a "search"). HIST_FIND_NO_DUPS
-                  # won't prevent dupes from appearing when just hitting "up" without a
-                  # prefix (ie. that's "zle up-line-or-history" and not classified as a
-                  # "search"). So, we have HIST_IGNORE_DUPS to make life bearable for that
-                  # case.
-                  #
-                  # https://superuser.com/a/1494647/322531
-                  HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
-
                   # For speed:
                   # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
                   ZSH_AUTOSUGGEST_MANUAL_REBIND=1
@@ -428,7 +413,6 @@ in {
                 ../../../config/zsh.d/zsh/config/options.zsh
                 ../../../config/zsh.d/zsh/config/input.zsh
                 ../../../config/zsh.d/zsh/config/completion.zsh
-                "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
                 "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
               ]
               ++ [
@@ -436,13 +420,6 @@ in {
                 zsh
                 */
                 ''
-                  # bind UP and DOWN keys
-                  bindkey '^[[A' history-substring-search-up
-                  bindkey '^[[B' history-substring-search-down
-                  # In vi mode
-                  bindkey -M vicmd 'k' history-substring-search-up
-                  bindkey -M vicmd 'j' history-substring-search-down
-
                   # I have to source this file instead of reading it because it depends on reading files in its own directory
                   # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
                   source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
@@ -454,6 +431,8 @@ in {
                   source "${pkgs.grc}/etc/grc.zsh"
 
                   source <(${pkgs.fzf}/bin/fzf --zsh)
+
+                  source <(carapace _carapace)
 
                   eval "${"$"}(${pkgs.direnv}/bin/direnv hook zsh)"
                   eval "${"$"}(${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow --disable-ctrl-r)"
