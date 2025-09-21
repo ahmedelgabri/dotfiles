@@ -38,6 +38,7 @@ local clean_src_names = {
 }
 
 vim.diagnostic.config {
+	jump = { float = true },
 	severity_sort = true,
 	virtual_text = {
 		spacing = 0,
