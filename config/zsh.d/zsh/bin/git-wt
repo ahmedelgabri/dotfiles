@@ -30,8 +30,22 @@ clone)
 	echo "gitdir: ./.bare" >.git
 
 	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+	$CMD config core.logallrefupdates true
 
 	$CMD fetch --all
+
+	# Need to remove all local branches with invalid upstream refs
+	# See: https://stackoverflow.com/a/54408181/213124
+	$CMD for-each-ref --format='%(refname:short)' refs/heads | xargs git branch -D
+
+	echo "Discovering default branch..."
+	default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+
+	if [ -n "$default_branch" ]; then
+		echo "Creating initial worktree for the default branch (origin/$default_branch)..."
+		git worktree add -B "$default_branch" "$default_branch" "origin/$default_branch"
+	fi
+
 	;;
 add)
 	shift
