@@ -79,7 +79,8 @@ return {
 									},
 								},
 								defaults = {
-									auth_method = 'gemini-api-key',
+									auth_method = utils.is_rocket() and 'oauth-personal'
+										or 'gemini-api-key',
 								},
 							})
 						end,
