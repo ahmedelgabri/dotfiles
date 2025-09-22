@@ -24,7 +24,7 @@
         formatter = pkgs.alejandra;
         devShells.default = with pkgs;
           mkShell {
-            buildInputs = [
+            packages = [
               cargo
               rust-analyzer-unwrapped
               rustPackages.clippy

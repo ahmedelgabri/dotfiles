@@ -274,7 +274,7 @@
     in {
       default = pkgs.mkShell {
         name = "dotfiles";
-        buildInputs = with pkgs; [
+        packages = with pkgs; [
           go
           gopls
           go-tools # staticcheck, etc...

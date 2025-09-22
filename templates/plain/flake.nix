@@ -23,7 +23,7 @@
         };
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [mise];
+          packages = with pkgs; [mise];
           shellHook =
             /*
             bash
