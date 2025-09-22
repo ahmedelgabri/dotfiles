@@ -33,7 +33,7 @@ location.setup()
 wifi.start()
 utils.reloadConfig()
 
--- layout.layoutWatcher:start()
+-- layout.setup()
 
 -- Load host custom/extra config
 pcall(require, hs.host.localizedName())

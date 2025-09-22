@@ -53,8 +53,10 @@ function M.switchLayout()
 	hs.layout.apply(layout)
 end
 
-M.switchLayout()
-
-M.layoutWatcher = hs.screen.watcher.newWithActiveScreen(M.switchLayout)
+function M.setup()
+	M.switchLayout()
+	M.layoutWatcher = hs.screen.watcher.newWithActiveScreen(M.switchLayout)
+	M.layoutWatcher:start()
+end
 
 return M
