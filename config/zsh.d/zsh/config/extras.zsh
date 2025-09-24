@@ -16,7 +16,6 @@ if which atuin &>/dev/null; then
 			"--bind=?:toggle-preview"
 			"--query=${LBUFFER}"
 			"--no-multi"
-			"--gap"
 			"--highlight-line"
 			"--read0"
 			"--bind=ctrl-d:reload(atuin search $atuin_opts -c $PWD),ctrl-r:reload(atuin search $atuin_opts)"
