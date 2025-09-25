@@ -14,7 +14,6 @@ _: {
     casks = [
       # "arq" # I need a specific version so I will handle it myself.
       "jdownloader"
-      "brave-browser"
       "signal"
       "monodraw"
       "sony-ps-remote-play"
