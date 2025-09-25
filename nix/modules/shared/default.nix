@@ -31,6 +31,7 @@
     ./ghostty.nix
     ./ai.nix
     ./karabiner.nix
+    ./aerc.nix
   ];
 
   my.modules = {
@@ -59,5 +60,6 @@
     karabiner.enable = lib.mkDefault pkgs.stdenv.isDarwin;
     ghostty.enable = lib.mkDefault true;
     ai.enable = lib.mkDefault true;
+    aerc.enable = lib.mkDefault true;
   };
 }
