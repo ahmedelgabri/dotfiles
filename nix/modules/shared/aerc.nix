@@ -139,14 +139,7 @@ in {
               ".config/aerc/querymap" = {source = ../../../config/aerc/querymap;};
               ".config/aerc/aerc.conf" = {source = ../../../config/aerc/aerc.conf;};
 
-              ".config/aerc/accounts.conf.bk" = {
-                # HACK: https://github.com/nix-community/home-manager/issues/3090#issuecomment-2010891733
-                onChange = ''
-                  rm -f ${xdg.configHome}/aerc/accounts.conf
-                  cp ${xdg.configHome}/aerc/accounts.conf.bk ${xdg.configHome}/aerc/accounts.conf
-                  chmod 600 ${xdg.configHome}/aerc/accounts.conf
-                '';
-
+              ".config/aerc/accounts.conf" = {
                 ###############################################################################
                 # Maybe I should always connect remotely and ignore the local sync all together?
                 # - will be slower in taking actions or opening folders (network requests)

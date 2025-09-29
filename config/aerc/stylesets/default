@@ -1,42 +1,57 @@
- aerc default styleset
+# aerc default styleset
 #
 # This styleset uses the terminal defaults as its base.
 # More information on how to configure the styleset can be found in
 # the aerc-styleset(7) manpage. Please read the manual before
 # modifying or creating a styleset.
 
+# reset everything
 *.default=true
-*.selected.reverse=toggle
+*.normal=true
 
 title.reverse=true
-header.bold=true
+header.fg=238
 
-*error.bold=true
-error.fg=red
-warning.fg=yellow
-success.fg=green
+*error.fg=red
+*warning.fg=yellow
+*success.fg=green
+
+*.selected.fg=blue
+*.selected.bg=black
+*.selected.bold=false
+
+# scrollbars
+*_pill.bg=236
 
 statusline*.default=true
-statusline_default.fg=grey
+statusline_default.fg=237
 statusline_error.fg=red
 statusline_error.reverse=true
 
 msglist_unread.bold=false
-msglist_read.fg=gray
+msglist_read.fg=237
 msglist_marked.fg=gold
 msglist_deleted.fg=red
 
-msglist_*.selected.bg=234
-msglist_*.selected.fg=237
-msglist_*.selected.bold=false
+dirlist_default.fg=237
+dirlist_unread.fg=242
 
-completion_pill.reverse=true
+completion_description.fg=242
 
-tab.selected.bg=color238
-tab.selected.fg=#111111
-tab.selected.bold=false
+border.bg=false
+tab.selected.bg=false
+tab.fg=237
 
-border.bg=grey
+border.bg=false
 
-selector_focused.reverse=true
 selector_chooser.bold=true
+
+spinner.fg=237
+
+# Colorize
+[viewer]
+url.underline=true
+
+# Custom styles
+[user]
+foo.fg=red
