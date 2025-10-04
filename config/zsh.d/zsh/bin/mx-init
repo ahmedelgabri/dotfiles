@@ -14,8 +14,7 @@ create_session() {
 		command -v neomutt &>/dev/null
 	then
 		tmux new-window -n 'mail'
-		# https://github.com/neomutt/neomutt/issues/4058#issuecomment-1751682305
-		tmux send-keys "TERM=xterm-direct neomutt" C-m
+		tmux send-keys "aerc" C-m
 	fi
 
 	if

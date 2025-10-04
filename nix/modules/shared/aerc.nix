@@ -18,7 +18,7 @@ in {
         '';
         account = {
           name = mkOption {
-            default = "gabri.me";
+            default = "Personal";
             type = with types; uniq str;
           };
           type = mkOption {
@@ -130,10 +130,10 @@ in {
             };
 
             hm.file = {
-              # ".config/aerc/stylesets" = {
-              #   recursive = true;
-              #   source = ../../../config/aerc/stylesets;
-              # };
+              ".config/aerc/stylesets" = {
+                recursive = true;
+                source = ../../../config/aerc/stylesets;
+              };
 
               ".config/aerc/binds.conf" = {source = ../../../config/aerc/binds.conf;};
               ".config/aerc/querymap" = {source = ../../../config/aerc/querymap;};
