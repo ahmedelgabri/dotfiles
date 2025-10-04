@@ -1,7 +1,7 @@
 font-family = PragmataPro Liga
 font-size = 12
 font-thicken = true
-theme = dark:mine,light:neobones_light
+theme = dark:mine,light:Neobones Light
 window-padding-x = 5
 window-padding-y = 5
 window-padding-balance = true
@@ -11,6 +11,7 @@ window-save-state = always
 window-decoration = false
 working-directory = home
 mouse-hide-while-typing = false
+bell-features = "no-attention,no-audio,no-system,no-title,no-border"
 
 macos-non-native-fullscreen=padded-notch
 macos-non-native-fullscreen = true
