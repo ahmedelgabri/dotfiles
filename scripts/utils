@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
 
-# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eueo pipefail
 
-SUDO_USER=$(whoami)
-
-FLAKE=${1:$(hostname -s)}
-
-# Intell by default because my personal machine
-ARCH="i386"
-
-if [[ $(arch) == 'arm64' ]]; then
-	ARCH="$(arch)"
-fi
+ARCH="$(arch)"
 
 # =======================================================================
 # = Helpers & setting some variables
@@ -24,10 +14,14 @@ tput sgr0
 RED=$(tput setaf 1)
 ORANGE=$(tput setaf 3)
 GREEN=$(tput setaf 2)
+# shellcheck disable=SC2034
 PURPLE=$(tput setaf 5)
+# shellcheck disable=SC2034
 CYAN=$(tput setaf 4)
 BLUE=$(tput setaf 6)
+# shellcheck disable=SC2034
 WHITE=$(tput setaf 7)
+# shellcheck disable=SC2034
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 
@@ -39,10 +33,11 @@ log() {
 	local MSG=("$@")
 	printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols) - ${#LABEL})) | tr ' ' '='
 	for M in "${MSG[@]}"; do
+		# shellcheck disable=SC2219
 		let COL=$(tput cols)-2-${#M}
 		printf "%s%${COL}s${RESET}" "$COLOR* $M"
 	done
-	printf "${COLOR}%*s${RESET}\n\n\n" $(tput cols) | tr ' ' '='
+	printf "${COLOR}%*s${RESET}\n\n\n" "$(tput cols)" | tr ' ' '='
 }
 
 log_error() {
@@ -89,73 +84,6 @@ EOF
 	fi
 }
 
-print_prompt() {
-	echo "What do you want to do?"
-	PS3="Enter your choice (must be a number): "
-	options=("All" "Install package manager" "Clone dotfiles" "Backup old files" "Symlink files" "Install Apps" "Change shell" "Quit")
-	select opt in "${options[@]}"; do
-		case $opt in
-		"All")
-			all
-			break
-			;;
-		"Install package manager")
-			package_manager
-			break
-			;;
-		"Clone dotfiles")
-			clone_dotfiles
-			break
-			;;
-		"Install")
-			install
-			break
-			;;
-		"Quit")
-			break
-			;;
-		*)
-			echo "Invalid option"
-			break
-			;;
-		esac
-	done
-}
-
-# =======================================================================
-# = Main functions
-# =======================================================================
-
-install_xcode() {
-	if command -v xcode-select >/dev/null; then
-		log_info "Xcode already installed"
-	else
-		log_success "Installing Xcode"
-		xcode-select --install
-		if [[ "$ARCH" == 'arm64' ]]; then
-			log_success "Installing Rosetta"
-			sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
-		fi
-	fi
-}
-
-install_nix() {
-	if command -v nix >/dev/null; then
-		log_info "Nix already installed"
-	else
-		log_success "Installing Nix"
-		true | sh <(curl -L https://nixos.org/nix/install)
-	fi
-
-}
-
-package_manager() {
-	if [ "$(uname)" == "Darwin" ]; then
-		install_xcode
-		install_nix
-	fi
-}
-
 clone_dotfiles() {
 	if [[ ! -d $DOTFILES_DIR ]]; then
 		log_success "Cloning dotfiles..."
@@ -177,41 +105,3 @@ clone_dotfiles() {
 		git stash pop || true
 	fi
 }
-
-install() {
-	if command -v nix >/dev/null; then
-		if [ "$(uname)" == "Darwin" ]; then
-			log_info "Building flakes..."
-			nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "$DOTFILES_DIR#$FLAKE"
-		else
-			sudo -u "$SUDO_USER" nixos-rebuild switch --flake "$DOTFILES_DIR#$FLAKE"
-		fi
-	fi
-}
-
-all() {
-	package_manager
-	clone_dotfiles
-	install
-
-	FAILED_COMMAND=$(fc -ln -1)
-
-	if [ $? -eq 0 ]; then
-		log_success "Done."
-		log_info "Don't forget to generate SSH keys & import gpg keys"
-		# command vim -u NONE $XDG_DATA_HOME/$(hostname)/{gitconfig,zshrc}
-	else
-		log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
-	fi
-}
-
-run() {
-	print_main_banner
-	print_prompt
-}
-
-# =======================================================================
-# = Run!
-# =======================================================================
-
-run

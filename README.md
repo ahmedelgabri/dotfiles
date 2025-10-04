@@ -38,13 +38,7 @@ These are the main configs:
 
 ## Installation
 
-1. Install Command line tools.
-
-```bash
-xcode-select --install
-```
-
-2. Install `nix` (I tested mostly with
+1. Install `nix` (I tested mostly with
    <https://github.com/DeterminateSystems/nix-installer>, but I think everything
    should work fine with the default nix installer)
 
@@ -52,22 +46,17 @@ xcode-select --install
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-3. Build
+2. Set up
 
 > [!NOTE]
 >
-> The flake attribute in my case is usually the host machine name
+> The flake attribute in my case is usually is the host machine name, if not
+> passed it will default to `$(hostname -s)`
 
 online:
 
 ```bash
-nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "github:ahmedelgabri/dotfiles#<flake attribute>"
-```
-
-local:
-
-```bash
-nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --flake "~/path/to/dotfiles#<flake attribute>"
+nix run "github:ahmedelgabri/dotfiles" -- <flake attribute>
 ```
 
 ### Homebrew

@@ -261,6 +261,28 @@
         pkgs.alejandra
     );
 
+    apps = forAllSystems (system: let
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      utils = pkgs.writeShellApplication {
+        name = "utils";
+        text = builtins.readFile scripts/utils;
+      };
+      bootstrap = pkgs.writeShellApplication {
+        name = "bootstrap";
+        runtimeInputs = [pkgs.git];
+        text = ''
+          # shellcheck disable=SC1091
+          source ${pkgs.lib.getExe utils}
+          ${builtins.readFile scripts/${system}_bootstrap}
+        '';
+      };
+    in {
+      default = {
+        type = "app";
+        program = pkgs.lib.getExe bootstrap;
+      };
+    });
+
     packages = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
     in {
@@ -289,7 +311,13 @@
     });
   in
     {
-      inherit darwinConfigurations nixosConfigurations devShells formatter;
+      inherit
+        darwinConfigurations
+        nixosConfigurations
+        devShells
+        formatter
+        apps
+        ;
       templates = import ./templates;
     }
     // mapHosts

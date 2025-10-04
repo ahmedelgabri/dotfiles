@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -Eueo pipefail
+
+SUDO_USER=$(whoami)
+
+FLAKE=${1:-$(hostname -s)}
+
+print_main_banner
+
+# =======================================================================
+# = Main functions
+# =======================================================================
+
+if command -v xcode-select >/dev/null; then
+	log_info "Xcode already installed"
+else
+	log_success "Installing Xcode"
+	xcode-select --install
+
+	log_success "Installing Rosetta"
+	sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
+fi
+
+log_info "Installing flake -> $FLAKE"
+sudo nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --option eval-cache false --flake "$DOTFILES_DIR#$FLAKE"
+log_success "$FLAKE installed"
+
+clone_dotfiles
+
+FAILED_COMMAND=$(fc -ln -1)
+
+if [ $? -eq 0 ]; then
+	log_success "Done."
+	log_info "Don't forget to generate SSH keys & import gpg keys"
+else
+	log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
+fi
