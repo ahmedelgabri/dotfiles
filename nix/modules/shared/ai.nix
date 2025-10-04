@@ -20,7 +20,7 @@ in {
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
         launchd.daemons.swama = {
-          command = "${pkgs.ollama}/bin/ollama serve";
+          command = "${lib.getExe pkgs.ollama} serve";
           serviceConfig = {
             Label = "ollama";
             UserName = config.my.username;

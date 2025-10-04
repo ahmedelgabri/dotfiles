@@ -68,14 +68,14 @@ in {
               set -ue -o pipefail
 
               echo "--- Starting mail sync at $(date) ---"
-              ${pkgs.coreutils}/bin/timeout ${
+              ${lib.getExe pkgs.coreutils} ${
                 if cfg.keychain.name == "gmail.com"
                 then "5m"
                 else "2m"
-              } ${pkgs.isync}/bin/mbsync -q -a
+              } ${lib.getExe pkgs.isync} -q -a
 
               echo "mbsync finished successfully. Indexing new mail..."
-              ${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new
+              ${lib.getExe pkgs.notmuch} --config=${xdg.configHome}/notmuch/config new
 
               echo "Sync finished at $(date)"'';
 
@@ -179,7 +179,7 @@ in {
                   "+${cfg.account}/Drafts" \
                   "+${cfg.account}/Trash" \
                   "+${cfg.account}/Spam" \
-                  `${pkgs.tree}/bin/tree ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afinQ --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
+                  `${lib.getExe pkgs.tree} ~/.mail/${cfg.account} -l -d -I "Archive|cur|new|tmp|certs|.notmuch|INBOX|[Gmail]" -afinQ --noreport | awk '{if(NR>1)print}' | tr '\n' ' '`
 
                 ${lib.optionalString
                   (lib.toLower cfg.account == "personal" && cfg.switch_to != "") ''
@@ -345,7 +345,7 @@ in {
               #
 
               [crypto]
-              gpg_path=${pkgs.gnupg}/bin/gpg '';
+              gpg_path=${lib.getExe pkgs.gnupg} '';
           };
 
           # TODO: support multiple accounts
@@ -368,7 +368,7 @@ in {
               from ${email}
               user ${email}
               passwordeval ${xdg.configHome}/zsh/bin/get-keychain-pass ${cfg.keychain.account} ${cfg.keychain.name}
-              # passwordeval ${pkgs.pass}/bin/pass email/${cfg.keychain.name}
+              # passwordeval ${lib.getExe pkgs.pass} email/${cfg.keychain.name}
 
               account default : ${lib.toLower cfg.account}'';
           };
@@ -408,7 +408,7 @@ in {
               Host ${cfg.imap_server}
               User ${email}
               # Get the account password from the system Keychain
-              # PassCmd "${pkgs.pass}/bin/pass email/${cfg.keychain.name}"
+              # PassCmd "${lib.getExe pkgs.pass} email/${cfg.keychain.name}"
               PassCmd "~/.config/zsh/bin/get-keychain-pass '${cfg.keychain.account}' '${cfg.keychain.name}'"
               AuthMechs LOGIN
               TLSType IMAPS

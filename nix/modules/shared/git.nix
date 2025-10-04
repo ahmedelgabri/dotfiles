@@ -50,10 +50,10 @@ in {
               	username = ${github_username}''}
 
             [gpg]
-            	program = ${pkgs.gnupg}/bin/gpg
+            	program = ${lib.getExe pkgs.gnupg}
 
             [diff "exif"]
-            	textconv = ${pkgs.exiftool}/bin/exiftool
+            	textconv = ${lib.getExe pkgs.exiftool}
 
             ${optionalString pkgs.stdenv.isDarwin ''
               [diff "plist"]

@@ -113,15 +113,15 @@
       package = pkgs.i3-gaps;
       extraPackages = with pkgs; [i3lock dmenu i3blocks];
       # extraSessionCommands = ''
-      # ${pkgs.xset}/bin/xset r rate 200 60
+      # ${lib.getExe pkgs.xset} r rate 200 60
       # ${inputs.nixpgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
-      # ${pkgs.dunst}/bin/dunst &
+      # ${lib.getExe pkgs.dunst} &
       # '';
     };
     displayManager.defaultSession = "none+i3";
     # displayManager.setupCommands = ''
     # ${inputs.nixpkgs-unstable.feh}/bin/feh --no-fehbg --bg-fill "/home/ahmed/.config/big-sur.jpg" &
-    # ${pkgs.dunst}/bin/dunst &
+    # ${lib.getExe pkgs.dunst} &
     # '';
     # displayManager.startx.enable = true;
 

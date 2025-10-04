@@ -34,7 +34,7 @@ in {
       };
 
       my.env = {
-        EDITOR = "${pkgs.neovim-unwrapped}/bin/nvim";
+        EDITOR = "${lib.getExe pkgs.neovim-unwrapped}";
         VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";

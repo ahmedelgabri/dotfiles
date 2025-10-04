@@ -143,7 +143,7 @@ in {
               FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
               FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --walker-skip .git,node_modules";
               FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-              FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
+              FZF_CTRL_T_COMMAND = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
               FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
               FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
               FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview' --info inline-right";
@@ -162,8 +162,8 @@ in {
               # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
               # Remove -X and -F (exit if the content fits on one screen) to enable it.
               LESS = "-F -g -i -M -R -S -w -X -z-4";
-              # LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
-              LS_COLORS = "$(${pkgs.vivid}/bin/vivid generate ~/.config/vivid/theme.yml)";
+              # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
+              LS_COLORS = "$(${lib.getExe pkgs.vivid} generate ~/.config/vivid/theme.yml)";
               NEXT_TELEMETRY_DISABLED = "1";
               NOTES_DIR = "${PERSONAL_STORAGE}/notes";
               PAGER = "less";
@@ -173,7 +173,7 @@ in {
               # Better spell checking & auto correction prompt
               SHELL = "${pkgs.zsh}/bin/zsh";
               SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
-              VIM_FZF_LOG = ''"$(${pkgs.git}/bin/git config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
+              VIM_FZF_LOG = ''"$(${lib.getExe pkgs.git} config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
               ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
               ZDOTDIR = "${hm.configHome}/zsh";
               # I use a single zk notes dir, so set it and forget
@@ -430,13 +430,13 @@ in {
                   # This breaks p10k instant prompt if I inline the file, but sourcing works fine
                   source "${pkgs.grc}/etc/grc.zsh"
 
-                  source <(${pkgs.fzf}/bin/fzf --zsh)
+                  source <(${lib.getExe pkgs.fzf} --zsh)
+
+                  eval "${"$"}(${lib.getExe pkgs.direnv} hook zsh)"
+                  eval "${"$"}(${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r)"
+                  eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
 
                   source <(carapace _carapace)
-
-                  eval "${"$"}(${pkgs.direnv}/bin/direnv hook zsh)"
-                  eval "${"$"}(${pkgs.atuin}/bin/atuin init zsh --disable-up-arrow --disable-ctrl-r)"
-                  eval "${"$"}(${pkgs.zoxide}/bin/zoxide init zsh --hook pwd)"
                 ''
                 (builtins.readFile ../../../config/zsh.d/zsh/config/extras.zsh)
                 (builtins.readFile ../../../config/zsh.d/.p10k.zsh)

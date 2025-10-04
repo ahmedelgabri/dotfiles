@@ -38,7 +38,7 @@ in {
         };
 
         source_cred_cmd = mkOption {
-          default = "${pkgs.pass}/bin/pass show service/email/source";
+          default = "${lib.getExe pkgs.pass} show service/email/source";
           type = with types; uniq str;
         };
 
@@ -48,12 +48,12 @@ in {
         };
 
         outgoing_cred_cmd = mkOption {
-          default = "${pkgs.pass}/bin/pass show service/email/outgoing";
+          default = "${lib.getExe pkgs.pass} show service/email/outgoing";
           type = with types; uniq str;
         };
 
         carddav_source_cred_cmd = mkOption {
-          default = "${pkgs.pass}/bin/pass show service/email/contacts";
+          default = "${lib.getExe pkgs.pass} show service/email/contacts";
           type = with types; uniq str;
         };
       };
@@ -74,14 +74,14 @@ in {
                 set -ue -o pipefail
 
                 echo "--- Starting mail sync at $(date) ---"
-                ${pkgs.coreutils}/bin/timeout ${
+                ${lib.getExe pkgs.coreutils} ${
                   if cfg.account.service == "gmail.com"
                   then "5m"
                   else "2m"
-                } ${pkgs.isync}/bin/mbsync -q -a
+                } ${lib.getExe pkgs.isync} -q -a
 
                 echo "mbsync finished successfully. Indexing new mail..."
-                ${pkgs.notmuch}/bin/notmuch --config=${xdg.configHome}/notmuch/config new
+                ${lib.getExe pkgs.notmuch} --config=${xdg.configHome}/notmuch/config new
 
                 echo "Sync finished at $(date)"'';
 
@@ -297,7 +297,7 @@ in {
                   #
 
                   [crypto]
-                  gpg_path=${pkgs.gnupg}/bin/gpg '';
+                  gpg_path=${lib.getExe pkgs.gnupg} '';
               };
 
               # TODO: copy over msmtp and isync configs here too, and update

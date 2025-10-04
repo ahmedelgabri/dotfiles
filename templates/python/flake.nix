@@ -32,23 +32,23 @@
             */
             ''
               if [ ! -f pyproject.toml ]; then
-                ${pkgs.uv}/bin/uv init --author-from git
+                ${pkgs.lib.getExe pkgs.uv} init --author-from git
 
                 # in order to make sure pyright LSP plays well
                 echo '[tool.pyright]\nvenvPath = "."\nvenv = ".venv"' >> pyproject.toml
 
-                ${pkgs.uv}/bin/uv tool install ruff
-                ${pkgs.uv}/bin/uv tool install pyright
+                ${pkgs.lib.getExe pkgs.uv} tool install ruff
+                ${pkgs.lib.getExe pkgs.uv} tool install pyright
               fi
 
               # Activate Python virtual environment
               if [ ! -d .venv ]; then
-                ${pkgs.uv}/bin/uv venv
+                ${pkgs.lib.getExe pkgs.uv} venv
               fi
               source .venv/bin/activate
 
               # Install project dependencies
-              ${pkgs.uv}/bin/uv sync
+              ${pkgs.lib.getExe pkgs.uv} sync
 
               echo "Development environment ready!"
             '';
