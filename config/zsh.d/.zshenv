@@ -18,17 +18,8 @@ path=(
   ${GHOSTTY_BIN_DIR}(N-/)
   ${ZDOTDIR}/bin
   ${HOME}/.local/bin(N-/)
-  # ${CARGO_HOME}/bin(N-/)
-  ${GOBIN}(N-/)
   $path
   # For M1/2 machines
   /opt/homebrew/bin(N-/)
   /usr/local/{bin,sbin}
 )
-
-fpath=(
-  ${ZDOTDIR}/functions
-  $fpath
-)
-
-autoload -Uz ${ZDOTDIR}/functions/**/*(N:t)
