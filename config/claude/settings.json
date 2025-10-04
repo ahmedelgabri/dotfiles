@@ -1,0 +1,40 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(fd:*)",
+			"Bash(rg:*)",
+			"Bash(find:*)",
+			"Bash(grep:*)",
+			"Bash(yarn:*)",
+			"Bash(mkdir:*)",
+			"Bash(echo:*)",
+			"Bash(tail:*)",
+			"Bash(head:*)",
+			"Bash(cd:*)",
+			"Bash(uniq:*)",
+			"Bash(sort:*)",
+			"Bash(awk:*)",
+			"Bash(pwd:*)"
+		],
+		"deny": [
+			"Read(.env)",
+			"Read(.envrc)",
+			"Read(.env.*)",
+			"Read(.zshrc)",
+			"Read(.zshenv)"
+		],
+		"ask": [
+			"Bash(mv:*)",
+			"Bash(cp:*)",
+			"Bash(node:*)",
+			"Bash(xargs:*)",
+			"Bash(git:*)",
+			"Bash(curl:*)"
+		]
+	},
+	"statusLine": {
+		"type": "command",
+		"command": "~/.claude/statusline.py"
+	},
+	"alwaysThinkingEnabled": false
+}

@@ -161,6 +161,20 @@ in {
             ".claude/CLAUDE.md" = {
               source = ../../../config/claude/CLAUDE.md;
             };
+
+            ".claude/statusline.py" = {
+              source = ../../../config/claude/statusline.py;
+            };
+
+            ".claude/settings.json.bk" = {
+              source = ../../../config/claude/settings.json;
+              # HACK: https://github.com/nix-community/home-manager/issues/3090#issuecomment-2010891733
+              # These file should be editable by claude
+              onChange = ''
+                rm -f ${homeDir}/.claude/settings.json
+                cp ${homeDir}/.claude/settings.json.bk ${homeDir}/.claude/settings.json
+              '';
+            };
           };
         };
       }
