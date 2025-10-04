@@ -44,11 +44,6 @@ in {
         })
 
       {
-        environment = {
-          shellAliases = {
-            aider = "aider --config ~/.dotfiles/config/aider/config.yml";
-          };
-        };
         my = {
           user = {
             packages = with pkgs; [
