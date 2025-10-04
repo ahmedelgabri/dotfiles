@@ -283,13 +283,6 @@
       };
     });
 
-    packages = forAllSystems (system: let
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
-    in {
-      ${system}.foo = pkgs.writeShellScriptBin "foo" ''echo "foo" '';
-      ${system}.default = self.packages.${system}.foo;
-    });
-
     # @TODO: move the logic inside ./install here
     devShells = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
