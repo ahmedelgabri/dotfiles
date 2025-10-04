@@ -22,6 +22,10 @@ create_session() {
 	then
 		tmux new-window -n 'rss'
 		tmux send-keys "newsboat" C-m
+
+	if command -v clx &>/dev/null; then
+		tmux new-window -n 'HN'
+		tmux send-keys "clx" C-m
 	fi
 
 	if command -v weechat &>/dev/null; then

@@ -71,16 +71,16 @@ if ! (tmux has-session -t "$SESSION" &>/dev/null); then
 		tmux link-window -s _shared:rss -t 7
 	fi
 
+	if tmux has-session -t _shared:HN 2>/dev/null; then
+		tmux link-window -s _shared:HN -t 8
+	fi
+
 	if tmux has-session -t _shared:dotfiles 2>/dev/null; then
-		tmux link-window -s _shared:dotfiles -t 8
+		tmux link-window -s _shared:dotfiles -t 9
 	fi
 
 	if tmux has-session -t _shared:notes 2>/dev/null; then
-		tmux link-window -s _shared:notes -t 9
-	fi
-
-	if tmux has-session -t _shared:reddit 2>/dev/null; then
-		tmux link-window -s _shared:reddit -t 10
+		tmux link-window -s _shared:notes -t 10
 	fi
 
 	if tmux has-session -t _shared:weechat 2>/dev/null; then
