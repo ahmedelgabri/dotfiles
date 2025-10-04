@@ -68,7 +68,7 @@ in {
               set -ue -o pipefail
 
               echo "--- Starting mail sync at $(date) ---"
-              ${lib.getExe pkgs.coreutils} ${
+              ${lib.getExe' pkgs.coreutils "timeout"} ${
                 if cfg.keychain.name == "gmail.com"
                 then "5m"
                 else "2m"
