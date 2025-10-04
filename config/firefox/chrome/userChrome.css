@@ -1,16 +1,33 @@
-/* Move the sidebar header to the bottom and hide the close button */
+/*
+* Sidebery modifications
+* 1. Move the sidebar header to the bottom and hide the close button
+* 2. Remove border-radius, outline and box-shadow from the sidebar
+* 3. Reduce the width of the sidebar splitter between content and sidebar
+*/
 #sidebar-box {
 	flex-direction: column-reverse !important;
+
+	#sidebar-header {
+		font-size: 1em !important;
+		padding: 5px !important;
+		border: none !important;
+	}
+	#sidebar-close,
+	#sidebar-spacer {
+		display: none !important;
+	}
+
+	#sidebar {
+		outline: none !important;
+		border-radius: 0 !important;
+		box-shadow: none !important;
+	}
 }
 
-#sidebar-box #sidebar-header {
-	font-size: 1em !important;
-	padding: 5px !important;
-	border: none !important;
-}
-
-#sidebar-box #sidebar-close,
-#sidebar-box #sidebar-spacer,
 #sidebar-panel-header {
 	display: none !important;
+}
+
+#sidebar-splitter {
+	width: 1px !important;
 }
