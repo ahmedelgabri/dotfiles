@@ -254,6 +254,11 @@ in {
               recursive = true;
               source = ../../../config/zsh.d/zsh;
             };
+            # $ZDOTDIR must include a `.zshrc` file
+            ".config/zsh/.zshrc" = {
+              recursive = true;
+              text = "";
+            };
             ".config/mods" = {
               recursive = true;
               source = ../../../config/mods;
@@ -326,27 +331,49 @@ in {
           # zshenv
           shellInit =
             lib.concatStringsSep "\n"
-            (
-              [
-                /*
-                zsh
-                */
-                ''
-                  export LESS_TERMCAP_mb=$'\E[1;31m'   # Begins blinking.
-                  export LESS_TERMCAP_md=$'\E[1;31m'   # Begins bold.
-                  export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
-                  export LESS_TERMCAP_se=$'\E[0m'      # Ends standout-mode.
-                  export LESS_TERMCAP_so=$'\E[7m'      # Begins standout-mode.
-                  export LESS_TERMCAP_ue=$'\E[0m'      # Ends underline.
-                  export LESS_TERMCAP_us=$'\E[1;32m'   # Begins underline.
-                  # Remove path separator from WORDCHARS.
-                  WORDCHARS=${"$"}{WORDCHARS//[\/]}
-                ''
-              ]
-              ++ (map builtins.readFile [
-                ../../../config/zsh.d/.zshenv
-              ])
-            );
+            [
+              /*
+              zsh
+              */
+              ''
+                export LESS_TERMCAP_mb=$'\E[1;31m'   # Begins blinking.
+                export LESS_TERMCAP_md=$'\E[1;31m'   # Begins bold.
+                export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
+                export LESS_TERMCAP_se=$'\E[0m'      # Ends standout-mode.
+                export LESS_TERMCAP_so=$'\E[7m'      # Begins standout-mode.
+                export LESS_TERMCAP_ue=$'\E[0m'      # Ends underline.
+                export LESS_TERMCAP_us=$'\E[1;32m'   # Begins underline.
+                # Remove path separator from WORDCHARS.
+                WORDCHARS=${"$"}{WORDCHARS//[\/]}
+
+
+                # Ensure path arrays do not contain duplicates.
+                typeset -gU cdpath fpath mailpath manpath path
+
+                ##############################################################
+                # PATH.
+                # (N-/): do not register if the directory does not exists
+                # (Nn[-1]-/)
+                #
+                #  N   : NULL_GLOB option (ignore path if the path does not match the glob)
+                #  n   : Sort the output
+                #  [-1]: Select the last item in the array
+                #  -   : follow the symbol links
+                #  /   : ignore files
+                #  t   : tail of the path
+                ##############################################################
+
+                path=(
+                	${"$"}{GHOSTTY_BIN_DIR}(N-/)
+                	${"$"}{ZDOTDIR}/bin
+                	${"$"}{HOME}/.local/bin(N-/)
+                	${"$"}path
+                	# For M1/2 machines
+                	/opt/homebrew/bin(N-/)
+                	/usr/local/{bin,sbin}
+                )
+              ''
+            ];
 
           # zshrc
           interactiveShellInit =
