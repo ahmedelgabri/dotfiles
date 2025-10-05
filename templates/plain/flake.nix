@@ -23,13 +23,13 @@
         };
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [mise];
+          packages = with pkgs; [hello];
           shellHook =
             /*
             bash
             */
             ''
-              eval "$(mise activate)"
+              ${pkgs.lib.getExe pkgs.hello}
             '';
         };
       };

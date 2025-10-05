@@ -24,14 +24,15 @@
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            mise
+            nodejs_latest
+            pnpm
           ];
           shellHook =
             /*
             bash
             */
             ''
-              eval "$(mise activate)"
+
             '';
         };
       };
