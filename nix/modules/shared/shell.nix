@@ -247,6 +247,7 @@ in {
               poppler_utils # to preview PDFs as text
               newsraft
               bun
+              circumflex # HN CLI reader
             ];
           };
 
