@@ -61,11 +61,11 @@ in {
       "visual-studio-code"
       "google-chrome"
       "cursor"
-      "zed"
     ];
 
     brews = [
       "go-task"
+      "jiratui"
     ];
   };
 }
