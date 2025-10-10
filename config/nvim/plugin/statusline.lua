@@ -277,28 +277,6 @@ local function git_conflicts()
 	)
 end
 
-local function copilot()
-	if
-		vim.bo.filetype == 'ministarter' or vim.bo.filetype == 'snacks_dashboard'
-	then
-		return nil
-	end
-
-	local ok, c = pcall(require, 'copilot.client')
-
-	if
-		ok
-		and (
-			not c.is_disabled() or c.buf_is_attached(vim.api.nvim_get_current_buf())
-		)
-	then
-		return string.format(require('mini.icons').get('filetype', 'copilot'))
-			.. ' '
-	end
-
-	return nil
-end
-
 ---Mostly taken from https://github.com/MariaSolOs/dotfiles/blob/34c5df39e6576357a2b90e25673e44f4d33afe38/.config/nvim/lua/statusline.lua#L121-L172
 ---@type table<string, string?>
 local progress_status = {
@@ -433,7 +411,6 @@ function M.render_active()
 		diff_source(),
 		lsp_diagnostics(),
 		lsp_progress_component(),
-		copilot(),
 		get_codecompanion_status(),
 		file_info(),
 		rhs(),

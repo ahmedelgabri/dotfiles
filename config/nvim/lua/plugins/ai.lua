@@ -323,32 +323,65 @@ return {
 			})
 		end,
 	},
+	-- TODO: Change keymaps for LSP to start with <leader>l to avoid conflicts
 	{
-		'https://github.com/zbirenbaum/copilot.lua',
-		enabled = utils.is_rocket(),
-		build = ':Copilot auth',
-		event = 'InsertEnter',
+		'https://github.com/folke/sidekick.nvim',
 		opts = {
-			suggestion = { enabled = false },
-			panel = { enabled = false },
-			filetypes = {
-				['*'] = function()
-					if
-						string.match(
-							vim.fs.basename(vim.api.nvim_buf_get_name(0)),
-							'^%.env.*'
-						)
-					then
-						-- disable for .env files
-						return false
-					end
-					return true
+			mux = { enabled = true },
+		},
+		keys = {
+			{
+				'<c-.>',
+				function()
+					require('sidekick.cli').toggle()
 				end,
+				desc = 'Sidekick Toggle',
+				mode = { 'n', 't', 'i', 'x' },
 			},
-			copilot_node_command = vim.fn.expand '~/.local/share/mise/installs/node/latest/bin/node',
-			server = {
-				type = 'binary',
-				custom_server_filepath = vim.fn.exepath 'copilot-language-server',
+			{
+				'<localleader>aa',
+				function()
+					require('sidekick.cli').toggle()
+				end,
+				desc = 'Sidekick Toggle CLI',
+			},
+			{
+				'<localleader>as',
+				function()
+					require('sidekick.cli').select { filter = { installed = true } }
+				end,
+				desc = 'Select CLI',
+			},
+			{
+				'<localleader>at',
+				function()
+					require('sidekick.cli').send { msg = '{this}' }
+				end,
+				mode = { 'x', 'n' },
+				desc = 'Send This',
+			},
+			{
+				'<localleader>af',
+				function()
+					require('sidekick.cli').send { msg = '{file}' }
+				end,
+				desc = 'Send File',
+			},
+			{
+				'<localleader>av',
+				function()
+					require('sidekick.cli').send { msg = '{selection}' }
+				end,
+				mode = { 'x' },
+				desc = 'Send Visual Selection',
+			},
+			{
+				'<localleader>ap',
+				function()
+					require('sidekick.cli').prompt()
+				end,
+				mode = { 'n', 'x' },
+				desc = 'Sidekick Select Prompt',
 			},
 		},
 	},

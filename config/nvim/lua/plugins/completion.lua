@@ -19,7 +19,6 @@ return {
 			'https://github.com/rafamadriz/friendly-snippets',
 			'https://github.com/moyiz/blink-emoji.nvim',
 			'https://github.com/olimorris/codecompanion.nvim',
-			'https://github.com/fang2hou/blink-copilot',
 			'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
@@ -194,22 +193,5 @@ return {
 				},
 			},
 		},
-		config = function(_, opts)
-			local ok = pcall(require, 'copilot.api')
-
-			if ok then
-				table.insert(opts.sources.default, 'copilot')
-				opts.sources.providers.copilot = {
-					name = 'copilot',
-					enabled = true,
-					module = 'blink-copilot',
-					-- min_keyword_length = 6,
-					score_offset = 100, -- push to the top
-					async = true,
-				}
-			end
-
-			require('blink.cmp').setup(opts)
-		end,
 	},
 }
