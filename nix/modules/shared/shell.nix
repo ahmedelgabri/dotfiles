@@ -201,7 +201,6 @@ in {
             rsync
             wget
             zoxide
-            zsh-powerlevel10k
             (pkgs.writeScriptBin "nixup"
               /*
               bash
@@ -366,7 +365,6 @@ in {
                 ##############################################################
 
                 path=(
-                	${"$"}{GHOSTTY_BIN_DIR}(N-/)
                 	${"$"}{ZDOTDIR}/bin
                 	${"$"}{HOME}/.local/bin(N-/)
                 	${"$"}path
