@@ -25,9 +25,9 @@ def when_str_of_start_end(s, e):
     datetime_format = "%a, %d %b %Y at %H:%M"
 
     # sometimes, s and e can be dates only, so convert them to datetimes
-    if type(s) == datetime.date:
+    if type(s) is datetime.date:
         s = datetime.datetime.combine(s, datetime.time.min)
-    if type(e) == datetime.date:
+    if type(e) is datetime.date:
         e = datetime.datetime.combine(e, datetime.time.min)
 
     until_format = "%H:%M" if s.date() == e.date() else datetime_format
@@ -68,8 +68,7 @@ def pretty_print_invitation(invitation):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2 or sys.argv[1].startswith("-"):
-        sys.stderr.write("Usage: %s <filename.ics>\n".format(sys.argv[0]))
+        sys.stderr.write(f"Usage: {sys.argv[0]} <filename.ics>\n")
         sys.exit(2)
     inv = get_invitation_from_path(sys.argv[1])
     pretty_print_invitation(inv)
-

@@ -1,4 +1,5 @@
-Create `session_{slug}_{timestamp}.md` with a complete summary of our session. Include:
+Create `session_{slug}_{timestamp}.md` with a complete summary of our session.
+Include:
 
 - A brief recap of key actions.
 - Total cost of the session.

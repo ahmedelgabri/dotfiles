@@ -12,16 +12,13 @@ complement this file.
 # Imports we need
 import sys
 import os
-import re
-import readline, rlcompleter
+import readline
 import atexit
 from pprint import pprint
 from tempfile import mkstemp
 from code import InteractiveConsole
 
 # Imports we want
-import datetime
-import pdb
 
 
 # Color Support
@@ -164,7 +161,7 @@ def SECRET_KEY():
 if "DJANGO_SETTINGS_MODULE" in os.environ:
     from django.db.models.loading import get_models
     from django.test.client import Client
-    from django.test.utils import setup_test_environment, teardown_test_environment
+    from django.test.utils import setup_test_environment
     from django.conf import settings as S
 
     class DjangoModels(object):
@@ -222,8 +219,6 @@ if "SALT_MINION_CONFIG" in os.environ:
         import salt.config
         import salt.client
         import salt.loader
-        import jinja2
-        import yaml
     except ImportError:
         pass
     else:
@@ -238,7 +233,7 @@ if "SALT_MINION_CONFIG" in os.environ:
         SCALL = salt.client.Caller(mopts=__opts__)
 
         # Populate grains if it hasn't been done already
-        if not "grains" in __opts__ or not __opts__["grains"]:
+        if "grains" not in __opts__ or not __opts__["grains"]:
             __opts__["grains"] = salt.loader.grains(__opts__)
 
         # Populate template variables

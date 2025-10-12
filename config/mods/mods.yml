@@ -144,4 +144,3 @@ apis:
       openchat/openchat-3.5-1210:
         aliases: ['openchat']
         max-input-chars: 8192
-

@@ -43,4 +43,4 @@ zf() {
 }
 
 # Avoid ssh issues with ssh and terminfo with new terminal apps
-[[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"
+[[ $TERM == "xterm-kitty" ]] || [[ $TERM == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"
