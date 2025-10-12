@@ -18,10 +18,10 @@ create_session() {
 	fi
 
 	if
-		command -v newsboat &>/dev/null
+		command -v newsraft &>/dev/null
 	then
 		tmux new-window -n 'rss'
-		tmux send-keys "newsboat" C-m
+		tmux send-keys "newsraft" C-m
 	fi
 
 	if command -v clx &>/dev/null; then
