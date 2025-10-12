@@ -1,0 +1,11 @@
+[global]
+excludes = ["*.lock", "node_modules", "dist", "build"]
+
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.deno]
+command = "deno"
+options = ["fmt"]
+includes = ["*.ts", "*.tsx", "*.js", "*.jsx", "*.json", "*.jsonc", "*.md"]

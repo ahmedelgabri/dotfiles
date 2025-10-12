@@ -2,11 +2,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
     flake-parts,
     nixpkgs,
+    treefmt-nix,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -21,10 +26,21 @@
           inherit system;
           config.allowUnfree = true;
         };
-        formatter = pkgs.alejandra;
+        formatter = let
+          treefmtEval = treefmt-nix.lib.evalModule pkgs {
+            projectRootFile = "flake.nix";
+            programs = {
+              alejandra.enable = true;
+              ruff-format.enable = true;
+              ruff-check.enable = true;
+            };
+          };
+        in
+          treefmtEval.config.build.wrapper;
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             uv
+            treefmt
           ];
           shellHook =
             /*

@@ -1,0 +1,17 @@
+[global]
+excludes = ["*.lock", "vendor"]
+
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.gofmt]
+command = "gofmt"
+options = ["-w"]
+includes = ["*.go"]
+
+[formatter.goimports]
+command = "goimports"
+options = ["-w"]
+includes = ["*.go"]
+priority = 1

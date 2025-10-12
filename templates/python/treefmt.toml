@@ -1,0 +1,17 @@
+[global]
+excludes = ["*.lock", ".venv", "venv", "__pycache__", "*.egg-info"]
+
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.ruff-format]
+command = "ruff"
+options = ["format"]
+includes = ["*.py"]
+
+[formatter.ruff-check]
+command = "ruff"
+options = ["check", "--fix"]
+includes = ["*.py"]
+priority = 1
