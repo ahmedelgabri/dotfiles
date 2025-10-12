@@ -17,8 +17,8 @@ return {
 					require('snacks').scratch.open {
 						ft = ft,
 						win = {
-							width = 150,
-							height = 40,
+							width = 200,
+							height = 100,
 							border = utils.get_border(),
 							title = 'Scratch Buffer',
 						},
@@ -33,6 +33,20 @@ return {
 				require('snacks').scratch.select()
 			end,
 			{ desc = 'Select Scratch Buffer' },
+		},
+		{
+			'<localleader>t',
+			function()
+				local git_root = vim.fs.root(0, '.git')
+				if git_root then
+					local file = git_root .. '/todo.md'
+					require('snacks').scratch.open {
+						ft = 'markdown',
+						file = file,
+					}
+				end
+			end,
+			desc = 'Toggle Scratch Todo',
 		},
 		{
 			'<Leader>-',

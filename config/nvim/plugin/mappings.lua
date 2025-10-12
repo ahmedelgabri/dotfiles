@@ -180,14 +180,14 @@ local mode_keymaps = {
 		},
 	},
 
-	['<Localleader>t'] = {
-		{
-			-- Quick note taking per project
-			modes = { 'n' },
-			action = ':tab drop .git/todo.md<CR>',
-			opts = { remap = true, desc = 'Add project [t]odos' },
-		},
-	},
+	-- ['<Localleader>t'] = {
+	-- 	{
+	-- 		-- Quick note taking per project
+	-- 		modes = { 'n' },
+	-- 		action = ':tab drop .git/todo.md<CR>',
+	-- 		opts = { remap = true, desc = 'Add project [t]odos' },
+	-- 	},
+	-- },
 
 	['+'] = {
 		{ modes = { 'n' }, action = '<C-a>', opts = { desc = 'Increment' } },
