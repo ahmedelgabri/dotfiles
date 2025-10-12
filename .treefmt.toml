@@ -1,0 +1,96 @@
+[global]
+excludes = [
+  "*.lock",
+  "LICENSE",
+  "config/nvim/spell/*",
+  "config/weechat/*",
+  "config/zsh.d/zsh/config/completion.zsh",
+  "config/.hammerspoon/Spoons/*",
+  "config/zsh.d/.p10k.zsh",
+  "*.ignore",
+  "*.gitignore",
+]
+
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.statix]
+# command = "statix"
+# options = ["fix"]
+includes = ["*.nix"]
+# https://github.com/numtide/treefmt/issues/241#issuecomment-1614563462
+command = "bash"
+options = ["-euc", "fd -t f -e nix . | xargs -I {} statix fix {}"]
+
+[formatter.stylua]
+command = "stylua"
+options = [
+  "--line-endings",
+  "Unix",
+  "--quote-style",
+  "AutoPreferSingle",
+  "--call-parentheses",
+  "None",
+  "--column-width",
+  "80",
+  "--indent-width",
+  "2",
+  "--sort-requires",
+]
+includes = ["*.lua"]
+
+[formatter.gofmt]
+command = "gofmt"
+options = ["-w"]
+includes = ["*.go"]
+
+[formatter.goimports]
+command = "goimports"
+options = ["-w"]
+includes = ["*.go"]
+priority = 1
+
+[formatter.ruff-format]
+command = "ruff"
+options = ["format"]
+includes = ["*.py"]
+
+[formatter.ruff-check]
+command = "ruff"
+options = ["check", "--fix"]
+includes = ["*.py"]
+priority = 1
+
+[formatter.shfmt]
+command = "shfmt"
+options = ["-w", "-s"]
+includes = ["*.sh", "*.bash", "*.zsh", ".envrc"]
+
+[formatter.taplo]
+command = "taplo"
+options = ["format"]
+includes = ["*.toml"]
+
+[formatter.prettier]
+command = "prettier"
+options = [
+  "--write",
+  '--config-precedence',
+  'prefer-file',
+  '--use-tabs',
+  '--single-quote',
+  '--no-bracket-spacing',
+  '--prose-wrap',
+  'always',
+  '--arrow-parens',
+  'always',
+  '--trailing-comma',
+  'all',
+  '--no-semi',
+  '--end-of-line',
+  'lf',
+  '--print-width',
+  '80',
+]
+includes = ["*.css", "*.html", "*.json", "*.jsonc", "*.md", "*.yaml", "*.yml"]

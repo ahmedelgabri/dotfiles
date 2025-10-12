@@ -252,6 +252,7 @@
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "nur": "nur",
+        "treefmt-nix": "treefmt-nix",
         "weechat-scripts": "weechat-scripts",
         "yazi": "yazi",
         "yazi-glow": "yazi-glow",
@@ -327,6 +328,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760120816,
+        "narHash": "sha256-gq9rdocpmRZCwLS5vsHozwB6b5nrOBDNc2kkEaTXHfg=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "761ae7aff00907b607125b2f57338b74177697ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     },

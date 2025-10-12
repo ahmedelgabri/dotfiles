@@ -61,11 +61,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = {self, ...} @ inputs: let
+  outputs = {
+    self,
+    treefmt-nix,
+    ...
+  } @ inputs: let
     darwinHosts = {
       "pandoras-box" = "x86_64-darwin";
       "alcantara" = "aarch64-darwin";
@@ -265,12 +274,45 @@
       ))
       linuxHosts;
 
-    formatter = forAllSystems (
-      system: let
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
-      in
-        pkgs.alejandra
-    );
+    formatter = forAllSystems (system: let
+      treefmtEval = treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {
+        projectRootFile = "flake.nix";
+        # Read configuration from treefmt.toml
+        programs = {
+          alejandra.enable = true;
+          statix.enable = true;
+          stylua.enable = true;
+          gofmt.enable = true;
+          goimports.enable = true;
+          ruff-format.enable = true;
+          ruff-check.enable = true;
+          shfmt.enable = true;
+          taplo.enable = true;
+          prettier.enable = true;
+        };
+      };
+    in
+      treefmtEval.config.build.wrapper);
+
+    checks = forAllSystems (system: let
+      treefmtEval = treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {
+        projectRootFile = "flake.nix";
+        programs = {
+          alejandra.enable = true;
+          statix.enable = true;
+          stylua.enable = true;
+          gofmt.enable = true;
+          goimports.enable = true;
+          ruff-format.enable = true;
+          ruff-check.enable = true;
+          shfmt.enable = true;
+          taplo.enable = true;
+          prettier.enable = true;
+        };
+      };
+    in {
+      formatting = treefmtEval.config.build.check self;
+    });
 
     apps = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -304,6 +346,7 @@
           typos
           typos-lsp
           alejandra
+          treefmt
         ];
       };
       go = pkgs.mkShell {
@@ -325,6 +368,7 @@
         devShells
         formatter
         apps
+        checks
         ;
       templates = import ./templates;
     }
