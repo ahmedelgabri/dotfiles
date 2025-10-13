@@ -123,6 +123,7 @@ return {
 				enabled = true,
 				window = {
 					border = utils.get_border(),
+					treesitter_highlighting = true,
 				},
 			},
 
