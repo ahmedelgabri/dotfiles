@@ -4,35 +4,8 @@ return {
 		ft = { 'markdown', 'codecompanion', 'gitcommit' },
 		opts = function(_, opts)
 			return vim.tbl_deep_extend('force', opts or {}, {
-				preset = 'obsidian',
 				render_modes = true,
-				win_options = {
-					-- disable ability to conceal text
-					conceallevel = { rendered = 0 },
-					concealcursor = { rendered = 'nvic' },
-				},
-				anti_conceal = {
-					enabled = true,
-					above = 1000,
-					below = 1000,
-					ignore = {
-						head_icon = false,
-						head_background = true,
-						head_border = true,
-						code_language = true,
-						code_background = true,
-						code_border = true,
-						dash = true,
-						bullet = true,
-						check_icon = true,
-						check_scope = true,
-						quote = true,
-						table_border = true,
-						callout = true,
-						link = true,
-						sign = false,
-					},
-				},
+				nested = false, -- Don't format markdown codeblocks inside markdown
 				completions = {
 					lsp = {
 						enabled = true,
@@ -45,8 +18,6 @@ return {
 				heading = {
 					position = 'inline',
 					icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
-					border = true,
-					border_virtual = true,
 				},
 				code = {
 					width = 'block',
@@ -147,17 +118,6 @@ return {
 				overrides = {
 					filetype = {
 						gitcommit = { heading = { enabled = false } },
-					},
-				},
-				injections = {
-					gitcommit = {
-						enabled = true,
-						query = [[
-                ((message) @injection.content
-                    (#set! injection.combined)
-                    (#set! injection.include-children)
-                    (#set! injection.language "markdown"))
-            ]],
 					},
 				},
 			})
