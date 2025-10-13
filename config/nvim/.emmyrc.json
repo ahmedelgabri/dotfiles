@@ -14,7 +14,7 @@
 		"version": "LuaJIT"
 	},
 	"workspace": {
-		"ignoreDir": ["**/.config/nvim/undo/", ".direnv"],
+		"ignoreDir": ["**/undo/", ".direnv"],
 		"library": ["$VIMRUNTIME", "${3rd}/luv/library"]
 	}
 }
