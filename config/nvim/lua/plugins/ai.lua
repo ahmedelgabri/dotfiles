@@ -40,6 +40,13 @@ return {
 						},
 					},
 				},
+				memory = {
+					opts = {
+						chat = {
+							enabled = true,
+						},
+					},
+				},
 				adapters = {
 					acp = {
 						claude_code = function()
@@ -52,7 +59,8 @@ return {
 									},
 								},
 								env = {
-									ANTHROPIC_API_KEY = vim.env.ANTHROPIC_API_KEY,
+									-- https://codecompanion.olimorris.dev/configuration/adapters#using-claude-pro-subscription
+									CLAUDE_CODE_OAUTH_TOKEN = 'pass show secret/claude_oauth_token',
 								},
 							})
 						end,
