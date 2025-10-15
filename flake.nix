@@ -250,8 +250,8 @@
             sharedConfiguration
             inputs.home-manager.darwinModules.home-manager
             inputs.nix-homebrew.darwinModules.nix-homebrew
-            ./nix/modules/darwin
             ./nix/modules/shared
+            ./nix/modules/darwin
             ./nix/hosts/${host}.nix
           ];
         }))

@@ -1,8 +1,19 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: {
+  imports = [
+    ./hammerspoon.nix
+    ./karabiner.nix
+  ];
+
+  my.modules = {
+    hammerspoon.enable = lib.mkDefault true;
+    karabiner.enable = lib.mkDefault true;
+  };
+
   system.primaryUser = config.my.username;
 
   # enable sudo authentication with Touch ID

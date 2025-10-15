@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./settings.nix
     ./shell.nix
@@ -27,10 +23,8 @@
     ./python.nix
     ./discord.nix
     ./zk.nix
-    ./hammerspoon.nix
     ./ghostty.nix
     ./ai.nix
-    ./karabiner.nix
     ./aerc.nix
   ];
 
@@ -56,8 +50,6 @@
     rust.enable = lib.mkDefault true;
     zk.enable = lib.mkDefault true;
     discord.enable = lib.mkDefault true;
-    hammerspoon.enable = lib.mkDefault pkgs.stdenv.isDarwin;
-    karabiner.enable = lib.mkDefault pkgs.stdenv.isDarwin;
     ghostty.enable = lib.mkDefault true;
     ai.enable = lib.mkDefault true;
     aerc.enable = lib.mkDefault true;
