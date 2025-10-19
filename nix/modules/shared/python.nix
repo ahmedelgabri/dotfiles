@@ -30,7 +30,7 @@ in {
               ]))
             # nixos.python38Packages.httpx
             ruff
-            pyright
+            basedpyright
             uv
           ];
         };

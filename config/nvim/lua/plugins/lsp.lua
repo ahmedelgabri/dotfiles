@@ -111,7 +111,7 @@ return {
 				{ 'dockerls', 'docker-langserver' },
 				{ 'docker_compose_language_service' },
 
-				{ 'pyright', 'pyright-langserver' },
+				{ 'basedpyright', 'basedpyright-langserver' },
 				{ 'ruff' },
 
 				{ 'bashls', 'bash-language-server' },

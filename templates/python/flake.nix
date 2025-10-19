@@ -41,6 +41,7 @@
           packages = with pkgs; [
             uv
             treefmt
+            basedpyright
           ];
           shellHook =
             /*
@@ -51,7 +52,7 @@
                 ${pkgs.lib.getExe pkgs.uv} init --author-from git
 
                 # in order to make sure pyright LSP plays well
-                echo '[tool.pyright]\nvenvPath = "."\nvenv = ".venv"' >> pyproject.toml
+                echo "[tool.basedpyright]\nvenvPath = \".\"\nvenv = \".venv\"" >> pyproject.toml
 
                 ${pkgs.lib.getExe pkgs.uv} tool install ruff
                 ${pkgs.lib.getExe pkgs.uv} tool install pyright
