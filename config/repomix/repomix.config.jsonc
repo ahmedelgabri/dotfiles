@@ -1,0 +1,25 @@
+{
+	"$schema": "https://repomix.com/schemas/latest/schema.json",
+	"include": ["**/*"],
+	"ignore": {
+		"useGitignore": true,
+		"useDefaultPatterns": true,
+		// Patterns can also be specified in .repomixignore
+		"customPatterns": [
+			"**/*.log",
+			"**/uv.lock",
+			"**/package-lock.json",
+			"**/.env",
+			"**/.envrc",
+			"**/mise.toml",
+			"**/mise.*.toml",
+			"**/Cargo.lock",
+			"**/node_modules",
+			"**/target",
+			"**/dist",
+			"**/build",
+			"**/output.txt",
+			"**/yarn.lock",
+		],
+	},
+}

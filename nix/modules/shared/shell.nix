@@ -247,6 +247,7 @@ in {
               newsraft
               bun
               circumflex # HN CLI reader
+              repomix
             ];
           };
 
@@ -286,6 +287,9 @@ in {
             };
             ".config/atuin" = {
               source = ../../../config/atuin;
+            };
+            ".config/repomix" = {
+              source = ../../../config/repomix;
             };
           };
         };
