@@ -234,6 +234,7 @@ return {
 			end,
 
 			frontmatter = {
+				sort = { 'id', 'title', 'date', 'aliases', 'tags' },
 				-- Optional, alternatively you can customize the frontmatter data.
 				---@return table
 				func = function(note)
