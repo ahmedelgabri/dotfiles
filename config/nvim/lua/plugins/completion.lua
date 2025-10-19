@@ -12,6 +12,38 @@ local has_words_before = function()
 			== nil
 end
 
+local function get_mini_icon_info(ctx)
+	local MiniIcons = require 'mini.icons'
+	local source = ctx.item.source_name
+	local label = ctx.item.label
+
+	if source == nil then
+		return
+	end
+
+	if source == 'path' then
+		if label:match '%.[^/]+$' then
+			return MiniIcons.get('file', label)
+		end
+
+		return MiniIcons.get('directory', ctx.item.label)
+	end
+
+	return MiniIcons.get('lsp', ctx.kind)
+end
+
+local function get_icon(ctx)
+	local icon = get_mini_icon_info(ctx)
+
+	return icon or ctx.kind_icon
+end
+
+local function get_icon_highlight(ctx)
+	local _, hl, _ = get_mini_icon_info(ctx)
+
+	return hl
+end
+
 return {
 	{
 		'https://github.com/Saghen/blink.cmp',
@@ -86,21 +118,11 @@ return {
 							},
 							label_description = { width = { fill = true } },
 							kind_icon = {
-								text = function(ctx)
-									local MiniIcons = require 'mini.icons'
-									local source = ctx.item.source_name
-									local label = ctx.item.label
-									local icon = source == 'LSP'
-											and MiniIcons.get('lsp', ctx.kind)
-										or source == 'copilot' and MiniIcons.get('filetype', source)
-										or source == 'Path' and (label:match '%.[^/]+$' and MiniIcons.get(
-											'file',
-											label
-										) or MiniIcons.get('directory', ctx.item.label))
-										or ctx.kind_icon
-
-									return icon .. ' '
-								end,
+								text = get_icon,
+								highlight = get_icon_highlight,
+							},
+							kind = {
+								highlight = get_icon_highlight,
 							},
 						},
 					},

@@ -161,6 +161,7 @@ return {
 				},
 				lsp = {
 					calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
+					copilot = { glyph = '', hl = 'MiniIconsGrey' },
 				},
 				directory = {
 					['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
