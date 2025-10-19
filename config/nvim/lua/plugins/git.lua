@@ -5,19 +5,32 @@ return {
 		ft = { 'markdown.ghpull', 'markdown.ghissue', 'markdown.ghrelease' },
 	},
 	{
-		'https://github.com/rhysd/conflict-marker.vim',
-		init = function()
-			-- disable the default highlight group
-			vim.g.conflict_marker_highlight_group = ''
-			-- Include text after begin and end markers
-			vim.g.conflict_marker_begin = '^<<<<<<< .*$'
-			vim.g.conflict_marker_end = '^>>>>>>> .*$'
-		end,
+		'https://github.com/Tronikelis/conflict-marker.nvim',
+		opts = {
+			on_attach = function(conflict)
+				local map = function(key, fn)
+					vim.keymap.set('n', key, fn, { buffer = conflict.bufnr })
+				end
+
+				map('co', function()
+					conflict:choose_ours()
+				end)
+				map('ct', function()
+					conflict:choose_theirs()
+				end)
+				map('cb', function()
+					conflict:choose_both()
+				end)
+				map('cn', function()
+					conflict:choose_none()
+				end)
+			end,
+		},
 	},
 	{
 		'https://github.com/sindrets/diffview.nvim',
 		dependencies = { { 'https://github.com/nvim-lua/plenary.nvim' } },
-		cmd = { 'DiffviewOpen' },
+		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
 		opts = {
 			view = {
 				default = {
@@ -34,7 +47,7 @@ return {
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',
-		event = 'VeryLazy',
+		cmd = { 'Git' },
 		dependencies = {
 			{ 'https://github.com/tpope/vim-rhubarb' },
 		},
