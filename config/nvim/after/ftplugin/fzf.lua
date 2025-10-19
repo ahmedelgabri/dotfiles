@@ -1,2 +1,0 @@
--- vim.cmd [[silent! match None]]
--- vim.wo.number = false
