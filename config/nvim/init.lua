@@ -65,6 +65,7 @@ vim.o.synmaxcol = 300
 
 -- Don't Display the mode you're in. since it's already shown on the statusline
 vim.o.showmode = false
+vim.o.ruler = false
 
 -- show a navigable menu for tab completion
 vim.o.wildmode = 'longest:full,list,full'
@@ -91,10 +92,12 @@ vim.o.tags = utils.prepend('tags', { './.git/tags;' })
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 vim.o.spelllang = 'en,nl'
 vim.o.spellsuggest = '30'
+vim.o.spelloptions = 'camel'
 vim.o.spellfile =
 	string.format('%s%s', vim.fn.stdpath 'config', '/spell/spell.add')
 
 vim.o.complete = utils.append('complete', { 'kspell' })
+vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
 vim.o.secure = true
@@ -104,8 +107,6 @@ vim.o.virtualedit = 'block'
 
 -- allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 vim.o.whichwrap = 'b,h,l,s,<,>,[,],~'
-
-vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- don't bother updating screen during macro playback
 vim.o.lazyredraw = true
@@ -123,6 +124,8 @@ vim.o.splitright = true
 -- Ignore case in search.
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.infercase = true
+vim.o.iskeyword = utils.append('iskeyword', { '-' })
 
 vim.o.timeoutlen = 300
 
@@ -156,9 +159,12 @@ vim.o.listchars = table.concat({
 	'trail:␣',
 }, ',')
 
-if not vim.fn.has 'nvim-0.6' then
-	vim.o.joinspaces = false
-end
+-- Pattern for a start of numbered list (used in `gw`). This reads as
+-- "Start of list item is: at least one special character (digit, -, +, *)
+-- possibly followed by punctuation (. or `)`) followed by at least one space".
+vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
+
+vim.o.joinspaces = false
 
 vim.o.concealcursor = 'n'
 
@@ -181,9 +187,8 @@ vim.o.fillchars = table.concat({
 }, ',')
 
 vim.o.foldcolumn = '0'
-vim.o.foldlevel = 99
-vim.o.foldnestmax = 4
-vim.o.foldlevelstart = 99 -- start unfolded
+vim.o.foldlevel = 10
+vim.o.foldnestmax = 10
 vim.o.foldminlines = 0 -- Allow closing even 1-line folds.
 -- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
 vim.o.foldtext = ''
@@ -193,13 +198,12 @@ vim.o.foldexpr = 'v:lua.__.foldexpr(v:lnum)'
 
 vim.o.linebreak = true
 vim.o.textwidth = 80
+vim.o.autoindent = true
+vim.o.smartindent = true
 vim.o.wrap = false
 vim.o.breakindent = true
-vim.o.breakindentopt = 'sbr,shift:' .. vim.bo.shiftwidth
+vim.o.breakindentopt = 'list:-1'
 vim.o.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
-
--- show where you are
-vim.o.ruler = true
 
 if not vim.fn.has 'nvim-0.6' then
 	vim.o.hidden = true
@@ -264,6 +268,8 @@ vim.o.guicursor = utils.append('guicursor', {
 	'n-v-c:blinkon0',
 	'i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100',
 })
+vim.o.cursorline = true
+vim.o.cursorlineopt = 'screenline,number'
 vim.o.smoothscroll = true
 
 vim.o.tabclose = 'uselast'
