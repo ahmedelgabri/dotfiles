@@ -21,7 +21,9 @@
 			"Read(.envrc)",
 			"Read(.env.*)",
 			"Read(.zshrc)",
-			"Read(.zshenv)"
+			"Read(.zshenv)",
+			"Read(.bashrc)",
+			"Read(.profile)"
 		],
 		"ask": [
 			"Bash(mv:*)",
@@ -35,6 +37,19 @@
 	"statusLine": {
 		"type": "command",
 		"command": "~/.claude/statusline.py"
+	},
+	"hooks": {
+		"Notification": [
+			{
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "jq -r '.message' | xargs -I {} hs -c 'hs.notify.new({title=\"Claude\", informativeText=\"{}\"}):send()'"
+					}
+				]
+			}
+		]
 	},
 	"alwaysThinkingEnabled": false
 }
