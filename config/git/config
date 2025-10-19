@@ -58,12 +58,18 @@
 
 [fetch]
 	prune = true
+	pruneTags = true
 	all = true
 
 [rebase]
 	autosquash = true
 	instructionFormat = [%cn <%ce> %G?] %s
 	autoStash = true
+	updateRefs = true
+
+[rerere]
+	enabled = true
+	autoupdate = true
 
 ; https://github.com/jj-vcs/jj/issues/5913
 ; https://lore.kernel.org/git/20241129-wt_relative_options-v6-0-44e4e0bec8c3@pm.me/
@@ -205,23 +211,24 @@
 	unpushed-branches = log --branches --not --remotes --no-walk --decorate --oneline
 	# Review helpers: https://blog.jez.io/cli-code-review/
 	# https://github.com/jez/dotfiles/blob/d7b720fe13b6bc83829d248e23127b918d65de6e/util/gitconfig#L23-L53
-	review-base = !git merge-base HEAD \"${review_base:-master}\"
+	review-base = !git merge-base HEAD \"${REVIEW_BASE:-main}\"
 	stat = !git --no-pager diff --stat $(git review-base)
 	files = !git --no-pager diff --name-only $(git review-base)
+	# Show a markdown-formatted summary of commits from {REVIEW_BASE:-master} until HEAD
+	pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"$(git review-base)\"..HEAD
 	# Review by commit
-	by-commit = !tig log --reverse $(git review-base)..HEAD
-	# Show a markdown-formatted summary of commits from {review_base:-master} until HEAD
-	pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"${review_base:-master}\"..HEAD
-	# split-diff style review using vim-fugitive Gdiff
-	review = !$EDITOR -p $(git files) +\"tabdo Gdiff ${review_base:-master}\"
-	reviewone = !$EDITOR -p +\"tabdo Gdiff ${review_base:-master}\"
-	reviewf = !$EDITOR -p $(git files | fzf) +\"tabdo Gdiff ${review_base:-master}\"
+	by-commit = !$EDITOR +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges\"
+	# split-diff style review using diffview.nvim
+	review = !$EDITOR +\"DiffviewOpen origin/$(git review-base)...HEAD --imply-local\"
+	# review a single file by commit
+	reviewf = !$EDITOR -p $(git files | fzf) +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges %\"
 	tag = tag -s
 	default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 	bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"
 	# https://twitter.com/mitsuhiko/status/1554562541132603395
 	# https://twitter.com/mitsuhiko/status/1554562650645864448
 	mainalias = "!f() { if (git show-ref --verify -q refs/heads/main && !git show-ref --verify -q refs/heads/master); then (git symbolic-ref refs/heads/master refs/heads/main); else (git symbolic-ref refs/heads/main refs/heads/master); fi }; f"
+	abbrev = !bash -c 'git rev-parse --short ${1-"HEAD"}' -
 
 	grep = grep --break --heading
 	count = !git --no-pager log --oneline | wc -l
