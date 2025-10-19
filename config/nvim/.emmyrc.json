@@ -1,20 +1,15 @@
 {
 	"$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
-	"diagnostics": {
-		"globals": ["vim"]
-	},
 	"runtime": {
-		"INFO": "`?/lua/` is needed to pick up nvim plugins that are not in `./lua` relative to this emmyrc.json",
-		"requirePattern": [
-			"lua/?.lua",
-			"lua/?/init.lua",
-			"?/lua/?.lua",
-			"?/lua/?/init.lua"
-		],
 		"version": "LuaJIT"
 	},
 	"workspace": {
 		"ignoreDir": ["**/undo/", ".direnv"],
-		"library": ["$VIMRUNTIME", "${3rd}/luv/library"]
+		"ignoreGlobs": ["**/*_spec.lua"],
+		"library": [
+			"$VIMRUNTIME",
+			"$HOME/.local/share/nvim/lazy/luvit-meta/library/uv.lua",
+			"$HOME/.local/share/nvim/lazy"
+		]
 	}
 }
