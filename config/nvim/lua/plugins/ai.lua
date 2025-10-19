@@ -60,7 +60,7 @@ return {
 								},
 								env = {
 									-- https://codecompanion.olimorris.dev/configuration/adapters#using-claude-pro-subscription
-									CLAUDE_CODE_OAUTH_TOKEN = 'pass show secret/claude_oauth_token',
+									CLAUDE_CODE_OAUTH_TOKEN = 'cmd:pass show secret/claude_oauth_token',
 								},
 							})
 						end,
