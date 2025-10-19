@@ -45,6 +45,14 @@ return {
 			}
 		end,
 		config = function()
+			-- TODO clean up my mappings that conflicts
+			require('mini.bracketed').setup {}
+
+			local extra = require 'mini.extra'
+			extra.setup {}
+
+			require('mini.misc').setup {}
+
 			require('mini.pairs').setup {
 				-- https://github.com/echasnovski/mini.nvim/issues/835
 				-- alternative? https://gist.github.com/tmerse/dc21ec932860013e56882f23ee9ad8d2
@@ -90,12 +98,32 @@ return {
 					},
 				},
 			}
-			require('mini.ai').setup {
+
+			local ai = require 'mini.ai'
+
+			ai.setup {
 				-- Table with textobject id as fields, textobject specification as values.
 				-- Also use this to disable builtin textobjects. See |MiniAi.config|.
-				custom_textobjects = nil,
-				-- Number of lines within which textobject is searched
-				n_lines = 200,
+				custom_textobjects = {
+					B = extra.gen_ai_spec.buffer(),
+					I = extra.gen_ai_spec.indent(),
+					L = extra.gen_ai_spec.line(),
+
+					-- For more complicated textobjects that require structural awareness,
+					-- use tree-sitter. This example makes `aF`/`iF` mean around/inside function
+					-- definition (not call). See `:h MiniAi.gen_spec.treesitter()` for details.
+					F = ai.gen_spec.treesitter {
+						a = '@function.outer',
+						i = '@function.inner',
+					},
+				},
+				-- 'mini.ai' by default mostly mimics built-in search behavior: first try
+				-- to find textobject covering cursor, then try to find to the right.
+				-- Although this works in most cases, some are confusing. It is more robus…
+				-- always try to search only covering textobject and explicitly ask to sea…
+				-- for next (`an`/`in`) or last (`an`/`il`).
+				-- Try this. If you don't like it - delete next line and this comment.
+				search_method = 'cover',
 			}
 
 			-- Indentscope
@@ -279,17 +307,20 @@ return {
 				local w = type(word) == 'table' and word[1] or word
 				local hl = type(word) == 'table' and word[2] or word
 
-				comments[w] = {
-					-- Highlights patterns like FOO, @FOO, @FOO: FOO: both upper and lowercase
-					pattern = {
-						'%f[%w]()' .. w .. '()%f[%W]',
-						'%f[%w]()' .. w:upper() .. '()%f[%W]',
-					},
-					group = highlight_if_ts_capture(
+				if type(w) ~= 'string' or type(hl) ~= 'string' then
+					return
+				end
+
+				comments[w] = extra.gen_highlighter.words(
+					-- Highlights patterns like FOO, @FOO, @FOO: FOO:, upper, lowercase
+					-- and sentence-cased (Foo)
+					{ w, w:upper(), w:sub(1, 1):upper() .. w:sub(2) },
+					-- Only inside comments
+					highlight_if_ts_capture(
 						'comment',
 						string.format('MiniHipatterns%s', hl:sub(1, 1):upper() .. hl:sub(2))
-					),
-				}
+					)
+				)
 			end
 
 			hipatterns.setup {
@@ -321,7 +352,7 @@ return {
 			}
 
 			-- Clue
-			local miniclue = require 'mini.clue'
+			local clue = require 'mini.clue'
 
 			-- https://github.com/MariaSolOs/dotfiles/blob/8479ce37bc9bac5f8383d38aa3ead36dc935bdf1/.config/nvim/lua/plugins/miniclue.lua#L50
 
@@ -384,7 +415,7 @@ return {
 				return res
 			end
 
-			miniclue.setup {
+			clue.setup {
 				triggers = {
 					-- Leader triggers
 					{ mode = 'n', keys = '<Leader>' },
@@ -438,12 +469,12 @@ return {
 					{ mode = 'n', keys = '[', desc = '+prev' },
 					{ mode = 'n', keys = ']', desc = '+next' },
 					-- Enhance this by adding descriptions for <Leader> mapping groups
-					miniclue.gen_clues.builtin_completion(),
-					miniclue.gen_clues.g(),
-					miniclue.gen_clues.marks(),
-					miniclue.gen_clues.registers(),
-					miniclue.gen_clues.windows(),
-					miniclue.gen_clues.z(),
+					clue.gen_clues.builtin_completion(),
+					clue.gen_clues.g(),
+					clue.gen_clues.marks(),
+					clue.gen_clues.registers(),
+					clue.gen_clues.windows(),
+					clue.gen_clues.z(),
 					-- Custom extras.
 					mark_clues,
 					macro_clues,
