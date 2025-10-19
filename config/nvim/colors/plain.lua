@@ -212,7 +212,7 @@ highlight('helpHyperTextEntry', { link = 'Title' })
 highlight('helpHyperTextJump', { link = 'String' })
 
 -- __StatusLine__
-highlight('StatusLine', { link = 'Comment' })
+highlight('StatusLine', { link = 'LineNr' })
 
 -- __StatusLineNC__
 highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.cursor_line })
@@ -477,7 +477,7 @@ highlight('LspReferenceWrite', { link = 'SpecialKey' })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })
-highlight('User6', { fg = colors.norm, italic = true })
+highlight('User6', { fg = colors.norm })
 highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
