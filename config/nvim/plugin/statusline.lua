@@ -80,12 +80,12 @@ local function git_info()
 	local out = vim.fn.FugitiveHead(10)
 
 	if out ~= '' then
-		out = string.format('%s %s', utils.get_icon 'branch' .. ' ', out)
+		out = string.format('%s %s', utils.get_icon 'branch', out)
 	end
 
 	return type(out) == 'string'
 			and out ~= ''
-			and string.format('%%6* %s%%*', out)
+			and string.format('%%#User6#%s%%*', out)
 		or nil
 end
 
@@ -172,7 +172,6 @@ local function rhs()
 			and get_parts {
 				'%#User4#%3l/%3L:%-2c%*',
 				'%#User4#' .. line_no_indicator() .. '%*',
-				' ',
 			}
 		or line_no_indicator()
 end
@@ -244,7 +243,7 @@ local function lsp_diagnostics()
 
 	if not vim.tbl_isempty(data) then
 		for _, msg in pairs(data) do
-			result = (result or ' ‹›') .. ' ' .. msg
+			result = (result or '‹›') .. ' ' .. msg
 		end
 	end
 
@@ -286,7 +285,7 @@ local progress_status = {
 }
 
 local function lsp_progress_component()
-	local lsp_icon = require('mini.icons').get('lsp', 'event') .. ' '
+	local lsp_icon = require('mini.icons').get('lsp', 'event')
 
 	if not progress_status.client or not progress_status.title then
 		local ok, clients = pcall(vim.lsp.get_clients)
@@ -398,6 +397,7 @@ function M.render_active()
 	end
 
 	local line = get_parts {
+		'%#Statusline#',
 		git_info(),
 		filepath(),
 		readonly(),
@@ -414,6 +414,7 @@ function M.render_active()
 		get_codecompanion_status(),
 		file_info(),
 		rhs(),
+		'%*',
 	}
 
 	return line
