@@ -146,7 +146,7 @@ in {
               FZF_CTRL_T_COMMAND = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
               FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
               FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
-              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --separator='' --bind '?:toggle-preview' --info inline-right";
+              FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
               # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
               FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
               GATSBY_TELEMETRY_DISABLED = "1";
