@@ -1,4 +1,3 @@
-vim.wo.conceallevel = 2
 vim.opt_local.isfname:append '@-@'
 
 local yarn_lock = vim.fn.findfile('yarn.lock', vim.fn.expand '%:p' .. ';')
