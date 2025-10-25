@@ -187,8 +187,8 @@ vim.o.fillchars = table.concat({
 }, ',')
 
 vim.o.foldcolumn = '0'
-vim.o.foldlevel = 10
-vim.o.foldnestmax = 10
+vim.o.foldlevel = 99
+vim.o.foldnestmax = 20 -- 20 is the max
 vim.o.foldminlines = 0 -- Allow closing even 1-line folds.
 -- https://www.reddit.com/r/neovim/comments/1fv8o74/is_it_too_much_to_ask_for_a_foldline_that_looks/
 vim.o.foldtext = ''
