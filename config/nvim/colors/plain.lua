@@ -537,12 +537,14 @@ highlight('DiffviewDiffAddAsDelete', { link = 'DiffviewDiffDelete' })
 highlight('DiffviewDiffDeleteDim', { link = 'Comment' })
 highlight('DiffviewDiffText', { link = 'DiffText' })
 
--- conflict-marker.vim
-highlight('ConflictMarkerBegin', { bg = '#2f7366' })
-highlight('ConflictMarkerOurs', { bg = '#2e5049' })
-highlight('ConflictMarkerTheirs', { bg = '#344f69' })
-highlight('ConflictMarkerEnd', { bg = '#2f628e' })
-highlight('ConflictMarkerCommonAncestorsHunk', { bg = '#754a81' })
+-- conflict-marker.nvim
+highlight('ConflictOursMarker', { bg = '#2e5049' })
+highlight('ConflictOurs', { link = 'ConflictOursMarker' })
+highlight('ConflictTheirsMarker', { bg = '#344f69' })
+highlight('ConflictTheirs', { link = 'ConflictTheirsMarker' })
+highlight('ConflictMid', { bg = '#2f7366' })
+highlight('ConflictBaseMarker', { bg = '#754a81' })
+highlight('ConflictBase', { link = 'ConflictBaseMarker' })
 
 highlight('RainbowDelimiterRed', { fg = lighter_gray })
 highlight('RainbowDelimiterYellow', { fg = light_gray })
