@@ -22,6 +22,7 @@ return {
 		},
 		{
 			'https://github.com/HiPhish/rainbow-delimiters.nvim',
+			ft = { 'html', 'javascriptreact', 'jsx', 'typescriptreact', 'tsx' },
 			config = function()
 				require('rainbow-delimiters.setup').setup {
 					enabled_when = function(bufnr)
@@ -41,6 +42,7 @@ return {
 						'tsx',
 					},
 					query = {
+						-- Only highlight react tags
 						javascript = 'rainbow-tags-react',
 						typescript = 'rainbow-tags-react',
 						tsx = 'rainbow-tags-react',
