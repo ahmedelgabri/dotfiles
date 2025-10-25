@@ -77,40 +77,18 @@ return {
 		vim.treesitter.language.register('bash', 'zsh')
 
 		local ensure_installed = {
-			'bash',
-			'css',
-			'diff',
 			'embedded_template', -- ERB, EJS, etc…
 			'git_config',
-			'git_rebase',
 			'gitattributes',
-			'gitcommit', -- requires git_rebase and diff
+			'git_rebase',
+			'diff',
+			'gitcommit', -- requires git_rebase and diff https://github.com/gbprod/tree-sitter-gitcommit#note-about-injected-languages
 			'gitignore',
-			'go',
-			'html',
-			'ini',
-			'javascript',
 			'jsdoc',
-			'json',
-			'jsonc',
-			'lua',
-			'make',
 			'markdown',
 			'markdown_inline',
-			'mermaid',
-			'muttrc',
-			'nix',
-			'python',
 			'query', -- For treesitter quereies
 			'regex',
-			'ssh_config',
-			'tmux',
-			'toml',
-			'tsx',
-			'typescript',
-			'vim',
-			'vimdoc',
-			'yaml',
 		}
 
 		local syntax_map = {}
