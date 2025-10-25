@@ -182,6 +182,14 @@ That's because I have `git` defined as a function in my shell. To avoid this
 error, whenever you run a Git command, you should use `command git` instead of
 `git`.
 
+# Prefer modern alternative for CLI tools when available
+
+Prefer to use modern and faster alternatives to CLI tools like `grep`, `find`,
+etc...
+
+- `grep` -> `rg`
+- `find` -> `fd`
+
 # Follow the instructions in `CLAUDE.md` and related files eagerly
 
 In this file and in any related host-specific files, you should follow the

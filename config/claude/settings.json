@@ -14,7 +14,8 @@
 			"Bash(uniq:*)",
 			"Bash(sort:*)",
 			"Bash(awk:*)",
-			"Bash(pwd:*)"
+			"Bash(pwd:*)",
+			"Bash(nix flake check:*)"
 		],
 		"deny": [
 			"Read(.env)",
