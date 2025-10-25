@@ -1,11 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: let
-  inherit (config.home-manager.users."${config.my.username}") xdg;
-in {
+{pkgs, ...}: {
   networking = {hostName = "rocket";};
   ids.gids.nixbld = 30000;
 
@@ -17,23 +10,17 @@ in {
     devFolder = "dev";
     modules = {
       gpg.enable = true;
-      aerc = {
+      mail = rec {
         enable = true;
         account = {
           name = "Miro";
           type = "Work";
           service = "gmail.com";
         };
-        source_server = "imaps://gmail.com@imap.gmail.com";
-        outgoing_server = "smtps+plain://gmail.com@smtp.gmail.com";
-      };
-      mail = {
-        enable = true;
-        account = "Work";
-        alias_path = "";
-        keychain = {name = "gmail.com";};
         imap_server = "imap.gmail.com";
         smtp_server = "smtp.gmail.com";
+        source_server = "imaps://gmail.com@${imap_server}";
+        outgoing_server = "smtps+plain://gmail.com@${smtp_server}";
       };
     };
     user = {

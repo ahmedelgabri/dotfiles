@@ -11,7 +11,7 @@ create_session() {
 	tmux new-session -d -s "$SESSION"
 
 	if
-		command -v neomutt &>/dev/null
+		command -v aerc &>/dev/null
 	then
 		tmux new-window -n 'mail'
 		tmux send-keys "aerc" C-m

@@ -181,10 +181,6 @@
               withEmacs = false;
             };
 
-            neomutt = prev.neomutt.override {
-              enableLua = true;
-            };
-
             # Nixpkgs is outdated
             zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (oldAttrs: rec {
               version = "master";

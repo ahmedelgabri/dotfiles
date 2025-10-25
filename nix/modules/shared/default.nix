@@ -25,7 +25,6 @@
     ./zk.nix
     ./ghostty.nix
     ./ai.nix
-    ./aerc.nix
   ];
 
   my.modules = {
@@ -52,6 +51,5 @@
     discord.enable = lib.mkDefault true;
     ghostty.enable = lib.mkDefault true;
     ai.enable = lib.mkDefault true;
-    aerc.enable = lib.mkDefault true;
   };
 }

@@ -21,7 +21,7 @@ These are the main configs:
   [Homebrew cask](https://github.com/caskroom/homebrew-cask) through the
   homebrew module in
   [`nix-darwin`](https://github.com/LnL7/nix-darwin/blob/5c3146b75d5d478f0693d0ea6c83f1da8382ff56/modules/homebrew.nix)
-- [neomutt][neomutt] for reading emails
+- [aerc][aerc] for reading emails
 - [tmux][tmux] 2.3 or later
 - [Neovim][neovim]
 - [Zsh][zsh]
@@ -96,8 +96,8 @@ Learn about creating a GPG key and signing your commits
 #### Email
 
 My email messages are synchronised between the remote server and my computer
-with [isync][isync], I read them with [neomutt][neomutt] and search index is
-built by [notmuch][notmuch].
+with [isync][isync], I read them with [aerc][aerc] and search index is built by
+[notmuch][notmuch].
 
 After linking the dotfiles, there are only a few more things that need to be
 done.
@@ -140,7 +140,7 @@ On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
 [notmuch]: https://notmuchmail.org
 [keychain]: https://en.wikipedia.org/wiki/Keychain_(software)
 [launchd]: http://launchd.info
-[neomutt]: https://neomutt.org/
+[aerc]: https://aerc-mail.org/
 [nix]: https://nixos.org/
 [tmux]: http://tmux.sourceforge.net/
 [neovim]: https://neovim.io

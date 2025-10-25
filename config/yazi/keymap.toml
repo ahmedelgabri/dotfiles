@@ -20,6 +20,6 @@ prepend_keymap = [
   { on = "F", run = "plugin toggle-pane max-preview", desc = "Maximize or restore preview" },
 
   # https://yazi-rs.github.io/docs/tips#email-selected-files
-  { on = "<C-m>", run = 'shell --block -- neomutt -a "$@"', desc = "Attach files to email" },
+  { on = "<C-m>", run = 'shell --block -- aerc -A "$@"', desc = "Attach files to email" },
 
 ]

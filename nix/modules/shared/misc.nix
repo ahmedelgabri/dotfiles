@@ -24,7 +24,6 @@ in {
           recursive = true;
           text = builtins.readFile ../../../config/.ignore;
         };
-        ".mailcap" = {source = ../../../config/.mailcap;};
         ".psqlrc" = {source = ../../../config/.psqlrc;};
       };
     };
