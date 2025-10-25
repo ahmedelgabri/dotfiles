@@ -87,7 +87,7 @@ vim.o.wildignore = vim.o.wildignore
 	}, ',')
 
 vim.o.tagcase = 'followscs'
-vim.o.tags = utils.prepend('tags', { './.git/tags;' })
+vim.o.tags = utils.prepend(vim.o.tags, { './.git/tags;' })
 
 -- https://robots.thoughtbot.com/opt-in-project-specific-vim-spell-checking-and-word-completion
 vim.o.spelllang = 'en,nl'
@@ -96,7 +96,7 @@ vim.o.spelloptions = 'camel'
 vim.o.spellfile =
 	string.format('%s%s', vim.fn.stdpath 'config', '/spell/spell.add')
 
-vim.o.complete = utils.append('complete', { 'kspell' })
+vim.o.complete = utils.append(vim.o.complete, { 'kspell' })
 vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
@@ -125,7 +125,7 @@ vim.o.splitright = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.infercase = true
-vim.o.iskeyword = utils.append('iskeyword', { '-' })
+vim.o.iskeyword = utils.append(vim.o.iskeyword, { '-' })
 
 vim.o.timeoutlen = 300
 
@@ -213,7 +213,7 @@ end
 vim.o.tildeop = true
 
 -- Make sure diffs are always opened in vertical splits, also match my git settings
-vim.o.diffopt = utils.append('diffopt', {
+vim.o.diffopt = utils.append(vim.o.diffopt, {
 	'vertical',
 	'algorithm:histogram',
 	'indent-heuristic',
@@ -245,7 +245,7 @@ if root then
 	vim.o.undofile = false -- don't create root-owned files
 else
 	vim.o.undofile = true -- actually use undo files
-	vim.o.undodir = utils.append('undodir', { '.' })
+	vim.o.undodir = utils.append(vim.o.undodir, { '.' })
 end
 
 -- Shada Defaults:
@@ -264,7 +264,7 @@ end
 -- cursor behavior:
 --   - no blinking in normal/visual mode
 --   - blinking in insert-mode
-vim.o.guicursor = utils.append('guicursor', {
+vim.o.guicursor = utils.append(vim.o.guicursor, {
 	'n-v-c:blinkon0',
 	'i-ci:ver25-Cursor/lCursor-blinkwait30-blinkoff100-blinkon100',
 })
@@ -321,7 +321,7 @@ if not vim.loop.fs_stat(lazypath) then
 	}
 end
 
-vim.o.rtp = utils.prepend('rtp', { lazypath })
+vim.o.rtp = utils.prepend(vim.o.rtp, { lazypath })
 
 ---@diagnostic disable-next-line: missing-fields, param-type-not-match
 require('lazy').setup {
