@@ -54,6 +54,10 @@ return {
 	{ 'https://github.com/b0o/SchemaStore.nvim' },
 	{
 		'https://github.com/neovim/nvim-lspconfig',
+		dependencies = {
+			-- vim.uv types
+			{ 'https://github.com/Bilal2453/luvit-meta', lazy = true },
+		},
 		event = 'VeryLazy',
 		config = function()
 			-- for debugging
