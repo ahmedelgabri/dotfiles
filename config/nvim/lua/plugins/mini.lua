@@ -56,6 +56,7 @@ return {
 
 			misc.setup_auto_root()
 			misc.setup_termbg_sync()
+			misc.setup_restore_cursor()
 
 			require('mini.pairs').setup {
 				-- https://github.com/echasnovski/mini.nvim/issues/835

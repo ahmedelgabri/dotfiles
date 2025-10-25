@@ -18,19 +18,6 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
-		desc = 'Go to the last location when opening a buffer',
-		event = 'BufReadPost',
-		pattern = '*',
-		callback = function(args)
-			local row, col = unpack(vim.api.nvim_buf_get_mark(args.buf, '"'))
-			local line_count = vim.api.nvim_buf_line_count(args.buf)
-
-			if row > 0 and row <= line_count then
-				vim.api.nvim_win_set_cursor(0, { row, col })
-			end
-		end,
-	},
-	{
 		event = { 'BufWritePost', 'BufLeave', 'WinLeave' },
 		pattern = '?*',
 		callback = cmds.mkview,
