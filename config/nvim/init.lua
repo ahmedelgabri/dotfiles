@@ -323,6 +323,7 @@ end
 
 vim.o.rtp = utils.prepend('rtp', { lazypath })
 
+---@diagnostic disable-next-line: missing-fields, param-type-not-match
 require('lazy').setup {
 	spec = {
 		{ import = 'plugins' },
