@@ -51,7 +51,11 @@ return {
 			local extra = require 'mini.extra'
 			extra.setup {}
 
-			require('mini.misc').setup {}
+			local misc = require 'mini.misc'
+			misc.setup {}
+
+			misc.setup_auto_root()
+			misc.setup_termbg_sync()
 
 			require('mini.pairs').setup {
 				-- https://github.com/echasnovski/mini.nvim/issues/835
