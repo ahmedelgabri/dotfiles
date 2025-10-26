@@ -303,11 +303,7 @@ return {
 					-- ---------------
 					client.flags.allow_incremental_sync = true
 
-					if
-						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_documentHighlight
-						)
-					then
+					if client:supports_method 'textDocument/documentHighlight' then
 						local group = '__LSP_HIGHLIGHTS__'
 						vim.api.nvim_create_augroup(group, {
 							clear = false,
@@ -342,11 +338,7 @@ return {
 						})
 					end
 
-					if
-						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_codeLens
-						)
-					then
+					if client:supports_method 'textDocument/codeLens' then
 						au.augroup('__LSP_CODELENS__', {
 							{
 								event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
@@ -358,19 +350,14 @@ return {
 						})
 					end
 
-					if
-						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_foldingRange
-						)
-					then
+					if client:supports_method 'textDocument/foldingRange' then
 						local win = vim.api.nvim_get_current_win()
 						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
 					end
 
 					if
-						client:supports_method(
-							vim.lsp.protocol.Methods.textDocument_completion
-						) and not package.loaded['blink.cmp']
+						client:supports_method 'textDocument/completion'
+						and not package.loaded['blink.cmp']
 					then
 						vim.lsp.completion.enable(
 							true,

@@ -114,7 +114,7 @@ return {
 						})
 
 					client:notify(
-						vim.lsp.protocol.Methods.workspace_didChangeConfiguration,
+						'workspace/didChangeConfiguration',
 						{ settings = client.config.settings }
 					)
 				end
