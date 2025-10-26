@@ -121,13 +121,6 @@ return {
 		-- Move explorer to the right
 		require('snacks.picker.config.layouts').sidebar.layout.position = 'right'
 
-		local random_quote = function()
-			local quotes = require '_.quotes'
-			math.randomseed(os.time())
-
-			return quotes[math.random(#quotes)]
-		end
-
 		local function wrap_text(input_table, width)
 			local wrapped_lines = {}
 
@@ -253,7 +246,7 @@ return {
 							text = { wrap_text({ line }, 60), hl = 'Comment' },
 							gap = 1,
 						}
-					end, random_quote()),
+					end, require('_.quotes').random_quote()),
 					{ text = '', padding = 1 },
 					{ title = 'Bookmarks', padding = 1 },
 					{ section = 'keys', padding = 1 },

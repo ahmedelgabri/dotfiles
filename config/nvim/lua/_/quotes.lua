@@ -1,4 +1,7 @@
-return {
+---@diagnostic disable: assign-type-mismatch
+local M = {}
+
+M.quotes = {
 	-- Copied most of it from startify https://github.com/mhinz/vim-startify/blob/4e089dffdad46f3f5593f34362d530e8fe823dcf/autoload/startify/fortune.vim#L85-L239
 	-- and then added my own
 	{
@@ -895,3 +898,11 @@ return {
 		'—  Edsger Dijkstra',
 	},
 }
+
+function M.random_quote()
+	math.randomseed(os.time())
+
+	return M.quotes[math.random(#M.quotes)]
+end
+
+return M
