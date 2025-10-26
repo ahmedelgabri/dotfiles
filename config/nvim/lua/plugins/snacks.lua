@@ -1,5 +1,4 @@
 ---@diagnostic disable: missing-fields
-local utils = require '_.utils'
 
 return {
 	'https://github.com/folke/snacks.nvim',
@@ -19,7 +18,6 @@ return {
 						win = {
 							width = 200,
 							height = 100,
-							border = utils.get_border(),
 							title = 'Scratch Buffer',
 						},
 					}
@@ -156,6 +154,13 @@ return {
 			return table.concat(wrapped_lines, '\n')
 		end
 
+		local function filter_common(file)
+			return file:match 'COMMIT_EDITMSG' == nil
+				and file:match '/tmp' == nil
+				-- vim help files
+				and file:match '/share/nvim/runtime/doc' == nil
+		end
+
 		return vim.tbl_deep_extend('force', opts or {}, {
 			quickfile = { enabled = false },
 			scroll = { enabled = false },
@@ -174,7 +179,6 @@ return {
 			input = {
 				win = {
 					style = {
-						border = utils.get_border(),
 						relative = 'cursor',
 						width = 45,
 						row = -3,
@@ -251,9 +255,22 @@ return {
 					{ title = 'Bookmarks', padding = 1 },
 					{ section = 'keys', padding = 1 },
 					{ title = 'MRU ', file = vim.fn.fnamemodify('.', ':~'), padding = 1 },
-					{ section = 'recent_files', cwd = true, limit = 8, padding = 1 },
+					{
+						section = 'recent_files',
+						cwd = true,
+						limit = 8,
+						padding = 1,
+						filter = filter_common,
+					},
 					{ title = 'MRU', padding = 1 },
-					{ section = 'recent_files', limit = 8, padding = 1 },
+					{
+						section = 'recent_files',
+						limit = 8,
+						padding = 1,
+						filter = function(file)
+							return file:match(vim.uv.cwd()) == nil and filter_common(file)
+						end,
+					},
 					{ title = 'Sessions', padding = 1 },
 					{ section = 'projects', padding = 1 },
 					{ section = 'startup' },
