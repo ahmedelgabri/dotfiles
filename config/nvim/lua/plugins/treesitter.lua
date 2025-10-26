@@ -5,6 +5,10 @@ return {
 	build = ':TSUpdate',
 	dependencies = {
 		{
+			'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
+			branch = 'main', -- must match treesitter branch,
+		},
+		{
 			'https://github.com/JoosepAlviste/nvim-ts-context-commentstring',
 			opts = {
 				enable_autocmd = false,
