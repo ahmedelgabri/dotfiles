@@ -368,15 +368,10 @@ require('lazy').setup {
 -- OVERRIDES {{{1
 -------------------------------------------------------------------------------
 
-local vimrc_local = string.format(
-	'%s/%s%s',
-	vim.env.XDG_DATA_HOME,
-	vim.fn.hostname(),
-	'/nvimrc.lua'
-)
+local vimrc_local = string.format('%s/%s', vim.env.HOST_CONFIGS, 'nvimrc.lua')
 
 if vim.uv.fs_stat(vimrc_local) then
-	vim.cmd(string.format('silent source %s', vimrc_local))
+	vim.cmd(string.format('source %s', vimrc_local))
 end
 
 -------------------------------------------------------------------------------
