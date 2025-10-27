@@ -15,7 +15,10 @@
 			"Bash(sort:*)",
 			"Bash(awk:*)",
 			"Bash(pwd:*)",
-			"Bash(nix flake check:*)"
+			"Bash(nix flake check:*)",
+			"Bash(git log:*)",
+			"Bash(git diff:*)",
+			"Bash(git show:*)"
 		],
 		"deny": [
 			"Read(.env)",

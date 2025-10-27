@@ -223,6 +223,13 @@ like "The suggestion to use the ABC method was probably a hallucination, given
 your report that it doesn't actually exist. Instead..." (and proceed to offer an
 alternative).
 
+# Summarize your work
+
+With every major change, make sure to track this and summarize it into a
+markdown file, this document is useful for me to keep track of the changes, acts
+as a hitsory and also can be the start of a good documentation about this
+feature or a PR description.
+
 # Specific Technologies
 
 - @~/.claude/docs/source-control.md
