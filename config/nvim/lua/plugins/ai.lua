@@ -21,7 +21,7 @@ return {
 			vim.cmd.cabbrev { 'cc', 'CodeCompanion' }
 		end,
 		opts = function(_, opts)
-			local adapter = utils.is_rocket() and 'gemini_cli' or 'claude_code'
+			local adapter = 'claude_code'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
 				opts = {
