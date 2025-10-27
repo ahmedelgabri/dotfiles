@@ -83,6 +83,11 @@ in {
       mkMerge [
         (mkIf pkgs.stdenv.isDarwin {
           launchd.user.agents."mailsync" = {
+            # `pass` needs to have proper gpg setup
+            environment = {
+              GNUPGHOME = "${xdg.configHome}/gnupg";
+              SSH_AUTH_SOCK = "${xdg.configHome}/gnupg/S.gpg-agent.ssh";
+            };
             command =
               pkgs.writeShellScript "mailsync"
               /*
@@ -90,6 +95,9 @@ in {
               */
               ''
                 set -ue -o pipefail
+
+                # `pass` needs gpg agent running so it can retrieve passwords from the store
+                ${lib.getExe' pkgs.gnupg "gpg-connect-agent"}
 
                 echo "--- Starting mail sync at $(date) ---"
                 ${lib.getExe' pkgs.coreutils "timeout"} ${
