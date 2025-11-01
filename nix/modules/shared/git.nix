@@ -22,7 +22,6 @@ in {
       my.user = {
         packages = with pkgs; [
           # gitAndTools.transcrypt # old version
-          difftastic
           delta
           hub
           gh

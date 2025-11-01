@@ -43,7 +43,6 @@ in {
       my.user = {
         packages = with pkgs; [
           fzf
-          par
           fd
           ripgrep
           hadolint # Docker linter
@@ -65,11 +64,7 @@ in {
           emmylua_check
           tree-sitter # required for treesitter "auto-install" option to work
           nixd # nix lsp
-          actionlint
           taplo # TOML linter and formatter
-          # neovim luarocks support requires lua 5.1
-          # https://github.com/folke/lazy.nvim/issues/1570#issuecomment-2194329169
-          lua51Packages.luarocks
           typos
           typos-lsp
           copilot-language-server
