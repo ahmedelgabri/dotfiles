@@ -22,8 +22,8 @@ return {
 				default_file_explorer = true,
 				watch_for_changes = true,
 				delete_to_trash = true,
+				skip_confirm_for_simple_edits = true,
 				view_options = { show_hidden = true },
-				win_options = { cursorline = true },
 				keymaps = {
 					['q'] = { 'actions.close', mode = 'n' },
 					['?'] = 'actions.preview',
