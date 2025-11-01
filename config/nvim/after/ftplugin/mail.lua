@@ -9,5 +9,3 @@ local utils = require '_.utils'
 -- ("$VIMRUNTIME/ftplugin/mail.vim"), which sets it back to 72, but only if it
 -- was previously set to 0.
 utils.plaintext()
-
-vim.bo.formatprg = 'par rTbgqR B=.,?_A_a_0 Q=_s>'

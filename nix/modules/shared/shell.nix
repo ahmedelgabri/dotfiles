@@ -191,10 +191,8 @@ in {
             fzf
             grc
             htop
-            hyperfine
             jq
             pass
-            ncdu
             nix-direnv
             pandoc
             ripgrep
@@ -225,14 +223,9 @@ in {
               fd
               ffmpeg
               glow
-              gum # https://github.com/charmbracelet/gum
               hcron
-              mods # https://github.com/charmbracelet/mods
-              scc
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
-              presenterm # CLI markdown presentation tool
-              tokei
               vivid
               zsh-autosuggestions
               carapace
