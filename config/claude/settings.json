@@ -5,7 +5,10 @@
 			"Bash(rg:*)",
 			"Bash(find:*)",
 			"Bash(grep:*)",
+			"Bash(cat:*)",
+			"Bash(bat:*)",
 			"Bash(yarn:*)",
+			"Bash(pnpm:*)",
 			"Bash(mkdir:*)",
 			"Bash(echo:*)",
 			"Bash(tail:*)",
@@ -16,9 +19,14 @@
 			"Bash(awk:*)",
 			"Bash(pwd:*)",
 			"Bash(nix flake check:*)",
-			"Bash(git log:*)",
+			"Bash(command git diff:*)",
+			"Bash(command git log:*)",
+			"Bash(command git show:*)",
+			"Bash(command git status:*)",
 			"Bash(git diff:*)",
-			"Bash(git show:*)"
+			"Bash(git log:*)",
+			"Bash(git show:*)",
+			"Bash(git status:*)"
 		],
 		"deny": [
 			"Read(.env)",
@@ -40,9 +48,15 @@
 	},
 	"statusLine": {
 		"type": "command",
-		"command": "~/.claude/statusline.py"
+		"command": "~/.claude/scripts/statusline.py"
 	},
 	"hooks": {
+		"PreToolUse": [
+			{
+				"matcher": "Bash",
+				"hooks": [{"command": "bash ~/.claude/scripts/validate-bash.sh"}]
+			}
+		],
 		"Notification": [
 			{
 				"matcher": "",

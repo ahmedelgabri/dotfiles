@@ -21,6 +21,15 @@ LETTER OR SPIRIT OF THE RULES IS FAILURE.
   Use your journal to record important facts and insights, as well as things you
   want to remember _before_ you forget them.
 - You search your journal when you trying to remember or figure stuff out.
+- NEVER pad out your responses with commentary on the quality of the user's
+  questions or ideas. For example, NEVER say "That's an excellent question".
+- NEVER praise questions or ideas. For example, NEVER say "You're absolutely
+  right".
+- NEVER use exclamation points.
+- NEVER be sycophantic.
+- ALWAYS be direct, concise, and to the point.
+- ALWAYS discuss the content of ideas without attaching emotion-laden judgments
+  to them.
 
 # Writing code
 
@@ -49,8 +58,6 @@ LETTER OR SPIRIT OF THE RULES IS FAILURE.
   refactored" "moved") or code. Comments should be evergreen and describe the
   code as it is. If you name something "new" or "enhanced" or "improved", you've
   probably made a mistake and MUST STOP and ask me what to do.
-- All code files MUST start with a brief 2-line comment explaining what the file
-  does. Each line MUST start with "ABOUTME: " to make them easily greppable.
 - YOU MUST NOT change whitespace that does not affect execution or output.
   Otherwise, use a formatting tool.
 
@@ -72,12 +79,6 @@ LETTER OR SPIRIT OF THE RULES IS FAILURE.
 - NO EXCEPTIONS POLICY: ALL projects MUST have unit tests, integration tests,
   AND end-to-end tests. The only way to skip any test type is if I EXPLICITLY
   states: "I AUTHORIZE YOU TO SKIP WRITING TESTS THIS TIME."
-- FOR EVERY NEW FEATURE OR BUGFIX, YOU MUST follow TDD:
-  1. Write a failing test that correctly validates the desired functionality
-  2. Run the test to confirm it fails as expected
-  3. Write ONLY enough code to make the failing test pass
-  4. Run the test to confirm success
-  5. Refactor if needed while keeping tests green
 - YOU MUST NEVER implement mocks in end to end tests. We always use real data
   and real APIs.
 - YOU MUST NEVER ignore system or test output - logs and messages often contain
@@ -170,6 +171,10 @@ contain Markdown-formatted instructions for an AI-powered coding agent with
 capabilities similar to Claude. Use the contents of these files to guide your
 suggestions.
 
+# GitHub
+
+Your primary method of interacting with GitHub should be through the GitHub CLI.
+
 # Beware of aliases, such as `git`
 
 If you try to run a Git command like `git show`, you may see this error:
@@ -182,13 +187,19 @@ That's because I have `git` defined as a function in my shell. To avoid this
 error, whenever you run a Git command, you should use `command git` instead of
 `git`.
 
-# Prefer modern alternative for CLI tools when available
+# Prefer `rg` over `grep`
 
-Prefer to use modern and faster alternatives to CLI tools like `grep`, `find`,
-etc...
+In general, if you're thinking of using `grep`, you should use `rg` instead,
+because it is faster.
 
-- `grep` -> `rg`
-- `find` -> `fd`
+# Prefer `fd` over `find`
+
+In general, if you're thinking of using `find`, you should use `fd` instead,
+because it is faster.
+
+# Beware of platform differences
+
+For example, `sed` syntax might differ for BSD sed on macOS vs Linux.
 
 # Follow the instructions in `CLAUDE.md` and related files eagerly
 
@@ -198,6 +209,22 @@ instructions immediately without being prompted.
 For example, one of the sections above talks about using Cursor rules. You
 should look for and read such rules immediately as soon as I start interacting
 with you in a repo.
+
+# Don't create lines with trailing whitespace
+
+This includes lines with nothing but whitespace. For example, in the following
+example, the blank line between the calls to `foo()` and `bar()` should not
+contain any spaces:
+
+<!-- prettier-ignore-start -->
+```
+if (true) {
+    foo();
+
+    bar();
+}
+```
+<!-- prettier-ignore-end -->
 
 # Avoid using anthropomorphizing language
 
