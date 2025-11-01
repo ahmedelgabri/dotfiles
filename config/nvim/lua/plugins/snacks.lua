@@ -50,6 +50,7 @@ return {
 			'<Leader>-',
 			function()
 				require('snacks').picker.explorer {
+					hidden = true,
 					win = {
 						list = {
 							keys = {
