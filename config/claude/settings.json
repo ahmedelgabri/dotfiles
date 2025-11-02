@@ -26,7 +26,11 @@
 			"Bash(git diff:*)",
 			"Bash(git log:*)",
 			"Bash(git show:*)",
-			"Bash(git status:*)"
+			"Bash(git status:*)",
+			"Bash(gh pr view:*)",
+			"Bash(gh issue view:*)",
+			"Bash(gh repo view:*)",
+			"Bash(gh run view:*)"
 		],
 		"deny": [
 			"Read(.env)",
@@ -54,7 +58,12 @@
 		"PreToolUse": [
 			{
 				"matcher": "Bash",
-				"hooks": [{"command": "bash ~/.claude/scripts/validate-bash.sh"}]
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash ~/.claude/scripts/validate-bash.sh"
+					}
+				]
 			}
 		],
 		"Notification": [
