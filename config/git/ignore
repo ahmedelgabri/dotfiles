@@ -34,4 +34,11 @@ Session.vim
 .env
 !.envrc
 
+# AI      #
+#############
 .aider*
+# personal settings
+# https://docs.claude.com/en/docs/claude-code/settings#settings-files
+.claude/settings.local.json
+# https://docs.claude.com/en/docs/claude-code/memory#determine-memory-type
+CLAUDE.local.md
