@@ -157,8 +157,9 @@ in {
               source = ../../../config/claude/CLAUDE.md;
             };
 
-            ".claude/statusline.py" = {
-              source = ../../../config/claude/statusline.py;
+            ".claude/scripts" = {
+              recursive = true;
+              source = ../../../config/claude/scripts;
             };
 
             ".claude/settings.json.bk" = {
