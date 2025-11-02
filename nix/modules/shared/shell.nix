@@ -227,15 +227,13 @@ in {
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
               vivid
-              zsh-autosuggestions
               carapace
-              zsh-fast-syntax-highlighting
               zsh-history-substring-search
               (imagemagick.override {
                 ghostscriptSupport = true;
               })
               ghostscript # to preview PDFs as images
-              poppler_utils # to preview PDFs as text
+              poppler-utils # to preview PDFs as text
               newsraft
               bun
               circumflex # HN CLI reader
@@ -318,8 +316,9 @@ in {
           enableGlobalCompInit = false;
           enableBashCompletion = false;
 
-          # I use fast-syntax-highlighting instead of zsh-syntax-highlighting
-          enableSyntaxHighlighting = false;
+          enableFastSyntaxHighlighting = false;
+
+          enableAutosuggestions = true;
 
           ########################################################################
           # Instead of sourcing, I can read the files & save startiup time instead
@@ -447,7 +446,6 @@ in {
                 ../../../config/zsh.d/zsh/config/input.zsh
                 ../../../config/zsh.d/zsh/config/completion.zsh
                 "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-                "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
               ]
               ++ [
                 /*
@@ -463,7 +461,7 @@ in {
 
                   # I have to source this file instead of reading it because it depends on reading files in its own directory
                   # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
-                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh"
+                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
                   # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
                   unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
