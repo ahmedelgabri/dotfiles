@@ -25,19 +25,6 @@ options = ["-euc", "fd -t f -e nix . | xargs -I {} statix fix {}"]
 
 [formatter.stylua]
 command = "stylua"
-options = [
-  "--line-endings",
-  "Unix",
-  "--quote-style",
-  "AutoPreferSingle",
-  "--call-parentheses",
-  "None",
-  "--column-width",
-  "80",
-  "--indent-width",
-  "2",
-  "--sort-requires",
-]
 includes = ["*.lua"]
 
 [formatter.gofmt]
@@ -74,23 +61,5 @@ includes = ["*.toml"]
 
 [formatter.prettier]
 command = "prettier"
-options = [
-  "--write",
-  '--config-precedence',
-  'prefer-file',
-  '--use-tabs',
-  '--single-quote',
-  '--no-bracket-spacing',
-  '--prose-wrap',
-  'always',
-  '--arrow-parens',
-  'always',
-  '--trailing-comma',
-  'all',
-  '--no-semi',
-  '--end-of-line',
-  'lf',
-  '--print-width',
-  '80',
-]
+options = ["--write", '--config-precedence', 'prefer-file']
 includes = ["*.css", "*.html", "*.json", "*.jsonc", "*.md", "*.yaml", "*.yml"]

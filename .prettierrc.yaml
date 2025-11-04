@@ -1,0 +1,9 @@
+---
+useTabs: true
+singleQuote: true
+bracketSpacing: false
+proseWrap: 'always'
+arrowParens: 'always'
+trailingComma: 'all'
+semi: false
+endOfLine: 'lf'

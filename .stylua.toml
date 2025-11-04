@@ -1,0 +1,8 @@
+line_endings = "Unix"
+quote_style = "AutoPreferSingle"
+call_parentheses = "None"
+column_width = 80
+indent_width = 2
+
+[sort_requires]
+enabled = true

@@ -39,22 +39,6 @@ return {
 		opts = {
 			log_level = vim.log.levels.DEBUG,
 			formatters = {
-				treefmt = {
-					command = 'treefmt',
-					args = { '--stdin', '$FILENAME', '--allow-missing-formatter' },
-					stdin = true,
-					cwd = function()
-						-- Find the project root with flake.nix
-						local root = vim.fs.find({ 'flake.nix' }, {
-							upward = true,
-							path = vim.fn.expand '%:p:h',
-						})[1]
-						if root then
-							return vim.fn.fnamemodify(root, ':h')
-						end
-						return vim.uv.cwd()
-					end,
-				},
 				injected = {
 					options = {
 						ignore_errors = true,
@@ -148,20 +132,8 @@ return {
 					return
 				end
 
-				-- Check if treefmt is available and we're in a flake project
-				local conform = require 'conform'
-				local treefmt_info = conform.get_formatter_info('treefmt', bufnr)
-
-				if treefmt_info.available then
-					-- Use treefmt which respects treefmt.toml config
-					return {
-						formatters = { 'treefmt' },
-						timeout_ms = 500,
-					}
-				else
-					-- Fall back to language-specific formatters
-					return { timeout_ms = 500, lsp_format = 'fallback' }
-				end
+				-- Fall back to language-specific formatters
+				return { timeout_ms = 500, lsp_format = 'fallback' }
 			end,
 		},
 		init = function()
@@ -169,8 +141,6 @@ return {
 			vim.bo.formatexpr = "v:lua.require'conform'.formatexpr()"
 
 			-- Define a command to run async formatting
-			-- Will use treefmt if available (and in a project with flake.nix),
-			-- otherwise falls back to language-specific formatters
 			vim.api.nvim_create_user_command('Format', function(args)
 				local range = nil
 
@@ -183,30 +153,13 @@ return {
 					}
 				end
 
-				local conform = require 'conform'
-
-				-- Check if treefmt is available and we're in a flake project
-				local treefmt_info = conform.get_formatter_info('treefmt', 0)
-				local use_treefmt = treefmt_info.available
-
-				if use_treefmt then
-					-- Use treefmt which respects treefmt.toml config
-					conform.format {
-						formatters = { 'treefmt' },
-						async = true,
-						range = range,
-					}
-				else
-					-- Fall back to language-specific formatters
-					conform.format {
-						async = true,
-						lsp_format = 'fallback',
-						range = range,
-					}
-				end
+				require('conform').format {
+					async = true,
+					lsp_format = 'fallback',
+					range = range,
+				}
 			end, {
 				range = true,
-				desc = 'Format with treefmt if available, otherwise use language-specific formatters',
 			})
 
 			vim.api.nvim_create_user_command('FormatToggle', function(args)
