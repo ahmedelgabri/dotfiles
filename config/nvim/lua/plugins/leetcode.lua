@@ -20,6 +20,7 @@ return {
 				{ desc = 'Leet: Console' }
 			)
 			map('n', '<localleader>lr', '<Cmd>Leet run<Cr>', { desc = 'Leet: Run' })
+			map('n', '<localleader>lt', '<Cmd>Leet test<Cr>', { desc = 'Leet: Test' })
 			map(
 				'n',
 				'<localleader>ls',
@@ -39,12 +40,16 @@ return {
 				{ desc = 'Leet: Select question (in progress)' }
 			)
 
+			---@diagnostic disable-next-line: missing-fields, param-type-mismatch
 			require('leetcode').setup {
 				arg = leet_arg,
 				lang = 'typescript',
 				storage = {
-					home = (vim.env.PROJECTS or vim.fn.stdpath 'data') .. '/leetcode',
-					cache = vim.fn.stdpath 'cache' .. '/leetcode',
+					home = (vim.env.PROJECTS or vim.fn.stdpath 'data')
+						.. '/assignments/_prep/'
+						.. os.date '%Y'
+						.. '/',
+					cache = vim.fn.stdpath 'cache' .. '/leetcode/',
 				},
 			}
 		end,
