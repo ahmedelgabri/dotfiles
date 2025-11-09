@@ -11,70 +11,50 @@
   outputs = inputs @ {
     flake-parts,
     nixpkgs,
-    treefmt-nix,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+      imports = [inputs.treefmt-nix.flakeModule];
       perSystem = {
         pkgs,
         system,
-        self',
         ...
-      }: let
-        treefmtCfg = {
-          projectRootFile = "flake.nix";
-          settings = {
-            # Do not exit with error if a configured formatter is missing
-            allow-missing-formatter = true;
-
-            # Log paths that did not match any formatters at the specified log level
-            # Possible values are <debug|info|warn|error|fatal>
-            on-unmatched = "info";
-
-            # The method used to traverse the files within the tree root
-            # Currently, we support 'auto', 'git', 'jujutsu', or 'filesystem'
-            walk = "git";
-
-            global.excludes = [
-              "*.gitignore"
-              "*.ignore"
-              "*.lock"
-              "LICENSE"
-              ".venv"
-              "venv"
-              "__pycache__"
-              "*.egg-info"
-            ];
-          };
-          programs = {
-            alejandra.enable = true;
-            ruff-format.enable = true;
-            ruff-check = {
-              enable = true;
-              priority = 1;
-            };
-          };
-        };
-      in {
+      }: {
         # This sets `pkgs` to a nixpkgs with allowUnfree option set.
         _module.args.pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
 
-        formatter = let
-          treefmtEval = treefmt-nix.lib.evalModule pkgs treefmtCfg;
-        in
-          treefmtEval.config.build.wrapper;
+        treefmt = {
+          projectRootFile = "flake.nix";
+          settings = {
+            # Log paths that did not match any formatters at the specified log level
+            # Possible values are <debug|info|warn|error|fatal>
+            on-unmatched = "info";
 
-        checks = let
-          treefmtEval =
-            treefmt-nix.lib.evalModule
-            pkgs
-            treefmtCfg;
-        in {
-          formatting = treefmtEval.config.build.check self';
+            global.excludes = [
+              "*.gitignore"
+              "*.ignore"
+              "*.lock"
+              "LICENSE"
+              ".venv/*"
+              "venv/*"
+              "__pycache__/*"
+              "*.egg-info"
+            ];
+          };
+
+          programs = {
+            alejandra.enable = true;
+            statix.enable = true;
+            ruff-format.enable = true;
+            ruff-check = {
+              enable = true;
+              priority = 1;
+            };
+          };
         };
 
         devShells.default = pkgs.mkShell {
