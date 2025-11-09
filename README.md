@@ -10,7 +10,7 @@ config officially supports macOS & NixOS & managed by [nix][nix]
 > _Font is [Pragmata Pro](https://fsd.it/shop/fonts/pragmatapro/), theme is a
 > [my own](./config/nvim/colors/plain.lua) fork of
 > [vim-colors-plain](https://github.com/andreypopp/vim-colors-plain), Terminal
-> is [kitty](https://sw.kovidgoyal.net/kitty/)_
+> is [Ghostty][Ghostty]_
 
 ## What's in it?
 
@@ -26,14 +26,14 @@ These are the main configs:
 - [Neovim][neovim]
 - [Zsh][zsh]
 - [Git][git]
-- [Kitty][kitty] as my terminal
+- [Ghostty][Ghostty] as my terminal
 - [weechat][weechat] IRC client
 - [hammerspoon][hammerspoon] macOS automation, using it for window management &
   other stuff
 
 ## Officially supported OSs
 
-- ARM macOS Sonoma
+- ARM macOS Sequoia
 - [Experimental] NixOS (tested on 22.11)
 
 ## Installation
@@ -105,24 +105,22 @@ done.
 ##### Authentication
 
 Each account must authenticate with an IMAP server and an SMTP server. The
-passwords, need be stored in the [OS X keychain][keychain].
+passwords, need be stored in the [Pass][Pass].
 
 For Fastmail (or Gmail accounts with two-factor authentication enabled), use an
 application-specific password.
 
-In order for all this to work, a few items have to be stored in the macOS
-keychain:
+In order for all this to work, a few items have to be stored in the password
+store:
 
-Create a "generic"(A.K.A. "application") keychain item (that is, without
-protocols, only hostnames):
-
-For sending mail:
-
-- An item with:
-  - "Keychain Item Name": fastmail.com
-  - "Account Name": username+mutt@fastmail.com
-
-**Repeat this for each account you want to add.**
+- `service/email/source`: (_used by fastmail only_ JMAP password to access my
+  email)
+- `service/email/outgoing`: (_used by fastmail only_ JMAP password to send
+  emails)
+- `service/email/contacts`: (_used by fastmail only_ JMAP password to access
+  contacts)
+- `service/email/password`: App specific password, needed for local email
+  syncing `mbsync` and sending emails with `msmtp`
 
 ## Synchronizing periodically
 
@@ -149,5 +147,5 @@ On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
 [kitty]: https://github.com/kovidgoyal/kitty
 [weechat]: https://weechat.org/
 [hammerspoon]: http://www.hammerspoon.org/
-[node]: https://nodejs.org
-[python]: https://www.python.org/
+[Ghostty]: https://ghostty.org/
+[Pass]: https://www.passwordstore.org/
