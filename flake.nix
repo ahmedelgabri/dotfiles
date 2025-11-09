@@ -271,41 +271,16 @@
       linuxHosts;
 
     formatter = forAllSystems (system: let
-      treefmtEval = treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {
-        projectRootFile = "flake.nix";
-        # Read configuration from treefmt.toml
-        programs = {
-          alejandra.enable = true;
-          statix.enable = true;
-          stylua.enable = true;
-          gofmt.enable = true;
-          goimports.enable = true;
-          ruff-format.enable = true;
-          ruff-check.enable = true;
-          shfmt.enable = true;
-          taplo.enable = true;
-          prettier.enable = true;
-        };
-      };
+      treefmtEval = treefmt-nix.lib.evalModule
+      inputs.nixpkgs.legacyPackages.${system}
+      ./treefmt.nix;
     in
       treefmtEval.config.build.wrapper);
 
     checks = forAllSystems (system: let
-      treefmtEval = treefmt-nix.lib.evalModule inputs.nixpkgs.legacyPackages.${system} {
-        projectRootFile = "flake.nix";
-        programs = {
-          alejandra.enable = true;
-          statix.enable = true;
-          stylua.enable = true;
-          gofmt.enable = true;
-          goimports.enable = true;
-          ruff-format.enable = true;
-          ruff-check.enable = true;
-          shfmt.enable = true;
-          taplo.enable = true;
-          prettier.enable = true;
-        };
-      };
+      treefmtEval = treefmt-nix.lib.evalModule
+      inputs.nixpkgs.legacyPackages.${system}
+      ./treefmt.nix;
     in {
       formatting = treefmtEval.config.build.check self;
     });
