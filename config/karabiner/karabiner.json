@@ -33,6 +33,60 @@
 								"type": "basic"
 							}
 						]
+					},
+					{
+						"description": "M: YouTube increase playback speed",
+						"manipulators": [
+							{
+								"conditions": [
+									{
+										"bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
+										"type": "frontmost_application_if"
+									}
+								],
+								"from": {
+									"key_code": "period",
+									"modifiers": {
+										"mandatory": ["right_shift"],
+										"optional": ["any"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "period",
+										"modifiers": ["control"]
+									}
+								],
+								"type": "basic"
+							}
+						]
+					},
+					{
+						"description": "M: YouTube decrease playback speed",
+						"manipulators": [
+							{
+								"conditions": [
+									{
+										"bundle_identifiers": ["^org\\.mozilla\\.firefox$"],
+										"type": "frontmost_application_if"
+									}
+								],
+								"from": {
+									"key_code": "comma",
+									"modifiers": {
+										"mandatory": ["right_shift"],
+										"optional": ["any"]
+									}
+								},
+								"to": [
+									{
+										"key_code": "comma",
+										"modifiers": ["control"]
+									}
+								],
+								"type": "basic"
+							}
+						]
 					}
 				]
 			},
@@ -42,3 +96,4 @@
 		}
 	]
 }
+
