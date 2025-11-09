@@ -317,7 +317,6 @@
           typos
           typos-lsp
           alejandra
-          treefmt
         ];
       };
       go = pkgs.mkShell {

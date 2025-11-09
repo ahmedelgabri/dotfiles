@@ -2,10 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {
@@ -26,26 +22,7 @@
           config.allowUnfree = true;
         };
 
-        treefmt = {
-          projectRootFile = "flake.nix";
-          settings = {
-            # Log paths that did not match any formatters at the specified log level
-            # Possible values are <debug|info|warn|error|fatal>
-            on-unmatched = "info";
-
-            global.excludes = [
-              "*.gitignore"
-              "*.ignore"
-              "*.lock"
-              "LICENSE"
-            ];
-          };
-
-          programs = {
-            alejandra.enable = true;
-            statix.enable = true;
-          };
-        };
+        formatter = pkgs.alejandra;
 
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [];
