@@ -131,15 +131,6 @@ return {
 				search_method = 'cover',
 			}
 
-			-- Indentscope
-			require('mini.indentscope').setup {
-				draw = {
-					delay = 50,
-					animation = require('mini.indentscope').gen_animation.none(),
-				},
-				symbol = '▎', -- default ╎, -- alts: ┊│┆ ┊  ▎││ ▏▏
-			}
-
 			-- Surround
 			require('mini.surround').setup {
 				-- How to search for surrounding (first inside current line, then inside

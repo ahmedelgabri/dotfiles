@@ -184,4 +184,19 @@ return {
 		cmd = { 'Outline', 'OutlineOpen' },
 		opts = {},
 	},
+	{
+		'https://github.com/saghen/blink.indent',
+		--- @module 'blink.indent'
+		--- @type blink.indent.Config
+		opts = {
+			static = {
+				enabled = false,
+				char = '▎',
+			},
+			scope = {
+				char = '▎',
+				highlights = { 'BlinkIndentScope' },
+			},
+		},
+	},
 }

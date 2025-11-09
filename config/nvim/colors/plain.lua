@@ -553,3 +553,5 @@ highlight('RainbowDelimiterOrange', { fg = lighter_black })
 highlight('RainbowDelimiterGreen', { fg = light_black })
 highlight('RainbowDelimiterViolet', { fg = subtle_black })
 highlight('RainbowDelimiterCyan', { fg = subtle_black })
+
+highlight('BlinkIndentScope', { link = 'MiniIndentscopeSymbol' })
