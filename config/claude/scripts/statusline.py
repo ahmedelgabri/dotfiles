@@ -32,8 +32,12 @@ def format_cost(cost_usd):
 
 
 def format_duration(ms):
-    """Format duration, converting to seconds for large values."""
-    if ms >= 1000:
+    """Format duration, converting to seconds, minutes, or hours for large values."""
+    if ms >= 3600000:  # >= 1 hour
+        return f"{ms / 3600000:.1f}h"
+    elif ms >= 60000:  # >= 1 minute
+        return f"{ms / 60000:.1f}m"
+    elif ms >= 1000:
         return f"{ms / 1000:.1f}s"
     else:
         return f"{ms}ms"
@@ -69,8 +73,8 @@ parts = [
     f" {git_branch}:",
     f" [{model}]",
     f" {format_cost(cost)}" if cost > 0 else None,
-    f" +{format_lines(added)}" if added > 0 else None,
-    f" -{format_lines(removed)}" if removed > 0 else None,
+    f" \033[32m+{format_lines(added)}\033[0m" if added > 0 else None,
+    f" \033[31m-{format_lines(removed)}\033[0m" if removed > 0 else None,
     f" in {format_duration(total_duration)}",
 ]
 

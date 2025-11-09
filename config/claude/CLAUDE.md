@@ -187,15 +187,10 @@ That's because I have `git` defined as a function in my shell. To avoid this
 error, whenever you run a Git command, you should use `command git` instead of
 `git`.
 
-# Prefer `rg` over `grep`
+# Prefer modern tools for searching
 
-In general, if you're thinking of using `grep`, you should use `rg` instead,
-because it is faster.
-
-# Prefer `fd` over `find`
-
-In general, if you're thinking of using `find`, you should use `fd` instead,
-because it is faster.
+- Use `fd` for file/folder searching instead of `find`.
+- Use `rg` for searching through files instead of `grep`.
 
 # Beware of platform differences
 
