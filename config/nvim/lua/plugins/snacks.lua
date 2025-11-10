@@ -115,11 +115,6 @@ return {
 		})
 	end,
 	opts = function(_, opts)
-		-- Show select prompts relative to cursor position
-		require('snacks.picker.config.layouts').select.layout.relative = 'cursor'
-		-- Move explorer to the right
-		require('snacks.picker.config.layouts').sidebar.layout.position = 'right'
-
 		local function wrap_text(input_table, width)
 			local wrapped_lines = {}
 
@@ -190,7 +185,23 @@ return {
 					},
 				},
 			},
-
+			picker = {
+				layouts = {
+					select = {
+						layout = {
+							relative = 'cursor',
+						},
+					},
+				},
+				sources = {
+					explorer = {
+						layout = {
+							layout = { position = 'right' },
+							auto_hide = { 'input' },
+						},
+					},
+				},
+			},
 			dashboard = {
 				enabled = true,
 				pane_gap = 10,
