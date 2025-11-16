@@ -98,7 +98,7 @@ return {
 				root_markers = { '.git' },
 			})
 
-			local tsgo = vim.fn.executable 'tsgo' ~= 0
+			local tsgo = vim.fn.executable 'tsgo' == 1
 
 			local servers = {
 				{ 'cssls', 'vscode-css-language-server' },
@@ -140,11 +140,11 @@ return {
 				end
 
 				if type(enableOrExecutable) == 'string' then
-					enable = vim.fn.executable(enableOrExecutable) ~= 0
+					enable = vim.fn.executable(enableOrExecutable) == 1
 				end
 
 				if type(enableOrExecutable) == 'nil' then
-					enable = vim.fn.executable(lsp) ~= 0
+					enable = vim.fn.executable(lsp) == 1
 				end
 
 				-- only enable the ones that have their executable available

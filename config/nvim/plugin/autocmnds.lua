@@ -12,7 +12,7 @@ au.augroup('__myautocmds__', {
 		event = 'BufWritePost',
 		pattern = '.envrc',
 		callback = function()
-			if vim.fn.executable 'direnv' then
+			if vim.fn.executable 'direnv' == 1 then
 				vim.cmd [[silent !direnv allow %]]
 			end
 		end,
@@ -59,7 +59,6 @@ au.augroup('__myautocmds__', {
 			)
 		end,
 	},
-
 	{
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = '*',
