@@ -83,6 +83,8 @@ return {
 				-- for next (`an`/`in`) or last (`an`/`il`).
 				-- Try this. If you don't like it - delete next line and this comment.
 				search_method = 'cover',
+				-- I work with big files sometimes, 50 is too low.
+				n_lines = 2000,
 			}
 
 			-- Surround
