@@ -157,11 +157,32 @@ in {
               source = ../../../config/claude/CLAUDE.md;
             };
 
+            ".claude/agents" = {
+              recursive = true;
+              source = ../../../config/claude/agents;
+            };
+
+            ".claude/docs" = {
+              recursive = true;
+              source = ../../../config/claude/docs;
+            };
+
+            ".claude/commands" = {
+              recursive = true;
+              source = ../../../config/claude/commands;
+            };
+
+            ".claude/hooks" = {
+              recursive = true;
+              source = ../../../config/claude/hooks;
+            };
+
             ".claude/scripts" = {
               recursive = true;
               source = ../../../config/claude/scripts;
             };
 
+            # I need to find a different solution that works with managed the full ~/.claude folder
             ".claude/settings.json.bk" = {
               source = ../../../config/claude/settings.json;
               # HACK: https://github.com/nix-community/home-manager/issues/3090#issuecomment-2010891733
