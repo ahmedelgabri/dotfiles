@@ -192,9 +192,9 @@
               };
             });
 
-            inherit (inputs.gh-gfm-preview.packages.${prev.system}) gh-gfm-preview;
+            inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
 
-            inherit (inputs.emmylua-analyzer-rust.packages.${prev.system}) emmylua_ls emmylua_check;
+            inherit (inputs.emmylua-analyzer-rust.packages.${prev.stdenv.hostPlatform.system}) emmylua_ls emmylua_check;
           })
         ];
       };
