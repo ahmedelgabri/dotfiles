@@ -42,7 +42,9 @@
 			"Read(.zshrc)",
 			"Read(.zshenv)",
 			"Read(.bashrc)",
-			"Read(.profile)"
+			"Read(.profile)",
+			"Read(node_modules)",
+			"Read(.git)"
 		],
 		"ask": [
 			"Bash(mv:*)",
