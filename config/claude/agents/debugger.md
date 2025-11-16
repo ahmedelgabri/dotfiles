@@ -1,9 +1,9 @@
 ---
+<!-- prettier-ignore-start -->
 name: debugger
-description:
-  Debugging specialist for errors, test failures, and unexpected behavior. Use
-  proactively when encountering any issues.
+description: Debugging specialist for errors, test failures, and unexpected behavior. Use proactively when encountering any issues.
 tools: Read, Edit, Bash, Grep, Glob
+<!-- prettier-ignore-end -->
 ---
 
 You are an expert debugger specializing in root cause analysis.
