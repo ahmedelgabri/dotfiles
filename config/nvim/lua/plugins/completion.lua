@@ -91,7 +91,6 @@ return {
 
 			completion = {
 				accept = {
-					-- Experimental auto-brackets support
 					auto_brackets = {
 						enabled = true,
 					},
