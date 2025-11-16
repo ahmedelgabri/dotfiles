@@ -4,7 +4,7 @@ local cmds = require '_.autocmds'
 au.augroup('__myautocmds__', {
 	{
 		event = 'VimResized',
-		desc = 'Make splits equal in size',
+		desc = 'Make splits equal in size when window is resized',
 		pattern = '*',
 		command = 'wincmd =',
 	},
@@ -60,11 +60,11 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 
-	-- Project specific override
 	{
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = '*',
 		callback = cmds.source_project_config,
+		desc = 'Project specific override',
 	},
 	{
 		event = 'DirChanged',
@@ -122,5 +122,11 @@ au.augroup('__myautocmds__', {
 		event = { 'BufDelete', 'BufWipeout' },
 		desc = 'Write to ShaDa when deleting/wiping out buffers',
 		command = 'wshada',
+	},
+	{
+		event = { 'FileType' },
+		pattern = 'help',
+		command = 'wincmd L',
+		desc = 'open help in vertical split',
 	},
 })
