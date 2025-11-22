@@ -42,9 +42,17 @@ These are the main configs:
    <https://github.com/DeterminateSystems/nix-installer>, but I think everything
    should work fine with the default nix installer)
 
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
+> [!CAUTION]
+>
+> ```bash
+> curl -fsSL https://install.determinate.systems/nix | sh -s -- install --prefer-upstream-nix
+> ```
+>
+> The `--prefer-upstream-nix` flag is supported only until January 1st, 2026
+> <https://determinate.systems/blog/installer-dropping-upstream/>
+>
+> **After this date, check <https://github.com/nix-darwin/nix-darwin> for
+> instructions to install**
 
 2. Set up
 
