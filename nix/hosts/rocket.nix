@@ -53,6 +53,7 @@
     brews = [
       "go-task"
       "jiratui"
+      "claude-code"
     ];
   };
 }
