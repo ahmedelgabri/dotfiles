@@ -34,6 +34,7 @@ in {
           "zoom"
           "whatsapp"
           "telegram"
+          "voiceink"
         ];
       })
       (mkIf isLinux {
