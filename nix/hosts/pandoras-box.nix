@@ -4,7 +4,6 @@ _: {
   my = {
     modules = {
       mail = {enable = true;};
-      irc.enable = true;
       gpg.enable = true;
       discord.enable = true;
     };

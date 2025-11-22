@@ -27,7 +27,6 @@ These are the main configs:
 - [Zsh][zsh]
 - [Git][git]
 - [Ghostty][Ghostty] as my terminal
-- [weechat][weechat] IRC client
 - [hammerspoon][hammerspoon] macOS automation, using it for window management &
   other stuff
 
@@ -81,7 +80,6 @@ Homebrew is fully managed by `nix` it gets installed and run through nix using
 ```zsh
 export HOMEBREW_GITHUB_API_TOKEN =
 export GITHUB_TOKEN =
-export WEECHAT_PASSPHRASE =
 ```
 
 - For git add your GPG key info in `${XDG_DATA_HOME}/$(hostname)/gitconfig`
@@ -153,7 +151,6 @@ On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
 [zsh]: http://www.zsh.org/
 [git]: http://git-scm.com/
 [kitty]: https://github.com/kovidgoyal/kitty
-[weechat]: https://weechat.org/
 [hammerspoon]: http://www.hammerspoon.org/
 [Ghostty]: https://ghostty.org/
 [Pass]: https://www.passwordstore.org/

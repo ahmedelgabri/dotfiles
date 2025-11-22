@@ -17,7 +17,6 @@ _: {
       "*.lock"
       "LICENSE"
       "config/nvim/spell/*"
-      "config/weechat/*"
       "config/zsh.d/zsh/config/completion.zsh"
       "config/.hammerspoon/Spoons/*"
       "config/zsh.d/.p10k.zsh"

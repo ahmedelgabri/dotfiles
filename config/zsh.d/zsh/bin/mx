@@ -83,9 +83,6 @@ if ! (tmux has-session -t "$SESSION" &>/dev/null); then
 		tmux link-window -s _shared:notes -t 10
 	fi
 
-	if tmux has-session -t _shared:weechat 2>/dev/null; then
-		tmux link-window -s _shared:weechat -t 11
-	fi
 	tmux select-window -t 1
 fi
 

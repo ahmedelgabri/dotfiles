@@ -16,7 +16,6 @@
     ./misc.nix
     ./vim.nix
     ./node.nix
-    ./irc.nix
     ./go.nix
     ./rust.nix
     ./gui.nix

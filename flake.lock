@@ -253,7 +253,6 @@
         "nixpkgs": "nixpkgs",
         "nur": "nur",
         "treefmt-nix": "treefmt-nix",
-        "weechat-scripts": "weechat-scripts",
         "yazi": "yazi",
         "yazi-glow": "yazi-glow",
         "yazi-plugins": "yazi-plugins"
@@ -348,22 +347,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "weechat-scripts": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1759585265,
-        "narHash": "sha256-BGwrU8Q5JmYrcjRCIhu8YF4FcRAyeMolL9j808/MpLk=",
-        "owner": "weechat",
-        "repo": "scripts",
-        "rev": "acf9d8a7592f18da68df40493f1d9b7d2f1bff74",
-        "type": "github"
-      },
-      "original": {
-        "owner": "weechat",
-        "repo": "scripts",
         "type": "github"
       }
     },

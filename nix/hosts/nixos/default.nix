@@ -32,7 +32,6 @@
     modules = {
       mail = {enable = true;};
       youtube-dl.enable = true;
-      irc.enable = true;
       discord.enable = true;
     };
   };

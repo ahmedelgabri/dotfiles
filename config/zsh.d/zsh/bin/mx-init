@@ -29,13 +29,6 @@ create_session() {
 		tmux send-keys "clx" C-m
 	fi
 
-	if command -v weechat &>/dev/null; then
-		tmux new-window -n 'weechat'
-		# Stop Weechat from renaming the window
-		tmux set-option allow-rename off
-		tmux send-keys "weechat" C-m
-	fi
-
 	if [ -d "${NOTES_DIR-}" ]; then
 		tmux new-window -n 'notes' -c "$NOTES_DIR"
 		tmux send-keys "$EDITOR" C-m

@@ -27,11 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    weechat-scripts = {
-      url = "github:weechat/scripts";
-      flake = false;
-    };
-
     yazi = {
       url = "github:sxyazi/yazi";
     };
