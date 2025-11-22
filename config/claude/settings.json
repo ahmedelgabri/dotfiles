@@ -44,7 +44,9 @@
 			"Read(.bashrc)",
 			"Read(.profile)",
 			"Read(node_modules)",
-			"Read(.git)"
+			"Read(.git)",
+			"Grep",
+			"Glob"
 		],
 		"ask": [
 			"Bash(mv:*)",
