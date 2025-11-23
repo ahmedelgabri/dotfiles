@@ -37,7 +37,7 @@ local function convert_date(date_string)
 	end
 
 	if not year then
-		return nil, 'Invalid date format'
+		return nil
 	end
 
 	-- Create date table for os.time
@@ -170,14 +170,12 @@ return {
 					-- Add the title of the note as an alias.
 					note:add_alias(note.title or note.id)
 
+					local validated_id = tostring(convert_date(note.id))
 					-- We run this at the end so we have access to metadata too
-					if not note.metadata.id then
-						out.id = tostring(
-							convert_date(
-								note.metadata.id or note.metadata.date or os.date '%Y%m%d%H%M'
-							)
+					out.id = validated_id ~= 'nil' and validated_id
+						or tostring(
+							convert_date(note.metadata.date or os.date '%Y%m%d%H%M')
 						)
-					end
 
 					return out
 				end,
