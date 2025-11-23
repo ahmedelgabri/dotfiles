@@ -1,3 +1,62 @@
+-- Pattern definitions: each entry contains a pattern and optional default time values
+local patterns = {
+	{
+		name = 'ISO datetime',
+		pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)[T ](%d%d):(%d%d)',
+		defaults = {},
+	},
+	{
+		name = 'compact datetime',
+		pattern = '^(%d%d%d%d)(%d%d)(%d%d)(%d%d)(%d%d)$',
+		defaults = {},
+	},
+	{
+		name = 'ISO date',
+		pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)$',
+		defaults = { hour = 0, min = 0 },
+	},
+}
+
+-- Parse date strings and convert to YYYYMMDDHHMM timestamp format
+-- Supported formats:
+--   - ISO datetime: "2025-01-01T00:00" or "2025-01-01 00:00"
+--   - Compact datetime: "202501010000"
+--   - ISO date only: "2025-01-01" (time defaults to 00:00)
+local function convert_date(date_string)
+	local year, month, day, hour, min
+
+	-- Try each pattern until one matches
+	for _, config in ipairs(patterns) do
+		local captures = { date_string:match(config.pattern) }
+		if #captures > 0 then
+			year, month, day = captures[1], captures[2], captures[3]
+			hour = captures[4] or config.defaults.hour
+			min = captures[5] or config.defaults.min
+			break
+		end
+	end
+
+	if not year then
+		return nil, 'Invalid date format'
+	end
+
+	-- Create date table for os.time
+	local date_table = {
+		year = tonumber(year),
+		month = tonumber(month),
+		day = tonumber(day),
+		hour = tonumber(hour) or 0,
+		min = tonumber(min) or 0,
+		sec = 0,
+	}
+
+	-- Convert to timestamp
+	local timestamp = os.time(date_table)
+
+	-- Format using os.date
+	return os.date('%Y%m%d%H%M', timestamp)
+end
+
 return {
 	{
 		'https://github.com/davidmh/mdx.nvim',
@@ -87,48 +146,10 @@ return {
 
 			frontmatter = {
 				sort = { 'id', 'title', 'date', 'aliases', 'tags' },
-				-- Optional, alternatively you can customize the frontmatter data.
+				-- Customize the frontmatter data.
 				---@return table
 				func = function(note)
-					local function convert_date(date_string)
-						local year, month, day, hour, min
-
-						-- Try to match date with time
-						year, month, day, hour, min =
-							date_string:match '(%d+)-(%d+)-(%d+)[T ](%d+):(%d+)'
-
-						if not year then
-							-- Try to match date only
-							year, month, day = date_string:match '(%d+)-(%d+)-(%d+)'
-							hour, min = 0, 0
-						end
-
-						if year then
-							-- Create date table for os.time
-							local date_table = {
-								year = tonumber(year),
-								month = tonumber(month),
-								day = tonumber(day),
-								hour = tonumber(hour) or 0,
-								min = tonumber(min) or 0,
-								sec = 0,
-							}
-
-							-- Convert to timestamp
-							local timestamp = os.time(date_table)
-
-							-- Format using os.date
-							return os.date('%Y%m%d%H%M', timestamp)
-						else
-							return nil, 'Invalid date format'
-						end
-					end
-
-					-- Add the title of the note as an alias.
-					if note.title then
-						note:add_alias(note.title)
-					end
-
+					-- NOTE: `note.id` is NOT frontmatter id but rather the name of the note, for the frontmatter it's note.metadata.id
 					local out = {
 						aliases = note.aliases,
 						tags = note.tags,
@@ -142,10 +163,21 @@ return {
 						end
 					end
 
+					if not note.metadata.title then
+						out.title = note.title or note.id
+					end
+
+					-- Add the title of the note as an alias.
+					note:add_alias(note.title or note.id)
+
 					-- We run this at the end so we have access to metadata too
-					out.id = note.id
-						or tostring(convert_date(note.metadata.date))
-						or tostring(os.date '%Y%m%d%H%M')
+					if not note.metadata.id then
+						out.id = tostring(
+							convert_date(
+								note.metadata.id or note.metadata.date or os.date '%Y%m%d%H%M'
+							)
+						)
+					end
 
 					return out
 				end,
