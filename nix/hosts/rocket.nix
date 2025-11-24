@@ -48,12 +48,12 @@
       "visual-studio-code"
       "google-chrome"
       "cursor"
+      "claude-code"
     ];
 
     brews = [
       "go-task"
       "jiratui"
-      "claude-code"
     ];
   };
 }
