@@ -58,8 +58,11 @@ end
 function M.plaintext()
 	vim.wo.linebreak = true
 	vim.wo.list = false
-	vim.wo.wrap = true
 	vim.bo.expandtab = true
+
+	if vim.bo.filetype ~= 'markdown' then
+		vim.wo.wrap = true
+	end
 
 	if vim.bo.filetype == 'gitcommit' then
 		-- Git commit messages body are constraied to 72 characters
