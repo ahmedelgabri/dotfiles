@@ -245,6 +245,8 @@ rfc = 'zk new work --template rfc.md --title "$*"'
 # Personal
 j = 'zk new --no-input journal'
 p = 'zk new --no-input personal --title "$*"'
+y = 'zk new --no-input personal --template year.md --title "$*"'
+d = 'zk new --no-input personal --template decade.md --title "$*"'
 
 # TIL
 til = 'zk new --no-input til --title "$*"'
