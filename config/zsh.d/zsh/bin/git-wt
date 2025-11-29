@@ -11,7 +11,17 @@ fi
 get_worktree_branch() {
 	# We get grep for the worktree name, then we extract the branch name from the result
 	# Because a worktree name is not always the branch name
-	git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g'
+	local BRANCH
+	BRANCH=$(git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g')
+	# local BRANCH=$(git -C "${1-}" branch --show-current)
+
+	# check if branch has the string (detached HEAD)
+	if [[ "$BRANCH" == *"(detached HEAD)"* ]]; then
+		# If it does, then we get the branch name from the HEAD
+		echo ""
+	fi
+
+	echo "$BRANCH"
 }
 
 case $1 in
@@ -49,10 +59,24 @@ clone)
 	;;
 add)
 	shift
-	$CMD worktree add "$@"
-	# Do I need to handle this?
-	# git worktree add -b origin/ahmed/foo foo
-	# $CMD branch --set-upstream-to=origin/"$branch" "$branch"
+	BRANCH=""
+	ARGS=()
+	while [[ $# -gt 0 ]]; do
+		if [[ $1 == "-b" ]]; then
+			BRANCH=$2
+			ARGS+=("$1" "$2")
+			shift 2
+		else
+			ARGS+=("$1")
+			shift
+		fi
+	done
+
+	$CMD worktree add "${ARGS[@]}"
+
+	if [[ -n "$BRANCH" ]]; then
+		$CMD branch --set-upstream-to="origin/$BRANCH" "$BRANCH"
+	fi
 
 	$CMD fetch --all --prune
 	;;
@@ -74,24 +98,35 @@ remove | rm)
 	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
 
 	$CMD worktree remove -f "$1"
-	$CMD branch -D "$BRANCH_TO_DELETE"
+
+	if [[ -n "$BRANCH_TO_DELETE" ]]; then
+		$CMD branch -D "$BRANCH_TO_DELETE"
+	fi
 	;;
 # Same as remove, but this time we also delete the branch from remote
 destroy)
 	shift
 
-	printf "Are you sure you want to destroy %s? [y/N]: " "$1"
+	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
+
+	EXTRTA_MSG=""
+	if [[ -n "$BRANCH_TO_DELETE" ]]; then
+		EXTRTA_MSG=" and delete its remote branch [$BRANCH_TO_DELETE]"
+	fi
+
+	printf "Are you sure you want to destroy '%s' workspace%s? [y/N]: " "$1" "$EXTRTA_MSG"
 	read -r CONFIRMATION
 
 	if [[ "$CONFIRMATION" != "y" ]]; then
 		exit 1
 	fi
 
-	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
-
 	$CMD worktree remove -f "$1"
-	$CMD branch -D "$BRANCH_TO_DELETE"
-	$CMD push origin --delete "$BRANCH_TO_DELETE"
+
+	if [[ -n "$BRANCH_TO_DELETE" ]]; then
+		$CMD branch -D "$BRANCH_TO_DELETE"
+		$CMD push origin --delete "$BRANCH_TO_DELETE"
+	fi
 	;;
 list | lock | unlock | move | prune | repair)
 	$CMD worktree "$@"
