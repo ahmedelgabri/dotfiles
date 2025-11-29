@@ -11,21 +11,9 @@ fi
 
 if [ ! -e ./flake.nix ]; then
 	echo "Creating flake.nix using nix-direnv template..."
-	# This template contains .envrc file already
-	nix flake new -t github:nix-community/nix-direnv .
+	nix flake init -t github:ahmedelgabri/dotfiles .
 
-	# Check if .envrc was created by the template
 	if [ -e ./.envrc ]; then
-		echo "Updating .envrc..."
-		# Prepend standard lines and append dotenv_if_exists
-		# Use a temporary file to avoid issues with reading and writing the same file
-		tmp_envrc=$(mktemp)
-		printf '%s\n' "set -e" "set +u" >"$tmp_envrc"
-		cat .envrc >>"$tmp_envrc"
-		printf '\n%s\n' "dotenv_if_exists" >>"$tmp_envrc"
-		mv "$tmp_envrc" .envrc
-
-		# Check if direnv command exists before running
 		if command -v direnv &>/dev/null; then
 			direnv allow
 		else
@@ -38,16 +26,5 @@ else
 	echo "flake.nix already exists."
 fi
 
-# Open flake.nix and .envrc in editor
-# Use ${EDITOR:-vim} for safety if EDITOR is unset
-editor_cmd="${EDITOR:-vim}"
-echo "Opening flake.nix and .envrc in $editor_cmd..."
-if [ -e ./flake.nix ] && [ -e ./.envrc ]; then
-	"$editor_cmd" flake.nix .envrc
-elif [ -e ./flake.nix ]; then
-	"$editor_cmd" flake.nix
-elif [ -e ./.envrc ]; then
-	"$editor_cmd" .envrc
-else
-	echo "Neither flake.nix nor .envrc found to edit."
-fi
+echo "Opening flake.nix and .envrc in $EDITOR..."
+"$EDITOR" flake.nix .envrc
