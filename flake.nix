@@ -56,20 +56,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = {
-    self,
-    treefmt-nix,
-    ...
-  } @ inputs: let
+  outputs = {self, ...} @ inputs: let
     darwinHosts = {
       "pandoras-box" = "x86_64-darwin";
       "alcantara" = "aarch64-darwin";
@@ -265,20 +256,12 @@
       ))
       linuxHosts;
 
-    formatter = forAllSystems (system: let
-      treefmtEval = treefmt-nix.lib.evalModule
-      inputs.nixpkgs.legacyPackages.${system}
-      ./treefmt.nix;
-    in
-      treefmtEval.config.build.wrapper);
-
-    checks = forAllSystems (system: let
-      treefmtEval = treefmt-nix.lib.evalModule
-      inputs.nixpkgs.legacyPackages.${system}
-      ./treefmt.nix;
-    in {
-      formatting = treefmtEval.config.build.check self;
-    });
+    formatter = forAllSystems (
+      system: let
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
+      in
+        pkgs.alejandra
+    );
 
     apps = forAllSystems (system: let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -333,7 +316,6 @@
         devShells
         formatter
         apps
-        checks
         ;
       templates = import ./templates;
     }
