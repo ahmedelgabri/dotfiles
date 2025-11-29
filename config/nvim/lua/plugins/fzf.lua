@@ -150,6 +150,9 @@ return {
 					include_current_session = true,
 					stat_file = true, -- verify files exist on disk
 				},
+				buffers = {
+					_fzf_nth_devicons = true,
+				},
 				files = {
 					cwd_prompt = false,
 					fd_opts = vim.env.FZF_DEFAULT_COMMAND and nil
@@ -161,6 +164,7 @@ return {
 					hidden = true,
 					follow = true,
 					line_query = true,
+					_fzf_nth_devicons = true,
 					actions = {
 						['ctrl-g'] = false,
 						['default'] = actions.file_edit,
