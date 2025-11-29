@@ -33,7 +33,9 @@
 			"Bash(gh pr view:*)",
 			"Bash(gh issue view:*)",
 			"Bash(gh repo view:*)",
-			"Bash(gh run view:*)"
+			"Bash(gh run view:*)",
+			"Bash(ast-grep:*)",
+			"Bash(grit:*)"
 		],
 		"deny": [
 			"Read(.env)",

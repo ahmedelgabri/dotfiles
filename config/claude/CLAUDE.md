@@ -189,8 +189,12 @@ error, whenever you run a Git command, you should use `command git` instead of
 
 # Prefer modern tools for searching
 
-- DONOT use the `Glob` tool instead use `fd` for file/folder searching.
-- DONOT use the `Grep` tool instead use `rg` for for searching through files.
+- DO NOT use the `Glob` tool instead use `fd` for file/folder searching.
+- DO NOT use the `Bash` tool with `find` instead use it with `fd` for
+  file/folder searching.
+- DO NOT use the `Grep` tool instead use `rg` for for searching through files.
+- DO NOT use the `Bash` tool with `grep` instead use it with `rg` for for
+  searching through files.
 
 # Beware of platform differences
 
