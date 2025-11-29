@@ -49,6 +49,7 @@
       "google-chrome"
       "cursor"
       "claude-code"
+      "superwhisper"
     ];
 
     brews = [
