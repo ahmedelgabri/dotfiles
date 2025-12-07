@@ -60,6 +60,21 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+      "https://nixpkgs.cachix.org"
+      "https://yazi.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
+      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+    ];
+  };
+
   outputs = {self, ...} @ inputs: let
     darwinHosts = {
       "pandoras-box" = "x86_64-darwin";
@@ -105,18 +120,6 @@
           ];
           # disabled on Darwin because some buggy behaviour: https://github.com/NixOS/nix/issues/7273
           auto-optimise-store = !pkgs.stdenv.isDarwin;
-          substituters = [
-            "https://cache.nixos.org"
-            "https://nix-community.cachix.org"
-            "https://nixpkgs.cachix.org"
-            "https://yazi.cachix.org"
-          ];
-          trusted-public-keys = [
-            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
-            "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
-          ];
           # Recommended when using `direnv` etc.
           keep-derivations = true;
           keep-outputs = true;
