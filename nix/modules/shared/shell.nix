@@ -180,7 +180,6 @@ in {
               ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
               WORK = "$HOME/${devFolder}/work";
               _ZO_DATA_DIR = "${hm.configHome}/zoxide";
-              CARAPACE_BRIDGES = "zsh,bash,fish,inshellisense";
             };
 
           systemPackages = with pkgs; [
@@ -227,7 +226,7 @@ in {
               shellcheck
               shfmt # Doesn't work with zsh, only sh & bash
               vivid
-              carapace
+              zsh-completions
               zsh-history-substring-search
               (imagemagick.override {
                 ghostscriptSupport = true;
@@ -315,9 +314,12 @@ in {
           enableGlobalCompInit = false;
           enableBashCompletion = false;
 
-          enableFastSyntaxHighlighting = false;
+          enableFastSyntaxHighlighting = true;
 
           enableAutosuggestions = true;
+
+          histSize = 10000000;
+          histFile = "${"$"}{ZDOTDIR}/.zsh_history";
 
           ########################################################################
           # Instead of sourcing, I can read the files & save startiup time instead
@@ -366,6 +368,8 @@ in {
                 	/opt/homebrew/bin(N-/)
                 	/usr/local/{bin,sbin}
                 )
+
+                fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)
               ''
             ];
 
@@ -405,17 +409,26 @@ in {
                     source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
                   fi
 
-                  # Must be here because nix-darwin defaults are set in zshrc https://github.com/LnL7/nix-darwin/blob/bd7d1e3912d40f799c5c0f7e5820ec950f1e0b3d/modules/programs/zsh/default.nix#L174-L177
-                  export HISTFILE="${"$"}{ZDOTDIR}/.zsh_history"
-                  export HISTSIZE=10000000
-                  export SAVEHIST=${"$"}HISTSIZE
+                  # This is not set by nix-darwin so I have to set it myself https://github.com/nix-darwin/nix-darwin/blob/e95de00a471d07435e0527ff4db092c84998698e/modules/programs/zsh/default.nix#L204-L208
                   export HISTFILESIZE=${"$"}HISTSIZE
 
                   autoload -U select-word-style
                   # only alphanumeric chars are considered WORDCHARS
                   select-word-style bash
 
-                  autoload -Uz compinit && compinit -C -d "${"$"}ZCOMPDUMP_PATH"
+                  # Smart compinit: only skip check if zcompdump is recent (less than 24 hours old)
+                  # This ensures new completions (like zsh-completions) trigger a rebuild
+                  autoload -Uz compinit
+                  if [[ -n "${"$"}{ZCOMPDUMP_PATH}"(#qNmh-24) ]]; then
+                    compinit -C -d "${"$"}ZCOMPDUMP_PATH"
+                  else
+                    compinit -d "${"$"}ZCOMPDUMP_PATH"
+                  fi
+
+                  # Compile zcompdump for faster loading
+                  if [[ ! -f "${"$"}{ZCOMPDUMP_PATH}".zwc || "${"$"}{ZCOMPDUMP_PATH}" -nt "${"$"}{ZCOMPDUMP_PATH}".zwc ]]; then
+                    zcompile "${"$"}ZCOMPDUMP_PATH"
+                  fi
 
                   # Autocomplete the g script
                   if (( ${"$"}+commands[hub] )); then
@@ -458,10 +471,6 @@ in {
                   bindkey -M vicmd 'k' history-substring-search-up
                   bindkey -M vicmd 'j' history-substring-search-down
 
-                  # I have to source this file instead of reading it because it depends on reading files in its own directory
-                  # https://github.com/zdharma-continuum/fast-syntax-highlighting/blob/cf318e06a9b7c9f2219d78f41b46fa6e06011fd9/fast-syntax-highlighting.plugin.zsh#L339-L340
-                  source "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-
                   # Very slow chormas https://github.com/zdharma-continuum/fast-syntax-highlighting/issues/27
                   unset "FAST_HIGHLIGHT[chroma-whatis]" "FAST_HIGHLIGHT[chroma-man]"
 
@@ -473,8 +482,6 @@ in {
                   eval "${"$"}(${lib.getExe pkgs.direnv} hook zsh)"
                   eval "${"$"}(${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r)"
                   eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
-
-                  source <(carapace _carapace)
                 ''
                 (builtins.readFile ../../../config/zsh.d/zsh/config/extras.zsh)
                 (builtins.readFile ../../../config/zsh.d/.p10k.zsh)

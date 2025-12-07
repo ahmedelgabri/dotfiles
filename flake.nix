@@ -181,8 +181,18 @@
               };
             });
 
-            inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
+            # Nixpkgs is outdated
+            zsh-completions = prev.zsh-completions.overrideAttrs (oldAttrs: rec {
+              version = "master";
+              src = prev.fetchFromGitHub {
+                owner = "zsh-users";
+                repo = oldAttrs.pname;
+                rev = version;
+                sha256 = "sha256-C8ebCnNPaSPUEDVxIGIWjdOfr/MmxoBwOB/3pNCkzPc=";
+              };
+            });
 
+            inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
             inherit (inputs.emmylua-analyzer-rust.packages.${prev.stdenv.hostPlatform.system}) emmylua_ls emmylua_check;
           })
         ];

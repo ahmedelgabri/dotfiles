@@ -26,14 +26,20 @@ zstyle ':completion:*:messages' format '%F{purple}-- %d --%f'
 zstyle ':completion:*:warnings' format '%F{red}-- no matches found --%f'
 zstyle ':completion:*' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' '+r:|?=**'
+# Context-aware verbose: disable for command name completion (fast), enable for subcommands/options (descriptive)
+# This is critical for performance in direnv/nix-shell environments with large PATH
+zstyle -e ':completion:*' verbose '[[ $context == command ]] && reply=(no) || reply=(yes)'
+# Optimized matcher: case-insensitive + anchor matching at word boundaries
+# Old '+r:|?=**' was too expensive (substring matching everywhere)
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # Complete flags/options
 zstyle ':completion:*' complete-options true
 
-# zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+# Only apply list-colors to file/directory completions, not commands
+# Applying to all completions (default) is expensive with large lists
+zstyle ':completion:*:*:*:*:files' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:*:*:directories' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'expand'
@@ -43,6 +49,13 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path "${ZDOTDIR}/.zcompcache"
 
+# Performance optimizations
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-compctl false
+# Limit max-errors for corrections to improve speed
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+# Show menu after 2 matches instead of listing all (faster for large lists)
+zstyle ':completion:*' menu select=2
 # ignore useless commands and functions
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
 
