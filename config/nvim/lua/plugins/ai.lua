@@ -4,6 +4,7 @@ return {
 	{
 		'https://github.com/olimorris/codecompanion.nvim',
 		lazy = false,
+		version = 'v17.33.0',
 		keys = {
 			{
 				'<localleader>ca',
