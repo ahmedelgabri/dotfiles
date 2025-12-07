@@ -39,7 +39,7 @@ local medium_gray = '#767676'
 local white = '#F1F1F1'
 local light_black = '#424242'
 local lighter_black = '#545454'
-local subtle_black = '#303030'
+local subtle_black = '#191919'
 local light_gray = '#999999'
 local lighter_gray = '#CCCCCC'
 local lightest_gray = '#E5E5E5'
@@ -215,7 +215,7 @@ highlight('helpHyperTextJump', { link = 'String' })
 highlight('StatusLine', { link = 'LineNr' })
 
 -- __StatusLineNC__
-highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.cursor_line })
+highlight('StatusLineNC', { italic = true, bg = nil, fg = colors.bg_subtle })
 
 -- __WildMenu__
 highlight(
@@ -234,11 +234,11 @@ highlight(
 )
 
 -- __Pmenu__
-highlight('Pmenu', { fg = colors.cursor_line, bg = nil })
+highlight('Pmenu', { fg = colors.bg_subtle, bg = nil })
 highlight('PmenuSbar', { link = 'Pmenu' })
 highlight('PmenuThumb', { link = 'Pmenu' })
 -- __PmenuSel__
-highlight('PmenuSel', { fg = nil, bg = colors.lighter_gray, blend = 0 })
+highlight('PmenuSel', { fg = colors.norm, bg = colors.bg_subtle, blend = 0 })
 
 -- TabLine --
 highlight('Tabline', { ctrem = nil, gui = nil })
@@ -252,7 +252,7 @@ highlight('FloatBorder', { link = 'Number' })
 -- __CursorLine__
 highlight('CursorLine', { bg = colors.cursor_line })
 -- __CursorColumn__
-highlight('ColorColumn', { bg = colors.cursor_line })
+highlight('ColorColumn', { bg = colors.bg_subtle })
 
 -- __MatchParen__
 highlight('MatchParen', { bg = colors.bg_subtle, fg = colors.norm })
@@ -422,10 +422,7 @@ highlight('@variable.parameter.reference', { link = 'Statement' }) -- ???
 
 -- blink.cmp
 highlight('BlinkCmpLabelDeprecated', { strikethrough = true })
-highlight(
-	'BlinkCmpMenuSelection',
-	{ bg = colors.cursor_line, fg = colors.norm }
-)
+highlight('BlinkCmpMenuSelection', { bg = colors.bg_subtle, fg = colors.norm })
 highlight('BlinkCmpLabel', { link = 'NoneText' })
 highlight('BlinkCmpScrollBarThumb', { link = 'CursorLine' })
 highlight(
