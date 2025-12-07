@@ -77,7 +77,6 @@ return {
 
 		treesitter.setup {}
 
-		vim.treesitter.language.register('markdown', 'mdx')
 		vim.treesitter.language.register('bash', 'zsh')
 
 		local ensure_installed = {

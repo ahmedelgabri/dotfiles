@@ -1,6 +1,5 @@
 vim.filetype.add {
 	extension = {
-		mdx = 'mdx',
 		mdc = 'markdown',
 		log = 'log',
 		env = 'dotenv',
