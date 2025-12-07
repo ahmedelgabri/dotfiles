@@ -84,8 +84,8 @@ in {
             "$schema" = "https://jj-vcs.github.io/jj/prerelease/config-schema.json"
 
             [user]
-            ${optionalString (name != "") "  name = \"${name}\""}
-            ${optionalString (email != "") "  email = \"${email}\""}
+            ${optionalString (name != "") "name = \"${name}\""}
+            ${optionalString (email != "") "email = \"${email}\""}
           '';
         };
       };
