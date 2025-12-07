@@ -42,3 +42,4 @@ Session.vim
 .claude/settings.local.json
 # https://docs.claude.com/en/docs/claude-code/memory#determine-memory-type
 CLAUDE.local.md
+.claude/hook-events.jsonl

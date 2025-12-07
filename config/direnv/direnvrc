@@ -1,6 +1,6 @@
 # vim:ft=bash
 
-# https://github.com/direnv/direnv/wiki/Customizing-cache-location#direnv-cache-on-tmpfs
+# https://github.com/direnv/direnv/wiki/Customizing-cache-location#human-readable-directories
 
 # Two things to know:
 # * `direnv_layour_dir` is called once for every {.direnvrc,.envrc} sourced
