@@ -93,7 +93,7 @@
 					},
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/aggregate-prompts.sh UserPromptSubmit"
+						"command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit"
 					}
 				]
 			}
