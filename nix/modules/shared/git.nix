@@ -78,10 +78,14 @@ in {
           source = ../../../config/jj;
         };
 
-        ".config/jj/config.d/nix.toml" = with config.my; {
+        # Make this conditional per host config
+        ".config/jj/conf.d/nix.toml" = with config.my; {
           text = ''
             # ${nix_managed}
-            "$schema" = "https://jj-vcs.github.io/jj/prerelease/config-schema.json"
+            #:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+
+
+            --when.hostnames = ["${config.networking.hostName}"]
 
             [user]
             ${optionalString (name != "") "name = \"${name}\""}
