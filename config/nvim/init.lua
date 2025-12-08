@@ -68,7 +68,7 @@ vim.o.showmode = false
 vim.o.ruler = false
 
 -- show a navigable menu for tab completion
-vim.o.wildmode = 'longest:full,list,full'
+vim.o.wildmode = 'noselect,full'
 vim.o.wildignore = vim.o.wildignore
 	.. table.concat({
 		'*.o',

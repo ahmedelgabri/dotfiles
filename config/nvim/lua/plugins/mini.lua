@@ -47,6 +47,7 @@ return {
 		config = function()
 			-- TODO clean up my mappings that conflicts
 			require('mini.bracketed').setup {}
+			require('mini.cmdline').setup {}
 
 			local extra = require 'mini.extra'
 			extra.setup {}
