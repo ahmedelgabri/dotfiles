@@ -1,9 +1,5 @@
 #:schema https://jj-vcs.github.io/jj/latest/config-schema.json
 
-[user]
-name = "Ahmed El Gabri"
-email = "ahmed@gabri.me"
-
 [ui]
 default-command = "log"
 # https://difftastic.wilfred.me.uk/jj.html
