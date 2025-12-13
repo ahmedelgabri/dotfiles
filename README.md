@@ -37,23 +37,19 @@ These are the main configs:
 
 ## Installation
 
-1. Install `nix` (I tested mostly with
-   <https://github.com/DeterminateSystems/nix-installer>, but I think everything
-   should work fine with the default nix installer)
+1. Install `nix`
 
-> [!CAUTION]
+> [!NOTE]
 >
-> ```bash
-> curl -fsSL https://install.determinate.systems/nix | sh -s -- install --prefer-upstream-nix
-> ```
->
-> The `--prefer-upstream-nix` flag is supported only until January 1st, 2026
-> <https://determinate.systems/blog/installer-dropping-upstream/>
->
-> **After this date, check <https://github.com/nix-darwin/nix-darwin> for
-> instructions to install**
+> Make sure to check the
+> [`quirks`](https://github.com/NixOS/experimental-nix-installer/blob/main/docs/quirks.md)
+> section
 
-2. Set up
+```bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | sh -s -- install
+```
+
+1. Set up
 
 > [!NOTE]
 >
