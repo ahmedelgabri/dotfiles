@@ -35,6 +35,7 @@
         httpstat
         k9s
         lazydocker
+        mise
       ];
     };
   };
