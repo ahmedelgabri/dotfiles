@@ -273,6 +273,7 @@ return {
 									count = 1,
 									severity = vim.diagnostic.severity.ERROR,
 								}
+								vim.cmd 'normal! zz'
 							end,
 							{ desc = 'Next [E]rror' },
 						},
@@ -284,6 +285,7 @@ return {
 									count = -1,
 									severity = vim.diagnostic.severity.ERROR,
 								}
+								vim.cmd 'normal! zz'
 							end,
 							{ desc = 'Previous [E]rror' },
 						},
