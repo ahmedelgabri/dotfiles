@@ -28,6 +28,19 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
+        launchd.user.agents."maxfiles" = {
+          serviceConfig = {
+            ProgramArguments = [
+              "launchctl"
+              "limit"
+              "maxfiles"
+              "65536"
+              "65536"
+            ];
+            RunAtLoad = true;
+            ServiceIPC = false;
+          };
+        };
         environment = {
           shellAliases = {
             emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
