@@ -61,7 +61,7 @@
 	},
 	"statusLine": {
 		"type": "command",
-		"command": "~/.claude/scripts/statusline.py"
+		"command": "~/.claude/scripts/statusline.sh"
 	},
 	"hooks": {
 		"SessionStart": [
