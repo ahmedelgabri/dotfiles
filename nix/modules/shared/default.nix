@@ -1,7 +1,7 @@
 {lib, ...}: {
   imports = [
     ./settings.nix
-    ./shell.nix
+    ./user-shell.nix
     ./mail.nix
     ./gpg.nix
     ./ssh.nix

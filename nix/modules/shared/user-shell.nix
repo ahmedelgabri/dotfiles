@@ -250,6 +250,7 @@ in {
               bun
               circumflex # HN CLI reader
               repomix
+              mise
             ];
           };
 
@@ -493,6 +494,7 @@ in {
                   source <(${lib.getExe pkgs.fzf} --zsh)
 
                   eval "${"$"}(${lib.getExe pkgs.direnv} hook zsh)"
+                  eval "${"$"}(${lib.getExe pkgs.mise} activate zsh)"
                   eval "${"$"}(${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r)"
                   eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
                 ''
