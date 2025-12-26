@@ -24,6 +24,7 @@
     ./zk.nix
     ./ghostty.nix
     ./ai.nix
+    ./agenix.nix
   ];
 
   my.modules = {
@@ -50,5 +51,6 @@
     discord.enable = lib.mkDefault true;
     ghostty.enable = lib.mkDefault true;
     ai.enable = lib.mkDefault true;
+    agenix.enable = lib.mkDefault true;
   };
 }

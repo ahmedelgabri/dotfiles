@@ -56,6 +56,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "darwin";
+        home-manager.follows = "home-manager";
+      };
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -242,6 +251,7 @@
             sharedConfiguration
             inputs.home-manager.darwinModules.home-manager
             inputs.nix-homebrew.darwinModules.nix-homebrew
+            inputs.agenix.darwinModules.default
             ./nix/modules/shared
             ./nix/modules/darwin
             ./nix/hosts/${host}.nix
@@ -259,6 +269,7 @@
           modules = [
             sharedConfiguration
             inputs.home-manager.nixosModules.home-manager
+            inputs.agenix.darwinModules.default
             ./nix/modules/shared
             ./nix/hosts/${host}
           ];
@@ -305,6 +316,7 @@
           typos
           typos-lsp
           alejandra
+          inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
       };
       go = pkgs.mkShell {
