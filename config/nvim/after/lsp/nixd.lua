@@ -18,7 +18,7 @@ return {
 				-- home_manager = {
 				-- 	expr = string.format(
 				-- 		'(builtins.getFlake "%s").homeConfigurations.%s.options',
-				-- 		vim.fn.expand '$DOTFILES',
+				--    vim.fs.root(0, { 'flake.nix' }) or vim.fn.expand '$DOTFILES',
 				-- 		vim.fn.hostname()
 				-- 	),
 				-- },
@@ -26,7 +26,7 @@ return {
 				['nix-darwin'] = {
 					expr = string.format(
 						'(builtins.getFlake "%s").darwinConfigurations.%s.options',
-						vim.fn.expand '$DOTFILES',
+						vim.fs.root(0, { 'flake.nix' }) or vim.fn.expand '$DOTFILES',
 						vim.fn.hostname()
 					),
 				},
@@ -34,7 +34,7 @@ return {
 				nixos = {
 					expr = string.format(
 						'(builtins.getFlake "%s").nixosConfigurations.%s.options',
-						vim.fn.expand '$DOTFILES',
+						vim.fs.root(0, { 'flake.nix' }) or vim.fn.expand '$DOTFILES',
 						vim.fn.hostname()
 					),
 				},
