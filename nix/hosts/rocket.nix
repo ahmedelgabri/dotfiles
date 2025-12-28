@@ -10,17 +10,18 @@
     devFolder = "dev";
     modules = {
       gpg.enable = true;
-      mail = rec {
+      mail = {
         enable = true;
-        account = {
-          name = "Miro";
-          type = "Work";
-          service = "gmail.com";
-        };
-        imap_server = "imap.gmail.com";
-        smtp_server = "smtp.gmail.com";
-        source_server = "imaps://gmail.com@${imap_server}";
-        outgoing_server = "smtps+plain://gmail.com@${smtp_server}";
+        accounts = [
+          {
+            name = "Work";
+            email = "ahmed@miro.com";
+            service = "gmail.com";
+            mbsync = {
+              extra_exclusion_patterns = ''!"Version Control" !"Version Control/*" !GitHub !GitHub/* !"Inbox - CC" "!Inbox - CC/*" ![Gmail]*'';
+            };
+          }
+        ];
       };
     };
     user = {

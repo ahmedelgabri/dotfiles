@@ -8,71 +8,345 @@ with config.my; let
   cfg = config.my.modules.mail;
   homeDir = config.my.user.home;
   inherit (config.home-manager.users."${username}") xdg;
+
+  # Helper functions for multi-account support
+  primaryAccount = lib.head cfg.accounts;
+  lowerName = account: lib.toLower account;
+
+  # Service-specific defaults lookup
+  serviceDefaults = {
+    "fastmail.com" = {
+      imap = {
+        server = "imap.fastmail.com";
+      };
+      smtp = {
+        server = "smtp.fastmail.com";
+      };
+      aerc = {
+        source_server = email: "jmap+oauthbearer://${email}@api.fastmail.com/.well-known/jmap";
+        outgoing_server = "jmap://";
+      };
+      carddav = {
+        enabled = true;
+        source = "https://${email}@carddav.fastmail.com/dav/addressbooks/user/${email}/Default";
+      };
+      map = {
+        enabled = false;
+      };
+      mbsync = {
+        folders = [
+          {
+            name = "INBOX";
+            remote = "INBOX";
+          }
+          {
+            name = "Drafts";
+            remote = "Drafts";
+          }
+          {
+            name = "Archive";
+            remote = "Archive";
+          }
+          {
+            name = "Spam";
+            remote = "Spam";
+          }
+          {
+            name = "Sent";
+            remote = "Sent";
+          }
+          {
+            name = "Trash";
+            remote = "Trash";
+          }
+        ];
+        extra_exclusion_patterns = "";
+      };
+    };
+    "cirrux.me" = {
+      imap = {
+        server = "imap.cirrux.co";
+      };
+      smtp = {
+        server = "smtp.cirrux.co";
+      };
+      aerc = {
+        source_server = _: "";
+        outgoing_server = "";
+      };
+      carddav = {
+        enabled = false;
+        source = "api.cirrux.co";
+      };
+      map = {
+        enabled = false;
+        text = ''
+          Archive=ARCHIVE
+          Sent=SENT
+          Drafts=DRAFT
+          Spam=JUNK
+          Trash=TRASH
+        '';
+      };
+      mbsync = {
+        folders = [
+          {
+            name = "INBOX";
+            remote = "INBOX";
+          }
+          {
+            name = "Drafts";
+            remote = "DRAFT";
+          }
+          {
+            name = "Archive";
+            remote = "ARCHIVE";
+          }
+          {
+            name = "Spam";
+            remote = "JUNK";
+          }
+          {
+            name = "Notes";
+            remote = "Notes";
+          }
+          {
+            name = "Sent";
+            remote = "SENT";
+          }
+          {
+            name = "Trash";
+            remote = "TRASH";
+          }
+        ];
+        extra_exclusion_patterns = "";
+      };
+    };
+    "gmail.com" = rec {
+      imap = {
+        server = "imap.gmail.com";
+      };
+      smtp = {
+        server = "smtp.gmail.com";
+      };
+      aerc = {
+        source_server = _: "imaps://gmail.com@${imap.server}";
+        outgoing_server = "smtps+plain://gmail.com@${smtp.server}";
+      };
+      carddav = {
+        enabled = false;
+      };
+      map = {
+        enabled = true;
+        text = ''
+          Archive=[Gmail]/All Mail
+          Sent=[Gmail]/Sent Mail
+          Drafts=[Gmail]/Drafts
+          Spam=[Gmail]/Spam
+          Starred=[Gmail]/Starred
+          Trash=[Gmail]/Trash
+        '';
+      };
+      mbsync = {
+        folders = [
+          {
+            name = "INBOX";
+            remote = "INBOX";
+          }
+          {
+            name = "Drafts";
+            remote = ''"[Gmail]/Drafts"'';
+          }
+          {
+            name = "Archive";
+            remote = ''"[Gmail]/Archive"'';
+          }
+          {
+            name = "Spam";
+            remote = ''"[Gmail]/Spam"'';
+          }
+          {
+            name = "Sent";
+            remote = ''"[Gmail]/Sent Mail"'';
+          }
+          {
+            name = "Trash";
+            remote = ''"[Gmail]/Trash"'';
+          }
+          {
+            name = "Starred";
+            remote = ''"[Gmail]/Starred"'';
+          }
+        ];
+        extra_exclusion_patterns = "![Gmail]*";
+      };
+    };
+  };
 in {
   options = with lib; {
     my.modules = {
       mail = {
-        # TODO: support multiple accounts
         enable = mkEnableOption ''
           Whether to enable mail module
         '';
 
-        account = {
-          type = mkOption {
-            default = "Personal";
-            type = with types; uniq str;
-          };
+        accounts = mkOption {
+          type = types.listOf (types.submodule ({config, ...}: let
+            svcDefaults = serviceDefaults.${config.service};
+          in {
+            options = {
+              name = mkOption {
+                default = "Personal";
+                type = types.str;
+                description = "Account name (e.g., 'Personal', 'Work')";
+              };
 
-          name = mkOption {
-            default = "Personal";
-            type = with types; uniq str;
-          };
+              email = mkOption {
+                type = types.str;
+                default = email; # This will use the outer 'email' variable from config.my
+                description = "Email address for this account";
+              };
 
-          service = mkOption {
-            default = "fastmail.com";
-            type = with types; uniq str;
-          };
-        };
+              service = mkOption {
+                type = types.enum ["fastmail.com" "gmail.com" "cirrux.me"];
+                default = "fastmail.com";
+                description = "Email service provider";
+              };
 
-        source_server = mkOption {
-          default = "jmap+oauthbearer://${config.my.email}@api.fastmail.com/.well-known/jmap";
-          type = with types; uniq str;
-        };
+              imap = mkOption {
+                type = types.submodule {
+                  options = {
+                    server = mkOption {
+                      type = types.str;
+                      default = svcDefaults.imap.server;
+                      description = "IMAP server hostname";
+                    };
+                    password_cmd = mkOption {
+                      type = types.str;
+                      default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/password";
+                      description = "Command to retrieve IMAP password";
+                    };
+                  };
+                };
+                default = {};
+              };
 
-        source_cred_cmd = mkOption {
-          default = "${lib.getExe pkgs.pass} show service/email/source";
-          type = with types; uniq str;
-        };
+              smtp = mkOption {
+                type = types.submodule {
+                  options = {
+                    server = mkOption {
+                      type = types.str;
+                      default = svcDefaults.smtp.server;
+                      description = "SMTP server hostname";
+                    };
+                    password_cmd = mkOption {
+                      type = types.str;
+                      default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/password";
+                      description = "Command to retrieve SMTP password";
+                    };
+                  };
+                };
+                default = {};
+              };
 
-        outgoing_server = mkOption {
-          default = "jmap://";
-          type = with types; uniq str;
-        };
+              aerc = mkOption {
+                type = types.nullOr (types.submodule {
+                  options = {
+                    source_server = mkOption {
+                      type = types.str;
+                      default = svcDefaults.aerc.source_server config.email;
+                      description = "JMAP source server URL";
+                    };
+                    source_cred_cmd = mkOption {
+                      type = types.str;
+                      default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/source";
+                      description = "Command to retrieve JMAP source credentials";
+                    };
+                    outgoing_server = mkOption {
+                      type = types.str;
+                      default = svcDefaults.aerc.outgoing_server;
+                      description = "JMAP outgoing server URL";
+                    };
+                    outgoing_cred_cmd = mkOption {
+                      type = types.str;
+                      default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/outgoing";
+                      description = "Command to retrieve JMAP outgoing credentials";
+                    };
+                  };
+                });
+                default = {};
+                description = "JMAP configuration (automatically enabled for supported services)";
+              };
 
-        outgoing_cred_cmd = mkOption {
-          default = "${lib.getExe pkgs.pass} show service/email/outgoing";
-          type = with types; uniq str;
-        };
+              carddav = mkOption {
+                type = types.nullOr (types.submodule {
+                  options = {
+                    cred_cmd = mkOption {
+                      type = types.str;
+                      default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/contacts";
+                      description = "Command to retrieve CardDAV credentials";
+                    };
+                  };
+                });
+                default =
+                  if svcDefaults.carddav.enabled
+                  then {}
+                  else null;
+                description = "CardDAV configuration (automatically enabled for supported services)";
+              };
 
-        carddav_source_cred_cmd = mkOption {
-          default = "${lib.getExe pkgs.pass} show service/email/contacts";
-          type = with types; uniq str;
-        };
+              map = mkOption {
+                type = types.submodule {
+                  options = {
+                    enabled = mkOption {
+                      type = types.bool;
+                      default = svcDefaults.map.enabled;
+                      description = "Whether to enable folder mapping";
+                    };
+                    text = mkOption {
+                      type = types.str;
+                      default = svcDefaults.map.text;
+                      description = "Folder mapping configuration content";
+                    };
+                  };
+                };
+                default = {};
+                description = "Folder mapping configuration for aerc";
+              };
 
-        # These are needed for mbysnc and local syncing
-        password_cmd = mkOption {
-          default = "${lib.getExe pkgs.pass} show service/email/password";
-          type = with types; uniq str;
-        };
-
-        imap_server = mkOption {
-          default = "imap.fastmail.com";
-          type = with types; uniq str;
-        };
-
-        smtp_server = mkOption {
-          default = "smtp.fastmail.com";
-          type = with types; uniq str;
+              mbsync = mkOption {
+                type = types.submodule {
+                  options = {
+                    folders = mkOption {
+                      type = types.listOf (types.submodule {
+                        options = {
+                          name = mkOption {
+                            type = types.str;
+                            description = "Local folder name";
+                          };
+                          remote = mkOption {
+                            type = types.str;
+                            description = "Remote folder name";
+                          };
+                        };
+                      });
+                      default = svcDefaults.mbsync.folders;
+                      description = "List of folders to sync";
+                    };
+                    extra_exclusion_patterns = mkOption {
+                      type = types.str;
+                      default = svcDefaults.mbsync.extra_exclusion_patterns;
+                      description = "Additional exclusion patterns for the folders channel";
+                    };
+                  };
+                };
+                default = svcDefaults.mbsync;
+                description = "mbsync folder configuration";
+              };
+            };
+          }));
+          default = [{}];
+          description = "List of email accounts (first account is primary)";
         };
       };
     };
@@ -82,7 +356,15 @@ in {
     mkIf cfg.enable (
       mkMerge [
         (mkIf pkgs.stdenv.isDarwin {
-          launchd.user.agents."mailsync" = {
+          launchd.user.agents."mailsync" = let
+            # Determine max timeout needed across all accounts
+            maxTimeout = let
+              hasGmail = lib.any (acc: acc.service == "gmail.com") cfg.accounts;
+            in
+              if hasGmail
+              then "5m"
+              else "2m";
+          in {
             # `pass` needs to have proper gpg setup
             environment = {
               GNUPGHOME = "${xdg.configHome}/gnupg";
@@ -100,11 +382,7 @@ in {
                 ${lib.getExe' pkgs.gnupg "gpg-connect-agent"}
 
                 echo "--- Starting mail sync at $(date) ---"
-                ${lib.getExe' pkgs.coreutils "timeout"} ${
-                  if cfg.account.service == "gmail.com"
-                  then "5m"
-                  else "2m"
-                } ${lib.getExe pkgs.isync} -q -a
+                ${lib.getExe' pkgs.coreutils "timeout"} ${maxTimeout} ${lib.getExe pkgs.isync} -q -a
 
                 echo "mbsync finished successfully. Indexing new mail..."
                 ${lib.getExe pkgs.notmuch} --config=${xdg.configHome}/notmuch/config new
@@ -130,29 +408,31 @@ in {
           # systemd
         })
 
-        (mkIf (cfg.account.service == "gmail.com") {
-          my.hm.file = {
-            ".config/aerc/folder-map" = {
-              text = ''
-                Archive=[Gmail]/All Mail
-                Sent=[Gmail]/Sent Mail
-                Drafts=[Gmail]/Drafts
-                Spam=[Gmail]/Spam
-                Starred=[Gmail]/Starred
-                Trash=[Gmail]/Trash
-              '';
-            };
-          };
+        (mkIf (lib.any (acc: acc.map.enabled) cfg.accounts) {
+          my.hm.file = lib.mkMerge (
+            map (acc:
+              lib.mkIf acc.map.enabled {
+                ".config/aerc/${lowerName acc.name}-folder-map" = {
+                  inherit (acc.map) text;
+                };
+              })
+            cfg.accounts
+          );
         })
 
         {
           system.activationScripts.postActivation.text = ''
             echo ":: -> Running mail activationScript..."
 
-            if [ ! -e "${homeDir}/.mail/${cfg.account.type}" ]; then
-              echo "Creating mail folder for account ${cfg.account.type} at ${homeDir}/.mail/${cfg.account.type}..."
-              mkdir -p ${homeDir}/.mail/${cfg.account.type}
-            fi
+            ${lib.concatStringsSep "\n" (
+              map (account: ''
+                if [ ! -e "${homeDir}/.mail/${account.name}" ]; then
+                  echo "Creating mail folder for account ${account.name} at ${homeDir}/.mail/${account.name}..."
+                  mkdir -p ${homeDir}/.mail/${account.name}
+                fi
+              '')
+              cfg.accounts
+            )}
           '';
 
           my = {
@@ -192,42 +472,50 @@ in {
                 # - should I get rid of service for account type? personal/work, etc...?
                 ###############################################################################
 
-                text = ''
-                  [${cfg.account.name}]
-                  from              = ${config.my.name} <${config.my.email}>
-                  source            = maildir://~/.mail/${cfg.account.type}
-                  # source            = ${cfg.source_server}
-                  # source-cred-cmd   = ${cfg.source_cred_cmd}
-                  # outgoing          = ${cfg.outgoing_server}
-                  outgoing = msmtp -a ${lib.toLower cfg.account.type}
-                  copy-to           = Sent
-                  postpone          = Drafts
-                  archive           = Archive
-                  default           = INBOX
-                  folders-sort      = INBOX, Starred, Drafts, Sent, Trash, Archive, Spam
-                  # signature-file    = ~/.signature.local
-                  ${lib.optionalString (cfg.account.service == "gmail.com") ''
-                    folder-map  = ~/.config/aerc/folder-map
-                    cache-headers = true''}
+                text = lib.concatStringsSep "\n" (
+                  map (
+                    account: ''
+                      [${account.name}]
+                      from              = ${config.my.name} <${account.email}>
+                      source            = maildir://~/.mail/${account.name}
+                      # source            = ${lib.optionalString (account.aerc.source_server != null) account.aerc.source_server}
+                      # source-cred-cmd   = ${lib.optionalString (account.aerc.source_cred_cmd != null) account.aerc.source_cred_cmd}
+                      # outgoing          = ${lib.optionalString (account.aerc.outgoing_server != null) account.aerc.outgoing_server}
+                      outgoing = msmtp -a ${lowerName account.name}
+                      copy-to           = Sent
+                      postpone          = Drafts
+                      archive           = Archive
+                      default           = INBOX
+                      folders-sort      = INBOX, Starred, Drafts, Sent, Trash, Archive, Spam
+                      # signature-file    = ~/.signature.local
+                      ${lib.optionalString account.map.enabled ''folder-map  = ~/.config/aerc/${lowerName account.name}-folder-map''}
+                      ${lib.optionalString (account.service == "gmail.com") ''
+                          cache-headers = true''}
 
-                  ${lib.optionalString (cfg.account.service == "fastmail.com") ''
-                    # https://lists.sr.ht/~rjarry/aerc-discuss/%3CD8FESFHT3XQ3.O21TH7KHQBOU@fastmail.com%3E#%3CD8FV5SWTKJNG.8IHCST9O3ZVR@fastmail.com%3E
-                    use-labels        = true
-                    cache-state       = true
-                    cache-blobs       = true
-                    use-envelope-from = true
-                    carddav-source = https://${config.my.email}@carddav.fastmail.com/dav/addressbooks/user/${config.my.email}/Default
-                    carddav-source-cred-cmd = ${cfg.carddav_source_cred_cmd}
-                    address-book-cmd = carddav-query -S ${cfg.account.type} %s''}
+                      ${lib.optionalString (account.service == "fastmail.com") ''
+                        # https://lists.sr.ht/~rjarry/aerc-discuss/%3CD8FESFHT3XQ3.O21TH7KHQBOU@fastmail.com%3E#%3CD8FV5SWTKJNG.8IHCST9O3ZVR@fastmail.com%3E
+                        use-labels        = true
+                        cache-state       = true
+                        cache-blobs       = true
+                        use-envelope-from = true
+                        carddav-source = https://${account.email}@carddav.fastmail.com/dav/addressbooks/user/${account.email}/Default
+                        carddav-source-cred-cmd = ${lib.optionalString (account.carddav != null) account.carddav.cred_cmd}
+                        address-book-cmd = carddav-query -S ${lowerName account.name} %s''}
 
-                  # [notmuch]
-                  # source            = notmuch://~/.mail/
-                  # query-map         = ~/.config/aerc/querymap'';
+                      # [notmuch]
+                      # source            = notmuch://~/.mail/
+                      # query-map         = ~/.config/aerc/querymap''
+                  )
+                  cfg.accounts
+                );
               };
 
               # This is the exact same as in `mail.nix`
               ".config/notmuch/config" = {
-                text = ''
+                text = let
+                  # Get all emails except the primary (first account)
+                  otherEmails = lib.tail (map (acc: acc.email) cfg.accounts);
+                in ''
                   # ${nix_managed}
                   #  vim:ft=conf
 
@@ -267,7 +555,10 @@ in {
                   # This section is set by setting up $NAME & $EMAIL
                   [user]
                   name=${config.my.name}
-                  primary_email=${config.my.email}
+                  primary_email=${primaryAccount.email}
+                  ${lib.optionalString (otherEmails != []) ''
+                    # https://notmuchmail.org/pipermail/notmuch/2010/003628.html
+                    other_email=${lib.concatStringsSep ";" otherEmails}''}
 
                   # Configuration for "notmuch new"
                   #
@@ -345,7 +636,6 @@ in {
                   gpg_path=${lib.getExe pkgs.gnupg} '';
               };
 
-              # TODO: support multiple accounts
               ".config/msmtp/config" = {
                 text = ''
                   # ${nix_managed}
@@ -357,16 +647,21 @@ in {
                   tls_trust_file /etc/ssl/certs/ca-certificates.crt
                   logfile ~/Library/Logs/msmtp.log
 
-                  account ${lib.toLower cfg.account.type}
-                  ${lib.optionalString (cfg.account.service == "fastmail.com")
-                    "tls_starttls on"}
-                  port 587
-                  host ${cfg.smtp_server}
-                  from ${config.my.email}
-                  user ${config.my.email}
-                  passwordeval ${cfg.password_cmd}
+                  ${lib.concatStringsSep "\n" (
+                    lib.map (
+                      account: ''
+                        account ${lowerName account.name}
+                        ${lib.optionalString (account.service != "gmail.com") "tls_starttls on"}
+                        port 587
+                        host ${account.smtp.server}
+                        from ${account.email}
+                        user ${account.email}
+                        passwordeval ${account.smtp.password_cmd}''
+                    )
+                    cfg.accounts
+                  )}
 
-                  account default : ${lib.toLower cfg.account.type}'';
+                  account default : ${lowerName primaryAccount.name}'';
               };
 
               ".config/isyncrc" = {
@@ -393,112 +688,65 @@ in {
                   Remove Near
 
                   SyncState *
-                  # TODO: support multiple accounts
-                  # {% for account in mail_accounts %}
-                  # {% if account.imap_user != "" %}
-                  ########################################
-                  # ${cfg.account.name}
-                  ########################################
-                  IMAPAccount ${cfg.account.type}
-                  PipelineDepth 100
-                  Host ${cfg.imap_server}
-                  User ${config.my.email}
-                  # Get the account password from the system Keychain
-                  PassCmd "${cfg.password_cmd}"
-                  AuthMechs LOGIN
-                  TLSType IMAPS
-                  TLSVersions +1.2
-                  ${lib.optionalString (cfg.account.service == "gmail.com") ''PipelineDepth 1''}
 
-                  # Remote storage (where the mail is retrieved from)
-                  IMAPStore ${cfg.account.type}-remote
-                  Account ${cfg.account.type}
+                  ${lib.concatStringsSep "\n\n" (
+                    map (
+                      account: let
+                        lower = lowerName account.name;
+                      in ''
+                        ########################################
+                        # ${account.name}
+                        ########################################
+                        IMAPAccount ${account.name}
+                        PipelineDepth 100
+                        Host ${account.imap.server}
+                        User ${account.email}
+                        # Get the account password from the system Keychain
+                        PassCmd "${account.imap.password_cmd}"
+                        AuthMechs LOGIN
+                        TLSType IMAPS
+                        TLSVersions +1.2
+                        ${lib.optionalString (account.service == "gmail.com") ''PipelineDepth 1''}
 
-                  # Local storage (where the mail is retrieved to)
-                  MaildirStore ${cfg.account.type}-local
-                  Path ~/.mail/${cfg.account.type}/ # The trailing "/" is important
-                  Inbox ~/.mail/${cfg.account.type}/INBOX
-                  SubFolders Verbatim
+                        # Remote storage (where the mail is retrieved from)
+                        IMAPStore ${account.name}-remote
+                        Account ${account.name}
 
-                  Channel ${cfg.account.type}-inbox
-                  Far :${cfg.account.type}-remote:INBOX
-                  Near :${cfg.account.type}-local:INBOX
+                        # Local storage (where the mail is retrieved to)
+                        MaildirStore ${account.name}-local
+                        Path ~/.mail/${account.name}/ # The trailing "/" is important
+                        Inbox ~/.mail/${account.name}/INBOX
+                        SubFolders Verbatim
 
+                        ${lib.concatStringsSep "\n\n" (
+                          map (folder: ''
+                            Channel ${lower}-${lib.toLower folder.name}
+                            Far :${account.name}-remote:${folder.remote}
+                            Near :${account.name}-local:${folder.name}'')
+                          account.mbsync.folders
+                        )}
 
-                  ${lib.optionalString (cfg.account.service == "fastmail.com") ''
-                    Channel ${cfg.account.type}-archive
-                    Far :${cfg.account.type}-remote:Archive
-                    Near :${cfg.account.type}-local:Archive''}
+                        Channel ${lower}-folders
+                        Far :${account.name}-remote:
+                        Near :${account.name}-local:
+                        # All folders except those defined above
+                        Patterns * ${lib.concatMapStringsSep " " (f: "!${f.remote}") account.mbsync.folders}${lib.optionalString (account.mbsync.extra_exclusion_patterns != "") " ${account.mbsync.extra_exclusion_patterns}"}
 
+                        # Group the channels, so that all channels can be sync'd with `mbsync ${lower}`
+                        Group ${lower}
+                        ${lib.concatMapStringsSep "\n" (f: "Channel ${lower}-${lib.toLower f.name}") account.mbsync.folders}
+                        Channel ${lower}-folders
 
-                  Channel ${cfg.account.type}-drafts
-                  ${
-                    if cfg.account.service == "fastmail.com"
-                    then "Far :${cfg.account.type}-remote:Drafts"
-                    else ''Far :${cfg.account.type}-remote:"[Gmail]/Drafts"''
-                  }
-                  Near :${cfg.account.type}-local:Drafts
-
-                  ${lib.optionalString (cfg.account.service == "gmail.com") ''
-                    Channel ${cfg.account.type}-starred
-                    Far :${cfg.account.type}-remote:"[Gmail]/Starred"
-                    Near :${cfg.account.type}-local:Starred''}
-
-                  Channel ${cfg.account.type}-sent
-                  ${
-                    if cfg.account.service == "fastmail.com"
-                    then "Far :${cfg.account.type}-remote:Sent"
-                    else ''Far :${cfg.account.type}-remote:"[Gmail]/Sent Mail"''
-                  }
-                  Near :${cfg.account.type}-local:Sent
-
-                  Channel ${cfg.account.type}-spam
-                  ${
-                    if cfg.account.service == "fastmail.com"
-                    then "Far :${cfg.account.type}-remote:Spam"
-                    else ''Far :${cfg.account.type}-remote:"[Gmail]/Spam"''
-                  }
-                  Near :${cfg.account.type}-local:Spam
-
-                  Channel ${cfg.account.type}-trash
-                  ${
-                    if cfg.account.service == "fastmail.com"
-                    then "Far :${cfg.account.type}-remote:Trash"
-                    else ''Far :${cfg.account.type}-remote:"[Gmail]/Trash"''
-                  }
-                  Near :${cfg.account.type}-local:Trash
-
-                  Channel ${cfg.account.type}-folders
-                  Far :${cfg.account.type}-remote:
-                  Near :${cfg.account.type}-local:
-                  # All folders except those defined above
-                  Patterns * !INBOX !Archive !Drafts ${
-                    lib.optionalString (cfg.account.service == "gmail.com")
-                    ''!Starred !"Version Control" !"Version Control/*" !GitHub !GitHub/* !"Inbox - CC" "!Inbox - CC/*" ''
-                  }!Sent !Spam !Trash ![Gmail]*
-
-                  # Group the channels, so that all channels can be sync'd with `mbsync ${
-                    lib.toLower cfg.account.type
-                  }`
-                  Group ${lib.toLower cfg.account.type}
-                  Channel ${cfg.account.type}-inbox
-                  Channel ${cfg.account.type}-archive
-                  Channel ${cfg.account.type}-drafts
-                  Channel ${cfg.account.type}-sent
-                  Channel ${cfg.account.type}-spam
-                  Channel ${cfg.account.type}-trash
-                  Channel ${cfg.account.type}-folders
-                  ${lib.optionalString (cfg.account.service == "gmail.com") ''Channel ${cfg.account.type}-starred''}
-
-                  # For doing a quick sync of just the INBOX with `mbsync ${
-                    lib.toLower cfg.account.type
-                  }-download`.
-                  Channel ${lib.toLower cfg.account.type}-download
-                  Far :${cfg.account.type}-remote:INBOX
-                  Near :${cfg.account.type}-local:INBOX
-                  Create Near
-                  Expunge Near
-                  Sync Pull'';
+                        # For doing a quick sync of just the INBOX with `mbsync ${lower}-download`.
+                        Channel ${lower}-download
+                        Far :${account.name}-remote:INBOX
+                        Near :${account.name}-local:INBOX
+                        Create Near
+                        Expunge Near
+                        Sync Pull''
+                    )
+                    cfg.accounts
+                  )}'';
               };
             };
           };
