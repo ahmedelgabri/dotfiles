@@ -27,13 +27,34 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             uv
-            ruff
           ];
           shellHook =
             /*
             bash
             */
-            ''uv init --script main.py'';
+            ''
+              if [ ! -f pyproject.toml ]; then
+                ${pkgs.lib.getExe pkgs.uv} init --author-from git --script main.py
+
+                # in order to make sure pyright LSP plays well
+                echo "[tool.basedpyright]\nvenvPath = \".\"\nvenv = \".venv\"" >> pyproject.toml
+
+                ${pkgs.lib.getExe pkgs.uv} add --dev ruff
+                ${pkgs.lib.getExe pkgs.uv} add --dev basedpyright
+                ${pkgs.lib.getExe pkgs.uv} add --dev ty
+              fi
+
+              # Activate Python virtual environment
+              if [ ! -d .venv ]; then
+                ${pkgs.lib.getExe pkgs.uv} venv
+              fi
+              source .venv/bin/activate
+
+              # Install project dependencies
+              ${pkgs.lib.getExe pkgs.uv} sync
+
+              echo "Development environment ready!"
+            '';
         };
       };
     };

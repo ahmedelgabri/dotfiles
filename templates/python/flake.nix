@@ -27,8 +27,6 @@
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             uv
-            basedpyright
-            ruff
           ];
           shellHook =
             /*
@@ -41,8 +39,9 @@
                 # in order to make sure pyright LSP plays well
                 echo "[tool.basedpyright]\nvenvPath = \".\"\nvenv = \".venv\"" >> pyproject.toml
 
-                ${pkgs.lib.getExe pkgs.uv} tool install ruff
-                ${pkgs.lib.getExe pkgs.uv} tool install pyright
+                ${pkgs.lib.getExe pkgs.uv} add --dev ruff
+                ${pkgs.lib.getExe pkgs.uv} add --dev basedpyright
+                ${pkgs.lib.getExe pkgs.uv} add --dev ty
               fi
 
               # Activate Python virtual environment
