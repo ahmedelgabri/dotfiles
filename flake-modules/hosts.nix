@@ -31,6 +31,7 @@ in {
             specialArgs = {inherit inputs self;};
             inherit system;
             modules = [
+              ../nix/settings.nix
               ../nix/shared-configuration.nix
               ../nix/overlays.nix
               inputs.home-manager.darwinModules.home-manager
@@ -52,6 +53,7 @@ in {
             specialArgs = {inherit inputs self;};
             inherit system;
             modules = [
+              ../nix/settings.nix
               ../nix/shared-configuration.nix
               ../nix/overlays.nix
               inputs.home-manager.nixosModules.home-manager

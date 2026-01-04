@@ -45,16 +45,25 @@ outputs = inputs @ {flake-parts, ...}:
 │   ├── per-system.nix                 # Per-system outputs (formatter, devShells, apps)
 │   └── hosts.nix                      # Darwin & NixOS configurations
 ├── nix/
-│   ├── shared-configuration.nix       # Shared config for all systems (NEW)
-│   ├── overlays.nix                   # Nixpkgs overlays (NEW)
+│   ├── settings.nix                   # Custom options & config (EXTRACTED)
+│   ├── shared-configuration.nix       # Shared config for all systems (EXTRACTED)
+│   ├── overlays.nix                   # Nixpkgs overlays (EXTRACTED)
 │   ├── modules/
-│   │   ├── shared/                    # Shared modules
-│   │   │   └── settings.nix           # Custom options (UNCHANGED)
+│   │   ├── shared/                    # Shared feature modules (shell, git, vim, etc)
 │   │   └── darwin/                    # Darwin-specific modules
 │   └── hosts/                         # Host-specific configs
 ```
 
 #### Module Breakdown
+
+**`nix/settings.nix`** (Extracted from `nix/modules/shared/`)
+- Defines custom `config.my.*` options (username, timezone, email, etc.)
+- Sets up home-manager aliases (`my.hm.file`, `my.hm.configFile`, etc.)
+- Configures XDG directories (platform-aware)
+- Environment variable management
+- Platform-specific home directory logic (Darwin vs Linux)
+
+This is a NixOS/nix-darwin module that defines reusable options and configuration used across all systems.
 
 **`nix/shared-configuration.nix`** (Extracted from original `sharedConfiguration`)
 - Core Nix settings (experimental features, substituters, GC)
@@ -87,16 +96,17 @@ This is a NixOS/nix-darwin module that gets imported by all system configuration
 
 The migration achieves a **single Nix configuration that works on any system** managed by the flake:
 
-1. **`nix/shared-configuration.nix`**: Applied to ALL systems (Darwin and NixOS)
-2. **`nix/overlays.nix`**: Applied to ALL systems
-3. **`nix/modules/shared/settings.nix`**: Custom options available to ALL systems
+1. **`nix/settings.nix`**: Custom options and config applied to ALL systems
+2. **`nix/shared-configuration.nix`**: Core system config applied to ALL systems (Darwin and NixOS)
+3. **`nix/overlays.nix`**: Package customizations applied to ALL systems
 4. Platform-specific logic handled via `pkgs.stdenv.isDarwin` conditionals
 
 All systems share the same:
-- Nix settings
+- Custom options (`config.my.*`)
+- Nix settings and configuration
 - Overlays and custom packages
 - Base home-manager configuration
-- Custom options defined in settings.nix
+- XDG directory structure
 
 ## Benefits of This Migration
 
@@ -107,15 +117,27 @@ All systems share the same:
 5. **Single Source of Truth**: shared-configuration.nix applies universally
 6. **Better Organization**: Clear separation between flake outputs and system modules
 
-## settings.nix Unchanged
+## Extracted Core Modules
 
-The `nix/modules/shared/settings.nix` file remains **completely unchanged**. It continues to:
-- Define custom `config.my.*` options
-- Set up home-manager aliases
-- Configure XDG directories
-- Manage environment variables
+Three core modules have been extracted to the `nix/` directory for better organization:
 
-This is because settings.nix is a NixOS/nix-darwin module (not a flake-parts module), and the migration only affects the flake structure, not the system module structure.
+**`nix/settings.nix`** (moved from `nix/modules/shared/settings.nix`)
+- Defines custom `config.my.*` options
+- Sets up home-manager aliases
+- Configures XDG directories
+- Manages environment variables
+- Platform-aware home directory logic
+
+**`nix/shared-configuration.nix`** (extracted from `sharedConfiguration` function)
+- Core Nix daemon settings
+- Cache configuration
+- Font packages
+- System-wide settings
+
+**`nix/overlays.nix`** (extracted from `sharedConfiguration` function)
+- All package overlays and customizations
+
+These are NixOS/nix-darwin modules (not flake-parts modules), imported directly by system configurations. The content remains functionally identical, only the organization has changed.
 
 ## How to Use
 
