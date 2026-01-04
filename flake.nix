@@ -8,6 +8,7 @@
 # https://wiki.nixos.org/wiki/Flakes
 # https://rconybea.github.io/web/nix/nix-for-your-own-project.html
 # https://flake.parts/
+# https://github.com/mightyiam/dendritic
 {
   description = "~ 🍭 ~";
 
@@ -75,7 +76,41 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = inputs @ {flake-parts, ...}:
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-parts,
+    ...
+  }: let
+    # Auto-discovery: recursively import all .nix files from a directory
+    # This follows the Dendritic Pattern where every file is a flake-parts module
+    importTree = dir: let
+      inherit (builtins) readDir;
+      inherit (nixpkgs.lib)
+        filterAttrs
+        hasSuffix
+        hasPrefix
+        mapAttrsToList
+        flatten
+        ;
+
+      entries = readDir dir;
+
+      # Filter: .nix files and non-private directories (not starting with _)
+      isValid = name: type:
+        !hasPrefix "_" name
+        && (type == "directory" || hasSuffix ".nix" name);
+
+      # Convert to import paths
+      toImport = name: type: let
+        path = dir + "/${name}";
+      in
+        if type == "directory"
+        then importTree path
+        else path;
+    in
+      flatten (mapAttrsToList toImport (filterAttrs isValid entries));
+  in
     flake-parts.lib.mkFlake {inherit inputs;} {
       # Define which systems we support
       systems = [
@@ -85,11 +120,9 @@
         "aarch64-darwin"
       ];
 
-      # Import our modular flake-parts modules
-      imports = [
-        ./flake-modules/per-system.nix
-        ./flake-modules/hosts.nix
-      ];
+      # Auto-import all flake-parts modules from ./modules
+      # This is the Dendritic Pattern: every .nix file is a module
+      imports = importTree ./modules;
 
       # Top-level flake outputs
       flake = {
