@@ -2,7 +2,7 @@
 {inputs, ...}: {
   # Define the host configuration module
   flake.modules.darwin.alcantara = {config, pkgs, ...}: {
-    # Import system feature modules
+    # Import system modules
     imports = with inputs.self.modules.darwin; [
       user-options
       nix-daemon
@@ -10,7 +10,7 @@
       home-manager-integration
       fonts
       defaults
-      git
+      feature-defaults
     ];
 
     # Import external modules
@@ -48,7 +48,7 @@
 
     # Home-manager configuration for this host
     home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
-      git
+      # Add home-manager-specific modules here if needed
     ];
   };
 

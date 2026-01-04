@@ -8,6 +8,7 @@
       home-manager-integration
       fonts
       defaults
+      feature-defaults
     ];
 
     imports = [

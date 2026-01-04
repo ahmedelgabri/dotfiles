@@ -7,21 +7,19 @@
       state-version
       home-manager-integration
       fonts
-      git
+      feature-defaults
     ];
 
     imports = [
       inputs.home-manager.nixosModules.home-manager
-      inputs.agenix.darwinModules.default
+      inputs.agenix.nixosModules.default
+      ./nixos # Host-specific NixOS configuration
     ];
 
     networking.hostName = "nixos";
 
-    # Import existing host-specific config from nix/hosts/nixos/
-    imports = [../nix/hosts/nixos];
-
     home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
-      git
+      # Add home-manager-specific modules here if needed
     ];
   };
 
