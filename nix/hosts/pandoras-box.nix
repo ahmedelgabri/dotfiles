@@ -1,34 +1,32 @@
-_: {
-  networking = {hostName = "pandoras-box";};
-
-  my = {
-    modules = {
-      mail = {enable = true;};
-      gpg.enable = true;
-      discord.enable = true;
-    };
-  };
-
-  homebrew = {
-    casks = [
-      # "arq" # I need a specific version so I will handle it myself.
-      "transmit"
-      "jdownloader"
-      "brave-browser"
-      "signal"
+# Pandoras-box host (x86_64-darwin)
+{inputs, ...}: {
+  flake.modules.darwin.pandoras-box = {config, pkgs, ...}: {
+    imports = with inputs.self.modules.darwin; [
+      user-options
+      nix-daemon
+      state-version
+      home-manager-integration
+      fonts
+      defaults
+      git
     ];
 
-    # Requires to be logged in to the AppStore
-    # Cleanup doesn't work automatically if you add/remove to list
-    # masApps = {
-    #   Guidance = 412759995;
-    #   Dato = 1470584107;
-    #   "Day One" = 1055511498;
-    #   Tweetbot = 1384080005;
-    #   Todoist = 585829637;
-    #   Sip = 507257563;
-    #   Irvue = 1039633667;
-    #   Telegram = 747648890;
-    # };
+    imports = [
+      inputs.home-manager.darwinModules.home-manager
+      inputs.nix-homebrew.darwinModules.nix-homebrew
+      inputs.agenix.darwinModules.default
+    ];
+
+    networking.hostName = "pandoras-box";
+
+    # Import existing host-specific config from nix/hosts/
+    imports = [../nix/hosts/pandoras-box.nix];
+
+    home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
+      git
+    ];
   };
+
+  flake.darwinConfigurations =
+    inputs.self.lib.mkDarwin "x86_64-darwin" "pandoras-box";
 }

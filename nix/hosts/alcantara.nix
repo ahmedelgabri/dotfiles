@@ -1,25 +1,44 @@
-{pkgs, ...}: {
-  networking = {hostName = "alcantara";};
+# Alcantara host (aarch64-darwin)
+{inputs, ...}: {
+  # Define the host configuration module
+  flake.modules.darwin.alcantara = {config, pkgs, ...}: {
+    # Import system feature modules
+    imports = with inputs.self.modules.darwin; [
+      user-options
+      nix-daemon
+      state-version
+      home-manager-integration
+      fonts
+      defaults
+      git
+    ];
 
-  my = {
-    modules = {
-      mail = {enable = true;};
+    # Import external modules
+    imports = [
+      inputs.home-manager.darwinModules.home-manager
+      inputs.nix-homebrew.darwinModules.nix-homebrew
+      inputs.agenix.darwinModules.default
+    ];
+
+    # Host-specific configuration
+    networking.hostName = "alcantara";
+
+    # Enable specific features for this host
+    my.modules = {
+      mail.enable = true;
       gpg.enable = true;
       discord.enable = true;
     };
 
-    user = {
-      packages = with pkgs; [
-        amp-cli
-        codex
-        opencode
-      ];
-    };
-  };
+    # Host-specific user packages
+    my.user.packages = with pkgs; [
+      amp-cli
+      codex
+      opencode
+    ];
 
-  homebrew = {
-    casks = [
-      # "arq" # I need a specific version so I will handle it myself.
+    # Host-specific homebrew casks
+    homebrew.casks = [
       "jdownloader"
       "signal"
       "monodraw"
@@ -27,17 +46,13 @@
       "helium-browser"
     ];
 
-    # Requires to be logged in to the AppStore
-    # Cleanup doesn't work automatically if you add/remove to list
-    # masApps = {
-    #   Guidance = 412759995;
-    #   Dato = 1470584107;
-    #   "Day One" = 1055511498;
-    #   Tweetbot = 1384080005;
-    #   Todoist = 585829637;
-    #   Sip = 507257563;
-    #   Irvue = 1039633667;
-    #   Telegram = 747648890;
-    # };
+    # Home-manager configuration for this host
+    home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
+      git
+    ];
   };
+
+  # Create the actual darwinConfiguration
+  flake.darwinConfigurations =
+    inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
 }

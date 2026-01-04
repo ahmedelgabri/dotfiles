@@ -20,6 +20,8 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    import-tree.url = "github:vic/import-tree";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,40 +79,10 @@
   };
 
   outputs = inputs @ {
-    self,
-    nixpkgs,
     flake-parts,
+    import-tree,
     ...
-  }: let
-    # Auto-discovery: recursively import all .nix files from a directory
-    # This follows the Dendritic Pattern where every file is a flake-parts module
-    importTree = dir: let
-      inherit (builtins) readDir;
-      inherit (nixpkgs.lib)
-        filterAttrs
-        hasSuffix
-        hasPrefix
-        mapAttrsToList
-        flatten
-        ;
-
-      entries = readDir dir;
-
-      # Filter: .nix files and non-private directories (not starting with _)
-      isValid = name: type:
-        !hasPrefix "_" name
-        && (type == "directory" || hasSuffix ".nix" name);
-
-      # Convert to import paths
-      toImport = name: type: let
-        path = dir + "/${name}";
-      in
-        if type == "directory"
-        then importTree path
-        else path;
-    in
-      flatten (mapAttrsToList toImport (filterAttrs isValid entries));
-  in
+  }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       # Define which systems we support
       systems = [
@@ -120,9 +92,11 @@
         "aarch64-darwin"
       ];
 
-      # Auto-import all flake-parts modules from ./modules
+      # Auto-import all flake-parts modules from ./nix using import-tree
       # This is the Dendritic Pattern: every .nix file is a module
-      imports = importTree ./modules;
+      imports = [
+        (import-tree ./nix)
+      ];
 
       # Top-level flake outputs
       flake = {
