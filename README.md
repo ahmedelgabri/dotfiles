@@ -161,4 +161,4 @@ This configuration uses [flake-parts](https://flake.parts/) with the [Dendritic 
 - **System modules**: Core configuration in `nix/system/`
 - **Host configs**: Single file per host in `nix/hosts/`
 
-See [DENDRITIC-MIGRATION.md](./DENDRITIC-MIGRATION.md) for complete architecture details.
+See [docs/DENDRITIC-MIGRATION.md](./docs/DENDRITIC-MIGRATION.md) for complete architecture details.
