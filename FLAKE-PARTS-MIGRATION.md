@@ -1,6 +1,16 @@
 # Flake-Parts Migration Guide
 
-This document describes the migration of this Nix configuration from a monolithic flake to a modular flake-parts architecture.
+> **⚠️ This document is SUPERSEDED by [DENDRITIC-MIGRATION.md](./DENDRITIC-MIGRATION.md)**
+>
+> This document describes an earlier, incomplete migration step. The configuration has since been migrated to the [Dendritic Pattern](https://github.com/mightyiam/dendritic) which provides a complete aspect-oriented architecture.
+>
+> **For current documentation, see [DENDRITIC-MIGRATION.md](./DENDRITIC-MIGRATION.md)**
+
+---
+
+## Historical Context
+
+This document describes the initial migration of this Nix configuration from a monolithic flake to a modular flake-parts architecture. This was an intermediate step before the full Dendritic Pattern migration.
 
 ## Migration Overview
 
