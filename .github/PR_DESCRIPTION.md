@@ -24,8 +24,8 @@ The configuration now follows a modular, aspect-oriented architecture where:
 **Darwin-only modules (2)**:
 - hammerspoon, karabiner
 
-**System modules (7)**:
-- user-options, nix-daemon, state-version, home-manager-integration, fonts, darwin-defaults, feature-defaults
+**System modules (6)**:
+- user-options, nix-daemon, state-version, home-manager-integration, fonts, darwin-defaults
 
 ### Architecture Improvements
 
@@ -39,7 +39,7 @@ nix/modules/
 **After:**
 ```
 nix/
-├── features/        # 26 feature modules
+├── modules/        # 26 feature modules
 ├── system/          # 7 system modules
 └── hosts/           # 4 host configs (single file each)
 ```
@@ -62,7 +62,7 @@ nix/
 Every feature module follows this pattern:
 
 ```nix
-# nix/features/git.nix
+# nix/modules/git.nix
 {inputs, ...}: let
   gitModule = {pkgs, lib, config, ...}: let
     cfg = config.my.modules.git;
@@ -93,7 +93,6 @@ Hosts import system and feature modules:
       home-manager-integration
       fonts
       defaults
-      feature-defaults  # Enables most features by default
     ];
 
     # Override or enable opt-in features
@@ -131,8 +130,7 @@ outputs = inputs @ {flake-parts, import-tree, ...}:
    - `nix/programs/` (example directory)
 
 2. **Added**:
-   - `nix/features/` (26 feature modules in flake-parts format)
-   - `nix/system/feature-defaults.nix` (replaces old default.nix)
+   - `nix/modules/` (26 feature modules in flake-parts format)
 
 3. **Migrated**:
    - All feature modules to `flake.modules.{darwin,nixos}.<name>` pattern
@@ -189,10 +187,10 @@ See [DENDRITIC-MIGRATION.md](./DENDRITIC-MIGRATION.md) for:
 
 ### Adding New Features
 
-1. Create a feature module in `nix/features/`:
+1. Create a feature module in `nix/modules/`:
 
 ```nix
-# nix/features/example.nix
+# nix/modules/example.nix
 {inputs, ...}: let
   exampleModule = {pkgs, lib, config, ...}: let
     cfg = config.my.modules.example;
@@ -208,7 +206,6 @@ in {
 }
 ```
 
-2. Optionally add to `nix/system/feature-defaults.nix`
 3. Enable in hosts as needed
 
 ### Disabling Features

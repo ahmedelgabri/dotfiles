@@ -25,16 +25,15 @@ The Dendritic Pattern treats each `.nix` file as a top-level flake-parts module.
 │   ├── dev-shells.nix           # perSystem devShells
 │   ├── apps.nix                 # perSystem apps
 │   │
-│   ├── system/                  # System-level modules (7 files)
+│   ├── system/                  # System-level modules (6 files)
 │   │   ├── user-options.nix         # config.my.* options
 │   │   ├── nix-daemon.nix           # Nix daemon config
 │   │   ├── state-version.nix        # State version management
 │   │   ├── home-manager-integration.nix  # Home-manager setup
 │   │   ├── fonts.nix                # Font configuration
 │   │   ├── darwin-defaults.nix      # macOS system defaults
-│   │   └── feature-defaults.nix     # Default feature enables
 │   │
-│   ├── features/                # Feature modules (26 files)
+│   ├── modules/                # Feature modules (26 files)
 │   │   ├── git.nix              # flake.modules.{darwin,nixos}.git
 │   │   ├── vim.nix              # flake.modules.{darwin,nixos}.vim
 │   │   ├── tmux.nix             # flake.modules.{darwin,nixos}.tmux
@@ -99,7 +98,7 @@ outputs = inputs @ {flake-parts, import-tree, ...}:
 Feature modules define reusable configuration that works across platforms:
 
 ```nix
-# nix/features/git.nix
+# nix/modules/git.nix
 {inputs, ...}: let
   gitModule = {pkgs, lib, config, ...}: let
     cfg = config.my.modules.git;
@@ -147,83 +146,80 @@ in {
 }
 ```
 
-### 4. Feature Defaults
-
-The `feature-defaults.nix` module sets sensible defaults for which features are enabled:
-
-```nix
-# nix/system/feature-defaults.nix
-{lib, ...}: let
-  featureDefaultsModule = {config, lib, ...}: {
-    my.modules = {
-      # Core tools enabled by default
-      shell.enable = lib.mkDefault true;
-      git.enable = lib.mkDefault true;
-      vim.enable = lib.mkDefault true;
-      # ... more defaults
-
-      # Opt-in features
-      mail.enable = lib.mkDefault false;
-      gpg.enable = lib.mkDefault false;
-      discord.enable = lib.mkDefault false;
-    };
-  };
-in {
-  flake.modules.darwin.feature-defaults = featureDefaultsModule;
-  flake.modules.nixos.feature-defaults = featureDefaultsModule;
-}
-```
-
-### 5. Host Configuration
 
 Host modules import system modules, feature-defaults, and external modules:
 
 ```nix
-# nix/hosts/alcantara.nix
+# nix/hosts/alcantara/default.nix
 {inputs, ...}: {
   flake.modules.darwin.alcantara = {config, pkgs, ...}: {
-    # Import system modules
-    imports = with inputs.self.modules.darwin; [
-      user-options
-      nix-daemon
-      state-version
-      home-manager-integration
-      fonts
-      defaults
-      feature-defaults  # Enables most features by default
-    ];
+    imports =
+      with inputs.self.modules.darwin; [
+        user-options
+        nix-daemon
+        state-version
+        home-manager-integration
+        fonts
+        defaults
+        shell
+        git
+        vim
+        tmux
+        ssh
+        gpg
+        kitty
+        ghostty
+        yazi
+        bat
+        ripgrep
+        mpv
+        yt-dlp
+        gui
+        zk
+        ai
+        agenix
+        misc
+        node
+        python
+        go
+        rust
+        hammerspoon
+        karabiner
+        mail
+        discord
+      ];
 
-    # Import external modules
     imports = [
       inputs.home-manager.darwinModules.home-manager
       inputs.nix-homebrew.darwinModules.nix-homebrew
       inputs.agenix.darwinModules.default
     ];
 
-    # Host-specific configuration
     networking.hostName = "alcantara";
 
-    # Override feature defaults or enable opt-in features
-    my.modules = {
-      mail.enable = true;   # Opt-in
-      gpg.enable = true;    # Opt-in
-      discord.enable = true; # Opt-in
-    };
+    my.user.packages = with pkgs; [
+      amp-cli
+      codex
+      opencode
+    ];
 
-    # Host-specific packages
-    my.user.packages = with pkgs; [amp-cli codex opencode];
+    homebrew.casks = [
+      "jdownloader"
+      "signal"
+      "monodraw"
+      "sony-ps-remote-play"
+      "helium-browser"
+    ];
 
-    # Host-specific homebrew
-    homebrew.casks = ["jdownloader" "signal" "monodraw"];
+    home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [];
   };
 
-  # Create the actual darwinConfiguration
   flake.darwinConfigurations =
     inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
 }
 ```
 
-### 6. Helper Functions
+### 5. Helper Functions
 
 The `lib.nix` module provides helpers for creating configurations:
 
@@ -252,7 +248,7 @@ The `lib.nix` module provides helpers for creating configurations:
 }
 ```
 
-### 7. perSystem Outputs
+### 6. perSystem Outputs
 
 Overlays, dev shells, and apps use `perSystem`:
 
@@ -295,7 +291,7 @@ nix/
 **After:**
 ```
 nix/
-├── features/                     # Feature modules (26 files)
+├── modules/                     # Feature modules (26 files)
 │   ├── git.nix                   # flake.modules.{darwin,nixos}.git
 │   ├── vim.nix                   # flake.modules.{darwin,nixos}.vim
 │   └── ...                       # All features migrated
@@ -306,7 +302,6 @@ nix/
 │   ├── home-manager-integration.nix  # Extracted
 │   ├── fonts.nix                 # Extracted
 │   ├── darwin-defaults.nix       # Migrated from darwin/default.nix
-│   └── feature-defaults.nix      # NEW - replaces shared/default.nix
 └── hosts/                        # Single file per host
     ├── alcantara.nix             # Was: alcantara/{configuration,flake-parts}.nix
     ├── pandoras-box.nix          # Consolidated
@@ -326,8 +321,8 @@ nix/
 **Darwin-only modules (2)**:
 - hammerspoon, karabiner
 
-**System modules (7)**:
-- user-options, nix-daemon, state-version, home-manager-integration, fonts, darwin-defaults, feature-defaults
+**System modules (6)**:
+- user-options, nix-daemon, state-version, home-manager-integration, fonts, darwin-defaults
 
 ### Key Improvements
 
@@ -337,8 +332,6 @@ nix/
 4. **✅ Single file per host** - No more configuration.nix + flake-parts.nix split
 5. **✅ Clean separation** - Features, system, and hosts clearly separated
 6. **✅ No specialArgs** - Access modules via `inputs.self.modules.*`
-7. **✅ Sensible defaults** - feature-defaults module enables common features
-8. **✅ Easy overrides** - Hosts can override with `lib.mkDefault`
 
 ## Benefits
 
@@ -414,7 +407,7 @@ nix flake update
 ### 1. Create a feature module:
 
 ```nix
-# nix/features/example.nix
+# nix/modules/example.nix
 {inputs, ...}: let
   exampleModule = {pkgs, lib, config, ...}: let
     cfg = config.my.modules.example;
@@ -433,30 +426,19 @@ in {
 }
 ```
 
-### 2. Add to feature-defaults (optional):
+### 2. Import in host:
 
 ```nix
-# nix/system/feature-defaults.nix
-my.modules = {
-  # ...
-  example.enable = lib.mkDefault true;  # Enable by default
-  # OR
-  example.enable = lib.mkDefault false; # Opt-in only
-};
+# nix/hosts/alcantara/default.nix
+imports = with inputs.self.modules.darwin; [
+  # ... other modules
+  example  # Add the module
+];
 ```
 
-### 3. Use in host (if opt-in):
+### 3. Done!
 
-```nix
-# nix/hosts/alcantara.nix
-my.modules = {
-  example.enable = true;  # Override default
-};
-```
-
-### 4. Done!
-
-The module is auto-discovered, features are enabled by defaults or explicitly, and everything just works.
+The module is auto-discovered, imported by the host, and everything just works.
 
 ## Testing Checklist
 
