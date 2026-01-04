@@ -1,19 +1,19 @@
-# Alcantara host configuration (aarch64-darwin)
-# Imports feature modules and sets host-specific configuration
+# Alcantara host (aarch64-darwin)
 {inputs, ...}: {
+  # Define the host configuration module
   flake.modules.darwin.alcantara = {config, pkgs, ...}: {
-    # Import system-level feature modules from inputs.self.modules.darwin
+    # Import system feature modules
     imports = with inputs.self.modules.darwin; [
-      settings      # Custom options (config.my.*)
-      nix          # Nix daemon configuration
-      fonts        # Font packages
-      defaults     # macOS system defaults
-      git          # Git (system-level)
-      # TODO: Add more feature modules as needed
-      # vim, tmux, etc.
+      user-options
+      nix-daemon
+      state-version
+      home-manager-integration
+      fonts
+      defaults
+      git
     ];
 
-    # Import home-manager as a darwin module
+    # Import external modules
     imports = [
       inputs.home-manager.darwinModules.home-manager
       inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -49,8 +49,10 @@
     # Home-manager configuration for this host
     home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
       git
-      # TODO: Add more home-manager modules
-      # vim, tmux, etc.
     ];
   };
+
+  # Create the actual darwinConfiguration
+  flake.darwinConfigurations =
+    inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
 }

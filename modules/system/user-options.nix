@@ -1,9 +1,8 @@
-# Custom options and configuration - works on both Darwin and NixOS
-# Defines config.my.* options used throughout the configuration
+# User options - defines config.my.* options for personal configuration
+# These options are available in both Darwin and NixOS configurations
 {lib, ...}:
 with lib; let
-  # Shared module definition for both darwin and nixos
-  settingsModule = {
+  userOptionsModule = {
     config,
     pkgs,
     options,
@@ -15,23 +14,10 @@ with lib; let
         default = value;
       };
 
-    mkSecret = description: default:
-      mkOption {
-        inherit description default;
-        type = with types; either str (listOf str);
-      };
-
     mkOpt = type: default: mkOption {inherit type default;};
 
     mkOpt' = type: default: description:
       mkOption {inherit type default description;};
-
-    mkBoolOpt = default:
-      mkOption {
-        inherit default;
-        type = types.bool;
-        example = true;
-      };
 
     home =
       if pkgs.stdenv.isDarwin
@@ -68,9 +54,7 @@ with lib; let
             if isList v
             then
               if k == "TERMINFO_DIRS"
-              then
-                # Home-manager sets it before nix-darwin so instead of overriding it we append to it
-                "$TERMINFO_DIRS:" + concatMapStringsSep ":" toString v
+              then "$TERMINFO_DIRS:" + concatMapStringsSep ":" toString v
               else concatMapStringsSep ":" toString v
             else (toString v));
           default = {};
@@ -88,55 +72,12 @@ with lib; let
 
       my.hostConfigHome = "${config.my.hm.dataHome}/${config.networking.hostName}";
 
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        backupFileExtension = "bk";
-      };
-
-      # I only need a subset of home-manager's capabilities. That is, access to
-      # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
-      # files easily to my $HOME, but 'home-manager.users.${config.my.username}.home.file.*'
-      # is much too long and harder to maintain, so I've made aliases in:
-      #
-      #   my.hm.file        ->  home-manager.users.ahmed.home.file
-      #   my.hm.configFile  ->  home-manager.users.ahmed.home.xdg.configFile
-      #   my.hm.dataFile    ->  home-manager.users.ahmed.home.xdg.dataFile
-      home-manager.users."${config.my.username}" = {
-        xdg = {
-          enable = true;
-          cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
-          configFile = mkAliasDefinitions options.my.hm.configFile;
-          # configHome = mkAliasDefinitions options.my.hm.configHome;
-          dataFile = mkAliasDefinitions options.my.hm.dataFile;
-          # dataHome = mkAliasDefinitions options.my.hm.dataHome;
-          # stateHome = mkAliasDefinitions options.my.hm.stateHome;
-        };
-
-        home = {
-          inherit (config.my) username;
-          file = mkAliasDefinitions options.my.hm.file;
-        };
-
-        programs = {
-          # Let Home Manager install and manage itself.
-          home-manager.enable = true;
-          man.enable = true;
-        };
-
-        manual = {
-          html.enable = true; # adds home-manager-help
-          manpages.enable = true;
-        };
-      };
-
       environment.extraInit =
         concatStringsSep "\n"
         (mapAttrsToList (n: v: ''export ${n}="${v}"'') config.my.env);
     };
   };
 in {
-  # Define the module for both darwin and nixos
-  flake.modules.darwin.settings = settingsModule;
-  flake.modules.nixos.settings = settingsModule;
+  flake.modules.darwin.user-options = userOptionsModule;
+  flake.modules.nixos.user-options = userOptionsModule;
 }
