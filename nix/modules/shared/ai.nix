@@ -109,6 +109,11 @@ in {
               source = ../../../config/claude/scripts;
             };
 
+            ".claude/skills" = {
+              recursive = true;
+              source = ../../../config/claude/skills;
+            };
+
             # I need to find a different solution that works with managed the full ~/.claude folder
             ".claude/settings.json.bk" = {
               source = ../../../config/claude/settings.json;
