@@ -62,12 +62,15 @@ The Dendritic Pattern treats each `.nix` file as a top-level flake-parts module.
 │   │   └── karabiner.nix        # flake.modules.darwin.karabiner
 │   │
 │   ├── hosts/                   # Host configurations (4 hosts)
-│   │   ├── alcantara.nix        # aarch64-darwin (personal)
-│   │   ├── pandoras-box.nix     # x86_64-darwin (personal)
-│   │   ├── rocket.nix           # aarch64-darwin (work - Miro)
-│   │   ├── nixos.nix            # x86_64-linux
-│   │   └── nixos/               # NixOS-specific config
-│   │       ├── default.nix
+│   │   ├── alcantara/
+│   │   │   └── default.nix      # aarch64-darwin (personal)
+│   │   ├── pandoras-box/
+│   │   │   └── default.nix      # x86_64-darwin (personal)
+│   │   ├── rocket/
+│   │   │   └── default.nix      # aarch64-darwin (work - Miro)
+│   │   └── nixos/
+│   │       ├── flake-module.nix # x86_64-linux flake config
+│   │       ├── default.nix      # NixOS system config
 │   │       ├── dwm.patch
 │   │       └── hardware-configuration.nix
 │   │
@@ -147,7 +150,9 @@ in {
 ```
 
 
-Host modules import system modules, feature-defaults, and external modules:
+### 4. Host Configuration
+
+Host modules explicitly import system modules, feature modules, and external modules:
 
 ```nix
 # nix/hosts/alcantara/default.nix
@@ -295,18 +300,20 @@ nix/
 │   ├── git.nix                   # flake.modules.{darwin,nixos}.git
 │   ├── vim.nix                   # flake.modules.{darwin,nixos}.vim
 │   └── ...                       # All features migrated
-├── system/                       # System modules (7 files)
+├── system/                       # System modules (6 files)
 │   ├── user-options.nix          # Extracted from old settings.nix
 │   ├── nix-daemon.nix            # Extracted from old settings.nix
 │   ├── state-version.nix         # Extracted from old settings.nix
 │   ├── home-manager-integration.nix  # Extracted
 │   ├── fonts.nix                 # Extracted
-│   ├── darwin-defaults.nix       # Migrated from darwin/default.nix
-└── hosts/                        # Single file per host
-    ├── alcantara.nix             # Was: alcantara/{configuration,flake-parts}.nix
-    ├── pandoras-box.nix          # Consolidated
-    ├── rocket.nix                # Consolidated
-    └── nixos.nix                 # Consolidated
+│   └── darwin-defaults.nix       # Migrated from darwin/default.nix
+└── hosts/                        # Host directories
+    ├── alcantara/default.nix
+    ├── pandoras-box/default.nix
+    ├── rocket/default.nix
+    └── nixos/
+        ├── flake-module.nix
+        └── default.nix
 ```
 
 ### Modules Migrated (26 feature modules)
@@ -329,7 +336,7 @@ nix/
 1. **✅ Single file per feature** - Each feature is self-contained
 2. **✅ Auto-discovery** - All modules discovered via import-tree
 3. **✅ Aspect-oriented** - Organized by feature, not platform
-4. **✅ Single file per host** - No more configuration.nix + flake-parts.nix split
+4. **✅ Explicit imports** - Each host explicitly lists what modules it uses
 5. **✅ Clean separation** - Features, system, and hosts clearly separated
 6. **✅ No specialArgs** - Access modules via `inputs.self.modules.*`
 
@@ -338,8 +345,8 @@ nix/
 ### 1. **Aspect-Oriented Organization**
 
 Instead of organizing by platform (darwin/nixos/shared), organize by what it does:
-- `features/git.nix` - Git configuration for ALL systems
-- `features/vim.nix` - Vim configuration for ALL systems
+- `modules/git.nix` - Git configuration for ALL systems
+- `modules/vim.nix` - Vim configuration for ALL systems
 - `system/nix-daemon.nix` - Nix daemon for ALL systems
 
 ### 2. **No Special Args Anti-Pattern**
@@ -462,10 +469,13 @@ Before deploying changes:
 
 ## Migration Commits
 
-1. `refactor(nix): use import-tree and migrate to nix/ directory` - Added import-tree and restructured
+1. `feat(nix): migrate to Dendritic Pattern architecture` - Initial migration setup
 2. `refactor(nix): cleanup and break down modules into focused aspects` - Split monolithic settings.nix
-3. `fix(nix): properly migrate pandoras-box and rocket host configs` - Fixed broken host imports
-4. `feat(nix): complete migration to flake-parts with Dendritic Pattern` - Final migration
+3. `refactor(nix): use import-tree and migrate to nix/ directory` - Added import-tree and restructured
+4. `fix(nix): properly migrate pandoras-box and rocket host configs` - Fixed broken host imports
+5. `feat(nix): complete migration to flake-parts with Dendritic Pattern` - Complete module migration
+6. `refactor(nix): fix migration - use nix/modules, remove feature-defaults, explicit imports` - Corrections and cleanup
+7. `docs: organize documentation in docs/ directory` - Move docs to docs/
 
 ## What's Next?
 
