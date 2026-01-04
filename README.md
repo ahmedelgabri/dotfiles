@@ -130,7 +130,7 @@ Incoming messages are fetched from the remote server when `mbsync` runs (the
 executable name for isync).
 
 On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
-[`mail.nix`](nix/modules/shared/mail.nix).
+[`mail.nix`](nix/features/mail.nix).
 
 ### Authors
 
@@ -150,3 +150,15 @@ On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
 [hammerspoon]: http://www.hammerspoon.org/
 [Ghostty]: https://ghostty.org/
 [Pass]: https://www.passwordstore.org/
+
+## Architecture
+
+This configuration uses [flake-parts](https://flake.parts/) with the [Dendritic Pattern](https://github.com/mightyiam/dendritic):
+
+- **Auto-discovery**: All modules under `nix/` are auto-discovered via [import-tree](https://github.com/vic/import-tree)
+- **Aspect-oriented**: Organized by feature (git, vim), not platform (darwin, nixos)
+- **Feature modules**: Each feature in `nix/features/` works across all systems
+- **System modules**: Core configuration in `nix/system/`
+- **Host configs**: Single file per host in `nix/hosts/`
+
+See [DENDRITIC-MIGRATION.md](./DENDRITIC-MIGRATION.md) for complete architecture details.
