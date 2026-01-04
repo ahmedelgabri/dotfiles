@@ -8,7 +8,6 @@
       home-manager-integration
       fonts
       defaults
-      git
     ];
 
     imports = [
@@ -17,13 +16,26 @@
       inputs.agenix.darwinModules.default
     ];
 
+    # Host-specific configuration
     networking.hostName = "pandoras-box";
 
-    # Import existing host-specific config from nix/hosts/
-    imports = [../nix/hosts/pandoras-box.nix];
+    my.modules = {
+      mail.enable = true;
+      gpg.enable = true;
+      discord.enable = true;
+    };
 
+    homebrew.casks = [
+      # "arq" # I need a specific version so I will handle it myself.
+      "transmit"
+      "jdownloader"
+      "brave-browser"
+      "signal"
+    ];
+
+    # Home-manager configuration for this host
     home-manager.users.${config.my.username}.imports = with inputs.self.modules.homeManager; [
-      git
+      # Add home-manager modules here
     ];
   };
 
