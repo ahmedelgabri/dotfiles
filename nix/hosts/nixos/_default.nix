@@ -19,20 +19,14 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    ./_hardware-configuration.nix
   ];
 
   my = {
-    # Define a user account. Don't forget to set a password with ‘passwd’.
+    # Define a user account. Don't forget to set a password with 'passwd'.
     user = {
       isNormalUser = true;
-      extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
-    };
-
-    modules = {
-      mail = {enable = true;};
-      youtube-dl.enable = true;
-      discord.enable = true;
+      extraGroups = ["wheel" "networkmanager"]; # Enable 'sudo' for the user.
     };
   };
 

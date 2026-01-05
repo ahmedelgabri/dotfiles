@@ -5,18 +5,8 @@
     ...
   }: let
     inherit (config.my.user) home;
-    cfg = config.my.modules.hammerspoon;
   in {
-    options = with lib; {
-      my.modules.hammerspoon = {
-        enable = mkEnableOption ''
-          Whether to enable hammerspoon module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+    config = {
         homebrew.casks = [
           "hammerspoon"
         ];
@@ -32,7 +22,7 @@
             echo "Linking hammerspoon folders..."
             ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
           '';
-      };
+    };
   };
 in {
   flake.modules.darwin.hammerspoon = hammerspoonModule;

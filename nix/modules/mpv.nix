@@ -5,19 +5,10 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.mpv;
     inherit (pkgs.stdenv) isDarwin;
   in {
-    options = with lib; {
-      my.modules.mpv = {
-        enable = mkEnableOption ''
-          Whether to enable mpv module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           homebrew.casks = ["iina"];
         })
@@ -31,7 +22,7 @@
             };
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.mpv = mpvModule;

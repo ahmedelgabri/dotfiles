@@ -1,7 +1,12 @@
 {inputs, ...}: {
   flake.modules.darwin.alcantara = {config, pkgs, ...}: {
     imports =
-      with inputs.self.modules.darwin; [
+      [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.nix-homebrew.darwinModules.nix-homebrew
+        inputs.agenix.darwinModules.default
+      ]
+      ++ (with inputs.self.modules.darwin; [
         user-options
         nix-daemon
         state-version
@@ -34,13 +39,7 @@
         karabiner
         mail
         discord
-      ];
-
-    imports = [
-      inputs.home-manager.darwinModules.home-manager
-      inputs.nix-homebrew.darwinModules.nix-homebrew
-      inputs.agenix.darwinModules.default
-    ];
+      ]);
 
     networking.hostName = "alcantara";
 

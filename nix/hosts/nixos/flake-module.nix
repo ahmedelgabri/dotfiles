@@ -1,7 +1,12 @@
 {inputs, ...}: {
   flake.modules.nixos.nixos = {config, pkgs, ...}: {
     imports =
-      with inputs.self.modules.nixos; [
+      [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.agenix.nixosModules.default
+        ./_default.nix
+      ]
+      ++ (with inputs.self.modules.nixos; [
         user-options
         nix-daemon
         state-version
@@ -29,13 +34,7 @@
         python
         go
         rust
-      ];
-
-    imports = [
-      inputs.home-manager.nixosModules.home-manager
-      inputs.agenix.nixosModules.default
-      ./default.nix
-    ];
+      ]);
 
     networking.hostName = "nixos";
 

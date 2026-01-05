@@ -5,19 +5,10 @@
     pkgs,
     ...
   }: let
-    cfg = config.my.modules.ghostty;
     inherit (pkgs.stdenv) isDarwin isLinux;
   in {
-    options = with lib; {
-      my.modules.ghostty = {
-        enable = mkEnableOption ''
-          Whether to enable ghostty module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           homebrew.casks = [
             "ghostty@tip"
@@ -46,7 +37,7 @@
             };
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.ghostty = ghosttyModule;

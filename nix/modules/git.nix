@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.git;
-  in {
-    options = with lib; {
-      my.modules.git = {
-        enable = mkEnableOption ''
-          Whether to enable git module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         environment.systemPackages = with pkgs; [git];
 
         my.user = {
@@ -93,7 +82,7 @@
           };
         };
       };
-  };
+    };
 in {
   flake.modules.darwin.git = gitModule;
   flake.modules.nixos.git = gitModule;

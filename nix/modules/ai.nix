@@ -6,19 +6,10 @@
     ...
   }: let
     homeDir = config.my.user.home;
-    cfg = config.my.modules.ai;
     inherit (pkgs.stdenv) isDarwin isLinux;
   in {
-    options = with lib; {
-      my.modules.ai = {
-        enable = mkEnableOption ''
-          Whether to enable ai module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           launchd.daemons.ollama = {
             command = "${lib.getExe pkgs.ollama} serve";
@@ -128,7 +119,7 @@
             };
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.ai = aiModule;

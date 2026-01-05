@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.yt-dlp;
-  in {
-    options = with lib; {
-      my.modules.yt-dlp = {
-        enable = mkEnableOption ''
-          Whether to enable yt-dlp module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         my.user = {
           packages = with pkgs; [
             (yt-dlp.override {withAlias = true;})
@@ -29,7 +18,7 @@
             source = ../../config/yt-dlp;
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.yt-dlp = yt-dlpModule;

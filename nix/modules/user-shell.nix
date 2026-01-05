@@ -11,23 +11,14 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.shell;
     inherit (config.my.user) home;
     inherit (config.my) hm devFolder hostConfigHome company;
     inherit (pkgs.stdenv) isDarwin isLinux;
 
     local_zshrc = "${hostConfigHome}/zshrc";
   in {
-    options = with lib; {
-      my.modules.shell = {
-        enable = mkEnableOption ''
-          Whether to enable shell module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           launchd.user.agents."maxfiles" = {
             serviceConfig = {
@@ -524,7 +515,7 @@
             promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.shell = shellModule;

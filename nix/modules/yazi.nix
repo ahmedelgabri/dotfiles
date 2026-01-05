@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.yazi;
-  in {
-    options = with lib; {
-      my.modules.yazi = {
-        enable = mkEnableOption ''
-          Whether to enable yazi module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         my.user = {
           packages = with pkgs; [
             yazi
@@ -78,7 +67,7 @@
             source = "${inputs.yazi-glow}/init.lua";
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.yazi = yaziModule;

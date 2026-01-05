@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.python;
-  in {
-    options = with lib; {
-      my.modules.python = {
-        enable = mkEnableOption ''
-          Whether to enable python module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         my = {
           env = {PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py";};
 
@@ -48,7 +37,7 @@
             };
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.python = pythonModule;

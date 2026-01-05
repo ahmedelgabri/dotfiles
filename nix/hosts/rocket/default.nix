@@ -1,7 +1,12 @@
 {inputs, ...}: {
   flake.modules.darwin.rocket = {config, pkgs, ...}: {
     imports =
-      with inputs.self.modules.darwin; [
+      [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.nix-homebrew.darwinModules.nix-homebrew
+        inputs.agenix.darwinModules.default
+      ]
+      ++ (with inputs.self.modules.darwin; [
         user-options
         nix-daemon
         state-version
@@ -32,13 +37,7 @@
         rust
         hammerspoon
         karabiner
-      ];
-
-    imports = [
-      inputs.home-manager.darwinModules.home-manager
-      inputs.nix-homebrew.darwinModules.nix-homebrew
-      inputs.agenix.darwinModules.default
-    ];
+      ]);
 
     networking.hostName = "rocket";
     ids.gids.nixbld = 30000;

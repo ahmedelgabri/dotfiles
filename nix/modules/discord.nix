@@ -5,26 +5,17 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.discord;
     inherit (pkgs.stdenv) isDarwin isLinux;
   in {
-    options = with lib; {
-      my.modules.discord = {
-        enable = mkEnableOption ''
-          Whether to enable discord module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           homebrew.casks = ["discord"];
         })
         (mkIf isLinux {
           my.user = {packages = with pkgs; [discord];};
         })
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.discord = discordModule;

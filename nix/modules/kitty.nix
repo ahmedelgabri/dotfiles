@@ -5,19 +5,10 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.kitty;
     inherit (pkgs.stdenv) isDarwin isLinux;
   in {
-    options = with lib; {
-      my.modules.kitty = {
-        enable = mkEnableOption ''
-          Whether to enable kitty module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           homebrew.casks = ["kitty"];
           my = {
@@ -54,7 +45,7 @@
             };
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.kitty = kittyModule;

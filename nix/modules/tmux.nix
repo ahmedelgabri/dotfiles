@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.tmux;
-  in {
-    options = with lib; {
-      my.modules.tmux = {
-        enable = mkEnableOption ''
-          Whether to enable tmux module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         environment = {
           shellAliases = {
             # https://github.com/direnv/direnv/wiki/Tmux
@@ -37,7 +26,7 @@
             source = ../../config/tmux;
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.tmux = tmuxModule;

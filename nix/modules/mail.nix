@@ -187,10 +187,6 @@
       options = with lib; {
         my.modules = {
           mail = {
-            enable = mkEnableOption ''
-              Whether to enable mail module
-            '';
-
             accounts = mkOption {
               type = types.listOf (types.submodule ({config, ...}: let
                 svcDefaults = serviceDefaults.${config.service};
@@ -354,8 +350,7 @@
       };
 
       config = with lib;
-        mkIf cfg.enable (
-          mkMerge [
+        mkMerge [
             (mkIf pkgs.stdenv.isDarwin {
               launchd.user.agents."mailsync" = let
                 # Determine max timeout needed across all accounts
@@ -752,8 +747,7 @@
                 };
               };
             }
-          ]
-        );
+          ];
     };
 in {
   flake.modules.darwin.mail = mailModule;

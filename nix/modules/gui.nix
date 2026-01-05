@@ -5,19 +5,10 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.gui;
     inherit (pkgs.stdenv) isDarwin isLinux;
   in {
-    options = with lib; {
-      my.modules.gui = {
-        enable = mkEnableOption ''
-          Whether to enable gui module
-        '';
-      };
-    };
-
     config = with lib;
-      mkIf cfg.enable (mkMerge [
+      mkMerge [
         (mkIf isDarwin {
           homebrew.casks = [
             "1password"
@@ -335,7 +326,7 @@
             };
           };
         }
-      ]);
+      ];
   };
 in {
   flake.modules.darwin.gui = guiModule;

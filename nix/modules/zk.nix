@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.zk;
-  in {
-    options = with lib; {
-      my.modules.zk = {
-        enable = mkEnableOption ''
-          Whether to enable zk module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         my.user = {packages = with pkgs; [zk];};
 
         my.hm.file = {
@@ -28,7 +17,7 @@
             source = ../../config/zk/templates;
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.zk = zkModule;

@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.node;
-  in {
-    options = with lib; {
-      my.modules.node = {
-        enable = mkEnableOption ''
-          Whether to enable node module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         # I don't install any packages here because I use shell.nix for each project, so no need for globals
         my = {
           env = with config.my; {
@@ -32,13 +21,13 @@
 
         age.secrets = {
           npmrc = {
-            file = ../secrets/npmrc.age;
+            file = ../_secrets/npmrc.age;
             path = "${config.my.user.home}/.npmrc";
             owner = config.my.username;
             mode = "600";
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.node = nodeModule;

@@ -4,19 +4,8 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.my.modules.gpg;
-  in {
-    options = with lib; {
-      my.modules.gpg = {
-        enable = mkEnableOption ''
-          Whether to enable gpg module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+  }: {
+    config = {
         environment.systemPackages = with pkgs; [gnupg];
         my.env = {GNUPGHOME = "$XDG_CONFIG_HOME/gnupg";};
 
@@ -43,7 +32,7 @@
               ${builtins.readFile ../../config/gnupg/gpg.conf}'';
           };
         };
-      };
+    };
   };
 in {
   flake.modules.darwin.gpg = gpgModule;

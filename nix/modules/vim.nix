@@ -5,20 +5,10 @@
     config,
     ...
   }: let
-    cfg = config.my.modules.vim;
     inherit (config.my.user) home;
     inherit (config.my) hm;
   in {
-    options = with lib; {
-      my.modules.vim = {
-        enable = mkEnableOption ''
-          Whether to enable vim module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+    config = {
         environment = {
           shellAliases = {
             e = "$EDITOR";
@@ -87,7 +77,7 @@
             echo "Creating vim swap/backup/undo/view folders inside ${hm.stateHome}/nvim ..."
             mkdir -p ${hm.stateHome}/nvim/{backup,swap,undo,view}
           '';
-      };
+    };
   };
 in {
   flake.modules.darwin.vim = vimModule;

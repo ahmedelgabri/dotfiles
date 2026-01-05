@@ -6,18 +6,8 @@
   }: let
     inherit (config.my.user) home;
     inherit (config.my) hm;
-    cfg = config.my.modules.karabiner;
   in {
-    options = with lib; {
-      my.modules.karabiner = {
-        enable = mkEnableOption ''
-          Whether to enable karabiner module
-        '';
-      };
-    };
-
-    config = with lib;
-      mkIf cfg.enable {
+    config = {
         homebrew.casks = [
           "karabiner-elements"
         ];
@@ -41,7 +31,7 @@
             echo "Linking karabiner folders..."
             ln -sf ${home}/.dotfiles/config/karabiner ${hm.configHome}
           '';
-      };
+    };
   };
 in {
   flake.modules.darwin.karabiner = karabinerModule;
