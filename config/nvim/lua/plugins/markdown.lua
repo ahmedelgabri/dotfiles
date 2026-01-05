@@ -59,10 +59,8 @@ end
 
 return {
 	{
-		'https://github.com/davidmh/mdx.nvim',
-		ft = { 'mdx' },
-		opts = {},
 	},
+	{ 'https://github.com/davidmh/mdx.nvim' },
 	{
 		'https://github.com/zk-org/zk-nvim',
 		config = function()
@@ -87,7 +85,7 @@ return {
 					strict = true,
 					overrides = {
 						attachments = {
-							img_folder = vim.env.NOTES_DIR .. '/assets',
+							folder = vim.env.NOTES_DIR .. '/assets',
 							img_name_func = function()
 								return string.format(
 									'%s/%s/Pasted image %s',
@@ -198,7 +196,7 @@ return {
 			},
 
 			attachments = {
-				img_folder = 'assets',
+				folder = 'assets',
 			},
 
 			footer = {
