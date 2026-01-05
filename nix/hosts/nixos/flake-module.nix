@@ -34,6 +34,8 @@
         python
         go
         rust
+        mail
+        discord
       ]);
 
     networking.hostName = "nixos";
