@@ -14,6 +14,7 @@ The Dendritic Pattern treats each `.nix` file as a top-level flake-parts module.
 4. **No specialArgs anti-pattern** - access modules directly
 5. **Cross-cutting concerns** - one file can configure multiple systems
 6. **Aspect-oriented organization** - organize by feature, not by platform
+7. **Import = enable** - no `.enable` flags, importing a module enables it
 
 ## Final Architecture
 
@@ -31,7 +32,7 @@ The Dendritic Pattern treats each `.nix` file as a top-level flake-parts module.
 │   │   ├── state-version.nix        # State version management
 │   │   ├── home-manager-integration.nix  # Home-manager setup
 │   │   ├── fonts.nix                # Font configuration
-│   │   ├── darwin-defaults.nix      # macOS system defaults
+│   │   └── darwin-defaults.nix      # macOS system defaults
 │   │
 │   ├── modules/                # Feature modules (26 files)
 │   │   ├── git.nix              # flake.modules.{darwin,nixos}.git
@@ -70,12 +71,18 @@ The Dendritic Pattern treats each `.nix` file as a top-level flake-parts module.
 │   │   │   └── default.nix      # aarch64-darwin (work - Miro)
 │   │   └── nixos/
 │   │       ├── flake-module.nix # x86_64-linux flake config
-│   │       ├── default.nix      # NixOS system config
-│   │       ├── dwm.patch
-│   │       └── hardware-configuration.nix
+│   │       ├── configuration.nix # NixOS system config
+│   │       ├── hardware.nix     # Hardware configuration
+│   │       └── dwm.patch
 │   │
 │   ├── pkgs/                    # Custom packages
+│   │   └── _definitions/        # Package definitions (excluded from import-tree)
+│   │       ├── hcron.nix
+│   │       └── pragmatapro.nix
+│   │
 │   └── secrets/                 # Age-encrypted secrets
+│       ├── secrets.nix          # flake-parts module (auto-discovered)
+│       └── npmrc.age            # Secret file
 ```
 
 ## How It Works
@@ -96,22 +103,31 @@ outputs = inputs @ {flake-parts, import-tree, ...}:
   };
 ```
 
-### 2. Feature Modules
+### 2. Feature Modules (No Enable Pattern)
 
-Feature modules define reusable configuration that works across platforms:
+Feature modules define reusable configuration that works across platforms. **Import = enable**:
 
 ```nix
 # nix/modules/git.nix
 {inputs, ...}: let
-  gitModule = {pkgs, lib, config, ...}: let
-    cfg = config.my.modules.git;
-  in {
-    options.my.modules.git.enable = lib.mkEnableOption "git module";
-
-    config = lib.mkIf cfg.enable {
+  gitModule = {pkgs, lib, config, ...}: {
+    config = {
       environment.systemPackages = with pkgs; [git];
       my.user.packages = with pkgs; [delta hub gh tig];
-      # ... git config files, etc
+
+      my.hm.file = {
+        ".config/git" = {
+          recursive = true;
+          source = ../../config/git;
+        };
+      };
+
+      # Git-specific config using config.my.* options
+      programs.git = {
+        enable = true;
+        userName = config.my.name;
+        userEmail = config.my.email;
+      };
     };
   };
 in {
@@ -123,10 +139,11 @@ in {
 
 **Key points:**
 - Each feature is self-contained
+- No `enable` option - import IS the enable
 - Shared modules work on both darwin and nixos
 - Darwin-only modules (hammerspoon, karabiner) only define `flake.modules.darwin.*`
 - Features have **no knowledge of hosts**
-- All features use `config.my.modules.<feature>.enable` pattern
+- Configuration can reference `config.my.*` options for customization
 
 ### 3. System Modules
 
@@ -136,10 +153,10 @@ System modules provide core configuration and options:
 # nix/system/user-options.nix
 {lib, ...}: let
   userOptionsModule = {config, pkgs, options, ...}: {
-    options.my = {
-      name = mkOptStr "Ahmed El Gabri";
-      username = mkOptStr "ahmed";
-      email = mkOptStr "ahmed@gabri.me";
+    options.my = with lib; {
+      name = mkOption {type = types.str; default = "Ahmed El Gabri";};
+      username = mkOption {type = types.str; default = "ahmed";};
+      email = mkOption {type = types.str; default = "ahmed@gabri.me";};
       # ... more options
     };
   };
@@ -159,7 +176,12 @@ Host modules explicitly import system modules, feature modules, and external mod
 {inputs, ...}: {
   flake.modules.darwin.alcantara = {config, pkgs, ...}: {
     imports =
-      with inputs.self.modules.darwin; [
+      [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.nix-homebrew.darwinModules.nix-homebrew
+        inputs.agenix.darwinModules.default
+      ]
+      ++ (with inputs.self.modules.darwin; [
         user-options
         nix-daemon
         state-version
@@ -192,22 +214,18 @@ Host modules explicitly import system modules, feature modules, and external mod
         karabiner
         mail
         discord
-      ];
-
-    imports = [
-      inputs.home-manager.darwinModules.home-manager
-      inputs.nix-homebrew.darwinModules.nix-homebrew
-      inputs.agenix.darwinModules.default
-    ];
+      ]);
 
     networking.hostName = "alcantara";
 
+    # Host-specific packages
     my.user.packages = with pkgs; [
       amp-cli
       codex
       opencode
     ];
 
+    # Host-specific homebrew casks
     homebrew.casks = [
       "jdownloader"
       "signal"
@@ -268,12 +286,45 @@ Overlays, dev shells, and apps use `perSystem`:
         inputs.yazi.overlays.default
         inputs.nur.overlays.default
         (final: prev: {
-          pragmatapro = prev.callPackage ./pkgs/pragmatapro.nix {};
-          hcron = prev.callPackage ./pkgs/hcron.nix {};
+          # Custom packages defined once in overlays
+          pragmatapro = prev.callPackage ./pkgs/_definitions/pragmatapro.nix {};
+          hcron = prev.callPackage ./pkgs/_definitions/hcron.nix {};
           # ... more packages
         })
       ];
     };
+  };
+}
+```
+
+### 7. Packages and Secrets
+
+**Packages** are defined in `nix/pkgs/_definitions/` (excluded from import-tree) and exposed via overlays:
+
+```nix
+# nix/pkgs/_definitions/hcron.nix
+{fetchurl, stdenvNoCC}:
+stdenvNoCC.mkDerivation rec {
+  name = "hcron";
+  version = "1.1.1";
+  # ... package definition
+}
+```
+
+**Secrets** are managed via a flake-parts module:
+
+```nix
+# nix/secrets/secrets.nix
+{inputs, ...}: let
+  # SSH keys for hosts and users
+  rocket = "ssh-ed25519 ...";
+  alcantara = "ssh-ed25519 ...";
+  personal = "ssh-ed25519 ...";
+
+  allKeys = [rocket alcantara personal];
+in {
+  flake.age.secrets = {
+    "npmrc.age".publicKeys = allKeys;
   };
 }
 ```
@@ -286,39 +337,30 @@ Overlays, dev shells, and apps use `perSystem`:
 ```
 nix/
 ├── modules/
-│   ├── shared/default.nix       # Imports and defaults
-│   ├── shared/git.nix            # Old NixOS module
-│   ├── shared/vim.nix            # Old NixOS module
-│   ├── shared/...                # 23 more modules
-│   └── darwin/default.nix        # Darwin defaults + system config
+│   ├── shared/default.nix       # Imports and defaults with lib.mkDefault
+│   ├── shared/git.nix            # Old module with .enable
+│   ├── shared/vim.nix            # Old module with .enable
+│   └── ...
+└── system/feature-defaults.nix  # Defaults pattern
 ```
 
 **After:**
 ```
 nix/
 ├── modules/                     # Feature modules (26 files)
-│   ├── git.nix                   # flake.modules.{darwin,nixos}.git
-│   ├── vim.nix                   # flake.modules.{darwin,nixos}.vim
+│   ├── git.nix                   # No .enable, import = enable
+│   ├── vim.nix                   # No .enable, import = enable
 │   └── ...                       # All features migrated
 ├── system/                       # System modules (6 files)
-│   ├── user-options.nix          # Extracted from old settings.nix
-│   ├── nix-daemon.nix            # Extracted from old settings.nix
-│   ├── state-version.nix         # Extracted from old settings.nix
-│   ├── home-manager-integration.nix  # Extracted
-│   ├── fonts.nix                 # Extracted
-│   └── darwin-defaults.nix       # Migrated from darwin/default.nix
-└── hosts/                        # Host directories
-    ├── alcantara/default.nix
-    ├── pandoras-box/default.nix
-    ├── rocket/default.nix
-    └── nixos/
-        ├── flake-module.nix
-        └── default.nix
+├── hosts/                        # Explicit imports per host
+├── pkgs/_definitions/            # Excluded from import-tree
+└── secrets/
+    └── secrets.nix              # Auto-discovered flake-parts module
 ```
 
 ### Modules Migrated (26 feature modules)
 
-**Shared modules (21)** - work on both darwin and nixos:
+**Shared modules (24)** - work on both darwin and nixos:
 - Core: git, vim, tmux, ssh, gpg, user-shell
 - Terminal: kitty, ghostty, yazi, bat, ripgrep
 - Development: node, python, go, rust
@@ -333,12 +375,14 @@ nix/
 
 ### Key Improvements
 
-1. **✅ Single file per feature** - Each feature is self-contained
-2. **✅ Auto-discovery** - All modules discovered via import-tree
-3. **✅ Aspect-oriented** - Organized by feature, not platform
-4. **✅ Explicit imports** - Each host explicitly lists what modules it uses
-5. **✅ Clean separation** - Features, system, and hosts clearly separated
-6. **✅ No specialArgs** - Access modules via `inputs.self.modules.*`
+1. **✅ No enable pattern** - Import statement IS the opt-in
+2. **✅ Single file per feature** - Each feature is self-contained
+3. **✅ Auto-discovery** - All modules discovered via import-tree
+4. **✅ Aspect-oriented** - Organized by feature, not platform
+5. **✅ Explicit imports** - Each host explicitly lists what modules it uses
+6. **✅ Clean separation** - Features, system, and hosts clearly separated
+7. **✅ No specialArgs** - Access modules via `inputs.self.modules.*`
+8. **✅ No underscore files** - Only `_definitions/` subdirectory excluded
 
 ## Benefits
 
@@ -371,6 +415,12 @@ One file can configure:
 ### 5. **Discoverability**
 
 All modules auto-discovered - just add a `.nix` file and it's imported. No manual import lists to maintain.
+
+### 6. **Simplicity**
+
+- No `.enable` flags to manage
+- Importing a module = enabling it
+- Clearer intent in host configurations
 
 ## Usage
 
@@ -416,14 +466,16 @@ nix flake update
 ```nix
 # nix/modules/example.nix
 {inputs, ...}: let
-  exampleModule = {pkgs, lib, config, ...}: let
-    cfg = config.my.modules.example;
-  in {
-    options.my.modules.example.enable = lib.mkEnableOption "example module";
-
-    config = lib.mkIf cfg.enable {
+  exampleModule = {pkgs, lib, config, ...}: {
+    config = {
       # Your configuration here
       my.user.packages = with pkgs; [example-package];
+
+      my.hm.file = {
+        ".config/example" = {
+          source = ../../config/example;
+        };
+      };
     };
   };
 in {
@@ -437,10 +489,12 @@ in {
 
 ```nix
 # nix/hosts/alcantara/default.nix
-imports = with inputs.self.modules.darwin; [
-  # ... other modules
-  example  # Add the module
-];
+imports =
+  [...]
+  ++ (with inputs.self.modules.darwin; [
+    # ... other modules
+    example  # Add the module - this enables it!
+  ]);
 ```
 
 ### 3. Done!
@@ -476,6 +530,9 @@ Before deploying changes:
 5. `feat(nix): complete migration to flake-parts with Dendritic Pattern` - Complete module migration
 6. `refactor(nix): fix migration - use nix/modules, remove feature-defaults, explicit imports` - Corrections and cleanup
 7. `docs: organize documentation in docs/ directory` - Move docs to docs/
+8. `refactor: remove enable pattern and ensure all files are flake-parts modules` - Remove .enable flags
+9. `refactor: migrate underscore files to flake-parts modules` - Convert all files
+10. `fix: correct package definitions, secrets location, and NixOS modules` - Final cleanup
 
 ## What's Next?
 
@@ -484,9 +541,11 @@ The migration is complete! The configuration now follows the Dendritic Pattern w
 - ✅ Aspect-oriented organization
 - ✅ Clean separation of concerns
 - ✅ Feature-based architecture
-- ✅ Single file per host
+- ✅ Single file per host with explicit imports
 - ✅ No specialArgs anti-pattern
+- ✅ No enable flags - import = enable
 - ✅ Cross-platform compatibility
+- ✅ All files are flake-parts modules or properly excluded
 
 Future improvements:
 - Consider adding more granular feature modules
