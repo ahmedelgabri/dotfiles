@@ -1,0 +1,38 @@
+{inputs, ...}: let
+  karabinerModule = {
+    lib,
+    config,
+    ...
+  }: let
+    inherit (config.my.user) home;
+    inherit (config.my) hm;
+  in {
+    config = {
+        homebrew.casks = [
+          "karabiner-elements"
+        ];
+
+        # my.hm.file = {
+        #   ".config/karabiner/karabiner.json" = {
+        #     source = ../../config/karabiner/karabiner.json;
+        #   };
+        # };
+
+        # The config should be "live" because it can be modified from the app GUI
+        # At least for now and until I reach a stable state, I'd like to symlink it instead
+        system.activationScripts.postActivation.text =
+          /*
+          bash
+          */
+          ''
+            echo ":: -> Running karabiner activationScript..."
+
+            # Handle mutable configs
+            echo "Linking karabiner folders..."
+            ln -sf ${home}/.dotfiles/config/karabiner ${hm.configHome}
+          '';
+    };
+  };
+in {
+  flake.modules.darwin.karabiner = karabinerModule;
+}

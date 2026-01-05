@@ -19,7 +19,7 @@
 #
 # To rekey all secrets after adding/removing keys:
 #   agenix -r
-let
+{inputs, ...}: let
   # Host SSH keys (from /etc/ssh/ssh_host_ed25519_key.pub)
   # Run: cat /etc/ssh/ssh_host_ed25519_key.pub
   rocket = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJoIMgS+2sb1PgWu5MswNSZokqnVmUox0pMeKf76Tah";
@@ -35,5 +35,9 @@ let
 
   allKeys = allHosts ++ allUsers;
 in {
-  "npmrc.age".publicKeys = allKeys;
+  flake = {
+    age.secrets = {
+      "npmrc.age".publicKeys = allKeys;
+    };
+  };
 }
