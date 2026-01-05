@@ -28,11 +28,14 @@ in {
           NPM_CONFIG_INIT_LICENSE = "MIT";
           NPM_CONFIG_INIT_VERSION = "0.0.0";
         };
+      };
 
-        hm.file = {
-          ".npmrc" = {
-            source = ../../../config/.npmrc;
-          };
+      age.secrets = {
+        npmrc = {
+          file = ../../secrets/npmrc.age;
+          path = "${config.my.user.home}/.npmrc";
+          owner = config.my.username;
+          mode = "600";
         };
       };
     };

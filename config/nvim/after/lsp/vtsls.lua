@@ -23,7 +23,13 @@ return {
 	end,
 	settings = {
 		typescript = vim.tbl_deep_extend('force', lang_settings, {
-			tsserver = { maxTsServerMemory = 12288 },
+			tsserver = {
+				maxTsServerMemory = 12288,
+				watchOptions = {
+					watchFile = 'useFsEvents',
+					watchDirectory = 'useFsEvents',
+				},
+			},
 		}),
 		javascript = lang_settings,
 		vtsls = {

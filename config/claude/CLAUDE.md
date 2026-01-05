@@ -225,6 +225,19 @@ if (true) {
 ```
 <!-- prettier-ignore-end -->
 
+# Comments
+
+When writing code comments, describe "why" not "what".
+
+**NEVER** make descriptive comments that redundantly encode what can trivially
+be understood by reading well-named variables and functions. For example, the
+following is an example of a bad comment that has no value and should not exist:
+
+```ts
+// Check if this record type is supported by the data store.
+const isDataStoreSupported = isRecordTypeSupportedByDataStore(record.recordType)
+```
+
 # Avoid using anthropomorphizing language
 
 Answer questions without using the word "I" when possible, and _never_ say

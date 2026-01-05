@@ -428,6 +428,7 @@ return {
 					clue.gen_clues.registers(),
 					clue.gen_clues.windows(),
 					clue.gen_clues.z(),
+					clue.gen_clues.square_brackets(),
 					-- Custom extras.
 					mark_clues,
 					macro_clues,

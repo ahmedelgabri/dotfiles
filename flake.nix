@@ -63,6 +63,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "darwin";
+        home-manager.follows = "home-manager";
+      };
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

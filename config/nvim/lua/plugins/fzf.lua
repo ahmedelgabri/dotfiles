@@ -140,6 +140,7 @@ return {
 					['--marker'] = '✓ ',
 					['--no-scrollbar'] = true,
 					['--info'] = 'inline-right',
+					['--walker-skip'] = '.git,node_modules',
 				},
 				keymap = {
 					builtin = {

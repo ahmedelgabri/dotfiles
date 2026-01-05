@@ -5,7 +5,7 @@
 -- :h lua-guide-options
 
 -- Enable the Lua loader byte-compilation cache.
-if vim.loader then
+if vim.loader ~= nil then
 	vim.loader.enable()
 end
 

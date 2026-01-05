@@ -1,4 +1,4 @@
-_: {
+{pkgs, ...}: {
   networking = {hostName = "alcantara";};
 
   my = {
@@ -6,6 +6,14 @@ _: {
       mail = {enable = true;};
       gpg.enable = true;
       discord.enable = true;
+    };
+
+    user = {
+      packages = with pkgs; [
+        amp-cli
+        codex
+        opencode
+      ];
     };
   };
 
@@ -16,6 +24,7 @@ _: {
       "signal"
       "monodraw"
       "sony-ps-remote-play"
+      "helium-browser"
     ];
 
     # Requires to be logged in to the AppStore

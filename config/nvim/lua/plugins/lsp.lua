@@ -105,7 +105,8 @@ return {
 				{ 'stylelint_lsp', 'stylelint-lsp' },
 				{ 'html', 'vscode-html-language-server' },
 				{ 'eslint', 'vscode-eslint-language-server' },
-				{ 'oxlint', utils.get_lsp_bin 'oxc_language_server' },
+				{ 'oxlint', utils.get_lsp_bin 'oxlint' },
+				{ 'oxfmt', utils.get_lsp_bin 'oxfmt' },
 				{ 'tsgo', tsgo },
 				{ 'vtsls', not tsgo },
 				{ 'denols', 'deno' },
@@ -273,6 +274,7 @@ return {
 									count = 1,
 									severity = vim.diagnostic.severity.ERROR,
 								}
+								vim.cmd 'normal! zz'
 							end,
 							{ desc = 'Next [E]rror' },
 						},
@@ -284,6 +286,7 @@ return {
 									count = -1,
 									severity = vim.diagnostic.severity.ERROR,
 								}
+								vim.cmd 'normal! zz'
 							end,
 							{ desc = 'Previous [E]rror' },
 						},

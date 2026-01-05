@@ -80,30 +80,42 @@ return {
 			formatters_by_ft = vim.tbl_extend('force', {
 				['*'] = { 'trim_whitespace', 'trim_newlines' },
 				json = {
-					'deno_fmt',
-					'biome',
+					'oxfmt',
 					'prettier',
+					'deno_fmt',
 					'jq',
 					stop_after_first = true,
 				},
 				jsonc = {
-					'deno_fmt',
-					'biome',
+					'oxfmt',
 					'prettier',
+					'deno_fmt',
 					stop_after_first = true,
 				},
 				markdown = function(bufnr)
-					return { first(bufnr, 'deno_fmt', 'prettier'), 'injected' }
+					return { first(bufnr, 'oxfmt', 'prettier', 'deno_fmt'), 'injected' }
 				end,
-				['markdown.mdx'] = { 'prettier', 'injected' },
-				mdx = { 'prettier', 'injected' },
-				html = { 'prettier', 'injected' },
-				yaml = { 'prettier', 'injected' },
-				css = { 'biome', 'prettier', stop_after_first = true },
-				vue = { 'prettier' },
-				scss = { 'prettier' },
-				less = { 'prettier' },
-				graphql = { 'prettier' },
+				['markdown.mdx'] = function(bufnr)
+					return { first(bufnr, 'oxfmt', 'prettier', 'deno_fmt'), 'injected' }
+				end,
+
+				mdx = function(bufnr)
+					return { first(bufnr, 'oxfmt', 'prettier'), 'injected' }
+				end,
+				html = function(bufnr)
+					return { first(bufnr, 'oxfmt', 'prettier'), 'injected' }
+				end,
+				xml = function(bufnr)
+					return { first(bufnr, 'oxfmt', 'prettier'), 'injected' }
+				end,
+				yaml = function(bufnr)
+					return { first(bufnr, 'oxfmt', 'prettier'), 'injected' }
+				end,
+				css = { 'oxfmt', 'prettier', stop_after_first = true },
+				vue = { 'oxfmt', 'prettier', stop_after_first = true },
+				scss = { 'oxfmt', 'prettier', stop_after_first = true },
+				less = { 'oxfmt', 'prettier', stop_after_first = true },
+				graphql = { 'oxfmt', 'prettier', stop_after_first = true },
 				lua = { 'stylua' },
 				-- Ideally I'd use the LSP for this, but I'd lose organize imports and the autofix
 				-- https://github.com/astral-sh/ruff/issues/12778#issuecomment-2279374570

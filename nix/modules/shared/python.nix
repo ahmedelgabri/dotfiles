@@ -32,6 +32,7 @@ in {
             ruff
             basedpyright
             uv
+            ty
           ];
         };
 
