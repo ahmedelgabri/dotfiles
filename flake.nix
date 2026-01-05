@@ -18,6 +18,8 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    import-tree.url = "github:vic/import-tree";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -100,18 +102,13 @@
       systems = [
         "x86_64-darwin"
         "aarch64-darwin"
-        "x86_64-linux"
+        # "x86_64-linux"
       ];
 
+      # Auto-import all flake-parts modules from ./nix using import-tree
+      # This is the Dendritic Pattern: every .nix file is a module
       imports = [
-        inputs.flake-parts.flakeModules.modules
-        inputs.home-manager.flakeModules.home-manager
-        ./flake-modules/system-modules.nix
-        ./flake-modules/shared.nix
-        ./flake-modules/darwin.nix
-        ./flake-modules/nixos.nix
-        ./flake-modules/dev-shells.nix
-        ./flake-modules/apps.nix
+        (inputs.import-tree ./flake-modules)
       ];
 
       perSystem = {

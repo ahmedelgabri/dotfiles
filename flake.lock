@@ -192,6 +192,21 @@
         "type": "github"
       }
     },
+    "import-tree": {
+      "locked": {
+        "lastModified": 1763762820,
+        "narHash": "sha256-ZvYKbFib3AEwiNMLsejb/CWs/OL/srFQ8AogkebEPF0=",
+        "owner": "vic",
+        "repo": "import-tree",
+        "rev": "3c23749d8013ec6daa1d7255057590e9ca726646",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "import-tree",
+        "type": "github"
+      }
+    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": "brew-src"
@@ -270,6 +285,7 @@
         "flake-parts": "flake-parts",
         "gh-gfm-preview": "gh-gfm-preview",
         "home-manager": "home-manager",
+        "import-tree": "import-tree",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "nur": "nur",

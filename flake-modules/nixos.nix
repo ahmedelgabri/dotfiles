@@ -19,8 +19,9 @@
           specialArgs = {inherit inputs;};
           inherit system;
           modules = [
-            config.flake.modules.shared.core
-            config.flake.modules.nixos.core
+            inputs.self.modules.generic.user-options
+            inputs.self.modules.generic.core
+            inputs.self.modules.nixos.core
             inputs.home-manager.nixosModules.home-manager
             "${self}/nix/modules/shared"
             "${self}/nix/hosts/${host}"

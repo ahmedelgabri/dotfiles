@@ -21,11 +21,13 @@
             specialArgs = {inherit inputs;};
             inherit system;
             modules = [
-              self.sharedConfiguration
+              inputs.self.modules.generic.user-options
+              inputs.self.modules.generic.core
+              inputs.self.modules.darwin.core
               inputs.home-manager.darwinModules.home-manager
               inputs.nix-homebrew.darwinModules.nix-homebrew
-              "${self}/nix/modules/shared"
               "${self}/nix/modules/darwin"
+              "${self}/nix/modules/shared"
               "${self}/nix/hosts/${host}.nix"
             ];
           }))

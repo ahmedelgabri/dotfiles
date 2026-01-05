@@ -1,6 +1,5 @@
 {lib, ...}: {
   imports = [
-    ./settings.nix
     ./shell.nix
     ./mail.nix
     ./gpg.nix
