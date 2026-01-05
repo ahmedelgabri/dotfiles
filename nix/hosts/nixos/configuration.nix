@@ -19,7 +19,7 @@
 }: {
   imports = [
     # Include the results of the hardware scan.
-    ./_hardware-configuration.nix
+    ./hardware.nix
   ];
 
   my = {

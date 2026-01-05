@@ -4,7 +4,7 @@
       [
         inputs.home-manager.nixosModules.home-manager
         inputs.agenix.nixosModules.default
-        ./_default.nix
+        ./configuration.nix
       ]
       ++ (with inputs.self.modules.nixos; [
         user-options

@@ -10,8 +10,8 @@
         inputs.yazi.overlays.default
         inputs.nur.overlays.default
         (final: prev: {
-          pragmatapro = prev.callPackage ../nix/_pkgs/pragmatapro.nix {};
-          hcron = prev.callPackage ../nix/_pkgs/hcron.nix {};
+          pragmatapro = prev.callPackage ./pkgs/pragmatapro-package.nix {};
+          hcron = prev.callPackage ./pkgs/hcron-package.nix {};
 
           next-prayer =
             prev.callPackage

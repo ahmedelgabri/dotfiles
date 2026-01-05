@@ -21,7 +21,7 @@
 
         age.secrets = {
           npmrc = {
-            file = ../_secrets/npmrc.age;
+            file = ../secrets/npmrc.age;
             path = "${config.my.user.home}/.npmrc";
             owner = config.my.username;
             mode = "600";
