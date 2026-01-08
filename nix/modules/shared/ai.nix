@@ -65,7 +65,7 @@ in {
           # - https://github.com/anthropics/claude-code/issues/12836#issuecomment-3667047439
           #
           variables = {
-            ENABLE_TOOL_SEARCH = true;
+            ENABLE_TOOL_SEARCH = "true";
           };
         };
 
