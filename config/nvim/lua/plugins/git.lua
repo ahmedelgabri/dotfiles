@@ -28,24 +28,6 @@ return {
 		},
 	},
 	{
-		'https://github.com/sindrets/diffview.nvim',
-		dependencies = { { 'https://github.com/nvim-lua/plenary.nvim' } },
-		cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-		opts = {
-			view = {
-				default = {
-					disable_diagnostics = true,
-					winbar_info = true,
-				},
-			},
-			file_panel = {
-				win_config = {
-					position = 'right',
-				},
-			},
-		},
-	},
-	{
 		'https://github.com/tpope/vim-fugitive',
 		cmd = { 'Git' },
 		dependencies = {
@@ -85,5 +67,15 @@ return {
 				},
 			})
 		end,
+	},
+	{
+		'https://github.com/esmuellert/codediff.nvim',
+		dependencies = { 'https://github.com/MunifTanjim/nui.nvim' },
+		cmd = { 'CodeDiff' },
+		opts = {
+			explorer = {
+				view_mode = 'tree',
+			},
+		},
 	},
 }
