@@ -1,21 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.go;
-in {
-  options = with lib; {
-    my.modules.go = {
-      enable = mkEnableOption ''
-        Whether to enable go module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.go = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    config = with lib; {
       my.env = rec {
         GOPATH = "$XDG_DATA_HOME/go";
         GOBIN = "${GOPATH}/bin";
@@ -39,4 +29,5 @@ in {
       #   ];
       # };
     };
+  };
 }

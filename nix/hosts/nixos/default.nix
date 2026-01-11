@@ -1,6 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# and in the NixOS manual (accessible by running 'nixos-help').
 # Notes from MBA NixOS installation
 #
 # - Wifi requires network manager & this can't be enabled if wireless is enabled also
@@ -23,16 +23,10 @@
   ];
 
   my = {
-    # Define a user account. Don't forget to set a password with ‘passwd’.
+    # Define a user account. Don't forget to set a password with 'passwd'.
     user = {
       isNormalUser = true;
-      extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
-    };
-
-    modules = {
-      mail = {enable = true;};
-      youtube-dl.enable = true;
-      discord.enable = true;
+      extraGroups = ["wheel" "networkmanager"]; # Enable 'sudo' for the user.
     };
   };
 

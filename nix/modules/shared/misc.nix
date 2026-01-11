@@ -1,21 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.misc;
-in {
-  options = with lib; {
-    my.modules.misc = {
-      enable = mkEnableOption ''
-        Whether to enable misc module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.misc = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    config = {
       my.hm.file = {
         ".gemrc" = {source = ../../../config/.gemrc;};
         ".curlrc" = {source = ../../../config/.curlrc;};
@@ -27,4 +17,5 @@ in {
         ".psqlrc" = {source = ../../../config/.psqlrc;};
       };
     };
+  };
 }

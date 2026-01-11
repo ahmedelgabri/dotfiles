@@ -2,12 +2,6 @@
   networking = {hostName = "alcantara";};
 
   my = {
-    modules = {
-      mail = {enable = true;};
-      gpg.enable = true;
-      discord.enable = true;
-    };
-
     user = {
       packages = with pkgs; [
         amp-cli

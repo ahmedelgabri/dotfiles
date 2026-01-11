@@ -1,14 +1,6 @@
 _: {
   networking = {hostName = "pandoras-box";};
 
-  my = {
-    modules = {
-      mail = {enable = true;};
-      gpg.enable = true;
-      discord.enable = true;
-    };
-  };
-
   homebrew = {
     casks = [
       # "arq" # I need a specific version so I will handle it myself.

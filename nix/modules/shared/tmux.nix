@@ -1,40 +1,29 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.tmux;
-in {
-  options = with lib; {
-    my.modules.tmux = {
-      enable = mkEnableOption ''
-        Whether to enable tmux module
-      '';
+{...}: {
+  flake.sharedModules.tmux = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    environment = {
+      shellAliases = {
+        # https://github.com/direnv/direnv/wiki/Tmux
+        tmux = "direnv exec / tmux";
+      };
+    };
+
+    my.user = {
+      packages = with pkgs; [
+        tmux
+        next-prayer
+      ];
+    };
+
+    my.hm.file = {
+      ".config/tmux" = {
+        recursive = true;
+        source = ../../../config/tmux;
+      };
     };
   };
-
-  config = with lib;
-    mkIf cfg.enable {
-      environment = {
-        shellAliases = {
-          # https://github.com/direnv/direnv/wiki/Tmux
-          tmux = "direnv exec / tmux";
-        };
-      };
-
-      my.user = {
-        packages = with pkgs; [
-          tmux
-          next-prayer
-        ];
-      };
-
-      my.hm.file = {
-        ".config/tmux" = {
-          recursive = true;
-          source = ../../../config/tmux;
-        };
-      };
-    };
 }

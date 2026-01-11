@@ -8,7 +8,7 @@
   }: let
     utils = pkgs.writeShellApplication {
       name = "utils";
-      text = builtins.readFile ../../scripts/utils;
+      text = builtins.readFile ../scripts/utils;
     };
     bootstrap = pkgs.writeShellApplication {
       name = "bootstrap";
@@ -16,7 +16,7 @@
       text = ''
         # shellcheck disable=SC1091
         source ${pkgs.lib.getExe utils}
-        ${builtins.readFile ../../scripts/${system}_bootstrap}
+        ${builtins.readFile ../scripts/${system}_bootstrap}
       '';
     };
   in {

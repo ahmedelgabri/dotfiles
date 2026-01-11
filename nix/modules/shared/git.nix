@@ -1,21 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.git;
-in {
-  options = with lib; {
-    my.modules.git = {
-      enable = mkEnableOption ''
-        Whether to enable git module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.git = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }:
+    with lib; {
       environment.systemPackages = with pkgs; [git];
 
       my.user = {

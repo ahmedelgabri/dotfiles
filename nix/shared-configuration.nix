@@ -3,8 +3,7 @@
 # Previously this was the sharedConfiguration function in flake.nix
 {inputs, ...}: {
   # This module provides shared configuration to darwin and nixos modules
-  # by importing it through the hosts module
-  flake.sharedModules.default = {
+  flake.sharedModules.core = {
     config,
     pkgs,
     lib,
@@ -82,12 +81,12 @@
         inputs.yazi.overlays.default
         inputs.nur.overlays.default
         (final: prev: {
-          pragmatapro = prev.callPackage ../pkgs/pragmatapro.nix {};
-          hcron = prev.callPackage ../pkgs/hcron.nix {};
+          pragmatapro = prev.callPackage ./pkgs/pragmatapro.nix {};
+          hcron = prev.callPackage ./pkgs/hcron.nix {};
 
           next-prayer =
             prev.callPackage
-            ../../config/tmux/scripts/next-prayer/next-prayer.nix
+            ../config/tmux/scripts/next-prayer/next-prayer.nix
             {};
 
           notmuch = prev.notmuch.override {

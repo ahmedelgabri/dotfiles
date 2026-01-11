@@ -1,21 +1,9 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.yt-dlp;
-in {
-  options = with lib; {
-    my.modules.yt-dlp = {
-      enable = mkEnableOption ''
-        Whether to enable yt-dlp module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.yt-dlp = {
+    pkgs,
+    ...
+  }: {
+    config = {
       my.user = {
         packages = with pkgs; [
           (yt-dlp.override {withAlias = true;})
@@ -29,4 +17,5 @@ in {
         };
       };
     };
+  };
 }

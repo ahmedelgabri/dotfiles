@@ -1,22 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}: let
-  cfg = config.my.modules.node;
-in {
-  options = with lib; {
-    my.modules.node = {
-      enable = mkEnableOption ''
-        Whether to enable node module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{inputs, ...}: {
+  flake.sharedModules.node = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    config = {
       # I don't install any packages here because I use shell.nix for each project, so no need for globals
       my = {
         env = with config.my; {
@@ -39,4 +28,5 @@ in {
         };
       };
     };
+  };
 }

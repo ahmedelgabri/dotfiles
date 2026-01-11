@@ -17,26 +17,29 @@
     "nixos" = "x86_64-linux";
   };
 
-  # Shared configuration module (migrated from sharedConfiguration function)
-  sharedModule = config.flake.sharedModules.default;
+  # Collect all shared modules from flake.sharedModules
+  sharedModulesList = lib.attrValues config.flake.sharedModules;
+
+  # Collect all darwin modules from flake.darwinModules
+  darwinModulesList = lib.attrValues config.flake.darwinModules;
 
   # Common modules for all Darwin hosts
-  darwinModules = [
-    sharedModule
-    inputs.home-manager.darwinModules.home-manager
-    inputs.nix-homebrew.darwinModules.nix-homebrew
-    inputs.agenix.darwinModules.default
-    ../modules/shared
-    ../modules/darwin
-  ];
+  darwinModules =
+    sharedModulesList
+    ++ darwinModulesList
+    ++ [
+      inputs.home-manager.darwinModules.home-manager
+      inputs.nix-homebrew.darwinModules.nix-homebrew
+      inputs.agenix.darwinModules.default
+    ];
 
   # Common modules for all NixOS hosts
-  nixosModules = [
-    sharedModule
-    inputs.home-manager.nixosModules.home-manager
-    inputs.agenix.nixosModules.default
-    ../modules/shared
-  ];
+  nixosModules =
+    sharedModulesList
+    ++ [
+      inputs.home-manager.nixosModules.home-manager
+      inputs.agenix.nixosModules.default
+    ];
 
   # Build a Darwin configuration for a host
   mkDarwinHost = host: system:
@@ -46,7 +49,7 @@
       modules =
         darwinModules
         ++ [
-          ../hosts/${host}
+          ./hosts/${host}
         ];
     };
 
@@ -58,7 +61,7 @@
       modules =
         nixosModules
         ++ [
-          ../hosts/${host}
+          ./hosts/${host}
         ];
     };
 in {

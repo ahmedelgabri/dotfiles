@@ -1,6 +1,6 @@
 # Templates module
 {...}: {
   flake = {
-    templates = import ../../templates;
+    templates = import ../templates;
   };
 }

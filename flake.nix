@@ -81,5 +81,9 @@
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;}
-    (inputs.import-tree ./nix/flake-modules);
+    # Import all .nix files from nix/ except secrets and package source files
+    ((inputs.import-tree ./nix).filter (path:
+      # Exclude secrets directory and individual package source files
+      # (keep pkgs/default.nix which provides overlays)
+      !(builtins.elem (baseNameOf path) ["secrets.nix" "pragmatapro.nix" "hcron.nix" "hardware-configuration.nix"])));
 }

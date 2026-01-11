@@ -8,22 +8,19 @@
     website = "https://miro.com";
     company = "Miro";
     devFolder = "dev";
-    modules = {
-      gpg.enable = true;
-      mail = {
-        enable = true;
-        accounts = [
-          {
-            name = "Work";
-            email = "ahmed@miro.com";
-            service = "gmail.com";
-            mbsync = {
-              extra_exclusion_patterns = ''!"Version Control" !"Version Control/*" !GitHub !GitHub/* !"Inbox - CC" "!Inbox - CC/*" ![Gmail]* !Sent !Spam !Starred !Archive'';
-            };
-          }
-        ];
-      };
-    };
+
+    # Mail accounts configuration
+    modules.mail.accounts = [
+      {
+        name = "Work";
+        email = "ahmed@miro.com";
+        service = "gmail.com";
+        mbsync = {
+          extra_exclusion_patterns = ''!"Version Control" !"Version Control/*" !GitHub !GitHub/* !"Inbox - CC" "!Inbox - CC/*" ![Gmail]* !Sent !Spam !Starred !Archive'';
+        };
+      }
+    ];
+
     user = {
       packages = with pkgs; [
         graph-easy
