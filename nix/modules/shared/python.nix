@@ -1,21 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.python;
-in {
-  options = with lib; {
-    my.modules.python = {
-      enable = mkEnableOption ''
-        Whether to enable python module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.python = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    config = {
       my = {
         env = {PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py";};
 
@@ -48,4 +38,5 @@ in {
         };
       };
     };
+  };
 }

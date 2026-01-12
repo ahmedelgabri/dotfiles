@@ -1,23 +1,14 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.my.modules.vim;
-  inherit (config.my.user) home;
-  inherit (config.my) hm;
-in {
-  options = with lib; {
-    my.modules.vim = {
-      enable = mkEnableOption ''
-        Whether to enable vim module
-      '';
-    };
-  };
-
-  config = with lib;
-    mkIf cfg.enable {
+{...}: {
+  flake.sharedModules.vim = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: let
+    inherit (config.my.user) home;
+    inherit (config.my) hm;
+  in {
+    config = {
       environment = {
         shellAliases = {
           e = "$EDITOR";
@@ -87,4 +78,5 @@ in {
           mkdir -p ${hm.stateHome}/nvim/{backup,swap,undo,view}
         '';
     };
+  };
 }

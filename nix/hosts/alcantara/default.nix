@@ -1,21 +1,24 @@
-_: {
-  networking = {hostName = "pandoras-box";};
+{pkgs, ...}: {
+  networking = {hostName = "alcantara";};
 
   my = {
-    modules = {
-      mail = {enable = true;};
-      gpg.enable = true;
-      discord.enable = true;
+    user = {
+      packages = with pkgs; [
+        amp-cli
+        codex
+        opencode
+      ];
     };
   };
 
   homebrew = {
     casks = [
       # "arq" # I need a specific version so I will handle it myself.
-      "transmit"
       "jdownloader"
-      "brave-browser"
       "signal"
+      "monodraw"
+      "sony-ps-remote-play"
+      "helium-browser"
     ];
 
     # Requires to be logged in to the AppStore
