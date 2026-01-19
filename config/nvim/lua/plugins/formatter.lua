@@ -22,8 +22,8 @@ for _, ft in ipairs {
 	'typescriptreact',
 } do
 	js_formats[ft] = {
+		'oxfmt',
 		'deno_fmt',
-		'biome',
 		'prettier',
 		stop_after_first = true,
 	}
@@ -81,15 +81,15 @@ return {
 				['*'] = { 'trim_whitespace', 'trim_newlines' },
 				json = {
 					'oxfmt',
-					'prettier',
 					'deno_fmt',
+					'prettier',
 					'jq',
 					stop_after_first = true,
 				},
 				jsonc = {
 					'oxfmt',
-					'prettier',
 					'deno_fmt',
+					'prettier',
 					stop_after_first = true,
 				},
 				markdown = function(bufnr)
