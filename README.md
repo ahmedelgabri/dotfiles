@@ -59,7 +59,7 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental
 online:
 
 ```bash
-nix run "github:ahmedelgabri/dotfiles" -- <flake attribute>
+nix --experimental-features 'nix-command flakes' run "github:ahmedelgabri/dotfiles" -- <flake attribute>
 ```
 
 ### Homebrew
