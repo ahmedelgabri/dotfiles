@@ -211,6 +211,8 @@ in {
             rsync
             wget
             zoxide
+            mise
+            devcontainer
             (pkgs.writeScriptBin "nixup"
               /*
               bash
@@ -250,7 +252,6 @@ in {
               bun
               circumflex # HN CLI reader
               repomix
-              mise
             ];
           };
 

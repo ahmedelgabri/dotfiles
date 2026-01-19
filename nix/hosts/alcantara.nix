@@ -13,6 +13,9 @@
         amp-cli
         codex
         opencode
+        colima
+        docker
+        podman
       ];
     };
   };
