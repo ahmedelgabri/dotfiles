@@ -90,7 +90,7 @@ if command git -C "$current_dir_full" rev-parse --is-inside-work-tree >/dev/null
 fi
 
 output="/$current_dir"
-output+=" ($git_branch) |"
+output+=" ($git_branch) ${GRAY}|${NC}"
 output+=" $model"
 
 if ((added > 0)); then
@@ -107,6 +107,6 @@ if awk -v cost="$cost" 'BEGIN { exit !(cost > 0) }'; then
 	output+=" for $(format_cost "$cost")"
 fi
 
-output+=" | $context_info"
+output+=" ${GRAY}|${NC} $context_info"
 
 echo -e "$output"
