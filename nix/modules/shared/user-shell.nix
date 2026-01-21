@@ -213,6 +213,7 @@ in {
             zoxide
             mise
             devcontainer
+            pure-prompt
             (pkgs.writeScriptBin "nixup"
               /*
               bash
@@ -385,6 +386,7 @@ in {
                 )
 
                 fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)
+                fpath+=(${pkgs.pure-prompt}/share/zsh/site-functions)
               ''
             ];
 
@@ -419,10 +421,21 @@ in {
 
                   # zmodload zsh/zprof
 
-                  # Enable instant prompt
-                  if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
-                    source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
-                  fi
+                   PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
+                   # Arrays in zsh starts from 1
+                   export PURE_PROMPT_SYMBOL=${"$"}{PROMPT_SYMBOLS[${"$"}RANDOM % ${"$"}{#PROMPT_SYMBOLS[@]} + 1]}
+                   export PURE_SUSPENDED_JOBS_SYMBOL="%F{008}%(1j.[%j].)"
+
+                   zstyle :prompt:pure:git:branch color blue
+                   zstyle :prompt:pure:git:arrow color blue
+                   zstyle :prompt:pure:git:stash color blue
+                   zstyle :prompt:pure:git:dirty color red
+                   zstyle :prompt:pure:git:action color 003
+                   zstyle :prompt:pure:prompt:success color 003
+                   zstyle :prompt:pure:path color 242
+                   zstyle :prompt:pure:git:stash show yes
+                   zstyle :prompt:pure:environment:nix-shell show no
+                   zstyle :prompt:pure:git:fetch only_upstream yes
 
                   # This is not set by nix-darwin so I have to set it myself https://github.com/nix-darwin/nix-darwin/blob/e95de00a471d07435e0527ff4db092c84998698e/modules/programs/zsh/default.nix#L204-L208
                   export HISTFILESIZE=${"$"}HISTSIZE
@@ -500,7 +513,6 @@ in {
                   eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
                 ''
                 (builtins.readFile ../../../config/zsh.d/zsh/config/extras.zsh)
-                (builtins.readFile ../../../config/zsh.d/.p10k.zsh)
                 ''
                   # Per machine config
                   if [ -f ${"$"}HOST_CONFIGS/zshrc ]; then
@@ -521,7 +533,7 @@ in {
                 ''
               ]);
 
-          promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          promptInit = "autoload -U promptinit; promptinit; prompt pure";
         };
       }
     ]);

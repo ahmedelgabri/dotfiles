@@ -1,0 +1,96 @@
+diff --git a/pure.zsh b/pure.zsh
+index 8628877c..dbdee9a2 100644
+--- a/pure.zsh
++++ b/pure.zsh
+@@ -144,7 +144,10 @@ prompt_pure_preprompt_render() {
+
+ 	# Git branch and dirty status info.
+ 	typeset -gA prompt_pure_vcs_info
+-	if [[ -n $prompt_pure_vcs_info[branch] ]]; then
++	if [[ -n $prompt_pure_vcs_info[worktree_root] ]]; then
++		# At worktree root (parent of worktrees), show only the worktree symbol.
++		preprompt_parts+=('%F{$prompt_pure_colors[git:worktree]}${PURE_GIT_WORKTREE_SYMBOL:-≡}%f')
++	elif [[ -n $prompt_pure_vcs_info[branch] ]]; then
+ 		preprompt_parts+=("%F{$git_color}"'${prompt_pure_vcs_info[branch]}'"%F{$git_dirty_color}"'${prompt_pure_git_dirty}%f')
+ 	fi
+ 	# Git action (for example, merge).
+@@ -276,6 +279,9 @@ prompt_pure_async_git_aliases() {
+ prompt_pure_async_vcs_info() {
+ 	setopt localoptions noshwordsplit
+
++	# Receive cached values from previous run.
++	local prev_top=$1 prev_worktree_root=$2
++
+ 	# Configure `vcs_info` inside an async task. This frees up `vcs_info`
+ 	# to be used or configured as the user pleases.
+ 	zstyle ':vcs_info:*' enable git
+@@ -294,6 +300,34 @@ prompt_pure_async_vcs_info() {
+ 	info[top]=$vcs_info_msg_1_
+ 	info[action]=$vcs_info_msg_2_
+
++	# Detect worktree root when using relative worktree paths (git 2.25+).
++	# At a worktree root (parent of worktrees), we want to show a symbol instead of branch.
++	# Detection: bare repo where git-dir == git-common-dir but neither is ".git" (regular repo).
++	# Note: vcs_info may still return the bare repo's HEAD branch, so we check regardless.
++	# Optimization: use cached value if git context (top) hasn't changed.
++	if [[ -n $prev_top && $info[top] == $prev_top && -n $prev_worktree_root ]]; then
++		# Same git context with known worktree root - use cached value.
++		info[branch]=
++		info[worktree_root]=1
++	else
++		# Check if this is a worktree root. Only run if is_bare (cheap check first).
++		local is_bare
++		is_bare=$(command git rev-parse --is-bare-repository 2>/dev/null)
++
++		if [[ $is_bare == "true" ]]; then
++			local git_dir git_common_dir
++			git_dir=$(command git rev-parse --git-dir 2>/dev/null)
++			git_common_dir=$(command git rev-parse --git-common-dir 2>/dev/null)
++
++			# Worktree root: git_dir == git_common_dir but not ".git"
++			if [[ -n $git_dir && $git_dir == $git_common_dir && $git_dir != ".git" ]]; then
++				info[top]=$PWD
++				info[branch]=
++				info[worktree_root]=1
++			fi
++		fi
++	fi
++
+ 	print -r - ${(@kvq)info}
+ }
+
+@@ -445,10 +479,12 @@ prompt_pure_async_tasks() {
+ 		unset prompt_pure_git_fetch_pattern
+ 		prompt_pure_vcs_info[branch]=
+ 		prompt_pure_vcs_info[top]=
++		prompt_pure_vcs_info[worktree_root]=
+ 	fi
+ 	unset MATCH MBEGIN MEND
+
+-	async_job "prompt_pure" prompt_pure_async_vcs_info
++	# Pass previous top and worktree_root to async worker for caching.
++	async_job "prompt_pure" prompt_pure_async_vcs_info "$prompt_pure_vcs_info[top]" "$prompt_pure_vcs_info[worktree_root]"
+
+ 	# Only perform tasks inside a Git working tree.
+ 	[[ -n $prompt_pure_vcs_info[top] ]] || return
+@@ -561,10 +597,11 @@ prompt_pure_async_callback() {
+ 			# Git directory. Run the async refresh tasks.
+ 			[[ -n $info[top] ]] && [[ -z $prompt_pure_vcs_info[top] ]] && prompt_pure_async_refresh
+
+-			# Always update branch, top-level and stash.
++			# Always update branch, top-level, action, and worktree_root.
+ 			prompt_pure_vcs_info[branch]=$info[branch]
+ 			prompt_pure_vcs_info[top]=$info[top]
+ 			prompt_pure_vcs_info[action]=$info[action]
++			prompt_pure_vcs_info[worktree_root]=$info[worktree_root]
+
+ 			do_render=1
+ 			;;
+@@ -836,6 +873,7 @@ prompt_pure_setup() {
+ 		git:branch:cached    red
+ 		git:action           yellow
+ 		git:dirty            218
++		git:worktree         242
+ 		host                 242
+ 		path                 blue
+ 		prompt:error         red

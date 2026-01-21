@@ -176,6 +176,10 @@
               withEmacs = false;
             };
 
+            pure-prompt = prev.pure-prompt.overrideAttrs (old: {
+              patches = (old.patches or[]) ++ [./nix/patches/pure.patch];
+            });
+
             # Nixpkgs is outdated
             zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (oldAttrs: rec {
               version = "master";
