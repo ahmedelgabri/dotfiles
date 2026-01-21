@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 set -ue -o pipefail
 
+# Function to get the Wi-Fi service name (e.g., "Wi-Fi")
+get_wifi_service() {
+	networksetup -listallhardwareports | awk -F': ' '/^Hardware Port: (Wi-Fi|AirPort)$/{print $2}'
+}
+
 # Function to check if the interface is Wi-Fi
 is_wifi() {
 	local interface="$1"
-	local wifi_status
-	wifi_status=$(networksetup -getinfo "$interface" | grep "Wi-Fi ID" || true)
-	[ -n "$wifi_status" ]
+	local wifi_service
+	wifi_service=$(get_wifi_service)
+	[ "$interface" = "$wifi_service" ]
 }
 
 # Function to check if the interface is Ethernet
 is_ethernet() {
 	local interface="$1"
-	local ethernet_status
-	ethernet_status=$(networksetup -getinfo "$interface" | grep "Ethernet Address" || true)
-	[ -n "$ethernet_status" ]
+	[[ "$interface" == *Ethernet* ]]
 }
 
 # Function to check if the interface is connected
@@ -38,17 +41,38 @@ get_current_interface() {
 	done <<<"$interfaces"
 }
 
+# Function to get the Wi-Fi hardware interface (e.g., en0, en1)
+get_wifi_device() {
+	networksetup -listallhardwareports | awk '/Wi-Fi|AirPort/{getline; print $NF}'
+}
+
 # Function to get SSID of the connected Wi-Fi network
 get_wifi_ssid() {
 	local ssid
-	ssid=$(networksetup -getairportnetwork en0 | awk -F ": " '{print $2}')
+	local wifi_device
+	wifi_device=$(get_wifi_device)
+
+	if [ -z "$wifi_device" ]; then
+		return
+	fi
+
+	ssid=$(networksetup -getairportnetwork "$wifi_device" | awk -F ": " '{print $2}')
 
 	if [ -z "$ssid" ]; then
 		# Sequoia has a bug with networksetup command. But the following works
-		ssid=$(ipconfig getsummary en0 | awk -F ' SSID : ' '/ SSID : / {print $2}')
+		ssid=$(ipconfig getsummary "$wifi_device" | awk -F ' SSID : ' '/ SSID : / {print $2}')
 	fi
 
-	# Thanks Apple... final way out. Using hammerspoon CLI to get the network SSID
+	# Try getting SSID via preferred networks if Wi-Fi is active
+	if [ "$ssid" = "<redacted>" ]; then
+		local is_inactive
+		is_inactive=$(ipconfig getsummary "$wifi_device" | grep -Fxq "  Active : FALSE" && echo "yes")
+		if [ -z "$is_inactive" ]; then
+			ssid=$(networksetup -listpreferredwirelessnetworks "$wifi_device" | sed -n '2s/^\t//p')
+		fi
+	fi
+
+	# Final fallback: use Hammerspoon CLI to get the network SSID
 	if [ "$ssid" = "<redacted>" ] && command -v hs &>/dev/null; then
 		ssid=$(hs -c "hs.wifi.currentNetwork()")
 	fi
