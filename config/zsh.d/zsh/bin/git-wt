@@ -1,142 +1,1348 @@
 #!/usr/bin/env bash
 set -ue -o pipefail
 
+# DEBUG mode strategy:
+# - $CMD is used for mutation operations (clone, config, fetch, worktree add/remove, branch, push)
+# - Direct git calls are used for read-only operations (worktree list, remote show, rev-parse, etc.)
+# - When DEBUG=1, mutations are echoed without execution, reads run normally
 CMD="git"
-if [[ -n "${DEUBG-}" ]]; then
+if [[ -n "${DEBUG-}" ]]; then
 	set -x
 
 	CMD="echo git"
 fi
 
-get_worktree_branch() {
-	# We get grep for the worktree name, then we extract the branch name from the result
-	# Because a worktree name is not always the branch name
-	local BRANCH
-	BRANCH=$(git worktree list | grep "${1-}" | sed -E 's/.*\s+[a-zA-Z0-9]+\s\[(.*)\]/\1/g')
-	# local BRANCH=$(git -C "${1-}" branch --show-current)
-
-	# check if branch has the string (detached HEAD)
-	if [[ "$BRANCH" == *"(detached HEAD)"* ]]; then
-		# If it does, then we get the branch name from the HEAD
-		echo ""
+# Check for required dependencies for interactive commands
+check_fzf_dependency() {
+	if ! command -v fzf >/dev/null 2>&1; then
+		echo "Error: fzf is required for interactive mode"
+		echo "Install fzf: https://github.com/junegunn/fzf"
+		exit 1
 	fi
-
-	echo "$BRANCH"
 }
 
-case $1 in
+extract_branch_from_line() {
+	# Extract branch name from git worktree list output format: path hash [branch]
+	local line=$1
+	local branch
+	branch=$(echo "$line" | sed -E 's/.*\[([^]]+)\].*/\1/')
+
+	# Return empty if detached HEAD
+	if [[ "$branch" == *"(detached HEAD)"* ]]; then
+		echo ""
+		return
+	fi
+
+	echo "$branch"
+}
+
+extract_path_from_line() {
+	# Extract worktree path (first field) from git worktree list output
+	echo "$1" | awk '{print $1}'
+}
+
+get_worktree_branch() {
+	# We grep for the worktree name, then extract the branch name from the result
+	# Because a worktree name is not always the branch name
+	local line
+	line=$(git worktree list | grep "${1-}")
+	extract_branch_from_line "$line"
+}
+
+validate_worktree() {
+	local path=$1
+	if ! git worktree list | grep -q "^$path "; then
+		echo "Error: '$path' is not a valid worktree"
+		return 1
+	fi
+	return 0
+}
+
+select_worktrees_interactive() {
+	local mode=$1 # "remove" or "destroy"
+	local WORKTREE_LIST=$(git worktree list | grep -v ".bare")
+
+	if [[ -z "$WORKTREE_LIST" ]]; then
+		echo "No worktrees to $mode"
+		exit 0
+	fi
+
+	local prompt header preview_extra
+
+	if [[ "$mode" == "destroy" ]]; then
+		prompt="Select worktree(s) to DESTROY (TAB to select multiple): "
+		header="⚠️  WARNING: This will delete LOCAL and REMOTE branches
+TAB: select/deselect | ENTER: confirm | ESC: cancel"
+		preview_extra='cat <<-EOF
+			⚠️  DESTROY MODE - PERMANENT DELETION
+
+			Worktree: $WORKTREE_PATH
+			Branch: $BRANCH
+
+			This will:
+			  1. Remove worktree directory
+			  2. Delete local branch
+			  3. Delete remote branch (origin/$BRANCH)
+		EOF'
+	else
+		prompt="Select worktree(s) to remove (TAB to select multiple): "
+		header="TAB: select/deselect | ENTER: confirm | ESC: cancel
+Local branches will also be deleted (remote branches preserved)"
+		preview_extra='cat <<-EOF
+			Worktree: $WORKTREE_PATH
+			Branch: $BRANCH
+		EOF'
+	fi
+
+	SELECTED=$(
+		echo "$WORKTREE_LIST" | fzf \
+			--multi \
+			--prompt="$prompt" \
+			--height=60% \
+			--border \
+			--header="$header" \
+			--preview="
+				WORKTREE_PATH=\$(echo {} | awk '{print \$1}')
+				BRANCH=\$(echo {} | sed -E 's/.*\[([^]]+)\].*/\1/')
+
+				$preview_extra
+				echo \"\"
+				echo \"Status:\"
+				git -c color.status=always -C \"\$WORKTREE_PATH\" status --short --branch 2>/dev/null || echo \"(unable to get status)\"
+				echo \"\"
+				echo \"Recent commits:\"
+				git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' \"\$BRANCH\" -10 -- 2>/dev/null || echo \"(unable to get log)\"
+			" \
+			--preview-window=right:60%:wrap
+	)
+
+	# User cancelled
+	if [[ -z "$SELECTED" ]]; then
+		echo "Cancelled"
+		exit 0
+	fi
+
+	echo "$SELECTED"
+}
+
+validate_branch_name() {
+	# Validate git branch name according to git-check-ref-format rules
+	local branch_name=$1
+
+	if [[ -z "$branch_name" ]]; then
+		echo "Error: Branch name cannot be empty"
+		return 1
+	fi
+
+	# Check for invalid characters and patterns
+	if [[ "$branch_name" =~ ^[-.] ]] ||
+		[[ "$branch_name" =~ [[:space:]] ]] ||
+		[[ "$branch_name" =~ \.\. ]] ||
+		[[ "$branch_name" =~ [~^:\?\*\[] ]] ||
+		[[ "$branch_name" =~ /$ ]] ||
+		[[ "$branch_name" =~ \.lock$ ]] ||
+		[[ "$branch_name" == "@" ]]; then
+		cat <<-EOF
+			Error: Invalid branch name '$branch_name'
+			Branch names cannot:
+			  - Start with '.' or '-'
+			  - Contain spaces, '..', '~', '^', ':', '?', '*', '['
+			  - End with '/' or '.lock'
+			  - Be '@'
+		EOF
+		return 1
+	fi
+
+	return 0
+}
+
+parse_selected_worktrees() {
+	# Parse fzf selection output into worktree paths and branch names
+	# Args: $1 = fzf output (multiline string)
+	# Sets global arrays: WORKTREE_PATHS and BRANCH_NAMES
+	local selected=$1
+	WORKTREE_PATHS=()
+	BRANCH_NAMES=()
+
+	while IFS= read -r line; do
+		WORKTREE_PATHS+=("$(extract_path_from_line "$line")")
+		BRANCH_NAMES+=("$(extract_branch_from_line "$line")")
+	done <<<"$selected"
+}
+
+case ${1-} in
 # This is an extra command that I added to handle cloning a repo and setting it
 # up as a worktree
 clone)
 	shift
-	FOLDER_NAME=${2:-$(basename "$1" ".git")}
 
-	mkdir -p "$FOLDER_NAME"
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt clone - Clone a repository with worktree structure
 
-	cd "$FOLDER_NAME"
+			Usage:
+			  git wt clone <repository-url> [folder-name]
 
-	$CMD clone --bare "$1" .bare
+			Options:
+			  --help, -h      Show this help message
+
+			Examples:
+			  git wt clone https://github.com/user/repo.git
+			  git wt clone git@github.com:user/repo.git my-repo
+
+			Note: Creates .bare directory structure and initial worktree for default branch
+		EOF
+		exit 0
+	fi
+
+	# Validate repository URL is provided
+	if [[ -z "${1-}" ]]; then
+		echo "Error: Repository URL is required"
+		echo "Usage: git wt clone <repository-url> [folder-name]"
+		exit 1
+	fi
+
+	REPO_URL="$1"
+	FOLDER_NAME=${2:-$(basename "$REPO_URL" ".git")}
+
+	# Check if directory already exists
+	if [[ -d "$FOLDER_NAME" ]]; then
+		echo "Error: Directory '$FOLDER_NAME' already exists"
+		exit 1
+	fi
+
+	# Create directory with error handling
+	mkdir -p "$FOLDER_NAME" || {
+		echo "Error: Failed to create directory '$FOLDER_NAME'"
+		exit 1
+	}
+
+	cd "$FOLDER_NAME" || {
+		echo "Error: Failed to change to directory '$FOLDER_NAME'"
+		exit 1
+	}
+
+	# Clone with error handling and cleanup on failure
+	$CMD clone --bare "$REPO_URL" .bare || {
+		echo "Error: Failed to clone repository"
+		cd ..
+		rm -rf "$FOLDER_NAME"
+		exit 1
+	}
 
 	echo "gitdir: ./.bare" >.git
 
 	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 	$CMD config core.logallrefupdates true
 
-	$CMD fetch --all
+	$CMD fetch --all || {
+		echo "Warning: Failed to fetch all branches"
+	}
 
 	# Need to remove all local branches with invalid upstream refs
 	# See: https://stackoverflow.com/a/54408181/213124
-	$CMD for-each-ref --format='%(refname:short)' refs/heads | xargs git branch -D
+	$CMD for-each-ref --format='%(refname:short)' refs/heads | xargs $CMD branch -D 2>/dev/null || true
 
 	echo "Discovering default branch..."
-	default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+	default_branch=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
 
-	if [ -n "$default_branch" ]; then
-		echo "Creating initial worktree for the default branch (origin/$default_branch)..."
-		git worktree add -B "$default_branch" "$default_branch" "origin/$default_branch"
+	if [[ -z "$default_branch" ]]; then
+		echo "Warning: Could not discover default branch from remote"
+		echo "Available branches:"
+		git branch -r
+		printf "Enter default branch name (or press Enter to skip): "
+		read -r default_branch
 	fi
+
+	if [[ -n "$default_branch" ]]; then
+		echo "Creating initial worktree for '$default_branch'..."
+		$CMD worktree add -B "$default_branch" "$default_branch" "origin/$default_branch" || {
+			echo "Warning: Failed to create worktree for default branch"
+		}
+	else
+		echo "No worktree created. Use 'git wt add' to create worktrees."
+	fi
+
+	cat <<-EOF
+
+		✓ Repository cloned successfully
+
+		Repository structure:
+		  $FOLDER_NAME/
+		  ├── .bare/              (git data)
+		  ├── .git                (pointer to .bare)
+	EOF
+	if [[ -n "$default_branch" ]]; then
+		echo "  └── $default_branch/           (worktree)"
+	fi
+	cat <<-EOF
+
+		To create additional worktrees:
+		  cd $FOLDER_NAME
+		  git wt add
+	EOF
+
+	;;
+# Migrate an existing repository to use worktrees
+# Takes the current git repo and converts it to a .bare + worktrees structure
+# Preserves working directory state (modified files, staged changes, stashes)
+migrate)
+	shift
+
+	# Check if we're in a git repository
+	if ! git rev-parse --git-dir >/dev/null 2>&1; then
+		echo "Error: Not in a git repository"
+		exit 1
+	fi
+
+	# Get the current repository root
+	REPO_ROOT=$(git rev-parse --show-toplevel)
+	REPO_NAME=$(basename "$REPO_ROOT")
+	PARENT_DIR=$(dirname "$REPO_ROOT")
+
+	# Get the current branch before we do anything
+	CURRENT_BRANCH=$(git branch --show-current)
+
+	if [[ -z "$CURRENT_BRANCH" ]]; then
+		echo "Error: Not on a branch (detached HEAD state). Please check out a branch first."
+		exit 1
+	fi
+
+	# Get the remote URL to preserve it
+	REMOTE_URL=""
+	if git remote get-url origin >/dev/null 2>&1; then
+		REMOTE_URL=$(git remote get-url origin)
+		echo "Remote URL: $REMOTE_URL"
+	else
+		echo "Warning: No remote 'origin' found"
+	fi
+
+	# Discover the default branch from remote
+	DEFAULT_BRANCH=""
+	if [[ -n "$REMOTE_URL" ]]; then
+		DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
+	fi
+
+	# Fallback: try common default branch names if remote detection fails
+	if [[ -z "$DEFAULT_BRANCH" ]]; then
+		for branch in main master; do
+			if git rev-parse --verify "$branch" >/dev/null 2>&1; then
+				DEFAULT_BRANCH="$branch"
+				break
+			fi
+		done
+	fi
+
+	echo "Migrating repository: $REPO_NAME"
+	echo "Current branch: $CURRENT_BRANCH"
+	if [[ -n "$DEFAULT_BRANCH" ]]; then
+		echo "Default branch: $DEFAULT_BRANCH"
+	fi
+	echo ""
+
+	# Check if there are any changes (staged or unstaged)
+	HAS_CHANGES=false
+	if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+		HAS_CHANGES=true
+		echo "Detected uncommitted changes - will preserve them in the new worktree"
+	fi
+
+	# Check if there are untracked files
+	UNTRACKED_FILES=()
+	while IFS= read -r file; do
+		UNTRACKED_FILES+=("$file")
+	done < <(git ls-files --others --exclude-standard)
+
+	if [[ ${#UNTRACKED_FILES[@]} -gt 0 ]]; then
+		echo "Detected ${#UNTRACKED_FILES[@]} untracked file(s) - will preserve them"
+	fi
+
+	# Store stash count to migrate later
+	STASH_COUNT=$(git stash list | wc -l | tr -d ' ')
+	if [[ "$STASH_COUNT" -gt 0 ]]; then
+		echo "Detected $STASH_COUNT stash(es) - will migrate them"
+	fi
+
+	echo ""
+
+	# Confirm with user
+	printf "This will restructure the repository. Continue? [y/N]: "
+	read -r CONFIRMATION
+
+	if [[ "$CONFIRMATION" != "y" ]]; then
+		echo "Migration cancelled."
+		exit 0
+	fi
+
+	# Create temporary directory to hold migration work
+	NEW_STRUCTURE="${PARENT_DIR}/${REPO_NAME}-new-$$"
+	TEMP_BACKUP="${PARENT_DIR}/${REPO_NAME}-backup-$$"
+
+	echo "Creating new repository structure..."
+	mkdir -p "$NEW_STRUCTURE"
+	cd "$NEW_STRUCTURE"
+
+	# Clone the existing repo as bare into .bare
+	echo "Converting to bare repository..."
+	$CMD clone --bare "$REPO_ROOT" .bare
+
+	# Create .git file pointing to .bare directory
+	# This allows git commands to work from the parent directory without being inside a worktree
+	echo "gitdir: ./.bare" >.git
+
+	# Configure fetch refspec to get all remote branches
+	# Bare repos by default use a different fetch refspec ("+refs/*:refs/*")
+	# We need "+refs/heads/*:refs/remotes/origin/*" to properly track remote branches
+	# This ensures all remote branches are visible and can be checked out as worktrees
+	echo "Configuring bare repository..."
+	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+	# Enable reflog in bare repository
+	# Bare repos have core.logallrefupdates=false by default because they don't have a working tree
+	# Setting this to true maintains reflog entries for all ref updates, which is essential for:
+	# - git reflog (viewing history of ref changes)
+	# - recovering lost commits
+	# - undoing accidental branch deletions or resets
+	# Without this, operations like "git reflog" wouldn't work properly
+	$CMD config core.logallrefupdates true
+
+	# Fetch all branches from remote if they exist
+	if git remote get-url origin >/dev/null 2>&1; then
+		echo "Fetching all branches from remote..."
+		$CMD fetch --all
+	fi
+
+	# Clean up any local branches with invalid upstream refs
+	# After converting to bare repo, some branch refs may be in an inconsistent state
+	# This cleanup ensures we start fresh with only valid branch references
+	$CMD for-each-ref --format='%(refname:short)' refs/heads | xargs $CMD branch -D 2>/dev/null || true
+
+	# Fix the remote URL to point to the original remote instead of the local disk path
+	# When we clone from a local path, git sets origin to that local path
+	# We need to restore the original remote URL so fetch/push work correctly
+	if [ -n "$REMOTE_URL" ]; then
+		echo "Restoring remote URL..."
+		$CMD remote set-url origin "$REMOTE_URL"
+	fi
+
+	# Migrate all stashes to the new bare repository
+	# Stashes are stored in refs/stash, and we need to copy them to the new bare repo
+	if [[ "$STASH_COUNT" -gt 0 ]]; then
+		echo "Migrating $STASH_COUNT stash(es)..."
+		# Copy the stash ref and reflog from old repo to new bare repo
+		if [[ -f "$REPO_ROOT/.git/refs/stash" ]]; then
+			cp "$REPO_ROOT/.git/refs/stash" "$NEW_STRUCTURE/.bare/refs/stash"
+		fi
+		if [[ -f "$REPO_ROOT/.git/logs/refs/stash" ]]; then
+			mkdir -p "$NEW_STRUCTURE/.bare/logs/refs"
+			cp "$REPO_ROOT/.git/logs/refs/stash" "$NEW_STRUCTURE/.bare/logs/refs/stash"
+		fi
+	fi
+
+	# Create worktrees
+	# If current branch is the default branch, only create one worktree
+	# Otherwise, create worktrees for both default and current branches
+	if [[ -n "$DEFAULT_BRANCH" ]] && [[ "$DEFAULT_BRANCH" = "$CURRENT_BRANCH" ]]; then
+		echo "Creating worktree for $CURRENT_BRANCH (default branch)..."
+		git -C "$NEW_STRUCTURE" worktree add "$CURRENT_BRANCH" "$CURRENT_BRANCH"
+	else
+		# Create worktree for default branch first if it exists
+		if [[ -n "$DEFAULT_BRANCH" ]]; then
+			echo "Creating worktree for default branch: $DEFAULT_BRANCH"
+			git -C "$NEW_STRUCTURE" worktree add "$DEFAULT_BRANCH" "$DEFAULT_BRANCH"
+		fi
+
+		# Create worktree for current branch
+		echo "Creating worktree for current branch: $CURRENT_BRANCH"
+		git -C "$NEW_STRUCTURE" worktree add "$CURRENT_BRANCH" "$CURRENT_BRANCH"
+	fi
+
+	# Restore the working directory state to match the original repo
+	# This includes ALL files on disk: tracked, modified, untracked, and gitignored
+	echo "Restoring working directory state..."
+
+	# Copy all files from the original repo to preserve the exact state
+	# We use rsync to preserve file permissions, timestamps, and handle all edge cases
+	# This copies:
+	# - Tracked files (already in git)
+	# - Modified files (tracked but with changes)
+	# - Untracked files (not in git, not gitignored)
+	# - Gitignored files (on disk but ignored by git)
+	# Everything except .git directory itself (which we've replaced with .bare structure)
+	rsync -a --exclude='.git' "$REPO_ROOT/" "$NEW_STRUCTURE/$CURRENT_BRANCH/"
+
+	# Restore the git index (staged changes)
+	# The index file contains information about staged changes
+	# This ensures any staged changes are preserved in the new worktree
+	if [[ -f "$REPO_ROOT/.git/index" ]]; then
+		cp "$REPO_ROOT/.git/index" "$NEW_STRUCTURE/.bare/worktrees/$CURRENT_BRANCH/index"
+	fi
+
+	echo "Working directory state restored (all files preserved)"
+
+	# Success - now replace the old repo with the new structure
+	echo ""
+	echo "Finalizing migration..."
+
+	cd "$PARENT_DIR"
+	mv "$REPO_ROOT" "$TEMP_BACKUP"
+	mv "$NEW_STRUCTURE" "$REPO_ROOT"
+
+	echo "Cleaning up..."
+	rm -rf "$TEMP_BACKUP"
+
+	cat <<-EOF
+
+		✓ Migration complete!
+
+		Your repository structure is now:
+		  $REPO_ROOT/
+		  ├── .bare/              (git data)
+		  ├── .git                (pointer to .bare)
+	EOF
+
+	# Display worktree structure based on what was created
+	if [[ -n "$DEFAULT_BRANCH" ]] && [[ "$DEFAULT_BRANCH" = "$CURRENT_BRANCH" ]]; then
+		echo "  └── $CURRENT_BRANCH/           (worktree - default branch)"
+	else
+		if [[ -n "$DEFAULT_BRANCH" ]]; then
+			echo "  ├── $DEFAULT_BRANCH/           (worktree - default branch)"
+		fi
+		echo "  └── $CURRENT_BRANCH/           (worktree - current branch)"
+	fi
+	echo ""
+
+	if [[ -n "$REMOTE_URL" ]]; then
+		echo "✓ Remote URL preserved: $REMOTE_URL"
+	fi
+
+	if [[ "$STASH_COUNT" -gt 0 ]]; then
+		echo "✓ Migrated $STASH_COUNT stash(es)"
+	fi
+
+	if [[ "$HAS_CHANGES" = true ]]; then
+		echo "✓ Preserved uncommitted changes in $CURRENT_BRANCH/"
+	fi
+
+	if [[ ${#UNTRACKED_FILES[@]} -gt 0 ]]; then
+		echo "✓ Preserved ${#UNTRACKED_FILES[@]} untracked file(s) in $CURRENT_BRANCH/"
+	fi
+
+	cat <<-EOF
+
+		To create additional worktrees:
+		  cd $REPO_ROOT
+		  git wt add <branch-name> <branch-name>
+
+		To view migrated stashes:
+		  cd $REPO_ROOT/$CURRENT_BRANCH
+		  git stash list
+
+		Navigate to your worktree:
+		  cd $REPO_ROOT/$CURRENT_BRANCH
+	EOF
 
 	;;
 add)
 	shift
+
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt add - Create a new worktree
+
+			Usage:
+			  git wt add                              Interactive mode (fzf)
+			  git wt add <path> <commit-ish>          Create worktree from branch
+			  git wt add -b <branch> <path>           Create new branch and worktree
+
+			Options:
+			  -b <branch>     Create new branch
+			  -B <branch>     Create/reset branch
+			  --help, -h      Show this help message
+
+			Examples:
+			  git wt add                               # Interactive selection
+			  git wt add feature origin/feature        # From remote branch
+			  git wt add -b new-feature new-feature    # New branch
+
+			Note: Always fetches from origin to ensure up-to-date refs
+		EOF
+		exit 0
+	fi
+
+	# Fetch latest remote branches to ensure we have up-to-date refs
+	echo "Fetching from origin..."
+	$CMD fetch origin --prune
+
+	# If no arguments provided, show interactive branch selector with fzf
+	if [[ $# -eq 0 ]]; then
+		check_fzf_dependency
+
+		# Get list of remote branches (excluding HEAD)
+		# Format: Strip 'origin/' prefix for cleaner display
+		SELECTED=$(
+			{
+				echo "➕ Create new branch"
+				$CMD branch -r --format='%(refname:short)' | grep -v HEAD | sed 's/^origin\///'
+			} | fzf \
+				--prompt="Select branch or create new: " \
+				--height=40% \
+				--border \
+				--preview='
+					if [[ {} == "➕ Create new branch" ]]; then
+						echo "Create a new branch and worktree"
+						echo ""
+						echo "You will be prompted to enter:"
+						echo "  • Branch name"
+						echo "  • Worktree path (optional, defaults to branch name)"
+					else
+						echo "Branch: {}"
+						echo ""
+						echo "Recent commits:"
+						git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" origin/{} -10 --
+					fi
+				' \
+				--preview-window=right:60%:wrap
+		)
+
+		# User cancelled
+		if [[ -z "$SELECTED" ]]; then
+			echo "Cancelled"
+			exit 0
+		fi
+
+		# Handle "Create new branch" option
+		if [[ "$SELECTED" == "➕ Create new branch" ]]; then
+			printf "Enter new branch name: "
+			read -r NEW_BRANCH
+
+			if ! validate_branch_name "$NEW_BRANCH"; then
+				exit 1
+			fi
+
+			printf "Enter worktree path [default: %s]: " "$NEW_BRANCH"
+			read -r WORKTREE_PATH
+
+			# Default to branch name if no path provided
+			if [[ -z "$WORKTREE_PATH" ]]; then
+				WORKTREE_PATH="$NEW_BRANCH"
+			fi
+
+			# Create new branch and worktree
+			echo "Creating new branch '$NEW_BRANCH' and worktree at '$WORKTREE_PATH'..."
+			$CMD worktree add -b "$NEW_BRANCH" "$WORKTREE_PATH"
+			exit $?
+		fi
+
+		# Handle existing remote branch selection
+		# Create worktree from the selected remote branch
+		echo "Creating worktree for '$SELECTED' from origin/$SELECTED..."
+		$CMD worktree add "$SELECTED" "origin/$SELECTED"
+		WORKTREE_ADD_EXIT=$?
+
+		# Set upstream tracking if worktree was created successfully
+		if [[ $WORKTREE_ADD_EXIT -eq 0 ]]; then
+			echo "Setting upstream to origin/$SELECTED"
+			$CMD branch --set-upstream-to="origin/$SELECTED" "$SELECTED"
+		fi
+
+		exit $WORKTREE_ADD_EXIT
+	fi
+
+	# Arguments provided - proceed with normal argument parsing
 	BRANCH=""
 	ARGS=()
+
+	# Parse arguments
+	# Supports standard git worktree add flags
+	# -b <branch>: Create new branch (standard git flag)
+	# -B <branch>: Create/reset branch (standard git flag)
 	while [[ $# -gt 0 ]]; do
-		if [[ $1 == "-b" ]]; then
+		case $1 in
+		-b | -B)
+			# Capture branch name for upstream tracking
 			BRANCH=$2
 			ARGS+=("$1" "$2")
 			shift 2
-		else
+			;;
+		*)
 			ARGS+=("$1")
 			shift
-		fi
+			;;
+		esac
 	done
 
+	# Create the worktree
+	# Pass all collected arguments to git worktree add
 	$CMD worktree add "${ARGS[@]}"
+	WORKTREE_ADD_EXIT=$?
 
-	if [[ -n "$BRANCH" ]]; then
-		$CMD branch --set-upstream-to="origin/$BRANCH" "$BRANCH"
+	# Only proceed with upstream setup if worktree was created successfully
+	if [[ $WORKTREE_ADD_EXIT -eq 0 ]] && [[ -n "$BRANCH" ]]; then
+		# Set upstream tracking if the branch exists on origin
+		# This enables git push/pull without specifying remote/branch
+		if git rev-parse --verify "origin/$BRANCH" >/dev/null 2>&1; then
+			echo "Setting upstream to origin/$BRANCH"
+			$CMD branch --set-upstream-to="origin/$BRANCH" "$BRANCH"
+		else
+			# If we're creating a new local branch,
+			# remind the user to push and set upstream
+			cat <<-EOF
+
+				Branch '$BRANCH' created locally.
+				To push and set upstream:
+				  git push -u origin $BRANCH
+			EOF
+		fi
 	fi
 
-	$CMD fetch --all --prune
+	exit $WORKTREE_ADD_EXIT
 	;;
 remove | rm)
 	shift
 
-	if [[ -z "${1-}" ]]; then
-		git worktree list | grep -v ".bare" | fzf \
-			--header $'CTRL-X (remove worktree)\n\n' \
-			--bind 'enter:become(git worktree remove -f {1} && git branch -D $(echo {3} | sed -E "s/\[(.*)\]/\1/g"))' \
-			--bind 'ctrl-x:reload(git worktree remove -f {1} && git branch -D $(echo {3} | sed -E "s/\[(.*)\]/\1/g"); git worktree list)' \
-			--preview "
-				git -c color.status=always -C {1} status --short --branch
-				echo
-				git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' {2} --
-			"
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt remove - Remove worktree(s) and delete local branch(es)
+
+			Usage:
+			  git wt remove                            Interactive mode (fzf)
+			  git wt remove <path> [<path>...]         Remove specific worktree(s)
+			  git wt remove --dry-run                  Preview without changes
+
+			Options:
+			  --dry-run, -n   Show what would be removed without making changes
+			  --help, -h      Show this help message
+
+			Examples:
+			  git wt remove                            # Interactive selection
+			  git wt remove feature-1 feature-2        # Remove multiple
+			  git wt remove --dry-run                  # Preview in interactive mode
+			  git wt remove -n feature-1 feature-2     # Preview specific worktrees
+
+			Note: Remote branches are NOT deleted. Use 'destroy' for that.
+		EOF
+		exit 0
 	fi
 
-	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
+	# Parse flags
+	DRY_RUN=false
+	WORKTREE_ARGS=()
 
-	$CMD worktree remove -f "$1"
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		--dry-run | -n)
+			DRY_RUN=true
+			shift
+			;;
+		*)
+			WORKTREE_ARGS+=("$1")
+			shift
+			;;
+		esac
+	done
 
-	if [[ -n "$BRANCH_TO_DELETE" ]]; then
-		$CMD branch -D "$BRANCH_TO_DELETE"
+	# Interactive mode - select worktree(s) with fzf
+	if [[ ${#WORKTREE_ARGS[@]} -eq 0 ]]; then
+		check_fzf_dependency
+		SELECTED=$(select_worktrees_interactive "remove")
+
+		# Parse selected worktrees into arrays
+		parse_selected_worktrees "$SELECTED"
+		WORKTREES_TO_REMOVE=("${WORKTREE_PATHS[@]}")
+		BRANCHES_TO_DELETE=("${BRANCH_NAMES[@]}")
+
+		# Show what will be removed
+		echo ""
+		if [[ "$DRY_RUN" = true ]]; then
+			echo "[DRY RUN] Would remove ${#WORKTREES_TO_REMOVE[@]} worktree(s):"
+		else
+			echo "About to remove ${#WORKTREES_TO_REMOVE[@]} worktree(s):"
+		fi
+		for i in "${!WORKTREES_TO_REMOVE[@]}"; do
+			echo "  [$((i + 1))] ${WORKTREES_TO_REMOVE[$i]} (branch: ${BRANCHES_TO_DELETE[$i]})"
+		done
+		echo ""
+		echo "Note: Remote branches will NOT be deleted"
+		echo ""
+
+		if [[ "$DRY_RUN" = true ]]; then
+			echo "[DRY RUN] No changes made"
+			exit 0
+		fi
+
+		printf "Continue? [y/N]: "
+		read -r CONFIRMATION
+
+		if [[ "$CONFIRMATION" != "y" ]]; then
+			echo "Cancelled"
+			exit 0
+		fi
+
+		# Remove worktrees and delete branches
+		echo ""
+		FAILED_COUNT=0
+		SUCCESS_COUNT=0
+
+		for i in "${!WORKTREES_TO_REMOVE[@]}"; do
+			WORKTREE_PATH="${WORKTREES_TO_REMOVE[$i]}"
+			BRANCH="${BRANCHES_TO_DELETE[$i]}"
+
+			echo "[$((i + 1))/${#WORKTREES_TO_REMOVE[@]}] Removing $WORKTREE_PATH..."
+
+			$CMD worktree remove -f "$WORKTREE_PATH"
+			REMOVE_EXIT=$?
+
+			if [[ $REMOVE_EXIT -eq 0 ]]; then
+				if [[ -n "$BRANCH" ]]; then
+					$CMD branch -D "$BRANCH" >/dev/null 2>&1 || true
+					echo "  ✓ Removed worktree and deleted local branch '$BRANCH'"
+					((SUCCESS_COUNT++))
+				else
+					echo "  ✓ Removed worktree"
+					((SUCCESS_COUNT++))
+				fi
+			else
+				echo "  ✗ Failed to remove worktree"
+				((FAILED_COUNT++))
+			fi
+		done
+
+		echo ""
+		echo "Summary: $SUCCESS_COUNT succeeded, $FAILED_COUNT failed"
+
+		if [[ $FAILED_COUNT -gt 0 ]]; then
+			exit 1
+		fi
+
+		exit 0
 	fi
+
+	# Non-interactive mode - worktree path(s) provided as arguments
+	# Support multiple worktrees as arguments
+	FAILED_COUNT=0
+	SUCCESS_COUNT=0
+
+	# Validate all worktree paths first
+	for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
+		if ! validate_worktree "$WORKTREE_PATH"; then
+			exit 1
+		fi
+	done
+
+	# Show what will be removed in dry-run mode
+	if [[ "$DRY_RUN" = true ]]; then
+		echo "[DRY RUN] Would remove ${#WORKTREE_ARGS[@]} worktree(s):"
+		for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
+			BRANCH=$(get_worktree_branch "$WORKTREE_PATH")
+			if [[ -n "$BRANCH" ]]; then
+				echo "  - $WORKTREE_PATH (branch: $BRANCH)"
+			else
+				echo "  - $WORKTREE_PATH"
+			fi
+		done
+		echo ""
+		echo "[DRY RUN] No changes made"
+		exit 0
+	fi
+
+	for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
+		BRANCH_TO_DELETE=$(get_worktree_branch "$WORKTREE_PATH")
+
+		$CMD worktree remove -f "$WORKTREE_PATH"
+		REMOVE_EXIT=$?
+
+		if [[ $REMOVE_EXIT -eq 0 ]] && [[ -n "$BRANCH_TO_DELETE" ]]; then
+			$CMD branch -D "$BRANCH_TO_DELETE" || true
+			echo "Removed worktree '$WORKTREE_PATH' and deleted local branch '$BRANCH_TO_DELETE'"
+			((SUCCESS_COUNT++))
+		elif [[ $REMOVE_EXIT -eq 0 ]]; then
+			echo "Removed worktree '$WORKTREE_PATH'"
+			((SUCCESS_COUNT++))
+		else
+			echo "Failed to remove worktree '$WORKTREE_PATH'"
+			((FAILED_COUNT++))
+		fi
+	done
+
+	if [[ ${#WORKTREE_ARGS[@]} -gt 1 ]]; then
+		echo ""
+		echo "Summary: $SUCCESS_COUNT succeeded, $FAILED_COUNT failed"
+	fi
+
+	if [[ $FAILED_COUNT -gt 0 ]]; then
+		exit 1
+	fi
+
+	exit 0
 	;;
 # Same as remove, but this time we also delete the branch from remote
 destroy)
 	shift
 
-	BRANCH_TO_DELETE=$(get_worktree_branch "$1")
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt destroy - Remove worktree(s) and delete LOCAL and REMOTE branch(es)
 
-	EXTRTA_MSG=""
-	if [[ -n "$BRANCH_TO_DELETE" ]]; then
-		EXTRTA_MSG=" and delete its remote branch [$BRANCH_TO_DELETE]"
+			Usage:
+			  git wt destroy                           Interactive mode (fzf)
+			  git wt destroy <path> [<path>...]        Destroy specific worktree(s)
+			  git wt destroy --dry-run                 Preview without changes
+
+			Options:
+			  --dry-run, -n   Show what would be destroyed without making changes
+			  --help, -h      Show this help message
+
+			Examples:
+			  git wt destroy                           # Interactive selection
+			  git wt destroy feature-1 feature-2       # Destroy multiple
+			  git wt destroy --dry-run                 # Preview in interactive mode
+			  git wt destroy -n feature-1 feature-2    # Preview specific worktrees
+
+			Warning: This deletes both local AND remote branches permanently.
+		EOF
+		exit 0
 	fi
 
-	printf "Are you sure you want to destroy '%s' workspace%s? [y/N]: " "$1" "$EXTRTA_MSG"
-	read -r CONFIRMATION
+	# Parse flags
+	DRY_RUN=false
+	WORKTREE_ARGS=()
 
-	if [[ "$CONFIRMATION" != "y" ]]; then
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		--dry-run | -n)
+			DRY_RUN=true
+			shift
+			;;
+		*)
+			WORKTREE_ARGS+=("$1")
+			shift
+			;;
+		esac
+	done
+
+	# Interactive mode - select worktree(s) with fzf
+	if [[ ${#WORKTREE_ARGS[@]} -eq 0 ]]; then
+		check_fzf_dependency
+		SELECTED=$(select_worktrees_interactive "destroy")
+
+		# Parse selected worktrees into arrays
+		parse_selected_worktrees "$SELECTED"
+		WORKTREES_TO_DESTROY=("${WORKTREE_PATHS[@]}")
+		BRANCHES_TO_DELETE=("${BRANCH_NAMES[@]}")
+
+		# Show what will be destroyed
+		echo ""
+		if [[ "$DRY_RUN" = true ]]; then
+			echo "[DRY RUN] Would DESTROY ${#WORKTREES_TO_DESTROY[@]} worktree(s):"
+		else
+			echo "⚠️  WARNING: DESTRUCTIVE OPERATION"
+			echo ""
+			echo "About to DESTROY ${#WORKTREES_TO_DESTROY[@]} worktree(s):"
+		fi
+		for i in "${!WORKTREES_TO_DESTROY[@]}"; do
+			echo "  [$((i + 1))] ${WORKTREES_TO_DESTROY[$i]} (branch: ${BRANCHES_TO_DELETE[$i]})"
+		done
+		cat <<-EOF
+
+			This will:
+			  - Remove worktree directories
+			  - Delete local branches
+			  - Delete remote branches (origin/<branch>)
+
+		EOF
+
+		if [[ "$DRY_RUN" = true ]]; then
+			echo "[DRY RUN] No changes made"
+			exit 0
+		fi
+
+		cat <<-EOF
+			This action CANNOT be undone.
+
+		EOF
+
+		# For single selection, require exact branch name
+		# For multiple selections, use 'destroy' confirmation (typing multiple branch names would be tedious)
+		if [[ ${#WORKTREES_TO_DESTROY[@]} -eq 1 ]]; then
+			printf "Type the branch name to confirm: "
+			read -r CONFIRMATION
+
+			if [[ "$CONFIRMATION" != "${BRANCHES_TO_DELETE[0]}" ]]; then
+				echo "Cancelled (confirmation did not match branch name)"
+				exit 0
+			fi
+		else
+			printf "Type 'destroy' to confirm: "
+			read -r CONFIRMATION
+
+			if [[ "$CONFIRMATION" != "destroy" ]]; then
+				echo "Cancelled (must type 'destroy' to confirm)"
+				exit 0
+			fi
+		fi
+
+		# Remove worktrees and delete branches
+		echo ""
+		FAILED_COUNT=0
+		SUCCESS_COUNT=0
+
+		for i in "${!WORKTREES_TO_DESTROY[@]}"; do
+			WORKTREE_PATH="${WORKTREES_TO_DESTROY[$i]}"
+			BRANCH="${BRANCHES_TO_DELETE[$i]}"
+
+			echo "[$((i + 1))/${#WORKTREES_TO_DESTROY[@]}] Destroying $WORKTREE_PATH..."
+
+			# Remove worktree
+			$CMD worktree remove -f "$WORKTREE_PATH"
+			REMOVE_EXIT=$?
+
+			if [[ $REMOVE_EXIT -eq 0 ]]; then
+				if [[ -n "$BRANCH" ]]; then
+					# Delete local branch
+					$CMD branch -D "$BRANCH" >/dev/null 2>&1 || true
+
+					# Check if remote exists and branch is tracked before attempting deletion
+					if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+						$CMD push origin --delete "$BRANCH" 2>/dev/null
+						PUSH_EXIT=$?
+
+						if [[ $PUSH_EXIT -eq 0 ]]; then
+							echo "  ✓ Destroyed worktree and deleted branch '$BRANCH' (local and remote)"
+						else
+							echo "  ⚠ Destroyed worktree and deleted local branch '$BRANCH' (remote deletion failed)"
+						fi
+					else
+						echo "  ✓ Destroyed worktree and deleted local branch '$BRANCH' (no remote branch)"
+					fi
+					((SUCCESS_COUNT++))
+				else
+					echo "  ✓ Destroyed worktree"
+					((SUCCESS_COUNT++))
+				fi
+			else
+				echo "  ✗ Failed to destroy worktree"
+				((FAILED_COUNT++))
+			fi
+		done
+
+		echo ""
+		echo "Summary: $SUCCESS_COUNT succeeded, $FAILED_COUNT failed"
+
+		if [[ $FAILED_COUNT -gt 0 ]]; then
+			exit 1
+		fi
+
+		exit 0
+	fi
+
+	# Non-interactive mode - worktree path(s) provided as arguments
+	# Support multiple worktrees as arguments
+	FAILED_COUNT=0
+	SUCCESS_COUNT=0
+
+	# Validate all worktree paths first
+	for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
+		if ! validate_worktree "$WORKTREE_PATH"; then
+			exit 1
+		fi
+	done
+
+	# Show what will be destroyed in dry-run mode
+	if [[ "$DRY_RUN" = true ]]; then
+		echo "[DRY RUN] Would DESTROY ${#WORKTREE_ARGS[@]} worktree(s):"
+		for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
+			BRANCH=$(get_worktree_branch "$WORKTREE_PATH")
+			if [[ -n "$BRANCH" ]]; then
+				cat <<-EOF
+					  - $WORKTREE_PATH (branch: $BRANCH)
+					    • Remove worktree directory
+					    • Delete local branch: $BRANCH
+					    • Delete remote branch: origin/$BRANCH
+				EOF
+			else
+				echo "  - $WORKTREE_PATH"
+			fi
+		done
+		cat <<-EOF
+
+			[DRY RUN] No changes made
+		EOF
+		exit 0
+	fi
+
+	for WORKTREE_ARG in "${WORKTREE_ARGS[@]}"; do
+		BRANCH_TO_DELETE=$(get_worktree_branch "$WORKTREE_ARG")
+
+		EXTRA_MSG=""
+		if [[ -n "$BRANCH_TO_DELETE" ]]; then
+			EXTRA_MSG=" and delete its remote branch [$BRANCH_TO_DELETE]"
+		fi
+
+		# Only prompt for confirmation on first worktree when multiple are provided
+		if [[ ${#WORKTREE_ARGS[@]} -eq 1 ]] || [[ "$WORKTREE_ARG" == "${WORKTREE_ARGS[0]}" ]]; then
+			printf "Are you sure you want to destroy '%s' workspace%s? " "$WORKTREE_ARG" "$EXTRA_MSG"
+			if [[ ${#WORKTREE_ARGS[@]} -gt 1 ]]; then
+				printf "(and %d more) " $((${#WORKTREE_ARGS[@]} - 1))
+			fi
+			printf "[y/N]: "
+			read -r CONFIRMATION
+
+			if [[ "$CONFIRMATION" != "y" ]]; then
+				echo "Cancelled"
+				exit 1
+			fi
+		fi
+
+		$CMD worktree remove -f "$WORKTREE_ARG"
+		REMOVE_EXIT=$?
+
+		if [[ $REMOVE_EXIT -eq 0 ]]; then
+			if [[ -n "$BRANCH_TO_DELETE" ]]; then
+				$CMD branch -D "$BRANCH_TO_DELETE" || true
+
+				# Check if remote exists and branch is tracked before attempting deletion
+				if git ls-remote --exit-code --heads origin "$BRANCH_TO_DELETE" >/dev/null 2>&1; then
+					$CMD push origin --delete "$BRANCH_TO_DELETE" 2>/dev/null
+					PUSH_EXIT=$?
+
+					if [[ $PUSH_EXIT -eq 0 ]]; then
+						echo "Destroyed worktree '$WORKTREE_ARG' and deleted branch '$BRANCH_TO_DELETE' (local and remote)"
+					else
+						echo "Destroyed worktree '$WORKTREE_ARG' and deleted local branch '$BRANCH_TO_DELETE' (remote deletion failed)"
+					fi
+				else
+					echo "Destroyed worktree '$WORKTREE_ARG' and deleted local branch '$BRANCH_TO_DELETE' (no remote branch)"
+				fi
+				((SUCCESS_COUNT++))
+			else
+				echo "Destroyed worktree '$WORKTREE_ARG'"
+				((SUCCESS_COUNT++))
+			fi
+		else
+			echo "Failed to destroy worktree '$WORKTREE_ARG'"
+			((FAILED_COUNT++))
+		fi
+	done
+
+	if [[ ${#WORKTREE_ARGS[@]} -gt 1 ]]; then
+		echo ""
+		echo "Summary: $SUCCESS_COUNT succeeded, $FAILED_COUNT failed"
+	fi
+
+	if [[ $FAILED_COUNT -gt 0 ]]; then
 		exit 1
 	fi
 
-	$CMD worktree remove -f "$1"
+	exit 0
+	;;
+switch)
+	shift
 
-	if [[ -n "$BRANCH_TO_DELETE" ]]; then
-		$CMD branch -D "$BRANCH_TO_DELETE"
-		$CMD push origin --delete "$BRANCH_TO_DELETE"
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt switch - Interactively switch to a different worktree
+
+			Usage:
+			  git wt switch                            Interactive selection with fzf
+
+			Options:
+			  --help, -h      Show this help message
+
+			Example:
+			  git wt switch                            # Select worktree and cd into it
+		EOF
+		exit 0
+	fi
+
+	check_fzf_dependency
+
+	WORKTREE_LIST=$(git worktree list | grep -v ".bare")
+
+	if [[ -z "$WORKTREE_LIST" ]]; then
+		echo "No worktrees available"
+		exit 0
+	fi
+
+	SELECTED=$(
+		echo "$WORKTREE_LIST" | fzf \
+			--prompt="Switch to worktree: " \
+			--height=60% \
+			--border \
+			--preview="
+				WORKTREE_PATH=\$(echo {} | awk '{print \$1}')
+				BRANCH=\$(echo {} | sed -E 's/.*\[([^]]+)\].*/\1/')
+
+				echo \"Worktree: \$WORKTREE_PATH\"
+				echo \"Branch: \$BRANCH\"
+				echo \"\"
+				echo \"Status:\"
+				git -c color.status=always -C \"\$WORKTREE_PATH\" status --short --branch 2>/dev/null || echo \"(unable to get status)\"
+				echo \"\"
+				echo \"Recent commits:\"
+				git log --oneline --graph --date=short --color=always --pretty='format:%C(auto)%cd %h%d %s' \"\$BRANCH\" -10 -- 2>/dev/null || echo \"(unable to get log)\"
+			" \
+			--preview-window=right:60%:wrap
+	)
+
+	if [[ -n "$SELECTED" ]]; then
+		WORKTREE_PATH=$(echo "$SELECTED" | awk '{print $1}')
+		echo "Switching to $WORKTREE_PATH..."
+		cd "$WORKTREE_PATH"
 	fi
 	;;
-list | lock | unlock | move | prune | repair)
+list)
+	shift
+
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt list - List all worktrees
+
+			Usage:
+			  git wt list                              List all worktrees
+
+			Options:
+			  --help, -h      Show this help message
+
+			Note: This is a wrapper around 'git worktree list'
+		EOF
+		exit 0
+	fi
+
+	$CMD worktree list "$@"
+	;;
+lock | unlock | move | prune | repair)
 	$CMD worktree "$@"
 	;;
 
-help | --help)
-	$CMD worktree --help
-	echo "--------------------------"
+"" | help | --help)
 	cat <<-EOF
-		git-wt clone <repo>
+		  Run: git worktree --help for worktree help
+		  -------------------------------------------------------------------------------
+			Additional commands (use --help on each for details):
+
+			git-wt <command> --help                      Show help for a specific command
+
+			git-wt clone <repo> [folder-name]
+			    Clone a repository and set it up with worktree structure
+			    Creates .bare directory for git data and initial worktree for default branch
+
+			git-wt migrate
+			    Migrate an existing repository to use worktrees
+			    Converts current repo to .bare + worktrees structure
+			    Preserves: uncommitted changes, staged changes, untracked files, and stashes
+			    Must be run from within the repository to migrate
+
+			git-wt add [options] [<path>] [<commit-ish>]
+			    Create a new worktree (enhanced wrapper around git worktree add)
+			    Always fetches latest refs from origin before creating worktree
+
+			    Interactive mode (no arguments):
+			      git wt add
+			          Opens fzf to select from remote branches or create new branch
+			          - Fetches latest remote refs first
+			          - Shows git log preview for each remote branch
+			          - Option to create new branch with custom name and path
+			          - Automatically sets up upstream tracking
+
+			    Standard git worktree flags:
+			      -b <branch>     Create new branch
+			      -B <branch>     Create/reset branch
+			      All other git worktree add flags are supported
+
+			    Upstream tracking:
+			      - Automatically sets upstream when using -b if branch exists on origin
+			      - Always sets upstream in interactive mode
+			      - Provides helpful push instructions for new local branches
+
+			    Examples:
+			      git wt add
+			          Interactive mode - select branch with fzf
+
+			      git wt add feature origin/feature
+			          Create worktree from remote branch
+
+			      git wt add -b new-feature new-feature
+			          Create new branch and worktree
+
+			      git wt add existing-branch
+			          Create worktree from existing local branch
+
+			git-wt remove|rm [options] [<worktree>...]
+			    Remove worktree(s) and delete local branch(es)
+			    Does NOT delete branches from remote
+
+			    Options:
+			      --dry-run, -n    Show what would be removed without making changes
+
+			    Interactive mode (no arguments):
+			      git wt remove
+			          Opens fzf to select worktree(s) to remove
+			          - Use TAB to select multiple worktrees
+			          - Shows git status and log preview
+			          - Lists all selected worktrees before confirmation
+			          - Shows progress for each worktree
+			          - Removes worktrees and deletes local branches only
+
+			    Direct mode (with arguments):
+			      git wt remove <worktree-path> [<worktree-path>...]
+			          Removes specified worktree(s) and deletes local branch(es)
+			          Supports multiple worktrees as arguments
+
+			    Examples:
+			      git wt remove --dry-run
+			          Preview what would be removed (interactive)
+
+			      git wt remove -n feature-1 feature-2
+			          Preview removing multiple worktrees (direct)
+
+			git-wt destroy [options] [<worktree>...]
+			    Remove worktree(s), delete local branch(es), AND delete from remote
+			    Use this when you're completely done with feature branch(es)
+
+			    Options:
+			      --dry-run, -n    Show what would be destroyed without making changes
+
+			    Interactive mode (no arguments):
+			      git wt destroy
+			          Opens fzf to select worktree(s) to destroy
+			          - Use TAB to select multiple worktrees
+			          - Shows warning about permanent deletion
+			          - Shows git status and log preview
+			          - Single selection: requires typing exact branch name
+			          - Multiple selection: requires typing 'destroy'
+			          - Shows progress for each worktree
+			          - Removes worktrees, deletes local and remote branches
+
+			    Direct mode (with arguments):
+			      git wt destroy <worktree-path> [<worktree-path>...]
+			          Destroys specified worktree(s)
+			          Prompts for confirmation before destroying
+			          Supports multiple worktrees as arguments
+
+			    Examples:
+			      git wt destroy --dry-run
+			          Preview what would be destroyed (interactive)
+
+			      git wt destroy -n feature-1 feature-2
+			          Preview destroying multiple worktrees with full details
+
+			git-wt switch
+			    Interactively switch to a different worktree
+			    Opens fzf to select worktree, then cd into it and start new shell
+			    Shows git status and log preview for each worktree
+
+			    Example:
+			      git wt switch                            # Interactive selection
+
+			git-wt list
+			    List all worktrees (wrapper around git worktree list)
 	EOF
 	;;
 *)
