@@ -55,8 +55,6 @@
     ];
 
     brews = [
-      "go-task"
-      "jiratui"
     ];
   };
 }
