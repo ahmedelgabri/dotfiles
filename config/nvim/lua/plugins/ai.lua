@@ -25,11 +25,6 @@ return {
 			local adapter = 'claude_code'
 
 			return vim.tbl_deep_extend('force', opts or {}, {
-				opts = {
-					visible = true,
-					language = "the same language of user's question",
-					log_level = 'TRACE', -- TRACE|DEBUG|ERROR|INFO
-				},
 				memory = {
 					opts = {
 						chat = {
@@ -135,29 +130,10 @@ return {
 							end,
 							user = vim.env.USER,
 						},
-						slash_commands = {
-							buffer = {
-								opts = {
-									provider = 'default',
-								},
-							},
-							file = {
-								opts = {
-									provider = 'default',
-								},
-							},
-							help = {
-								opts = {
-									provider = 'default',
-								},
-							},
-						},
 					},
 					cmd = { adapter = adapter },
 					inline = { adapter = adapter },
-					agent = {
-						adapter = adapter,
-					},
+					agent = { adapter = adapter },
 				},
 				display = {
 					chat = {
