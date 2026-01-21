@@ -1,8 +1,7 @@
 ---
 name: github
-<!-- prettier-ignore-start -->
-description: This skill should be used when the user mentions GitHub PRs, issues, workflows, releases, or repository management. Triggers on keywords like "github", "gh", "pr", "pull request", "issue", "workflow", "actions", "release", "merge", "review", "ci", "check", or PR/issue number patterns like "#123".
-<!-- prettier-ignore-end -->
+description: |
+  This skill should be used when the user mentions GitHub PRs, issues, workflows, releases, or repository management. Triggers on keywords like "github", "gh", "pr", "pull request", "issue", "workflow", "actions", "release", "merge", "review", "ci", "check", or PR/issue number patterns like "#123".
 version: 1.0.0
 ---
 

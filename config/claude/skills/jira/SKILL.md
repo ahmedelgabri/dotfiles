@@ -1,8 +1,7 @@
 ---
 name: jira
-<!-- prettier-ignore-start -->
-description: This skill should be used when the user mentions Jira issues (e.g., "PROJ-123"), asks about tickets, wants to create/view/update issues, check sprint status, or manage their Jira workflow. Triggers on keywords like "jira", "issue", "ticket", "sprint", "backlog", or issue key patterns.
-<!-- prettier-ignore-end -->
+description: |
+  This skill should be used when the user mentions Jira issues (e.g., "PROJ-123"), asks about tickets, wants to create/view/update issues, check sprint status, or manage their Jira workflow. Triggers on keywords like "jira", "issue", "ticket", "sprint", "backlog", or issue key patterns.
 version: 1.0.0
 ---
 

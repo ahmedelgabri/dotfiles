@@ -1,8 +1,7 @@
 ---
 name: jujutsu
-<!-- prettier-ignore-start -->
-description: This skill should be used when the user mentions Jujutsu version control, "jj" commands, working with jj repositories, or asks about Git to Jujutsu equivalents. Triggers on keywords like "jujutsu", "jj", "jj-vcs", "jj repo", "jj commit", "jj log", "jj new", "jj squash", "jj rebase", "jj bookmark", or questions about Jujutsu workflows and concepts.
-<!-- prettier-ignore-end -->
+description: |
+  This skill should be used when the user mentions Jujutsu version control, "jj" commands, working with jj repositories, or asks about Git to Jujutsu equivalents. Triggers on keywords like "jujutsu", "jj", "jj-vcs", "jj repo", "jj commit", "jj log", "jj new", "jj squash", "jj rebase", "jj bookmark", or questions about Jujutsu workflows and concepts.
 version: 1.0.0
 ---
 

@@ -1,8 +1,7 @@
 ---
 name: generating-commit-messages
-<!-- prettier-disable -->
-description: Generates clear commit messages from Git diffs. Use when writing commit messages or reviewing staged changes.
-<!-- prettier-enable -->
+description: |
+  Generates clear commit messages from Git diffs. Use when writing commit messages or reviewing staged changes.
 ---
 
 # Generating Commit Messages
