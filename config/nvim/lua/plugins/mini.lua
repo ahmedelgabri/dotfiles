@@ -463,14 +463,24 @@ return {
 				file = '',
 			}
 
+			-- Sanitize a string to be safe for use as a filename.
+			-- Handles all characters allowed by git-check-ref-format that are
+			-- problematic for filenames.
+			local function sanitize_for_filename(str)
+				-- Replace characters that are valid in git refs but problematic for filenames:
+				-- / (path separator), . (hidden files, special meaning), ~ ^ : ? * [ \ @
+				-- Also handle spaces and control characters for safety
+				return str:gsub('[/%.~%^:%?%*%[\\@%s%c]+', '_'):gsub('_+', '_'):gsub('^_', ''):gsub('_$', '')
+			end
+
 			local function get_session_name()
-				local name = string.gsub(vim.fn.getcwd(), '/', '_')
+				local name = sanitize_for_filename(vim.fn.getcwd())
 				local obj = vim
 					.system({ 'git', 'branch', '--show-current' }, { text = true })
 					:wait()
 				local branch = vim.trim(obj.stdout or '')
 				if obj.code == 0 and branch ~= '' then
-					return name .. '_' .. branch
+					return name .. '_' .. sanitize_for_filename(branch)
 				else
 					return name
 				end
