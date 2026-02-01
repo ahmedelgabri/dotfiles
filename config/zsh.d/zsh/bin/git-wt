@@ -45,13 +45,13 @@ get_worktree_branch() {
 	# We grep for the worktree name, then extract the branch name from the result
 	# Because a worktree name is not always the branch name
 	local line
-	line=$(git worktree list | grep "${1-}")
+	line=$(git worktree list | grep -F "${1-}")
 	extract_branch_from_line "$line"
 }
 
 validate_worktree() {
 	local path=$1
-	if ! git worktree list | grep -q "^$path "; then
+	if ! git worktree list | grep -qF "$path "; then
 		echo "Error: '$path' is not a valid worktree"
 		return 1
 	fi
@@ -60,7 +60,7 @@ validate_worktree() {
 
 select_worktrees_interactive() {
 	local mode=$1 # "remove" or "destroy"
-	local WORKTREE_LIST=$(git worktree list | grep -v ".bare")
+	local WORKTREE_LIST=$(git worktree list | grep -vF ".bare")
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees to $mode"
@@ -168,6 +168,72 @@ parse_selected_worktrees() {
 		WORKTREE_PATHS+=("$(extract_path_from_line "$line")")
 		BRANCH_NAMES+=("$(extract_branch_from_line "$line")")
 	done <<<"$selected"
+}
+
+delete_remote_branch() {
+	# Delete a branch from the remote if it exists
+	# Args: $1 = branch name
+	# Returns: 0 if deleted or didn't exist, 1 if deletion failed
+	# Outputs: status message describing what happened
+	local branch=$1
+
+	if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+		if $CMD push origin --delete "$branch" 2>/dev/null; then
+			echo "local and remote"
+			return 0
+		else
+			echo "remote deletion failed"
+			return 1
+		fi
+	else
+		echo "no remote branch"
+		return 0
+	fi
+}
+
+remove_single_worktree() {
+	# Remove a single worktree and optionally delete its branch
+	# Args: $1 = worktree path, $2 = branch name (can be empty), $3 = mode ("remove" or "destroy")
+	#       $4 = success prefix (optional), $5 = failure prefix (optional)
+	# Returns: 0 on success, 1 on failure
+	local worktree_path=$1
+	local branch=$2
+	local mode=$3
+	local success_prefix=${4-}
+	local failure_prefix=${5:-$success_prefix}
+	local action_verb="Removed"
+	local action_noun="remove"
+
+	if [[ "$mode" == "destroy" ]]; then
+		action_verb="Destroyed"
+		action_noun="destroy"
+	fi
+
+	$CMD worktree remove -f "$worktree_path"
+	local remove_exit=$?
+
+	if [[ $remove_exit -ne 0 ]]; then
+		echo "${failure_prefix}Failed to $action_noun worktree '$worktree_path'"
+		return 1
+	fi
+
+	if [[ -z "$branch" ]]; then
+		echo "${success_prefix}$action_verb worktree '$worktree_path'"
+		return 0
+	fi
+
+	# Delete local branch
+	$CMD branch -D "$branch" >/dev/null 2>&1 || true
+
+	if [[ "$mode" == "destroy" ]]; then
+		local remote_status
+		remote_status=$(delete_remote_branch "$branch")
+		echo "${success_prefix}$action_verb worktree '$worktree_path' and deleted branch '$branch' ($remote_status)"
+	else
+		echo "${success_prefix}$action_verb worktree '$worktree_path' and deleted local branch '$branch'"
+	fi
+
+	return 0
 }
 
 case ${1-} in
@@ -380,6 +446,21 @@ migrate)
 	NEW_STRUCTURE="${PARENT_DIR}/${REPO_NAME}-new-$$"
 	TEMP_BACKUP="${PARENT_DIR}/${REPO_NAME}-backup-$$"
 
+	# Cleanup function for signal handling
+	cleanup_migrate() {
+		local exit_code=$?
+		if [[ -d "$NEW_STRUCTURE" ]]; then
+			rm -rf "$NEW_STRUCTURE"
+		fi
+		if [[ -d "$TEMP_BACKUP" ]]; then
+			rm -rf "$TEMP_BACKUP"
+		fi
+		exit $exit_code
+	}
+
+	# Set trap to cleanup on interrupt or error
+	trap cleanup_migrate INT TERM
+
 	echo "Creating new repository structure..."
 	mkdir -p "$NEW_STRUCTURE"
 	cd "$NEW_STRUCTURE"
@@ -543,6 +624,9 @@ migrate)
 		Navigate to your worktree:
 		  cd $REPO_ROOT/$CURRENT_BRANCH
 	EOF
+
+	# Clear trap on successful completion
+	trap - INT TERM
 
 	;;
 add)
@@ -794,21 +878,10 @@ remove | rm)
 
 			echo "[$((i + 1))/${#WORKTREES_TO_REMOVE[@]}] Removing $WORKTREE_PATH..."
 
-			$CMD worktree remove -f "$WORKTREE_PATH"
-			REMOVE_EXIT=$?
-
-			if [[ $REMOVE_EXIT -eq 0 ]]; then
-				if [[ -n "$BRANCH" ]]; then
-					$CMD branch -D "$BRANCH" >/dev/null 2>&1 || true
-					echo "  ✓ Removed worktree and deleted local branch '$BRANCH'"
-					((SUCCESS_COUNT++))
-				else
-					echo "  ✓ Removed worktree"
-					((SUCCESS_COUNT++))
-				fi
+			if remove_single_worktree "$WORKTREE_PATH" "$BRANCH" "remove" "  ✓ " "  ✗ "; then
+				SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
 			else
-				echo "  ✗ Failed to remove worktree"
-				((FAILED_COUNT++))
+				FAILED_COUNT=$((FAILED_COUNT + 1))
 			fi
 		done
 
@@ -853,19 +926,10 @@ remove | rm)
 	for WORKTREE_PATH in "${WORKTREE_ARGS[@]}"; do
 		BRANCH_TO_DELETE=$(get_worktree_branch "$WORKTREE_PATH")
 
-		$CMD worktree remove -f "$WORKTREE_PATH"
-		REMOVE_EXIT=$?
-
-		if [[ $REMOVE_EXIT -eq 0 ]] && [[ -n "$BRANCH_TO_DELETE" ]]; then
-			$CMD branch -D "$BRANCH_TO_DELETE" || true
-			echo "Removed worktree '$WORKTREE_PATH' and deleted local branch '$BRANCH_TO_DELETE'"
-			((SUCCESS_COUNT++))
-		elif [[ $REMOVE_EXIT -eq 0 ]]; then
-			echo "Removed worktree '$WORKTREE_PATH'"
-			((SUCCESS_COUNT++))
+		if remove_single_worktree "$WORKTREE_PATH" "$BRANCH_TO_DELETE" "remove"; then
+			SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
 		else
-			echo "Failed to remove worktree '$WORKTREE_PATH'"
-			((FAILED_COUNT++))
+			FAILED_COUNT=$((FAILED_COUNT + 1))
 		fi
 	done
 
@@ -998,36 +1062,10 @@ destroy)
 
 			echo "[$((i + 1))/${#WORKTREES_TO_DESTROY[@]}] Destroying $WORKTREE_PATH..."
 
-			# Remove worktree
-			$CMD worktree remove -f "$WORKTREE_PATH"
-			REMOVE_EXIT=$?
-
-			if [[ $REMOVE_EXIT -eq 0 ]]; then
-				if [[ -n "$BRANCH" ]]; then
-					# Delete local branch
-					$CMD branch -D "$BRANCH" >/dev/null 2>&1 || true
-
-					# Check if remote exists and branch is tracked before attempting deletion
-					if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-						$CMD push origin --delete "$BRANCH" 2>/dev/null
-						PUSH_EXIT=$?
-
-						if [[ $PUSH_EXIT -eq 0 ]]; then
-							echo "  ✓ Destroyed worktree and deleted branch '$BRANCH' (local and remote)"
-						else
-							echo "  ⚠ Destroyed worktree and deleted local branch '$BRANCH' (remote deletion failed)"
-						fi
-					else
-						echo "  ✓ Destroyed worktree and deleted local branch '$BRANCH' (no remote branch)"
-					fi
-					((SUCCESS_COUNT++))
-				else
-					echo "  ✓ Destroyed worktree"
-					((SUCCESS_COUNT++))
-				fi
+			if remove_single_worktree "$WORKTREE_PATH" "$BRANCH" "destroy" "  ✓ " "  ✗ "; then
+				SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
 			else
-				echo "  ✗ Failed to destroy worktree"
-				((FAILED_COUNT++))
+				FAILED_COUNT=$((FAILED_COUNT + 1))
 			fi
 		done
 
@@ -1076,57 +1114,32 @@ destroy)
 		exit 0
 	fi
 
+	# Prompt for confirmation once before processing all worktrees
+	FIRST_BRANCH=$(get_worktree_branch "${WORKTREE_ARGS[0]}")
+	EXTRA_MSG=""
+	if [[ -n "$FIRST_BRANCH" ]]; then
+		EXTRA_MSG=" and delete its remote branch [$FIRST_BRANCH]"
+	fi
+
+	printf "Are you sure you want to destroy '%s' workspace%s? " "${WORKTREE_ARGS[0]}" "$EXTRA_MSG"
+	if [[ ${#WORKTREE_ARGS[@]} -gt 1 ]]; then
+		printf "(and %d more) " $((${#WORKTREE_ARGS[@]} - 1))
+	fi
+	printf "[y/N]: "
+	read -r CONFIRMATION
+
+	if [[ "$CONFIRMATION" != "y" ]]; then
+		echo "Cancelled"
+		exit 1
+	fi
+
 	for WORKTREE_ARG in "${WORKTREE_ARGS[@]}"; do
 		BRANCH_TO_DELETE=$(get_worktree_branch "$WORKTREE_ARG")
 
-		EXTRA_MSG=""
-		if [[ -n "$BRANCH_TO_DELETE" ]]; then
-			EXTRA_MSG=" and delete its remote branch [$BRANCH_TO_DELETE]"
-		fi
-
-		# Only prompt for confirmation on first worktree when multiple are provided
-		if [[ ${#WORKTREE_ARGS[@]} -eq 1 ]] || [[ "$WORKTREE_ARG" == "${WORKTREE_ARGS[0]}" ]]; then
-			printf "Are you sure you want to destroy '%s' workspace%s? " "$WORKTREE_ARG" "$EXTRA_MSG"
-			if [[ ${#WORKTREE_ARGS[@]} -gt 1 ]]; then
-				printf "(and %d more) " $((${#WORKTREE_ARGS[@]} - 1))
-			fi
-			printf "[y/N]: "
-			read -r CONFIRMATION
-
-			if [[ "$CONFIRMATION" != "y" ]]; then
-				echo "Cancelled"
-				exit 1
-			fi
-		fi
-
-		$CMD worktree remove -f "$WORKTREE_ARG"
-		REMOVE_EXIT=$?
-
-		if [[ $REMOVE_EXIT -eq 0 ]]; then
-			if [[ -n "$BRANCH_TO_DELETE" ]]; then
-				$CMD branch -D "$BRANCH_TO_DELETE" || true
-
-				# Check if remote exists and branch is tracked before attempting deletion
-				if git ls-remote --exit-code --heads origin "$BRANCH_TO_DELETE" >/dev/null 2>&1; then
-					$CMD push origin --delete "$BRANCH_TO_DELETE" 2>/dev/null
-					PUSH_EXIT=$?
-
-					if [[ $PUSH_EXIT -eq 0 ]]; then
-						echo "Destroyed worktree '$WORKTREE_ARG' and deleted branch '$BRANCH_TO_DELETE' (local and remote)"
-					else
-						echo "Destroyed worktree '$WORKTREE_ARG' and deleted local branch '$BRANCH_TO_DELETE' (remote deletion failed)"
-					fi
-				else
-					echo "Destroyed worktree '$WORKTREE_ARG' and deleted local branch '$BRANCH_TO_DELETE' (no remote branch)"
-				fi
-				((SUCCESS_COUNT++))
-			else
-				echo "Destroyed worktree '$WORKTREE_ARG'"
-				((SUCCESS_COUNT++))
-			fi
+		if remove_single_worktree "$WORKTREE_ARG" "$BRANCH_TO_DELETE" "destroy"; then
+			SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
 		else
-			echo "Failed to destroy worktree '$WORKTREE_ARG'"
-			((FAILED_COUNT++))
+			FAILED_COUNT=$((FAILED_COUNT + 1))
 		fi
 	done
 
@@ -1175,7 +1188,7 @@ update | u)
 	fi
 
 	# Find the worktree for the default branch
-	default_worktree=$(git worktree list | grep "\[$default_branch\]" | awk '{print $1}')
+	default_worktree=$(git worktree list | grep -F "[$default_branch]" | awk '{print $1}')
 
 	if [[ -z "$default_worktree" ]]; then
 		echo "Error: No worktree found for default branch '$default_branch'"
@@ -1197,20 +1210,21 @@ switch)
 			git wt switch - Interactively switch to a different worktree
 
 			Usage:
-			  git wt switch                            Interactive selection with fzf
+			  cd \$(git wt switch)                      Change to selected worktree
+			  git wt switch                            Print selected worktree path
 
 			Options:
 			  --help, -h      Show this help message
 
 			Example:
-			  git wt switch                            # Select worktree and cd into it
+			  cd \$(git wt switch)                      # Select worktree and cd into it
 		EOF
 		exit 0
 	fi
 
 	check_fzf_dependency
 
-	WORKTREE_LIST=$(git worktree list | grep -v ".bare")
+	WORKTREE_LIST=$(git worktree list | grep -vF ".bare")
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees available"
@@ -1240,8 +1254,9 @@ switch)
 
 	if [[ -n "$SELECTED" ]]; then
 		WORKTREE_PATH=$(echo "$SELECTED" | awk '{print $1}')
-		echo "Switching to $WORKTREE_PATH..."
-		cd "$WORKTREE_PATH"
+		# Output the path for the user to cd into
+		# Usage: cd $(git wt switch) or use shell integration
+		echo "$WORKTREE_PATH"
 	fi
 	;;
 list)
@@ -1391,12 +1406,12 @@ lock | unlock | move | prune | repair)
 			      git wt u                                 # Alias for update
 
 			git-wt switch
-			    Interactively switch to a different worktree
-			    Opens fzf to select worktree, then cd into it and start new shell
+			    Interactively select a worktree and print its path
+			    Use with cd: cd $(git wt switch)
 			    Shows git status and log preview for each worktree
 
 			    Example:
-			      git wt switch                            # Interactive selection
+			      cd $(git wt switch)                      # Select and change to worktree
 
 			git-wt list
 			    List all worktrees (wrapper around git worktree list)
