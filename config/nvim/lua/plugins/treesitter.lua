@@ -77,8 +77,6 @@ return {
 
 		treesitter.setup {}
 
-		vim.treesitter.language.register('bash', 'zsh')
-
 		local ensure_installed = {
 			'embedded_template', -- ERB, EJS, etc…
 			'git_config',
