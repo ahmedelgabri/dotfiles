@@ -235,6 +235,7 @@ clone)
 
 	$CMD config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 	$CMD config core.logallrefupdates true
+	$CMD config worktree.useRelativePaths true
 
 	$CMD fetch --all || {
 		echo "Warning: Failed to fetch all branches"
@@ -1140,6 +1141,53 @@ destroy)
 
 	exit 0
 	;;
+
+update | u)
+	shift
+
+	# Handle --help flag
+	if [[ "${1-}" == "--help" ]] || [[ "${1-}" == "-h" ]]; then
+		cat <<-EOF
+			git wt update - Fetch and update the default branch worktree
+
+			Usage:
+			  git wt update                            Fetch all and pull default branch
+			  git wt u                                 Alias for update
+
+			Options:
+			  --help, -h      Show this help message
+
+			Example:
+			  git wt update                            # Fetch all, then pull main/master
+		EOF
+		exit 0
+	fi
+
+	echo "Fetching from all remotes..."
+	$CMD fetch --all --prune --prune-tags
+
+	# Discover the default branch from remote
+	default_branch=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
+
+	if [[ -z "$default_branch" ]]; then
+		echo "Error: Could not determine default branch from remote"
+		exit 1
+	fi
+
+	# Find the worktree for the default branch
+	default_worktree=$(git worktree list | grep "\[$default_branch\]" | awk '{print $1}')
+
+	if [[ -z "$default_worktree" ]]; then
+		echo "Error: No worktree found for default branch '$default_branch'"
+		echo "Available worktrees:"
+		git worktree list
+		exit 1
+	fi
+
+	echo "Updating default branch '$default_branch' in $default_worktree..."
+	git -C "$default_worktree" pull
+	;;
+
 switch)
 	shift
 
@@ -1332,6 +1380,15 @@ lock | unlock | move | prune | repair)
 
 			      git wt destroy -n feature-1 feature-2
 			          Preview destroying multiple worktrees with full details
+
+			git-wt update|u
+			    Fetch all remotes and update the default branch worktree
+			    Runs: git fetch --all --prune --prune-tags
+			    Then pulls the default branch (main/master) in its worktree
+
+			    Example:
+			      git wt update                            # Fetch and pull default branch
+			      git wt u                                 # Alias for update
 
 			git-wt switch
 			    Interactively switch to a different worktree
