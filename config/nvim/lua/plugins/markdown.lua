@@ -166,7 +166,7 @@ return {
 					end
 
 					-- Add the title of the note as an alias.
-					note:add_alias(note.title or note.id)
+					note:add_alias(note.title or note.metadata.title or note.id)
 
 					local validated_id = tostring(convert_date(note.id))
 					-- We run this at the end so we have access to metadata too
