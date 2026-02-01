@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Finds all .env files in the current directory tree and displays a summary of
+# their contents, showing variable names with truncated/masked values for quick
+# inspection without exposing secrets.
+#
+# Example output:
+#
+#   ==> .env
+#     DATABASE_URL=(len=45)
+#     API_KEY=(len=32)
+#     DEBUG=(empty)
+#
+#   ==> .env.local
+#     SECRET_TOKEN=(len=64)
+#
+
+set -ue -o pipefail
+
+fd -H -t f '^\.env($|\.)' -E node_modules -E .git -E '*.example' -E '*.sample' |
+	while IFS= read -r f; do
+		printf '\n==> %s\n' "$f"
+		awk '
+    /^[[:space:]]*($|#)/ { next }
+    {
+      sub(/\r$/, "")
+      sub(/^[[:space:]]*export[[:space:]]+/, "")
+    }
+    index($0, "=") {
+      k = substr($0, 1, index($0, "=") - 1)
+      v = substr($0, index($0, "=") + 1)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", k)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", v)
+      if (k == "" || k ~ /[[:space:]]/) next
+      q = substr(v, 1, 1)
+      if ((q == "\"" || q == "\047") && substr(v, length(v), 1) == q)
+        v = substr(v, 2, length(v) - 2)
+      m = length(v) ? "(len=" length(v) ")" : "(empty)"
+      printf "  %s=%s\n", k, m
+    }
+  ' "$f"
+	done
