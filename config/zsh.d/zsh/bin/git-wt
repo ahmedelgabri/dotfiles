@@ -12,106 +12,127 @@ if [[ -n "${DEBUG-}" ]]; then
 	CMD="echo git"
 fi
 
+# Color output (respects NO_COLOR environment variable)
+if [[ -z "${NO_COLOR-}" ]]; then
+	GREEN=$'\033[32m'
+	RED=$'\033[31m'
+	YELLOW=$'\033[33m'
+	RESET=$'\033[0m'
+else
+	GREEN=""
+	RED=""
+	YELLOW=""
+	RESET=""
+fi
+
 # Check for required dependencies for interactive commands
 check_fzf_dependency() {
 	if ! command -v fzf >/dev/null 2>&1; then
-		echo "Error: fzf is required for interactive mode"
-		echo "Install fzf: https://github.com/junegunn/fzf"
+		echo "Error: fzf is required for interactive mode" >&2
+		echo "Install fzf: https://github.com/junegunn/fzf" >&2
 		exit 1
 	fi
 }
 
-# Porcelain parsing functions
-# The --porcelain format is stable across git versions and looks like:
-#   worktree /path/to/worktree
-#   HEAD abc123
-#   branch refs/heads/branch-name
-#   <blank line>
-#   worktree /path/to/other
-#   ...
+# Worktree cache - populated once per invocation
+# Avoids multiple calls to 'git worktree list --porcelain'
+declare -A WORKTREE_CACHE_BRANCHES=() # path -> branch
+declare -A WORKTREE_CACHE_PATHS=()    # branch -> path
+declare -A WORKTREE_CACHE_HEADS=()    # path -> short SHA
+WORKTREE_CACHE_LOADED=false
 
-get_worktree_branch() {
-	# Get the branch name for a given worktree path using porcelain format
-	# Args: $1 = worktree path
-	# Returns: branch name (without refs/heads/) or empty if detached
-	local target_path=$1
-	local current_path=""
-	local branch=""
+load_worktree_cache() {
+	# Parse porcelain output once and populate all caches
+	# The --porcelain format is stable across git versions:
+	#   worktree /path/to/worktree
+	#   HEAD abc123...
+	#   branch refs/heads/branch-name
+	#   <blank line>
+	[[ "$WORKTREE_CACHE_LOADED" == true ]] && return 0
 
-	while IFS= read -r line; do
-		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
-			current_path="${BASH_REMATCH[1]}"
-		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
-			if [[ "$current_path" == "$target_path" ]]; then
-				echo "${BASH_REMATCH[1]}"
-				return 0
-			fi
-		elif [[ -z "$line" ]]; then
-			current_path=""
-		fi
-	done < <(git worktree list --porcelain)
-
-	echo ""
-}
-
-validate_worktree() {
-	# Check if a path is a valid worktree using porcelain format
-	# Args: $1 = worktree path
-	local target_path=$1
+	local current_path="" current_branch="" current_head=""
 
 	while IFS= read -r line; do
-		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
-			if [[ "${BASH_REMATCH[1]}" == "$target_path" ]]; then
-				return 0
-			fi
-		fi
-	done < <(git worktree list --porcelain)
-
-	echo "Error: '$target_path' is not a valid worktree"
-	return 1
-}
-
-get_worktree_list() {
-	# Get list of worktrees as "path:branch" lines, excluding .bare
-	# Output format: /path/to/worktree:branch-name (or :detached for detached HEAD)
-	local current_path=""
-	local current_branch=""
-
-	while IFS= read -r line; do
-		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
-			current_path="${BASH_REMATCH[1]}"
-			current_branch=""
-		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
-			current_branch="${BASH_REMATCH[1]}"
-		elif [[ "$line" == "detached" ]]; then
+		case "$line" in
+		worktree\ *)
+			current_path="${line#worktree }"
+			;;
+		HEAD\ *)
+			current_head="${line#HEAD }"
+			current_head="${current_head:0:7}"
+			;;
+		branch\ *)
+			current_branch="${line#branch refs/heads/}"
+			;;
+		detached)
 			current_branch="(detached)"
-		elif [[ -z "$line" && -n "$current_path" ]]; then
-			# Skip .bare directories
-			if [[ "$current_path" != *".bare"* ]]; then
-				echo "${current_path}:${current_branch}"
+			;;
+		"")
+			if [[ -n "$current_path" && "$current_path" != *".bare"* ]]; then
+				WORKTREE_CACHE_BRANCHES["$current_path"]="$current_branch"
+				WORKTREE_CACHE_HEADS["$current_path"]="$current_head"
+				if [[ -n "$current_branch" && "$current_branch" != "(detached)" ]]; then
+					WORKTREE_CACHE_PATHS["$current_branch"]="$current_path"
+				fi
 			fi
-			current_path=""
-			current_branch=""
-		fi
+			current_path="" current_branch="" current_head=""
+			;;
+		esac
 	done < <(git worktree list --porcelain)
 
 	# Handle last entry (no trailing blank line)
 	if [[ -n "$current_path" && "$current_path" != *".bare"* ]]; then
-		echo "${current_path}:${current_branch}"
+		WORKTREE_CACHE_BRANCHES["$current_path"]="$current_branch"
+		WORKTREE_CACHE_HEADS["$current_path"]="$current_head"
+		if [[ -n "$current_branch" && "$current_branch" != "(detached)" ]]; then
+			WORKTREE_CACHE_PATHS["$current_branch"]="$current_path"
+		fi
 	fi
+
+	WORKTREE_CACHE_LOADED=true
+}
+
+get_worktree_branch() {
+	# Get the branch name for a given worktree path
+	# Args: $1 = worktree path
+	# Returns: branch name or empty if detached/not found
+	load_worktree_cache
+	echo "${WORKTREE_CACHE_BRANCHES[$1]:-}"
+}
+
+validate_worktree() {
+	# Check if a path is a valid worktree
+	# Args: $1 = worktree path
+	load_worktree_cache
+	if [[ -n "${WORKTREE_CACHE_BRANCHES[$1]+x}" ]]; then
+		return 0
+	fi
+	echo "Error: '$1' is not a valid worktree" >&2
+	return 1
+}
+
+get_worktree_list() {
+	# Get list of worktrees as "path:branch:head" lines, excluding .bare
+	# Output format: /path/to/worktree:branch-name:abc1234
+	load_worktree_cache
+	local path
+	for path in "${!WORKTREE_CACHE_BRANCHES[@]}"; do
+		echo "${path}:${WORKTREE_CACHE_BRANCHES[$path]}:${WORKTREE_CACHE_HEADS[$path]}"
+	done
 }
 
 format_worktree_for_display() {
-	# Convert "path:branch" format to display format for fzf
-	# Input: /path/to/worktree:branch-name
-	# Output: /path/to/worktree  abc123 [branch-name]
+	# Convert "path:branch:head" format to display format for fzf
+	# Input: /path/to/worktree:branch-name:abc1234
+	# Output: /path/to/worktree abc1234 [branch-name]
 	local entry=$1
 	local wt_path="${entry%%:*}"
-	local branch="${entry#*:}"
+	local rest="${entry#*:}"
+	local branch="${rest%%:*}"
+	local commit="${rest##*:}"
 
-	# Get the short commit hash
-	local commit
-	commit=$(git -C "$wt_path" rev-parse --short HEAD 2>/dev/null || echo "??????")
+	# Fallback if commit is empty
+	[[ -z "$commit" ]] && commit="??????"
 
 	if [[ -n "$branch" && "$branch" != "(detached)" ]]; then
 		printf "%s %s [%s]\n" "$wt_path" "$commit" "$branch"
@@ -123,7 +144,7 @@ format_worktree_for_display() {
 extract_path_from_display_line() {
 	# Extract worktree path from display format line
 	# The path is the first whitespace-separated field
-	echo "$1" | awk '{print $1}'
+	echo "${1%% *}"
 }
 
 extract_branch_from_display_line() {
@@ -139,45 +160,51 @@ extract_branch_from_display_line() {
 }
 
 get_worktree_path_for_branch() {
-	# Find the worktree path for a given branch name using porcelain format
+	# Find the worktree path for a given branch name
 	# Args: $1 = branch name
 	# Returns: worktree path or empty if not found
-	local target_branch=$1
-	local current_path=""
+	load_worktree_cache
+	echo "${WORKTREE_CACHE_PATHS[$1]:-}"
+}
 
-	while IFS= read -r line; do
-		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
-			current_path="${BASH_REMATCH[1]}"
-		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
-			if [[ "${BASH_REMATCH[1]}" == "$target_branch" ]]; then
-				echo "$current_path"
-				return 0
+get_default_branch() {
+	# Get the default branch name, preferring local lookup over network
+	# Returns: branch name (e.g., "main" or "master")
+	local branch
+
+	# Try local symbolic-ref first (instant, no network)
+	branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)
+	if [[ -n "$branch" ]]; then
+		echo "${branch#refs/remotes/origin/}"
+		return 0
+	fi
+
+	# Fall back to network call
+	git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p'
+}
+
+build_worktree_display_list() {
+	# Build newline-separated display list of worktrees for fzf
+	# Output: /path/to/worktree abc1234 [branch-name]
+	local result="" entry display_line
+	while IFS= read -r entry; do
+		if [[ -n "$entry" ]]; then
+			display_line=$(format_worktree_for_display "$entry")
+			if [[ -n "$result" ]]; then
+				result="${result}"$'\n'"${display_line}"
+			else
+				result="$display_line"
 			fi
-		elif [[ -z "$line" ]]; then
-			current_path=""
 		fi
-	done < <(git worktree list --porcelain)
-
-	echo ""
+	done < <(get_worktree_list)
+	echo "$result"
 }
 
 select_worktrees_interactive() {
 	local mode=$1 # "remove" or "destroy"
 
-	# Build display list from porcelain data
-	local WORKTREE_LIST=""
-	local entry
-	while IFS= read -r entry; do
-		if [[ -n "$entry" ]]; then
-			local display_line
-			display_line=$(format_worktree_for_display "$entry")
-			if [[ -n "$WORKTREE_LIST" ]]; then
-				WORKTREE_LIST="${WORKTREE_LIST}"$'\n'"${display_line}"
-			else
-				WORKTREE_LIST="$display_line"
-			fi
-		fi
-	done < <(get_worktree_list)
+	local WORKTREE_LIST
+	WORKTREE_LIST=$(build_worktree_display_list)
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees to $mode"
@@ -247,7 +274,7 @@ validate_branch_name() {
 	local branch_name=$1
 
 	if [[ -z "$branch_name" ]]; then
-		echo "Error: Branch name cannot be empty"
+		echo "Error: Branch name cannot be empty" >&2
 		return 1
 	fi
 
@@ -259,7 +286,7 @@ validate_branch_name() {
 		[[ "$branch_name" =~ /$ ]] ||
 		[[ "$branch_name" =~ \.lock$ ]] ||
 		[[ "$branch_name" == "@" ]]; then
-		cat <<-EOF
+		cat >&2 <<-EOF
 			Error: Invalid branch name '$branch_name'
 			Branch names cannot:
 			  - Start with '.' or '-'
@@ -381,8 +408,8 @@ clone)
 
 	# Validate repository URL is provided
 	if [[ -z "${1-}" ]]; then
-		echo "Error: Repository URL is required"
-		echo "Usage: git wt clone <repository-url> [folder-name]"
+		echo "Error: Repository URL is required" >&2
+		echo "Usage: git wt clone <repository-url> [folder-name]" >&2
 		exit 1
 	fi
 
@@ -391,24 +418,24 @@ clone)
 
 	# Check if directory already exists
 	if [[ -d "$FOLDER_NAME" ]]; then
-		echo "Error: Directory '$FOLDER_NAME' already exists"
+		echo "Error: Directory '$FOLDER_NAME' already exists" >&2
 		exit 1
 	fi
 
 	# Create directory with error handling
 	mkdir -p "$FOLDER_NAME" || {
-		echo "Error: Failed to create directory '$FOLDER_NAME'"
+		echo "Error: Failed to create directory '$FOLDER_NAME'" >&2
 		exit 1
 	}
 
 	cd "$FOLDER_NAME" || {
-		echo "Error: Failed to change to directory '$FOLDER_NAME'"
+		echo "Error: Failed to change to directory '$FOLDER_NAME'" >&2
 		exit 1
 	}
 
 	# Clone with error handling and cleanup on failure
 	$CMD clone --bare "$REPO_URL" .bare || {
-		echo "Error: Failed to clone repository"
+		echo "Error: Failed to clone repository" >&2
 		cd ..
 		rm -rf "$FOLDER_NAME"
 		exit 1
@@ -429,7 +456,7 @@ clone)
 	$CMD for-each-ref --format='%(refname:short)' refs/heads | xargs $CMD branch -D 2>/dev/null || true
 
 	echo "Discovering default branch..."
-	default_branch=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
+	default_branch=$(get_default_branch)
 
 	if [[ -z "$default_branch" ]]; then
 		echo "Warning: Could not discover default branch from remote"
@@ -476,7 +503,7 @@ migrate)
 
 	# Check if we're in a git repository
 	if ! git rev-parse --git-dir >/dev/null 2>&1; then
-		echo "Error: Not in a git repository"
+		echo "Error: Not in a git repository" >&2
 		exit 1
 	fi
 
@@ -489,7 +516,7 @@ migrate)
 	CURRENT_BRANCH=$(git branch --show-current)
 
 	if [[ -z "$CURRENT_BRANCH" ]]; then
-		echo "Error: Not on a branch (detached HEAD state). Please check out a branch first."
+		echo "Error: Not on a branch (detached HEAD state). Please check out a branch first." >&2
 		exit 1
 	fi
 
@@ -505,7 +532,7 @@ migrate)
 	# Discover the default branch from remote
 	DEFAULT_BRANCH=""
 	if [[ -n "$REMOTE_URL" ]]; then
-		DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
+		DEFAULT_BRANCH=$(get_default_branch)
 	fi
 
 	# Fallback: try common default branch names if remote detection fails
@@ -1296,11 +1323,11 @@ update | u)
 	echo "Fetching from all remotes..."
 	$CMD fetch --all --prune --prune-tags
 
-	# Discover the default branch from remote
-	default_branch=$(git remote show origin 2>/dev/null | sed -n '/HEAD branch/s/.*: //p')
+	# Discover the default branch
+	default_branch=$(get_default_branch)
 
 	if [[ -z "$default_branch" ]]; then
-		echo "Error: Could not determine default branch from remote"
+		echo "Error: Could not determine default branch from remote" >&2
 		exit 1
 	fi
 
@@ -1308,9 +1335,9 @@ update | u)
 	default_worktree=$(get_worktree_path_for_branch "$default_branch")
 
 	if [[ -z "$default_worktree" ]]; then
-		echo "Error: No worktree found for default branch '$default_branch'"
-		echo "Available worktrees:"
-		git worktree list
+		echo "Error: No worktree found for default branch '$default_branch'" >&2
+		echo "Available worktrees:" >&2
+		git worktree list >&2
 		exit 1
 	fi
 
@@ -1341,18 +1368,7 @@ switch)
 
 	check_fzf_dependency
 
-	# Build display list from porcelain data
-	WORKTREE_LIST=""
-	while IFS= read -r entry; do
-		if [[ -n "$entry" ]]; then
-			display_line=$(format_worktree_for_display "$entry")
-			if [[ -n "$WORKTREE_LIST" ]]; then
-				WORKTREE_LIST="${WORKTREE_LIST}"$'\n'"${display_line}"
-			else
-				WORKTREE_LIST="$display_line"
-			fi
-		fi
-	done < <(get_worktree_list)
+	WORKTREE_LIST=$(build_worktree_display_list)
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees available"
@@ -1413,7 +1429,7 @@ lock | unlock | move | prune | repair)
 	;;
 
 "" | help | --help)
-	cat <<-EOF
+	cat <<-'EOF'
 		  Run: git worktree --help for worktree help
 		  -------------------------------------------------------------------------------
 			Additional commands (use --help on each for details):
