@@ -34,7 +34,7 @@ in {
           "zoom"
           "whatsapp"
           "telegram"
-          "voiceink"
+          # spokenly # from the app store
         ];
       })
       (mkIf isLinux {
