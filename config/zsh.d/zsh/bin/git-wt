@@ -21,46 +21,163 @@ check_fzf_dependency() {
 	fi
 }
 
-extract_branch_from_line() {
-	# Extract branch name from git worktree list output format: path hash [branch]
-	local line=$1
-	local branch
-	branch=$(echo "$line" | sed -E 's/.*\[([^]]+)\].*/\1/')
-
-	# Return empty if detached HEAD
-	if [[ "$branch" == *"(detached HEAD)"* ]]; then
-		echo ""
-		return
-	fi
-
-	echo "$branch"
-}
-
-extract_path_from_line() {
-	# Extract worktree path (first field) from git worktree list output
-	echo "$1" | awk '{print $1}'
-}
+# Porcelain parsing functions
+# The --porcelain format is stable across git versions and looks like:
+#   worktree /path/to/worktree
+#   HEAD abc123
+#   branch refs/heads/branch-name
+#   <blank line>
+#   worktree /path/to/other
+#   ...
 
 get_worktree_branch() {
-	# We grep for the worktree name, then extract the branch name from the result
-	# Because a worktree name is not always the branch name
-	local line
-	line=$(git worktree list | grep -F "${1-}")
-	extract_branch_from_line "$line"
+	# Get the branch name for a given worktree path using porcelain format
+	# Args: $1 = worktree path
+	# Returns: branch name (without refs/heads/) or empty if detached
+	local target_path=$1
+	local current_path=""
+	local branch=""
+
+	while IFS= read -r line; do
+		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
+			current_path="${BASH_REMATCH[1]}"
+		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
+			if [[ "$current_path" == "$target_path" ]]; then
+				echo "${BASH_REMATCH[1]}"
+				return 0
+			fi
+		elif [[ -z "$line" ]]; then
+			current_path=""
+		fi
+	done < <(git worktree list --porcelain)
+
+	echo ""
 }
 
 validate_worktree() {
-	local path=$1
-	if ! git worktree list | grep -qF "$path "; then
-		echo "Error: '$path' is not a valid worktree"
-		return 1
+	# Check if a path is a valid worktree using porcelain format
+	# Args: $1 = worktree path
+	local target_path=$1
+
+	while IFS= read -r line; do
+		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
+			if [[ "${BASH_REMATCH[1]}" == "$target_path" ]]; then
+				return 0
+			fi
+		fi
+	done < <(git worktree list --porcelain)
+
+	echo "Error: '$target_path' is not a valid worktree"
+	return 1
+}
+
+get_worktree_list() {
+	# Get list of worktrees as "path:branch" lines, excluding .bare
+	# Output format: /path/to/worktree:branch-name (or :detached for detached HEAD)
+	local current_path=""
+	local current_branch=""
+
+	while IFS= read -r line; do
+		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
+			current_path="${BASH_REMATCH[1]}"
+			current_branch=""
+		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
+			current_branch="${BASH_REMATCH[1]}"
+		elif [[ "$line" == "detached" ]]; then
+			current_branch="(detached)"
+		elif [[ -z "$line" && -n "$current_path" ]]; then
+			# Skip .bare directories
+			if [[ "$current_path" != *".bare"* ]]; then
+				echo "${current_path}:${current_branch}"
+			fi
+			current_path=""
+			current_branch=""
+		fi
+	done < <(git worktree list --porcelain)
+
+	# Handle last entry (no trailing blank line)
+	if [[ -n "$current_path" && "$current_path" != *".bare"* ]]; then
+		echo "${current_path}:${current_branch}"
 	fi
-	return 0
+}
+
+format_worktree_for_display() {
+	# Convert "path:branch" format to display format for fzf
+	# Input: /path/to/worktree:branch-name
+	# Output: /path/to/worktree  abc123 [branch-name]
+	local entry=$1
+	local wt_path="${entry%%:*}"
+	local branch="${entry#*:}"
+
+	# Get the short commit hash
+	local commit
+	commit=$(git -C "$wt_path" rev-parse --short HEAD 2>/dev/null || echo "??????")
+
+	if [[ -n "$branch" && "$branch" != "(detached)" ]]; then
+		printf "%s %s [%s]\n" "$wt_path" "$commit" "$branch"
+	else
+		printf "%s %s (detached HEAD)\n" "$wt_path" "$commit"
+	fi
+}
+
+extract_path_from_display_line() {
+	# Extract worktree path from display format line
+	# The path is the first whitespace-separated field
+	echo "$1" | awk '{print $1}'
+}
+
+extract_branch_from_display_line() {
+	# Extract branch name from display format line
+	# Format: /path/to/worktree abc123 [branch-name]
+	local line=$1
+
+	if [[ "$line" =~ \[([^\]]+)\]$ ]]; then
+		echo "${BASH_REMATCH[1]}"
+	else
+		echo ""
+	fi
+}
+
+get_worktree_path_for_branch() {
+	# Find the worktree path for a given branch name using porcelain format
+	# Args: $1 = branch name
+	# Returns: worktree path or empty if not found
+	local target_branch=$1
+	local current_path=""
+
+	while IFS= read -r line; do
+		if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
+			current_path="${BASH_REMATCH[1]}"
+		elif [[ "$line" =~ ^branch\ refs/heads/(.+)$ ]]; then
+			if [[ "${BASH_REMATCH[1]}" == "$target_branch" ]]; then
+				echo "$current_path"
+				return 0
+			fi
+		elif [[ -z "$line" ]]; then
+			current_path=""
+		fi
+	done < <(git worktree list --porcelain)
+
+	echo ""
 }
 
 select_worktrees_interactive() {
 	local mode=$1 # "remove" or "destroy"
-	local WORKTREE_LIST=$(git worktree list | grep -vF ".bare")
+
+	# Build display list from porcelain data
+	local WORKTREE_LIST=""
+	local entry
+	while IFS= read -r entry; do
+		if [[ -n "$entry" ]]; then
+			local display_line
+			display_line=$(format_worktree_for_display "$entry")
+			if [[ -n "$WORKTREE_LIST" ]]; then
+				WORKTREE_LIST="${WORKTREE_LIST}"$'\n'"${display_line}"
+			else
+				WORKTREE_LIST="$display_line"
+			fi
+		fi
+	done < <(get_worktree_list)
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees to $mode"
@@ -158,15 +275,15 @@ validate_branch_name() {
 
 parse_selected_worktrees() {
 	# Parse fzf selection output into worktree paths and branch names
-	# Args: $1 = fzf output (multiline string)
+	# Args: $1 = fzf output (multiline string, display format)
 	# Sets global arrays: WORKTREE_PATHS and BRANCH_NAMES
 	local selected=$1
 	WORKTREE_PATHS=()
 	BRANCH_NAMES=()
 
 	while IFS= read -r line; do
-		WORKTREE_PATHS+=("$(extract_path_from_line "$line")")
-		BRANCH_NAMES+=("$(extract_branch_from_line "$line")")
+		WORKTREE_PATHS+=("$(extract_path_from_display_line "$line")")
+		BRANCH_NAMES+=("$(extract_branch_from_display_line "$line")")
 	done <<<"$selected"
 }
 
@@ -1188,7 +1305,7 @@ update | u)
 	fi
 
 	# Find the worktree for the default branch
-	default_worktree=$(git worktree list | grep -F "[$default_branch]" | awk '{print $1}')
+	default_worktree=$(get_worktree_path_for_branch "$default_branch")
 
 	if [[ -z "$default_worktree" ]]; then
 		echo "Error: No worktree found for default branch '$default_branch'"
@@ -1224,7 +1341,18 @@ switch)
 
 	check_fzf_dependency
 
-	WORKTREE_LIST=$(git worktree list | grep -vF ".bare")
+	# Build display list from porcelain data
+	WORKTREE_LIST=""
+	while IFS= read -r entry; do
+		if [[ -n "$entry" ]]; then
+			display_line=$(format_worktree_for_display "$entry")
+			if [[ -n "$WORKTREE_LIST" ]]; then
+				WORKTREE_LIST="${WORKTREE_LIST}"$'\n'"${display_line}"
+			else
+				WORKTREE_LIST="$display_line"
+			fi
+		fi
+	done < <(get_worktree_list)
 
 	if [[ -z "$WORKTREE_LIST" ]]; then
 		echo "No worktrees available"
@@ -1253,7 +1381,7 @@ switch)
 	)
 
 	if [[ -n "$SELECTED" ]]; then
-		WORKTREE_PATH=$(echo "$SELECTED" | awk '{print $1}')
+		WORKTREE_PATH=$(extract_path_from_display_line "$SELECTED")
 		# Output the path for the user to cd into
 		# Usage: cd $(git wt switch) or use shell integration
 		echo "$WORKTREE_PATH"
