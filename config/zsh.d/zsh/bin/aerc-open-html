@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# Open HTML email content in browser
+
+import email
+import subprocess
+import sys
+import tempfile
+from email import policy
+from email.message import EmailMessage
+
+
+def find_html_part(msg: EmailMessage) -> str | None:
+    """Find HTML part in email message."""
+    for part in msg.walk():
+        if part.get_content_type() == "text/html":
+            return part.get_content()
+    return None
+
+
+def main() -> None:
+    msg_bytes = sys.stdin.buffer.read()
+    msg = email.message_from_bytes(msg_bytes, policy=policy.default)  # type: ignore[arg-type]
+    if not isinstance(msg, EmailMessage):
+        print("Failed to parse email", file=sys.stderr)
+        sys.exit(1)
+
+    html_content = find_html_part(msg)
+    if not html_content:
+        print("No HTML content found in this email", file=sys.stderr)
+        sys.exit(1)
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".html", delete=False) as f:
+        f.write(html_content)
+    subprocess.run(["open", f.name], check=True)
+
+
+if __name__ == "__main__":
+    main()
