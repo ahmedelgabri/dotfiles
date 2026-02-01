@@ -20,6 +20,7 @@ for _, ft in ipairs {
 	'typescript',
 	'typescript.tsx',
 	'typescriptreact',
+	'astro',
 } do
 	js_formats[ft] = {
 		'oxfmt',
