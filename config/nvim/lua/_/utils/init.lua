@@ -162,9 +162,12 @@ function M.remove(option, item)
 end
 
 function M.web_roots(_, on_dir)
-	on_dir(
+	local root =
 		vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
-	)
+
+	if root then
+		on_dir(root)
+	end
 end
 
 return M

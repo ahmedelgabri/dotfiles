@@ -55,6 +55,11 @@ return {
 		usePlaceholders = true,
 	},
 	root_dir = function(_bufnr, on_dir)
-		on_dir(vim.fs.root(0, { 'go.mod', '.git', vim.api.nvim_buf_get_name(0) }))
+		local root =
+			vim.fs.root(0, { 'go.mod', '.git', vim.api.nvim_buf_get_name(0) })
+
+		if root then
+			on_dir(root)
+		end
 	end,
 }

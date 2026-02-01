@@ -10,16 +10,22 @@ local lang_settings = {
 
 return {
 	root_dir = function(_bufnr, on_dir)
-		on_dir(
-			not vim.fs.root(0, { '.flowconfig', 'deno.json', 'deno.jsonc' })
-				and vim.fs.root(0, {
-					'tsconfig.json',
-					'jsconfig.json',
-					'package.json',
-					'.git',
-					vim.api.nvim_buf_get_name(0),
-				})
-		)
+		-- Don't attach if this is a Deno or Flow project
+		if vim.fs.root(0, { '.flowconfig', 'deno.json', 'deno.jsonc' }) then
+			return
+		end
+
+		local root = vim.fs.root(0, {
+			'tsconfig.json',
+			'jsconfig.json',
+			'package.json',
+			'.git',
+			vim.api.nvim_buf_get_name(0),
+		})
+
+		if root then
+			on_dir(root)
+		end
 	end,
 	settings = {
 		typescript = vim.tbl_deep_extend('force', lang_settings, {
