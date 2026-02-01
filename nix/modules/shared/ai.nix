@@ -32,7 +32,7 @@ in {
             StandardOutPath = "${homeDir}/Library/Logs/ollama-output.log";
             StandardErrorPath = "${homeDir}/Library/Logs/ollama-error.log";
             EnvironmentVariables = {
-              "OLLAMA_HOST" = "0.0.0.0:11434";
+              "OLLAMA_HOST" = "127.0.0.1:11434";
             };
           };
         };
