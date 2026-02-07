@@ -16,7 +16,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [git];
+      environment.systemPackages = with pkgs; [git git-wt];
 
       my.user = {
         packages = with pkgs; [

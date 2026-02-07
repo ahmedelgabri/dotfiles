@@ -65,6 +65,11 @@
       };
     };
 
+    git-wt = {
+      url = "github:ahmedelgabri/git-wt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -204,6 +209,7 @@
 
             inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
             inherit (inputs.emmylua-analyzer-rust.packages.${prev.stdenv.hostPlatform.system}) emmylua_ls emmylua_check;
+            inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
           })
         ];
       };
