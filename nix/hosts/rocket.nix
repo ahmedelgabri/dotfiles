@@ -37,6 +37,7 @@
         k9s
         lazydocker
         mise
+        gemini-cli
       ];
     };
   };

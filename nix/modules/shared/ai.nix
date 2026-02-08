@@ -38,10 +38,18 @@ in {
         };
         homebrew.casks = [
           "claude"
+          "claude-code"
         ];
       })
       (mkIf isLinux {
-        })
+        my = {
+          user = {
+            packages = with pkgs; [
+              claude-code
+            ];
+          };
+        };
+      })
 
       {
         environment = {
@@ -74,9 +82,6 @@ in {
             packages = with pkgs; [
               ollama
               llama-cpp
-              claude-code
-              gemini-cli
-              repomix
             ];
           };
           hm.file = {
