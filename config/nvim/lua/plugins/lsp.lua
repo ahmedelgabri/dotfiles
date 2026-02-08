@@ -135,7 +135,7 @@ return {
 
 				{ 'bashls', 'bash-language-server' },
 				{ 'emmylua_ls' },
-				{ 'rust_analyzer' },
+				{ 'rust_analyzer', 'rust-analyzer' },
 				{ 'gopls' },
 				{ 'nixd' },
 				{ 'ast_grep', utils.get_lsp_bin 'ast-grep' },
