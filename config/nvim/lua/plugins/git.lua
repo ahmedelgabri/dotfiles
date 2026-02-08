@@ -29,7 +29,7 @@ return {
 	},
 	{
 		'https://github.com/tpope/vim-fugitive',
-		cmd = { 'Git' },
+		lazy = false, -- we need it for the statusline branch info
 		dependencies = {
 			{ 'https://github.com/tpope/vim-rhubarb' },
 		},
