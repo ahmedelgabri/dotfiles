@@ -444,13 +444,21 @@ in {
                   # only alphanumeric chars are considered WORDCHARS
                   select-word-style bash
 
-                  # Smart compinit: only skip check if zcompdump is recent (less than 24 hours old)
-                  # This ensures new completions (like zsh-completions) trigger a rebuild
+                  # Rebuild zcompdump when fpath completion count changes (e.g. new package installed)
                   autoload -Uz compinit
-                  if [[ -n "${"$"}{ZCOMPDUMP_PATH}"(#qNmh-24) ]]; then
-                    compinit -C -d "${"$"}ZCOMPDUMP_PATH"
+                  if [[ -f "${"$"}{ZCOMPDUMP_PATH}" ]]; then
+                    local dump_header
+                    read -r dump_header < "${"$"}{ZCOMPDUMP_PATH}"
+                    local dump_count=${"$"}{${"$"}{dump_header#\#files: }%%[[:space:]]*}
+                    local -a comp_files=( ${"$"}{^fpath}/*(-.,@N) )
+                    local current_count=${"$"}{#comp_files}
+                    if [[ "${"$"}dump_count" == "${"$"}current_count" ]]; then
+                      compinit -C -d "${"$"}{ZCOMPDUMP_PATH}"
+                    else
+                      compinit -d "${"$"}{ZCOMPDUMP_PATH}"
+                    fi
                   else
-                    compinit -d "${"$"}ZCOMPDUMP_PATH"
+                    compinit -d "${"$"}{ZCOMPDUMP_PATH}"
                   fi
 
                   # Compile zcompdump for faster loading
