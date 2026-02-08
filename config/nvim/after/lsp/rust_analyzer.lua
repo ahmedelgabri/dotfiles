@@ -16,14 +16,10 @@ return {
 			procMacro = {
 				enable = true,
 			},
-			checkOnSave = {
-				-- default: `cargo check`
-				command = 'clippy',
-				allFeatures = true,
-			},
+			checkOnSave = true,
 			assist = {
 				importEnforceGranularity = true,
-				importPrefix = 'create',
+				importPrefix = 'crate',
 			},
 			inlayHints = {
 				lifetimeElisionHints = {
