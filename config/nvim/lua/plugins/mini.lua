@@ -85,7 +85,7 @@ return {
 				-- Try this. If you don't like it - delete next line and this comment.
 				search_method = 'cover',
 				-- I work with big files sometimes, 50 is too low.
-				n_lines = 2000,
+				n_lines = 20000,
 			}
 
 			-- Surround
@@ -470,7 +470,11 @@ return {
 				-- Replace characters that are valid in git refs but problematic for filenames:
 				-- / (path separator), . (hidden files, special meaning), ~ ^ : ? * [ \ @
 				-- Also handle spaces and control characters for safety
-				return str:gsub('[/%.~%^:%?%*%[\\@%s%c]+', '_'):gsub('_+', '_'):gsub('^_', ''):gsub('_$', '')
+				return str
+					:gsub('[/%.~%^:%?%*%[\\@%s%c]+', '_')
+					:gsub('_+', '_')
+					:gsub('^_', '')
+					:gsub('_$', '')
 			end
 
 			local function get_session_name()
