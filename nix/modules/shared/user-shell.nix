@@ -196,7 +196,6 @@ in {
             };
 
           systemPackages = with pkgs; [
-            ast-grep
             cachix
             curl
             direnv
