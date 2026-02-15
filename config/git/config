@@ -15,7 +15,12 @@
 	; https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
 	; hash (#) conflicts with Markdown when I use hub to open PRs etc...
-	commentChar = auto
+	; auto will be removed in git 3.0 this will break treesiter which doesn't support
+	; custom chars and if I use # then Markdown rendering will be broken
+	; https://github.com/gbprod/tree-sitter-gitcommit/issues/75
+	; https://github.com/gbprod/tree-sitter-gitcommit/issues/45
+	; https://github.com/gbprod/tree-sitter-gitcommit/pull/79
+	; commentChar = auto
 	hooksPath = ~/.config/git/hooks
 	pager = delta_
 	; fsmonitor = true
