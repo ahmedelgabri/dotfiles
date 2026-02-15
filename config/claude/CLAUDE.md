@@ -163,14 +163,6 @@ the machine name (as reported by `hostname`) in lowercase matches a Markdown
 file in the "host" directory, read that file after this one. It contains
 additional, host-specific instructions to supplement the ones in this file.
 
-# Use Cursor rules, if available
-
-When working in a repo, check to see whether there are any files under
-`.cursor/rules` in the repo root. These files have an ".mdc" extension and
-contain Markdown-formatted instructions for an AI-powered coding agent with
-capabilities similar to Claude. Use the contents of these files to guide your
-suggestions.
-
 # GitHub
 
 Your primary method of interacting with GitHub should be through the GitHub CLI.
