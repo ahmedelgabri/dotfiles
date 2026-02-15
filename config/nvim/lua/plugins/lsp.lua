@@ -96,20 +96,6 @@ return {
 					debounce_text_changes = 150,
 				},
 				root_markers = { '.git' },
-				root_dir = function(bufnr, on_dir)
-					local bufname = vim.api.nvim_buf_get_name(bufnr)
-
-					-- Skip non-file buffers (oil://, fugitive://, etc.)
-					if bufname == '' or bufname:match '^%w+://' then
-						return
-					end
-
-					local root = vim.fs.root(bufnr, { '.git' })
-
-					if root then
-						on_dir(root)
-					end
-				end,
 			})
 
 			local tsgo = vim.fn.executable 'tsgo' == 1
@@ -134,7 +120,7 @@ return {
 				{ 'ruff' },
 
 				{ 'bashls', 'bash-language-server' },
-				{ 'emmylua_ls' },
+				{ 'lua_ls', 'yaml-language-server' },
 				{ 'rust_analyzer', 'rust-analyzer' },
 				{ 'gopls' },
 				{ 'nixd' },

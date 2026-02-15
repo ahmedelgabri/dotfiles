@@ -51,11 +51,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    emmylua-analyzer-rust = {
-      url = "github:EmmyLuaLs/emmylua-analyzer-rust";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -208,7 +203,6 @@
             });
 
             inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
-            inherit (inputs.emmylua-analyzer-rust.packages.${prev.stdenv.hostPlatform.system}) emmylua_ls emmylua_check;
             inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
           })
         ];

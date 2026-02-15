@@ -60,8 +60,7 @@ in {
           yaml-language-server
           tailwindcss-language-server
           statix
-          emmylua_ls
-          emmylua_check
+          lua-language-server
           tree-sitter # required for treesitter "auto-install" option to work
           nixd # nix lsp
           taplo # TOML linter and formatter
