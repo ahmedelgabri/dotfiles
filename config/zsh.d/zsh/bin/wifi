@@ -14,12 +14,6 @@ is_wifi() {
 	[ "$interface" = "$wifi_service" ]
 }
 
-# Function to check if the interface is Ethernet
-is_ethernet() {
-	local interface="$1"
-	[[ "$interface" == *Ethernet* ]]
-}
-
 # Function to check if the interface is connected
 is_connected() {
 	local interface="$1"
@@ -89,9 +83,6 @@ get_formatted_output() {
 		if is_wifi "$interface"; then
 			ssid=$(get_wifi_ssid)
 			echo -ne "\UF05A9  $ssid"
-		elif is_ethernet "$interface"; then
-			# echo -ne "\UF0200  $interface"
-			echo -ne "\UF0200 "
 		else
 			# echo -ne "\UF06F5  $interface"
 			echo -ne "\UF06F5 " # Icon for other interfaces
