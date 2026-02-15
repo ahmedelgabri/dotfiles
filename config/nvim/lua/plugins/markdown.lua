@@ -59,6 +59,39 @@ end
 
 return {
 	{
+		'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+		opts = {
+			file_types = { 'markdown', 'md', 'codecompanion' },
+			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
+			code = {
+				sign = false,
+				border = 'thin',
+				position = 'right',
+				width = 'block',
+				above = '▁',
+				below = '▔',
+				language_left = '█',
+				language_right = '█',
+				language_border = '▁',
+				left_pad = 1,
+				right_pad = 1,
+			},
+			heading = {
+				sign = false,
+				width = 'block',
+				left_pad = 1,
+				right_pad = 0,
+				position = 'inline',
+				icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
+			},
+		},
+	},
+	{
+		'https://github.com/YousefHadder/markdown-plus.nvim',
+		ft = { 'markdown', 'txt', 'text' },
+		opts = {
+			filetypes = { 'markdown', 'text', 'txt' },
+		},
 	},
 	{ 'https://github.com/davidmh/mdx.nvim' },
 	{
