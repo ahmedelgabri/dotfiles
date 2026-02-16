@@ -1,8 +1,9 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-settings.json",
-	"alwaysThinkingEnabled": false,
+	"alwaysThinkingEnabled": true,
 	"includeCoAuthoredBy": false,
 	"cleanupPeriodDays": 99999,
+	"model": "opus",
 	"permissions": {
 		"allow": [
 			"Bash(fd:*)",
