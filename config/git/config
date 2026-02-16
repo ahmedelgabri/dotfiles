@@ -20,7 +20,7 @@
 	; https://github.com/gbprod/tree-sitter-gitcommit/issues/75
 	; https://github.com/gbprod/tree-sitter-gitcommit/issues/45
 	; https://github.com/gbprod/tree-sitter-gitcommit/pull/79
-	; commentChar = auto
+	commentChar = "#"
 	hooksPath = ~/.config/git/hooks
 	pager = delta_
 	; fsmonitor = true
