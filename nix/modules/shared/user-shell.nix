@@ -423,8 +423,8 @@ in {
                    PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
                    # Arrays in zsh starts from 1
                    export PURE_PROMPT_SYMBOL=${"$"}{PROMPT_SYMBOLS[${"$"}RANDOM % ${"$"}{#PROMPT_SYMBOLS[@]} + 1]}
-                   export PURE_SUSPENDED_JOBS_SYMBOL="%F{008}%(1j.[%j].)"
 
+                   zstyle :prompt:pure:suspended_jobs color 008
                    zstyle :prompt:pure:git:branch color blue
                    zstyle :prompt:pure:git:arrow color blue
                    zstyle :prompt:pure:git:stash color blue

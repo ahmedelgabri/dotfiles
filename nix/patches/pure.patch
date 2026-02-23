@@ -1,5 +1,5 @@
 diff --git a/pure.zsh b/pure.zsh
-index 80f0a8e..7348c36 100644
+index 80f0a8e..e257c32 100644
 --- a/pure.zsh
 +++ b/pure.zsh
 @@ -126,6 +126,12 @@ prompt_pure_preprompt_render() {
@@ -95,3 +95,12 @@ index 80f0a8e..7348c36 100644
  		host                 242
  		path                 blue
  		prompt:error         red
+@@ -862,7 +903,7 @@ prompt_pure_setup() {
+ 	#   myenv ❯
+ 	#
+ 	# Preprompt line: each %(NV..) section only renders when its psvar is non-empty.
+-	PROMPT='%(12V.%F{$prompt_pure_colors[suspended_jobs]}%12v%f .)'
++	PROMPT='%(1j.%F{$prompt_pure_colors[suspended_jobs]}[%j]%f .)'
+ 	PROMPT+='%(13V.${prompt_pure_state[username]} .)'
+ 	PROMPT+='%F{${prompt_pure_colors[path]}}%~%f'
+ 	PROMPT+='%(14V. %F{${prompt_pure_git_branch_color}}%14v%(15V.%F{$prompt_pure_colors[git:dirty]}%15v.)%f.)'
