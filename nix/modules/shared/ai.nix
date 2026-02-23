@@ -57,6 +57,7 @@ in {
             packages = with pkgs; [
               ollama
               llama-cpp
+              ccpeak
             ];
           };
           hm.file = {

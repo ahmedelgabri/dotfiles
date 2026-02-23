@@ -61,7 +61,12 @@
     };
 
     git-wt = {
-      url = "github:ahmedelgabri/git-wt";
+      url = "github:ahmedelgabri/git-wt?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ccpeak = {
+      url = "github:ahmedelgabri/ccpeak?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -204,6 +209,7 @@
 
             inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
             inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
+            inherit (inputs.ccpeak.packages.${prev.stdenv.hostPlatform.system}) ccpeak;
           })
         ];
       };
