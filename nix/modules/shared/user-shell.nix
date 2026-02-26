@@ -211,7 +211,6 @@ in {
             wget
             zoxide
             mise
-            devcontainer
             pure-prompt
             (pkgs.writeScriptBin "nixup"
               /*
