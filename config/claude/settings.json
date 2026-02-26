@@ -82,11 +82,6 @@
 			"Bash(curl:*)"
 		]
 	},
-	"sandbox": {
-		"enabled": true,
-		"autoAllowBashIfSandboxed": false,
-		"allowUnsandboxedCommands": false
-	},
 	"statusLine": {
 		"type": "command",
 		"command": "~/.claude/scripts/statusline.sh"
@@ -184,7 +179,7 @@
 					},
 					{
 						"type": "command",
-						"command": "jq -r '.message' | xargs -I {} hs -c 'hs.notify.new({title=\"Claude\", informativeText=\"{}\"}):send()'"
+						"command": "jq -r '.message' | terminal-notifier -title Claude -subtitle \"Notification hook\" -activate com.mitchellh.ghostty"
 					}
 				]
 			}
