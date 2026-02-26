@@ -44,7 +44,7 @@
         "type": "github"
       }
     },
-    "ccpeak": {
+    "ccpeek": {
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": [
@@ -53,17 +53,16 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1771801654,
-        "narHash": "sha256-umwoIPtVSviMGccPh1aN51N8C2fNrSXdqa5kfR0umW0=",
+        "lastModified": 1771845057,
+        "narHash": "sha256-wTju2YR61nEfgrqCr84A8uzfgcWTRMTzbcF5ZPeCIPY=",
         "owner": "ahmedelgabri",
-        "repo": "ccpeak",
-        "rev": "f4dcc4fde86624461699405486d11e0abaaf8706",
+        "repo": "ccpeek",
+        "rev": "dc1e5c79dfac6952b7a9ddd0293777f3200e46f6",
         "type": "github"
       },
       "original": {
         "owner": "ahmedelgabri",
-        "ref": "main",
-        "repo": "ccpeak",
+        "repo": "ccpeek",
         "type": "github"
       }
     },
@@ -207,16 +206,15 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1771802664,
-        "narHash": "sha256-36jfQ4QaOwD8twJWHDg/UaiRPA/knjf2Jj4NaLIzIw4=",
+        "lastModified": 1771852844,
+        "narHash": "sha256-WFVLlEG7clkQnhJF1f0EntO8OyAtC02FcxfMqdo6INI=",
         "owner": "ahmedelgabri",
         "repo": "git-wt",
-        "rev": "861f0105c34338c7428924d4e210bc32a08080b5",
+        "rev": "450c479480510a8d56a65540e6ba9f97ad2d6420",
         "type": "github"
       },
       "original": {
         "owner": "ahmedelgabri",
-        "ref": "main",
         "repo": "git-wt",
         "type": "github"
       }
@@ -377,7 +375,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "ccpeak": "ccpeak",
+        "ccpeek": "ccpeek",
         "darwin": "darwin",
         "gh-gfm-preview": "gh-gfm-preview",
         "git-wt": "git-wt",
