@@ -251,7 +251,7 @@ in {
               newsraft
               bun
               circumflex # HN CLI reader
-              repomix
+              terminal-notifier
             ];
           };
 
