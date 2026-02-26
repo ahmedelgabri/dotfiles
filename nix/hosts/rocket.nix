@@ -38,11 +38,16 @@
         lazydocker
         mise
         gemini-cli
+        entr
       ];
     };
   };
 
   homebrew = {
+    taps = [
+      "atlassian-labs/acli"
+    ];
+
     casks = [
       "loom"
       "docker-desktop"
@@ -52,10 +57,10 @@
       "google-chrome"
       "cursor"
       "claude-code"
-      "superwhisper"
     ];
 
     brews = [
+      "acli"
     ];
   };
 }
