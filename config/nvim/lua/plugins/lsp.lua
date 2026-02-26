@@ -98,8 +98,6 @@ return {
 				root_markers = { '.git' },
 			})
 
-			local tsgo = vim.fn.executable 'tsgo' == 1
-
 			local servers = {
 				{ 'cssls', 'vscode-css-language-server' },
 				{ 'stylelint_lsp', 'stylelint-lsp' },
@@ -107,8 +105,8 @@ return {
 				{ 'eslint', 'vscode-eslint-language-server' },
 				{ 'oxlint', utils.get_lsp_bin 'oxlint' },
 				{ 'oxfmt', utils.get_lsp_bin 'oxfmt' },
-				{ 'tsgo', tsgo },
-				{ 'vtsls', not tsgo },
+				{ 'tsgo', utils.get_lsp_bin 'tsgo' ~= 'tsgo' },
+				{ 'vtsls', utils.get_lsp_bin 'tsgo' == 'tsgo' },
 				{ 'denols', 'deno' },
 				{ 'biome', utils.get_lsp_bin 'biome' },
 				{ 'tailwindcss', 'tailwindcss-language-server' },
