@@ -1,7 +1,6 @@
 return {
 	{
 		'https://github.com/ibhagwan/fzf-lua',
-		ft = { 'markdown' },
 		keys = {
 			{
 				'<leader><leader>',
