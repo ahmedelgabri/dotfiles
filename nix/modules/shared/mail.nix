@@ -12,6 +12,7 @@ with config.my; let
   # Helper functions for multi-account support
   primaryAccount = lib.head cfg.accounts;
   lowerName = account: lib.toLower account;
+  localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
 
   # Service-specific defaults lookup
   serviceDefaults = {
@@ -130,7 +131,7 @@ with config.my; let
         server = "smtp.gmail.com";
       };
       aerc = {
-        source_server = _: "imaps://gmail.com@${imap.server}";
+        source_server = email: "imaps://${builtins.replaceStrings ["@"] ["%40"] email}@${imap.server}";
         outgoing_server = "smtps+plain://gmail.com@${smtp.server}";
       };
       carddav = {
@@ -211,6 +212,12 @@ in {
                 type = types.enum ["fastmail.com" "gmail.com" "cirrux.me"];
                 default = "fastmail.com";
                 description = "Email service provider";
+              };
+
+              mode = mkOption {
+                type = types.enum ["local" "remote"];
+                default = "local";
+                description = "Whether to use local maildir (synced via mbsync) or connect to remote IMAP/JMAP directly";
               };
 
               imap = mkOption {
@@ -355,11 +362,11 @@ in {
   config = with lib;
     mkIf cfg.enable (
       mkMerge [
-        (mkIf pkgs.stdenv.isDarwin {
+        (mkIf (pkgs.stdenv.isDarwin && localAccounts != []) {
           launchd.user.agents."mailsync" = let
             # Determine max timeout needed across all accounts
             maxTimeout = let
-              hasGmail = lib.any (acc: acc.service == "gmail.com") cfg.accounts;
+              hasGmail = lib.any (acc: acc.service == "gmail.com") localAccounts;
             in
               if hasGmail
               then "5m"
@@ -431,7 +438,7 @@ in {
                   mkdir -p ${homeDir}/.mail/${account.name}
                 fi
               '')
-              cfg.accounts
+              localAccounts
             )}
           '';
 
@@ -460,7 +467,28 @@ in {
                 source = ../../../config/aerc/stylesets;
               };
 
-              ".config/aerc/binds.conf" = {source = ../../../config/aerc/binds.conf;};
+              ".config/aerc/binds.conf" = {
+                text = let
+                  remoteAccounts = lib.filter (acc: acc.mode == "remote") cfg.accounts;
+                in
+                  builtins.readFile ../../../config/aerc/binds.conf
+                  + lib.optionalString (remoteAccounts != []) (
+                    "\n"
+                    + lib.concatStringsSep "\n" (
+                      map (account: ''
+                        [messages:account=${account.name}]
+                        D = :delete<Enter>
+                        A = :archive flat<Enter>
+
+                        [view:account=${account.name}]
+                        D = :delete<Enter>
+                        A = :archive flat<Enter>
+                      '')
+                      remoteAccounts
+                    )
+                  );
+              };
+
               ".config/aerc/querymap" = {source = ../../../config/aerc/querymap;};
               ".config/aerc/aerc.conf" = {source = ../../../config/aerc/aerc.conf;};
 
@@ -477,10 +505,12 @@ in {
                     account: ''
                       [${account.name}]
                       from              = ${config.my.name} <${account.email}>
-                      source            = maildir://~/.mail/${account.name}
-                      # source            = ${lib.optionalString (account.aerc.source_server != null) account.aerc.source_server}
-                      # source-cred-cmd   = ${lib.optionalString (account.aerc.source_cred_cmd != null) account.aerc.source_cred_cmd}
-                      # outgoing          = ${lib.optionalString (account.aerc.outgoing_server != null) account.aerc.outgoing_server}
+                      ${
+                        if account.mode == "local"
+                        then "source            = maildir://~/.mail/${account.name}"
+                        else "source            = ${account.aerc.source_server}"
+                      }
+                       ${lib.optionalString (account.mode == "remote") "source-cred-cmd   = ${account.aerc.source_cred_cmd}"}
                       outgoing = msmtp -a ${lowerName account.name}
                       copy-to           = Sent
                       postpone          = Drafts
@@ -745,7 +775,7 @@ in {
                         Expunge Near
                         Sync Pull''
                     )
-                    cfg.accounts
+                    localAccounts
                   )}'';
               };
             };
