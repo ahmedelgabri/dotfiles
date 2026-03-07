@@ -167,18 +167,6 @@ additional, host-specific instructions to supplement the ones in this file.
 
 Your primary method of interacting with GitHub should be through the GitHub CLI.
 
-# Beware of aliases, such as `git`
-
-If you try to run a Git command like `git show`, you may see this error:
-
-```
-(eval):1: git: function definition file not found
-```
-
-That's because I have `git` defined as a function in my shell. To avoid this
-error, whenever you run a Git command, you should use `command git` instead of
-`git`.
-
 # Prefer modern tools for searching
 
 - DO NOT use the `Glob` tool instead use `fd` for file/folder searching.
