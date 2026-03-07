@@ -22,12 +22,14 @@ in {
         packages = with pkgs; [
           delta
           hub
-          gh
-          gh-dash
-          gh-gfm-preview
           tig
           exiftool
           jujutsu
+
+          gh
+          gh-dash
+          # gh-enhance
+          gh-gfm-preview
         ];
       };
 
@@ -76,7 +78,75 @@ in {
           source = ../../../config/jj;
         };
 
-        # Make this conditional per host config
+        ".config/gh-dash/config.yml" = let
+          yamlFormat = pkgs.formats.yaml {};
+          configFile = yamlFormat.generate "config.yml" {
+            defaults = {
+              prApproveComment = ":shipit:";
+              preview = {
+                open = true;
+                width = 100;
+              };
+              layout = {
+                prs = {
+                  repoName = {
+                    grow = true;
+                    width = 10;
+                    hidden = false;
+                  };
+                };
+              };
+              refetchIntervalMinutes = 10;
+            };
+            keybindings = {
+              prs = [
+                {
+                  # Override the default merge command to squash
+                  # https://github.com/dlvhdr/gh-dash/blob/2a7e017686ba6a05d8b9ebc4568b0a1600308dff/.gh-dash.yml#L52
+                  key = "m";
+                  name = "Admin force merge";
+                  command = "gh pr merge --admin --squash --repo {{.RepoName}} {{.PrNumber}}";
+                }
+                {
+                  key = "c";
+                  command = "tmux new-window -c {{.RepoPath}} 'gh pr checkout {{.PrNumber}} && nvim -c \":CodeDiff {{.BaseRefName}}...{{.HeadRefName}}\"'";
+                }
+                {
+                  key = "T";
+                  command = "gh enhance -R {{.RepoName}} {{.PrNumber}}";
+                }
+                {
+                  key = "v";
+                  name = "approve";
+                  command = "gh pr review --repo {{.RepoName}} --approve --body \"$(${pkgs.lib.getExe pkgs.gum} write --placeholder=Approval\\ Comment)\" {{.PrNumber}}";
+                }
+              ];
+            };
+            # configure where to locate repos when checking out PRs
+            repoPaths = {
+              # https://www.gh-dash.dev/configuration/repo-paths/
+              # :owner/:repo: ~/src/github.com/:owner/:repo # template if you always clone github repos in a consistent location
+            };
+            theme = {
+              ui = {
+                table = {
+                  compact = true;
+                };
+              };
+            };
+            pager = {
+              diff = "delta --side-by-side";
+            };
+          };
+        in {
+          text = with config.my;
+            lib.concatStringsSep "\n" [
+              "# yaml-language-server: $schema=https://www.gh-dash.dev/schema.json"
+              ''# ${nix_managed}''
+              (builtins.readFile configFile)
+            ];
+        };
+
         ".config/jj/conf.d/nix.toml" = with config.my; {
           text = ''
             # ${nix_managed}
