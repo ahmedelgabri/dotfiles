@@ -50,7 +50,6 @@ return {
 		dependencies = {
 			'https://github.com/rafamadriz/friendly-snippets',
 			'https://github.com/moyiz/blink-emoji.nvim',
-			'https://github.com/olimorris/codecompanion.nvim',
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
 		event = { 'InsertEnter' },
@@ -156,7 +155,6 @@ return {
 					'snippets',
 					'buffer',
 					'emoji',
-					'codecompanion',
 				},
 				providers = {
 					lsp = {
