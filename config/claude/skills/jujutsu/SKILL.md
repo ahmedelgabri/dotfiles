@@ -1,8 +1,6 @@
 ---
 name: jujutsu
-description: |
-  This skill should be used when the user mentions Jujutsu version control, "jj" commands, working with jj repositories, or asks about Git to Jujutsu equivalents. Triggers on keywords like "jujutsu", "jj", "jj-vcs", "jj repo", "jj commit", "jj log", "jj new", "jj squash", "jj rebase", "jj bookmark", or questions about Jujutsu workflows and concepts.
-version: 1.0.0
+description: How to use `jj`, the Jujutsu version control system
 ---
 
 # Jujutsu (jj) Version Control Skill
@@ -32,15 +30,17 @@ Use change IDs for references that survive rebases.
 
 Revsets are expressions to select commits:
 
-- `@` - Working copy commit
-- `@-` - Parent of working copy
-- `root()` - Repository root
-- `bookmarks()` - All bookmarked commits
-- `foo..bar` - Commits from foo to bar (exclusive)
-- `foo::bar` - Commits from foo to bar (inclusive)
-- `A | B` - Union
-- `A & B` - Intersection
-- `~A` - Complement
+| Expression    | Description                         |
+| ------------- | ----------------------------------- |
+| `@`           | Working copy commit                 |
+| `@-`          | Parent of working copy              |
+| `root()`      | Repository root                     |
+| `bookmarks()` | All bookmarked commits              |
+| `foo..bar`    | Commits from foo to bar (exclusive) |
+| `foo::bar`    | Commits from foo to bar (inclusive) |
+| `A \| B`      | Union                               |
+| `A & B`       | Intersection                        |
+| `~A`          | Complement                          |
 
 ### Bookmarks (not Branches)
 
@@ -70,6 +70,8 @@ when commits are rewritten.
 | `git fetch`                 | `jj git fetch`            | Fetch from remote                |
 | `git push`                  | `jj git push`             | Push bookmarks                   |
 | `git branch NAME`           | `jj bookmark create NAME` | Create bookmark                  |
+| `git reflog`                | `jj evolog`               | Show previous states of a change |
+| N/A                         | `jj op log`               | Show previous operations         |
 
 ## Common Workflows
 
