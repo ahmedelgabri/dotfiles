@@ -66,8 +66,8 @@ in {
           taplo # TOML linter and formatter
           typos
           typos-lsp
+          markdown-oxide
           copilot-language-server
-          pngpaste # For Obsidian paste_img command
           stylelint-lsp
         ];
       };

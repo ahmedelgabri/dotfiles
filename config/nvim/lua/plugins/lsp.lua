@@ -128,6 +128,8 @@ return {
 				{ 'yamlls', 'yaml-language-server' },
 				{ 'typos_lsp', 'typos-lsp' },
 				{ 'mutt_ls', 'mutt-language-server' },
+				{ 'markdown_oxide', 'markdown-oxide' },
+				{ 'tinymist' }, -- typst LSP
 			}
 
 			for _, value in ipairs(servers) do
