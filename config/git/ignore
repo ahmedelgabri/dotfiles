@@ -45,6 +45,7 @@ Session.vim
 CLAUDE.local.md
 .claude/hook-events.jsonl
 PROMPTS.md
+.claude-notes
 
 # Mise      #
 #############
