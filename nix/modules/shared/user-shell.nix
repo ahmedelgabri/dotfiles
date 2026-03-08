@@ -513,6 +513,7 @@ in {
                   source "${pkgs.grc}/etc/grc.zsh"
 
                   source <(${lib.getExe pkgs.fzf} --zsh)
+                  source <(COMPLETE=zsh ${lib.getExe pkgs.jj})
 
                   eval "${"$"}(${lib.getExe pkgs.direnv} hook zsh)"
                   eval "${"$"}(${lib.getExe pkgs.mise} activate zsh)"
