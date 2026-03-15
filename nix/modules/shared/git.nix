@@ -78,7 +78,7 @@ in {
           source = ../../../config/jj;
         };
 
-        ".config/gh-dash/config.yml" = let
+        ".config/gh-dash/config.yml" = mkIf (config.my.company == "") (let
           yamlFormat = pkgs.formats.yaml {};
           configFile = yamlFormat.generate "config.yml" {
             defaults = {
@@ -145,7 +145,7 @@ in {
               ''# ${nix_managed}''
               (builtins.readFile configFile)
             ];
-        };
+        });
 
         ".config/jj/conf.d/nix.toml" = with config.my; {
           text = ''
