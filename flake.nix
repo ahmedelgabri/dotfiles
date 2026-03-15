@@ -75,6 +75,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    atuin = {
+      url = "github:atuinsh/atuin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -215,6 +220,7 @@
             inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
             inherit (inputs.ccpeek.packages.${prev.stdenv.hostPlatform.system}) ccpeek;
             qmd = inputs.qmd.packages.${prev.stdenv.hostPlatform.system}.default;
+            atuin = inputs.atuin.packages.${prev.stdenv.hostPlatform.system}.default;
           })
         ];
       };
