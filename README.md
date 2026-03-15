@@ -42,11 +42,11 @@ These are the main configs:
 > [!NOTE]
 >
 > Make sure to check the
-> [`quirks`](https://github.com/NixOS/experimental-nix-installer/blob/main/docs/quirks.md)
+> [`quirks`](https://github.com/NixOS/nix-installer/blob/main/docs/quirks.md)
 > section
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | sh -s -- install
+curl --proto '=https' --tlsv1.2 -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
 ```
 
 1. Set up
