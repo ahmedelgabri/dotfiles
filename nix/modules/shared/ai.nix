@@ -19,23 +19,6 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (mkIf isDarwin {
-        launchd.daemons.ollama = {
-          command = "${lib.getExe pkgs.ollama} serve";
-          serviceConfig = {
-            Label = "ollama";
-            UserName = config.my.username;
-            GroupName = "staff";
-            ExitTimeOut = 30;
-            Disabled = false;
-            RunAtLoad = true;
-            KeepAlive = true;
-            StandardOutPath = "${homeDir}/Library/Logs/ollama-output.log";
-            StandardErrorPath = "${homeDir}/Library/Logs/ollama-error.log";
-            EnvironmentVariables = {
-              "OLLAMA_HOST" = "127.0.0.1:11434";
-            };
-          };
-        };
         homebrew.casks = [
           "claude"
           "claude-code"
@@ -55,7 +38,6 @@ in {
         my = {
           user = {
             packages = with pkgs; [
-              ollama
               llama-cpp
               ccpeek
             ];
