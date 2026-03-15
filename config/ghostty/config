@@ -24,4 +24,13 @@ auto-update = download
 # for claude code
 keybind=shift+enter=text:\\\n\r
 
+working-directory = home
+window-inherit-working-directory = false
+tab-inherit-working-directory = true
+split-inherit-working-directory = true
+
+# Until I look into my colors, one day...
+palette-generate = false
+palette-harmonious = false
+
 config-file = ?config.local
