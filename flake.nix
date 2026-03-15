@@ -70,6 +70,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    qmd = {
+      url = "github:tobi/qmd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
@@ -209,6 +214,7 @@
             inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
             inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
             inherit (inputs.ccpeek.packages.${prev.stdenv.hostPlatform.system}) ccpeek;
+            qmd = inputs.qmd.packages.${prev.stdenv.hostPlatform.system}.default;
           })
         ];
       };

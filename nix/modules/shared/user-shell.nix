@@ -252,6 +252,7 @@ in {
               bun
               circumflex # HN CLI reader
               terminal-notifier
+              qmd
             ];
           };
 
