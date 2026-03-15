@@ -53,23 +53,39 @@
 			"Bash(jq:*)"
 		],
 		"deny": [
-			"Read(.env)",
-			"Read(.envrc)",
-			"Read(.env.*)",
-			"Read(.zshrc)",
-			"Read(.zshenv)",
-			"Read(.bashrc)",
-			"Read(.profile)",
-			"Read(node_modules)",
-			"Read(.git)",
+			"Glob",
 			"Grep",
-			"Glob"
+			"Read(.bashrc)",
+			"Read(.env)",
+			"Read(.env.*)",
+			"Read(.envrc)",
+			"Read(.git)",
+			"Read(.profile)",
+			"Read(.zshenv)",
+			"Read(.zshrc)",
+			"Read(node_modules)",
+			"Write(.bashrc)",
+			"Write(.env)",
+			"Write(.env.*)",
+			"Write(.envrc)",
+			"Write(.profile)",
+			"Write(.zshenv)",
+			"Write(.zshrc)"
 		],
 		"ask": [
-			"Bash(mv:*)",
 			"Bash(cp:*)",
+			"Bash(curl:*)",
+			"Bash(mv:*)",
 			"Bash(node:*)",
+			"Bash(rm:*)",
+			"Bash(ssh:*)",
+			"Bash(su:*)",
+			"Bash(sudo:*)",
+			"Bash(wget:*)",
 			"Bash(xargs:*)",
+			"Bash(gh repo delete *)",
+			"Bash(gh secret delete *)",
+			"Bash(gh secret set *)",
 			"Bash(git branch:*)",
 			"Bash(git checkout:*)",
 			"Bash(git clean:*)",
@@ -91,8 +107,7 @@
 			"Bash(command git rebase:*)",
 			"Bash(command git reflog:*)",
 			"Bash(command git reset:*)",
-			"Bash(command git restore:*)",
-			"Bash(curl:*)"
+			"Bash(command git restore:*)"
 		]
 	},
 	"enabledPlugins": {
@@ -176,6 +191,10 @@
 					{
 						"type": "command",
 						"command": "~/.claude/hooks/log-event.sh Stop"
+					},
+					{
+						"type": "command",
+						"command": "ccpeek --index-only >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log &"
 					}
 				]
 			}
