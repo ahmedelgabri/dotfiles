@@ -67,13 +67,10 @@ in {
               gnused
               coreutils
               findutils
-              (pkgs.writeScriptBin "nixsw"
-                /*
-                bash
-                */
+              (pkgs.writeShellScriptBin "nixsw"
                 ''
-                  pushd $DOTFILES/
-                  sudo darwin-rebuild switch --flake .
+                  pushd "$DOTFILES"/ || exit
+                  sudo NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" darwin-rebuild switch --flake .
                   popd
                 '')
             ]
@@ -213,12 +210,9 @@ in {
             zoxide
             mise
             pure-prompt
-            (pkgs.writeScriptBin "nixup"
-              /*
-              bash
-              */
+            (pkgs.writeShellScriptBin "nixup"
               ''
-                pushd $DOTFILES/
+                pushd "$DOTFILES"/ || exit
                 nix flake update
                 popd
               '')
