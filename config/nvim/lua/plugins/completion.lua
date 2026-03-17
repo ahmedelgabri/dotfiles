@@ -53,7 +53,7 @@ return {
 			'https://github.com/xzbdmw/colorful-menu.nvim',
 		},
 		event = { 'InsertEnter' },
-		version = '*',
+		version = '1.*',
 		opts = {
 			keymap = {
 				-- Set my own, and get rid of the ones I don't use
