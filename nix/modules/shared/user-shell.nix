@@ -120,7 +120,6 @@ in {
             l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
             ll = "eza --icons --tree --group-directories-first --all --level=2";
             lt = "eza --tree --group-directories-first --all";
-            cat = "bat";
             grep = "grep --color=auto";
             get = "wget --continue --progress=bar --timestamping";
           };
@@ -171,7 +170,7 @@ in {
               # Set the default Less options.
               # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
               # Remove -X and -F (exit if the content fits on one screen) to enable it.
-              LESS = "-F -g -i -M -R -S -w -X -z-4";
+              LESS = "-F -g -i -M -R -S -w -X";
               # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
               LS_COLORS = "$(${lib.getExe pkgs.vivid} generate ~/.config/vivid/theme.yml)";
               NEXT_TELEMETRY_DISABLED = "1";
