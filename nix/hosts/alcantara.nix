@@ -10,9 +10,9 @@
 
     user = {
       packages = with pkgs; [
-        amp-cli
-        codex
-        opencode
+        llm-agents.amp
+        llm-agents.codex
+        llm-agents.opencode
         colima
         docker
         podman

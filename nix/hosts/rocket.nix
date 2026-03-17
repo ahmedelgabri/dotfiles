@@ -37,8 +37,7 @@
         httpstat
         k9s
         lazydocker
-        mise
-        gemini-cli
+        llm-agents.gemini-cli
         entr
       ];
     };
@@ -57,7 +56,6 @@
       "visual-studio-code"
       "google-chrome"
       "cursor"
-      "claude-code"
     ];
 
     brews = [

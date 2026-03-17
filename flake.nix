@@ -70,8 +70,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    qmd = {
-      url = "github:tobi/qmd";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -133,12 +133,14 @@
             "https://nix-community.cachix.org"
             "https://nixpkgs.cachix.org"
             "https://yazi.cachix.org"
+            "https://cache.numtide.com"
           ];
           trusted-public-keys = [
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
             "nixpkgs.cachix.org-1:q91R6hxbwFvDqTSDKwDAV4T5PxqXGxswD8vhONFMeOE="
             "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+            "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
           ];
           # Recommended when using `direnv` etc.
           keep-derivations = true;
@@ -177,6 +179,7 @@
         overlays = [
           inputs.yazi.overlays.default
           inputs.nur.overlays.default
+          inputs.llm-agents.overlays.default
           (final: prev: {
             pragmatapro = prev.callPackage ./nix/pkgs/pragmatapro.nix {};
             hcron = prev.callPackage ./nix/pkgs/hcron.nix {};
@@ -219,7 +222,6 @@
             inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
             inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
             inherit (inputs.ccpeek.packages.${prev.stdenv.hostPlatform.system}) ccpeek;
-            qmd = inputs.qmd.packages.${prev.stdenv.hostPlatform.system}.default;
             atuin = inputs.atuin.packages.${prev.stdenv.hostPlatform.system}.default;
           })
         ];

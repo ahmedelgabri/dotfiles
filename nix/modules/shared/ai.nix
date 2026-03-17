@@ -6,7 +6,6 @@
 }: let
   homeDir = config.my.user.home;
   cfg = config.my.modules.ai;
-  inherit (pkgs.stdenv) isDarwin isLinux;
 in {
   options = with lib; {
     my.modules.ai = {
@@ -17,78 +16,63 @@ in {
   };
 
   config = with lib;
-    mkIf cfg.enable (mkMerge [
-      (mkIf isDarwin {
-        homebrew.casks = [
-          "claude"
-          "claude-code"
-        ];
-      })
-      (mkIf isLinux {
-        my = {
-          user = {
-            packages = with pkgs; [
-              claude-code
-            ];
+    mkIf cfg.enable {
+      my = {
+        user = {
+          packages = with pkgs; [
+            llm-agents.claude-code
+            llm-agents.qmd
+            llm-agents.agent-browser
+            llama-cpp
+            ccpeek
+          ];
+        };
+        hm.file = {
+          ".claude/CLAUDE.md" = {
+            source = ../../../config/claude/CLAUDE.md;
+          };
+
+          ".claude/agents" = {
+            recursive = true;
+            source = ../../../config/claude/agents;
+          };
+
+          ".claude/docs" = {
+            recursive = true;
+            source = ../../../config/claude/docs;
+          };
+
+          ".claude/commands" = {
+            recursive = true;
+            source = ../../../config/claude/commands;
+          };
+
+          ".claude/hooks" = {
+            recursive = true;
+            source = ../../../config/claude/hooks;
+          };
+
+          ".claude/scripts" = {
+            recursive = true;
+            source = ../../../config/claude/scripts;
+          };
+
+          ".claude/skills" = {
+            recursive = true;
+            source = ../../../config/claude/skills;
+          };
+
+          # I need to find a different solution that works with managed the full ~/.claude folder
+          ".claude/settings.json.bk" = {
+            source = ../../../config/claude/settings.json;
+            # HACK: https://github.com/nix-community/home-manager/issues/3090#issuecomment-2010891733
+            # These file should be editable by claude
+            onChange = ''
+              rm -f ${homeDir}/.claude/settings.json
+              cp ${homeDir}/.claude/settings.json.bk ${homeDir}/.claude/settings.json
+            '';
           };
         };
-      })
-
-      {
-        my = {
-          user = {
-            packages = with pkgs; [
-              llama-cpp
-              ccpeek
-            ];
-          };
-          hm.file = {
-            ".claude/CLAUDE.md" = {
-              source = ../../../config/claude/CLAUDE.md;
-            };
-
-            ".claude/agents" = {
-              recursive = true;
-              source = ../../../config/claude/agents;
-            };
-
-            ".claude/docs" = {
-              recursive = true;
-              source = ../../../config/claude/docs;
-            };
-
-            ".claude/commands" = {
-              recursive = true;
-              source = ../../../config/claude/commands;
-            };
-
-            ".claude/hooks" = {
-              recursive = true;
-              source = ../../../config/claude/hooks;
-            };
-
-            ".claude/scripts" = {
-              recursive = true;
-              source = ../../../config/claude/scripts;
-            };
-
-            ".claude/skills" = {
-              recursive = true;
-              source = ../../../config/claude/skills;
-            };
-
-            # I need to find a different solution that works with managed the full ~/.claude folder
-            ".claude/settings.json.bk" = {
-              source = ../../../config/claude/settings.json;
-              # HACK: https://github.com/nix-community/home-manager/issues/3090#issuecomment-2010891733
-              # These file should be editable by claude
-              onChange = ''
-                rm -f ${homeDir}/.claude/settings.json
-                cp ${homeDir}/.claude/settings.json.bk ${homeDir}/.claude/settings.json
-              '';
-            };
-          };
-        };
-      }
-    ]);
+      };
+    };
 }
