@@ -11,6 +11,7 @@ stdenvNoCC.mkDerivation rec {
   dontConfigure = true;
 
   src = requireFile {
+    inherit name;
     url = "file://path/to/${name}.zip";
     sha256 = "09vpzcalcg2dih98jhgw879glvsgg0gsxy9si7l0zm7ksklh013p";
     message = ''
