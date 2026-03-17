@@ -63,6 +63,7 @@
 			"Read(.profile)",
 			"Read(.zshenv)",
 			"Read(.zshrc)",
+			"Read(.zsh_history)",
 			"Read(node_modules)",
 			"Write(.bashrc)",
 			"Write(.env)",
@@ -70,7 +71,8 @@
 			"Write(.envrc)",
 			"Write(.profile)",
 			"Write(.zshenv)",
-			"Write(.zshrc)"
+			"Write(.zshrc)",
+			"Write(.zsh_history)"
 		],
 		"ask": [
 			"Bash(cp:*)",
