@@ -26,9 +26,7 @@ in {
                 pip
                 setuptools
                 pynvim
-                vobject # Mutt calendar script
               ]))
-            # nixos.python38Packages.httpx
             ruff
             basedpyright
             uv
