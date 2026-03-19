@@ -25,11 +25,13 @@
     ./ghostty.nix
     ./ai.nix
     ./agenix.nix
+    ./jujutsu.nix
   ];
 
   my.modules = {
     shell.enable = lib.mkDefault true;
     git.enable = lib.mkDefault true;
+    jujutsu.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
 
     kitty.enable = lib.mkDefault true;

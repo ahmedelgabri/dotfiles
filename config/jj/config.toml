@@ -1,9 +1,100 @@
-#:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+# https://github.com/jennings/dotfiles/blob/62590e20046ef95a48d1b5f84162c8d36f4a00c1/dot_config/jj/conf.d/config.toml.tmpl
+# https://github.com/wincent/wincent/blob/aafcf9efdef93aad1f6a8eb8a3222c5ffaa3fea7/aspects/dotfiles/templates/.config/jj/config.toml.erb
+[signing]
+behavior = "own"
+backend = "gpg"
+backends.gpg.program = "vcs-gpg"
+
+[git]
+push-bookmark-prefix = 'ahmedelgabri/'
+private-commits = 'private()'
+
+[remotes.origin]
+# https://docs.jj-vcs.dev/latest/config/#automatic-tracking-of-bookmarks
+auto-track-bookmarks = "ahmedelgabri/*"
+auto-track-created-bookmarks = "*"
+
 
 [ui]
 default-command = "log"
 # https://difftastic.wilfred.me.uk/jj.html
 # diff-formatter = ["difft", "--color=always", "$left", "$right"]
+# diff-formatter = ":git"
+# pager = ["delta", "--hunk-header-style", "plain"]
+# # pager = ["delta_", "--color-only", "--features=interactive"]
+# paginate = "auto"
+# diff-editor = ":builtin"
+show-cryptographic-signatures = true
+
+[colors]
+"diff removed token" = { underline = false }
+"diff added token" = { underline = false }
+"diff context" = { dim = true }
+
+[template-aliases]
+'format_short_change_id(id)' = 'id.shortest()'
+'format_short_signature(signature)' = 'signature'
+
+[revset-aliases]
+# 'default()' = 'present(@) | ancestors(immutable_heads().., 5) | present(trunk())'
+'empty_description()' = 'description(exact:"")'
+'closest_pushable(to)' = 'heads(::to & mutable() & ~empty_description() & (~empty() | merges()))'
+'last' = 'latest(ancestors(@) & ~empty() & ~empty_description())'
+
+# Work in progress
+'wip()' = 'description(glob:"wip:*") ~ ::immutable_heads()'
+
+# Any commits considered private by git.private-commits
+'private()' = '(description(glob:"private:*") | description(glob:"wip:*"))'
 
 [revsets]
 log = "present(@) | ancestors(immutable_heads().., 10) | present(trunk())"
+bookmark-advance-to = 'closest_pushable(@)'
+log-graph-prioritize = 'trunk() | present(@)'
+
+[aliases]
+gr = ["log", "-r", "::@ & ~empty_description()", "-T", '''
+  commit_id.short() ++
+  " (" ++
+  pad_start(12, committer.timestamp().ago()) ++
+  ")" ++
+  " " ++
+  description.first_line() ++
+  " - " ++
+  author.name() ++
+  if(bookmarks, " (" ++ bookmarks ++ ")") ++
+  "\n"
+''']
+last = ["show", "-r", "last"]
+o = ["oneline"]
+oneline = ["gr", "--no-graph"]
+oo = ["oneline", "--limit", "10"]
+tug = ["bookmark", "advance"]
+
+[templates]
+# Generate prefixed bookmark names when running `jj git push --change`:
+# See: https://jj-vcs.github.io/jj/latest/config/#generated-bookmark-names-on-push
+# git_push_bookmark = '"<%= variables.gitHubUsername %>/" ++ change_id.short()'
+git_push_bookmark = '"ahmedelgabri/" ++ change_id.short()'
+
+log = "builtin_log_comfortable"
+
+# Add change ID to the end of the commit
+commit_trailers = '''
+if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))
+'''
+
+# Replicate `git commit -v`
+draft_commit_description = '''
+concat(
+  coalesce(description, default_commit_description, "\n"),
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ: ", diff.stat(72)),
+  ),
+  "\nJJ: ignore-rest\n",
+  diff.git(),
+)
+'''

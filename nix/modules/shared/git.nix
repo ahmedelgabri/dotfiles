@@ -24,7 +24,6 @@ in {
           hub
           tig
           exiftool
-          jujutsu
 
           gh
           gh-dash
@@ -49,7 +48,7 @@ in {
               	username = ${github_username}''}
 
             [gpg]
-            	program = ${lib.getExe pkgs.gnupg}
+            	program = vcs-gpg
 
             [diff "exif"]
             	textconv = ${lib.getExe pkgs.exiftool}
@@ -71,11 +70,6 @@ in {
         ".config/tig" = {
           recursive = true;
           source = ../../../config/tig;
-        };
-
-        ".config/jj" = {
-          recursive = true;
-          source = ../../../config/jj;
         };
 
         ".config/gh-dash/config.yml" = mkIf (config.my.company == "") (let
@@ -146,20 +140,6 @@ in {
               (builtins.readFile configFile)
             ];
         });
-
-        ".config/jj/conf.d/nix.toml" = with config.my; {
-          text = ''
-            # ${nix_managed}
-            #:schema https://jj-vcs.github.io/jj/latest/config-schema.json
-
-
-            --when.hostnames = ["${config.networking.hostName}"]
-
-            [user]
-            ${optionalString (name != "") "name = \"${name}\""}
-            ${optionalString (email != "") "email = \"${email}\""}
-          '';
-        };
       };
     };
 }

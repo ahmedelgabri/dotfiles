@@ -16,7 +16,16 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [gnupg];
+      environment.systemPackages = with pkgs; [
+        gnupg
+        (pkgs.writeShellScriptBin "vcs-gpg" ''
+          if [ -n "$GIT_COMMITTER_DATE" ]; then
+            ${lib.getExe pkgs.gnupg} --faked-system-time "$GIT_COMMITTER_DATE" "$@"
+          else
+            ${lib.getExe pkgs.gnupg} "$@"
+          fi
+        '')
+      ];
       my.env = {GNUPGHOME = "$XDG_CONFIG_HOME/gnupg";};
 
       programs.gnupg.agent = {
