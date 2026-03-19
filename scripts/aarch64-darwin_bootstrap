@@ -2,7 +2,6 @@
 
 set -Eueo pipefail
 
-# shellcheck disable=SC2034
 SUDO_USER=$(whoami)
 
 FLAKE=${1:-$(hostname -s)}
@@ -18,6 +17,9 @@ if command -v xcode-select >/dev/null; then
 else
 	log_success "Installing Xcode"
 	xcode-select --install
+
+	log_success "Installing Rosetta"
+	sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
 fi
 
 log_info "Installing flake -> $FLAKE"
