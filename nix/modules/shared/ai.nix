@@ -23,6 +23,7 @@ in {
             llm-agents.claude-code
             llm-agents.qmd
             llm-agents.agent-browser
+            llm-agents.pi
             llama-cpp
             ccpeek
           ];
