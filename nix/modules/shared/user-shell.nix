@@ -209,6 +209,7 @@ in {
             zoxide
             mise
             pure-prompt
+            devenv
             (pkgs.writeShellScriptBin "nixup"
               ''
                 pushd "$DOTFILES"/ || exit
