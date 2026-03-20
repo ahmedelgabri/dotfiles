@@ -10,10 +10,14 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix")];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel" "wl"];
-  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+  boot = {
+    initrd = {
+      availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
+      kernelModules = [];
+    };
+    kernelModules = ["kvm-intel" "wl"];
+    extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/bf9df006-7b07-4895-973c-819d283fb7ed";
