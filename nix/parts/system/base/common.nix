@@ -3,6 +3,7 @@ _: let
     autoOptimiseStore,
     optimiseAutomatic,
     extraFonts,
+    homePrefix,
     systemStateVersion,
     homeStateVersion,
   }: {
@@ -72,6 +73,8 @@ _: let
     time.timeZone = config.my.timezone;
     documentation.man.enable = true;
 
+    my.user.home = "${homePrefix}/${config.my.username}";
+
     system.stateVersion = systemStateVersion;
     home-manager.users."${config.my.username}".home.stateVersion = homeStateVersion config;
   };
@@ -82,6 +85,7 @@ in {
         autoOptimiseStore = false;
         optimiseAutomatic = true;
         extraFonts = _: [];
+        homePrefix = "/Users";
         systemStateVersion = 5;
         homeStateVersion = _: "24.05";
       };
@@ -89,6 +93,7 @@ in {
       nixos.system-common = mkCommon {
         autoOptimiseStore = true;
         optimiseAutomatic = false;
+        homePrefix = "/home";
         extraFonts = pkgs:
           with pkgs; [
             noto-fonts
