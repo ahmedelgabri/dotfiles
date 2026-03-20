@@ -8,7 +8,35 @@
     ../flake-parts/darwinConfigurations-fix.nix
     ../flake-parts/modules.nix
     ../flake-parts/lib.nix
-    ../modules/default.nix
+    ../modules/base/default.nix
+    ../modules/darwin/default.nix
+    ../modules/darwin/hammerspoon.nix
+    ../modules/darwin/karabiner.nix
+    ../modules/shared/user-shell.nix
+    ../modules/shared/mail.nix
+    ../modules/shared/gui.nix
+    ../modules/shared/ssh.nix
+    ../modules/shared/git.nix
+    ../modules/shared/bat.nix
+    ../modules/shared/ripgrep.nix
+    ../modules/shared/yazi.nix
+    ../modules/shared/tmux.nix
+    ../modules/shared/vim.nix
+    ../modules/shared/ai.nix
+    ../modules/shared/ghostty.nix
+    ../modules/shared/zk.nix
+    ../modules/shared/gpg.nix
+    ../modules/shared/kitty.nix
+    ../modules/shared/mpv.nix
+    ../modules/shared/discord.nix
+    ../modules/shared/misc.nix
+    ../modules/shared/python.nix
+    ../modules/shared/jujutsu.nix
+    ../modules/shared/yt-dlp.nix
+    ../modules/shared/node.nix
+    ../modules/shared/go.nix
+    ../modules/shared/rust.nix
+    ../modules/shared/agenix.nix
     ../system/default.nix
     ../hosts/rocket/default.nix
     ../hosts/alcantara/default.nix
