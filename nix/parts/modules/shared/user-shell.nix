@@ -1,4 +1,6 @@
 let
+  module =
+let
   commonModule =
     # This is handcrafted setup to keep the same performance characteristics I had
     # before using nix or even improve it. Simple rules followed here are:
@@ -534,6 +536,16 @@ in {
         source = ../../../../config/.terminfo;
       };
       ".hushlogin".text = "";
+    };
+  };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.shell = module.darwin;
+      nixos.shell = module.nixos;
+      homeManager.shell = module.homeManager;
     };
   };
 }

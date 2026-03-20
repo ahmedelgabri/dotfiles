@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -38,4 +40,13 @@
         '';
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.jujutsu = module.generic;
+      homeManager.jujutsu = module.homeManager;
+    };
+  };
 }

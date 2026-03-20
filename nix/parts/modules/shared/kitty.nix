@@ -1,3 +1,5 @@
+let
+  module =
 {
   darwin = {
     lib,
@@ -37,4 +39,14 @@
         source = ../../../../config/kitty;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.kitty = module.darwin;
+      nixos.kitty = module.nixos;
+      homeManager.kitty = module.homeManager;
+    };
+  };
 }

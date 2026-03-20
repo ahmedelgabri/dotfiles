@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -23,4 +25,13 @@
         source = ../../../../config/yt-dlp;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic."yt-dlp" = module.generic;
+      homeManager."yt-dlp" = module.homeManager;
+    };
+  };
 }

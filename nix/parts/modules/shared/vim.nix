@@ -1,4 +1,6 @@
 let
+  module =
+let
   commonModule = {
     pkgs,
     lib,
@@ -84,4 +86,14 @@ in {
         mkdir -p ${config.xdg.stateHome}/nvim/{backup,swap,undo,view}
       '';
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.vim = module.darwin;
+      nixos.vim = module.nixos;
+      homeManager.vim = module.homeManager;
+    };
+  };
 }

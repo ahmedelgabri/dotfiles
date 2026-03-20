@@ -1,4 +1,6 @@
 let
+  module =
+let
   mkMailSyncTimeout = lib: localAccounts:
     if lib.any (acc: acc.service == "gmail.com") localAccounts
     then "5m"
@@ -723,5 +725,15 @@ in {
             localAccounts
           )}'';
       };
+  };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.mail = module.darwin;
+      nixos.mail = module.nixos;
+      homeManager.mail = module.homeManager;
+    };
   };
 }

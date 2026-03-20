@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -24,4 +26,13 @@
         source = ../../../../config/bat;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.bat = module.generic;
+      homeManager.bat = module.homeManager;
+    };
+  };
 }

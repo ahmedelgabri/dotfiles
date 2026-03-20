@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -26,4 +28,13 @@
         source = ../../../../config/tmux;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.tmux = module.generic;
+      homeManager.tmux = module.homeManager;
+    };
+  };
 }

@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -114,4 +116,13 @@
           ];
         };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.git = module.generic;
+      homeManager.git = module.homeManager;
+    };
+  };
 }

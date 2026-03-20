@@ -1,3 +1,5 @@
+let
+  module =
 {
   darwin = {
     pkgs,
@@ -33,4 +35,14 @@
         source = ../../../../config/mpv;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.mpv = module.darwin;
+      nixos.mpv = module.nixos;
+      homeManager.mpv = module.homeManager;
+    };
+  };
 }

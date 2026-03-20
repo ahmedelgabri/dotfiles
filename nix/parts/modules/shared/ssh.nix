@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -18,4 +20,13 @@
         source = ../../../../config/.ssh/config;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.ssh = module.generic;
+      homeManager.ssh = module.homeManager;
+    };
+  };
 }

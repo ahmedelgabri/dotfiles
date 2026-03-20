@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -46,4 +48,13 @@
           ${builtins.readFile ../../../../config/gnupg/gpg.conf}'';
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.gpg = module.generic;
+      homeManager.gpg = module.homeManager;
+    };
+  };
 }

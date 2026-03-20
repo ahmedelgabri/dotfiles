@@ -1,3 +1,5 @@
+let
+  module =
 {
   darwin = {
     lib,
@@ -31,4 +33,14 @@
         source = ../../../../config/ghostty;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.ghostty = module.darwin;
+      nixos.ghostty = module.nixos;
+      homeManager.ghostty = module.homeManager;
+    };
+  };
 }

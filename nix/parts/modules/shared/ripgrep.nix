@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -22,4 +24,13 @@
         source = ../../../../config/ripgrep;
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.ripgrep = module.generic;
+      homeManager.ripgrep = module.homeManager;
+    };
+  };
 }

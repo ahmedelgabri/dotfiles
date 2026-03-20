@@ -1,3 +1,5 @@
+let
+  module =
 {
   darwin = {
     lib,
@@ -17,6 +19,15 @@
   }: {
     config = with lib; {
       my.user.packages = with pkgs; [discord];
+    };
+  };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.discord = module.darwin;
+      nixos.discord = module.nixos;
     };
   };
 }

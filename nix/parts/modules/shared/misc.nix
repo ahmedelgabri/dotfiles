@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     lib,
@@ -22,4 +24,13 @@
 
       xdg.configFile."fd/ignore".text = builtins.readFile ../../../../config/.ignore;
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.misc = module.generic;
+      homeManager.misc = module.homeManager;
+    };
+  };
 }

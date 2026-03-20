@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -40,4 +42,13 @@
         };
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.python = module.generic;
+      homeManager.python = module.homeManager;
+    };
+  };
 }

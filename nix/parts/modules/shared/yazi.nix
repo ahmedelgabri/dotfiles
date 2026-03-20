@@ -1,3 +1,5 @@
+let
+  module =
 {
   generic = {
     pkgs,
@@ -73,4 +75,13 @@
         };
       };
     };
+}
+  ;
+in {
+  flake = {
+    modules = {
+      generic.yazi = module.generic;
+      homeManager.yazi = module.homeManager;
+    };
+  };
 }

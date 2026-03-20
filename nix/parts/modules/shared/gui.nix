@@ -1,4 +1,6 @@
 let
+  module =
+let
   firefoxHomeModule = {
     pkgs,
     config,
@@ -293,4 +295,14 @@ in {
   }: (firefoxHomeModule {
     inherit pkgs config myConfig;
   });
+}
+  ;
+in {
+  flake = {
+    modules = {
+      darwin.gui = module.darwin;
+      nixos.gui = module.nixos;
+      homeManager.gui = module.homeManager;
+    };
+  };
 }
