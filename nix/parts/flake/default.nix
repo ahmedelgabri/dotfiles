@@ -38,8 +38,6 @@
     ../modules/shared/rust.nix
     ../modules/shared/agenix.nix
     ../system/base/common.nix
-    ../system/base/darwin.nix
-    ../system/base/nixos.nix
     ../hosts/rocket/default.nix
     ../hosts/alcantara/default.nix
     ../hosts/nixos/default.nix

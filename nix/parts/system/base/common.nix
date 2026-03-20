@@ -78,6 +78,21 @@ _: let
     system.stateVersion = systemStateVersion;
     home-manager.users."${config.my.username}".home.stateVersion = homeStateVersion config;
   };
+
+  darwinBase = {inputs, ...}: {
+    imports = [
+      inputs.home-manager.darwinModules.home-manager
+      inputs.nix-homebrew.darwinModules.nix-homebrew
+      inputs.agenix.darwinModules.default
+    ];
+  };
+
+  nixosBase = {inputs, ...}: {
+    imports = [
+      inputs.home-manager.nixosModules.home-manager
+      inputs.agenix.nixosModules.default
+    ];
+  };
 in {
   flake = {
     modules = {
@@ -89,6 +104,8 @@ in {
         systemStateVersion = 5;
         homeStateVersion = _: "24.05";
       };
+
+      darwin.system-base = darwinBase;
 
       nixos.system-common = mkCommon {
         autoOptimiseStore = true;
@@ -109,6 +126,8 @@ in {
         systemStateVersion = "24.05";
         homeStateVersion = config: config.system.stateVersion;
       };
+
+      nixos.system-base = nixosBase;
     };
   };
 }
