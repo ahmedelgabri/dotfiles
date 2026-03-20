@@ -68,7 +68,7 @@
   };
 
   systemImports = [
-    m.generic.system-common
+    m.darwin.system-common
     m.darwin.system-base
     m.darwin.defaults
     m.darwin.shell
