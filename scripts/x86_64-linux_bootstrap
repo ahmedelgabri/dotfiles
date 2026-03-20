@@ -2,8 +2,6 @@
 
 set -Eueo pipefail
 
-SUDO_USER=$(whoami)
-
 FLAKE=${1:-$(hostname -s)}
 
 print_main_banner
@@ -12,14 +10,8 @@ print_main_banner
 # = Main functions
 # =======================================================================
 
-if command -v xcode-select >/dev/null; then
-	log_info "Xcode already installed"
-else
-	log_success "Installing Xcode"
-	xcode-select --install
-
-	log_success "Installing Rosetta"
-	sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
+if ! command -v nixos-rebuild >/dev/null; then
+	log_error "nixos-rebuild was not found; this bootstrap currently supports NixOS hosts only"
 fi
 
 if [ -e "$DOTFILES_DIR/flake.nix" ]; then
@@ -31,7 +23,7 @@ else
 fi
 
 log_info "Installing flake -> $FLAKE"
-sudo nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --option eval-cache false --flake "$FLAKE_ROOT#$FLAKE"
+sudo nixos-rebuild switch --flake "$FLAKE_ROOT#$FLAKE" --option eval-cache false
 log_success "$FLAKE installed"
 
 clone_dotfiles

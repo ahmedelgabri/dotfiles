@@ -1,0 +1,3 @@
+{
+  flake.templates = import ../../../templates;
+}
