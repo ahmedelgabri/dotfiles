@@ -62,6 +62,9 @@ online:
 nix --experimental-features 'nix-command flakes' run "github:ahmedelgabri/dotfiles" -- <flake attribute>
 ```
 
+On a first run, the bootstrap app uses the bundled flake source it was launched
+from and then clones the repo into `~/.dotfiles` for subsequent rebuilds.
+
 ### Homebrew
 
 I still use it mostly for GUI apps, since Nix and/or Home-manager support for
@@ -130,7 +133,7 @@ Incoming messages are fetched from the remote server when `mbsync` runs (the
 executable name for isync).
 
 On macs I use [`launchd`][launchd], on NixOS using `systemd`. You can check
-[`mail.nix`](nix/modules/shared/mail.nix).
+[`mail.nix`](nix/parts/modules/shared/mail.nix).
 
 ### Authors
 
