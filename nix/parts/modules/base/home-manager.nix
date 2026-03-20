@@ -4,10 +4,7 @@
   inputs,
   ...
 }: let
-  home =
-    if pkgs.stdenv.isDarwin
-    then "/Users/${config.my.username}"
-    else "/home/${config.my.username}";
+  inherit (config.my.user) home;
 
   xdgHomes = {
     cacheHome = "${home}/.cache";

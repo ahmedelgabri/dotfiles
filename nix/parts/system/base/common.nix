@@ -26,7 +26,7 @@
         "nix-command"
         "flakes"
       ];
-      auto-optimise-store = !pkgs.stdenv.isDarwin;
+      auto-optimise-store = false;
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
@@ -48,24 +48,12 @@
       automatic = true;
       options = "--delete-older-than 3d";
     };
-    optimise.automatic = pkgs.stdenv.isDarwin;
+    optimise.automatic = true;
   };
 
-  fonts = {
-    packages = with pkgs;
-      [pragmatapro]
-      ++ (lib.optionals pkgs.stdenv.isLinux [
-        noto-fonts
-        noto-fonts-cjk
-        noto-fonts-emoji
-        fira-code
-        fira-code-symbols
-        mplus-outline-fonts
-        dina-font
-        proggyfonts
-        (nerdfonts.override {fonts = ["FiraCode" "DroidSansMono"];})
-      ]);
-  };
+  fonts.packages = with pkgs; [
+    pragmatapro
+  ];
 
   nixpkgs = {
     config.allowUnfree = true;
@@ -81,13 +69,7 @@
 
   documentation.man.enable = true;
 
-  system.stateVersion =
-    if pkgs.stdenv.isDarwin
-    then 5
-    else "24.05";
+  system.stateVersion = 5;
 
-  home-manager.users."${config.my.username}".home.stateVersion =
-    if pkgs.stdenv.isDarwin
-    then "24.05"
-    else config.system.stateVersion;
+  home-manager.users."${config.my.username}".home.stateVersion = "24.05";
 }

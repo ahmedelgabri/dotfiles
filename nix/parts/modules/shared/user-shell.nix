@@ -15,22 +15,10 @@ let
       inherit (config.my.user) home;
       inherit (config.my) devFolder hostConfigHome company;
       inherit (config.home-manager.users."${config.my.username}") xdg;
-      inherit (pkgs.stdenv) isLinux;
 
       local_zshrc = "${hostConfigHome}/zshrc";
     in {
-      config = with lib; (mkMerge [
-        (mkIf isLinux {
-          environment = {
-            systemPackages = with pkgs; [dwm dmenu xclip];
-
-            shellAliases = {
-              chmod = "chmod --preserve-root -v";
-              chown = "chown --preserve-root -v";
-            };
-          };
-        })
-
+      config = lib.mkMerge [
         {
           environment = {
             shells = [pkgs.bashInteractive pkgs.zsh];
@@ -73,10 +61,6 @@ let
                 ADBLOCK = "true";
                 AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
                 AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
-                BROWSER =
-                  if pkgs.stdenv.isDarwin
-                  then "open"
-                  else "xdg-open";
                 CDPATH = ".:~:~/${devFolder}";
                 COLORTERM = "truecolor";
                 COMPANY = company;
@@ -428,8 +412,23 @@ let
             promptInit = "autoload -U promptinit; promptinit; prompt pure";
           };
         }
-      ]);
+      ];
     };
+
+  nixosModule = {pkgs, ...}: {
+    imports = [commonModule];
+
+    config.environment = {
+      systemPackages = with pkgs; [dwm dmenu xclip];
+
+      shellAliases = {
+        chmod = "chmod --preserve-root -v";
+        chown = "chown --preserve-root -v";
+      };
+
+      variables.BROWSER = "xdg-open";
+    };
+  };
 
   darwinModule = {
     pkgs,
@@ -470,6 +469,7 @@ let
         };
 
         variables = {
+          BROWSER = "open";
           LANG = "en_US.UTF-8";
           LC_TIME = "en_GB.UTF-8";
           NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
@@ -499,7 +499,7 @@ let
   };
 in {
   darwin = darwinModule;
-  nixos = commonModule;
+  nixos = nixosModule;
   homeManager = {
     pkgs,
     lib,
