@@ -121,7 +121,6 @@
   };
 
   systemImports = [
-    m.nixos.system-common
     m.nixos.system-base
     m.nixos.shell
     m.generic.git
