@@ -198,8 +198,6 @@ let
               enableGlobalCompInit = false;
               enableBashCompletion = false;
 
-              enableSyntaxHighlighting = true;
-
               enableAutosuggestions = true;
 
               histSize = 10000000;
@@ -428,6 +426,8 @@ let
         };
 
         variables.BROWSER = "xdg-open";
+
+        programs.zsh.enableSyntaxHighlighting = true;
       };
     };
 
@@ -462,6 +462,7 @@ let
             ServiceIPC = false;
           };
         };
+        programs.zsh.enableFastSyntaxHighlighting = true;
 
         environment = {
           shellAliases = {
