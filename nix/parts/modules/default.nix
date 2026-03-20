@@ -1,5 +1,9 @@
 _: {
   imports = [
+    ./base/default.nix
+    ./darwin/default.nix
+    ./darwin/hammerspoon.nix
+    ./darwin/karabiner.nix
     ./shared/user-shell.nix
     ./shared/mail.nix
     ./shared/gui.nix
@@ -21,21 +25,9 @@ _: {
     ./shared/python.nix
     ./shared/jujutsu.nix
     ./shared/yt-dlp.nix
+    ./shared/node.nix
+    ./shared/go.nix
+    ./shared/rust.nix
+    ./shared/agenix.nix
   ];
-
-  flake.modules = {
-    generic = {
-      base = import ./base/default.nix;
-      node = import ./shared/node.nix;
-      go = import ./shared/go.nix;
-      rust = import ./shared/rust.nix;
-      agenix = import ./shared/agenix.nix;
-    };
-
-    darwin = {
-      defaults = import ./darwin/default.nix;
-      hammerspoon = import ./darwin/hammerspoon.nix;
-      karabiner = import ./darwin/karabiner.nix;
-    };
-  };
 }
