@@ -417,15 +417,17 @@ let
     nixosModule = {pkgs, ...}: {
       imports = [commonModule];
 
-      config.environment = {
-        systemPackages = with pkgs; [dwm dmenu xclip];
+      config = {
+        environment = {
+          systemPackages = with pkgs; [dwm dmenu xclip];
 
-        shellAliases = {
-          chmod = "chmod --preserve-root -v";
-          chown = "chown --preserve-root -v";
+          shellAliases = {
+            chmod = "chmod --preserve-root -v";
+            chown = "chown --preserve-root -v";
+          };
+
+          variables.BROWSER = "xdg-open";
         };
-
-        variables.BROWSER = "xdg-open";
 
         programs.zsh.enableSyntaxHighlighting = true;
       };
