@@ -1,7 +1,5 @@
 {inputs, ...}: let
   host = inputs.self.lib.mkNixos "x86_64-linux" "nixos";
-  m = inputs.self.modules;
-  hm = m.homeManager;
 
   hostConfiguration = {
     pkgs,
@@ -119,50 +117,34 @@
   };
 
   systemImports = [
-    m.nixos.system-base
-    m.nixos.shell
-    m.generic.git
-    m.generic.jujutsu
-    m.generic.ssh
-    m.generic.bat
-    m.generic.yazi
-    m.generic.ripgrep
-    m.generic.tmux
-    m.generic.misc
-    m.generic.node
-    m.generic.go
-    m.generic.rust
-    m.generic.python
-    m.generic.agenix
-    m.nixos.vim
-    m.nixos.gui
-    m.generic.ai
-    m.nixos.mail
-    m.nixos.mpv
-    m.nixos.kitty
-    m.generic.zk
-    m.nixos.discord
-    m.generic."yt-dlp"
-    ({config, ...}: {
-      home-manager.users."${config.my.username}".imports = [
-        hm.shell
-        hm.ssh
-        hm.git
-        hm.bat
-        hm.ripgrep
-        hm.yazi
-        hm.tmux
-        hm.misc
-        hm.python
-        hm.jujutsu
-        hm.vim
-        hm.ai
-        hm.gui
-        hm.mail
-        hm.zk
-        hm.kitty
-        hm.mpv
-        hm."yt-dlp"
+    (inputs.self.lib.mkFeatureModule "nixos" {
+      features = [
+        "system-base"
+        "shell"
+        "git"
+        "jujutsu"
+        "ssh"
+        "bat"
+        "yazi"
+        "ripgrep"
+        "tmux"
+        "misc"
+        "node"
+        "go"
+        "rust"
+        "python"
+        "agenix"
+        "vim"
+        "gui"
+        "ai"
+        "gpg"
+        "mail"
+        "mpv"
+        "kitty"
+        "ghostty"
+        "zk"
+        "discord"
+        "yt-dlp"
       ];
     })
     hostConfiguration

@@ -1,7 +1,5 @@
 {inputs, ...}: let
   host = inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
-  m = inputs.self.modules;
-  hm = m.homeManager;
 
   hostConfiguration = {pkgs, ...}: {
     networking = {hostName = "alcantara";};
@@ -44,55 +42,35 @@
   };
 
   systemImports = [
-    m.darwin.system-base
-    m.darwin.defaults
-    m.darwin.shell
-    m.generic.git
-    m.generic.jujutsu
-    m.generic.ssh
-    m.generic.bat
-    m.generic.yazi
-    m.generic.ripgrep
-    m.generic.tmux
-    m.generic.misc
-    m.generic.node
-    m.generic.go
-    m.generic.rust
-    m.generic.python
-    m.generic.agenix
-    m.darwin.vim
-    m.darwin.gui
-    m.generic.ai
-    m.generic.gpg
-    m.darwin.mail
-    m.darwin.mpv
-    m.darwin.kitty
-    m.darwin.ghostty
-    m.generic.zk
-    m.darwin.discord
-    m.generic."yt-dlp"
-    ({config, ...}: {
-      home-manager.users."${config.my.username}".imports = [
-        hm.shell
-        hm.ssh
-        hm.git
-        hm.bat
-        hm.ripgrep
-        hm.yazi
-        hm.tmux
-        hm.misc
-        hm.python
-        hm.jujutsu
-        hm.vim
-        hm.ai
-        hm.gui
-        hm.mail
-        hm.gpg
-        hm.zk
-        hm.ghostty
-        hm.kitty
-        hm.mpv
-        hm."yt-dlp"
+    (inputs.self.lib.mkFeatureModule "darwin" {
+      features = [
+        "system-base"
+        "defaults"
+        "shell"
+        "git"
+        "jujutsu"
+        "ssh"
+        "bat"
+        "yazi"
+        "ripgrep"
+        "tmux"
+        "misc"
+        "node"
+        "go"
+        "rust"
+        "python"
+        "agenix"
+        "vim"
+        "gui"
+        "ai"
+        "gpg"
+        "mail"
+        "mpv"
+        "kitty"
+        "ghostty"
+        "zk"
+        "discord"
+        "yt-dlp"
       ];
     })
     hostConfiguration
