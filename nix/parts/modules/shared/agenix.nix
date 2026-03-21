@@ -1,11 +1,6 @@
 let
-  module = {
-    pkgs,
-    lib,
-    config,
-    ...
-  }: {
-    config = with lib; {
+  module = _: {
+    config = {
       environment = {
         shellAliases = {
           agenix = "agenix -i ~/.ssh/agenix";

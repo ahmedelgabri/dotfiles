@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -12,17 +11,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."ripgrep" = {
-          recursive = true;
-          source = ../../../../config/ripgrep;
-        };
+    homeManager = _: {
+      xdg.configFile."ripgrep" = {
+        recursive = true;
+        source = ../../../../config/ripgrep;
       };
+    };
   };
 in {
   flake = {

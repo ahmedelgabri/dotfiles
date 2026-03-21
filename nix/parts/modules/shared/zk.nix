@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -11,20 +10,15 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile = {
-          "zk/config.toml".source = ../../../../config/zk/config.toml;
-          "zk/templates" = {
-            recursive = true;
-            source = ../../../../config/zk/templates;
-          };
+    homeManager = _: {
+      xdg.configFile = {
+        "zk/config.toml".source = ../../../../config/zk/config.toml;
+        "zk/templates" = {
+          recursive = true;
+          source = ../../../../config/zk/templates;
         };
       };
+    };
   };
 in {
   flake = {

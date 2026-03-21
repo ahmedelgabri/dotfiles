@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {

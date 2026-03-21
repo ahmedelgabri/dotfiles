@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -16,17 +15,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."tmux" = {
-          recursive = true;
-          source = ../../../../config/tmux;
-        };
+    homeManager = _: {
+      xdg.configFile."tmux" = {
+        recursive = true;
+        source = ../../../../config/tmux;
       };
+    };
   };
 in {
   flake = {

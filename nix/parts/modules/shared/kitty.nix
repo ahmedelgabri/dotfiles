@@ -1,11 +1,7 @@
 let
   module = {
-    darwin = {
-      lib,
-      config,
-      ...
-    }: {
-      config = with lib; {
+    darwin = _: {
+      config = {
         homebrew.casks = ["kitty"];
         my.env.TERMINFO_DIRS = [
           "$KITTY_INSTALLATION_DIR/terminfo"
@@ -16,7 +12,6 @@ let
     nixos = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -27,17 +22,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."kitty" = {
-          recursive = true;
-          source = ../../../../config/kitty;
-        };
+    homeManager = _: {
+      xdg.configFile."kitty" = {
+        recursive = true;
+        source = ../../../../config/kitty;
       };
+    };
   };
 in {
   flake = {

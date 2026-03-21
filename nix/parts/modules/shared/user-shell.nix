@@ -83,7 +83,7 @@ let
                   GATSBY_TELEMETRY_DISABLED = "1";
                   GITHUB_USER = config.my.github_username;
                   # https://github.blog/2022-04-12-git-security-vulnerability-announced/
-                  GIT_CEILING_DIRECTORIES = builtins.dirOf home;
+                  GIT_CEILING_DIRECTORIES = dirOf home;
                   HOMEBREW_INSTALL_BADGE = "⚽️";
                   HOMEBREW_NO_ANALYTICS = "1";
                   HOST_CONFIGS = "${hostConfigHome}";
@@ -507,7 +507,6 @@ let
     homeManager = {
       pkgs,
       lib,
-      myConfig,
       ...
     }: {
       xdg.configFile = {

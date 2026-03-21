@@ -1,11 +1,6 @@
 let
-  module = {
-    pkgs,
-    lib,
-    config,
-    ...
-  }: {
-    config = with lib; {
+  module = {config, ...}: {
+    config = {
       my.env = rec {
         GOPATH = "$XDG_DATA_HOME/go";
         GOBIN = "${GOPATH}/bin";

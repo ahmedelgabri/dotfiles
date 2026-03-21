@@ -34,11 +34,8 @@ let
       with config.my; let
         cfg = config.my.modules.mail;
         homeDir = config.my.user.home;
-        inherit (config.home-manager.users."${username}") xdg;
 
         # Helper functions for multi-account support
-        primaryAccount = lib.head cfg.accounts;
-        lowerName = account: lib.toLower account;
         localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
 
         # Service-specific defaults lookup

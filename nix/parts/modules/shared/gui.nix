@@ -240,11 +240,7 @@ let
       };
     };
   in {
-    darwin = {
-      lib,
-      config,
-      ...
-    }: {
+    darwin = _: {
       config = {
         homebrew.casks = [
           "1password"
@@ -266,12 +262,7 @@ let
       };
     };
 
-    nixos = {
-      pkgs,
-      lib,
-      config,
-      ...
-    }: {
+    nixos = {pkgs, ...}: {
       config = {
         my.user.packages = with pkgs; [
           docker
@@ -287,7 +278,6 @@ let
 
     homeManager = {
       pkgs,
-      lib,
       config,
       myConfig,
       ...

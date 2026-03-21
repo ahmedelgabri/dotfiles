@@ -1,6 +1,5 @@
 let
   module = {
-    pkgs,
     lib,
     config,
     ...

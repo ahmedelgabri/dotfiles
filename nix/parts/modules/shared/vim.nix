@@ -3,7 +3,6 @@ let
     commonModule = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -55,12 +54,7 @@ let
       };
     };
 
-    nixosModule = {
-      pkgs,
-      lib,
-      config,
-      ...
-    }: {
+    nixosModule = {pkgs, ...}: {
       imports = [commonModule];
 
       config = {
@@ -74,17 +68,15 @@ let
 
     homeManager = {
       lib,
-      myConfig,
       config,
       ...
-    }:
-      with lib; {
-        home.activation.vim = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          echo ":: -> Running vim home-manager activation..."
-          ln -sfn ${config.home.homeDirectory}/.dotfiles/config/nvim ${config.xdg.configHome}/nvim
-          mkdir -p ${config.xdg.stateHome}/nvim/{backup,swap,undo,view}
-        '';
-      };
+    }: {
+      home.activation.vim = lib.hm.dag.entryAfter ["writeBoundary"] ''
+        echo ":: -> Running vim home-manager activation..."
+        ln -sfn ${config.home.homeDirectory}/.dotfiles/config/nvim ${config.xdg.configHome}/nvim
+        mkdir -p ${config.xdg.stateHome}/nvim/{backup,swap,undo,view}
+      '';
+    };
   };
 in {
   flake = {

@@ -4,9 +4,7 @@
   hm = m.homeManager;
 
   hostConfiguration = {
-    config,
     pkgs,
-    lib,
     inputs,
     ...
   }: {

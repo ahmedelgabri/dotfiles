@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -13,17 +12,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."yt-dlp" = {
-          recursive = true;
-          source = ../../../../config/yt-dlp;
-        };
+    homeManager = _: {
+      xdg.configFile."yt-dlp" = {
+        recursive = true;
+        source = ../../../../config/yt-dlp;
       };
+    };
   };
 in {
   flake = {

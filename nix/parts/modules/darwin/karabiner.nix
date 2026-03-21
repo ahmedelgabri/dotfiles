@@ -1,13 +1,9 @@
 let
-  module = {
-    lib,
-    config,
-    ...
-  }: let
+  module = {config, ...}: let
     inherit (config.my.user) home;
     inherit (config.home-manager.users."${config.my.username}") xdg;
   in {
-    config = with lib; {
+    config = {
       homebrew.casks = [
         "karabiner-elements"
       ];

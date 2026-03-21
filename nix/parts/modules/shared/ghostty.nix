@@ -1,11 +1,7 @@
 let
   module = {
-    darwin = {
-      lib,
-      config,
-      ...
-    }: {
-      config = with lib; {
+    darwin = _: {
+      config = {
         homebrew.casks = ["ghostty@tip"];
       };
     };
@@ -13,7 +9,6 @@ let
     nixos = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -21,17 +16,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."ghostty" = {
-          recursive = true;
-          source = ../../../../config/ghostty;
-        };
+    homeManager = _: {
+      xdg.configFile."ghostty" = {
+        recursive = true;
+        source = ../../../../config/ghostty;
       };
+    };
   };
 in {
   flake = {

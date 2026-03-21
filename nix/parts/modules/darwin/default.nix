@@ -1,7 +1,6 @@
 let
   module = {
     config,
-    lib,
     pkgs,
     inputs,
     ...

@@ -3,7 +3,6 @@ let
     darwin = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -15,7 +14,6 @@ let
     nixos = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -23,17 +21,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."mpv" = {
-          recursive = true;
-          source = ../../../../config/mpv;
-        };
+    homeManager = _: {
+      xdg.configFile."mpv" = {
+        recursive = true;
+        source = ../../../../config/mpv;
       };
+    };
   };
 in {
   flake = {

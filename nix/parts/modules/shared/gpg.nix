@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -27,26 +26,21 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile = {
-          "gnupg/gpg-agent.conf".text = ''
-            # ${myConfig.nix_managed}
+    homeManager = {myConfig, ...}: {
+      xdg.configFile = {
+        "gnupg/gpg-agent.conf".text = ''
+          # ${myConfig.nix_managed}
 
-            allow-preset-passphrase
+          allow-preset-passphrase
 
-            default-cache-ttl 86400
-            max-cache-ttl 86400'';
+          default-cache-ttl 86400
+          max-cache-ttl 86400'';
 
-          "gnupg/gpg.conf".text = ''
-            # ${myConfig.nix_managed}
-            ${builtins.readFile ../../../../config/gnupg/gpg.conf}'';
-        };
+        "gnupg/gpg.conf".text = ''
+          # ${myConfig.nix_managed}
+          ${builtins.readFile ../../../../config/gnupg/gpg.conf}'';
       };
+    };
   };
 in {
   flake = {

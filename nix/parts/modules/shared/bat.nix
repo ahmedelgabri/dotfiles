@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -14,17 +13,12 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile."bat" = {
-          recursive = true;
-          source = ../../../../config/bat;
-        };
+    homeManager = _: {
+      xdg.configFile."bat" = {
+        recursive = true;
+        source = ../../../../config/bat;
       };
+    };
   };
 in {
   flake = {

@@ -3,7 +3,6 @@ let
     generic = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
@@ -24,23 +23,18 @@ let
       };
     };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
-        xdg.configFile = {
-          "python" = {
-            recursive = true;
-            source = ../../../../config/python;
-          };
-          "pip" = {
-            recursive = true;
-            source = ../../../../config/pip;
-          };
+    homeManager = _: {
+      xdg.configFile = {
+        "python" = {
+          recursive = true;
+          source = ../../../../config/python;
+        };
+        "pip" = {
+          recursive = true;
+          source = ../../../../config/pip;
         };
       };
+    };
   };
 in {
   flake = {

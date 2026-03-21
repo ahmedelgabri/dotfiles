@@ -1,12 +1,8 @@
 let
-  module = {
-    lib,
-    config,
-    ...
-  }: let
+  module = {config, ...}: let
     inherit (config.my.user) home;
   in {
-    config = with lib; {
+    config = {
       homebrew.casks = [
         "hammerspoon"
       ];

@@ -1,11 +1,7 @@
 let
   module = {
-    darwin = {
-      lib,
-      config,
-      ...
-    }: {
-      config = with lib; {
+    darwin = _: {
+      config = {
         homebrew.casks = ["discord"];
       };
     };
@@ -13,7 +9,6 @@ let
     nixos = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       config = with lib; {
