@@ -515,10 +515,6 @@ let
           source = ../../../../config/zsh.d/zsh;
         };
         "zsh/.zshrc".text = "";
-        "mods" = {
-          recursive = true;
-          source = ../../../../config/mods;
-        };
         "direnv/direnvrc".text = lib.concatStringsSep "\n" [
           "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
           (builtins.readFile ../../../../config/direnv/direnvrc)
@@ -528,7 +524,6 @@ let
           source = ../../../../config/vivid;
         };
         "atuin".source = ../../../../config/atuin;
-        "repomix".source = ../../../../config/repomix;
       };
 
       home.file = {
