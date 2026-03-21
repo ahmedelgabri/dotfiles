@@ -1,11 +1,27 @@
 {
   inputs,
   lib,
+  flake-parts-lib,
   ...
 }: {
-  options.flake.lib = lib.mkOption {
-    type = lib.types.attrsOf lib.types.unspecified;
-    default = {};
+  options = {
+    flake = flake-parts-lib.mkSubmoduleOptions {
+      lib = lib.mkOption {
+        type = lib.types.attrsOf lib.types.unspecified;
+        default = {};
+      };
+
+      modules = lib.mkOption {
+        type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.raw);
+        default = {};
+      };
+
+      # darwinConfigurations fix
+      darwinConfigurations = lib.mkOption {
+        type = lib.types.lazyAttrsOf lib.types.raw;
+        default = {};
+      };
+    };
   };
 
   config.flake.lib = {

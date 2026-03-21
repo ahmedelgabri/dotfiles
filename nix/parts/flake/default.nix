@@ -5,9 +5,7 @@
   ];
 
   imports = [
-    ../flake-parts/darwinConfigurations-fix.nix
-    ../flake-parts/modules.nix
-    ../flake-parts/lib.nix
+    ./lib.nix
     ../modules/base/default.nix
     ../modules/darwin/default.nix
     ../modules/darwin/hammerspoon.nix
