@@ -11,6 +11,7 @@
         llm-agents.amp
         llm-agents.codex
         llm-agents.opencode
+        llm-agents.pi
         colima
         docker
         podman
