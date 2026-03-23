@@ -18,13 +18,6 @@ let
 
     homeManager = {config, ...}: {
       home.activation.syncAgentSettings = config.lib.dag.entryAfter ["writeBoundary"] ''
-        BK="${config.home.homeDirectory}/.pi/agent/settings.json.bk"
-        TARGET="${config.home.homeDirectory}/.pi/agent/settings.json"
-        if [ -f "$BK" ] || [ -L "$BK" ]; then
-          rm -f "$TARGET"
-          cp "$BK" "$TARGET"
-        fi
-
         BK="${config.home.homeDirectory}/.claude/settings.json.bk"
         TARGET="${config.home.homeDirectory}/.claude/settings.json"
         if [ -f "$BK" ] || [ -L "$BK" ]; then
@@ -40,8 +33,6 @@ let
           recursive = true;
           source = ../../../../config/claude/skills;
         };
-
-        ".pi/agent/settings.json.bk".source = ../../../../config/pi/settings.json;
 
         ".claude/CLAUDE.md".source = ../../../../config/claude/CLAUDE.md;
 

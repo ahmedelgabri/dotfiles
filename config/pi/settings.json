@@ -12,6 +12,5 @@
 	"collapseChangelog": false,
 	"quietStartup": false,
 	"treeFilterMode": "default",
-	"theme": "dark",
-	"skills": ["~/.agents/skills"]
+	"theme": "dark"
 }

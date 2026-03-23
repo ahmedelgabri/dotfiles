@@ -1,8 +1,34 @@
 {inputs, ...}: let
   host = inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
 
-  hostConfiguration = {pkgs, ...}: {
+  hostConfiguration = {
+    pkgs,
+    config,
+    ...
+  }: let
+    darwinConfig = config;
+  in {
     networking = {hostName = "alcantara";};
+
+
+    home-manager.users."${darwinConfig.my.username}" = {config, ...}: {
+      home.activation.syncPiAgentSettings = config.lib.dag.entryAfter ["writeBoundary"] ''
+        BK="${config.xdg.configHome}/pi/agent/settings.json.bk"
+        TARGET="${config.xdg.configHome}/pi/agent/settings.json"
+        if [ -f "$BK" ] || [ -L "$BK" ]; then
+          rm -f "$TARGET"
+          cp "$BK" "$TARGET"
+        fi
+      '';
+
+      xdg.configFile = {
+        "pi/agent/settings.json.bk".source = ../../../../config/pi/settings.json;
+      };
+    };
+
+    environment.variables = {
+      PI_CODING_AGENT_DIR = "$HOME/.config/pi/agent";
+    };
 
     my.user = {
       packages = with pkgs; [
