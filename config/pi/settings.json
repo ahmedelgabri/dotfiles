@@ -1,0 +1,17 @@
+{
+	"lastChangelogVersion": "0.61.1",
+	"defaultThinkingLevel": "xhigh",
+	"defaultProvider": "anthropic",
+	"defaultModel": "claude-opus-4-6",
+	"showHardwareCursor": true,
+	"autocompleteMaxVisible": 10,
+	"steeringMode": "one-at-a-time",
+	"followUpMode": "one-at-a-time",
+	"transport": "auto",
+	"hideThinkingBlock": false,
+	"collapseChangelog": false,
+	"quietStartup": false,
+	"treeFilterMode": "default",
+	"theme": "dark",
+	"skills": ["~/.agents/skills"]
+}
