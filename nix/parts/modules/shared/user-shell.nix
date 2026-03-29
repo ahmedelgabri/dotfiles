@@ -147,7 +147,6 @@ let
                 packages = with pkgs; [
                   _1password-cli
                   atuin
-                  bat
                   # buku
                   eza
                   fd
