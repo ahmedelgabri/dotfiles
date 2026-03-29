@@ -4,7 +4,6 @@
 		"BASH_DEFAULT_TIMEOUT_MS": "120000",
 		"CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
 		"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-		"CLAUDE_CODE_EFFORT_LEVEL": "high",
 		"CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS": "64000",
 		"CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
 		"CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
@@ -242,7 +241,7 @@
 					},
 					{
 						"type": "command",
-						"command": "jq -r '.message' | terminal-notifier -title Claude -subtitle \"Notification hook\" -activate com.mitchellh.ghostty"
+						"command": "[[ -z \"$GHOSTTY_BIN_DIR\" ]] && jq -r '.message' | terminal-notifier -title Claude -subtitle \"Notification hook\" -activate com.mitchellh.ghostty || true"
 					}
 				]
 			}
