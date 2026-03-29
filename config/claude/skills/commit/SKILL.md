@@ -51,9 +51,6 @@ For more information on Jujutsu, see the `/jujutsu` skill.
    - A blank line.
    - A detailed description, wrapped to 72 characters, using basic Markdown
      syntax.
-   - At the bottom, include the full text of **all** prompts that were used
-     while preparing the changes that led to the commit; **never** omit any
-     prompts.
 
 ## Best practices
 
@@ -94,11 +91,4 @@ for now, leaving it out presents us with an opportunity to simplify.
 It may even be a tiny bit faster (1.3% better CPU time, and 2.4%
 better wall time), with reasonable confidence, due to saving us some
 conditional checks.
-
-Agent prompts used in preparing this commit:
-
-> Search the codebase and confirm that the `recurse` setting isn't used
-> anywhere outside of the benchmarks, where it is hardcoded to `true`.
-> Once you've confirmed that, remove all traces of the setting. Run the
-> benchmarks to see they still work, and the tests to see they still pass.
 ```

@@ -1,12 +1,7 @@
 ---
+name: pr-create
 description: |
   Create a GitHub pull request as a draft, auto-generating title and body from commits
-allowed-tools:
-  - Bash
-  - Read
-  - Glob
-  - Grep
-  - AskUserQuestion
 ---
 
 Create a GitHub pull request for the current branch using the `gh` CLI.
@@ -21,12 +16,12 @@ Create a GitHub pull request for the current branch using the `gh` CLI.
 
    Use this as the base branch unless the user has specified a different base.
 
-1. **Gather context** by running these in parallel:
+2. **Gather context** by running these in parallel:
    - `git log <base>..HEAD --oneline` to see all commits being proposed
    - `git diff <base>...HEAD --stat` to see a summary of changed files
    - `git diff <base>...HEAD` to see the full diff
 
-1. **Check for a PR template** by looking for files in these locations (in order
+3. **Check for a PR template** by looking for files in these locations (in order
    of priority):
    - `.github/PULL_REQUEST_TEMPLATE.md`
    - `.github/PULL_REQUEST_TEMPLATE/` directory (if multiple templates exist,
@@ -36,7 +31,7 @@ Create a GitHub pull request for the current branch using the `gh` CLI.
    If a template is found, read it and use its structure for the PR body. Fill
    in the template sections based on the commits and diff.
 
-1. **Draft the PR title and body**:
+4. **Draft the PR title and body**:
    - Auto-generate a concise title (under 72 characters) from the commits and
      diff
    - Generate the body using the template structure if one was found, otherwise
@@ -44,12 +39,12 @@ Create a GitHub pull request for the current branch using the `gh` CLI.
    - The body should explain what changed and why, based on commit messages and
      the diff
 
-1. **Present the draft to the user** using AskUserQuestion:
+5. **Present the draft to the user** using AskUserQuestion:
    - Show the proposed title and body
    - Ask if they want to make any changes before creating the PR
    - If the user provides revisions, incorporate them
 
-1. **Create the PR** by running:
+6. **Create the PR** by running:
 
    ```
    gh pr create --draft --title "<title>" --body "<body>" --base <base-branch>
@@ -57,7 +52,7 @@ Create a GitHub pull request for the current branch using the `gh` CLI.
 
    Use a HEREDOC for the body to preserve formatting.
 
-1. **Report the PR URL** back to the user.
+7. **Report the PR URL** back to the user.
 
 ## Notes
 

@@ -1,14 +1,7 @@
 ---
+name: pr-review
 description: |
   Review a GitHub pull request, examining the summary, linked resources, and diff
-argument-hint: '[PR number or URL]'
-allowed-tools:
-  - Bash
-  - Read
-  - Glob
-  - Grep
-  - WebFetch
-  - AskUserQuestion
 ---
 
 Review a GitHub pull request using the `gh` CLI. Examine it as a thorough human
@@ -22,18 +15,18 @@ reviewer would.
      `gh pr view --json number,url`
    - If no PR is found, inform the user.
 
-1. **Fetch PR details** by running:
+2. **Fetch PR details** by running:
 
    ```
    gh pr view <number> --json title,body,baseRefName,headRefName,files,additions,deletions,commits,reviews,comments,url
    ```
 
-1. **Read the PR description carefully**:
+3. **Read the PR description carefully**:
    - Understand the stated motivation and approach.
    - If the description contains links (to issues, docs, RFCs, etc.), use
      WebFetch to read them and understand the context.
 
-1. **Examine the diff**:
+4. **Examine the diff**:
 
    ```
    gh pr diff <number>
@@ -47,7 +40,7 @@ reviewer would.
 
    and then examine the most important files in detail.
 
-1. **Conduct the review** by evaluating:
+5. **Conduct the review** by evaluating:
    - **Correctness**: Are there bugs, logic errors, or edge cases not handled?
    - **Design**: Is the approach sound? Are there simpler alternatives?
    - **Readability**: Is the code clear and well-structured?
@@ -57,7 +50,7 @@ reviewer would.
    - **Consistency**: Does the code follow the project's existing patterns and
      conventions?
 
-1. **Present the review** to the user:
+6. **Present the review** to the user:
    - Start with a brief overall assessment (1-2 sentences).
    - List specific issues found, grouped by severity:
      - **Blocking**: Must be fixed before merging
@@ -66,7 +59,7 @@ reviewer would.
    - For each issue, reference the specific file and line(s), and explain what
      the problem is and how to fix it.
 
-1. **Offer next steps** using AskUserQuestion. Give the user a choice:
+7. **Offer next steps** using AskUserQuestion. Give the user a choice:
 
    **Option A: Post review comments on the PR**
    - Use `gh pr review <number>` to submit the review.
