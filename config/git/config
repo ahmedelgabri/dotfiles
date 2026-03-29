@@ -80,6 +80,11 @@
 ; https://lore.kernel.org/git/20241129-wt_relative_options-v6-0-44e4e0bec8c3@pm.me/
 ; https://git-scm.com/docs/git-worktree#Documentation/git-worktree.txt---no-relative-paths
 ;
+; [BUG]
+; - https://github.com/libgit2/libgit2/issues/7210
+; - NIX flakes doesn't play nice (libgit2 issue) https://github.com/NixOS/nix/issues/14987
+; - p10k doesn't play nice (a forked version of libgit2) https://github.com/romkatv/gitstatus/issues/428
+;
 ; requires running git worktree repair in current worktrees
 [worktree]
 	useRelativePaths = true;
