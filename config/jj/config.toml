@@ -47,7 +47,7 @@ show-cryptographic-signatures = true
 'wip()' = 'description(glob:"wip:*") ~ ::immutable_heads()'
 
 # Any commits considered private by git.private-commits
-'private()' = '(description(glob:"private:*") | description(glob:"wip:*"))'
+'private()' = '(description(glob:"private:*") | wip())'
 
 [revsets]
 log = "present(@) | ancestors(immutable_heads().., 10) | present(trunk())"
@@ -55,6 +55,11 @@ bookmark-advance-to = 'closest_pushable(@)'
 log-graph-prioritize = 'trunk() | present(@)'
 
 [aliases]
+fetch = ["git", "fetch", "--all-remotes"]
+g = ["git"]
+push = ["git", "push"]
+retrunk = ["rebase", "-d", "trunk()"]
+sudo = ["--ignore-immutable"]
 gr = ["log", "-r", "::@ & ~empty_description()", "-T", '''
   commit_id.short() ++
   " (" ++
