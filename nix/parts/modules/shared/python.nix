@@ -3,10 +3,13 @@ let
     generic = {
       pkgs,
       lib,
+      config,
       ...
-    }: {
+    }: let
+      inherit (config.home-manager.users."${config.my.username}") xdg;
+    in {
       config = with lib; {
-        my.env.PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/.pythonrc.py";
+        environment.variables.PYTHONSTARTUP = "${xdg.configHome}/python/.pythonrc.py";
 
         my.user.packages = with pkgs; [
           (python3.withPackages (ps:

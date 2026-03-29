@@ -1,8 +1,10 @@
 let
-  module = {config, ...}: {
+  module = {config, ...}: let
+    inherit (config.home-manager.users."${config.my.username}") xdg;
+  in {
     config = {
-      my.env = rec {
-        GOPATH = "$XDG_DATA_HOME/go";
+      environment.variables = rec {
+        GOPATH = "${xdg.dataHome}/go";
         GOBIN = "${GOPATH}/bin";
         GOPRIVATE = "github.com/${config.my.github_username}/*,gitlab.com/${config.my.github_username}/*";
       };

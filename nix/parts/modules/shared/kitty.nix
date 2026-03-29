@@ -3,9 +3,9 @@ let
     darwin = _: {
       config = {
         homebrew.casks = ["kitty"];
-        my.env.TERMINFO_DIRS = [
-          "$KITTY_INSTALLATION_DIR/terminfo"
-        ];
+        environment.extraInit = ''
+          export TERMINFO_DIRS="$TERMINFO_DIRS:$KITTY_INSTALLATION_DIR/terminfo"
+        '';
       };
     };
 
@@ -16,9 +16,9 @@ let
     }: {
       config = with lib; {
         my.user.packages = with pkgs; [kitty];
-        my.env.TERMINFO_DIRS = [
-          "${pkgs.kitty.terminfo}/share/terminfo"
-        ];
+        environment.extraInit = ''
+          export TERMINFO_DIRS="$TERMINFO_DIRS:${pkgs.kitty.terminfo}/share/terminfo"
+        '';
       };
     };
 

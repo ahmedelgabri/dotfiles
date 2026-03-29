@@ -1,9 +1,11 @@
 let
-  module = _: {
+  module = {config, ...}: let
+    inherit (config.home-manager.users."${config.my.username}") xdg;
+  in {
     config = {
-      my.env = {
-        RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
-        CARGO_HOME = "$XDG_DATA_HOME/cargo";
+      environment.variables = {
+        RUSTUP_HOME = "${xdg.dataHome}/rustup";
+        CARGO_HOME = "${xdg.dataHome}/cargo";
       };
     };
   };

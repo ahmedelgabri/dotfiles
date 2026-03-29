@@ -3,8 +3,11 @@ let
     generic = {
       pkgs,
       lib,
+      config,
       ...
-    }: {
+    }: let
+      inherit (config.home-manager.users."${config.my.username}") xdg;
+    in {
       config = with lib; {
         environment.systemPackages = with pkgs; [
           gnupg
@@ -17,7 +20,7 @@ let
           '')
         ];
 
-        my.env.GNUPGHOME = "$XDG_CONFIG_HOME/gnupg";
+        environment.variables.GNUPGHOME = "${xdg.configHome}/gnupg";
 
         programs.gnupg.agent = {
           enable = true;

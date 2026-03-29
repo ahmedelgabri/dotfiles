@@ -34,6 +34,7 @@ let
       with config.my; let
         cfg = config.my.modules.mail;
         homeDir = config.my.user.home;
+        inherit (config.home-manager.users."${username}") xdg;
 
         # Helper functions for multi-account support
         localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
@@ -408,11 +409,11 @@ let
                     urlscan
                   ];
                 };
+              };
 
-                env = {
-                  MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
-                  NOTMUCH_CONFIG = "$XDG_CONFIG_HOME/notmuch/config";
-                };
+              environment.variables = {
+                MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
+                NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
               };
             }
           ]

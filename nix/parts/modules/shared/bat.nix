@@ -3,12 +3,21 @@ let
     generic = {
       pkgs,
       lib,
+      config,
       ...
-    }: {
+    }: let
+      inherit (config.home-manager.users."${config.my.username}") xdg;
+    in {
       config = with lib; {
-        environment.shellAliases.cat = "bat";
+        environment = {
+          shellAliases.cat = "bat";
+          zshGlobalAliases = {
+            "-h" = "-h 2>&1 | bat --language=help --style=plain";
+            "--help" = "--help 2>&1 | bat --language=help --style=plain";
+          };
+          variables.BAT_CONFIG_PATH = "${xdg.configHome}/bat/config";
+        };
 
-        my.env.BAT_CONFIG_PATH = "$XDG_CONFIG_HOME/bat/config";
         my.user.packages = with pkgs; [bat];
       };
     };

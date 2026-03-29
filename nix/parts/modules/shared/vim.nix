@@ -15,7 +15,7 @@ let
           ];
         };
 
-        my.env = {
+        environment.variables = {
           EDITOR = "${lib.getExe pkgs.neovim-unwrapped}";
           VISUAL = "$EDITOR";
           GIT_EDITOR = "$EDITOR";
