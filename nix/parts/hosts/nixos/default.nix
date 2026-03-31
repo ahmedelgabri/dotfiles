@@ -145,6 +145,7 @@
         "zk"
         "discord"
         "yt-dlp"
+        "bun"
       ];
     })
     hostConfiguration

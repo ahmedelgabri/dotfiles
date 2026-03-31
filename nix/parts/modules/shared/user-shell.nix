@@ -39,9 +39,6 @@ let
                 history = "fc -il 1";
                 jobs = "jobs -l";
                 play = "mx ϟ";
-                y = "yarn";
-                p = "pnpm";
-                b = "bun";
                 top = "htop";
                 l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
                 ll = "eza --icons --tree --group-directories-first --all --level=2";
@@ -164,7 +161,6 @@ let
                   ghostscript # to preview PDFs as images
                   poppler-utils # to preview PDFs as text
                   newsraft
-                  bun
                   circumflex # HN CLI reader
                   terminal-notifier
                 ];

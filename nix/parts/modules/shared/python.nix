@@ -36,6 +36,10 @@ let
           recursive = true;
           source = ../../../../config/pip;
         };
+        "uv" = {
+          recursive = true;
+          source = ../../../../config/uv;
+        };
       };
     };
   };
