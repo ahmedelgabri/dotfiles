@@ -358,9 +358,12 @@ return {
 						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
 					end
 
+					local lazy_ok, lazy_config = pcall(require, 'lazy.core.config')
+					local has_blink = lazy_ok and lazy_config.plugins['blink.cmp'] ~= nil
+
 					if
 						client:supports_method 'textDocument/completion'
-						and not package.loaded['blink.cmp']
+						and not has_blink
 					then
 						vim.lsp.completion.enable(
 							true,
