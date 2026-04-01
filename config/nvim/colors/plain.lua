@@ -202,6 +202,7 @@ highlight('DiffDelete', { fg = 'NvimLightRed' })
 highlight('DiffChange', { fg = 'NvimLightYellow' })
 -- __DiffText__
 highlight('DiffText', { fg = colors.constant })
+highlight('DiffTextAdd', { link = 'DiffAdd' })
 
 highlight('SpellBad', { underline = true, sp = colors.red })
 highlight('SpellCap', { underline = true, sp = colors.ok })
@@ -232,9 +233,15 @@ highlight(
 	'StatusLineWarning',
 	{ underline = true, bg = colors.bg, fg = colors.warning }
 )
+highlight('OkMsg', { link = 'StatusLineOk' })
+highlight('StdoutMsg', { link = 'MoreMsg' })
+highlight('StderrMsg', { link = 'ErrorMsg' })
 
 -- __Pmenu__
 highlight('Pmenu', { fg = colors.bg_subtle, bg = nil })
+highlight('PmenuBorder', { link = 'FloatBorder' })
+highlight('PmenuShadow', { bg = colors.bg_very_subtle })
+highlight('PmenuShadowThrough', { bg = colors.bg_very_subtle })
 highlight('PmenuSbar', { link = 'Pmenu' })
 highlight('PmenuThumb', { link = 'Pmenu' })
 -- __PmenuSel__
@@ -468,9 +475,13 @@ highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
 highlight('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
 highlight('LspDiagnosticsDefaultHint', { link = 'NonText' })
 highlight('LspInlayHint', { fg = lighter_black, bg = nil, italic = true })
+highlight('LspCodeLens', { link = 'Comment' })
+highlight('LspCodeLensSeparator', { link = 'LspCodeLens' })
 highlight('LspReferenceRead', { link = 'SpecialKey' })
 highlight('LspReferenceText', { link = 'SpecialKey' })
 highlight('LspReferenceWrite', { link = 'SpecialKey' })
+highlight('LspReferenceTarget', { link = 'SpecialKey' })
+highlight('SnippetTabstopActive', { link = 'Visual' })
 
 -- User highlights --
 highlight('User5', { fg = colors.red })
