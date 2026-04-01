@@ -30,7 +30,7 @@
         packages = with pkgs; [
           graph-easy
           graphviz
-          nodePackages.mermaid-cli
+          mermaid-cli
           jira-cli-go
           git-filter-repo
           git-lfs

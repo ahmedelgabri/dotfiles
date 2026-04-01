@@ -33,7 +33,7 @@ let
           shfmt
           stylua
           vscode-langservers-extracted
-          nodePackages.prettier
+          prettier
           bash-language-server
           dockerfile-language-server
           docker-compose-language-service
