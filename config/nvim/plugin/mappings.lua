@@ -226,6 +226,16 @@ local mode_keymaps = {
 			action = 'gF',
 		},
 	},
+	['<localleader>u'] = {
+		{
+			modes = { 'n', 'v' },
+			action = function()
+				vim.cmd.packadd 'nvim.undotree'
+				require('undotree').open { command = '50vnew' }
+			end,
+			opts = { silent = true, desc = 'Toggle [U]ndotree' },
+		},
+	},
 }
 
 for key, mappings in pairs(mode_keymaps) do

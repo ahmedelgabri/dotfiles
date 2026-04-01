@@ -42,6 +42,7 @@ au.augroup('__myautocmds__', {
 			'scratch',
 			'taskedit',
 			'grug-far',
+			'nvim-undotree',
 		},
 		desc = 'Close with <q>',
 		callback = function(args)
@@ -63,7 +64,7 @@ au.augroup('__myautocmds__', {
 		event = { 'BufRead', 'BufNewFile' },
 		pattern = '*',
 		callback = cmds.source_project_config,
-		desc = 'Project specific override',
+		desc = 'Legacy project specific override fallback',
 	},
 	{
 		event = 'DirChanged',

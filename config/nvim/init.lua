@@ -101,6 +101,9 @@ vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
 vim.o.secure = true
+-- Prefer native trusted project-local config in .nvim.lua/.nvimrc/.exrc.
+-- Legacy .vim/local.{vim,lua} support is kept as a fallback in _.autocmds.
+vim.o.exrc = true
 
 -- allow cursor to move where there is no text in visual block mode
 vim.o.virtualedit = 'block'
@@ -204,23 +207,23 @@ vim.o.wrap = false
 vim.o.breakindent = true
 vim.o.breakindentopt = 'list:-1'
 vim.o.showbreak = '↳  ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
-
-if not vim.fn.has 'nvim-0.6' then
-	vim.o.hidden = true
-end
+vim.o.hidden = true
 
 -- Make tilde command behave like an operator.
 vim.o.tildeop = true
 
--- Make sure diffs are always opened in vertical splits, also match my git settings
-vim.o.diffopt = utils.append(vim.o.diffopt, {
+-- Make sure diffs are always opened in vertical splits, also match my git settings.
+-- Neovim 0.12 already enables indent-heuristic and inline:char by default, but
+-- keep them explicit here so the intent stays visible.
+vim.opt.diffopt:append {
 	'vertical',
 	'algorithm:histogram',
 	'indent-heuristic',
+	'inline:char',
 	'hiddenoff',
 	'foldcolumn:0',
 	'linematch:60',
-})
+}
 
 vim.o.shortmess = vim.o.shortmess .. 'AIOTWaot'
 
@@ -229,11 +232,8 @@ vim.o.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}v
 vim.o.backupcopy = 'yes' -- overwrite files to update, instead of renaming + rewriting
 vim.o.backup = false
 vim.o.writebackup = false
-
-if not vim.fn.has 'nvim-0.6' then
-	vim.o.backupdir =
-		string.format('%s,%s%s', '.', vim.fn.stdpath 'state', '/backup//') -- keep backup files out of the way
-end
+vim.o.backupdir =
+	string.format('%s,%s%s', '.', vim.fn.stdpath 'state', '/backup//') -- keep backup files out of the way
 
 vim.o.swapfile = false
 vim.o.directory =
@@ -349,7 +349,6 @@ require('lazy').setup {
 				'netrwPlugin',
 				'rplugin',
 				'rrhelper',
-				'tohtml',
 				'tutor',
 				'vimball',
 				'vimballPlugin',

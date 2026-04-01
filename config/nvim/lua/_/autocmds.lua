@@ -72,15 +72,28 @@ function M.loadview(event)
 	end
 end
 
--- Project specific override
--- Better than what I had before https://github.com/mhinz/vim-startify/issues/292#issuecomment-335006879
+-- Legacy project specific override fallback.
+-- Native exrc support is enabled in init.lua; only source .vim/local.* files
+-- when no .nvim.lua/.nvimrc/.exrc file exists in the current path hierarchy.
 function M.source_project_config()
-	local files = {
+	local native_exrc_files = {
+		'.nvim.lua',
+		'.nvimrc',
+		'.exrc',
+	}
+
+	for _, file in ipairs(native_exrc_files) do
+		if vim.fn.findfile(file, vim.fn.expand '%:p' .. ';') ~= '' then
+			return
+		end
+	end
+
+	local legacy_files = {
 		'.vim/local.vim',
 		'.vim/local.lua',
 	}
 
-	for _, file in pairs(files) do
+	for _, file in ipairs(legacy_files) do
 		local current_file = vim.fn.findfile(file, vim.fn.expand '%:p' .. ';')
 
 		if vim.uv.fs_stat(current_file) then
