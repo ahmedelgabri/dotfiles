@@ -6,9 +6,6 @@ local M = {}
 
 __.statusline = M
 
--- Setup LSP progress handler
-lsp.setup_progress_handler()
-
 vim.o.laststatus = 2
 
 ---@return string
@@ -69,37 +66,72 @@ end
 ---------------------------------------------------------------------------------
 -- Autocommands
 ---------------------------------------------------------------------------------
+local lsp_progress = {}
+
 au.augroup('MyStatusLine', {
 	{
-		event = 'VimLeavePre',
+		event = { 'LspAttach', 'LspDetach' },
 		pattern = '*',
 		callback = function()
-			lsp.cleanup()
+			vim.cmd.redrawstatus()
 		end,
 	},
 	{
-		event = 'User',
-		pattern = {
-			'CodeCompanionChatAdapter',
-			'CodeCompanionChatModel',
-			'CodeCompanionRequest*',
-		},
-		callback = function(args)
-			if args.match == 'CodeCompanionRequestStarted' then
-				components.llm_info.processing = true
-			elseif args.match == 'CodeCompanionRequestFinished' then
-				components.llm_info.processing = false
-			elseif not vim.tbl_isempty(args.data) then
-				local bufnr = args.data.bufnr
-				components.llm_info[bufnr] = components.llm_info[bufnr] or {}
-				if args.match == 'CodeCompanionChatAdapter' and args.data.adapter then
-					components.llm_info[bufnr].name = args.data.adapter.name
-				elseif args.match == 'CodeCompanionChatModel' and args.data.model then
-					components.llm_info[bufnr].model = type(args.data.model) == 'table'
-							and args.data.model[1]
-						or args.data.model
-				end
+		event = 'LspProgress',
+		pattern = '*',
+		callback = function(ev)
+			local data = ev.data or {}
+			local params = data.params or {}
+			local value = params.value
+			local token = params.token
+
+			if type(value) ~= 'table' or token == nil or value.kind == nil then
+				return
 			end
+
+			local client = vim.lsp.get_client_by_id(data.client_id)
+			local client_name = client and client.name or 'LSP'
+			local id = string.format('lsp.%s.%s', data.client_id, token)
+			local progress = lsp_progress[id] or { client_name = client_name }
+
+			progress.client_name = client_name
+			progress.title = value.title or progress.title
+			progress.message = value.message or progress.message
+			progress.percentage = value.percentage or progress.percentage
+
+			if value.kind == 'end' then
+				lsp_progress[id] = nil
+				vim.api.nvim_echo({ { '' } }, false, {
+					id = id,
+					kind = 'progress',
+					source = client_name,
+					status = 'success',
+				})
+				return
+			end
+
+			lsp_progress[id] = progress
+
+			local label = progress.title or progress.client_name
+			local chunks = { { label, 'Comment' } }
+
+			if progress.percentage ~= nil then
+				table.insert(
+					chunks,
+					{ string.format(': %d%%', progress.percentage), 'DiagnosticWarn' }
+				)
+			end
+
+			if progress.message ~= nil and progress.message ~= '' then
+				table.insert(chunks, { ' ' .. progress.message, 'Normal' })
+			end
+
+			vim.api.nvim_echo(chunks, false, {
+				id = id,
+				kind = 'progress',
+				source = client_name,
+				status = 'running',
+			})
 		end,
 	},
 	{

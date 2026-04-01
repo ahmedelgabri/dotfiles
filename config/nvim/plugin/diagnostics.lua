@@ -28,7 +28,7 @@ vim.diagnostic.open_float = (function(orig)
 
 		opts.border = utils.get_border(border_color)
 
-		orig(bufnr, opts)
+		return orig(bufnr, opts)
 	end
 end)(vim.diagnostic.open_float)
 
@@ -38,8 +38,46 @@ local clean_src_names = {
 }
 
 vim.diagnostic.config {
-	jump = { float = true },
+	jump = {
+		on_jump = function(diagnostic, bufnr)
+			if diagnostic == nil then
+				return
+			end
+
+			vim.diagnostic.open_float(bufnr, { scope = 'cursor' })
+		end,
+	},
 	severity_sort = true,
+	status = {
+		format = function(counts)
+			local levels = {
+				{ vim.diagnostic.severity.ERROR, 'error', 'DiagnosticSignError' },
+				{ vim.diagnostic.severity.WARN, 'warn', 'DiagnosticSignWarn' },
+				{ vim.diagnostic.severity.INFO, 'info', 'DiagnosticSignInfo' },
+				{ vim.diagnostic.severity.HINT, 'hint', 'DiagnosticSignHint' },
+			}
+			local parts = {}
+
+			for _, item in ipairs(levels) do
+				local severity, icon_name, highlight = item[1], item[2], item[3]
+				local count = counts[severity]
+
+				if count ~= nil and count > 0 then
+					table.insert(
+						parts,
+						string.format(
+							'%%#%s#%s%s%%*',
+							highlight,
+							utils.get_icon(icon_name),
+							count
+						)
+					)
+				end
+			end
+
+			return table.concat(parts, ' ')
+		end,
+	},
 	virtual_text = {
 		spacing = 0,
 		prefix = function(diag, _, total)

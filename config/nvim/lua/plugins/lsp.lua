@@ -62,7 +62,7 @@ return {
 		config = function()
 			-- for debugging
 			-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
-			-- :lua print(vim.lsp.get_log_path())
+			-- :lua print(vim.lsp.log.get_filename())
 			-- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
 
 			-- require('vim.lsp.log').set_level 'debug'
@@ -117,7 +117,7 @@ return {
 				{ 'ruff' },
 
 				{ 'bashls', 'bash-language-server' },
-				{ 'lua_ls', 'yaml-language-server' },
+				{ 'lua_ls', 'lua-language-server' },
 				{ 'rust_analyzer', 'rust-analyzer' },
 				{ 'gopls' },
 				{ 'nixd' },
@@ -345,14 +345,8 @@ return {
 					end
 
 					if client:supports_method 'textDocument/codeLens' then
-						au.augroup('__LSP_CODELENS__', {
-							{
-								event = { 'CursorHold', 'BufEnter', 'InsertLeave' },
-								callback = function()
-									vim.lsp.codelens.refresh { bufnr = bufnr }
-								end,
-								buffer = bufnr,
-							},
+						vim.lsp.codelens.enable(true, {
+							bufnr = bufnr,
 						})
 					end
 
