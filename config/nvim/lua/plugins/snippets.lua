@@ -123,7 +123,14 @@ return {
 							local pos_begin = snip.nodes[6].mark:pos_begin()
 							local pos_end = snip.nodes[6].mark:pos_end()
 							local parser = vim.treesitter.get_parser(0, 'tsx')
+							if parser == nil then
+								return ''
+							end
+
 							local tstree = parser:parse()
+							if tstree[1] == nil then
+								return ''
+							end
 
 							local node = tstree[1]:root():named_descendant_for_range(
 								pos_begin[1],

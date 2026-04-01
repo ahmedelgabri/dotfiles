@@ -94,12 +94,14 @@ return {
 
 		local syntax_map = {}
 
-		local already_installed = ts_config.get_installed 'parsers'
+		local function has_installed_parser(parser_name)
+			return vim.tbl_contains(ts_config.get_installed 'parsers', parser_name)
+		end
 
 		local parsers_to_install = vim
 			.iter(ensure_installed)
 			:filter(function(parser)
-				return not vim.tbl_contains(already_installed, parser)
+				return not has_installed_parser(parser)
 			end)
 			:totable()
 
@@ -160,29 +162,36 @@ return {
 					return -- Parser not available, skip silently
 				end
 
-				local parser_exists =
-					pcall(vim.treesitter.get_parser, bufnr, parser_name)
+				local parser = vim.treesitter.get_parser(bufnr, parser_name)
 
-				if not parser_exists then
-					-- Check if parser is already installed
-					if vim.tbl_contains(already_installed, parser_name) then
+				if parser == nil then
+					if has_installed_parser(parser_name) then
 						vim.notify(
-							'Parser for ' .. parser_name .. ' already installed.',
-							vim.log.levels.INFO
+							'Unable to create parser for ' .. parser_name,
+							vim.log.levels.WARN
 						)
-					else
-						-- If not installed, install parser asynchronously and start treesitter
-						vim.notify(
-							'Installing parser for ' .. parser_name,
-							vim.log.levels.INFO
-						)
-
-						treesitter.install({ parser_name }):await(function()
-							ts_start(bufnr, parser_name)
-						end)
-
 						return
 					end
+
+					-- If not installed, install parser asynchronously and start treesitter
+					vim.notify(
+						'Installing parser for ' .. parser_name,
+						vim.log.levels.INFO
+					)
+
+					treesitter.install({ parser_name }):await(function()
+						if vim.treesitter.get_parser(bufnr, parser_name) == nil then
+							vim.notify(
+								'Unable to create parser for ' .. parser_name,
+								vim.log.levels.WARN
+							)
+							return
+						end
+
+						ts_start(bufnr, parser_name)
+					end)
+
+					return
 				end
 
 				-- Start treesitter for this buffer

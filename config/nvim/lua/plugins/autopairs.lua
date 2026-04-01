@@ -38,16 +38,20 @@ return {
 				-- Also subtract one from the position of the column to see if we are at the end of a comment.
 				local pos_adjusted = { p[1] - 1, p[2] - 1 }
 
-				vim.treesitter.get_parser():parse()
+				local parser = vim.treesitter.get_parser(0)
+				if parser ~= nil then
+					parser:parse()
+				end
+
 				local target = vim.treesitter.get_node {
 					pos = pos_adjusted,
 					ignore_injections = false,
 				}
-				log.debug(target:type())
-				if
-					target ~= nil and utils.is_in_table({ 'comment' }, target:type())
-				then
-					return false
+				if target ~= nil then
+					log.debug(target:type())
+					if utils.is_in_table({ 'comment' }, target:type()) then
+						return false
+					end
 				end
 
 				local rest_of_line = info.line:sub(info.col)
