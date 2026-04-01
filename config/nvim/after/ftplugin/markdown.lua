@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 	callback = function()
 		vim.keymap.set('n', '<Leader>p', preview_markdown, {
 			desc = 'Markdown preview',
-			buffer = true,
+			buf = 0,
 			desc = '[P]review Markdown',
 		})
 	end,

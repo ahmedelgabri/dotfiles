@@ -68,7 +68,6 @@ return {
 			-- require('vim.lsp.log').set_level 'debug'
 			-- require('vim.lsp.log').set_format_func(vim.inspect)
 			local au = require '_.utils.au'
-			local map_opts = { buffer = true, silent = true }
 
 			vim.lsp.config('*', {
 				capabilities = {
@@ -292,7 +291,11 @@ return {
 						},
 					} do
 						local extra_opts = table.remove(item, 4)
-						local merged_opts = vim.tbl_extend('force', map_opts, extra_opts)
+						local merged_opts = vim.tbl_extend(
+							'force',
+							{ silent = true, buf = bufnr },
+							extra_opts
+						)
 
 						table.insert(item, 4, merged_opts)
 

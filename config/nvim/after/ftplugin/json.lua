@@ -22,7 +22,7 @@ au.augroup('__JSON__', {
 					local url = 'https://www.npmjs.com/package/' .. package
 					vim.ui.open(url)
 				end
-			end, { buffer = true, silent = true, desc = '[G]o to [p]ackage' })
+			end, { buf = 0, silent = true, desc = '[G]o to [p]ackage' })
 		end,
 	},
 })

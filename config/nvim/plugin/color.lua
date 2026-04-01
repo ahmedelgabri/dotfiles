@@ -1,7 +1,7 @@
 local au = require '_.utils.au'
 
 local function set_macos_colorscheme()
-	if vim.loop.os_uname().sysname ~= 'Darwin' then
+	if vim.uv.os_uname().sysname ~= 'Darwin' then
 		vim.o.background = 'dark'
 		print 'Not macOS, switch to Dark mode as default.'
 	end

@@ -55,7 +55,7 @@ au.augroup('__myautocmds__', {
 				-- 	or ':q'
 				-- ) .. '<cr>',
 				'<cmd>quit<cr>',
-				{ buffer = args.buf, desc = '[Q]uit on q' }
+				{ buf = args.buf, desc = '[Q]uit on q' }
 			)
 		end,
 	},

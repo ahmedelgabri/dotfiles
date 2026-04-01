@@ -65,20 +65,20 @@ return {
 						vim.wo.virtualedit = 'all'
 
 						-- draw a line on HJKL keystrokes
-						vim.keymap.set('n', 'J', '<C-v>j:VBox<CR>', { buffer = true })
-						vim.keymap.set('n', 'K', '<C-v>k:VBox<CR>', { buffer = true })
-						vim.keymap.set('n', 'L', '<C-v>l:VBox<CR>', { buffer = true })
-						vim.keymap.set('n', 'H', '<C-v>h:VBox<CR>', { buffer = true })
+						vim.keymap.set('n', 'J', '<C-v>j:VBox<CR>', { buf = 0 })
+						vim.keymap.set('n', 'K', '<C-v>k:VBox<CR>', { buf = 0 })
+						vim.keymap.set('n', 'L', '<C-v>l:VBox<CR>', { buf = 0 })
+						vim.keymap.set('n', 'H', '<C-v>h:VBox<CR>', { buf = 0 })
 						-- draw a box by pressing "f" with visual selection
-						vim.keymap.set('v', 'f', ':VBox<CR>', { buffer = true })
+						vim.keymap.set('v', 'f', ':VBox<CR>', { buf = 0 })
 					else
 						vim.wo.virtualedit = ''
 
-						vim.keymap.del('n', 'J', { buffer = true })
-						vim.keymap.del('n', 'K', { buffer = true })
-						vim.keymap.del('n', 'L', { buffer = true })
-						vim.keymap.del('n', 'H', { buffer = true })
-						vim.keymap.del('v', 'f', { buffer = true })
+						vim.keymap.del('n', 'J', { buf = 0 })
+						vim.keymap.del('n', 'K', { buf = 0 })
+						vim.keymap.del('n', 'L', { buf = 0 })
+						vim.keymap.del('n', 'H', { buf = 0 })
+						vim.keymap.del('v', 'f', { buf = 0 })
 
 						vim.b.venn_enabled = nil
 					end

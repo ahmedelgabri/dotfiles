@@ -74,10 +74,10 @@ function M.plaintext()
 
 	-- Break undo sequences into chunks (after punctuation); see: `:h i_CTRL-G_u`
 	-- https://twitter.com/vimgifs/status/913390282242232320
-	vim.keymap.set({ 'i' }, '.', '.<c-g>u', { buffer = true })
-	vim.keymap.set({ 'i' }, '?', '?<c-g>u', { buffer = true })
-	vim.keymap.set({ 'i' }, '!', '!<c-g>u', { buffer = true })
-	vim.keymap.set({ 'i' }, ',', ',<c-g>u', { buffer = true })
+	vim.keymap.set({ 'i' }, '.', '.<c-g>u', { buf = 0 })
+	vim.keymap.set({ 'i' }, '?', '?<c-g>u', { buf = 0 })
+	vim.keymap.set({ 'i' }, '!', '!<c-g>u', { buf = 0 })
+	vim.keymap.set({ 'i' }, ',', ',<c-g>u', { buf = 0 })
 end
 
 function M.firstToUpper(str)
@@ -89,7 +89,7 @@ function M.is_rocket()
 end
 
 function M.is_x86_64()
-	return vim.loop.os_uname().machine == 'x86_64'
+	return vim.uv.os_uname().machine == 'x86_64'
 end
 
 function M.get_border(highlight)

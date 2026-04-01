@@ -32,7 +32,7 @@ return {
 					enabled_when = function(bufnr)
 						local max_filesize = 1 * 1024 * 1024 -- 1 MB
 						local ok, stats =
-							pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+							pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
 						if ok and stats and stats.size > max_filesize then
 							return false
 						end

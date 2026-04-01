@@ -9,7 +9,7 @@ return {
 		opts = {
 			on_attach = function(conflict)
 				local map = function(key, fn)
-					vim.keymap.set('n', key, fn, { buffer = conflict.bufnr })
+					vim.keymap.set('n', key, fn, { buf = conflict.bufnr })
 				end
 
 				map('co', function()
