@@ -101,9 +101,6 @@ vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
 vim.o.secure = true
--- Prefer native trusted project-local config in .nvim.lua/.nvimrc/.exrc.
--- Legacy .vim/local.{vim,lua} support is kept as a fallback in _.autocmds.
-vim.o.exrc = true
 
 -- allow cursor to move where there is no text in visual block mode
 vim.o.virtualedit = 'block'

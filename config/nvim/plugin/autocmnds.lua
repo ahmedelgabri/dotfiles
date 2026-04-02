@@ -61,17 +61,6 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
-		event = { 'BufRead', 'BufNewFile' },
-		pattern = '*',
-		callback = cmds.source_project_config,
-		desc = 'Legacy project specific override fallback',
-	},
-	{
-		event = 'DirChanged',
-		pattern = '*',
-		callback = cmds.source_project_config,
-	},
-	{
 		event = 'TextYankPost',
 		pattern = '*',
 		callback = function()
