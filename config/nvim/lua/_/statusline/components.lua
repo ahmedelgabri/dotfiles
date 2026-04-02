@@ -177,12 +177,18 @@ end
 
 ---@return string
 function M.rhs()
-	return vim.fn.winwidth(0) > 80
-			and M.get_parts {
-				'%#User4#%3l/%3L:%-2c%*',
-				'%#User4#' .. line_no_indicator() .. '%*',
-			}
-		or line_no_indicator()
+	if vim.fn.winwidth(0) <= 80 then
+		return line_no_indicator()
+	end
+
+	local total = vim.fn.line '$'
+	local width = #tostring(total)
+	local pos = string.format('%' .. width .. 'd/%d:%-2d', vim.fn.line '.', total, vim.fn.col '.')
+
+	return M.get_parts {
+		string.format('%%#User4#%s%%*', pos),
+		'%#User4#' .. line_no_indicator() .. '%*',
+	}
 end
 
 ---@return string?
