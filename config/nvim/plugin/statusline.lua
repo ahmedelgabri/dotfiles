@@ -47,7 +47,6 @@ function M.render_active()
 		components.diff_source(),
 		lsp.diagnostics(),
 		lsp.progress(),
-		components.get_codecompanion_status(),
 		components.file_info(),
 		components.rhs(),
 		'%*',
