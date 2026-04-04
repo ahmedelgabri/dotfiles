@@ -145,10 +145,10 @@ local mode_keymaps = {
 		},
 	},
 
-	['<M-h>'] = { { modes = { 't' }, action = '<c-><c-n><c-w>h' } },
-	['<M-j>'] = { { modes = { 't' }, action = '<c-><c-n><c-w>j' } },
-	['<M-k>'] = { { modes = { 't' }, action = '<c-><c-n><c-w>k' } },
-	['<M-l>'] = { { modes = { 't' }, action = '<c-><c-n><c-w>l' } },
+	['<M-h>'] = { { modes = { 't' }, action = [[<c-\><c-n><c-w>h]] } },
+	['<M-j>'] = { { modes = { 't' }, action = [[<c-\><c-n><c-w>j]] } },
+	['<M-k>'] = { { modes = { 't' }, action = [[<c-\><c-n><c-w>k]] } },
+	['<M-l>'] = { { modes = { 't' }, action = [[<c-\><c-n><c-w>l]] } },
 
 	['<Localleader>g'] = {
 		{
