@@ -390,14 +390,15 @@ return {
 					end
 
 					local function lsp_status()
-						local clients = vim.lsp.get_clients { bufnr = bufnr }
+						local current_bufnr = vim.api.nvim_get_current_buf()
+						local clients = vim.lsp.get_clients { bufnr = current_bufnr }
 
 						if #clients == 0 then
 							print '󰅚 No LSP clients attached'
 							return
 						end
 
-						print('󰒋 LSP Status for buffer ' .. bufnr .. ':')
+						print('󰒋 LSP Status for buffer ' .. current_bufnr .. ':')
 						print '─────────────────────────────────'
 
 						for i, c in ipairs(clients) do
@@ -446,7 +447,8 @@ return {
 					)
 
 					local function check_lsp_capabilities()
-						local clients = vim.lsp.get_clients { bufnr = bufnr }
+						local current_bufnr = vim.api.nvim_get_current_buf()
+						local clients = vim.lsp.get_clients { bufnr = current_bufnr }
 
 						if #clients == 0 then
 							print 'No LSP clients attached'
