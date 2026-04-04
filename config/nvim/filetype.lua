@@ -6,6 +6,8 @@ vim.filetype.add {
 		sb = 'scheme', -- Apple sandbox rules
 		['code-workspace'] = 'jsonc',
 		base = 'yaml.obsidian',
+		mts = 'typescript',
+		cts = 'typescript',
 	},
 	filename = {
 		['.envrc'] = 'bash',
