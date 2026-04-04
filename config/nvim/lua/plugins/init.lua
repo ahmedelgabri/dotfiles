@@ -11,7 +11,7 @@ return {
 			local au = require '_.utils.au'
 			local hl = require '_.utils.highlight'
 
-			function SetUpLoupeHighlight()
+			local function set_up_loupe_highlight()
 				hl.group('QuickFixLine', { link = 'PmenuSel' })
 				vim.cmd 'highlight! clear Search'
 				hl.group('Search', { link = 'Underlined' })
@@ -21,11 +21,11 @@ return {
 				{
 					event = 'ColorScheme',
 					pattern = '*',
-					callback = SetUpLoupeHighlight,
+					callback = set_up_loupe_highlight,
 				},
 			})
 
-			SetUpLoupeHighlight()
+			set_up_loupe_highlight()
 		end,
 	},
 	{
