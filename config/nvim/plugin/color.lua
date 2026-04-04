@@ -3,8 +3,9 @@ local au = require '_.utils.au'
 local function set_macos_colorscheme()
 	if vim.uv.os_uname().sysname ~= 'Darwin' then
 		vim.o.background = 'dark'
-		print 'Not macOS, switch to Dark mode as default.'
+		return
 	end
+
 	local appleInterfaceStyle =
 		vim.fn.system { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
 
@@ -12,10 +13,8 @@ local function set_macos_colorscheme()
 	-- "The domain/default pair of (kCFPreferencesAnyApplication, AppleInterfaceStyle) does not exist"
 	if not appleInterfaceStyle:find 'Dark' then
 		vim.o.background = 'light'
-		print 'Switched to Light Mode'
 	else
 		vim.o.background = 'dark'
-		print 'Switched to Dark Mode'
 	end
 end
 
