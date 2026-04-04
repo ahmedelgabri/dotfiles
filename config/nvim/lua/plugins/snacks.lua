@@ -23,14 +23,14 @@ return {
 					}
 				end)
 			end,
-			{ desc = 'Toggle Scratch Buffer' },
+			desc = 'Toggle Scratch Buffer',
 		},
 		{
 			'<leader>S',
 			function()
 				require('snacks').scratch.select()
 			end,
-			{ desc = 'Select Scratch Buffer' },
+			desc = 'Select Scratch Buffer',
 		},
 		{
 			'<localleader>t',
@@ -60,7 +60,7 @@ return {
 					},
 				}
 			end,
-			{ silent = true },
+			silent = true,
 			desc = 'Open file explorer',
 		},
 		{
@@ -68,7 +68,7 @@ return {
 			function()
 				require('snacks').zen.zoom()
 			end,
-			{ silent = true },
+			silent = true,
 			desc = 'Toggle buffer [z]oom mode',
 		},
 	},
