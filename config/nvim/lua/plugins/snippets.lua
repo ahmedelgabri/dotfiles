@@ -50,11 +50,7 @@ return {
 		}
 
 		require('luasnip.loaders.from_vscode').lazy_load {
-			path = {
-				string.format(
-					'%s/pack/packer/start/friendly-snippets/snippets',
-					vim.fn.stdpath 'data'
-				),
+			lazy_paths = {
 				string.format(
 					'%s/%s%s',
 					vim.env.XDG_DATA_HOME,
