@@ -80,7 +80,7 @@ return {
 			for prop_signature in object_type_node:iter_children() do
 				if prop_signature:type() == 'property_signature' then
 					local prop_iden = prop_signature:child(0)
-					local prop_name = vim.treesitter.query.get_node_text(prop_iden, 0)
+					local prop_name = vim.treesitter.get_node_text(prop_iden, 0)
 					prop_names[#prop_names + 1] = prop_name
 				end
 			end
