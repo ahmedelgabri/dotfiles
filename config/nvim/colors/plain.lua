@@ -248,9 +248,9 @@ highlight('PmenuThumb', { link = 'Pmenu' })
 highlight('PmenuSel', { fg = colors.norm, bg = colors.bg_subtle, blend = 0 })
 
 -- TabLine --
-highlight('Tabline', { ctrem = nil, gui = nil })
-highlight('TablineFill', { ctrem = nil, gui = nil })
-highlight('TablineSel', { reverse = true })
+highlight('TabLine', { ctrem = nil, gui = nil })
+highlight('TabLineFill', { ctrem = nil, gui = nil })
+highlight('TabLineSel', { reverse = true })
 
 -- Floating Window --
 highlight('NormalFloat', { gui = nil, ctrem = nil, fg = colors.norm })
@@ -430,13 +430,13 @@ highlight('@variable.parameter.reference', { link = 'Statement' }) -- ???
 -- blink.cmp
 highlight('BlinkCmpLabelDeprecated', { strikethrough = true })
 highlight('BlinkCmpMenuSelection', { bg = colors.bg_subtle, fg = colors.norm })
-highlight('BlinkCmpLabel', { link = 'NoneText' })
+highlight('BlinkCmpLabel', { link = 'NonText' })
 highlight('BlinkCmpScrollBarThumb', { link = 'CursorLine' })
 highlight(
 	'BlinkCmpLabelMatch',
 	{ link = 'DiffAdd', bold = true, italic = true }
 )
-highlight('BlinkCmpKind', { link = 'NoneText' })
+highlight('BlinkCmpKind', { link = 'NonText' })
 highlight('BlinkCmpKindField', { fg = colors.red })
 highlight('BlinkCmpKindProperty', { link = 'BlinkCmpKindField' })
 highlight('BlinkCmpKindEvent', { link = 'BlinkCmpKindField' })
