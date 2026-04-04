@@ -35,14 +35,8 @@ local function preview_markdown()
 	})
 end
 
--- create a shortcut only in Markdown files, mapped to `<Leader>P`
-vim.api.nvim_create_autocmd({ 'FileType' }, {
-	pattern = { 'markdown' },
-	callback = function()
-		vim.keymap.set('n', '<Leader>p', preview_markdown, {
-			desc = 'Markdown preview',
-			buf = 0,
-			desc = '[P]review Markdown',
-		})
-	end,
+vim.keymap.set('n', '<Leader>p', preview_markdown, {
+	buf = 0,
+	silent = true,
+	desc = '[P]review Markdown',
 })
