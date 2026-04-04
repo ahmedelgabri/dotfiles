@@ -27,9 +27,10 @@ vim.g.maplocalleader = ','
 -- Skip vim plugins menu.vim, saves ~100ms, disabled by lazy later in this file
 vim.g.did_install_default_menus = 1
 
--- vim.o. them directly if they are installed, otherwise disable them. To avoid the then
--- runtime check cost, which can be slow.
--- Python This must be here because it makes loading vim VERY SLOW otherwise
+-- Disable providers explicitly to avoid the runtime availability checks,
+-- which can be slow.
+-- Python skip-check flags must be set here because provider detection makes
+-- startup noticeably slower otherwise.
 vim.g.python_host_skip_check = 1
 vim.g.loaded_python_provider = 0
 
