@@ -7,7 +7,7 @@ return {
 				function()
 					require('fzf-lua').files {}
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'Search Files',
 			},
 			{
@@ -15,7 +15,7 @@ return {
 				function()
 					require('fzf-lua').buffers {}
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'Search [B]uffers',
 			},
 			{
@@ -23,7 +23,7 @@ return {
 				function()
 					require('fzf-lua').help_tags {}
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'Search [H]elp',
 			},
 			{
@@ -31,7 +31,7 @@ return {
 				function()
 					require('fzf-lua').oldfiles {}
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'Search [O]ldfiles',
 			},
 			{
@@ -39,7 +39,7 @@ return {
 				function()
 					require('fzf-lua').live_grep { exec_empty_query = true }
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'grep project',
 			},
 			{
@@ -81,7 +81,7 @@ return {
 				function()
 					require('fzf-lua').spell_suggest {}
 				end,
-				{ silent = true },
+				silent = true,
 				desc = 'Spelling Suggestions',
 			},
 		},
