@@ -304,59 +304,41 @@ vim.g.markdown_fenced_languages = {
 	'viml=vim',
 }
 
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
-	vim.fn.system {
-		'git',
-		'clone',
-		'--filter=blob:none',
-		'https://github.com/folke/lazy.nvim.git',
-		'--branch=stable', -- latest stable release
-		lazypath,
-	}
+-- Disable builtin plugins (previously handled by lazy.nvim)
+for _, plugin in ipairs {
+	'getscript',
+	'getscriptPlugin',
+	'netrwPlugin',
+	'rplugin',
+	'rrhelper',
+	'tutor',
+	'vimball',
+	'vimballPlugin',
+} do
+	vim.g['loaded_' .. plugin] = 1
 end
 
-vim.o.rtp = utils.prepend(vim.o.rtp, { lazypath })
+-- Plugin build/update hooks (must be created before the first vim.pack.add call)
+vim.api.nvim_create_autocmd('PackChanged', {
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+		if kind ~= 'install' and kind ~= 'update' then
+			return
+		end
 
----@diagnostic disable-next-line: missing-fields, param-type-not-match
-require('lazy').setup {
-	spec = {
-		{ import = 'plugins' },
-	},
-	---@diagnostic disable-next-line: assign-type-mismatch
-	dev = {
-		-- directory where you store your local plugin projects
-		path = '~/code/personal/forks',
-		---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-		patterns = { 'ahmedelgabri' }, -- For example {"folke"}
-		fallback = true, -- Fallback to git when local plugin doesn't exist
-	},
-	ui = {
-		border = utils.get_border(),
-		backdrop = 0,
-	},
-	performance = {
-		rtp = {
-			-- Stuff I don't use.
-			disabled_plugins = {
-				'getscript',
-				'getscriptPlugin',
-				'netrwPlugin',
-				'rplugin',
-				'rrhelper',
-				'tutor',
-				'vimball',
-				'vimballPlugin',
-			},
-		},
-	},
-	-- Don't bother me when tweaking plugins.
-	change_detection = { notify = false },
-	profiling = {
-		-- Track each new require in the Lazy profiling tab
-		require = true,
-	},
-}
+		if name == 'nvim-treesitter' then
+			if not ev.data.active then
+				vim.cmd.packadd 'nvim-treesitter'
+			end
+			vim.cmd 'TSUpdate'
+		elseif name == 'LuaSnip' then
+			vim.fn.system { 'make', '-C', ev.data.path, 'install_jsregexp' }
+		end
+	end,
+})
+
+-- Load plugin configurations (using vim.pack)
+require 'plugins'
 
 -------------------------------------------------------------------------------
 -- OVERRIDES {{{1

@@ -1,43 +1,96 @@
----@param bufnr integer
----@param ... string
----@return string
-local function first(bufnr, ...)
-	local conform = require 'conform'
-	for i = 1, select('#', ...) do
-		local formatter = select(i, ...)
-		if conform.get_formatter_info(formatter, bufnr).available then
-			return formatter
+-- conform.nvim: formatter (lazy on BufWritePre and cmd)
+
+-- Init code runs immediately (format commands, formatexpr)
+-- Use conform for gq.
+vim.bo.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+-- Define a command to run async formatting
+vim.api.nvim_create_user_command('Format', function(args)
+	local range = nil
+
+	if args.count ~= -1 then
+		local end_line =
+			vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+		range = {
+			start = { args.line1, 0 },
+			['end'] = { args.line2, end_line:len() },
+		}
+	end
+
+	require('conform').format {
+		async = true,
+		lsp_format = 'fallback',
+		range = range,
+	}
+end, {
+	range = true,
+})
+
+vim.api.nvim_create_user_command('FormatToggle', function(args)
+	-- FormatToggle! will toggle formatting globally
+	if args.bang then
+		if vim.g.disable_autoformat == true then
+			vim.g.disable_autoformat = nil
+		else
+			vim.g.disable_autoformat = true
+		end
+	else
+		if vim.b.disable_autoformat == true then
+			vim.b.disable_autoformat = nil
+		else
+			vim.b.disable_autoformat = true
 		end
 	end
-	return select(1, ...)
-end
+end, {
+	desc = 'Toggle autoformat-on-save',
+	bang = true,
+})
 
-local js_formats = {}
-for _, ft in ipairs {
-	'javascript',
-	'javascript.jsx',
-	'javascriptreact',
-	'typescript',
-	'typescript.tsx',
-	'typescriptreact',
-	'astro',
-} do
-	js_formats[ft] = {
-		'oxfmt',
-		'deno_fmt',
-		'prettier',
-		stop_after_first = true,
-	}
-end
+-- Load conform on BufWritePre (first write triggers load)
+do
+	---@param bufnr integer
+	---@param ... string
+	---@return string
+	local function first(bufnr, ...)
+		local conform = require 'conform'
+		for k = 1, select('#', ...) do
+			local formatter = select(k, ...)
+			if conform.get_formatter_info(formatter, bufnr).available then
+				return formatter
+			end
+		end
+		return select(1, ...)
+	end
 
-return {
-	{
-		'https://github.com/stevearc/conform.nvim',
-		event = { 'BufWritePre' },
-		cmd = { 'ConformInfo' },
+	local js_formats = {}
+	for _, ft in ipairs {
+		'javascript',
+		'javascript.jsx',
+		'javascriptreact',
+		'typescript',
+		'typescript.tsx',
+		'typescriptreact',
+		'astro',
+	} do
+		js_formats[ft] = {
+			'oxfmt',
+			'deno_fmt',
+			'prettier',
+			stop_after_first = true,
+		}
+	end
+
+	local conform_loaded = false
+	local function ensure_conform()
+		if conform_loaded then
+			return
+		end
+		conform_loaded = true
+		vim.pack.add { 'https://github.com/stevearc/conform.nvim' }
+
 		---@module "conform"
 		---@type conform.setupOpts
-		opts = {
+		require('conform').setup {
 			log_level = vim.log.levels.DEBUG,
 			formatters = {
 				injected = {
@@ -45,7 +98,6 @@ return {
 						ignore_errors = true,
 					},
 				},
-				-- Look into dprint as my default formatter instead
 				prettier = {
 					cwd = function()
 						return vim.uv.cwd()
@@ -118,16 +170,11 @@ return {
 				less = { 'oxfmt', 'prettier', stop_after_first = true },
 				graphql = { 'oxfmt', 'prettier', stop_after_first = true },
 				lua = { 'stylua' },
-				-- Ideally I'd use the LSP for this, but I'd lose organize imports and the autofix
-				-- https://github.com/astral-sh/ruff/issues/12778#issuecomment-2279374570
 				python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
 				go = {
-					-- this will run gofmt too
-					-- I'm using this instead of LSP format because it cleans up imports too
 					'goimports',
 				},
 				nix = { 'alejandra', 'statix' },
-				-- not 100% supported but does the job as long as I'm writing POSIX and not fancy zsh
 				zsh = { 'shfmt' },
 				sh = { 'shfmt' },
 				bash = { 'shfmt' },
@@ -148,52 +195,18 @@ return {
 				-- Fall back to language-specific formatters
 				return { timeout_ms = 500, lsp_format = 'fallback' }
 			end,
-		},
-		init = function()
-			-- Use conform for gq.
-			vim.bo.formatexpr = "v:lua.require'conform'.formatexpr()"
+		}
+	end
 
-			-- Define a command to run async formatting
-			vim.api.nvim_create_user_command('Format', function(args)
-				local range = nil
+	vim.api.nvim_create_autocmd('BufWritePre', {
+		once = true,
+		callback = ensure_conform,
+	})
 
-				if args.count ~= -1 then
-					local end_line =
-						vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-					range = {
-						start = { args.line1, 0 },
-						['end'] = { args.line2, end_line:len() },
-					}
-				end
-
-				require('conform').format {
-					async = true,
-					lsp_format = 'fallback',
-					range = range,
-				}
-			end, {
-				range = true,
-			})
-
-			vim.api.nvim_create_user_command('FormatToggle', function(args)
-				-- FormatToggle! will toggle formatting globally
-				if args.bang then
-					if vim.g.disable_autoformat == true then
-						vim.g.disable_autoformat = nil
-					else
-						vim.g.disable_autoformat = true
-					end
-				else
-					if vim.b.disable_autoformat == true then
-						vim.b.disable_autoformat = nil
-					else
-						vim.b.disable_autoformat = true
-					end
-				end
-			end, {
-				desc = 'Toggle autoformat-on-save',
-				bang = true,
-			})
-		end,
-	},
-}
+	-- Also lazy load on ConformInfo command
+	vim.api.nvim_create_user_command('ConformInfo', function()
+		pcall(vim.api.nvim_del_user_command, 'ConformInfo')
+		ensure_conform()
+		vim.cmd 'ConformInfo'
+	end, {})
+end
