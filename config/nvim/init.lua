@@ -318,21 +318,12 @@ for _, plugin in ipairs {
 	vim.g['loaded_' .. plugin] = 1
 end
 
--- Plugin build/update hooks (must be created before the first vim.pack.add call)
+-- Generic build hook: runs spec.data.run on install/update
 vim.api.nvim_create_autocmd('PackChanged', {
 	callback = function(ev)
-		local name, kind = ev.data.spec.name, ev.data.kind
-		if kind ~= 'install' and kind ~= 'update' then
-			return
-		end
-
-		if name == 'nvim-treesitter' then
-			if not ev.data.active then
-				vim.cmd.packadd 'nvim-treesitter'
-			end
-			vim.cmd 'TSUpdate'
-		elseif name == 'LuaSnip' then
-			vim.fn.system { 'make', '-C', ev.data.path, 'install_jsregexp' }
+		local run = (ev.data.spec.data or {}).run
+		if ev.data.kind ~= 'delete' and type(run) == 'function' then
+			run(ev.data)
 		end
 	end,
 })

@@ -3,6 +3,14 @@ vim.pack.add {
 	{
 		src = 'https://github.com/nvim-treesitter/nvim-treesitter',
 		version = 'main',
+		data = {
+			run = function(p)
+				if not p.active then
+					vim.cmd.packadd 'nvim-treesitter'
+				end
+				vim.cmd 'TSUpdate'
+			end,
+		},
 	},
 	{
 		src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',

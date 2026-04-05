@@ -3,7 +3,14 @@
 
 vim.pack.add {
 	'https://github.com/rafamadriz/friendly-snippets',
-	'https://github.com/L3MON4D3/LuaSnip',
+	{
+		src = 'https://github.com/L3MON4D3/LuaSnip',
+		data = {
+			run = function(p)
+				vim.fn.system { 'make', '-C', p.path, 'install_jsregexp' }
+			end,
+		},
+	},
 }
 
 -- Configure LuaSnip (runs immediately since blink.cmp may require it at any time)
