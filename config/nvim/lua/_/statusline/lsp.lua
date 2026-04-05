@@ -21,7 +21,7 @@ function M.progress()
 
 	if #clients == 0 then
 		hl = 'ErrorMsg'
-	elseif next(__.statusline.lsp_progress) then
+	elseif vim.ui.progress_status() ~= '' then
 		hl = 'DiagnosticWarn'
 	end
 
