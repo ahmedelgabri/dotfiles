@@ -1,3 +1,4 @@
+-- blink.cmp: completion (lazy on InsertEnter)
 local utils = require '_.utils'
 
 local has_words_before = function()
@@ -44,17 +45,20 @@ local function get_icon_highlight(ctx)
 	return hl
 end
 
-return {
-	{
-		'https://github.com/Saghen/blink.cmp',
-		dependencies = {
-			'https://github.com/rafamadriz/friendly-snippets',
+vim.api.nvim_create_autocmd('InsertEnter', {
+	once = true,
+	callback = function()
+		vim.pack.add {
 			'https://github.com/moyiz/blink-emoji.nvim',
 			'https://github.com/xzbdmw/colorful-menu.nvim',
-		},
-		event = { 'InsertEnter' },
-		version = '1.*',
-		opts = {
+			{
+				src = 'https://github.com/Saghen/blink.cmp',
+				version = vim.version.range '1.x',
+				name = 'blink.cmp',
+			},
+		}
+
+		require('blink.cmp').setup {
 			keymap = {
 				-- Set my own, and get rid of the ones I don't use
 				preset = 'none',
@@ -67,7 +71,7 @@ return {
 				['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
 				['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
 
-				-- Not sure about this one 🤔
+				-- Not sure about this one
 				['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
 				['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
 				['<Tab>'] = {
@@ -161,19 +165,11 @@ return {
 						name = 'lsp',
 						enabled = true,
 						module = 'blink.cmp.sources.lsp',
-						-- When linking markdown notes, I would get snippets and text in the
-						-- suggestions, I want those to show only if there are no LSP
-						-- suggestions
-						-- Disabling fallbacks as my snippets wouldn't show up
-						-- Enabled fallbacks as this seems to be working now
 						fallbacks = { 'buffer' },
 					},
 					path = {
 						name = 'Path',
 						module = 'blink.cmp.sources.path',
-						-- When typing a path, I would get snippets and text in the
-						-- suggestions, I want those to show only if there are no path
-						-- suggestions
 						fallbacks = { 'snippets', 'buffer' },
 						opts = {
 							trailing_slash = false,
@@ -205,6 +201,6 @@ return {
 					},
 				},
 			},
-		},
-	},
-}
+		}
+	end,
+})

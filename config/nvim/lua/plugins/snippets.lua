@@ -1,20 +1,35 @@
-return {
-	'https://github.com/L3MON4D3/LuaSnip',
-	lazy = true,
-	-- Build Step is needed for regex support in snippets
-	build = 'make install_jsregexp',
-	dependencies = {
-		{ 'https://github.com/rafamadriz/friendly-snippets' },
-	},
-	config = function()
-		local ls = require 'luasnip'
+-- LuaSnip: lazy on InsertEnter (must load before blink.cmp which uses luasnip preset)
+-- Install eagerly so build hook works, but defer loading/config to InsertEnter
 
-		-- Setup toggle choice
-		vim.keymap.set({ 'i', 's' }, '<C-l>', function()
-			if ls.choice_active() then
-				ls.change_choice(1)
-			end
-		end, { silent = true })
+vim.pack.add({
+	'https://github.com/rafamadriz/friendly-snippets',
+	{
+		src = 'https://github.com/L3MON4D3/LuaSnip',
+		data = {
+			run = function(p)
+				vim.fn.system { 'make', '-C', p.path, 'install_jsregexp' }
+			end,
+		},
+	},
+}, { load = function() end })
+
+-- Setup toggle choice (works before plugin loads, guarded by choice_active check)
+vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+	local ok, ls = pcall(require, 'luasnip')
+	if ok and ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, { silent = true })
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+	once = true,
+	callback = function()
+		vim.pack.add {
+			'https://github.com/rafamadriz/friendly-snippets',
+			'https://github.com/L3MON4D3/LuaSnip',
+		}
+
+		local ls = require 'luasnip'
 
 		local s = ls.snippet
 		local sn = ls.snippet_node
@@ -41,11 +56,6 @@ return {
 						virt_text = { { '← Choice', 'Todo' } },
 					},
 				},
-				-- [types.insertNode] = {
-				--   active = {
-				--     virt_text = { { '← ...', 'Todo' } },
-				--   },
-				-- },
 			},
 		}
 
@@ -59,14 +69,9 @@ return {
 				),
 			},
 		}
+
 		-- Get a list of  the property names given an `interface_declaration`
 		-- treesitter *tsx* node.
-		-- Ie, if the treesitter node represents:
-		--   interface {
-		--     prop1: string;
-		--     prop2: number;
-		--   }
-		-- Then this function would return `{"prop1", "prop2"}
 		---@param id_node {} Stands for "interface declaration node"
 		---@return string[]
 		local function get_prop_names(id_node)
@@ -108,7 +113,12 @@ return {
 							return sn(nil, {
 								i(
 									1,
-									vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')
+									vim.fn.substitute(
+										snip.env.TM_FILENAME,
+										'\\..*$',
+										'',
+										'g'
+									)
 								),
 							})
 						end, { 1 }),
@@ -135,7 +145,10 @@ return {
 								pos_end[2]
 							)
 
-							while node ~= nil and node:type() ~= 'interface_declaration' do
+							while
+								node ~= nil
+								and node:type() ~= 'interface_declaration'
+							do
 								node = node:parent()
 							end
 
@@ -247,12 +260,15 @@ return {
 
 						return sn(
 							nil,
-							fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
-								commentStart = str[1],
-								text = i(1),
-								commentEnd = str[2] or '',
-								next = i(0),
-							})
+							fmt(
+								'{commentStart} vim:ft={text} {commentEnd}{next}',
+								{
+									commentStart = str[1],
+									text = i(1),
+									commentEnd = str[2] or '',
+									next = i(0),
+								}
+							)
 						)
 					end, {}),
 				}),
@@ -488,7 +504,9 @@ SOFTWARE.
 					'script',
 					fmt('<script {scriptEnd}{body}</script>{next}', {
 						scriptEnd = c(1, {
-							fmt('src="{src}">', { src = i(1, 'path/to/file.js') }),
+							fmt('src="{src}">', {
+								src = i(1, 'path/to/file.js'),
+							}),
 							fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
 						}),
 						body = i(2),
@@ -523,4 +541,4 @@ SOFTWARE.
 			},
 		})
 	end,
-}
+})

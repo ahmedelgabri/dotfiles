@@ -1,13 +1,15 @@
-return {
-	'https://github.com/windwp/nvim-autopairs',
-	event = 'InsertEnter',
-	config = function()
+-- nvim-autopairs: lazy on InsertEnter
+vim.api.nvim_create_autocmd('InsertEnter', {
+	once = true,
+	callback = function()
+		vim.pack.add { 'https://github.com/windwp/nvim-autopairs' }
+
 		local npairs = require 'nvim-autopairs'
 		local Rule = require 'nvim-autopairs.rule'
 		local conds = require 'nvim-autopairs.conds'
 		local ts_conds = require 'nvim-autopairs.ts-conds'
 		local log = require 'nvim-autopairs._log'
-		local utils = require 'nvim-autopairs.utils'
+		local ap_utils = require 'nvim-autopairs.utils'
 
 		npairs.setup {}
 
@@ -26,16 +28,11 @@ return {
 
 		-- When typing space equals for assignment in Nix, add the final semicolon to the line
 		-- https://github.com/windwp/nvim-autopairs/wiki/Custom-rules#when-typing-space-equals-for-assignment-in-nix-add-the-final-semicolon-to-the-line
-		-- Note that when the cursor is at the end of a comment line,
-		-- treesitter thinks we are in attrset_expression
-		-- because the cursor is "after" the comment, even though it is on the same line.
 		local is_not_ts_node_comment_one_back = function()
 			return function(info)
 				log.debug 'not_in_ts_node_comment_one_back'
 
 				local p = vim.api.nvim_win_get_cursor(0)
-				-- Subtract one to account for 1-based row indexing in nvim_win_get_cursor
-				-- Also subtract one from the position of the column to see if we are at the end of a comment.
 				local pos_adjusted = { p[1] - 1, p[2] - 1 }
 
 				local parser = vim.treesitter.get_parser(0)
@@ -49,7 +46,7 @@ return {
 				}
 				if target ~= nil then
 					log.debug(target:type())
-					if utils.is_in_table({ 'comment' }, target:type()) then
+					if ap_utils.is_in_table({ 'comment' }, target:type()) then
 						return false
 					end
 				end
@@ -65,4 +62,4 @@ return {
 				:set_end_pair_length(1)
 		)
 	end,
-}
+})
