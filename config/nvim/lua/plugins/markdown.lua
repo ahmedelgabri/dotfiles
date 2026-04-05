@@ -49,42 +49,48 @@ local function convert_date(date_string)
 	return os.date('%Y%m%d%H%M', timestamp)
 end
 
--- Eager markdown plugins
+-- Eager: mdx and zk (no filetype conditions in original config)
 vim.pack.add {
-	'https://github.com/MeanderingProgrammer/render-markdown.nvim',
 	'https://github.com/davidmh/mdx.nvim',
 	'https://github.com/zk-org/zk-nvim',
 }
 
--- render-markdown setup
-require('render-markdown').setup {
-	file_types = { 'markdown', 'md', 'codecompanion' },
-	render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
-	code = {
-		sign = false,
-		border = 'thin',
-		position = 'right',
-		width = 'block',
-		above = '▁',
-		below = '▔',
-		language_left = '█',
-		language_right = '█',
-		language_border = '▁',
-		left_pad = 1,
-		right_pad = 1,
-	},
-	heading = {
-		sign = false,
-		width = 'block',
-		left_pad = 1,
-		right_pad = 0,
-		position = 'inline',
-		icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
-	},
-}
-
 -- zk-nvim: only commands, no LSP
 require 'zk.commands.builtin'
+
+-- render-markdown.nvim: lazy on FileType
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'markdown', 'md', 'codecompanion' },
+	once = true,
+	callback = function()
+		vim.pack.add { 'https://github.com/MeanderingProgrammer/render-markdown.nvim' }
+		require('render-markdown').setup {
+			file_types = { 'markdown', 'md', 'codecompanion' },
+			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
+			code = {
+				sign = false,
+				border = 'thin',
+				position = 'right',
+				width = 'block',
+				above = '▁',
+				below = '▔',
+				language_left = '█',
+				language_right = '█',
+				language_border = '▁',
+				left_pad = 1,
+				right_pad = 1,
+			},
+			heading = {
+				sign = false,
+				width = 'block',
+				left_pad = 1,
+				right_pad = 0,
+				position = 'inline',
+				icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
+			},
+		}
+	end,
+})
 
 -- markdown-plus: lazy on filetype
 vim.api.nvim_create_autocmd('FileType', {
