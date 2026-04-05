@@ -211,13 +211,9 @@ vim.o.hidden = true
 vim.o.tildeop = true
 
 -- Make sure diffs are always opened in vertical splits, also match my git settings.
--- Neovim 0.12 already enables indent-heuristic and inline:char by default, but
--- keep them explicit here so the intent stays visible.
 vim.opt.diffopt:append {
 	'vertical',
 	'algorithm:histogram',
-	'indent-heuristic',
-	'inline:char',
 	'hiddenoff',
 	'foldcolumn:0',
 	'linematch:60',
