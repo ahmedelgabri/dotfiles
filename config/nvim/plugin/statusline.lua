@@ -66,12 +66,9 @@ end
 ---------------------------------------------------------------------------------
 -- Autocommands
 ---------------------------------------------------------------------------------
-local lsp_progress = {}
-M.lsp_progress = lsp_progress
-
 au.augroup('MyStatusLine', {
 	{
-		event = { 'LspAttach', 'LspDetach' },
+		event = { 'LspAttach', 'LspDetach', 'Progress' },
 		pattern = '*',
 		callback = function()
 			vim.cmd.redrawstatus()
@@ -90,57 +87,30 @@ au.augroup('MyStatusLine', {
 				return
 			end
 
-			local client = vim.lsp.get_client_by_id(data.client_id)
+			local client = vim.lsp.get_client_by_id(ev.data.client_id)
 			local client_name = client and client.name or 'LSP'
-			local id = string.format('lsp.%s.%s', data.client_id, token)
-			local progress = lsp_progress[id] or { client_name = client_name }
-
-			progress.client_name = client_name
-			progress.title = value.title or progress.title
-			progress.message = value.message or progress.message
-			progress.percentage = value.percentage or progress.percentage
-
-			local had_progress = next(lsp_progress) ~= nil
-
-			if value.kind == 'end' then
-				lsp_progress[id] = nil
-				vim.api.nvim_echo({ { '' } }, false, {
-					id = id,
-					kind = 'progress',
-					source = client_name,
-					status = 'success',
-				})
-				if had_progress and not next(lsp_progress) then
-					vim.cmd.redrawstatus()
-				end
-				return
-			end
-
-			lsp_progress[id] = progress
-
-			if not had_progress then
-				vim.cmd.redrawstatus()
-			end
-
-			local label = progress.title or progress.client_name
-			local chunks = { { label, 'Comment' } }
-
-			if progress.percentage ~= nil then
-				table.insert(
-					chunks,
-					{ string.format(': %d%%', progress.percentage), 'DiagnosticWarn' }
-				)
-			end
-
-			if progress.message ~= nil and progress.message ~= '' then
-				table.insert(chunks, { ' ' .. progress.message, 'Normal' })
-			end
+			local chunks = {
+				{
+					string.format(
+						'(%s %d%%) %s: ',
+						client_name,
+						value.percentage or 100,
+						value.title
+					),
+					'Comment',
+				},
+				{ (value.message or 'done'), 'Comment' },
+			}
 
 			vim.api.nvim_echo(chunks, false, {
-				id = id,
+				id = 'lsp.' .. ev.data.client_id,
 				kind = 'progress',
 				source = client_name,
-				status = 'running',
+				status = value.kind ~= 'end' and 'running' or 'success',
+				-- Could have use this but I want to control how they look and there are
+				-- no much options here, these are just strings/numbers
+				-- title = '',
+				-- percent = value.percentage,
 			})
 		end,
 	},
