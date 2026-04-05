@@ -320,6 +320,9 @@ return {
 
 				return vim
 					.iter(marks)
+					:unique(function(mark)
+						return mark.mark
+					end)
 					:map(function(mark)
 						local key = mark.mark:sub(2, 2)
 

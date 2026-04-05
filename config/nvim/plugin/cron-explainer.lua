@@ -65,16 +65,16 @@ M.cron_from_line = function(line)
 		if content_pattern then
 			-- Try to match with double quotes
 			local full_pattern_dq = '"%s*(' .. content_pattern .. ')%s*"'
-			local match = line:match(full_pattern_dq)
+			local start_pos, end_pos, match = line:find(full_pattern_dq)
 			if match then
-				return match -- string.match with a capture returns the captured part
+				return match, start_pos, end_pos
 			end
 
 			-- Try to match with single quotes
 			local full_pattern_sq = "'%s*(" .. content_pattern .. ")%s*'"
-			match = line:match(full_pattern_sq)
+			start_pos, end_pos, match = line:find(full_pattern_sq)
 			if match then
-				return match -- string.match with a capture returns the captured part
+				return match, start_pos, end_pos
 			end
 		end
 	end
@@ -101,7 +101,8 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 		mark_id = nil -- Clear the stored ID after deleting the mark
 	end
 
-	local expression = M.cron_from_line(vim.fn.getline '.')
+	local line = vim.fn.getline '.'
+	local expression, start_pos, end_pos = M.cron_from_line(line)
 
 	if expression then
 		local data = M._cache[expression]
@@ -111,6 +112,8 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 			M._cache[expression] = data
 		end
 
+		local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+		vim.hl.range(0, ns, 'DiagnosticInfo', { row, start_pos - 1 }, { row, end_pos })
 		mark_id = M.render(data)
 	end
 end, { desc = 'Explain a cron expression' })
