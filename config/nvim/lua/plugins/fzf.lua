@@ -1,14 +1,10 @@
 -- fzf-lua: fuzzy finder (lazy on keys)
-local fzf_loaded = false
-local function ensure_fzf()
-	if fzf_loaded then
-		return
-	end
-	fzf_loaded = true
-	vim.pack.add { 'https://github.com/ibhagwan/fzf-lua' }
 
-	-- Init: register as vim.ui.select
-	vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
+-- Register fzf-lua as vim.ui.select at startup (before plugin loads)
+vim.g.fzf_history_dir = vim.fn.expand '~/.fzf-history'
+
+vim.schedule(function()
+	vim.pack.add { 'https://github.com/ibhagwan/fzf-lua' }
 
 	require('fzf-lua').register_ui_select(function(_, items)
 		local min_h, max_h = 0.15, 0.70
@@ -20,6 +16,15 @@ local function ensure_fzf()
 		end
 		return { winopts = { height = h, width = 0.60, row = 0.40 } }
 	end)
+end)
+
+local fzf_loaded = false
+local function ensure_fzf()
+	if fzf_loaded then
+		return
+	end
+	fzf_loaded = true
+	vim.pack.add { 'https://github.com/ibhagwan/fzf-lua' }
 
 	-- Configure fzf-lua
 	local utils = require '_.utils'

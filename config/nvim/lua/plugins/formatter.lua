@@ -200,7 +200,15 @@ do
 
 	vim.api.nvim_create_autocmd('BufWritePre', {
 		once = true,
-		callback = ensure_conform,
+		callback = function(ev)
+			ensure_conform()
+			-- Re-trigger format-on-save for this first write
+			require('conform').format {
+				bufnr = ev.buf,
+				timeout_ms = 500,
+				lsp_format = 'fallback',
+			}
+		end,
 	})
 
 	-- Also lazy load on ConformInfo command

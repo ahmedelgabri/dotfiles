@@ -4,7 +4,8 @@ local utils = require '_.utils'
 vim.pack.add { 'https://github.com/b0o/SchemaStore.nvim' }
 
 -- navic: winbar setup immediately, plugin loads on LspAttach
-vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+-- Guard require so winbar doesn't error before LspAttach loads the plugin
+vim.o.winbar = "%{%v:lua.(package.loaded['nvim-navic'] and require('nvim-navic').get_location() or '')%}"
 
 local navic_loaded = false
 vim.api.nvim_create_autocmd('LspAttach', {
