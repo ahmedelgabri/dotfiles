@@ -273,6 +273,7 @@ vim.o.smoothscroll = true
 vim.o.tabclose = 'uselast'
 
 vim.o.winborder = 'bold'
+vim.o.pumborder = vim.o.winborder
 
 vim.o.jumpoptions = 'stack,view'
 -------------------------------------------------------------------------------
