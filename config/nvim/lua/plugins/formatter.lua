@@ -2,7 +2,7 @@
 
 -- Init code runs immediately (format commands, formatexpr)
 -- Use conform for gq.
-vim.bo.formatexpr = "v:lua.require'conform'.formatexpr()"
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
 -- Define a command to run async formatting
 vim.api.nvim_create_user_command('Format', function(args)
