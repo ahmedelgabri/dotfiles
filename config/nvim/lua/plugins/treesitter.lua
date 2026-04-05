@@ -86,8 +86,6 @@ return {
 			'gitcommit', -- requires git_rebase and diff https://github.com/gbprod/tree-sitter-gitcommit#note-about-injected-languages
 			'gitignore',
 			'jsdoc',
-			'markdown',
-			'markdown_inline',
 			'query', -- For treesitter quereies
 			'regex',
 		}
