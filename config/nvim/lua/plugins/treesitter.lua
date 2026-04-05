@@ -63,6 +63,16 @@ return {
 					enable_rename = true, -- Auto rename pairs of tags
 					enable_close_on_slash = true, -- Auto close on trailing </
 				},
+				-- Let LSP linkedEditingRange handle paired tag renames where it is
+				-- supported, and keep autotag focused on tag closing behavior.
+				per_filetype = {
+					html = { enable_rename = false },
+					javascriptreact = { enable_rename = false },
+					['javascript.jsx'] = { enable_rename = false },
+					typescriptreact = { enable_rename = false },
+					['typescript.tsx'] = { enable_rename = false },
+					xml = { enable_rename = false },
+				},
 			},
 		},
 	},
