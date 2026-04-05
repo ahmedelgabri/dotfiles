@@ -46,6 +46,7 @@ function M.render_active()
 		components.spell(),
 		components.diff_source(),
 		lsp.diagnostics(),
+		vim.bo.busy > 0 and '◐ ' or '',
 		lsp.progress(),
 		components.file_info(),
 		components.rhs(),
@@ -66,6 +67,7 @@ end
 -- Autocommands
 ---------------------------------------------------------------------------------
 local lsp_progress = {}
+M.lsp_progress = lsp_progress
 
 au.augroup('MyStatusLine', {
 	{
@@ -98,6 +100,8 @@ au.augroup('MyStatusLine', {
 			progress.message = value.message or progress.message
 			progress.percentage = value.percentage or progress.percentage
 
+			local had_progress = next(lsp_progress) ~= nil
+
 			if value.kind == 'end' then
 				lsp_progress[id] = nil
 				vim.api.nvim_echo({ { '' } }, false, {
@@ -106,10 +110,17 @@ au.augroup('MyStatusLine', {
 					source = client_name,
 					status = 'success',
 				})
+				if had_progress and not next(lsp_progress) then
+					vim.cmd.redrawstatus()
+				end
 				return
 			end
 
 			lsp_progress[id] = progress
+
+			if not had_progress then
+				vim.cmd.redrawstatus()
+			end
 
 			local label = progress.title or progress.client_name
 			local chunks = { { label, 'Comment' } }

@@ -14,14 +14,18 @@ end
 ---@return string?
 function M.progress()
 	local clients = vim.lsp.get_clients { bufnr = 0 }
-	if #clients == 0 then
-		return nil
-	end
 
 	local ok, mini_icons = pcall(require, 'mini.icons')
 	local icon = ok and mini_icons.get('lsp', 'event') or '󰒋'
+	local hl = 'Comment'
 
-	return string.format('%%#Comment#%s%%*', icon)
+	if #clients == 0 then
+		hl = 'ErrorMsg'
+	elseif next(__.statusline.lsp_progress) then
+		hl = 'DiagnosticWarn'
+	end
+
+	return string.format('%%#%s#%s%%*', hl, icon)
 end
 
 return M
