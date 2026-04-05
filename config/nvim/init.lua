@@ -98,7 +98,7 @@ vim.o.spellfile =
 	string.format('%s%s', vim.fn.stdpath 'config', '/spell/spell.add')
 
 vim.o.complete = utils.append(vim.o.complete, { 'kspell' })
-vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert'
+vim.o.completeopt = 'menu,menuone,noselect,fuzzy,preinsert,nearest'
 
 -- Disable unsafe commands. Only run autocommands owned by me http://andrew.stwrt.ca/posts/project-specific-vimrc/
 vim.o.secure = true
