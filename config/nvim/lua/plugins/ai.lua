@@ -11,44 +11,73 @@ local function ensure_sidekick()
 	end)
 end
 
-vim.keymap.set({ 'n', 't', 'i', 'x' }, '<LocalLeader>cc', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').toggle()
+local function with_sidekick_cli(fn)
+	if not ensure_sidekick() then
+		return
 	end
-end, { desc = 'Sidekick Toggle' })
 
-vim.keymap.set('n', '<localleader>aa', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').toggle()
-	end
-end, { desc = 'Sidekick Toggle CLI' })
+	fn(require 'sidekick.cli')
+end
 
-vim.keymap.set('n', '<localleader>as', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').select { filter = { installed = true } }
-	end
-end, { desc = 'Select CLI' })
-
-vim.keymap.set({ 'x', 'n' }, '<localleader>at', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').send { msg = '{this}' }
-	end
-end, { desc = 'Send This' })
-
-vim.keymap.set('n', '<localleader>af', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').send { msg = '{file}' }
-	end
-end, { desc = 'Send File' })
-
-vim.keymap.set('x', '<localleader>av', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').send { msg = '{selection}' }
-	end
-end, { desc = 'Send Visual Selection' })
-
-vim.keymap.set({ 'n', 'x' }, '<localleader>ap', function()
-	if ensure_sidekick() then
-		require('sidekick.cli').prompt()
-	end
-end, { desc = 'Sidekick Select Prompt' })
+for _, mapping in ipairs {
+	{
+		modes = { 'n', 't', 'i', 'x' },
+		lhs = '<LocalLeader>cc',
+		desc = 'Sidekick Toggle',
+		callback = function(cli)
+			cli.toggle()
+		end,
+	},
+	{
+		modes = 'n',
+		lhs = '<localleader>aa',
+		desc = 'Sidekick Toggle CLI',
+		callback = function(cli)
+			cli.toggle()
+		end,
+	},
+	{
+		modes = 'n',
+		lhs = '<localleader>as',
+		desc = 'Select CLI',
+		callback = function(cli)
+			cli.select { filter = { installed = true } }
+		end,
+	},
+	{
+		modes = { 'x', 'n' },
+		lhs = '<localleader>at',
+		desc = 'Send This',
+		callback = function(cli)
+			cli.send { msg = '{this}' }
+		end,
+	},
+	{
+		modes = 'n',
+		lhs = '<localleader>af',
+		desc = 'Send File',
+		callback = function(cli)
+			cli.send { msg = '{file}' }
+		end,
+	},
+	{
+		modes = 'x',
+		lhs = '<localleader>av',
+		desc = 'Send Visual Selection',
+		callback = function(cli)
+			cli.send { msg = '{selection}' }
+		end,
+	},
+	{
+		modes = { 'n', 'x' },
+		lhs = '<localleader>ap',
+		desc = 'Sidekick Select Prompt',
+		callback = function(cli)
+			cli.prompt()
+		end,
+	},
+} do
+	vim.keymap.set(mapping.modes, mapping.lhs, function()
+		with_sidekick_cli(mapping.callback)
+	end, { desc = mapping.desc })
+end
