@@ -2,6 +2,7 @@ local M = {}
 
 local configured = {}
 local bootstrapped = false
+local hooks_registered = false
 
 local function listify(value)
 	if value == nil then
@@ -176,10 +177,48 @@ function M.lazy_cmd(names, ensure, opts)
 	end
 end
 
+local function ensure_hooks()
+	if hooks_registered then
+		return
+	end
+
+	vim.api.nvim_create_autocmd('PackChanged', {
+		callback = function(ev)
+			local spec = ev.data.spec
+			local run = (spec.data or {}).run
+			if ev.data.kind == 'delete' or type(run) ~= 'function' then
+				return
+			end
+
+			local plugin_name = spec.name
+			local name = plugin_name or spec.src or 'unknown plugin'
+			if plugin_name ~= nil and not M.load(plugin_name) then
+				return
+			end
+
+			vim.api.nvim_echo({
+				{
+					string.format(
+						'vim.pack: running hook for %s (%s)',
+						name,
+						ev.data.kind
+					),
+					'Comment',
+				},
+			}, true, {})
+			run(ev.data)
+		end,
+	})
+
+	hooks_registered = true
+end
+
 function M.bootstrap()
 	if bootstrapped then
 		return
 	end
+
+	ensure_hooks()
 
 	local function selective_load(plug_data)
 		local data = plug_data.spec.data or {}

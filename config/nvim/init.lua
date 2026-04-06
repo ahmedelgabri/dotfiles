@@ -318,32 +318,6 @@ for _, plugin in ipairs {
 	vim.g['loaded_' .. plugin] = 1
 end
 
--- Generic build hook: runs spec.data.run on install/update
-vim.api.nvim_create_autocmd('PackChanged', {
-	callback = function(ev)
-		local spec = ev.data.spec
-		local run = (spec.data or {}).run
-		if ev.data.kind ~= 'delete' and type(run) == 'function' then
-			local plugin_name = spec.name
-			local name = plugin_name or spec.src or 'unknown plugin'
-			if plugin_name then
-				pcall(vim.cmd.packadd, plugin_name)
-			end
-			vim.api.nvim_echo({
-				{
-					string.format(
-						'vim.pack: running hook for %s (%s)',
-						name,
-						ev.data.kind
-					),
-					'Comment',
-				},
-			}, true, {})
-			run(ev.data)
-		end
-	end,
-})
-
 -- Load plugin configurations (using vim.pack)
 require 'plugins'
 
