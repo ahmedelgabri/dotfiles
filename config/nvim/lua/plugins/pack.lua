@@ -44,6 +44,7 @@ function M.load(names)
 	end
 end
 
+-- Supports both setup(names, fn) and setup(key, names, fn).
 function M.setup(key_or_names, names_or_fn, maybe_fn)
 	local key = key_or_names
 	local names = names_or_fn
@@ -74,6 +75,7 @@ function M.setup(key_or_names, names_or_fn, maybe_fn)
 	return ok
 end
 
+-- Schedule non-essential plugin setup after startup settles.
 function M.later(fn)
 	vim.schedule(function()
 		M.try('later', fn)
@@ -119,6 +121,7 @@ function M.bootstrap()
 
 	vim.pack.add(require 'plugins.specs', {
 		load = selective_load,
+		-- Skip confirmation prompts during headless runs.
 		confirm = next(vim.api.nvim_list_uis()) ~= nil,
 	})
 
