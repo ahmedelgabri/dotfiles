@@ -13,7 +13,7 @@ end
 vim.o.winbar = '%!v:lua.__.navic_location()'
 
 local function ensure_navic()
-	return pack.setup('nvim-navic', 'nvim-navic', function()
+	return pack.setup('nvim-navic', function()
 		require('nvim-navic').setup {
 			click = true,
 			highlight = true,
@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 local function ensure_none_ls()
-	return pack.setup('none-ls.nvim', 'none-ls.nvim', function()
+	return pack.setup('none-ls.nvim', function()
 		local nls = require 'null-ls'
 
 		nls.setup {

@@ -4,7 +4,7 @@
 local pack = require 'plugins.pack'
 
 local function ensure_sidekick()
-	return pack.setup('sidekick.nvim', 'sidekick.nvim', function()
+	return pack.setup('sidekick.nvim', function()
 		require('sidekick').setup {
 			mux = { enabled = true },
 		}

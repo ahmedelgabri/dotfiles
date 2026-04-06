@@ -54,7 +54,7 @@ end
 require 'zk.commands.builtin'
 
 local function ensure_render_markdown()
-	return pack.setup('render-markdown.nvim', 'render-markdown.nvim', function()
+	return pack.setup('render-markdown.nvim', function()
 		require('render-markdown').setup {
 			file_types = { 'markdown', 'md', 'codecompanion' },
 			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
@@ -89,7 +89,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 local function ensure_markdown_plus()
-	return pack.setup('markdown-plus.nvim', 'markdown-plus.nvim', function()
+	return pack.setup('markdown-plus.nvim', function()
 		require('markdown-plus').setup {
 			filetypes = { 'markdown', 'text', 'txt' },
 		}
@@ -145,7 +145,7 @@ local function ensure_obsidian()
 		return false
 	end
 
-	return pack.setup('obsidian.nvim', 'obsidian.nvim', function()
+	return pack.setup('obsidian.nvim', function()
 		require('obsidian').setup {
 			legacy_commands = false,
 			workspaces = {

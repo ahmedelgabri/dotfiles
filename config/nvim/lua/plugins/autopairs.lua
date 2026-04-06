@@ -2,7 +2,7 @@
 local pack = require 'plugins.pack'
 
 local function ensure_autopairs()
-	return pack.setup('nvim-autopairs', 'nvim-autopairs', function()
+	return pack.setup('nvim-autopairs', function()
 		local npairs = require 'nvim-autopairs'
 		local Rule = require 'nvim-autopairs.rule'
 		local conds = require 'nvim-autopairs.conds'

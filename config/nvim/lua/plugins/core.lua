@@ -15,7 +15,7 @@ require('nvim-tmux-navigation').setup {
 }
 
 local function ensure_blink_indent()
-	return pack.setup('blink.indent', 'blink.indent', function()
+	return pack.setup('blink.indent', function()
 		--- @module 'blink.indent'
 		--- @type blink.indent.Config
 		require('blink.indent').setup {
@@ -116,7 +116,7 @@ vim.api.nvim_create_autocmd('FileType', {
 -- grug-far.nvim: lazy on cmd and FileType
 do
 	local function ensure_grug()
-		return pack.setup('grug-far.nvim', 'grug-far.nvim', function()
+		return pack.setup('grug-far.nvim', function()
 			local pack_utils = require '_.utils'
 			local node_modules_ast_grep = pack_utils.get_lsp_bin 'ast-grep'
 			local opts = {}
@@ -147,7 +147,7 @@ end
 -- outline.nvim: lazy on cmd
 do
 	local function ensure_outline()
-		return pack.setup('outline.nvim', 'outline.nvim', function()
+		return pack.setup('outline.nvim', function()
 			require('outline').setup {}
 		end)
 	end

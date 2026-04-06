@@ -23,6 +23,11 @@ local function notify_error(context, err)
 	end)
 end
 
+local function default_key(names)
+	local normalized = listify(names)
+	return normalized[#normalized]
+end
+
 function M.try(context, fn)
 	local ok, result = xpcall(fn, debug.traceback)
 	if not ok then
@@ -39,7 +44,17 @@ function M.load(names)
 	end
 end
 
-function M.setup(key, names, fn)
+function M.setup(key_or_names, names_or_fn, maybe_fn)
+	local key = key_or_names
+	local names = names_or_fn
+	local fn = maybe_fn
+
+	if fn == nil then
+		names = key_or_names
+		fn = names_or_fn
+		key = default_key(names)
+	end
+
 	if configured[key] then
 		return true
 	end

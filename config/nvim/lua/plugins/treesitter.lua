@@ -39,10 +39,7 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'html', 'javascriptreact', 'jsx', 'typescriptreact', 'tsx' },
 	callback = function()
 		if
-			not pack.setup(
-				'rainbow-delimiters.nvim',
-				'rainbow-delimiters.nvim',
-				function()
+			not pack.setup('rainbow-delimiters.nvim', function()
 					require('rainbow-delimiters.setup').setup {
 						enabled_when = function(bufnr)
 							local max_filesize = 1 * 1024 * 1024 -- 1 MB
