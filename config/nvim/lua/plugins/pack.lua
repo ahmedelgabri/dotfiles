@@ -65,26 +65,27 @@ function M.later(fn)
 	end)
 end
 
-function M.run_command(cmd, raw_args, user_opts)
-	if type(raw_args) == 'table' then
-		user_opts = raw_args
-		raw_args = user_opts.args
-	end
+function M.lazy_cmd(names, ensure, opts)
+	opts = vim.tbl_extend('force', {
+		nargs = '*',
+		bang = true,
+	}, opts or {})
 
-	local command = ''
-	if user_opts ~= nil and user_opts.mods ~= nil and user_opts.mods ~= '' then
-		command = user_opts.mods .. ' '
-	end
+	for _, name in ipairs(listify(names)) do
+		vim.api.nvim_create_user_command(name, function(user_opts)
+			pcall(vim.api.nvim_del_user_command, name)
+			if not ensure() then
+				return
+			end
 
-	command = command .. cmd
-	if user_opts ~= nil and user_opts.bang then
-		command = command .. '!'
+			vim.cmd {
+				cmd = name,
+				args = user_opts.fargs,
+				bang = user_opts.bang,
+				mods = user_opts.smods,
+			}
+		end, opts)
 	end
-	if raw_args ~= nil and raw_args ~= '' then
-		command = command .. ' ' .. raw_args
-	end
-
-	vim.api.nvim_cmd(vim.api.nvim_parse_cmd(command, {}), {})
 end
 
 function M.bootstrap()

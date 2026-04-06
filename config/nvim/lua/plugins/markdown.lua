@@ -145,8 +145,6 @@ local function ensure_obsidian()
 		return false
 	end
 
-	pcall(vim.api.nvim_del_user_command, 'Obsidian')
-
 	return pack.setup('obsidian.nvim', 'obsidian.nvim', function()
 		require('obsidian').setup {
 			legacy_commands = false,
@@ -270,12 +268,7 @@ local function ensure_obsidian()
 end
 
 -- Lazy load on Obsidian* commands
-vim.api.nvim_create_user_command('Obsidian', function(opts)
-	if not ensure_obsidian() then
-		return
-	end
-	pack.run_command('Obsidian', opts)
-end, { nargs = '*', bang = true })
+pack.lazy_cmd('Obsidian', ensure_obsidian)
 
 -- Also load for markdown files inside NOTES_DIR
 local notes_dir = get_notes_dir()

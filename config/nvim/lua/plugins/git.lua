@@ -60,7 +60,6 @@ vim.api.nvim_create_autocmd('FileType', {
 -- codediff.nvim: lazy on cmd
 do
 	local function ensure_codediff()
-		pcall(vim.api.nvim_del_user_command, 'CodeDiff')
 		return pack.setup(
 			'codediff.nvim',
 			{ 'nui.nvim', 'codediff.nvim' },
@@ -74,10 +73,5 @@ do
 		)
 	end
 
-	vim.api.nvim_create_user_command('CodeDiff', function(opts)
-		if not ensure_codediff() then
-			return
-		end
-		pack.run_command('CodeDiff', opts)
-	end, { nargs = '*', bang = true })
+	pack.lazy_cmd('CodeDiff', ensure_codediff)
 end

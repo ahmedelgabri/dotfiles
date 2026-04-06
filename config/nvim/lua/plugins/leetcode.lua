@@ -5,7 +5,6 @@ local leet_arg = 'leet'
 local is_leet = leet_arg == vim.fn.argv()[1]
 
 local function ensure_leetcode()
-	pcall(vim.api.nvim_del_user_command, 'Leet')
 	return pack.setup('leetcode.nvim', { 'nui.nvim', 'leetcode.nvim' }, function()
 		local map = vim.api.nvim_set_keymap
 
@@ -56,10 +55,5 @@ if is_leet then
 	ensure_leetcode()
 else
 	-- Also lazy load on :Leet command
-	vim.api.nvim_create_user_command('Leet', function(opts)
-		if not ensure_leetcode() then
-			return
-		end
-		pack.run_command('Leet', opts)
-	end, { nargs = '*', bang = true })
+	pack.lazy_cmd('Leet', ensure_leetcode)
 end

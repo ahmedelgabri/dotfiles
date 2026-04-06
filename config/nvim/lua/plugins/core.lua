@@ -116,7 +116,6 @@ vim.api.nvim_create_autocmd('FileType', {
 -- grug-far.nvim: lazy on cmd and FileType
 do
 	local function ensure_grug()
-		pcall(vim.api.nvim_del_user_command, 'GrugFar')
 		return pack.setup('grug-far.nvim', 'grug-far.nvim', function()
 			local pack_utils = require '_.utils'
 			local node_modules_ast_grep = pack_utils.get_lsp_bin 'ast-grep'
@@ -137,12 +136,7 @@ do
 		end)
 	end
 
-	vim.api.nvim_create_user_command('GrugFar', function(cmd_opts)
-		if not ensure_grug() then
-			return
-		end
-		pack.run_command('GrugFar', cmd_opts)
-	end, { nargs = '*', bang = true })
+	pack.lazy_cmd('GrugFar', ensure_grug)
 
 	vim.api.nvim_create_autocmd('FileType', {
 		pattern = 'grug-far',
@@ -153,20 +147,10 @@ end
 -- outline.nvim: lazy on cmd
 do
 	local function ensure_outline()
-		for _, name in ipairs { 'Outline', 'OutlineOpen' } do
-			pcall(vim.api.nvim_del_user_command, name)
-		end
 		return pack.setup('outline.nvim', 'outline.nvim', function()
 			require('outline').setup {}
 		end)
 	end
 
-	for _, cmd in ipairs { 'Outline', 'OutlineOpen' } do
-		vim.api.nvim_create_user_command(cmd, function(cmd_opts)
-			if not ensure_outline() then
-				return
-			end
-			pack.run_command(cmd, cmd_opts)
-		end, { nargs = '*', bang = true })
-	end
+	pack.lazy_cmd({ 'Outline', 'OutlineOpen' }, ensure_outline)
 end
