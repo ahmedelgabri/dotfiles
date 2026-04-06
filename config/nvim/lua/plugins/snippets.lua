@@ -1,20 +1,19 @@
-return {
-	'https://github.com/L3MON4D3/LuaSnip',
-	lazy = true,
-	-- Build Step is needed for regex support in snippets
-	build = 'make install_jsregexp',
-	dependencies = {
-		{ 'https://github.com/rafamadriz/friendly-snippets' },
-	},
-	config = function()
-		local ls = require 'luasnip'
+-- LuaSnip: lazy on InsertEnter (must load before blink.cmp which uses luasnip preset)
+local pack = require 'plugins.pack'
 
-		-- Setup toggle choice
-		vim.keymap.set({ 'i', 's' }, '<C-l>', function()
-			if ls.choice_active() then
-				ls.change_choice(1)
-			end
-		end, { silent = true })
+local M = {}
+
+-- Setup toggle choice (works before plugin loads, guarded by choice_active check)
+vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+	local ok, ls = pcall(require, 'luasnip')
+	if ok and ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, { silent = true })
+
+function M.ensure()
+	return pack.setup('LuaSnip', { 'friendly-snippets', 'LuaSnip' }, function()
+		local ls = require 'luasnip'
 
 		local s = ls.snippet
 		local sn = ls.snippet_node
@@ -41,11 +40,6 @@ return {
 						virt_text = { { '← Choice', 'Todo' } },
 					},
 				},
-				-- [types.insertNode] = {
-				--   active = {
-				--     virt_text = { { '← ...', 'Todo' } },
-				--   },
-				-- },
 			},
 		}
 
@@ -59,14 +53,9 @@ return {
 				),
 			},
 		}
+
 		-- Get a list of  the property names given an `interface_declaration`
 		-- treesitter *tsx* node.
-		-- Ie, if the treesitter node represents:
-		--   interface {
-		--     prop1: string;
-		--     prop2: number;
-		--   }
-		-- Then this function would return `{"prop1", "prop2"}
 		---@param id_node {} Stands for "interface declaration node"
 		---@return string[]
 		local function get_prop_names(id_node)
@@ -488,7 +477,9 @@ SOFTWARE.
 					'script',
 					fmt('<script {scriptEnd}{body}</script>{next}', {
 						scriptEnd = c(1, {
-							fmt('src="{src}">', { src = i(1, 'path/to/file.js') }),
+							fmt('src="{src}">', {
+								src = i(1, 'path/to/file.js'),
+							}),
 							fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
 						}),
 						body = i(2),
@@ -522,5 +513,11 @@ SOFTWARE.
 				}),
 			},
 		})
-	end,
-}
+	end)
+end
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+	callback = M.ensure,
+})
+
+return M

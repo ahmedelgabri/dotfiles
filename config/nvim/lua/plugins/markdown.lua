@@ -1,4 +1,7 @@
--- Pattern definitions: each entry contains a pattern and optional default time values
+-- Markdown plugins
+local pack = require 'plugins.pack'
+
+-- Pattern definitions for obsidian date parsing
 local patterns = {
 	{
 		name = 'ISO datetime',
@@ -17,15 +20,9 @@ local patterns = {
 	},
 }
 
--- Parse date strings and convert to YYYYMMDDHHMM timestamp format
--- Supported formats:
---   - ISO datetime: "2025-01-01T00:00" or "2025-01-01 00:00"
---   - Compact datetime: "202501010000"
---   - ISO date only: "2025-01-01" (time defaults to 00:00)
 local function convert_date(date_string)
 	local year, month, day, hour, min
 
-	-- Try each pattern until one matches
 	for _, config in ipairs(patterns) do
 		local captures = { date_string:match(config.pattern) }
 		if #captures > 0 then
@@ -40,7 +37,6 @@ local function convert_date(date_string)
 		return nil
 	end
 
-	-- Create date table for os.time
 	local date_table = {
 		year = tonumber(year),
 		month = tonumber(month),
@@ -50,17 +46,16 @@ local function convert_date(date_string)
 		sec = 0,
 	}
 
-	-- Convert to timestamp
 	local timestamp = os.time(date_table)
-
-	-- Format using os.date
 	return os.date('%Y%m%d%H%M', timestamp)
 end
 
-return {
-	{
-		'https://github.com/MeanderingProgrammer/render-markdown.nvim',
-		opts = {
+-- zk-nvim: only commands, no LSP
+require 'zk.commands.builtin'
+
+local function ensure_render_markdown()
+	return pack.setup('render-markdown.nvim', 'render-markdown.nvim', function()
+		require('render-markdown').setup {
 			file_types = { 'markdown', 'md', 'codecompanion' },
 			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
 			code = {
@@ -84,45 +79,89 @@ return {
 				position = 'inline',
 				icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
 			},
-		},
-	},
-	{
-		'https://github.com/YousefHadder/markdown-plus.nvim',
-		ft = { 'markdown', 'txt', 'text' },
-		opts = {
+		}
+	end)
+end
+
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'markdown', 'md', 'codecompanion' },
+	callback = ensure_render_markdown,
+})
+
+local function ensure_markdown_plus()
+	return pack.setup('markdown-plus.nvim', 'markdown-plus.nvim', function()
+		require('markdown-plus').setup {
 			filetypes = { 'markdown', 'text', 'txt' },
-		},
-	},
-	{ 'https://github.com/davidmh/mdx.nvim' },
-	{
-		'https://github.com/zk-org/zk-nvim',
-		config = function()
-			-- I don't need the LSP I use markdown-oxide for that, I only need the commands. This is why I don't call .setup()
-			require 'zk.commands.builtin'
-		end,
-	},
-	{
-		'https://github.com/obsidian-nvim/obsidian.nvim',
-		version = '*',
-		cmd = { 'Obsidian' },
-		ft = { 'markdown' },
-		dependencies = {
-			'https://github.com/nvim-lua/plenary.nvim',
-		},
-		opts = {
+		}
+	end)
+end
+
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'markdown', 'txt', 'text' },
+	callback = ensure_markdown_plus,
+})
+
+local obsidian_warned = false
+
+local function notify_missing_notes_dir()
+	if obsidian_warned then
+		return
+	end
+
+	obsidian_warned = true
+	vim.notify(
+		'Obsidian disabled: NOTES_DIR is not set or does not exist',
+		vim.log.levels.WARN
+	)
+end
+
+local function get_notes_dir()
+	local dir = vim.env.NOTES_DIR
+	if dir == nil or dir == '' then
+		return nil
+	end
+
+	local normalized = vim.fs.normalize(dir)
+	if vim.uv.fs_stat(normalized) == nil then
+		return nil
+	end
+
+	return normalized
+end
+
+local function notes_patterns(notes_dir)
+	return {
+		notes_dir .. '/*.md',
+		notes_dir .. '/**/*.md',
+		notes_dir .. '/*.markdown',
+		notes_dir .. '/**/*.markdown',
+	}
+end
+
+local function ensure_obsidian()
+	local notes_dir = get_notes_dir()
+	if notes_dir == nil then
+		notify_missing_notes_dir()
+		return false
+	end
+
+	pcall(vim.api.nvim_del_user_command, 'Obsidian')
+
+	return pack.setup('obsidian.nvim', 'obsidian.nvim', function()
+		require('obsidian').setup {
 			legacy_commands = false,
 			workspaces = {
 				{
 					name = 'notes',
-					path = vim.env.NOTES_DIR,
+					path = notes_dir,
 					strict = true,
 					overrides = {
 						attachments = {
-							folder = vim.env.NOTES_DIR .. '/assets',
+							folder = notes_dir .. '/assets',
 							img_name_func = function()
 								return string.format(
 									'%s/%s/Pasted image %s',
-									vim.env.NOTES_DIR .. '/assets',
+									notes_dir .. '/assets',
 									vim.fn.expand '%:t:r',
 									os.date '%Y%m%d%H%M%S'
 								)
@@ -133,24 +172,21 @@ return {
 			},
 
 			templates = {
-				folder = '.zk/templates', -- must be relative to the root of the vault
+				folder = '.zk/templates',
 				date_format = '%Y-%m-%d',
 				time_format = '%H:%M',
-				-- A map for custom variables, the key should be the variable and the value a function
 				substitutions = {
-					-- zk compatibility
-					-- https://zk-org.github.io/zk/notes/template.html#date-formatting-helper
 					['format-date now "%Y-%m-%dT%H:%M"'] = function()
-						return os.date '%Y-%m-%dT%H:%M' -- 2025-04-01T12:05
+						return os.date '%Y-%m-%dT%H:%M'
 					end,
 					['format-date now "timestamp"'] = function()
-						return os.date '%Y%m%d%H%M' -- 202504011205
+						return os.date '%Y%m%d%H%M'
 					end,
 					["format-date now '%Y-%m-%d'"] = function()
-						return os.date '%Y-%m-%d' -- 2025-04-01
+						return os.date '%Y-%m-%d'
 					end,
 					['format-date now "long"'] = function()
-						return os.date '%B %d, %Y' -- April 1, 2025
+						return os.date '%B %d, %Y'
 					end,
 					['content'] = function()
 						return ''
@@ -177,36 +213,30 @@ return {
 
 			frontmatter = {
 				sort = { 'id', 'title', 'date', 'aliases', 'tags' },
-				-- Customize the frontmatter data.
 				---@return table
 				func = function(note)
-					-- NOTE: `note.id` is NOT frontmatter id but rather the name of the note, for the frontmatter it's note.metadata.id
+					local metadata = note.metadata or {}
 					local out = {
 						aliases = note.aliases,
 						tags = note.tags,
 					}
 
-					-- `note.metadata` contains any manually added fields in the frontmatter.
-					-- So here we just make sure those fields are kept in the frontmatter.
-					if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-						for k, v in pairs(note.metadata) do
+					if not vim.tbl_isempty(metadata) then
+						for k, v in pairs(metadata) do
 							out[k] = v
 						end
 					end
 
-					if not note.metadata.title then
+					if not metadata.title then
 						out.title = note.title or note.id
 					end
 
-					-- Add the title of the note as an alias.
-					note:add_alias(note.title or note.metadata.title or note.id)
+					note:add_alias(note.title or metadata.title or note.id)
 
-					local validated_id = tostring(convert_date(note.id))
-					-- We run this at the end so we have access to metadata too
-					out.id = validated_id ~= 'nil' and validated_id
-						or tostring(
-							convert_date(note.metadata.date or os.date '%Y%m%d%H%M')
-						)
+					local validated_id = convert_date(note.id)
+					out.id = validated_id
+						or convert_date(metadata.date or os.date '%Y%m%d%H%M')
+						or os.date '%Y%m%d%H%M'
 
 					return out
 				end,
@@ -235,6 +265,23 @@ return {
 			footer = {
 				enabled = false,
 			},
-		},
-	},
-}
+		}
+	end)
+end
+
+-- Lazy load on Obsidian* commands
+vim.api.nvim_create_user_command('Obsidian', function(opts)
+	if not ensure_obsidian() then
+		return
+	end
+	pack.run_command('Obsidian', opts)
+end, { nargs = '*', bang = true })
+
+-- Also load for markdown files inside NOTES_DIR
+local notes_dir = get_notes_dir()
+if notes_dir ~= nil then
+	vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
+		pattern = notes_patterns(notes_dir),
+		callback = ensure_obsidian,
+	})
+end

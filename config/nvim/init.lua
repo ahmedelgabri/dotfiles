@@ -304,59 +304,44 @@ vim.g.markdown_fenced_languages = {
 	'viml=vim',
 }
 
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
-	vim.fn.system {
-		'git',
-		'clone',
-		'--filter=blob:none',
-		'https://github.com/folke/lazy.nvim.git',
-		'--branch=stable', -- latest stable release
-		lazypath,
-	}
+-- Disable builtin plugins (previously handled by lazy.nvim)
+for _, plugin in ipairs {
+	'getscript',
+	'getscriptPlugin',
+	'netrwPlugin',
+	'rplugin',
+	'rrhelper',
+	'tutor',
+	'vimball',
+	'vimballPlugin',
+} do
+	vim.g['loaded_' .. plugin] = 1
 end
 
-vim.o.rtp = utils.prepend(vim.o.rtp, { lazypath })
+-- Generic build hook: runs spec.data.run on install/update
+vim.api.nvim_create_autocmd('PackChanged', {
+	callback = function(ev)
+		local spec = ev.data.spec
+		local run = (spec.data or {}).run
+		if ev.data.kind ~= 'delete' and type(run) == 'function' then
+			local name = spec.name or spec.src or 'unknown plugin'
+			vim.api.nvim_echo({
+				{
+					string.format(
+						'vim.pack: running hook for %s (%s)',
+						name,
+						ev.data.kind
+					),
+					'Comment',
+				},
+			}, true, {})
+			run(ev.data)
+		end
+	end,
+})
 
----@diagnostic disable-next-line: missing-fields, param-type-not-match
-require('lazy').setup {
-	spec = {
-		{ import = 'plugins' },
-	},
-	---@diagnostic disable-next-line: assign-type-mismatch
-	dev = {
-		-- directory where you store your local plugin projects
-		path = '~/code/personal/forks',
-		---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
-		patterns = { 'ahmedelgabri' }, -- For example {"folke"}
-		fallback = true, -- Fallback to git when local plugin doesn't exist
-	},
-	ui = {
-		border = utils.get_border(),
-		backdrop = 0,
-	},
-	performance = {
-		rtp = {
-			-- Stuff I don't use.
-			disabled_plugins = {
-				'getscript',
-				'getscriptPlugin',
-				'netrwPlugin',
-				'rplugin',
-				'rrhelper',
-				'tutor',
-				'vimball',
-				'vimballPlugin',
-			},
-		},
-	},
-	-- Don't bother me when tweaking plugins.
-	change_detection = { notify = false },
-	profiling = {
-		-- Track each new require in the Lazy profiling tab
-		require = true,
-	},
-}
+-- Load plugin configurations (using vim.pack)
+require 'plugins'
 
 -------------------------------------------------------------------------------
 -- OVERRIDES {{{1
