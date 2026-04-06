@@ -1,20 +1,11 @@
 local pack = require 'plugins.pack'
 local utils = require '_.utils'
 
-__.navic_location = function()
-	local ok, navic = pcall(require, 'nvim-navic')
-	if not ok then
-		return ''
-	end
-
-	return navic.get_location()
-end
-
-vim.o.winbar = '%!v:lua.__.navic_location()'
-
 local function ensure_navic()
 	return pack.setup('nvim-navic', function()
-		require('nvim-navic').setup {
+		local navic = require 'nvim-navic'
+
+		navic.setup {
 			click = true,
 			highlight = true,
 			lsp = {
@@ -22,6 +13,8 @@ local function ensure_navic()
 				preference = { 'marksman', 'obsidian-ls' },
 			},
 		}
+
+		vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 	end)
 end
 
