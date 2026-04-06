@@ -324,7 +324,11 @@ vim.api.nvim_create_autocmd('PackChanged', {
 		local spec = ev.data.spec
 		local run = (spec.data or {}).run
 		if ev.data.kind ~= 'delete' and type(run) == 'function' then
-			local name = spec.name or spec.src or 'unknown plugin'
+			local plugin_name = spec.name
+			local name = plugin_name or spec.src or 'unknown plugin'
+			if plugin_name then
+				pcall(vim.cmd.packadd, plugin_name)
+			end
 			vim.api.nvim_echo({
 				{
 					string.format(

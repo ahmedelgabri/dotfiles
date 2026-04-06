@@ -18,10 +18,7 @@ return {
 		src = 'https://github.com/nvim-treesitter/nvim-treesitter',
 		version = 'main',
 		data = {
-			run = function(plugin)
-				if not plugin.active then
-					vim.cmd.packadd 'nvim-treesitter'
-				end
+			run = function()
 				vim.cmd 'TSUpdate'
 			end,
 		},
