@@ -48,11 +48,7 @@ local function get_icon_highlight(ctx)
 end
 
 local function ensure_completion()
-	return pack.setup('blink.cmp', {
-		'blink-emoji.nvim',
-		'colorful-menu.nvim',
-		'blink.cmp',
-	}, function()
+	return pack.setup('blink.cmp', function()
 		if not snippets.ensure() then
 			error 'LuaSnip failed to load'
 		end

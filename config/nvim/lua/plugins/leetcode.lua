@@ -5,7 +5,7 @@ local leet_arg = 'leet'
 local is_leet = leet_arg == vim.fn.argv()[1]
 
 local function ensure_leetcode()
-	return pack.setup('leetcode.nvim', { 'nui.nvim', 'leetcode.nvim' }, function()
+	return pack.setup('leetcode.nvim', function()
 		local map = vim.api.nvim_set_keymap
 
 		map(

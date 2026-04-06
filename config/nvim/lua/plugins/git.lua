@@ -60,10 +60,7 @@ vim.api.nvim_create_autocmd('FileType', {
 -- codediff.nvim: lazy on cmd
 do
 	local function ensure_codediff()
-		return pack.setup(
-			'codediff.nvim',
-			{ 'nui.nvim', 'codediff.nvim' },
-			function()
+		return pack.setup('codediff.nvim', function()
 				require('codediff').setup {
 					explorer = {
 						view_mode = 'tree',

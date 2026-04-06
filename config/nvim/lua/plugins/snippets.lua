@@ -12,7 +12,7 @@ vim.keymap.set({ 'i', 's' }, '<C-l>', function()
 end, { silent = true })
 
 function M.ensure()
-	return pack.setup('LuaSnip', { 'friendly-snippets', 'LuaSnip' }, function()
+	return pack.setup('LuaSnip', function()
 		local ls = require 'luasnip'
 
 		local s = ls.snippet

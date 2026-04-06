@@ -62,7 +62,7 @@ end)
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = 'qf',
 	callback = function()
-		pack.load { 'fzf', 'nvim-bqf' }
+		pack.load 'nvim-bqf'
 	end,
 })
 

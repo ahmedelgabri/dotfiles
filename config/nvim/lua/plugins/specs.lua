@@ -43,7 +43,10 @@ return {
 	{ src = 'https://github.com/MunifTanjim/nui.nvim', data = { lazy = true } },
 	{
 		src = 'https://github.com/esmuellert/codediff.nvim',
-		data = { lazy = true },
+		data = {
+			lazy = true,
+			deps = { 'https://github.com/MunifTanjim/nui.nvim' },
+		},
 	},
 
 	-- Search / navigation helpers
@@ -52,7 +55,10 @@ return {
 		name = 'fzf',
 		data = { lazy = true },
 	},
-	{ src = 'https://github.com/kevinhwang91/nvim-bqf', data = { lazy = true } },
+	{
+		src = 'https://github.com/kevinhwang91/nvim-bqf',
+		data = { lazy = true, deps = { 'https://github.com/junegunn/fzf' } },
+	},
 	{ src = 'https://github.com/jbyuki/venn.nvim', data = { lazy = true } },
 	{ src = 'https://github.com/fladson/vim-kitty', data = { lazy = true } },
 	{
@@ -73,6 +79,7 @@ return {
 		src = 'https://github.com/L3MON4D3/LuaSnip',
 		data = {
 			lazy = true,
+			deps = { 'https://github.com/rafamadriz/friendly-snippets' },
 			run = function(plugin)
 				vim.fn.system { 'make', '-C', plugin.path, 'install_jsregexp' }
 			end,
@@ -86,7 +93,13 @@ return {
 		src = 'https://github.com/Saghen/blink.cmp',
 		name = 'blink.cmp',
 		version = vim.version.range '1.x',
-		data = { lazy = true },
+		data = {
+			lazy = true,
+			deps = {
+				'https://github.com/moyiz/blink-emoji.nvim',
+				'https://github.com/xzbdmw/colorful-menu.nvim',
+			},
+		},
 	},
 	{ src = 'https://github.com/moyiz/blink-emoji.nvim', data = { lazy = true } },
 	{
@@ -114,5 +127,11 @@ return {
 
 	-- AI / misc tools
 	{ src = 'https://github.com/folke/sidekick.nvim', data = { lazy = true } },
-	{ src = 'https://github.com/kawre/leetcode.nvim', data = { lazy = true } },
+	{
+		src = 'https://github.com/kawre/leetcode.nvim',
+		data = {
+			lazy = true,
+			deps = { 'https://github.com/MunifTanjim/nui.nvim' },
+		},
+	},
 }

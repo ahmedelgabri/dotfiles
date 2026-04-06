@@ -28,6 +28,74 @@ local function default_key(names)
 	return normalized[#normalized]
 end
 
+local spec_cache
+
+local function spec_src(spec)
+	if type(spec) == 'string' then
+		return spec
+	end
+
+	return spec.src
+end
+
+local function spec_name(spec)
+	if type(spec) == 'table' and spec.name ~= nil then
+		return spec.name
+	end
+
+	local src = spec_src(spec)
+	if src ~= nil then
+		return vim.fs.basename(src):gsub('%.git$', '')
+	end
+end
+
+local function specs_by_key()
+	if spec_cache ~= nil then
+		return spec_cache
+	end
+
+	spec_cache = {}
+	for _, spec in ipairs(require 'plugins.specs') do
+		local name = spec_name(spec)
+		local src = spec_src(spec)
+		local resolved = {
+			name = name,
+			src = src,
+			data = type(spec) == 'table' and spec.data or nil,
+		}
+
+		if name ~= nil then
+			spec_cache[name] = resolved
+		end
+		if src ~= nil then
+			spec_cache[src] = resolved
+		end
+	end
+
+	return spec_cache
+end
+
+local function load_one(identifier, seen)
+	local spec = specs_by_key()[identifier]
+	local name = spec and spec.name or identifier
+	local key = spec and (spec.src or spec.name) or identifier
+
+	if seen[key] then
+		return true
+	end
+	seen[key] = true
+
+	for _, dep in ipairs(listify(spec and (spec.data or {}).deps)) do
+		if not load_one(dep, seen) then
+			return false
+		end
+	end
+
+	return M.try('load ' .. name, function()
+		vim.cmd.packadd(name)
+	end)
+end
+
 function M.try(context, fn)
 	local ok, result = xpcall(fn, debug.traceback)
 	if not ok then
@@ -39,9 +107,14 @@ function M.try(context, fn)
 end
 
 function M.load(names)
+	local seen = {}
 	for _, name in ipairs(listify(names)) do
-		vim.cmd.packadd(name)
+		if not load_one(name, seen) then
+			return false
+		end
 	end
+
+	return true
 end
 
 -- Supports both setup(names, fn) and setup(key, names, fn).
@@ -60,9 +133,7 @@ function M.setup(key_or_names, names_or_fn, maybe_fn)
 		return true
 	end
 
-	local ok = M.try('load ' .. key, function()
-		M.load(names)
-	end)
+	local ok = M.load(names)
 	if not ok then
 		return false
 	end
