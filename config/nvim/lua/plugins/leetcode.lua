@@ -50,10 +50,11 @@ local function ensure_leetcode()
 	end)
 end
 
--- Load immediately if started with 'leet' argument
+-- Lazy load on :Leet and reuse the same path for argv bootstrapping.
+pack.lazy_cmd('Leet', ensure_leetcode)
+
 if is_leet then
-	ensure_leetcode()
-else
-	-- Also lazy load on :Leet command
-	pack.lazy_cmd('Leet', ensure_leetcode)
+	vim.schedule(function()
+		vim.cmd.Leet()
+	end)
 end
