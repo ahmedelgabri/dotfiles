@@ -74,7 +74,7 @@
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "none-ls.nvim": {
-      "rev": "6ad251ef07dd4ba0cc725a5553cc76e9923f1a4a",
+      "rev": "7f9301e416533b5d74e2fb3b1ce5059eeaed748b",
       "src": "https://github.com/nvimtools/none-ls.nvim"
     },
     "nui.nvim": {
@@ -141,7 +141,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "bd0d34008d611b9f87fb0969b1f9878351202e80",
+      "rev": "aab6caaffd79b8def22ec4320a5344f7c42f58d2",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "render-markdown.nvim": {

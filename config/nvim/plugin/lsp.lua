@@ -1,10 +1,27 @@
-local pack = require 'plugins.pack'
+Pack.add {
+	'https://github.com/b0o/SchemaStore.nvim',
+	{ src = 'https://github.com/SmiteshP/nvim-navic' },
+	'https://github.com/neovim/nvim-lspconfig',
+	'https://github.com/nvim-lua/plenary.nvim',
+	{ src = 'https://github.com/nvimtools/none-ls.nvim' },
+}
+
+if not Pack.load { 'SchemaStore.nvim', 'nvim-lspconfig' } then
+	return
+end
+
 local utils = require '_.utils'
 
-local function ensure_navic()
-	return pack.setup('nvim-navic', function()
-		local navic = require 'nvim-navic'
+local navic_ready = false
+Pack.event('LspAttach', {
+	desc = 'Attach nvim-navic when supported',
+}, function(ev)
+	if not navic_ready then
+		if not Pack.load 'nvim-navic' then
+			return
+		end
 
+		local navic = require 'nvim-navic'
 		navic.setup {
 			click = true,
 			highlight = true,
@@ -15,63 +32,60 @@ local function ensure_navic()
 		}
 
 		vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-	end)
-end
+		navic_ready = true
+	end
 
-vim.api.nvim_create_autocmd('LspAttach', {
-	desc = 'Attach nvim-navic when supported',
-	callback = function(ev)
-		if not ensure_navic() then
-			return
-		end
+	local client = vim.lsp.get_client_by_id(ev.data.client_id)
+	if
+		client
+		and client.server_capabilities
+		and client.server_capabilities.documentSymbolProvider
+	then
+		pcall(require('nvim-navic').attach, client, ev.buf)
+	end
+end)
 
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if
-			client
-			and client.server_capabilities
-			and client.server_capabilities.documentSymbolProvider
-		then
-			pcall(require('nvim-navic').attach, client, ev.buf)
-		end
-	end,
-})
-
-local function ensure_none_ls()
-	return pack.setup('none-ls.nvim', function()
-		local nls = require 'null-ls'
-
-		nls.setup {
-			debug = false,
-			debounce = 150,
-			sources = {
-				nls.builtins.diagnostics.zsh,
-				nls.builtins.diagnostics.hadolint,
-				nls.builtins.diagnostics.statix,
-				nls.builtins.diagnostics.mypy,
-				nls.builtins.diagnostics.dotenv_linter.with {
-					filetypes = { 'dotenv' },
-					extra_args = { '--skip', 'UnorderedKey' },
-				},
-				nls.builtins.diagnostics.actionlint.with {
-					condition = function()
-						local cwd = vim.fn.expand '%:p:.'
-						return cwd:find '.github/'
-					end,
-				},
-
-				nls.builtins.code_actions.gitrebase,
-				nls.builtins.code_actions.statix,
-				nls.builtins.hover.dictionary,
-			},
-		}
-	end)
-end
-
-vim.api.nvim_create_autocmd('LspAttach', {
+local none_ls_ready = false
+Pack.event('LspAttach', {
 	desc = 'Load none-ls on first LSP attach',
 	once = true,
-	callback = ensure_none_ls,
-})
+}, function()
+	if none_ls_ready then
+		return true
+	end
+
+	if not Pack.load { 'plenary.nvim', 'none-ls.nvim' } then
+		return false
+	end
+
+	local nls = require 'null-ls'
+	nls.setup {
+		debug = false,
+		debounce = 150,
+		sources = {
+			nls.builtins.diagnostics.zsh,
+			nls.builtins.diagnostics.hadolint,
+			nls.builtins.diagnostics.statix,
+			nls.builtins.diagnostics.ty,
+			nls.builtins.diagnostics.dotenv_linter.with {
+				filetypes = { 'dotenv' },
+				extra_args = { '--skip', 'UnorderedKey' },
+			},
+			nls.builtins.diagnostics.actionlint.with {
+				condition = function()
+					local cwd = vim.fn.expand '%:p:.'
+					return cwd:find '.github/'
+				end,
+			},
+			nls.builtins.code_actions.gitrebase,
+			nls.builtins.code_actions.statix,
+			nls.builtins.hover.dictionary,
+		},
+	}
+
+	none_ls_ready = true
+	return true
+end)
 
 local function lsp_status()
 	local current_bufnr = vim.api.nvim_get_current_buf()
@@ -245,7 +259,7 @@ vim.schedule(function()
 		{ 'dockerls', 'docker-langserver' },
 		{ 'docker_compose_language_service' },
 
-		{ 'basedpyright', 'basedpyright-langserver' },
+		{ 'ty' },
 		{ 'ruff' },
 
 		{ 'bashls', 'bash-language-server' },

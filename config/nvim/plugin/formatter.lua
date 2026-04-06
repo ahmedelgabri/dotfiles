@@ -1,4 +1,10 @@
--- conform.nvim: formatter
+Pack.add {
+	'https://github.com/stevearc/conform.nvim',
+}
+
+if not Pack.load 'conform.nvim' then
+	return
+end
 
 -- Use conform for gq.
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
@@ -108,7 +114,8 @@ require('conform').setup {
 					'--end-of-line',
 					'lf',
 					'--print-width',
-					vim.bo[ctx.buf].textwidth <= 80 and 80 or vim.bo[ctx.buf].textwidth,
+					vim.bo[ctx.buf].textwidth <= 80 and 80
+						or vim.bo[ctx.buf].textwidth,
 				}
 			end,
 		},

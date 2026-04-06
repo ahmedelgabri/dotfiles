@@ -318,9 +318,6 @@ for _, plugin in ipairs {
 	vim.g['loaded_' .. plugin] = 1
 end
 
--- Load plugin configurations (using vim.pack)
-require 'plugins'
-
 -------------------------------------------------------------------------------
 -- OVERRIDES {{{1
 -------------------------------------------------------------------------------

@@ -1,4 +1,11 @@
--- fzf-lua: fuzzy finder
+Pack.add {
+	'https://github.com/ibhagwan/fzf-lua',
+}
+
+if not Pack.load 'fzf-lua' then
+	return
+end
+
 local actions = require 'fzf-lua.actions'
 local defaults = require 'fzf-lua.defaults'
 local utils = require '_.utils'

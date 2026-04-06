@@ -1,4 +1,11 @@
--- oil.nvim: file explorer (eager, replaces netrw)
+Pack.add {
+	'https://github.com/stevearc/oil.nvim',
+}
+
+if not Pack.load 'oil.nvim' then
+	return
+end
+
 vim.keymap.set('n', '-', function()
 	require('oil').open()
 end, { noremap = true, desc = 'Open parent directory' })

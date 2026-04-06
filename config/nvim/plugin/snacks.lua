@@ -1,6 +1,12 @@
 ---@diagnostic disable: missing-fields
 
--- snacks.nvim: utility plugins (eager, high priority)
+Pack.add {
+	'https://github.com/folke/snacks.nvim',
+}
+
+if not Pack.load 'snacks.nvim' then
+	return
+end
 
 -- Init code (runs immediately)
 vim.g.custom_explorer = true

@@ -1,6 +1,13 @@
+Pack.add {
+	'https://github.com/nvim-mini/mini.nvim',
+}
+
+if not Pack.load 'mini.nvim' then
+	return
+end
+
 -- mini.nvim: core utilities (eager)
 local au = require '_.utils.au'
-local pack = require 'plugins.pack'
 local utils = require '_.utils'
 
 -- Bufremove keymap
@@ -285,7 +292,7 @@ local function setup_hipatterns()
 	}
 end
 
-pack.later(setup_hipatterns)
+vim.schedule(setup_hipatterns)
 
 local function setup_clue()
 	local clue = require 'mini.clue'
@@ -432,7 +439,7 @@ local function setup_clue()
 	}
 end
 
-pack.later(setup_clue)
+vim.schedule(setup_clue)
 
 local sessions
 local function ensure_sessions()
@@ -471,7 +478,7 @@ local function get_session_name()
 end
 
 if vim.fn.argc(-1) == 0 then
-	pack.later(function()
+	vim.schedule(function()
 		local local_sessions = ensure_sessions()
 
 		vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained' }, {
