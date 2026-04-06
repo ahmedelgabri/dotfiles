@@ -1,4 +1,4 @@
--- LuaSnip: lazy on InsertEnter (must load before blink.cmp which uses luasnip preset)
+-- LuaSnip: loaded by completion on InsertEnter so snippet setup stays in one place
 local pack = require 'plugins.pack'
 
 local M = {}
@@ -515,9 +515,5 @@ SOFTWARE.
 		})
 	end)
 end
-
-vim.api.nvim_create_autocmd('InsertEnter', {
-	callback = M.ensure,
-})
 
 return M

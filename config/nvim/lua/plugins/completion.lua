@@ -1,4 +1,4 @@
--- blink.cmp: completion (lazy on InsertEnter)
+-- blink.cmp: completion (lazy on InsertEnter, owns LuaSnip startup)
 local pack = require 'plugins.pack'
 local snippets = require 'plugins.snippets'
 local utils = require '_.utils'
@@ -49,6 +49,7 @@ end
 
 local function ensure_completion()
 	return pack.setup('blink.cmp', function()
+		-- blink.cmp uses the luasnip preset, so completion owns snippet startup.
 		if not snippets.ensure() then
 			error 'LuaSnip failed to load'
 		end
