@@ -76,6 +76,12 @@ local function specs_by_key()
 	return spec_cache
 end
 
+local function load_plugin(name)
+	return M.try('load ' .. name, function()
+		vim.cmd.packadd(name)
+	end)
+end
+
 local function load_one(identifier, seen)
 	local spec = specs_by_key()[identifier]
 	local name = spec and spec.name or identifier
@@ -92,9 +98,7 @@ local function load_one(identifier, seen)
 		end
 	end
 
-	return M.try('load ' .. name, function()
-		vim.cmd.packadd(name)
-	end)
+	return load_plugin(name)
 end
 
 function M.try(context, fn)
@@ -190,9 +194,9 @@ local function ensure_hooks()
 				return
 			end
 
-			local plugin_name = spec.name
+			local plugin_name = spec_name(spec)
 			local name = plugin_name or spec.src or 'unknown plugin'
-			if plugin_name ~= nil and not M.load(plugin_name) then
+			if plugin_name ~= nil and not load_plugin(plugin_name) then
 				return
 			end
 

@@ -68,7 +68,9 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- venn.nvim: lazy on key
 vim.keymap.set('n', '<leader>v', function()
-	pack.load 'venn.nvim'
+	if not pack.load 'venn.nvim' then
+		return
+	end
 
 	if vim.b.venn_enabled == nil then
 		vim.b.venn_enabled = true
