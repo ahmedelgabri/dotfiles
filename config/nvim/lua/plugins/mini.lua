@@ -200,12 +200,8 @@ local function setup_hipatterns()
 		if alpha == nil or alpha < 0 or alpha > 1 then
 			return false
 		end
-		local hex = string.format(
-			'#%02x%02x%02x',
-			red * alpha,
-			green * alpha,
-			blue * alpha
-		)
+		local hex =
+			string.format('#%02x%02x%02x', red * alpha, green * alpha, blue * alpha)
 
 		return hex
 	end
@@ -324,11 +320,7 @@ local function setup_clue()
 					local line_num = mark.pos[2]
 					local lines = vim.fn.getbufline(mark.pos[1], line_num)
 					if lines and lines[1] then
-						desc = string.format(
-							'%d: %s',
-							line_num,
-							lines[1]:gsub('^%s*', '')
-						)
+						desc = string.format('%d: %s', line_num, lines[1]:gsub('^%s*', ''))
 					end
 				end
 
@@ -423,9 +415,7 @@ local function setup_clue()
 			scroll_up = '<C-b>',
 			config = function(bufnr)
 				local max_width = 0
-				for _, line in
-					ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false))
-				do
+				for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
 					max_width = math.max(max_width, vim.fn.strchars(line))
 				end
 

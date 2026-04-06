@@ -40,33 +40,32 @@ vim.api.nvim_create_autocmd('FileType', {
 	callback = function()
 		if
 			not pack.setup('rainbow-delimiters.nvim', function()
-					require('rainbow-delimiters.setup').setup {
-						enabled_when = function(bufnr)
-							local max_filesize = 1 * 1024 * 1024 -- 1 MB
-							local ok, stats =
-								pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
-							if ok and stats and stats.size > max_filesize then
-								return false
-							end
-							return true
-						end,
-						whitelist = {
-							'html',
-							'javascript',
-							'jsx',
-							'typescript',
-							'tsx',
-						},
-						query = {
-							-- Only highlight react tags
-							javascript = 'rainbow-tags-react',
-							typescript = 'rainbow-tags-react',
-							tsx = 'rainbow-tags-react',
-							jsx = 'rainbow-tags-react',
-						},
-					}
-				end
-			)
+				require('rainbow-delimiters.setup').setup {
+					enabled_when = function(bufnr)
+						local max_filesize = 1 * 1024 * 1024 -- 1 MB
+						local ok, stats =
+							pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+						if ok and stats and stats.size > max_filesize then
+							return false
+						end
+						return true
+					end,
+					whitelist = {
+						'html',
+						'javascript',
+						'jsx',
+						'typescript',
+						'tsx',
+					},
+					query = {
+						-- Only highlight react tags
+						javascript = 'rainbow-tags-react',
+						typescript = 'rainbow-tags-react',
+						tsx = 'rainbow-tags-react',
+						jsx = 'rainbow-tags-react',
+					},
+				}
+			end)
 		then
 			return
 		end

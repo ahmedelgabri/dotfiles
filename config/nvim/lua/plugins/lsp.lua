@@ -93,6 +93,11 @@ local function lsp_status()
 		print('  Filetypes: ' .. table.concat(client.config.filetypes or {}, ', '))
 
 		local caps = client.server_capabilities
+
+		if caps == nil then
+			return
+		end
+
 		local features = {}
 		if caps.completionProvider then
 			table.insert(features, 'completion')

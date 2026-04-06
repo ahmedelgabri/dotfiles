@@ -62,7 +62,7 @@
       "src": "https://github.com/wincent/loupe"
     },
     "markdown-plus.nvim": {
-      "rev": "4bbb89d5ea24f6d24e14ea5903b5659c27080ecd",
+      "rev": "7fd942ca68c9c7534eb6393571a611e91462bd92",
       "src": "https://github.com/YousefHadder/markdown-plus.nvim"
     },
     "mdx.nvim": {
@@ -88,6 +88,10 @@
     "nvim-bqf": {
       "rev": "c282a62bec6c0621a1ef5132aa3f4c9fc4dcc2c7",
       "src": "https://github.com/kevinhwang91/nvim-bqf"
+    },
+    "nvim-dbee": {
+      "rev": "dda517694889a5d238d7aa407403984da9f80cc0",
+      "src": "https://github.com/kndndrj/nvim-dbee"
     },
     "nvim-lspconfig": {
       "rev": "a776085e04f7b15d0b59fae2244df07d98360ab4",
@@ -137,7 +141,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "rainbow-delimiters.nvim": {
-      "rev": "50080ed0f44dbc18ae13b81278a01b951a06127a",
+      "rev": "bd0d34008d611b9f87fb0969b1f9878351202e80",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
     "render-markdown.nvim": {
@@ -151,6 +155,10 @@
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"
+    },
+    "ts-error-translator.nvim": {
+      "rev": "558abff11b9e8f4cefc0de09df780c56841c7a4b",
+      "src": "https://github.com/dmmulroy/ts-error-translator.nvim"
     },
     "venn.nvim": {
       "rev": "b09c2f36ddf70b498281845109bedcf08a7e0de0",

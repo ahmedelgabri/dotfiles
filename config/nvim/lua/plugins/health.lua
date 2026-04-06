@@ -105,17 +105,21 @@ local function scan_plugin_references(registry)
 		if basename ~= 'health.lua' then
 			local text = table.concat(vim.fn.readfile(file), '\n')
 
-			for name in text:gmatch("pack%.load%s*'([^']+)'") do
+			for name in text:gmatch "pack%.load%s*'([^']+)'" do
 				if registry.by_name[name] == nil then
 					table.insert(
 						issues,
-						string.format('%s references unknown pack.load target %s', basename, name)
+						string.format(
+							'%s references unknown pack.load target %s',
+							basename,
+							name
+						)
 					)
 				end
 			end
 
 			for block in text:gmatch 'pack%.load%s*%b{}' do
-				for name in block:gmatch("'([^']+)'") do
+				for name in block:gmatch "'([^']+)'" do
 					if registry.by_name[name] == nil then
 						table.insert(
 							issues,
@@ -129,11 +133,15 @@ local function scan_plugin_references(registry)
 				end
 			end
 
-			for name in text:gmatch("pack%.setup%s*%(%s*'([^']+)'") do
+			for name in text:gmatch "pack%.setup%s*%(%s*'([^']+)'" do
 				if registry.by_name[name] == nil then
 					table.insert(
 						issues,
-						string.format('%s references unknown pack.setup target %s', basename, name)
+						string.format(
+							'%s references unknown pack.setup target %s',
+							basename,
+							name
+						)
 					)
 				end
 			end
