@@ -1,42 +1,31 @@
+local au = require '_.utils.au'
+
 Pack.add {
 	'https://github.com/tpope/vim-rhubarb',
 	'https://github.com/tpope/vim-fugitive',
 	'https://github.com/Tronikelis/conflict-marker.nvim',
-	{ src = 'https://github.com/jez/vim-github-hub' },
-	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
-	{ src = 'https://github.com/esmuellert/codediff.nvim' },
+	{ src = 'https://github.com/jez/vim-github-hub', load = false },
+	{ src = 'https://github.com/MunifTanjim/nui.nvim', load = false },
+	{ src = 'https://github.com/esmuellert/codediff.nvim', load = false },
 }
 
-Pack.event('FileType', {
+au.autocmd {
+	event = 'FileType',
 	pattern = { 'markdown.ghpull', 'markdown.ghissue', 'markdown.ghrelease' },
-}, function()
-	Pack.load 'vim-github-hub'
-end)
-
-local codediff_ready = false
+	callback = function()
+		Pack.load 'vim-github-hub'
+	end,
+}
 
 Pack.cmd('CodeDiff', function()
-	if codediff_ready then
-		return true
-	end
-
-	if not Pack.load { 'nui.nvim', 'codediff.nvim' } then
-		return false
-	end
+	Pack.load { 'nui.nvim', 'codediff.nvim' }
 
 	require('codediff').setup {
 		explorer = {
 			view_mode = 'tree',
 		},
 	}
-
-	codediff_ready = true
-	return true
 end)
-
-if not Pack.load { 'vim-rhubarb', 'vim-fugitive', 'conflict-marker.nvim' } then
-	return
-end
 
 vim.keymap.set({ 'n', 'v' }, '<leader>gb', ':GBrowse<cr>', {
 	desc = '[G]it [B]rowse file',

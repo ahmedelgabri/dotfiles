@@ -113,7 +113,13 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 		end
 
 		local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-		vim.hl.range(0, ns, 'DiagnosticInfo', { row, start_pos - 1 }, { row, end_pos })
+		vim.hl.range(
+			0,
+			ns,
+			'DiagnosticInfo',
+			{ row, start_pos - 1 },
+			{ row, end_pos }
+		)
 		mark_id = M.render(data)
 	end
 end, { desc = 'Explain a cron expression' })

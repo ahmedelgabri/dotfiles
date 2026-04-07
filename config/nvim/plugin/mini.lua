@@ -2,10 +2,6 @@ Pack.add {
 	'https://github.com/nvim-mini/mini.nvim',
 }
 
-if not Pack.load 'mini.nvim' then
-	return
-end
-
 -- mini.nvim: core utilities (eager)
 local au = require '_.utils.au'
 local utils = require '_.utils'
@@ -46,12 +42,8 @@ au.autocmd {
 }
 
 -- Configure mini modules
--- TODO clean up my mappings that conflicts
-require('mini.bracketed').setup {}
+-- Eager: cmdline, misc (auto_root, termbg_sync, restore_cursor)
 require('mini.cmdline').setup {}
-
-local extra = require 'mini.extra'
-extra.setup {}
 
 local misc = require 'mini.misc'
 misc.setup {}
@@ -59,240 +51,6 @@ misc.setup {}
 misc.setup_auto_root()
 misc.setup_termbg_sync()
 misc.setup_restore_cursor()
-
-local ai = require 'mini.ai'
-
-ai.setup {
-	-- Table with textobject id as fields, textobject specification as values.
-	-- Also use this to disable builtin textobjects. See |MiniAi.config|.
-	custom_textobjects = {
-		B = extra.gen_ai_spec.buffer(),
-		I = extra.gen_ai_spec.indent(),
-		L = extra.gen_ai_spec.line(),
-
-		-- For more complicated textobjects that require structural awareness,
-		-- use tree-sitter. This example makes `aF`/`iF` mean around/inside function
-		-- definition (not call). See `:h MiniAi.gen_spec.treesitter()` for details.
-		F = ai.gen_spec.treesitter {
-			a = '@function.outer',
-			i = '@function.inner',
-		},
-	},
-	search_method = 'cover',
-	-- I work with big files sometimes, 50 is too low.
-	n_lines = 20000,
-}
-
--- Surround
-require('mini.surround').setup {
-	search_method = 'cover_or_next',
-}
-
--- Diff
-require('mini.diff').setup {
-	view = {
-		style = 'sign',
-		signs = {
-			add = '│',
-			change = '│',
-			delete = '_',
-		},
-	},
-}
-
--- Icons
-local test_icon = ''
-local js_table = { glyph = test_icon, hl = 'MiniIconsYellow' }
-local jsx_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
-local ts_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
-local tsx_table = { glyph = test_icon, hl = 'MiniIconsBlue' }
-
-require('mini.icons').setup {
-	extension = {
-		['test.js'] = js_table,
-		['test.jsx'] = jsx_table,
-		['test.ts'] = ts_table,
-		['test.tsx'] = tsx_table,
-		['spec.js'] = js_table,
-		['spec.jsx'] = jsx_table,
-		['spec.ts'] = ts_table,
-		['spec.tsx'] = tsx_table,
-	},
-	filetype = {
-		copilot = { glyph = '', hl = 'MiniIconsGrey' },
-		supermaven = { glyph = '', hl = 'MiniIconsGrey' },
-		codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
-		gemini = { glyph = '⯌', hl = 'MiniIconsGrey' },
-		gemini_cli = { glyph = '⯌', hl = 'MiniIconsGrey' },
-		claude = { glyph = '', hl = 'MiniIconsGrey' },
-		anthropic = { glyph = '', hl = 'MiniIconsGray' },
-		openai = { glyph = '󰊲', hl = 'MiniIconsGrey' },
-		groq = { glyph = '', hl = 'MiniIconsGrey' },
-		xai = { glyph = '', hl = 'MiniIconsGrey' },
-		huggingface = { glyph = '', hl = 'MiniIconsGrey' },
-	},
-	lsp = {
-		calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
-		copilot = { glyph = '', hl = 'MiniIconsGrey' },
-	},
-	directory = {
-		['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
-		['.github'] = { glyph = '󰊤', hl = 'MiniIconsAzure' },
-	},
-	file = {
-		-- https://github.com/echasnovski/mini.nvim/issues/1384#issuecomment-2523472949
-		['init.lua'] = { glyph = '󰢱', hl = 'MiniIconsAzure' },
-		README = { glyph = '󰈙', hl = 'MiniIconsYellow' },
-		['README.md'] = { glyph = '󰈙', hl = 'MiniIconsYellow' },
-	},
-}
-require('mini.icons').mock_nvim_web_devicons()
-
-local function setup_hipatterns()
-	local hipatterns = require 'mini.hipatterns'
-	local color_icon = utils.get_icon 'virtual' .. ' '
-
-	local function highlight_if_ts_capture(capture, hl_group)
-		return function(buf_id, _match, data)
-			local captures = vim.treesitter.get_captures_at_pos(
-				buf_id,
-				data.line - 1,
-				data.from_col - 1
-			)
-
-			local pred = function(t)
-				return t.capture == capture
-			end
-
-			local not_in_capture = vim.tbl_isempty(vim.tbl_filter(pred, captures))
-
-			if not_in_capture then
-				return nil
-			end
-
-			return hl_group
-		end
-	end
-
-	-- Returns hex color group for matching short hex color.
-	--
-	---@param match string
-	---@return string
-	local function get_hex_short(match)
-		local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
-		local hex = string.format('#%s%s%s%s%s%s', r, r, g, g, b, b)
-		return hex
-	end
-
-	-- Returns hex color group for matching rgb() color.
-	--
-	---@param match string
-	---@return string
-	local function rgb_color(match)
-		local red, green, blue = match:match 'rgb%((%d+), ?(%d+), ?(%d+)%)'
-		local hex = string.format('#%02x%02x%02x', red, green, blue)
-		return hex
-	end
-
-	-- Returns hex color group for matching rgba() color
-	-- or false if alpha is nil or out of range.
-	-- The use of the alpha value refers to a black background.
-	--
-	---@param match string
-	---@return string|false
-	local function rgba_color(match)
-		local red, green, blue, alpha =
-			match:match 'rgba%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)'
-		alpha = tonumber(alpha)
-		if alpha == nil or alpha < 0 or alpha > 1 then
-			return false
-		end
-		local hex =
-			string.format('#%02x%02x%02x', red * alpha, green * alpha, blue * alpha)
-
-		return hex
-	end
-
-	-- Returns extmark opts for highlights with virtual inline text.
-	--
-	---@param data table Includes `hl_group`, `full_match` and more.
-	---@return table
-	local function extmark_opts_inline(_, _, data)
-		return {
-			virt_text = { { color_icon, data.hl_group } },
-			virt_text_pos = 'inline',
-			-- priority = 200,
-			right_gravity = false,
-		}
-	end
-
-	local function get_highlight(cb)
-		return function(_, match)
-			local style = 'fg' -- 'fg' or 'bg', for extmark_opts_inline use 'fg'
-			return hipatterns.compute_hex_color_group(cb(match), style)
-		end
-	end
-
-	local comments = {}
-	for _, word in ipairs {
-		'todo',
-		'note',
-		'hack',
-		'fixme',
-		{ 'warn', 'hack' },
-		{ 'bug', 'fixme' },
-		{ 'fix', 'fixme' },
-		{ 'xxx', 'fixme' },
-	} do
-		local w = type(word) == 'table' and word[1] or word
-		local hl = type(word) == 'table' and word[2] or word
-
-		if type(w) ~= 'string' or type(hl) ~= 'string' then
-			return
-		end
-
-		comments[w] = extra.gen_highlighter.words(
-			-- Highlights patterns like FOO, @FOO, @FOO: FOO:, upper, lowercase
-			-- and sentence-cased (Foo)
-			{ w, w:upper(), w:sub(1, 1):upper() .. w:sub(2) },
-			-- Only inside comments
-			highlight_if_ts_capture(
-				'comment',
-				string.format('MiniHipatterns%s', hl:sub(1, 1):upper() .. hl:sub(2))
-			)
-		)
-	end
-
-	hipatterns.setup {
-		highlighters = vim.tbl_extend('force', comments, {
-			-- Highlight hex color strings (`#rrggbb`) using that color
-			hex_color = hipatterns.gen_highlighter.hex_color {
-				style = 'bg',
-				inline_text = color_icon,
-			},
-			-- `#rgb`
-			hex_color_short = {
-				pattern = '#%x%x%x%f[%X]',
-				group = get_highlight(get_hex_short),
-				extmark_opts = extmark_opts_inline,
-			},
-			-- `rgb(255, 255, 255)`
-			rgb_color = {
-				pattern = 'rgb%(%d+, ?%d+, ?%d+%)',
-				group = get_highlight(rgb_color),
-				extmark_opts = extmark_opts_inline,
-			},
-			-- `rgba(255, 255, 255, 0.5)`
-			rgba_color = {
-				pattern = 'rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)',
-				group = get_highlight(rgba_color),
-				extmark_opts = extmark_opts_inline,
-			},
-		}),
-	}
-end
-
-vim.schedule(setup_hipatterns)
 
 local function setup_clue()
 	local clue = require 'mini.clue'
@@ -439,21 +197,250 @@ local function setup_clue()
 	}
 end
 
-vim.schedule(setup_clue)
+local function setup_hipatterns()
+	local hipatterns = require 'mini.hipatterns'
+	local extra = require 'mini.extra'
+	local color_icon = utils.get_icon 'virtual' .. ' '
 
-local sessions
-local function ensure_sessions()
-	if sessions ~= nil then
-		return sessions
+	local function highlight_if_ts_capture(capture, hl_group)
+		return function(buf_id, _match, data)
+			local captures = vim.treesitter.get_captures_at_pos(
+				buf_id,
+				data.line - 1,
+				data.from_col - 1
+			)
+
+			local pred = function(t)
+				return t.capture == capture
+			end
+
+			local not_in_capture = vim.tbl_isempty(vim.tbl_filter(pred, captures))
+
+			if not_in_capture then
+				return nil
+			end
+
+			return hl_group
+		end
 	end
 
-	sessions = require 'mini.sessions'
-	sessions.setup {
-		file = '',
+	-- Returns hex color group for matching short hex color.
+	--
+	---@param match string
+	---@return string
+	local function get_hex_short(match)
+		local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
+		local hex = string.format('#%s%s%s%s%s%s', r, r, g, g, b, b)
+		return hex
+	end
+
+	-- Returns hex color group for matching rgb() color.
+	--
+	---@param match string
+	---@return string
+	local function rgb_color(match)
+		local red, green, blue = match:match 'rgb%((%d+), ?(%d+), ?(%d+)%)'
+		local hex = string.format('#%02x%02x%02x', red, green, blue)
+		return hex
+	end
+
+	-- Returns hex color group for matching rgba() color
+	-- or false if alpha is nil or out of range.
+	-- The use of the alpha value refers to a black background.
+	--
+	---@param match string
+	---@return string|false
+	local function rgba_color(match)
+		local red, green, blue, alpha =
+			match:match 'rgba%((%d+), ?(%d+), ?(%d+), ?(%d*%.?%d*)%)'
+		alpha = tonumber(alpha)
+		if alpha == nil or alpha < 0 or alpha > 1 then
+			return false
+		end
+		local hex =
+			string.format('#%02x%02x%02x', red * alpha, green * alpha, blue * alpha)
+
+		return hex
+	end
+
+	-- Returns extmark opts for highlights with virtual inline text.
+	--
+	---@param data table Includes `hl_group`, `full_match` and more.
+	---@return table
+	local function extmark_opts_inline(_, _, data)
+		return {
+			virt_text = { { color_icon, data.hl_group } },
+			virt_text_pos = 'inline',
+			-- priority = 200,
+			right_gravity = false,
+		}
+	end
+
+	local function get_highlight(cb)
+		return function(_, match)
+			local style = 'fg' -- 'fg' or 'bg', for extmark_opts_inline use 'fg'
+			return hipatterns.compute_hex_color_group(cb(match), style)
+		end
+	end
+
+	local comments = {}
+	for _, word in ipairs {
+		'todo',
+		'note',
+		'hack',
+		'fixme',
+		{ 'warn', 'hack' },
+		{ 'bug', 'fixme' },
+		{ 'fix', 'fixme' },
+		{ 'xxx', 'fixme' },
+	} do
+		local w = type(word) == 'table' and word[1] or word
+		local hl = type(word) == 'table' and word[2] or word
+
+		if type(w) ~= 'string' or type(hl) ~= 'string' then
+			return
+		end
+
+		comments[w] = extra.gen_highlighter.words(
+			-- Highlights patterns like FOO, @FOO, @FOO: FOO:, upper, lowercase
+			-- and sentence-cased (Foo)
+			{ w, w:upper(), w:sub(1, 1):upper() .. w:sub(2) },
+			-- Only inside comments
+			highlight_if_ts_capture(
+				'comment',
+				string.format('MiniHipatterns%s', hl:sub(1, 1):upper() .. hl:sub(2))
+			)
+		)
+	end
+
+	hipatterns.setup {
+		highlighters = vim.tbl_extend('force', comments, {
+			-- Highlight hex color strings (`#rrggbb`) using that color
+			hex_color = hipatterns.gen_highlighter.hex_color {
+				style = 'bg',
+				inline_text = color_icon,
+			},
+			-- `#rgb`
+			hex_color_short = {
+				pattern = '#%x%x%x%f[%X]',
+				group = get_highlight(get_hex_short),
+				extmark_opts = extmark_opts_inline,
+			},
+			-- `rgb(255, 255, 255)`
+			rgb_color = {
+				pattern = 'rgb%(%d+, ?%d+, ?%d+%)',
+				group = get_highlight(rgb_color),
+				extmark_opts = extmark_opts_inline,
+			},
+			-- `rgba(255, 255, 255, 0.5)`
+			rgba_color = {
+				pattern = 'rgba%(%d+, ?%d+, ?%d+, ?%d*%.?%d*%)',
+				group = get_highlight(rgba_color),
+				extmark_opts = extmark_opts_inline,
+			},
+		}),
+	}
+end
+
+-- Scheduled: editing modules, diff, and icons
+vim.schedule(function()
+	setup_hipatterns()
+	setup_clue()
+
+	-- TODO clean up my mappings that conflicts
+	require('mini.bracketed').setup {}
+
+	local extra = require 'mini.extra'
+	extra.setup {}
+
+	local ai = require 'mini.ai'
+
+	ai.setup {
+		-- Table with textobject id as fields, textobject specification as values.
+		-- Also use this to disable builtin textobjects. See |MiniAi.config|.
+		custom_textobjects = {
+			B = extra.gen_ai_spec.buffer(),
+			I = extra.gen_ai_spec.indent(),
+			L = extra.gen_ai_spec.line(),
+
+			-- For more complicated textobjects that require structural awareness,
+			-- use tree-sitter. This example makes `aF`/`iF` mean around/inside function
+			-- definition (not call). See `:h MiniAi.gen_spec.treesitter()` for details.
+			F = ai.gen_spec.treesitter {
+				a = '@function.outer',
+				i = '@function.inner',
+			},
+		},
+		search_method = 'cover',
+		-- I work with big files sometimes, 50 is too low.
+		n_lines = 20000,
 	}
 
-	return sessions
-end
+	-- Surround
+	require('mini.surround').setup {
+		search_method = 'cover_or_next',
+	}
+
+	-- Diff
+	require('mini.diff').setup {
+		view = {
+			style = 'sign',
+			signs = {
+				add = '│',
+				change = '│',
+				delete = '_',
+			},
+		},
+	}
+
+	-- Icons
+	local test_icon = ''
+	local js_table = { glyph = test_icon, hl = 'MiniIconsYellow' }
+	local jsx_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
+	local ts_table = { glyph = test_icon, hl = 'MiniIconsAzure' }
+	local tsx_table = { glyph = test_icon, hl = 'MiniIconsBlue' }
+
+	require('mini.icons').setup {
+		extension = {
+			['test.js'] = js_table,
+			['test.jsx'] = jsx_table,
+			['test.ts'] = ts_table,
+			['test.tsx'] = tsx_table,
+			['spec.js'] = js_table,
+			['spec.jsx'] = jsx_table,
+			['spec.ts'] = ts_table,
+			['spec.tsx'] = tsx_table,
+		},
+		filetype = {
+			copilot = { glyph = '', hl = 'MiniIconsGrey' },
+			supermaven = { glyph = '', hl = 'MiniIconsGrey' },
+			codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
+			gemini = { glyph = '⯌', hl = 'MiniIconsGrey' },
+			gemini_cli = { glyph = '⯌', hl = 'MiniIconsGrey' },
+			claude = { glyph = '', hl = 'MiniIconsGrey' },
+			anthropic = { glyph = '', hl = 'MiniIconsGray' },
+			openai = { glyph = '󰊲', hl = 'MiniIconsGrey' },
+			groq = { glyph = '', hl = 'MiniIconsGrey' },
+			xai = { glyph = '', hl = 'MiniIconsGrey' },
+			huggingface = { glyph = '', hl = 'MiniIconsGrey' },
+		},
+		lsp = {
+			calc = { glyph = '󰃬', hl = 'MiniIconsGrey' },
+			copilot = { glyph = '', hl = 'MiniIconsGrey' },
+		},
+		directory = {
+			['.git'] = { glyph = '󰊢', hl = 'MiniIconsOrange' },
+			['.github'] = { glyph = '󰊤', hl = 'MiniIconsAzure' },
+		},
+		file = {
+			-- https://github.com/echasnovski/mini.nvim/issues/1384#issuecomment-2523472949
+			['init.lua'] = { glyph = '󰢱', hl = 'MiniIconsAzure' },
+			README = { glyph = '󰈙', hl = 'MiniIconsYellow' },
+			['README.md'] = { glyph = '󰈙', hl = 'MiniIconsYellow' },
+		},
+	}
+	require('mini.icons').mock_nvim_web_devicons()
+end)
 
 -- Sanitize a string to be safe for use as a filename.
 local function sanitize_for_filename(str)
@@ -479,7 +466,10 @@ end
 
 if vim.fn.argc(-1) == 0 then
 	vim.schedule(function()
-		local local_sessions = ensure_sessions()
+		local sessions = require 'mini.sessions'
+		sessions.setup {
+			file = '',
+		}
 
 		vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained' }, {
 			nested = true,
@@ -488,17 +478,17 @@ if vim.fn.argc(-1) == 0 then
 
 				-- Save session for current branch
 				if vim.v.this_session ~= '' then
-					local_sessions.write()
+					sessions.write()
 				end
 
 				if
-					local_sessions.detected[session_name]
+					sessions.detected[session_name]
 					and string.find(vim.v.this_session, session_name, 1, true) == nil
 				then
 					return
 				else
 					-- If we are opening a new branch, create a session for the new branch with current state
-					local_sessions.write(get_session_name())
+					sessions.write(get_session_name())
 				end
 			end,
 		})
@@ -509,7 +499,7 @@ if vim.fn.argc(-1) == 0 then
 					return
 				end
 
-				local_sessions.write(get_session_name())
+				sessions.write(get_session_name())
 			end,
 		})
 	end)

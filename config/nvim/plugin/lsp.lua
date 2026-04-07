@@ -1,28 +1,21 @@
 Pack.add {
 	'https://github.com/b0o/SchemaStore.nvim',
-	{ src = 'https://github.com/SmiteshP/nvim-navic' },
+	{ src = 'https://github.com/SmiteshP/nvim-navic', load = false },
 	'https://github.com/neovim/nvim-lspconfig',
-	'https://github.com/nvim-lua/plenary.nvim',
-	{ src = 'https://github.com/nvimtools/none-ls.nvim' },
+	{ src = 'https://github.com/nvim-lua/plenary.nvim', load = false },
+	{ src = 'https://github.com/nvimtools/none-ls.nvim', load = false },
 }
 
-if not Pack.load { 'SchemaStore.nvim', 'nvim-lspconfig' } then
-	return
-end
-
+local au = require '_.utils.au'
 local utils = require '_.utils'
 
-local navic_ready = false
-Pack.event('LspAttach', {
+au.autocmd {
+	event = 'LspAttach',
 	desc = 'Attach nvim-navic when supported',
-}, function(ev)
-	if not navic_ready then
-		if not Pack.load 'nvim-navic' then
-			return
-		end
+	callback = function(ev)
+		Pack.load 'nvim-navic'
 
-		local navic = require 'nvim-navic'
-		navic.setup {
+		require('nvim-navic').setup {
 			click = true,
 			highlight = true,
 			lsp = {
@@ -32,60 +25,50 @@ Pack.event('LspAttach', {
 		}
 
 		vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-		navic_ready = true
-	end
 
-	local client = vim.lsp.get_client_by_id(ev.data.client_id)
-	if
-		client
-		and client.server_capabilities
-		and client.server_capabilities.documentSymbolProvider
-	then
-		pcall(require('nvim-navic').attach, client, ev.buf)
-	end
-end)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if
+			client
+			and client.server_capabilities
+			and client.server_capabilities.documentSymbolProvider
+		then
+			pcall(require('nvim-navic').attach, client, ev.buf)
+		end
+	end,
+}
 
-local none_ls_ready = false
-Pack.event('LspAttach', {
+au.autocmd {
+	event = 'LspAttach',
 	desc = 'Load none-ls on first LSP attach',
 	once = true,
-}, function()
-	if none_ls_ready then
-		return true
-	end
+	callback = function()
+		Pack.load { 'plenary.nvim', 'none-ls.nvim' }
 
-	if not Pack.load { 'plenary.nvim', 'none-ls.nvim' } then
-		return false
-	end
-
-	local nls = require 'null-ls'
-	nls.setup {
-		debug = false,
-		debounce = 150,
-		sources = {
-			nls.builtins.diagnostics.zsh,
-			nls.builtins.diagnostics.hadolint,
-			nls.builtins.diagnostics.statix,
-			nls.builtins.diagnostics.ty,
-			nls.builtins.diagnostics.dotenv_linter.with {
-				filetypes = { 'dotenv' },
-				extra_args = { '--skip', 'UnorderedKey' },
+		local nls = require 'null-ls'
+		nls.setup {
+			debug = false,
+			debounce = 150,
+			sources = {
+				nls.builtins.diagnostics.zsh,
+				nls.builtins.diagnostics.hadolint,
+				nls.builtins.diagnostics.statix,
+				nls.builtins.diagnostics.dotenv_linter.with {
+					filetypes = { 'dotenv' },
+					extra_args = { '--skip', 'UnorderedKey' },
+				},
+				nls.builtins.diagnostics.actionlint.with {
+					condition = function()
+						local cwd = vim.fn.expand '%:p:.'
+						return cwd:find '.github/'
+					end,
+				},
+				nls.builtins.code_actions.gitrebase,
+				nls.builtins.code_actions.statix,
+				nls.builtins.hover.dictionary,
 			},
-			nls.builtins.diagnostics.actionlint.with {
-				condition = function()
-					local cwd = vim.fn.expand '%:p:.'
-					return cwd:find '.github/'
-				end,
-			},
-			nls.builtins.code_actions.gitrebase,
-			nls.builtins.code_actions.statix,
-			nls.builtins.hover.dictionary,
-		},
-	}
-
-	none_ls_ready = true
-	return true
-end)
+		}
+	end,
+}
 
 local function lsp_status()
 	local current_bufnr = vim.api.nvim_get_current_buf()

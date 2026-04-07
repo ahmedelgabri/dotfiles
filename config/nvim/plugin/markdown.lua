@@ -1,6 +1,7 @@
 -- Markdown plugins
+local au = require '_.utils.au'
 
-Pack.add {
+Pack.add({
 	'https://github.com/davidmh/mdx.nvim',
 	'https://github.com/zk-org/zk-nvim',
 	'https://github.com/nvim-lua/plenary.nvim',
@@ -10,18 +11,18 @@ Pack.add {
 		src = 'https://github.com/obsidian-nvim/obsidian.nvim',
 		version = vim.version.range '*',
 	},
+}, { load = false })
+
+au.autocmd {
+	event = 'FileType',
+	pattern = { 'markdown', 'markdown.mdx', 'mdx' },
+	callback = function()
+		Pack.load { 'mdx.nvim', 'zk-nvim' }
+
+		-- zk-nvim: only commands, no LSP
+		require 'zk.commands.builtin'
+	end,
 }
-
-local function setup_markdown_core()
-	if not Pack.load { 'mdx.nvim', 'zk-nvim' } then
-		return
-	end
-
-	-- zk-nvim: only commands, no LSP
-	require 'zk.commands.builtin'
-end
-
-setup_markdown_core()
 
 -- Pattern definitions for obsidian date parsing
 local patterns = {
@@ -72,81 +73,51 @@ local function convert_date(date_string)
 	return os.date('%Y%m%d%H%M', timestamp)
 end
 
-local render_markdown_ready = false
-Pack.event('FileType', {
+au.autocmd {
+	event = 'FileType',
 	pattern = { 'markdown', 'md', 'codecompanion' },
-}, function()
-	if render_markdown_ready then
-		return true
-	end
+	callback = function()
+		Pack.load 'render-markdown.nvim'
 
-	if not Pack.load 'render-markdown.nvim' then
-		return false
-	end
+		require('render-markdown').setup {
+			file_types = { 'markdown', 'md', 'codecompanion' },
+			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
+			code = {
+				sign = false,
+				border = 'thin',
+				position = 'right',
+				width = 'block',
+				above = '▁',
+				below = '▔',
+				language_left = '█',
+				language_right = '█',
+				language_border = '▁',
+				left_pad = 1,
+				right_pad = 1,
+			},
+			heading = {
+				sign = false,
+				width = 'block',
+				left_pad = 1,
+				right_pad = 0,
+				position = 'inline',
+				icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
+			},
+		}
+	end,
+}
 
-	require('render-markdown').setup {
-		file_types = { 'markdown', 'md', 'codecompanion' },
-		render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
-		code = {
-			sign = false,
-			border = 'thin',
-			position = 'right',
-			width = 'block',
-			above = '▁',
-			below = '▔',
-			language_left = '█',
-			language_right = '█',
-			language_border = '▁',
-			left_pad = 1,
-			right_pad = 1,
-		},
-		heading = {
-			sign = false,
-			width = 'block',
-			left_pad = 1,
-			right_pad = 0,
-			position = 'inline',
-			icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
-		},
-	}
-
-	render_markdown_ready = true
-	return true
-end)
-
-local markdown_plus_ready = false
-Pack.event('FileType', {
+au.autocmd {
+	event = 'FileType',
 	pattern = { 'markdown', 'txt', 'text' },
-}, function()
-	if markdown_plus_ready then
-		return true
-	end
+	callback = function()
+		Pack.load 'markdown-plus.nvim'
 
-	if not Pack.load 'markdown-plus.nvim' then
-		return false
-	end
-
-	require('markdown-plus').setup {
-		filetypes = { 'markdown', 'text', 'txt' },
-	}
-
-	markdown_plus_ready = true
-	return true
-end)
-
-local obsidian_warned = false
-
-local function notify_missing_notes_dir()
-	if obsidian_warned then
-		return
-	end
-
-	obsidian_warned = true
-	vim.notify(
-		'Obsidian disabled: NOTES_DIR is not set or does not exist',
-		vim.log.levels.WARN
-	)
-end
+		require('markdown-plus').setup {
+			filetypes = { 'markdown', 'text', 'txt' },
+		}
+	end,
+}
 
 local function get_notes_dir()
 	local dir = vim.env.NOTES_DIR
@@ -171,21 +142,17 @@ local function notes_patterns(notes_dir)
 	}
 end
 
-local obsidian_ready = false
 local function load_obsidian()
-	if obsidian_ready then
-		return true
-	end
-
 	local notes_dir = get_notes_dir()
 	if notes_dir == nil then
-		notify_missing_notes_dir()
+		vim.notify(
+			'Obsidian disabled: NOTES_DIR is not set or does not exist',
+			vim.log.levels.WARN
+		)
 		return false
 	end
 
-	if not Pack.load { 'plenary.nvim', 'obsidian.nvim' } then
-		return false
-	end
+	Pack.load { 'plenary.nvim', 'obsidian.nvim' }
 
 	require('obsidian').setup {
 		legacy_commands = false,
@@ -305,16 +272,15 @@ local function load_obsidian()
 			enabled = false,
 		},
 	}
-
-	obsidian_ready = true
-	return true
 end
 
 Pack.cmd('Obsidian', load_obsidian)
 
 local notes_dir = get_notes_dir()
 if notes_dir ~= nil then
-	Pack.event({ 'BufReadPost', 'BufNewFile' }, {
+	au.autocmd {
+		event = { 'BufReadPost', 'BufNewFile' },
 		pattern = notes_patterns(notes_dir),
-	}, load_obsidian)
+		callback = load_obsidian,
+	}
 end

@@ -4,10 +4,6 @@ Pack.add {
 	'https://github.com/folke/snacks.nvim',
 }
 
-if not Pack.load 'snacks.nvim' then
-	return
-end
-
 -- Init code (runs immediately)
 vim.g.custom_explorer = true
 vim.g.snacks_animate = false
@@ -192,17 +188,23 @@ require('snacks').setup {
 					action = ':ene',
 				},
 				{
-					desc = 'Update Plugins',
-					icon = '󰏗 ',
-					action = ':lua vim.pack.update(nil, {force = true})',
+					desc = 'vim.pack Update',
+					icon = '󰚰 ',
+					action = ':lua vim.pack.update()',
 					key = 'u',
 				},
 				{
-					desc = 'Sync',
-					icon = '󰒲 ',
+					desc = 'vim.pack Sync',
+					icon = '󰑐 ',
 					action = ":lua vim.pack.update(nil, { target = 'lockfile' })",
 					key = 's',
 					enabled = #vim.pack.get(nil, { info = false }) > 0,
+				},
+				{
+					desc = 'vim.pack List',
+					icon = '󰏖 ',
+					action = ':lua vim.pack.update(nil, { offline = true })',
+					key = 'l',
 				},
 				{
 					icon = ' ',

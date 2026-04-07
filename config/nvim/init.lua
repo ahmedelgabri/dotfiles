@@ -308,6 +308,7 @@ vim.g.markdown_fenced_languages = {
 for _, plugin in ipairs {
 	'getscript',
 	'getscriptPlugin',
+	'matchit',
 	'netrwPlugin',
 	'rplugin',
 	'rrhelper',

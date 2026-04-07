@@ -1,7 +1,9 @@
 -- Core/misc plugins
+local au = require '_.utils.au'
 local hl = require '_.utils.highlight'
 
-Pack.add {
+Pack.add({
+	'https://github.com/tpope/vim-repeat',
 	'https://github.com/alexghergh/nvim-tmux-navigation',
 	{
 		src = 'https://github.com/saghen/blink.indent',
@@ -18,12 +20,44 @@ Pack.add {
 	{ src = 'https://github.com/MagicDuck/grug-far.nvim' },
 	{ src = 'https://github.com/hedyhli/outline.nvim' },
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
+
+	'https://github.com/Sebastian-Nielsen/better-type-hover',
+
+	-- {
+	-- 	'https://github.com/aikhe/fleur.nvim',
+	-- 	priority = 1000,
+	-- 	enabled = false,
+	-- 	lazy = false,
+	-- 	opts = {
+	-- 		transparent = true,
+	-- 		styles = {
+	-- 			comments = { italic = true },
+	-- 			keywords = { bold = true },
+	-- 		},
+	-- 		plugins = {
+	-- 			telescope = true,
+	-- 		},
+	-- 		-- on_colors = function(c)
+	-- 		--   c.accent = '#FF79C6' -- Override accent color
+	-- 		-- end,
+	-- 	},
+	-- 	config = function()
+	-- 		vim.cmd [[colorscheme fleur]]
+	-- 		vim.cmd [[highlight StatusLine guibg=NONE ctermbg=NONE]]
+	-- 	end,
+	-- },
+}, { load = false })
+
+au.autocmd {
+	event = 'FileType',
+	pattern = { 'typescript', 'typescriptreact' },
+	callback = function()
+		Pack.load 'better-type-hover'
+	end,
 }
 
-local function setup_tmux_navigation()
-	if not Pack.load 'nvim-tmux-navigation' then
-		return
-	end
+if vim.env.TMUX then
+	Pack.load 'nvim-tmux-navigation'
 
 	require('nvim-tmux-navigation').setup {
 		disable_when_zoomed = true,
@@ -36,17 +70,8 @@ local function setup_tmux_navigation()
 	}
 end
 
-setup_tmux_navigation()
-
-local blink_indent_ready = false
 vim.schedule(function()
-	if blink_indent_ready then
-		return
-	end
-
-	if not Pack.load 'blink.indent' then
-		return
-	end
+	Pack.load 'blink.indent'
 
 	--- @module 'blink.indent'
 	--- @type blink.indent.Config
@@ -60,8 +85,6 @@ vim.schedule(function()
 			highlights = { 'BlinkIndentScope' },
 		},
 	}
-
-	blink_indent_ready = true
 end)
 
 -- Loupe: load after startup (was event = 'VeryLazy')
@@ -88,9 +111,13 @@ vim.schedule(function()
 end)
 
 -- nvim-bqf: lazy on FileType qf
-Pack.event('FileType', { pattern = 'qf' }, function()
-	Pack.load { 'fzf', 'nvim-bqf' }
-end)
+au.autocmd {
+	event = 'FileType',
+	pattern = 'qf',
+	callback = function()
+		Pack.load { 'fzf', 'nvim-bqf' }
+	end,
+}
 
 -- venn.nvim: lazy on key
 Pack.keys({
@@ -126,28 +153,29 @@ Pack.keys({
 end)
 
 -- vim-kitty: lazy on FileType
-Pack.event('FileType', { pattern = 'kitty' }, function()
-	Pack.load 'vim-kitty'
-end)
+au.autocmd {
+	event = 'FileType',
+	pattern = 'kitty',
+	callback = function()
+		Pack.load 'vim-kitty'
+	end,
+}
 
 -- Ghostty: local plugin, lazy on FileType (not a git repo, just add to rtp)
-Pack.event('FileType', { pattern = 'ghostty' }, function()
-	local ghostty_path =
-		'/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/'
-	if vim.uv.fs_stat(ghostty_path) then
-		vim.opt.rtp:prepend(ghostty_path)
-	end
-end)
+au.autocmd {
+	event = 'FileType',
+	pattern = 'ghostty',
+	callback = function()
+		local ghostty_path =
+			'/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/'
+		if vim.uv.fs_stat(ghostty_path) then
+			vim.opt.rtp:prepend(ghostty_path)
+		end
+	end,
+}
 
-local grug_ready = false
-Pack.cmd('GrugFar', function()
-	if grug_ready then
-		return true
-	end
-
-	if not Pack.load 'grug-far.nvim' then
-		return false
-	end
+local function setup_grug_far()
+	Pack.load 'grug-far.nvim'
 
 	local pack_utils = require '_.utils'
 	local node_modules_ast_grep = pack_utils.get_lsp_bin 'ast-grep'
@@ -165,49 +193,16 @@ Pack.cmd('GrugFar', function()
 	end
 
 	require('grug-far').setup(opts)
-	grug_ready = true
-	return true
-end)
+end
 
-Pack.event('FileType', { pattern = 'grug-far' }, function()
-	if grug_ready then
-		return true
-	end
+Pack.cmd('GrugFar', setup_grug_far)
+au.autocmd {
+	event = 'FileType',
+	pattern = 'grug-far',
+	callback = setup_grug_far,
+}
 
-	if not Pack.load 'grug-far.nvim' then
-		return false
-	end
-
-	local pack_utils = require '_.utils'
-	local node_modules_ast_grep = pack_utils.get_lsp_bin 'ast-grep'
-	local opts = {}
-
-	if node_modules_ast_grep then
-		opts = {
-			engines = {
-				astgrep = {
-					path = node_modules_ast_grep,
-				},
-			},
-		}
-	end
-
-	require('grug-far').setup(opts)
-	grug_ready = true
-	return true
-end)
-
-local outline_ready = false
 Pack.cmd({ 'Outline', 'OutlineOpen' }, function()
-	if outline_ready then
-		return true
-	end
-
-	if not Pack.load 'outline.nvim' then
-		return false
-	end
-
+	Pack.load 'outline.nvim'
 	require('outline').setup {}
-	outline_ready = true
-	return true
 end)

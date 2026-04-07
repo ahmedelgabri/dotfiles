@@ -1,21 +1,13 @@
-Pack.add {
+Pack.add({
 	'https://github.com/nvim-lua/plenary.nvim',
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
 	{ src = 'https://github.com/kawre/leetcode.nvim' },
-}
+}, { load = false })
 
 local leet_arg = 'leet'
 local is_leet = leet_arg == vim.fn.argv()[1]
-local leetcode_ready = false
-
 Pack.cmd('Leet', function()
-	if leetcode_ready then
-		return true
-	end
-
-	if not Pack.load { 'plenary.nvim', 'nui.nvim', 'leetcode.nvim' } then
-		return false
-	end
+	Pack.load { 'plenary.nvim', 'nui.nvim', 'leetcode.nvim' }
 
 	local map = vim.keymap.set
 
@@ -50,9 +42,6 @@ Pack.cmd('Leet', function()
 			cache = vim.fn.stdpath 'cache' .. '/leetcode/',
 		},
 	}
-
-	leetcode_ready = true
-	return true
 end)
 
 if is_leet then

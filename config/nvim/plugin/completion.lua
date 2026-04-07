@@ -1,6 +1,7 @@
 -- Completion and snippets
+local au = require '_.utils.au'
 
-Pack.add {
+Pack.add({
 	{ src = 'https://github.com/rafamadriz/friendly-snippets' },
 	{
 		src = 'https://github.com/L3MON4D3/LuaSnip',
@@ -17,7 +18,7 @@ Pack.add {
 		name = 'blink.cmp',
 		version = vim.version.range '1.x',
 	},
-}
+}, { load = false })
 
 local utils = require '_.utils'
 
@@ -65,10 +66,6 @@ local function get_icon_highlight(ctx)
 	return hl
 end
 
-
-local snippets_ready = false
-local completion_ready = false
-
 -- Setup toggle choice (works before plugin loads, guarded by choice_active check)
 vim.keymap.set({ 'i', 's' }, '<C-l>', function()
 	local ok, ls = pcall(require, 'luasnip')
@@ -78,13 +75,7 @@ vim.keymap.set({ 'i', 's' }, '<C-l>', function()
 end, { silent = true })
 
 local function ensure_snippets()
-	if snippets_ready then
-		return true
-	end
-
-	if not Pack.load { 'friendly-snippets', 'LuaSnip' } then
-		return false
-	end
+	Pack.load { 'friendly-snippets', 'LuaSnip' }
 
 	local ls = require 'luasnip'
 
@@ -168,10 +159,7 @@ local function ensure_snippets()
 					-- Initialize component name to file name
 					d(2, function(_, snip)
 						return sn(nil, {
-							i(
-								1,
-								vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')
-							),
+							i(1, vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')),
 						})
 					end, { 1 }),
 					i(3, '// props'),
@@ -586,23 +574,12 @@ SOFTWARE.
 			}),
 		},
 	})
-
-	snippets_ready = true
-	return true
 end
 
 local function ensure_completion()
-	if completion_ready then
-		return true
-	end
+	ensure_snippets()
 
-	if not ensure_snippets() then
-		return false
-	end
-
-	if not Pack.load { 'blink-emoji.nvim', 'colorful-menu.nvim', 'blink.cmp' } then
-		return false
-	end
+	Pack.load { 'blink-emoji.nvim', 'colorful-menu.nvim', 'blink.cmp' }
 
 	require('blink.cmp').setup {
 		keymap = {
@@ -658,9 +635,7 @@ local function ensure_completion()
 								return require('colorful-menu').blink_components_text(ctx)
 							end,
 							highlight = function(ctx)
-								return require('colorful-menu').blink_components_highlight(
-									ctx
-								)
+								return require('colorful-menu').blink_components_highlight(ctx)
 							end,
 						},
 						label_description = { width = { fill = true } },
@@ -748,9 +723,9 @@ local function ensure_completion()
 			},
 		},
 	}
-
-	completion_ready = true
-	return true
 end
 
-Pack.event('InsertEnter', {}, ensure_completion)
+au.autocmd {
+	event = 'InsertEnter',
+	callback = ensure_completion,
+}

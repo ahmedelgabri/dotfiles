@@ -1,11 +1,9 @@
 -- sidekick.nvim: AI assistant (lazy on keys)
 -- TODO: Change keymaps for LSP to start with <leader>l to avoid conflicts
 
-Pack.add {
+Pack.add({
 	{ src = 'https://github.com/folke/sidekick.nvim' },
-}
-
-local sidekick_ready = false
+}, { load = false })
 
 Pack.keys({
 	{
@@ -65,18 +63,8 @@ Pack.keys({
 		end,
 	},
 }, function()
-	if sidekick_ready then
-		return true
-	end
-
-	if not Pack.load 'sidekick.nvim' then
-		return false
-	end
-
+	Pack.load 'sidekick.nvim'
 	require('sidekick').setup {
 		mux = { enabled = true },
 	}
-
-	sidekick_ready = true
-	return true
 end)
