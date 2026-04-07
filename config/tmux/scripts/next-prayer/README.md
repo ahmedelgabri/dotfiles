@@ -184,11 +184,11 @@ automatically invalidated when:
 
 Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json`. Mawaqit cache files also include selected mosque metadata.
 
-The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the current location to show all prayer times, display the mosque name when cached by Mawaqit, notify at prayer time, check the next prayer row, and show its `(-hh:mm)` remaining time; it does not fetch prayer times itself.
+The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the current location to show all prayer times, display the mosque name when cached by Mawaqit, notify at prayer time, check the next prayer row, and show its `(-hh:mm)` remaining time; when the matching cache is missing, it can invoke the companion `get-prayer` script to warm the cache instead of waiting for tmux.
 
 ## tmux integration
 
-The companion script `get-prayer` is designed to be called from `tmux.conf`:
+The companion script `get-prayer` is designed to be called from `tmux.conf`, and the Hammerspoon menubar module can also invoke it to warm a missing cache:
 
 ```tmux
 set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
@@ -205,8 +205,7 @@ set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
 This means prayer times update automatically when:
 
 - tmux refreshes its status bar (controlled by `status-interval`)
-- The location changes (Hammerspoon writes new coordinates, the cache key
-  changes, and the next tmux refresh fetches fresh data)
+- The location changes (Hammerspoon writes new coordinates, the cache key changes, and either the next tmux refresh or the menubar fallback fetches fresh data)
 
 ## Building
 

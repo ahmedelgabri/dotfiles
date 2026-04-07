@@ -43,6 +43,9 @@ local MENU_TEXT_STYLE = {
 local DEFAULT_SETTINGS = {
 	autosaveName = 'prayer-times',
 	cacheDir = hs.fs.temporaryDirectory(),
+	cacheFetchCommand = '~/.config/tmux/scripts/get-prayer',
+	cacheFetchCooldownSeconds = 300,
+	cacheFetchShell = '/bin/zsh',
 	locationPath = hs.fs.temporaryDirectory() .. '.location.json',
 	notificationGraceSeconds = 90,
 	notificationsEnabled = true,
@@ -51,6 +54,10 @@ local DEFAULT_SETTINGS = {
 }
 
 local M = {
+	cacheFetchState = {
+		running = false,
+	},
+	cacheFetchTask = nil,
 	hijriDateCache = {},
 	menuBar = nil,
 	notificationTimer = nil,
@@ -176,18 +183,18 @@ local function findCache(now)
 
 	if locationCache then
 		if pathExists(locationCache) then
-			return locationCache, locationData
+			return locationCache, locationData, locationCache
 		end
 
-		return nil, locationData
+		return nil, locationData, locationCache
 	end
 
 	local cachePath = genericCachePath(now)
 	if pathExists(cachePath) then
-		return cachePath, nil
+		return cachePath, locationData, cachePath
 	end
 
-	return nil, nil
+	return nil, locationData, cachePath
 end
 
 local function timingValue(timings, key)
@@ -573,6 +580,162 @@ local function schedulePrayerNotification(rows, now)
 	end)
 end
 
+local function cacheFetchInProgress(cachePath)
+	return M.cacheFetchState.running
+		and (not cachePath or M.cacheFetchState.cachePath == cachePath)
+end
+
+local function shouldStartCacheFetch(cachePath, force)
+	if cacheFetchInProgress() then
+		return false
+	end
+
+	if type(cachePath) ~= 'string' or cachePath == '' then
+		return false
+	end
+
+	local cooldown = M.settings.cacheFetchCooldownSeconds or 0
+	local lastAttempt = M.cacheFetchState.requestedAt
+	if
+		not force
+		and cooldown > 0
+		and lastAttempt
+		and M.cacheFetchState.cachePath == cachePath
+		and os.time() - lastAttempt < cooldown
+	then
+		return false
+	end
+
+	return true
+end
+
+local function recordCacheFetchFailure(cachePath, message)
+	local now = os.time()
+	M.cacheFetchTask = nil
+	M.cacheFetchState = {
+		cachePath = cachePath,
+		completedAt = now,
+		error = message,
+		requestedAt = now,
+		running = false,
+	}
+	log.wf('Prayer cache fetch unavailable: %s', message)
+end
+
+local function finishCacheFetch(
+	cachePath,
+	requestedAt,
+	exitCode,
+	stdout,
+	stderr
+)
+	local output = trim(stdout)
+	local err = trim(stderr)
+	local errorMessage = nil
+	if exitCode ~= 0 then
+		errorMessage = err ~= '' and err or ('exit code ' .. tostring(exitCode))
+	end
+
+	M.cacheFetchTask = nil
+	M.cacheFetchState = {
+		cachePath = cachePath,
+		completedAt = os.time(),
+		error = errorMessage,
+		exitCode = exitCode,
+		output = output ~= '' and output or nil,
+		requestedAt = requestedAt,
+		running = false,
+	}
+
+	if errorMessage then
+		log.wf('Prayer cache fetch failed: %s', errorMessage)
+	else
+		log.i 'Prayer cache fetch completed'
+	end
+
+	if M.menuBar then
+		M.update()
+	end
+end
+
+local function startCacheFetch(cachePath, force)
+	if not shouldStartCacheFetch(cachePath, force) then
+		return false
+	end
+
+	local command = expandPath(M.settings.cacheFetchCommand)
+	if type(command) ~= 'string' or command == '' then
+		recordCacheFetchFailure(cachePath, 'missing get-prayer command setting')
+		return false
+	end
+
+	if not pathExists(command) then
+		recordCacheFetchFailure(
+			cachePath,
+			'missing get-prayer command: ' .. command
+		)
+		return false
+	end
+
+	local requestedAt = os.time()
+	M.cacheFetchState = {
+		cachePath = cachePath,
+		requestedAt = requestedAt,
+		running = true,
+	}
+
+	local shell = expandPath(M.settings.cacheFetchShell or '/bin/zsh')
+	local task = hs.task.new(
+		shell,
+		function(exitCode, stdout, stderr)
+			finishCacheFetch(cachePath, requestedAt, exitCode, stdout, stderr)
+		end,
+		nil,
+		{
+			'-lc',
+			'exec "$1"',
+			'get-prayer',
+			command,
+		}
+	)
+	if not task then
+		recordCacheFetchFailure(cachePath, 'failed to create get-prayer task')
+		return false
+	end
+
+	M.cacheFetchTask = task
+	local ok, result = pcall(function()
+		return task:start()
+	end)
+	if not ok or result == false then
+		recordCacheFetchFailure(
+			cachePath,
+			'failed to start get-prayer: ' .. tostring(result)
+		)
+		return false
+	end
+
+	log.i 'Fetching missing prayer cache with get-prayer'
+	return true
+end
+
+local function cancelCacheFetch()
+	if M.cacheFetchTask then
+		pcall(function()
+			M.cacheFetchTask:terminate()
+		end)
+		M.cacheFetchTask = nil
+	end
+
+	M.cacheFetchState.running = false
+end
+
+local function resetCacheFetchState()
+	M.cacheFetchState = {
+		running = false,
+	}
+end
+
 local function setUnavailable(errorMessage)
 	cancelNotificationTimer()
 	M.state = {
@@ -679,12 +842,27 @@ local function relevantPathChanged(files)
 	return false
 end
 
-function M.update()
+function M.update(opts)
+	opts = type(opts) == 'table' and opts or {}
+
 	local now = os.time()
-	local cachePath, locationData = findCache(now)
+	local cachePath, locationData, expectedCachePath = findCache(now)
 
 	if not cachePath then
-		setUnavailable('no prayer cache for ' .. dateStamp(now))
+		local fetching = cacheFetchInProgress(expectedCachePath)
+		if not fetching then
+			fetching = startCacheFetch(expectedCachePath, opts.forceFetch)
+		end
+		if not fetching then
+			fetching = cacheFetchInProgress()
+		end
+
+		local message = 'no prayer cache for ' .. dateStamp(now)
+		if fetching then
+			message = message .. '; fetching with get-prayer'
+		end
+
+		setUnavailable(message)
 		return false
 	end
 
@@ -731,7 +909,12 @@ function M.menu()
 			{ title = 'Prayer times unavailable', disabled = true },
 			{ title = M.state.error, disabled = true },
 			{ title = '-' },
-			{ title = 'Refresh', fn = M.update },
+			{
+				title = 'Refresh',
+				fn = function()
+					M.update { forceFetch = true }
+				end,
+			},
 		}
 	end
 
@@ -740,13 +923,19 @@ function M.menu()
 		table.insert(items, item)
 	end
 	table.insert(items, { title = '-' })
-	table.insert(items, { title = 'Refresh', fn = M.update })
+	table.insert(items, {
+		title = 'Refresh',
+		fn = function()
+			M.update { forceFetch = true }
+		end,
+	})
 
 	return items
 end
 
 function M.getStatus()
 	return {
+		cacheFetch = utils.deepCopy(M.cacheFetchState),
 		cachePath = M.state.cachePath,
 		error = M.state.error,
 		highlight = M.state.highlight,
@@ -797,6 +986,8 @@ local function startTimer()
 end
 
 function M.setup()
+	cancelCacheFetch()
+	resetCacheFetchState()
 	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 
 	if M.menuBar then
@@ -832,6 +1023,7 @@ function M.stop()
 	end
 
 	cancelNotificationTimer()
+	cancelCacheFetch()
 
 	if M.menuBar then
 		M.menuBar:delete()

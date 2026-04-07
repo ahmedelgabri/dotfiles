@@ -87,9 +87,9 @@ All require prefix unless noted.
 | Mouse drag   | Copies selection to clipboard  |
 | `prefix + *` | Save entire scrollback to file |
 
-Clipboard uses tmux-native copy commands plus OSC 52 via
-`set-clipboard on`. This keeps copy mode simple and works well in terminals
-like Kitty and Ghostty without an external clipboard helper script.
+Clipboard uses tmux-native copy commands plus OSC 52 via `set-clipboard on`.
+This keeps copy mode simple and works well in terminals like Kitty and Ghostty
+without an external clipboard helper script.
 
 ### Popups
 
@@ -254,9 +254,15 @@ next-prayer aladhan --country nl --city amsterdam --method 3
 
 ### Caching
 
-Prayer times are cached per day to `$TMPDIR/.prayer-<city>_<country>_<DD-MM-YYYY>.json`; city/country come from location data for Mawaqit or config for Aladhan. A new API call is only made when the cache file for the current date/location doesn't exist.
+Prayer times are cached per day to
+`$TMPDIR/.prayer-<city>_<country>_<DD-MM-YYYY>.json`; city/country come from
+location data for Mawaqit or config for Aladhan. A new API call is only made
+when the cache file for the current date/location doesn't exist.
 
-The Hammerspoon `prayer.lua` menubar module reads the matching cache for the current location to display all prayer times, show cached Mawaqit mosque metadata, and notify at prayer time without making API calls.
+The Hammerspoon `prayer.lua` menubar module reads the matching cache for the
+current location to display all prayer times, show cached Mawaqit mosque
+metadata, and notify at prayer time; when the matching cache is missing, it can
+invoke `get-prayer` to warm the cache instead of waiting for tmux.
 
 ### Environment Variables
 

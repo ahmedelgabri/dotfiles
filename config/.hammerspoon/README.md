@@ -26,7 +26,7 @@ large `init.lua`.
 | `layout.lua`            | Keeps the preferred browser on the largest screen.                                                                   |
 | `lifecycle.lua`         | Runs delayed layout/location refresh phases after wake/unlock events.                                                |
 | `location.lua`          | Captures the current location, reverse geocodes it, and writes JSON output.                                          |
-| `prayer.lua`            | Shows cached prayer times in the menu bar and sends prayer-time notifications.                                      |
+| `prayer.lua`            | Shows cached prayer times in the menu bar and sends prayer-time notifications.                                       |
 | `wifi.lua`              | Watches SSID changes, sends notifications, and triggers location refresh attempts.                                   |
 | `spoons.lua`            | Bootstraps SpoonInstall and configures EmmyLua, Caffeine, and URLDispatcher.                                         |
 | `mappings.lua`          | Global hotkeys, modal launcher layers, and meeting mute integration.                                                 |
@@ -59,7 +59,8 @@ At startup, `init.lua` does the following:
    - `wifi`
    - `window-management`
 9. attempts to load a host override module named exactly after the current host
-10. runs setup/start hooks for spoons, mappings, window management, location, prayer, Wi-Fi, layout, and lifecycle
+10. runs setup/start hooks for spoons, mappings, window management, location,
+    prayer, Wi-Fi, layout, and lifecycle
 11. starts config watchers for:
     - `hs.configdir`
     - the host-specific extra module directory
@@ -427,7 +428,8 @@ require('location').updateLocationData {
 
 ## `prayer.lua`
 
-This module creates a menubar item for cached prayer times produced by `next-prayer`.
+This module creates a menubar item for cached prayer times produced by
+`next-prayer`.
 
 ### Default settings
 
@@ -435,6 +437,9 @@ This module creates a menubar item for cached prayer times produced by `next-pra
 {
 	autosaveName = 'prayer-times',
 	cacheDir = hs.fs.temporaryDirectory(),
+	cacheFetchCommand = '~/.config/tmux/scripts/get-prayer',
+	cacheFetchCooldownSeconds = 300,
+	cacheFetchShell = '/bin/zsh',
 	locationPath = hs.fs.temporaryDirectory() .. '.location.json',
 	notificationGraceSeconds = 90,
 	notificationsEnabled = true,
@@ -445,14 +450,33 @@ This module creates a menubar item for cached prayer times produced by `next-pra
 
 ### What it does
 
-- Reads `$TMPDIR/.location.json` and only uses the exact `.prayer-<city>_<country>_<DD-MM-YYYY>.json` cache for the current location, matching the cache key used by `next-prayer mawaqit`.
-- Uses the legacy `.prayer-<DD-MM-YYYY>.json` cache only when no location key is available; it does not scan for another location-keyed cache because that can show stale prayer times after travelling.
-- Shows the next prayer in Arabic in the menu bar, without the 🕋 emoji, and turns it red when it is within `warningThresholdMinutes`, matching `next-prayer`/`get-prayer` behavior.
-- Shows location plus mosque name in the dropdown header when the mosque is available from the cache.
-- Shows the Hijri date in the dropdown using macOS's Umm al-Qura Islamic calendar.
-- Shows all cached prayer times when clicked in three aligned columns: English label, prayer time plus a slightly dimmed `(-hh:mm)` remaining-time label for the upcoming prayer, and a right-aligned Arabic label; metadata and non-upcoming prayer rows are disabled, the upcoming prayer row is checked, and `Refresh` is the only action item.
-- Schedules a macOS notification timer for the next unsent prayer so the notification fires at prayer time, with the Arabic prayer name as the title, `حان الان وقت صلاة <prayer>` as the body, and the Guidance app icon as the content image.
-- Watches `$TMPDIR` and refreshes every minute, but never fetches prayer times itself.
+- Reads `$TMPDIR/.location.json` and only uses the exact
+  `.prayer-<city>_<country>_<DD-MM-YYYY>.json` cache for the current location,
+  matching the cache key used by `next-prayer mawaqit`.
+- Uses the legacy `.prayer-<DD-MM-YYYY>.json` cache only when no location key is
+  available; it does not scan for another location-keyed cache because that can
+  show stale prayer times after travelling.
+- Shows the next prayer in Arabic in the menu bar, without the 🕋 emoji, and
+  turns it red when it is within `warningThresholdMinutes`, matching
+  `next-prayer`/`get-prayer` behavior.
+- Shows location plus mosque name in the dropdown header when the mosque is
+  available from the cache.
+- Shows the Hijri date in the dropdown using macOS's Umm al-Qura Islamic
+  calendar.
+- Shows all cached prayer times when clicked in three aligned columns: English
+  label, prayer time plus a slightly dimmed `(-hh:mm)` remaining-time label for
+  the upcoming prayer, and a right-aligned Arabic label; metadata and
+  non-upcoming prayer rows are disabled, the upcoming prayer row is checked, and
+  `Refresh` is the only action item.
+- Schedules a macOS notification timer for the next unsent prayer so the
+  notification fires at prayer time, with the Arabic prayer name as the title,
+  `حان الان وقت صلاة <prayer>` as the body, and the Guidance app icon as the
+  content image.
+- Watches `$TMPDIR` and refreshes every minute.
+- When the matching cache is missing, starts `get-prayer` asynchronously through
+  a login shell to warm the cache, then refreshes itself once the command exits;
+  automatic retries are cooled down per cache path, while the menu `Refresh`
+  action can force another attempt.
 
 ### Public functions
 
