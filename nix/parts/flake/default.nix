@@ -117,7 +117,14 @@
       };
 
       time.timeZone = config.my.timezone;
-      documentation.man.enable = true;
+
+      documentation = {
+        enable = true;
+        info.enable = true;
+        man.enable = true;
+      };
+
+      programs.man.enable = true;
 
       my.user.home = "${homePrefix}/${config.my.username}";
 
