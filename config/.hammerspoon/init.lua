@@ -7,10 +7,12 @@ hs.ipc.cliSaveHistory(true)
 hs.window.animationDuration = 0
 hs.application.enableSpotlightForNameSearches(true)
 
-local extraPath = os.getenv 'HOME'
+local hostName = hs.host.localizedName()
+local extraModuleDir = os.getenv 'HOME'
 	.. '/.local/share/'
-	.. hs.host.localizedName()
-	.. '/hammerspoon/?.lua'
+	.. hostName
+	.. '/hammerspoon'
+local extraPath = extraModuleDir .. '/?.lua'
 
 if not package.path:find(extraPath, 1, true) then
 	package.path = package.path .. ';' .. extraPath
@@ -26,6 +28,12 @@ local mappings = require 'mappings'
 local spoons = require 'spoons'
 local wifi = require 'wifi'
 local window = require 'window-management'
+
+log.i 'Loading host override'
+local ok, hostErr = pcall(require, hostName)
+if not ok then
+	log.wf('Host override failed to load: %s', tostring(hostErr))
+end
 
 log.i 'Setting up spoons'
 spoons.setup()
@@ -46,13 +54,7 @@ log.i 'Setting up layout watcher'
 layout.setup()
 
 log.i 'Starting config watcher'
-utils.startConfigWatcher()
-
-log.i 'Loading host override'
-local ok, hostErr = pcall(require, hs.host.localizedName())
-if not ok then
-	log.wf('Host override failed to load: %s', tostring(hostErr))
-end
+utils.startConfigWatcher({ hs.configdir, extraModuleDir })
 
 local elapsed = math.floor((hs.timer.absoluteTime() - start) / 1000000)
 hs.alert 'Config loaded'

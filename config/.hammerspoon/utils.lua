@@ -90,6 +90,57 @@ function M.deepCopy(value)
 	return copy
 end
 
+function M.isArray(value)
+	if type(value) ~= 'table' then
+		return false
+	end
+
+	if next(value) == nil then
+		return false
+	end
+
+	local count = 0
+	for key in pairs(value) do
+		if type(key) ~= 'number' or key < 1 or key % 1 ~= 0 then
+			return false
+		end
+		count = count + 1
+	end
+
+	for index = 1, count do
+		if value[index] == nil then
+			return false
+		end
+	end
+
+	return true
+end
+
+function M.deepMerge(base, override)
+	if override == nil then
+		return M.deepCopy(base)
+	end
+
+	if base == nil then
+		return M.deepCopy(override)
+	end
+
+	if type(base) ~= 'table' or type(override) ~= 'table' then
+		return M.deepCopy(override)
+	end
+
+	if M.isArray(base) or M.isArray(override) then
+		return M.deepCopy(override)
+	end
+
+	local merged = M.deepCopy(base)
+	for key, value in pairs(override) do
+		merged[key] = M.deepMerge(merged[key], value)
+	end
+
+	return merged
+end
+
 function M.expandPath(path)
 	if type(path) ~= 'string' or path == '' then
 		return path

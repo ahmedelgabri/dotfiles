@@ -1,11 +1,11 @@
 local log = require 'log'
 local utils = require 'utils'
 
-local URL_DISPATCH_RULES = {
+local DEFAULT_URL_DISPATCH_RULES = {
 	{ 'https?://%w+.zoom.us/j/', 'zoom' },
 }
 
-local URL_REDIRECT_DECODERS = {
+local DEFAULT_URL_REDIRECT_DECODERS = {
 	{
 		'redirect old NixOS wiki',
 		'https://nixos%.wiki/(.*)',
@@ -19,7 +19,24 @@ local MANAGED_SPOONS = {
 	'URLDispatcher',
 }
 
-local M = {}
+local DEFAULT_SETTINGS = {
+	urlDispatcher = {
+		enabled = true,
+		start = true,
+		default_handler = nil,
+		decode_slack_redir_urls = true,
+		set_system_handler = true,
+		url_patterns = DEFAULT_URL_DISPATCH_RULES,
+		url_redir_decoders = DEFAULT_URL_REDIRECT_DECODERS,
+		log_level = 'warning',
+	},
+}
+
+local M = {
+	install = nil,
+	settings = utils.deepCopy(DEFAULT_SETTINGS),
+	setupComplete = false,
+}
 
 local function loadSpoon(name)
 	local ok, err = pcall(hs.loadSpoon, name)
@@ -36,7 +53,31 @@ local function loadSpoon(name)
 	return true
 end
 
+local function resolveHandlerTarget(target)
+	if type(target) ~= 'string' then
+		return target
+	end
+
+	local bundleID = utils.getAppBundleID(target)
+	if bundleID then
+		return bundleID
+	end
+
+	if target:find('.', 1, true) then
+		return target
+	end
+
+	return nil
+end
+
 local function resolveDefaultBrowser()
+	local configured = resolveHandlerTarget(
+		M.settings.urlDispatcher.default_handler
+	)
+	if configured then
+		return configured
+	end
+
 	local bundleID = utils.resolvePreferredBrowser()
 	if bundleID then
 		return bundleID
@@ -45,20 +86,12 @@ local function resolveDefaultBrowser()
 	return utils.getAppBundleID 'safari'
 end
 
-local function resolveRuleTarget(target)
-	if type(target) ~= 'string' then
-		return target
-	end
-
-	return utils.getAppBundleID(target) or target
-end
-
-local function buildDispatchRules()
-	local rules = {}
-	for _, rule in ipairs(URL_DISPATCH_RULES) do
-		local target = resolveRuleTarget(rule[2])
-		if target then
-			table.insert(rules, { rule[1], target, rule[3], rule[4] })
+local function buildDispatchRules(rules)
+	local resolvedRules = {}
+	for _, rule in ipairs(rules or {}) do
+		local target = resolveHandlerTarget(rule[2])
+		if target or rule[3] then
+			table.insert(resolvedRules, { rule[1], target, rule[3], rule[4] })
 		else
 			log.wf(
 				"Skipping URL dispatch rule '%s' because target app is missing",
@@ -66,10 +99,83 @@ local function buildDispatchRules()
 			)
 		end
 	end
-	return rules
+	return resolvedRules
+end
+
+local function mergeURLDispatcherListField(name, base, overrides)
+	if overrides == nil then
+		return utils.deepCopy(base or {})
+	end
+
+	if type(overrides) ~= 'table' then
+		log.wf(
+			"Ignoring invalid URLDispatcher %s override of type '%s'",
+			name,
+			type(overrides)
+		)
+		return utils.deepCopy(base or {})
+	end
+
+	local merged = {}
+	for _, item in ipairs(overrides) do
+		table.insert(merged, utils.deepCopy(item))
+	end
+	for _, item in ipairs(base or {}) do
+		table.insert(merged, utils.deepCopy(item))
+	end
+	return merged
+end
+
+local function mergeURLDispatcherConfig(base, overrides)
+	local merged = utils.deepMerge(base or {}, overrides or {})
+	if type(overrides) ~= 'table' then
+		return merged
+	end
+
+	if overrides.url_patterns ~= nil then
+		merged.url_patterns = mergeURLDispatcherListField(
+			'url_patterns',
+			base and base.url_patterns,
+			overrides.url_patterns
+		)
+	end
+
+	if overrides.url_redir_decoders ~= nil then
+		merged.url_redir_decoders = mergeURLDispatcherListField(
+			'url_redir_decoders',
+			base and base.url_redir_decoders,
+			overrides.url_redir_decoders
+		)
+	end
+
+	return merged
+end
+
+local function stopURLDispatcherPatternWatchers()
+	if not spoon.URLDispatcher then
+		return
+	end
+
+	for _, watcher in pairs(spoon.URLDispatcher.pat_watchers or {}) do
+		if watcher then
+			watcher:stop()
+		end
+	end
+
+	spoon.URLDispatcher.pat_watchers = {}
+	spoon.URLDispatcher.pat_files = {}
+end
+
+function M.getURLDispatcherConfig()
+	return utils.deepCopy(M.settings.urlDispatcher)
 end
 
 function M.buildURLDispatcherConfig()
+	local settings = M.settings.urlDispatcher or {}
+	if settings.enabled == false then
+		return nil
+	end
+
 	local defaultHandler = resolveDefaultBrowser()
 	if not defaultHandler then
 		log.w 'Skipping URLDispatcher setup because no default browser could be resolved'
@@ -77,15 +183,82 @@ function M.buildURLDispatcherConfig()
 	end
 
 	return {
-		start = true,
+		start = settings.start ~= false,
+		log_level = settings.log_level,
 		config = {
 			default_handler = defaultHandler,
-			decode_slack_redir_urls = true,
-			set_system_handler = true,
-			url_patterns = buildDispatchRules(),
-			url_redir_decoders = URL_REDIRECT_DECODERS,
+			decode_slack_redir_urls = settings.decode_slack_redir_urls ~= false,
+			set_system_handler = settings.set_system_handler ~= false,
+			url_patterns = buildDispatchRules(settings.url_patterns),
+			url_redir_decoders = utils.deepCopy(
+				settings.url_redir_decoders or {}
+			),
 		},
 	}
+end
+
+function M.getEffectiveURLDispatcherConfig()
+	return utils.deepCopy(M.buildURLDispatcherConfig())
+end
+
+function M.applyURLDispatcherConfig()
+	local runtime = M.buildURLDispatcherConfig()
+	if not runtime then
+		if spoon.URLDispatcher then
+			stopURLDispatcherPatternWatchers()
+			hs.urlevent.httpCallback = nil
+		end
+		return true
+	end
+
+	if not spoon.URLDispatcher and not loadSpoon 'URLDispatcher' then
+		return false
+	end
+
+	stopURLDispatcherPatternWatchers()
+
+	for key, value in pairs(runtime.config) do
+		spoon.URLDispatcher[key] = value
+	end
+
+	if spoon.URLDispatcher.logger and runtime.log_level then
+		spoon.URLDispatcher.logger.setLogLevel(runtime.log_level)
+	end
+
+	if runtime.start == false then
+		hs.urlevent.httpCallback = nil
+		return true
+	end
+
+	spoon.URLDispatcher:start()
+	return true
+end
+
+function M.configureURLDispatcher(overrides)
+	M.settings.urlDispatcher = mergeURLDispatcherConfig(
+		M.settings.urlDispatcher,
+		overrides or {}
+	)
+
+	if M.setupComplete then
+		return M.applyURLDispatcherConfig()
+	end
+
+	return true
+end
+
+function M.setURLDispatcherConfig(config)
+	M.settings.urlDispatcher = utils.deepCopy(config or {})
+
+	if M.setupComplete then
+		return M.applyURLDispatcherConfig()
+	end
+
+	return true
+end
+
+function M.resetURLDispatcherConfig()
+	return M.setURLDispatcherConfig(DEFAULT_SETTINGS.urlDispatcher)
 end
 
 function M.updateSpoons()
@@ -124,15 +297,8 @@ function M.setup()
 		start = true,
 	})
 
-	local urlDispatcherConfig = M.buildURLDispatcherConfig()
-	if urlDispatcherConfig then
-		M.install:andUse('URLDispatcher', urlDispatcherConfig)
-		if spoon.URLDispatcher and spoon.URLDispatcher.logger then
-			spoon.URLDispatcher.logger.setLogLevel 'warning'
-		end
-	end
-
-	return true
+	M.setupComplete = true
+	return M.applyURLDispatcherConfig()
 end
 
 return M

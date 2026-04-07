@@ -2,6 +2,9 @@ local log = require 'log'
 local utils = require 'utils'
 
 local M = {
+	config = {
+		externalBrowserPriority = nil,
+	},
 	state = {
 		lastSignature = nil,
 	},
@@ -47,14 +50,77 @@ local function addLayoutRule(layout, bundleID, screen, unit)
 	end
 end
 
+local function resolveTargetScreen(screens)
+	return screens.largest or screens.main
+end
+
+local function normalizeBrowserPriority(priority)
+	if priority == nil then
+		return nil
+	end
+
+	if type(priority) == 'string' then
+		return { priority }
+	end
+
+	if type(priority) == 'table' then
+		return utils.deepCopy(priority)
+	end
+
+	log.wf(
+		"Ignoring invalid external browser preference of type '%s'",
+		type(priority)
+	)
+	return nil
+end
+
+local function resolveBrowserCandidate(candidate)
+	if type(candidate) ~= 'string' or candidate == '' then
+		return nil, nil
+	end
+
+	local bundleID = utils.getAppBundleID(candidate)
+	if bundleID then
+		return bundleID, candidate
+	end
+
+	if hs.application.infoForBundleID(candidate) then
+		return candidate, candidate
+	end
+
+	return nil, nil
+end
+
+local function resolveExternalBrowser()
+	local priority = M.config.externalBrowserPriority or utils.getBrowserPriority()
+
+	for _, candidate in ipairs(priority) do
+		local bundleID, resolved = resolveBrowserCandidate(candidate)
+		if bundleID then
+			return bundleID, resolved
+		end
+	end
+
+	return nil, nil
+end
+
+function M.setExternalBrowserPriority(priority)
+	M.config.externalBrowserPriority = normalizeBrowserPriority(priority)
+	return M.switchLayout()
+end
+
+function M.setExternalBrowser(browser)
+	return M.setExternalBrowserPriority(browser)
+end
+
 function M.buildLayout(screens)
 	local layout = {}
-	local browserBundleID = utils.resolvePreferredBrowser()
+	local browserBundleID = resolveExternalBrowser()
 
 	addLayoutRule(
 		layout,
 		browserBundleID,
-		screens.largest or screens.main,
+		resolveTargetScreen(screens),
 		hs.layout.maximized
 	)
 
@@ -62,14 +128,14 @@ function M.buildLayout(screens)
 end
 
 local function layoutSignature(layout, screens)
-	local browserTarget = screens.largest and screens.largest:name()
-		or screens.main and screens.main:name()
-		or 'unknown'
+	local targetScreen = resolveTargetScreen(screens)
+	local browserBundleID = resolveExternalBrowser()
 	return table.concat({
 		tostring(#layout),
 		tostring(#screens.all),
-		browserTarget,
-		tostring(screenArea(screens.largest)),
+		targetScreen and targetScreen:name() or 'unknown',
+		tostring(screenArea(targetScreen)),
+		tostring(browserBundleID or 'none'),
 	}, '|')
 end
 
@@ -84,7 +150,7 @@ function M.switchLayout()
 	local signature = layoutSignature(layout, screens)
 	hs.layout.apply(layout)
 
-	local targetScreen = screens.largest or screens.main
+	local targetScreen = resolveTargetScreen(screens)
 	if
 		targetScreen
 		and #screens.all > 1
@@ -92,7 +158,7 @@ function M.switchLayout()
 	then
 		hs.notify.show(
 			'Hammerspoon',
-			'Default browser moved to largest screen',
+			'Preferred browser moved to largest screen',
 			targetScreen:name()
 		)
 	end
