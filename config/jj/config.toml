@@ -52,7 +52,7 @@ show-cryptographic-signatures = true
 'private()' = '(description(glob:"private:*") | wip())'
 
 [revsets]
-log = "present(@) | ancestors(immutable_heads().., 10) | present(trunk())"
+log = "present(@) | ancestors(immutable_heads().., 5) | present(trunk())"
 bookmark-advance-to = 'closest_pushable(@)'
 log-graph-prioritize = 'trunk() | present(@)'
 
@@ -85,8 +85,6 @@ tug = ["bookmark", "advance"]
 # See: https://jj-vcs.github.io/jj/latest/config/#generated-bookmark-names-on-push
 # git_push_bookmark = '"<%= variables.gitHubUsername %>/" ++ change_id.short()'
 git_push_bookmark = '"ahmedelgabri/" ++ change_id.short()'
-
-log = "builtin_log_comfortable"
 
 # Add change ID to the end of the commit
 commit_trailers = '''
