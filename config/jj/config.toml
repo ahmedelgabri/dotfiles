@@ -59,6 +59,7 @@ log-graph-prioritize = 'trunk() | present(@)'
 [aliases]
 fetch = ["git", "fetch", "--all-remotes"]
 g = ["git"]
+d = ["diff"]
 push = ["git", "push"]
 retrunk = ["rebase", "-d", "trunk()"]
 sudo = ["--ignore-immutable"]
