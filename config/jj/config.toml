@@ -18,6 +18,8 @@ auto-track-created-bookmarks = "*"
 
 
 [ui]
+# better tool support, syntax highlighting and one less thing to relearn
+conflict-marker-style = "git"
 default-command = "log"
 # https://difftastic.wilfred.me.uk/jj.html
 # diff-formatter = ["difft", "--color=always", "$left", "$right"]
