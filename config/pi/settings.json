@@ -2,8 +2,13 @@
 	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "xhigh",
 	"defaultProvider": "openai-codex",
-	"defaultModel": "gpt-5.4",
-	"enabledModels": ["claude-4*", "gpt-5.*"],
+	"defaultModel": "gpt-5.5",
+	"enabledModels": [
+		"claude-opus-4*",
+		"claude-sonnet-4*",
+		"claude-haiku-4*",
+		"gpt-5.*"
+	],
 	"showHardwareCursor": true,
 	"autocompleteMaxVisible": 10,
 	"steeringMode": "one-at-a-time",
