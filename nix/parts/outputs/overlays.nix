@@ -13,24 +13,14 @@
       patches = (old.patches or []) ++ [../../patches/pure.patch];
     });
 
-    zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (oldAttrs: rec {
-      version = "master";
-      src = prev.fetchFromGitHub {
-        owner = "zsh-users";
-        repo = oldAttrs.pname;
-        rev = version;
-        sha256 = "sha256-KHujL1/TM5R3m4uQh2nGVC98D6MOyCgQpyFf+8gjKR0=";
-      };
+    zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (_: {
+      version = "latest";
+      src = inputs.zsh-history-substring-search;
     });
 
-    zsh-completions = prev.zsh-completions.overrideAttrs (oldAttrs: rec {
-      version = "master";
-      src = prev.fetchFromGitHub {
-        owner = "zsh-users";
-        repo = oldAttrs.pname;
-        rev = version;
-        sha256 = "sha256-JVX+gWLvcnln4pEJ/d4I7iIfWXHZ+zu8MRMGIslh/Fw=";
-      };
+    zsh-completions = prev.zsh-completions.overrideAttrs (_: {
+      version = "latest";
+      src = inputs.zsh-completions;
     });
 
     inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
