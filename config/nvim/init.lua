@@ -272,6 +272,10 @@ vim.o.winborder = 'bold'
 vim.o.pumborder = vim.o.winborder
 
 vim.o.jumpoptions = 'stack,view'
+
+-- Enable project-local configuration.
+vim.o.exrc = true
+
 -------------------------------------------------------------------------------
 -- PLUGINS {{{1
 -------------------------------------------------------------------------------
