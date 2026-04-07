@@ -43,6 +43,7 @@ au.augroup('__myautocmds__', {
 			'taskedit',
 			'grug-far',
 			'nvim-undotree',
+			'nvim-pack',
 		},
 		desc = 'Close with <q>',
 		callback = function(args)
