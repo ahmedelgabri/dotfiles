@@ -142,6 +142,7 @@ au.autocmd {
 			'jsdoc',
 			'query', -- For treesitter quereies
 			'regex',
+			'yaml', -- needed for markdown frontmatter injection
 		}
 
 		local parsers_to_install = vim
