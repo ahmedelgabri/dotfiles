@@ -5,6 +5,11 @@ end
 --- @class Pack
 local Pack = {}
 
+-- vim.pack.get() is ~730ms at startup, so check the directory directly instead.
+local pack_dir = vim.fs.joinpath(vim.fn.stdpath 'data', 'pack')
+local has_plugins = vim.uv.fs_stat(pack_dir) ~= nil
+	and #vim.fn.readdir(pack_dir) > 0
+
 --- Per-spec opts fields that get extracted from spec tables and passed to
 --- vim.pack.add as the opts argument instead.
 --- @type string[]
@@ -66,7 +71,8 @@ end
 --- @param opts? vim.pack.keyset.add
 function Pack.add(specs, opts)
 	local defaults = vim.tbl_extend('force', {
-		confirm = next(vim.api.nvim_list_uis()) ~= nil,
+		-- auto confirm on a fresh install or in headless mode
+		confirm = has_plugins and next(vim.api.nvim_list_uis()) ~= nil,
 	}, opts or {})
 
 	-- Partition specs by their per-spec opts so we can batch

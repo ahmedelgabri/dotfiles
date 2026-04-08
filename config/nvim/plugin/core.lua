@@ -57,17 +57,19 @@ au.autocmd {
 }
 
 if vim.env.TMUX then
-	Pack.load 'nvim-tmux-navigation'
+	vim.schedule(function()
+		Pack.load 'nvim-tmux-navigation'
 
-	require('nvim-tmux-navigation').setup {
-		disable_when_zoomed = true,
-		keybindings = {
-			left = '<C-h>',
-			down = '<C-j>',
-			up = '<C-k>',
-			right = '<C-l>',
-		},
-	}
+		require('nvim-tmux-navigation').setup {
+			disable_when_zoomed = true,
+			keybindings = {
+				left = '<C-h>',
+				down = '<C-j>',
+				up = '<C-k>',
+				right = '<C-l>',
+			},
+		}
+	end)
 end
 
 vim.schedule(function()
