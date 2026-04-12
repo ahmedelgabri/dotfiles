@@ -54,6 +54,13 @@
       home-manager.users."${config.my.username}".imports = imports;
     };
   in {
+    commonOverlays = [
+      inputs.yazi.overlays.default
+      inputs.nur.overlays.default
+      inputs.llm-agents.overlays.default
+      inputs.self.overlays.default
+    ];
+
     mkDarwin = system: name: {
       ${name} = inputs.darwin.lib.darwinSystem {
         inherit system;

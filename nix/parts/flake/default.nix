@@ -113,12 +113,7 @@
 
       nixpkgs = {
         config.allowUnfree = true;
-        overlays = [
-          inputs.yazi.overlays.default
-          inputs.nur.overlays.default
-          inputs.llm-agents.overlays.default
-          inputs.self.overlays.default
-        ];
+        overlays = inputs.self.lib.commonOverlays;
       };
 
       time.timeZone = config.my.timezone;
