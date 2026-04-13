@@ -1,7 +1,7 @@
 {
   node = {
     path = ./node;
-    description = "A simple template node/js/ts workflows using pnpm and fnm";
+    description = "A simple template for Node.js / JavaScript / TypeScript workflows using pnpm";
     welcomeText = ''Welcome to nix node template with pnpm'';
   };
   deno = {
