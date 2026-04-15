@@ -3,8 +3,8 @@ local utils = require 'utils'
 
 local DEFAULT_BROWSER_PRIORITY = {
 	'firefox',
-	'safari',
 	'chrome',
+	'safari',
 }
 
 local URL_DISPATCH_RULES = {
@@ -19,9 +19,10 @@ local URL_REDIRECT_DECODERS = {
 	},
 }
 
-local LOAD_EMMY_LUA = false
-local SET_SYSTEM_BROWSER_HANDLER = true
-local URL_DISPATCHER_LOG_LEVEL = 'warning'
+local MANAGED_SPOONS = {
+	'Caffeine',
+	'URLDispatcher',
+}
 
 local M = {}
 
@@ -95,21 +96,42 @@ function M.buildURLDispatcherConfig()
 		config = {
 			default_handler = defaultHandler,
 			decode_slack_redir_urls = true,
-			set_system_handler = SET_SYSTEM_BROWSER_HANDLER,
+			set_system_handler = true,
 			url_patterns = buildDispatchRules(),
 			url_redir_decoders = buildRedirectDecoders(),
 		},
 	}
 end
 
-function M.updateSpoons()
+local function upgradeManagedSpoons()
 	if not M.install then
 		log.w 'SpoonInstall is not available'
 		return false
 	end
 
 	M.install:updateAllRepos()
-	return true
+
+	local spoonsToUpgrade = utils.deepCopy(MANAGED_SPOONS)
+	if LOAD_EMMY_LUA then
+		table.insert(spoonsToUpgrade, 'EmmyLua')
+	end
+
+	local updated = true
+	for _, spoonName in ipairs(spoonsToUpgrade) do
+		local ok = M.install:installSpoonFromRepo(spoonName)
+		if ok then
+			log.i(string.format("Updated spoon '%s'", spoonName))
+		else
+			updated = false
+			log.wf("Failed to update spoon '%s'", spoonName)
+		end
+	end
+
+	return updated
+end
+
+function M.updateSpoons()
+	return upgradeManagedSpoons()
 end
 
 function M.setup()
@@ -118,10 +140,9 @@ function M.setup()
 	end
 
 	M.install = spoon.SpoonInstall
+	upgradeManagedSpoons()
 
-	if LOAD_EMMY_LUA then
-		M.install:andUse 'EmmyLua'
-	end
+	M.install:andUse 'EmmyLua'
 
 	M.install:andUse('Caffeine', {
 		start = true,
@@ -131,7 +152,7 @@ function M.setup()
 	if urlDispatcherConfig then
 		M.install:andUse('URLDispatcher', urlDispatcherConfig)
 		if spoon.URLDispatcher and spoon.URLDispatcher.logger then
-			spoon.URLDispatcher.logger.setLogLevel(URL_DISPATCHER_LOG_LEVEL)
+			spoon.URLDispatcher.logger.setLogLevel 'warning'
 		end
 	end
 
