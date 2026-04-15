@@ -1,148 +1,171 @@
-local M = {}
 local log = require 'log'
 local utils = require 'utils'
 
-M.hyperKey = { 'shift', 'ctrl', 'alt', 'cmd' }
-
-M.layers = {
-	-- [b]rowse
-	b = {
-		-- [m]ail
-		m = function()
-			hs.urlevent.openURL 'https://fastmail.com'
-		end,
-		-- [r]eddit
-		r = function()
-			hs.urlevent.openURL 'https://reddit.com'
-		end,
-		-- [h]ackernews
-		h = function()
-			hs.urlevent.openURL 'raycast://extensions/thomas/hacker-news/frontpage'
-		end,
-		-- [f]acebook
-		f = function()
-			hs.urlevent.openURL 'https://facebook.com'
-		end,
-		-- [y]outube
-		y = function()
-			hs.urlevent.openURL 'https://youtube.com'
-		end,
-		x = function()
-			hs.urlevent.openURL 'https://x.com'
-		end,
-		-- [c]ode
-		c = function()
-			hs.urlevent.openURL 'https://github.com'
-		end,
+local M = {
+	layers = {
+		b = {
+			label = 'browse',
+			actions = {
+				m = { label = 'mail', url = 'https://fastmail.com' },
+				r = { label = 'reddit', url = 'https://reddit.com' },
+				h = { label = 'hacker news', url = 'raycast://extensions/thomas/hacker-news/frontpage' },
+				f = { label = 'facebook', url = 'https://facebook.com' },
+				y = { label = 'youtube', url = 'https://youtube.com' },
+				x = { label = 'x', url = 'https://x.com' },
+				c = { label = 'code', url = 'https://github.com' },
+			},
+		},
+		o = {
+			label = 'open',
+			actions = {
+				['1'] = { label = '1Password', app = '1password' },
+				g = { label = 'Google Chrome', app = 'chrome' },
+				b = { label = 'Firefox', app = 'firefox' },
+				s = { label = 'Slack', app = 'slack' },
+				m = { label = 'Messages', app = 'imessage' },
+				t = { label = 'Terminal', app = 'ghostty' },
+				c = { label = 'Calendar', app = 'calendar' },
+				z = { label = 'Zoom', app = 'zoom' },
+				d = { label = 'Discord', app = 'discord' },
+			},
+		},
 	},
-	-- [o]pen
-	o = {
-		-- [1]Password
-		['1'] = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap['1password'])
-		end,
-		-- [g]oogle chrome
-		g = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.chrome)
-		end,
-		-- [f]irefox
-		b = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.firefox)
-		end,
-		-- s[l]ack
-		s = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.slack)
-		end,
-		-- i[m]essage
-		m = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.imessage)
-		end,
-		-- [t]erminal
-		t = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.ghostty)
-		end,
-		-- [C]alendar
-		c = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.calendar)
-		end,
-		-- [z]oom
-		z = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.zoom)
-		end,
-		-- [d]iscord
-		d = function()
-			hs.application.launchOrFocusByBundleID(utils.appMap.discord)
-		end,
-	},
+	modals = {},
+	settings = {},
 }
 
-function M.setup()
-	log.info()
-	for layer in pairs(M.layers) do
-		local m = hs.hotkey.modal.new(M.hyperKey, layer)
-		local subLayer = M.layers[layer]
+local meetingBindings = {
+	zoom = { mods = { 'cmd', 'shift' }, key = 'a' },
+	meet = { mods = { 'cmd' }, key = 'd' },
+}
 
-		function m:entered()
-			local msg = m.k.msg .. ' mode on'
-
-			log.i(msg)
+local function safeAction(label, fn)
+	return function()
+		local ok, err = xpcall(fn, debug.traceback)
+		if not ok then
+			log.ef("Action '%s' failed: %s", label, err)
 		end
+	end
+end
 
-		function m:exited()
-			local msg = m.k.msg .. ' mode off'
+local function runAction(action)
+	if action.fn then
+		return action.fn()
+	end
 
-			log.i(msg)
-		end
+	if action.app then
+		return utils.launchOrFocus(action.app)
+	end
 
-		m:bind('', 'escape', function()
-			m:exit()
-		end)
+	if action.url then
+		return utils.openURL(action.url, action.browser)
+	end
 
-		for subLayerKey in pairs(subLayer) do
-			m:bind('', subLayerKey, function()
-				log.i(m.k.msg .. ' + ' .. subLayerKey .. ' pressed')
-				subLayer[subLayerKey]()
-				m:exit()
-			end)
+	return false
+end
+
+local function bindAction(modal, layerKey, actionKey, action)
+	modal:bind('', actionKey, safeAction(action.label, function()
+		log.i(string.format('%s + %s pressed', layerKey, actionKey))
+		runAction(action)
+		modal:exit()
+	end))
+end
+
+local function bindLayer(triggerKey, layer, hyperKey)
+	local modal = hs.hotkey.modal.new(hyperKey, triggerKey)
+	M.modals[triggerKey] = modal
+
+	function modal:entered()
+		log.i(string.format('%s mode on', layer.label))
+	end
+
+	function modal:exited()
+		log.i(string.format('%s mode off', layer.label))
+	end
+
+	modal:bind('', 'escape', function()
+		modal:exit()
+	end)
+
+	for actionKey, action in pairs(layer.actions) do
+		bindAction(modal, triggerKey, actionKey, action)
+	end
+end
+
+local function findMeetingApp()
+	local frontmostApp = hs.application.frontmostApplication()
+	if frontmostApp then
+		for appKey in pairs(meetingBindings) do
+			if frontmostApp:bundleID() == utils.getAppBundleID(appKey) then
+				return appKey, frontmostApp
+			end
 		end
 	end
 
-	-- local resizeMappings = {
-	-- 	h = { x = 0, y = 0, w = 0.5, h = 1 },
-	-- 	j = { x = 0, y = 0.5, w = 1, h = 0.5 },
-	-- 	k = { x = 0, y = 0, w = 1, h = 0.5 },
-	-- 	l = { x = 0.5, y = 0, w = 0.5, h = 1 },
-	-- 	m = { x = 0, y = 0, w = 1, h = 1 },
-	-- 	u = { x = 0, y = 0, w = 0.33, h = 1 },
-	-- 	i = { x = 0.33, y = 0, w = 0.33, h = 1 },
-	-- 	o = { x = 0.66, y = 0, w = 0.33, h = 1 },
-	-- }
-	--
-	-- for key in pairs(resizeMappings) do
-	-- 	hs.hotkey.bind(modalKey, key, function()
-	-- 		local win = hs.window.focusedWindow()
-	-- 		if win then
-	-- 			win:moveToUnit(resizeMappings[key])
-	-- 		end
-	-- 	end)
-	-- end
+	for appKey in pairs(meetingBindings) do
+		local bundleID = utils.getAppBundleID(appKey)
+		if bundleID then
+			local app = hs.application.get(bundleID)
+			if app then
+				return appKey, app
+			end
+		end
+	end
+end
 
-	hs.hotkey.bind({}, 'f10', hs.openConsole)
+local function activateAndSendKeystroke(appKey, app, settings)
+	local binding = meetingBindings[appKey]
+	if not binding or not app then
+		return false
+	end
 
-	--  Mute Zoom (requires enabling global keyboard shortcut in Zoom)/Google Meet
-	hs.hotkey.bind({}, '§', function()
-		if hs.application.find(utils.appMap.zoom) then
-			hs.application.get(utils.appMap.zoom):activate()
-			hs.eventtap.keyStroke({ 'CMD', 'SHIFT' }, 'a')
-		elseif hs.application.find(utils.appMap.meet) then
-			hs.application.get(utils.appMap.meet):activate()
-			hs.eventtap.keyStroke({ 'CMD' }, 'd')
+	local previousApp = hs.application.frontmostApplication()
+	app:activate()
+
+	local meetingHotkey = settings.hotkeys and settings.hotkeys.meetingMute or {}
+	hs.timer.doAfter(meetingHotkey.activationDelaySeconds or 0.2, function()
+		hs.eventtap.keyStroke(binding.mods, binding.key)
+		if
+			meetingHotkey.restorePreviousApp
+			and previousApp
+			and previousApp:bundleID() ~= app:bundleID()
+		then
+			previousApp:activate()
 		end
 	end)
 
-	hs.hotkey.bind({ 'alt', 'cmd' }, 'r', function()
-		hs.reload()
-	end)
+	return true
+end
+
+local function toggleMeetingMute()
+	local appKey, app = findMeetingApp()
+	if not appKey or not app then
+		log.w 'No supported meeting app is currently running'
+		hs.notify.show('Hammerspoon', 'Meeting mute', 'No Zoom or Meet app is running')
+		return false
+	end
+
+	return activateAndSendKeystroke(appKey, app, M.settings)
+end
+
+local function bindHotkey(spec, fn)
+	if spec and spec.key then
+		hs.hotkey.bind(spec.mods or {}, spec.key, fn)
+	end
+end
+
+function M.setup(settings)
+	M.settings = settings or {}
+	local hyperKey = M.settings.hotkeys and M.settings.hotkeys.hyper or { 'shift', 'ctrl', 'alt', 'cmd' }
+
+	for triggerKey, layer in pairs(M.layers) do
+		bindLayer(triggerKey, layer, hyperKey)
+	end
+
+	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.console, hs.openConsole)
+	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.reload, hs.reload)
+	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.meetingMute, safeAction('meeting mute', toggleMeetingMute))
 end
 
 return M
