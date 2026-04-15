@@ -6,15 +6,8 @@ local DEFAULT_SETTINGS = {
 	notifyOnApply = true,
 }
 
-local DEFAULT_BROWSER_PRIORITY = {
-	'firefox',
-	'zen',
-	'safari',
-	'chrome',
-}
-
 local M = {
-	settings = DEFAULT_SETTINGS,
+	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	state = {
 		lastSignature = nil,
 	},
@@ -54,20 +47,6 @@ local function resolveScreens()
 	}
 end
 
-local function preferredBrowserBundleID()
-	local chromeBundleID = utils.getAppBundleID 'chrome'
-	if chromeBundleID then
-		return chromeBundleID
-	end
-
-	for _, appKey in ipairs(DEFAULT_BROWSER_PRIORITY) do
-		local bundleID = utils.getAppBundleID(appKey)
-		if bundleID then
-			return bundleID
-		end
-	end
-end
-
 local function addLayoutRule(layout, bundleID, screen, unit)
 	if bundleID and screen then
 		table.insert(layout, { bundleID, nil, screen, unit, nil, nil })
@@ -76,10 +55,11 @@ end
 
 function M.buildLayout(screens)
 	local layout = {}
+	local browserBundleID = utils.resolvePreferredBrowser()
 
 	addLayoutRule(
 		layout,
-		preferredBrowserBundleID(),
+		browserBundleID,
 		screens.largest or screens.main,
 		hs.layout.maximized
 	)
@@ -135,7 +115,7 @@ function M.scheduleLayout()
 end
 
 function M.setup()
-	M.settings = DEFAULT_SETTINGS
+	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 	M.state.lastSignature = nil
 	M.switchLayout()
 

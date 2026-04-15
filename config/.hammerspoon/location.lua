@@ -23,6 +23,13 @@ local function isoTimestamp()
 	return os.date '!%Y-%m-%dT%H:%M:%SZ'
 end
 
+local function sanitizeLocationTable(locationData)
+	if type(locationData) == 'table' then
+		locationData.__luaSkinType = nil
+	end
+	return locationData
+end
+
 local function cancelStartupTimer()
 	if M.startupTimer then
 		M.startupTimer:stop()
@@ -75,9 +82,7 @@ end
 
 function M.writeLocationData(data)
 	local payload = utils.deepCopy(data or {})
-	if type(payload.location) == 'table' then
-		payload.location.__luaSkinType = nil
-	end
+	payload.location = sanitizeLocationTable(payload.location)
 	payload.updatedAt = payload.updatedAt or isoTimestamp()
 
 	local path = M.settings.outputPath
@@ -94,26 +99,18 @@ end
 
 function M.sanitizeLocationResult(item)
 	local payload = utils.deepCopy(item or {})
-	if type(payload.location) == 'table' then
-		payload.location.__luaSkinType = nil
-	end
+	payload.location = sanitizeLocationTable(payload.location)
 	payload.updatedAt = isoTimestamp()
 	return payload
 end
 
 function M.fallbackLocationData(loc, reason)
-	local payload = {
-		location = utils.deepCopy(loc or {}),
+	return {
+		location = sanitizeLocationTable(utils.deepCopy(loc or {})),
 		locality = '',
 		error = reason,
 		updatedAt = isoTimestamp(),
 	}
-
-	if type(payload.location) == 'table' then
-		payload.location.__luaSkinType = nil
-	end
-
-	return payload
 end
 
 function M.reverseGeocode(loc, callback)

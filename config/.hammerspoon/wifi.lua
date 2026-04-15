@@ -1,5 +1,6 @@
 local location = require 'location'
 local log = require 'log'
+local utils = require 'utils'
 
 local DEFAULT_SETTINGS = {
 	notifyOnChange = true,
@@ -7,7 +8,7 @@ local DEFAULT_SETTINGS = {
 }
 
 local M = {
-	settings = DEFAULT_SETTINGS,
+	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	started = false,
 }
 
@@ -52,7 +53,7 @@ function M.start()
 		return true
 	end
 
-	M.settings = DEFAULT_SETTINGS
+	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 	lastNetwork = hs.wifi.currentNetwork()
 	M.watcher = hs.wifi.watcher.new(handleSSIDChange)
 	if not M.watcher then

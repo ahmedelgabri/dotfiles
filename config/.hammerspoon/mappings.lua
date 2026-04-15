@@ -5,6 +5,7 @@ local DEFAULT_SETTINGS = {
 	hyper = { 'shift', 'ctrl', 'alt', 'cmd' },
 	layerOverlay = {
 		enabled = true,
+		maxVisibleActions = 12,
 	},
 	reload = {
 		mods = { 'alt', 'cmd' },
@@ -19,6 +20,10 @@ local DEFAULT_SETTINGS = {
 		key = '§',
 		activationDelaySeconds = 0.2,
 		restorePreviousApp = false,
+		bindings = {
+			zoom = { mods = { 'cmd', 'shift' }, key = 'a' },
+			meet = { mods = { 'cmd' }, key = 'd' },
+		},
 	},
 }
 
@@ -56,12 +61,7 @@ local M = {
 		},
 	},
 	modals = {},
-	settings = DEFAULT_SETTINGS,
-}
-
-local meetingBindings = {
-	zoom = { mods = { 'cmd', 'shift' }, key = 'a' },
-	meet = { mods = { 'cmd' }, key = 'd' },
+	settings = utils.deepCopy(DEFAULT_SETTINGS),
 }
 
 local function safeAction(label, fn)
@@ -114,7 +114,17 @@ local function showLayerOverlay(triggerKey, layer)
 		'esc: cancel',
 	}
 
-	for _, actionKey in ipairs(actionKeys) do
+	local maxVisibleActions = M.settings.layerOverlay.maxVisibleActions
+		or #actionKeys
+	for index, actionKey in ipairs(actionKeys) do
+		if index > maxVisibleActions then
+			table.insert(
+				lines,
+				string.format('… and %d more', #actionKeys - maxVisibleActions)
+			)
+			break
+		end
+
 		local action = layer.actions[actionKey]
 		table.insert(lines, string.format('%s: %s', actionKey, action.label))
 	end
@@ -157,17 +167,21 @@ local function bindLayer(triggerKey, layer)
 	end
 end
 
+local function meetingBindings()
+	return M.settings.meetingMute.bindings or {}
+end
+
 local function findMeetingApp()
 	local frontmostApp = hs.application.frontmostApplication()
 	if frontmostApp then
-		for appKey in pairs(meetingBindings) do
+		for appKey in pairs(meetingBindings()) do
 			if frontmostApp:bundleID() == utils.getAppBundleID(appKey) then
 				return appKey, frontmostApp
 			end
 		end
 	end
 
-	for appKey in pairs(meetingBindings) do
+	for appKey in pairs(meetingBindings()) do
 		local bundleID = utils.getAppBundleID(appKey)
 		if bundleID then
 			local app = hs.application.get(bundleID)
@@ -179,7 +193,7 @@ local function findMeetingApp()
 end
 
 local function activateAndSendKeystroke(appKey, app)
-	local binding = meetingBindings[appKey]
+	local binding = meetingBindings()[appKey]
 	if not binding or not app then
 		return false
 	end

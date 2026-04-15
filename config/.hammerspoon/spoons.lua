@@ -1,12 +1,6 @@
 local log = require 'log'
 local utils = require 'utils'
 
-local DEFAULT_BROWSER_PRIORITY = {
-	'firefox',
-	'chrome',
-	'safari',
-}
-
 local URL_DISPATCH_RULES = {
 	{ 'https?://%w+.zoom.us/j/', 'zoom' },
 }
@@ -20,9 +14,12 @@ local URL_REDIRECT_DECODERS = {
 }
 
 local MANAGED_SPOONS = {
+	'EmmyLua',
 	'Caffeine',
 	'URLDispatcher',
 }
+
+local URL_DISPATCHER_LOG_LEVEL = 'warning'
 
 local M = {}
 
@@ -42,11 +39,9 @@ local function loadSpoon(name)
 end
 
 local function resolveDefaultBrowser()
-	for _, appKey in ipairs(DEFAULT_BROWSER_PRIORITY) do
-		local bundleID = utils.getAppBundleID(appKey)
-		if bundleID then
-			return bundleID
-		end
+	local bundleID = utils.resolvePreferredBrowser()
+	if bundleID then
+		return bundleID
 	end
 
 	return utils.getAppBundleID 'safari'
@@ -76,14 +71,6 @@ local function buildDispatchRules()
 	return rules
 end
 
-local function buildRedirectDecoders()
-	local decoders = {}
-	for _, decoder in ipairs(URL_REDIRECT_DECODERS) do
-		table.insert(decoders, decoder)
-	end
-	return decoders
-end
-
 function M.buildURLDispatcherConfig()
 	local defaultHandler = resolveDefaultBrowser()
 	if not defaultHandler then
@@ -98,12 +85,12 @@ function M.buildURLDispatcherConfig()
 			decode_slack_redir_urls = true,
 			set_system_handler = true,
 			url_patterns = buildDispatchRules(),
-			url_redir_decoders = buildRedirectDecoders(),
+			url_redir_decoders = URL_REDIRECT_DECODERS,
 		},
 	}
 end
 
-local function upgradeManagedSpoons()
+function M.updateSpoons()
 	if not M.install then
 		log.w 'SpoonInstall is not available'
 		return false
@@ -111,13 +98,8 @@ local function upgradeManagedSpoons()
 
 	M.install:updateAllRepos()
 
-	local spoonsToUpgrade = utils.deepCopy(MANAGED_SPOONS)
-	if LOAD_EMMY_LUA then
-		table.insert(spoonsToUpgrade, 'EmmyLua')
-	end
-
 	local updated = true
-	for _, spoonName in ipairs(spoonsToUpgrade) do
+	for _, spoonName in ipairs(MANAGED_SPOONS) do
 		local ok = M.install:installSpoonFromRepo(spoonName)
 		if ok then
 			log.i(string.format("Updated spoon '%s'", spoonName))
@@ -130,17 +112,13 @@ local function upgradeManagedSpoons()
 	return updated
 end
 
-function M.updateSpoons()
-	return upgradeManagedSpoons()
-end
-
 function M.setup()
 	if not loadSpoon 'SpoonInstall' then
 		return false
 	end
 
 	M.install = spoon.SpoonInstall
-	upgradeManagedSpoons()
+	M.updateSpoons()
 
 	M.install:andUse 'EmmyLua'
 
@@ -152,7 +130,7 @@ function M.setup()
 	if urlDispatcherConfig then
 		M.install:andUse('URLDispatcher', urlDispatcherConfig)
 		if spoon.URLDispatcher and spoon.URLDispatcher.logger then
-			spoon.URLDispatcher.logger.setLogLevel 'warning'
+			spoon.URLDispatcher.logger.setLogLevel(URL_DISPATCHER_LOG_LEVEL)
 		end
 	end
 

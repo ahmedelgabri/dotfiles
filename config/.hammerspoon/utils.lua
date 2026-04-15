@@ -68,6 +68,13 @@ local APP_SPECS = {
 	},
 }
 
+local DEFAULT_BROWSER_PRIORITY = {
+	'firefox',
+	'zen',
+	'safari',
+	'chrome',
+}
+
 local CONFIG_WATCH_DEBOUNCE_SECONDS = 0.5
 
 local M = {
@@ -171,6 +178,21 @@ end
 
 function M.getAppBundleID(appKey)
 	return M.appMap[appKey]
+end
+
+function M.getBrowserPriority()
+	return M.deepCopy(DEFAULT_BROWSER_PRIORITY)
+end
+
+function M.resolvePreferredBrowser(priority)
+	for _, appKey in ipairs(priority or DEFAULT_BROWSER_PRIORITY) do
+		local bundleID = M.getAppBundleID(appKey)
+		if bundleID then
+			return bundleID, appKey
+		end
+	end
+
+	return nil, nil
 end
 
 function M.launchOrFocus(appKey, opts)
@@ -292,10 +314,6 @@ function M.startConfigWatcher(paths, debounceSeconds)
 	if not started then
 		log.w 'No config watchers started'
 	end
-end
-
-function M.reloadConfig(paths, debounceSeconds)
-	M.startConfigWatcher(paths, debounceSeconds)
 end
 
 return M
