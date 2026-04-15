@@ -23,8 +23,20 @@ local DEFAULT_SETTINGS = {
 	},
 }
 
+local OVERLAY_STYLE = {
+	backgroundColor = { white = 0.08, alpha = 0.82 },
+	font = 'PragmataPro Mono',
+	fontSize = 14,
+	lineHeight = 18,
+	margin = 0,
+	maxWidthFraction = 0.35,
+	minWidth = 80,
+	padding = 12,
+	textColor = { white = 1, alpha = 0.95 },
+}
+
 local M = {
-	overlayID = nil,
+	overlayCanvas = nil,
 	layers = {
 		b = {
 			label = 'browse',
@@ -86,41 +98,134 @@ local function runAction(action)
 end
 
 local function hideLayerOverlay()
-	if M.overlayID then
-		hs.alert.closeSpecific(M.overlayID, 0)
-		M.overlayID = nil
+	if M.overlayCanvas then
+		M.overlayCanvas:delete()
+		M.overlayCanvas = nil
 	end
 end
 
-local function showLayerOverlay(triggerKey, layer)
-	hideLayerOverlay()
+local function overlayTargetScreen()
+	local focusedWindow = hs.window.frontmostWindow()
+	if focusedWindow then
+		local screen = focusedWindow:screen()
+		if screen then
+			return screen
+		end
+	end
 
+	return hs.screen.mainScreen() or hs.screen.primaryScreen()
+end
+
+local function overlayRow(key, label, keyWidth)
+	return string.format('%-' .. keyWidth .. 's  %s', key, label)
+end
+
+local function overlayLines(triggerKey, layer)
 	local actionKeys = {}
 	for actionKey in pairs(layer.actions) do
 		table.insert(actionKeys, actionKey)
 	end
 	table.sort(actionKeys)
 
-	local lines = {
-		string.format('[%s] %s', triggerKey, layer.label),
-		'esc: cancel',
-	}
-
 	local maxVisibleActions = #actionKeys
-	for index, actionKey in ipairs(actionKeys) do
-		if index > maxVisibleActions then
-			table.insert(
-				lines,
-				string.format('… and %d more', #actionKeys - maxVisibleActions)
-			)
-			break
-		end
+	local visibleActionCount = math.min(#actionKeys, maxVisibleActions)
+	local keyWidth = #'esc'
 
-		local action = layer.actions[actionKey]
-		table.insert(lines, string.format('%s: %s', actionKey, action.label))
+	for index = 1, visibleActionCount do
+		keyWidth = math.max(keyWidth, #tostring(actionKeys[index]))
 	end
 
-	M.overlayID = hs.alert.show(table.concat(lines, '\n'), nil, nil, false)
+	local lines = {
+		string.format('[%s] %s', triggerKey, layer.label),
+		'',
+	}
+
+	for index = 1, visibleActionCount do
+		local actionKey = actionKeys[index]
+		local action = layer.actions[actionKey]
+		table.insert(lines, overlayRow(actionKey, action.label, keyWidth))
+	end
+
+	if #actionKeys > visibleActionCount then
+		table.insert(
+			lines,
+			overlayRow(
+				'...',
+				string.format('and %d more', #actionKeys - visibleActionCount),
+				keyWidth
+			)
+		)
+	end
+
+	table.insert(lines, '')
+	table.insert(lines, overlayRow('esc', 'cancel', keyWidth))
+
+	return lines
+end
+
+local function overlayFrame(lines, screenFrame)
+	local longestLine = 0
+	for _, line in ipairs(lines) do
+		longestLine = math.max(longestLine, #line)
+	end
+
+	local estimatedWidth = math.floor(
+		longestLine * (OVERLAY_STYLE.fontSize * 0.62) + OVERLAY_STYLE.padding * 2
+	)
+	local maxWidth = math.floor(screenFrame.w * OVERLAY_STYLE.maxWidthFraction)
+	local width =
+		math.min(math.max(estimatedWidth, OVERLAY_STYLE.minWidth), maxWidth)
+	local height = OVERLAY_STYLE.padding * 2 + (#lines * OVERLAY_STYLE.lineHeight)
+
+	return {
+		x = screenFrame.x + screenFrame.w - width - OVERLAY_STYLE.margin,
+		y = screenFrame.y + screenFrame.h - height - OVERLAY_STYLE.margin,
+		w = width,
+		h = height,
+	}
+end
+
+local function showLayerOverlay(triggerKey, layer)
+	hideLayerOverlay()
+
+	local lines = overlayLines(triggerKey, layer)
+	local screen = overlayTargetScreen()
+	if not screen then
+		return
+	end
+
+	local frame = overlayFrame(lines, screen:frame())
+	local textFrame = {
+		x = OVERLAY_STYLE.padding,
+		y = OVERLAY_STYLE.padding,
+		w = frame.w - OVERLAY_STYLE.padding * 2,
+		h = frame.h - OVERLAY_STYLE.padding * 2,
+	}
+
+	local canvas = hs.canvas.new(frame)
+	canvas:level 'floating'
+	canvas:behaviorAsLabels { 'moveToActiveSpace', 'transient' }
+	canvas[1] = {
+		type = 'rectangle',
+		action = 'fill',
+		fillColor = OVERLAY_STYLE.backgroundColor,
+		frame = { x = 0, y = 0, w = '100%', h = '100%' },
+		roundedRectRadii = { xRadius = 0, yRadius = 0 },
+	}
+	canvas[2] = {
+		type = 'text',
+		text = table.concat(lines, '\n'),
+		frame = textFrame,
+		textColor = OVERLAY_STYLE.textColor,
+		textFont = OVERLAY_STYLE.font,
+		textSize = OVERLAY_STYLE.fontSize,
+		textAlignment = 'left',
+		textLineBreak = 'wordWrap',
+		withShadow = false,
+	}
+	canvas:show()
+
+	M.overlayCanvas = canvas
 end
 
 local function bindAction(modal, layerKey, actionKey, action)
