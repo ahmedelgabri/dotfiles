@@ -1,5 +1,4 @@
 local start = hs.timer.absoluteTime()
-local defaultSettings = require 'config'
 local log = require 'log'
 local utils = require 'utils'
 
@@ -32,47 +31,6 @@ local function extendPackagePath()
 	end
 end
 
-local function loadHostOverrides()
-	local hostPath = hs.configdir
-		.. '/hosts/'
-		.. hs.host.localizedName()
-		.. '.lua'
-	if not utils.pathExists(hostPath) then
-		log.i('No host overrides found for ' .. hs.host.localizedName())
-		return {}
-	end
-
-	local chunk, loadErr = loadfile(hostPath)
-	if not chunk then
-		log.ef('Failed to load host overrides from %s: %s', hostPath, loadErr)
-		return {}
-	end
-
-	local overrides
-	local ok = safeCall('host overrides', function()
-		overrides = chunk()
-	end)
-	if not ok then
-		return {}
-	end
-
-	if type(overrides) ~= 'table' then
-		log.wf(
-			'Ignoring host overrides from %s because it did not return a table',
-			hostPath
-		)
-		return {}
-	end
-
-	log.i('Loaded host overrides from ' .. hostPath)
-	return overrides
-end
-
-local settings = utils.mergeConfig(defaultSettings, loadHostOverrides())
-log.applySettings(settings)
-
-extendPackagePath()
-
 safeCall('hs.ipc.cliInstall', function()
 	hs.ipc.cliInstall()
 end)
@@ -83,7 +41,8 @@ end)
 hs.window.animationDuration = 0
 hs.application.enableSpotlightForNameSearches(true)
 
-utils.setup(settings)
+extendPackagePath()
+utils.setup()
 
 local layout = safeRequire 'layout'
 local location = safeRequire 'location'
@@ -92,60 +51,51 @@ local spoons = safeRequire 'spoons'
 local wifi = safeRequire 'wifi'
 local window = safeRequire 'window-management'
 
-if settings.features.spoons and spoons then
+if spoons then
 	safeCall('spoons.setup', function()
-		spoons.setup(settings)
+		spoons.setup()
 	end)
 end
 
 if mappings then
 	safeCall('mappings.setup', function()
-		mappings.setup(settings)
+		mappings.setup()
 	end)
 end
 
 if window then
 	safeCall('window.setup', function()
-		window.setup(settings)
+		window.setup()
 	end)
 end
 
-if settings.features.location and location then
+if location then
 	safeCall('location.setup', function()
-		location.setup(settings)
+		location.setup()
 	end)
 end
 
-if settings.features.wifiWatcher and wifi then
+if wifi then
 	safeCall('wifi.start', function()
-		wifi.start(settings)
+		wifi.start()
 	end)
 end
 
-if settings.features.layout and layout then
+if layout then
 	safeCall('layout.setup', function()
-		layout.setup(settings)
+		layout.setup()
 	end)
 end
 
-if settings.features.autoReload then
-	safeCall('utils.startConfigWatcher', function()
-		utils.startConfigWatcher(
-			settings.reload and settings.reload.watchPaths,
-			settings.reload and settings.reload.debounceSeconds
-		)
-	end)
-end
+safeCall('utils.startConfigWatcher', function()
+	utils.startConfigWatcher()
+end)
+
+safeCall('host custom config', function()
+	pcall(require, hs.host.localizedName())
+end)
 
 local elapsed = math.floor((hs.timer.absoluteTime() - start) / 1000000)
-if settings.log and settings.log.startupAlert then
-	hs.alert 'Config loaded'
-end
-if settings.log and settings.log.startupNotification then
-	hs.notify.show(
-		'Hammerspoon',
-		'',
-		string.format('Initialized in %dms', elapsed)
-	)
-end
+hs.alert 'Config loaded'
+hs.notify.show('Hammerspoon', '', string.format('Initialized in %dms', elapsed))
 log.i(string.format('Configuration initialized (%dms)', elapsed))

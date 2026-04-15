@@ -1,8 +1,20 @@
 local log = require 'log'
 local utils = require 'utils'
 
+local DEFAULT_SETTINGS = {
+	debounceSeconds = 0.75,
+	notifyOnApply = true,
+}
+
+local DEFAULT_BROWSER_PRIORITY = {
+	'firefox',
+	'zen',
+	'safari',
+	'chrome',
+}
+
 local M = {
-	settings = {},
+	settings = DEFAULT_SETTINGS,
 	state = {
 		lastSignature = nil,
 	},
@@ -42,15 +54,13 @@ local function resolveScreens()
 	}
 end
 
-local function preferredBrowserBundleID(settings)
+local function preferredBrowserBundleID()
 	local chromeBundleID = utils.getAppBundleID 'chrome'
 	if chromeBundleID then
 		return chromeBundleID
 	end
 
-	for _, appKey in
-		ipairs(settings.urls and settings.urls.defaultBrowserPriority or {})
-	do
+	for _, appKey in ipairs(DEFAULT_BROWSER_PRIORITY) do
 		local bundleID = utils.getAppBundleID(appKey)
 		if bundleID then
 			return bundleID
@@ -64,12 +74,12 @@ local function addLayoutRule(layout, bundleID, screen, unit)
 	end
 end
 
-function M.buildLayout(settings, screens)
+function M.buildLayout(screens)
 	local layout = {}
 
 	addLayoutRule(
 		layout,
-		preferredBrowserBundleID(settings),
+		preferredBrowserBundleID(),
 		screens.largest or screens.main,
 		hs.layout.maximized
 	)
@@ -91,7 +101,7 @@ end
 
 function M.switchLayout()
 	local screens = resolveScreens()
-	local layout = M.buildLayout(M.settings, screens)
+	local layout = M.buildLayout(screens)
 	if #layout == 0 then
 		log.w 'Skipping layout application because no valid rules were generated'
 		return false
@@ -103,8 +113,7 @@ function M.switchLayout()
 	local targetScreen = screens.largest or screens.main
 	if
 		targetScreen
-		and M.settings.layout
-		and M.settings.layout.notifyOnApply
+		and M.settings.notifyOnApply
 		and #screens.all > 1
 		and M.state.lastSignature ~= signature
 	then
@@ -120,17 +129,13 @@ function M.switchLayout()
 end
 
 function M.scheduleLayout()
-	utils.debounce(
-		'layout.switch',
-		M.settings.layout and M.settings.layout.debounceSeconds or 0.75,
-		function()
-			M.switchLayout()
-		end
-	)
+	utils.debounce('layout.switch', M.settings.debounceSeconds or 0.75, function()
+		M.switchLayout()
+	end)
 end
 
-function M.setup(settings)
-	M.settings = settings or {}
+function M.setup()
+	M.settings = DEFAULT_SETTINGS
 	M.state.lastSignature = nil
 	M.switchLayout()
 

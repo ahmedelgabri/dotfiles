@@ -34,12 +34,6 @@ local module = {
 	getLevel = function()
 		return logger.getLogLevel()
 	end,
-	applySettings = function(settings)
-		local level = settings and settings.log and settings.log.level
-		if level then
-			logger.setLogLevel(level)
-		end
-	end,
 
 	debug = function()
 		logger.setLogLevel 'debug'

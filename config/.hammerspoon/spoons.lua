@@ -1,6 +1,28 @@
 local log = require 'log'
 local utils = require 'utils'
 
+local DEFAULT_BROWSER_PRIORITY = {
+	'firefox',
+	'safari',
+	'chrome',
+}
+
+local URL_DISPATCH_RULES = {
+	{ 'https?://%w+.zoom.us/j/', 'zoom' },
+}
+
+local URL_REDIRECT_DECODERS = {
+	{
+		'redirect old NixOS wiki',
+		'https://nixos%.wiki/(.*)',
+		'https://wiki.nixos.org/%1',
+	},
+}
+
+local LOAD_EMMY_LUA = false
+local SET_SYSTEM_BROWSER_HANDLER = true
+local URL_DISPATCHER_LOG_LEVEL = 'warning'
+
 local M = {}
 
 local function loadSpoon(name)
@@ -18,10 +40,8 @@ local function loadSpoon(name)
 	return true
 end
 
-local function resolveDefaultBrowser(settings)
-	for _, appKey in
-		ipairs(settings.urls and settings.urls.defaultBrowserPriority or {})
-	do
+local function resolveDefaultBrowser()
+	for _, appKey in ipairs(DEFAULT_BROWSER_PRIORITY) do
 		local bundleID = utils.getAppBundleID(appKey)
 		if bundleID then
 			return bundleID
@@ -39,9 +59,9 @@ local function resolveRuleTarget(target)
 	return utils.getAppBundleID(target) or target
 end
 
-local function buildDispatchRules(settings)
+local function buildDispatchRules()
 	local rules = {}
-	for _, rule in ipairs(settings.urls and settings.urls.dispatchRules or {}) do
+	for _, rule in ipairs(URL_DISPATCH_RULES) do
 		local target = resolveRuleTarget(rule[2])
 		if target then
 			table.insert(rules, { rule[1], target, rule[3], rule[4] })
@@ -55,18 +75,16 @@ local function buildDispatchRules(settings)
 	return rules
 end
 
-local function buildRedirectDecoders(settings)
+local function buildRedirectDecoders()
 	local decoders = {}
-	for _, decoder in
-		ipairs(settings.urls and settings.urls.redirectDecoders or {})
-	do
+	for _, decoder in ipairs(URL_REDIRECT_DECODERS) do
 		table.insert(decoders, decoder)
 	end
 	return decoders
 end
 
-function M.buildURLDispatcherConfig(settings)
-	local defaultHandler = resolveDefaultBrowser(settings)
+function M.buildURLDispatcherConfig()
+	local defaultHandler = resolveDefaultBrowser()
 	if not defaultHandler then
 		log.w 'Skipping URLDispatcher setup because no default browser could be resolved'
 		return nil
@@ -77,11 +95,9 @@ function M.buildURLDispatcherConfig(settings)
 		config = {
 			default_handler = defaultHandler,
 			decode_slack_redir_urls = true,
-			set_system_handler = settings.features
-					and settings.features.setSystemBrowserHandler
-				or false,
-			url_patterns = buildDispatchRules(settings),
-			url_redir_decoders = buildRedirectDecoders(settings),
+			set_system_handler = SET_SYSTEM_BROWSER_HANDLER,
+			url_patterns = buildDispatchRules(),
+			url_redir_decoders = buildRedirectDecoders(),
 		},
 	}
 end
@@ -96,14 +112,14 @@ function M.updateSpoons()
 	return true
 end
 
-function M.setup(settings)
+function M.setup()
 	if not loadSpoon 'SpoonInstall' then
 		return false
 	end
 
 	M.install = spoon.SpoonInstall
 
-	if settings.spoons and settings.spoons.loadEmmyLua then
+	if LOAD_EMMY_LUA then
 		M.install:andUse 'EmmyLua'
 	end
 
@@ -111,13 +127,11 @@ function M.setup(settings)
 		start = true,
 	})
 
-	local urlDispatcherConfig = M.buildURLDispatcherConfig(settings)
+	local urlDispatcherConfig = M.buildURLDispatcherConfig()
 	if urlDispatcherConfig then
 		M.install:andUse('URLDispatcher', urlDispatcherConfig)
 		if spoon.URLDispatcher and spoon.URLDispatcher.logger then
-			spoon.URLDispatcher.logger.setLogLevel(
-				settings.spoons and settings.spoons.urlDispatcherLogLevel or 'warning'
-			)
+			spoon.URLDispatcher.logger.setLogLevel(URL_DISPATCHER_LOG_LEVEL)
 		end
 	end
 

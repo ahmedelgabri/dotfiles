@@ -1,8 +1,13 @@
 local location = require 'location'
 local log = require 'log'
 
+local DEFAULT_SETTINGS = {
+	notifyOnChange = true,
+	notifyInitial = false,
+}
+
 local M = {
-	settings = {},
+	settings = DEFAULT_SETTINGS,
 	started = false,
 }
 
@@ -42,12 +47,12 @@ local function handleSSIDChange()
 	end
 end
 
-function M.start(settings)
+function M.start()
 	if M.started then
 		return true
 	end
 
-	M.settings = settings.wifi or {}
+	M.settings = DEFAULT_SETTINGS
 	lastNetwork = hs.wifi.currentNetwork()
 	M.watcher = hs.wifi.watcher.new(handleSSIDChange)
 	if not M.watcher then

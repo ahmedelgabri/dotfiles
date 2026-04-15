@@ -1,6 +1,27 @@
 local log = require 'log'
 local utils = require 'utils'
 
+local DEFAULT_SETTINGS = {
+	hyper = { 'shift', 'ctrl', 'alt', 'cmd' },
+	layerOverlay = {
+		enabled = true,
+	},
+	reload = {
+		mods = { 'alt', 'cmd' },
+		key = 'r',
+	},
+	console = {
+		mods = {},
+		key = 'f10',
+	},
+	meetingMute = {
+		mods = {},
+		key = '§',
+		activationDelaySeconds = 0.2,
+		restorePreviousApp = false,
+	},
+}
+
 local M = {
 	overlayID = nil,
 	layers = {
@@ -35,7 +56,7 @@ local M = {
 		},
 	},
 	modals = {},
-	settings = {},
+	settings = DEFAULT_SETTINGS,
 }
 
 local meetingBindings = {
@@ -76,9 +97,7 @@ local function hideLayerOverlay()
 end
 
 local function showLayerOverlay(triggerKey, layer)
-	local layerOverlay = M.settings.hotkeys and M.settings.hotkeys.layerOverlay
-		or {}
-	if layerOverlay.enabled == false then
+	if M.settings.layerOverlay.enabled == false then
 		return
 	end
 
@@ -115,8 +134,8 @@ local function bindAction(modal, layerKey, actionKey, action)
 	)
 end
 
-local function bindLayer(triggerKey, layer, hyperKey)
-	local modal = hs.hotkey.modal.new(hyperKey, triggerKey)
+local function bindLayer(triggerKey, layer)
+	local modal = hs.hotkey.modal.new(M.settings.hyper, triggerKey)
 	M.modals[triggerKey] = modal
 
 	function modal:entered()
@@ -159,7 +178,7 @@ local function findMeetingApp()
 	end
 end
 
-local function activateAndSendKeystroke(appKey, app, settings)
+local function activateAndSendKeystroke(appKey, app)
 	local binding = meetingBindings[appKey]
 	if not binding or not app then
 		return false
@@ -168,17 +187,19 @@ local function activateAndSendKeystroke(appKey, app, settings)
 	local previousApp = hs.application.frontmostApplication()
 	app:activate()
 
-	local meetingHotkey = settings.hotkeys and settings.hotkeys.meetingMute or {}
-	hs.timer.doAfter(meetingHotkey.activationDelaySeconds or 0.2, function()
-		hs.eventtap.keyStroke(binding.mods, binding.key)
-		if
-			meetingHotkey.restorePreviousApp
-			and previousApp
-			and previousApp:bundleID() ~= app:bundleID()
-		then
-			previousApp:activate()
+	hs.timer.doAfter(
+		M.settings.meetingMute.activationDelaySeconds or 0.2,
+		function()
+			hs.eventtap.keyStroke(binding.mods, binding.key)
+			if
+				M.settings.meetingMute.restorePreviousApp
+				and previousApp
+				and previousApp:bundleID() ~= app:bundleID()
+			then
+				previousApp:activate()
+			end
 		end
-	end)
+	)
 
 	return true
 end
@@ -195,7 +216,7 @@ local function toggleMeetingMute()
 		return false
 	end
 
-	return activateAndSendKeystroke(appKey, app, M.settings)
+	return activateAndSendKeystroke(appKey, app)
 end
 
 local function bindHotkey(spec, fn)
@@ -204,19 +225,17 @@ local function bindHotkey(spec, fn)
 	end
 end
 
-function M.setup(settings)
-	M.settings = settings or {}
-	local hyperKey = M.settings.hotkeys and M.settings.hotkeys.hyper
-		or { 'shift', 'ctrl', 'alt', 'cmd' }
+function M.setup()
+	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 
 	for triggerKey, layer in pairs(M.layers) do
-		bindLayer(triggerKey, layer, hyperKey)
+		bindLayer(triggerKey, layer)
 	end
 
-	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.console, hs.openConsole)
-	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.reload, hs.reload)
+	bindHotkey(M.settings.console, hs.openConsole)
+	bindHotkey(M.settings.reload, hs.reload)
 	bindHotkey(
-		M.settings.hotkeys and M.settings.hotkeys.meetingMute,
+		M.settings.meetingMute,
 		safeAction('meeting mute', toggleMeetingMute)
 	)
 end

@@ -1,9 +1,18 @@
 local log = require 'log'
 local utils = require 'utils'
 
+local DEFAULT_SETTINGS = {
+	outputPath = hs.fs.temporaryDirectory() .. '.location.json',
+	initialLookupDelaySeconds = 1,
+	debounceSeconds = 5,
+	startupRetryIntervalSeconds = 2,
+	startupMaxAttempts = 5,
+	startTrackingOnStartup = true,
+}
+
 local M = {
 	lastUpdateAt = 0,
-	settings = {},
+	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	startupAttempts = 0,
 	startupTimer = nil,
 	trackingStarted = false,
@@ -72,7 +81,6 @@ function M.writeLocationData(data)
 	payload.updatedAt = payload.updatedAt or isoTimestamp()
 
 	local path = M.settings.outputPath
-		or (hs.fs.temporaryDirectory() .. '.location.json')
 	local ok, err = pcall(hs.json.write, payload, path, true, true)
 
 	if ok then
@@ -204,8 +212,8 @@ function M.scheduleUpdate(opts)
 	end)
 end
 
-function M.setup(settings)
-	M.settings = settings.location or {}
+function M.setup()
+	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 	M.lastUpdateAt = 0
 	M.startupAttempts = 0
 	cancelStartupTimer()

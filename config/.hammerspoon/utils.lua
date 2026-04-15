@@ -1,10 +1,79 @@
 local log = require 'log'
 
+local APP_SPECS = {
+	chrome = {
+		paths = {
+			'/Applications/Google Chrome.app',
+			'/Applications/Chrome.app',
+		},
+		bundleIDs = { 'com.google.Chrome' },
+	},
+	firefox = {
+		paths = { '/Applications/Firefox.app' },
+		bundleIDs = { 'org.mozilla.firefox' },
+	},
+	zen = {
+		paths = { '/Applications/Zen Browser.app' },
+		bundleIDs = { 'app.zen-browser.zen' },
+	},
+	safari = {
+		paths = {
+			'/Applications/Safari.app',
+			'/System/Applications/Safari.app',
+		},
+		bundleIDs = { 'com.apple.Safari' },
+	},
+	kitty = {
+		paths = { '/Applications/kitty.app' },
+		bundleIDs = { 'net.kovidgoyal.kitty' },
+	},
+	ghostty = {
+		paths = { '/Applications/Ghostty.app' },
+		bundleIDs = { 'com.mitchellh.ghostty' },
+	},
+	x = {
+		paths = {
+			'/Applications/X.app',
+			'~/Applications/Chrome Apps.localized/X.app',
+		},
+		bundleIDs = {},
+	},
+	discord = {
+		paths = { '/Applications/Discord.app' },
+		bundleIDs = { 'com.hnc.Discord' },
+	},
+	slack = {
+		paths = { '/Applications/Slack.app' },
+		bundleIDs = { 'com.tinyspeck.slackmacgap' },
+	},
+	imessage = {
+		paths = { '/System/Applications/Messages.app' },
+		bundleIDs = { 'com.apple.MobileSMS' },
+	},
+	calendar = {
+		paths = { '/Applications/Notion Calendar.app' },
+		bundleIDs = { 'notion.id.calendar' },
+	},
+	['1password'] = {
+		paths = { '/Applications/1Password.app' },
+		bundleIDs = { 'com.1password.1password' },
+	},
+	zoom = {
+		paths = { '/Applications/zoom.us.app' },
+		bundleIDs = { 'us.zoom.xos' },
+	},
+	meet = {
+		paths = { '~/Applications/Chrome Apps.localized/Google Meet.app' },
+		bundleIDs = {},
+	},
+}
+
+local CONFIG_WATCH_DEBOUNCE_SECONDS = 0.5
+
 local M = {
 	appMap = {},
 	debouncers = {},
 	fileWatchers = {},
-	settings = {},
 }
 
 function M.deepCopy(value)
@@ -18,54 +87,6 @@ function M.deepCopy(value)
 	end
 	return copy
 end
-
-function M.isList(tbl)
-	if type(tbl) ~= 'table' then
-		return false
-	end
-
-	local maxIndex = 0
-	local count = 0
-
-	for key in pairs(tbl) do
-		if type(key) ~= 'number' or key < 1 or key % 1 ~= 0 then
-			return false
-		end
-		count = count + 1
-		if key > maxIndex then
-			maxIndex = key
-		end
-	end
-
-	return maxIndex == count
-end
-
-function M.mergeConfig(base, override)
-	if type(base) ~= 'table' then
-		return M.deepCopy(override)
-	end
-
-	local merged = M.deepCopy(base)
-	if type(override) ~= 'table' then
-		return merged
-	end
-
-	for key, value in pairs(override) do
-		if type(value) == 'table' and type(merged[key]) == 'table' then
-			if M.isList(value) or M.isList(merged[key]) then
-				merged[key] = M.deepCopy(value)
-			else
-				merged[key] = M.mergeConfig(merged[key], value)
-			end
-		else
-			merged[key] = M.deepCopy(value)
-		end
-	end
-
-	return merged
-end
-
-M.deepMerge = M.mergeConfig
 
 function M.expandPath(path)
 	if type(path) ~= 'string' or path == '' then
@@ -143,9 +164,8 @@ function M.resolveApps(appConfig)
 	return resolved
 end
 
-function M.setup(settings)
-	M.settings = settings or {}
-	M.appMap = M.resolveApps(M.settings.apps or {})
+function M.setup()
+	M.appMap = M.resolveApps(APP_SPECS)
 	return M.appMap
 end
 
@@ -252,7 +272,11 @@ function M.startConfigWatcher(paths, debounceSeconds)
 					return
 				end
 
-				M.debounce('config.reload', debounceSeconds or 0.5, hs.reload)
+				M.debounce(
+					'config.reload',
+					debounceSeconds or CONFIG_WATCH_DEBOUNCE_SECONDS,
+					hs.reload
+				)
 			end)
 			watcher:start()
 			table.insert(M.fileWatchers, watcher)
