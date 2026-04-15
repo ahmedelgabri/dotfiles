@@ -25,6 +25,9 @@ return {
 		outputPath = tempLocationPath,
 		initialLookupDelaySeconds = 1,
 		debounceSeconds = 5,
+		startupRetryIntervalSeconds = 2,
+		startupMaxAttempts = 5,
+		startTrackingOnStartup = true,
 	},
 
 	wifi = {

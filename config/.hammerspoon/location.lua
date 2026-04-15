@@ -4,11 +4,34 @@ local utils = require 'utils'
 local M = {
 	lastUpdateAt = 0,
 	settings = {},
+	startupAttempts = 0,
+	startupTimer = nil,
+	trackingStarted = false,
 	warnedServicesDisabled = false,
 }
 
 local function isoTimestamp()
 	return os.date '!%Y-%m-%dT%H:%M:%SZ'
+end
+
+local function cancelStartupTimer()
+	if M.startupTimer then
+		M.startupTimer:stop()
+		M.startupTimer = nil
+	end
+end
+
+local function stopWarmupTracking()
+	if M.trackingStarted then
+		hs.location.stop()
+		M.trackingStarted = false
+	end
+end
+
+local function finishStartupWarmup()
+	cancelStartupTimer()
+	M.startupAttempts = 0
+	stopWarmupTracking()
 end
 
 local function locationServicesEnabled()
@@ -24,6 +47,21 @@ local function locationServicesEnabled()
 	end
 
 	return false
+end
+
+local function startWarmupTracking()
+	if M.settings.startTrackingOnStartup == false or M.trackingStarted then
+		return true
+	end
+
+	local ok = hs.location.start()
+	if ok then
+		M.trackingStarted = true
+	else
+		log.w 'Failed to start location tracking for startup warmup'
+	end
+
+	return ok
 end
 
 function M.writeLocationData(data)
@@ -99,8 +137,22 @@ function M.updateLocationData(opts)
 
 	local loc = hs.location.get()
 	if not loc then
-		log.w 'No location found'
+		if opts.reason == 'startup' then
+			log.i(
+				string.format(
+					'Location not available yet (attempt %d/%d)',
+					opts.attempt or 1,
+					opts.maxAttempts or 1
+				)
+			)
+		else
+			log.w 'No location found'
+		end
 		return false
+	end
+
+	if M.startupAttempts > 0 or M.startupTimer then
+		finishStartupWarmup()
 	end
 
 	M.lastUpdateAt = now
@@ -117,6 +169,35 @@ function M.updateLocationData(opts)
 	return true
 end
 
+local function scheduleStartupUpdate(delaySeconds)
+	cancelStartupTimer()
+	M.startupTimer = hs.timer.doAfter(delaySeconds, function()
+		M.startupTimer = nil
+		M.startupAttempts = M.startupAttempts + 1
+
+		local attempt = M.startupAttempts
+		local maxAttempts = M.settings.startupMaxAttempts or 5
+		local ok = M.updateLocationData {
+			force = true,
+			reason = 'startup',
+			attempt = attempt,
+			maxAttempts = maxAttempts,
+		}
+
+		if ok then
+			return
+		end
+
+		if attempt < maxAttempts then
+			scheduleStartupUpdate(M.settings.startupRetryIntervalSeconds or 2)
+			return
+		end
+
+		log.wf('Unable to retrieve location after %d startup attempts', maxAttempts)
+		finishStartupWarmup()
+	end)
+end
+
 function M.scheduleUpdate(opts)
 	utils.debounce('location.update', M.settings.debounceSeconds or 0, function()
 		M.updateLocationData(opts)
@@ -126,20 +207,23 @@ end
 function M.setup(settings)
 	M.settings = settings.location or {}
 	M.lastUpdateAt = 0
+	M.startupAttempts = 0
+	cancelStartupTimer()
+	stopWarmupTracking()
 
 	if not locationServicesEnabled() then
 		return false
 	end
 
-	hs.timer.doAfter(M.settings.initialLookupDelaySeconds or 1, function()
-		M.updateLocationData { force = true, reason = 'startup' }
-	end)
+	startWarmupTracking()
+	scheduleStartupUpdate(M.settings.initialLookupDelaySeconds or 1)
 
 	return true
 end
 
 function M.stop()
 	utils.cancelDebounce 'location.update'
+	finishStartupWarmup()
 end
 
 return M
