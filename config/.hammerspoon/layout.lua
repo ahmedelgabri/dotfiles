@@ -12,34 +12,33 @@ local function getAllScreens()
 	return hs.screen.allScreens()
 end
 
-local function findScreenByNames(names)
-	for _, wantedName in ipairs(names or {}) do
-		for _, screen in ipairs(getAllScreens()) do
-			if screen:name() == wantedName then
-				return screen
-			end
-		end
+local function screenArea(screen)
+	if not screen then
+		return 0
 	end
+
+	local frame = screen:fullFrame()
+	return frame.w * frame.h
 end
 
-local function resolveScreens(settings)
+local function resolveScreens()
 	local allScreens = getAllScreens()
 	local mainScreen = hs.screen.primaryScreen() or allScreens[1]
-	local externalScreen = findScreenByNames(settings.layout and settings.layout.preferredExternalNames)
+	local largestScreen = mainScreen
+	local largestArea = screenArea(mainScreen)
 
-	if not externalScreen then
-		for _, screen in ipairs(allScreens) do
-			if mainScreen and screen:id() ~= mainScreen:id() then
-				externalScreen = screen
-				break
-			end
+	for _, screen in ipairs(allScreens) do
+		local area = screenArea(screen)
+		if area > largestArea then
+			largestScreen = screen
+			largestArea = area
 		end
 	end
 
 	return {
 		all = allScreens,
 		main = mainScreen,
-		external = externalScreen,
+		largest = largestScreen,
 	}
 end
 
@@ -49,7 +48,9 @@ local function preferredBrowserBundleID(settings)
 		return chromeBundleID
 	end
 
-	for _, appKey in ipairs(settings.urls and settings.urls.defaultBrowserPriority or {}) do
+	for _, appKey in
+		ipairs(settings.urls and settings.urls.defaultBrowserPriority or {})
+	do
 		local bundleID = utils.getAppBundleID(appKey)
 		if bundleID then
 			return bundleID
@@ -65,24 +66,34 @@ end
 
 function M.buildLayout(settings, screens)
 	local layout = {}
-	local browserScreen = screens.external or screens.main
 
-	addLayoutRule(layout, preferredBrowserBundleID(settings), browserScreen, hs.layout.maximized)
-	addLayoutRule(layout, utils.getAppBundleID('x'), screens.main, hs.layout.right30)
-	addLayoutRule(layout, utils.getAppBundleID('slack'), screens.main, hs.layout.maximized)
+	addLayoutRule(
+		layout,
+		preferredBrowserBundleID(settings),
+		screens.largest or screens.main,
+		hs.layout.maximized
+	)
 
 	return layout
 end
 
 local function layoutSignature(layout, screens)
-	local browserTarget = screens.external and screens.external:name()
+	local browserTarget = screens.largest and screens.largest:name()
 		or screens.main and screens.main:name()
 		or 'unknown'
-	return table.concat({ tostring(#layout), tostring(#screens.all), browserTarget }, '|')
+	return table.concat(
+		{
+			tostring(#layout),
+			tostring(#screens.all),
+			browserTarget,
+			tostring(screenArea(screens.largest)),
+		},
+		'|'
+	)
 end
 
 function M.switchLayout()
-	local screens = resolveScreens(M.settings)
+	local screens = resolveScreens()
 	local layout = M.buildLayout(M.settings, screens)
 	if #layout == 0 then
 		log.w 'Skipping layout application because no valid rules were generated'
@@ -92,7 +103,7 @@ function M.switchLayout()
 	local signature = layoutSignature(layout, screens)
 	hs.layout.apply(layout)
 
-	local targetScreen = screens.external or screens.main
+	local targetScreen = screens.largest or screens.main
 	if
 		targetScreen
 		and M.settings.layout
@@ -102,7 +113,7 @@ function M.switchLayout()
 	then
 		hs.notify.show(
 			'Hammerspoon',
-			string.format('%d monitor layout activated', #screens.all),
+			'Default browser moved to largest screen',
 			targetScreen:name()
 		)
 	end
@@ -112,9 +123,13 @@ function M.switchLayout()
 end
 
 function M.scheduleLayout()
-	utils.debounce('layout.switch', M.settings.layout and M.settings.layout.debounceSeconds or 0.75, function()
-		M.switchLayout()
-	end)
+	utils.debounce(
+		'layout.switch',
+		M.settings.layout and M.settings.layout.debounceSeconds or 0.75,
+		function()
+			M.switchLayout()
+		end
+	)
 end
 
 function M.setup(settings)

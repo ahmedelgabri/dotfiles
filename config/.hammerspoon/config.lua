@@ -10,7 +10,7 @@ return {
 	features = {
 		autoReload = true,
 		spoons = true,
-		layout = false,
+		layout = true,
 		wifiWatcher = true,
 		location = true,
 		setSystemBrowserHandler = true,
@@ -35,10 +35,6 @@ return {
 	layout = {
 		debounceSeconds = 0.75,
 		notifyOnApply = true,
-		preferredExternalNames = {
-			'LG HDR 4K',
-			'S24R65x',
-		},
 	},
 
 	hotkeys = {
