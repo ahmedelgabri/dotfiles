@@ -158,7 +158,10 @@ function M.launchOrFocus(appKey, opts)
 	local bundleID = M.getAppBundleID(appKey)
 
 	if not bundleID then
-		log.wf("App '%s' is not installed or could not be resolved", tostring(appKey))
+		log.wf(
+			"App '%s' is not installed or could not be resolved",
+			tostring(appKey)
+		)
 		if opts.notify ~= false then
 			hs.notify.show('Hammerspoon', 'App not found', tostring(appKey))
 		end
@@ -186,7 +189,10 @@ function M.openURL(url, appKey)
 			return true
 		end
 
-		log.wf("No bundle ID available for '%s'; opening URL with system handler", tostring(appKey))
+		log.wf(
+			"No bundle ID available for '%s'; opening URL with system handler",
+			tostring(appKey)
+		)
 	end
 
 	hs.urlevent.openURL(url)
@@ -214,7 +220,7 @@ end
 
 local function shouldReload(files)
 	for _, file in ipairs(files or {}) do
-		if file:match('%.lua$') or file:match('%.json$') or file:match('%.jsonc$') then
+		if file:match '%.lua$' or file:match '%.json$' or file:match '%.jsonc$' then
 			return true
 		end
 	end
@@ -252,7 +258,10 @@ function M.startConfigWatcher(paths, debounceSeconds)
 			table.insert(M.fileWatchers, watcher)
 			started = true
 		else
-			log.wf("Skipping missing config watch path '%s'", tostring(expanded or path))
+			log.wf(
+				"Skipping missing config watch path '%s'",
+				tostring(expanded or path)
+			)
 		end
 	end
 

@@ -8,7 +8,7 @@ local M = {
 }
 
 local function isoTimestamp()
-	return os.date('!%Y-%m-%dT%H:%M:%SZ')
+	return os.date '!%Y-%m-%dT%H:%M:%SZ'
 end
 
 local function locationServicesEnabled()
@@ -33,7 +33,8 @@ function M.writeLocationData(data)
 	end
 	payload.updatedAt = payload.updatedAt or isoTimestamp()
 
-	local path = M.settings.outputPath or (hs.fs.temporaryDirectory() .. '.location.json')
+	local path = M.settings.outputPath
+		or (hs.fs.temporaryDirectory() .. '.location.json')
 	local ok, err = pcall(hs.json.write, payload, path, true, true)
 
 	if ok then
@@ -88,7 +89,11 @@ function M.updateLocationData(opts)
 
 	local now = hs.timer.secondsSinceEpoch()
 	local debounceSeconds = M.settings.debounceSeconds or 0
-	if not opts.force and M.lastUpdateAt > 0 and now - M.lastUpdateAt < debounceSeconds then
+	if
+		not opts.force
+		and M.lastUpdateAt > 0
+		and now - M.lastUpdateAt < debounceSeconds
+	then
 		return false
 	end
 
@@ -103,7 +108,9 @@ function M.updateLocationData(opts)
 		if result then
 			M.writeLocationData(result)
 		else
-			M.writeLocationData(M.fallbackLocationData(loc, reason or 'reverse geocode failed'))
+			M.writeLocationData(
+				M.fallbackLocationData(loc, reason or 'reverse geocode failed')
+			)
 		end
 	end)
 

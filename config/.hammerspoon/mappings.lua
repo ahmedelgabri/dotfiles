@@ -76,7 +76,8 @@ local function hideLayerOverlay()
 end
 
 local function showLayerOverlay(triggerKey, layer)
-	local layerOverlay = M.settings.hotkeys and M.settings.hotkeys.layerOverlay or {}
+	local layerOverlay = M.settings.hotkeys and M.settings.hotkeys.layerOverlay
+		or {}
 	if layerOverlay.enabled == false then
 		return
 	end

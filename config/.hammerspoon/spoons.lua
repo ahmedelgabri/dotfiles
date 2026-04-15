@@ -19,7 +19,9 @@ local function loadSpoon(name)
 end
 
 local function resolveDefaultBrowser(settings)
-	for _, appKey in ipairs(settings.urls and settings.urls.defaultBrowserPriority or {}) do
+	for _, appKey in
+		ipairs(settings.urls and settings.urls.defaultBrowserPriority or {})
+	do
 		local bundleID = utils.getAppBundleID(appKey)
 		if bundleID then
 			return bundleID
@@ -44,7 +46,10 @@ local function buildDispatchRules(settings)
 		if target then
 			table.insert(rules, { rule[1], target, rule[3], rule[4] })
 		else
-			log.wf("Skipping URL dispatch rule '%s' because target app is missing", tostring(rule[1]))
+			log.wf(
+				"Skipping URL dispatch rule '%s' because target app is missing",
+				tostring(rule[1])
+			)
 		end
 	end
 	return rules
@@ -52,7 +57,9 @@ end
 
 local function buildRedirectDecoders(settings)
 	local decoders = {}
-	for _, decoder in ipairs(settings.urls and settings.urls.redirectDecoders or {}) do
+	for _, decoder in
+		ipairs(settings.urls and settings.urls.redirectDecoders or {})
+	do
 		table.insert(decoders, decoder)
 	end
 	return decoders
@@ -70,7 +77,9 @@ function M.buildURLDispatcherConfig(settings)
 		config = {
 			default_handler = defaultHandler,
 			decode_slack_redir_urls = true,
-			set_system_handler = settings.features and settings.features.setSystemBrowserHandler or false,
+			set_system_handler = settings.features
+					and settings.features.setSystemBrowserHandler
+				or false,
 			url_patterns = buildDispatchRules(settings),
 			url_redir_decoders = buildRedirectDecoders(settings),
 		},

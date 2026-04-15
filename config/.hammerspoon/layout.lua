@@ -81,15 +81,12 @@ local function layoutSignature(layout, screens)
 	local browserTarget = screens.largest and screens.largest:name()
 		or screens.main and screens.main:name()
 		or 'unknown'
-	return table.concat(
-		{
-			tostring(#layout),
-			tostring(#screens.all),
-			browserTarget,
-			tostring(screenArea(screens.largest)),
-		},
-		'|'
-	)
+	return table.concat({
+		tostring(#layout),
+		tostring(#screens.all),
+		browserTarget,
+		tostring(screenArea(screens.largest)),
+	}, '|')
 end
 
 function M.switchLayout()

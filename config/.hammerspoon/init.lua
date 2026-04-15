@@ -1,7 +1,7 @@
 local start = hs.timer.absoluteTime()
+local defaultSettings = require 'config'
 local log = require 'log'
 local utils = require 'utils'
-local defaultSettings = require 'config'
 
 local function safeCall(label, fn)
 	local ok, result = xpcall(fn, debug.traceback)
@@ -33,7 +33,10 @@ local function extendPackagePath()
 end
 
 local function loadHostOverrides()
-	local hostPath = hs.configdir .. '/hosts/' .. hs.host.localizedName() .. '.lua'
+	local hostPath = hs.configdir
+		.. '/hosts/'
+		.. hs.host.localizedName()
+		.. '.lua'
 	if not utils.pathExists(hostPath) then
 		log.i('No host overrides found for ' .. hs.host.localizedName())
 		return {}
@@ -54,7 +57,10 @@ local function loadHostOverrides()
 	end
 
 	if type(overrides) ~= 'table' then
-		log.wf('Ignoring host overrides from %s because it did not return a table', hostPath)
+		log.wf(
+			'Ignoring host overrides from %s because it did not return a table',
+			hostPath
+		)
 		return {}
 	end
 
@@ -136,6 +142,10 @@ if settings.log and settings.log.startupAlert then
 	hs.alert 'Config loaded'
 end
 if settings.log and settings.log.startupNotification then
-	hs.notify.show('Hammerspoon', '', string.format('Initialized in %dms', elapsed))
+	hs.notify.show(
+		'Hammerspoon',
+		'',
+		string.format('Initialized in %dms', elapsed)
+	)
 end
 log.i(string.format('Configuration initialized (%dms)', elapsed))
