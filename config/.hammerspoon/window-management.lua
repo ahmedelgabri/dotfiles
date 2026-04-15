@@ -5,10 +5,11 @@
 local M = {}
 local log = require 'log'
 
--- https://github.com/wincent/wincent/blob/a33430e43464842c067016e507ab91abd6569948/roles/dotfiles/files/.hammerspoon/init.lua
-local lastSeenChain = nil
-local lastSeenWindow = nil
-local lastSeenAt = nil
+local state = {
+	lastSeenChain = nil,
+	lastSeenWindow = nil,
+	lastSeenAt = 0,
+}
 
 hs.grid.ui.textSize = 24
 hs.grid.ui.fontName = 'PragmataPro Mono'
@@ -38,51 +39,78 @@ M.grid = {
 	centeredSmall = '4,4 4x4',
 }
 
--- Chain the specified movement commands.
---
--- This is like the 'chain' feature in Slate, but with a couple of enhancements:
---
---  - Chains always start on the screen the window is currently on.
---  - A chain will be reset after 2 seconds of inactivity, or on switching from
---    one chain to another, or on switching from one app to another, or from one
---    window to another.
-local chain = nil
+local function getFocusedWindow()
+	local win = hs.window.frontmostWindow()
+	if not win then
+		log.w 'No focused window available'
+		return nil
+	end
 
-chain = function(movements)
+	return win
+end
+
+local function withFocusedWindow(fn)
+	local win = getFocusedWindow()
+	if not win then
+		return false
+	end
+
+	return fn(win)
+end
+
+local function makeChain(movements)
 	local chainResetInterval = 2 -- seconds
 	local cycleLength = #movements
 	local sequenceNumber = 1
 
 	return function()
-		local win = hs.window.frontmostWindow()
-		local id = win:id()
-		local now = hs.timer.secondsSinceEpoch()
-		local screen = win:screen()
+		withFocusedWindow(function(win)
+			local id = win:id()
+			local now = hs.timer.secondsSinceEpoch()
+			local screen = win:screen()
+			if not screen then
+				log.w "Can't determine window screen"
+				return false
+			end
 
-		if
-			lastSeenChain ~= movements
-			or lastSeenAt < now - chainResetInterval
-			or lastSeenWindow ~= id
-		then
-			sequenceNumber = 1
-			lastSeenChain = movements
-		elseif sequenceNumber == 1 then
-			-- At end of chain, restart chain on next screen.
-			screen = screen:next()
-		end
-		lastSeenAt = now
-		lastSeenWindow = id
+			if
+				state.lastSeenChain ~= movements
+				or state.lastSeenAt == 0
+				or state.lastSeenAt < now - chainResetInterval
+				or state.lastSeenWindow ~= id
+			then
+				sequenceNumber = 1
+				state.lastSeenChain = movements
+			elseif sequenceNumber == 1 then
+				screen = screen:next() or screen
+			end
 
-		hs.grid.set(win, movements[sequenceNumber], screen)
-		sequenceNumber = sequenceNumber % cycleLength + 1
+			state.lastSeenAt = now
+			state.lastSeenWindow = id
+
+			hs.grid.set(win, movements[sequenceNumber], screen)
+			sequenceNumber = sequenceNumber % cycleLength + 1
+			return true
+		end)
 	end
+end
+
+local function moveFocusedWindowToScreen(direction)
+	withFocusedWindow(function(win)
+		if direction == 'west' then
+			win:moveOneScreenWest(false, true)
+		else
+			win:moveOneScreenEast(false, true)
+		end
+		return true
+	end)
 end
 
 function M.setup()
 	hs.hotkey.bind(
 		{ 'cmd', 'alt' },
 		'up',
-		chain {
+		makeChain {
 			M.grid.topHalf,
 			M.grid.topThird,
 			M.grid.topTwoThirds,
@@ -92,7 +120,7 @@ function M.setup()
 	hs.hotkey.bind(
 		{ 'cmd', 'alt' },
 		'right',
-		chain {
+		makeChain {
 			M.grid.rightHalf,
 			M.grid.rightThird,
 			M.grid.rightTwoThirds,
@@ -102,7 +130,7 @@ function M.setup()
 	hs.hotkey.bind(
 		{ 'cmd', 'alt' },
 		'down',
-		chain {
+		makeChain {
 			M.grid.bottomHalf,
 			M.grid.bottomThird,
 			M.grid.bottomTwoThirds,
@@ -112,7 +140,7 @@ function M.setup()
 	hs.hotkey.bind(
 		{ 'cmd', 'alt' },
 		'left',
-		chain {
+		makeChain {
 			M.grid.leftHalf,
 			M.grid.leftThird,
 			M.grid.leftTwoThirds,
@@ -122,7 +150,7 @@ function M.setup()
 	hs.hotkey.bind(
 		{ 'alt', 'cmd' },
 		'c',
-		chain {
+		makeChain {
 			M.grid.centeredBig,
 			M.grid.centeredSmall,
 		}
@@ -131,27 +159,17 @@ function M.setup()
 	hs.hotkey.bind(
 		{ 'alt', 'cmd' },
 		'f',
-		chain {
+		makeChain {
 			M.grid.fullScreen,
 		}
 	)
 
 	hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'left', function()
-		local win = hs.window.focusedWindow()
-		if not win then
-			log.w "Can't move window"
-			return
-		end
-		win:moveOneScreenWest(false, true)
+		moveFocusedWindowToScreen 'west'
 	end)
 
 	hs.hotkey.bind({ 'ctrl', 'alt', 'cmd' }, 'right', function()
-		local win = hs.window.focusedWindow()
-		if not win then
-			log.w "Can't move window"
-			return
-		end
-		win:moveOneScreenEast(false, true)
+		moveFocusedWindowToScreen 'east'
 	end)
 end
 

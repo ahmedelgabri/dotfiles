@@ -1,53 +1,138 @@
 local log = require 'log'
+local utils = require 'utils'
 
-local M = {}
--- ╔═════════════════════════════════════════════════════════════════╗
--- ║Custom location logic, I use the generated file in other scripts ║
--- ╚═════════════════════════════════════════════════════════════════╝
+local M = {
+	lastUpdateAt = 0,
+	settings = {},
+	warnedServicesDisabled = false,
+}
+
+local function isoTimestamp()
+	return os.date('!%Y-%m-%dT%H:%M:%SZ')
+end
+
+local function locationServicesEnabled()
+	local enabled = hs.location.servicesEnabled()
+	if enabled then
+		M.warnedServicesDisabled = false
+		return true
+	end
+
+	if not M.warnedServicesDisabled then
+		log.w 'Location services are disabled'
+		M.warnedServicesDisabled = true
+	end
+
+	return false
+end
+
 function M.writeLocationData(data)
-	local path = hs.fs.temporaryDirectory() .. '.location.json'
+	local payload = utils.deepCopy(data or {})
+	if type(payload.location) == 'table' then
+		payload.location.__luaSkinType = nil
+	end
+	payload.updatedAt = payload.updatedAt or isoTimestamp()
 
-	local ok, _ = pcall(hs.json.write, data, path, true, true)
+	local path = M.settings.outputPath or (hs.fs.temporaryDirectory() .. '.location.json')
+	local ok, err = pcall(hs.json.write, payload, path, true, true)
 
 	if ok then
 		log.i('Location written to ' .. path)
 	else
-		log.e('Failed to write location to ' .. path)
+		log.ef('Failed to write location to %s: %s', path, tostring(err))
 	end
+
+	return ok
 end
 
-function M.updateLocationData()
-	local loc = hs.location.get()
+function M.sanitizeLocationResult(item)
+	local payload = utils.deepCopy(item or {})
+	if type(payload.location) == 'table' then
+		payload.location.__luaSkinType = nil
+	end
+	payload.updatedAt = isoTimestamp()
+	return payload
+end
 
-	if not loc then
-		log.e 'No location found.'
-		return nil
+function M.fallbackLocationData(loc, reason)
+	local payload = {
+		location = utils.deepCopy(loc or {}),
+		locality = '',
+		error = reason,
+		updatedAt = isoTimestamp(),
+	}
+
+	if type(payload.location) == 'table' then
+		payload.location.__luaSkinType = nil
 	end
 
-	hs.location.geocoder.lookupLocation(loc, function(state, result)
-		if state then
-			-- Needed otherwise JSON serialization fails
-			-- ERROR:   LuaSkin: Object cannot be serialised as JSON
-			-- ERROR:   LuaSkin: Failed to write object to JSON file
-			result[1].location['__luaSkinType'] = nil
+	return payload
+end
 
-			M.writeLocationData(result[1])
-		else
-			M.writeLocationData { location = loc, locality = '' }
+function M.reverseGeocode(loc, callback)
+	hs.location.geocoder.lookupLocation(loc, function(state, result)
+		if not state or type(result) ~= 'table' or type(result[1]) ~= 'table' then
+			callback(nil, 'reverse geocode failed')
+			return
 		end
+
+		callback(M.sanitizeLocationResult(result[1]))
 	end)
 end
 
-function M.setup()
-	if hs.location.servicesEnabled() then
-		hs.location.start()
-		hs.timer.doAfter(1, function()
-			M.updateLocationData()
-		end)
-		hs.location.stop()
-	else
-		log.e 'Location services disabled!n'
+function M.updateLocationData(opts)
+	opts = opts or {}
+	if not locationServicesEnabled() then
+		return false
 	end
+
+	local now = hs.timer.secondsSinceEpoch()
+	local debounceSeconds = M.settings.debounceSeconds or 0
+	if not opts.force and M.lastUpdateAt > 0 and now - M.lastUpdateAt < debounceSeconds then
+		return false
+	end
+
+	local loc = hs.location.get()
+	if not loc then
+		log.w 'No location found'
+		return false
+	end
+
+	M.lastUpdateAt = now
+	M.reverseGeocode(loc, function(result, reason)
+		if result then
+			M.writeLocationData(result)
+		else
+			M.writeLocationData(M.fallbackLocationData(loc, reason or 'reverse geocode failed'))
+		end
+	end)
+
+	return true
+end
+
+function M.scheduleUpdate(opts)
+	utils.debounce('location.update', M.settings.debounceSeconds or 0, function()
+		M.updateLocationData(opts)
+	end)
+end
+
+function M.setup(settings)
+	M.settings = settings.location or {}
+	M.lastUpdateAt = 0
+
+	if not locationServicesEnabled() then
+		return false
+	end
+
+	hs.timer.doAfter(M.settings.initialLookupDelaySeconds or 1, function()
+		M.updateLocationData { force = true, reason = 'startup' }
+	end)
+
+	return true
+end
+
+function M.stop()
+	utils.cancelDebounce 'location.update'
 end
 
 return M
