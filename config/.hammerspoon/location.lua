@@ -3,11 +3,7 @@ local utils = require 'utils'
 
 local DEFAULT_SETTINGS = {
 	outputPath = hs.fs.temporaryDirectory() .. '.location.json',
-	initialLookupDelaySeconds = 1,
 	debounceSeconds = 5,
-	startupRetryIntervalSeconds = 2,
-	startupMaxAttempts = 5,
-	startTrackingOnStartup = true,
 }
 
 local M = {
@@ -66,7 +62,7 @@ local function locationServicesEnabled()
 end
 
 local function startWarmupTracking()
-	if M.settings.startTrackingOnStartup == false or M.trackingStarted then
+	if M.trackingStarted then
 		return true
 	end
 
@@ -181,7 +177,7 @@ local function scheduleStartupUpdate(delaySeconds)
 		M.startupAttempts = M.startupAttempts + 1
 
 		local attempt = M.startupAttempts
-		local maxAttempts = M.settings.startupMaxAttempts or 5
+		local maxAttempts = 5
 		local ok = M.updateLocationData {
 			force = true,
 			reason = 'startup',
@@ -194,7 +190,7 @@ local function scheduleStartupUpdate(delaySeconds)
 		end
 
 		if attempt < maxAttempts then
-			scheduleStartupUpdate(M.settings.startupRetryIntervalSeconds or 2)
+			scheduleStartupUpdate(2)
 			return
 		end
 
@@ -221,7 +217,7 @@ function M.setup()
 	end
 
 	startWarmupTracking()
-	scheduleStartupUpdate(M.settings.initialLookupDelaySeconds or 1)
+	scheduleStartupUpdate(1)
 
 	return true
 end

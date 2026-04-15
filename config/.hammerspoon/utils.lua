@@ -4,7 +4,6 @@ local APP_SPECS = {
 	chrome = {
 		paths = {
 			'/Applications/Google Chrome.app',
-			'/Applications/Chrome.app',
 		},
 		bundleIDs = { 'com.google.Chrome' },
 	},
@@ -19,7 +18,6 @@ local APP_SPECS = {
 	safari = {
 		paths = {
 			'/Applications/Safari.app',
-			'/System/Applications/Safari.app',
 		},
 		bundleIDs = { 'com.apple.Safari' },
 	},
@@ -33,8 +31,8 @@ local APP_SPECS = {
 	},
 	x = {
 		paths = {
-			'/Applications/X.app',
 			'~/Applications/Chrome Apps.localized/X.app',
+			'/Applications/X.app',
 		},
 		bundleIDs = {},
 	},
@@ -70,12 +68,9 @@ local APP_SPECS = {
 
 local DEFAULT_BROWSER_PRIORITY = {
 	'firefox',
-	'zen',
 	'safari',
 	'chrome',
 }
-
-local CONFIG_WATCH_DEBOUNCE_SECONDS = 0.5
 
 local M = {
 	appMap = {},
@@ -294,11 +289,7 @@ function M.startConfigWatcher(paths, debounceSeconds)
 					return
 				end
 
-				M.debounce(
-					'config.reload',
-					debounceSeconds or CONFIG_WATCH_DEBOUNCE_SECONDS,
-					hs.reload
-				)
+				M.debounce('config.reload', debounceSeconds or 0.5, hs.reload)
 			end)
 			watcher:start()
 			table.insert(M.fileWatchers, watcher)

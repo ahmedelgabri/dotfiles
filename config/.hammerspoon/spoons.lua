@@ -19,8 +19,6 @@ local MANAGED_SPOONS = {
 	'URLDispatcher',
 }
 
-local URL_DISPATCHER_LOG_LEVEL = 'warning'
-
 local M = {}
 
 local function loadSpoon(name)
@@ -130,7 +128,7 @@ function M.setup()
 	if urlDispatcherConfig then
 		M.install:andUse('URLDispatcher', urlDispatcherConfig)
 		if spoon.URLDispatcher and spoon.URLDispatcher.logger then
-			spoon.URLDispatcher.logger.setLogLevel(URL_DISPATCHER_LOG_LEVEL)
+			spoon.URLDispatcher.logger.setLogLevel 'warning'
 		end
 	end
 

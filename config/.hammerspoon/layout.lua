@@ -1,13 +1,7 @@
 local log = require 'log'
 local utils = require 'utils'
 
-local DEFAULT_SETTINGS = {
-	debounceSeconds = 0.75,
-	notifyOnApply = true,
-}
-
 local M = {
-	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	state = {
 		lastSignature = nil,
 	},
@@ -93,7 +87,6 @@ function M.switchLayout()
 	local targetScreen = screens.largest or screens.main
 	if
 		targetScreen
-		and M.settings.notifyOnApply
 		and #screens.all > 1
 		and M.state.lastSignature ~= signature
 	then
@@ -109,13 +102,12 @@ function M.switchLayout()
 end
 
 function M.scheduleLayout()
-	utils.debounce('layout.switch', M.settings.debounceSeconds or 0.75, function()
+	utils.debounce('layout.switch', 0.75, function()
 		M.switchLayout()
 	end)
 end
 
 function M.setup()
-	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 	M.state.lastSignature = nil
 	M.switchLayout()
 

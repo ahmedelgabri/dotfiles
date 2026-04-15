@@ -1,24 +1,13 @@
 local location = require 'location'
 local log = require 'log'
-local utils = require 'utils'
-
-local DEFAULT_SETTINGS = {
-	notifyOnChange = true,
-	notifyInitial = false,
-}
 
 local M = {
-	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	started = false,
 }
 
 local lastNetwork = nil
 
 local function notifyNetworkChange(newNetwork)
-	if M.settings.notifyOnChange == false then
-		return
-	end
-
 	hs.notify
 		.new({
 			title = 'Wi-Fi Status',
@@ -39,7 +28,7 @@ local function handleSSIDChange()
 	local oldNetwork = lastNetwork
 	lastNetwork = newNetwork
 
-	if oldNetwork ~= nil or M.settings.notifyInitial then
+	if oldNetwork ~= nil then
 		notifyNetworkChange(newNetwork)
 	end
 
@@ -53,7 +42,6 @@ function M.start()
 		return true
 	end
 
-	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 	lastNetwork = hs.wifi.currentNetwork()
 	M.watcher = hs.wifi.watcher.new(handleSSIDChange)
 	if not M.watcher then

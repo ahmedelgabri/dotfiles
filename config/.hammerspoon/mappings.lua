@@ -3,10 +3,6 @@ local utils = require 'utils'
 
 local DEFAULT_SETTINGS = {
 	hyper = { 'shift', 'ctrl', 'alt', 'cmd' },
-	layerOverlay = {
-		enabled = true,
-		maxVisibleActions = 12,
-	},
 	reload = {
 		mods = { 'alt', 'cmd' },
 		key = 'r',
@@ -97,10 +93,6 @@ local function hideLayerOverlay()
 end
 
 local function showLayerOverlay(triggerKey, layer)
-	if M.settings.layerOverlay.enabled == false then
-		return
-	end
-
 	hideLayerOverlay()
 
 	local actionKeys = {}
@@ -114,8 +106,7 @@ local function showLayerOverlay(triggerKey, layer)
 		'esc: cancel',
 	}
 
-	local maxVisibleActions = M.settings.layerOverlay.maxVisibleActions
-		or #actionKeys
+	local maxVisibleActions = #actionKeys
 	for index, actionKey in ipairs(actionKeys) do
 		if index > maxVisibleActions then
 			table.insert(
