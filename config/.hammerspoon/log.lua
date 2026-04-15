@@ -2,53 +2,67 @@
 -- Simple logging facility.
 --
 
--- Possible values, from most to least verbose:
---
---   - verbose
---   - debug
---   - info
---   - warning (the Hammerspoon default)
---   - error
---   - nothing
---
-local logLevel = 'info'
-
-local log = hs.logger.new('ahmed', logLevel)
+local defaultLogLevel = 'info'
+local logger = hs.logger.new('ahmed', defaultLogLevel)
 
 local module = {
-	d = log.d,
-	df = log.df,
-	i = log.i,
-	w = log.w,
-	wf = log.wf,
-	e = log.e,
-	ef = log.ef,
+	d = function(...)
+		return logger.d(...)
+	end,
+	df = function(...)
+		return logger.df(...)
+	end,
+	i = function(...)
+		return logger.i(...)
+	end,
+	w = function(...)
+		return logger.w(...)
+	end,
+	wf = function(...)
+		return logger.wf(...)
+	end,
+	e = function(...)
+		return logger.e(...)
+	end,
+	ef = function(...)
+		return logger.ef(...)
+	end,
 
-	-- Convenience methods, simpler than doing this in the console:
-	--
-	--   hs.logger.setGlobalLogLevel('debug')
-	--
+	setLevel = function(level)
+		logger.setLogLevel(level)
+	end,
+	getLevel = function()
+		return logger.getLogLevel()
+	end,
+	applySettings = function(settings)
+		local level = settings and settings.log and settings.log.level
+		if level then
+			logger.setLogLevel(level)
+		end
+	end,
+
 	debug = function()
-		log.setLogLevel 'debug'
+		logger.setLogLevel 'debug'
 	end,
 	info = function()
-		log.setLogLevel 'info'
+		logger.setLogLevel 'info'
 	end,
 	verbose = function()
-		log.setLogLevel 'verbose'
+		logger.setLogLevel 'verbose'
 	end,
 	warning = function()
-		log.setLogLevel 'warning'
+		logger.setLogLevel 'warning'
 	end,
 	error = function()
-		log.setLogLevel 'error'
+		logger.setLogLevel 'error'
 	end,
 	nothing = function()
-		log.setLogLevel 'nothing'
+		logger.setLogLevel 'nothing'
 	end,
 }
 
--- Add this separately in order to avoid a syntax error.
-module['if'] = log['if']
+module['if'] = function(...)
+	return logger['if'](...)
+end
 
 return module
