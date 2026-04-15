@@ -43,6 +43,9 @@ return {
 
 	hotkeys = {
 		hyper = { 'shift', 'ctrl', 'alt', 'cmd' },
+		layerOverlay = {
+			enabled = true,
+		},
 		reload = {
 			mods = { 'alt', 'cmd' },
 			key = 'r',

@@ -2,13 +2,17 @@ local log = require 'log'
 local utils = require 'utils'
 
 local M = {
+	overlayID = nil,
 	layers = {
 		b = {
 			label = 'browse',
 			actions = {
 				m = { label = 'mail', url = 'https://fastmail.com' },
 				r = { label = 'reddit', url = 'https://reddit.com' },
-				h = { label = 'hacker news', url = 'raycast://extensions/thomas/hacker-news/frontpage' },
+				h = {
+					label = 'hacker news',
+					url = 'raycast://extensions/thomas/hacker-news/frontpage',
+				},
 				f = { label = 'facebook', url = 'https://facebook.com' },
 				y = { label = 'youtube', url = 'https://youtube.com' },
 				x = { label = 'x', url = 'https://x.com' },
@@ -64,12 +68,50 @@ local function runAction(action)
 	return false
 end
 
+local function hideLayerOverlay()
+	if M.overlayID then
+		hs.alert.closeSpecific(M.overlayID, 0)
+		M.overlayID = nil
+	end
+end
+
+local function showLayerOverlay(triggerKey, layer)
+	local layerOverlay = M.settings.hotkeys and M.settings.hotkeys.layerOverlay or {}
+	if layerOverlay.enabled == false then
+		return
+	end
+
+	hideLayerOverlay()
+
+	local actionKeys = {}
+	for actionKey in pairs(layer.actions) do
+		table.insert(actionKeys, actionKey)
+	end
+	table.sort(actionKeys)
+
+	local lines = {
+		string.format('[%s] %s', triggerKey, layer.label),
+		'esc: cancel',
+	}
+
+	for _, actionKey in ipairs(actionKeys) do
+		local action = layer.actions[actionKey]
+		table.insert(lines, string.format('%s: %s', actionKey, action.label))
+	end
+
+	M.overlayID = hs.alert.show(table.concat(lines, '\n'), nil, nil, false)
+end
+
 local function bindAction(modal, layerKey, actionKey, action)
-	modal:bind('', actionKey, safeAction(action.label, function()
-		log.i(string.format('%s + %s pressed', layerKey, actionKey))
-		runAction(action)
-		modal:exit()
-	end))
+	modal:bind(
+		'',
+		actionKey,
+		safeAction(action.label, function()
+			log.i(string.format('%s + %s pressed', layerKey, actionKey))
+			runAction(action)
+			modal:exit()
+		end)
+	)
 end
 
 local function bindLayer(triggerKey, layer, hyperKey)
@@ -78,10 +120,12 @@ local function bindLayer(triggerKey, layer, hyperKey)
 
 	function modal:entered()
 		log.i(string.format('%s mode on', layer.label))
+		showLayerOverlay(triggerKey, layer)
 	end
 
 	function modal:exited()
 		log.i(string.format('%s mode off', layer.label))
+		hideLayerOverlay()
 	end
 
 	modal:bind('', 'escape', function()
@@ -142,7 +186,11 @@ local function toggleMeetingMute()
 	local appKey, app = findMeetingApp()
 	if not appKey or not app then
 		log.w 'No supported meeting app is currently running'
-		hs.notify.show('Hammerspoon', 'Meeting mute', 'No Zoom or Meet app is running')
+		hs.notify.show(
+			'Hammerspoon',
+			'Meeting mute',
+			'No Zoom or Meet app is running'
+		)
 		return false
 	end
 
@@ -157,7 +205,8 @@ end
 
 function M.setup(settings)
 	M.settings = settings or {}
-	local hyperKey = M.settings.hotkeys and M.settings.hotkeys.hyper or { 'shift', 'ctrl', 'alt', 'cmd' }
+	local hyperKey = M.settings.hotkeys and M.settings.hotkeys.hyper
+		or { 'shift', 'ctrl', 'alt', 'cmd' }
 
 	for triggerKey, layer in pairs(M.layers) do
 		bindLayer(triggerKey, layer, hyperKey)
@@ -165,7 +214,10 @@ function M.setup(settings)
 
 	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.console, hs.openConsole)
 	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.reload, hs.reload)
-	bindHotkey(M.settings.hotkeys and M.settings.hotkeys.meetingMute, safeAction('meeting mute', toggleMeetingMute))
+	bindHotkey(
+		M.settings.hotkeys and M.settings.hotkeys.meetingMute,
+		safeAction('meeting mute', toggleMeetingMute)
+	)
 end
 
 return M
