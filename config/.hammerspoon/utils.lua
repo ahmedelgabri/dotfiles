@@ -11,9 +11,9 @@ local APP_SPECS = {
 		paths = { '/Applications/Firefox.app' },
 		bundleIDs = { 'org.mozilla.firefox' },
 	},
-	zen = {
-		paths = { '/Applications/Zen Browser.app' },
-		bundleIDs = { 'app.zen-browser.zen' },
+	helium = {
+		paths = { '/Applications/Helium.app' },
+		bundleIDs = { 'net.imput.helium' },
 	},
 	safari = {
 		paths = {

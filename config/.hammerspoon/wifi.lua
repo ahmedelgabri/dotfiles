@@ -3,9 +3,18 @@ local log = require 'log'
 
 local M = {
 	started = false,
+	state = {
+		currentNetwork = nil,
+		lastChangedAt = nil,
+		previousNetwork = nil,
+	},
 }
 
 local lastNetwork = nil
+
+local function isoTimestamp()
+	return os.date '!%Y-%m-%dT%H:%M:%SZ'
+end
 
 local function notifyNetworkChange(newNetwork)
 	hs.notify
@@ -27,14 +36,26 @@ local function handleSSIDChange()
 
 	local oldNetwork = lastNetwork
 	lastNetwork = newNetwork
+	M.state.currentNetwork = newNetwork
+	M.state.lastChangedAt = isoTimestamp()
+	M.state.previousNetwork = oldNetwork
 
 	if oldNetwork ~= nil then
 		notifyNetworkChange(newNetwork)
 	end
 
-	if location and location.scheduleUpdate then
-		location.scheduleUpdate { reason = 'wifi' }
+	if location and location.updateLocationData then
+		location.updateLocationData { reason = 'wifi' }
 	end
+end
+
+function M.getStatus()
+	return {
+		currentNetwork = M.state.currentNetwork,
+		lastChangedAt = M.state.lastChangedAt,
+		previousNetwork = M.state.previousNetwork,
+		started = M.started,
+	}
 end
 
 function M.start()
@@ -43,6 +64,9 @@ function M.start()
 	end
 
 	lastNetwork = hs.wifi.currentNetwork()
+	M.state.currentNetwork = lastNetwork
+	M.state.lastChangedAt = nil
+	M.state.previousNetwork = nil
 	M.watcher = hs.wifi.watcher.new(handleSSIDChange)
 	if not M.watcher then
 		log.e 'Failed to create Wi-Fi watcher'
@@ -61,6 +85,9 @@ function M.stop()
 	end
 
 	lastNetwork = nil
+	M.state.currentNetwork = nil
+	M.state.lastChangedAt = nil
+	M.state.previousNetwork = nil
 	M.started = false
 end
 

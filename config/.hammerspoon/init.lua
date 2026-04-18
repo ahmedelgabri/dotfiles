@@ -23,6 +23,7 @@ utils.setup()
 
 log.i 'Loading modules'
 local layout = require 'layout'
+local lifecycle = require 'lifecycle'
 local location = require 'location'
 local mappings = require 'mappings'
 local spoons = require 'spoons'
@@ -52,6 +53,9 @@ wifi.start()
 
 log.i 'Setting up layout watcher'
 layout.setup()
+
+log.i 'Setting up lifecycle watcher'
+lifecycle.setup()
 
 log.i 'Starting config watcher'
 utils.startConfigWatcher({ hs.configdir, extraModuleDir })

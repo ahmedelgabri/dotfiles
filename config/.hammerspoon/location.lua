@@ -3,11 +3,15 @@ local utils = require 'utils'
 
 local DEFAULT_SETTINGS = {
 	outputPath = hs.fs.temporaryDirectory() .. '.location.json',
-	debounceSeconds = 5,
+	minimumUpdateIntervalSeconds = 5,
 }
 
 local M = {
+	lastError = nil,
+	lastPayload = nil,
+	lastRequestReason = nil,
 	lastUpdateAt = 0,
+	lastWriteOk = nil,
 	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	startupAttempts = 0,
 	startupTimer = nil,
@@ -84,6 +88,10 @@ function M.writeLocationData(data)
 	local path = M.settings.outputPath
 	local ok, err = pcall(hs.json.write, payload, path, true, true)
 
+	M.lastPayload = utils.deepCopy(payload)
+	M.lastWriteOk = ok
+	M.lastError = payload.error
+
 	if ok then
 		log.i('Location written to ' .. path)
 	else
@@ -122,22 +130,27 @@ end
 
 function M.updateLocationData(opts)
 	opts = opts or {}
+	M.lastRequestReason = opts.reason
+
 	if not locationServicesEnabled() then
+		M.lastError = 'location services disabled'
 		return false
 	end
 
 	local now = hs.timer.secondsSinceEpoch()
-	local debounceSeconds = M.settings.debounceSeconds or 0
+	local minimumUpdateIntervalSeconds =
+		M.settings.minimumUpdateIntervalSeconds or 0
 	if
 		not opts.force
 		and M.lastUpdateAt > 0
-		and now - M.lastUpdateAt < debounceSeconds
+		and now - M.lastUpdateAt < minimumUpdateIntervalSeconds
 	then
 		return false
 	end
 
 	local loc = hs.location.get()
 	if not loc then
+		M.lastError = 'no location found'
 		if opts.reason == 'startup' then
 			log.i(
 				string.format(
@@ -199,15 +212,28 @@ local function scheduleStartupUpdate(delaySeconds)
 	end)
 end
 
-function M.scheduleUpdate(opts)
-	utils.debounce('location.update', M.settings.debounceSeconds or 0, function()
-		M.updateLocationData(opts)
-	end)
+function M.getStatus()
+	return {
+		minimumUpdateIntervalSeconds = M.settings.minimumUpdateIntervalSeconds,
+		error = M.lastError,
+		lastPayload = utils.deepCopy(M.lastPayload),
+		lastRequestReason = M.lastRequestReason,
+		lastUpdateAt = M.lastUpdateAt,
+		lastWriteOk = M.lastWriteOk,
+		outputPath = M.settings.outputPath,
+		servicesEnabled = hs.location.servicesEnabled(),
+		startupAttempts = M.startupAttempts,
+		trackingStarted = M.trackingStarted,
+	}
 end
 
 function M.setup()
 	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
+	M.lastError = nil
+	M.lastPayload = nil
+	M.lastRequestReason = nil
 	M.lastUpdateAt = 0
+	M.lastWriteOk = nil
 	M.startupAttempts = 0
 	cancelStartupTimer()
 	stopWarmupTracking()
@@ -223,7 +249,6 @@ function M.setup()
 end
 
 function M.stop()
-	utils.cancelDebounce 'location.update'
 	finishStartupWarmup()
 end
 

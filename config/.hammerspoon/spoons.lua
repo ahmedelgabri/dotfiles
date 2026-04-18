@@ -201,6 +201,32 @@ function M.getEffectiveURLDispatcherConfig()
 	return utils.deepCopy(M.buildURLDispatcherConfig())
 end
 
+function M.getStatus()
+	local runtime = M.buildURLDispatcherConfig()
+	if not runtime then
+		return {
+			setupComplete = M.setupComplete,
+			urlDispatcher = {
+				enabled = false,
+			},
+		}
+	end
+
+	return {
+		setupComplete = M.setupComplete,
+		urlDispatcher = {
+			decodeSlackRedirURLs = runtime.config.decode_slack_redir_urls,
+			decoderCount = #(runtime.config.url_redir_decoders or {}),
+			defaultHandler = runtime.config.default_handler,
+			enabled = true,
+			logLevel = runtime.log_level,
+			ruleCount = #(runtime.config.url_patterns or {}),
+			setSystemHandler = runtime.config.set_system_handler,
+			start = runtime.start,
+		},
+	}
+end
+
 function M.applyURLDispatcherConfig()
 	local runtime = M.buildURLDispatcherConfig()
 	if not runtime then

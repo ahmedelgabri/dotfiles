@@ -6,9 +6,14 @@ local M = {
 		externalBrowserPriority = nil,
 	},
 	state = {
+		lastAppliedAt = nil,
 		lastSignature = nil,
 	},
 }
+
+local function isoTimestamp()
+	return os.date '!%Y-%m-%dT%H:%M:%SZ'
+end
 
 local function getAllScreens()
 	return hs.screen.allScreens()
@@ -163,17 +168,31 @@ function M.switchLayout()
 		)
 	end
 
+	M.state.lastAppliedAt = isoTimestamp()
 	M.state.lastSignature = signature
 	return true
 end
 
-function M.scheduleLayout()
-	utils.debounce('layout.switch', 0.75, function()
-		M.switchLayout()
-	end)
+function M.getStatus()
+	local screens = resolveScreens()
+	local targetScreen = resolveTargetScreen(screens)
+	local browserBundleID, browser = resolveExternalBrowser()
+
+	return {
+		browser = browser or browserBundleID,
+		browserBundleID = browserBundleID,
+		configuredPriority = utils.deepCopy(M.config.externalBrowserPriority),
+		lastAppliedAt = M.state.lastAppliedAt,
+		lastSignature = M.state.lastSignature,
+		largestScreen = screens.largest and screens.largest:name() or nil,
+		mainScreen = screens.main and screens.main:name() or nil,
+		screenCount = #screens.all,
+		targetScreen = targetScreen and targetScreen:name() or nil,
+	}
 end
 
 function M.setup()
+	M.state.lastAppliedAt = nil
 	M.state.lastSignature = nil
 	M.switchLayout()
 
@@ -182,13 +201,12 @@ function M.setup()
 	end
 
 	M.layoutWatcher = hs.screen.watcher.newWithActiveScreen(function()
-		M.scheduleLayout()
+		M.switchLayout()
 	end)
 	M.layoutWatcher:start()
 end
 
 function M.stop()
-	utils.cancelDebounce 'layout.switch'
 	if M.layoutWatcher then
 		M.layoutWatcher:stop()
 		M.layoutWatcher = nil
