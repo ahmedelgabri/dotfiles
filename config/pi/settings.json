@@ -1,8 +1,10 @@
 {
 	"lastChangelogVersion": "0.61.1",
+	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "xhigh",
-	"defaultProvider": "anthropic",
-	"defaultModel": "claude-opus-4-6",
+	"defaultProvider": "openai-codex",
+	"defaultModel": "gpt-5.4",
+	"enabledModels": ["claude-4*", "gpt-5.*"],
 	"showHardwareCursor": true,
 	"autocompleteMaxVisible": 10,
 	"steeringMode": "one-at-a-time",
