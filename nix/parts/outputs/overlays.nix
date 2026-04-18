@@ -19,7 +19,7 @@
         owner = "zsh-users";
         repo = oldAttrs.pname;
         rev = version;
-        sha256 = "sha256-1+w0AeVJtu1EK5iNVwk3loenFuIyVlQmlw8TWliHZGI=";
+        sha256 = "sha256-KHujL1/TM5R3m4uQh2nGVC98D6MOyCgQpyFf+8gjKR0=";
       };
     });
 
@@ -29,7 +29,7 @@
         owner = "zsh-users";
         repo = oldAttrs.pname;
         rev = version;
-        sha256 = "sha256-C8ebCnNPaSPUEDVxIGIWjdOfr/MmxoBwOB/3pNCkzPc=";
+        sha256 = "sha256-JVX+gWLvcnln4pEJ/d4I7iIfWXHZ+zu8MRMGIslh/Fw=";
       };
     });
 
