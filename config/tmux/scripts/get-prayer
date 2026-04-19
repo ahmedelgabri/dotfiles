@@ -10,12 +10,17 @@ fi
 LOCATION_DATA="$TMPDIR/.location.json"
 LOCATION_ICON="$(printf '\U000F0A77')"
 
-# Validate the JSON syntax
+# When location data is available use Mawaqit (mosque-specific times),
+# otherwise fall back to Aladhan (city-level calculation).
 if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
 	latitude="$(jq -r '.location.latitude' "$LOCATION_DATA")"
 	longitude="$(jq -r '.location.longitude' "$LOCATION_DATA")"
+	city="$(jq -r '.locality' "$LOCATION_DATA")"
+	country="$(jq -r '.countryCode' "$LOCATION_DATA")"
 
-	printf "%s" "$LOCATION_ICON $(next-prayer mawaqit -latitude "$latitude" -longitude "$longitude")"
+	printf "%s" "$LOCATION_ICON $(next-prayer mawaqit \
+		-latitude "$latitude" -longitude "$longitude" \
+		-city "$city" -country "$country")"
 else
 	printf "%s" "$(next-prayer aladhan)"
 fi
