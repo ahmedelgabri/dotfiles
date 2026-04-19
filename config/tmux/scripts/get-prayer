@@ -8,12 +8,14 @@ if [[ -n "${DEBUG-}" ]]; then
 fi
 
 LOCATION_DATA="$TMPDIR/.location.json"
+LOCATION_ICON="$(printf '\U000F0A77')"
 
 # Validate the JSON syntax
 if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
-	FLAGS=$(jq -r '"-latitude \(.location.latitude) -longitude \(.location.longitude)"' "$LOCATION_DATA")
+	latitude="$(jq -r '.location.latitude' "$LOCATION_DATA")"
+	longitude="$(jq -r '.location.longitude' "$LOCATION_DATA")"
 
-	printf "%s" "󰩷 $(next-prayer mawaqit $FLAGS)"
+	printf "%s" "$LOCATION_ICON $(next-prayer mawaqit -latitude "$latitude" -longitude "$longitude")"
 else
 	printf "%s" "$(next-prayer aladhan)"
 fi

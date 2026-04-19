@@ -138,7 +138,10 @@ Examples
 }
 
 func (m mawaqit) Get_api() (shared.ApiData, error) {
-	apiToken, _ := get_token(*m.flags.Username, *m.flags.Password)
+	apiToken, err := get_token(*m.flags.Username, *m.flags.Password)
+	if err != nil {
+		return shared.ApiData{}, fmt.Errorf("failed to authenticate with Mawaqit: %w", err)
+	}
 	client := &http.Client{}
 	url := fmt.Sprintf("%s/mosque/search?lat=%s&lon=%s", base, *m.flags.Latitude, *m.flags.Longitude)
 	req, err := http.NewRequest(http.MethodGet, url, nil)

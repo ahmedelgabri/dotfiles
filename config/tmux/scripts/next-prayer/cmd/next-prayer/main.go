@@ -105,7 +105,7 @@ func main() {
 		fmt.Println(formatOutput(result))
 		return
 	default:
-		version := flag.Bool("version", false, "CLI version")
+		showVersion := flag.Bool("version", false, "CLI version")
 		help := flag.Bool("help", false, "Help!")
 
 		flag.Parse()
@@ -115,7 +115,7 @@ func main() {
 			return
 		}
 
-		if *version {
+		if *showVersion {
 			fmt.Println(version)
 			return
 		}

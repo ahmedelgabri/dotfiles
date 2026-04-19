@@ -1,19 +1,48 @@
 #!/bin/bash
 
 # https://www.githubstatus.com/api#status
-GITHUB_STATUS=$(curl -sS https://kctbh9vrtdwd.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
+
+CACHE_FILE="$TMPDIR/.tmux-github-status.tmp"
+CACHE_TTL=$((5 * 60)) # 5 minutes
+
+_fetch_status() {
+	local status
+	status=$(curl -sS --max-time 5 https://kctbh9vrtdwd.statuspage.io/api/v2/status.json | jq -r '.status.indicator')
+	printf "%s\n%s" "$status" "$(date +'%s')" >"$CACHE_FILE"
+	printf "%s" "$status"
+}
+
+_get_status() {
+	if [[ -f "$CACHE_FILE" ]]; then
+		local now epoch delta
+		now="$(date +'%s')"
+		epoch="$(tail -n 1 "$CACHE_FILE")"
+		delta="$((now - epoch))"
+		if [[ $delta -gt $CACHE_TTL ]]; then
+			_fetch_status
+		else
+			head -n 1 "$CACHE_FILE"
+		fi
+	else
+		_fetch_status
+	fi
+}
+
+GITHUB_STATUS=$(_get_status)
 
 INDICATOR="#[fg=colour237]⦁"
+ICON_GITHUB="$(printf '\uE709')"
+ICON_MAINTENANCE="$(printf '\uE20F')"
 
 case $GITHUB_STATUS in
 maj* | cri*)
-	STATUS="#[fg=red]   $INDICATOR "
+	STATUS="#[fg=red] ${ICON_GITHUB}  $INDICATOR "
 	;;
 mi*)
-	STATUS="#[fg=yellow]   $INDICATOR "
+	STATUS="#[fg=yellow] ${ICON_GITHUB}  $INDICATOR "
 	;;
 mai*)
-	STATUS="#[fg=yellow]   $INDICATOR "
+	STATUS="#[fg=yellow] ${ICON_MAINTENANCE}  $INDICATOR "
 	;;
 *)
 	STATUS=""

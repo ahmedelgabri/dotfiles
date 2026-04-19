@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 _load_weather() {
-	# check for internet connection
-	ping -q -c 1 1.1.1.1 >/dev/null && {
+	# check for weather command and internet connection
+	command -v weather >/dev/null 2>&1 || return 1
+	ping -q -c 1 -W 2 1.1.1.1 >/dev/null 2>&1 && {
 		weather "" "format=%c+%t+%h+%w+%m" >"$TMP_WEATHER_FILE"
 		printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
 	}
@@ -11,7 +12,7 @@ _load_weather() {
 # Weather data
 weather_segment() {
 	local -r TMP_WEATHER_FILE="$TMPDIR/weather.tmp"
-	local -r REFRESH_RATE=$((60 * 60)) // 60 # minutes
+	local -r REFRESH_RATE=$((60 * 60)) # seconds (1 hour)
 
 	[[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
 
@@ -28,8 +29,6 @@ weather_segment() {
 	local weather
 	weather="$(head -n 1 "$TMP_WEATHER_FILE")"
 	weather="$(echo "${weather//+/}")"
-
-	echo
 
 	printf "%s" "$weather"
 }

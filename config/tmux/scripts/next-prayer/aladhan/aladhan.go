@@ -6,7 +6,6 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-	"time"
 
 	shared "github.com/ahmedelgabri/dotfiles/config/tmux/scripts/next-prayer/shared"
 )
@@ -78,7 +77,6 @@ func (a aladahan) Get_api() (shared.ApiData, error) {
 		return shared.ApiData{}, err
 	}
 
-	rand.New(rand.NewSource(time.Now().Unix()))
 	req.Header.Add("Host", "api.aladhan.com")
 	req.Header.Add("User-Agent", agents[rand.Intn(len(agents))])
 
