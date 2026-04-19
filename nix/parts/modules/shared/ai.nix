@@ -27,14 +27,14 @@ let
       '';
 
       home.file = {
-        ".agents/AGENTS.md".source = ../../../../config/claude/CLAUDE.md;
+        ".agents/AGENTS.md".source = ../../../../config/claude/CLAUDE-template.md;
 
         ".agents/skills" = {
           recursive = true;
           source = ../../../../config/claude/skills;
         };
 
-        ".claude/CLAUDE.md".source = ../../../../config/claude/CLAUDE.md;
+        ".claude/CLAUDE.md".source = ../../../../config/claude/CLAUDE-template.md;
 
         ".claude/agents" = {
           recursive = true;
