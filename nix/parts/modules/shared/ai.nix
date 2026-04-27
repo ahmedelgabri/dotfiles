@@ -1,5 +1,17 @@
 let
   module = {
+    darwin = {
+      pkgs,
+      ...
+    }: {
+      config = {
+        homebrew.casks = ["tart"];
+        my.user.packages = with pkgs; [
+          sb
+        ];
+      };
+    };
+
     generic = {
       pkgs,
       lib,
@@ -73,6 +85,7 @@ let
 in {
   flake = {
     modules = {
+      darwin.ai = module.darwin;
       generic.ai = module.generic;
       homeManager.ai = module.homeManager;
     };

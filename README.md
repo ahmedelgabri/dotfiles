@@ -42,7 +42,7 @@ application configuration in [config/](./config/). In practice it manages:
 | macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                           |
 | Mail and communication  | aerc, isync/mbsync, notmuch, msmtp, and pass                                                      |
 | Notes and media         | zk, mpv, and yt-dlp                                                                               |
-| AI / agent tooling      | Claude, Pi, Codex, OpenCode, and related llm-agents tooling/config                                |
+| AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                          |
 
 ## Supported targets
 
@@ -188,6 +188,9 @@ Nix and/or Home Manager support for GUI applications on macOS is still a bit
 awkward, especially around symlinking into `Applications/`. Homebrew is still
 managed declaratively here, but it is installed and controlled through
 [`nix-homebrew`][nix-homebrew] rather than manually.
+
+It also covers a few macOS-only dependencies that are awkward to source through
+Nix alone, such as `Tart`, which backs the `sb` sandbox helper.
 
 ## Machine-local configuration
 
