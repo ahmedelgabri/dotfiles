@@ -78,6 +78,8 @@ let
                   # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
                   FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
                   GATSBY_TELEMETRY_DISABLED = "1";
+                  # See: https://cli.github.com/telemetry
+                  GH_TELEMETRY = "false";
                   GITHUB_USER = config.my.github_username;
                   # https://github.blog/2022-04-12-git-security-vulnerability-announced/
                   GIT_CEILING_DIRECTORIES = dirOf home;
