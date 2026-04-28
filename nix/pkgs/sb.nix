@@ -210,7 +210,10 @@ in
       }
 
       find_project() {
-        local dir="$PWD"
+        local dir
+        local start
+        dir="$(pwd -P)"
+        start="$dir"
         PROJECT_ROOT=""
         while [ "$dir" != "/" ]; do
           if [ -f "$dir/.sandboxrc" ] || [ -d "$dir/.jj" ] || [ -e "$dir/.git" ]; then
@@ -220,7 +223,7 @@ in
           dir="$(dirname "$dir")"
         done
         if [ -z "$PROJECT_ROOT" ]; then
-          PROJECT_ROOT="$PWD"
+          PROJECT_ROOT="$start"
         fi
         set_project_paths
       }
