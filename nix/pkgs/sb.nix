@@ -114,6 +114,13 @@
       chsh -s /usr/bin/zsh admin
       systemctl enable ssh
 
+      mkdir -p /etc/ssh/sshd_config.d
+      printf '%s\n' \
+        'AcceptEnv ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN OPENAI_API_KEY LANG LC_*' \
+        'StreamLocalBindUnlink yes' \
+        > /etc/ssh/sshd_config.d/sandbox.conf
+      sshd -t
+
       # Ensure ~/.local/bin (where claude.ai/install.sh lands) is on PATH
       # for both interactive and login shells.
       for f in /home/admin/.zshrc /home/admin/.zprofile /home/admin/.profile; do
