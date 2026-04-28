@@ -10,7 +10,6 @@
   in {
     networking = {hostName = "alcantara";};
 
-
     home-manager.users."${darwinConfig.my.username}" = {config, ...}: {
       home.activation.syncPiAgentSettings = config.lib.dag.entryAfter ["writeBoundary"] ''
         BK="${config.xdg.configHome}/pi/agent/settings.json.bk"
@@ -23,6 +22,7 @@
 
       xdg.configFile = {
         "pi/agent/settings.json.bk".source = ../../../../config/pi/settings.json;
+        "pi/agent/extensions".source = ../../../../config/pi/agent/extensions;
       };
     };
 

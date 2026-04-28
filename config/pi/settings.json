@@ -1,5 +1,4 @@
 {
-	"lastChangelogVersion": "0.61.1",
 	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "xhigh",
 	"defaultProvider": "openai-codex",
