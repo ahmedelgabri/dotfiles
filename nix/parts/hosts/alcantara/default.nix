@@ -23,6 +23,7 @@
       xdg.configFile = {
         "pi/agent/settings.json.bk".source = ../../../../config/pi/settings.json;
         "pi/agent/extensions".source = ../../../../config/pi/agent/extensions;
+        "pi/agent/AGENTS.md".source = ../../../../config/pi/agent/AGENTS.md;
       };
     };
 
