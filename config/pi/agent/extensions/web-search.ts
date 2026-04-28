@@ -12,7 +12,7 @@ import {
 	truncateHead,
 	withFileMutationQueue,
 } from '@mariozechner/pi-coding-agent'
-import {Type} from '@sinclair/typebox'
+import {Type} from 'typebox'
 
 const EXA_MCP_URL = 'https://mcp.exa.ai/mcp'
 const DEFAULT_RESULT_LIMIT = 5
