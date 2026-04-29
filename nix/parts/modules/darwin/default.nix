@@ -21,6 +21,11 @@ let
       user = config.my.username;
     };
 
+    environment.variables = {
+      # Let Homebrew use system Git, the Nix Git in PATH does not use macOS trust store.
+      HOMEBREW_GIT_PATH = "/usr/bin/git";
+    };
+
     homebrew = {
       enable = true;
       global = {
