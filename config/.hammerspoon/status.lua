@@ -2,6 +2,7 @@ local layout = require 'layout'
 local lifecycle = require 'lifecycle'
 local location = require 'location'
 local log = require 'log'
+local prayer = require 'prayer'
 local spoons = require 'spoons'
 local utils = require 'utils'
 local wifi = require 'wifi'
@@ -20,7 +21,7 @@ end
 local function safeCall(label, fn)
 	local ok, result = xpcall(fn, debug.traceback)
 	if not ok then
-		log.ef("Status %s failed: %s", label, result)
+		log.ef('Status %s failed: %s', label, result)
 		return nil
 	end
 	return result
@@ -76,6 +77,19 @@ local function lifecycleSummary(lifecycleStatus)
 	)
 end
 
+local function prayerSummary(prayerStatus)
+	if prayerStatus.error then
+		return 'error: ' .. prayerStatus.error
+	end
+
+	local nextPrayer = prayerStatus.nextPrayer or {}
+	if nextPrayer.label and nextPrayer.time then
+		return string.format('%s %s', nextPrayer.label, nextPrayer.time)
+	end
+
+	return 'unknown'
+end
+
 local function buildSnapshot()
 	local layoutStatus = safeCall('layout status', function()
 		return layout.getStatus()
@@ -85,6 +99,9 @@ local function buildSnapshot()
 	end) or {}
 	local locationStatus = safeCall('location status', function()
 		return location.getStatus()
+	end) or {}
+	local prayerStatus = safeCall('prayer status', function()
+		return prayer.getStatus()
 	end) or {}
 	local spoonsStatus = safeCall('spoons status', function()
 		return spoons.getStatus()
@@ -101,10 +118,12 @@ local function buildSnapshot()
 		log = {
 			level = log.getLevel(),
 		},
+		prayer = prayerStatus,
 		spoons = spoonsStatus,
 		summary = {
 			lifecycle = lifecycleSummary(lifecycleStatus),
 			location = locationSummary(locationStatus),
+			prayer = prayerSummary(prayerStatus),
 			urlDispatcher = urlDispatcherSummary(spoonsStatus),
 			wifi = wifiStatus.currentNetwork or 'disconnected',
 		},

@@ -26,6 +26,7 @@ local layout = require 'layout'
 local lifecycle = require 'lifecycle'
 local location = require 'location'
 local mappings = require 'mappings'
+local prayer = require 'prayer'
 local spoons = require 'spoons'
 local wifi = require 'wifi'
 local window = require 'window-management'
@@ -48,6 +49,9 @@ window.setup()
 log.i 'Setting up location'
 location.setup()
 
+log.i 'Setting up prayer menu'
+prayer.setup()
+
 log.i 'Starting Wi-Fi watcher'
 wifi.start()
 
@@ -58,7 +62,7 @@ log.i 'Setting up lifecycle watcher'
 lifecycle.setup()
 
 log.i 'Starting config watcher'
-utils.startConfigWatcher({ hs.configdir, extraModuleDir })
+utils.startConfigWatcher { hs.configdir, extraModuleDir }
 
 local elapsed = math.floor((hs.timer.absoluteTime() - start) / 1000000)
 hs.alert 'Config loaded'

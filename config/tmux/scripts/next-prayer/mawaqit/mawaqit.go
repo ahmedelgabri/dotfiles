@@ -309,5 +309,12 @@ func (m mawaqit) GetAPI() (shared.ApiData, error) {
 			Maghrib: times[4],
 			Isha:    times[5],
 		},
+		Mosque: &shared.MosqueInfo{
+			UUID:            mosque.UUID,
+			Name:            mosque.Name,
+			Label:           mosque.Label,
+			Slug:            mosque.Slug,
+			AssociationName: mosque.AssociationName,
+		},
 	}, nil
 }

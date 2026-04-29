@@ -40,8 +40,12 @@ _: {
         };
       };
 
-    packages = pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
-      inherit (pkgs) sb;
-    };
+    packages =
+      {
+        inherit (pkgs) next-prayer;
+      }
+      // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+        inherit (pkgs) sb;
+      };
   };
 }

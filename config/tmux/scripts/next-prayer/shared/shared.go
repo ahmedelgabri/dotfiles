@@ -25,8 +25,17 @@ type Output struct {
 	TimeRemaining int
 }
 
+type MosqueInfo struct {
+	UUID            string `json:"uuid,omitempty"`
+	Name            string `json:"name,omitempty"`
+	Label           string `json:"label,omitempty"`
+	Slug            string `json:"slug,omitempty"`
+	AssociationName string `json:"associationName,omitempty"`
+}
+
 type ApiData struct {
-	Timings AllTimes `json:"timings"`
+	Timings AllTimes    `json:"timings"`
+	Mosque  *MosqueInfo `json:"mosque,omitempty"`
 }
 
 type Source interface {

@@ -182,7 +182,9 @@ automatically invalidated when:
 - A new day starts
 - The user's location changes (e.g. travelling)
 
-Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json`.
+Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json`. Mawaqit cache files also include selected mosque metadata.
+
+The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the current location to show all prayer times, display the mosque name when cached by Mawaqit, notify at prayer time, check the next prayer row, and show its `(-hh:mm)` remaining time; it does not fetch prayer times itself.
 
 ## tmux integration
 
