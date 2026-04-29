@@ -14,10 +14,11 @@ vim.api.nvim_create_autocmd('UIEnter', {
 		local defaults = require 'fzf-lua.defaults'
 		local utils = require '_.utils'
 
-		local function log_cmd(fallback, extra)
-			return vim.env.VIM_FZF_LOG
-					and 'git log ' .. vim.env.VIM_FZF_LOG .. ' ' .. (extra or '')
-				or fallback
+		-- Keep this in sync with `git config alias.l`.
+		local git_log_args = [[--color=always --graph --pretty=format:"%C(blue)%h %Creset- %C(green)%>(12)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d" --date=auto:human]]
+
+		local function log_cmd(extra)
+			return 'git log ' .. git_log_args .. (extra and (' ' .. extra) or '')
 		end
 
 		require('fzf-lua').setup {
@@ -89,10 +90,10 @@ vim.api.nvim_create_autocmd('UIEnter', {
 				},
 			},
 			commits = {
-				cmd = log_cmd(defaults.defaults.git.commits.cmd),
+				cmd = log_cmd(),
 			},
 			bcommits = {
-				cmd = log_cmd(defaults.defaults.git.bcommits.cmd, '{file}'),
+				cmd = log_cmd('{file}'),
 			},
 		}
 

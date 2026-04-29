@@ -18,6 +18,39 @@ let
         inherit (config.home-manager.users."${config.my.username}") xdg;
 
         local_zshrc = "${hostConfigHome}/zshrc";
+
+        mkExportedShellVars = vars:
+          lib.concatLines (lib.mapAttrsToList (name: value: "export ${lib.toShellVar name value}") vars);
+
+        mkRawExportedShellVars = vars:
+          lib.concatLines (lib.mapAttrsToList (name: value: "export ${name}=${value}") vars);
+
+        fzfPreviewCommand = "COLORTERM=truecolor previewer {}";
+        fzfCtrlTCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
+
+        zshInteractiveLocalVars = {
+          CDPATH = ".:${home}:${home}/${devFolder}";
+          KEYTIMEOUT = "1";
+          SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
+        };
+
+        zshInteractiveExportedVars = {
+          EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
+          EZA_ICON_SPACING = "2";
+          FZF_PREVIEW_COMMAND = fzfPreviewCommand;
+          FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
+          FZF_ALT_C_COMMAND = "${fzfCtrlTCommand} --type d .";
+          FZF_DEFAULT_COMMAND = "${fzfCtrlTCommand} --type f";
+          FZF_ALT_C_OPTS = "--preview='(${fzfPreviewCommand}) 2> /dev/null' --walker-skip .git,node_modules";
+          FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
+          FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})' --walker-skip .git,node_modules";
+          FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
+        };
+
+        vividTheme = ../../../../config/vivid/theme.yml;
+        zshInteractiveRawExportedVars = {
+          LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ${vividTheme})"'';
+        };
       in {
         config = lib.mkMerge [
           {
@@ -59,24 +92,12 @@ let
                   ADBLOCK = "true";
                   AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
                   AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
-                  CDPATH = ".:~:~/${devFolder}";
                   COLORTERM = "truecolor";
                   COMPANY = company;
                   DOCKER_CONFIG = "${xdg.configHome}/docker";
                   DOTFILES = "$HOME/.dotfiles";
                   DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
                   ELINKS_CONFDIR = "${xdg.configHome}/elinks";
-                  EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
-                  EZA_ICON_SPACING = "2";
-                  FZF_ALT_C_COMMAND = "${FZF_CTRL_T_COMMAND} --type d .";
-                  FZF_ALT_C_OPTS = "--preview='(${FZF_PREVIEW_COMMAND}) 2> /dev/null' --walker-skip .git,node_modules";
-                  FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-                  FZF_CTRL_T_COMMAND = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
-                  FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${FZF_PREVIEW_COMMAND})' --walker-skip .git,node_modules";
-                  FZF_DEFAULT_COMMAND = "${FZF_CTRL_T_COMMAND} --type f";
-                  FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
-                  # https://github.com/sharkdp/bat/issues/634#issuecomment-524525661
-                  FZF_PREVIEW_COMMAND = "COLORTERM=truecolor previewer {}";
                   GATSBY_TELEMETRY_DISABLED = "1";
                   # See: https://cli.github.com/telemetry
                   GH_TELEMETRY = "false";
@@ -86,24 +107,18 @@ let
                   HOMEBREW_INSTALL_BADGE = "⚽️";
                   HOMEBREW_NO_ANALYTICS = "1";
                   HOST_CONFIGS = "${hostConfigHome}";
-                  KEYTIMEOUT = "1";
                   KITTY_LISTEN_ON = "unix:/tmp/kitty";
                   # Set the default Less options.
                   # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
                   # Remove -X and -F (exit if the content fits on one screen) to enable it.
                   LESS = "-F -g -i -M -R -S -w -X";
                   # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
-                  LS_COLORS = "$(${lib.getExe pkgs.vivid} generate ~/.config/vivid/theme.yml)";
                   NEXT_TELEMETRY_DISABLED = "1";
                   NOTES_DIR = "${PERSONAL_STORAGE}/notes";
                   PAGER = "less";
                   PERSONAL_STORAGE = "$HOME/Sync";
                   PROJECTS = "$HOME/${devFolder}/personal/dev";
                   RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
-                  # Better spell checking & auto correction prompt
-                  SHELL = "${pkgs.zsh}/bin/zsh";
-                  SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
-                  VIM_FZF_LOG = ''"$(${lib.getExe pkgs.git} config --get alias.l 2>/dev/null | awk '{$1=""; print $0;}' | tr -d '\r')"'';
                   ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
                   ZDOTDIR = "${xdg.configHome}/zsh";
                   # I use a single zk notes dir, so set it and forget
@@ -284,24 +299,31 @@ let
 
                       # zmodload zsh/zprof
 
-                       PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
-                       # Arrays in zsh starts from 1
-                       export PURE_PROMPT_SYMBOL=${"$"}{PROMPT_SYMBOLS[${"$"}RANDOM % ${"$"}{#PROMPT_SYMBOLS[@]} + 1]}
-
-                       zstyle :prompt:pure:suspended_jobs color 008
-                       zstyle :prompt:pure:git:branch color blue
-                       zstyle :prompt:pure:git:arrow color blue
-                       zstyle :prompt:pure:git:stash color blue
-                       zstyle :prompt:pure:git:dirty color red
-                       zstyle :prompt:pure:git:action color 003
-                       zstyle :prompt:pure:prompt:success color 003
-                       zstyle :prompt:pure:path color 242
-                       zstyle :prompt:pure:git:stash show yes
-                       zstyle :prompt:pure:environment:nix-shell show no
-                       zstyle :prompt:pure:git:fetch only_upstream yes
-
                       # This is not set by nix-darwin so I have to set it myself https://github.com/nix-darwin/nix-darwin/blob/e95de00a471d07435e0527ff4db092c84998698e/modules/programs/zsh/default.nix#L204-L208
                       export HISTFILESIZE=${"$"}HISTSIZE
+
+                      # Keep zsh-only behavior and runtime-generated values in
+                      # interactive startup so non-interactive shells inherit a
+                      # smaller, static environment.
+                      ${lib.toShellVars zshInteractiveLocalVars}
+                      ${mkExportedShellVars zshInteractiveExportedVars}
+                      ${mkRawExportedShellVars zshInteractiveRawExportedVars}
+
+                      PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
+                      # Arrays in zsh starts from 1
+                      export PURE_PROMPT_SYMBOL=${"$"}{PROMPT_SYMBOLS[${"$"}RANDOM % ${"$"}{#PROMPT_SYMBOLS[@]} + 1]}
+
+                      zstyle :prompt:pure:suspended_jobs color 008
+                      zstyle :prompt:pure:git:branch color blue
+                      zstyle :prompt:pure:git:arrow color blue
+                      zstyle :prompt:pure:git:stash color blue
+                      zstyle :prompt:pure:git:dirty color red
+                      zstyle :prompt:pure:git:action color 003
+                      zstyle :prompt:pure:prompt:success color 003
+                      zstyle :prompt:pure:path color 242
+                      zstyle :prompt:pure:git:stash show yes
+                      zstyle :prompt:pure:environment:nix-shell show no
+                      zstyle :prompt:pure:git:fetch only_upstream yes
 
                       autoload -U select-word-style
                       # only alphanumeric chars are considered WORDCHARS
