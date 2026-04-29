@@ -36,6 +36,11 @@ let
       '';
 
       home.file = {
+        ".agents/skills" = {
+          recursive = true;
+          source = ../../../../config/claude/skills;
+        };
+
         ".claude/CLAUDE.md".source = ../../../../config/claude/CLAUDE-template.md;
 
         ".claude/agents" = {
