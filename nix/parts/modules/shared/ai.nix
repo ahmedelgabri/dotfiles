@@ -1,15 +1,6 @@
 let
   module = {
-    darwin = {pkgs, ...}: {
-      config = {
-        homebrew.casks = ["tart"];
-        my.user.packages = with pkgs; [
-          sb
-        ];
-      };
-    };
-
-    generic = {
+    commonModule = {
       pkgs,
       lib,
       ...
@@ -76,12 +67,25 @@ let
         ".claude/settings.json.bk".source = ../../../../config/claude/settings.json;
       };
     };
+    darwin = {pkgs, ...}: {
+      imports = [module.commonModule];
+      config = {
+        homebrew.brews = ["cirruslabs/cli/tart"];
+        my.user.packages = with pkgs; [
+          sb
+        ];
+      };
+    };
+
+    nixos = {...}: {
+      imports = [module.commonModule];
+    };
   };
 in {
   flake = {
     modules = {
       darwin.ai = module.darwin;
-      generic.ai = module.generic;
+      nixos.ai = module.nixos;
       homeManager.ai = module.homeManager;
     };
   };
