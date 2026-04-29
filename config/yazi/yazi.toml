@@ -14,10 +14,10 @@ max_height = 1964 # default = 900
 image_delay = 0
 
 [plugin]
-prepend_previewers = [{ name = "*.md", run = "glow" }]
+prepend_previewers = [{ url = "*.md", run = "glow" }]
 prepend_fetchers = [
-  { id = "git", name = "*", run = "git" },
-  { id = "git", name = "*/", run = "git" },
+  { url = "*", run = "git", group = "git" },
+  { url = "*/", run = "git", group = "git" },
 ]
 
 [opener]
@@ -29,7 +29,7 @@ play = [
 
 [open]
 prepend_rules = [
-  { name = "*.{ass,srt,ssa,sty,sup,vtt}", use = [
+  { url = "*.{ass,srt,ssa,sty,sup,vtt}", use = [
     "subtitle",
     "edit",
   ] },
