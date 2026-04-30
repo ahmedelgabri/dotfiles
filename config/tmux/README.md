@@ -176,13 +176,13 @@ theme. Accent colors:
 
 ## Terminal Support
 
-Explicit overrides are configured for:
+Explicit terminal features and overrides are configured for:
 
-| Terminal | Override                     |
-| -------- | ---------------------------- |
-| All      | RGB colour, undercurl/style  |
-| Kitty    | Blinking text (`\E[5m`)      |
-| Ghostty  | Overline (`\E[53m`/`\E[55m`) |
+| Terminal | Support                                                                      |
+| -------- | ---------------------------------------------------------------------------- |
+| All      | RGB colour, undercurl/style                                                  |
+| Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)                    |
+| Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`)               |
 
 Escape sequence passthrough is enabled (`allow-passthrough on`) for base16-shell
 theming and yazi image previews.
