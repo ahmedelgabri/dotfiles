@@ -1,0 +1,1150 @@
+#!/usr/bin/env python3
+# Open Kitty file URLs in the nearest running Neovim instance without creating a
+# new Kitty window/tab/overlay or a new Neovim process.
+#
+# This is the target of config/kitty/open-actions.conf. Kitty launches it as a
+# background process and passes the clicked URL, plus the active Kitty window id
+# when available. If no id is provided, the script asks Kitty for the focused
+# window id. The script accepts both forms:
+#
+#   kitty-open-in-nvim file:///path/to/file#12:34
+#   kitty-open-in-nvim <kitty-window-id> file:///path/to/file#12:34
+#
+# URL parsing supports the link shapes normally emitted by tools and compiler
+# output:
+#
+#   file:///tmp/example.lua#12
+#   file:///tmp/example.lua#12:34
+#   file:///tmp/example.lua#L12C34
+#   file:///tmp/example.lua#line=12&column=34
+#   /tmp/example.lua:12:34
+#
+# High-level flow:
+#
+#   Kitty click
+#       |
+#       v
+#   parse URL -> absolute path + optional line/column
+#       |
+#       v
+#   find source context
+#       |
+#       +-- inside tmux, or clicked Kitty window belongs to a tmux client
+#       |       |
+#       |       v
+#       |   score tmux panes by distance from the source pane
+#       |       |
+#       |       v
+#       |   try cached pane -> Neovim RPC socket
+#       |       |
+#       |       +-- cache hit: send RPC and focus tmux pane
+#       |       |
+#       |       +-- cache miss/stale:
+#       |              inspect pane processes -> find Neovim PID -> find socket -> send RPC -> cache -> focus pane
+#       |
+#       +-- no tmux context
+#               |
+#               v
+#           inspect Kitty windows with `kitty @ ls`
+#               |
+#               v
+#           score windows by tab/window order from the clicked window
+#               |
+#               v
+#           try cached window -> Neovim RPC socket
+#               |
+#               +-- cache hit: send RPC and focus Kitty window
+#               |
+#               +-- cache miss/stale:
+#                      find Neovim PID -> find socket -> send RPC -> cache -> focus Kitty window
+#
+# Neovim already starts an RPC server and exposes its address in v:servername.
+# On Unix that default address is a generated socket path containing the real
+# Neovim server PID, for example:
+#
+#   $TMPDIR/nvim.$USER/<random>/nvim.<pid>.0
+#
+# Some launchers wrap Neovim. For example, the process attached to the terminal
+# can be a wrapper while the real `nvim --embed ...` child owns v:servername.
+# For that reason this script builds a process table once, follows descendants
+# of terminal/Kitty foreground processes, and then searches for sockets matching
+# each Neovim PID. Instances started with `nvim --listen <addr>` are also
+# supported by reading their command line.
+#
+# Opening the file is done by speaking Neovim's msgpack-RPC protocol directly
+# over the socket and evaluating a small expression equivalent to:
+#
+#   :drop {file}
+#   :call cursor(line, column)
+#   :normal! zvzz
+#
+# Direct RPC avoids spawning `nvim --server --remote-expr` for every click. A
+# small runtime cache maps tmux panes and Kitty windows to Neovim sockets, so the
+# warm path is usually: parse URL -> read cache -> one RPC request -> focus.
+"""Open Kitty file URLs in the closest Neovim instance."""
+
+from __future__ import annotations
+
+import getpass
+import json
+import os
+import re
+import shlex
+import shutil
+import socket
+import subprocess
+import sys
+from collections.abc import Mapping
+from dataclasses import dataclass
+from pathlib import Path
+from typing import NoReturn, cast
+from urllib.parse import parse_qs, unquote, urlsplit
+
+EXTRA_PATHS = (
+    "/run/current-system/sw/bin",
+    "/opt/homebrew/bin",
+    "/usr/local/bin",
+    "/usr/bin",
+    "/bin",
+    "/usr/sbin",
+    "/sbin",
+)
+os.environ["PATH"] = ":".join((*EXTRA_PATHS, os.environ.get("PATH", "")))
+VIM_PATTERN = re.compile(r"^(?:\S+/)?g?\.?(?:view|l?n?vim?x?)(?:diff)?(?:-wrapped)?$")
+
+
+@dataclass(frozen=True)
+class Pane:
+    session_id: str
+    window_id: str
+    pane_id: str
+    window_index: int
+    pane_index: int
+    left: int
+    top: int
+    width: int
+    height: int
+    current_path: str
+    current_command: str
+    tty: str
+
+    @property
+    def target(self) -> str:
+        return f"{self.session_id}:{self.window_id}.{self.pane_id}"
+
+    @property
+    def tty_name(self) -> str:
+        return self.tty.removeprefix("/dev/")
+
+    @property
+    def center(self) -> tuple[float, float]:
+        return (self.left + self.width / 2, self.top + self.height / 2)
+
+
+@dataclass(frozen=True)
+class Process:
+    pid: int
+    ppid: int
+    state: str
+    tty: str
+    command: str
+
+
+@dataclass(frozen=True)
+class KittyWindow:
+    id: int
+    os_window_id: int
+    tab_id: int
+    tab_index: int
+    window_index: int
+    cwd: str
+    pids: tuple[int, ...]
+
+
+def command(name: str, fallback: str | None = None) -> str:
+    found = shutil.which(name)
+    if found:
+        return found
+    if fallback and Path(fallback).exists():
+        return fallback
+    raise RuntimeError(f"{name} was not found on PATH")
+
+
+TMUX = command("tmux")
+NVIM = command("nvim")
+KITTY = shutil.which("kitty") or (
+    "/Applications/kitty.app/Contents/MacOS/kitty"
+    if Path("/Applications/kitty.app/Contents/MacOS/kitty").exists()
+    else None
+)
+
+
+def run(args: list[str], timeout: float = 5) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        timeout=timeout,
+    )
+
+
+def die(message: str, client: str | None = None, code: int = 1) -> NoReturn:
+    if client:
+        run([TMUX, "display-message", "-c", client, f"kitty-open-in-nvim: {message}"])
+    else:
+        print(f"kitty-open-in-nvim: {message}", file=sys.stderr)
+    raise SystemExit(code)
+
+
+def first_int(*values: str | None) -> int | None:
+    for value in values:
+        if value is None:
+            continue
+        match = re.search(r"\d+", value)
+        if match:
+            return int(match.group(0))
+    return None
+
+
+def parse_fragment(
+    fragment: str, line: int | None, column: int | None
+) -> tuple[int | None, int | None]:
+    fragment = fragment.strip().lstrip("#")
+    if not fragment:
+        return line, column
+
+    if "=" in fragment:
+        query = parse_qs(fragment.replace(",", "&").replace(";", "&"))
+        line = line or first_int(
+            *(query.get(key, [None])[0] for key in ("line", "lnum", "row"))
+        )
+        column = column or first_int(
+            *(query.get(key, [None])[0] for key in ("column", "col", "character"))
+        )
+        if line:
+            return line, column
+
+    patterns = (
+        r"^[Ll](\d+)(?:-[Ll]?\d+)?(?:[Cc](\d+))?$",
+        r"^[Ll](\d+)(?::[Cc]?(\d+))?$",
+        r"^:(\d+)(?::(\d+))?$",
+        r"^(\d+)(?::(\d+))?$",
+    )
+    for pattern in patterns:
+        match = re.match(pattern, fragment)
+        if match:
+            return line or int(match.group(1)), column or first_int(match.group(2))
+
+    return line, column
+
+
+def parse_path_suffix(
+    path: str, line: int | None, column: int | None
+) -> tuple[str, int | None, int | None]:
+    match = re.match(r"^(.+?):(\d+)(?::(\d+))?$", path)
+    if not match:
+        return path, line, column
+
+    base = match.group(1)
+    path_exists = Path(os.path.expanduser(path)).exists()
+    base_exists = Path(os.path.expanduser(base)).exists()
+    if path_exists and not base_exists:
+        return path, line, column
+
+    return base, line or int(match.group(2)), column or first_int(match.group(3))
+
+
+def parse_url(raw: str) -> tuple[str, int | None, int | None]:
+    raw = raw.strip()
+    line = None
+    column = None
+    fragment = ""
+    query: dict[str, list[str]] = {}
+
+    if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", raw):
+        url = urlsplit(raw)
+        if url.scheme != "file":
+            raise ValueError(f"unsupported URL scheme: {url.scheme}")
+        path = unquote(url.path)
+        if url.netloc and url.netloc not in ("localhost", "127.0.0.1", "::1"):
+            path = f"//{url.netloc}{path}"
+        query = parse_qs(url.query)
+        fragment = unquote(url.fragment)
+    else:
+        path = raw
+
+    path, line, column = parse_path_suffix(path, line, column)
+    line = line or first_int(
+        *(query.get(key, [None])[0] for key in ("line", "lnum", "row"))
+    )
+    column = column or first_int(
+        *(query.get(key, [None])[0] for key in ("column", "col", "character"))
+    )
+    line, column = parse_fragment(fragment, line, column)
+    return path, line, column
+
+
+def tmux_format() -> str:
+    return "\t".join(
+        (
+            "#{session_id}",
+            "#{window_id}",
+            "#{pane_id}",
+            "#{window_index}",
+            "#{pane_index}",
+            "#{pane_left}",
+            "#{pane_top}",
+            "#{pane_width}",
+            "#{pane_height}",
+            "#{pane_current_path}",
+            "#{pane_current_command}",
+            "#{pane_tty}",
+        )
+    )
+
+
+def parse_pane(fields: list[str]) -> Pane | None:
+    if len(fields) != 12:
+        return None
+    try:
+        return Pane(
+            session_id=fields[0],
+            window_id=fields[1],
+            pane_id=fields[2],
+            window_index=int(fields[3]),
+            pane_index=int(fields[4]),
+            left=int(fields[5]),
+            top=int(fields[6]),
+            width=int(fields[7]),
+            height=int(fields[8]),
+            current_path=fields[9],
+            current_command=fields[10],
+            tty=fields[11],
+        )
+    except ValueError:
+        return None
+
+
+def pane_from_target(target: str, client: str | None = None) -> Pane | None:
+    args = [TMUX, "display-message", "-p"]
+    if client:
+        args.extend(("-c", client))
+    args.extend(("-t", target, tmux_format()))
+    result = run(args)
+    if result.returncode != 0:
+        return None
+    return parse_pane(result.stdout.rstrip("\n").split("\t"))
+
+
+def current_pane_for_client(client: str) -> Pane | None:
+    result = run([TMUX, "display-message", "-p", "-c", client, tmux_format()])
+    if result.returncode != 0:
+        return None
+    return parse_pane(result.stdout.rstrip("\n").split("\t"))
+
+
+def list_panes() -> list[Pane]:
+    result = run([TMUX, "list-panes", "-a", "-F", tmux_format()])
+    if result.returncode != 0:
+        return []
+
+    panes = []
+    for line in result.stdout.splitlines():
+        pane = parse_pane(line.split("\t"))
+        if pane is not None:
+            panes.append(pane)
+    return panes
+
+
+def list_clients() -> list[dict[str, str]]:
+    result = run(
+        [
+            TMUX,
+            "list-clients",
+            "-F",
+            "#{client_name}\t#{client_tty}\t#{client_pid}\t#{client_session}\t#{client_flags}",
+        ]
+    )
+    if result.returncode != 0:
+        return []
+
+    clients = []
+    for line in result.stdout.splitlines():
+        fields = line.split("\t")
+        if len(fields) == 5:
+            clients.append(
+                {
+                    "name": fields[0],
+                    "tty": fields[1],
+                    "pid": fields[2],
+                    "session": fields[3],
+                    "flags": fields[4],
+                }
+            )
+    return clients
+
+
+def focused_client() -> str | None:
+    focused = [
+        client for client in list_clients() if "focused" in client["flags"].split(",")
+    ]
+    if len(focused) == 1:
+        return focused[0]["name"]
+    return None
+
+
+def kitty_window_pids(window_id: str | None) -> set[int]:
+    if not KITTY or not window_id:
+        return set()
+
+    result = run([KITTY, "@", "ls", "--match", f"id:{window_id}"])
+    if result.returncode != 0 or not result.stdout.strip():
+        return set()
+
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return set()
+
+    pids: set[int] = set()
+    for os_window in data:
+        for tab in os_window.get("tabs", []):
+            for window in tab.get("windows", []):
+                if str(window.get("id")) != str(window_id):
+                    continue
+                for key in ("pid", "child_pid"):
+                    if window.get(key):
+                        pids.add(int(window[key]))
+                for process in window.get("foreground_processes", []):
+                    if isinstance(process, dict) and process.get("pid"):
+                        pids.add(int(process["pid"]))
+    return pids
+
+
+def ancestors(pid: int) -> set[int]:
+    seen: set[int] = set()
+    current = pid
+    for _ in range(32):
+        result = run(["ps", "-o", "ppid=", "-p", str(current)])
+        if result.returncode != 0:
+            break
+        try:
+            parent = int(result.stdout.strip())
+        except ValueError:
+            break
+        if parent <= 1 or parent in seen:
+            break
+        seen.add(parent)
+        current = parent
+    return seen
+
+
+def client_for_kitty(window_id: str | None, fallback: bool = False) -> str | None:
+    clients = list_clients()
+    if not clients:
+        return None
+
+    pids = kitty_window_pids(window_id)
+    for client in clients:
+        if first_int(client["pid"]) in pids:
+            return client["name"]
+
+    for client in clients:
+        pid = first_int(client["pid"])
+        if pid is not None and pids.intersection(ancestors(pid)):
+            return client["name"]
+
+    if fallback:
+        if len(clients) == 1:
+            return clients[0]["name"]
+        return focused_client()
+    return None
+
+
+def process_table() -> dict[int, Process]:
+    result = run(
+        [
+            "ps",
+            "-axo",
+            "pid=",
+            "-o",
+            "ppid=",
+            "-o",
+            "state=",
+            "-o",
+            "tty=",
+            "-o",
+            "comm=",
+        ]
+    )
+    if result.returncode != 0:
+        return {}
+
+    processes = {}
+    for line in result.stdout.splitlines():
+        parts = line.split(None, 4)
+        if len(parts) != 5:
+            continue
+        try:
+            pid = int(parts[0])
+            ppid = int(parts[1])
+        except ValueError:
+            continue
+        processes[pid] = Process(
+            pid=pid, ppid=ppid, state=parts[2], tty=parts[3], command=parts[4].strip()
+        )
+    return processes
+
+
+def child_map(processes: dict[int, Process]) -> dict[int, list[int]]:
+    children: dict[int, list[int]] = {}
+    for process in processes.values():
+        children.setdefault(process.ppid, []).append(process.pid)
+    return children
+
+
+def descendant_pids(roots: list[int], children: dict[int, list[int]]) -> list[int]:
+    descendants = []
+    queue = list(roots)
+    seen = set(queue)
+    while queue:
+        parent = queue.pop(0)
+        for child in children.get(parent, []):
+            if child in seen:
+                continue
+            seen.add(child)
+            descendants.append(child)
+            queue.append(child)
+    return descendants
+
+
+def is_running_nvim(process: Process) -> bool:
+    return bool(
+        process.state
+        and process.state[0] not in "TXZ"
+        and VIM_PATTERN.match(Path(process.command).name)
+    )
+
+
+def nvim_pids_for_roots(
+    root_pids: list[int], processes: dict[int, Process], children: dict[int, list[int]]
+) -> list[int]:
+    candidate_pids = root_pids + descendant_pids(root_pids, children)
+
+    pids = []
+    for pid in candidate_pids:
+        process = processes.get(pid)
+        if process and is_running_nvim(process) and pid not in pids:
+            pids.append(pid)
+    return pids
+
+
+def nvim_pids_for_pane(
+    pane: Pane, processes: dict[int, Process], children: dict[int, list[int]]
+) -> list[int]:
+    root_pids = [
+        process.pid
+        for process in processes.values()
+        if process.tty == pane.tty_name and is_running_nvim(process)
+    ]
+    return nvim_pids_for_roots(root_pids, processes, children)
+
+
+def process_args(pid: int) -> list[str]:
+    result = run(["ps", "-ww", "-o", "args=", "-p", str(pid)])
+    if result.returncode != 0 or not result.stdout.strip():
+        return []
+    try:
+        return shlex.split(result.stdout.strip())
+    except ValueError:
+        return []
+
+
+def listen_addresses_from_args(pid: int) -> list[str]:
+    args = process_args(pid)
+    addresses = []
+    index = 0
+    while index < len(args):
+        arg = args[index]
+        if arg == "--listen" and index + 1 < len(args):
+            addresses.append(args[index + 1])
+            index += 2
+            continue
+        if arg.startswith("--listen="):
+            addresses.append(arg.split("=", 1)[1])
+        index += 1
+    return addresses
+
+
+def run_roots() -> list[Path]:
+    user = getpass.getuser()
+    roots = []
+    if os.environ.get("XDG_RUNTIME_DIR"):
+        roots.append(Path(os.environ["XDG_RUNTIME_DIR"]))
+    if os.environ.get("TMPDIR"):
+        roots.append(Path(os.environ["TMPDIR"]) / f"nvim.{user}")
+    else:
+        roots.append(Path("/tmp") / f"nvim.{user}")
+    roots.append(Path(f"/run/user/{os.getuid()}"))
+
+    unique_roots = []
+    seen = set()
+    for root in roots:
+        if root in seen:
+            continue
+        seen.add(root)
+        unique_roots.append(root)
+    return unique_roots
+
+
+def generated_server_candidates(pid: int) -> list[str]:
+    candidates = []
+    seen = set()
+    for root in run_roots():
+        for pattern in (f"nvim.{pid}.*", f"*/nvim.{pid}.*"):
+            for candidate in sorted(root.glob(pattern)):
+                address = str(candidate)
+                if address not in seen:
+                    seen.add(address)
+                    candidates.append(address)
+    return candidates
+
+
+def cache_path() -> Path:
+    root = Path(os.environ.get("XDG_RUNTIME_DIR") or os.environ.get("TMPDIR") or "/tmp")
+    return root / f"kitty-open-in-nvim.{os.getuid()}.json"
+
+
+def read_cache() -> dict[str, str]:
+    try:
+        with cache_path().open() as file:
+            data = json.load(file)
+    except (FileNotFoundError, OSError, json.JSONDecodeError):
+        return {}
+
+    if not isinstance(data, dict):
+        return {}
+    return {
+        str(key): str(value) for key, value in data.items() if isinstance(value, str)
+    }
+
+
+def write_cache(cache: dict[str, str]) -> None:
+    path = cache_path()
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(cache, separators=(",", ":")))
+    except OSError:
+        pass
+
+
+def server_candidates(pid: int) -> list[str]:
+    generated = generated_server_candidates(pid)
+    if generated:
+        return generated
+    return listen_addresses_from_args(pid)
+
+
+def pane_score(current: Pane, pane: Pane) -> tuple[int, float, int, int]:
+    if pane.session_id == current.session_id and pane.window_id == current.window_id:
+        left, top = pane.center
+        current_left, current_top = current.center
+        return (
+            0,
+            abs(left - current_left) + abs(top - current_top),
+            pane.window_index,
+            pane.pane_index,
+        )
+    if pane.session_id == current.session_id:
+        return (
+            1,
+            abs(pane.window_index - current.window_index),
+            pane.window_index,
+            pane.pane_index,
+        )
+    return (2, pane.window_index, pane.window_index, pane.pane_index)
+
+
+def vim_quote(value: str) -> str:
+    return "'" + value.replace("'", "''") + "'"
+
+
+def nvim_open_expr(path: str, line: int | None, column: int | None) -> str:
+    line = max(line or 1, 1)
+    column = max(column or 1, 1)
+    return " . ".join(
+        (
+            f"execute('drop ' . fnameescape({vim_quote(path)}))",
+            f"execute('call cursor({line}, {column})')",
+            "execute('normal! zvzz')",
+        )
+    )
+
+
+def msgpack_pack(value: object) -> bytes:
+    if value is None:
+        return b"\xc0"
+    if value is False:
+        return b"\xc2"
+    if value is True:
+        return b"\xc3"
+    if isinstance(value, int):
+        if 0 <= value <= 0x7F:
+            return bytes([value])
+        if -32 <= value < 0:
+            return bytes([0x100 + value])
+        if 0 <= value <= 0xFF:
+            return b"\xcc" + value.to_bytes(1, "big")
+        if 0 <= value <= 0xFFFF:
+            return b"\xcd" + value.to_bytes(2, "big")
+        if 0 <= value <= 0xFFFFFFFF:
+            return b"\xce" + value.to_bytes(4, "big")
+        if 0 <= value <= 0xFFFFFFFFFFFFFFFF:
+            return b"\xcf" + value.to_bytes(8, "big")
+        if -0x80 <= value < 0:
+            return b"\xd0" + value.to_bytes(1, "big", signed=True)
+        if -0x8000 <= value < 0:
+            return b"\xd1" + value.to_bytes(2, "big", signed=True)
+        if -0x80000000 <= value < 0:
+            return b"\xd2" + value.to_bytes(4, "big", signed=True)
+        return b"\xd3" + value.to_bytes(8, "big", signed=True)
+    if isinstance(value, str):
+        data = value.encode()
+        length = len(data)
+        if length <= 31:
+            return bytes([0xA0 | length]) + data
+        if length <= 0xFF:
+            return b"\xd9" + length.to_bytes(1, "big") + data
+        if length <= 0xFFFF:
+            return b"\xda" + length.to_bytes(2, "big") + data
+        return b"\xdb" + length.to_bytes(4, "big") + data
+    if isinstance(value, bytes):
+        length = len(value)
+        if length <= 0xFF:
+            return b"\xc4" + length.to_bytes(1, "big") + value
+        if length <= 0xFFFF:
+            return b"\xc5" + length.to_bytes(2, "big") + value
+        return b"\xc6" + length.to_bytes(4, "big") + value
+    if isinstance(value, (list, tuple)):
+        length = len(value)
+        if length <= 15:
+            prefix = bytes([0x90 | length])
+        elif length <= 0xFFFF:
+            prefix = b"\xdc" + length.to_bytes(2, "big")
+        else:
+            prefix = b"\xdd" + length.to_bytes(4, "big")
+        return prefix + b"".join(msgpack_pack(item) for item in value)
+    if isinstance(value, dict):
+        length = len(value)
+        if length <= 15:
+            prefix = bytes([0x80 | length])
+        elif length <= 0xFFFF:
+            prefix = b"\xde" + length.to_bytes(2, "big")
+        else:
+            prefix = b"\xdf" + length.to_bytes(4, "big")
+        return prefix + b"".join(
+            msgpack_pack(key) + msgpack_pack(item) for key, item in value.items()
+        )
+    raise TypeError(f"cannot msgpack encode {type(value)!r}")
+
+
+class MsgpackReader:
+    def __init__(self, connection: socket.socket):
+        self.connection = connection
+
+    def read(self, length: int) -> bytes:
+        chunks = []
+        remaining = length
+        while remaining > 0:
+            chunk = self.connection.recv(remaining)
+            if not chunk:
+                raise EOFError("socket closed")
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        return b"".join(chunks)
+
+    def read_uint(self, length: int) -> int:
+        return int.from_bytes(self.read(length), "big")
+
+    def read_int(self, length: int) -> int:
+        return int.from_bytes(self.read(length), "big", signed=True)
+
+    def unpack_array(self, length: int) -> list[object]:
+        return [self.unpack() for _ in range(length)]
+
+    def unpack_map(self, length: int) -> dict[object, object]:
+        return {self.unpack(): self.unpack() for _ in range(length)}
+
+    def unpack_ext(self, length: int) -> tuple[str, int, bytes]:
+        ext_type = self.read_int(1)
+        return ("ext", ext_type, self.read(length))
+
+    def unpack(self) -> object:
+        code = self.read(1)[0]
+        if code <= 0x7F:
+            return code
+        if 0x80 <= code <= 0x8F:
+            return self.unpack_map(code & 0x0F)
+        if 0x90 <= code <= 0x9F:
+            return self.unpack_array(code & 0x0F)
+        if 0xA0 <= code <= 0xBF:
+            return self.read(code & 0x1F).decode()
+        if code >= 0xE0:
+            return code - 0x100
+
+        if code == 0xC0:
+            return None
+        if code == 0xC2:
+            return False
+        if code == 0xC3:
+            return True
+        if code == 0xC4:
+            return self.read(self.read_uint(1))
+        if code == 0xC5:
+            return self.read(self.read_uint(2))
+        if code == 0xC6:
+            return self.read(self.read_uint(4))
+        if code == 0xC7:
+            return self.unpack_ext(self.read_uint(1))
+        if code == 0xC8:
+            return self.unpack_ext(self.read_uint(2))
+        if code == 0xC9:
+            return self.unpack_ext(self.read_uint(4))
+        if code == 0xCC:
+            return self.read_uint(1)
+        if code == 0xCD:
+            return self.read_uint(2)
+        if code == 0xCE:
+            return self.read_uint(4)
+        if code == 0xCF:
+            return self.read_uint(8)
+        if code == 0xD0:
+            return self.read_int(1)
+        if code == 0xD1:
+            return self.read_int(2)
+        if code == 0xD2:
+            return self.read_int(4)
+        if code == 0xD3:
+            return self.read_int(8)
+        if code == 0xD4:
+            return self.unpack_ext(1)
+        if code == 0xD5:
+            return self.unpack_ext(2)
+        if code == 0xD6:
+            return self.unpack_ext(4)
+        if code == 0xD7:
+            return self.unpack_ext(8)
+        if code == 0xD8:
+            return self.unpack_ext(16)
+        if code == 0xD9:
+            return self.read(self.read_uint(1)).decode()
+        if code == 0xDA:
+            return self.read(self.read_uint(2)).decode()
+        if code == 0xDB:
+            return self.read(self.read_uint(4)).decode()
+        if code == 0xDC:
+            return self.unpack_array(self.read_uint(2))
+        if code == 0xDD:
+            return self.unpack_array(self.read_uint(4))
+        if code == 0xDE:
+            return self.unpack_map(self.read_uint(2))
+        if code == 0xDF:
+            return self.unpack_map(self.read_uint(4))
+        raise ValueError(f"unsupported msgpack code: 0x{code:02x}")
+
+
+def connect_nvim(address: str, timeout: float) -> socket.socket:
+    if ":" in address and not address.startswith("/"):
+        host, port = address.rsplit(":", 1)
+        connection = socket.create_connection(
+            (host or "127.0.0.1", int(port)), timeout=timeout
+        )
+    else:
+        connection = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        connection.settimeout(timeout)
+        connection.connect(address)
+    connection.settimeout(timeout)
+    return connection
+
+
+def nvim_request(
+    address: str, method: str, params: list[object], timeout: float = 0.5
+) -> object:
+    request = [0, 1, method, params]
+    with connect_nvim(address, timeout) as connection:
+        connection.sendall(msgpack_pack(request))
+        reader = MsgpackReader(connection)
+        while True:
+            response = reader.unpack()
+            if not isinstance(response, list) or len(response) < 3:
+                continue
+            if response[0] != 1 or response[1] != 1:
+                continue
+            error = response[2]
+            if error is not None:
+                raise RuntimeError(error)
+            return response[3]
+
+
+def open_in_nvim(server: str, expr: str) -> bool:
+    try:
+        nvim_request(server, "nvim_eval", [expr])
+    except (EOFError, OSError, RuntimeError, TimeoutError, ValueError):
+        return False
+    return True
+
+
+def open_in_closest_nvim(
+    current: Pane, path: str, line: int | None, column: int | None
+) -> Pane | None:
+    panes = sorted(list_panes(), key=lambda pane: pane_score(current, pane))
+    expr = nvim_open_expr(path, line, column)
+    cache = read_cache()
+
+    closest_nvim = next(
+        (pane for pane in panes if VIM_PATTERN.match(Path(pane.current_command).name)),
+        None,
+    )
+    if closest_nvim:
+        cache_key = f"tmux:{closest_nvim.pane_id}"
+        cached_server = cache.get(cache_key)
+        if cached_server and open_in_nvim(cached_server, expr):
+            return closest_nvim
+        if cached_server:
+            cache.pop(cache_key, None)
+            write_cache(cache)
+
+    processes = process_table()
+    children = child_map(processes)
+    for pane in panes:
+        if not VIM_PATTERN.match(Path(pane.current_command).name):
+            continue
+        for pid in nvim_pids_for_pane(pane, processes, children):
+            for server in server_candidates(pid):
+                if open_in_nvim(server, expr):
+                    cache[f"tmux:{pane.pane_id}"] = server
+                    write_cache(cache)
+                    return pane
+    return None
+
+
+def kitty_window_pids_from_data(window: Mapping[str, object]) -> tuple[int, ...]:
+    pids: list[int] = []
+    for key in ("pid", "child_pid"):
+        value = window.get(key)
+        if isinstance(value, int):
+            pids.append(value)
+    foreground_processes = window.get("foreground_processes", [])
+    if isinstance(foreground_processes, list):
+        for process in foreground_processes:
+            if not isinstance(process, Mapping):
+                continue
+            process_data = cast(Mapping[str, object], process)
+            pid = process_data.get("pid")
+            if isinstance(pid, int):
+                pids.append(pid)
+    return tuple(dict.fromkeys(pids))
+
+
+def focused_kitty_window_id() -> str | None:
+    if not KITTY:
+        return None
+    result = run([KITTY, "@", "ls", "--match", "state:focused"])
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+
+    for os_window in data:
+        if not isinstance(os_window, dict):
+            continue
+        for tab in os_window.get("tabs", []):
+            if not isinstance(tab, dict):
+                continue
+            for window in tab.get("windows", []):
+                if isinstance(window, dict) and isinstance(window.get("id"), int):
+                    return str(window["id"])
+    return None
+
+
+def kitty_windows() -> list[KittyWindow]:
+    if not KITTY:
+        return []
+    result = run([KITTY, "@", "ls"])
+    if result.returncode != 0 or not result.stdout.strip():
+        return []
+    try:
+        data = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return []
+
+    windows = []
+    for os_window in data:
+        if not isinstance(os_window, dict):
+            continue
+        os_window_id = int(os_window.get("id", 0))
+        for tab_index, tab in enumerate(os_window.get("tabs", [])):
+            if not isinstance(tab, dict):
+                continue
+            tab_id = int(tab.get("id", 0))
+            for window_index, window in enumerate(tab.get("windows", [])):
+                if not isinstance(window, dict) or not isinstance(
+                    window.get("id"), int
+                ):
+                    continue
+                cwd = window.get("cwd")
+                if not isinstance(cwd, str) or not cwd:
+                    cwd = os.environ.get("PWD", os.getcwd())
+                windows.append(
+                    KittyWindow(
+                        id=window["id"],
+                        os_window_id=os_window_id,
+                        tab_id=tab_id,
+                        tab_index=tab_index,
+                        window_index=window_index,
+                        cwd=cwd,
+                        pids=kitty_window_pids_from_data(window),
+                    )
+                )
+    return windows
+
+
+def kitty_window_score(
+    current: KittyWindow, window: KittyWindow
+) -> tuple[int, int, int, int]:
+    if window.os_window_id == current.os_window_id and window.tab_id == current.tab_id:
+        return (
+            0,
+            abs(window.window_index - current.window_index),
+            window.tab_index,
+            window.window_index,
+        )
+    if window.os_window_id == current.os_window_id:
+        return (
+            1,
+            abs(window.tab_index - current.tab_index),
+            window.tab_index,
+            window.window_index,
+        )
+    return (2, window.os_window_id, window.tab_index, window.window_index)
+
+
+def open_in_closest_kitty_nvim(
+    current_id: int, path: str, line: int | None, column: int | None
+) -> KittyWindow | None:
+    windows = kitty_windows()
+    current = next((window for window in windows if window.id == current_id), None)
+    if current is None:
+        return None
+
+    if not os.path.isabs(path):
+        path = os.path.abspath(os.path.join(current.cwd, path))
+
+    windows = sorted(windows, key=lambda window: kitty_window_score(current, window))
+    expr = nvim_open_expr(path, line, column)
+    cache = read_cache()
+
+    for window in windows:
+        cache_key = f"kitty:{window.id}"
+        cached_server = cache.get(cache_key)
+        if cached_server and open_in_nvim(cached_server, expr):
+            return window
+        if cached_server:
+            cache.pop(cache_key, None)
+            write_cache(cache)
+
+    processes = process_table()
+    children = child_map(processes)
+    for window in windows:
+        pids = nvim_pids_for_roots(list(window.pids), processes, children)
+        if not pids:
+            continue
+        for pid in pids:
+            for server in server_candidates(pid):
+                if open_in_nvim(server, expr):
+                    cache[f"kitty:{window.id}"] = server
+                    write_cache(cache)
+                    return window
+    return None
+
+
+def focus_pane(client: str | None, pane: Pane) -> None:
+    if client:
+        run([TMUX, "switch-client", "-c", client, "-t", pane.target])
+    else:
+        run([TMUX, "select-pane", "-t", pane.target])
+
+
+def focus_kitty_window(window: KittyWindow) -> None:
+    if KITTY:
+        run([KITTY, "@", "focus-window", "--match", f"id:{window.id}", "--no-response"])
+
+
+def source_context(kitty_window_id: str | None) -> tuple[str | None, Pane] | None:
+    tmux_pane = os.environ.get("TMUX_PANE")
+    if tmux_pane:
+        current = pane_from_target(tmux_pane)
+        if current:
+            return focused_client() or client_for_kitty(
+                kitty_window_id, fallback=True
+            ), current
+
+    client = client_for_kitty(kitty_window_id)
+    if client:
+        current = current_pane_for_client(client)
+        if current:
+            return client, current
+
+    return None
+
+
+def usage() -> None:
+    print("usage: kitty-open-in-nvim [kitty-window-id] <file-url-or-path>")
+
+
+def main(argv: list[str]) -> int:
+    if len(argv) < 2 or argv[1] in ("-h", "--help"):
+        usage()
+        return 0 if len(argv) >= 2 else 64
+
+    if len(argv) >= 3 and argv[1].isdigit():
+        kitty_window_id = argv[1]
+        raw_url = argv[2]
+    else:
+        kitty_window_id = os.environ.get("KITTY_WINDOW_ID") or focused_kitty_window_id()
+        raw_url = argv[1]
+
+    try:
+        path, line, column = parse_url(raw_url)
+    except ValueError as error:
+        die(str(error))
+
+    path = os.path.expanduser(path)
+    context = source_context(kitty_window_id)
+    if context:
+        client, current = context
+        if not os.path.isabs(path):
+            path = os.path.abspath(os.path.join(current.current_path, path))
+
+        target = open_in_closest_nvim(current, path, line, column)
+        if target is None:
+            die("no tmux Neovim pane with a live server was found", client)
+
+        focus_pane(client, target)
+        return 0
+
+    if kitty_window_id and kitty_window_id.isdigit():
+        target = open_in_closest_kitty_nvim(int(kitty_window_id), path, line, column)
+        if target:
+            focus_kitty_window(target)
+            return 0
+
+    die("no Neovim instance was found")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
