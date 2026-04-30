@@ -259,6 +259,7 @@ let
           "whatsapp"
           "telegram"
           "xdeck"
+          "handy"
         ];
       };
     };
