@@ -135,6 +135,12 @@ require('conform').setup {
 			'prettier',
 			stop_after_first = true,
 		},
+		json5 = {
+			'oxfmt',
+			'deno_fmt',
+			'prettier',
+			stop_after_first = true,
+		},
 		markdown = function(bufnr)
 			return { first(bufnr, 'oxfmt', 'prettier', 'deno_fmt'), 'injected' }
 		end,
