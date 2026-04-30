@@ -555,8 +555,23 @@ in
       cmd_list() { tart list; }
       cmd_pull() {
         if [ -n "''${SB_VM_IMAGE:-}" ]; then
+          local local_base="''${SB_VM_IMAGE##*/}"
+          local_base="''${local_base%%:*}"
+
+          if vm_running "$local_base"; then
+            err "local '$local_base' is running; stop it first."
+          fi
+
           info "Pulling $SB_VM_IMAGE..."
           tart pull "$SB_VM_IMAGE"
+
+          if vm_exists "$local_base"; then
+            info "Deleting local $local_base to replace with pulled image..."
+            tart delete "$local_base"
+          fi
+
+          info "Cloning $SB_VM_IMAGE -> $local_base..."
+          tart clone "$SB_VM_IMAGE" "$local_base"
         else
           info "Pulling $BASE_IMAGE_SOURCE..."
           tart pull "$BASE_IMAGE_SOURCE"
@@ -775,7 +790,7 @@ in
         inject       Push branches from host into VM [--force] [branch...]
         extract      Fetch and show VM changes
         apply        Fetch and apply VM changes to host (git cherry-pick or jj rebase+sign)
-        pull         Pull the latest base image from the OCI registry
+        pull         Pull remote base; refresh local clone when SB_VM_IMAGE is set
         help         Show this help
 
       Configuration (.sandboxrc in project root, or sandboxrc under \$SB_CONFIG_PATH):
