@@ -690,7 +690,6 @@ local function startCacheFetch(cachePath, force)
 		function(exitCode, stdout, stderr)
 			finishCacheFetch(cachePath, requestedAt, exitCode, stdout, stderr)
 		end,
-		nil,
 		{
 			'-lc',
 			'exec "$1"',
