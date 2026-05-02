@@ -13,10 +13,24 @@ Pack.add({
 	},
 	{ src = 'https://github.com/moyiz/blink-emoji.nvim' },
 	{ src = 'https://github.com/xzbdmw/colorful-menu.nvim' },
+	{ src = 'https://github.com/Saghen/blink.lib' },
 	{
 		src = 'https://github.com/Saghen/blink.cmp',
 		name = 'blink.cmp',
-		version = vim.version.range '1.x',
+		version = 'main',
+		data = {
+			run = function()
+				Pack.load 'blink.lib'
+
+				local ok, err = pcall(function()
+					local download = require('blink.cmp').download
+					download({ force = true, match = '*' }):wait(60000)
+				end)
+				if not ok then
+					vim.notify(err, vim.log.levels.WARN, { title = 'blink.cmp binary' })
+				end
+			end,
+		},
 	},
 }, { load = false })
 
@@ -579,7 +593,7 @@ end
 local function ensure_completion()
 	ensure_snippets()
 
-	Pack.load { 'blink-emoji.nvim', 'colorful-menu.nvim', 'blink.cmp' }
+	Pack.load { 'blink.lib', 'blink-emoji.nvim', 'colorful-menu.nvim', 'blink.cmp' }
 
 	require('blink.cmp').setup {
 		keymap = {
@@ -615,6 +629,10 @@ local function ensure_completion()
 
 		snippets = { preset = 'luasnip' },
 
+		fuzzy = {
+			implementation = 'prefer_rust',
+		},
+
 		completion = {
 			accept = {
 				auto_brackets = {
@@ -644,6 +662,9 @@ local function ensure_completion()
 							highlight = get_icon_highlight,
 						},
 						kind = {
+							-- Don't fill: only `label` should absorb slack so `kind`
+							-- stays right-aligned in a fixed column.
+							width = { fill = false },
 							highlight = get_icon_highlight,
 						},
 					},
