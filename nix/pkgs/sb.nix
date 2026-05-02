@@ -325,6 +325,67 @@ in
         export GIT_SSH_COMMAND="sshpass -p $VM_PASS ssh ''${SSH_OPTS[*]}"
         git -C "$PROJECT_ROOT" remote remove vm 2>/dev/null || true
         git -C "$PROJECT_ROOT" remote add vm "ssh://''${VM_USER}@''${ip}''${VM_REPO_PATH}"
+        # Keep the ephemeral `vm` remote out of `git remote update` /
+        # `git fetch --all`: its host key changes on every `sb reset`, and
+        # plain git doesn't inherit sb's `StrictHostKeyChecking=no`. Explicit
+        # `git fetch vm` / `git push vm` from cmd_inject/extract/apply are
+        # unaffected.
+        git -C "$PROJECT_ROOT" config remote.vm.skipDefaultUpdate true
+      }
+
+      # Install a `pre-receive` hook in the VM repo so that `sb inject --force`
+      # (which sends `--push-option=force` over the wire) can clobber the VM's
+      # uncommitted changes before receive.denyCurrentBranch=updateInstead's
+      # clean-tree check refuses the push. Non-force pushes get a friendlier
+      # "use --force" message instead of git's stock
+      # "Working directory has unstaged changes".
+      #
+      # `pre-receive` rather than `push-to-checkout` because git (through at
+      # least 2.43) does not pass GIT_PUSH_OPTION_* to `push-to-checkout`.
+      install_pre_receive_hook() {
+        local ip="$1"
+        local hook_path="$VM_REPO_PATH/.git/hooks/pre-receive"
+        sb_ssh "$ip" "rm -f $VM_REPO_PATH/.git/hooks/push-to-checkout && cat > $hook_path && chmod +x $hook_path" <<'HOOK'
+      #!/bin/sh
+      # Managed by sb. Honours a `force` push option to clobber uncommitted
+      # changes before receive.denyCurrentBranch=updateInstead's clean-tree
+      # check runs.
+      set -e
+
+      # Drain ref-update commands from stdin (one '<old> <new> <ref>' per line).
+      cat > /dev/null
+
+      force=0
+      i=0
+      while [ "$i" -lt "''${GIT_PUSH_OPTION_COUNT:-0}" ]; do
+        eval "opt=\$GIT_PUSH_OPTION_$i"
+        [ "$opt" = "force" ] && force=1
+        i=$((i + 1))
+      done
+
+      # Unborn HEAD: nothing to be dirty against; let updateInstead handle it.
+      if ! git rev-parse --verify --quiet HEAD >/dev/null; then
+        exit 0
+      fi
+
+      if git diff-index --quiet HEAD -- \
+         && git diff-index --cached --quiet HEAD --; then
+        exit 0
+      fi
+
+      if [ "$force" = 1 ]; then
+        # Reset index + working tree to HEAD without touching any refs;
+        # `git reset --hard` would try to update ORIG_HEAD/HEAD, which is
+        # forbidden inside pre-receive's quarantine environment.
+        git read-tree --reset -u HEAD
+        git clean -fdx >/dev/null
+        exit 0
+      fi
+
+      echo "Working tree has uncommitted changes; refusing push." >&2
+      echo "Use 'sb inject --force' to override." >&2
+      exit 1
+      HOOK
       }
 
       choose_clone_source() {
@@ -453,15 +514,21 @@ in
           && git init --initial-branch=$primary $VM_REPO_PATH \
           && cd $VM_REPO_PATH \
           && git config receive.denyCurrentBranch updateInstead \
+          && git config receive.advertisePushOptions true \
           && jj git init --colocate"
+        install_pre_receive_hook "$ip"
 
         if declare -f sb_provision >/dev/null 2>&1; then
           info "Running project sb_provision hook..."
           sb_provision "$ip"
         fi
 
+        # Bootstrap inject uses --force: the base image may carry a stale
+        # repo at $VM_REPO_PATH from a previous bake (git init reports
+        # "Reinitialized existing Git repository") whose working tree we
+        # want to overwrite unconditionally with the host's branches.
         info "Injecting branches..."
-        cmd_inject
+        cmd_inject --force
 
         ok "Sandbox '$VM_NAME' ready. Connect with: sb ssh"
       }
@@ -595,22 +662,14 @@ in
         ip="$(vm_ip)" || err "VM is not running"
         setup_git_remote "$ip"
 
-        local has_commits
-        has_commits=$(sb_ssh "$ip" "cd $VM_REPO_PATH && git rev-parse HEAD >/dev/null 2>&1 && echo yes || echo no")
-
-        if [ "$has_commits" = "yes" ]; then
-          if ! sb_ssh "$ip" "cd $VM_REPO_PATH && git diff --quiet HEAD && git diff --quiet --cached" 2>/dev/null; then
-            echo "Warning: VM repo has uncommitted changes."
-            read -r -p "Continue anyway? [y/N] " answer
-            if [[ ! "$answer" =~ ^[Yy]$ ]]; then
-              exit 1
-            fi
-          fi
-        fi
-
+        # Dirty-tree gating lives in the VM-side pre-receive hook installed
+        # by install_pre_receive_hook: it's the only place that can clobber
+        # the working tree before receive.denyCurrentBranch=updateInstead's
+        # clean-tree check rejects the push. `--push-option=force` carries
+        # the user's intent across the wire.
         info "Pushing ''${branches[*]} to VM..."
         if [ "$force" = true ]; then
-          git -C "$PROJECT_ROOT" push --force vm "''${branches[@]}"
+          git -C "$PROJECT_ROOT" push --push-option=force --force vm "''${branches[@]}"
         else
           if ! git -C "$PROJECT_ROOT" push vm "''${branches[@]}"; then
             echo ""
