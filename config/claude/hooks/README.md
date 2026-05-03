@@ -14,6 +14,15 @@ Universal event logger for all Claude Code hook events.
 - **Format**: JSON Lines (one JSON object per line)
 - **Fields**: `timestamp`, `event`, `project_dir`, `input`
 
+### inject-repo-info.sh
+
+- **Events**: `SessionStart`
+- **What it does**: Detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git
+  repo and emits `hookSpecificOutput.additionalContext` so Claude knows which
+  VCS to use. In Jujutsu repos it also reminds Claude to avoid raw
+  `git add`/`stage`/`history`/`commit`. Mirrors the heuristic used by
+  `config/pi/agent/extensions/jj-guard.ts`.
+
 ## Viewing Logs
 
 ```bash

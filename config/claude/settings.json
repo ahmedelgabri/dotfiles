@@ -157,6 +157,10 @@
 					{
 						"type": "command",
 						"command": "~/.claude/hooks/log-event.sh SessionStart"
+					},
+					{
+						"type": "command",
+						"command": "~/.claude/hooks/inject-repo-info.sh"
 					}
 				]
 			}
