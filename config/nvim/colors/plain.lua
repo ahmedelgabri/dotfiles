@@ -497,6 +497,7 @@ highlight('WinBarNC', { link = 'WinBar' })
 highlight('FzfLuaBorder', { link = 'Comment' })
 
 -- Render Markdown
+highlight('RenderMarkdownCode', { bg = colors.bg_very_subtle })
 highlight('RenderMarkdownH1Bg', { bg = nil })
 highlight('RenderMarkdownH2Bg', { bg = nil })
 highlight('RenderMarkdownH3Bg', { bg = nil })
