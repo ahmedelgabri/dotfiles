@@ -61,15 +61,15 @@ function M.format_diff_summary(data)
 	local t = {}
 
 	if summary.add and summary.add > 0 then
-		table.insert(t, '%#@diff.plus#+' .. summary.add .. '%*')
+		table.insert(t, '%#StatusLineDiffAdd#+' .. summary.add .. '%*')
 	end
 
 	if summary.change and summary.change > 0 then
-		table.insert(t, '%#@diff.delta#~' .. summary.change .. '%*')
+		table.insert(t, '%#StatusLineDiffChange#~' .. summary.change .. '%*')
 	end
 
 	if summary.delete and summary.delete > 0 then
-		table.insert(t, '%#@diff.minus#-' .. summary.delete .. '%*')
+		table.insert(t, '%#StatusLineDiffDelete#-' .. summary.delete .. '%*')
 	end
 
 	vim.b[data.buf].minidiff_summary_string = table.concat(t, ' ')
@@ -101,7 +101,7 @@ function M.filepath()
 	local highlight = 'User4'
 
 	if vim.bo.modified then
-		highlight = 'DiffChange'
+		highlight = 'StatusLineModified'
 	end
 
 	local line = '%#' .. highlight .. '#%f%*'

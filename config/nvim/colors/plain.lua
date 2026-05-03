@@ -17,6 +17,31 @@
 --
 --
 
+-- Pull a color from Neovim's default palette so we track upstream changes
+-- across versions. Capture BEFORE `highlight 'clear'` (below) wipes the named
+-- groups. Hardcoded hex fallback covers older Neovim or odd load orders.
+local function nvim_color(name, fallback)
+	local hl = vim.api.nvim_get_hl(0, { name = name })
+	if hl and hl.fg then
+		return string.format('#%06X', hl.fg)
+	end
+	return fallback
+end
+
+-- See :help nvim-color-palette
+local dark_red = nvim_color('NvimDarkRed', '#590008')
+local light_red = nvim_color('NvimLightRed', '#FFC0B9')
+local dark_blue = nvim_color('NvimDarkBlue', '#00378F')
+local light_blue = nvim_color('NvimLightBlue', '#A6DBFF')
+local dark_cyan = nvim_color('NvimDarkCyan', '#007373')
+local light_cyan = nvim_color('NvimLightCyan', '#8CF8F7')
+local dark_green = nvim_color('NvimDarkGreen', '#005523')
+local light_green = nvim_color('NvimLightGreen', '#B3F6C0')
+local dark_purple = nvim_color('NvimDarkMagenta', '#470045')
+local light_purple = nvim_color('NvimLightMagenta', '#FFCAFF')
+local light_yellow = nvim_color('NvimLightYellow', '#FCE094')
+local dark_yellow = nvim_color('NvimDarkYellow', '#6B5300')
+
 -- Clear highlights and reset syntax.
 vim.cmd.highlight 'clear'
 if vim.fn.exists 'syntax_on' then
@@ -43,18 +68,6 @@ local subtle_black = '#191919'
 local light_gray = '#999999'
 local lighter_gray = '#CCCCCC'
 local lightest_gray = '#E5E5E5'
-local dark_red = 'NvimDarkRed'
-local light_red = 'NvimLightRed'
-local dark_blue = 'NvimDarkBlue'
-local light_blue = 'NvimLightBlue'
-local dark_cyan = 'NvimDarkCyan'
-local light_cyan = 'NvimLightCyan'
-local dark_green = 'NvimDarkGreen'
-local light_green = 'NvimLightGreen'
-local dark_purple = 'NvimDarkMagenta'
-local light_purple = 'NvimLightMagenta'
-local light_yellow = 'NvimLightYellow'
-local dark_yellow = 'NvimDarkYellow'
 
 local themes = {
 	dark = {
@@ -79,6 +92,9 @@ local themes = {
 		red = light_red,
 		yellow = light_yellow,
 		blue = light_blue,
+		diff_add_bg = dark_green,
+		diff_delete_bg = dark_red,
+		diff_change_bg = dark_yellow,
 	},
 	light = {
 		bg = white,
@@ -87,7 +103,7 @@ local themes = {
 		norm = light_black,
 		norm_subtle = lighter_black,
 		norm_very_subtle = medium_gray,
-		visual = light_blue,
+		visual = lighter_gray,
 		cursor_line = lightest_gray,
 		constant = dark_blue,
 		comment = light_gray,
@@ -102,6 +118,9 @@ local themes = {
 		red = dark_red,
 		yellow = dark_yellow,
 		blue = dark_blue,
+		diff_add_bg = light_green,
+		diff_delete_bg = light_red,
+		diff_change_bg = light_yellow,
 	},
 }
 
@@ -113,7 +132,6 @@ highlight('Cursor', { fg = colors.bg, bg = colors.norm })
 highlight('Identifier', { link = 'Normal' })
 highlight('Function', { link = 'Identifier' })
 highlight('Type', { link = 'Normal' })
-highlight('StorageClass', { link = 'Type' })
 highlight('Structure', { link = 'Type' })
 highlight('Typedef', { link = 'Type' })
 highlight('Special', { link = 'Normal' })
@@ -122,7 +140,6 @@ highlight('Tag', { link = 'Special' })
 highlight('Delimiter', { link = 'Special' })
 highlight('SpecialComment', { link = 'Special' })
 highlight('Debug', { link = 'Special' })
-highlight('VertSplit', { link = 'Normal' })
 highlight('PreProc', { link = 'Normal' })
 highlight('Define', { link = 'PreProc' })
 highlight('Macro', { link = 'PreProc' })
@@ -134,14 +151,13 @@ highlight('SpecialKey', { fg = colors.cyan })
 -- __Operator__
 highlight('Noise', { fg = colors.norm_subtle })
 highlight('Operator', { link = 'Noise' })
-highlight('LineNr', { link = 'Noise' })
-highlight('CursorLineNr', { link = 'LineNr' })
 highlight('FoldColumn', { link = 'LineNr' })
 highlight('SignColumn', { link = 'LineNr' })
 
 -- __Comment__
 highlight('Comment', { italic = true, bg = nil, fg = colors.bg_subtle })
 highlight('LineNr', { bg = nil, fg = colors.bg_subtle })
+highlight('CursorLineNr', { link = 'LineNr' })
 highlight('Whitespace', { fg = colors.bg_very_subtle })
 highlight('Todo', { link = 'Comment' })
 highlight('Conceal', { link = 'NonText' })
@@ -195,11 +211,11 @@ highlight('VisualNOS', { bg = colors.bg_subtle })
 highlight('Ignore', { fg = colors.bg })
 
 -- __DiffAdd__
-highlight('DiffAdd', { fg = 'NvimLightGreen' })
+highlight('DiffAdd', { fg = colors.green, bg = colors.diff_add_bg })
 -- __DiffDelete__
-highlight('DiffDelete', { fg = 'NvimLightRed' })
+highlight('DiffDelete', { fg = colors.red, bg = colors.diff_delete_bg })
 -- __DiffChange__
-highlight('DiffChange', { fg = 'NvimLightYellow' })
+highlight('DiffChange', { fg = colors.yellow, bg = colors.diff_change_bg })
 -- __DiffText__
 highlight('DiffText', { fg = colors.constant })
 highlight('DiffTextAdd', { link = 'DiffAdd' })
@@ -225,6 +241,10 @@ highlight(
 )
 
 highlight('StatusLineOk', { underline = true, bg = colors.bg, fg = colors.ok })
+highlight('StatusLineModified', { fg = colors.yellow })
+highlight('StatusLineDiffAdd', { fg = colors.green })
+highlight('StatusLineDiffChange', { fg = colors.yellow })
+highlight('StatusLineDiffDelete', { fg = colors.red })
 highlight(
 	'StatusLineError',
 	{ underline = true, bg = colors.bg, fg = colors.error }
@@ -245,15 +265,15 @@ highlight('PmenuShadowThrough', { bg = colors.bg_very_subtle })
 highlight('PmenuSbar', { link = 'Pmenu' })
 highlight('PmenuThumb', { link = 'Pmenu' })
 -- __PmenuSel__
-highlight('PmenuSel', { fg = colors.norm, bg = colors.bg_subtle, blend = 0 })
+highlight('PmenuSel', { fg = colors.norm, bg = colors.bg_subtle })
 
 -- TabLine --
-highlight('TabLine', { ctrem = nil, gui = nil })
-highlight('TabLineFill', { ctrem = nil, gui = nil })
+highlight('TabLine', {})
+highlight('TabLineFill', {})
 highlight('TabLineSel', { reverse = true })
 
 -- Floating Window --
-highlight('NormalFloat', { gui = nil, ctrem = nil, fg = colors.norm })
+highlight('NormalFloat', { fg = colors.norm, bg = nil })
 highlight('FloatBorder', { link = 'Number' })
 
 -- __CursorLine__
@@ -262,7 +282,10 @@ highlight('CursorLine', { bg = colors.cursor_line })
 highlight('ColorColumn', { bg = colors.bg_subtle })
 
 -- __MatchParen__
-highlight('MatchParen', { bg = colors.bg_subtle, fg = colors.norm })
+highlight(
+	'MatchParen',
+	{ bg = colors.bg_subtle, fg = colors.norm, bold = true }
+)
 
 highlight('htmlH1', { link = 'Normal' })
 highlight('htmlH2', { link = 'Normal' })
@@ -337,21 +360,13 @@ highlight('StartifySlash', { link = 'StartifyPath' })
 highlight('StartifyBracket', { link = 'StartifyPath' })
 highlight('StartifyNumber', { link = 'Title' })
 
--- NvimTree --
-highlight('NvimTreeGitDirty', { link = 'DiffChange' })
-highlight('NvimTreeGitStaged', { link = 'DiffChange' })
-highlight('NvimTreeGitMerge', { link = 'DiffText' })
-highlight('NvimTreeGitRenamed', { link = 'DiffChange' })
-highlight('NvimTreeGitNew', { link = 'DiffAdd' })
-highlight('NvimTreeGitDeleted', { link = 'DiffDelete' })
-
 -- Mini --
 highlight('MiniIndentscopeSymbol', { link = 'Comment' })
 highlight('MiniIndentscopeSymbolOff', { link = 'MiniIndentscopeSymbol' })
 
-highlight('MiniDiffSignAdd', { link = 'DiffAdd' })
-highlight('MiniDiffSignChange', { link = 'DiffChange' })
-highlight('MiniDiffSignDelete', { link = 'DiffDelete' })
+highlight('MiniDiffSignAdd', { fg = colors.green })
+highlight('MiniDiffSignChange', { fg = colors.yellow })
+highlight('MiniDiffSignDelete', { fg = colors.red })
 highlight('MiniDiffOverAdd', { link = 'DiffAdd' })
 highlight('MiniDiffOverChange', { link = 'DiffChange' })
 highlight('MiniDiffOverContext', { link = 'DiffText' })
@@ -362,7 +377,7 @@ highlight('MiniStarterInactive', { link = 'Comment' })
 highlight('MiniStarterItem', { link = 'EndOfBuffer' })
 highlight('MiniStarterItemBullet', { link = 'Comment' })
 highlight('MiniStarterItemPrefix', { link = 'MiniStarterHeader' })
-highlight('MiniStarterQuery', { link = 'DiffDelete' })
+highlight('MiniStarterQuery', { fg = colors.red, bold = true })
 
 -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md#highlights
 highlight('@annotation', { link = 'Cursor' })
@@ -382,6 +397,12 @@ highlight('@constructor', { link = 'Normal' })
 highlight('@diff.delta', { link = 'DiffChange' })
 highlight('@diff.minus', { link = 'DiffDelete' })
 highlight('@diff.plus', { link = 'DiffAdd' })
+highlight(
+	'@diff.delta.diff',
+	{ fg = colors.yellow, bg = colors.diff_change_bg }
+)
+highlight('@diff.minus.diff', { fg = colors.red, bg = colors.diff_delete_bg })
+highlight('@diff.plus.diff', { fg = colors.green, bg = colors.diff_add_bg })
 highlight('@error', { link = 'Error' })
 highlight('@exception', { link = 'Error' })
 highlight('@function', { link = 'Normal' })
@@ -396,7 +417,7 @@ highlight('@keyword.repeat', { link = 'Normal' })
 highlight('@label', { link = 'Noise' })
 highlight('@markup', { link = 'Normal' })
 highlight('@markup.emphasis', { italic = true })
-highlight('@markup.heading', { fg = light_green })
+highlight('@markup.heading', { fg = colors.green, bold = true })
 highlight('@markup.link.url', { link = 'Constant' })
 highlight('@markup.link.label', { link = 'Constant' })
 highlight('@markup.list', { link = 'Noise' })
@@ -434,7 +455,7 @@ highlight('BlinkCmpLabel', { link = 'NonText' })
 highlight('BlinkCmpScrollBarThumb', { link = 'CursorLine' })
 highlight(
 	'BlinkCmpLabelMatch',
-	{ link = 'DiffAdd', bold = true, italic = true }
+	{ fg = colors.green, bold = true, italic = true }
 )
 highlight('BlinkCmpKind', { link = 'NonText' })
 highlight('BlinkCmpKindField', { fg = colors.red })
@@ -468,12 +489,31 @@ highlight(
 	'OverLength',
 	{ fg = nil, bg = colors.selection_fg, ctermbg = 234, ctermfg = nil }
 )
-highlight('GitMarker', { link = 'OverLength' })
 
--- LspDiagnostics --
-highlight('LspDiagnosticsDefaultError', { link = 'DiffDelete' })
-highlight('LspDiagnosticsDefaultWarning', { link = 'DiffChange' })
-highlight('LspDiagnosticsDefaultHint', { link = 'NonText' })
+-- Diagnostics (Neovim 0.6+) --
+highlight('DiagnosticError', { link = 'ErrorMsg' })
+highlight('DiagnosticWarn', { link = 'WarningMsg' })
+highlight('DiagnosticInfo', { fg = colors.blue })
+highlight('DiagnosticHint', { link = 'NonText' })
+highlight('DiagnosticOk', { fg = colors.ok })
+
+highlight('DiagnosticSignError', { link = 'DiagnosticError' })
+highlight('DiagnosticSignWarn', { link = 'DiagnosticWarn' })
+highlight('DiagnosticSignInfo', { link = 'DiagnosticInfo' })
+highlight('DiagnosticSignHint', { link = 'DiagnosticHint' })
+highlight('DiagnosticSignOk', { link = 'DiagnosticOk' })
+
+highlight('DiagnosticVirtualTextError', { link = 'DiagnosticError' })
+highlight('DiagnosticVirtualTextWarn', { link = 'DiagnosticWarn' })
+highlight('DiagnosticVirtualTextInfo', { link = 'DiagnosticInfo' })
+highlight('DiagnosticVirtualTextHint', { link = 'DiagnosticHint' })
+
+highlight('DiagnosticUnderlineError', { underline = true, sp = colors.red })
+highlight('DiagnosticUnderlineWarn', { underline = true, sp = colors.yellow })
+highlight('DiagnosticUnderlineInfo', { underline = true, sp = colors.blue })
+highlight('DiagnosticUnderlineHint', { underline = true, sp = colors.norm_very_subtle })
+
+-- Lsp --
 highlight('LspInlayHint', { fg = lighter_black, bg = nil, italic = true })
 highlight('LspCodeLens', { link = 'Comment' })
 highlight('LspCodeLensSeparator', { link = 'LspCodeLens' })
@@ -490,7 +530,7 @@ highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
 -- Winbar
-highlight('WinBar', { bg = nil, fg = 'NvimLightGrey4' })
+highlight('WinBar', { bg = nil, fg = '#9B9EA4' })
 highlight('WinBarNC', { link = 'WinBar' })
 
 -- FzfLua
