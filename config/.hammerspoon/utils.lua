@@ -67,6 +67,7 @@ local APP_SPECS = {
 }
 
 local DEFAULT_BROWSER_PRIORITY = {
+	'helium',
 	'firefox',
 	'safari',
 	'chrome',

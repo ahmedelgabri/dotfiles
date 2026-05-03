@@ -125,7 +125,7 @@ local layout = require 'layout'
 local lifecycle = require 'lifecycle'
 local spoons = require 'spoons'
 
-layout.setExternalBrowserPriority { 'helium', 'safari', 'firefox' }
+layout.setExternalBrowserPriority { 'helium', 'firefox', 'safari' }
 
 lifecycle.configure {
 	layoutDelaySeconds = 0.25,
@@ -250,9 +250,9 @@ used mainly for:
 
 The shared fallback browser order is:
 
-1. `firefox`
-2. `safari`
-3. `chrome`
+1. `helium`
+2. `firefox`
+3. `safari`
 
 Both `layout.lua` and `spoons.lua` rely on this same app-resolution layer.
 
@@ -293,7 +293,7 @@ This module keeps the preferred browser on the **largest detected screen**.
 
 ```lua
 local layout = require 'layout'
-layout.setExternalBrowserPriority { 'helium', 'safari', 'firefox' }
+layout.setExternalBrowserPriority { 'helium', 'firefox', 'safari' }
 layout.switchLayout()
 ```
 
@@ -623,7 +623,7 @@ The modal layers use:
 | ----- | --------------- |
 | `1`   | 1Password       |
 | `g`   | Google Chrome   |
-| `b`   | Firefox         |
+| `b`   | Helium          |
 | `s`   | Slack           |
 | `m`   | Messages        |
 | `t`   | Ghostty         |
@@ -835,7 +835,7 @@ status.snapshot()
 ### Change preferred browser at runtime
 
 ```lua
-require('layout').setExternalBrowserPriority { 'helium', 'safari', 'firefox' }
+require('layout').setExternalBrowserPriority { 'helium', 'firefox', 'safari' }
 ```
 
 ---

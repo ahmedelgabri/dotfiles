@@ -58,7 +58,7 @@ local M = {
 			actions = {
 				['1'] = { label = '1Password', app = '1password' },
 				g = { label = 'Google Chrome', app = 'chrome' },
-				b = { label = 'Firefox', app = 'firefox' },
+				b = { label = 'Helium', app = 'helium' },
 				s = { label = 'Slack', app = 'slack' },
 				m = { label = 'Messages', app = 'imessage' },
 				t = { label = 'Terminal', app = 'ghostty' },
