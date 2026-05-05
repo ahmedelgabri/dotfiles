@@ -3,8 +3,9 @@
 # Requires tart (not in nixpkgs):
 #   brew install --cask tart
 #
-# Inspired by Greg Hurrell's sb.erb:
+# Inspired by Greg Hurrell's sb.erb and bin/vm:
 #   https://github.com/wincent/wincent/blob/main/aspects/dotfiles/templates/.zsh/bin/sb.erb
+#   https://github.com/wincent/wincent/blob/main/bin/vm
 {
   formats,
   writeShellApplication,
@@ -645,6 +646,46 @@ in
         fi
       }
 
+      cmd_push() {
+        local target_image="''${SB_VM_IMAGE:-}"
+        if [ $# -gt 1 ]; then
+          err "usage: sb push [oci-image]"
+        fi
+        if [ $# -eq 1 ]; then
+          target_image="$1"
+        fi
+        if [ -z "$target_image" ]; then
+          err "no registry image configured. Set SB_VM_IMAGE or pass an OCI image: sb push ghcr.io/OWNER/IMAGE:TAG"
+        fi
+
+        local source_image="$BASE_IMAGE"
+        local local_base="''${target_image##*/}"
+        local_base="''${local_base%%:*}"
+        if vm_exists "$BASE_IMAGE"; then
+          source_image="$BASE_IMAGE"
+        elif vm_exists "$local_base"; then
+          source_image="$local_base"
+        else
+          err "base image '$BASE_IMAGE' not found. Run 'sb build-image' first."
+        fi
+
+        if vm_running "$source_image"; then
+          err "local '$source_image' is running; stop it first."
+        fi
+
+        info "Pushing $source_image -> $target_image..."
+        if ! tart push "$source_image" "$target_image"; then
+          local registry="''${target_image%%/*}"
+          if [ "$registry" = "$target_image" ]; then
+            err "push failed; you may need to authenticate with your OCI registry"
+          else
+            err "push failed; you may need to run: tart login $registry"
+          fi
+        fi
+
+        ok "Pushed $source_image -> $target_image"
+      }
+
       cmd_inject() {
         local force=false
         local -a branches=()
@@ -850,6 +891,7 @@ in
         extract      Fetch and show VM changes
         apply        Fetch and apply VM changes to host (git cherry-pick or jj rebase+sign)
         pull         Pull remote base; refresh local clone when SB_VM_IMAGE is set
+        push [image] Push local base image to SB_VM_IMAGE or an OCI image
         help         Show this help
 
       Configuration (.sandboxrc in project root, or sandboxrc under \$SB_CONFIG_PATH):
@@ -861,7 +903,7 @@ in
         SB_PORTS        host:vm port forwards
         SB_SOCKETS      host_sock:vm_sock     reverse socket forwards
         SB_REPO_SUBDIR  VM home subdirectory  (default: code)
-        SB_VM_IMAGE     Optional remote OCI image to clone instead of the local build
+        SB_VM_IMAGE     Optional remote OCI image for clone/pull/push
         SB_SSH_EXEC     default ssh command
         sb_provision()  post-create hook; receives VM IP as \$1
 
@@ -902,6 +944,7 @@ in
         ip)          require_tart; cmd_ip ;;
         list)        require_tart; cmd_list ;;
         pull)        require_tart; cmd_pull ;;
+        push)        require_tart; shift; cmd_push "$@" ;;
         inject)      require_tart; shift; cmd_inject "$@" ;;
         extract)     require_tart; cmd_extract ;;
         apply)       require_tart; cmd_apply ;;
