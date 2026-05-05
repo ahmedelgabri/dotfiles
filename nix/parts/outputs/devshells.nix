@@ -7,7 +7,7 @@
           [
             typos
             typos-lsp
-            alejandra
+            nixfmt-rs
             inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
           ]
           ++ lib.optional stdenv.isDarwin sb;

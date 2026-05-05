@@ -16,14 +16,17 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
 
+    nixfmt-rs = {
+      url = "github:Mic92/nixfmt-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-    };
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     darwin = {
       url = "github:nix-darwin/nix-darwin";
@@ -32,6 +35,7 @@
 
     yazi = {
       url = "github:sxyazi/yazi";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     yazi-plugins = {
@@ -97,6 +101,6 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./nix/parts/flake);
+  outputs =
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./nix/parts/flake);
 }

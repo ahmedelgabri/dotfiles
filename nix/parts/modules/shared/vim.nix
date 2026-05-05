@@ -28,7 +28,7 @@ let
           ripgrep
           hadolint
           dotenv-linter
-          alejandra
+          nixfmt-rs
           shellcheck
           shfmt
           stylua

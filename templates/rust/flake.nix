@@ -22,7 +22,7 @@
           config.allowUnfree = true;
         };
 
-        formatter = pkgs.alejandra;
+        formatter = pkgs.nixfmt;
 
         devShells.default = with pkgs;
           mkShell {

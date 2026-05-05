@@ -1,5 +1,5 @@
 _: {
   perSystem = {pkgs, ...}: {
-    formatter = pkgs.alejandra;
+    formatter = pkgs.nixfmt-rs;
   };
 }

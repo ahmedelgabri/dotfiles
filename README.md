@@ -330,7 +330,7 @@ repo itself:
 | Command            | What it does                           |
 | ------------------ | -------------------------------------- |
 | `nix develop`      | Provides the default development shell |
-| `nix fmt`          | Formats the Nix code with `alejandra`  |
+| `nix fmt`          | Formats the Nix code with `nixfmt-rs`  |
 | `nix develop .#go` | Opens the Go-focused dev shell         |
 
 <!-- Reference links -->

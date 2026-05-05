@@ -167,7 +167,7 @@ require('conform').setup {
 		lua = { 'stylua' },
 		python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
 		go = { 'goimports' },
-		nix = { 'alejandra', 'statix' },
+		nix = { 'nixfmt', 'statix' },
 		zsh = { 'shfmt' },
 		sh = { 'shfmt' },
 		bash = { 'shfmt' },

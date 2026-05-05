@@ -12,7 +12,7 @@ return {
 					),
 			},
 			formatting = {
-				command = { 'alejandra' },
+				command = { 'nixfmt' },
 			},
 			options = vim.tbl_extend('force', {
 				-- home_manager = {

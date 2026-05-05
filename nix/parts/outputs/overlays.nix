@@ -28,6 +28,7 @@
       inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
       inherit (inputs.ccpeek.packages.${prev.stdenv.hostPlatform.system}) ccpeek;
       atuin = inputs.atuin.packages.${prev.stdenv.hostPlatform.system}.default;
+      nixfmt-rs = inputs.nixfmt-rs.packages.${prev.stdenv.hostPlatform.system}.default;
     }
     // prev.lib.optionalAttrs prev.stdenv.isDarwin {
       sb = prev.callPackage ../../pkgs/sb.nix {};
