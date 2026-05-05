@@ -24,21 +24,24 @@ let
       };
     };
 
-    nixos = {pkgs, ...}: {
-      config = {
-        my.user.packages = with pkgs; [
-          docker
-          firefox
-          brave
-          obsidian
-          signal-desktop
-          slack
-          zoom-us
-        ];
+    nixos =
+      { pkgs, ... }:
+      {
+        config = {
+          my.user.packages = with pkgs; [
+            docker
+            firefox
+            brave
+            obsidian
+            signal-desktop
+            slack
+            zoom-us
+          ];
+        };
       };
-    };
   };
-in {
+in
+{
   flake = {
     modules = {
       darwin.gui = module.darwin;

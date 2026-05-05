@@ -11,7 +11,8 @@ let
       xdg.configFile."fd/ignore".text = builtins.readFile ../../../../config/.ignore;
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       homeManager.misc = module.homeManager;

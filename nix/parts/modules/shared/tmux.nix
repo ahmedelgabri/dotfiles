@@ -1,19 +1,21 @@
 let
   module = {
-    generic = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      config = with lib; {
-        environment.shellAliases.tmux = "direnv exec / tmux";
+    generic =
+      {
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        config = with lib; {
+          environment.shellAliases.tmux = "direnv exec / tmux";
 
-        my.user.packages = with pkgs; [
-          tmux
-          next-prayer
-        ];
+          my.user.packages = with pkgs; [
+            tmux
+            next-prayer
+          ];
+        };
       };
-    };
 
     homeManager = _: {
       xdg.configFile."tmux" = {
@@ -22,7 +24,8 @@ let
       };
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       generic.tmux = module.generic;

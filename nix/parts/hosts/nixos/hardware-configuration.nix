@@ -7,16 +7,26 @@
   pkgs,
   modulesPath,
   ...
-}: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+}:
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
     initrd = {
-      availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-      kernelModules = [];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      kernelModules = [ ];
     };
-    kernelModules = ["kvm-intel" "wl"];
-    extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+    kernelModules = [
+      "kvm-intel"
+      "wl"
+    ];
+    extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
   };
 
   fileSystems."/" = {
@@ -29,7 +39,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{device = "/dev/disk/by-uuid/b24c0bc4-f574-431b-8803-9eb313dfb23a";}];
+  swapDevices = [ { device = "/dev/disk/by-uuid/b24c0bc4-f574-431b-8803-9eb313dfb23a"; } ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

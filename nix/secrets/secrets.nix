@@ -25,15 +25,19 @@ let
   rocket = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJoIMgS+2sb1PgWu5MswNSZokqnVmUox0pMeKf76Tah";
   alcantara = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMC/o7FX/aT6QMsDFDYwNaA8QeC2NIvqdQKeZKmt/JLK";
 
-  allHosts = [rocket alcantara];
+  allHosts = [
+    rocket
+    alcantara
+  ];
 
   # These are in 1Password
   # work = "";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Hf3aTl5Iwo4WlBBBs22+EPoaYe0sBCtjIl6G0DvBX ahmed";
 
-  allUsers = [personal];
+  allUsers = [ personal ];
 
   allKeys = allHosts ++ allUsers;
-in {
+in
+{
   "npmrc.age".publicKeys = allKeys;
 }

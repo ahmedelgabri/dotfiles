@@ -1,23 +1,27 @@
 let
   module = {
-    generic = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      config = with lib; {
-        environment.systemPackages = with pkgs; [
-          jujutsu
-        ];
+    generic =
+      {
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        config = with lib; {
+          environment.systemPackages = with pkgs; [
+            jujutsu
+          ];
+        };
       };
-    };
 
-    homeManager = {
-      lib,
-      myConfig,
-      ...
-    }:
-      with lib; {
+    homeManager =
+      {
+        lib,
+        myConfig,
+        ...
+      }:
+      with lib;
+      {
         xdg.configFile = {
           "jj" = {
             recursive = true;
@@ -39,7 +43,8 @@ let
         };
       };
   };
-in {
+in
+{
   flake = {
     modules = {
       generic.jujutsu = module.generic;

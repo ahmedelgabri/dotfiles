@@ -1,25 +1,28 @@
 let
   module = {
-    generic = {
-      pkgs,
-      lib,
-      config,
-      ...
-    }: let
-      inherit (config.home-manager.users."${config.my.username}") xdg;
-    in {
-      config = with lib; {
-        my.user.packages = with pkgs; [
-          bun
-        ];
+    generic =
+      {
+        pkgs,
+        lib,
+        config,
+        ...
+      }:
+      let
+        inherit (config.home-manager.users."${config.my.username}") xdg;
+      in
+      {
+        config = with lib; {
+          my.user.packages = with pkgs; [
+            bun
+          ];
 
-        environment = {
-          shellAliases = {
-            b = "bun";
+          environment = {
+            shellAliases = {
+              b = "bun";
+            };
           };
         };
       };
-    };
 
     homeManager = _: {
       xdg.configFile = {
@@ -30,7 +33,8 @@ let
       };
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       generic.bun = module.generic;

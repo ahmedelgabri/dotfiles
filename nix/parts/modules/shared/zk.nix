@@ -1,14 +1,16 @@
 let
   module = {
-    generic = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      config = with lib; {
-        my.user.packages = with pkgs; [zk];
+    generic =
+      {
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        config = with lib; {
+          my.user.packages = with pkgs; [ zk ];
+        };
       };
-    };
 
     homeManager = _: {
       xdg.configFile = {
@@ -20,7 +22,8 @@ let
       };
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       generic.zk = module.generic;

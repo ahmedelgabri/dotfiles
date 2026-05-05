@@ -4,35 +4,38 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs = inputs @ {
-    flake-parts,
-    nixpkgs,
-    ...
-  }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-      perSystem = {
-        pkgs,
-        system,
-        ...
-      }: {
-        # This sets `pkgs` to a nixpkgs with allowUnfree option set.
-        _module.args.pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
+  outputs =
+    inputs@{
+      flake-parts,
+      nixpkgs,
+      ...
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+      perSystem =
+        {
+          pkgs,
+          system,
+          ...
+        }:
+        {
+          # This sets `pkgs` to a nixpkgs with allowUnfree option set.
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
 
-        formatter = pkgs.nixfmt;
+          formatter = pkgs.nixfmt;
 
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            uv
-          ];
-          shellHook =
-            /*
-            bash
-            */
-            ''
+          devShells.default = pkgs.mkShell {
+            packages = with pkgs; [
+              uv
+            ];
+            shellHook = /* bash */ ''
               if [ ! -f pyproject.toml ]; then
                 ${pkgs.lib.getExe pkgs.uv} init --author-from git
 
@@ -55,7 +58,7 @@
 
               echo "Development environment ready!"
             '';
+          };
         };
-      };
     };
 }

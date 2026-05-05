@@ -3,7 +3,8 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   inherit (config.my.user) home;
 
   xdgHomes = {
@@ -12,7 +13,8 @@
     dataHome = "${home}/.local/share";
     stateHome = "${home}/.local/state";
   };
-in {
+in
+{
   config = {
     my.hostConfigHome = "${xdgHomes.dataHome}/${config.networking.hostName}";
 
@@ -23,7 +25,15 @@ in {
       extraSpecialArgs = {
         inherit inputs;
         myConfig = {
-          inherit (config.my) name email github_username company nix_managed hostConfigHome modules;
+          inherit (config.my)
+            name
+            email
+            github_username
+            company
+            nix_managed
+            hostConfigHome
+            modules
+            ;
           inherit (config.networking) hostName;
         };
       };
@@ -32,7 +42,12 @@ in {
     home-manager.users."${config.my.username}" = {
       xdg = {
         enable = true;
-        inherit (xdgHomes) cacheHome configHome dataHome stateHome;
+        inherit (xdgHomes)
+          cacheHome
+          configHome
+          dataHome
+          stateHome
+          ;
       };
 
       home = {

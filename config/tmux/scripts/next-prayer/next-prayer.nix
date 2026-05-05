@@ -1,4 +1,4 @@
-{buildGoModule}:
+{ buildGoModule }:
 buildGoModule rec {
   name = "next-prayer";
   version = "latest";
@@ -7,5 +7,9 @@ buildGoModule rec {
 
   src = ./.;
 
-  ldflags = ["-w" "-s" "-X=main.version=${version}"];
+  ldflags = [
+    "-w"
+    "-s"
+    "-X=main.version=${version}"
+  ];
 }

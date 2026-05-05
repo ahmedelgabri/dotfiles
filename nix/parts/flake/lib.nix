@@ -3,95 +3,105 @@
   lib,
   flake-parts-lib,
   ...
-}: {
+}:
+{
   options = {
     flake = flake-parts-lib.mkSubmoduleOptions {
       lib = lib.mkOption {
         type = lib.types.attrsOf lib.types.unspecified;
-        default = {};
+        default = { };
       };
 
       modules = lib.mkOption {
         type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.raw);
-        default = {};
+        default = { };
       };
 
       # darwinConfigurations fix
       darwinConfigurations = lib.mkOption {
         type = lib.types.lazyAttrsOf lib.types.raw;
-        default = {};
+        default = { };
       };
     };
   };
 
-  config.flake.lib = let
-    m = inputs.self.modules;
-    hm = m.homeManager;
+  config.flake.lib =
+    let
+      m = inputs.self.modules;
+      hm = m.homeManager;
 
-    has = scope: name: builtins.hasAttr name scope;
-    get = scope: name: builtins.getAttr name scope;
+      has = scope: name: builtins.hasAttr name scope;
+      get = scope: name: builtins.getAttr name scope;
 
-    # Resolve an optional Home Manager module for a feature name.
-    # Returns a singleton list when present so callers can concatMap it.
-    hmModuleFor = name:
-      if has hm name
-      then [(get hm name)]
-      else [];
+      # Resolve an optional Home Manager module for a feature name.
+      # Returns a singleton list when present so callers can concatMap it.
+      hmModuleFor = name: if has hm name then [ (get hm name) ] else [ ];
 
-    # Resolve the system module for a feature name for a given runtime.
-    # Prefer runtime-specific modules first, then fall back to generic ones.
-    # Missing features are skipped.
-    systemModuleFor = runtime: name: let
-      runtimeModules = get m runtime;
+      # Resolve the system module for a feature name for a given runtime.
+      # Prefer runtime-specific modules first, then fall back to generic ones.
+      # Missing features are skipped.
+      systemModuleFor =
+        runtime: name:
+        let
+          runtimeModules = get m runtime;
+        in
+        if has runtimeModules name then
+          [ (get runtimeModules name) ]
+        else if has m.generic name then
+          [ (get m.generic name) ]
+        else
+          [ ];
+
+      mkHmImports =
+        imports:
+        { config, ... }:
+        {
+          home-manager.users."${config.my.username}".imports = imports;
+        };
     in
-      if has runtimeModules name
-      then [(get runtimeModules name)]
-      else if has m.generic name
-      then [(get m.generic name)]
-      else [];
+    {
+      commonOverlays = [
+        inputs.yazi.overlays.default
+        inputs.nur.overlays.default
+        inputs.llm-agents.overlays.default
+        inputs.self.overlays.default
+      ];
 
-    mkHmImports = imports: {config, ...}: {
-      home-manager.users."${config.my.username}".imports = imports;
-    };
-  in {
-    commonOverlays = [
-      inputs.yazi.overlays.default
-      inputs.nur.overlays.default
-      inputs.llm-agents.overlays.default
-      inputs.self.overlays.default
-    ];
-
-    mkDarwin = system: name: {
-      ${name} = inputs.darwin.lib.darwinSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
-        modules = [
-          inputs.self.modules.darwin.${name}
-          {nixpkgs.hostPlatform = lib.mkDefault system;}
-        ];
+      mkDarwin = system: name: {
+        ${name} = inputs.darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.self.modules.darwin.${name}
+            { nixpkgs.hostPlatform = lib.mkDefault system; }
+          ];
+        };
       };
-    };
 
-    mkNixos = system: name: {
-      ${name} = inputs.nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
-        modules = [
-          inputs.self.modules.nixos.${name}
-          {nixpkgs.hostPlatform = lib.mkDefault system;}
-        ];
+      mkNixos = system: name: {
+        ${name} = inputs.nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.self.modules.nixos.${name}
+            { nixpkgs.hostPlatform = lib.mkDefault system; }
+          ];
+        };
       };
-    };
 
-    # Turn a list of feature names into a concrete module that imports:
-    # - runtime/generic system modules for each feature
-    # - matching Home Manager modules when they exist
-    mkFeatureModule = runtime: {features}: let
-      hmImports = lib.concatMap hmModuleFor features;
-    in {
-      imports =
-        lib.concatMap (systemModuleFor runtime) features
-        ++ lib.optional (hmImports != []) (mkHmImports hmImports);
+      # Turn a list of feature names into a concrete module that imports:
+      # - runtime/generic system modules for each feature
+      # - matching Home Manager modules when they exist
+      mkFeatureModule =
+        runtime:
+        { features }:
+        let
+          hmImports = lib.concatMap hmModuleFor features;
+        in
+        {
+          imports =
+            lib.concatMap (systemModuleFor runtime) features
+            ++ lib.optional (hmImports != [ ]) (mkHmImports hmImports);
+        };
     };
-  };
 }

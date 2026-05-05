@@ -4,7 +4,8 @@
   options,
   ...
 }:
-with lib; {
+with lib;
+{
   options.my.user = mkOption {
     type = options.users.users.type.functor.payload.elemType;
   };

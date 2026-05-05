@@ -1,17 +1,19 @@
-{inputs, ...}: {
-  flake.overlays.default = final: prev:
+{ inputs, ... }:
+{
+  flake.overlays.default =
+    final: prev:
     {
-      pragmatapro = prev.callPackage ../../pkgs/pragmatapro.nix {};
-      hcron = prev.callPackage ../../pkgs/hcron.nix {};
+      pragmatapro = prev.callPackage ../../pkgs/pragmatapro.nix { };
+      hcron = prev.callPackage ../../pkgs/hcron.nix { };
 
-      next-prayer = prev.callPackage ../../../config/tmux/scripts/next-prayer/next-prayer.nix {};
+      next-prayer = prev.callPackage ../../../config/tmux/scripts/next-prayer/next-prayer.nix { };
 
       notmuch = prev.notmuch.override {
         withEmacs = false;
       };
 
       pure-prompt = prev.pure-prompt.overrideAttrs (old: {
-        patches = (old.patches or []) ++ [../../patches/pure.patch];
+        patches = (old.patches or [ ]) ++ [ ../../patches/pure.patch ];
       });
 
       zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (_: {
@@ -31,6 +33,6 @@
       nixfmt-rs = inputs.nixfmt-rs.packages.${prev.stdenv.hostPlatform.system}.default;
     }
     // prev.lib.optionalAttrs prev.stdenv.isDarwin {
-      sb = prev.callPackage ../../pkgs/sb.nix {};
+      sb = prev.callPackage ../../pkgs/sb.nix { };
     };
 }

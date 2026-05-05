@@ -1,25 +1,25 @@
 let
-  module = {config, ...}: let
-    inherit (config.my.user) home;
-  in {
-    config = {
-      homebrew.casks = [
-        "hammerspoon"
-      ];
+  module =
+    { config, ... }:
+    let
+      inherit (config.my.user) home;
+    in
+    {
+      config = {
+        homebrew.casks = [
+          "hammerspoon"
+        ];
 
-      system.activationScripts.postActivation.text =
-        /*
-        bash
-        */
-        ''
+        system.activationScripts.postActivation.text = /* bash */ ''
           echo ":: -> Running hammerspoon activationScript..."
 
           # Handle mutable configs
           echo "Linking hammerspoon folders..."
           ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
         '';
+      };
     };
-  };
-in {
+in
+{
   flake.modules.darwin.hammerspoon = module;
 }

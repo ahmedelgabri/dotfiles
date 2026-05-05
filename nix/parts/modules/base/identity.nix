@@ -1,11 +1,14 @@
-{lib, ...}:
-with lib; let
-  mkOptStr = value:
+{ lib, ... }:
+with lib;
+let
+  mkOptStr =
+    value:
     mkOption {
       type = with types; uniq str;
       default = value;
     };
-in {
+in
+{
   options.my = {
     name = mkOptStr "Ahmed El Gabri";
     timezone = mkOptStr "Europe/Amsterdam";

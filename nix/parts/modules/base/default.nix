@@ -7,6 +7,7 @@ let
       ./zsh-global-aliases.nix
     ];
   };
-in {
+in
+{
   flake.modules.generic.base = module;
 }

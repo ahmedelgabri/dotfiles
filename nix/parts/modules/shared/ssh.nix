@@ -6,7 +6,8 @@ let
       };
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       homeManager.ssh = module.homeManager;

@@ -1,232 +1,233 @@
 let
-  module = let
-    commonModule =
-      # This is handcrafted setup to keep the same performance characteristics I had
-      # before using nix or even improve it. Simple rules followed here are:
-      #
-      # - Setup things as early as possible when the shell runs
-      # - Inline files when possible instead of souring then
-      # - User specific shell files are to override or for machine specific setup
-      {
-        pkgs,
-        lib,
-        config,
-        ...
-      }: let
-        inherit (config.my.user) home;
-        inherit (config.my) devFolder hostConfigHome company;
-        inherit (config.home-manager.users."${config.my.username}") xdg;
+  module =
+    let
+      commonModule =
+        # This is handcrafted setup to keep the same performance characteristics I had
+        # before using nix or even improve it. Simple rules followed here are:
+        #
+        # - Setup things as early as possible when the shell runs
+        # - Inline files when possible instead of souring then
+        # - User specific shell files are to override or for machine specific setup
+        {
+          pkgs,
+          lib,
+          config,
+          ...
+        }:
+        let
+          inherit (config.my.user) home;
+          inherit (config.my) devFolder hostConfigHome company;
+          inherit (config.home-manager.users."${config.my.username}") xdg;
 
-        local_zshrc = "${hostConfigHome}/zshrc";
+          local_zshrc = "${hostConfigHome}/zshrc";
 
-        mkExportedShellVars = vars:
-          lib.concatLines (lib.mapAttrsToList (name: value: "export ${lib.toShellVar name value}") vars);
+          mkExportedShellVars =
+            vars:
+            lib.concatLines (lib.mapAttrsToList (name: value: "export ${lib.toShellVar name value}") vars);
 
-        mkRawExportedShellVars = vars:
-          lib.concatLines (lib.mapAttrsToList (name: value: "export ${name}=${value}") vars);
+          mkRawExportedShellVars =
+            vars: lib.concatLines (lib.mapAttrsToList (name: value: "export ${name}=${value}") vars);
 
-        fzfPreviewCommand = "COLORTERM=truecolor previewer {}";
-        fzfCtrlTCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
+          fzfPreviewCommand = "COLORTERM=truecolor previewer {}";
+          fzfCtrlTCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
 
-        zshInteractiveLocalVars = {
-          CDPATH = ".:${home}:${home}/${devFolder}";
-          KEYTIMEOUT = "1";
-          SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
-        };
+          zshInteractiveLocalVars = {
+            CDPATH = ".:${home}:${home}/${devFolder}";
+            KEYTIMEOUT = "1";
+            SPROMPT = "zsh: correct %F{red}'%R'%f to %F{blue}'%r'%f [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort]?";
+          };
 
-        zshInteractiveExportedVars = {
-          EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
-          EZA_ICON_SPACING = "2";
-          FZF_PREVIEW_COMMAND = fzfPreviewCommand;
-          FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
-          FZF_ALT_C_COMMAND = "${fzfCtrlTCommand} --type d .";
-          FZF_DEFAULT_COMMAND = "${fzfCtrlTCommand} --type f";
-          FZF_ALT_C_OPTS = "--preview='(${fzfPreviewCommand}) 2> /dev/null' --walker-skip .git,node_modules";
-          FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-          FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})' --walker-skip .git,node_modules";
-          FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
-        };
+          zshInteractiveExportedVars = {
+            EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
+            EZA_ICON_SPACING = "2";
+            FZF_PREVIEW_COMMAND = fzfPreviewCommand;
+            FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
+            FZF_ALT_C_COMMAND = "${fzfCtrlTCommand} --type d .";
+            FZF_DEFAULT_COMMAND = "${fzfCtrlTCommand} --type f";
+            FZF_ALT_C_OPTS = "--preview='(${fzfPreviewCommand}) 2> /dev/null' --walker-skip .git,node_modules";
+            FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
+            FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})' --walker-skip .git,node_modules";
+            FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
+          };
 
-        vividTheme = ../../../../config/vivid/theme.yml;
-        zshInteractiveRawExportedVars = {
-          LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ${vividTheme})"'';
-        };
-      in {
-        config = lib.mkMerge [
-          {
-            environment = {
-              shells = [pkgs.bashInteractive pkgs.zsh];
-              shellAliases = {
-                cp = "cp -iv";
-                ln = "ln -iv";
-                mv = "mv -iv";
-                rm = "rm -i";
-                mkdir = "mkdir -p";
-                sudo = "sudo ";
-                type = "type -a";
-                c = "clear";
-                df = "df -kh";
-                du = "du -kh";
-                fd = "fd --hidden";
-                history-stat = ''fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head'';
-                history = "fc -il 1";
-                jobs = "jobs -l";
-                play = "mx ϟ";
-                top = "htop";
-                l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
-                ll = "eza --icons --tree --group-directories-first --all --level=2";
-                lt = "eza --tree --group-directories-first --all";
-                grep = "grep --color=auto";
-                get = "wget --continue --progress=bar --timestamping";
-              };
-
-              variables =
-                # ====================================================
-                # This list gets set in alphabetical order.
-                # So care needs to be taken if two env vars depend on each other
-                #
-                # Allowed variables is only $HOME
-                # Everything else has to be explicit
-                # ====================================================
-                rec {
-                  ADBLOCK = "true";
-                  AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
-                  AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
-                  COLORTERM = "truecolor";
-                  COMPANY = company;
-                  DOCKER_CONFIG = "${xdg.configHome}/docker";
-                  DOTFILES = "$HOME/.dotfiles";
-                  DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
-                  ELINKS_CONFDIR = "${xdg.configHome}/elinks";
-                  GATSBY_TELEMETRY_DISABLED = "1";
-                  # See: https://cli.github.com/telemetry
-                  GH_TELEMETRY = "false";
-                  GITHUB_USER = config.my.github_username;
-                  # https://github.blog/2022-04-12-git-security-vulnerability-announced/
-                  GIT_CEILING_DIRECTORIES = dirOf home;
-                  HOMEBREW_INSTALL_BADGE = "⚽️";
-                  HOMEBREW_NO_ANALYTICS = "1";
-                  HOST_CONFIGS = "${hostConfigHome}";
-                  KITTY_LISTEN_ON = "unix:/tmp/kitty";
-                  # Set the default Less options.
-                  # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
-                  # Remove -X and -F (exit if the content fits on one screen) to enable it.
-                  LESS = "-F -g -i -M -R -S -w -X";
-                  # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
-                  NEXT_TELEMETRY_DISABLED = "1";
-                  NOTES_DIR = "${PERSONAL_STORAGE}/notes";
-                  PAGER = "less";
-                  PERSONAL_STORAGE = "$HOME/Sync";
-                  PROJECTS = "$HOME/${devFolder}/personal/dev";
-                  RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
-                  ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
-                  ZDOTDIR = "${xdg.configHome}/zsh";
-                  # I use a single zk notes dir, so set it and forget
-                  ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
-                  WORK = "$HOME/${devFolder}/work";
-                  _ZO_DATA_DIR = "${xdg.configHome}/zoxide";
-                  CLAUDE_CODE_TMPDIR = "$HOME/${devFolder}/agent-stuff";
+          vividTheme = ../../../../config/vivid/theme.yml;
+          zshInteractiveRawExportedVars = {
+            LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ${vividTheme})"'';
+          };
+        in
+        {
+          config = lib.mkMerge [
+            {
+              environment = {
+                shells = [
+                  pkgs.bashInteractive
+                  pkgs.zsh
+                ];
+                shellAliases = {
+                  cp = "cp -iv";
+                  ln = "ln -iv";
+                  mv = "mv -iv";
+                  rm = "rm -i";
+                  mkdir = "mkdir -p";
+                  sudo = "sudo ";
+                  type = "type -a";
+                  c = "clear";
+                  df = "df -kh";
+                  du = "du -kh";
+                  fd = "fd --hidden";
+                  history-stat = ''fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head'';
+                  history = "fc -il 1";
+                  jobs = "jobs -l";
+                  play = "mx ϟ";
+                  top = "htop";
+                  l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
+                  ll = "eza --icons --tree --group-directories-first --all --level=2";
+                  lt = "eza --tree --group-directories-first --all";
+                  grep = "grep --color=auto";
+                  get = "wget --continue --progress=bar --timestamping";
                 };
 
-              systemPackages = with pkgs; [
-                cachix
-                curl
-                direnv
-                fzf
-                grc
-                htop
-                jq
-                pass
-                nix-direnv
-                pandoc
-                ripgrep
-                rsync
-                wget
-                zoxide
-                mise
-                pure-prompt
-                devenv
-                (pkgs.writeShellScriptBin "nixup"
-                  ''
+                variables =
+                  # ====================================================
+                  # This list gets set in alphabetical order.
+                  # So care needs to be taken if two env vars depend on each other
+                  #
+                  # Allowed variables is only $HOME
+                  # Everything else has to be explicit
+                  # ====================================================
+                  rec {
+                    ADBLOCK = "true";
+                    AWS_CONFIG_FILE = "${xdg.configHome}/aws/config";
+                    AWS_SHARED_CREDENTIALS_FILE = "${xdg.configHome}/aws/credentials";
+                    COLORTERM = "truecolor";
+                    COMPANY = company;
+                    DOCKER_CONFIG = "${xdg.configHome}/docker";
+                    DOTFILES = "$HOME/.dotfiles";
+                    DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
+                    ELINKS_CONFDIR = "${xdg.configHome}/elinks";
+                    GATSBY_TELEMETRY_DISABLED = "1";
+                    # See: https://cli.github.com/telemetry
+                    GH_TELEMETRY = "false";
+                    GITHUB_USER = config.my.github_username;
+                    # https://github.blog/2022-04-12-git-security-vulnerability-announced/
+                    GIT_CEILING_DIRECTORIES = dirOf home;
+                    HOMEBREW_INSTALL_BADGE = "⚽️";
+                    HOMEBREW_NO_ANALYTICS = "1";
+                    HOST_CONFIGS = "${hostConfigHome}";
+                    KITTY_LISTEN_ON = "unix:/tmp/kitty";
+                    # Set the default Less options.
+                    # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
+                    # Remove -X and -F (exit if the content fits on one screen) to enable it.
+                    LESS = "-F -g -i -M -R -S -w -X";
+                    # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
+                    NEXT_TELEMETRY_DISABLED = "1";
+                    NOTES_DIR = "${PERSONAL_STORAGE}/notes";
+                    PAGER = "less";
+                    PERSONAL_STORAGE = "$HOME/Sync";
+                    PROJECTS = "$HOME/${devFolder}/personal/dev";
+                    RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
+                    ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
+                    ZDOTDIR = "${xdg.configHome}/zsh";
+                    # I use a single zk notes dir, so set it and forget
+                    ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
+                    WORK = "$HOME/${devFolder}/work";
+                    _ZO_DATA_DIR = "${xdg.configHome}/zoxide";
+                    CLAUDE_CODE_TMPDIR = "$HOME/${devFolder}/agent-stuff";
+                  };
+
+                systemPackages = with pkgs; [
+                  cachix
+                  curl
+                  direnv
+                  fzf
+                  grc
+                  htop
+                  jq
+                  pass
+                  nix-direnv
+                  pandoc
+                  ripgrep
+                  rsync
+                  wget
+                  zoxide
+                  mise
+                  pure-prompt
+                  devenv
+                  (pkgs.writeShellScriptBin "nixup" ''
                     pushd "$DOTFILES"/ || exit
                     nix flake update
                     popd
                   '')
-              ];
-            };
-
-            my = {
-              user = {
-                shell = pkgs.zsh;
-                packages = with pkgs; [
-                  _1password-cli
-                  atuin
-                  # buku
-                  eza
-                  fd
-                  ffmpeg
-                  glow
-                  hcron
-                  shellcheck
-                  shfmt # Doesn't work with zsh, only sh & bash
-                  vivid
-                  zsh-completions
-                  zsh-history-substring-search
-                  (imagemagick.override {
-                    ghostscriptSupport = true;
-                  })
-                  ghostscript # to preview PDFs as images
-                  poppler-utils # to preview PDFs as text
-                  newsraft
-                  circumflex # HN CLI reader
-                  terminal-notifier
                 ];
               };
-            };
 
-            system.activationScripts.postActivation.text = ''
-              echo ":: -> Running shell activationScript..."
-              if [ ! -e "${local_zshrc}" ]; then
-              	mkdir -p "$(dirname "${local_zshrc}")"
+              my = {
+                user = {
+                  shell = pkgs.zsh;
+                  packages = with pkgs; [
+                    _1password-cli
+                    atuin
+                    # buku
+                    eza
+                    fd
+                    ffmpeg
+                    glow
+                    hcron
+                    shellcheck
+                    shfmt # Doesn't work with zsh, only sh & bash
+                    vivid
+                    zsh-completions
+                    zsh-history-substring-search
+                    (imagemagick.override {
+                      ghostscriptSupport = true;
+                    })
+                    ghostscript # to preview PDFs as images
+                    poppler-utils # to preview PDFs as text
+                    newsraft
+                    circumflex # HN CLI reader
+                    terminal-notifier
+                  ];
+                };
+              };
 
-                cat > ${local_zshrc}<< EOF
-              	# vim:ft=zsh:
-              	[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"
-              	[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"
-              	[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"
-              	[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"
-              	[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"
-              EOF
-              fi
-            '';
+              system.activationScripts.postActivation.text = ''
+                echo ":: -> Running shell activationScript..."
+                if [ ! -e "${local_zshrc}" ]; then
+                	mkdir -p "$(dirname "${local_zshrc}")"
 
-            programs.zsh = {
-              enable = true;
-              # This will also add nix-zsh-completions to the systemPackages.
-              # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L117
-              enableCompletion = true;
-              # Default is the value of enableCompletion but I want to handle it myself
-              # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L76
-              enableGlobalCompInit = false;
-              enableBashCompletion = false;
+                  cat > ${local_zshrc}<< EOF
+                	# vim:ft=zsh:
+                	[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"
+                	[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"
+                	[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"
+                	[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"
+                	[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"
+                EOF
+                fi
+              '';
 
-              enableAutosuggestions = true;
+              programs.zsh = {
+                enable = true;
+                # This will also add nix-zsh-completions to the systemPackages.
+                # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L117
+                enableCompletion = true;
+                # Default is the value of enableCompletion but I want to handle it myself
+                # https://github.com/LnL7/nix-darwin/blob/58b905ea87674592aa84c37873e6c07bc3807aba/modules/programs/zsh/default.nix#L76
+                enableGlobalCompInit = false;
+                enableBashCompletion = false;
 
-              histSize = 10000000;
-              histFile = "${"$"}{ZDOTDIR}/.zsh_history";
+                enableAutosuggestions = true;
 
-              ########################################################################
-              # Instead of sourcing, I can read the files & save startiup time instead
-              ########################################################################
+                histSize = 10000000;
+                histFile = "${"$"}{ZDOTDIR}/.zsh_history";
 
-              # zshenv
-              shellInit =
-                lib.concatStringsSep "\n"
-                [
-                  /*
-                  zsh
-                  */
-                  ''
+                ########################################################################
+                # Instead of sourcing, I can read the files & save startiup time instead
+                ########################################################################
+
+                # zshenv
+                shellInit = lib.concatStringsSep "\n" [
+                  /* zsh */ ''
                     export LESS_TERMCAP_mb=$'\E[1;31m'   # Begins blinking.
                     export LESS_TERMCAP_md=$'\E[1;31m'   # Begins bold.
                     export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
@@ -268,14 +269,10 @@ let
                   ''
                 ];
 
-              # zshrc
-              interactiveShellInit =
-                lib.concatStringsSep "\n"
-                ([
-                    /*
-                    zsh
-                    */
-                    ''
+                # zshrc
+                interactiveShellInit = lib.concatStringsSep "\n" (
+                  [
+                    /* zsh */ ''
 
                       ##############################################################
                       # Profiling.
@@ -381,10 +378,7 @@ let
                     "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
                   ]
                   ++ [
-                    /*
-                    zsh
-                    */
-                    ''
+                    /* zsh */ ''
                       # bind UP and DOWN keys
                       bindkey '^[[A' history-substring-search-up
                       bindkey '^[[B' history-substring-search-down
@@ -425,136 +419,150 @@ let
 
                       # zprof
                     ''
-                  ]);
+                  ]
+                );
 
-              promptInit = "autoload -U promptinit; promptinit; prompt pure";
+                promptInit = "autoload -U promptinit; promptinit; prompt pure";
+              };
+            }
+          ];
+        };
+
+      nixosModule =
+        { pkgs, ... }:
+        {
+          imports = [ commonModule ];
+
+          config = {
+            environment = {
+              systemPackages = with pkgs; [
+                dwm
+                dmenu
+                xclip
+              ];
+
+              shellAliases = {
+                chmod = "chmod --preserve-root -v";
+                chown = "chown --preserve-root -v";
+              };
+
+              variables.BROWSER = "xdg-open";
             };
-          }
-        ];
-      };
 
-    nixosModule = {pkgs, ...}: {
-      imports = [commonModule];
-
-      config = {
-        environment = {
-          systemPackages = with pkgs; [dwm dmenu xclip];
-
-          shellAliases = {
-            chmod = "chmod --preserve-root -v";
-            chown = "chown --preserve-root -v";
+            programs.zsh.enableSyntaxHighlighting = true;
           };
-
-          variables.BROWSER = "xdg-open";
         };
 
-        programs.zsh.enableSyntaxHighlighting = true;
-      };
-    };
+      darwinModule =
+        {
+          pkgs,
+          lib,
+          config,
+          ...
+        }:
+        let
+          inherit (config.home-manager.users."${config.my.username}") xdg;
+        in
+        {
+          imports = [ commonModule ];
 
-    darwinModule = {
-      pkgs,
-      lib,
-      config,
-      ...
-    }: let
-      inherit (config.home-manager.users."${config.my.username}") xdg;
-    in {
-      imports = [commonModule];
+          config = {
+            system.activationScripts.postActivation.text = lib.mkAfter ''
+              if dscl . -read /Users/${config.my.username} UserShell | grep -qv "/run/current-system/sw/bin/zsh"; then
+                echo ":: -> Changing Shell..."
+                sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
+              fi
+            '';
 
-      config = {
-        system.activationScripts.postActivation.text = lib.mkAfter ''
-          if dscl . -read /Users/${config.my.username} UserShell | grep -qv "/run/current-system/sw/bin/zsh"; then
-            echo ":: -> Changing Shell..."
-            sudo dscl . -create /Users/${config.my.username} UserShell /run/current-system/sw/bin/zsh
-          fi
-        '';
+            launchd.user.agents."maxfiles" = {
+              serviceConfig = {
+                ProgramArguments = [
+                  "launchctl"
+                  "limit"
+                  "maxfiles"
+                  "65536"
+                  "65536"
+                ];
+                RunAtLoad = true;
+                ServiceIPC = false;
+              };
+            };
+            programs.zsh.enableFastSyntaxHighlighting = true;
 
-        launchd.user.agents."maxfiles" = {
-          serviceConfig = {
-            ProgramArguments = [
-              "launchctl"
-              "limit"
-              "maxfiles"
-              "65536"
-              "65536"
+            environment = {
+              shellAliases = {
+                emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
+                flushdns = "sudo killall -HUP mDNSResponder";
+              };
+
+              variables = {
+                BROWSER = "open";
+                LANG = "en_US.UTF-8";
+                LC_TIME = "en_GB.UTF-8";
+                NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+                XDG_CACHE_HOME = xdg.cacheHome;
+                XDG_CONFIG_HOME = xdg.configHome;
+                XDG_DATA_HOME = xdg.dataHome;
+                XDG_STATE_HOME = xdg.stateHome;
+              };
+
+              systemPackages =
+                with pkgs;
+                [
+                  openssl
+                  gawk
+                  gnused
+                  coreutils
+                  findutils
+                  (pkgs.writeShellScriptBin "nixsw" ''
+                    pushd "$DOTFILES"/ || exit
+                    sudo NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" darwin-rebuild switch --flake .
+                    popd
+                  '')
+                ]
+                ++ (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin") lnav);
+            };
+          };
+        };
+    in
+    {
+      darwin = darwinModule;
+      nixos = nixosModule;
+      homeManager =
+        {
+          pkgs,
+          lib,
+          ...
+        }:
+        {
+          xdg.configFile = {
+            "zsh" = {
+              recursive = true;
+              source = ../../../../config/zsh.d/zsh;
+            };
+            "zsh/.zshrc".text = "";
+            "direnv/direnvrc".text = lib.concatStringsSep "\n" [
+              "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
+              (builtins.readFile ../../../../config/direnv/direnvrc)
             ];
-            RunAtLoad = true;
-            ServiceIPC = false;
+            "vivid" = {
+              recursive = true;
+              source = ../../../../config/vivid;
+            };
+            "atuin".source = ../../../../config/atuin;
+          };
+
+          home.file = {
+            ".terminfo" = {
+              recursive = true;
+              source = ../../../../config/.terminfo;
+            };
+            ".hushlogin".text = "";
           };
         };
-        programs.zsh.enableFastSyntaxHighlighting = true;
-
-        environment = {
-          shellAliases = {
-            emptytrash = "sudo rm -rfv /Volumes/*/.Trashes;sudo rm -rfv ~/.Trash";
-            flushdns = "sudo killall -HUP mDNSResponder";
-          };
-
-          variables = {
-            BROWSER = "open";
-            LANG = "en_US.UTF-8";
-            LC_TIME = "en_GB.UTF-8";
-            NIX_SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-            XDG_CACHE_HOME = xdg.cacheHome;
-            XDG_CONFIG_HOME = xdg.configHome;
-            XDG_DATA_HOME = xdg.dataHome;
-            XDG_STATE_HOME = xdg.stateHome;
-          };
-
-          systemPackages = with pkgs;
-            [
-              openssl
-              gawk
-              gnused
-              coreutils
-              findutils
-              (pkgs.writeShellScriptBin "nixsw"
-                ''
-                  pushd "$DOTFILES"/ || exit
-                  sudo NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" darwin-rebuild switch --flake .
-                  popd
-                '')
-            ]
-            ++ (lib.optional (stdenv.hostPlatform.system == "aarch64-darwin") lnav);
-        };
-      };
     };
-  in {
-    darwin = darwinModule;
-    nixos = nixosModule;
-    homeManager = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      xdg.configFile = {
-        "zsh" = {
-          recursive = true;
-          source = ../../../../config/zsh.d/zsh;
-        };
-        "zsh/.zshrc".text = "";
-        "direnv/direnvrc".text = lib.concatStringsSep "\n" [
-          "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
-          (builtins.readFile ../../../../config/direnv/direnvrc)
-        ];
-        "vivid" = {
-          recursive = true;
-          source = ../../../../config/vivid;
-        };
-        "atuin".source = ../../../../config/atuin;
-      };
-
-      home.file = {
-        ".terminfo" = {
-          recursive = true;
-          source = ../../../../config/.terminfo;
-        };
-        ".hushlogin".text = "";
-      };
-    };
-  };
-in {
+in
+{
   flake = {
     modules = {
       darwin.shell = module.darwin;

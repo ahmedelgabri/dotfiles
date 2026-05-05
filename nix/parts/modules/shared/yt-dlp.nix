@@ -1,16 +1,18 @@
 let
   module = {
-    generic = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      config = with lib; {
-        my.user.packages = with pkgs; [
-          (yt-dlp.override {withAlias = true;})
-        ];
+    generic =
+      {
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        config = with lib; {
+          my.user.packages = with pkgs; [
+            (yt-dlp.override { withAlias = true; })
+          ];
+        };
       };
-    };
 
     homeManager = _: {
       xdg.configFile."yt-dlp" = {
@@ -19,7 +21,8 @@ let
       };
     };
   };
-in {
+in
+{
   flake = {
     modules = {
       generic."yt-dlp" = module.generic;

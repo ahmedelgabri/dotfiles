@@ -2,21 +2,24 @@ let
   module = {
     darwin = _: {
       config = {
-        homebrew.casks = ["discord"];
+        homebrew.casks = [ "discord" ];
       };
     };
 
-    nixos = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      config = with lib; {
-        my.user.packages = with pkgs; [discord];
+    nixos =
+      {
+        pkgs,
+        lib,
+        ...
+      }:
+      {
+        config = with lib; {
+          my.user.packages = with pkgs; [ discord ];
+        };
       };
-    };
   };
-in {
+in
+{
   flake = {
     modules = {
       darwin.discord = module.darwin;

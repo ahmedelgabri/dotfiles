@@ -8,6 +8,7 @@ let
       };
     };
   };
-in {
+in
+{
   flake.modules.generic.agenix = module;
 }
