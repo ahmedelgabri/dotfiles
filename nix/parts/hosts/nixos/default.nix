@@ -28,7 +28,6 @@ let
         gc = {
           dates = "daily";
         };
-        autoOptimiseStore = true;
         registry = {
           nixos.flake = inputs.nixpkgs;
           nixpkgs.flake = inputs.nixpkgs;
@@ -40,20 +39,12 @@ let
 
       networking = {
         hostName = "nixos";
-        wireless.enable = false;
         networkmanager.enable = true;
         useDHCP = false;
         interfaces.enp0s20u2.useDHCP = true;
       };
 
       hardware.bluetooth.enable = true;
-      hardware.pulseaudio = {
-        enable = true;
-        systemWide = true;
-        support32Bit = true;
-        package = pkgs.pulseaudioFull;
-      };
-
       i18n = {
         defaultLocale = "en_US.UTF-8";
         extraLocaleSettings = {
@@ -67,29 +58,32 @@ let
       };
 
       services = {
+        desktopManager.plasma6.enable = true;
+        displayManager = {
+          defaultSession = "none+i3";
+          sddm.enable = true;
+        };
+        libinput = {
+          enable = true;
+          touchpad = {
+            tapping = true;
+            naturalScrolling = true;
+          };
+        };
+
         xserver = {
           enable = true;
-          layout = "us,ar,nl";
-          libinput = {
-            enable = true;
-            touchpad = {
-              tapping = true;
-              naturalScrolling = true;
-            };
-          };
+          xkb.layout = "us,ar,nl";
           windowManager.dwm.enable = true;
           windowManager.i3 = {
             enable = true;
-            package = pkgs.i3-gaps;
+            package = pkgs.i3;
             extraPackages = with pkgs; [
               i3lock
               dmenu
               i3blocks
             ];
           };
-          displayManager.defaultSession = "none+i3";
-          displayManager.sddm.enable = true;
-          desktopManager.plasma5.enable = true;
         };
 
         nextdns.enable = true;
@@ -100,8 +94,6 @@ let
       };
 
       nixpkgs.config.dwm.patches = [ ./dwm.patch ];
-
-      sound.enable = true;
 
       environment.systemPackages = with pkgs; [
         gnumake
@@ -121,9 +113,6 @@ let
       environment.shellAliases.l = null;
 
       programs = {
-        gnupg.agent = {
-          pinentryFlavor = "pinentry";
-        };
         java.enable = true;
         less.enable = true;
         mosh.enable = true;

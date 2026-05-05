@@ -34,6 +34,7 @@ _: {
                     '';
                   }
                 );
+                meta.description = "Bootstrap a dotfiles host configuration";
               };
             }
           else
@@ -43,6 +44,7 @@ _: {
           sb = {
             type = "app";
             program = pkgs.lib.getExe pkgs.sb;
+            meta.description = "Manage sandbox VMs for isolated development";
           };
         };
 

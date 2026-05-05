@@ -72,6 +72,13 @@ let
           theme.ui.table.compact = true;
           pager.diff = "delta --side-by-side";
         };
+        ghDashConfigWithHeader = pkgs.runCommand "gh-dash-config.yml" { } ''
+          {
+            printf '%s\n' '# yaml-language-server: $schema=https://www.gh-dash.dev/schema.json'
+            printf '%s\n' '# ${myConfig.nix_managed}'
+            cat ${ghDashConfig}
+          } > $out
+        '';
       in
       with lib;
       {
@@ -114,11 +121,7 @@ let
           };
         }
         // optionalAttrs (myConfig.company == "") {
-          "gh-dash/config.yml".text = concatStringsSep "\n" [
-            "# yaml-language-server: $schema=https://www.gh-dash.dev/schema.json"
-            "# ${myConfig.nix_managed}"
-            (builtins.readFile ghDashConfig)
-          ];
+          "gh-dash/config.yml".source = ghDashConfigWithHeader;
         };
       };
   };

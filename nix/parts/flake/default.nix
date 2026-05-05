@@ -75,11 +75,19 @@
           nix = {
             enable = true;
             channel.enable = false;
-            nixPath = {
-              inherit (inputs) nixpkgs;
-              inherit (inputs) darwin;
-              inherit (inputs) home-manager;
-            };
+            nixPath =
+              if pkgs.stdenv.isDarwin then
+                {
+                  inherit (inputs) nixpkgs;
+                  inherit (inputs) darwin;
+                  inherit (inputs) home-manager;
+                }
+              else
+                [
+                  "nixpkgs=${inputs.nixpkgs}"
+                  "darwin=${inputs.darwin}"
+                  "home-manager=${inputs.home-manager}"
+                ];
             package = pkgs.nix;
             settings = {
               trusted-users = [ "@admin" ];
