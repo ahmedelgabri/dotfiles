@@ -2,8 +2,7 @@
  * Files Extension
  *
  * /files command lists files in the current git tree (plus session-referenced files)
- * and offers quick actions like reveal, open, edit, or diff.
- * /diff is kept as an alias to the same picker.
+ * and offers quick actions like reveal, open, edit, or per-file VS Code diff.
  *
  * from: https://github.com/mitsuhiko/agent-stuff/blob/a3f8ab1108a48fec9e175f6cd5d9aaa4694ce29d/extensions/files.ts
  */
