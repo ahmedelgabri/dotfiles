@@ -1,45 +1,52 @@
 ---
-name: commit
-description: Create a commit in a repository
+name: git-commit
+description: Create a commit (or draft a commit message) in a Git repository
 ---
 
-# Create a commit in a repository
+# Create a commit (or draft a commit message) in a Git repository
+
+Your user may invoke this skill explicitly with a slash command, or informally
+with a phrase like "commit this" or "suggest a commit message". If they use a
+loose instruction like "commit this" your first task is to determine whether you
+are working in a Git repository and should make a Git commit (using this skill),
+or you are working in a Jujutsu repo and should create a Jujutsu commit (using
+the dedicated Jujutsu commit skill).
+
+## Determining the repository type
+
+**IMPORTANT:** Always identify the repository root of the current working
+directory before making a commit. You must ensure that you are actually in a
+repo, and that the repo uses the specific version control system that you intend
+to use to create the commit.
+
+Most frequently, you will be in a Git repository (which you can determine via
+the presence of a `.git` directory and the absence of a `.jj` directory in the
+current working directory's repository root). In Git repositories, you should
+use this skill to create commits.
+
+Less frequently, you will find yourself in a Jujutsu repository (which you can
+determine via the presence of a `.jj` directory in the current working
+directory's repository root). In Jujutsu repositories, you should use the
+dedicated Jujutsu commit skill to create commits. For general information on
+Jujutsu, see the Jujutsu version-control skill.
 
 ## Creating Git commits
 
-The most common case will be creating a commit in a Git repository. Usually, you
-will include all changes in the working directory in the commit (that is, you
-should run `git diff` to see what the changes are, and/or `git diff --staged` to
-see what has already been staged). Generally, if your user wants you to commit
-only a subset of the changes in the working directory, he will instruct you to
-do so.
+Generally, if your user wants you to commit only a subset of the changes in the
+working directory, they will instruct you to do so. Nevertheless, if you
+determine that there are unrelated changes waiting to be committed, you should
+clarify with the user how they wish to split them up into distinct commits,
+rather than committing them all at once.
 
-## Creating Jujutsu commits
-
-Less frequently, you will find yourself in a Jujutsu repository (which you can
-determine via the presence of a `.jj` directory in the repository root). Jujutsu
-does not have a concept of a staging area like Git, and running any `jj` command
-will cause a snapshot of the working directory (including untracked files) to be
-made; you should therefore interactively prompt your user to indicate which
-changed files should be included in the change. In the most common case, you can
-use `jj st` to see which files are in the current snapshot, and `jj show` to see
-the diff, then `jj split <file>...` to indicate which specific files to be
-included in the commit (passing your commit message using the `-m` option.
-
-In general, because of the lack of staging area, you should be careful with
-_any_ `jj` command that creates or modifies a change. For example, if you user
-asks you to squash some changes into the last commit using `jj squash`, you
-should prompt the user to indicate _which_ files' changes they want squashed
-(and invoke `jj squash <file>...` accordingly).
-
-For more information on Jujutsu, see the `/jujutsu` skill.
+Usually, you will include all changes in the working directory in the commit
+(that is, you should run `git diff` to see what the changes are, and/or
+`git diff --staged` to see what has already been staged).
 
 ## Common instructions
 
-1. Run the appropriate Git-specific or Jujutsu-specific commands to see what
-   should be included in the commit.
+1. Run commands to see what can and should be included in the commit.
 2. Note that your user may have asked you to create or update "plan" files under
-   `.claude-notes/`, a directory which is ignored via the global
+   `.agent-notes/`, a directory which may be ignored via the global
    `~/.config/git/ignore` file: these plan files should never be included in a
    commit as they are intended to be local-only aids to development.
 3. Create a commit message with:

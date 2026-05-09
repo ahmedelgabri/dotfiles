@@ -1,7 +1,16 @@
 ---
 name: pr-review
-description: |
-  Review a GitHub pull request, examining the summary, linked resources, and diff
+description:
+  Review a GitHub pull request, examining the summary, linked resources, and
+  diff
+argument-hint: '[PR number or URL]'
+allowed-tools:
+  - Bash
+  - Read
+  - Glob
+  - Grep
+  - WebFetch
+  - AskUserQuestion
 ---
 
 Review a GitHub pull request using the `gh` CLI. Examine it as a thorough human
@@ -23,8 +32,9 @@ reviewer would.
 
 3. **Read the PR description carefully**:
    - Understand the stated motivation and approach.
-   - If the description contains links (to issues, docs, RFCs, etc.), use
-     WebFetch to read them and understand the context.
+   - If the description contains links (to issues, docs, RFCs, etc.), fetch them
+     (via the host's web-fetch tool, or `curl` via `bash`) to understand the
+     context.
 
 4. **Examine the diff**:
 
@@ -59,12 +69,12 @@ reviewer would.
    - For each issue, reference the specific file and line(s), and explain what
      the problem is and how to fix it.
 
-7. **Offer next steps** using AskUserQuestion. Give the user a choice:
+7. **Offer next steps**. Ask the user which of these to do:
 
    **Option A: Post review comments on the PR**
    - Use `gh pr review <number>` to submit the review.
-   - Each comment must be clearly prefixed with `[Claude Code Review]` so it is
-     obvious the feedback was AI-generated.
+   - Each comment must be clearly prefixed with `[AI Review]` so it is obvious
+     the feedback was AI-generated.
    - Use `--comment` for suggestion-level reviews, `--request-changes` if there
      are blocking issues.
 
@@ -81,5 +91,6 @@ reviewer would.
 - Be thorough but fair. Acknowledge what the PR does well, not just problems.
 - Do not nitpick formatting if the project has a formatter configured.
 - If the PR is very large, focus review effort on the most critical or complex
-  changes.
+  changes. Inform the user of sections that you did not focus on, and offer to
+  use subagents to target those parts.
 - When posting comments via `gh`, always label them as AI-generated.

@@ -1,7 +1,14 @@
 ---
 name: pr-create
-description: |
-  Create a GitHub pull request as a draft, auto-generating title and body from commits
+description:
+  Create a GitHub pull request as a draft, auto-generating title and body from
+  commits
+allowed-tools:
+  - Bash
+  - Read
+  - Glob
+  - Grep
+  - AskUserQuestion
 ---
 
 Create a GitHub pull request for the current branch using the `gh` CLI.
@@ -39,10 +46,10 @@ Create a GitHub pull request for the current branch using the `gh` CLI.
    - The body should explain what changed and why, based on commit messages and
      the diff
 
-5. **Present the draft to the user** using AskUserQuestion:
-   - Show the proposed title and body
-   - Ask if they want to make any changes before creating the PR
-   - If the user provides revisions, incorporate them
+5. **Present the draft to the user**:
+   - Show the proposed title and body.
+   - Ask if they want to make any changes before creating the PR.
+   - If the user provides revisions, incorporate them.
 
 6. **Create the PR** by running:
 

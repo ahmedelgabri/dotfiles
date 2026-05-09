@@ -1,5 +1,5 @@
 ---
-name: jujutsu
+name: jj-version-control
 description: How to use `jj`, the Jujutsu version control system
 ---
 
@@ -21,13 +21,14 @@ snapshot, modify `.gitignore` then use `jj file untrack <file>...`.
 
 ## Common commands
 
-| Command     | Description                                               |
-| ----------- | --------------------------------------------------------- |
-| `jj st`     | Show summary of working copy changes                      |
-| `jj diff`   | Show diff of working copy changes                         |
-| `jj log`    | Show graph of commits (by default, only unpushed commits) |
-| `jj evolog` | Show previous states (analogous to `git reflog`)          |
-| `jj op log` | Show previous operations                                  |
+| Command         | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `jj st`         | Show summary of working copy changes                      |
+| `jj diff`       | Show diff of working copy changes                         |
+| `jj diff --git` | Show git Git-compatible diff of working copy changes      |
+| `jj log`        | Show graph of commits (by default, only unpushed commits) |
+| `jj evolog`     | Show previous states (analogous to `git reflog`)          |
+| `jj op log`     | Show previous operations                                  |
 
 ## Specifying revisions
 

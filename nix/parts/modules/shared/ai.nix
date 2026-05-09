@@ -14,6 +14,8 @@ let
             llm-agents.agent-browser
             llama-cpp
             ccpeek
+            puppeteer-cli
+            agent-browser
           ];
         };
       };
