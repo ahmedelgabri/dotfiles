@@ -18,7 +18,6 @@ let
           "zoom"
           "whatsapp"
           "telegram"
-          "xdeck"
           "handy"
         ];
       };
