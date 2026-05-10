@@ -165,6 +165,20 @@
 				]
 			}
 		],
+		"PostCompact": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "~/.claude/hooks/log-event.sh PostCompact"
+					},
+					{
+						"type": "command",
+						"command": "~/.claude/hooks/inject-repo-info.sh"
+					}
+				]
+			}
+		],
 		"SessionEnd": [
 			{
 				"hooks": [
