@@ -516,7 +516,12 @@ let
                   findutils
                   (pkgs.writeShellScriptBin "nixsw" ''
                     pushd "$DOTFILES"/ || exit
-                    sudo NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" darwin-rebuild switch --flake .
+                    sudo \
+                      NIX_SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
+                      SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
+                      GIT_SSL_CAINFO="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
+                      HOMEBREW_GIT_PATH="/Library/Developer/CommandLineTools/usr/bin/git" \
+                      darwin-rebuild switch --flake .
                     popd
                   '')
                 ]

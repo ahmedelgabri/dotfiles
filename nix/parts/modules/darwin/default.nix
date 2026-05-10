@@ -24,8 +24,9 @@ let
       };
 
       environment.variables = {
-        # Let Homebrew use system Git, the Nix Git in PATH does not use macOS trust store.
-        HOMEBREW_GIT_PATH = "/usr/bin/git";
+        # /usr/bin/git is an xcrun shim and follows xcode-select, which points at Nix's SDK.
+        # `xcrun -f git` -> `/run/current-system/sw/bin/git`
+        HOMEBREW_GIT_PATH = "/Library/Developer/CommandLineTools/usr/bin/git";
       };
 
       homebrew = {
@@ -37,6 +38,12 @@ let
           autoUpdate = true;
           upgrade = true;
           cleanup = "zap";
+          extraEnv = {
+            HOMEBREW_GIT_PATH = "/Library/Developer/CommandLineTools/usr/bin/git";
+            SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+            GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+            HOMEBREW_NO_ANALYTICS = "1";
+          };
         };
       };
 
