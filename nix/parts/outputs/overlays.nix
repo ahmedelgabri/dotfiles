@@ -8,9 +8,17 @@
 
       next-prayer = prev.callPackage ../../../config/tmux/scripts/next-prayer/next-prayer.nix { };
 
-      notmuch = prev.notmuch.override {
+      notmuch = (prev.notmuch.override {
         withEmacs = false;
-      };
+      }).overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + prev.lib.optionalString prev.stdenv.hostPlatform.isDarwin ''
+            # The Darwin sanitizer runtime can hang probing dynamic shadow memory, and configure runs the probe without a timeout.
+            substituteInPlace configure \
+              --replace-fail 'if ''${test_cmdline} >/dev/null 2>&1 && ./minimal' 'if false'
+          '';
+      });
 
       pure-prompt = prev.pure-prompt.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../../patches/pure.patch ];
