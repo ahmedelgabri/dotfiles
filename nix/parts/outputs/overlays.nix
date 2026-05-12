@@ -20,10 +20,6 @@
           '';
       });
 
-      pure-prompt = prev.pure-prompt.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ../../patches/pure.patch ];
-      });
-
       zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (_: {
         version = "latest";
         src = inputs.zsh-history-substring-search;

@@ -151,7 +151,6 @@ let
                   wget
                   zoxide
                   mise
-                  pure-prompt
                   devenv
                   (pkgs.writeShellScriptBin "nixup" ''
                     pushd "$DOTFILES"/ || exit
@@ -265,7 +264,6 @@ let
                     )
 
                     fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)
-                    fpath+=(${pkgs.pure-prompt}/share/zsh/site-functions)
                   ''
                 ];
 
@@ -273,6 +271,12 @@ let
                 interactiveShellInit = lib.concatStringsSep "\n" (
                   [
                     /* zsh */ ''
+                      # Enable powerlevel10k instant prompt. Must run before any
+                      # output or interactive setup so the cached prompt renders
+                      # before the rest of zshrc finishes evaluating.
+                      if [[ -r "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh" ]]; then
+                        source "${"$"}{XDG_CACHE_HOME:-${"$"}HOME/.cache}/p10k-instant-prompt-${"$"}{(%):-%n}.zsh"
+                      fi
 
                       ##############################################################
                       # Profiling.
@@ -305,22 +309,6 @@ let
                       ${lib.toShellVars zshInteractiveLocalVars}
                       ${mkExportedShellVars zshInteractiveExportedVars}
                       ${mkRawExportedShellVars zshInteractiveRawExportedVars}
-
-                      PROMPT_SYMBOLS=("λ" "ϟ" "▲" "∴" "→" "»" "৸")
-                      # Arrays in zsh starts from 1
-                      export PURE_PROMPT_SYMBOL=${"$"}{PROMPT_SYMBOLS[${"$"}RANDOM % ${"$"}{#PROMPT_SYMBOLS[@]} + 1]}
-
-                      zstyle :prompt:pure:suspended_jobs color 008
-                      zstyle :prompt:pure:git:branch color blue
-                      zstyle :prompt:pure:git:arrow color blue
-                      zstyle :prompt:pure:git:stash color blue
-                      zstyle :prompt:pure:git:dirty color red
-                      zstyle :prompt:pure:git:action color 003
-                      zstyle :prompt:pure:prompt:success color 003
-                      zstyle :prompt:pure:path color 242
-                      zstyle :prompt:pure:git:stash show yes
-                      zstyle :prompt:pure:environment:nix-shell show no
-                      zstyle :prompt:pure:git:fetch only_upstream yes
 
                       autoload -U select-word-style
                       # only alphanumeric chars are considered WORDCHARS
@@ -401,6 +389,7 @@ let
                       eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
                     ''
                     (builtins.readFile ../../../../config/zsh.d/zsh/config/extras.zsh)
+                    (builtins.readFile ../../../../config/zsh.d/.p10k.zsh)
                     ''
                       # Per machine config
                       if [ -f ${"$"}HOST_CONFIGS/zshrc ]; then
@@ -422,7 +411,7 @@ let
                   ]
                 );
 
-                promptInit = "autoload -U promptinit; promptinit; prompt pure";
+                promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
               };
             }
           ];
