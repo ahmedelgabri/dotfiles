@@ -41,7 +41,9 @@
     # =========================[ Line #1 ]=========================
     # os_icon               # os identifier
     dir                     # current directory
-    vcs                     # git status
+    # vcs                   # git status (stock p10k; replaced by my_git below)
+    my_git                  # custom async git segment
+    my_jj                   # custom async jj segment
     my_jobs
     command_execution_time  # duration of the last command
     # =========================[ Line #2 ]=========================
@@ -1736,6 +1738,862 @@
 
 # Tell `p10k configure` which file it should overwrite.
 typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
+
+##############################################################################
+# Shared helpers for my_git + my_jj prompt segments.
+##############################################################################
+
+typeset -g _MY_VCS_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/p10k-vcs-segments
+
+# Convert a repo/workspace path into a filesystem-safe cache key.
+_my_vcs_cache_key() {
+  local key=${1:A}
+  key=${key//\%/%25}
+  key=${key//\//%2F}
+  key=${key//:/%3A}
+  REPLY=$key
+}
+
+_my_vcs_refresh_prompt() {
+  (( ${+functions[p10k]} )) && p10k display -r
+  zle -I 2>/dev/null || true
+  zle reset-prompt 2>/dev/null || true
+  zle -R 2>/dev/null || true
+}
+
+typeset -gi _my_vcs_poll_scheduled=0
+typeset -gi _my_vcs_poll_attempts=0
+
+_my_vcs_has_pending_refresh() {
+  [[ -n ${_my_git_state[stale]:-} || -n ${_my_jj_state[stale]:-} ]] || (( ${_my_git_gitstatus_pending:-0} ))
+}
+
+_my_vcs_process_pending_refresh() {
+  if (( ${_my_git_gitstatus_pending:-0} && ${+functions[gitstatus_process_results_my_git_]} )); then
+    gitstatus_process_results_my_git_ -t 0 MY_GIT 2>/dev/null || true
+  fi
+}
+
+_my_vcs_p9k_worker_invoke() {
+  local id=$1 cmd=$2
+  (( ${+functions[_p9k_worker_start]} && ${+functions[_p9k_worker_invoke]} )) || return 1
+  [[ -o interactive ]] || return 1
+  _p9k_worker_start 2>/dev/null || return 1
+  [[ -n ${_p9k__worker_resp_fd:-} ]] || return 1
+  _p9k_worker_invoke "$id" "$cmd"
+}
+
+_my_vcs_schedule_poll() {
+  (( _my_vcs_poll_scheduled )) && return
+  _my_vcs_poll_scheduled=1
+  local pid=$$
+  { command sleep 0.05; kill -USR1 $pid 2>/dev/null; } &!
+}
+
+TRAPUSR1() {
+  _my_vcs_poll_scheduled=0
+  _my_vcs_process_pending_refresh
+  if _my_vcs_has_pending_refresh; then
+    if (( _my_vcs_poll_attempts < 40 )); then
+      (( _my_vcs_poll_attempts++ ))
+      _my_vcs_schedule_poll
+    else
+      _my_vcs_poll_attempts=0
+    fi
+  else
+    _my_vcs_poll_attempts=0
+  fi
+  return 0
+}
+
+##############################################################################
+# my_git: custom async git segment
+#
+# Replaces p10k's built-in `vcs` segment with a hybrid renderer that:
+#
+#   - Returns early in jj-managed repos (look for `.jj` walking up from PWD).
+#   - Returns POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON at a worktree-root
+#     (bare repo where the gitdir is its own common dir, e.g.
+#     `~/code/project/.bare/` with sibling worktrees).
+#   - Uses gitstatusd (`gitstatus_query_my_git_`) for the common fast path.
+#   - Falls back to p10k's background worker for anything gitstatusd
+#     refuses or fails on — most notably repos with
+#     `extensions.relativeWorktrees = true`, the case that broke status
+#     rendering and motivated this rewrite (see p10k issue #2728).
+#
+# Per-checkout metadata is cached by absolute gitdir so linked worktrees that
+# share a common dir still keep their own prompt labels.
+##############################################################################
+
+## Colors — each is overridable. Unset (or empty) per-part vars fall back
+## to FOREGROUND. STALE_FOREGROUND drives the "data shown is cached/old while
+## a refresh is in flight" rendering.
+typeset -g POWERLEVEL9K_MY_GIT_FOREGROUND=${POWERLEVEL9K_MY_GIT_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_GIT_STALE_FOREGROUND=${POWERLEVEL9K_MY_GIT_STALE_FOREGROUND:-236}
+typeset -g POWERLEVEL9K_MY_GIT_DIRTY_FOREGROUND=${POWERLEVEL9K_MY_GIT_DIRTY_FOREGROUND:-1}
+typeset -g POWERLEVEL9K_MY_GIT_AHEAD_FOREGROUND=${POWERLEVEL9K_MY_GIT_AHEAD_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_GIT_BEHIND_FOREGROUND=${POWERLEVEL9K_MY_GIT_BEHIND_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_GIT_AT_FOREGROUND=${POWERLEVEL9K_MY_GIT_AT_FOREGROUND:-242}
+typeset -g POWERLEVEL9K_MY_GIT_SHA_FOREGROUND=${POWERLEVEL9K_MY_GIT_SHA_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON=${POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON:-≡}
+typeset -g POWERLEVEL9K_MY_GIT_USE_GITSTATUS=${POWERLEVEL9K_MY_GIT_USE_GITSTATUS:-true}
+typeset -g POWERLEVEL9K_MY_GIT_VISUAL_IDENTIFIER_EXPANSION=
+
+typeset -gA _my_git_state                 # current display incl. `stale`
+typeset -gA _my_git_meta                  # per-absolute-gitdir metadata cache
+typeset -g  _my_git_last_pwd=''
+typeset -g  _my_git_last_git_dir=''
+typeset -g  _my_git_last_common_dir=''
+typeset -g  _my_git_last_top=''
+typeset -g  _my_git_async_pwd=''          # PWD at most recent async dispatch
+typeset -g  _my_git_gitstatus_started=0
+typeset -g  _my_git_gitstatus_pending=0
+typeset -g  _my_git_gitstatus_pending_pwd=''
+typeset -g  _my_git_gitstatus_pending_git_dir=''
+typeset -g  _my_git_gitstatus_pending_top=''
+typeset -g  _my_git_last_cache_serial=''
+
+# `stale` field is also blanked here — used by the renderer to pick color.
+_my_git_blank() {
+  _my_git_state=( label '' sha '' dirty '' ahead 0 behind 0 stale '' probed_pwd '' )
+}
+
+# Walk up from $1 looking for .jj. FS only, no subprocess.
+_my_git_is_jj_dir() {
+  local p=$1
+  while [[ -n $p && $p != / ]]; do
+    [[ -d $p/.jj ]] && return 0
+    p=${p%/*}
+  done
+  return 1
+}
+
+_my_git_cache_serial() {
+  REPLY="${_my_git_state[label]:-}|${_my_git_state[sha]:-}|${_my_git_state[dirty]:-}|${_my_git_state[ahead]:-0}|${_my_git_state[behind]:-0}"
+}
+
+_my_git_cache_path() {
+  [[ -n $_my_git_last_git_dir ]] || return 1
+  _my_vcs_cache_key "$_my_git_last_git_dir"
+  REPLY="$_MY_VCS_CACHE_DIR/git-$REPLY.zsh"
+}
+
+_my_git_store_cache() {
+  [[ -n ${_my_git_state[label]:-} ]] || return
+  _my_git_cache_serial
+  [[ $REPLY == $_my_git_last_cache_serial ]] && return
+  _my_git_last_cache_serial=$REPLY
+
+  local file
+  _my_git_cache_path || return
+  file=$REPLY
+  command mkdir -p -- "${file:h}" 2>/dev/null || return
+
+  local -A cache=(
+    label  "${_my_git_state[label]:-}"
+    sha    "${_my_git_state[sha]:-}"
+    dirty  "${_my_git_state[dirty]:-}"
+    ahead  "${_my_git_state[ahead]:-0}"
+    behind "${_my_git_state[behind]:-0}"
+  )
+  local -a payload
+  payload=( ${(qqkv)cache} )
+  local tmp="$file.$$"
+  print -r -- "typeset -gA _my_git_cached_state=( ${(j: :)payload} )" >| "$tmp" 2>/dev/null && \
+    command mv -f -- "$tmp" "$file" 2>/dev/null
+}
+
+_my_git_load_cache() {
+  local file
+  _my_git_cache_path || return 1
+  file=$REPLY
+  [[ -r $file ]] || return 1
+
+  typeset -gA _my_git_cached_state=()
+  source "$file" 2>/dev/null || return 1
+  [[ -n ${_my_git_cached_state[label]:-} ]] || return 1
+
+  _my_git_state=(
+    label      "${_my_git_cached_state[label]:-}"
+    sha        "${_my_git_cached_state[sha]:-}"
+    dirty      "${_my_git_cached_state[dirty]:-}"
+    ahead      "${_my_git_cached_state[ahead]:-0}"
+    behind     "${_my_git_cached_state[behind]:-0}"
+    stale      1
+    probed_pwd "$PWD"
+  )
+  _my_git_cache_serial
+  _my_git_last_cache_serial=$REPLY
+  return 0
+}
+
+# One-shot classification per checkout; populates _my_git_meta[$git_dir].
+_my_git_classify_repo() {
+  local out git_dir common_dir top is_worktree=0 worktree_name=''
+  out=$(command git rev-parse --path-format=absolute --git-dir --git-common-dir --show-toplevel 2>/dev/null)
+  if (( $? )); then
+    out=$(command git rev-parse --path-format=absolute --git-dir --git-common-dir 2>/dev/null) || return 1
+  fi
+
+  local -a rev_parse=(${(@f)out})
+  (( $#rev_parse >= 2 )) || return 1
+  git_dir=$rev_parse[1]
+  common_dir=$rev_parse[2]
+  top=${rev_parse[3]:-${PWD:A}}
+
+  if [[ $git_dir != $common_dir && $git_dir == */worktrees/* ]]; then
+    is_worktree=1
+    worktree_name=${git_dir##*/worktrees/}
+    worktree_name=${worktree_name%/}
+  fi
+
+  _my_git_meta[$git_dir]="common_dir=$common_dir|top=$top|is_worktree=$is_worktree|worktree_name=$worktree_name"
+  _my_git_last_git_dir=$git_dir
+  _my_git_last_common_dir=$common_dir
+  _my_git_last_top=$top
+  return 0
+}
+
+# Sync label-only probe. Runs in the foreground shell. Cheap and only used
+# when no cached label is available; dirty/ahead/behind are left to gitstatusd
+# or the async refresh.
+_my_git_sync_label_probe() {
+  # Worktree-root: bare repo whose gitdir == its own common dir.
+  if [[ "$(command git rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
+    if [[ -n $_my_git_last_git_dir && $_my_git_last_git_dir == $_my_git_last_common_dir && $_my_git_last_git_dir != */.git ]]; then
+      _my_git_state=( label "$POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON" sha '' dirty '' ahead 0 behind 0 stale 1 probed_pwd "$PWD" )
+      return 0
+    fi
+    _my_git_blank
+    return 1
+  fi
+
+  command git rev-parse --show-toplevel >/dev/null 2>&1 || { _my_git_blank; return 1; }
+
+  local label branch sha
+  sha=$(command git rev-parse --short HEAD 2>/dev/null)
+  branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  if [[ -n $branch ]]; then
+    local meta=${_my_git_meta[$_my_git_last_git_dir]:-}
+    local is_worktree=0 worktree_name=''
+    [[ $meta == *is_worktree=1* ]] && is_worktree=1
+    if (( is_worktree )); then
+      worktree_name=${${meta#*worktree_name=}%%|*}
+      label=$worktree_name
+    else
+      label=$branch
+    fi
+  else
+    label='detached'
+  fi
+  _my_git_state=( label "$label" sha "$sha" dirty '' ahead 0 behind 0 stale 1 probed_pwd "$PWD" )
+  return 0
+}
+
+_my_git_ensure_gitstatus() {
+  (( _my_git_gitstatus_started > 0 )) && return 0
+  (( _my_git_gitstatus_started < 0 )) && return 1
+  [[ $POWERLEVEL9K_MY_GIT_USE_GITSTATUS == true ]] || return 1
+  # During p10k instant prompt, stdio is redirected and p10k hasn't finished
+  # installing its prompt machinery yet. Starting gitstatus there can emit a
+  # noisy initialization error, so defer it to the real precmd that runs after
+  # instant prompt cleanup.
+  (( ${+__p9k_instant_prompt_active} )) && return 1
+  [[ -o interactive ]] || return 1
+  if (( ! ${+functions[gitstatus_start_my_git_]} )); then
+    [[ -r ${_MY_GIT_GITSTATUS_PLUGIN:-} ]] || { _my_git_gitstatus_started=-1; return 1; }
+    source "$_MY_GIT_GITSTATUS_PLUGIN" _my_git_ 2>/dev/null || { _my_git_gitstatus_started=-1; return 1; }
+  fi
+  (( ${+functions[gitstatus_start_my_git_]} )) || { _my_git_gitstatus_started=-1; return 1; }
+
+  GITSTATUS_AUTO_INSTALL=0 gitstatus_start_my_git_ \
+    -s -1 -u -1 -d -1 -c -1 -m ${POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY:--1} \
+    -t 0.1 MY_GIT 2>/dev/null && _my_git_gitstatus_started=1 && return 0
+
+  _my_git_gitstatus_started=-1
+  return 1
+}
+
+_my_git_apply_gitstatus() {
+  local git_dir=$1 pwd=$2
+  local meta=${_my_git_meta[$git_dir]:-}
+  local is_worktree=0 worktree_name=''
+  [[ $meta == *is_worktree=1* ]] && is_worktree=1
+  (( is_worktree )) && worktree_name=${${meta#*worktree_name=}%%|*}
+
+  local label sha=${VCS_STATUS_COMMIT[1,7]:-}
+  if (( is_worktree )) && [[ -n $worktree_name ]]; then
+    label=$worktree_name
+  elif [[ -n ${VCS_STATUS_LOCAL_BRANCH:-} ]]; then
+    label=$VCS_STATUS_LOCAL_BRANCH
+  elif [[ -n ${VCS_STATUS_COMMIT:-} ]]; then
+    label='detached'
+  else
+    label='(no commits)'
+  fi
+
+  local dirty=
+  (( ${VCS_STATUS_HAS_STAGED:-0} || ${VCS_STATUS_HAS_UNSTAGED:-0} || ${VCS_STATUS_HAS_UNTRACKED:-0} || ${VCS_STATUS_HAS_CONFLICTED:-0} )) && dirty='*'
+
+  _my_git_state=(
+    label      "$label"
+    sha        "$sha"
+    dirty      "$dirty"
+    ahead      "${VCS_STATUS_COMMITS_AHEAD:-0}"
+    behind     "${VCS_STATUS_COMMITS_BEHIND:-0}"
+    stale      ''
+    probed_pwd "$pwd"
+  )
+  _my_git_store_cache
+}
+
+_my_git_gitstatus_callback() {
+  local pending_pwd=$_my_git_gitstatus_pending_pwd
+  local pending_git_dir=$_my_git_gitstatus_pending_git_dir
+  local pending_top=$_my_git_gitstatus_pending_top
+  _my_git_gitstatus_pending=0
+  _my_git_gitstatus_pending_pwd=''
+  _my_git_gitstatus_pending_git_dir=''
+  _my_git_gitstatus_pending_top=''
+
+  [[ $pending_top == $_my_git_last_top ]] || return
+
+  if [[ ${VCS_STATUS_RESULT:-} == ok-async ]]; then
+    _my_git_apply_gitstatus "$pending_git_dir" "$pending_pwd"
+    _my_vcs_refresh_prompt
+  elif [[ ${VCS_STATUS_RESULT:-} == norepo-async ]]; then
+    _my_git_dispatch_async
+  fi
+}
+
+# Async worker: handles worktree-root + relativeWorktrees + anything else
+# that gitstatusd couldn't answer. Emits newline-delimited key/value fields.
+_my_git_async() {
+  local pwd=$1
+  cd -q -- "$pwd" 2>/dev/null || return
+  print -r -- "pwd=$pwd"
+
+  local out git_dir common_dir top
+  out=$(command git rev-parse --path-format=absolute --git-dir --git-common-dir --show-toplevel 2>/dev/null)
+  if (( $? )); then
+    out=$(command git rev-parse --path-format=absolute --git-dir --git-common-dir 2>/dev/null) || { print -r -- 'ok=0'; return; }
+  fi
+  local -a rev_parse=(${(@f)out})
+  (( $#rev_parse >= 2 )) || { print -r -- 'ok=0'; return; }
+  git_dir=$rev_parse[1]
+  common_dir=$rev_parse[2]
+  top=${rev_parse[3]:-${PWD:A}}
+
+  # Worktree-root: bare repo whose gitdir == its own common dir.
+  if [[ "$(command git rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
+    if [[ -n $git_dir && $git_dir == $common_dir && $git_dir != */.git ]]; then
+      print -r -- 'ok=1'
+      print -r -- "label=$POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON"
+      print -r -- 'sha='
+      print -r -- 'dirty='
+      print -r -- 'ahead=0'
+      print -r -- 'behind=0'
+    else
+      print -r -- 'ok=0'
+    fi
+    return
+  fi
+
+  command git rev-parse --show-toplevel >/dev/null 2>&1 || { print -r -- 'ok=0'; return; }
+
+  local label branch sha
+  sha=$(command git rev-parse --short HEAD 2>/dev/null)
+  branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  if [[ -n $branch ]]; then
+    if [[ $git_dir != $common_dir && $git_dir == */worktrees/* ]]; then
+      label=${git_dir##*/worktrees/}
+      label=${label%/}
+    else
+      label=$branch
+    fi
+  else
+    label='detached'
+  fi
+
+  local dirty=
+  if command git rev-parse --verify HEAD >/dev/null 2>&1; then
+    command git diff --quiet --ignore-submodules HEAD -- 2>/dev/null || dirty='*'
+    [[ -z $dirty && -n "$(command git ls-files --others --exclude-standard --directory --no-empty-directory 2>/dev/null)" ]] && dirty='*'
+  else
+    [[ -n "$(command git ls-files --cached --others --exclude-standard 2>/dev/null)" ]] && dirty='*'
+  fi
+
+  local ahead=0 behind=0
+  if command git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    local counts
+    counts=$(command git rev-list --left-right --count 'HEAD...@{u}' 2>/dev/null)
+    ahead=${counts%%$'\t'*}
+    behind=${counts##*$'\t'}
+  fi
+
+  print -r -- 'ok=1'
+  print -r -- "label=$label"
+  print -r -- "sha=$sha"
+  print -r -- "dirty=$dirty"
+  print -r -- "ahead=$ahead"
+  print -r -- "behind=$behind"
+}
+
+_my_git_apply_async_output() {
+  local out=$1
+  [[ -n $out ]] || return 1
+
+  local -A fields=( ok 0 pwd '' label '' sha '' dirty '' ahead 0 behind 0 )
+  local line
+  for line in ${(f)out}; do
+    [[ $line == *=* ]] || continue
+    fields[${line%%=*}]=${line#*=}
+  done
+
+  [[ ${fields[pwd]} == "$PWD" ]] || return 1
+  if [[ ${fields[ok]} != 1 ]]; then
+    _my_git_blank
+    return 0
+  fi
+
+  _my_git_state=(
+    label      "${fields[label]}"
+    sha        "${fields[sha]}"
+    dirty      "${fields[dirty]}"
+    ahead      "${fields[ahead]:-0}"
+    behind     "${fields[behind]:-0}"
+    stale      ''
+    probed_pwd "$PWD"
+  )
+  _my_git_store_cache
+  return 0
+}
+
+_my_git_worker_compute() {
+  local pwd=$1 out
+  out=$(_my_git_async "$pwd")
+  _p9k_worker_reply "_my_git_worker_callback ${(qqq)pwd} ${(qqq)out}"
+}
+
+_my_git_worker_callback() {
+  local expected_pwd=$1 out=$2
+  [[ $expected_pwd == "$PWD" ]] || return
+  _my_git_apply_async_output "$out" || return
+  reset=2
+}
+
+_my_git_dispatch_async() {
+  [[ -n ${_my_git_state[label]:-} ]] || _my_git_sync_label_probe
+  _my_git_state[stale]=1
+  _my_git_state[probed_pwd]=$PWD
+  _my_git_async_pwd=$PWD
+
+  local out
+  if _my_vcs_p9k_worker_invoke my_git "_my_git_worker_compute ${(qqq)PWD}"; then
+    return
+  fi
+
+  out=$(_my_git_async "$PWD")
+  _my_git_apply_async_output "$out" || return
+}
+
+_my_git_precmd() {
+  # jj short-circuit (FS only). We're leaving git territory entirely;
+  # blank the state so we don't show stale data from a previous git repo
+  # in front of a my_jj render.
+  if _my_git_is_jj_dir "$PWD"; then
+    _my_git_blank
+    return
+  fi
+
+  # Re-classify only when PWD changes.
+  if [[ "$PWD" != "$_my_git_last_pwd" ]]; then
+    _my_git_last_pwd=$PWD
+    if ! _my_git_classify_repo; then
+      _my_git_blank
+      return
+    fi
+  fi
+
+  # On first visit/new shell, prefer cached data (shown stale) over blocking.
+  # If no cache exists, give gitstatusd the first chance to populate the full
+  # state; only fall back to a foreground label probe if gitstatusd times out
+  # or refuses the repo.
+  local need_label_probe=0
+  if [[ -z "${_my_git_state[label]:-}" ]] || [[ "$PWD" != "${_my_git_state[probed_pwd]:-}" ]]; then
+    if _my_git_load_cache; then
+      _my_git_state[probed_pwd]=$PWD
+    else
+      need_label_probe=1
+    fi
+  fi
+
+  if _my_git_ensure_gitstatus; then
+    if (( _my_git_gitstatus_pending )); then
+      _my_vcs_process_pending_refresh
+      if (( _my_git_gitstatus_pending )); then
+        _my_git_dispatch_async
+      fi
+      return
+    fi
+
+    if gitstatus_query_my_git_ -d "$PWD" -t 0.005 -c _my_git_gitstatus_callback MY_GIT 2>/dev/null; then
+      case ${VCS_STATUS_RESULT:-} in
+        ok-sync)
+          _my_git_apply_gitstatus "$_my_git_last_git_dir" "$PWD"
+          return
+        ;;
+        tout)
+          if (( need_label_probe )); then
+            _my_git_sync_label_probe
+            _my_git_state[probed_pwd]=$PWD
+          fi
+          _my_git_gitstatus_pending=1
+          _my_git_gitstatus_pending_pwd=$PWD
+          _my_git_gitstatus_pending_git_dir=$_my_git_last_git_dir
+          _my_git_gitstatus_pending_top=$_my_git_last_top
+          _my_git_state[stale]=1
+          _my_git_dispatch_async
+          _my_vcs_schedule_poll
+          return
+        ;;
+        norepo-sync)
+          # Fall through to the slow path; this is how relativeWorktrees and
+          # other gitstatusd rejection cases stay feature-complete.
+        ;;
+      esac
+    fi
+  fi
+
+  if (( need_label_probe )); then
+    _my_git_sync_label_probe
+    _my_git_state[probed_pwd]=$PWD
+  fi
+  _my_git_dispatch_async
+}
+
+_p9k_prompt_my_git_init() {
+  _p9k__async_segments_compute+='_my_git_precmd'
+}
+
+_my_git_init() {
+  _my_git_blank
+  # Pre-populate state before the first real prompt fires. Cached state is
+  # marked stale; otherwise a sync label probe prevents an empty first render.
+  _my_git_precmd
+}
+
+prompt_my_git() {
+  local label=${_my_git_state[label]:-}
+  [[ -n $label ]] || return
+
+  # Pick base color. When stale, force part colors to base for visual
+  # consistency — "everything is dim, refresh pending."
+  local base dirty_color ahead_color behind_color at_color sha_color
+  at_color=${POWERLEVEL9K_MY_GIT_AT_FOREGROUND:-242}
+  if (( ${_my_git_force_stale:-0} )) || [[ -n ${_my_git_state[stale]:-} ]]; then
+    base=$POWERLEVEL9K_MY_GIT_STALE_FOREGROUND
+    dirty_color=$base
+    ahead_color=$base
+    behind_color=$base
+    sha_color=$base
+  else
+    base=$POWERLEVEL9K_MY_GIT_FOREGROUND
+    dirty_color=${POWERLEVEL9K_MY_GIT_DIRTY_FOREGROUND:-$base}
+    ahead_color=${POWERLEVEL9K_MY_GIT_AHEAD_FOREGROUND:-$base}
+    behind_color=${POWERLEVEL9K_MY_GIT_BEHIND_FOREGROUND:-$base}
+    sha_color=${POWERLEVEL9K_MY_GIT_SHA_FOREGROUND:-$base}
+  fi
+
+  local safe_label=${label//\%/%%}
+  local safe_sha=${_my_git_state[sha]//\%/%%}
+  local content="$safe_label"
+  [[ -n $safe_sha ]] && content+="%F{$at_color}@%F{$sha_color}$safe_sha%F{$base}"
+  [[ -n ${_my_git_state[dirty]:-} ]] && \
+    content+="%F{$dirty_color}${_my_git_state[dirty]}%F{$base}"
+
+  if (( ${_my_git_state[ahead]:-0} > 0 )) || (( ${_my_git_state[behind]:-0} > 0 )); then
+    content+=" "
+    (( ${_my_git_state[ahead]:-0}  > 0 )) && \
+      content+="%F{$ahead_color}↑${_my_git_state[ahead]}%F{$base}"
+    (( ${_my_git_state[behind]:-0} > 0 )) && \
+      content+="%F{$behind_color}↓${_my_git_state[behind]}%F{$base}"
+  fi
+
+  p10k segment -f $base -t "$content"
+}
+
+instant_prompt_my_git() {
+  local _my_git_force_stale=1
+  prompt_my_git
+}
+
+_my_git_init
+
+##############################################################################
+# my_jj: custom async jj segment
+#
+# Renders `[<workspace>] <change>@<sha>[ <bookmarks>][*]` for jj repos.
+# The `[<workspace>] ` prefix appears only when the current workspace
+# isn't the `default` one. Field details:
+#
+#   workspace — current workspace name (jj template `working_copies`,
+#               with the trailing `@` stripped); omitted when `default`
+#   change    — shortest unique prefix of @'s change_id (jj's own
+#               short form, same as `format_short_change_id`)
+#   sha       — 7-char unique-prefix of @'s commit_id (git-style)
+#   bookmarks — comma-joined local bookmarks pointing at @, if any
+#   *         — present when @ has changes (non-empty), regardless of
+#               whether the working-copy commit already has a description
+#
+# Cached state is used immediately on first visit/new shell and rendered in
+# STALE_FOREGROUND while p10k's background worker refreshes it.
+##############################################################################
+
+## Colors — each is overridable. Unset (or empty) per-part vars fall back
+## to FOREGROUND. STALE_FOREGROUND drives the "data shown is cached/old while
+## a refresh is in flight" rendering.
+typeset -g POWERLEVEL9K_MY_JJ_FOREGROUND=${POWERLEVEL9K_MY_JJ_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_JJ_STALE_FOREGROUND=${POWERLEVEL9K_MY_JJ_STALE_FOREGROUND:-236}
+typeset -g POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-242}
+typeset -g POWERLEVEL9K_MY_JJ_AT_FOREGROUND=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-242}
+typeset -g POWERLEVEL9K_MY_JJ_SHA_FOREGROUND=${POWERLEVEL9K_MY_JJ_SHA_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND=${POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND:-4}
+typeset -g POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND=${POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND:-1}
+typeset -g POWERLEVEL9K_MY_JJ_VISUAL_IDENTIFIER_EXPANSION=
+
+typeset -gA _my_jj_state
+typeset -g  _my_jj_async_pwd=''  # PWD at most recent async dispatch
+typeset -g  _my_jj_last_root=''
+typeset -g  _my_jj_last_cache_serial=''
+
+_my_jj_blank() {
+  _my_jj_state=( workspace '' change '' sha '' bookmarks '' dirty '' stale '' probed_pwd '' )
+}
+
+_my_jj_cache_serial() {
+  REPLY="${_my_jj_state[workspace]:-}|${_my_jj_state[change]:-}|${_my_jj_state[sha]:-}|${_my_jj_state[bookmarks]:-}|${_my_jj_state[dirty]:-}"
+}
+
+_my_jj_cache_path() {
+  [[ -n $_my_jj_last_root ]] || return 1
+  _my_vcs_cache_key "$_my_jj_last_root"
+  REPLY="$_MY_VCS_CACHE_DIR/jj-$REPLY.zsh"
+}
+
+_my_jj_store_cache() {
+  [[ -n ${_my_jj_state[change]:-} ]] || return
+  _my_jj_cache_serial
+  [[ $REPLY == $_my_jj_last_cache_serial ]] && return
+  _my_jj_last_cache_serial=$REPLY
+
+  local file
+  _my_jj_cache_path || return
+  file=$REPLY
+  command mkdir -p -- "${file:h}" 2>/dev/null || return
+
+  local -A cache=(
+    workspace "${_my_jj_state[workspace]:-}"
+    change    "${_my_jj_state[change]:-}"
+    sha       "${_my_jj_state[sha]:-}"
+    bookmarks "${_my_jj_state[bookmarks]:-}"
+    dirty     "${_my_jj_state[dirty]:-}"
+  )
+  local -a payload
+  payload=( ${(qqkv)cache} )
+  local tmp="$file.$$"
+  print -r -- "typeset -gA _my_jj_cached_state=( ${(j: :)payload} )" >| "$tmp" 2>/dev/null && \
+    command mv -f -- "$tmp" "$file" 2>/dev/null
+}
+
+_my_jj_load_cache() {
+  local file
+  _my_jj_cache_path || return 1
+  file=$REPLY
+  [[ -r $file ]] || return 1
+
+  typeset -gA _my_jj_cached_state=()
+  source "$file" 2>/dev/null || return 1
+  [[ -n ${_my_jj_cached_state[change]:-} ]] || return 1
+
+  _my_jj_state=(
+    workspace  "${_my_jj_cached_state[workspace]:-}"
+    change     "${_my_jj_cached_state[change]:-}"
+    sha        "${_my_jj_cached_state[sha]:-}"
+    bookmarks  "${_my_jj_cached_state[bookmarks]:-}"
+    dirty      "${_my_jj_cached_state[dirty]:-}"
+    stale      1
+    probed_pwd "$PWD"
+  )
+  _my_jj_cache_serial
+  _my_jj_last_cache_serial=$REPLY
+  return 0
+}
+
+# Parse the newline-delimited output of `_my_jj_async` into `_my_jj_state`.
+# `expected_pwd` lets callbacks discard stale results after rapid directory
+# changes.
+_my_jj_apply_output() {
+  local out=$1 expected_pwd=$2
+  if [[ -n $out ]]; then
+    local -A fields=( ok 0 pwd '' workspace '' change '' sha '' bookmarks '' dirty '' )
+    local line
+    for line in ${(f)out}; do
+      [[ $line == *=* ]] || continue
+      fields[${line%%=*}]=${line#*=}
+    done
+
+    [[ ${fields[pwd]} == "$expected_pwd" ]] || return 1
+    if [[ ${fields[ok]} != 1 || -z ${fields[change]} ]]; then
+      _my_jj_blank
+      return 0
+    fi
+
+    local ws=${fields[workspace]:-}
+    ws=${ws%@}
+    [[ $ws == "default" ]] && ws=
+    _my_jj_state=(
+      change     "${fields[change]}"
+      sha        "${fields[sha]}"
+      bookmarks  "${fields[bookmarks]}"
+      dirty      "${fields[dirty]}"
+      workspace  "$ws"
+      stale      ''
+      probed_pwd "$expected_pwd"
+    )
+    _my_jj_store_cache
+  else
+    _my_jj_blank
+  fi
+}
+
+# Walk up looking for .jj. FS only, no subprocess. Echo the root if found.
+_my_jj_find_root() {
+  local p=$1
+  while [[ -n $p && $p != / ]]; do
+    [[ -d $p/.jj ]] && { echo "$p"; return 0; }
+    p=${p%/*}
+  done
+  return 1
+}
+
+_my_jj_async() {
+  local pwd=$1
+  cd -q -- "$pwd" 2>/dev/null || return
+  print -r -- "pwd=$pwd"
+
+  local out
+  out=$(command jj log --no-graph -r @ -T \
+    '"change=" ++ change_id.shortest() ++ "\n" ++ "sha=" ++ commit_id.shortest(7) ++ "\n" ++ "bookmarks=" ++ bookmarks.map(|b| b.name()).join(",") ++ "\n" ++ "dirty=" ++ if(empty, "", "*") ++ "\n" ++ "workspace=" ++ working_copies' \
+    2>/dev/null) || { print -r -- 'ok=0'; return; }
+
+  print -r -- 'ok=1'
+  print -r -- "$out"
+}
+
+_my_jj_worker_compute() {
+  local pwd=$1 out
+  out=$(_my_jj_async "$pwd")
+  _p9k_worker_reply "_my_jj_worker_callback ${(qqq)pwd} ${(qqq)out}"
+}
+
+_my_jj_worker_callback() {
+  local expected_pwd=$1 out=$2
+  [[ $expected_pwd == "$PWD" ]] || return
+  _my_jj_apply_output "$out" "$expected_pwd" || return
+  reset=2
+}
+
+_my_jj_dispatch_async() {
+  _my_jj_state[stale]=1
+  _my_jj_state[probed_pwd]=$PWD
+  _my_jj_async_pwd=$PWD
+
+  local out
+  if _my_vcs_p9k_worker_invoke my_jj "_my_jj_worker_compute ${(qqq)PWD}"; then
+    return
+  fi
+
+  out=$(_my_jj_async "$PWD")
+  _my_jj_apply_output "$out" "$PWD" || return
+}
+
+_my_jj_precmd() {
+  local root
+  if ! root=$(_my_jj_find_root "$PWD"); then
+    _my_jj_blank
+    return
+  fi
+  _my_jj_last_root=$root
+
+  # Avoid empty prompts on first visit. Prefer stale cache; if absent, run one
+  # synchronous jj template subprocess and cache the result for future shells.
+  if [[ -z "${_my_jj_state[change]:-}" ]] || [[ "$PWD" != "${_my_jj_state[probed_pwd]:-}" ]]; then
+    if _my_jj_load_cache; then
+      _my_jj_dispatch_async
+    else
+      _my_jj_apply_output "$(_my_jj_async "$PWD")" "$PWD"
+    fi
+    return
+  fi
+
+  # Same PWD, populated state — mark stale and async-refresh.
+  _my_jj_dispatch_async
+}
+
+_p9k_prompt_my_jj_init() {
+  _p9k__async_segments_compute+='_my_jj_precmd'
+}
+
+_my_jj_init() {
+  _my_jj_blank
+  # Pre-populate state before the first prompt fires so it never renders empty.
+  _my_jj_precmd
+}
+
+prompt_my_jj() {
+  local change=${_my_jj_state[change]:-}
+  [[ -n $change ]] || return
+
+  local base ws_color at_color sha_color bookmark_color dirty_color
+  at_color=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-242}
+  if (( ${_my_jj_force_stale:-0} )) || [[ -n ${_my_jj_state[stale]:-} ]]; then
+    base=$POWERLEVEL9K_MY_JJ_STALE_FOREGROUND
+    ws_color=$base
+    sha_color=$base
+    bookmark_color=$base
+    dirty_color=$base
+  else
+    base=$POWERLEVEL9K_MY_JJ_FOREGROUND
+    ws_color=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-$base}
+    sha_color=${POWERLEVEL9K_MY_JJ_SHA_FOREGROUND:-$base}
+    bookmark_color=${POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND:-$base}
+    dirty_color=${POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND:-$base}
+  fi
+
+  local safe_workspace=${_my_jj_state[workspace]//\%/%%}
+  local safe_change=${change//\%/%%}
+  local safe_sha=${_my_jj_state[sha]//\%/%%}
+  local safe_bookmarks=${_my_jj_state[bookmarks]//\%/%%}
+
+  local content=""
+  [[ -n ${_my_jj_state[workspace]} ]] && \
+    content+="%F{$ws_color}[$safe_workspace]%F{$base} "
+  content+="$safe_change%F{$at_color}@%F{$sha_color}$safe_sha%F{$base}"
+  [[ -n ${_my_jj_state[bookmarks]} ]] && \
+    content+=" %F{$bookmark_color}$safe_bookmarks%F{$base}"
+  [[ -n ${_my_jj_state[dirty]} ]] && \
+    content+="%F{$dirty_color}${_my_jj_state[dirty]}%F{$base}"
+
+  p10k segment -f $base -t "$content"
+}
+
+instant_prompt_my_jj() {
+  local _my_jj_force_stale=1
+  prompt_my_jj
+}
+
+_my_jj_init
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'

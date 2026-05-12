@@ -387,6 +387,9 @@ let
                       eval "${"$"}(${lib.getExe pkgs.mise} activate zsh)"
                       eval "${"$"}(${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r)"
                       eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
+
+                      # Gitstatus is sourced lazily by my_git only after a Git repo is detected.
+                      typeset -g _MY_GIT_GITSTATUS_PLUGIN=${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/gitstatus/gitstatus.plugin.zsh
                     ''
                     (builtins.readFile ../../../../config/zsh.d/zsh/config/extras.zsh)
                     (builtins.readFile ../../../../config/zsh.d/.p10k.zsh)
