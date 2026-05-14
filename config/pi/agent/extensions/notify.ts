@@ -7,7 +7,7 @@
  * - OSC 99: Kitty
  */
 
-import type {ExtensionAPI} from '@mariozechner/pi-coding-agent'
+import type {ExtensionAPI} from '@earendil-works/pi-coding-agent'
 
 function notifyOSC777(title: string, body: string): void {
 	process.stdout.write(`\x1b]777;notify;${title};${body}\x07`)

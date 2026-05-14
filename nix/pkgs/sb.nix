@@ -113,7 +113,7 @@ let
     sudo -iu admin bash -c 'curl -fsSL https://claude.ai/install.sh | bash'
 
     # pi is npm-only.
-    npm install -g @mariozechner/pi-coding-agent
+    npm install -g @earendil-works/pi-coding-agent
 
     chsh -s /usr/bin/zsh admin
     systemctl enable ssh

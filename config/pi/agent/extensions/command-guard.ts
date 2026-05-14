@@ -8,8 +8,8 @@
  * from: https://github.com/felixge/dotfiles/blob/a603b50cfa50e8d3c9966bcddf84e2a55d1a6b11/pi/.pi/agent/extensions/command-guard/index.ts
  */
 
-import type {ExtensionAPI} from '@mariozechner/pi-coding-agent'
-import {isToolCallEventType} from '@mariozechner/pi-coding-agent'
+import type {ExtensionAPI} from '@earendil-works/pi-coding-agent'
+import {isToolCallEventType} from '@earendil-works/pi-coding-agent'
 
 interface Rule {
 	name: string

@@ -4,7 +4,7 @@ import {isAbsolute, relative, resolve} from 'node:path'
 import type {
 	ExtensionAPI,
 	ExtensionCommandContext,
-} from '@mariozechner/pi-coding-agent'
+} from '@earendil-works/pi-coding-agent'
 
 export type VcsKind = 'jj' | 'git'
 export type DiffStatus =

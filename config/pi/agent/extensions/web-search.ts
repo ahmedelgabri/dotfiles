@@ -4,14 +4,14 @@ import {join} from 'node:path'
 import type {
 	ExtensionAPI,
 	TruncationResult,
-} from '@mariozechner/pi-coding-agent'
+} from '@earendil-works/pi-coding-agent'
 import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
 	formatSize,
 	truncateHead,
 	withFileMutationQueue,
-} from '@mariozechner/pi-coding-agent'
+} from '@earendil-works/pi-coding-agent'
 import {Type} from 'typebox'
 
 const EXA_MCP_URL = 'https://mcp.exa.ai/mcp'

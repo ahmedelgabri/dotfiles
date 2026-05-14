@@ -6,11 +6,11 @@ import {
 } from 'node:http'
 import type {Server} from 'node:http'
 import type {AddressInfo} from 'node:net'
-import {StringEnum} from '@mariozechner/pi-ai'
+import {StringEnum} from '@earendil-works/pi-ai'
 import type {
 	ExtensionAPI,
 	ExtensionCommandContext,
-} from '@mariozechner/pi-coding-agent'
+} from '@earendil-works/pi-coding-agent'
 import {Type} from 'typebox'
 import {
 	loadPersistedAnnotations,

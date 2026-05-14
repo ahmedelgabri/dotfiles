@@ -6,8 +6,8 @@
  * through `jj` instead.
  */
 
-import type {ExtensionAPI} from '@mariozechner/pi-coding-agent'
-import {isToolCallEventType} from '@mariozechner/pi-coding-agent'
+import type {ExtensionAPI} from '@earendil-works/pi-coding-agent'
+import {isToolCallEventType} from '@earendil-works/pi-coding-agent'
 
 // Not a security boundary — just a heuristic to catch the most common
 // forms of `git add`, `git stage`, `git history` and `git commit` that an LLM agent
