@@ -23,6 +23,10 @@ au.autocmd {
 vim.api.nvim_create_autocmd('UIEnter', {
 	once = true,
 	callback = function()
+		vim.g.jiejie_config = {
+			excluded_revset = '',
+		}
+
 		Pack.load {
 			'vim-fugitive',
 			'vim-rhubarb',
