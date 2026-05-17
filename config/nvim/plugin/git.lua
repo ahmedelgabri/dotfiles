@@ -5,7 +5,6 @@ Pack.add({
 	'https://github.com/tpope/vim-fugitive',
 	'https://github.com/Tronikelis/conflict-marker.nvim',
 	'https://github.com/jceb/jiejie.nvim',
-	-- 'https://github.com/martintrojer/jj-fugitive',
 	-- 'https://github.com/NicolasGB/jj.nvim',
 	{ src = 'https://github.com/jez/vim-github-hub' },
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },

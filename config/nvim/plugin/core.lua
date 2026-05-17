@@ -206,5 +206,10 @@ au.autocmd {
 
 Pack.cmd({ 'Outline', 'OutlineOpen' }, function()
 	Pack.load 'outline.nvim'
-	require('outline').setup {}
+	require('outline').setup {
+		preview_window = {
+			auto_preview = true,
+			live = true,
+		},
+	}
 end)
