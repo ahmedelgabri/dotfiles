@@ -22,7 +22,7 @@ auto-track-created-bookmarks = "*"
 conflict-marker-style = "git"
 default-command = "log"
 diff-formatter = ":git"
-paginate = "never"
+pager = ["delta_"]
 # diff-editor = ":builtin"
 show-cryptographic-signatures = true
 
