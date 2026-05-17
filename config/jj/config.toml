@@ -21,12 +21,8 @@ auto-track-created-bookmarks = "*"
 # better tool support, syntax highlighting and one less thing to relearn
 conflict-marker-style = "git"
 default-command = "log"
-# https://difftastic.wilfred.me.uk/jj.html
-# diff-formatter = ["difft", "--color=always", "$left", "$right"]
-# diff-formatter = ":git"
-# pager = ["delta", "--hunk-header-style", "plain"]
-# # pager = ["delta_", "--color-only", "--features=interactive"]
-# paginate = "auto"
+diff-formatter = ":git"
+paginate = "never"
 # diff-editor = ":builtin"
 show-cryptographic-signatures = true
 
