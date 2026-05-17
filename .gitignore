@@ -4,3 +4,4 @@ result
 .claude
 .opencode
 config/nvim/nvim-pack-lock.json
+config/pi/agent/extensions/node_modules

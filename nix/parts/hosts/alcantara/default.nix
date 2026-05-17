@@ -18,7 +18,36 @@ let
 
       home-manager.users."${darwinConfig.my.username}" =
         { config, ... }:
+        let
+          piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
+          piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
+          piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
+            mkdir -p "$out/@earendil-works" "$out/@types"
+
+            ln -s ${piCodingAgent} "$out/@earendil-works/pi-coding-agent"
+            for package in ${piCodingAgentNodeModules}/@earendil-works/*; do
+              ln -s "$package" "$out/@earendil-works/$(basename "$package")"
+            done
+            ln -s ${piCodingAgentNodeModules}/typebox "$out/typebox"
+            ln -s ${piCodingAgentNodeModules}/@types/node "$out/@types/node"
+            ln -s ${piCodingAgentNodeModules}/undici-types "$out/undici-types"
+          '';
+        in
         {
+          home.activation.linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+            TARGET="${config.home.homeDirectory}/.dotfiles/config/pi/agent/extensions/node_modules"
+            SOURCE="${piAgentExtensionNodeModules}"
+
+            if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
+              echo "Refusing to replace non-symlink $TARGET" >&2
+              exit 1
+            fi
+
+            mkdir -p "$(dirname "$TARGET")"
+            rm -f "$TARGET"
+            ln -s "$SOURCE" "$TARGET"
+          '';
+
           home.activation.syncPiAgentSettings = config.lib.dag.entryAfter [ "writeBoundary" ] ''
             BK="${config.xdg.configHome}/pi/agent/settings.json.bk"
             TARGET="${config.xdg.configHome}/pi/agent/settings.json"

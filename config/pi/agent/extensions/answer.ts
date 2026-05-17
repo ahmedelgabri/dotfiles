@@ -189,11 +189,6 @@ class QnAComponent implements Component {
 		}
 	}
 
-	private allQuestionsAnswered(): boolean {
-		this.saveCurrentAnswer()
-		return this.answers.every((a) => (a?.trim() || '').length > 0)
-	}
-
 	private saveCurrentAnswer(): void {
 		this.answers[this.currentIndex] = this.editor.getText()
 	}

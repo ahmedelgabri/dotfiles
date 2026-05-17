@@ -13,6 +13,7 @@
               typos-lsp
               nixfmt-rs
               inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+              typescript
             ]
             ++ lib.optional stdenv.isDarwin sb;
         };

@@ -44,7 +44,7 @@ import {StringEnum} from '@earendil-works/pi-ai'
 import {Type} from 'typebox'
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import {existsSync, readFileSync, readdirSync} from 'node:fs'
+import {existsSync} from 'node:fs'
 import crypto from 'node:crypto'
 import {
 	Container,
@@ -856,7 +856,7 @@ function getTodoSettingsPath(todosDir: string): string {
 function normalizeTodoSettings(raw: Partial<TodoSettings>): TodoSettings {
 	const gc = raw.gc ?? DEFAULT_TODO_SETTINGS.gc
 	const gcDays = Number.isFinite(raw.gcDays)
-		? raw.gcDays
+		? (raw.gcDays as number)
 		: DEFAULT_TODO_SETTINGS.gcDays
 	return {
 		gc: Boolean(gc),
@@ -1194,39 +1194,6 @@ async function listTodos(todosDir: string): Promise<TodoFrontMatter[]> {
 			})
 		} catch {
 			// ignore unreadable todo
-		}
-	}
-
-	return sortTodos(todos)
-}
-
-function listTodosSync(todosDir: string): TodoFrontMatter[] {
-	let entries: string[] = []
-	try {
-		entries = readdirSync(todosDir)
-	} catch {
-		return []
-	}
-
-	const todos: TodoFrontMatter[] = []
-	for (const entry of entries) {
-		if (!entry.endsWith('.md')) continue
-		const id = entry.slice(0, -3)
-		const filePath = path.join(todosDir, entry)
-		try {
-			const content = readFileSync(filePath, 'utf8')
-			const {frontMatter} = splitFrontMatter(content)
-			const parsed = parseFrontMatter(frontMatter, id)
-			todos.push({
-				id,
-				title: parsed.title,
-				tags: parsed.tags ?? [],
-				status: parsed.status,
-				created_at: parsed.created_at,
-				assigned_to_session: parsed.assigned_to_session,
-			})
-		} catch {
-			// ignore
 		}
 	}
 
