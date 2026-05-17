@@ -9,7 +9,6 @@ Pack.add({
 	-- 'https://github.com/NicolasGB/jj.nvim',
 	{ src = 'https://github.com/jez/vim-github-hub' },
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
-	{ src = 'https://github.com/esmuellert/codediff.nvim' },
 }, { load = false })
 
 au.autocmd {
@@ -19,16 +18,6 @@ au.autocmd {
 		Pack.load 'vim-github-hub'
 	end,
 }
-
-Pack.cmd('CodeDiff', function()
-	Pack.load { 'nui.nvim', 'codediff.nvim' }
-
-	require('codediff').setup {
-		explorer = {
-			view_mode = 'tree',
-		},
-	}
-end)
 
 -- Defer git plugin loading until after the UI renders
 vim.api.nvim_create_autocmd('UIEnter', {
