@@ -141,7 +141,11 @@ function M.get_lsp_bin(bin)
 		return bin_path
 	end
 
-	return bin
+	if vim.fn.executable(bin) == 1 then
+		return bin
+	end
+
+	return nil
 end
 
 function M.append(option, list)
