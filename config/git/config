@@ -98,7 +98,7 @@
 	# Detect copies as well as renames
 	renames = copies
 	algorithm = histogram
-	tool = vimdiff
+	tool = nvim
 	indentHeuristic = true
 	compactionHeuristic = true
 	colorMoved = zebra
@@ -108,13 +108,16 @@
 	prompt = false
 	trustExitCode = true
 
-[difftool "vimdiff"]
-	cmd = $EDITOR -d $LOCAL $REMOTE
+[difftool "nvim"]
+	cmd = $EDITOR -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
+
+[difftool "fugitivediff"]
+	cmd = $EDITOR -f \"$REMOTE\" -c \"packadd vim-fugitive\" -c 'execute \"Gvdiffsplit \" . fnameescape($LOCAL)'
 
 [merge]
 	# Include summaries of merged commits in newly created merge commit messages
 	log = 1000
-	tool = vimdiff
+	tool = nvim
 	conflictstyle = zdiff3
 
 [mergetool]
@@ -122,11 +125,11 @@
 	keepBackup = false
 	prompt = false
 
-[mergetool "vimdiff"]
+[mergetool "nvim"]
 	cmd = $EDITOR -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [mergetool "fugitivediff"]
-	cmd = $EDITOR -f -c "Git diff" "$MERGED"
+	cmd = $EDITOR -f -c \"packadd vim-fugitive\" -c \"Gdiffsplit!\" \"$MERGED\"
 
 [log]
 	decorate = short
