@@ -22,8 +22,10 @@ tmux/
 │       ├── cmd/next-prayer/main.go    # CLI entrypoint
 │       ├── aladhan/aladhan.go         # Aladhan API provider
 │       ├── mawaqit/mawaqit.go         # Mawaqit API provider
-│       ├── shared/shared.go           # Shared types and prayer logic
+│       ├── config/config.go           # TOML config loading and precedence helpers
+│       ├── shared/shared.go           # Shared types, caching, and prayer logic
 │       ├── go.mod
+│       ├── go.sum
 │       ├── Makefile
 │       └── next-prayer.nix            # Nix build expression
 └── .gitignore
@@ -178,11 +180,11 @@ theme. Accent colors:
 
 Explicit terminal features and overrides are configured for:
 
-| Terminal | Support                                                                      |
-| -------- | ---------------------------------------------------------------------------- |
-| All      | RGB colour, undercurl/style                                                  |
-| Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)                    |
-| Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`)               |
+| Terminal | Support                                                       |
+| -------- | ------------------------------------------------------------- |
+| All      | RGB colour, undercurl/style                                   |
+| Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)      |
+| Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`) |
 
 Escape sequence passthrough is enabled (`allow-passthrough on`) for base16-shell
 theming and yazi image previews.
@@ -255,9 +257,11 @@ next-prayer aladhan --country nl --city amsterdam --method 3
 ### Caching
 
 Prayer times are cached per day to
-`$TMPDIR/.prayer-<city>_<country>_<DD-MM-YYYY>.json`; city/country come from
-location data for Mawaqit or config for Aladhan. A new API call is only made
-when the cache file for the current date/location doesn't exist.
+`$TMPDIR/.prayer-<city>_<country>_<DD-MM-YYYY>.json` when city/country cache-key
+data is available, and to `$TMPDIR/.prayer-<DD-MM-YYYY>.json` otherwise.
+City/country come from location data for Mawaqit or config for Aladhan. A new
+API call is only made when the cache file for the current date/location doesn't
+exist.
 
 The Hammerspoon `prayer.lua` menubar module reads the matching cache for the
 current location to display all prayer times, show cached Mawaqit mosque
@@ -313,4 +317,4 @@ or bindings) without modifying the shared config.
 | `wifi`        | Wi-Fi status bar segment    | Optional   |
 | `weather`     | Weather status bar segment  | Optional   |
 | `next-prayer` | Prayer times                | Optional   |
-| Go ≥ 1.21     | Building `next-prayer`      | Build only |
+| Go ≥ 1.24     | Building `next-prayer`      | Build only |

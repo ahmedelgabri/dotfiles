@@ -1,35 +1,70 @@
 # Claude Code Hooks
 
-Universal event logger for all Claude Code hook events.
+This directory contains the hook scripts that are linked into `~/.claude/hooks`
+by Home Manager and wired from `config/claude/settings.json`.
 
-## Installed Hook
+## Configured hooks
 
-### log-event.sh
+| Event              | Hook commands                                                           | Purpose                                                                               |
+| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `SessionStart`     | `log-event.sh SessionStart`, `inject-repo-info.sh`                      | Log session startup and inject repository VCS context.                                |
+| `PostCompact`      | `log-event.sh PostCompact`, `inject-repo-info.sh`                       | Log compaction and refresh repository VCS context afterward.                          |
+| `SessionEnd`       | `log-event.sh SessionEnd`                                               | Log session shutdown.                                                                 |
+| `UserPromptSubmit` | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit` | Log submitted prompts and append project prompts to `PROMPTS.md`.                     |
+| `PreToolUse`       | `log-event.sh PreToolUse`; for `Bash`, `validate-bash.sh`               | Log tool calls and block risky Bash commands that touch generated or sensitive paths. |
+| `PostToolUse`      | `log-event.sh PostToolUse`                                              | Log tool results.                                                                     |
+| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only ... &`                        | Log assistant stops and refresh the `ccpeek` index in the background.                 |
+| `SubagentStop`     | `log-event.sh SubagentStop`                                             | Log subagent completion.                                                              |
+| `Notification`     | `log-event.sh Notification`, `terminal-notifier ...`                    | Log notifications and mirror them to macOS Notification Center outside Ghostty.       |
+| `PreCompact`       | `log-event.sh PreCompact`                                               | Log compaction before it runs.                                                        |
 
-- **Events**: All 9 hook event types
-- **What it does**: Logs all hook events and their inputs
-- **Log Location**:
-  - `$CLAUDE_PROJECT_DIR/.claude/hook-events.jsonl` (if in a project)
-  - `~/.claude/hook-events.jsonl` (if not in a project)
-- **Format**: JSON Lines (one JSON object per line)
-- **Fields**: `timestamp`, `event`, `project_dir`, `input`
+## Hook scripts
 
-### inject-repo-info.sh
+### `log-event.sh`
 
-- **Events**: `SessionStart`
-- **What it does**: Detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git
+- **Events**: every configured event that passes the event name as the first
+  argument.
+- **What it does**: logs the hook event and raw JSON input.
+- **Log location**:
+  - `$CLAUDE_PROJECT_DIR/.claude/hook-events.jsonl` when Claude is running in a
+    project.
+  - `~/.claude/hook-events.jsonl` when no project directory is available.
+- **Format**: JSON Lines, one JSON object per line.
+- **Fields**: `timestamp`, `event`, `project_dir`, `input`.
+
+### `inject-repo-info.sh`
+
+- **Events**: `SessionStart`, `PostCompact`.
+- **What it does**: detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git
   repo and emits `hookSpecificOutput.additionalContext` so Claude knows which
-  VCS to use. In Jujutsu repos it also reminds Claude to avoid raw
-  `git add`/`stage`/`history`/`commit`. Mirrors the heuristic used by
-  `config/pi/agent/extensions/jj-guard.ts`.
+  VCS to use.
+- **Jujutsu behavior**: Jujutsu takes priority in colocated repos and the
+  injected context reminds Claude to avoid raw `git add`, `git stage`,
+  `git history`, and `git commit`.
 
-## Viewing Logs
+### `aggregate-prompt.sh`
+
+- **Events**: `UserPromptSubmit`.
+- **What it does**: appends the submitted prompt text to
+  `$CLAUDE_PROJECT_DIR/PROMPTS.md`, separated by `---` when the file already
+  exists.
+- **Behavior**: skips global sessions, empty prompts, and invalid project paths.
+
+### `validate-bash.sh`
+
+- **Events**: `PreToolUse` with matcher `Bash`.
+- **What it does**: blocks Bash commands that mention generated, dependency,
+  IDE, VCS, or secret-ish paths.
+- **Blocked patterns**: `node_modules/`, `.env`, `__pycache__/`, `.git/`,
+  `dist/`, `build/`, `.next/`, `.astro/`, `.vscode/`, `.idea/`.
+
+## Viewing logs
 
 ```bash
-# View project-specific logs (if in a project)
+# View project-specific logs if in a project
 cat .claude/hook-events.jsonl
 
-# View global logs (if not in a project)
+# View global logs if not in a project
 cat ~/.claude/hook-events.jsonl
 
 # Pretty print with jq
@@ -49,27 +84,29 @@ tail -n 10 .claude/hook-events.jsonl | jq
 cat ~/.claude/hook-events.jsonl | jq 'select(.project_dir == "/path/to/project")'
 ```
 
-## Hook Types
+## Hook events used here
 
-You can create hooks for these events:
+- `SessionStart` — when Claude Code starts a session.
+- `PostCompact` — after compaction finishes.
+- `SessionEnd` — when Claude Code exits a session.
+- `UserPromptSubmit` — when you submit a prompt.
+- `PreToolUse` — before a tool executes.
+- `PostToolUse` — after a tool completes.
+- `Stop` — when Claude finishes responding.
+- `SubagentStop` — when a subagent finishes.
+- `Notification` — during Claude notifications.
+- `PreCompact` — before compaction starts.
 
-- `SessionStart` - When Claude Code starts
-- `SessionEnd` - When Claude Code exits
-- `UserPromptSubmit` - When you submit a prompt
-- `PreToolUse` - Before a tool executes (can block with exit 1)
-- `PostToolUse` - After a tool completes
-- `Stop` - When Claude finishes responding
-- `SubagentStop` - When a subagent finishes
-- `Notification` - During system notifications
-
-## Hook Structure
+## Hook behavior
 
 Hooks receive JSON input via stdin and can:
 
-- Exit 0 to allow the operation (and optionally print messages)
-- Exit 1 to block the operation (for Pre hooks)
+- Exit 0 to allow the operation and optionally print JSON output for events that
+  support it.
+- Exit 2 from blocking hooks such as `PreToolUse` to block the operation and
+  return stderr feedback to Claude.
 
-### Example: Block writes to certain files
+### Example: block writes to certain files
 
 ```bash
 #!/bin/bash
@@ -77,14 +114,14 @@ input=$(cat)
 file_path=$(echo "$input" | jq -r '.file_path // empty')
 
 if [[ "$file_path" == *".env"* ]]; then
-	echo "Blocked: Cannot write to .env files"
-	exit 1
+	echo "Blocked: Cannot write to .env files" >&2
+	exit 2
 fi
 
 exit 0
 ```
 
-### Example: Tool-specific hook
+### Example: tool-specific hook
 
 Add a matcher to target specific tools:
 
@@ -102,20 +139,20 @@ Add a matcher to target specific tools:
 ]
 ```
 
-## Useful Tips
+## Useful tips
 
-- Use `jq` to parse JSON input properly
-- Keep hooks fast (they block operations)
-- Add timeouts for long-running hooks
-- Check `$CLAUDE_*` environment variables for context
-- Test hooks by running them directly with sample JSON
+- Use `jq` to parse JSON input properly.
+- Keep hooks fast because they block Claude while running.
+- Add timeouts for long-running hooks.
+- Check `$CLAUDE_*` environment variables for context.
+- Test hooks directly with sample JSON before wiring them into `settings.json`.
 
-## Testing Your Hooks
+## Testing hooks
 
 Test a hook manually:
 
 ```bash
-echo '{"command": "git push --force"}' | ./hooks/your-hook.sh
+echo '{"tool_input": {"command": "ls node_modules"}}' | ./validate-bash.sh
 ```
 
 ## Resources

@@ -253,6 +253,7 @@ The shared fallback browser order is:
 1. `helium`
 2. `firefox`
 3. `safari`
+4. `chrome`
 
 Both `layout.lua` and `spoons.lua` rely on this same app-resolution layer.
 

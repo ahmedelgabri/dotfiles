@@ -15,6 +15,7 @@ Supports two data sources:
 - **Mawaqit**: a free account at [mawaqit.net](https://mawaqit.net/). Username
   and password are needed for API access.
 - **Aladhan**: no account required.
+- **Local builds**: Go 1.24+.
 
 ## Configuration
 
@@ -41,14 +42,16 @@ tune = "0,-18,0,0,0,0,0,12,0"
 
 ### Resolution order
 
-Every setting follows the same precedence:
+Most configurable values resolve in this order:
 
 1. **CLI flag** (highest priority)
 2. **Config file**
 3. **Environment variable**
 
-If none of these provide a value, the tool exits with an error. There are no
-hardcoded defaults.
+Required values still cause the command to exit with an error when unresolved.
+Mawaqit requires username, password, latitude, longitude, and mosque; Aladhan
+requires city, country, and method. `tune` and the Mawaqit `--city`/`--country`
+cache-key flags are optional.
 
 ### Environment variables
 
@@ -182,13 +185,20 @@ automatically invalidated when:
 - A new day starts
 - The user's location changes (e.g. travelling)
 
-Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json`. Mawaqit cache files also include selected mosque metadata.
+Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json` when
+city/country cache-key data is available, and `.prayer-<DD-MM-YYYY>.json`
+otherwise. Mawaqit cache files also include selected mosque metadata.
 
-The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the current location to show all prayer times, display the mosque name when cached by Mawaqit, notify at prayer time, check the next prayer row, and show its `(-hh:mm)` remaining time; when the matching cache is missing, it can invoke the companion `get-prayer` script to warm the cache instead of waiting for tmux.
+The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the
+current location to show all prayer times, display the mosque name when cached
+by Mawaqit, notify at prayer time, check the next prayer row, and show its
+`(-hh:mm)` remaining time; when the matching cache is missing, it can invoke the
+companion `get-prayer` script to warm the cache instead of waiting for tmux.
 
 ## tmux integration
 
-The companion script `get-prayer` is designed to be called from `tmux.conf`, and the Hammerspoon menubar module can also invoke it to warm a missing cache:
+The companion script `get-prayer` is designed to be called from `tmux.conf`, and
+the Hammerspoon menubar module can also invoke it to warm a missing cache:
 
 ```tmux
 set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
@@ -205,9 +215,13 @@ set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
 This means prayer times update automatically when:
 
 - tmux refreshes its status bar (controlled by `status-interval`)
-- The location changes (Hammerspoon writes new coordinates, the cache key changes, and either the next tmux refresh or the menubar fallback fetches fresh data)
+- The location changes (Hammerspoon writes new coordinates, the cache key
+  changes, and either the next tmux refresh or the menubar fallback fetches
+  fresh data)
 
 ## Building
+
+Local builds require Go 1.24+.
 
 ```bash
 # Build locally
