@@ -5,75 +5,17 @@ let
   hostConfiguration =
     {
       pkgs,
-      config,
       ...
     }:
-    let
-      darwinConfig = config;
-    in
     {
       networking = {
         hostName = "alcantara";
       };
 
-      home-manager.users."${darwinConfig.my.username}" =
-        { config, ... }:
-        let
-          piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
-          piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
-          piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
-            mkdir -p "$out/@earendil-works" "$out/@types"
-
-            ln -s ${piCodingAgent} "$out/@earendil-works/pi-coding-agent"
-            for package in ${piCodingAgentNodeModules}/@earendil-works/*; do
-              ln -s "$package" "$out/@earendil-works/$(basename "$package")"
-            done
-            ln -s ${piCodingAgentNodeModules}/typebox "$out/typebox"
-            ln -s ${piCodingAgentNodeModules}/@types/node "$out/@types/node"
-            ln -s ${piCodingAgentNodeModules}/undici-types "$out/undici-types"
-          '';
-        in
-        {
-          home.activation.linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-            TARGET="${config.home.homeDirectory}/.dotfiles/config/pi/agent/extensions/node_modules"
-            SOURCE="${piAgentExtensionNodeModules}"
-
-            if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
-              echo "Refusing to replace non-symlink $TARGET" >&2
-              exit 1
-            fi
-
-            mkdir -p "$(dirname "$TARGET")"
-            rm -f "$TARGET"
-            ln -s "$SOURCE" "$TARGET"
-          '';
-
-          home.activation.syncPiAgentSettings = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-            BK="${config.xdg.configHome}/pi/agent/settings.json.bk"
-            TARGET="${config.xdg.configHome}/pi/agent/settings.json"
-            if [ -f "$BK" ] || [ -L "$BK" ]; then
-              rm -f "$TARGET"
-              cp "$BK" "$TARGET"
-            fi
-          '';
-
-          xdg.configFile = {
-            "pi/agent/settings.json.bk".source = ../../../../config/pi/settings.json;
-            "pi/agent/extensions".source = ../../../../config/pi/agent/extensions;
-            "pi/agent/AGENTS.md".source = ../../../../config/pi/agent/AGENTS.md;
-          };
-        };
-
-      environment.variables = {
-        PI_CODING_AGENT_DIR = "$HOME/.config/pi/agent";
-      };
-
       my.user = {
         packages = with pkgs; [
           llm-agents.amp
-          llm-agents.codex
           llm-agents.opencode
-          llm-agents.pi
           colima
           docker
           podman
