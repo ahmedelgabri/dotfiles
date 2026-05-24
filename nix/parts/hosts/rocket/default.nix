@@ -38,13 +38,13 @@ let
             mermaid-cli
             jira-cli-go
             git-filter-repo
-            git-lfs
             git-sizer
             httpstat
             k9s
             lazydocker
             llm-agents.gemini-cli
-            entr
+            himalaya
+            acli
           ];
         };
       };
@@ -52,6 +52,9 @@ let
       homebrew = {
         taps = [
           "atlassian-labs/acli"
+          "cirruslabs/cli"
+          "JetBrains/homebrew-utils"
+          "docker/homebrew-tap"
         ];
 
         casks = [
@@ -62,10 +65,13 @@ let
           "visual-studio-code"
           "google-chrome"
           "cursor"
+          "sbx"
         ];
 
         brews = [
+          "socat"
           "acli"
+          "kotlin-lsp"
         ];
       };
     };
