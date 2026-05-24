@@ -33,4 +33,5 @@ split-inherit-working-directory = true
 palette-generate = false
 palette-harmonious = false
 
+config-file = ?config.nix.local
 config-file = ?config.local

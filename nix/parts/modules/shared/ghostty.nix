@@ -18,12 +18,25 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."ghostty" = {
-        recursive = true;
-        source = ../../../../config/ghostty;
+    homeManager =
+      { inputs, ... }:
+      {
+        xdg = {
+          configFile."ghostty" = {
+            recursive = true;
+            source = ../../../../config/ghostty;
+          };
+
+          xdg.configFile."ghostty/shaders" = {
+            recursive = true;
+            source = "${inputs.ghostty-cursor-shaders}";
+          };
+
+          xdg.configFile."ghostty/config.nix.local" = {
+            text = "custom-shader = shaders/cursor_tail.glsl";
+          };
+        };
       };
-    };
   };
 in
 {

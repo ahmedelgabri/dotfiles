@@ -374,6 +374,22 @@
         "type": "github"
       }
     },
+    "ghostty-cursor-shaders": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778252515,
+        "narHash": "sha256-G/UIr1bKnxn1AcHl/4FL/jou6b7M2VeREslYVELxdmw=",
+        "owner": "sahaj-b",
+        "repo": "ghostty-cursor-shaders",
+        "rev": "06d4e90fb5410e9c4d0b3131584060adddf89406",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sahaj-b",
+        "repo": "ghostty-cursor-shaders",
+        "type": "github"
+      }
+    },
     "git-wt": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -633,6 +649,7 @@
         "darwin": "darwin",
         "flake-parts": "flake-parts_2",
         "gh-gfm-preview": "gh-gfm-preview",
+        "ghostty-cursor-shaders": "ghostty-cursor-shaders",
         "git-wt": "git-wt",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
