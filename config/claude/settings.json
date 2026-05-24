@@ -16,6 +16,7 @@
 	"cleanupPeriodDays": 99999,
 	"model": "opus[1m]",
 	"permissions": {
+		"defaultMode": "auto",
 		"allow": [
 			"Bash(fd:*)",
 			"Bash(rg:*)",
@@ -62,7 +63,8 @@
 			"Bash(make:*)",
 			"WebSearch",
 			"Read(~/.claude/host/*.md)",
-			"Bash(jq:*)"
+			"Bash(jq:*)",
+			"Bash(himalaya message move Archive:*)"
 		],
 		"deny": [
 			"Glob",
