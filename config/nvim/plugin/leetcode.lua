@@ -1,7 +1,14 @@
 Pack.add({
 	'https://github.com/nvim-lua/plenary.nvim',
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
-	{ src = 'https://github.com/kawre/leetcode.nvim' },
+	{
+		src = 'https://github.com/kawre/leetcode.nvim',
+		data = {
+			run = function()
+				vim.cmd 'TSUpdate html'
+			end,
+		},
+	},
 }, { load = false })
 
 local leet_arg = 'leet'
