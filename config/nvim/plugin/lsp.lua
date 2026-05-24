@@ -258,6 +258,7 @@ vim.schedule(function()
 		{ 'mutt_ls', 'mutt-language-server' },
 		{ 'markdown_oxide', 'markdown-oxide' },
 		{ 'tinymist' }, -- typst LSP
+		{ 'kotlin_lsp', 'kotlin-lsp' },
 	}
 
 	for _, value in ipairs(servers) do
