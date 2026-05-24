@@ -1,3 +1,5 @@
+I'm `ahmedelgabri` aka Ahmed El Gabri on GitHub and other places.
+
 # Markdown formatting
 
 **NEVER** hard-wrap Markdown in ".md" files. That is, a paragraph or a list item
