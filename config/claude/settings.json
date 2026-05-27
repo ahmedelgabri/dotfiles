@@ -158,11 +158,13 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SessionStart"
+						"command": "~/.claude/hooks/log-event.sh SessionStart",
+						"async": true
 					},
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/inject-repo-info.sh"
+						"command": "~/.claude/hooks/inject-repo-info.sh",
+						"statusMessage": "Loading repo VCS info…"
 					}
 				]
 			}
@@ -172,11 +174,14 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PostCompact"
+						"command": "~/.claude/hooks/log-event.sh PostCompact",
+						"async": true
 					},
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/inject-repo-info.sh"
+						"command": "~/.claude/hooks/inject-repo-info.sh",
+						"asyncRewake": true,
+						"statusMessage": "Loading repo VCS info…"
 					}
 				]
 			}
@@ -186,7 +191,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SessionEnd"
+						"command": "~/.claude/hooks/log-event.sh SessionEnd",
+						"async": true
 					}
 				]
 			}
@@ -196,11 +202,13 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh UserPromptSubmit"
+						"command": "~/.claude/hooks/log-event.sh UserPromptSubmit",
+						"async": true
 					},
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit"
+						"command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit",
+						"async": true
 					}
 				]
 			}
@@ -210,7 +218,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PreToolUse"
+						"command": "~/.claude/hooks/log-event.sh PreToolUse",
+						"async": true
 					}
 				]
 			},
@@ -229,7 +238,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PostToolUse"
+						"command": "~/.claude/hooks/log-event.sh PostToolUse",
+						"async": true
 					}
 				]
 			}
@@ -239,11 +249,13 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh Stop"
+						"command": "~/.claude/hooks/log-event.sh Stop",
+						"async": true
 					},
 					{
 						"type": "command",
-						"command": "ccpeek --index-only >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log &"
+						"command": "ccpeek --index-only >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log &",
+						"async": true
 					}
 				]
 			}
@@ -253,7 +265,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SubagentStop"
+						"command": "~/.claude/hooks/log-event.sh SubagentStop",
+						"async": true
 					}
 				]
 			}
@@ -263,7 +276,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh Notification"
+						"command": "~/.claude/hooks/log-event.sh Notification",
+						"async": true
 					},
 					{
 						"type": "command",
@@ -277,7 +291,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PreCompact"
+						"command": "~/.claude/hooks/log-event.sh PreCompact",
+						"async": true
 					}
 				]
 			}
