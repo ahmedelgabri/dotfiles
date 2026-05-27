@@ -3,7 +3,6 @@ let
     commonModule =
       {
         pkgs,
-        lib,
         ...
       }:
       {
@@ -17,17 +16,15 @@ let
           ];
         };
 
-        config = with lib; {
-          my.user.packages = with pkgs; [
-            llm-agents.claude-code
-            llm-agents.codex
-            llm-agents.pi
-            llm-agents.qmd
-            llm-agents.agent-browser
-            llama-cpp
-            ccpeek
-          ];
-        };
+        my.user.packages = with pkgs; [
+          llm-agents.claude-code
+          llm-agents.codex
+          llm-agents.pi
+          llm-agents.qmd
+          llm-agents.agent-browser
+          llama-cpp
+          ccpeek
+        ];
       };
 
     homeManager =
