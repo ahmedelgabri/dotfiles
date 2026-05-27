@@ -22,18 +22,18 @@ let
       { inputs, ... }:
       {
         xdg = {
-          configFile."ghostty" = {
-            recursive = true;
-            source = ../../../../config/ghostty;
-          };
-
-          xdg.configFile."ghostty/shaders" = {
-            recursive = true;
-            source = "${inputs.ghostty-cursor-shaders}";
-          };
-
-          xdg.configFile."ghostty/config.nix.local" = {
-            text = "custom-shader = shaders/cursor_tail.glsl";
+          configFile = {
+            "ghostty" = {
+              recursive = true;
+              source = ../../../../config/ghostty;
+            };
+            "ghostty/shaders" = {
+              recursive = true;
+              source = "${inputs.ghostty-cursor-shaders}";
+            };
+            "ghostty/config.nix.local" = {
+              text = "custom-shader = shaders/cursor_tail.glsl";
+            };
           };
         };
       };
