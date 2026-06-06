@@ -529,8 +529,25 @@ local function render_dashboard(_, buf_id)
 end
 
 -- Configure mini modules
--- Eager: cmdline, starter, misc (auto_root, termbg_sync, restore_cursor)
+-- Eager: cmdline, input, pick, starter, misc (auto_root, termbg_sync, restore_cursor)
 require('mini.cmdline').setup {}
+
+local input = require 'mini.input'
+input.setup {
+	scope = 'cursor',
+	handlers = {
+		view = input.gen_view.floatwin {
+			adjust_config = function(_, config)
+				local max_width = math.max(vim.o.columns - 4, 1)
+				config.border = utils.get_border()
+				config.title_pos = 'center'
+				config.width = math.min(math.max(config.width, 45), max_width)
+				return config
+			end,
+		},
+	},
+}
+
 require('mini.starter').setup {
 	autoopen = true,
 	evaluate_single = false,
