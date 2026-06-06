@@ -35,6 +35,27 @@ vim.filetype.add {
 		-- For dockder compose-language-service
 		['compose.y.?ml'] = 'yaml.docker-compose',
 		['docker%-compose%.y.?ml'] = 'yaml.docker-compose',
+		-- https://github.com/folke/snacks.nvim/blob/882c996cf28183f4d63640de0b4c02ec886d01f2/lua/snacks/bigfile.lua
+		['.*'] = {
+			function(path, buf)
+				if not path or not buf or vim.bo[buf].filetype == 'bigfile' then
+					return
+				end
+				if path ~= vim.fs.normalize(vim.api.nvim_buf_get_name(buf)) then
+					return
+				end
+				local size = vim.fn.getfsize(path)
+				if size <= 0 then
+					return
+				end
+				-- 500kb
+				if size > (1024 * 500) then
+					return 'bigfile'
+				end
+				local lines = vim.api.nvim_buf_line_count(buf)
+				return (size - lines) / lines > 1000 and 'bigfile' or nil
+			end,
+		},
 	},
 }
 

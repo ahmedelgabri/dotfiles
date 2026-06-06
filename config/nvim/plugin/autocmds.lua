@@ -119,4 +119,31 @@ au.augroup('__myautocmds__', {
 		command = 'wincmd L',
 		desc = 'open help in vertical split',
 	},
+	{
+		event = { 'FileType' },
+		pattern = 'bigfile',
+		callback = function(args)
+			local buf = args.buf
+			local path =
+				vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ':p:~:.')
+			vim.schedule(function()
+				print(
+					('Big file detected `%s`. Some Neovim features have been **disabled**.'):format(
+						path
+					)
+				)
+				vim.bo[buf].syntax = vim.filetype.match { buf = buf } or ''
+				if vim.fn.exists ':NoMatchParen' ~= 0 then
+					vim.cmd [[NoMatchParen]]
+				end
+				vim.wo[buf].foldmethod = 'manual'
+				vim.wo[buf].statuscolumn = ''
+				vim.wo[buf].conceallevel = 0
+				vim.b.completion = false
+				vim.b.minianimate_disable = true
+				vim.b.minihipatterns_disable = true
+			end)
+		end,
+		desc = 'Disable features in big files',
+	},
 })

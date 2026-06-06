@@ -98,10 +98,7 @@ require('snacks').setup {
 	scroll = { enabled = false },
 	statuscolumn = { enabled = false },
 	indent = { enabled = false },
-	bigfile = {
-		enabled = true,
-		size = 1024 * 500, -- 500KB
-	},
+	bigfile = { enabled = false },
 	image = {
 		doc = {
 			float = true,

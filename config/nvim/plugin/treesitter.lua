@@ -61,16 +61,19 @@ au.autocmd {
 local function ts_start(bufnr, parser_name)
 	vim.treesitter.start(bufnr, parser_name)
 
-	-- Use regex based syntax-highlighting as fallback as some plugins might need it
-	if vim.bo[bufnr].filetype == 'markdown' then
-		vim.bo[bufnr].syntax = 'ON'
+	-- Don't enable tree-sitter features in bigfiles
+	if vim.bo[bufnr].filetype ~= 'bigfile' then
+		-- Use regex based syntax-highlighting as fallback as some plugins might need it
+		if vim.bo[bufnr].filetype == 'markdown' then
+			vim.bo[bufnr].syntax = 'ON'
+		end
+
+		-- Use treesitter for folds
+		vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+		-- Use treesitter for indentation
+		vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 	end
-
-	-- Use treesitter for folds
-	vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-
-	-- Use treesitter for indentation
-	vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 end
 
 au.autocmd {
