@@ -5,7 +5,6 @@ Pack.add {
 }
 
 -- Init code (runs immediately)
-vim.g.custom_explorer = true
 vim.g.snacks_animate = false
 
 vim.schedule(function()
@@ -18,12 +17,6 @@ vim.schedule(function()
 	_G.bt = function()
 		Snacks.debug.backtrace()
 	end
-
-	-- Create some toggle mappings
-	Snacks.toggle.option('wrap', { name = 'Wrap' }):map '<leader>uw'
-	Snacks.toggle.diagnostics():map '<leader>ud'
-	Snacks.toggle.inlay_hints():map '<leader>uh'
-	Snacks.toggle.dim():map '<leader>uD'
 end)
 
 vim.api.nvim_create_user_command('Zen', function()
@@ -75,19 +68,6 @@ vim.keymap.set('n', '<localleader>t', function()
 	end
 end, { desc = 'Toggle Scratch Todo' })
 
-vim.keymap.set('n', '<Leader>-', function()
-	require('snacks').picker.explorer {
-		hidden = true,
-		win = {
-			list = {
-				keys = {
-					['o'] = { { 'pick_win', 'jump' }, mode = { 'n', 'i' } },
-				},
-			},
-		},
-	}
-end, { silent = true, desc = 'Open file explorer' })
-
 vim.keymap.set('n', '<leader>z', function()
 	require('snacks').zen.zoom()
 end, { silent = true, desc = 'Toggle buffer [z]oom mode' })
@@ -98,41 +78,13 @@ require('snacks').setup {
 	scroll = { enabled = false },
 	statuscolumn = { enabled = false },
 	indent = { enabled = false },
+	input = { enabled = false },
 	bigfile = { enabled = false },
+	picker = { enabled = false },
 	image = {
 		doc = {
 			float = true,
 			inline = false,
-		},
-	},
-	input = {
-		win = {
-			style = {
-				relative = 'cursor',
-				width = 45,
-				row = -3,
-				col = 0,
-				wo = {
-					winhighlight = 'NormalFloat:SnacksInputNormal,FloatBorder:Comment,FloatTitle:Normal',
-				},
-			},
-		},
-	},
-	picker = {
-		layouts = {
-			select = {
-				layout = {
-					relative = 'cursor',
-				},
-			},
-		},
-		sources = {
-			explorer = {
-				layout = {
-					layout = { position = 'right' },
-					auto_hide = { 'input' },
-				},
-			},
 		},
 	},
 }

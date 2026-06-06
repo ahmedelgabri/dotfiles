@@ -125,14 +125,22 @@ au.augroup('MyStatusLine', {
 		event = { 'WinEnter', 'BufEnter' },
 		pattern = '*',
 		callback = function()
-			vim.wo.statusline = '%!v:lua.__.statusline.render_active()'
+			if vim.bo.filetype == 'snacks_picker_input' then
+				vim.wo.statusline = ''
+			else
+				vim.wo.statusline = '%!v:lua.__.statusline.render_active()'
+			end
 		end,
 	},
 	{
 		event = { 'WinLeave', 'BufLeave' },
 		pattern = '*',
 		callback = function()
-			vim.wo.statusline = '%!v:lua.__.statusline.render_inactive()'
+			if vim.bo.filetype == 'snacks_picker_input' then
+				vim.wo.statusline = ''
+			else
+				vim.wo.statusline = '%!v:lua.__.statusline.render_inactive()'
+			end
 		end,
 	},
 })
