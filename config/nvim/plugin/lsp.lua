@@ -4,6 +4,7 @@ Pack.add {
 	'https://github.com/neovim/nvim-lspconfig',
 	{ src = 'https://github.com/nvim-lua/plenary.nvim', load = false },
 	{ src = 'https://github.com/nvimtools/none-ls.nvim', load = false },
+	{ src = 'https://github.com/rachartier/tiny-code-action.nvim', load = false },
 }
 
 local au = require '_.utils.au'
@@ -310,10 +311,7 @@ vim.schedule(function()
 					{ 'n' },
 					'<C-]>',
 					function()
-						require('fzf-lua').lsp_definitions {
-							-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-jump-to-location-for-single-result
-							jump1 = true,
-						}
+						vim.lsp.buf.definition()
 					end,
 					{ desc = 'Go to Definition' },
 				},
@@ -321,16 +319,10 @@ vim.schedule(function()
 					{ 'n' },
 					'<leader>a',
 					function()
-						require('fzf-lua').lsp_code_actions {
-							winopts = {
-								preview = { hidden = 'hidden' },
-								relative = 'cursor',
-								row = 1.01,
-								col = 0,
-								height = 0.2,
-								width = 0.4,
-							},
-						}
+						-- vim.lsp.buf.code_action()
+						Pack.load 'tiny-code-action.nvim'
+
+						require('tiny-code-action').code_action()
 					end,
 					{ desc = 'Code [A]ctions' },
 				},
@@ -338,10 +330,7 @@ vim.schedule(function()
 					{ 'n' },
 					'<leader>f',
 					function()
-						require('fzf-lua').lsp_references {
-							-- https://github.com/ibhagwan/fzf-lua/wiki#lsp-references-ignore-current-line
-							ignore_current_line = true,
-						}
+						vim.lsp.buf.references()
 					end,
 					{ desc = 'Show Re[f]erences' },
 				},
@@ -355,7 +344,7 @@ vim.schedule(function()
 					{ 'n' },
 					'<leader>D',
 					function()
-						require('fzf-lua').lsp_declarations {}
+						vim.lsp.buf.declaration()
 					end,
 					{ desc = 'Go to [D]eclaration' },
 				},
@@ -363,7 +352,7 @@ vim.schedule(function()
 					{ 'n' },
 					'<leader>i',
 					function()
-						require('fzf-lua').lsp_implementations {}
+						vim.lsp.buf.implementation()
 					end,
 					{ desc = 'Go to [I]mplementation' },
 				},
