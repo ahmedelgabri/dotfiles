@@ -1,5 +1,6 @@
 Pack.add {
 	'https://github.com/nvim-mini/mini.nvim',
+	'https://tangled.org/ronshavit.com/mini.diff.jj',
 }
 
 -- mini.nvim: core utilities (eager)
@@ -909,6 +910,9 @@ vim.schedule(function()
 
 	-- Diff
 	require('mini.diff').setup {
+		sources = {
+			require 'mini.diff.jj',
+		},
 		view = {
 			style = 'sign',
 			signs = {
