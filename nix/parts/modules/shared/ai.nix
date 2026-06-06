@@ -13,6 +13,7 @@ let
         homebrew = {
           casks = [
             "claude"
+            "codex-app"
           ];
         };
 
