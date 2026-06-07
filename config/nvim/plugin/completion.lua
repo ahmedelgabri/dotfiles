@@ -1,165 +1,94 @@
 -- Completion and snippets
-local au = require '_.utils.au'
-
-Pack.add({
-	{ src = 'https://github.com/rafamadriz/friendly-snippets' },
-	{
-		src = 'https://github.com/L3MON4D3/LuaSnip',
-		data = {
-			run = function(plugin)
-				vim.fn.system { 'make', '-C', plugin.path, 'install_jsregexp' }
-			end,
-		},
-	},
-	{ src = 'https://github.com/moyiz/blink-emoji.nvim' },
-	{ src = 'https://github.com/xzbdmw/colorful-menu.nvim' },
-	{ src = 'https://github.com/Saghen/blink.lib' },
-	{
-		src = 'https://github.com/Saghen/blink.cmp',
-		name = 'blink.cmp',
-		version = 'main',
-		data = {
-			run = function()
-				Pack.load 'blink.lib'
-
-				local ok, err = pcall(function()
-					local download = require('blink.cmp').download
-					download({ force = true, match = '*' }):wait(60000)
-				end)
-				if not ok then
-					vim.notify(err, vim.log.levels.WARN, { title = 'blink.cmp binary' })
-				end
-			end,
-		},
-	},
-}, { load = false })
+local pack = require '_.pack'
 
 local utils = require '_.utils'
 
-local has_words_before = function()
-	if vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt' then
-		return false
-	end
-	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-	return col ~= 0
-		and vim.api
-				.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]
-				:match '^%s*$'
-			== nil
-end
+pack.add {
+	{ src = 'https://github.com/rafamadriz/friendly-snippets', load = false },
+	{
+		src = 'https://github.com/L3MON4D3/LuaSnip',
+		event = { 'InsertEnter' },
+		load = false,
+		config = function()
+			vim.cmd.packadd 'friendly-snippets'
 
-local function get_mini_icon_info(ctx)
-	local MiniIcons = require 'mini.icons'
-	local source = ctx.item.source_name
-	local label = ctx.item.label
+			-- Setup toggle choice
+			vim.keymap.set({ 'i', 's' }, '<C-l>', function()
+				local ok, ls = pcall(require, 'luasnip')
+				if ok and ls.choice_active() then
+					ls.change_choice(1)
+				end
+			end, { silent = true })
 
-	if source == nil then
-		return
-	end
+			local ls = require 'luasnip'
 
-	if source == 'path' then
-		if label:match '%.[^/]+$' then
-			return MiniIcons.get('file', label)
-		end
+			local s = ls.snippet
+			local sn = ls.snippet_node
+			local t = ls.text_node
+			local i = ls.insert_node
+			local f = ls.function_node
+			local c = ls.choice_node
+			local d = ls.dynamic_node
+			local r = ls.restore_node
+			local fmt = require('luasnip.extras.fmt').fmt
+			local rep = require('luasnip.extras').rep
+			-- https://github.com/L3MON4D3/LuaSnip/blob/1dbafec2379bd836bd09c4659d4c6e1a70eb380e/Examples/snippets.lua#L356=
+			local l = require('luasnip.extras').lambda
+			local types = require 'luasnip.util.types'
 
-		return MiniIcons.get('directory', ctx.item.label)
-	end
-
-	return MiniIcons.get('lsp', ctx.kind)
-end
-
-local function get_icon(ctx)
-	local icon = get_mini_icon_info(ctx)
-
-	return icon or ctx.kind_icon
-end
-
-local function get_icon_highlight(ctx)
-	local _, hl, _ = get_mini_icon_info(ctx)
-
-	return hl
-end
-
--- Setup toggle choice (works before plugin loads, guarded by choice_active check)
-vim.keymap.set({ 'i', 's' }, '<C-l>', function()
-	local ok, ls = pcall(require, 'luasnip')
-	if ok and ls.choice_active() then
-		ls.change_choice(1)
-	end
-end, { silent = true })
-
-local function ensure_snippets()
-	Pack.load { 'friendly-snippets', 'LuaSnip' }
-
-	local ls = require 'luasnip'
-
-	local s = ls.snippet
-	local sn = ls.snippet_node
-	local t = ls.text_node
-	local i = ls.insert_node
-	local f = ls.function_node
-	local c = ls.choice_node
-	local d = ls.dynamic_node
-	local r = ls.restore_node
-	local fmt = require('luasnip.extras.fmt').fmt
-	local rep = require('luasnip.extras').rep
-	-- https://github.com/L3MON4D3/LuaSnip/blob/1dbafec2379bd836bd09c4659d4c6e1a70eb380e/Examples/snippets.lua#L356=
-	local l = require('luasnip.extras').lambda
-	local types = require 'luasnip.util.types'
-
-	ls.config.set_config {
-		history = true,
-		enable_autosnippets = true,
-		store_selection_keys = '<Tab>', -- needed for TM_SELECTED_TEXT
-		updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
-		ext_opts = {
-			[types.choiceNode] = {
-				active = {
-					virt_text = { { '← Choice', 'Todo' } },
+			ls.config.set_config {
+				history = true,
+				enable_autosnippets = true,
+				store_selection_keys = '<Tab>', -- needed for TM_SELECTED_TEXT
+				updateevents = 'TextChanged,TextChangedI', -- default is InsertLeave
+				ext_opts = {
+					[types.choiceNode] = {
+						active = {
+							virt_text = { { '← Choice', 'Todo' } },
+						},
+					},
 				},
-			},
-		},
-	}
+			}
 
-	require('luasnip.loaders.from_vscode').lazy_load {
-		lazy_paths = {
-			string.format(
-				'%s/%s%s',
-				vim.env.XDG_DATA_HOME,
-				vim.fn.hostname(),
-				'/snippets'
-			),
-		},
-	}
+			require('luasnip.loaders.from_vscode').lazy_load {
+				lazy_paths = {
+					string.format(
+						'%s/%s%s',
+						vim.env.XDG_DATA_HOME,
+						vim.fn.hostname(),
+						'/snippets'
+					),
+				},
+			}
 
-	-- Get a list of  the property names given an `interface_declaration`
-	-- treesitter *tsx* node.
-	---@param id_node {} Stands for "interface declaration node"
-	---@return string[]
-	local function get_prop_names(id_node)
-		local object_type_node = id_node:child(2)
-		if object_type_node:type() ~= 'object_type' then
-			return {}
-		end
+			-- Get a list of  the property names given an `interface_declaration`
+			-- treesitter *tsx* node.
+			---@param id_node {} Stands for "interface declaration node"
+			---@return string[]
+			local function get_prop_names(id_node)
+				local object_type_node = id_node:child(2)
+				if object_type_node:type() ~= 'object_type' then
+					return {}
+				end
 
-		local prop_names = {}
+				local prop_names = {}
 
-		for prop_signature in object_type_node:iter_children() do
-			if prop_signature:type() == 'property_signature' then
-				local prop_iden = prop_signature:child(0)
-				local prop_name = vim.treesitter.get_node_text(prop_iden, 0)
-				prop_names[#prop_names + 1] = prop_name
+				for prop_signature in object_type_node:iter_children() do
+					if prop_signature:type() == 'property_signature' then
+						local prop_iden = prop_signature:child(0)
+						local prop_name = vim.treesitter.get_node_text(prop_iden, 0)
+						prop_names[#prop_names + 1] = prop_name
+					end
+				end
+
+				return prop_names
 			end
-		end
 
-		return prop_names
-	end
-
-	local react = {
-		s(
-			{ trig = 'rcomp' },
-			fmt(
-				[[
+			local react = {
+				s(
+					{ trig = 'rcomp' },
+					fmt(
+						[[
 {}interface {}Props {{
   {}
 }}
@@ -168,178 +97,181 @@ local function ensure_snippets()
   return {}
 }}
 ]],
-				{
-					i(1, 'export '),
-					-- Initialize component name to file name
-					d(2, function(_, snip)
-						return sn(nil, {
-							i(1, vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')),
-						})
-					end, { 1 }),
-					i(3, '// props'),
-					rep(1),
-					rep(2),
-					f(function(_, snip, _)
-						local pos_begin = snip.nodes[6].mark:pos_begin()
-						local pos_end = snip.nodes[6].mark:pos_end()
-						local parser = vim.treesitter.get_parser(0, 'tsx')
-						if parser == nil then
-							return ''
+						{
+							i(1, 'export '),
+							-- Initialize component name to file name
+							d(2, function(_, snip)
+								return sn(nil, {
+									i(
+										1,
+										vim.fn.substitute(snip.env.TM_FILENAME, '\\..*$', '', 'g')
+									),
+								})
+							end, { 1 }),
+							i(3, '// props'),
+							rep(1),
+							rep(2),
+							f(function(_, snip, _)
+								local pos_begin = snip.nodes[6].mark:pos_begin()
+								local pos_end = snip.nodes[6].mark:pos_end()
+								local parser = vim.treesitter.get_parser(0, 'tsx')
+								if parser == nil then
+									return ''
+								end
+
+								local tstree = parser:parse()
+								if tstree[1] == nil then
+									return ''
+								end
+
+								local node = tstree[1]:root():named_descendant_for_range(
+									pos_begin[1],
+									pos_begin[2],
+									pos_end[1],
+									pos_end[2]
+								)
+
+								while node ~= nil and node:type() ~= 'interface_declaration' do
+									node = node:parent()
+								end
+
+								if node == nil then
+									return ''
+								end
+
+								-- `node` is now surely of type "interface_declaration"
+								local prop_names = get_prop_names(node)
+
+								return table.concat(prop_names, ', ')
+							end, { 3 }),
+							rep(2),
+							i(5, "'Hello World!'"),
+						}
+					)
+				),
+			}
+
+			local js_ts = {
+				s(
+					{ trig = 'import', dscr = 'import statement' },
+					fmt("import {} from '{}{}';", {
+						i(1, 'name'),
+						i(2),
+						d(3, function(nodes)
+							local text = nodes[1][1]
+							local _, _, typish, target =
+								text:find '^%s*(%a*)%s*{?%s*(%a+).*}?%s*$'
+							if typish == 'type' and target then
+								return sn(1, { i(1, target) })
+							elseif typish and target then
+								return sn(1, { i(1, typish .. target) })
+							else
+								return sn(1, { i(1, 'specifier') })
+							end
+						end, { 1 }),
+					})
+				),
+				s(
+					{ trig = 'require', dscr = 'require statement' },
+					fmt("const {} = require('{}{}');", {
+						i(1, 'name'),
+						i(2),
+						d(3, function(nodes)
+							local text = nodes[1][1]
+							return sn(1, { i(1, text) })
+						end, { 1 }),
+					})
+				),
+				s({ trig = '**', dscr = 'docblock' }, {
+					t { '/**', '' },
+					f(function(_args, snip)
+						local lines = vim.tbl_map(function(line)
+							return ' * ' .. vim.trim(line)
+						end, snip.env.SELECT_RAW)
+						if #lines == 0 then
+							return ' * '
+						else
+							return lines
 						end
+					end, {}),
+					i(1),
+					t { '', ' */' },
+				}),
+			}
 
-						local tstree = parser:parse()
-						if tstree[1] == nil then
-							return ''
-						end
-
-						local node = tstree[1]:root():named_descendant_for_range(
-							pos_begin[1],
-							pos_begin[2],
-							pos_end[1],
-							pos_end[2]
-						)
-
-						while node ~= nil and node:type() ~= 'interface_declaration' do
-							node = node:parent()
-						end
-
-						if node == nil then
-							return ''
-						end
-
-						-- `node` is now surely of type "interface_declaration"
-						local prop_names = get_prop_names(node)
-
-						return table.concat(prop_names, ', ')
-					end, { 3 }),
-					rep(2),
-					i(5, "'Hello World!'"),
-				}
-			)
-		),
-	}
-
-	local js_ts = {
-		s(
-			{ trig = 'import', dscr = 'import statement' },
-			fmt("import {} from '{}{}';", {
-				i(1, 'name'),
-				i(2),
-				d(3, function(nodes)
-					local text = nodes[1][1]
-					local _, _, typish, target =
-						text:find '^%s*(%a*)%s*{?%s*(%a+).*}?%s*$'
-					if typish == 'type' and target then
-						return sn(1, { i(1, target) })
-					elseif typish and target then
-						return sn(1, { i(1, typish .. target) })
-					else
-						return sn(1, { i(1, 'specifier') })
-					end
-				end, { 1 }),
-			})
-		),
-		s(
-			{ trig = 'require', dscr = 'require statement' },
-			fmt("const {} = require('{}{}');", {
-				i(1, 'name'),
-				i(2),
-				d(3, function(nodes)
-					local text = nodes[1][1]
-					return sn(1, { i(1, text) })
-				end, { 1 }),
-			})
-		),
-		s({ trig = '**', dscr = 'docblock' }, {
-			t { '/**', '' },
-			f(function(_args, snip)
-				local lines = vim.tbl_map(function(line)
-					return ' * ' .. vim.trim(line)
-				end, snip.env.SELECT_RAW)
-				if #lines == 0 then
-					return ' * '
-				else
-					return lines
+			local function replace_each(replacer)
+				return function(args)
+					local len = #args[1][1]
+					return { replacer:rep(len) }
 				end
-			end, {}),
-			i(1),
-			t { '', ' */' },
-		}),
-	}
+			end
 
-	local function replace_each(replacer)
-		return function(args)
-			local len = #args[1][1]
-			return { replacer:rep(len) }
-		end
-	end
+			local twig = { 'html', 'twig' }
 
-	local twig = { 'html', 'twig' }
+			ls.filetype_extend('jinja', twig)
+			ls.filetype_extend('jinja2', twig)
+			ls.filetype_extend('html.twig', twig)
 
-	ls.filetype_extend('jinja', twig)
-	ls.filetype_extend('jinja2', twig)
-	ls.filetype_extend('html.twig', twig)
+			ls.filetype_extend('typescriptreact', { 'html' })
+			ls.filetype_extend('javascriptreact', { 'html' })
 
-	ls.filetype_extend('typescriptreact', { 'html' })
-	ls.filetype_extend('javascriptreact', { 'html' })
+			ls.add_snippets(nil, {
+				all = {
+					s({ trig = 'bbox', wordTrig = true }, {
+						t { '╔' },
+						f(replace_each '═', { 1 }),
+						t { '╗', '║' },
+						i(1, { 'content' }),
+						t { '║', '╚' },
+						f(replace_each '═', { 1 }),
+						t { '╝' },
+						i(0),
+					}),
+					s({ trig = 'sbox', wordTrig = true }, {
+						t { '*' },
+						f(replace_each '-', { 1 }),
+						t { '*', '|' },
+						i(1, { 'content' }),
+						t { '|', '*' },
+						f(replace_each '-', { 1 }),
+						t { '*' },
+						i(0),
+					}),
+					s('modeline', {
+						d(1, function()
+							local str = vim.split(vim.bo.commentstring, '%s', true)
 
-	ls.add_snippets(nil, {
-		all = {
-			s({ trig = 'bbox', wordTrig = true }, {
-				t { '╔' },
-				f(replace_each '═', { 1 }),
-				t { '╗', '║' },
-				i(1, { 'content' }),
-				t { '║', '╚' },
-				f(replace_each '═', { 1 }),
-				t { '╝' },
-				i(0),
-			}),
-			s({ trig = 'sbox', wordTrig = true }, {
-				t { '*' },
-				f(replace_each '-', { 1 }),
-				t { '*', '|' },
-				i(1, { 'content' }),
-				t { '|', '*' },
-				f(replace_each '-', { 1 }),
-				t { '*' },
-				i(0),
-			}),
-			s('modeline', {
-				d(1, function()
-					local str = vim.split(vim.bo.commentstring, '%s', true)
-
-					return sn(
-						nil,
-						fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
-							commentStart = str[1],
-							text = i(1),
-							commentEnd = str[2] or '',
+							return sn(
+								nil,
+								fmt('{commentStart} vim:ft={text} {commentEnd}{next}', {
+									commentStart = str[1],
+									text = i(1),
+									commentEnd = str[2] or '',
+									next = i(0),
+								})
+							)
+						end, {}),
+					}),
+					ls.parser.parse_snippet(
+						{ trig = 'vimfold' },
+						'${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
+					),
+					s(
+						'bang',
+						fmt('#!/usr/bin/env {shell}{next}', {
+							shell = c(1, {
+								t 'sh',
+								t 'zsh',
+								t 'bash',
+								t 'python',
+								t 'node',
+							}),
 							next = i(0),
 						})
-					)
-				end, {}),
-			}),
-			ls.parser.parse_snippet(
-				{ trig = 'vimfold' },
-				'${1:Fold title} {{{\n\t${0:${TM_SELECTED_TEXT}}\n}}}'
-			),
-			s(
-				'bang',
-				fmt('#!/usr/bin/env {shell}{next}', {
-					shell = c(1, {
-						t 'sh',
-						t 'zsh',
-						t 'bash',
-						t 'python',
-						t 'node',
-					}),
-					next = i(0),
-				})
-			),
-			ls.parser.parse_snippet(
-				{ trig = 'tmux-start' },
-				[[#!/usr/bin/env sh
+					),
+					ls.parser.parse_snippet(
+						{ trig = 'tmux-start' },
+						[[#!/usr/bin/env sh
 
 local SESSION_NAME="${1}"
 
@@ -367,47 +299,47 @@ tmux send-keys -t"\$SESSION_NAME":2.1 "direnv reload && \$EDITOR" C-m
 
 tmux select-window -t"\$SESSION_NAME":2.1
 ${0}]]
-			),
-			ls.parser.parse_snippet(
-				{ trig = 'todo' },
-				string.format(
-					'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
-					vim.env.GITHUB_USER
-				)
-			),
-			s({ trig = 'fn' }, {
-				c(1, {
-					t 'public ',
-					t 'private ',
-				}),
-				c(2, {
-					t 'void',
-					i(nil, { '' }),
-					t 'String',
-					t 'char',
-					t 'int',
-					t 'double',
-					t 'boolean',
-				}),
-				t ' ',
-				i(3, { 'myFunc' }),
-				t '(',
-				i(4),
-				t ')',
-				c(5, {
-					t '',
-					sn(nil, {
-						t { '', ' throws ' },
-						i(1),
+					),
+					ls.parser.parse_snippet(
+						{ trig = 'todo' },
+						string.format(
+							'TODO: ${1:Do something} (${$CURRENT_MONTH_NAME} ${$CURRENT_DATE}, ${$CURRENT_YEAR} ${$CURRENT_HOUR}:${$CURRENT_MINUTE}, ${2:%s})\n$0',
+							vim.env.GITHUB_USER
+						)
+					),
+					s({ trig = 'fn' }, {
+						c(1, {
+							t 'public ',
+							t 'private ',
+						}),
+						c(2, {
+							t 'void',
+							i(nil, { '' }),
+							t 'String',
+							t 'char',
+							t 'int',
+							t 'double',
+							t 'boolean',
+						}),
+						t ' ',
+						i(3, { 'myFunc' }),
+						t '(',
+						i(4),
+						t ')',
+						c(5, {
+							t '',
+							sn(nil, {
+								t { '', ' throws ' },
+								i(1),
+							}),
+						}),
+						t { ' {', '\t' },
+						i(0),
+						t { '', '}' },
 					}),
-				}),
-				t { ' {', '\t' },
-				i(0),
-				t { '', '}' },
-			}),
-			ls.parser.parse_snippet(
-				{ trig = 'dumpenv' },
-				[[
+					ls.parser.parse_snippet(
+						{ trig = 'dumpenv' },
+						[[
   ${$TM_SELECTED_TEXT} --  TM_SELECTED_TEXT The currently selected text or the empty string
   ${$TM_CURRENT_LINE} --  TM_CURRENT_LINE The contents of the current line
   ${$TM_CURRENT_WORD} --  TM_CURRENT_WORD The contents of the word under cursor or the empty string
@@ -440,16 +372,16 @@ ${0}]]
   ${$BLOCK_COMMENT_END} --  BLOCK_COMMENT_END Example output: in PHP */ or in HTML -->
   ${$LINE_COMMENT} --  LINE_COMMENT Example output: in PHP //
     ]]
-			),
-		},
-		javascript = js_ts,
-		typescript = js_ts,
-		javascriptreact = vim.tbl_extend('force', {}, js_ts, react),
-		typescriptreact = vim.tbl_extend('force', {}, js_ts, react),
-		markdown = {
-			ls.parser.parse_snippet(
-				{ trig = 'fmatter', dscr = 'Document frontmatter' },
-				[[
+					),
+				},
+				javascript = js_ts,
+				typescript = js_ts,
+				javascriptreact = vim.tbl_extend('force', {}, js_ts, react),
+				typescriptreact = vim.tbl_extend('force', {}, js_ts, react),
+				markdown = {
+					ls.parser.parse_snippet(
+						{ trig = 'fmatter', dscr = 'Document frontmatter' },
+						[[
 ---
 title: ${1:Title}
 date: ${CURRENT_DATE}-${CURRENT_MONTH}-${CURRENT_YEAR}T${CURRENT_HOUR}:${CURRENT_MINUTE}
@@ -458,13 +390,13 @@ ${3:tags}: $4
 
 $0
 ]]
-			),
-			ls.parser.parse_snippet(
-				{
-					trig = 'oto',
-					dscr = 'One to one section',
-				},
-				[=[## [[${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}]]
+					),
+					ls.parser.parse_snippet(
+						{
+							trig = 'oto',
+							dscr = 'One to one section',
+						},
+						[=[## [[${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}]]
 $0
 
 ### My topics
@@ -473,42 +405,42 @@ $0
 
 ### Actions
 ]=]
-			),
-			s(
-				{ trig = 'img', dscr = 'Markdown image' },
-				fmt('![{alt}]({url}){next}', {
-					url = f(function(_, snip)
-						return snip.env.TM_SELECTED_TEXT[1]
-							or sn(nil, i(1, 'https://example.com'))
-					end, {}),
-					alt = i(1, 'ALt'),
-					next = i(0),
-				})
-			),
-			s(
-				{ trig = 'link', dscr = 'Markdown link' },
-				fmt('[{text}]({url}){next}', {
-					url = f(function(_, snip)
-						return snip.env.TM_SELECTED_TEXT[1]
-							or sn(nil, i(1, 'https://example.com'))
-					end, {}),
-					text = i(1, 'Text'),
-					next = i(0),
-				})
-			),
-			s({ trig = 'table', dscr = 'Table template' }, {
-				t '| ',
-				i(1, 'First Header'),
-				t {
-					'  | Second Header |',
-					'| ------------- | ------------- |',
-					'| Content Cell  | Content Cell  |',
-					'| Content Cell  | Content Cell  |',
-				},
-			}),
-			ls.parser.parse_snippet(
-				{ trig = 'footer', dscr = 'Project footer' },
-				[[
+					),
+					s(
+						{ trig = 'img', dscr = 'Markdown image' },
+						fmt('![{alt}]({url}){next}', {
+							url = f(function(_, snip)
+								return snip.env.TM_SELECTED_TEXT[1]
+									or sn(nil, i(1, 'https://example.com'))
+							end, {}),
+							alt = i(1, 'ALt'),
+							next = i(0),
+						})
+					),
+					s(
+						{ trig = 'link', dscr = 'Markdown link' },
+						fmt('[{text}]({url}){next}', {
+							url = f(function(_, snip)
+								return snip.env.TM_SELECTED_TEXT[1]
+									or sn(nil, i(1, 'https://example.com'))
+							end, {}),
+							text = i(1, 'Text'),
+							next = i(0),
+						})
+					),
+					s({ trig = 'table', dscr = 'Table template' }, {
+						t '| ',
+						i(1, 'First Header'),
+						t {
+							'  | Second Header |',
+							'| ------------- | ------------- |',
+							'| Content Cell  | Content Cell  |',
+							'| Content Cell  | Content Cell  |',
+						},
+					}),
+					ls.parser.parse_snippet(
+						{ trig = 'footer', dscr = 'Project footer' },
+						[[
 **${1:projectname}** © ${$CURRENT_YEAR}+, Ahmed El Gabri Released under the [MIT] License.<br>
 Authored and maintained by Ahmed El Gabri with help from contributors ([list][contributors]).
 
@@ -519,10 +451,10 @@ Authored and maintained by Ahmed El Gabri with help from contributors ([list][co
 [MIT]: http://mit-license.org/
 [contributors]: http://github.com/ahmedelgabri/$1/contributors
     ]]
-			),
-			ls.parser.parse_snippet(
-				{ trig = 'mit', dscr = 'MIT Licence' },
-				[[
+					),
+					ls.parser.parse_snippet(
+						{ trig = 'mit', dscr = 'MIT Licence' },
+						[[
 The MIT License (MIT)
 
 Copyright (c) ${$CURRENT_YEAR} ${0}
@@ -545,208 +477,275 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
     ]]
-			),
-		},
-		html = {
-			s(
-				'script',
-				fmt('<script {scriptEnd}{body}</script>{next}', {
-					scriptEnd = c(1, {
-						fmt('src="{src}">', {
-							src = i(1, 'path/to/file.js'),
-						}),
-						fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
+					),
+				},
+				html = {
+					s(
+						'script',
+						fmt('<script {scriptEnd}{body}</script>{next}', {
+							scriptEnd = c(1, {
+								fmt('src="{src}">', {
+									src = i(1, 'path/to/file.js'),
+								}),
+								fmt('>\n\t{code}\n\n', { code = i(1, '// code') }),
+							}),
+							body = i(2),
+							next = i(0),
+						})
+					),
+					s(
+						{ trig = 'fav', dscr = 'Add an inline SVG Emoji Favicon' },
+						fmt(
+							'<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{text}</text></svg>"/>',
+							{ text = i(1) }
+						)
+					),
+				},
+				css = {
+					s({
+						trig = 'debug',
+						dscr = 'Print box model from https://dev.to/gajus/my-favorite-css-hack-32g3',
+					}, {
+						t {
+							'* { background-color: rgba(255,0,0,.2); }',
+							'* * { background-color: rgba(0,255,0,.2); }',
+							'* * * { background-color: rgba(0,0,255,.2); }',
+							'* * * * { background-color: rgba(255,0,255,.2); }',
+							'* * * * * { background-color: rgba(0,255,255,.2); }',
+							'* * * * * * { background-color: rgba(255,255,0,.2); }',
+							'* * * * * * * { background-color: rgba(255,0,0,.2); }',
+							'* * * * * * * * { background-color: rgba(0,255,0,.2); }',
+							'* * * * * * * * * { background-color: rgba(0,0,255,.2); }',
+						},
 					}),
-					body = i(2),
-					next = i(0),
-				})
-			),
-			s(
-				{ trig = 'fav', dscr = 'Add an inline SVG Emoji Favicon' },
-				fmt(
-					'<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>{text}</text></svg>"/>',
-					{ text = i(1) }
-				)
-			),
-		},
-		css = {
-			s({
-				trig = 'debug',
-				dscr = 'Print box model from https://dev.to/gajus/my-favorite-css-hack-32g3',
-			}, {
-				t {
-					'* { background-color: rgba(255,0,0,.2); }',
-					'* * { background-color: rgba(0,255,0,.2); }',
-					'* * * { background-color: rgba(0,0,255,.2); }',
-					'* * * * { background-color: rgba(255,0,255,.2); }',
-					'* * * * * { background-color: rgba(0,255,255,.2); }',
-					'* * * * * * { background-color: rgba(255,255,0,.2); }',
-					'* * * * * * * { background-color: rgba(255,0,0,.2); }',
-					'* * * * * * * * { background-color: rgba(0,255,0,.2); }',
-					'* * * * * * * * * { background-color: rgba(0,0,255,.2); }',
 				},
-			}),
-		},
-	})
-end
+			})
+		end,
+		build = function(plugin)
+			vim.fn.system { 'make', '-C', plugin.path, 'install_jsregexp' }
+		end,
+	},
+	{ src = 'https://github.com/moyiz/blink-emoji.nvim', load = false },
+	{ src = 'https://github.com/xzbdmw/colorful-menu.nvim', load = false },
+	{ src = 'https://github.com/Saghen/blink.lib', load = false },
+	{
+		src = 'https://github.com/Saghen/blink.cmp',
+		name = 'blink.cmp',
+		version = 'main',
+		event = { 'InsertEnter' },
+		config = function()
+			vim.cmd.packadd 'blink.lib'
+			vim.cmd.packadd 'blink-emoji.nvim'
+			vim.cmd.packadd 'colorful-menu.nvim'
 
-local function ensure_completion()
-	ensure_snippets()
+			local has_words_before = function()
+				if
+					vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt'
+				then
+					return false
+				end
+				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+				return col ~= 0
+					and vim.api
+							.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]
+							:match '^%s*$'
+						== nil
+			end
 
-	Pack.load { 'blink.lib', 'blink-emoji.nvim', 'colorful-menu.nvim', 'blink.cmp' }
+			local function get_mini_icon_info(ctx)
+				local MiniIcons = require 'mini.icons'
+				local source = ctx.item.source_name
+				local label = ctx.item.label
 
-	require('blink.cmp').setup {
-		keymap = {
-			-- Set my own, and get rid of the ones I don't use
-			preset = 'none',
-			['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
-			['<C-c>'] = { 'hide' },
+				if source == nil then
+					return
+				end
 
-			['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
-			['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
-
-			['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-			['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
-
-			-- Not sure about this one
-			['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
-			['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
-			['<Tab>'] = {
-				function(cmp)
-					if not has_words_before() then
-						return
+				if source == 'path' then
+					if label:match '%.[^/]+$' then
+						return MiniIcons.get('file', label)
 					end
 
-					if cmp.is_menu_visible() then
-						return cmp.select_next()
-					end
-				end,
-				'snippet_forward',
-				'fallback',
-			},
-			['<CR>'] = { 'select_and_accept', 'fallback' },
-		},
+					return MiniIcons.get('directory', ctx.item.label)
+				end
 
-		snippets = { preset = 'luasnip' },
+				return MiniIcons.get('lsp', ctx.kind)
+			end
 
-		fuzzy = {
-			implementation = 'prefer_rust',
-		},
+			local function get_icon(ctx)
+				local icon = get_mini_icon_info(ctx)
 
-		completion = {
-			accept = {
-				auto_brackets = {
-					enabled = true,
-				},
-			},
+				return icon or ctx.kind_icon
+			end
 
-			menu = {
-				border = utils.get_border(),
-				draw = {
-					padding = 1,
-					gap = 2,
-					columns = { { 'kind_icon' }, { 'label', 'kind', gap = 2 } },
-					components = {
-						label = {
-							width = { fill = true },
-							text = function(ctx)
-								return require('colorful-menu').blink_components_text(ctx)
-							end,
-							highlight = function(ctx)
-								return require('colorful-menu').blink_components_highlight(ctx)
-							end,
-						},
-						label_description = { width = { fill = true } },
-						kind_icon = {
-							text = get_icon,
-							highlight = get_icon_highlight,
-						},
-						kind = {
-							-- Don't fill: only `label` should absorb slack so `kind`
-							-- stays right-aligned in a fixed column.
-							width = { fill = false },
-							highlight = get_icon_highlight,
-						},
-					},
-				},
-			},
+			local function get_icon_highlight(ctx)
+				local _, hl, _ = get_mini_icon_info(ctx)
 
-			documentation = {
-				auto_show = true,
-				treesitter_highlighting = true,
-				window = {
-					border = utils.get_border(),
-				},
-			},
-			ghost_text = {
-				enabled = true,
-			},
-		},
+				return hl
+			end
 
-		-- Experimental signature help support
-		signature = {
-			enabled = true,
-			window = {
-				border = utils.get_border(),
-				treesitter_highlighting = true,
-			},
-		},
+			require('blink.cmp').setup {
+				keymap = {
+					-- Set my own, and get rid of the ones I don't use
+					preset = 'none',
+					['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+					['<C-c>'] = { 'hide' },
 
-		cmdline = { enabled = false },
+					['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+					['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
 
-		sources = {
-			default = {
-				'lsp',
-				'path',
-				'snippets',
-				'buffer',
-				'emoji',
-			},
-			providers = {
-				lsp = {
-					name = 'lsp',
-					enabled = true,
-					module = 'blink.cmp.sources.lsp',
-					fallbacks = { 'buffer' },
-				},
-				path = {
-					name = 'Path',
-					module = 'blink.cmp.sources.path',
-					fallbacks = { 'snippets', 'buffer' },
-					opts = {
-						trailing_slash = false,
-						label_trailing_slash = true,
-						get_cwd = function(context)
-							return vim.fn.expand(('#%d:p:h'):format(context.bufnr))
+					['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+					['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+					-- Not sure about this one
+					['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
+					['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+					['<Tab>'] = {
+						function(cmp)
+							if not has_words_before() then
+								return
+							end
+
+							if cmp.is_menu_visible() then
+								return cmp.select_next()
+							end
 						end,
-						show_hidden_files_by_default = true,
+						'snippet_forward',
+						'fallback',
+					},
+					['<CR>'] = { 'select_and_accept', 'fallback' },
+				},
+
+				snippets = { preset = 'luasnip' },
+
+				fuzzy = {
+					implementation = 'prefer_rust',
+				},
+
+				completion = {
+					accept = {
+						auto_brackets = {
+							enabled = true,
+						},
+					},
+
+					menu = {
+						border = utils.get_border(),
+						draw = {
+							padding = 1,
+							gap = 2,
+							columns = { { 'kind_icon' }, { 'label', 'kind', gap = 2 } },
+							components = {
+								label = {
+									width = { fill = true },
+									text = function(ctx)
+										return require('colorful-menu').blink_components_text(ctx)
+									end,
+									highlight = function(ctx)
+										return require('colorful-menu').blink_components_highlight(
+											ctx
+										)
+									end,
+								},
+								label_description = { width = { fill = true } },
+								kind_icon = {
+									text = get_icon,
+									highlight = get_icon_highlight,
+								},
+								kind = {
+									-- Don't fill: only `label` should absorb slack so `kind`
+									-- stays right-aligned in a fixed column.
+									width = { fill = false },
+									highlight = get_icon_highlight,
+								},
+							},
+						},
+					},
+
+					documentation = {
+						auto_show = true,
+						treesitter_highlighting = true,
+						window = {
+							border = utils.get_border(),
+						},
+					},
+					ghost_text = {
+						enabled = true,
 					},
 				},
-				buffer = {
-					name = 'Buffer',
-					enabled = true,
-					max_items = 3,
-					module = 'blink.cmp.sources.buffer',
-					min_keyword_length = 4,
-				},
-				emoji = {
-					module = 'blink-emoji',
-					name = 'Emoji',
-					opts = { insert = true },
-				},
-				snippets = {
-					name = 'snippets',
-					enabled = true,
-					max_items = 8,
-					min_keyword_length = 2,
-					module = 'blink.cmp.sources.snippets',
-				},
-			},
-		},
-	}
-end
 
-au.autocmd {
-	event = 'InsertEnter',
-	callback = ensure_completion,
+				-- Experimental signature help support
+				signature = {
+					enabled = true,
+					window = {
+						border = utils.get_border(),
+						treesitter_highlighting = true,
+					},
+				},
+
+				cmdline = { enabled = false },
+
+				sources = {
+					default = {
+						'lsp',
+						'path',
+						'snippets',
+						'buffer',
+						'emoji',
+					},
+					providers = {
+						lsp = {
+							name = 'lsp',
+							enabled = true,
+							module = 'blink.cmp.sources.lsp',
+							fallbacks = { 'buffer' },
+						},
+						path = {
+							name = 'Path',
+							module = 'blink.cmp.sources.path',
+							fallbacks = { 'snippets', 'buffer' },
+							opts = {
+								trailing_slash = false,
+								label_trailing_slash = true,
+								get_cwd = function(context)
+									return vim.fn.expand(('#%d:p:h'):format(context.bufnr))
+								end,
+								show_hidden_files_by_default = true,
+							},
+						},
+						buffer = {
+							name = 'Buffer',
+							enabled = true,
+							max_items = 3,
+							module = 'blink.cmp.sources.buffer',
+							min_keyword_length = 4,
+						},
+						emoji = {
+							module = 'blink-emoji',
+							name = 'Emoji',
+							opts = { insert = true },
+						},
+						snippets = {
+							name = 'snippets',
+							enabled = true,
+							max_items = 8,
+							min_keyword_length = 2,
+							module = 'blink.cmp.sources.snippets',
+						},
+					},
+				},
+			}
+		end,
+		build = function()
+			vim.cmd.packadd 'blink.lib'
+
+			local ok, err = pcall(function()
+				local download = require('blink.cmp').download
+				download({ force = true, match = '*' }):wait(60000)
+			end)
+			if not ok then
+				vim.notify(err, vim.log.levels.WARN, { title = 'blink.cmp binary' })
+			end
+		end,
+	},
 }

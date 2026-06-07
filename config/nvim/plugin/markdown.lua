@@ -1,124 +1,5 @@
 -- Markdown plugins
-local au = require '_.utils.au'
-
-Pack.add({
-	'https://github.com/davidmh/mdx.nvim',
-	'https://github.com/zk-org/zk-nvim',
-	'https://github.com/nvim-lua/plenary.nvim',
-	{ src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
-	{ src = 'https://github.com/YousefHadder/markdown-plus.nvim' },
-	{
-		src = 'https://github.com/obsidian-nvim/obsidian.nvim',
-		version = vim.version.range '*',
-	},
-}, { load = false })
-
-au.autocmd {
-	event = 'FileType',
-	pattern = { 'markdown', 'markdown.mdx', 'mdx' },
-	callback = function()
-		Pack.load { 'mdx.nvim', 'zk-nvim' }
-
-		-- zk-nvim: only commands, no LSP
-		require 'zk.commands.builtin'
-	end,
-}
-
--- Pattern definitions for obsidian date parsing
-local patterns = {
-	{
-		name = 'ISO datetime',
-		pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)[T ](%d%d):(%d%d)',
-		defaults = {},
-	},
-	{
-		name = 'compact datetime',
-		pattern = '^(%d%d%d%d)(%d%d)(%d%d)(%d%d)(%d%d)$',
-		defaults = {},
-	},
-	{
-		name = 'ISO date',
-		pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)$',
-		defaults = { hour = 0, min = 0 },
-	},
-}
-
-local function convert_date(date_string)
-	local year, month, day, hour, min
-
-	for _, config in ipairs(patterns) do
-		local captures = { date_string:match(config.pattern) }
-		if #captures > 0 then
-			year, month, day = captures[1], captures[2], captures[3]
-			hour = captures[4] or config.defaults.hour
-			min = captures[5] or config.defaults.min
-			break
-		end
-	end
-
-	if not year then
-		return nil
-	end
-
-	local date_table = {
-		year = tonumber(year),
-		month = tonumber(month),
-		day = tonumber(day),
-		hour = tonumber(hour) or 0,
-		min = tonumber(min) or 0,
-		sec = 0,
-	}
-
-	local timestamp = os.time(date_table)
-	return os.date('%Y%m%d%H%M', timestamp)
-end
-
-au.autocmd {
-	event = 'FileType',
-	pattern = { 'markdown', 'md', 'codecompanion' },
-	callback = function()
-		Pack.load 'render-markdown.nvim'
-
-		require('render-markdown').setup {
-			file_types = { 'markdown', 'md', 'codecompanion' },
-			render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
-			code = {
-				sign = false,
-				border = 'thin',
-				position = 'right',
-				width = 'block',
-				above = '▁',
-				below = '▔',
-				language_left = '█',
-				language_right = '█',
-				language_border = '▁',
-				left_pad = 1,
-				right_pad = 1,
-			},
-			heading = {
-				sign = false,
-				width = 'block',
-				left_pad = 1,
-				right_pad = 0,
-				position = 'inline',
-				icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
-			},
-		}
-	end,
-}
-
-au.autocmd {
-	event = 'FileType',
-	pattern = { 'markdown', 'txt', 'text' },
-	callback = function()
-		Pack.load 'markdown-plus.nvim'
-
-		require('markdown-plus').setup {
-			filetypes = { 'markdown', 'text', 'txt' },
-		}
-	end,
-}
-
+local pack = require '_.pack'
 local function get_notes_dir()
 	local dir = vim.env.NOTES_DIR
 	if dir == nil or dir == '' then
@@ -142,145 +23,245 @@ local function notes_patterns(notes_dir)
 	}
 end
 
-local function load_obsidian()
-	local notes_dir = get_notes_dir()
-	if notes_dir == nil then
-		vim.notify(
-			'Obsidian disabled: NOTES_DIR is not set or does not exist',
-			vim.log.levels.WARN
-		)
-		return false
-	end
+local notes_dir = get_notes_dir()
 
-	Pack.load { 'plenary.nvim', 'obsidian.nvim' }
-
-	require('obsidian').setup {
-		legacy_commands = false,
-		workspaces = {
-			{
-				name = 'notes',
-				path = notes_dir,
-				strict = true,
-				overrides = {
-					attachments = {
-						folder = notes_dir .. '/assets',
-						img_name_func = function()
-							return string.format(
-								'%s/%s/Pasted image %s',
-								notes_dir .. '/assets',
-								vim.fn.expand '%:t:r',
-								os.date '%Y%m%d%H%M%S'
-							)
-						end,
-					},
+pack.add {
+	{
+		src = 'https://github.com/davidmh/mdx.nvim',
+		ft = { 'markdown', 'markdown.mdx', 'mdx' },
+	},
+	{
+		src = 'https://github.com/zk-org/zk-nvim',
+		ft = { 'markdown', 'markdown.mdx', 'mdx' },
+		config = function()
+			-- zk-nvim: only commands, no LSP
+			require 'zk.commands.builtin'
+		end,
+	},
+	{ src = 'https://github.com/nvim-lua/plenary.nvim' },
+	{
+		src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim',
+		ft = { 'markdown', 'md', 'codecompanion' },
+		config = function()
+			require('render-markdown').setup {
+				file_types = { 'markdown', 'md', 'codecompanion' },
+				render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
+				code = {
+					sign = false,
+					border = 'thin',
+					position = 'right',
+					width = 'block',
+					above = '▁',
+					below = '▔',
+					language_left = '█',
+					language_right = '█',
+					language_border = '▁',
+					left_pad = 1,
+					right_pad = 1,
 				},
-			},
-		},
-
-		templates = {
-			folder = '.zk/templates',
-			date_format = '%Y-%m-%d',
-			time_format = '%H:%M',
-			substitutions = {
-				['format-date now "%Y-%m-%dT%H:%M"'] = function()
-					return os.date '%Y-%m-%dT%H:%M'
-				end,
-				['format-date now "timestamp"'] = function()
-					return os.date '%Y%m%d%H%M'
-				end,
-				["format-date now '%Y-%m-%d'"] = function()
-					return os.date '%Y-%m-%d'
-				end,
-				['format-date now "long"'] = function()
-					return os.date '%B %d, %Y'
-				end,
-				['content'] = function()
-					return ''
-				end,
-				['extra.employer'] = function()
-					return vim.env.COMPANY or 'NO COMPANY'
-				end,
-			},
-		},
-
-		---@param title string|?
-		---@return string
-		note_id_func = function(title)
-			local note_name = tostring(os.date '%Y%m%d%H%M')
-
-			if title ~= nil then
-				note_name = note_name
-					.. ' '
-					.. title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+				heading = {
+					sign = false,
+					width = 'block',
+					left_pad = 1,
+					right_pad = 0,
+					position = 'inline',
+					icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
+				},
+			}
+		end,
+	},
+	{
+		src = 'https://github.com/YousefHadder/markdown-plus.nvim',
+		ft = { 'markdown', 'txt', 'text' },
+		config = function()
+			require('markdown-plus').setup {
+				filetypes = { 'markdown', 'text', 'txt' },
+			}
+		end,
+	},
+	{
+		src = 'https://github.com/obsidian-nvim/obsidian.nvim',
+		event = notes_dir and { 'BufReadPost', 'BufNewFile' } or nil,
+		pattern = notes_dir and notes_patterns(notes_dir) or nil,
+		version = vim.version.range '*',
+		cmd = { 'Obsidian' },
+		config = function()
+			local notes_dir = get_notes_dir()
+			if notes_dir == nil then
+				vim.notify(
+					'Obsidian disabled: NOTES_DIR is not set or does not exist',
+					vim.log.levels.WARN
+				)
+				return
 			end
 
-			return note_name
-		end,
+			-- Pattern definitions for obsidian date parsing
+			local patterns = {
+				{
+					name = 'ISO datetime',
+					pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)[T ](%d%d):(%d%d)',
+					defaults = {},
+				},
+				{
+					name = 'compact datetime',
+					pattern = '^(%d%d%d%d)(%d%d)(%d%d)(%d%d)(%d%d)$',
+					defaults = {},
+				},
+				{
+					name = 'ISO date',
+					pattern = '^(%d%d%d%d)-(%d%d)-(%d%d)$',
+					defaults = { hour = 0, min = 0 },
+				},
+			}
 
-		frontmatter = {
-			sort = { 'id', 'title', 'date', 'aliases', 'tags' },
-			---@return table
-			func = function(note)
-				local metadata = note.metadata or {}
-				local out = {
-					aliases = note.aliases,
-					tags = note.tags,
-				}
+			local function convert_date(date_string)
+				local year, month, day, hour, min
 
-				if not vim.tbl_isempty(metadata) then
-					for k, v in pairs(metadata) do
-						out[k] = v
+				for _, config in ipairs(patterns) do
+					local captures = { date_string:match(config.pattern) }
+					if #captures > 0 then
+						year, month, day = captures[1], captures[2], captures[3]
+						hour = captures[4] or config.defaults.hour
+						min = captures[5] or config.defaults.min
+						break
 					end
 				end
 
-				if not metadata.title then
-					out.title = note.title or note.id
+				if not year then
+					return nil
 				end
 
-				note:add_alias(note.title or metadata.title or note.id)
+				local date_table = {
+					year = tonumber(year),
+					month = tonumber(month),
+					day = tonumber(day),
+					hour = tonumber(hour) or 0,
+					min = tonumber(min) or 0,
+					sec = 0,
+				}
 
-				local validated_id = convert_date(note.id)
-				out.id = validated_id
-					or convert_date(metadata.date or os.date '%Y%m%d%H%M')
-					or os.date '%Y%m%d%H%M'
+				local timestamp = os.time(date_table)
+				return os.date('%Y%m%d%H%M', timestamp)
+			end
 
-				return out
-			end,
-		},
+			require('obsidian').setup {
+				legacy_commands = false,
+				workspaces = {
+					{
+						name = 'notes',
+						path = notes_dir,
+						strict = true,
+						overrides = {
+							attachments = {
+								folder = notes_dir .. '/assets',
+								img_name_func = function()
+									return string.format(
+										'%s/%s/Pasted image %s',
+										notes_dir .. '/assets',
+										vim.fn.expand '%:t:r',
+										os.date '%Y%m%d%H%M%S'
+									)
+								end,
+							},
+						},
+					},
+				},
 
-		daily_notes = {
-			folder = 'journal',
-			workdays_only = false,
-			default_tags = { 'journal' },
-			template = 'journal.md',
-		},
+				templates = {
+					folder = '.zk/templates',
+					date_format = '%Y-%m-%d',
+					time_format = '%H:%M',
+					substitutions = {
+						['format-date now "%Y-%m-%dT%H:%M"'] = function()
+							return os.date '%Y-%m-%dT%H:%M'
+						end,
+						['format-date now "timestamp"'] = function()
+							return os.date '%Y%m%d%H%M'
+						end,
+						["format-date now '%Y-%m-%d'"] = function()
+							return os.date '%Y-%m-%d'
+						end,
+						['format-date now "long"'] = function()
+							return os.date '%B %d, %Y'
+						end,
+						['content'] = function()
+							return ''
+						end,
+						['extra.employer'] = function()
+							return vim.env.COMPANY or 'NO COMPANY'
+						end,
+					},
+				},
 
-		completion = {
-			nvim_cmp = false,
-			blink = false,
-		},
+				---@param title string|?
+				---@return string
+				note_id_func = function(title)
+					local note_name = tostring(os.date '%Y%m%d%H%M')
 
-		ui = {
-			enable = false,
-		},
+					if title ~= nil then
+						note_name = note_name
+							.. ' '
+							.. title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+					end
 
-		attachments = {
-			folder = 'assets',
-		},
+					return note_name
+				end,
 
-		footer = {
-			enabled = false,
-		},
-	}
-end
+				frontmatter = {
+					sort = { 'id', 'title', 'date', 'aliases', 'tags' },
+					---@return table
+					func = function(note)
+						local metadata = note.metadata or {}
+						local out = {
+							aliases = note.aliases,
+							tags = note.tags,
+						}
 
-Pack.cmd('Obsidian', load_obsidian)
+						if not vim.tbl_isempty(metadata) then
+							for k, v in pairs(metadata) do
+								out[k] = v
+							end
+						end
 
-local notes_dir = get_notes_dir()
-if notes_dir ~= nil then
-	au.autocmd {
-		event = { 'BufReadPost', 'BufNewFile' },
-		pattern = notes_patterns(notes_dir),
-		callback = load_obsidian,
-	}
-end
+						if not metadata.title then
+							out.title = note.title or note.id
+						end
+
+						note:add_alias(note.title or metadata.title or note.id)
+
+						local validated_id = convert_date(note.id)
+						out.id = validated_id
+							or convert_date(metadata.date or os.date '%Y%m%d%H%M')
+							or os.date '%Y%m%d%H%M'
+
+						return out
+					end,
+				},
+
+				daily_notes = {
+					folder = 'journal',
+					workdays_only = false,
+					default_tags = { 'journal' },
+					template = 'journal.md',
+				},
+
+				completion = {
+					nvim_cmp = false,
+					blink = false,
+				},
+
+				ui = {
+					enable = false,
+				},
+
+				attachments = {
+					folder = 'assets',
+				},
+
+				footer = {
+					enabled = false,
+				},
+			}
+		end,
+	},
+}

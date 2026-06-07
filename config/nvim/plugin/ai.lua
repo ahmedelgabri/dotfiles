@@ -1,6 +1,13 @@
-Pack.add { 'https://github.com/wincent/shannon' }
+local pack = require '_.pack'
 
-require('wincent.shannon').setup {
-	prefix = '<LocalLeader>a', -- keymap prefix
-	agents = { 'pi', 'claude' }, -- process names to search for, in priority order
+pack.add {
+	{
+		src = 'https://github.com/wincent/shannon',
+		config = function()
+			require('wincent.shannon').setup {
+				prefix = '<LocalLeader>a', -- keymap prefix
+				agents = { 'pi', 'claude' }, -- process names to search for, in priority order
+			}
+		end,
+	},
 }
