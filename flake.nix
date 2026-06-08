@@ -48,11 +48,6 @@
       flake = false;
     };
 
-    nur = {
-      url = "github:nix-community/nur";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     gh-gfm-preview = {
       url = "github:thiagokokada/gh-gfm-preview";
       inputs.nixpkgs.follows = "nixpkgs";

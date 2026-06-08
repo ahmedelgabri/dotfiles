@@ -62,7 +62,6 @@
     {
       commonOverlays = [
         inputs.yazi.overlays.default
-        inputs.nur.overlays.default
         inputs.llm-agents.overlays.default
         inputs.self.overlays.default
       ];
