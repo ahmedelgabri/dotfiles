@@ -47,6 +47,11 @@ let
         '';
       in
       {
+        xdg.configFile."pi/agent/extensions" = {
+          recursive = true;
+          source = ../../../../config/pi/agent/extensions;
+        };
+
         home = {
           activation = {
             syncAgentSettings = config.lib.dag.entryAfter [ "writeBoundary" ] ''
