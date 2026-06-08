@@ -40,7 +40,10 @@
                 ${pkgs.lib.getExe pkgs.uv} init --author-from git
 
                 # in order to make sure pyright LSP plays well
-                echo "[tool.basedpyright]\nvenvPath = \".\"\nvenv = \".venv\"" >> pyproject.toml
+                printf '%s\n' \
+                  "[tool.basedpyright]" \
+                  'venvPath = "."' \
+                  'venv = ".venv"' >> pyproject.toml
 
                 ${pkgs.lib.getExe pkgs.uv} add --dev ruff
                 ${pkgs.lib.getExe pkgs.uv} add --dev basedpyright
