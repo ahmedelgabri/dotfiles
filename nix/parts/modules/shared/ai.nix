@@ -29,7 +29,12 @@ let
       };
 
     homeManager =
-      { config, pkgs, ... }:
+      {
+        config,
+        pkgs,
+        myConfig,
+        ...
+      }:
 
       let
         piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
@@ -45,12 +50,18 @@ let
           ln -s ${piCodingAgentNodeModules}/@types/node "$out/@types/node"
           ln -s ${piCodingAgentNodeModules}/undici-types "$out/undici-types"
         '';
+        piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
+          extensions = [ "${myConfig.hostConfigHome}/pi/extensions" ];
+          skills = [ "${myConfig.hostConfigHome}/pi/skills" ];
+        };
       in
       {
         xdg.configFile."pi/agent/extensions" = {
           recursive = true;
           source = ../../../../config/pi/agent/extensions;
         };
+
+        xdg.configFile."pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
 
         home = {
           activation = {
