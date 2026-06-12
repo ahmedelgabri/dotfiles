@@ -4,10 +4,10 @@
 	"defaultProvider": "openai-codex",
 	"defaultModel": "gpt-5.5",
 	"enabledModels": [
+		"anthropic/claude-fable-*",
 		"anthropic/claude-opus-4*",
 		"anthropic/claude-sonnet-4*",
 		"anthropic/claude-haiku-4*",
-		"openai-codex/gpt-5.4*",
 		"openai-codex/gpt-5.5*"
 	],
 	"showHardwareCursor": true,
