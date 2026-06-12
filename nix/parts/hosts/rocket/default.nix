@@ -36,7 +36,6 @@ let
             graph-easy
             graphviz
             mermaid-cli
-            jira-cli-go
             git-filter-repo
             git-sizer
             httpstat
