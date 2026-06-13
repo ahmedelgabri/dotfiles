@@ -305,61 +305,251 @@ const FallbackFileList = ({files, currentPath, onSelect}) => html`
 	</ul>
 `
 
+const collectDirectoryPaths = (files) => {
+	const directories = new Set()
+	for (const file of files) {
+		const parts = file.path.split('/')
+		let prefix = ''
+		for (let i = 0; i < parts.length - 1; i += 1) {
+			prefix = prefix ? prefix + '/' + parts[i] : parts[i]
+			directories.add(prefix)
+		}
+	}
+	return Array.from(directories)
+}
+
+const sortFilesForTree = (files) => {
+	const byPath = new Map(files.map((file) => [file.path, file]))
+	try {
+		const prepared = treesLib.prepareFileTreeInput?.(
+			files.map((file) => file.path),
+		)
+		const sortedPaths = Array.isArray(prepared?.paths) ? prepared.paths : null
+		if (sortedPaths) {
+			return sortedPaths.map((path) => byPath.get(path)).filter(Boolean)
+		}
+	} catch (error) {
+		console.error(error)
+	}
+	return [...files].sort((left, right) =>
+		left.path.localeCompare(right.path, undefined, {
+			numeric: true,
+			sensitivity: 'base',
+		}),
+	)
+}
+
+const getTreeItem = (tree, path) => {
+	const normalized = String(path || '').replace(/\/+$/g, '')
+	const candidates = normalized ? [normalized, normalized + '/'] : []
+	for (const candidate of candidates) {
+		const item = tree.getItem(candidate)
+		if (item) return item
+	}
+	return null
+}
+
+const isDirectoryItem = (item) => Boolean(item?.isDirectory?.())
+
+const expandTreeAncestors = (tree, path) => {
+	const parts = String(path || '').split('/')
+	let prefix = ''
+	for (let i = 0; i < parts.length - 1; i += 1) {
+		prefix = prefix ? prefix + '/' + parts[i] : parts[i]
+		const item = getTreeItem(tree, prefix)
+		if (isDirectoryItem(item)) item.expand()
+	}
+}
+
+const selectTreePath = (tree, path) => {
+	expandTreeAncestors(tree, path)
+	const item = getTreeItem(tree, path)
+	if (item) {
+		for (const selectedPath of tree.getSelectedPaths()) {
+			if (selectedPath === path) continue
+			getTreeItem(tree, selectedPath)?.deselect?.()
+		}
+		item.select()
+		item.focus()
+	}
+}
+
+const isEditableKeyTarget = (event) => {
+	const path = event.composedPath?.() || []
+	return path.some(
+		(target) =>
+			target instanceof HTMLInputElement ||
+			target instanceof HTMLTextAreaElement ||
+			target?.isContentEditable,
+	)
+}
+
+const suppressedTreeKeys = new Set([
+	'ArrowDown',
+	'ArrowLeft',
+	'ArrowRight',
+	'ArrowUp',
+	'Enter',
+	'h',
+	'l',
+])
+
 const FileTreePanel = ({files, currentPath, onSelect}) => {
+	const panelRef = useRef(null)
 	const treeRef = useRef(null)
+	const treeInstanceRef = useRef(null)
+	const currentPathRef = useRef(currentPath)
+	const suppressSelectionEventsRef = useRef(false)
+	const navigationFiles = useMemo(() => sortFilesForTree(files), [files])
+	const selectablePaths = useMemo(
+		() => new Set(navigationFiles.map((file) => file.path)),
+		[navigationFiles],
+	)
+	const directoryPaths = useMemo(
+		() => collectDirectoryPaths(navigationFiles),
+		[navigationFiles],
+	)
 
 	useEffect(() => {
+		currentPathRef.current = currentPath
+	}, [currentPath])
+
+	const setAllDirectoriesExpanded = useCallback(
+		(expanded) => {
+			const tree = treeInstanceRef.current
+			if (!tree) return
+			const paths = expanded ? directoryPaths : [...directoryPaths].reverse()
+			for (const directoryPath of paths) {
+				const item = getTreeItem(tree, directoryPath)
+				if (!isDirectoryItem(item)) continue
+				expanded ? item.expand() : item.collapse()
+			}
+		},
+		[directoryPaths],
+	)
+
+	const selectPathInTree = useCallback((path) => {
+		const tree = treeInstanceRef.current
+		if (!tree) return
+		suppressSelectionEventsRef.current = true
+		try {
+			selectTreePath(tree, path)
+		} finally {
+			setTimeout(() => {
+				suppressSelectionEventsRef.current = false
+			}, 0)
+		}
+	}, [])
+
+	const jumpToFile = useCallback(
+		(direction) => {
+			if (navigationFiles.length === 0) return
+			const currentIndex = navigationFiles.findIndex(
+				(file) => file.path === currentPathRef.current,
+			)
+			const nextIndex =
+				currentIndex === -1
+					? direction > 0
+						? 0
+						: navigationFiles.length - 1
+					: clamp(currentIndex + direction, 0, navigationFiles.length - 1)
+			const nextPath = navigationFiles[nextIndex]?.path
+			if (!nextPath || nextPath === currentPathRef.current) return
+			currentPathRef.current = nextPath
+			selectPathInTree(nextPath)
+			onSelect(nextPath)
+		},
+		[navigationFiles, onSelect, selectPathInTree],
+	)
+
+	useEffect(() => {
+		const panel = panelRef.current
 		const host = treeRef.current
-		if (!host || files.length === 0) return undefined
+		if (!panel || !host || navigationFiles.length === 0) return undefined
 
 		host.innerHTML = ''
 		try {
-			const paths = files.map((file) => file.path)
-			const directories = new Set()
-			for (const filePath of paths) {
-				const parts = filePath.split('/')
-				let prefix = ''
-				for (let i = 0; i < parts.length - 1; i += 1) {
-					prefix = prefix ? prefix + '/' + parts[i] : parts[i]
-					directories.add(prefix)
-				}
-			}
-
+			const paths = navigationFiles.map((file) => file.path)
 			const tree = new treesLib.FileTree({
 				paths,
 				search: true,
 				flattenEmptyDirectories: false,
 				unsafeCSS: fileTreeUnsafeCss,
-				initialExpandedPaths: Array.from(directories).slice(0, 100),
-				gitStatus: files.map((file) => ({
+				initialExpandedPaths: directoryPaths.slice(0, 100),
+				gitStatus: navigationFiles.map((file) => ({
 					path: file.path,
 					status: treeStatus(file.status),
 				})),
 			})
 			tree.render({fileTreeContainer: host})
-			const unsubscribe = tree.subscribe(() => {
-				const selected = tree.getSelectedPaths()[0] || tree.getFocusedPath()
-				if (selected && selected !== currentPath) onSelect(selected)
-			})
-
-			if (currentPath) {
-				const item = tree.getItem(currentPath)
-				if (item) {
-					item.select()
-					item.focus()
+			treeInstanceRef.current = tree
+			const handleTreeKeyDown = (event) => {
+				if (
+					event.altKey ||
+					event.ctrlKey ||
+					event.metaKey ||
+					event.shiftKey ||
+					isEditableKeyTarget(event)
+				) {
+					return
+				}
+				const key = event.key?.length === 1 ? event.key.toLowerCase() : event.key
+				if (key === 'j' || key === 'k') {
+					event.preventDefault()
+					event.stopPropagation()
+					jumpToFile(key === 'j' ? 1 : -1)
+					return
+				}
+				if (suppressedTreeKeys.has(key)) {
+					event.preventDefault()
+					event.stopPropagation()
 				}
 			}
+			panel.addEventListener('keydown', handleTreeKeyDown, true)
+			const unsubscribe = tree.subscribe(() => {
+				if (suppressSelectionEventsRef.current) return
+				const selected = tree.getSelectedPaths()[0]
+				if (
+					selected &&
+					selectablePaths.has(selected) &&
+					selected !== currentPathRef.current
+				) {
+					currentPathRef.current = selected
+					onSelect(selected)
+				}
+			})
+
+			const selectedPath = currentPathRef.current
+			if (selectedPath) selectPathInTree(selectedPath)
 
 			return () => {
+				if (treeInstanceRef.current === tree) treeInstanceRef.current = null
+				panel.removeEventListener('keydown', handleTreeKeyDown, true)
 				unsubscribe?.()
 				tree.cleanUp()
 			}
 		} catch (error) {
 			console.error(error)
 			host.innerHTML = ''
+			treeInstanceRef.current = null
 		}
 		return undefined
-	}, [files, currentPath, onSelect])
+	}, [
+		directoryPaths,
+		jumpToFile,
+		navigationFiles,
+		onSelect,
+		selectablePaths,
+		selectPathInTree,
+	])
+
+	useEffect(() => {
+		currentPathRef.current = currentPath
+		const tree = treeInstanceRef.current
+		if (!tree || !currentPath) return
+		if (tree.getSelectedPaths()[0] === currentPath) return
+		selectPathInTree(currentPath)
+	}, [currentPath, selectPathInTree])
 
 	if (files.length === 0) {
 		return html`<${FallbackFileList}
@@ -369,7 +559,19 @@ const FileTreePanel = ({files, currentPath, onSelect}) => {
 		/>`
 	}
 
-	return html`<div ref=${treeRef} class="tree-host"></div>`
+	return html`
+		<div ref=${panelRef} class="tree-panel">
+			<div class="tree-toolbar" aria-label="File tree actions">
+				<button type="button" onClick=${() => setAllDirectoriesExpanded(false)}>
+					Collapse all
+				</button>
+				<button type="button" onClick=${() => setAllDirectoriesExpanded(true)}>
+					Open all
+				</button>
+			</div>
+			<div ref=${treeRef} class="tree-host"></div>
+		</div>
+	`
 }
 
 const ReplyEntry = ({reply, onDelete}) => html`

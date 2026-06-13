@@ -183,8 +183,22 @@ body.resizing-sidebar {
 	font-weight: 700;
 	margin-bottom: 10px;
 }
+.tree-toolbar {
+	display: flex;
+	gap: 6px;
+	padding: 8px 8px 0;
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	background: var(--panel);
+}
+.tree-toolbar button {
+	flex: 1;
+	padding: 5px 8px;
+	font-size: 12px;
+}
 .tree-host {
-	height: calc(100vh - 74px);
+	height: calc(100vh - 114px);
 	padding: 8px;
 }
 .file-list {
@@ -541,7 +555,7 @@ button.link.danger {
 		display: flex;
 	}
 	.tree-host {
-		height: calc(100% - 49px);
+		height: calc(100% - 90px);
 	}
 	.sidebar-toggle {
 		display: inline-flex;
