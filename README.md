@@ -41,7 +41,7 @@ application configuration in [config/](./config/). In practice it manages:
 | Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                         |
 | macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                           |
 | Mail and communication  | aerc, isync/mbsync, notmuch, msmtp, and pass                                                      |
-| Notes and media         | zk, mpv, and yt-dlp                                                                               |
+| Notes and media         | zk, markdown-oxide, qmd, [Neovim notes workflow](./config/nvim/lua/_/notes/README.md), mpv, and yt-dlp |
 | AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                          |
 
 ## Supported targets

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+user="${USER:-$(id -un)}"
+home="${HOME:-/Users/$user}"
+export PATH="$home/.nix-profile/bin:/etc/profiles/per-user/$user/bin:/run/current-system/sw/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH:-}"
+
+script="${DOTFILES:-$home/.dotfiles}/config/nvim/lua/_/notes/cli.lua"
+exec nvim --headless --clean -u NONE -l "$script" -- "$@"

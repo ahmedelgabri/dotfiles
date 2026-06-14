@@ -12,7 +12,7 @@ pack.add {
 				highlight = true,
 				lsp = {
 					auto_attach = true,
-					preference = { 'marksman', 'obsidian-ls' },
+					preference = { 'markdown_oxide' },
 				},
 			}
 
