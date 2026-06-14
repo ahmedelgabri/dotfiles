@@ -38,6 +38,8 @@ let
           autoUpdate = true;
           upgrade = true;
           cleanup = "zap";
+          # Run zap cleanup without the interactive [y/n] confirmation prompt.
+          extraFlags = [ "--force-cleanup" ];
           extraEnv = {
             HOMEBREW_GIT_PATH = "/Library/Developer/CommandLineTools/usr/bin/git";
             SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";

@@ -113,6 +113,7 @@ let
                     GIT_CEILING_DIRECTORIES = dirOf home;
                     HOMEBREW_INSTALL_BADGE = "⚽️";
                     HOMEBREW_NO_ANALYTICS = "1";
+                    HOMEBREW_NO_REQUIRE_TAP_TRUST = "1";
                     HOST_CONFIGS = "${hostConfigHome}";
                     KITTY_LISTEN_ON = "unix:/tmp/kitty";
                     # Set the default Less options.
