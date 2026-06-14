@@ -232,17 +232,25 @@ const coerceAnnotations = (value: unknown): StoredReviewAnnotation[] => {
 
 const readReviewFile = async (
 	path: string,
-): Promise<{found: boolean; annotations: StoredReviewAnnotation[]}> => {
+): Promise<{
+	found: boolean
+	corrupt: boolean
+	annotations: StoredReviewAnnotation[]
+}> => {
 	try {
 		const raw = await readFile(path, 'utf8')
 		const parsed = JSON.parse(raw)
-		return {found: true, annotations: coerceAnnotations(parsed?.annotations)}
+		return {
+			found: true,
+			corrupt: false,
+			annotations: coerceAnnotations(parsed?.annotations),
+		}
 	} catch (error) {
 		if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-			return {found: false, annotations: []}
+			return {found: false, corrupt: false, annotations: []}
 		}
 		if (error instanceof SyntaxError) {
-			return {found: true, annotations: []}
+			return {found: true, corrupt: true, annotations: []}
 		}
 		throw error
 	}
@@ -267,8 +275,15 @@ const loadLegacyAnnotations = async (
 
 export const loadPersistedAnnotations = async (
 	snapshot: DiffSnapshot,
+	onWarning?: (message: string) => void,
 ): Promise<StoredReviewAnnotation[]> => {
-	const review = await readReviewFile(annotationStorePath(snapshot))
+	const path = annotationStorePath(snapshot)
+	const review = await readReviewFile(path)
+	if (review.corrupt) {
+		onWarning?.(
+			`Diff annotation store is corrupt and will be overwritten on the next save: ${path}`,
+		)
+	}
 	if (review.found) return review.annotations
 	return loadLegacyAnnotations(snapshot)
 }

@@ -1,4 +1,3 @@
-import {createHash} from 'node:crypto'
 import {readFile, writeFile} from 'node:fs/promises'
 import {isAbsolute, relative, resolve} from 'node:path'
 import type {
@@ -275,6 +274,8 @@ const parsePatchFileList = (patch: string): DiffFile[] => {
 			filePath = current.oldPath
 		} else if (current.copiedFile) {
 			status = 'copied'
+			previousPath = current.renameFrom ?? current.oldPath
+			filePath = current.renameTo ?? current.newPath
 		} else if (
 			current.renameTo ||
 			current.renameFrom ||
@@ -331,9 +332,6 @@ const parsePatchFileList = (patch: string): DiffFile[] => {
 	finish()
 	return files
 }
-
-const hashValue = (value: string): string =>
-	createHash('sha256').update(value).digest('hex').slice(0, 16)
 
 const normalizePrTarget = (value: string): string => {
 	const trimmed = value.trim()
@@ -569,13 +567,9 @@ const resolveDiffRequest = async (
 	return {kind: 'working', args: parsedArgs.all, pathspec: []}
 }
 
-const sourceForWorking = (
-	vcs: VcsKind,
-	command: string,
-	patch: string,
-): DiffSource => ({
+const sourceForWorking = (vcs: VcsKind, command: string): DiffSource => ({
 	kind: 'working',
-	key: `working:${vcs}:${command}:${hashValue(patch)}`,
+	key: `working:${vcs}:${command}`,
 	label: 'Working diff',
 })
 
@@ -830,10 +824,25 @@ export const createDiffSnapshotLoader = (
 	ctx: ExtensionCommandContext,
 	args: string,
 ) => {
-	return async (): Promise<DiffSnapshot> => {
+	// Roots and request kind are deterministic for fixed args, so resolve them
+	// once and reuse across refreshes instead of re-running jj/git/gh detection
+	// (including a `gh pr view` network call for auto-detected PRs) every time.
+	let resolution: {
+		jjRoot: string | null
+		gitRoot: string | null
+		request: DiffRequest
+	} | null = null
+	const resolve = async () => {
+		if (resolution) return resolution
 		const jjRoot = await getJjRoot(pi, ctx.cwd)
 		const gitRoot = await getGitRoot(pi, ctx.cwd)
 		const request = await resolveDiffRequest(pi, ctx.cwd, jjRoot, gitRoot, args)
+		resolution = {jjRoot, gitRoot, request}
+		return resolution
+	}
+
+	return async (): Promise<DiffSnapshot> => {
+		const {jjRoot, gitRoot, request} = await resolve()
 
 		if (request.kind === 'pr') {
 			return loadPullRequestSnapshot(
@@ -871,11 +880,7 @@ export const createDiffSnapshotLoader = (
 				command: formatCommand('jj', jjArgs),
 				patch: result.stdout,
 				files: parsePatchFileList(result.stdout),
-				source: sourceForWorking(
-					'jj',
-					formatCommand('jj', jjArgs),
-					result.stdout,
-				),
+				source: sourceForWorking('jj', formatCommand('jj', jjArgs)),
 			}
 		}
 
@@ -905,11 +910,7 @@ export const createDiffSnapshotLoader = (
 			command: formatCommand('git', gitArgs),
 			patch: result.stdout,
 			files: parsePatchFileList(result.stdout),
-			source: sourceForWorking(
-				'git',
-				formatCommand('git', gitArgs),
-				result.stdout,
-			),
+			source: sourceForWorking('git', formatCommand('git', gitArgs)),
 		}
 	}
 }

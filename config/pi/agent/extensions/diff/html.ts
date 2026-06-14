@@ -34,6 +34,7 @@ export const renderHtml = (token: string): string => `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
 <title>pi diff review</title>
 <style>
 ${styles()}

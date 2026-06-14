@@ -698,6 +698,13 @@ const AnnotationCard = ({
 	</div>
 `
 
+const toLineAnnotations = (annotations) =>
+	annotations.map((annotation) => ({
+		side: annotation.side,
+		lineNumber: annotation.start,
+		metadata: {annotation},
+	}))
+
 const DiffViewer = ({
 	patch,
 	diffs,
@@ -709,6 +716,7 @@ const DiffViewer = ({
 	onDeleteAnnotation,
 }) => {
 	const diffRef = useRef(null)
+	const instanceRef = useRef(null)
 	const currentDiff = useMemo(() => {
 		if (!currentPath) return null
 		return (
@@ -733,6 +741,22 @@ const DiffViewer = ({
 		}
 	}, [activeRange, currentPath])
 
+	// The FileDiff instance bakes these in at construction time, so route them
+	// through refs to keep them current without rebuilding the whole diff.
+	const onAddAnnotationRef = useRef(onAddAnnotation)
+	const onDeleteAnnotationRef = useRef(onDeleteAnnotation)
+	const fileAnnotationsRef = useRef(fileAnnotations)
+	useEffect(() => {
+		onAddAnnotationRef.current = onAddAnnotation
+	}, [onAddAnnotation])
+	useEffect(() => {
+		onDeleteAnnotationRef.current = onDeleteAnnotation
+	}, [onDeleteAnnotation])
+	useEffect(() => {
+		fileAnnotationsRef.current = fileAnnotations
+	}, [fileAnnotations])
+
+	// Rebuild the diff only when its structure changes (file, layout, or patch).
 	useEffect(() => {
 		const host = diffRef.current
 		if (!host || !currentDiff) return undefined
@@ -759,14 +783,14 @@ const DiffViewer = ({
 				onLineSelectionEnd: showSelection,
 				onGutterUtilityClick: (range) => {
 					showSelection(range)
-					onAddAnnotation(range)
+					onAddAnnotationRef.current(range)
 				},
 				renderAnnotation: (annotation) => {
 					const mount = document.createElement('div')
 					render(
 						html`<${AnnotationCard}
 							annotation=${annotation.metadata.annotation}
-							onDelete=${onDeleteAnnotation}
+							onDelete=${onDeleteAnnotationRef.current}
 							inline=${true}
 						/>`,
 						mount,
@@ -775,37 +799,43 @@ const DiffViewer = ({
 				},
 				renderHeaderMetadata: () => {
 					const span = document.createElement('span')
-					const count = fileAnnotations.length
+					const count = fileAnnotationsRef.current.length
 					span.textContent =
 						count === 1 ? '1 annotation' : count + ' annotations'
 					return span
 				},
 			})
+			instanceRef.current = instance
+			return () => {
+				instanceRef.current = null
+				instance.cleanUp()
+			}
+		} catch (error) {
+			console.error(error)
+			instanceRef.current = null
+			host.innerHTML = '<pre class="raw-patch">' + escapeHtml(patch) + '</pre>'
+		}
+		return undefined
+	}, [currentDiff, layout, patch])
+
+	// Push selection + annotation updates into the live instance instead of
+	// tearing the diff down, which would reset the scroll position.
+	useEffect(() => {
+		const host = diffRef.current
+		const instance = instanceRef.current
+		if (!host || !instance || !currentDiff) return
+		try {
 			instance.render({
 				fileDiff: currentDiff,
 				selectedLines,
-				lineAnnotations: fileAnnotations.map((annotation) => ({
-					side: annotation.side,
-					lineNumber: annotation.start,
-					metadata: {annotation},
-				})),
+				lineAnnotations: toLineAnnotations(fileAnnotations),
 				containerWrapper: host,
 			})
-			return () => instance.cleanUp()
 		} catch (error) {
 			console.error(error)
 			host.innerHTML = '<pre class="raw-patch">' + escapeHtml(patch) + '</pre>'
 		}
-		return undefined
-	}, [
-		currentDiff,
-		layout,
-		fileAnnotations,
-		selectedLines,
-		onAddAnnotation,
-		onDeleteAnnotation,
-		patch,
-	])
+	}, [currentDiff, layout, selectedLines, fileAnnotations, patch])
 
 	if (!patch.trim()) {
 		return html`<p class="empty">No diff found.</p>`

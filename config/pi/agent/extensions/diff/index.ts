@@ -92,10 +92,13 @@ const closeSession = (session: ReviewSession) => {
 	session.server.close()
 }
 
-const broadcastAnnotations = (session: ReviewSession) => {
-	const payload = `event: annotations\ndata: ${JSON.stringify({
+const annotationsEvent = (session: ReviewSession): string =>
+	`event: annotations\ndata: ${JSON.stringify({
 		annotations: session.annotations,
 	})}\n\n`
+
+const broadcastAnnotations = (session: ReviewSession) => {
+	const payload = annotationsEvent(session)
 	for (const client of session.eventClients) {
 		try {
 			client.write(payload)
@@ -250,7 +253,10 @@ const refreshSessionSnapshot = async (session: ReviewSession) => {
 	const previousKey = session.snapshot.source.key
 	session.snapshot = await session.refresh()
 	if (session.snapshot.source.key !== previousKey) {
-		session.annotations = await loadPersistedAnnotations(session.snapshot)
+		session.annotations = await loadPersistedAnnotations(
+			session.snapshot,
+			(message) => session.ctx.ui.notify(message, 'error'),
+		)
 		broadcastAnnotations(session)
 	}
 	return session.snapshot
@@ -306,9 +312,7 @@ const createRequestHandler =
 			if (req.method === 'GET' && url.pathname === '/api/events') {
 				writeSseHeaders(res)
 				res.write(': hello\n\n')
-				res.write(
-					`event: annotations\ndata: ${JSON.stringify({annotations: session.annotations})}\n\n`,
-				)
+				res.write(annotationsEvent(session))
 				session.eventClients.add(res)
 				const cleanup = () => {
 					session.eventClients.delete(res)
@@ -450,7 +454,9 @@ const startDiffReview = async (
 		ctx.ui.notify(`Loaded ${conflicts.length} merge conflict(s)`, 'info')
 	}
 
-	const annotations = await loadPersistedAnnotations(snapshot)
+	const annotations = await loadPersistedAnnotations(snapshot, (message) =>
+		ctx.ui.notify(message, 'error'),
+	)
 	if (annotations.length > 0) {
 		ctx.ui.notify(
 			`Loaded ${annotations.length} persisted annotation(s)`,
