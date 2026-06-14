@@ -200,11 +200,13 @@ The indexer does three things:
 2. Run `zk index --quiet --notebook-dir "$NOTES_DIR"`.
 3. Run `qmd update` unless `--no-qmd` is passed.
 
-`qmd embed` is not run by default because it is heavier. Run it explicitly with:
+`qmd embed` is not run by the change-triggered indexer because it is heavier than metadata/index refreshes. Run it explicitly with:
 
 ```sh
 notes-index --embed
 ```
+
+The macOS setup also runs `notes-index --embed` periodically; see [Automatic embeddings](#automatic-embeddings).
 
 The indexer uses a lock directory under `$XDG_CACHE_HOME/notes-index.lock` to avoid overlapping runs.
 
@@ -222,6 +224,14 @@ This means changes made by any of these sources are eventually indexed:
 - Obsidian app edits.
 - `markdown_oxide` missing-link file creation.
 - AI agents writing Markdown files.
+
+## Automatic embeddings
+
+On macOS, `nix/parts/modules/shared/zk.nix` also defines a launchd user agent named `notes-embed`.
+
+That agent runs the same headless Neovim indexer with `--quiet --embed` every hour. This keeps vector embeddings reasonably fresh without making every file save pay the embedding cost.
+
+`notes-index` and `notes-embed` share the same lock directory, so the hourly embedding job will skip if a normal indexing run is already active, and normal indexing will skip if an embedding run is active. This avoids concurrent writes to the `zk` and `qmd` indexes.
 
 ## LSP responsibilities
 
@@ -293,4 +303,4 @@ Run:
 notes-index --embed
 ```
 
-The default indexer updates the document index but does not refresh embeddings unless asked.
+The change-triggered indexer updates the document index but does not refresh embeddings. The hourly `notes-embed` launchd job should catch up automatically, and `notes-index --embed` forces a manual refresh.
