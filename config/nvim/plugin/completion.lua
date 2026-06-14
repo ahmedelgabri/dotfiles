@@ -380,18 +380,6 @@ ${0}]]
 				typescriptreact = vim.tbl_extend('force', {}, js_ts, react),
 				markdown = {
 					ls.parser.parse_snippet(
-						{ trig = 'fmatter', dscr = 'Document frontmatter' },
-						[[
----
-title: ${1:Title}
-date: ${CURRENT_DATE}-${CURRENT_MONTH}-${CURRENT_YEAR}T${CURRENT_HOUR}:${CURRENT_MINUTE}
-${3:tags}: $4
----
-
-$0
-]]
-					),
-					ls.parser.parse_snippet(
 						{
 							trig = 'oto',
 							dscr = 'One to one section',

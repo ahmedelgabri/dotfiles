@@ -3,10 +3,6 @@ local pack = require '_.pack'
 
 pack.add {
 	{
-		src = 'https://github.com/davidmh/mdx.nvim',
-		ft = { 'markdown', 'markdown.mdx', 'mdx' },
-	},
-	{
 		src = 'https://github.com/zk-org/zk-nvim',
 		config = function()
 			require('zk').setup {
@@ -54,10 +50,25 @@ pack.add {
 	},
 	{
 		src = 'https://github.com/YousefHadder/markdown-plus.nvim',
-		ft = { 'markdown', 'txt', 'text' },
+		ft = { 'markdown' },
 		config = function()
 			require('markdown-plus').setup {
-				filetypes = { 'markdown', 'text', 'txt' },
+				filetypes = { 'markdown' },
+				-- Avoid overlapping with markdown_oxide, render-markdown, and snippets.
+				features = {
+					list_management = true,
+					text_formatting = true,
+					thematic_break = false,
+					links = false,
+					images = false,
+					headers_toc = false,
+					quotes = false,
+					callouts = false,
+					code_block = false,
+					html_block_awareness = true,
+					table = true,
+					footnotes = false,
+				},
 			}
 		end,
 	},

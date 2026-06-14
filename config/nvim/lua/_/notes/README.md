@@ -39,6 +39,8 @@ Related files outside this directory:
 
 The Neovim commands call `zk-nvim`'s API, which delegates to `zk`. They do not duplicate template rendering in Lua. Lua only decides which `zk` options to pass and then normalizes frontmatter after the file exists.
 
+Prefer `:Note`/`:N` over the generic `:ZkNew` command for interactive note creation. `:ZkNew` remains available from `zk-nvim`, but `:Note` adds this repository's target parsing, command completion, and frontmatter normalization while still delegating note creation to `zk`.
+
 The CLI aliases in `config/zk/config.toml` remain normal `zk` aliases, for example `zk p`, `zk w`, and `zk j`. They intentionally do not call a wrapper, because indexing is handled separately by the watcher and shared indexer.
 
 ## Neovim commands

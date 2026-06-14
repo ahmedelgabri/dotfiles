@@ -1,10 +1,28 @@
+---@class _.notes.IndexOptions
+---@field quiet boolean
+---@field run_qmd boolean
+---@field run_embed boolean
+
+---@class _.notes.IndexEnv
+---@field HOME string
+---@field NOTES_DIR string
+---@field PATH string
+---@field USER string
+---@field XDG_CACHE_HOME string
+---@field ZK_NOTEBOOK_DIR string
+
+---@alias _.notes.IndexCommand string[]
+
+---@class _.notes.index
 local M = {}
 local frontmatter = require '_.notes.frontmatter'
 
+---@type table<string, boolean>
 local skip_dirs = {
 	assets = true,
 }
 
+---@return string
 local function current_user()
 	if vim.env.USER ~= nil and vim.env.USER ~= '' then
 		return vim.env.USER
@@ -13,6 +31,8 @@ local function current_user()
 	return vim.fn.system('id -un'):gsub('%s+$', '')
 end
 
+---@param user string
+---@return string
 local function home_dir(user)
 	if vim.env.HOME ~= nil and vim.env.HOME ~= '' then
 		return vim.env.HOME
@@ -21,6 +41,9 @@ local function home_dir(user)
 	return '/Users/' .. user
 end
 
+---@param home string
+---@param user string
+---@return nil
 local function configure_path(home, user)
 	vim.env.PATH = table.concat({
 		home .. '/.nix-profile/bin',
@@ -36,12 +59,15 @@ local function configure_path(home, user)
 	}, ':')
 end
 
+---@return nil
 local function usage()
 	print [[Usage: notes-index [--quiet] [--no-qmd] [--embed]
 
 Refresh note indexes shared by zk, Neovim, and AI agents.]]
 end
 
+---@param args string[]
+---@return _.notes.IndexOptions
 local function parse_args(args)
 	local opts = {
 		quiet = false,
@@ -68,16 +94,23 @@ local function parse_args(args)
 	return opts
 end
 
+---@param opts _.notes.IndexOptions
+---@param message string
+---@return nil
 local function log(opts, message)
 	if not opts.quiet then
 		io.stderr:write(message .. '\n')
 	end
 end
 
+---@param path string
+---@return boolean
 local function is_markdown(path)
 	return path:match '%.md$' ~= nil or path:match '%.markdown$' ~= nil
 end
 
+---@param dir string
+---@return nil
 local function normalize_empty_notes(dir)
 	for name, type in vim.fs.dir(dir) do
 		local path = vim.fs.joinpath(dir, name)
@@ -96,6 +129,10 @@ local function normalize_empty_notes(dir)
 	end
 end
 
+---@param cmd _.notes.IndexCommand
+---@param opts _.notes.IndexOptions
+---@param env _.notes.IndexEnv
+---@return integer
 local function run(cmd, opts, env)
 	if vim.fn.executable(cmd[1]) ~= 1 then
 		log(opts, 'notes-index: ' .. cmd[1] .. ' not found on PATH')
@@ -120,6 +157,10 @@ local function run(cmd, opts, env)
 	return result.code or 0
 end
 
+---@param lock_dir string
+---@param opts _.notes.IndexOptions
+---@param fn fun(): integer
+---@return integer
 local function with_lock(lock_dir, opts, fn)
 	local ok = vim.uv.fs_mkdir(lock_dir, 448)
 	if not ok then
@@ -142,6 +183,8 @@ local function with_lock(lock_dir, opts, fn)
 	return status
 end
 
+---@param args? string[]
+---@return nil
 function M.run(args)
 	local opts = parse_args(args or {})
 	local user = current_user()

@@ -1,6 +1,17 @@
+---@class _.notes.CreateOptions
+---@field notebook_path? string
+---@field dir? string
+---@field template? string
+---@field title? string
+---@field prompt? boolean
+---@field edit? boolean
+---@field [string] any
+
+---@class _.notes
 local M = {}
 local frontmatter = require '_.notes.frontmatter'
 
+---@type table<string, _.notes.CreateOptions>
 local aliases = {
 	interview = { dir = 'work', template = 'interview.md' },
 	j = { dir = 'journal', prompt = false },
@@ -19,6 +30,7 @@ local aliases = {
 	decade = { dir = 'personal', template = 'decade.md' },
 }
 
+---@type table<string, string>
 local command_aliases = {
 	NoteJournal = 'journal',
 	NotePersonal = 'personal',
@@ -27,6 +39,7 @@ local command_aliases = {
 	NoteWork = 'work',
 }
 
+---@type table<string, boolean>
 local ignored_dirs = {
 	['.git'] = true,
 	['.obsidian'] = true,
@@ -34,18 +47,26 @@ local ignored_dirs = {
 	assets = true,
 }
 
+---@type string[]
 local alias_names = vim.tbl_keys(aliases)
 table.sort(alias_names)
 
+---@param message string
+---@param level? integer
+---@return nil
 local function notify(message, level)
 	vim.notify(message, level or vim.log.levels.INFO, { title = 'notes' })
 end
 
+---@param args? string
+---@return string?
+---@return string
 local function first_word(args)
 	local word, rest = vim.trim(args or ''):match '^(%S+)%s*(.*)$'
 	return word, vim.trim(rest or '')
 end
 
+---@return string[]
 local function note_subdirs()
 	local root = frontmatter.notes_dir()
 	if root == nil then
@@ -67,6 +88,8 @@ local function note_subdirs()
 	return dirs
 end
 
+---@param path? string
+---@return boolean
 local function is_note_subdir(path)
 	local root = frontmatter.notes_dir()
 	if root == nil or path == nil or path == '' then
@@ -80,6 +103,8 @@ local function is_note_subdir(path)
 	return stat ~= nil and stat.type == 'directory'
 end
 
+---@param args string
+---@return _.notes.CreateOptions
 local function eval_options(args)
 	local chunk, err = loadstring('return ' .. args)
 	if chunk == nil then
@@ -97,6 +122,8 @@ local function eval_options(args)
 	return value
 end
 
+---@param args? string
+---@return _.notes.CreateOptions
 local function resolve_options(args)
 	local trimmed = vim.trim(args or '')
 	if trimmed:sub(1, 1) == '{' then
@@ -125,6 +152,10 @@ local function resolve_options(args)
 	return options
 end
 
+---@param arg_lead string
+---@param cmdline string
+---@param cursorpos integer
+---@return string[]
 local function complete_targets(arg_lead, cmdline, cursorpos)
 	local before_cursor = cmdline:sub(1, cursorpos - 1)
 	local args = before_cursor:match '^%S+%s*(.*)$' or ''
@@ -146,6 +177,8 @@ local function complete_targets(arg_lead, cmdline, cursorpos)
 	return targets
 end
 
+---@param options? _.notes.CreateOptions
+---@return nil
 local function new_note(options)
 	options = options or {}
 
@@ -184,6 +217,9 @@ local function new_note(options)
 	end)
 end
 
+---@param args? string
+---@param opts? _.notes.CreateOptions
+---@return nil
 function M.new_from_args(args, opts)
 	local ok, options = pcall(resolve_options, args)
 	if not ok then
@@ -198,6 +234,7 @@ function M.new_from_args(args, opts)
 	new_note(options)
 end
 
+---@return nil
 function M.setup()
 	vim.api.nvim_create_user_command('Note', function(ev)
 		M.new_from_args(ev.args, { edit = not ev.bang })

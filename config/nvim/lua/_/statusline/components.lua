@@ -183,7 +183,12 @@ function M.rhs()
 
 	local total = vim.fn.line '$'
 	local width = #tostring(total)
-	local pos = string.format('%' .. width .. 'd/%d:%-2d', vim.fn.line '.', total, vim.fn.col '.')
+	local pos = string.format(
+		'%' .. width .. 'd/%d:%-2d',
+		vim.fn.line '.',
+		total,
+		vim.fn.col '.'
+	)
 
 	return M.get_parts {
 		string.format('%%#User4#%s%%*', pos),
@@ -228,7 +233,7 @@ function M.word_count()
 		)
 	end
 
-	return vim.g.obsidian
+	return nil
 end
 
 ---@return string?

@@ -1,11 +1,24 @@
+---@class _.notes.NormalizeOptions
+---@field write? boolean
+
+---@class _.notes.FrontmatterBlock
+---@field key? string
+---@field lines string[]
+---@field order? integer
+
+---@class _.notes.frontmatter
 local M = {}
 
+---@type string[]
 local key_order = { 'id', 'title', 'date', 'aliases', 'tags' }
+---@type table<string, integer>
 local key_rank = {}
 for index, key in ipairs(key_order) do
 	key_rank[key] = index
 end
 
+---@param path string
+---@return string
 local function normalize_path(path)
 	local real = vim.uv.fs_realpath(path)
 	if real ~= nil then
@@ -21,6 +34,7 @@ local function normalize_path(path)
 	return vim.fs.normalize(path)
 end
 
+---@return string?
 function M.notes_dir()
 	local dir = vim.env.ZK_NOTEBOOK_DIR or vim.env.NOTES_DIR
 	if dir == nil or dir == '' then
@@ -35,6 +49,8 @@ function M.notes_dir()
 	return normalized
 end
 
+---@param bufnr integer
+---@return boolean
 function M.is_note(bufnr)
 	local root = M.notes_dir()
 	if root == nil then
@@ -55,11 +71,15 @@ function M.is_note(bufnr)
 		or normalized:match '%.markdown$' ~= nil
 end
 
+---@param bufnr integer
+---@return boolean
 function M.is_empty(bufnr)
 	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	return #lines == 0 or (#lines == 1 and lines[1] == '')
 end
 
+---@param value? string
+---@return string?
 local function yaml_value(value)
 	value = vim.trim(value or '')
 	if value == '' then
@@ -74,15 +94,21 @@ local function yaml_value(value)
 	return value:gsub("''", "'")
 end
 
+---@param value any
+---@return string
 local function yaml_quote(value)
 	return "'" .. tostring(value):gsub("'", "''") .. "'"
 end
 
+---@param path string
+---@return string
 local function path_stem(path)
 	local name = path ~= '' and vim.fs.basename(path) or 'Untitled'
 	return (name:gsub('%.markdown$', ''):gsub('%.md$', ''))
 end
 
+---@param value? any
+---@return string?
 local function timestamp(value)
 	if value == nil then
 		return nil
@@ -110,6 +136,8 @@ local function timestamp(value)
 	return string.format('%04d%02d%02d%02d%02d', year, month, day, hour, min)
 end
 
+---@param path string
+---@return string
 local function title_from_path(path)
 	local title = path_stem(path)
 	return title:match '^%d%d%d%d%d%d%d%d%d%d%d%d[%s_-]+(.+)$'
@@ -117,6 +145,8 @@ local function title_from_path(path)
 		or title
 end
 
+---@param lines string[]
+---@return integer?
 local function frontmatter_end(lines)
 	if lines[1] ~= '---' then
 		return nil
@@ -131,8 +161,14 @@ local function frontmatter_end(lines)
 	return nil
 end
 
+---@param lines string[]
+---@param stop integer
+---@return _.notes.FrontmatterBlock[]
+---@return table<string, _.notes.FrontmatterBlock>
 local function parse_blocks(lines, stop)
+	---@type _.notes.FrontmatterBlock[]
 	local blocks = {}
+	---@type table<string, _.notes.FrontmatterBlock>
 	local by_key = {}
 	local index = 2
 
@@ -159,6 +195,8 @@ local function parse_blocks(lines, stop)
 	return blocks, by_key
 end
 
+---@param block? _.notes.FrontmatterBlock
+---@return string?
 local function block_value(block)
 	if block == nil or block.lines[1] == nil then
 		return nil
@@ -167,6 +205,8 @@ local function block_value(block)
 	return yaml_value(block.lines[1]:match '^[%w_-]+:%s*(.-)%s*$')
 end
 
+---@param block? _.notes.FrontmatterBlock
+---@return string[]
 local function parse_aliases(block)
 	if block == nil then
 		return {}
@@ -194,6 +234,9 @@ local function parse_aliases(block)
 	return aliases
 end
 
+---@param aliases string[]
+---@param alias string
+---@return boolean
 local function has_alias(aliases, alias)
 	for _, existing in ipairs(aliases) do
 		if existing == alias then
@@ -204,20 +247,31 @@ local function has_alias(aliases, alias)
 	return false
 end
 
+---@param key string
+---@param lines string[]
+---@return _.notes.FrontmatterBlock
 local function block(key, lines)
 	return { key = key, lines = lines }
 end
 
+---@param key string
+---@param value any
+---@return _.notes.FrontmatterBlock
 local function scalar_block(key, value)
 	return block(key, { key .. ': ' .. yaml_quote(value) })
 end
 
+---@param aliases string[]
+---@return _.notes.FrontmatterBlock
 local function aliases_block(aliases)
 	return block('aliases', {
 		'aliases: [' .. table.concat(vim.tbl_map(yaml_quote, aliases), ', ') .. ']',
 	})
 end
 
+---@param lines string[]
+---@param body_start integer
+---@return string?
 local function heading_title(lines, body_start)
 	for index = body_start, #lines do
 		local title = lines[index]:match '^#%s+(.+)%s*$'
@@ -229,6 +283,8 @@ local function heading_title(lines, body_start)
 	return nil
 end
 
+---@param blocks _.notes.FrontmatterBlock[]
+---@return _.notes.FrontmatterBlock[]
 local function ordered(blocks)
 	table.sort(blocks, function(left, right)
 		local left_rank = key_rank[left.key]
@@ -243,6 +299,8 @@ local function ordered(blocks)
 	return blocks
 end
 
+---@param blocks _.notes.FrontmatterBlock[]
+---@return string[]
 local function render(blocks)
 	local lines = { '---' }
 	for _, item in ipairs(ordered(blocks)) do
@@ -252,12 +310,17 @@ local function render(blocks)
 	return lines
 end
 
+---@param bufnr integer
+---@return nil
 local function write_buffer(bufnr)
 	vim.api.nvim_buf_call(bufnr, function()
 		vim.cmd 'silent write'
 	end)
 end
 
+---@param bufnr? integer
+---@param opts? _.notes.NormalizeOptions
+---@return boolean changed
 function M.normalize(bufnr, opts)
 	bufnr = bufnr or 0
 	opts = opts or {}
@@ -266,7 +329,10 @@ function M.normalize(bufnr, opts)
 	local path = vim.api.nvim_buf_get_name(bufnr)
 	local stop = frontmatter_end(lines)
 	local body_start = stop and stop + 1 or 1
-	local blocks, by_key = {}, {}
+	---@type _.notes.FrontmatterBlock[]
+	local blocks = {}
+	---@type table<string, _.notes.FrontmatterBlock>
+	local by_key = {}
 
 	if stop ~= nil then
 		blocks, by_key = parse_blocks(lines, stop)
@@ -340,6 +406,9 @@ function M.normalize(bufnr, opts)
 	return true
 end
 
+---@param path string
+---@param opts? _.notes.NormalizeOptions
+---@return boolean changed
 function M.normalize_path(path, opts)
 	local bufnr = vim.fn.bufnr(path)
 	local existing = bufnr ~= -1
