@@ -14,6 +14,15 @@ const DOMPURIFY_CDN = 'https://esm.sh/dompurify@3.4.2?target=es2022'
 const json = (value: unknown): string =>
 	JSON.stringify(value).replace(/</g, '\\u003c')
 
+const FAVICON_SVG =
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">` +
+	`<rect width="32" height="32" rx="7" fill="#0d0e11"/>` +
+	`<g fill="none" stroke="#f0b429" stroke-width="2.6" stroke-linecap="round">` +
+	`<path d="M7 12h18"/><path d="M12.6 12v9"/><path d="M21 12v8.4"/>` +
+	`</g></svg>`
+
+const FAVICON = `data:image/svg+xml,${encodeURIComponent(FAVICON_SVG)}`
+
 const CLIENT_SCRIPT = readFileSync(
 	fileURLToPath(new URL('./client.js', import.meta.url)),
 	'utf8',
@@ -29,12 +38,17 @@ const clientScript = (): string =>
 
 const styles = (): string => STYLES.replace(/<\/style/gi, '<\\/style')
 
-export const renderHtml = (token: string): string => `<!doctype html>
+export const renderHtml = (token: string, ui?: unknown): string => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f1ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0e11" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="${FAVICON}">
+<link rel="preconnect" href="https://esm.sh" crossorigin>
 <title>pi diff review</title>
 <style>
 ${styles()}
@@ -45,11 +59,17 @@ ${styles()}
 	<div class="loading-shell">
 		<header class="header">
 			<div>
-				<div class="title">pi diff review</div>
-				<div class="subtitle">Loading UI…</div>
+				<div class="title">
+					<span class="brand-mark" aria-hidden="true">π</span>
+					<span class="wordmark">pi diff review</span>
+				</div>
+				<div class="subtitle">Booting review instrument…</div>
 			</div>
 			<span id="status" class="status">Starting…</span>
 		</header>
+		<div class="boot-stage" aria-hidden="true">
+			<div class="boot-mark">π</div>
+		</div>
 	</div>
 </div>
 <script type="importmap">
@@ -66,7 +86,7 @@ ${json({
 })}
 </script>
 <script>
-window.PI_DIFF_CONFIG = ${json({token})}
+window.PI_DIFF_CONFIG = ${json({token, ui: ui ?? null})}
 const RESIZE_OBSERVER_NOISE = /^ResizeObserver loop/i
 window.addEventListener('error', (event) => {
 	if (RESIZE_OBSERVER_NOISE.test(event.message || '')) {

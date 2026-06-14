@@ -20,6 +20,7 @@ import {
 	type StoredReviewReply,
 } from './annotations-store.js'
 import {renderHtml} from './html.js'
+import {loadUiPrefs, saveUiPrefs, type UiPrefs} from './prefs.js'
 import {
 	createDiffSnapshotLoader,
 	execOrNull,
@@ -41,6 +42,7 @@ interface ReviewSession {
 	eventClients: Set<ServerResponse>
 	heartbeat: NodeJS.Timeout
 	finished: boolean
+	uiPrefs: UiPrefs
 	pi: ExtensionAPI
 	ctx: ExtensionCommandContext
 }
@@ -274,7 +276,19 @@ const createRequestHandler =
 			}
 
 			if (req.method === 'GET' && url.pathname === '/') {
-				send(res, 200, renderHtml(session.token), 'text/html; charset=utf-8')
+				send(
+					res,
+					200,
+					renderHtml(session.token, session.uiPrefs),
+					'text/html; charset=utf-8',
+				)
+				return
+			}
+
+			if (req.method === 'POST' && url.pathname === '/api/prefs') {
+				const payload = await parseJsonBody(req)
+				session.uiPrefs = await saveUiPrefs(payload)
+				sendJson(res, 200, session.uiPrefs)
 				return
 			}
 
@@ -464,6 +478,7 @@ const startDiffReview = async (
 		)
 	}
 
+	const uiPrefs = await loadUiPrefs()
 	const token = randomBytes(24).toString('hex')
 	let session: ReviewSession
 	const server = createServer((req, res) => {
@@ -487,6 +502,7 @@ const startDiffReview = async (
 		eventClients: new Set(),
 		heartbeat,
 		finished: false,
+		uiPrefs,
 		pi,
 		ctx,
 	}

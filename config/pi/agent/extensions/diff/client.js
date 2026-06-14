@@ -23,6 +23,10 @@ const resolveMergeConflict =
 	diffsLib.resolveMergeConflict || diffsLib.resolveConflict
 
 const config = window.PI_DIFF_CONFIG
+// Server-provided UI prefs (sidebar widths). The HTTP server picks a new random
+// port every session, so localStorage — being origin-scoped — resets each time;
+// the server persists these on disk and seeds them here instead.
+const initialUi = (config && config.ui) || {}
 
 const LEFT_SIDEBAR_WIDTH_KEY = 'pi.diff.leftSidebarWidth'
 const RIGHT_SIDEBAR_WIDTH_KEY = 'pi.diff.rightSidebarWidth'
@@ -85,17 +89,30 @@ const annotationLocation = (annotation) =>
 
 const authorLabel = (author) => (author === 'pi' ? 'pi' : 'you')
 
+// Inline SVG icon bodies (drawn in a 0 0 24 24 viewBox, stroke = currentColor)
+// so the UI carries no icon-font dependency. Static markup, injected via
+// innerHTML on the <svg> host, which parses children in the SVG namespace.
 const ICONS = {
-	diff: '\ueae1',
-	layout: '\uebeb',
-	split: '\ueb57',
-	refresh: '\ueb37',
-	send: '\uec0f',
-	close: '\uea76',
+	layout:
+		'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 14.5h18"/>',
+	split: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>',
+	refresh: '<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4.5v5h-5"/>',
+	send: '<path d="M12 19.5V5"/><path d="M6 11l6-6 6 6"/>',
+	close: '<path d="M6 6l12 12M18 6L6 18"/>',
 }
 
 const Icon = ({name}) => html`
-	<span class="icon" aria-hidden="true">${ICONS[name] || ''}</span>
+	<svg
+		class="icon"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.7"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+		dangerouslySetInnerHTML=${{__html: ICONS[name] || ''}}
+	></svg>
 `
 
 const api = async (path, options = {}) => {
@@ -169,10 +186,11 @@ const mergeFileLists = (files, conflicts) => {
 const fileTreeUnsafeCss = `
 :host {
 	--trees-level-gap-override: 4px;
-	--trees-item-padding-x-override: 5px;
-	--trees-item-row-gap-override: 4px;
+	--trees-item-padding-x-override: 6px;
+	--trees-item-row-gap-override: 3px;
 	--trees-icon-width-override: 14px;
-	--trees-font-size-override: 13px;
+	--trees-font-size-override: 12.5px;
+	font-family: var(--mono, ui-monospace, monospace);
 }
 [data-file-tree-virtualized-scroll='true'] {
 	overflow-x: auto;
@@ -250,8 +268,8 @@ const Header = ({
 	<header class="header">
 		<div>
 			<div class="title">
-				<${Icon} name="diff" />
-				<span>pi diff review</span>
+				<span class="brand-mark" aria-hidden="true">π</span>
+				<span class="wordmark">pi diff review</span>
 			</div>
 			<div class="subtitle">${subtitle}</div>
 		</div>
@@ -698,6 +716,51 @@ const AnnotationCard = ({
 	</div>
 `
 
+// Inline annotation composer, mounted by the diff at the clicked line. The
+// textarea is uncontrolled so typing never re-renders the diff (which would
+// remount this node and drop focus); its value is read only on save.
+const InlineComposer = ({range, onSave, onCancel}) => {
+	const textareaRef = useRef(null)
+	useEffect(() => {
+		textareaRef.current?.focus()
+	}, [])
+	const submit = () => {
+		const text = textareaRef.current?.value.trim()
+		if (text) onSave(text)
+	}
+	return html`
+		<div class="composer annotation-card inline annotation-by-user">
+			<div class="annotation-header">
+				<span class="annotation-author user">you</span>
+				<span class="annotation-meta"
+					>${annotationLocation({...range, text: ''})}</span
+				>
+			</div>
+			<textarea
+				ref=${textareaRef}
+				class="composer-text"
+				placeholder="Write an annotation for pi… (Cmd/Ctrl+Enter to save, Esc to cancel)"
+				onKeyDown=${(event) => {
+					if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+						event.preventDefault()
+						submit()
+					} else if (event.key === 'Escape') {
+						event.preventDefault()
+						event.stopPropagation()
+						onCancel()
+					}
+				}}
+			></textarea>
+			<div class="composer-actions">
+				<button type="button" onClick=${onCancel}>Cancel</button>
+				<button class="primary" type="button" onClick=${submit}>
+					Add annotation
+				</button>
+			</div>
+		</div>
+	`
+}
+
 const toLineAnnotations = (annotations) =>
 	annotations.map((annotation) => ({
 		side: annotation.side,
@@ -712,11 +775,16 @@ const DiffViewer = ({
 	layout,
 	annotations,
 	activeRange,
+	draftRange,
 	onAddAnnotation,
 	onDeleteAnnotation,
+	onSaveDraft,
+	onCancelDraft,
 }) => {
 	const diffRef = useRef(null)
 	const instanceRef = useRef(null)
+	const draftForFile =
+		draftRange && draftRange.path === currentPath ? draftRange : null
 	const currentDiff = useMemo(() => {
 		if (!currentPath) return null
 		return (
@@ -745,6 +813,8 @@ const DiffViewer = ({
 	// through refs to keep them current without rebuilding the whole diff.
 	const onAddAnnotationRef = useRef(onAddAnnotation)
 	const onDeleteAnnotationRef = useRef(onDeleteAnnotation)
+	const onSaveDraftRef = useRef(onSaveDraft)
+	const onCancelDraftRef = useRef(onCancelDraft)
 	const fileAnnotationsRef = useRef(fileAnnotations)
 	useEffect(() => {
 		onAddAnnotationRef.current = onAddAnnotation
@@ -752,6 +822,12 @@ const DiffViewer = ({
 	useEffect(() => {
 		onDeleteAnnotationRef.current = onDeleteAnnotation
 	}, [onDeleteAnnotation])
+	useEffect(() => {
+		onSaveDraftRef.current = onSaveDraft
+	}, [onSaveDraft])
+	useEffect(() => {
+		onCancelDraftRef.current = onCancelDraft
+	}, [onCancelDraft])
 	useEffect(() => {
 		fileAnnotationsRef.current = fileAnnotations
 	}, [fileAnnotations])
@@ -786,15 +862,27 @@ const DiffViewer = ({
 					onAddAnnotationRef.current(range)
 				},
 				renderAnnotation: (annotation) => {
+					const data = annotation.metadata.annotation
 					const mount = document.createElement('div')
-					render(
-						html`<${AnnotationCard}
-							annotation=${annotation.metadata.annotation}
-							onDelete=${onDeleteAnnotationRef.current}
-							inline=${true}
-						/>`,
-						mount,
-					)
+					if (data?.draft) {
+						render(
+							html`<${InlineComposer}
+								range=${data}
+								onSave=${(text) => onSaveDraftRef.current(text)}
+								onCancel=${() => onCancelDraftRef.current()}
+							/>`,
+							mount,
+						)
+					} else {
+						render(
+							html`<${AnnotationCard}
+								annotation=${data}
+								onDelete=${onDeleteAnnotationRef.current}
+								inline=${true}
+							/>`,
+							mount,
+						)
+					}
 					return mount
 				},
 				renderHeaderMetadata: () => {
@@ -824,18 +912,26 @@ const DiffViewer = ({
 		const host = diffRef.current
 		const instance = instanceRef.current
 		if (!host || !instance || !currentDiff) return
+		const lineAnnotations = toLineAnnotations(fileAnnotations)
+		if (draftForFile) {
+			lineAnnotations.push({
+				side: draftForFile.side,
+				lineNumber: draftForFile.start,
+				metadata: {annotation: {draft: true, ...draftForFile}},
+			})
+		}
 		try {
 			instance.render({
 				fileDiff: currentDiff,
 				selectedLines,
-				lineAnnotations: toLineAnnotations(fileAnnotations),
+				lineAnnotations,
 				containerWrapper: host,
 			})
 		} catch (error) {
 			console.error(error)
 			host.innerHTML = '<pre class="raw-patch">' + escapeHtml(patch) + '</pre>'
 		}
-	}, [currentDiff, layout, selectedLines, fileAnnotations, patch])
+	}, [currentDiff, layout, selectedLines, fileAnnotations, draftForFile, patch])
 
 	if (!patch.trim()) {
 		return html`<p class="empty">No diff found.</p>`
@@ -1007,40 +1103,6 @@ const ReviewPanel = ({
 	</aside>
 `
 
-const AnnotationModal = ({range, text, setText, onCancel, onSave}) => html`
-	<div
-		class="modal-backdrop"
-		hidden=${!range}
-		onClick=${(event) => {
-			if (event.currentTarget === event.target) onCancel()
-		}}
-	>
-		<div
-			class="modal"
-			role="dialog"
-			aria-modal="true"
-			aria-labelledby="modalTitle"
-		>
-			<h2 id="modalTitle">Add annotation</h2>
-			<p class="empty">
-				${range ? annotationLocation({...range, text: ''}) : ''}
-			</p>
-			<textarea
-				placeholder="Write the annotation to send back to pi…"
-				value=${text}
-				onInput=${(event) => setText(event.currentTarget.value)}
-				autofocus=${true}
-			></textarea>
-			<div class="modal-actions">
-				<button type="button" onClick=${onCancel}>Cancel</button>
-				<button class="primary" type="button" onClick=${onSave}>
-					Save annotation
-				</button>
-			</div>
-		</div>
-	</div>
-`
-
 const App = () => {
 	const [status, setStatus] = useState({message: 'Starting…'})
 	const [snapshot, setSnapshot] = useState(null)
@@ -1053,16 +1115,19 @@ const App = () => {
 	const [annotations, setAnnotations] = useState([])
 	const [note, setNote] = useState('')
 	const [sidebar, setSidebar] = useState(null)
-	const [modalRange, setModalRange] = useState(null)
-	const [modalText, setModalText] = useState('')
+	const [draftRange, setDraftRange] = useState(null)
 	const [activeRange, setActiveRange] = useState(null)
 	const [submitting, setSubmitting] = useState(false)
 	const [leftSidebarWidth, setLeftSidebarWidth] = useState(() =>
-		readNumberPreference(LEFT_SIDEBAR_WIDTH_KEY, 280),
+		readNumberPreference(LEFT_SIDEBAR_WIDTH_KEY, initialUi.leftSidebarWidth ?? 280),
 	)
 	const [rightSidebarWidth, setRightSidebarWidth] = useState(() =>
-		readNumberPreference(RIGHT_SIDEBAR_WIDTH_KEY, 340),
+		readNumberPreference(
+			RIGHT_SIDEBAR_WIDTH_KEY,
+			initialUi.rightSidebarWidth ?? 340,
+		),
 	)
+	const prefsHydratedRef = useRef(false)
 
 	const displayFiles = useMemo(
 		() => mergeFileLists(files, conflicts),
@@ -1171,25 +1236,28 @@ const App = () => {
 				endSide: range.endSide === 'deletions' ? 'deletions' : side,
 			}
 			setActiveRange(nextRange)
-			setModalRange(nextRange)
-			setModalText('')
+			setDraftRange(nextRange)
 		},
 		[currentPath],
 	)
 
-	const saveAnnotation = useCallback(async () => {
-		const text = modalText.trim()
-		if (!modalRange || !text) return
-		const result = await api('/api/annotations', {
-			method: 'POST',
-			body: JSON.stringify({
-				annotation: {...modalRange, text, author: 'user'},
-			}),
-		})
-		setModalRange(null)
-		setModalText('')
-		if (result?.annotation) setActiveRange(result.annotation)
-	}, [modalRange, modalText])
+	const cancelDraft = useCallback(() => setDraftRange(null), [])
+
+	const saveDraft = useCallback(
+		async (text) => {
+			const trimmed = (text || '').trim()
+			if (!draftRange || !trimmed) return
+			const result = await api('/api/annotations', {
+				method: 'POST',
+				body: JSON.stringify({
+					annotation: {...draftRange, text: trimmed, author: 'user'},
+				}),
+			})
+			setDraftRange(null)
+			if (result?.annotation) setActiveRange(result.annotation)
+		},
+		[draftRange],
+	)
 
 	const submitAnnotations = useCallback(async () => {
 		if (annotations.length === 0 && !note.trim()) {
@@ -1280,6 +1348,22 @@ const App = () => {
 		writeNumberPreference(RIGHT_SIDEBAR_WIDTH_KEY, rightSidebarWidth)
 	}, [rightSidebarWidth])
 
+	// Persist widths to the server (disk), debounced past the drag. localStorage
+	// alone can't survive the random port each session runs on.
+	useEffect(() => {
+		if (!prefsHydratedRef.current) {
+			prefsHydratedRef.current = true
+			return
+		}
+		const timeout = setTimeout(() => {
+			void api('/api/prefs', {
+				method: 'POST',
+				body: JSON.stringify({leftSidebarWidth, rightSidebarWidth}),
+			}).catch(() => {})
+		}, 400)
+		return () => clearTimeout(timeout)
+	}, [leftSidebarWidth, rightSidebarWidth])
+
 	useEffect(() => {
 		setCurrentPathFromFiles(setCurrentPath, displayFiles)
 	}, [displayFiles])
@@ -1303,20 +1387,13 @@ const App = () => {
 
 	useEffect(() => {
 		const onKeyDown = (event) => {
-			if (event.key === 'Escape' && modalRange) setModalRange(null)
-			else if (event.key === 'Escape') closeSidebars()
-			if (
-				(event.metaKey || event.ctrlKey) &&
-				event.key === 'Enter' &&
-				modalRange
-			) {
-				event.preventDefault()
-				void saveAnnotation()
-			}
+			if (event.key !== 'Escape') return
+			if (draftRange) setDraftRange(null)
+			else closeSidebars()
 		}
 		window.addEventListener('keydown', onKeyDown)
 		return () => window.removeEventListener('keydown', onKeyDown)
-	}, [closeSidebars, modalRange, saveAnnotation])
+	}, [closeSidebars, draftRange])
 
 	useEffect(() => {
 		let cancelled = false
@@ -1458,8 +1535,11 @@ const App = () => {
 								layout=${layout}
 								annotations=${annotations}
 								activeRange=${activeRange}
+								draftRange=${draftRange}
 								onAddAnnotation=${addAnnotation}
 								onDeleteAnnotation=${deleteAnnotation}
+								onSaveDraft=${saveDraft}
+								onCancelDraft=${cancelDraft}
 							/>`}
 				</section>
 				<${SidebarResizeHandle}
@@ -1481,13 +1561,6 @@ const App = () => {
 					}}
 				/>
 			</main>
-			<${AnnotationModal}
-				range=${modalRange}
-				text=${modalText}
-				setText=${setModalText}
-				onCancel=${() => setModalRange(null)}
-				onSave=${saveAnnotation}
-			/>
 		</div>
 	`
 }

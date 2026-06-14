@@ -152,6 +152,7 @@ sequenceDiagram
 | `index.ts`             | Extension entrypoint. Registers the `/diff` command, the three `diff_*` tools, manages `ReviewSession`s, and serves the HTTP API.                                                           |
 | `vcs.ts`               | Source-of-truth for "where does the patch come from": parses `/diff` args, dispatches to `jj`, `git`, or `gh`, parses unified-diff headers into `DiffFile[]`, and surfaces merge conflicts. |
 | `annotations-store.ts` | On-disk persistence. Per-repo, per-source JSON files with atomic rename + legacy single-file migration.                                                                                     |
+| `prefs.ts`             | On-disk UI preferences (sidebar widths). A single global JSON file with atomic rename; survives the random server port that defeats browser `localStorage`.                                  |
 | `html.ts`              | Tiny HTML shell with an `importmap` that pulls Preact, htm, marked, DOMPurify, `@pierre/diffs`, and `@pierre/trees` from `esm.sh`. Inlines `client.js` and `styles.css`.                    |
 | `client.js`            | Preact UI: file tree, diff renderer, annotation threads, merge-conflict editor, SSE wiring. Shipped as plain JS so no build step is needed.                                                 |
 | `styles.css`           | UI styling (light/dark via `light-dark()`).                                                                                                                                                 |
@@ -159,6 +160,8 @@ sequenceDiagram
 ## Browser sidebar controls
 
 The file sidebar supports keyboard navigation when it has focus: `j` opens the next edited file and `k` opens the previous edited file. If the target file is inside a collapsed folder, its parent folders are expanded automatically. The sidebar toolbar also has **Collapse all** and **Open all** buttons for large trees.
+
+Both sidebars are resizable by dragging their dividers (or focusing a divider and using the arrow keys). Because the server binds a fresh random port every session, `localStorage` — which is origin-scoped — would reset each time, so the widths are persisted server-side via `POST /api/prefs` and seeded back into the page on load.
 
 ## The `/diff` command
 
@@ -257,6 +260,7 @@ Override paths via env vars:
 | `PI_CODING_AGENT_DIR`      | `~/.pi/agent`                                                |
 | `PI_DIFF_ANNOTATIONS_DIR`  | `$PI_CODING_AGENT_DIR/diff`                                  |
 | `PI_DIFF_ANNOTATIONS_PATH` | `$PI_CODING_AGENT_DIR/diff-annotations.json` (legacy reader) |
+| `PI_DIFF_PREFS_PATH`       | `$PI_CODING_AGENT_DIR/diff/ui-prefs.json`                    |
 
 ## Merge-conflict editor
 
