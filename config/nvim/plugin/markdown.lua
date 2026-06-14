@@ -45,6 +45,17 @@ pack.add {
 					position = 'inline',
 					icons = { '󰉫  ', '󰉬  ', '󰉭  ', '󰉮  ', '󰉯  ', '󰉰  ' },
 				},
+				bullet = {
+					-- Nesting depth reads through shape and fill: solid then
+					-- hollow, circle then square.
+					icons = { '●', '○', '▪', '▫' },
+				},
+				pipe_table = {
+					-- Soft corners and a thin alignment marker so borders match
+					-- the weight of the thematic-break rule.
+					preset = 'round',
+					alignment_indicator = '─',
+				},
 			}
 		end,
 	},
