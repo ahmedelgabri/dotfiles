@@ -117,9 +117,11 @@ let
                     HOST_CONFIGS = "${hostConfigHome}";
                     KITTY_LISTEN_ON = "unix:/tmp/kitty";
                     # Set the default Less options.
-                    # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
-                    # Remove -X and -F (exit if the content fits on one screen) to enable it.
-                    LESS = "-F -g -i -M -R -S -w -X";
+                    # Avoid -X: it skips terminal initialization, which disables
+                    # mouse/scroll input and can leave less unresponsive to keys
+                    # (e.g. q) under tmux. --redraw-on-quit keeps the final screen
+                    # visible after quitting without disabling terminal setup.
+                    LESS = "-F -g -i -M -R -S -w --redraw-on-quit --mouse --wheel-lines=3";
                     # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
                     NEXT_TELEMETRY_DISABLED = "1";
                     NOTES_DIR = "${PERSONAL_STORAGE}/notes";
