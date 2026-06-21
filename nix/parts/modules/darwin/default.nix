@@ -1,3 +1,15 @@
+# NOTE: docs for nix-darwin found
+# https://daiderd.com/nix-darwin/manual/index.html
+# macOS user-specific defaults using home-manager's built-in support
+#
+# VALIDATION BEST PRACTICES:
+# 1. Test settings manually first: `defaults write com.apple.finder ShowStatusBar -bool true`
+# 2. Check existing settings: `defaults read com.apple.finder`
+# 3. Use `defaults domains` to see available domains
+# 4. Invalid domains/keys will build but silently fail to apply
+# 5. Some settings require logout/restart to take effect
+# 6. Case sensitivity matters for both domains and keys
+# 7. Not all `defaults` commands have targets.darwin.defaults equivalents
 let
   module =
     {
@@ -138,6 +150,7 @@ let
 
           screencapture = {
             disable-shadow = true;
+            type = "png";
             show-thumbnail = false;
             location = "/Users/${config.my.username}/Desktop/screenshots";
           };
@@ -155,6 +168,7 @@ let
               AppleInterfaceStyle = "Dark";
             };
             "com.apple.finder" = {
+              NewWindowTargetPath = "file:///Users/${config.my.username}/";
               WarnOnEmptyTrash = false;
               ShowExternalHardDrivesOnDesktop = true;
               ShowHardDrivesOnDesktop = true;
@@ -219,6 +233,25 @@ let
             "com.apple.ImageCapture".disableHotPlug = true;
             # Turn on app auto-update
             "com.apple.commerce".AutoUpdate = true;
+
+            "com.mitchellh.ghostty" = {
+              SUHasLaunchedBefore = true;
+              SUSendProfileInfo = false;
+            };
+
+            "com.raycast.macos" = {
+              # cmd-space
+              raycastGlobalHotkey = "Command-49";
+              raycastShouldFollowSystemAppearance = true;
+              showGettingStartedLink = false;
+              onboardingCompleted = true;
+              "emojiPicker_skinTone" = "mediumLight";
+              "permissions.folders.read:/Users/${config.my.username}/Desktop" = true;
+              "permissions.folders.read:/Users/${config.my.username}/Documents" = true;
+              "permissions.folders.read:/Users/${config.my.username}/Downloads" = true;
+              "permissions.folders.read:cloudStorage" = true;
+              useHyperKeyIcon = 1;
+            };
           };
         };
 
