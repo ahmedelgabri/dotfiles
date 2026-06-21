@@ -16,7 +16,6 @@ let
           "slack"
           "sync"
           "zoom"
-          "whatsapp"
           "telegram"
           "handy"
         ];
