@@ -9,13 +9,20 @@ backends.gpg.program = "vcs-gpg"
 
 [git]
 push-bookmark-prefix = 'ahmedelgabri/'
-private-commits = 'private()'
+private-commits = 'blacklist()'
 
 [remotes.origin]
 # https://docs.jj-vcs.dev/latest/config/#automatic-tracking-of-bookmarks
 auto-track-bookmarks = "ahmedelgabri/*"
 auto-track-created-bookmarks = "*"
 
+[merge-tools.difft]
+program = "difft"
+diff-args = ["--color=always", "$left", "$right"]
+diff-invocation-mode = "file-by-file"
+
+[snapshot]
+auto-update-stale = true
 
 [ui]
 # better tool support, syntax highlighting and one less thing to relearn
@@ -25,27 +32,71 @@ diff-formatter = ":git"
 pager = ["delta_"]
 # diff-editor = ":builtin"
 show-cryptographic-signatures = true
+graph.style = "square"
 
 [colors]
+# ── Theme tweaks: no yellow, no bold ──────────────────────────────────
+# Only the labels that differ from jj's built-in colors.toml. ANSI color
+# names (not hex) so this tracks both the dark and light terminal
+# palettes instead of hard-coding values.
+
+# Diagnostics: drop bold, recolor the yellow warning.
+"error" = { fg = "default", bold = false }
+"warning" = { fg = "default", bold = false }
+"error heading" = { fg = "red", bold = false }
+"error_source heading" = { bold = false }
+"warning heading" = { fg = "magenta", bold = false }
+"hint heading" = { fg = "cyan", bold = false }
+"conflict_description" = "cyan"
+
+# Ids: emphasis from color contrast vs the "bright black" rest, not bold.
+"immutable change_id" = "bright cyan"
+"prefix" = { bold = false }
+"change_offset" = { bold = false }
+
+# People → cyan, timestamps → dim, placeholder → red (all were yellow/cyan).
+"author" = "cyan"
+"committer" = "cyan"
+"timestamp" = { dim = true }
+"description placeholder" = "red"
+"working_copy" = { bold = false }
+"working_copy author" = "magenta"
+"working_copy committer" = "bright cyan"
+"working_copy timestamp" = { dim = true }
+"working_copy description placeholder" = "magenta"
+
+"config_list value" = "default"
+
+# Diff: recolor the yellow status word, de-bold the file header.
+"diff header" = "cyan"
+"diff file_header" = "blue"
+# remove diff underlines
 "diff removed token" = { underline = false }
 "diff added token" = { underline = false }
 "diff context" = { dim = true }
 
-[template-aliases]
-'format_short_change_id(id)' = 'id.shortest()'
-'format_short_signature(signature)' = 'signature'
+# Operations: drop bold, recolor yellow user, dim the timestamps.
+"operation user" = "cyan"
+"operation time" = { dim = true }
+"operation current_operation" = { bold = false }
+"operation current_operation user" = "bright cyan"
+"operation current_operation time" = { dim = true }
 
-[revset-aliases]
-# 'default()' = 'present(@) | ancestors(immutable_heads().., 5) | present(trunk())'
-'empty_description()' = 'description(exact:"")'
-'closest_pushable(to)' = 'heads(::to & mutable() & ~empty_description() & (~empty() | merges()))'
-'last' = 'latest(ancestors(@) & ~empty() & ~empty_description())'
+# Graph nodes: drop bold; wip/private get their own distinct hues.
+"node working_copy" = { fg = "magenta" }
+"node current_operation" = { fg = "green" }
+"node immutable" = { fg = "bright cyan" }
+"node conflicted" = { fg = "red" }
+"node wip" = { fg = "bright yellow" }
+"node private" = { fg = "bright yellow" }
 
-# Work in progress
-'wip()' = 'description(glob:"wip:*") ~ ::immutable_heads()'
+# Signatures: recolor the yellow ones.
+"signature display" = "cyan"
+"signature status unknown" = "magenta"
 
-# Any commits considered private by git.private-commits
-'private()' = '(description(glob:"private:*") | wip())'
+# Template labels (no built-in default): de-bold.
+"text link" = { fg = "magenta", underline = true }
+"text warning" = { fg = "red" }
 
 [revsets]
 log = "present(@) | ancestors(immutable_heads().., 5) | present(trunk())"
@@ -76,6 +127,69 @@ o = ["oneline"]
 oneline = ["gr", "--no-graph"]
 oo = ["oneline", "--limit", "10"]
 tug = ["bookmark", "advance"]
+# EXPERIMENTAL: json output
+jsonlog = ["log", "--no-graph", "-T", "ndjson"]
+
+[revset-aliases]
+# 'default()' = 'present(@) | ancestors(immutable_heads().., 5) | present(trunk())'
+'empty_description()' = 'description(exact:"")'
+'closest_pushable(to)' = 'heads(::to & mutable() & ~empty_description() & (~empty() | merges()))'
+'last' = 'latest(ancestors(@) & ~empty() & ~empty_description())'
+
+# Work in progress
+'wip()' = 'description(glob-i:"wip:*") | description(glob-i:"[[]WIP[]]*")'
+# Any commits considered private by git.private-commits
+'private()' = 'description(glob-i:"private:*") | description(glob-i:"[[]PRIVATE[]]*")'
+
+'blacklist()' = 'wip() | private()'
+
+
+[template-aliases]
+# Basic customizations.
+'format_short_change_id(id)' = 'id.shortest()'
+'format_short_signature(signature)' = ' if(signature.email(), signature.email(), label("text warning", "NO EMAIL")) '
+'format_timestamp(ts)' = ' ts.ago() '
+'render_bookmarks(commit)' = '''
+  commit.bookmarks().map(|b|
+    if(b.remote(),
+      b,
+      hyperlink(git_web_url() ++ "/tree/" ++ b.name(), b),
+    )
+  )
+'''
+
+# Commit header. This includes code to automatically link to Gerrit code reviews
+# for matching commits in a very basic way.
+'format_short_commit_header(commit)' = '''separate(" ",
+  format_short_change_id_with_change_offset(commit),
+  format_timestamp(commit_timestamp(commit)),
+  format_short_signature(commit.author()),
+  format_short_commit_id(commit.commit_id()),
+  render_bookmarks(commit),
+  commit.tags(),
+  commit.working_copies(),
+  if(jira_key(commit.description()),
+    "[" ++
+    hyperlink(
+      jira_base() ++ "/browse/" ++ jira_key(commit.description()),
+      jira_key(commit.description())
+    ) ++ "]"
+  ),
+  if(commit.contained_in('first_parent(@)'), label("git_head", "git_head()")),
+  if(commit.conflict(), label("conflict", "conflict")),
+)'''
+
+# Link Jira tickets found in the description. The key is the first match of a
+# Jira-style issue key (e.g. PROJ-123); the browse base comes from `jira.url`.
+'jira_base()' = 'config("jira.url").as_string()'
+'jira_key(s)' = 's.match(regex:"[A-Z][A-Z0-9]+-[0-9]+")'
+
+# 6a6a636c is hex("jjcl").
+'has_change_id(s)' = 's.contains("Change-Id: I")'
+
+'ndjson(obj)' = 'json(obj) ++ "\n"'
+'ndjson' = 'ndjson(self)'
+
 
 [templates]
 # Generate prefixed bookmark names when running `jj git push --change`:
@@ -98,5 +212,23 @@ concat(
   ),
   "\nJJ: ignore-rest\n",
   diff.git(),
+)
+'''
+
+
+# Improve the default representation in the log. This colors
+# and changes the node icon for each.
+op_log_node = 'if(current_operation, "@", "◉")'
+log_node = '''
+label("node",
+  coalesce(
+    if(!self, label("elided", "⇋")),
+    if(current_working_copy, label("working_copy", "@")),
+    if(conflict, label("conflict", "x")),
+    if(immutable, label("immutable", "◆")),
+    if(description.starts_with("wip: "), label("wip", "⚑")),
+    if(description.starts_with("private: "), label("private", "‼")),
+    label("normal", "○")
+  )
 )
 '''
