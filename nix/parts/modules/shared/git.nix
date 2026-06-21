@@ -19,7 +19,6 @@ let
             tig
             exiftool
             gh
-            gh-dash
             gh-gfm-preview
           ];
         };
@@ -32,54 +31,6 @@ let
         myConfig,
         ...
       }:
-      let
-        yamlFormat = pkgs.formats.yaml { };
-        ghDashConfig = yamlFormat.generate "config.yml" {
-          defaults = {
-            prApproveComment = ":shipit:";
-            preview = {
-              open = true;
-              width = 100;
-            };
-            layout.prs.repoName = {
-              grow = true;
-              width = 10;
-              hidden = false;
-            };
-            refetchIntervalMinutes = 10;
-          };
-          keybindings.prs = [
-            {
-              key = "m";
-              name = "Admin force merge";
-              command = "gh pr merge --admin --squash --repo {{.RepoName}} {{.PrNumber}}";
-            }
-            {
-              key = "c";
-              command = "tmux new-window -c {{.RepoPath}} 'gh pr checkout {{.PrNumber}} && nvim -c \":CodeDiff {{.BaseRefName}}...{{.HeadRefName}}\"'";
-            }
-            {
-              key = "T";
-              command = "gh enhance -R {{.RepoName}} {{.PrNumber}}";
-            }
-            {
-              key = "v";
-              name = "approve";
-              command = "gh pr review --repo {{.RepoName}} --approve --body \"$(${pkgs.lib.getExe pkgs.gum} write --placeholder=Approval\\ Comment)\" {{.PrNumber}}";
-            }
-          ];
-          repoPaths = { };
-          theme.ui.table.compact = true;
-          pager.diff = "delta --side-by-side";
-        };
-        ghDashConfigWithHeader = pkgs.runCommand "gh-dash-config.yml" { } ''
-          {
-            printf '%s\n' '# yaml-language-server: $schema=https://www.gh-dash.dev/schema.json'
-            printf '%s\n' '# ${myConfig.nix_managed}'
-            cat ${ghDashConfig}
-          } > $out
-        '';
-      in
       with lib;
       {
         xdg.configFile = {
@@ -119,9 +70,6 @@ let
             recursive = true;
             source = ../../../../config/tig;
           };
-        }
-        // optionalAttrs (myConfig.company == "") {
-          "gh-dash/config.yml".source = ghDashConfigWithHeader;
         };
       };
   };
