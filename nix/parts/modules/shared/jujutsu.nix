@@ -36,7 +36,6 @@ let
             --when.hostnames = ["${myConfig.hostName}"]
 
             [user]
-            ${optionalString (myConfig.name != "") "name = \"${myConfig.name}\""}
             ${optionalString (myConfig.email != "") "email = \"${myConfig.email}\""}
 
           '';
