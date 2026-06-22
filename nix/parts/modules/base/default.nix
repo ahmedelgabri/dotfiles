@@ -4,7 +4,6 @@ let
       ./identity.nix
       ./user.nix
       ./home-manager.nix
-      ./zsh-global-aliases.nix
     ];
   };
 in

@@ -14,10 +14,6 @@ let
         config = with lib; {
           environment = {
             shellAliases.cat = "bat";
-            zshGlobalAliases = {
-              "-h" = "-h 2>&1 | bat --language=help --style=plain";
-              "--help" = "--help 2>&1 | bat --language=help --style=plain";
-            };
             variables.BAT_CONFIG_PATH = "${xdg.configHome}/bat/config";
           };
 
