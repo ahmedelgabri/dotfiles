@@ -254,7 +254,7 @@
 					},
 					{
 						"type": "command",
-						"command": "ccpeek --index-only >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log &",
+						"command": "ccpeek --index-only --skip-scan --quiet >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log",
 						"async": true
 					}
 				]

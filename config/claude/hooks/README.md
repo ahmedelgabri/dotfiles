@@ -13,7 +13,7 @@ by Home Manager and wired from `config/claude/settings.json`.
 | `UserPromptSubmit` | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit` | Log submitted prompts and append project prompts to `PROMPTS.md`.                     |
 | `PreToolUse`       | `log-event.sh PreToolUse`; for `Bash`, `validate-bash.sh`               | Log tool calls and block risky Bash commands that touch generated or sensitive paths. |
 | `PostToolUse`      | `log-event.sh PostToolUse`                                              | Log tool results.                                                                     |
-| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only ... &`                        | Log assistant stops and refresh the `ccpeek` index in the background.                 |
+| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only --skip-scan --quiet ...`       | Log assistant stops and refresh the `ccpeek` index without per-stop secret scans.     |
 | `SubagentStop`     | `log-event.sh SubagentStop`                                             | Log subagent completion.                                                              |
 | `Notification`     | `log-event.sh Notification`, `terminal-notifier ...`                    | Log notifications and mirror them to macOS Notification Center outside Ghostty.       |
 | `PreCompact`       | `log-event.sh PreCompact`                                               | Log compaction before it runs.                                                        |
