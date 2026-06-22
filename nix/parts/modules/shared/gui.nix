@@ -5,9 +5,7 @@ let
         homebrew.casks = [
           "1password"
           "raycast"
-          "anki"
           "appcleaner"
-          "firefox"
           "imageoptim"
           "kap"
           "launchcontrol"
@@ -28,8 +26,6 @@ let
         config = {
           my.user.packages = with pkgs; [
             docker
-            firefox
-            brave
             obsidian
             signal-desktop
             slack
