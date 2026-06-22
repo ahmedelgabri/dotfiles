@@ -21,9 +21,6 @@ window-colorspace = display-p3
 
 auto-update = download
 
-# for claude code
-keybind=shift+enter=text:\\\n\r
-
 working-directory = home
 window-inherit-working-directory = false
 tab-inherit-working-directory = true
