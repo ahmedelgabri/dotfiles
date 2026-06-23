@@ -12,11 +12,12 @@ import type {ExtensionAPI} from '@earendil-works/pi-coding-agent'
 const execAsync = promisify(exec)
 
 async function isDarkMode(): Promise<boolean> {
+	// `defaults read` avoids spawning AppleScript/System Events on every poll,
+	// which would otherwise trigger TCC automation checks and drain battery.
+	// The key is absent (command exits non-zero) in light mode, hence the catch.
 	try {
-		const {stdout} = await execAsync(
-			'osascript -e \'tell application "System Events" to tell appearance preferences to return dark mode\'',
-		)
-		return stdout.trim() === 'true'
+		const {stdout} = await execAsync('defaults read -g AppleInterfaceStyle')
+		return stdout.trim() === 'Dark'
 	} catch {
 		return false
 	}
@@ -35,7 +36,7 @@ export default function (pi: ExtensionAPI) {
 				currentTheme = newTheme
 				ctx.ui.setTheme(currentTheme)
 			}
-		}, 2000)
+		}, 5000)
 	})
 
 	pi.on('session_shutdown', () => {
