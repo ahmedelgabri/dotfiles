@@ -46,72 +46,6 @@ pager = ["delta_"]
 show-cryptographic-signatures = true
 graph.style = "square"
 
-[colors]
-# ── Theme tweaks: no yellow, no bold ──────────────────────────────────
-# Only the labels that differ from jj's built-in colors.toml. ANSI color
-# names (not hex) so this tracks both the dark and light terminal
-# palettes instead of hard-coding values.
-
-# Diagnostics: drop bold, recolor the yellow warning.
-"error" = { fg = "default", bold = false }
-"warning" = { fg = "default", bold = false }
-"error heading" = { fg = "red", bold = false }
-"error_source heading" = { bold = false }
-"warning heading" = { fg = "magenta", bold = false }
-"hint heading" = { fg = "cyan", bold = false }
-"conflict_description" = "cyan"
-
-# Ids: emphasis from color contrast vs the "bright black" rest, not bold.
-"immutable change_id" = "bright cyan"
-"prefix" = { bold = false }
-"change_offset" = { bold = false }
-
-# People → cyan, timestamps → dim, placeholder → red (all were yellow/cyan).
-"author" = "cyan"
-"committer" = "cyan"
-"timestamp" = { dim = true }
-"description placeholder" = "red"
-"working_copy" = { bold = false }
-"working_copy author" = "magenta"
-"working_copy committer" = "bright cyan"
-"working_copy timestamp" = { dim = true }
-"working_copy description placeholder" = "magenta"
-
-"config_list value" = "default"
-
-# Diff: recolor the yellow status word, de-bold the file header.
-"diff header" = "cyan"
-"diff file_header" = "blue"
-# remove diff underlines
-"diff removed token" = { underline = false }
-"diff added token" = { underline = false }
-"diff context" = { dim = true }
-
-# Operations: drop bold, recolor yellow user, dim the timestamps.
-"operation user" = "cyan"
-"operation time" = { dim = true }
-"operation current_operation" = { bold = false }
-"operation current_operation user" = "bright cyan"
-"operation current_operation time" = { dim = true }
-
-# Graph nodes: drop bold; wip/private get their own distinct hues.
-"node working_copy" = { fg = "magenta" }
-"node current_operation" = { fg = "green" }
-"node immutable" = { fg = "bright cyan" }
-"node conflicted" = { fg = "red" }
-"node wip" = { fg = "bright yellow" }
-"node private" = { fg = "bright yellow" }
-
-# Signatures: recolor the yellow ones.
-"signature display" = "cyan"
-"signature status unknown" = "magenta"
-
-# Template labels (no built-in default): de-bold.
-"text link" = { fg = "magenta", underline = true }
-"text warning" = { fg = "red" }
-# Jira ticket block in the log header (the bracketed, linked issue keys).
-"jira" = "cyan"
-
 [revsets]
 bookmark-advance-to = 'closest_pushable(@)'
 log-graph-prioritize = 'trunk() | present(@)'
@@ -329,19 +263,92 @@ concat(
 '''
 
 
-# Improve the default representation in the log. This colors
-# and changes the node icon for each.
-op_log_node = 'if(current_operation, "@", "◉")'
-log_node = '''
+# Improve the default representation in the log. The outer `node` label lets
+# node-specific color rules apply to the custom icons.
+op_log_node = '''
 label("node",
   coalesce(
-    if(!self, label("elided", "⇋")),
-    if(current_working_copy, label("working_copy", "@")),
-    if(conflict, label("conflict", "x")),
-    if(immutable, label("immutable", "◆")),
-    if(description.starts_with("wip: "), label("wip", "⚑")),
-    if(description.starts_with("private: "), label("private", "‼")),
-    label("normal", "○")
+    if(current_operation, label("current_operation", "@")),
+    label("normal", "·")
   )
 )
 '''
+log_node = '''
+label("node",
+  coalesce(
+    if(!self, label("elided", "~")),
+    if(current_working_copy, label("working_copy", "@")),
+    if(conflict, label("conflict", "x")),
+    if(immutable, label("immutable", "◆")),
+    if(description.lower().starts_with("wip:") || description.lower().starts_with("[wip]"), label("wip", "⚑")),
+    if(description.lower().starts_with("private:") || description.lower().starts_with("[private]"), label("private", "‼")),
+    label("normal", "·")
+  )
+)
+'''
+
+[colors]
+# ── Theme tweaks: no yellow, no bold ──────────────────────────────────
+# Only the labels that differ from jj's built-in colors.toml. ANSI color
+# names (not hex) so this tracks both the dark and light terminal
+# palettes instead of hard-coding values.
+
+# Diagnostics: drop bold, recolor the yellow warning.
+"error" = { fg = "default", bold = false }
+"warning" = { fg = "default", bold = false }
+"error heading" = { fg = "red", bold = false }
+"error_source heading" = { bold = false }
+"warning heading" = { fg = "magenta", bold = false }
+"hint heading" = { fg = "cyan", bold = false }
+"conflict_description" = "cyan"
+
+# Ids: emphasis from color contrast vs the "bright black" rest, not bold.
+"immutable change_id" = "bright cyan"
+"prefix" = { bold = false }
+"change_offset" = { bold = false }
+
+# People → cyan, timestamps → dim, placeholder → red (all were yellow/cyan).
+"author" = "cyan"
+"committer" = "cyan"
+"timestamp" = { dim = true }
+"description placeholder" = "red"
+"working_copy" = { bold = false }
+"working_copy author" = "magenta"
+"working_copy committer" = "bright cyan"
+"working_copy timestamp" = { dim = true }
+"working_copy description placeholder" = "magenta"
+
+"config_list value" = "default"
+
+# Diff: recolor the yellow status word, de-bold the file header.
+"diff header" = "cyan"
+"diff file_header" = "blue"
+# remove diff underlines
+"diff removed token" = { underline = false }
+"diff added token" = { underline = false }
+"diff context" = { dim = true }
+
+# Operations: drop bold, recolor yellow user, dim the timestamps.
+"operation user" = "cyan"
+"operation time" = { dim = true }
+"operation current_operation" = { bold = false }
+"operation current_operation user" = "bright cyan"
+"operation current_operation time" = { dim = true }
+
+# Graph nodes: drop bold; wip/private get their own distinct hues.
+"node working_copy" = { fg = "magenta" }
+"node current_operation" = { fg = "green" }
+"node immutable" = { fg = "bright cyan" }
+"node conflicted" = { fg = "red" }
+"node wip" = { fg = "bright yellow" }
+"node private" = { fg = "bright yellow" }
+
+# Signatures: recolor the yellow ones.
+"signature display" = "cyan"
+"signature status unknown" = "magenta"
+
+# Template labels (no built-in default): de-bold.
+"text link" = { fg = "magenta", underline = true }
+"text warning" = { fg = "red" }
+# Jira ticket block in the log header (the bracketed, linked issue keys).
+"jira" = "cyan"
