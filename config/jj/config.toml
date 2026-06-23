@@ -286,17 +286,17 @@ if(commit.root(),
 'jira_base()' = 'config("jira.url").as_string()'
 # Project key follows Jira's default format (two or more uppercase letters), so
 # lowercase/underscore identifiers like `OPLANE_REQ-00095128` are not keys. The
-# regex crate has no lookahead, so the first match requires a terminator that is
-# neither `-` nor a digit; this rejects `CVE-2026-33845` (extra `-NNNNN`) while
-# the second match strips that terminator back off to leave the bare key.
-'jira_key(s)' = 's.match(regex:"\\b[A-Z][A-Z]+-[0-9]+([^-0-9]|$)").match(regex:"[A-Z][A-Z]+-[0-9]+")'
+# terminator rejects CVE-style extra hyphenated numbers; the second match strips
+# that terminator back off to leave the bare key.
+'jira_key(s)' = 's.first_line().match(regex:"\\b[A-Z][A-Z]+-[0-9]+([^A-Za-z0-9_-]|$)").match(regex:"[A-Z][A-Z]+-[0-9]+")'
+'jira_key_token(s)' = 's.match(regex:"^[A-Z][A-Z]+-[0-9]+$")'
 # Every Jira key in the first line, in order, each as a browse hyperlink, so a
-# commit referencing more than one ticket links them all. Splits on whitespace
-# and reuses jira_key per word, so the same project-key/CVE rejection rules apply
-# to each candidate; the rendered list is space-separated like bookmarks/tags.
+# commit referencing more than one ticket links them all. Splitting keeps
+# lowercase and underscore identifiers intact so the exact token check rejects
+# them instead of extracting a partial key.
 'jira_links(s)' = '''
-  s.first_line().split(regex:"\\s+").filter(|w| jira_key(w)).map(|w|
-    hyperlink(jira_base() ++ "/browse/" ++ jira_key(w), jira_key(w))
+  s.first_line().split(regex:"[^A-Za-z0-9_-]+").filter(|w| jira_key_token(w)).map(|w|
+    hyperlink(jira_base() ++ "/browse/" ++ w, w)
   )
 '''
 
