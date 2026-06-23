@@ -14,6 +14,7 @@ backends.gpg.program = "vcs-gpg"
 [git]
 push-bookmark-prefix = 'ahmedelgabri/'
 private-commits = 'blacklist()'
+write-change-id-header = true
 
 [remotes.origin]
 # https://docs.jj-vcs.dev/latest/config/#automatic-tracking-of-bookmarks
@@ -211,9 +212,6 @@ jsonlog = ["log", "--no-graph", "-T", "ndjson"]
     hyperlink(jira_base() ++ "/browse/" ++ jira_key(w), jira_key(w))
   )
 '''
-
-# 6a6a636c is hex("jjcl").
-'has_change_id(s)' = 's.contains("Change-Id: I")'
 
 'ndjson(obj)' = 'json(obj) ++ "\n"'
 'ndjson' = 'ndjson(self)'
