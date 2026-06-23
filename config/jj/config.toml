@@ -39,7 +39,7 @@ url = ""
 [ui]
 # better tool support, syntax highlighting and one less thing to relearn
 conflict-marker-style = "git"
-default-command = "log"
+default-command = ["log", "-T", "builtin_log_oneline", "--no-pager"]
 diff-formatter = ":git"
 pager = ["delta_"]
 # diff-editor = ":builtin"
@@ -113,7 +113,6 @@ graph.style = "square"
 "jira" = "cyan"
 
 [revsets]
-log = "present(@) | ancestors(immutable_heads().., 5) | present(trunk())"
 bookmark-advance-to = 'closest_pushable(@)'
 log-graph-prioritize = 'trunk() | present(@)'
 
@@ -145,7 +144,6 @@ tug = ["bookmark", "advance"]
 jsonlog = ["log", "--no-graph", "-T", "ndjson"]
 
 [revset-aliases]
-# 'default()' = 'present(@) | ancestors(immutable_heads().., 5) | present(trunk())'
 'empty_description()' = 'description(exact:"")'
 'closest_pushable(to)' = 'heads(::to & mutable() & ~empty_description() & (~empty() | merges()))'
 'last' = 'latest(ancestors(@) & ~empty() & ~empty_description())'
@@ -161,24 +159,44 @@ jsonlog = ["log", "--no-graph", "-T", "ndjson"]
 [template-aliases]
 # Basic customizations.
 'format_short_change_id(id)' = 'id.shortest()'
-'format_short_signature(signature)' = ' if(signature.email(), signature.email(), label("text warning", "NO EMAIL")) '
+'format_short_signature(signature)' = '''if(signature.name(), signature.name(), label("text warning", "NO NAME"))'''
+'format_short_signature_oneline(signature)' = '''separate(" ",
+  format_short_signature(signature),
+  surround("<", ">", if(signature.email(), signature.email(), label("text warning", "NO EMAIL")))
+)
+'''
+
 'format_timestamp(ts)' = ' ts.ago() '
-# Link each local bookmark/tag to its tree on the web forge; remote refs render
-# plain (their local counterpart already carries the link).
+# Link each local bookmark/tag to its tree when a forge URL is known; remote
+# refs render plain (their local counterpart already carries the link).
 'render_refs(refs)' = '''
   refs.map(|r|
-    if(r.remote(),
-      r,
+    if(git_web_url() && !r.remote(),
       hyperlink(git_web_url() ++ "/tree/" ++ r.name(), r),
+      r,
     )
   )
 '''
 
-# Commit header. This includes code to automatically link to Gerrit code reviews
-# for matching commits in a very basic way.
+'render_jira(commit)' = '''
+  if(jira_base(),
+    surround("[", "]", label("jira", jira_links(commit.description())))
+  )
+'''
+
+'format_current_revision_summary(commit)' = '''
+if(commit.current_working_copy() && !commit.empty(),
+  indent("  ", commit.diff().summary())
+)
+'''
+
+# Compact header shared with jj's built-in log templates.
 'format_short_commit_header(commit)' = '''separate(" ",
   format_short_change_id_with_change_offset(commit),
   format_timestamp(commit_timestamp(commit)),
+	if(config("ui.show-cryptographic-signatures").as_boolean(),
+		format_short_cryptographic_signature(commit.signature())
+	),
   format_short_signature(commit.author()),
   format_short_commit_id(commit.commit_id()),
   render_refs(commit.bookmarks()),
@@ -186,16 +204,85 @@ jsonlog = ["log", "--no-graph", "-T", "ndjson"]
   commit.working_copies(),
   if(commit.contained_in('first_parent(@)'), label("git_head", "git_head()")),
   if(commit.conflict(), label("conflict", "conflict")),
-  if(jira_base() && jira_key(commit.description()),
-    label("jira", "[" ++ jira_links(commit.description()) ++ "]")
-  ),
+	render_jira(commit),
 )'''
 
+'format_short_cryptographic_signature(signature)' = '''
+if(signature,
+  label("signature status", label(signature.status(),
+    coalesce(
+      if(signature.status() == "good", "✓︎"),
+      if(signature.status() == "unknown", "?"),
+      "x",
+    )
+  ))
+)
+'''
+
+'builtin_log_compact(commit)' = '''
+if(commit.root(),
+  format_root_commit(commit),
+  label(
+    separate(" ",
+      if(commit.current_working_copy(), "working_copy"),
+      if(commit.immutable(), "immutable", "mutable"),
+      if(commit.conflict(), "conflicted"),
+    ),
+    concat(
+      format_short_commit_header(commit) ++ "\n",
+      separate(" ",
+        if(commit.empty(), empty_commit_marker),
+        if(commit.description(),
+          commit.description().first_line(),
+          label(if(commit.empty(), "empty"), description_placeholder),
+        ),
+      ) ++ "\n",
+      format_current_revision_summary(commit),
+    ),
+  )
+)
+'''
+
+'builtin_log_oneline(commit)' = '''
+if(commit.root(),
+  format_root_commit(commit),
+  label(
+    separate(" ",
+      if(commit.current_working_copy(), "working_copy"),
+      if(commit.immutable(), "immutable", "mutable"),
+      if(commit.conflict(), "conflicted"),
+    ),
+    concat(
+      separate(" ",
+        format_short_change_id_with_change_offset(commit),
+        format_timestamp(commit_timestamp(commit)),
+        format_short_commit_id(commit.commit_id()),
+        format_commit_labels(commit),
+        if(config("ui.show-cryptographic-signatures").as_boolean(),
+          format_short_cryptographic_signature(commit.signature())
+        ),
+        if(commit.empty(), empty_commit_marker),
+        if(commit.description(),
+          commit.description().first_line(),
+          label(if(commit.empty(), "empty"), description_placeholder),
+        ),
+        render_refs(commit.bookmarks()),
+        render_refs(commit.tags()),
+        commit.working_copies(),
+        if(commit.contained_in('first_parent(@)'), label("git_head", "git_head()")),
+        render_jira(commit),
+        "-",
+        format_short_signature_oneline(commit.author()),
+      ) ++ "\n",
+      format_current_revision_summary(commit),
+    ),
+  )
+)
+'''
+
 # Jira-style issue key (e.g. PROJ-123); the browse base comes from `jira.url`,
-# which defaults to "" above. The empty string disables linking via the `&&`
-# gate in the header. A boolean toggle does not work here: `config()` returns an
-# Option<ConfigValue>, and `.as_boolean()` on it types as `Any`, which `if()`
-# rejects once the alias is nested; a defaulted string config types cleanly.
+# which defaults to "" above. A default keeps `config("jira.url")` typed as a
+# clean String instead of a missing Option.
 'jira_base()' = 'config("jira.url").as_string()'
 # Project key follows Jira's default format (two or more uppercase letters), so
 # lowercase/underscore identifiers like `OPLANE_REQ-00095128` are not keys. The
