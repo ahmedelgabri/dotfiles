@@ -30,11 +30,13 @@ let
     alcantara
   ];
 
-  # These are in 1Password
-  # work = "";
+  work = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1iKQbFA7XKAeS1Yj0Z+dGNDOG9x3kun6dOip/2MzVl";
   personal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Hf3aTl5Iwo4WlBBBs22+EPoaYe0sBCtjIl6G0DvBX ahmed";
 
-  allUsers = [ personal ];
+  allUsers = [
+    personal
+    work
+  ];
 
   allKeys = allHosts ++ allUsers;
 in
