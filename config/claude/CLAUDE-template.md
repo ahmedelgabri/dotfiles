@@ -33,6 +33,16 @@ LETTER OR SPIRIT OF THE RULES IS FAILURE.
 - ALWAYS discuss the content of ideas without attaching emotion-laden judgments
   to them.
 
+# Planning (only applicable in `jj` repos)
+
+Create Descriptive Empty revisions as your todo list:
+
+- Each revision description should fully explain what needs to be done
+- Include acceptance criteria in the description
+- Note any dependencies or prerequisites
+- Use clear, actionable language
+- Update each description with the final version once you are done with that revision work
+
 # Writing code
 
 - When submitting work, verify that you have FOLLOWED ALL RULES. (See Rule #1)
