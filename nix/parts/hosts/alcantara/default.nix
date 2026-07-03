@@ -49,36 +49,7 @@ let
 
   systemImports = [
     (inputs.self.lib.mkFeatureModule "darwin" {
-      features = [
-        "system-base"
-        "defaults"
-        "shell"
-        "git"
-        "jujutsu"
-        "ssh"
-        "bat"
-        "yazi"
-        "ripgrep"
-        "tmux"
-        "misc"
-        "node"
-        "go"
-        "rust"
-        "python"
-        "agenix"
-        "vim"
-        "gui"
-        "ai"
-        "gpg"
-        "mail"
-        "mpv"
-        "kitty"
-        "ghostty"
-        "zk"
-        "discord"
-        "yt-dlp"
-        "bun"
-      ];
+      features = inputs.self.lib.commonFeatures ++ [ "defaults" ];
     })
     hostConfiguration
   ];

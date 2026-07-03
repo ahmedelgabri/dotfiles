@@ -70,6 +70,39 @@
         inputs.self.overlays.default
       ];
 
+      # Single source of truth for the features every host enables, so a new
+      # feature only needs to be added once. Darwin hosts append the
+      # darwin-only "defaults" feature themselves.
+      commonFeatures = [
+        "system-base"
+        "shell"
+        "git"
+        "jujutsu"
+        "ssh"
+        "bat"
+        "yazi"
+        "ripgrep"
+        "tmux"
+        "misc"
+        "node"
+        "go"
+        "rust"
+        "python"
+        "agenix"
+        "vim"
+        "gui"
+        "ai"
+        "gpg"
+        "mail"
+        "mpv"
+        "kitty"
+        "ghostty"
+        "zk"
+        "discord"
+        "yt-dlp"
+        "bun"
+      ];
+
       mkDarwin = system: name: {
         ${name} = inputs.darwin.lib.darwinSystem {
           inherit system;
