@@ -7,7 +7,7 @@
 with lib;
 {
   options.my.user = mkOption {
-    type = options.users.users.type.functor.payload.elemType;
+    type = options.users.users.type.nestedTypes.elemType;
   };
 
   config = {
