@@ -18,6 +18,9 @@ let
       inputs,
       ...
     }:
+    let
+      screenshotsDir = "/Users/${config.my.username}/Desktop/screenshots";
+    in
     {
       imports = [
         inputs.self.modules.darwin.hammerspoon
@@ -152,7 +155,7 @@ let
             disable-shadow = true;
             type = "png";
             show-thumbnail = false;
-            location = "/Users/${config.my.username}/Desktop/screenshots";
+            location = screenshotsDir;
           };
 
           universalaccess = {
@@ -260,6 +263,19 @@ let
           remapCapsLockToEscape = true;
         };
       };
+
+      # macOS silently falls back to saving screenshots on the Desktop when the
+      # configured location does not exist, and a root-run activation script
+      # would leave a directory screencapture cannot write to, so create it as
+      # the user via Home Manager.
+      home-manager.users."${config.my.username}" =
+        { lib, ... }:
+        {
+          home.activation.screencapture = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            echo ":: -> Running screencapture home-manager activation..."
+            mkdir -p ${screenshotsDir}
+          '';
+        };
     };
 in
 {
