@@ -9,11 +9,9 @@ click-repeat-interval = 500
 confirm-close-surface = false
 window-save-state = always
 window-decoration = false
-working-directory = home
 mouse-hide-while-typing = false
 bell-features = "no-attention,no-audio,no-system,no-title,no-border"
 
-macos-non-native-fullscreen=padded-notch
 macos-non-native-fullscreen = true
 macos-option-as-alt = left
 macos-window-shadow = false
