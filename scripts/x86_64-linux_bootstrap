@@ -28,11 +28,5 @@ log_success "$FLAKE installed"
 
 clone_dotfiles
 
-FAILED_COMMAND=$(fc -ln -1)
-
-if [ $? -eq 0 ]; then
-	log_success "Done."
-	log_info "Don't forget to generate SSH keys & import gpg keys"
-else
-	log_error "Something went wrong, [ Failed on: $FAILED_COMMAND ]"
-fi
+log_success "Done."
+log_info "Don't forget to generate SSH keys & import gpg keys"
