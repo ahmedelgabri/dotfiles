@@ -14,7 +14,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:vic/import-tree";
 
     nixfmt-rs = {
       url = "github:Mic92/nixfmt-rs";
@@ -102,5 +101,5 @@
   };
 
   outputs =
-    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./nix/parts/flake);
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./nix/parts/flake/default.nix;
 }
