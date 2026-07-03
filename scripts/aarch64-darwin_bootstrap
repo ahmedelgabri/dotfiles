@@ -2,8 +2,6 @@
 
 set -Eueo pipefail
 
-SUDO_USER=$(whoami)
-
 FLAKE=${1:-$(hostname -s)}
 
 print_main_banner
@@ -12,14 +10,14 @@ print_main_banner
 # = Main functions
 # =======================================================================
 
-if command -v xcode-select >/dev/null; then
+if xcode-select -p >/dev/null 2>&1; then
 	log_info "Xcode already installed"
 else
 	log_success "Installing Xcode"
 	xcode-select --install
 
 	log_success "Installing Rosetta"
-	sudo -u "$SUDO_USER" softwareupdate --install-rosetta --agree-to-license
+	sudo softwareupdate --install-rosetta --agree-to-license
 fi
 
 if [ -e "$DOTFILES_DIR/flake.nix" ]; then
