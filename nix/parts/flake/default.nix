@@ -35,6 +35,7 @@
     ../modules/shared/go.nix
     ../modules/shared/rust.nix
     ../modules/shared/agenix.nix
+    ../modules/shared/bun.nix
     ../hosts/rocket/default.nix
     ../hosts/alcantara/default.nix
     ../hosts/nixos/default.nix

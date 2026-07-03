@@ -39,7 +39,9 @@
 
       # Resolve the system module for a feature name for a given runtime.
       # Prefer runtime-specific modules first, then fall back to generic ones.
-      # Missing features are skipped.
+      # Features that ship only a Home Manager module contribute no system
+      # module; any other name aborts evaluation so a typo or a forgotten
+      # import cannot silently drop configuration.
       systemModuleFor =
         runtime: name:
         let
@@ -49,8 +51,10 @@
           [ (get runtimeModules name) ]
         else if has m.generic name then
           [ (get m.generic name) ]
+        else if has hm name then
+          [ ]
         else
-          [ ];
+          throw "unknown feature: ${name}";
 
       mkHmImports =
         imports:
