@@ -10,13 +10,14 @@ let
           "hammerspoon"
         ];
 
-        system.activationScripts.postActivation.text = /* bash */ ''
-          echo ":: -> Running hammerspoon activationScript..."
-
-          # Handle mutable configs
-          echo "Linking hammerspoon folders..."
-          ln -sf ${home}/.dotfiles/config/.hammerspoon ${home}
-        '';
+        # Link the config out of the store so it stays live-editable without
+        # a rebuild.
+        home-manager.users."${config.my.username}" =
+          { config, ... }:
+          {
+            home.file.".hammerspoon".source =
+              config.lib.file.mkOutOfStoreSymlink "${home}/.dotfiles/config/.hammerspoon";
+          };
       };
     };
 in

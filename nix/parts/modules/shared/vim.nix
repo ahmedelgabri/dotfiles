@@ -79,9 +79,13 @@ let
           ...
         }:
         {
+          # Link the config out of the store so it stays live-editable without
+          # a rebuild.
+          xdg.configFile."nvim".source =
+            config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/nvim";
+
           home.activation.vim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             echo ":: -> Running vim home-manager activation..."
-            ln -sfn ${config.home.homeDirectory}/.dotfiles/config/nvim ${config.xdg.configHome}/nvim
             mkdir -p ${config.xdg.stateHome}/nvim/{backup,swap,undo,view}
           '';
         };
