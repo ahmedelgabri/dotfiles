@@ -47,6 +47,14 @@ let
           extensions = [ "${myConfig.hostConfigHome}/pi/extensions" ];
           skills = [ "${myConfig.hostConfigHome}/pi/skills" ];
         };
+        mkSyncSettings = target: config.lib.dag.entryAfter [ "writeBoundary" ] ''
+          BK="${target}.bk"
+          TARGET="${target}"
+          if [ -f "$BK" ] || [ -L "$BK" ]; then
+            rm -f "$TARGET"
+            cp "$BK" "$TARGET"
+          fi
+        '';
       in
       {
         xdg.configFile."pi/agent/extensions" = {
@@ -58,14 +66,7 @@ let
 
         home = {
           activation = {
-            syncAgentSettings = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-              BK="${config.home.homeDirectory}/.claude/settings.json.bk"
-              TARGET="${config.home.homeDirectory}/.claude/settings.json"
-              if [ -f "$BK" ] || [ -L "$BK" ]; then
-                rm -f "$TARGET"
-                cp "$BK" "$TARGET"
-              fi
-            '';
+            syncAgentSettings = mkSyncSettings "${config.home.homeDirectory}/.claude/settings.json";
 
             linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
               TARGET="${config.home.homeDirectory}/.dotfiles/config/pi/agent/extensions/node_modules"
@@ -81,14 +82,7 @@ let
               ln -s "$SOURCE" "$TARGET"
             '';
 
-            syncPiAgentSettings = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-              BK="${config.xdg.configHome}/pi/agent/settings.json.bk"
-              TARGET="${config.xdg.configHome}/pi/agent/settings.json"
-              if [ -f "$BK" ] || [ -L "$BK" ]; then
-                rm -f "$TARGET"
-                cp "$BK" "$TARGET"
-              fi
-            '';
+            syncPiAgentSettings = mkSyncSettings "${config.xdg.configHome}/pi/agent/settings.json";
           };
 
           file = {
