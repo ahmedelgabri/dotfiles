@@ -539,9 +539,9 @@ let
         }:
         {
           xdg.configFile = {
-            "zsh" = {
+            "zsh/bin" = {
               recursive = true;
-              source = ../../../../config/zsh.d/zsh;
+              source = ../../../../config/zsh.d/zsh/bin;
             };
             "zsh/.zshrc".text = "";
             "direnv/direnvrc".text = lib.concatStringsSep "\n" [
