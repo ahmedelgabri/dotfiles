@@ -17,7 +17,10 @@
 
     nixfmt-rs = {
       url = "github:Mic92/nixfmt-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
 
     home-manager = {
@@ -63,12 +66,18 @@
 
     git-wt = {
       url = "github:ahmedelgabri/git-wt";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
 
     ccpeek = {
       url = "github:ahmedelgabri/ccpeek";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+      };
     };
 
     llm-agents = {
