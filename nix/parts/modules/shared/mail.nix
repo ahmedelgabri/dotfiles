@@ -56,9 +56,12 @@ let
               };
               carddav = {
                 enabled = true;
-                source = "https://${email}@carddav.fastmail.com/dav/addressbooks/user/${email}/Default";
+                source = email: "https://${email}@carddav.fastmail.com/dav/addressbooks/user/${email}/Default";
               };
               map = {
+                # Fastmail's remote folder names match the local maildir names,
+                # so no folder-map text exists for it; enabling map on a
+                # fastmail account requires setting text explicitly.
                 enabled = false;
               };
               mbsync = {
@@ -104,7 +107,6 @@ let
               };
               carddav = {
                 enabled = false;
-                source = "api.cirrux.co";
               };
               map = {
                 enabled = false;
@@ -326,6 +328,11 @@ let
                             type = types.nullOr (
                               types.submodule {
                                 options = {
+                                  source = mkOption {
+                                    type = types.str;
+                                    default = svcDefaults.carddav.source config.email;
+                                    description = "CardDAV address book source URL";
+                                  };
                                   cred_cmd = mkOption {
                                     type = types.str;
                                     default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/contacts";
@@ -629,7 +636,7 @@ let
                     cache-state       = true
                     cache-blobs       = true
                     use-envelope-from = true
-                    carddav-source = https://${account.email}@carddav.fastmail.com/dav/addressbooks/user/${account.email}/Default
+                    ${lib.optionalString (account.carddav != null) "carddav-source = ${account.carddav.source}"}
                     carddav-source-cred-cmd = ${lib.optionalString (account.carddav != null) account.carddav.cred_cmd}
                     address-book-cmd = carddav-query -S ${lowerName account} %s''}
                 '') cfg.accounts
