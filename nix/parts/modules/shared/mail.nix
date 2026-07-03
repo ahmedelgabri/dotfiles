@@ -223,6 +223,7 @@ let
                       { config, ... }:
                       let
                         svcDefaults = serviceDefaults.${config.service};
+                        passCmd = key: "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/${key}";
                       in
                       {
                         options = {
@@ -267,7 +268,7 @@ let
                                 };
                                 password_cmd = mkOption {
                                   type = types.str;
-                                  default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/password";
+                                  default = passCmd "password";
                                   description = "Command to retrieve IMAP password";
                                 };
                               };
@@ -285,7 +286,7 @@ let
                                 };
                                 password_cmd = mkOption {
                                   type = types.str;
-                                  default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/password";
+                                  default = passCmd "password";
                                   description = "Command to retrieve SMTP password";
                                 };
                               };
@@ -304,7 +305,7 @@ let
                                   };
                                   source_cred_cmd = mkOption {
                                     type = types.str;
-                                    default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/source";
+                                    default = passCmd "source";
                                     description = "Command to retrieve JMAP source credentials";
                                   };
                                   outgoing_server = mkOption {
@@ -314,7 +315,7 @@ let
                                   };
                                   outgoing_cred_cmd = mkOption {
                                     type = types.str;
-                                    default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/outgoing";
+                                    default = passCmd "outgoing";
                                     description = "Command to retrieve JMAP outgoing credentials";
                                   };
                                 };
@@ -335,7 +336,7 @@ let
                                   };
                                   cred_cmd = mkOption {
                                     type = types.str;
-                                    default = "${lib.getExe pkgs.pass} show service/email/${lib.toLower config.name}/contacts";
+                                    default = passCmd "contacts";
                                     description = "Command to retrieve CardDAV credentials";
                                   };
                                 };
