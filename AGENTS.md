@@ -4,8 +4,8 @@ This is a Nix-flake-powered personal dotfiles repo for macOS (Apple Silicon) and
 experimental NixOS. It manages system configuration, packages, shell, editor,
 terminal, mail, and development tooling.
 
-This repository uses the Jujutsu version control system (see the `/jujutsu`
-skill for details).
+This repository uses the Jujutsu version control system (see the
+`/jj-version-control` skill for details).
 
 ## How things work
 
@@ -60,7 +60,7 @@ Truly sensitive credentials live in `pass`. `agenix` is used only for lower-risk
 private files that should stay out of the public repo. Never commit secrets or
 tokens.
 
-H2 Update docs
+## Update docs
 
 Whenever you make a change make sure to update all relevant docs if needed
 (`README.md`, etc...)
