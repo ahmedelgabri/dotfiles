@@ -96,12 +96,8 @@ clone_dotfiles() {
 			git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
 
 	else
-		cd "$DOTFILES_DIR"
-		git stash -u || true
-		git checkout main
-		git reset --hard origin/main
-		git submodule update --init --recursive || true
-		git checkout -
-		git stash pop || true
+		# The local checkout is jj-managed; a git checkout/reset here would
+		# stomp the jj working copy, so subsequent runs reuse the clone as-is.
+		log_info "Dotfiles already present, skipping sync"
 	fi
 }
