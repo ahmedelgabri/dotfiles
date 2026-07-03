@@ -12,6 +12,7 @@ let
           pkgs,
           lib,
           config,
+          inputs,
           ...
         }:
         let
@@ -166,29 +167,31 @@ let
               my = {
                 user = {
                   shell = pkgs.zsh;
-                  packages = with pkgs; [
-                    _1password-cli
-                    atuin
-                    # buku
-                    eza
-                    fd
-                    ffmpeg
-                    glow
-                    hcron
-                    shellcheck
-                    shfmt # Doesn't work with zsh, only sh & bash
-                    vivid
-                    zsh-completions
-                    zsh-history-substring-search
-                    (imagemagick.override {
-                      ghostscriptSupport = true;
-                    })
-                    ghostscript # to preview PDFs as images
-                    poppler-utils # to preview PDFs as text
-                    newsraft
-                    circumflex # HN CLI reader
-                    terminal-notifier
-                  ];
+                  packages =
+                    with pkgs;
+                    [
+                      _1password-cli
+                      atuin
+                      # buku
+                      eza
+                      fd
+                      ffmpeg
+                      glow
+                      hcron
+                      shellcheck
+                      shfmt # Doesn't work with zsh, only sh & bash
+                      vivid
+                      zsh-completions
+                      zsh-history-substring-search
+                      (imagemagick.override {
+                        ghostscriptSupport = true;
+                      })
+                      ghostscript # to preview PDFs as images
+                      poppler-utils # to preview PDFs as text
+                      newsraft
+                      circumflex # HN CLI reader
+                    ]
+                    ++ (lib.optional stdenv.isDarwin terminal-notifier);
                 };
               };
 
@@ -366,7 +369,7 @@ let
                     ../../../../config/zsh.d/zsh/config/options.zsh
                     ../../../../config/zsh.d/zsh/config/input.zsh
                     ../../../../config/zsh.d/zsh/config/completion.zsh
-                    "${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+                    "${inputs.zsh-history-substring-search}/zsh-history-substring-search.zsh"
                   ]
                   ++ [
                     /* zsh */ ''

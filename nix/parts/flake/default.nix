@@ -169,19 +169,15 @@
         extraFonts =
           pkgs: with pkgs; [
             noto-fonts
-            noto-fonts-cjk
-            noto-fonts-emoji
+            noto-fonts-cjk-sans
+            noto-fonts-color-emoji
             fira-code
             fira-code-symbols
-            mplus-outline-fonts
+            mplus-outline-fonts.githubRelease
             dina-font
             proggyfonts
-            (nerdfonts.override {
-              fonts = [
-                "FiraCode"
-                "DroidSansMono"
-              ];
-            })
+            nerd-fonts.fira-code
+            nerd-fonts.droid-sans-mono
           ];
         systemStateVersion = "24.05";
         homeStateVersion = config: config.system.stateVersion;

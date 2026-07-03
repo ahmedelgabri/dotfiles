@@ -4,6 +4,7 @@ let
 
   hostConfiguration =
     {
+      lib,
       pkgs,
       inputs,
       ...
@@ -95,6 +96,10 @@ let
 
       nixpkgs.config.dwm.patches = [ ./dwm.patch ];
 
+      # The broadcom_sta (wl) driver required by this machine's WiFi chip is
+      # flagged insecure upstream; allow it regardless of version.
+      nixpkgs.config.allowInsecurePredicate = pkg: (lib.getName pkg) == "broadcom-sta";
+
       environment.systemPackages = with pkgs; [
         gnumake
         wget
@@ -106,11 +111,10 @@ let
         unzip
         wirelesstools
         libnotify
-        x11
-        gnome3.networkmanagerapplet
+        networkmanagerapplet
       ];
 
-      environment.shellAliases.l = null;
+      environment.shellAliases.l = lib.mkForce null;
 
       programs = {
         java.enable = true;

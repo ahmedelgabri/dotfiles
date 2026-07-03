@@ -10,13 +10,6 @@ let
           PI_CODING_AGENT_DIR = "$HOME/.config/pi/agent";
         };
 
-        homebrew = {
-          casks = [
-            "claude"
-            "codex-app"
-          ];
-        };
-
         my.user.packages = with pkgs; [
           llm-agents.claude-code
           llm-agents.codex
@@ -146,7 +139,13 @@ let
       {
         imports = [ module.commonModule ];
         config = {
-          homebrew.brews = [ "cirruslabs/cli/tart" ];
+          homebrew = {
+            brews = [ "cirruslabs/cli/tart" ];
+            casks = [
+              "claude"
+              "codex-app"
+            ];
+          };
           my.user.packages = with pkgs; [
             sb
           ];
