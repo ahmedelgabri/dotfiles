@@ -24,7 +24,6 @@ zstyle ':completion:*:corrections' format '%F{green}-- %d (errors: %e) --%f'
 zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*:messages' format '%F{purple}-- %d --%f'
 zstyle ':completion:*:warnings' format '%F{red}-- no matches found --%f'
-zstyle ':completion:*' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
 # Context-aware verbose: disable for command name completion (fast), enable for subcommands/options (descriptive)
 # This is critical for performance in direnv/nix-shell environments with large PATH
@@ -54,8 +53,6 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-compctl false
 # Limit max-errors for corrections to improve speed
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
-# Show menu after 2 matches instead of listing all (faster for large lists)
-zstyle ':completion:*' menu select=2
 # ignore useless commands and functions
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec)|prompt_*)'
 
