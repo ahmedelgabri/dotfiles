@@ -1,6 +1,6 @@
 # Notes setup
 
-This directory contains the Neovim-side notes integration for the dotfiles repository. The setup keeps `zk` as the source of truth for note creation, uses `markdown_oxide` for Markdown/wiki-link LSP behavior, and uses `qmd` plus `zk` indexes for search and agent access.
+This directory contains the Neovim-side notes integration for the dotfiles repository. The setup keeps `zk` as the source of truth for note creation, uses `markdown_oxide` for Markdown/wiki-link LSP behavior, and normalizes frontmatter independently of Obsidian.nvim.
 
 ## Goals
 
@@ -8,16 +8,13 @@ This directory contains the Neovim-side notes integration for the dotfiles repos
 - Keep note files compatible with the Obsidian desktop app by using plain Markdown, YAML frontmatter, and Obsidian-style wiki links.
 - Let `markdown_oxide` handle workspace-aware Markdown LSP features such as hover, definitions, diagnostics, and missing-link actions.
 - Keep frontmatter fallback behavior independent of Obsidian.nvim.
-- Keep indexing automatic for changes made by CLI commands, Neovim, Obsidian, `markdown_oxide`, or AI agents.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
 | `init.lua` | Defines Neovim commands such as `:Note`, `:N`, `:NoteWork`, and `:NoteFrontmatter`. It calls `zk-nvim` for note creation and then normalizes frontmatter. |
-| `frontmatter.lua` | Shared frontmatter normalization logic used by Neovim commands and the external indexer. |
-| `index.lua` | Shared indexing implementation. It normalizes empty notes, runs `zk index`, and runs `qmd update`. |
-| `cli.lua` | Headless Neovim entrypoint for running `index.lua` from outside Neovim with `nvim --headless --clean -u NONE -l`. |
+| `frontmatter.lua` | Shared frontmatter normalization logic used by the Neovim commands. |
 | `README.md` | This document. |
 
 Related files outside this directory:
@@ -28,9 +25,7 @@ Related files outside this directory:
 | `config/nvim/plugin/lsp.lua` | Enables `markdown_oxide` as the Markdown LSP and makes navic prefer it for Markdown symbols. |
 | `config/zk/config.toml` | Owns CLI note creation aliases, filename templates, group rules, and default templates. |
 | `config/zk/templates/` | Owns the actual note content templates used by `zk` for CLI and Neovim-created notes. |
-| `config/zsh.d/zsh/bin/notes-index` | Small shell wrapper that launches `cli.lua` with headless Neovim. |
-| `nix/parts/modules/shared/zk.nix` | Installs `zk` and `watchexec`, and defines the macOS launchd watcher that runs the headless indexer. |
-| `nix/parts/modules/shared/ai.nix` | Installs `qmd`, which provides indexed search/querying for humans and agents. |
+| `nix/parts/modules/shared/zk.nix` | Installs `zk` and links the `zk` config and templates. |
 | `nix/parts/modules/shared/vim.nix` | Installs `markdown-oxide` and Neovim support tooling. |
 
 ## Creation model
@@ -40,8 +35,6 @@ Related files outside this directory:
 The Neovim commands call `zk-nvim`'s API, which delegates to `zk`. They do not duplicate template rendering in Lua. Lua only decides which `zk` options to pass and then normalizes frontmatter after the file exists.
 
 Prefer `:Note`/`:N` over the generic `:ZkNew` command for interactive note creation. `:ZkNew` remains available from `zk-nvim`, but `:Note` adds this repository's target parsing, command completion, and frontmatter normalization while still delegating note creation to `zk`.
-
-The CLI aliases in `config/zk/config.toml` remain normal `zk` aliases, for example `zk p`, `zk w`, and `zk j`. They intentionally do not call a wrapper, because indexing is handled separately by the watcher and shared indexer.
 
 ## Neovim commands
 
@@ -183,57 +176,9 @@ Frontmatter normalization runs in these places:
 
 1. After creating a note through `:Note`, `:N`, or one of the convenience commands.
 2. When an empty Markdown file under `$NOTES_DIR` is opened or created in Neovim.
-3. When `notes-index` runs, for empty Markdown files under `$NOTES_DIR`.
-4. Manually via `:NoteFrontmatter`.
+3. Manually via `:NoteFrontmatter`.
 
-The empty-file paths are important for `markdown_oxide`: if its missing-link code action creates an empty Markdown file, opening that file in Neovim or letting the watcher index it will add fallback frontmatter.
-
-## Indexing model
-
-Indexing is centralized in `index.lua` and run externally through headless Neovim. The shell script `notes-index` only sets a reliable PATH and launches Lua:
-
-```sh
-nvim --headless --clean -u NONE -l ~/.dotfiles/config/nvim/lua/_/notes/cli.lua -- --quiet
-```
-
-The indexer does three things:
-
-1. Normalize empty Markdown notes under `$NOTES_DIR`.
-2. Run `zk index --quiet --notebook-dir "$NOTES_DIR"`.
-3. Run `qmd update` unless `--no-qmd` is passed.
-
-`qmd embed` is not run by the change-triggered indexer because it is heavier than metadata/index refreshes. Run it explicitly with:
-
-```sh
-notes-index --embed
-```
-
-The macOS setup also runs `notes-index --embed` periodically; see [Automatic embeddings](#automatic-embeddings).
-
-The indexer uses a lock directory under `$XDG_CACHE_HOME/notes-index.lock` to avoid overlapping runs.
-
-## Automatic indexing
-
-On macOS, `nix/parts/modules/shared/zk.nix` defines a launchd user agent named `notes-index`.
-
-That agent runs `watchexec` over `$HOME/Sync/notes` and watches Markdown file changes. After a debounce window it runs the headless Neovim indexer with `--quiet`.
-
-This means changes made by any of these sources are eventually indexed:
-
-- CLI `zk` aliases.
-- Neovim `:Note` commands.
-- Regular Neovim edits.
-- Obsidian app edits.
-- `markdown_oxide` missing-link file creation.
-- AI agents writing Markdown files.
-
-## Automatic embeddings
-
-On macOS, `nix/parts/modules/shared/zk.nix` also defines a launchd user agent named `notes-embed`.
-
-That agent runs the same headless Neovim indexer with `--quiet --embed` every hour. This keeps vector embeddings reasonably fresh without making every file save pay the embedding cost.
-
-`notes-index` and `notes-embed` share the same lock directory, so the hourly embedding job will skip if a normal indexing run is already active, and normal indexing will skip if an embedding run is active. This avoids concurrent writes to the `zk` and `qmd` indexes.
+The empty-file path is important for `markdown_oxide`: if its missing-link code action creates an empty Markdown file, opening that file in Neovim adds fallback frontmatter.
 
 ## LSP responsibilities
 
@@ -262,17 +207,6 @@ zk j
 zk til 'Something I learned'
 ```
 
-Indexing is not embedded into those aliases. Instead, the filesystem watcher and `notes-index` handle indexing for all editors and tools uniformly.
-
-Manual indexing:
-
-```sh
-notes-index
-notes-index --quiet
-notes-index --no-qmd
-notes-index --embed
-```
-
 ## Troubleshooting
 
 ### `:N` does not appear as a normal user command
@@ -285,24 +219,4 @@ notes-index --embed
 
 ### Frontmatter was not added to a file created by another tool
 
-Open the file in Neovim or run:
-
-```sh
-notes-index
-```
-
-You can also run `:NoteFrontmatter!` in the buffer.
-
-### `qmd update` is slow or locked
-
-`notes-index --no-qmd` updates only the `zk` index and empty-note frontmatter. Use this for quick manual recovery. The default watcher still attempts `qmd update` so agent search stays fresh.
-
-### `qmd` vector results are stale
-
-Run:
-
-```sh
-notes-index --embed
-```
-
-The change-triggered indexer updates the document index but does not refresh embeddings. The hourly `notes-embed` launchd job should catch up automatically, and `notes-index --embed` forces a manual refresh.
+Open the file in Neovim, or run `:NoteFrontmatter!` in the buffer.
