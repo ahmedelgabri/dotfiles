@@ -46,6 +46,7 @@ CLAUDE.local.md
 .claude/hook-events.jsonl
 PROMPTS.md
 .claude-notes
+.pi/todos
 
 # Mise      #
 #############
