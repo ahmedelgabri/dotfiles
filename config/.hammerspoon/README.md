@@ -451,12 +451,13 @@ This module creates a menubar item for cached prayer times produced by
 
 ### What it does
 
-- Reads `$TMPDIR/.location.json` and only uses the exact
-  `.prayer-<city>_<country>_<DD-MM-YYYY>.json` cache for the current location,
-  matching the cache key used by `next-prayer mawaqit`.
-- Uses the legacy `.prayer-<DD-MM-YYYY>.json` cache only when no location key is
-  available; it does not scan for another location-keyed cache because that can
-  show stale prayer times after travelling.
+- Reads `$TMPDIR/.location.json` and scans the cache directory for today's
+  `.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json` files
+  written by `next-prayer`, preferring a Mawaqit (mosque-specific) cache over
+  an Aladhan one.
+- When the location is known, only caches tagged with the current
+  city/country are used; it does not fall back to another location's cache
+  because that can show stale prayer times after travelling.
 - Shows the next prayer in Arabic in the menu bar, without the 🕋 emoji, and
   turns it red when it is within `warningThresholdMinutes`, matching
   `next-prayer`/`get-prayer` behavior.

@@ -257,11 +257,12 @@ next-prayer aladhan --country nl --city amsterdam --method 3
 ### Caching
 
 Prayer times are cached per day to
-`$TMPDIR/.prayer-<city>_<country>_<DD-MM-YYYY>.json` when city/country cache-key
-data is available, and to `$TMPDIR/.prayer-<DD-MM-YYYY>.json` otherwise.
-City/country come from location data for Mawaqit or config for Aladhan. A new
-API call is only made when the cache file for the current date/location doesn't
-exist.
+`$TMPDIR/.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`,
+where `<source>` is `mawaqit` or `aladhan` and the mosque part is present only
+for Mawaqit. City/country come from location data for Mawaqit or config for
+Aladhan. A new API call is only made when the cache file for the current
+source/mosque/date/location doesn't exist, so switching mosque or source takes
+effect immediately.
 
 The Hammerspoon `prayer.lua` menubar module reads the matching cache for the
 current location to display all prayer times, show cached Mawaqit mosque

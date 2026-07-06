@@ -179,15 +179,18 @@ values:
 ## Caching
 
 Prayer times are cached daily in `$TMPDIR` to avoid repeated API calls. The
-cache key includes the date and location (city + country), so the cache is
-automatically invalidated when:
+cache key includes the source, mosque (Mawaqit only), location (city +
+country), and date, so the cache is automatically invalidated when:
 
 - A new day starts
 - The user's location changes (e.g. travelling)
+- The data source or the selected mosque changes
 
-Cache files are named `.prayer-<city>_<country>_<DD-MM-YYYY>.json` when
-city/country cache-key data is available, and `.prayer-<DD-MM-YYYY>.json`
-otherwise. Mawaqit cache files also include selected mosque metadata.
+Cache files are named
+`.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`, with empty
+parts omitted. Mawaqit cache files also include selected mosque metadata. A
+cached file whose timings fail validation is treated as a cache miss and
+refetched.
 
 The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the
 current location to show all prayer times, display the mosque name when cached

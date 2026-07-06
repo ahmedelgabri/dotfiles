@@ -39,10 +39,14 @@ type Source interface {
 	GetAPI() (ApiData, error)
 }
 
-// CacheLocation identifies the user's location for cache keying. When the
-// city or country changes the cache is invalidated so prayer times are
-// re-fetched for the new location.
-type CacheLocation struct {
+// CacheKey identifies the data source and the user's location for cache
+// keying. When any component changes (source, mosque, city, country, or the
+// day) the cache file name changes so prayer times are re-fetched. Without
+// the source and mosque, Mawaqit and Aladhan would share cache files and a
+// mosque switch would keep serving the old mosque's times for the day.
+type CacheKey struct {
+	Source  string
+	Mosque  string
 	City    string
 	Country string
 }
@@ -78,16 +82,33 @@ func validateTimings(t AllTimes) error {
 	return nil
 }
 
-func cacheKey(loc CacheLocation, now time.Time) string {
-	date := now.Format("02-01-2006")
-	city := strings.ToLower(strings.ReplaceAll(loc.City, " ", "-"))
-	country := strings.ToLower(strings.ReplaceAll(loc.Country, " ", "-"))
+// sanitizePart makes a value safe and stable for use in a cache file name.
+// Slashes would otherwise escape the cache directory.
+func sanitizePart(s string) string {
+	s = strings.ToLower(strings.TrimSpace(s))
+	s = strings.ReplaceAll(s, " ", "-")
+	return strings.ReplaceAll(s, "/", "-")
+}
 
-	if city == "" && country == "" {
-		return fmt.Sprintf(".prayer-%s.json", date)
+// cacheFilename builds `.prayer-<source>[_<mosque>][_<city>_<country>]_<date>.json`.
+// The Hammerspoon prayer.lua module locates these files by the
+// `_<city>_<country>_` tag and the date suffix, so keep the format in sync.
+func cacheFilename(key CacheKey, now time.Time) string {
+	parts := []string{key.Source}
+
+	if mosque := sanitizePart(key.Mosque); mosque != "" {
+		parts = append(parts, mosque)
 	}
 
-	return fmt.Sprintf(".prayer-%s_%s_%s.json", city, country, date)
+	city := sanitizePart(key.City)
+	country := sanitizePart(key.Country)
+	if city != "" || country != "" {
+		parts = append(parts, city, country)
+	}
+
+	parts = append(parts, now.Format("02-01-2006"))
+
+	return fmt.Sprintf(".prayer-%s.json", strings.Join(parts, "_"))
 }
 
 // readCache returns the cached data when it exists and passes validation.
@@ -111,8 +132,8 @@ func readCache(cache string) (ApiData, bool) {
 	return data, true
 }
 
-func getData(source Source, loc CacheLocation, now time.Time) (ApiData, error) {
-	cache := filepath.Join(os.TempDir(), cacheKey(loc, now))
+func getData(source Source, key CacheKey, now time.Time) (ApiData, error) {
+	cache := filepath.Join(os.TempDir(), cacheFilename(key, now))
 
 	if data, ok := readCache(cache); ok {
 		return data, nil
@@ -139,11 +160,11 @@ func getData(source Source, loc CacheLocation, now time.Time) (ApiData, error) {
 	return data, nil
 }
 
-func GetPrayer(source Source, loc CacheLocation) (Output, error) {
+func GetPrayer(source Source, key CacheKey) (Output, error) {
 	now := time.Now().In(time.Local)
 	nowFormatted := now.Format("02 Jan 2006")
 
-	data, err := getData(source, loc, now)
+	data, err := getData(source, key, now)
 	if err != nil {
 		return Output{}, err
 	}

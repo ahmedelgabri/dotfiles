@@ -124,13 +124,15 @@ func runMawaqit() {
 		return
 	}
 
-	loc := shared.CacheLocation{
+	key := shared.CacheKey{
+		Source:  "mawaqit",
+		Mosque:  params.Mosque,
 		City:    config.ResolveString(*city, "", ""),
 		Country: config.ResolveString(*country, "", ""),
 	}
 
 	s := mawaqit.New(params)
-	result, err := shared.GetPrayer(s, loc)
+	result, err := shared.GetPrayer(s, key)
 	if err != nil {
 		fatal("%s", err)
 	}
@@ -170,13 +172,14 @@ func runAladhan() {
 		Tune:    config.ResolveString(*tune, cfg.Aladhan.Tune, "ALADHAN_TUNE"),
 	}
 
-	loc := shared.CacheLocation{
+	key := shared.CacheKey{
+		Source:  "aladhan",
 		City:    resolvedCity,
 		Country: resolvedCountry,
 	}
 
 	s := aladhan.New(params)
-	result, err := shared.GetPrayer(s, loc)
+	result, err := shared.GetPrayer(s, key)
 	if err != nil {
 		fatal("%s", err)
 	}

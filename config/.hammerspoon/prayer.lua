@@ -147,7 +147,49 @@ local function dateStamp(now)
 	return os.date('%d-%m-%Y', now or os.time())
 end
 
-local function cachePathForLocation(locationData, now)
+local CACHE_PREFIX = '.prayer-'
+local MAWAQIT_PREFIX = CACHE_PREFIX .. 'mawaqit'
+
+-- Cache files are named `.prayer-<source>[_<mosque>][_<city>_<country>]_<date>.json`
+-- by next-prayer's shared.cacheFilename; the mosque part is unknown here, so
+-- today's files are discovered by scanning the cache directory instead of
+-- computing exact paths.
+local function todayCacheFiles(now)
+	local dir = ensureTrailingSlash(M.settings.cacheDir)
+	local suffix = '_' .. dateStamp(now) .. '.json'
+	local files = {}
+
+	local ok, iter, dirObj = pcall(hs.fs.dir, dir)
+	if not ok or type(iter) ~= 'function' then
+		return files
+	end
+
+	for file in iter, dirObj do
+		if
+			file:sub(1, #CACHE_PREFIX) == CACHE_PREFIX
+			and file:sub(-#suffix) == suffix
+		then
+			table.insert(files, file)
+		end
+	end
+
+	table.sort(files)
+	return files
+end
+
+-- Mawaqit caches hold mosque-specific times, so they win over Aladhan's
+-- city-level calculation when both exist for the same day.
+local function pickCacheFile(files)
+	for _, file in ipairs(files) do
+		if file:sub(1, #MAWAQIT_PREFIX) == MAWAQIT_PREFIX then
+			return file
+		end
+	end
+
+	return files[1]
+end
+
+local function locationTag(locationData)
 	if type(locationData) ~= 'table' then
 		return nil
 	end
@@ -160,41 +202,40 @@ local function cachePathForLocation(locationData, now)
 		return nil
 	end
 
-	return ensureTrailingSlash(M.settings.cacheDir)
-		.. '.prayer-'
-		.. city
-		.. '_'
-		.. country
-		.. '_'
-		.. dateStamp(now)
-		.. '.json'
-end
-
-local function genericCachePath(now)
-	return ensureTrailingSlash(M.settings.cacheDir)
-		.. '.prayer-'
-		.. dateStamp(now)
-		.. '.json'
+	return '_' .. city .. '_' .. country .. '_'
 end
 
 local function findCache(now)
 	local locationData = readJson(M.settings.locationPath)
-	local locationCache = cachePathForLocation(locationData, now)
+	local files = todayCacheFiles(now)
+	local tag = locationTag(locationData)
 
-	if locationCache then
-		if pathExists(locationCache) then
-			return locationCache, locationData, locationCache
+	-- When the location is known, only caches for that location are usable;
+	-- anything else is stale data from somewhere the user no longer is.
+	if tag then
+		local matching = {}
+		for _, file in ipairs(files) do
+			if file:find(tag, 1, true) then
+				table.insert(matching, file)
+			end
 		end
-
-		return nil, locationData, locationCache
+		files = matching
 	end
 
-	local cachePath = genericCachePath(now)
-	if pathExists(cachePath) then
-		return cachePath, locationData, cachePath
+	local dir = ensureTrailingSlash(M.settings.cacheDir)
+	local chosen = pickCacheFile(files)
+	if chosen then
+		return dir .. chosen, locationData, dir .. chosen
 	end
 
-	return nil, locationData, cachePath
+	-- No usable cache; return a stable identifier so fetch cooldown tracking
+	-- has something to key on.
+	local expected = dir
+		.. CACHE_PREFIX
+		.. (tag or '_')
+		.. dateStamp(now)
+		.. '.json'
+	return nil, locationData, expected
 end
 
 local function timingValue(timings, key)
