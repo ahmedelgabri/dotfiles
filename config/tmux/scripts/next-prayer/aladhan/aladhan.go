@@ -74,7 +74,7 @@ func (a aladhan) GetAPI() (shared.ApiData, error) {
 	if a.params.Country == "" {
 		return shared.ApiData{}, fmt.Errorf("aladhan country is required")
 	}
-	if a.params.Method == 0 {
+	if a.params.Method < 0 {
 		return shared.ApiData{}, fmt.Errorf("aladhan method is required")
 	}
 

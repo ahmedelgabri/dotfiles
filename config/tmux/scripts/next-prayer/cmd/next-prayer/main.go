@@ -144,7 +144,7 @@ func runAladhan() {
 	configPath := fs.String("config", "", "Config file path override")
 	city := fs.String("city", "", "City name")
 	country := fs.String("country", "", "Country name or code")
-	method := fs.Int("method", 0, "Calculation method")
+	method := fs.Int("method", -1, "Calculation method")
 	tune := fs.String("tune", "", "Prayer time tuning")
 	help := fs.Bool("help", false, "Print help")
 

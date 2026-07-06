@@ -20,8 +20,10 @@ type MawaqitConfig struct {
 type AladhanConfig struct {
 	City    string `toml:"city"`
 	Country string `toml:"country"`
-	Method  int    `toml:"method"`
-	Tune    string `toml:"tune"`
+	// Pointer so an absent key is distinguishable from method 0 (Jafari),
+	// which is a valid Aladhan calculation method.
+	Method *int   `toml:"method"`
+	Tune   string `toml:"tune"`
 }
 
 type Config struct {
@@ -94,21 +96,23 @@ func ResolveFloat64(flag float64, cfgVal float64, envKey string) float64 {
 	return v
 }
 
-// ResolveInt returns the first non-zero value from: flag, config, env var.
-func ResolveInt(flag int, cfgVal int, envKey string) int {
-	if flag != 0 {
+// ResolveInt returns the first set value from: flag, config, env var.
+// Negative values mean "unset" so 0 stays usable as a real value; it
+// returns -1 when nothing resolves.
+func ResolveInt(flag int, cfgVal *int, envKey string) int {
+	if flag >= 0 {
 		return flag
 	}
-	if cfgVal != 0 {
-		return cfgVal
+	if cfgVal != nil {
+		return *cfgVal
 	}
 	s := os.Getenv(envKey)
 	if s == "" {
-		return 0
+		return -1
 	}
 	v, err := strconv.Atoi(s)
 	if err != nil {
-		return 0
+		return -1
 	}
 	return v
 }
