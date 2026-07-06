@@ -14,14 +14,14 @@ import (
 var version string
 
 func formatOutput(output shared.Output) string {
-	red := "\033[1;31;40m"
+	red, reset := "\033[1;31;40m", "\033[0m"
 
 	if _, isTmux := os.LookupEnv("TMUX"); isTmux {
-		red = "#[fg=red]"
+		red, reset = "#[fg=red]", "#[default]"
 	}
 
 	if output.TimeRemaining > -1 && output.TimeRemaining <= 30 {
-		return red + output.Item
+		return red + output.Item + reset
 	}
 
 	return output.Item
