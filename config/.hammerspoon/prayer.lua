@@ -726,18 +726,14 @@ local function startCacheFetch(cachePath, force)
 	}
 
 	local shell = expandPath(M.settings.cacheFetchShell or '/bin/zsh')
-	local task = hs.task.new(
-		shell,
-		function(exitCode, stdout, stderr)
-			finishCacheFetch(cachePath, requestedAt, exitCode, stdout, stderr)
-		end,
-		{
-			'-lc',
-			'exec "$1"',
-			'get-prayer',
-			command,
-		}
-	)
+	local task = hs.task.new(shell, function(exitCode, stdout, stderr)
+		finishCacheFetch(cachePath, requestedAt, exitCode, stdout, stderr)
+	end, {
+		'-lc',
+		'exec "$1"',
+		'get-prayer',
+		command,
+	})
 	if not task then
 		recordCacheFetchFailure(cachePath, 'failed to create get-prayer task')
 		return false
