@@ -107,7 +107,7 @@ type mawaqit struct {
 	params Params
 }
 
-func New(params Params) mawaqit {
+func New(params Params) shared.Source {
 	return mawaqit{params: params}
 }
 

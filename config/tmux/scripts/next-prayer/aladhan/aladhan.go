@@ -45,7 +45,7 @@ type aladhan struct {
 	params Params
 }
 
-func New(params Params) aladhan {
+func New(params Params) shared.Source {
 	return aladhan{params: params}
 }
 

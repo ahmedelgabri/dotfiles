@@ -1,7 +1,9 @@
 package config
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -57,7 +59,7 @@ func Load(path string) (Config, error) {
 	var cfg Config
 	_, err := toml.DecodeFile(p, &cfg)
 	if err != nil {
-		if os.IsNotExist(err) {
+		if errors.Is(err, fs.ErrNotExist) {
 			return Config{}, nil
 		}
 		return Config{}, fmt.Errorf("failed to load config %s: %w", p, err)
