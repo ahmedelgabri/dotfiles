@@ -69,35 +69,49 @@ type Params struct {
 	Mosque    string
 }
 
-func getToken(user string, pass string) (string, error) {
-	client := &http.Client{}
-	url := fmt.Sprintf("%s/me", base)
+// fetchJSON performs a GET request with the given extra headers and
+// unmarshals the JSON response into out.
+func fetchJSON(url string, headers map[string]string, out any) error {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
-		return "", fmt.Errorf("failed to create auth request: %w", err)
+		return fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(user+":"+pass))))
+	for k, v := range headers {
+		req.Header.Add(k, v)
+	}
 
-	resp, err := client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", fmt.Errorf("auth request failed: %w", err)
+		return fmt.Errorf("request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("auth failed with status %d", resp.StatusCode)
+		return fmt.Errorf("request failed with status %d", resp.StatusCode)
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", fmt.Errorf("failed to read auth response: %w", err)
+		return fmt.Errorf("failed to read response: %w", err)
 	}
 
+	if err := json.Unmarshal(body, out); err != nil {
+		return fmt.Errorf("failed to parse response: %w", err)
+	}
+
+	return nil
+}
+
+func getToken(user string, pass string) (string, error) {
+	basic := base64.StdEncoding.EncodeToString([]byte(user + ":" + pass))
+
 	var obj Login
-	if err := json.Unmarshal(body, &obj); err != nil {
-		return "", fmt.Errorf("failed to parse auth response: %w", err)
+	if err := fetchJSON(fmt.Sprintf("%s/me", base), map[string]string{
+		"Authorization": fmt.Sprintf("Basic %s", basic),
+	}, &obj); err != nil {
+		return "", fmt.Errorf("auth: %w", err)
 	}
 
 	return obj.APIAccessToken, nil
@@ -135,34 +149,13 @@ Examples
 }
 
 func searchMosques(token string, lat float64, lon float64) (Response, error) {
-	client := &http.Client{}
 	url := fmt.Sprintf("%s/mosque/search?lat=%f&lon=%f", base, lat, lon)
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create search request: %w", err)
-	}
-
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("mosque search request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("mosque search failed with status %d", resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read search response: %w", err)
-	}
 
 	var mosques Response
-	if err := json.Unmarshal(body, &mosques); err != nil {
-		return nil, fmt.Errorf("failed to parse search response: %w", err)
+	if err := fetchJSON(url, map[string]string{
+		"Authorization": token,
+	}, &mosques); err != nil {
+		return nil, fmt.Errorf("mosque search: %w", err)
 	}
 
 	return mosques, nil
