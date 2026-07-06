@@ -6,6 +6,8 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
+	"net/url"
+	"strconv"
 
 	shared "github.com/ahmedelgabri/dotfiles/config/tmux/scripts/next-prayer/shared"
 )
@@ -77,10 +79,14 @@ func (a aladhan) GetAPI() (shared.ApiData, error) {
 	}
 
 	client := &http.Client{}
-	url := fmt.Sprintf("https://api.aladhan.com/v1/timingsByCity?city=%s&country=%s&method=%d&tune=%s",
-		a.params.City, a.params.Country, a.params.Method, a.params.Tune)
+	query := url.Values{}
+	query.Set("city", a.params.City)
+	query.Set("country", a.params.Country)
+	query.Set("method", strconv.Itoa(a.params.Method))
+	query.Set("tune", a.params.Tune)
+	apiURL := "https://api.aladhan.com/v1/timingsByCity?" + query.Encode()
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest(http.MethodGet, apiURL, nil)
 	if err != nil {
 		return shared.ApiData{}, fmt.Errorf("failed to create request: %w", err)
 	}
@@ -106,6 +112,10 @@ func (a aladhan) GetAPI() (shared.ApiData, error) {
 	var obj Response
 	if err := json.Unmarshal(body, &obj); err != nil {
 		return shared.ApiData{}, fmt.Errorf("failed to parse response: %w", err)
+	}
+
+	if obj.Code != http.StatusOK {
+		return shared.ApiData{}, fmt.Errorf("aladhan API returned code %d: %s", obj.Code, obj.Status)
 	}
 
 	return shared.ApiData{
