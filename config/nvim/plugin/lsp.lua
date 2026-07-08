@@ -69,6 +69,17 @@ pack.add {
 				root_markers = { '.git' },
 			})
 
+			vim.lsp.config('docker_language_server', {
+				init_options = {
+					telemetry = 'off',
+					-- both this server and dockerls lint Dockerfiles, so drop
+					-- the duplicated diagnostics
+					dockerfileExperimental = {
+						removeOverlappingIssues = true,
+					},
+				},
+			})
+
 			local servers = {
 				{ 'cssls', 'vscode-css-language-server' },
 				{ 'stylelint_lsp', 'stylelint-lsp' },
@@ -84,6 +95,7 @@ pack.add {
 
 				{ 'dockerls', 'docker-langserver' },
 				{ 'docker_compose_language_service' },
+				{ 'docker_language_server', 'docker-language-server' },
 
 				{ 'ty' },
 				{ 'ruff' },

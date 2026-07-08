@@ -40,6 +40,7 @@ let
               bash-language-server
               dockerfile-language-server
               docker-compose-language-service
+              docker-language-server
               vtsls
               yaml-language-server
               tailwindcss-language-server
