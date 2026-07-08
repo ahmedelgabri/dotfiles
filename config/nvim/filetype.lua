@@ -28,7 +28,7 @@ vim.filetype.add {
 		['[jt]sconfig*.json'] = 'json5',
 		['.*/%.vscode/.*%.json'] = 'json5',
 		-- INFO: Match filenames like - ".env.example", ".env.local" and so on
-		-- needed to make dotenv-linter with null-ls works correctly
+		-- needed to make dotenv-linter with nvim-lint works correctly
 		['%.env%.[%w_.-]+'] = 'dotenv',
 		['.*%.gradle'] = 'groovy',
 		['.*/%.github/.*%.y*ml'] = 'yaml.github',

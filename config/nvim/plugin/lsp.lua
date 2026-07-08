@@ -487,36 +487,6 @@ pack.add {
 			})
 		end,
 	},
-	{ src = 'https://github.com/nvim-lua/plenary.nvim' },
-	{
-		src = 'https://github.com/nvimtools/none-ls.nvim',
-		event = { 'LspAttach' },
-		config = function()
-			local nls = require 'null-ls'
-			nls.setup {
-				debug = false,
-				debounce = 150,
-				sources = {
-					nls.builtins.diagnostics.zsh,
-					nls.builtins.diagnostics.hadolint,
-					nls.builtins.diagnostics.statix,
-					nls.builtins.diagnostics.dotenv_linter.with {
-						filetypes = { 'dotenv' },
-						extra_args = { '--skip', 'UnorderedKey' },
-					},
-					nls.builtins.diagnostics.actionlint.with {
-						condition = function()
-							local cwd = vim.fn.expand '%:p:.'
-							return cwd:find '.github/'
-						end,
-					},
-					nls.builtins.code_actions.gitrebase,
-					nls.builtins.code_actions.statix,
-					nls.builtins.hover.dictionary,
-				},
-			}
-		end,
-	},
 	{
 		src = 'https://github.com/rachartier/tiny-code-action.nvim',
 		event = { 'LspAttach' },
