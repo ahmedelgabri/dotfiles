@@ -39,7 +39,7 @@ url = ""
 [ui]
 # better tool support, syntax highlighting and one less thing to relearn
 conflict-marker-style = "git"
-default-command = ["log", "-T", "builtin_log_oneline", "--no-pager"]
+default-command = ["log"]
 diff-formatter = ":git"
 pager = ["delta_"]
 # diff-editor = ":builtin"
@@ -193,7 +193,7 @@ if(commit.root(),
         format_short_commit_id(commit.commit_id()),
         format_commit_labels(commit),
         if(config("ui.show-cryptographic-signatures").as_boolean(),
-          format_short_cryptographic_signature(commit.signature())
+          format_short_cryptographic_signature(commit.signature()) ++ " "
         ),
         if(commit.empty(), empty_commit_marker),
         if(commit.description(),
