@@ -179,6 +179,11 @@ let
               ShowRemovableMediaOnDesktop = true;
               _FXSortFoldersFirst = true;
             };
+            "com.apple.dock" = {
+              # make the MacOS app switcher appear on all displays
+              # https://til.codeinthehole.com/posts/how-to-make-the-macos-app-switcher-appear-on-all-displays/
+              appswitcher-all-displays = true;
+            };
             "com.apple.desktopservices" = {
               # Avoid creating .DS_Store files on network or USB volumes
               DSDontWriteNetworkStores = true;
