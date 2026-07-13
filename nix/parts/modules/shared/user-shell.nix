@@ -189,8 +189,7 @@ let
                       poppler-utils # to preview PDFs as text
                       newsraft
                       circumflex # HN CLI reader
-                    ]
-                    ++ (lib.optional stdenv.isDarwin terminal-notifier);
+                    ];
                 };
               };
 
@@ -464,6 +463,11 @@ let
           imports = [ commonModule ];
 
           config = {
+            # terminal-notifier's nixpkgs source build fails: the current
+            # cctools `ld` crashes at the link step. The Homebrew bottle is a
+            # native arm64 binary prebuilt with Apple's real toolchain.
+            homebrew.brews = [ "terminal-notifier" ];
+
             system.activationScripts.postActivation.text = lib.mkAfter ''
               if dscl . -read /Users/${config.my.username} UserShell | grep -qv "/run/current-system/sw/bin/zsh"; then
                 echo ":: -> Changing Shell..."
