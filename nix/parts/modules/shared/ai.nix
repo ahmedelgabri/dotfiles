@@ -7,6 +7,7 @@ let
       }:
       {
         environment.variables = {
+          CLAUDE_CODE_TMPDIR = "$HOME/.claude/agent-tmp-stuff";
           PI_CODING_AGENT_DIR = "$HOME/.config/pi/agent";
         };
 

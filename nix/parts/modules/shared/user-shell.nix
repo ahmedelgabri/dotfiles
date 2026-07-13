@@ -136,7 +136,6 @@ let
                     ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
                     WORK = "$HOME/${devFolder}/work";
                     _ZO_DATA_DIR = "${xdg.configHome}/zoxide";
-                    CLAUDE_CODE_TMPDIR = "$HOME/${devFolder}/agent-stuff";
                   };
 
                 systemPackages = with pkgs; [
