@@ -47,14 +47,16 @@ let
           extensions = [ "${myConfig.hostConfigHome}/pi/extensions" ];
           skills = [ "${myConfig.hostConfigHome}/pi/skills" ];
         };
-        mkSyncSettings = target: config.lib.dag.entryAfter [ "writeBoundary" ] ''
-          BK="${target}.bk"
-          TARGET="${target}"
-          if [ -f "$BK" ] || [ -L "$BK" ]; then
-            rm -f "$TARGET"
-            cp "$BK" "$TARGET"
-          fi
-        '';
+        mkSyncSettings =
+          target:
+          config.lib.dag.entryAfter [ "writeBoundary" ] ''
+            BK="${target}.bk"
+            TARGET="${target}"
+            if [ -f "$BK" ] || [ -L "$BK" ]; then
+              rm -f "$TARGET"
+              cp "$BK" "$TARGET"
+            fi
+          '';
       in
       {
         xdg.configFile."pi/agent/extensions" = {

@@ -109,6 +109,5 @@
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs =
-    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./nix/parts/flake/default.nix;
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./nix/parts/flake/default.nix;
 }
