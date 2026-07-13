@@ -16,9 +16,7 @@ let
         packages = with pkgs; [
           llm-agents.amp
           llm-agents.opencode
-          colima
           docker
-          podman
         ];
       };
 
