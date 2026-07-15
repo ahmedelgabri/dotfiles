@@ -17,12 +17,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."tmux" = {
-        recursive = true;
-        source = ../../../../config/tmux;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/tmux;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/tmux";
+          targetRoot = "tmux";
+        };
       };
-    };
   };
 in
 {
