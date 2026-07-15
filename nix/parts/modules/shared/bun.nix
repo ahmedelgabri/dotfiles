@@ -20,14 +20,12 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile = {
-        ".bunfig.toml" = {
-          recursive = true;
-          source = ../../../../config/bun/.bunfig.toml;
-        };
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile.".bunfig.toml".source =
+          config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/bun/.bunfig.toml";
       };
-    };
   };
 in
 {
