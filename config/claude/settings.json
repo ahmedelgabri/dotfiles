@@ -1,5 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-settings.json",
+	"cleanupPeriodDays": 99999,
 	"env": {
 		"BASH_DEFAULT_TIMEOUT_MS": "120000",
 		"CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
@@ -11,148 +12,11 @@
 		"DISABLE_TELEMETRY": "1",
 		"USE_BUILTIN_RIPGREP": "0"
 	},
-	"alwaysThinkingEnabled": true,
 	"includeCoAuthoredBy": false,
-	"cleanupPeriodDays": 99999,
-	"model": "opus[1m]",
 	"permissions": {
-		"defaultMode": "auto",
-		"allow": [
-			"Bash(fd:*)",
-			"Bash(rg:*)",
-			"Bash(find:*)",
-			"Bash(grep:*)",
-			"Bash(cat:*)",
-			"Bash(bat:*)",
-			"Bash(yarn:*)",
-			"Bash(pnpm:*)",
-			"Bash(mkdir:*)",
-			"Bash(echo:*)",
-			"Bash(tail:*)",
-			"Bash(head:*)",
-			"Bash(cd:*)",
-			"Bash(uniq:*)",
-			"Bash(sort:*)",
-			"Bash(awk:*)",
-			"Bash(pwd:*)",
-			"Bash(nix flake check:*)",
-			"Bash(nix flake show:*)",
-			"Bash(nix fmt:*)",
-			"Bash(command git:*)",
-			"Bash(git:*)",
-			"Bash(gh pr view:*)",
-			"Bash(gh issue view:*)",
-			"Bash(gh repo view:*)",
-			"Bash(gh run view:*)",
-			"Bash(gh run list:*)",
-			"Bash(jj diff:*)",
-			"Bash(jj evolog:*)",
-			"Bash(jj gr:*)",
-			"Bash(jj last:*)",
-			"Bash(jj log:*)",
-			"Bash(jj o:*)",
-			"Bash(jj oo:*)",
-			"Bash(jj op log:*)",
-			"Bash(jj st:*)",
-			"Bash(jj status:*)",
-			"Bash(jj show:*)",
-			"Skill(git-commit)",
-			"Skill(jj-commit)",
-			"Skill(jj-version-control)",
-			"Bash(ast-grep:*)",
-			"Bash(grit:*)",
-			"Bash(make:*)",
-			"WebSearch",
-			"Read(~/.claude/host/*.md)",
-			"Bash(jq:*)",
-			"Bash(himalaya message move Archive:*)"
-		],
-		"deny": [
-			"Glob",
-			"Grep",
-			"Read(**/.bashrc)",
-			"Read(**/.env)",
-			"Read(**/.env.*)",
-			"Read(**/.envrc)",
-			"Read(**/.git)",
-			"Read(**/.profile)",
-			"Read(**/.zshenv)",
-			"Read(**/.zshrc)",
-			"Read(/etc/zprofile)",
-			"Read(/etc/zshenv)",
-			"Read(/etc/zshrc)",
-			"Read(**/.zsh_history)",
-			"Read(**/node_modules)",
-			"Write(**/.bashrc)",
-			"Write(**/.env)",
-			"Write(**/.env.*)",
-			"Write(**/.envrc)",
-			"Write(**/.profile)",
-			"Write(**/.zshenv)",
-			"Write(**/.zshrc)",
-			"Write(/etc/zprofile)",
-			"Write(/etc/zshenv)",
-			"Write(/etc/zshrc)",
-			"Write(**/.zsh_history)"
-		],
-		"ask": [
-			"Bash(cp:*)",
-			"Bash(curl:*)",
-			"Bash(mv:*)",
-			"Bash(node:*)",
-			"Bash(rm:*)",
-			"Bash(ssh:*)",
-			"Bash(su:*)",
-			"Bash(sudo:*)",
-			"Bash(wget:*)",
-			"Bash(xargs:*)",
-			"Bash(gh repo delete *)",
-			"Bash(gh secret delete *)",
-			"Bash(gh secret set *)",
-			"Bash(git branch:*)",
-			"Bash(git checkout:*)",
-			"Bash(git clean:*)",
-			"Bash(git filter-branch:*)",
-			"Bash(git gc:*)",
-			"Bash(git prune:*)",
-			"Bash(git push:*)",
-			"Bash(git rebase:*)",
-			"Bash(git reflog:*)",
-			"Bash(git reset:*)",
-			"Bash(git restore:*)",
-			"Bash(command git branch:*)",
-			"Bash(command git checkout:*)",
-			"Bash(command git clean:*)",
-			"Bash(command git filter-branch:*)",
-			"Bash(command git gc:*)",
-			"Bash(command git prune:*)",
-			"Bash(command git push:*)",
-			"Bash(command git rebase:*)",
-			"Bash(command git reflog:*)",
-			"Bash(command git reset:*)",
-			"Bash(command git restore:*)"
-		]
+		"defaultMode": "auto"
 	},
-	"enabledPlugins": {
-		"claude-md-management@claude-plugins-official": true,
-		"feature-dev@claude-plugins-official": true,
-		"hookify@claude-plugins-official": true,
-		"skill-creator@claude-plugins-official": true,
-		"frontend-design@claude-plugins-official": true,
-		"qmd@qmd": true
-	},
-	"extraKnownMarketplaces": {
-		"qmd": {
-			"source": {
-				"source": "github",
-				"repo": "tobi/qmd"
-			}
-		}
-	},
-	"statusLine": {
-		"type": "command",
-		"command": "~/.claude/scripts/statusline.sh"
-	},
+	"model": "claude-fable-5[1m]",
 	"hooks": {
 		"SessionStart": [
 			{
@@ -181,8 +45,8 @@
 					{
 						"type": "command",
 						"command": "~/.claude/hooks/inject-repo-info.sh",
-						"asyncRewake": true,
-						"statusMessage": "Loading repo VCS info…"
+						"statusMessage": "Loading repo VCS info…",
+						"asyncRewake": true
 					}
 				]
 			}
@@ -298,5 +162,26 @@
 				]
 			}
 		]
-	}
+	},
+	"statusLine": {
+		"type": "command",
+		"command": "~/.claude/scripts/statusline.sh"
+	},
+	"enabledPlugins": {
+		"claude-md-management@claude-plugins-official": true,
+		"feature-dev@claude-plugins-official": true,
+		"hookify@claude-plugins-official": true,
+		"skill-creator@claude-plugins-official": true,
+		"frontend-design@claude-plugins-official": true,
+		"qmd@qmd": true
+	},
+	"extraKnownMarketplaces": {
+		"qmd": {
+			"source": {
+				"source": "github",
+				"repo": "tobi/qmd"
+			}
+		}
+	},
+	"alwaysThinkingEnabled": true
 }
