@@ -148,7 +148,7 @@ let
         imports = [ module.commonModule ];
         config = {
           homebrew = {
-            brews = [ "cirruslabs/cli/tart" ];
+            brews = [ "openai/tools/tart" ];
             casks = [
               "claude"
               "codex-app"

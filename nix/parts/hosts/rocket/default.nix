@@ -51,7 +51,7 @@ let
       homebrew = {
         taps = [
           "atlassian-labs/acli"
-          "cirruslabs/cli"
+          "openai/tools"
           "JetBrains/homebrew-utils"
           "docker/homebrew-tap"
         ];
