@@ -40,14 +40,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile = {
-        "pnpm" = {
-          recursive = true;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/pnpm;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/pnpm";
+          targetRoot = "pnpm";
         };
       };
-    };
   };
 in
 {
