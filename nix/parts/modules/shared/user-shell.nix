@@ -32,6 +32,12 @@ let
           fzfPreviewCommand = "COLORTERM=truecolor previewer {}";
           fzfCtrlTCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
 
+          # Single source for listing colors: "eza:"-prefixed lines become
+          # EZA_COLORS (eza-only UI keys), the rest become LS_COLORS.
+          listingColorLines = lib.filter (l: l != "" && !lib.hasPrefix "#" l) (
+            lib.splitString "\n" (builtins.readFile ../../../../config/zsh.d/ls_colors)
+          );
+
           zshInteractiveLocalVars = {
             CDPATH = ".:${home}:${home}/${devFolder}";
             KEYTIMEOUT = "1";
@@ -39,7 +45,11 @@ let
           };
 
           zshInteractiveExportedVars = {
-            EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:da=2";
+            # ANSI colors follow the terminal's dark/light palette automatically.
+            EZA_COLORS = lib.concatStringsSep ":" (
+              map (lib.removePrefix "eza:") (lib.filter (lib.hasPrefix "eza:") listingColorLines)
+            );
+            LS_COLORS = lib.concatStringsSep ":" (lib.filter (l: !lib.hasPrefix "eza:" l) listingColorLines);
             EZA_ICON_SPACING = "2";
             FZF_PREVIEW_COMMAND = fzfPreviewCommand;
             FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
@@ -51,10 +61,7 @@ let
             FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
           };
 
-          zshInteractiveRawExportedVars = {
-            # ANSI colors follow the terminal's dark/light palette automatically.
-            LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ansi)"'';
-          };
+          zshInteractiveRawExportedVars = { };
         in
         {
           config = lib.mkMerge [
@@ -177,7 +184,6 @@ let
                     hcron
                     shellcheck
                     shfmt # Doesn't work with zsh, only sh & bash
-                    vivid
                     zsh-completions
                     zsh-history-substring-search
                     (imagemagick.override {

@@ -1,0 +1,210 @@
+# LS_COLORS entries, one per line. user-shell.nix joins them with ":" at build
+# time and exports the result, so changes apply on the next rebuild switch.
+#
+# Each line is `<key>=<style>` where <key> is a two-letter file class or a
+# *glob, and <style> is a ";"-separated list of ANSI SGR attributes:
+#
+#   0       default foreground
+#   1       bold
+#   2       dim
+#   3       italic
+#   4       underline
+#   30-37   foreground from palette slot 0-7
+#           (black, red, green, yellow, blue, magenta, cyan, white)
+#   90-97   foreground from bright slot 8-15
+#   38;5;N  foreground from palette slot N (38;5;8 = gray, 38;5;11 = bright
+#           yellow); clearer than 90-97 when the slot number matters
+#
+# Attributes compose: "1;4;32" = bold underlined green. Palette slots only, no
+# truecolor, so everything follows the plain dark/light terminal palettes.
+#
+# The most specific pattern wins. This file is the single source of truth for
+# listing colors: lines prefixed "eza:" are routed into EZA_COLORS instead of
+# LS_COLORS (see the last section), so eza renders files exactly like ls does,
+# plus its own UI colors on top.
+#
+# Seeded from `vivid generate ansi` with the `*.ext=0` no-op entries stripped.
+# Deviations from the seed: agent/readme docs in bright yellow, lockfiles gray,
+# and the image and build-file groups promoted from eza's built-in styles.
+
+# File classes: di=directory, ln=symlink, or=orphaned symlink, mi=missing link
+# target, ex=executable, pi=fifo, so=socket, do=door, bd/cd=block/char device,
+# st/tw/ow=sticky/other-writable dirs, sg/su=setgid/setuid.
+di=0;34
+ln=3;36
+or=3;31
+mi=1;31
+ex=1;33
+pi=0;35
+so=1;35
+do=1;35
+bd=1;4;32
+cd=1;32
+st=1;34
+tw=1;4;34
+ow=4;34
+sg=1;4;33
+su=1;4;33
+
+# Backup, swap, and partial files.
+*~=2
+*.bak=2
+*.orig=2
+*.swn=2
+*.swo=2
+*.swp=2
+*.tmp=2
+*.part=2
+*.aria2=2
+
+# Compiled objects and bytecode.
+*.o=2
+*.bc=2
+*.hi=2
+*.la=2
+*.lo=2
+*.class=2
+*.dyn_hi=2
+*.dyn_o=2
+*.pyc=2
+*.pyd=2
+*.pyo=2
+*.rlib=2
+*.rmeta=2
+
+# LaTeX intermediates.
+*.aux=2
+*.bbl=2
+*.bcf=2
+*.blg=2
+*.fdb_latexmk=2
+*.fls=2
+*.idx=2
+*.ilg=2
+*.ind=2
+*.out=2
+*.sty=2
+*.synctex.gz=2
+*.toc=2
+
+# Logs, caches, dumps, and other generated state.
+*.cache=2
+*.ctags=2
+*.dmp=2
+*.dump=2
+*.log=2
+*.pcap=2
+*.pid=2
+*.state=2
+*.tfstate=2
+*.timestamp=2
+*go.sum=2
+*stderr=2
+*stdin=2
+*stdout=2
+
+# Build-system leftovers.
+*.scons_opt=2
+*.sconsign.dblite=2
+*CMakeCache.txt=2
+*Makefile.in=2
+
+# VCS and macOS metadata.
+*.git=2
+*.github=2
+*.CFUserTextEncoding=2
+*.DS_Store=2
+*.localized=2
+*.plist=2
+*Icon\r=2
+
+# Lockfiles.
+*.lock=38;5;8
+*.lockfile=38;5;8
+*bun.lockb=38;5;8
+*package-lock.json=38;5;8
+*poetry.lock=38;5;8
+*uv.lock=38;5;8
+
+# DOS/Windows executables.
+*.bat=1;33
+*.com=1;33
+*.exe=1;33
+
+# Notable repo docs.
+*AUTHORS=1
+*CHANGELOG=1
+*CHANGELOG.md=1
+*CHANGELOG.txt=1
+*CHANGES=1
+*CHANGES.md=1
+*CHANGES.txt=1
+*CODE_OF_CONDUCT=1
+*CODE_OF_CONDUCT.md=1
+*CODE_OF_CONDUCT.txt=1
+*CONTRIBUTING=1
+*CONTRIBUTING.md=1
+*CONTRIBUTING.txt=1
+*CONTRIBUTORS=1
+*CONTRIBUTORS.md=1
+*CONTRIBUTORS.txt=1
+*FAQ=1
+*HISTORY=1
+*INSTALL=1
+*INSTALL.md=1
+*INSTALL.txt=1
+*LEGACY=1
+*NOTICE=1
+*README=1
+*README.txt=1
+*TODO=1
+*TODO.md=1
+*TODO.txt=1
+*VERSION=1
+
+# Agent and readme docs.
+*AGENTS.md=38;5;11
+*CLAUDE.md=38;5;11
+*README.md=38;5;11
+
+# Images (promoted from eza's built-ins).
+*.avif=0;35
+*.bmp=0;35
+*.gif=0;35
+*.heic=0;35
+*.ico=0;35
+*.jpeg=0;35
+*.jpg=0;35
+*.png=0;35
+*.svg=0;35
+*.tiff=0;35
+*.webp=0;35
+
+# Build/manifest files you look at first in a repo (promoted from eza's
+# built-ins).
+*Cargo.toml=1;4;33
+*Dockerfile=1;4;33
+*Justfile=1;4;33
+*Makefile=1;4;33
+*flake.nix=1;4;33
+*go.mod=1;4;33
+*justfile=1;4;33
+*package.json=1;4;33
+
+# eza-only UI keys, routed into EZA_COLORS: ur/gr/tr uw/gw/tw ux/ue/gx/tx =
+# user/group/other permission bits (read, write, exec), uu = the current
+# user's name, da = date. "reset" must come first: it disables eza's built-in
+# filetype styles so the entries above are the only file colors.
+eza:reset
+eza:ur=35
+eza:gr=35
+eza:tr=35
+eza:uw=34
+eza:gw=34
+eza:tw=34
+eza:ux=36
+eza:ue=36
+eza:gx=36
+eza:tx=36
+eza:uu=36
+eza:da=2

@@ -339,6 +339,14 @@ default foreground for everything else) via bat's ANSI color encoding; run
 `bat cache --build` after changing it, otherwise bat and delta silently fall
 back to their default theme.
 
+File listing colors come from one checked-in file,
+[`config/zsh.d/ls_colors`](./config/zsh.d/ls_colors), which
+`user-shell.nix` splits at build time: lines prefixed `eza:` become
+`EZA_COLORS` (eza-only UI keys, plus `reset` to disable eza's built-in filetype
+styles) and the rest are joined into `LS_COLORS`, so eza, `ls`, `fd`, and zsh
+completions color files identically. The file header documents the SGR syntax
+and grouping; adding a color for a new extension is a one-line edit.
+
 The dark palette is a restrained
 [Tomorrow Night](https://github.com/tinted-theming/base16-schemes/blob/main/tomorrow-night.yaml)
 derivative. The light palette uses the corresponding Tomorrow family hues with
