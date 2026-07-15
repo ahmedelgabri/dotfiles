@@ -21,12 +21,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."bat" = {
-        recursive = true;
-        source = ../../../../config/bat;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/bat;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/bat";
+          targetRoot = "bat";
+        };
       };
-    };
   };
 in
 {
