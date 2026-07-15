@@ -1,15 +1,21 @@
 let
   module = {
-    homeManager = _: {
-      home.file = {
-        ".gemrc".source = ../../../../config/.gemrc;
-        ".curlrc".source = ../../../../config/.curlrc;
-        ".ignore".source = ../../../../config/.ignore;
-        ".psqlrc".source = ../../../../config/.psqlrc;
-      };
+    homeManager =
+      { config, ... }:
+      let
+        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+      in
+      {
+        home.file = {
+          ".gemrc".source = mkOutOfStoreSymlink "${dotfilesConfig}/.gemrc";
+          ".curlrc".source = mkOutOfStoreSymlink "${dotfilesConfig}/.curlrc";
+          ".ignore".source = mkOutOfStoreSymlink "${dotfilesConfig}/.ignore";
+          ".psqlrc".source = mkOutOfStoreSymlink "${dotfilesConfig}/.psqlrc";
+        };
 
-      xdg.configFile."fd/ignore".text = builtins.readFile ../../../../config/.ignore;
-    };
+        xdg.configFile."fd/ignore".source = mkOutOfStoreSymlink "${dotfilesConfig}/.ignore";
+      };
   };
 in
 {
