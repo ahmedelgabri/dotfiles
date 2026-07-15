@@ -33,7 +33,7 @@ let
       };
 
     homeManager =
-      { myConfig, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = {
           "gnupg/gpg-agent.conf".text = ''
@@ -44,9 +44,8 @@ let
             default-cache-ttl 86400
             max-cache-ttl 86400'';
 
-          "gnupg/gpg.conf".text = ''
-            # ${myConfig.nix_managed}
-            ${builtins.readFile ../../../../config/gnupg/gpg.conf}'';
+          "gnupg/gpg.conf".source =
+            config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/gnupg/gpg.conf";
         };
       };
   };
