@@ -20,7 +20,6 @@ if which atuin &>/dev/null; then
       "--no-multi"
       "--highlight-line"
       "--read0"
-      "--track"
       "--id-nth=3.."
       "--header=CTRL-D directory · CTRL-R all · CTRL-Y copy · ALT-M metadata"
       "--bind=alt-m:change-with-nth(3..|1..),ctrl-y:execute-silent(printf '%s' {3..} | pbcopy)+abort"
