@@ -536,7 +536,6 @@ let
         {
           config,
           pkgs,
-          lib,
           ...
         }:
         let
@@ -561,10 +560,12 @@ let
             }
             // {
               "zsh/.zshrc".text = "";
-              "direnv/direnvrc".text = lib.concatStringsSep "\n" [
-                "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
-                (builtins.readFile ../../../../config/direnv/direnvrc)
-              ];
+              "direnv/direnvrc".text = ''
+                source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
+                source ${config.xdg.configHome}/direnv/direnvrc.local
+              '';
+              "direnv/direnvrc.local".source =
+                config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/direnv/direnvrc";
             };
 
           home.file =
