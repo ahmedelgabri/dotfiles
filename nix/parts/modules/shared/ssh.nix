@@ -1,10 +1,11 @@
 let
   module = {
-    homeManager = _: {
-      home.file.".ssh/config" = {
-        source = ../../../../config/.ssh/config;
+    homeManager =
+      { config, ... }:
+      {
+        home.file.".ssh/config".source =
+          config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/.ssh/config";
       };
-    };
   };
 in
 {
