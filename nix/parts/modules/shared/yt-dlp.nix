@@ -14,12 +14,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."yt-dlp" = {
-        recursive = true;
-        source = ../../../../config/yt-dlp;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/yt-dlp;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/yt-dlp";
+          targetRoot = "yt-dlp";
+        };
       };
-    };
   };
 in
 {
