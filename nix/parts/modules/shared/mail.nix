@@ -584,12 +584,12 @@ let
                 ) cfg.accounts
               )
             ))
+            // config.lib.file.mkOutOfStoreTree {
+              source = ../../../../config/aerc/stylesets;
+              sourceRoot = "${homeDir}/.dotfiles/config/aerc/stylesets";
+              targetRoot = ".config/aerc/stylesets";
+            }
             // {
-              ".config/aerc/stylesets" = {
-                recursive = true;
-                source = ../../../../config/aerc/stylesets;
-              };
-
               ".config/aerc/binds.conf".text =
                 builtins.readFile ../../../../config/aerc/binds.conf
                 + lib.optionalString (remoteAccounts != [ ]) (
@@ -607,8 +607,10 @@ let
                   )
                 );
 
-              ".config/aerc/querymap".source = ../../../../config/aerc/querymap;
-              ".config/aerc/aerc.conf".source = ../../../../config/aerc/aerc.conf;
+              ".config/aerc/querymap".source =
+                config.lib.file.mkOutOfStoreSymlink "${homeDir}/.dotfiles/config/aerc/querymap";
+              ".config/aerc/aerc.conf".source =
+                config.lib.file.mkOutOfStoreSymlink "${homeDir}/.dotfiles/config/aerc/aerc.conf";
 
               ".config/aerc/accounts.conf".text = lib.concatStringsSep "\n" (
                 map (account: ''
