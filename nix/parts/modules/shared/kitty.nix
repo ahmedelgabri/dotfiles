@@ -24,12 +24,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."kitty" = {
-        recursive = true;
-        source = ../../../../config/kitty;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/kitty;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/kitty";
+          targetRoot = "kitty";
+        };
       };
-    };
   };
 in
 {
