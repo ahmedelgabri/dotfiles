@@ -12,6 +12,15 @@
         withEmacs = false;
       };
 
+      stylelint-lsp = prev.stylelint-lsp.override {
+        # pnpm is only used to build the LSP, so its runtime vulnerabilities do not affect the installed package.
+        pnpm_9 = prev.pnpm_9.overrideAttrs (old: {
+          meta = old.meta // {
+            knownVulnerabilities = [ ];
+          };
+        });
+      };
+
       zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (_: {
         version = "latest";
         src = inputs.zsh-history-substring-search;
