@@ -19,14 +19,15 @@ let
       };
 
     homeManager =
-      { inputs, ... }:
+      { config, inputs, ... }:
       {
-        xdg = {
-          configFile = {
-            "ghostty" = {
-              recursive = true;
-              source = ../../../../config/ghostty;
-            };
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/ghostty;
+            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/ghostty";
+            targetRoot = "ghostty";
+          }
+          // {
             "ghostty/shaders" = {
               recursive = true;
               source = "${inputs.ghostty-cursor-shaders}";
@@ -35,7 +36,6 @@ let
               text = "custom-shader = shaders/cursor_tail.glsl";
             };
           };
-        };
       };
   };
 in
