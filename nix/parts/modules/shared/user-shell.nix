@@ -51,7 +51,7 @@ let
             FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --multi --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
           };
 
-          vividTheme = ../../../../config/vivid/theme.yml;
+          vividTheme = "${xdg.configHome}/vivid/theme.yml";
           zshInteractiveRawExportedVars = {
             LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ${vividTheme})"'';
           };
@@ -166,30 +166,28 @@ let
               my = {
                 user = {
                   shell = pkgs.zsh;
-                  packages =
-                    with pkgs;
-                    [
-                      _1password-cli
-                      atuin
-                      # buku
-                      eza
-                      fd
-                      ffmpeg
-                      glow
-                      hcron
-                      shellcheck
-                      shfmt # Doesn't work with zsh, only sh & bash
-                      vivid
-                      zsh-completions
-                      zsh-history-substring-search
-                      (imagemagick.override {
-                        ghostscriptSupport = true;
-                      })
-                      ghostscript # to preview PDFs as images
-                      poppler-utils # to preview PDFs as text
-                      newsraft
-                      circumflex # HN CLI reader
-                    ];
+                  packages = with pkgs; [
+                    _1password-cli
+                    atuin
+                    # buku
+                    eza
+                    fd
+                    ffmpeg
+                    glow
+                    hcron
+                    shellcheck
+                    shfmt # Doesn't work with zsh, only sh & bash
+                    vivid
+                    zsh-completions
+                    zsh-history-substring-search
+                    (imagemagick.override {
+                      ghostscriptSupport = true;
+                    })
+                    ghostscript # to preview PDFs as images
+                    poppler-utils # to preview PDFs as text
+                    newsraft
+                    circumflex # HN CLI reader
+                  ];
                 };
               };
 
@@ -536,35 +534,48 @@ let
       nixos = nixosModule;
       homeManager =
         {
+          config,
           pkgs,
           lib,
           ...
         }:
+        let
+          dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        in
         {
-          xdg.configFile = {
-            "zsh/bin" = {
-              recursive = true;
+          xdg.configFile =
+            config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/zsh.d/zsh/bin;
-            };
-            "zsh/.zshrc".text = "";
-            "direnv/direnvrc".text = lib.concatStringsSep "\n" [
-              "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
-              (builtins.readFile ../../../../config/direnv/direnvrc)
-            ];
-            "vivid" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/zsh.d/zsh/bin";
+              targetRoot = "zsh/bin";
+            }
+            // config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/vivid;
+              sourceRoot = "${dotfilesConfig}/vivid";
+              targetRoot = "vivid";
+            }
+            // config.lib.file.mkOutOfStoreTree {
+              source = ../../../../config/atuin;
+              sourceRoot = "${dotfilesConfig}/atuin";
+              targetRoot = "atuin";
+            }
+            // {
+              "zsh/.zshrc".text = "";
+              "direnv/direnvrc".text = lib.concatStringsSep "\n" [
+                "source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc"
+                (builtins.readFile ../../../../config/direnv/direnvrc)
+              ];
             };
-            "atuin".source = ../../../../config/atuin;
-          };
 
-          home.file = {
-            ".terminfo" = {
-              recursive = true;
+          home.file =
+            config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/.terminfo;
+              sourceRoot = "${dotfilesConfig}/.terminfo";
+              targetRoot = ".terminfo";
+            }
+            // {
+              ".hushlogin".text = "";
             };
-            ".hushlogin".text = "";
-          };
         };
     };
 in
