@@ -25,12 +25,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."mpv" = {
-        recursive = true;
-        source = ../../../../config/mpv;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/mpv;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/mpv";
+          targetRoot = "mpv";
+        };
       };
-    };
   };
 in
 {
