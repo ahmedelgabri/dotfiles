@@ -6,15 +6,20 @@ let
         my.user.packages = with pkgs; [ zk ];
       };
 
-    homeManager = _: {
-      xdg.configFile = {
-        "zk/config.toml".source = ../../../../config/zk/config.toml;
-        "zk/templates" = {
-          recursive = true;
-          source = ../../../../config/zk/templates;
-        };
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/zk/templates;
+            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/zk/templates";
+            targetRoot = "zk/templates";
+          }
+          // {
+            "zk/config.toml".source =
+              config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/zk/config.toml";
+          };
       };
-    };
   };
 in
 {
