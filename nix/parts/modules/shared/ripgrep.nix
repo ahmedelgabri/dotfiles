@@ -17,12 +17,15 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile."ripgrep" = {
-        recursive = true;
-        source = ../../../../config/ripgrep;
+    homeManager =
+      { config, ... }:
+      {
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/ripgrep;
+          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/ripgrep";
+          targetRoot = "ripgrep";
+        };
       };
-    };
   };
 in
 {
