@@ -6,14 +6,10 @@
 	"enabledModels": [
 		"anthropic/claude-fable-5",
 		"anthropic/claude-opus-4-8",
-		"anthropic/claude-opus-4-7",
-		"anthropic/claude-opus-4-6",
 		"anthropic/claude-sonnet-5",
-		"anthropic/claude-sonnet-4-6",
 		"anthropic/claude-haiku-4-5",
 		"google/gemini-3.1-pro-preview",
 		"google/gemini-flash-latest",
-		"openai-codex/gpt-5.5*",
 		"openai-codex/gpt-5.6*"
 	],
 	"showHardwareCursor": true,
@@ -25,5 +21,5 @@
 	"collapseChangelog": false,
 	"quietStartup": false,
 	"treeFilterMode": "default",
-	"theme": "dark"
+	"theme": "plain-dark"
 }

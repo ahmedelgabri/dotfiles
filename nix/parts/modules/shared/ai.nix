@@ -49,6 +49,7 @@ let
         piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
           extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
           skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
+          themes = [ "${dotfilesConfig}/pi/agent/themes" ];
         };
         mkSyncSettings =
           target:

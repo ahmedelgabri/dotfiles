@@ -23,18 +23,33 @@ async function isDarkMode(): Promise<boolean> {
 	}
 }
 
+// Custom plain themes from config/pi/agent/themes; the built-in names are the
+// fallback for machines where those themes are not on the theme path.
+const THEME_BY_MODE = {
+	dark: 'plain-dark',
+	light: 'plain-light',
+} as const
+
+function applyTheme(ctx: {ui: {setTheme: (theme: string) => void}}, mode: 'dark' | 'light') {
+	try {
+		ctx.ui.setTheme(THEME_BY_MODE[mode])
+	} catch {
+		ctx.ui.setTheme(mode)
+	}
+}
+
 export default function (pi: ExtensionAPI) {
 	let intervalId: ReturnType<typeof setInterval> | null = null
 
 	pi.on('session_start', async (_event, ctx) => {
-		let currentTheme = (await isDarkMode()) ? 'dark' : 'light'
-		ctx.ui.setTheme(currentTheme)
+		let currentMode: 'dark' | 'light' = (await isDarkMode()) ? 'dark' : 'light'
+		applyTheme(ctx, currentMode)
 
 		intervalId = setInterval(async () => {
-			const newTheme = (await isDarkMode()) ? 'dark' : 'light'
-			if (newTheme !== currentTheme) {
-				currentTheme = newTheme
-				ctx.ui.setTheme(currentTheme)
+			const newMode = (await isDarkMode()) ? 'dark' : 'light'
+			if (newMode !== currentMode) {
+				currentMode = newMode
+				applyTheme(ctx, currentMode)
 			}
 		}, 5000)
 	})
