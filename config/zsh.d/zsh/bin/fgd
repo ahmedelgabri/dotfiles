@@ -3,7 +3,22 @@ set -ue -o pipefail
 # fgd - delete git branch/tag
 
 fgd() {
-	local tags branches target
+	local tags branches selection type target
+	local fzf_opts=(
+		--reverse
+		--no-hscroll
+		--ansi
+		--no-multi
+		--delimiter=$'\t'
+		--nth=2
+		--header='Select a branch or tag to delete'
+		--preview='git --no-pager log -150 --oneline {2}'
+	)
+
+	if [[ -n ${TMUX-} ]]; then
+		fzf_opts+=("--popup=center,90%,80%" --border=none)
+	fi
+
 	tags=$(
 		git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}'
 	) || return
@@ -12,23 +27,24 @@ fgd() {
 			sed "s/.* //" | sed "s#remotes/[^/]*/##" |
 			sort -u | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}'
 	) || return
-	target=$(
+	selection=$(
 		(
 			echo "$tags"
 			echo "$branches"
-		) |
-			fzf --reverse --no-hscroll --ansi +m -d "\t" -n 2
+		) | fzf "${fzf_opts[@]}"
 	) || return
 
-	if [ "$(echo "$target" | awk '{print $1}')" = "tag" ]; then
-		echo "$(echo "$target" | awk '{print $2}')"
-		git tag -d "$(echo "$target" | awk '{print $2}')"
-	fi
-
-	if [ "$(echo "$target" | awk '{print $1}')" = "branch" ]; then
-		echo "$(echo "$target" | awk '{print $2}')"
-		git branch -D "$(echo "$target" | awk '{print $2}')"
-	fi
+	IFS=$'\t' read -r type target <<<"$selection"
+	case "$type" in
+	tag)
+		echo "$target"
+		git tag -d "$target"
+		;;
+	branch)
+		echo "$target"
+		git branch -D "$target"
+		;;
+	esac
 }
 
 fgd "$@"

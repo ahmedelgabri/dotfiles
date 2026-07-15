@@ -234,7 +234,7 @@
 	# split-diff style review using diffview.nvim
 	review = !$EDITOR +\"DiffviewOpen origin/$(git review-base)...HEAD --imply-local\"
 	# review a single file by commit
-	reviewf = !$EDITOR -p $(git files | fzf) +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges %\"
+	reviewf = "!f() { file=$(git --no-pager diff --name-only -z $(git review-base) | fzf --read0 --no-multi) || return; [ -n \"$file\" ] || return; \"$EDITOR\" -p \"$file\" +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges %\"; }; f"
 	tag = tag -s
 	default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 	bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"

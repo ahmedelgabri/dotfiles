@@ -1,15 +1,28 @@
 #!/usr/bin/env bash
 set -ue -o pipefail
-# vim:ft=bash:
 # ts [FUZZY PATTERN] - Select selected tmux session
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 
-unalias ts 2>/dev/null
+unalias ts 2>/dev/null || true
 ts() {
 	local session
-	session=$(tmux list-sessions -F "#{session_name}" |
-		fzf --query="$1" --select-1 --exit-0) &&
+	local query="${1-}"
+	local fzf_opts=(
+		--query="$query"
+		--select-1
+		--exit-0
+		--no-multi
+		--track
+		--id-nth=..
+		--bind="every(2):reload-sync(tmux list-sessions -F '#{session_name}')"
+	)
+
+	if [[ -n ${TMUX-} ]]; then
+		fzf_opts+=("--popup=center,70%,70%" --border=none)
+	fi
+
+	session=$(tmux list-sessions -F '#{session_name}' | fzf "${fzf_opts[@]}") &&
 		tmux switch-client -t "$session"
 }
 

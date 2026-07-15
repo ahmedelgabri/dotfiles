@@ -5,6 +5,21 @@ set -ue -o pipefail
 
 fco() {
 	local tags branches target
+	local fzf_opts=(
+		--no-hscroll
+		--reverse
+		--no-multi
+		--delimiter=$'\t'
+		--nth=2
+		--accept-nth=2
+		--ansi
+		--preview="git --no-pager log -150 --oneline '..{2}'"
+	)
+
+	if [[ -n ${TMUX-} ]]; then
+		fzf_opts+=("--popup=center,90%,80%" --border=none)
+	fi
+
 	branches=$(git --no-pager branch --all \
 		--format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" |
 		sed '/^$/d') || return
@@ -13,11 +28,9 @@ fco() {
 		(
 			echo "$branches"
 			echo "$tags"
-		) |
-			fzf --no-hscroll --reverse --no-multi -n 2 \
-				--ansi --preview="git --no-pager log -150 --oneline '..{2}'"
+		) | fzf "${fzf_opts[@]}"
 	) || return
-	git checkout "$(awk '{print $2}' <<<"$target")"
+	git checkout "$target"
 }
 
 fco "$@"
