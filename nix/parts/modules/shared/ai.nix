@@ -25,12 +25,33 @@ let
     homeManager =
       {
         config,
+        lib,
         pkgs,
         myConfig,
         ...
       }:
 
       let
+        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        # Keep the parent directories writable so agent-created files can live
+        # alongside the managed files without being moved into the checkout.
+        mkOutOfStoreTree =
+          {
+            source,
+            sourceRoot,
+            targetRoot,
+          }:
+          lib.listToAttrs (
+            map (
+              file:
+              let
+                relative = lib.removePrefix "${toString source}/" (toString file);
+              in
+              lib.nameValuePair "${targetRoot}/${relative}" {
+                source = config.lib.file.mkOutOfStoreSymlink "${sourceRoot}/${relative}";
+              }
+            ) (lib.filesystem.listFilesRecursive source)
+          );
         piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
         piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
         piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
@@ -45,8 +66,8 @@ let
           ln -s ${piCodingAgentNodeModules}/undici-types "$out/undici-types"
         '';
         piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
-          extensions = [ "${myConfig.hostConfigHome}/pi/extensions" ];
-          skills = [ "${myConfig.hostConfigHome}/pi/skills" ];
+          extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
+          skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
         };
         mkSyncSettings =
           target:
@@ -60,17 +81,18 @@ let
           '';
       in
       {
-        xdg.configFile."pi/agent/extensions" = {
-          recursive = true;
-          source = ../../../../config/pi/agent/extensions;
-        };
-
-        xdg.configFile."pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
+        xdg.configFile =
+          mkOutOfStoreTree {
+            source = ../../../../config/pi/agent;
+            sourceRoot = "${dotfilesConfig}/pi/agent";
+            targetRoot = "pi/agent";
+          }
+          // {
+            "pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
+          };
 
         home = {
           activation = {
-            syncAgentSettings = mkSyncSettings "${config.home.homeDirectory}/.claude/settings.json";
-
             linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
               TARGET="${config.home.homeDirectory}/.dotfiles/config/pi/agent/extensions/node_modules"
               SOURCE="${piAgentExtensionNodeModules}"
@@ -88,46 +110,50 @@ let
             syncPiAgentSettings = mkSyncSettings "${config.xdg.configHome}/pi/agent/settings.json";
           };
 
-          file = {
-            ".agents/skills" = {
-              recursive = true;
+          file = lib.mergeAttrsList [
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/skills;
-            };
-
-            ".claude/CLAUDE.md".source = ../../../../config/claude/CLAUDE-template.md;
-
-            ".claude/agents" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/skills";
+              targetRoot = ".agents/skills";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/agents;
-            };
-
-            ".claude/docs" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/agents";
+              targetRoot = ".claude/agents";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/docs;
-            };
-
-            ".claude/commands" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/docs";
+              targetRoot = ".claude/docs";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/commands;
-            };
-
-            ".claude/hooks" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/commands";
+              targetRoot = ".claude/commands";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/hooks;
-            };
-
-            ".claude/scripts" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/hooks";
+              targetRoot = ".claude/hooks";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/scripts;
-            };
-
-            ".claude/skills" = {
-              recursive = true;
+              sourceRoot = "${dotfilesConfig}/claude/scripts";
+              targetRoot = ".claude/scripts";
+            })
+            (mkOutOfStoreTree {
               source = ../../../../config/claude/skills;
-            };
+              sourceRoot = "${dotfilesConfig}/claude/skills";
+              targetRoot = ".claude/skills";
+            })
+            {
+              ".claude/CLAUDE.md".source =
+                config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
 
-            ".claude/settings.json.bk".source = ../../../../config/claude/settings.json;
-          };
+              ".claude/settings.json".source =
+                config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/settings.json";
+            }
+          ];
         };
       };
 
