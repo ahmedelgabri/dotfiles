@@ -1,4 +1,4 @@
---theme="ansi"
+--theme="plain"
 --style="plain,changes"
 --italic-text=always
 --map-syntax '.*ignore:Git Ignore'

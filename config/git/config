@@ -30,7 +30,7 @@
 	singleKey = true
 
 [delta]
-	syntax-theme = ansi
+	syntax-theme = plain
 	navigate = true # use n and N to move between diff sections
 	hyperlinks = true
 	file-modified-label = MODIFIED:
