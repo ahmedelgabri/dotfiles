@@ -307,6 +307,8 @@ label("node",
 "prefix" = { bold = false }
 "change_offset" = { bold = false }
 
+"git_head" = "yellow"
+
 # People → cyan, timestamps → dim, placeholder → red (all were yellow/cyan).
 "author" = "cyan"
 "committer" = "cyan"
