@@ -30,22 +30,29 @@ let
         };
       };
 
-    homeManager = _: {
-      xdg.configFile = {
-        "python" = {
-          recursive = true;
-          source = ../../../../config/python;
-        };
-        "pip" = {
-          recursive = true;
-          source = ../../../../config/pip;
-        };
-        "uv" = {
-          recursive = true;
-          source = ../../../../config/uv;
-        };
+    homeManager =
+      { config, ... }:
+      let
+        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+      in
+      {
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/python;
+            sourceRoot = "${dotfilesConfig}/python";
+            targetRoot = "python";
+          }
+          // config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/pip;
+            sourceRoot = "${dotfilesConfig}/pip";
+            targetRoot = "pip";
+          }
+          // config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/uv;
+            sourceRoot = "${dotfilesConfig}/uv";
+            targetRoot = "uv";
+          };
       };
-    };
   };
 in
 {
