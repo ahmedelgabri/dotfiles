@@ -159,17 +159,19 @@ The default tmux position indicator is suppressed via a `pane-mode-changed` hook
 
 ### Colors
 
-The config uses `bg=terminal` and named ANSI slots throughout so it follows the terminal's dark/light palette without embedding xterm-256 grays.
+The config uses `bg=terminal` and named ANSI slots throughout so it follows the terminal's dark/light palette without embedding xterm-256 grays. Structure (borders, separators, session name) uses `black`, dim text uses `bright black` — see the Color system section in the root README for the slot conventions.
 
-| Element               | ANSI color     |
-| --------------------- | -------------- |
-| Prefix active         | bright blue    |
-| Current window        | blue           |
-| Zoomed window         | yellow         |
-| Activity              | bright black   |
-| Bell                  | bright red     |
-| Command line messages | bright red     |
-| Pane borders          | bright black   |
+| Element                    | ANSI color     |
+| -------------------------- | -------------- |
+| Prefix active              | bright blue    |
+| Current window             | blue           |
+| Zoomed window              | yellow         |
+| Activity                   | bright black   |
+| Bell                       | bright red     |
+| Command line messages      | bright red     |
+| Pane borders               | black          |
+| Separators / session name  | black          |
+| Status bar dim text        | bright black   |
 
 ## Terminal Support
 

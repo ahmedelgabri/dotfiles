@@ -103,7 +103,8 @@ local themes = {
 local colors = themes[vim.o.background] or themes.dark
 
 -- Mirror the terminal's plain-dark/plain-light ANSI palettes so :terminal
--- matches the outer terminal instead of Nvim's built-in 16 colors.
+-- matches the outer terminal instead of Nvim's built-in 16 colors. Same
+-- values as config/ghostty/themes/plain-* and config/kitty/themes/plain-*.conf.
 local terminal_palettes = {
 	dark = {
 		'#303030',

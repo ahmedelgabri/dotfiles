@@ -24,40 +24,25 @@ are composed from small feature modules, app configs live in
 
 > [!NOTE]
 >
-> `Pragmata Pro` is a commercial font and is **not** bundled with this repo. This flake expects a `PragmataPro<version>.zip` archive to be available in the Nix store. See [Font prerequisite](#2-font-prerequisite).
-
-## Color system
-
-The `plain-dark` and `plain-light` terminal themes are the color source of truth. Ghostty and Kitty follow the OS appearance, while terminal applications consume named ANSI slots instead of embedding independent truecolor or xterm-256 palettes. This keeps `bat`, delta, Jujutsu, `LS_COLORS`/eza, fzf, Yazi, aerc, tig, tmux, and the Zsh prompt synchronized automatically; Neovim's custom [`plain`](./config/nvim/colors/plain.lua) theme uses the same accents with extra structural shades needed by an editor. `bat` and delta render syntax through a custom [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) that mirrors the Neovim theme's restraint (gray italic comments, blue strings and constants, default foreground for everything else) via bat's ANSI color encoding; run `bat cache --build` once after changing it.
-
-The dark palette is a restrained [Tomorrow Night](https://github.com/tinted-theming/base16-schemes/blob/main/tomorrow-night.yaml) derivative. The light palette uses the corresponding Tomorrow family hues with darker green, yellow, and cyan values so colored text remains readable on `#fafafa`. ANSI bright black is the shared muted color, and red/green/yellow retain error/success/warning semantics everywhere.
-
-Close maintained alternatives, in order of fit:
-
-| Scheme | Fit |
-| ------ | --- |
-| Tomorrow Night + Tomorrow | Closest stock replacement; less near-black and slightly less restrained than `plain` |
-| [Flexoki](https://stephango.com/flexoki) | Similar low-chroma light/dark pair with warmer neutrals and broad ports |
-| [Neobones](https://github.com/mcchrish/zenbones.nvim) | Minimal syntax and muted colors; greener and cooler than the current light palette |
-| [Modus](https://protesilaos.com/emacs/modus-themes) | Best choice when maximum contrast and mature light/dark variants matter more than subtlety |
-
-[Tinty](https://github.com/tinted-theming/tinty) is the best next step if frequent manual scheme switching becomes a goal. It is deliberately not used here: letting each terminal follow the OS and treating ANSI as the application-facing API is simpler, works over SSH, and avoids shell escape sequences fighting the terminal's appearance detection.
+> `Pragmata Pro` is a commercial font and is **not** bundled with this repo.
+> This flake expects a `PragmataPro<version>.zip` archive to be available in the
+> Nix store. See [Font prerequisite](#2-font-prerequisite).
 
 ## What this repo manages
 
 The repo is split between reusable Nix modules in [nix/](./nix/) and checked-in
 application configuration in [config/](./config/). In practice it manages:
 
-| Area                    | What is configured here                                                                           |
-| ----------------------- | ------------------------------------------------------------------------------------------------- |
-| System management       | Nix, flake-parts, Home Manager, nix-darwin, host definitions, overlays, and small custom packages |
-| Shell and terminal      | Zsh, tmux, Ghostty, Kitty, direnv, atuin, zoxide, eza, fzf, bat, ripgrep, and Yazi                |
-| Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                         |
-| Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                         |
-| macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                           |
-| Mail and communication  | aerc, isync/mbsync, notmuch, msmtp, and pass                                                      |
+| Area                    | What is configured here                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| System management       | Nix, flake-parts, Home Manager, nix-darwin, host definitions, overlays, and small custom packages      |
+| Shell and terminal      | Zsh, tmux, Ghostty, Kitty, direnv, atuin, zoxide, eza, fzf, bat, ripgrep, and Yazi                     |
+| Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                              |
+| Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                              |
+| macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                                |
+| Mail and communication  | aerc, isync/mbsync, notmuch, msmtp, and pass                                                           |
 | Notes and media         | zk, markdown-oxide, qmd, [Neovim notes workflow](./config/nvim/lua/_/notes/README.md), mpv, and yt-dlp |
-| AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                          |
+| AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                               |
 
 ## Supported targets
 
@@ -120,7 +105,7 @@ This setup installs `Pragmata Pro` through a custom Nix package that uses
 first rebuild:
 
 ```bash
-nix-store --add-fixed sha256 /path/to/PragmataPro<version>.zip
+nix-store --add-fixed sha256 /path/to/PragmataPro <version >.zip
 ```
 
 If you do not use `Pragmata Pro`, remove or replace `pkgs.pragmatapro` in the
@@ -177,8 +162,8 @@ Once the repo is cloned locally, rebuild from `~/.dotfiles`.
 
 ```bash
 cd ~/.dotfiles
-nixup   # helper for `nix flake update`
-nixsw   # helper for `darwin-rebuild switch --flake .`
+nixup # helper for `nix flake update`
+nixsw # helper for `darwin-rebuild switch --flake .`
 ```
 
 Equivalent manual command:
@@ -191,7 +176,7 @@ darwin-rebuild switch --flake ~/.dotfiles#<host>
 
 ```bash
 cd ~/.dotfiles
-nixup   # optional helper for `nix flake update`
+nixup # optional helper for `nix flake update`
 sudo nixos-rebuild switch --flake .#nixos
 ```
 
@@ -229,7 +214,7 @@ Useful files to create there:
 | `$HOST_CONFIGS/gitconfig`                  | Local Git settings that should not be committed, especially GPG signing details                                              | `[user] signingkey =`    |
 | `$HOST_CONFIGS/hammerspoon/<hostname>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/) | Host-specific Lua config |
 | `$HOST_CONFIGS/pi/extensions`              | Machine-specific Pi extensions added to the generated Pi settings                                                            | Private extension        |
-| `$HOST_CONFIGS/pi/skills`                  | Machine-specific Pi skills added to the generated Pi settings                                                                 | Private skill            |
+| `$HOST_CONFIGS/pi/skills`                  | Machine-specific Pi skills added to the generated Pi settings                                                                | Private skill            |
 
 If you want GitHub to show commits as **Verified**, the email on the commit, the
 email on GitHub, and the email attached to the public key all need to match.
@@ -338,6 +323,67 @@ Available templates:
 | `python-script` | Simple one-off Python script template using `uv` script mode |
 | `go`            | Simple Go template                                           |
 | `rust`          | Simple Rust template                                         |
+
+## Color system
+
+The `plain-dark` and `plain-light` terminal themes are the color source of
+truth. Ghostty and Kitty follow the OS appearance, while terminal applications
+consume named ANSI slots instead of embedding independent truecolor or xterm-256
+palettes. This keeps `bat`, delta, Jujutsu, `LS_COLORS`/eza, fzf, Yazi, aerc,
+tig, tmux, and the Zsh prompt synchronized automatically; Neovim's custom
+[`plain`](./config/nvim/colors/plain.lua) theme uses the same accents with extra
+structural shades needed by an editor. `bat` and delta render syntax through a
+custom [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) that mirrors the
+Neovim theme's restraint (gray italic comments, blue strings and constants,
+default foreground for everything else) via bat's ANSI color encoding; run
+`bat cache --build` after changing it, otherwise bat and delta silently fall
+back to their default theme.
+
+The dark palette is a restrained
+[Tomorrow Night](https://github.com/tinted-theming/base16-schemes/blob/main/tomorrow-night.yaml)
+derivative. The light palette uses the corresponding Tomorrow family hues with
+darker green, yellow, and cyan values so colored text remains readable on
+`#fafafa`. ANSI bright black is the shared muted color, and red/green/yellow
+retain error/success/warning semantics everywhere.
+
+### How light/dark switching works
+
+macOS appearance is the only switch. Ghostty selects
+`theme = dark:plain-dark,light:plain-light` natively, Kitty resolves its
+`*-theme.auto.conf` symlinks, and Neovim polls `AppleInterfaceStyle` on startup
+and `FocusGained` to set `background`, which reloads
+[`plain.lua`](./config/nvim/colors/plain.lua). Nothing else listens for
+appearance changes: every other tool only emits ANSI indices, so the terminal
+re-renders even already-printed output the moment its palette flips.
+
+### Slot conventions
+
+- Slot 0 (`black`) is subtle structure: tmux pane borders and `⦁` separators,
+  aerc scrollbar and selection strips. The dark value is deliberately lifted to
+  `#303030` because a true near-black is invisible against the `#111111`
+  background — treat this slot as the chrome-visibility knob.
+- Slot 8 (`bright black`) is dim text: status line text, comments, secondary
+  info.
+- Red, green, and yellow keep error/success/warning semantics everywhere; blue
+  marks constants, strings, and links. Anything that is not a signal stays on
+  the default foreground.
+- The [`delta_`](./config/zsh.d/zsh/bin/delta_) wrapper must not pass
+  `--diff-so-fancy` (or any per-line foreground style): delta disables syntax
+  highlighting on lines whose style sets its own foreground, which hides the
+  plain theme everywhere except context lines. Delta's default tinted add/remove
+  backgrounds are chosen by its own light/dark detection.
+
+### Sync points
+
+The palette is intentionally duplicated in a few places that cannot reference
+each other. When one changes, change them all:
+
+| What                           | Where                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Full 16-slot palettes          | [`config/ghostty/themes/plain-dark`](./config/ghostty/themes/plain-dark) and [`plain-light`](./config/ghostty/themes/plain-light), [`config/kitty/themes/plain-dark.conf`](./config/kitty/themes/plain-dark.conf) and [`plain-light.conf`](./config/kitty/themes/plain-light.conf), and `terminal_palettes` in [`plain.lua`](./config/nvim/colors/plain.lua) |
+| Editor accents                 | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                                                                                        |
+| Syntax restraint rules         | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; rebuild the bat cache after editing the tmTheme                                                                                                                                    |
+| Comment markers (TODO/FIXME/…) | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                       |
 
 ## Working on this repo
 
