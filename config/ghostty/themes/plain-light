@@ -1,0 +1,24 @@
+# The light counterpart to plain-dark, based on Tomorrow with contrast-corrected accents.
+cursor-color = #4271ae
+cursor-text = #fafafa
+foreground = #4d4d4c
+background = #fafafa
+selection-foreground = #383a42
+selection-background = #d6d6d6
+
+palette = 0=#383a42
+palette = 1=#c82829
+palette = 2=#5f7800
+palette = 3=#9a6800
+palette = 4=#4271ae
+palette = 5=#8959a8
+palette = 6=#287f85
+palette = 7=#8e908c
+palette = 8=#767676
+palette = 9=#a82020
+palette = 10=#4f6b00
+palette = 11=#805900
+palette = 12=#315f9c
+palette = 13=#774394
+palette = 14=#176f76
+palette = 15=#4d4d4c

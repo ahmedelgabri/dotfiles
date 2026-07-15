@@ -30,7 +30,7 @@ _get_status() {
 
 NPM_STATUS=$(_get_status)
 
-INDICATOR="#[fg=colour237]⦁"
+INDICATOR="#[fg=brightblack]⦁"
 ICON_NPM="$(printf '\uE616')"
 ICON_MAINTENANCE="$(printf '\uE20F')"
 

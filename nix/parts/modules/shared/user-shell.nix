@@ -39,7 +39,7 @@ let
           };
 
           zshInteractiveExportedVars = {
-            EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:uu=38;5;235:da=38;5;238";
+            EZA_COLORS = "ur=35;nnn:gr=35;nnn:tr=35;nnn:uw=34;nnn:gw=34;nnn:tw=34;nnn:ux=36;nnn:ue=36;nnn:gx=36;nnn:tx=36;nnn:uu=36;nnn:da=2";
             EZA_ICON_SPACING = "2";
             FZF_PREVIEW_COMMAND = fzfPreviewCommand;
             FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
@@ -51,9 +51,9 @@ let
             FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
           };
 
-          vividTheme = "${xdg.configHome}/vivid/theme.yml";
           zshInteractiveRawExportedVars = {
-            LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ${vividTheme})"'';
+            # ANSI colors follow the terminal's dark/light palette automatically.
+            LS_COLORS = ''"$(${lib.getExe pkgs.vivid} generate ansi)"'';
           };
         in
         {
@@ -547,11 +547,6 @@ let
               source = ../../../../config/zsh.d/zsh/bin;
               sourceRoot = "${dotfilesConfig}/zsh.d/zsh/bin";
               targetRoot = "zsh/bin";
-            }
-            // config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/vivid;
-              sourceRoot = "${dotfilesConfig}/vivid";
-              targetRoot = "vivid";
             }
             // config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/atuin;

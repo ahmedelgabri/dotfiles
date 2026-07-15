@@ -10,43 +10,43 @@
 *.normal=true
 
 title.reverse=true
-header.fg=238
+header.fg=8
 
-*error.fg=red
-*warning.fg=yellow
-*success.fg=green
+*error.fg=1
+*warning.fg=3
+*success.fg=2
 
-*.selected.fg=blue
+*.selected.fg=4
 *.selected.bg=black
 *.selected.bold=false
 
 # scrollbars
-*_pill.bg=236
+*_pill.bg=black
 
 statusline*.default=true
-statusline_default.fg=237
-statusline_error.fg=red
+statusline_default.fg=8
+statusline_error.fg=1
 statusline_error.reverse=true
 
 msglist_unread.bold=false
-msglist_read.fg=237
-msglist_marked.fg=gold
-msglist_deleted.fg=red
+msglist_read.fg=8
+msglist_marked.fg=3
+msglist_deleted.fg=1
 
-dirlist_default.fg=237
-dirlist_unread.fg=242
+dirlist_default.fg=8
+dirlist_unread.fg=8
 
-completion_description.fg=242
+completion_description.fg=8
 
 border.bg=false
 tab.selected.bg=false
-tab.fg=237
+tab.fg=8
 
 border.bg=false
 
 selector_chooser.bold=true
 
-spinner.fg=237
+spinner.fg=8
 
 # Colorize
 [viewer]
@@ -54,4 +54,4 @@ url.underline=true
 
 # Custom styles
 [user]
-foo.fg=red
+foo.fg=1

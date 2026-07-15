@@ -17,31 +17,6 @@
 --
 --
 
--- Pull a color from Neovim's default palette so we track upstream changes
--- across versions. Capture BEFORE `highlight 'clear'` (below) wipes the named
--- groups. Hardcoded hex fallback covers older Neovim or odd load orders.
-local function nvim_color(name, fallback)
-	local hl = vim.api.nvim_get_hl(0, { name = name })
-	if hl and hl.fg then
-		return string.format('#%06X', hl.fg)
-	end
-	return fallback
-end
-
--- See :help nvim-color-palette
-local dark_red = nvim_color('NvimDarkRed', '#590008')
-local light_red = nvim_color('NvimLightRed', '#FFC0B9')
-local dark_blue = nvim_color('NvimDarkBlue', '#00378F')
-local light_blue = nvim_color('NvimLightBlue', '#A6DBFF')
-local dark_cyan = nvim_color('NvimDarkCyan', '#007373')
-local light_cyan = nvim_color('NvimLightCyan', '#8CF8F7')
-local dark_green = nvim_color('NvimDarkGreen', '#005523')
-local light_green = nvim_color('NvimLightGreen', '#B3F6C0')
-local dark_purple = nvim_color('NvimDarkMagenta', '#470045')
-local light_purple = nvim_color('NvimLightMagenta', '#FFCAFF')
-local light_yellow = nvim_color('NvimLightYellow', '#FCE094')
-local dark_yellow = nvim_color('NvimDarkYellow', '#6B5300')
-
 -- Clear highlights and reset syntax.
 vim.cmd.highlight 'clear'
 if vim.fn.exists 'syntax_on' then
@@ -59,68 +34,69 @@ local function highlight(name, opts)
 	vim.api.nvim_set_hl(0, name, opts)
 end
 
-local black = '#222222'
-local medium_gray = '#767676'
-local white = '#F1F1F1'
-local light_black = '#424242'
-local lighter_black = '#545454'
-local subtle_black = '#191919'
-local light_gray = '#999999'
-local lighter_gray = '#CCCCCC'
-local lightest_gray = '#E5E5E5'
-
+-- Keep these accents in step with the terminal's plain-dark/plain-light ANSI
+-- palettes. Structural shades remain editor-specific because they need more
+-- levels than a terminal's 16 slots provide.
 local themes = {
 	dark = {
 		bg = nil,
-		bg_subtle = light_black,
-		bg_very_subtle = subtle_black,
-		norm = lighter_gray,
-		norm_subtle = light_gray,
-		norm_very_subtle = medium_gray,
-		visual = lighter_black,
-		cursor_line = subtle_black,
-		constant = light_blue,
-		comment = light_gray,
-		selection = light_yellow,
-		selection_fg = black,
-		ok = dark_green,
-		warning = dark_yellow,
-		error = light_red,
-		purple = light_purple,
-		cyan = light_cyan,
-		green = light_green,
-		red = light_red,
-		yellow = light_yellow,
-		blue = light_blue,
-		diff_add_bg = dark_green,
-		diff_delete_bg = dark_red,
-		diff_change_bg = dark_yellow,
+		bg_subtle = '#424242',
+		bg_very_subtle = '#191919',
+		norm = '#C5C8C6',
+		norm_subtle = '#969896',
+		norm_very_subtle = '#767676',
+		visual = '#424242',
+		cursor_line = '#191919',
+		constant = '#81A2BE',
+		comment = '#767676',
+		selection = '#F0C674',
+		selection_fg = '#111111',
+		ok = '#B5BD68',
+		warning = '#F0C674',
+		error = '#CC6666',
+		purple = '#B294BB',
+		cyan = '#8ABEB7',
+		green = '#B5BD68',
+		red = '#CC6666',
+		yellow = '#F0C674',
+		blue = '#81A2BE',
+		diff_add_bg = '#263326',
+		diff_delete_bg = '#3A2426',
+		diff_change_bg = '#3A321F',
+		conflict_ours = '#2E5049',
+		conflict_theirs = '#344F69',
+		conflict_mid = '#2F7366',
+		conflict_base = '#754A81',
 	},
 	light = {
-		bg = white,
-		bg_subtle = lighter_gray,
-		bg_very_subtle = light_gray,
-		norm = light_black,
-		norm_subtle = lighter_black,
-		norm_very_subtle = medium_gray,
-		visual = lighter_gray,
-		cursor_line = lightest_gray,
-		constant = dark_blue,
-		comment = light_gray,
-		selection = light_yellow,
-		selection_fg = light_black,
-		ok = light_green,
-		warning = light_yellow,
-		error = dark_red,
-		purple = dark_purple,
-		cyan = dark_cyan,
-		green = dark_green,
-		red = dark_red,
-		yellow = dark_yellow,
-		blue = dark_blue,
-		diff_add_bg = light_green,
-		diff_delete_bg = light_red,
-		diff_change_bg = light_yellow,
+		bg = '#FAFAFA',
+		bg_subtle = '#D6D6D6',
+		bg_very_subtle = '#EFEFEF',
+		norm = '#4D4D4C',
+		norm_subtle = '#696C77',
+		norm_very_subtle = '#767676',
+		visual = '#D6D6D6',
+		cursor_line = '#EFEFEF',
+		constant = '#4271AE',
+		comment = '#767676',
+		selection = '#E8D9A8',
+		selection_fg = '#383A42',
+		ok = '#5F7800',
+		warning = '#9A6800',
+		error = '#C82829',
+		purple = '#8959A8',
+		cyan = '#287F85',
+		green = '#5F7800',
+		red = '#C82829',
+		yellow = '#9A6800',
+		blue = '#4271AE',
+		diff_add_bg = '#E5EED5',
+		diff_delete_bg = '#F4DDDD',
+		diff_change_bg = '#F5E9C8',
+		conflict_ours = '#D9EEE8',
+		conflict_theirs = '#DCE8F2',
+		conflict_mid = '#CBE8E1',
+		conflict_base = '#EADDEE',
 	},
 }
 
@@ -155,7 +131,7 @@ highlight('FoldColumn', { link = 'LineNr' })
 highlight('SignColumn', { link = 'LineNr' })
 
 -- __Comment__
-highlight('Comment', { italic = true, bg = nil, fg = colors.bg_subtle })
+highlight('Comment', { italic = true, bg = nil, fg = colors.comment })
 highlight('LineNr', { bg = nil, fg = colors.bg_subtle })
 highlight('CursorLineNr', { link = 'LineNr' })
 highlight('Whitespace', { fg = colors.bg_very_subtle })
@@ -519,10 +495,16 @@ highlight('DiagnosticVirtualTextHint', { link = 'DiagnosticHint' })
 highlight('DiagnosticUnderlineError', { underline = true, sp = colors.red })
 highlight('DiagnosticUnderlineWarn', { underline = true, sp = colors.yellow })
 highlight('DiagnosticUnderlineInfo', { underline = true, sp = colors.blue })
-highlight('DiagnosticUnderlineHint', { underline = true, sp = colors.norm_very_subtle })
+highlight(
+	'DiagnosticUnderlineHint',
+	{ underline = true, sp = colors.norm_very_subtle }
+)
 
 -- Lsp --
-highlight('LspInlayHint', { fg = lighter_black, bg = nil, italic = true })
+highlight(
+	'LspInlayHint',
+	{ fg = colors.norm_very_subtle, bg = nil, italic = true }
+)
 highlight('LspCodeLens', { link = 'Comment' })
 highlight('LspCodeLensSeparator', { link = 'LspCodeLens' })
 highlight('LspReferenceRead', { link = 'SpecialKey' })
@@ -538,7 +520,7 @@ highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
 -- Winbar
-highlight('WinBar', { bg = nil, fg = '#9B9EA4' })
+highlight('WinBar', { bg = nil, fg = colors.norm_subtle })
 highlight('WinBarNC', { link = 'WinBar' })
 
 -- FzfLua
@@ -590,20 +572,20 @@ highlight('DiffviewDiffDeleteDim', { link = 'Comment' })
 highlight('DiffviewDiffText', { link = 'DiffText' })
 
 -- conflict-marker.nvim
-highlight('ConflictOursMarker', { bg = '#2e5049' })
+highlight('ConflictOursMarker', { bg = colors.conflict_ours })
 highlight('ConflictOurs', { link = 'ConflictOursMarker' })
-highlight('ConflictTheirsMarker', { bg = '#344f69' })
+highlight('ConflictTheirsMarker', { bg = colors.conflict_theirs })
 highlight('ConflictTheirs', { link = 'ConflictTheirsMarker' })
-highlight('ConflictMid', { bg = '#2f7366' })
-highlight('ConflictBaseMarker', { bg = '#754a81' })
+highlight('ConflictMid', { bg = colors.conflict_mid })
+highlight('ConflictBaseMarker', { bg = colors.conflict_base })
 highlight('ConflictBase', { link = 'ConflictBaseMarker' })
 
-highlight('RainbowDelimiterRed', { fg = lighter_gray })
-highlight('RainbowDelimiterYellow', { fg = light_gray })
-highlight('RainbowDelimiterBlue', { fg = medium_gray })
-highlight('RainbowDelimiterOrange', { fg = lighter_black })
-highlight('RainbowDelimiterGreen', { fg = light_black })
-highlight('RainbowDelimiterViolet', { fg = subtle_black })
-highlight('RainbowDelimiterCyan', { fg = subtle_black })
+highlight('RainbowDelimiterRed', { fg = colors.norm })
+highlight('RainbowDelimiterYellow', { fg = colors.norm_subtle })
+highlight('RainbowDelimiterBlue', { fg = colors.norm_very_subtle })
+highlight('RainbowDelimiterOrange', { fg = colors.bg_subtle })
+highlight('RainbowDelimiterGreen', { fg = colors.bg_subtle })
+highlight('RainbowDelimiterViolet', { fg = colors.bg_very_subtle })
+highlight('RainbowDelimiterCyan', { fg = colors.bg_very_subtle })
 
 highlight('BlinkIndentScope', { link = 'MiniIndentscopeSymbol' })

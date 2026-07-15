@@ -223,17 +223,17 @@
 
   ##################################[ dir: current directory ]##################################
   # Default current directory color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=242
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=8
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=242
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=8
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=242
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=8
   # Set to true to display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=false
   # Don't shorten directories that contain any of these files. They are anchors.
@@ -922,7 +922,7 @@
 
   ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
   # Python virtual environment color.
-  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=242
+  typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=8
   # Don't show Python version next to the virtual environment name.
   typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false
   # If set to "false", won't show virtualenv if pyenv is already shown.
@@ -1041,7 +1041,7 @@
 
   ##############################[ node_version: node.js version ]###############################
   # Node version color.
-  typeset -g POWERLEVEL9K_NODE_VERSION_FOREGROUND=70
+  typeset -g POWERLEVEL9K_NODE_VERSION_FOREGROUND=2
   # Show node version only when in a directory tree containing package.json.
   typeset -g POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY=true
   # Custom icon.
@@ -1632,7 +1632,7 @@
 
   ####################################[ time: current time ]####################################
   # Current time color.
-  typeset -g POWERLEVEL9K_TIME_FOREGROUND=242
+  typeset -g POWERLEVEL9K_TIME_FOREGROUND=8
   # Format for the current time: 09:51:02. See `man 3 strftime`.
   typeset -g POWERLEVEL9K_TIME_FORMAT='%D{%H:%M:%S}'
   # If set to true, time will update when you hit enter. This way prompts for the past
@@ -1829,11 +1829,11 @@ TRAPUSR1() {
 ## to FOREGROUND. STALE_FOREGROUND drives the "data shown is cached/old while
 ## a refresh is in flight" rendering.
 typeset -g POWERLEVEL9K_MY_GIT_FOREGROUND=${POWERLEVEL9K_MY_GIT_FOREGROUND:-4}
-typeset -g POWERLEVEL9K_MY_GIT_STALE_FOREGROUND=${POWERLEVEL9K_MY_GIT_STALE_FOREGROUND:-236}
+typeset -g POWERLEVEL9K_MY_GIT_STALE_FOREGROUND=${POWERLEVEL9K_MY_GIT_STALE_FOREGROUND:-8}
 typeset -g POWERLEVEL9K_MY_GIT_DIRTY_FOREGROUND=${POWERLEVEL9K_MY_GIT_DIRTY_FOREGROUND:-1}
 typeset -g POWERLEVEL9K_MY_GIT_AHEAD_FOREGROUND=${POWERLEVEL9K_MY_GIT_AHEAD_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_GIT_BEHIND_FOREGROUND=${POWERLEVEL9K_MY_GIT_BEHIND_FOREGROUND:-4}
-typeset -g POWERLEVEL9K_MY_GIT_AT_FOREGROUND=${POWERLEVEL9K_MY_GIT_AT_FOREGROUND:-242}
+typeset -g POWERLEVEL9K_MY_GIT_AT_FOREGROUND=${POWERLEVEL9K_MY_GIT_AT_FOREGROUND:-8}
 typeset -g POWERLEVEL9K_MY_GIT_SHA_FOREGROUND=${POWERLEVEL9K_MY_GIT_SHA_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON=${POWERLEVEL9K_MY_GIT_WORKTREE_ROOT_ICON:-≡}
 typeset -g POWERLEVEL9K_MY_GIT_USE_GITSTATUS=${POWERLEVEL9K_MY_GIT_USE_GITSTATUS:-true}
@@ -2354,9 +2354,9 @@ _my_git_init
 ## to FOREGROUND. STALE_FOREGROUND drives the "data shown is cached/old while
 ## a refresh is in flight" rendering.
 typeset -g POWERLEVEL9K_MY_JJ_FOREGROUND=${POWERLEVEL9K_MY_JJ_FOREGROUND:-4}
-typeset -g POWERLEVEL9K_MY_JJ_STALE_FOREGROUND=${POWERLEVEL9K_MY_JJ_STALE_FOREGROUND:-236}
-typeset -g POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-242}
-typeset -g POWERLEVEL9K_MY_JJ_AT_FOREGROUND=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-242}
+typeset -g POWERLEVEL9K_MY_JJ_STALE_FOREGROUND=${POWERLEVEL9K_MY_JJ_STALE_FOREGROUND:-8}
+typeset -g POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-8}
+typeset -g POWERLEVEL9K_MY_JJ_AT_FOREGROUND=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-8}
 typeset -g POWERLEVEL9K_MY_JJ_SHA_FOREGROUND=${POWERLEVEL9K_MY_JJ_SHA_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND=${POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND=${POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND:-1}

@@ -146,35 +146,30 @@ Position: **top**. Refresh interval: **15 seconds**.
 
 ### Pane Borders
 
-Borders are displayed at the **top** of each pane. In normal mode they're
-invisible (same colour as background). In **copy mode**, a custom indicator
-appears:
+Borders are displayed at the **top** of each pane. In normal mode they use the terminal's muted ANSI color. In **copy mode**, a custom indicator appears:
 
 ```
   -- COPY --                                    (N results)  [offset/total]
 ```
 
 - Left: yellow `-- COPY --` marker
-- Right: scroll position as offset from top, plus search result count (with `+`
-  suffix if the search timed out)
+- Right: scroll position as offset from top, plus search result count (with `+` suffix if the search timed out)
 
-The default tmux position indicator is suppressed via a `pane-mode-changed`
-hook.
+The default tmux position indicator is suppressed via a `pane-mode-changed` hook.
 
 ### Colors
 
-The config uses `bg=terminal` throughout so colors inherit from the terminal
-theme. Accent colors:
+The config uses `bg=terminal` and named ANSI slots throughout so it follows the terminal's dark/light palette without embedding xterm-256 grays.
 
-| Element               | Color                   |
-| --------------------- | ----------------------- |
-| Prefix active         | `colour012` (blue)      |
-| Current window        | `colour004` (blue)      |
-| Zoomed window         | yellow                  |
-| Activity              | `colour243` (grey)      |
-| Bell                  | bright red              |
-| Command line messages | bright red              |
-| Pane borders          | `colour235` (dark grey) |
+| Element               | ANSI color     |
+| --------------------- | -------------- |
+| Prefix active         | bright blue    |
+| Current window        | blue           |
+| Zoomed window         | yellow         |
+| Activity              | bright black   |
+| Bell                  | bright red     |
+| Command line messages | bright red     |
+| Pane borders          | bright black   |
 
 ## Terminal Support
 
@@ -186,8 +181,7 @@ Explicit terminal features and overrides are configured for:
 | Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)      |
 | Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`) |
 
-Escape sequence passthrough is enabled (`allow-passthrough on`) for base16-shell
-theming and yazi image previews.
+Escape sequence passthrough is enabled (`allow-passthrough on`) for shell theming and Yazi image previews.
 
 ## Status Bar Scripts
 

@@ -1,4 +1,4 @@
---theme="Nord"
+--theme="ansi"
 --style="plain,changes"
 --italic-text=always
 --map-syntax '.*ignore:Git Ignore'

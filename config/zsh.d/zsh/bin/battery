@@ -333,8 +333,8 @@ while getopts ":g:m:w:c:tizGab:p" opt; do
 		;;
 	t)
 		output_tmux=1
-		good_color="colour237"
-		middle_color="colour243"
+		good_color="brightblack"
+		middle_color="brightblack"
 		warn_color="red"
 		;;
 	z)

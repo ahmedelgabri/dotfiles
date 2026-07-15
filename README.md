@@ -24,9 +24,24 @@ are composed from small feature modules, app configs live in
 
 > [!NOTE]
 >
-> `Pragmata Pro` is a commercial font and is **not** bundled with this repo.
-> This flake expects a `PragmataPro<version>.zip` archive to be available in the
-> Nix store. See [Font prerequisite](#2-font-prerequisite).
+> `Pragmata Pro` is a commercial font and is **not** bundled with this repo. This flake expects a `PragmataPro<version>.zip` archive to be available in the Nix store. See [Font prerequisite](#2-font-prerequisite).
+
+## Color system
+
+The `plain-dark` and `plain-light` terminal themes are the color source of truth. Ghostty and Kitty follow the OS appearance, while terminal applications consume named ANSI slots instead of embedding independent truecolor or xterm-256 palettes. This keeps `bat`, delta, Jujutsu, `LS_COLORS`/eza, fzf, Yazi, aerc, tig, tmux, and the Zsh prompt synchronized automatically; Neovim's custom [`plain`](./config/nvim/colors/plain.lua) theme uses the same accents with extra structural shades needed by an editor.
+
+The dark palette is a restrained [Tomorrow Night](https://github.com/tinted-theming/base16-schemes/blob/main/tomorrow-night.yaml) derivative. The light palette uses the corresponding Tomorrow family hues with darker green, yellow, and cyan values so colored text remains readable on `#fafafa`. ANSI bright black is the shared muted color, and red/green/yellow retain error/success/warning semantics everywhere.
+
+Close maintained alternatives, in order of fit:
+
+| Scheme | Fit |
+| ------ | --- |
+| Tomorrow Night + Tomorrow | Closest stock replacement; less near-black and slightly less restrained than `plain` |
+| [Flexoki](https://stephango.com/flexoki) | Similar low-chroma light/dark pair with warmer neutrals and broad ports |
+| [Neobones](https://github.com/mcchrish/zenbones.nvim) | Minimal syntax and muted colors; greener and cooler than the current light palette |
+| [Modus](https://protesilaos.com/emacs/modus-themes) | Best choice when maximum contrast and mature light/dark variants matter more than subtlety |
+
+[Tinty](https://github.com/tinted-theming/tinty) is the best next step if frequent manual scheme switching becomes a goal. It is deliberately not used here: letting each terminal follow the OS and treating ANSI as the application-facing API is simpler, works over SSH, and avoids shell escape sequences fighting the terminal's appearance detection.
 
 ## What this repo manages
 

@@ -190,8 +190,8 @@ bind   status S !?git stash save --keep-index %(prompt)
 # Git automatically indents commit messages by four spaces.
 
 # general
-color  cursor                  default      241
-color  title-focus             default      232
+color  cursor                  default  default  reverse
+color  title-focus             default  default  reverse
 color  id                      009      default
 color  author                  008      default
 

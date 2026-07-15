@@ -1,7 +1,7 @@
 font-family = "PragmataPro Liga"
 font-size = 12
 font-thicken = true
-theme = dark:mine,light:Neobones Light
+theme = dark:plain-dark,light:plain-light
 window-padding-x = 5
 window-padding-y = 5
 window-padding-balance = true
@@ -24,7 +24,7 @@ window-inherit-working-directory = false
 tab-inherit-working-directory = true
 split-inherit-working-directory = true
 
-# Until I look into my colors, one day...
+# Keep ANSI slots stable because CLI/TUI tools use them as the shared palette.
 palette-generate = false
 palette-harmonious = false
 

@@ -9,4 +9,4 @@ OUTPUT="$(battery -tpGi -c "$ICON" 2>/dev/null)" || exit 0
 
 [[ -n "$OUTPUT" ]] || exit 0
 
-printf "%s#[fg=colour237] ⦁ " "$OUTPUT"
+printf "%s#[fg=brightblack] ⦁ " "$OUTPUT"

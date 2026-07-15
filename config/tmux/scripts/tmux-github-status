@@ -30,7 +30,7 @@ _get_status() {
 
 GITHUB_STATUS=$(_get_status)
 
-INDICATOR="#[fg=colour237]⦁"
+INDICATOR="#[fg=brightblack]⦁"
 ICON_GITHUB="$(printf '\uE709')"
 ICON_MAINTENANCE="$(printf '\uE20F')"
 
