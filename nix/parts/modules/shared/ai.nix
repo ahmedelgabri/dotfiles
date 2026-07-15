@@ -33,25 +33,6 @@ let
 
       let
         dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
-        # Keep the parent directories writable so agent-created files can live
-        # alongside the managed files without being moved into the checkout.
-        mkOutOfStoreTree =
-          {
-            source,
-            sourceRoot,
-            targetRoot,
-          }:
-          lib.listToAttrs (
-            map (
-              file:
-              let
-                relative = lib.removePrefix "${toString source}/" (toString file);
-              in
-              lib.nameValuePair "${targetRoot}/${relative}" {
-                source = config.lib.file.mkOutOfStoreSymlink "${sourceRoot}/${relative}";
-              }
-            ) (lib.filesystem.listFilesRecursive source)
-          );
         piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
         piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
         piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
@@ -82,7 +63,7 @@ let
       in
       {
         xdg.configFile =
-          mkOutOfStoreTree {
+          config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/pi/agent;
             sourceRoot = "${dotfilesConfig}/pi/agent";
             targetRoot = "pi/agent";
@@ -111,37 +92,37 @@ let
           };
 
           file = lib.mergeAttrsList [
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/skills;
               sourceRoot = "${dotfilesConfig}/claude/skills";
               targetRoot = ".agents/skills";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/agents;
               sourceRoot = "${dotfilesConfig}/claude/agents";
               targetRoot = ".claude/agents";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/docs;
               sourceRoot = "${dotfilesConfig}/claude/docs";
               targetRoot = ".claude/docs";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/commands;
               sourceRoot = "${dotfilesConfig}/claude/commands";
               targetRoot = ".claude/commands";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/hooks;
               sourceRoot = "${dotfilesConfig}/claude/hooks";
               targetRoot = ".claude/hooks";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/scripts;
               sourceRoot = "${dotfilesConfig}/claude/scripts";
               targetRoot = ".claude/scripts";
             })
-            (mkOutOfStoreTree {
+            (config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/claude/skills;
               sourceRoot = "${dotfilesConfig}/claude/skills";
               targetRoot = ".claude/skills";

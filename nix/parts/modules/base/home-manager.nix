@@ -22,6 +22,32 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       backupFileExtension = "bk";
+      sharedModules = [
+        (
+          { config, lib, ... }:
+          {
+            # Keep destination directories writable while making each managed
+            # file live-editable from the dotfiles checkout.
+            lib.file.mkOutOfStoreTree =
+              {
+                source,
+                sourceRoot,
+                targetRoot,
+              }:
+              lib.listToAttrs (
+                map (
+                  file:
+                  let
+                    relative = lib.removePrefix "${toString source}/" (toString file);
+                  in
+                  lib.nameValuePair "${targetRoot}/${relative}" {
+                    source = config.lib.file.mkOutOfStoreSymlink "${sourceRoot}/${relative}";
+                  }
+                ) (lib.filesystem.listFilesRecursive source)
+              );
+          }
+        )
+      ];
       extraSpecialArgs = {
         inherit inputs;
         myConfig = {
