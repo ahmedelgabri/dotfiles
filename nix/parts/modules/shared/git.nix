@@ -26,6 +26,7 @@ let
 
     homeManager =
       {
+        config,
         pkgs,
         lib,
         myConfig,
@@ -33,44 +34,45 @@ let
       }:
       with lib;
       {
-        xdg.configFile = {
-          "git/config-nix".text = ''
-            ; ${myConfig.nix_managed}
-            ; vim: ft=gitconfig
-
-            [user]
-            ${optionalString (myConfig.name != "") "  name = ${myConfig.name}"}
-            ${optionalString (myConfig.email != "") "  email = ${myConfig.email}"}
-            useconfigonly = true
-
-            ${optionalString (myConfig.github_username != "") ''
-              [github]
-              	username = ${myConfig.github_username}''}
-
-            [gpg]
-            	program = vcs-gpg
-
-            [diff "exif"]
-            	textconv = ${lib.getExe pkgs.exiftool}
-
-            ${optionalString pkgs.stdenv.isDarwin ''
-              [diff "plist"]
-              	textconv = plutil -convert xml1 -o -''}
-
-            [include]
-            	path = ${myConfig.hostConfigHome}/gitconfig
-          '';
-
-          "git" = {
-            recursive = true;
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/git;
-          };
-
-          "tig" = {
-            recursive = true;
+            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/git";
+            targetRoot = "git";
+          }
+          // config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/tig;
+            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/tig";
+            targetRoot = "tig";
+          }
+          // {
+            "git/config-nix".text = ''
+              ; ${myConfig.nix_managed}
+              ; vim: ft=gitconfig
+
+              [user]
+              ${optionalString (myConfig.name != "") "  name = ${myConfig.name}"}
+              ${optionalString (myConfig.email != "") "  email = ${myConfig.email}"}
+              useconfigonly = true
+
+              ${optionalString (myConfig.github_username != "") ''
+                [github]
+                	username = ${myConfig.github_username}''}
+
+              [gpg]
+              	program = vcs-gpg
+
+              [diff "exif"]
+              	textconv = ${lib.getExe pkgs.exiftool}
+
+              ${optionalString pkgs.stdenv.isDarwin ''
+                [diff "plist"]
+                	textconv = plutil -convert xml1 -o -''}
+
+              [include]
+              	path = ${myConfig.hostConfigHome}/gitconfig
+            '';
           };
-        };
       };
   };
 in
