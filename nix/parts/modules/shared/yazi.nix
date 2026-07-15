@@ -33,43 +33,44 @@ let
       };
 
     homeManager =
-      { inputs, ... }:
+      { config, inputs, ... }:
       {
-        xdg.configFile = {
-          "yazi" = {
-            recursive = true;
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/yazi;
-          };
+            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/yazi";
+            targetRoot = "yazi";
+          }
+          // {
+            "yazi/plugins/smart-enter.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/smart-enter.yazi";
+            };
 
-          "yazi/plugins/smart-enter.yazi" = {
-            recursive = true;
-            source = "${inputs.yazi-plugins}/smart-enter.yazi";
-          };
+            "yazi/plugins/toggle-pane.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/toggle-pane.yazi";
+            };
 
-          "yazi/plugins/toggle-pane.yazi" = {
-            recursive = true;
-            source = "${inputs.yazi-plugins}/toggle-pane.yazi";
-          };
+            "yazi/plugins/full-border.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/full-border.yazi";
+            };
 
-          "yazi/plugins/full-border.yazi" = {
-            recursive = true;
-            source = "${inputs.yazi-plugins}/full-border.yazi";
-          };
+            "yazi/plugins/git.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/git.yazi";
+            };
 
-          "yazi/plugins/git.yazi" = {
-            recursive = true;
-            source = "${inputs.yazi-plugins}/git.yazi";
-          };
+            "yazi/plugins/types.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/types.yazi";
+            };
 
-          "yazi/plugins/types.yazi" = {
-            recursive = true;
-            source = "${inputs.yazi-plugins}/types.yazi";
+            "yazi/plugins/glow.yazi/main.lua" = {
+              source = "${inputs.yazi-glow}/init.lua";
+            };
           };
-
-          "yazi/plugins/glow.yazi/main.lua" = {
-            source = "${inputs.yazi-glow}/init.lua";
-          };
-        };
       };
   };
 in
