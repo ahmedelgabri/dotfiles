@@ -189,6 +189,10 @@ let
               DSDontWriteNetworkStores = true;
               DSDontWriteUSBStores = true;
             };
+            "com.apple.screencapture" = {
+              # HDR screenshots use HEIC regardless of the configured screenshot type
+              captureHDR = false;
+            };
             "com.apple.screensaver" = {
               # Require password immediately after sleep or screen saver begins
               askForPassword = 1;
