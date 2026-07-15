@@ -9,6 +9,7 @@ pack.add {
 		config = function()
 			local actions = require 'fzf-lua.actions'
 			local defaults = require 'fzf-lua.defaults'
+			local previewers = require 'fzf-lua.previewer'
 			local utils = require '_.utils'
 
 			-- Keep this in sync with `git config alias.l`.
@@ -30,6 +31,7 @@ pack.add {
 				winopts = {
 					border = utils.get_border(),
 					preview = {
+						default = 'previewer',
 						border = utils.get_border(),
 						winopts = {
 							number = false,
@@ -42,12 +44,24 @@ pack.add {
 						vim.b.snacks_indent = true
 					end,
 				},
+				previewers = {
+					previewer = {
+						cmd = 'COLORTERM=truecolor previewer',
+						_ctor = previewers.fzf.cmd,
+					},
+				},
 				fzf_opts = {
 					['--pointer'] = '▶',
 					['--marker'] = '✓ ',
 					['--no-scrollbar'] = true,
 					['--info'] = 'inline-right',
 					['--walker-skip'] = '.git,node_modules',
+					-- Run fzf in a tmux popup like the shell widgets; fzf-lua
+					-- ignores this outside tmux and falls back to the float.
+					-- fzf renamed the flag to --popup (--tmux is an alias) but
+					-- this key is fzf-lua's API: its popup-mode detection only
+					-- matches "--tmux", so don't "modernize" it.
+					['--tmux'] = 'center,85%,85%',
 				},
 				keymap = {
 					builtin = {
