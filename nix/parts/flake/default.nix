@@ -44,6 +44,7 @@
     ../outputs/formatter.nix
     ../outputs/devshells.nix
     ../outputs/apps.nix
+    ../outputs/neovim.nix
     ../outputs/templates.nix
   ];
 
