@@ -3,7 +3,6 @@ local pack = require '_.pack'
 pack.add {
 	{
 		src = 'https://github.com/nvim-treesitter/nvim-treesitter',
-		version = 'main',
 		event = { 'BufRead', 'FileType' },
 		config = function(event)
 			-- https://github.com/nvim-treesitter/nvim-treesitter/issues/3356#issuecomment-1226348556
@@ -168,7 +167,6 @@ pack.add {
 	},
 	{
 		src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
-		version = 'main',
 		load = false,
 	},
 	{
