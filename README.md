@@ -395,6 +395,16 @@ each other. When one changes, change them all:
 | Syntax restraint rules         | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh)                                                                                                                                    |
 | Comment markers (TODO/FIXME/…) | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                       |
 
+## Standalone Neovim
+
+The flake exports the full Neovim setup as a single self-contained package, usable on any machine that has Nix:
+
+```bash
+nix run 'github:ahmedelgabri/dotfiles#neovim'
+```
+
+Plugins are pinned by [config/nvim/nvim-pack-lock.json](./config/nvim/nvim-pack-lock.json) (the same lock `vim.pack` maintains at runtime), the Lua config is baked into the store, and all language servers/formatters ride along on its `$PATH`. See [config/nvim/README.md](./config/nvim/README.md) for how it works.
+
 ## Working on this repo
 
 The flake also exposes a few outputs that are useful when editing the dotfiles
