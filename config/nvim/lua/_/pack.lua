@@ -12,6 +12,12 @@
 
 local M = {}
 
+-- Inside the nix-wrapped neovim (see nix/parts/outputs/neovim.nix) plugins
+-- are already on the packpath in `opt/` dirs named after the lock entries,
+-- so vim.pack must not download or manage anything; :packadd and the lazy
+-- triggers below work the same against either packpath.
+local nix_managed = vim.g.nix_info_plugin_name ~= nil
+
 local builds = {}
 local configs = {}
 local configured = {}
@@ -108,7 +114,9 @@ function M.add(specs)
 		end
 	end
 
-	vim.pack.add(specs, { load = false, confirm = false })
+	if not nix_managed then
+		vim.pack.add(specs, { load = false, confirm = false })
+	end
 
 	for _, spec in ipairs(specs) do
 		local name = spec_name(spec)
