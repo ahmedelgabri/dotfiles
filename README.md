@@ -324,6 +324,16 @@ Available templates:
 | `go`            | Simple Go template                                           |
 | `rust`          | Simple Rust template                                         |
 
+## Standalone Neovim
+
+The flake exports the full Neovim setup as a single self-contained package, usable on any machine that has Nix:
+
+```bash
+nix run 'github:ahmedelgabri/dotfiles#neovim'
+```
+
+Plugins are pinned by [config/nvim/nvim-pack-lock.json](./config/nvim/nvim-pack-lock.json) (the same lock `vim.pack` maintains at runtime), the Lua config is baked into the store, and all language servers/formatters ride along on its `$PATH`. See [config/nvim/README.md](./config/nvim/README.md) for how it works.
+
 ## Working on this repo
 
 The flake also exposes a few outputs that are useful when editing the dotfiles
