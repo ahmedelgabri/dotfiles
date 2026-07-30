@@ -30,6 +30,11 @@
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
+    nix-wrapper-modules = {
+      url = "github:BirdeeHub/nix-wrapper-modules";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";

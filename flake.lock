@@ -427,6 +427,26 @@
         "type": "github"
       }
     },
+    "nix-wrapper-modules": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782135443,
+        "narHash": "sha256-vAmbArdCyjqpVW+37aCy/PMBOLIqukUXLQuEKLwUhA4=",
+        "owner": "BirdeeHub",
+        "repo": "nix-wrapper-modules",
+        "rev": "6e7f66fa2cdf4d63162580b438f7fcf87c28a46f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "nix-wrapper-modules",
+        "type": "github"
+      }
+    },
     "nixfmt-rs": {
       "inputs": {
         "nixpkgs": [
@@ -522,6 +542,7 @@
         "home-manager": "home-manager",
         "llm-agents": "llm-agents",
         "nix-homebrew": "nix-homebrew",
+        "nix-wrapper-modules": "nix-wrapper-modules",
         "nixfmt-rs": "nixfmt-rs",
         "nixpkgs": "nixpkgs",
         "yazi": "yazi",
