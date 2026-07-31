@@ -102,6 +102,53 @@ local themes = {
 
 local colors = themes[vim.o.background] or themes.dark
 
+-- Mirror the terminal's plain-dark/plain-light ANSI palettes so :terminal
+-- matches the outer terminal instead of Nvim's built-in 16 colors.
+local terminal_palettes = {
+	dark = {
+		'#303030',
+		'#cc6666',
+		'#b5bd68',
+		'#f0c674',
+		'#81a2be',
+		'#b294bb',
+		'#8abeb7',
+		'#c5c8c6',
+		'#666666',
+		'#f2777a',
+		'#99cc99',
+		'#ffcc66',
+		'#6699cc',
+		'#cc99cc',
+		'#66cccc',
+		'#ffffff',
+	},
+	light = {
+		'#383a42',
+		'#c82829',
+		'#5f7800',
+		'#9a6800',
+		'#4271ae',
+		'#8959a8',
+		'#287f85',
+		'#8e908c',
+		'#767676',
+		'#a82020',
+		'#4f6b00',
+		'#805900',
+		'#315f9c',
+		'#774394',
+		'#176f76',
+		'#4d4d4c',
+	},
+}
+
+for i, hex in
+	ipairs(terminal_palettes[vim.o.background] or terminal_palettes.dark)
+do
+	vim.g['terminal_color_' .. (i - 1)] = hex
+end
+
 -- __Normal__
 highlight('Normal', { fg = colors.norm, bg = colors.bg })
 highlight('Cursor', { fg = colors.bg, bg = colors.norm })
@@ -160,12 +207,12 @@ highlight('Exception', { link = 'Statement' })
 -- __ErrorMsg__
 highlight('ErrorMsg', { fg = colors.error })
 highlight('Error', { link = 'ErrorMsg' })
-highlight('Question', { link = 'ErrorMsg' })
 -- __WarningMsg__
 highlight('WarningMsg', { fg = colors.warning })
 -- __MoreMsg__
 highlight('MoreMsg', { fg = colors.norm_subtle, bold = true })
 highlight('ModeMsg', { link = 'MoreMsg' })
+highlight('Question', { link = 'MoreMsg' })
 
 -- __NonText__
 highlight('NonText', { fg = colors.norm_very_subtle })
@@ -197,9 +244,9 @@ highlight('DiffText', { fg = colors.constant })
 highlight('DiffTextAdd', { link = 'DiffAdd' })
 
 highlight('SpellBad', { underline = true, sp = colors.red })
-highlight('SpellCap', { underline = true, sp = colors.ok })
-highlight('SpellRare', { underline = true, sp = colors.error })
-highlight('SpellLocal', { underline = true, sp = colors.ok })
+highlight('SpellCap', { underline = true, sp = colors.warning })
+highlight('SpellRare', { underline = true, sp = colors.purple })
+highlight('SpellLocal', { underline = true, sp = colors.cyan })
 
 highlight('helpHyperTextEntry', { link = 'Title' })
 highlight('helpHyperTextJump', { link = 'String' })
@@ -250,7 +297,7 @@ highlight('TabLineSel', { reverse = true })
 
 -- Floating Window --
 highlight('NormalFloat', { fg = colors.norm, bg = nil })
-highlight('FloatBorder', { link = 'Number' })
+highlight('FloatBorder', { link = 'Comment' })
 
 -- __CursorLine__
 highlight('CursorLine', { bg = colors.cursor_line })
@@ -273,21 +320,6 @@ highlight('htmlH6', { link = 'Normal' })
 highlight('diffRemoved', { link = 'DiffDelete' })
 highlight('diffAdded', { link = 'DiffAdd' })
 
--- Signify, git-gutter
-highlight('SignifySignAdd', { link = 'LineNr' })
-highlight('SignifySignDelete', { link = 'LineNr' })
-highlight('SignifySignChange', { link = 'LineNr' })
-highlight('GitGutterAdd', { link = 'LineNr' })
-highlight('GitGutterDelete', { link = 'LineNr' })
-highlight('GitGutterChange', { link = 'LineNr' })
-highlight('GitGutterChangeDelete', { link = 'LineNr' })
-
-highlight('jsFlowTypeKeyword', { link = 'Statement' })
-highlight('jsFlowImportType', { link = 'Statement' })
-highlight('jsFunction', { link = 'Statement' })
-highlight('jsGlobalObjects', { link = 'Normal' })
-highlight('jsGlobalNodeObjects', { link = 'Normal' })
-highlight('jsArrowFunction', { link = 'Noise' })
 highlight('StorageClass', { link = 'Statement' })
 
 highlight('graphqlString', { link = 'Comment' })
@@ -312,31 +344,18 @@ highlight('markdownHeadingDelimiter', { link = 'Constant' })
 highlight('yamlBlockMappingKey', { link = 'Statement' })
 highlight('pythonOperator', { link = 'Statement' })
 
-highlight('ALEWarning', { link = 'WarningMsg' })
-highlight('ALEWarningSign', { link = 'WarningMsg' })
-highlight('ALEError', { link = 'ErrorMsg' })
-highlight('ALEErrorSign', { link = 'ErrorMsg' })
-highlight('ALEInfo', { link = 'InfoMsg' })
-highlight('ALEInfoSign', { link = 'InfoMsg' })
-
 highlight('sqlStatement', { link = 'Statement' })
 highlight('sqlKeyword', { link = 'Keyword' })
 
-highlight('MutedImports', { bg = nil, fg = colors.bg })
-highlight(
-	'MutedImportsInfo',
-	{ italic = true, bold = true, bg = nil, fg = colors.bg_subtle }
-)
-
--- Startify
-highlight('StartifyHeader', { link = 'Normal' })
-highlight('StartifyFile', { link = 'Directory' })
-highlight('StartifyPath', { link = 'LineNr' })
-highlight('StartifySlash', { link = 'StartifyPath' })
-highlight('StartifyBracket', { link = 'StartifyPath' })
-highlight('StartifyNumber', { link = 'Title' })
-
 -- Mini --
+-- mini.hipatterns paints TODO/FIXME-style markers via extmarks, which sit
+-- above any @comment.* treesitter highlight; keep both in the same muted
+-- style so markers scan by weight only.
+highlight('MiniHipatternsFixme', { link = '@comment.error' })
+highlight('MiniHipatternsHack', { link = '@comment.warning' })
+highlight('MiniHipatternsNote', { link = '@comment.note' })
+highlight('MiniHipatternsTodo', { link = '@comment.todo' })
+
 highlight('MiniIndentscopeSymbol', { link = 'Comment' })
 highlight('MiniIndentscopeSymbolOff', { link = 'MiniIndentscopeSymbol' })
 
@@ -364,16 +383,22 @@ highlight('MiniStarterDashboardKey', { fg = colors.bg_subtle })
 highlight('MiniStarterDashboardTitle', { fg = colors.norm_very_subtle })
 
 -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md#highlights
-highlight('@annotation', { link = 'Cursor' })
+highlight('@annotation', { link = 'Noise' })
 highlight('@attribute', { link = 'Constant' })
 highlight('@boolean', { link = 'Constant' })
 highlight('@character', { link = 'Constant' })
 highlight('@comment', { link = 'Comment' })
--- highlight('@comment.error', { link = 'Comment' })
--- highlight('@comment.note', { link = 'Comment' })
--- highlight('@comment.todo', { link = 'Comment' })
--- highlight('@comment.warning', { link = 'Comment' })
--- highlight('@comment.documentation', { link = 'Comment' })
+-- TODO/FIXME-style markers are signals, so they get accent colors; defined
+-- here (not inherited from Nvim defaults) so they track the plain palette
+-- in both modes. MiniHipatterns* groups link here too.
+highlight('@comment.error', { bold = true, italic = true, fg = colors.error })
+highlight('@comment.note', { bold = true, italic = true, fg = colors.cyan })
+highlight('@comment.todo', { bold = true, italic = true, fg = colors.blue })
+highlight(
+	'@comment.warning',
+	{ bold = true, italic = true, fg = colors.warning }
+)
+highlight('@comment.documentation', { link = 'Comment' })
 highlight('@constant', { link = 'Constant' })
 highlight('@constant.builtin', { link = 'Constant' })
 highlight('@constant.macro', { link = 'PreProc' })
@@ -409,13 +434,13 @@ highlight('@markup.quote', { link = 'Comment' })
 highlight('@markup.raw', { link = 'Noise' })
 highlight('@markup.strike', { strikethrough = true })
 highlight('@markup.strong', { bold = true })
-highlight('@markup.underline', { link = 'Underlined', underline = true })
+highlight('@markup.underline', { underline = true })
 highlight('@module', { link = 'Noise' })
 highlight('@none', { link = 'Noise' })
 highlight('@number', { link = 'Constant' })
 highlight('@number.float', { link = 'Constant' })
 highlight('@operator', { link = 'Normal' })
-highlight('@property', { link = '@field' })
+highlight('@property', { link = 'Normal' })
 highlight('@punctuation.bracket', { link = 'Noise' })
 highlight('@punctuation.delimiter', { link = 'Noise' })
 highlight('@string', { link = 'Constant' })
@@ -468,12 +493,6 @@ highlight('BlinkCmpKindInterface', { fg = colors.cyan })
 highlight('BlinkCmpKindColor', { link = 'BlinkCmpKindInterface' })
 highlight('BlinkCmpKindTypeParameter', { link = 'BlinkCmpKindInterface' })
 
--- Misc. mainly my custom stuff --
-highlight(
-	'OverLength',
-	{ fg = nil, bg = colors.selection_fg, ctermbg = 234, ctermfg = nil }
-)
-
 -- Diagnostics (Neovim 0.6+) --
 highlight('DiagnosticError', { link = 'ErrorMsg' })
 highlight('DiagnosticWarn', { link = 'WarningMsg' })
@@ -514,9 +533,7 @@ highlight('LspReferenceTarget', { link = 'SpecialKey' })
 highlight('SnippetTabstopActive', { link = 'Visual' })
 
 -- User highlights --
-highlight('User5', { fg = colors.red })
 highlight('User6', { fg = colors.norm })
-highlight('User7', { fg = colors.cyan })
 highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 
 -- Winbar
