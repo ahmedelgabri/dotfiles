@@ -69,5 +69,27 @@ zf() {
   [[ -n $selected ]] && builtin cd -- "$selected"
 }
 
+# Only exit if we're not on the last pane/window of a tmux session; detach
+# instead so the session survives. Defined as a function so it can actually
+# override the shell builtin.
+# https://github.com/fatih/dotfiles/blob/706e1d26a1b8526755bee92c8093ab61be077894/zshrc#L238-L254
+exit() {
+  if [[ -z ${TMUX-} ]]; then
+    builtin exit
+    return
+  fi
+
+  local panes wins count
+  panes=$(tmux list-panes | wc -l)
+  wins=$(tmux list-windows | wc -l)
+  count=$((panes + wins - 1))
+
+  if [[ $count -eq 1 ]]; then
+    tmux detach
+  else
+    builtin exit
+  fi
+}
+
 # Avoid ssh issues with ssh and terminfo with new terminal apps
 [[ $TERM == "xterm-kitty" ]] || [[ $TERM == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"
