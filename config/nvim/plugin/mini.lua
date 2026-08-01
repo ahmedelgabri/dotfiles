@@ -6,7 +6,6 @@ pack.add {
 		src = 'https://github.com/nvim-mini/mini.nvim',
 		config = function()
 			-- mini.nvim: core utilities (eager)
-			local au = require '_.utils.au'
 			local utils = require '_.utils'
 
 			-- Bufremove keymap
@@ -15,26 +14,6 @@ pack.add {
 			end, {
 				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
 			})
-
-			-- Indentscope: disable in some buffers
-			au.autocmd {
-				event = { 'FileType' },
-				pattern = {
-					'fzf',
-					'startify',
-					'ministarter',
-					'help',
-					'alpha',
-					'dashboard',
-					'neo-tree',
-					'Trouble',
-					'lazy',
-					'mason',
-				},
-				callback = function(args)
-					vim.b[args.buf].miniindentscope_disable = true
-				end,
-			}
 
 			local uv = vim.uv or vim.loop
 			local width = 60
@@ -563,20 +542,6 @@ pack.add {
 				footer = '',
 				content_hooks = { render_dashboard },
 			}
-
-			vim.api.nvim_create_autocmd('User', {
-				group = vim.api.nvim_create_augroup(
-					'custom_mini_starter_dashboard',
-					{ clear = true }
-				),
-				pattern = 'MiniStarterOpened',
-				callback = function()
-					local buf = vim.api.nvim_get_current_buf()
-					if vim.bo[buf].filetype == 'ministarter' then
-						vim.b[buf].miniindentscope_disable = true
-					end
-				end,
-			})
 
 			local misc = require 'mini.misc'
 			misc.setup {}
