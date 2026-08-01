@@ -18,7 +18,9 @@ au.augroup('__myautocmds__', {
 		end,
 	},
 	{
-		event = { 'BufWritePost', 'BufLeave', 'WinLeave' },
+		-- WinLeave is intentionally absent: a window switch fires WinLeave and
+		-- BufLeave back-to-back, writing the same view file twice.
+		event = { 'BufWritePost', 'BufLeave' },
 		pattern = '?*',
 		callback = cmds.mkview,
 	},
