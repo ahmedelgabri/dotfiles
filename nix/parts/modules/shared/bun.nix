@@ -21,10 +21,10 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile.".bunfig.toml".source =
-          config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/bun/.bunfig.toml";
+          config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/bun/.bunfig.toml";
       };
   };
 in

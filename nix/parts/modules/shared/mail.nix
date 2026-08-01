@@ -586,7 +586,7 @@ let
             ))
             // config.lib.file.mkOutOfStoreTree {
               source = ../../../../config/aerc/stylesets;
-              sourceRoot = "${homeDir}/.dotfiles/config/aerc/stylesets";
+              sourceRoot = "${myConfig.dotfilesDir}/config/aerc/stylesets";
               targetRoot = ".config/aerc/stylesets";
             }
             // {
@@ -608,9 +608,9 @@ let
                 );
 
               ".config/aerc/querymap".source =
-                config.lib.file.mkOutOfStoreSymlink "${homeDir}/.dotfiles/config/aerc/querymap";
+                config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/aerc/querymap";
               ".config/aerc/aerc.conf".source =
-                config.lib.file.mkOutOfStoreSymlink "${homeDir}/.dotfiles/config/aerc/aerc.conf";
+                config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/aerc/aerc.conf";
 
               ".config/aerc/accounts.conf".text = lib.concatStringsSep "\n" (
                 map (account: ''

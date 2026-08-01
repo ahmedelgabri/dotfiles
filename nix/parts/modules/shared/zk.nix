@@ -7,17 +7,17 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/zk/templates;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/zk/templates";
+            sourceRoot = "${myConfig.dotfilesDir}/config/zk/templates";
             targetRoot = "zk/templates";
           }
           // {
             "zk/config.toml".source =
-              config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/zk/config.toml";
+              config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/zk/config.toml";
           };
       };
   };

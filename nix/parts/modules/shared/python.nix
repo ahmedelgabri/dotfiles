@@ -31,9 +31,9 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       let
-        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        dotfilesConfig = "${myConfig.dotfilesDir}/config";
       in
       {
         xdg.configFile =

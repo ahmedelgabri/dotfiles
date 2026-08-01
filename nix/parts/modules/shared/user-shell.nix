@@ -17,7 +17,7 @@ let
         }:
         let
           inherit (config.my.user) home;
-          inherit (config.my) devFolder hostConfigHome company;
+          inherit (config.my) devFolder hostConfigHome company dotfilesDir;
           inherit (config.home-manager.users."${config.my.username}") xdg;
 
           local_zshrc = "${hostConfigHome}/zshrc";
@@ -110,7 +110,7 @@ let
                     COLORTERM = "truecolor";
                     COMPANY = company;
                     DOCKER_CONFIG = "${xdg.configHome}/docker";
-                    DOTFILES = "$HOME/.dotfiles";
+                    DOTFILES = dotfilesDir;
                     DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
                     ELINKS_CONFDIR = "${xdg.configHome}/elinks";
                     GATSBY_TELEMETRY_DISABLED = "1";
@@ -542,10 +542,11 @@ let
         {
           config,
           pkgs,
+          myConfig,
           ...
         }:
         let
-          dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+          dotfilesConfig = "${myConfig.dotfilesDir}/config";
         in
         {
           xdg.configFile =

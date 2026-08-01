@@ -18,11 +18,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/tmux;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/tmux";
+          sourceRoot = "${myConfig.dotfilesDir}/config/tmux";
           targetRoot = "tmux";
         };
       };

@@ -15,11 +15,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/yt-dlp;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/yt-dlp";
+          sourceRoot = "${myConfig.dotfilesDir}/config/yt-dlp";
           targetRoot = "yt-dlp";
         };
       };

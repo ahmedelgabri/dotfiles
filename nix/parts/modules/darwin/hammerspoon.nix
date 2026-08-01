@@ -2,7 +2,7 @@ let
   module =
     { config, ... }:
     let
-      inherit (config.my.user) home;
+      inherit (config.my) dotfilesDir;
     in
     {
       config = {
@@ -16,7 +16,7 @@ let
           { config, ... }:
           {
             home.file.".hammerspoon".source =
-              config.lib.file.mkOutOfStoreSymlink "${home}/.dotfiles/config/.hammerspoon";
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/.hammerspoon";
           };
       };
     };

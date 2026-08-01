@@ -26,11 +26,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/mpv;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/mpv";
+          sourceRoot = "${myConfig.dotfilesDir}/config/mpv";
           targetRoot = "mpv";
         };
       };

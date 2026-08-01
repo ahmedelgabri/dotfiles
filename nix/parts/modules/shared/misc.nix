@@ -1,9 +1,9 @@
 let
   module = {
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       let
-        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        dotfilesConfig = "${myConfig.dotfilesDir}/config";
         mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
       in
       {

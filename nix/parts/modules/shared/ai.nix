@@ -32,7 +32,7 @@ let
       }:
 
       let
-        dotfilesConfig = "${config.home.homeDirectory}/.dotfiles/config";
+        dotfilesConfig = "${myConfig.dotfilesDir}/config";
         piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
         piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
         piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
@@ -75,7 +75,7 @@ let
         home = {
           activation = {
             linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-              TARGET="${config.home.homeDirectory}/.dotfiles/config/pi/agent/extensions/node_modules"
+              TARGET="${myConfig.dotfilesDir}/config/pi/agent/extensions/node_modules"
               SOURCE="${piAgentExtensionNodeModules}"
 
               if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then

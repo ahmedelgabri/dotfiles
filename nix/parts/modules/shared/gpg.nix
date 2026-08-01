@@ -45,7 +45,7 @@ let
             max-cache-ttl 86400'';
 
           "gnupg/gpg.conf".source =
-            config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/config/gnupg/gpg.conf";
+            config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/gnupg/gpg.conf";
         };
       };
   };

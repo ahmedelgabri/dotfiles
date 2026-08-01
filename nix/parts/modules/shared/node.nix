@@ -41,11 +41,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/pnpm;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/pnpm";
+          sourceRoot = "${myConfig.dotfilesDir}/config/pnpm";
           targetRoot = "pnpm";
         };
       };

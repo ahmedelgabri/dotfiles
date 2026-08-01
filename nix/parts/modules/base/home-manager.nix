@@ -17,6 +17,7 @@ in
 {
   config = {
     my.hostConfigHome = "${xdgHomes.dataHome}/${config.networking.hostName}";
+    my.dotfilesDir = "${home}/.dotfiles";
 
     home-manager = {
       useGlobalPkgs = true;
@@ -58,6 +59,7 @@ in
             company
             nix_managed
             hostConfigHome
+            dotfilesDir
             modules
             ;
           inherit (config.networking) hostName;

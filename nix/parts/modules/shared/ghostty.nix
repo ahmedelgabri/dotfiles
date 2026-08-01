@@ -19,12 +19,12 @@ let
       };
 
     homeManager =
-      { config, inputs, ... }:
+      { config, inputs, myConfig, ... }:
       {
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/ghostty;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/ghostty";
+            sourceRoot = "${myConfig.dotfilesDir}/config/ghostty";
             targetRoot = "ghostty";
           }
           // {

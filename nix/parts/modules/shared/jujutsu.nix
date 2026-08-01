@@ -26,7 +26,7 @@ let
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/jj;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/jj";
+            sourceRoot = "${myConfig.dotfilesDir}/config/jj";
             targetRoot = "jj";
           }
           // {

@@ -2,7 +2,7 @@ let
   module =
     { config, ... }:
     let
-      inherit (config.my.user) home;
+      inherit (config.my) dotfilesDir;
     in
     {
       config = {
@@ -16,7 +16,7 @@ let
           { config, ... }:
           {
             xdg.configFile."karabiner".source =
-              config.lib.file.mkOutOfStoreSymlink "${home}/.dotfiles/config/karabiner";
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/config/karabiner";
           };
       };
     };

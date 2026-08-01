@@ -37,12 +37,12 @@ let
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/git;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/git";
+            sourceRoot = "${myConfig.dotfilesDir}/config/git";
             targetRoot = "git";
           }
           // config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/tig;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/tig";
+            sourceRoot = "${myConfig.dotfilesDir}/config/tig";
             targetRoot = "tig";
           }
           // {

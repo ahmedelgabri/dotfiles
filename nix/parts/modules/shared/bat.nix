@@ -22,11 +22,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/bat;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/bat";
+          sourceRoot = "${myConfig.dotfilesDir}/config/bat";
           targetRoot = "bat";
         };
       };

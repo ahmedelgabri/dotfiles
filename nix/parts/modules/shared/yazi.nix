@@ -33,12 +33,12 @@ let
       };
 
     homeManager =
-      { config, inputs, ... }:
+      { config, inputs, myConfig, ... }:
       {
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
             source = ../../../../config/yazi;
-            sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/yazi";
+            sourceRoot = "${myConfig.dotfilesDir}/config/yazi";
             targetRoot = "yazi";
           }
           // {

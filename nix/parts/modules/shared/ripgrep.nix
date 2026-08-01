@@ -18,11 +18,11 @@ let
       };
 
     homeManager =
-      { config, ... }:
+      { config, myConfig, ... }:
       {
         xdg.configFile = config.lib.file.mkOutOfStoreTree {
           source = ../../../../config/ripgrep;
-          sourceRoot = "${config.home.homeDirectory}/.dotfiles/config/ripgrep";
+          sourceRoot = "${myConfig.dotfilesDir}/config/ripgrep";
           targetRoot = "ripgrep";
         };
       };
