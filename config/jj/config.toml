@@ -11,14 +11,13 @@ behavior = "own"
 backend = "gpg"
 backends.gpg.program = "vcs-gpg"
 
+# push-bookmark-prefix, auto-track-bookmarks, and git_push_bookmark are
+# derived from my.github_username and generated into conf.d/nix.toml.
 [git]
-push-bookmark-prefix = 'ahmedelgabri/'
 private-commits = 'blacklist()'
 write-change-id-header = true
 
 [remotes.origin]
-# https://docs.jj-vcs.dev/latest/config/#automatic-tracking-of-bookmarks
-auto-track-bookmarks = "ahmedelgabri/*"
 auto-track-created-bookmarks = "*"
 
 [merge-tools.difft]
@@ -239,10 +238,7 @@ if(commit.root(),
 
 
 [templates]
-# Generate prefixed bookmark names when running `jj git push --change`:
-# See: https://jj-vcs.github.io/jj/latest/config/#generated-bookmark-names-on-push
-# git_push_bookmark = '"<%= variables.gitHubUsername %>/" ++ change_id.short()'
-git_push_bookmark = '"ahmedelgabri/" ++ change_id.short()'
+# git_push_bookmark is generated into conf.d/nix.toml from my.github_username.
 
 # Add change ID to the end of the commit
 commit_trailers = '''

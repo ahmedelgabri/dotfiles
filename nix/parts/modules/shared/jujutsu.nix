@@ -40,6 +40,18 @@ let
               [user]
               ${optionalString (myConfig.email != "") "email = \"${myConfig.email}\""}
 
+              [git]
+              push-bookmark-prefix = '${myConfig.github_username}/'
+
+              [remotes.origin]
+              # https://docs.jj-vcs.dev/latest/config/#automatic-tracking-of-bookmarks
+              auto-track-bookmarks = "${myConfig.github_username}/*"
+
+              [templates]
+              # Generate prefixed bookmark names when running `jj git push --change`:
+              # See: https://jj-vcs.github.io/jj/latest/config/#generated-bookmark-names-on-push
+              git_push_bookmark = '"${myConfig.github_username}/" ++ change_id.short()'
+
             '';
           };
       };
