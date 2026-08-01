@@ -8,29 +8,6 @@ M.mkview_filetype_blocklist = {
 	snacks_dashboard = true,
 }
 
-M.colorcolumn_blocklist = {
-	qf = true,
-	fzf = true,
-	netrw = true,
-	help = true,
-	markdown = true,
-	startify = true,
-	text = true,
-	gitconfig = true,
-	gitrebase = true,
-	conf = true,
-	tags = true,
-	vimfiler = true,
-	dos = true,
-	json = true,
-	diff = true,
-	minpacprgs = true,
-	gitcommit = true,
-	GrepperSide = true,
-	ministarter = true,
-	snacks_dashboard = true,
-}
-
 --  Loosely based on: http://vim.wikia.com/wiki/Make_views_automatic
 --  from https://github.com/wincent/wincent/blob/c87f3e1e127784bb011b0352c9e239f9fde9854f/roles/dotfiles/files/.vim/autoload/autocmds.vim#L20-L37
 local function should_mkview(event)
