@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -25,6 +26,17 @@ func formatOutput(output shared.Output) string {
 	}
 
 	return output.Item
+}
+
+func printSchedule(source shared.Source, key shared.CacheKey) {
+	schedule, err := shared.GetSchedule(source, key)
+	if err != nil {
+		fatal("%s", err)
+	}
+
+	if err := json.NewEncoder(os.Stdout).Encode(schedule); err != nil {
+		fatal("%s", err)
+	}
 }
 
 func printHelp() {
@@ -95,6 +107,7 @@ func runMawaqit() {
 	country := fs.String("country", "", "Country (for cache keying)")
 	mosque := fs.String("mosque", "", "Mosque name, label, slug, associationName, or UUID")
 	listMosques := fs.Bool("list-mosques", false, "List nearby mosques and exit")
+	jsonOut := fs.Bool("json", false, "Print today's full schedule as JSON")
 	help := fs.Bool("help", false, "Print help")
 
 	fs.Parse(os.Args[2:])
@@ -132,6 +145,12 @@ func runMawaqit() {
 	}
 
 	s := mawaqit.New(params)
+
+	if *jsonOut {
+		printSchedule(s, key)
+		return
+	}
+
 	result, err := shared.GetPrayer(s, key)
 	if err != nil {
 		fatal("%s", err)
@@ -148,6 +167,7 @@ func runAladhan() {
 	country := fs.String("country", "", "Country name or code")
 	method := fs.Int("method", -1, "Calculation method")
 	tune := fs.String("tune", "", "Prayer time tuning")
+	jsonOut := fs.Bool("json", false, "Print today's full schedule as JSON")
 	help := fs.Bool("help", false, "Print help")
 
 	fs.Parse(os.Args[2:])
@@ -179,6 +199,12 @@ func runAladhan() {
 	}
 
 	s := aladhan.New(params)
+
+	if *jsonOut {
+		printSchedule(s, key)
+		return
+	}
+
 	result, err := shared.GetPrayer(s, key)
 	if err != nil {
 		fatal("%s", err)

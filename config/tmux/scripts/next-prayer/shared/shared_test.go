@@ -159,6 +159,29 @@ func TestGetData(t *testing.T) {
 		}
 	})
 
+	t.Run("schedule exposes source, date, timings, and mosque", func(t *testing.T) {
+		t.Setenv("TMPDIR", t.TempDir())
+		mosque := &MosqueInfo{Name: "Blue Mosque"}
+		source := &fakeSource{data: ApiData{Timings: validTimes, Mosque: mosque}}
+
+		schedule, err := GetSchedule(source, key)
+		if err != nil {
+			t.Fatalf("GetSchedule failed: %v", err)
+		}
+		if schedule.Source != key.Source {
+			t.Errorf("schedule source = %q, want %q", schedule.Source, key.Source)
+		}
+		if want := time.Now().In(time.Local).Format("2006-01-02"); schedule.Date != want {
+			t.Errorf("schedule date = %q, want %q", schedule.Date, want)
+		}
+		if schedule.Timings != validTimes {
+			t.Errorf("schedule timings = %+v, want %+v", schedule.Timings, validTimes)
+		}
+		if schedule.Mosque == nil || schedule.Mosque.Name != mosque.Name {
+			t.Errorf("schedule mosque = %+v, want %+v", schedule.Mosque, mosque)
+		}
+	})
+
 	t.Run("corrupt cache is refetched and rewritten", func(t *testing.T) {
 		t.Setenv("TMPDIR", t.TempDir())
 		cache := filepath.Join(os.TempDir(), cacheFilename(key, testNow))

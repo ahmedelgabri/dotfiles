@@ -139,6 +139,7 @@ Options
     --country        Country (for cache keying)
     --mosque         Mosque name, label, slug, associationName, or UUID
     --list-mosques   List nearby mosques and exit
+    --json           Print today's full schedule as JSON
     --config         Config file path override
     --help           Print this help
 

@@ -59,6 +59,7 @@ Options
     --city      City name (e.g. "Amsterdam")
     --method    Calculation method (e.g. 3)
     --tune      Prayer time tuning
+    --json      Print today's full schedule as JSON
     --config    Config file path override
     --help      Print this help
 

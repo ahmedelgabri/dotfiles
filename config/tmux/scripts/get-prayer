@@ -12,6 +12,13 @@ fi
 LOCATION_DATA="${TMPDIR:-/tmp}/.location.json"
 LOCATION_ICON="$(printf '\U000F0A77')"
 
+# With --json, next-prayer's stable JSON schedule is printed as-is (no icon
+# or tmux styling) for machine consumers like the Hammerspoon prayer module.
+json_flag=""
+if [[ "${1-}" == "--json" ]]; then
+	json_flag="-json"
+fi
+
 # `// empty` maps missing keys to empty strings instead of the literal
 # string "null", which would otherwise be passed on as a flag value.
 latitude="$(jq -r '.location.latitude // empty' "$LOCATION_DATA" 2>/dev/null)"
@@ -25,17 +32,21 @@ if [[ -n "$latitude" && -n "$longitude" ]]; then
 	city="$(jq -r '.locality // empty' "$LOCATION_DATA" 2>/dev/null)"
 	country="$(jq -r '.countryCode // empty' "$LOCATION_DATA" 2>/dev/null)"
 
-	if result="$(next-prayer mawaqit \
+	if result="$(next-prayer mawaqit ${json_flag:+"$json_flag"} \
 		-latitude "$latitude" -longitude "$longitude" \
 		-city "$city" -country "$country")"; then
-		output="$LOCATION_ICON $result"
+		if [[ -n "$json_flag" ]]; then
+			output="$result"
+		else
+			output="$LOCATION_ICON $result"
+		fi
 	fi
 fi
 
 # Also reached when the Mawaqit call fails (auth or network errors), so the
 # status bar degrades to city-level times instead of going blank.
 if [[ -z "$output" ]]; then
-	output="$(next-prayer aladhan)"
+	output="$(next-prayer aladhan ${json_flag:+"$json_flag"})"
 fi
 
 printf "%s" "$output"

@@ -91,8 +91,8 @@ func sanitizePart(s string) string {
 }
 
 // cacheFilename builds `.prayer-<source>[_<mosque>][_<city>_<country>]_<date>.json`.
-// The Hammerspoon prayer.lua module locates these files by the
-// `_<city>_<country>_` tag and the date suffix, so keep the format in sync.
+// The format is private to this package; external consumers (Hammerspoon,
+// scripts) should use the CLI's -json output instead of reading cache files.
 func cacheFilename(key CacheKey, now time.Time) string {
 	parts := []string{key.Source}
 
@@ -158,6 +158,34 @@ func getData(source Source, key CacheKey, now time.Time) (ApiData, error) {
 	}
 
 	return data, nil
+}
+
+// Schedule is the stable machine-readable view of a day's prayer times,
+// exposed via the CLI's -json flag so consumers never have to touch the
+// private cache files.
+type Schedule struct {
+	Source  string      `json:"source"`
+	Date    string      `json:"date"`
+	Timings AllTimes    `json:"timings"`
+	Mosque  *MosqueInfo `json:"mosque,omitempty"`
+}
+
+// GetSchedule returns today's full schedule, served from the same daily
+// cache that GetPrayer uses.
+func GetSchedule(source Source, key CacheKey) (Schedule, error) {
+	now := time.Now().In(time.Local)
+
+	data, err := getData(source, key, now)
+	if err != nil {
+		return Schedule{}, err
+	}
+
+	return Schedule{
+		Source:  key.Source,
+		Date:    now.Format("2006-01-02"),
+		Timings: data.Timings,
+		Mosque:  data.Mosque,
+	}, nil
 }
 
 func GetPrayer(source Source, key CacheKey) (Output, error) {

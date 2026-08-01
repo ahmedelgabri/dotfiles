@@ -42,10 +42,9 @@ local MENU_TEXT_STYLE = {
 
 local DEFAULT_SETTINGS = {
 	autosaveName = 'prayer-times',
-	cacheDir = hs.fs.temporaryDirectory(),
-	cacheFetchCommand = '~/.config/tmux/scripts/get-prayer',
-	cacheFetchCooldownSeconds = 300,
-	cacheFetchShell = '/bin/zsh',
+	fetchCommand = '~/.config/tmux/scripts/get-prayer',
+	fetchCooldownSeconds = 300,
+	fetchShell = '/bin/zsh',
 	locationPath = hs.fs.temporaryDirectory() .. '.location.json',
 	notificationGraceSeconds = 90,
 	notificationsEnabled = true,
@@ -54,17 +53,19 @@ local DEFAULT_SETTINGS = {
 }
 
 local M = {
-	cacheFetchState = {
+	fetchState = {
 		running = false,
 	},
-	cacheFetchTask = nil,
+	fetchTask = nil,
 	hijriDateCache = {},
 	menuBar = nil,
 	notificationTimer = nil,
+	-- Day schedule from `get-prayer --json`; the CLI owns the on-disk cache
+	-- format, this module only consumes its stable JSON output.
+	schedule = {},
 	sentNotifications = {},
 	settings = utils.deepCopy(DEFAULT_SETTINGS),
 	state = {
-		cachePath = nil,
 		error = nil,
 		highlight = false,
 		hijriDate = nil,
@@ -74,6 +75,7 @@ local M = {
 		nextPrayer = nil,
 		remainingMinutes = nil,
 		rows = {},
+		source = nil,
 	},
 	timer = nil,
 	watcher = nil,
@@ -103,19 +105,6 @@ local function expandPath(path)
 	return utils.expandPath(path)
 end
 
-local function ensureTrailingSlash(path)
-	path = expandPath(path)
-	if type(path) ~= 'string' or path == '' then
-		return hs.fs.temporaryDirectory()
-	end
-
-	if path:sub(-1) == '/' then
-		return path
-	end
-
-	return path .. '/'
-end
-
 local function pathExists(path)
 	local expanded = expandPath(path)
 	return type(expanded) == 'string' and hs.fs.attributes(expanded) ~= nil
@@ -139,103 +128,8 @@ local function readJson(path)
 	return data, nil
 end
 
-local function cachePart(value)
-	return trim(value):lower():gsub(' ', '-')
-end
-
 local function dateStamp(now)
 	return os.date('%d-%m-%Y', now or os.time())
-end
-
-local CACHE_PREFIX = '.prayer-'
-local MAWAQIT_PREFIX = CACHE_PREFIX .. 'mawaqit'
-
--- Cache files are named `.prayer-<source>[_<mosque>][_<city>_<country>]_<date>.json`
--- by next-prayer's shared.cacheFilename; the mosque part is unknown here, so
--- today's files are discovered by scanning the cache directory instead of
--- computing exact paths.
-local function todayCacheFiles(now)
-	local dir = ensureTrailingSlash(M.settings.cacheDir)
-	local suffix = '_' .. dateStamp(now) .. '.json'
-	local files = {}
-
-	local ok, iter, dirObj = pcall(hs.fs.dir, dir)
-	if not ok or type(iter) ~= 'function' then
-		return files
-	end
-
-	for file in iter, dirObj do
-		if
-			file:sub(1, #CACHE_PREFIX) == CACHE_PREFIX
-			and file:sub(-#suffix) == suffix
-		then
-			table.insert(files, file)
-		end
-	end
-
-	table.sort(files)
-	return files
-end
-
--- Mawaqit caches hold mosque-specific times, so they win over Aladhan's
--- city-level calculation when both exist for the same day.
-local function pickCacheFile(files)
-	for _, file in ipairs(files) do
-		if file:sub(1, #MAWAQIT_PREFIX) == MAWAQIT_PREFIX then
-			return file
-		end
-	end
-
-	return files[1]
-end
-
-local function locationTag(locationData)
-	if type(locationData) ~= 'table' then
-		return nil
-	end
-
-	local city = cachePart(locationData.locality or '')
-	local country =
-		cachePart(locationData.countryCode or locationData.country or '')
-
-	if city == '' and country == '' then
-		return nil
-	end
-
-	return '_' .. city .. '_' .. country .. '_'
-end
-
-local function findCache(now)
-	local locationData = readJson(M.settings.locationPath)
-	local files = todayCacheFiles(now)
-	local tag = locationTag(locationData)
-
-	-- When the location is known, only caches for that location are usable;
-	-- anything else is stale data from somewhere the user no longer is.
-	if tag then
-		local matching = {}
-		for _, file in ipairs(files) do
-			if file:find(tag, 1, true) then
-				table.insert(matching, file)
-			end
-		end
-		files = matching
-	end
-
-	local dir = ensureTrailingSlash(M.settings.cacheDir)
-	local chosen = pickCacheFile(files)
-	if chosen then
-		return dir .. chosen, locationData, dir .. chosen
-	end
-
-	-- No usable cache; return a stable identifier so fetch cooldown tracking
-	-- has something to key on.
-	local expected = dir
-		.. CACHE_PREFIX
-		.. (tag or '_')
-		.. dateStamp(now)
-		.. '.json'
-	return nil, locationData, expected
 end
 
 local function timingValue(timings, key)
@@ -621,27 +515,22 @@ local function schedulePrayerNotification(rows, now)
 	end)
 end
 
-local function cacheFetchInProgress(cachePath)
-	return M.cacheFetchState.running
-		and (not cachePath or M.cacheFetchState.cachePath == cachePath)
+local function fetchInProgress(stamp)
+	return M.fetchState.running and (not stamp or M.fetchState.stamp == stamp)
 end
 
-local function shouldStartCacheFetch(cachePath, force)
-	if cacheFetchInProgress() then
+local function shouldStartFetch(stamp, force)
+	if fetchInProgress() then
 		return false
 	end
 
-	if type(cachePath) ~= 'string' or cachePath == '' then
-		return false
-	end
-
-	local cooldown = M.settings.cacheFetchCooldownSeconds or 0
-	local lastAttempt = M.cacheFetchState.requestedAt
+	local cooldown = M.settings.fetchCooldownSeconds or 0
+	local lastAttempt = M.fetchState.requestedAt
 	if
 		not force
 		and cooldown > 0
 		and lastAttempt
-		and M.cacheFetchState.cachePath == cachePath
+		and M.fetchState.stamp == stamp
 		and os.time() - lastAttempt < cooldown
 	then
 		return false
@@ -650,48 +539,54 @@ local function shouldStartCacheFetch(cachePath, force)
 	return true
 end
 
-local function recordCacheFetchFailure(cachePath, message)
+local function recordFetchFailure(stamp, message)
 	local now = os.time()
-	M.cacheFetchTask = nil
-	M.cacheFetchState = {
-		cachePath = cachePath,
+	M.fetchTask = nil
+	M.fetchState = {
 		completedAt = now,
 		error = message,
 		requestedAt = now,
 		running = false,
+		stamp = stamp,
 	}
-	log.wf('Prayer cache fetch unavailable: %s', message)
+	log.wf('Prayer schedule fetch unavailable: %s', message)
 end
 
-local function finishCacheFetch(
-	cachePath,
-	requestedAt,
-	exitCode,
-	stdout,
-	stderr
-)
+local function finishFetch(stamp, requestedAt, exitCode, stdout, stderr)
 	local output = trim(stdout)
 	local err = trim(stderr)
 	local errorMessage = nil
+	local schedule = nil
+
 	if exitCode ~= 0 then
 		errorMessage = err ~= '' and err or ('exit code ' .. tostring(exitCode))
+	else
+		local ok, decoded = pcall(hs.json.decode, output)
+		if ok and type(decoded) == 'table' and type(decoded.timings) == 'table' then
+			schedule = decoded
+		else
+			errorMessage = 'invalid JSON from get-prayer'
+		end
 	end
 
-	M.cacheFetchTask = nil
-	M.cacheFetchState = {
-		cachePath = cachePath,
+	M.fetchTask = nil
+	M.fetchState = {
 		completedAt = os.time(),
 		error = errorMessage,
 		exitCode = exitCode,
-		output = output ~= '' and output or nil,
 		requestedAt = requestedAt,
 		running = false,
+		stamp = stamp,
 	}
 
 	if errorMessage then
-		log.wf('Prayer cache fetch failed: %s', errorMessage)
+		log.wf('Prayer schedule fetch failed: %s', errorMessage)
 	else
-		log.i 'Prayer cache fetch completed'
+		M.schedule = {
+			data = schedule,
+			stamp = dateStamp(),
+		}
+		log.i 'Prayer schedule fetch completed'
 	end
 
 	if M.menuBar then
@@ -699,75 +594,72 @@ local function finishCacheFetch(
 	end
 end
 
-local function startCacheFetch(cachePath, force)
-	if not shouldStartCacheFetch(cachePath, force) then
+local function startFetch(stamp, force)
+	if not shouldStartFetch(stamp, force) then
 		return false
 	end
 
-	local command = expandPath(M.settings.cacheFetchCommand)
+	local command = expandPath(M.settings.fetchCommand)
 	if type(command) ~= 'string' or command == '' then
-		recordCacheFetchFailure(cachePath, 'missing get-prayer command setting')
+		recordFetchFailure(stamp, 'missing get-prayer command setting')
 		return false
 	end
 
 	if not pathExists(command) then
-		recordCacheFetchFailure(
-			cachePath,
-			'missing get-prayer command: ' .. command
-		)
+		recordFetchFailure(stamp, 'missing get-prayer command: ' .. command)
 		return false
 	end
 
 	local requestedAt = os.time()
-	M.cacheFetchState = {
-		cachePath = cachePath,
+	M.fetchState = {
 		requestedAt = requestedAt,
 		running = true,
+		stamp = stamp,
 	}
 
-	local shell = expandPath(M.settings.cacheFetchShell or '/bin/zsh')
+	local shell = expandPath(M.settings.fetchShell or '/bin/zsh')
 	local task = hs.task.new(shell, function(exitCode, stdout, stderr)
-		finishCacheFetch(cachePath, requestedAt, exitCode, stdout, stderr)
+		finishFetch(stamp, requestedAt, exitCode, stdout, stderr)
 	end, {
 		'-lc',
-		'exec "$1"',
+		'exec "$1" --json',
 		'get-prayer',
 		command,
 	})
 	if not task then
-		recordCacheFetchFailure(cachePath, 'failed to create get-prayer task')
+		recordFetchFailure(stamp, 'failed to create get-prayer task')
 		return false
 	end
 
-	M.cacheFetchTask = task
+	M.fetchTask = task
 	local ok, result = pcall(function()
 		return task:start()
 	end)
 	if not ok or result == false then
-		recordCacheFetchFailure(
-			cachePath,
+		recordFetchFailure(
+			stamp,
 			'failed to start get-prayer: ' .. tostring(result)
 		)
 		return false
 	end
 
-	log.i 'Fetching missing prayer cache with get-prayer'
+	log.i 'Fetching prayer schedule with get-prayer'
 	return true
 end
 
-local function cancelCacheFetch()
-	if M.cacheFetchTask then
+local function cancelFetch()
+	if M.fetchTask then
 		pcall(function()
-			M.cacheFetchTask:terminate()
+			M.fetchTask:terminate()
 		end)
-		M.cacheFetchTask = nil
+		M.fetchTask = nil
 	end
 
-	M.cacheFetchState.running = false
+	M.fetchState.running = false
 end
 
-local function resetCacheFetchState()
-	M.cacheFetchState = {
+local function resetFetchState()
+	M.fetchState = {
 		running = false,
 	}
 end
@@ -775,7 +667,6 @@ end
 local function setUnavailable(errorMessage)
 	cancelNotificationTimer()
 	M.state = {
-		cachePath = nil,
 		error = errorMessage,
 		highlight = false,
 		hijriDate = nil,
@@ -785,6 +676,7 @@ local function setUnavailable(errorMessage)
 		nextPrayer = nil,
 		remainingMinutes = nil,
 		rows = {},
+		source = nil,
 	}
 
 	if M.menuBar then
@@ -808,7 +700,7 @@ local function updateTitle()
 		.. tostring(M.state.nextPrayer.time)
 
 	M.menuBar:setTitle(styledTitle(title, M.state.highlight))
-	M.menuBar:setTooltip('Prayer times from ' .. basename(M.state.cachePath))
+	M.menuBar:setTooltip('Prayer times from ' .. (M.state.source or 'unknown'))
 end
 
 local function prayerMenuItems()
@@ -857,9 +749,9 @@ local function metadataMenuItems()
 		})
 	end
 
-	if M.state.cachePath then
+	if M.state.source then
 		table.insert(items, {
-			title = 'Cache: ' .. basename(M.state.cachePath),
+			title = 'Source: ' .. M.state.source,
 			disabled = true,
 		})
 	end
@@ -868,9 +760,9 @@ local function metadataMenuItems()
 end
 
 local function relevantPathChanged(files)
+	local locationFile = basename(M.settings.locationPath)
 	for _, path in ipairs(files or {}) do
-		local file = basename(path)
-		if file == '.location.json' or file:match '^%.prayer%-.*%.json$' then
+		if basename(path) == locationFile then
 			return true
 		end
 	end
@@ -881,19 +773,25 @@ end
 function M.update(opts)
 	opts = type(opts) == 'table' and opts or {}
 
+	-- A forced refresh drops the in-memory schedule so location or mosque
+	-- changes are picked up through a fresh get-prayer run.
+	if opts.forceFetch then
+		M.schedule = {}
+	end
+
 	local now = os.time()
-	local cachePath, locationData, expectedCachePath = findCache(now)
+	local stamp = dateStamp(now)
 
-	if not cachePath then
-		local fetching = cacheFetchInProgress(expectedCachePath)
+	if M.schedule.stamp ~= stamp then
+		local fetching = fetchInProgress(stamp)
 		if not fetching then
-			fetching = startCacheFetch(expectedCachePath, opts.forceFetch)
+			fetching = startFetch(stamp, opts.forceFetch)
 		end
 		if not fetching then
-			fetching = cacheFetchInProgress()
+			fetching = fetchInProgress()
 		end
 
-		local message = 'no prayer cache for ' .. dateStamp(now)
+		local message = 'no prayer schedule for ' .. stamp
 		if fetching then
 			message = message .. '; fetching with get-prayer'
 		end
@@ -902,25 +800,18 @@ function M.update(opts)
 		return false
 	end
 
-	local data, err = readJson(cachePath)
-	if not data then
-		setUnavailable(
-			'failed to read ' .. basename(cachePath) .. ': ' .. tostring(err)
-		)
-		return false
-	end
-
+	local data = M.schedule.data
+	local locationData = readJson(M.settings.locationPath)
 	local rows = moveFajrAfterIsha(buildRows(data, now), now)
 	local mosque = mosqueLabel(data)
 	local hijri = hijriDate(now)
 	local upcoming, remaining = nextPrayer(rows, now)
 	if not upcoming then
-		setUnavailable('no upcoming prayer in ' .. basename(cachePath))
+		setUnavailable 'no upcoming prayer in schedule'
 		return false
 	end
 
 	M.state = {
-		cachePath = cachePath,
 		error = nil,
 		highlight = shouldHighlight(remaining),
 		hijriDate = hijri,
@@ -930,6 +821,7 @@ function M.update(opts)
 		nextPrayer = upcoming,
 		remainingMinutes = remaining,
 		rows = rows,
+		source = data.source,
 	}
 
 	updateTitle()
@@ -971,9 +863,8 @@ end
 
 function M.getStatus()
 	return {
-		cacheFetch = utils.deepCopy(M.cacheFetchState),
-		cachePath = M.state.cachePath,
 		error = M.state.error,
+		fetch = utils.deepCopy(M.fetchState),
 		highlight = M.state.highlight,
 		hijriDate = utils.deepCopy(M.state.hijriDate),
 		lastUpdatedAt = M.state.lastUpdatedAt,
@@ -985,6 +876,7 @@ function M.getStatus()
 		remainingMinutes = M.state.remainingMinutes,
 		rowCount = #(M.state.rows or {}),
 		sentNotificationCount = tableCount(M.sentNotifications),
+		source = M.state.source,
 	}
 end
 
@@ -994,18 +886,23 @@ local function startWatcher()
 		M.watcher = nil
 	end
 
-	local cacheDir = ensureTrailingSlash(M.settings.cacheDir)
-	if not pathExists(cacheDir) then
-		log.wf('Prayer cache directory does not exist: %s', cacheDir)
+	local locationPath = expandPath(M.settings.locationPath)
+	local dir = type(locationPath) == 'string' and locationPath:match '^(.*/)'
+	if not dir or not pathExists(dir) then
+		log.wf('Prayer location directory does not exist: %s', tostring(dir))
 		return false
 	end
 
-	M.watcher = hs.pathwatcher.new(cacheDir, function(files)
+	-- A location change invalidates the schedule (different city or mosque),
+	-- so refetch through get-prayer instead of waiting for the timer.
+	M.watcher = hs.pathwatcher.new(dir, function(files)
 		if not relevantPathChanged(files) then
 			return
 		end
 
-		utils.debounce('prayer.update', 0.5, M.update)
+		utils.debounce('prayer.update', 0.5, function()
+			M.update { forceFetch = true }
+		end)
 	end)
 	M.watcher:start()
 	return true
@@ -1022,8 +919,9 @@ local function startTimer()
 end
 
 function M.setup()
-	cancelCacheFetch()
-	resetCacheFetchState()
+	cancelFetch()
+	resetFetchState()
+	M.schedule = {}
 	M.settings = utils.deepCopy(DEFAULT_SETTINGS)
 
 	if M.menuBar then
@@ -1059,7 +957,7 @@ function M.stop()
 	end
 
 	cancelNotificationTimer()
-	cancelCacheFetch()
+	cancelFetch()
 
 	if M.menuBar then
 		M.menuBar:delete()

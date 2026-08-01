@@ -429,7 +429,7 @@ require('location').updateLocationData {
 
 ## `prayer.lua`
 
-This module creates a menubar item for cached prayer times produced by
+This module creates a menubar item for the prayer times produced by
 `next-prayer`.
 
 ### Default settings
@@ -437,10 +437,9 @@ This module creates a menubar item for cached prayer times produced by
 ```lua
 {
 	autosaveName = 'prayer-times',
-	cacheDir = hs.fs.temporaryDirectory(),
-	cacheFetchCommand = '~/.config/tmux/scripts/get-prayer',
-	cacheFetchCooldownSeconds = 300,
-	cacheFetchShell = '/bin/zsh',
+	fetchCommand = '~/.config/tmux/scripts/get-prayer',
+	fetchCooldownSeconds = 300,
+	fetchShell = '/bin/zsh',
 	locationPath = hs.fs.temporaryDirectory() .. '.location.json',
 	notificationGraceSeconds = 90,
 	notificationsEnabled = true,
@@ -451,21 +450,15 @@ This module creates a menubar item for cached prayer times produced by
 
 ### What it does
 
-- Reads `$TMPDIR/.location.json` and scans the cache directory for today's
-  `.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json` files
-  written by `next-prayer`, preferring a Mawaqit (mosque-specific) cache over
-  an Aladhan one.
-- When the location is known, only caches tagged with the current
-  city/country are used; it does not fall back to another location's cache
-  because that can show stale prayer times after travelling.
+- Gets the day's schedule from `get-prayer --json`, which prefers Mawaqit (mosque-specific times) when location data is available and falls back to Aladhan (city-level calculation); `next-prayer` owns its on-disk cache, this module never reads the cache files.
 - Shows the next prayer in Arabic in the menu bar, without the 🕋 emoji, and
   turns it red when it is within `warningThresholdMinutes`, matching
   `next-prayer`/`get-prayer` behavior.
 - Shows location plus mosque name in the dropdown header when the mosque is
-  available from the cache.
+  available from the schedule.
 - Shows the Hijri date in the dropdown using macOS's Umm al-Qura Islamic
   calendar.
-- Shows all cached prayer times when clicked in three aligned columns: English
+- Shows the day's prayer times when clicked in three aligned columns: English
   label, prayer time plus a slightly dimmed `(-hh:mm)` remaining-time label for
   the upcoming prayer, and a right-aligned Arabic label; metadata and
   non-upcoming prayer rows are disabled, the upcoming prayer row is checked, and
@@ -474,11 +467,8 @@ This module creates a menubar item for cached prayer times produced by
   notification fires at prayer time, with the Arabic prayer name as the title,
   `حان الان وقت صلاة <prayer>` as the body, and the Guidance app icon as the
   content image.
-- Watches `$TMPDIR` and refreshes every minute.
-- When the matching cache is missing, starts `get-prayer` asynchronously through
-  a login shell to warm the cache, then refreshes itself once the command exits;
-  automatic retries are cooled down per cache path, while the menu `Refresh`
-  action can force another attempt.
+- Watches `$TMPDIR/.location.json` for location changes (which force a fresh fetch) and refreshes every minute.
+- Fetches the schedule asynchronously through a login shell, then refreshes itself once the command exits; automatic retries are cooled down per day, while the menu `Refresh` action drops the in-memory schedule and forces another fetch.
 
 ### Public functions
 

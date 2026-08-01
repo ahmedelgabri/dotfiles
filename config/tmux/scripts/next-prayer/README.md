@@ -131,6 +131,7 @@ Options
     --country        Country (for cache keying)
     --mosque         Mosque name, label, slug, associationName, or UUID
     --list-mosques   List nearby mosques and exit
+    --json           Print today's full schedule as JSON
     --config         Config file path override
     --help           Print help
 ```
@@ -151,6 +152,7 @@ Options
     --country   Country name or code
     --method    Calculation method
     --tune      Prayer time tuning
+    --json      Print today's full schedule as JSON
     --config    Config file path override
     --help      Print help
 ```
@@ -160,6 +162,27 @@ Example:
 ```bash
 next-prayer aladhan --city Amsterdam --country NL --method 3
 ```
+
+### JSON output
+
+Both commands accept `--json`, which prints today's full schedule as a single JSON object on stdout instead of the formatted next-prayer line:
+
+```json
+{
+	"source": "mawaqit",
+	"date": "2026-08-01",
+	"timings": {
+		"fajr": "04:30",
+		"dhuhr": "13:36",
+		"asr": "17:47",
+		"maghrib": "21:24",
+		"isha": "23:07"
+	},
+	"mosque": { "name": "..." }
+}
+```
+
+`source` is `mawaqit` or `aladhan`, `date` is `YYYY-MM-DD`, and `mosque` is present only for Mawaqit. This is the stable machine-readable interface for external consumers; the on-disk cache files are private and their naming may change.
 
 ### Aladhan calculation methods
 
@@ -192,16 +215,12 @@ parts omitted. Mawaqit cache files also include selected mosque metadata. A
 cached file whose timings fail validation is treated as a cache miss and
 refetched.
 
-The Hammerspoon `prayer.lua` menubar module consumes the matching cache for the
-current location to show all prayer times, display the mosque name when cached
-by Mawaqit, notify at prayer time, check the next prayer row, and show its
-`(-hh:mm)` remaining time; when the matching cache is missing, it can invoke the
-companion `get-prayer` script to warm the cache instead of waiting for tmux.
+The cache file naming is an internal detail of this tool. External consumers such as the Hammerspoon `prayer.lua` menubar module use the `--json` output (via `get-prayer --json`) to get the day's schedule, the mosque metadata, and everything needed for notifications, instead of reading the cache files.
 
 ## tmux integration
 
 The companion script `get-prayer` is designed to be called from `tmux.conf`, and
-the Hammerspoon menubar module can also invoke it to warm a missing cache:
+the Hammerspoon menubar module invokes it with `--json` to get its schedule:
 
 ```tmux
 set -g status-right "#(~/.config/tmux/scripts/get-prayer)"

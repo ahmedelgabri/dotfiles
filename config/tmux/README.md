@@ -228,6 +228,8 @@ Wrapper script that determines the prayer times source:
 When location data is available, the segment is prefixed with a location icon.
 The prayer time turns **red** when ≤30 minutes remain.
 
+With `--json` as the first argument, the script passes `-json` to `next-prayer` and prints the day's full schedule as JSON with no icon or tmux styling; this is the interface machine consumers like the Hammerspoon `prayer.lua` module use.
+
 ## `next-prayer` CLI
 
 A Go CLI tool that calculates the next Islamic prayer time. Built via Nix
@@ -241,6 +243,9 @@ next-prayer mawaqit -latitude 52.35 -longitude 4.74
 
 # Aladhan (city-based)
 next-prayer aladhan --country nl --city amsterdam --method 3
+
+# Full day's schedule as stable JSON (for scripts and other tools)
+next-prayer aladhan -json
 ```
 
 ### Providers
@@ -260,10 +265,7 @@ Aladhan. A new API call is only made when the cache file for the current
 source/mosque/date/location doesn't exist, so switching mosque or source takes
 effect immediately.
 
-The Hammerspoon `prayer.lua` menubar module reads the matching cache for the
-current location to display all prayer times, show cached Mawaqit mosque
-metadata, and notify at prayer time; when the matching cache is missing, it can
-invoke `get-prayer` to warm the cache instead of waiting for tmux.
+The cache file name format is private to `next-prayer`; external consumers such as the Hammerspoon `prayer.lua` menubar module get the day's schedule through `get-prayer --json` (which passes `-json` to `next-prayer`) instead of reading the cache files.
 
 ### Environment Variables
 
