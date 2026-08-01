@@ -26,9 +26,6 @@ let
             vars:
             lib.concatLines (lib.mapAttrsToList (name: value: "export ${lib.toShellVar name value}") vars);
 
-          mkRawExportedShellVars =
-            vars: lib.concatLines (lib.mapAttrsToList (name: value: "export ${name}=${value}") vars);
-
           # The shell-integration init code of these tools is deterministic
           # for a pinned store path, so generate it once at build time instead
           # of shelling out on every interactive shell startup; the file is
@@ -73,8 +70,6 @@ let
             FZF_CTRL_T_OPTS = "--popup=center,85%,85% --border=none --preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})'";
             FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
           };
-
-          zshInteractiveRawExportedVars = { };
         in
         {
           config = lib.mkMerge [
@@ -328,7 +323,6 @@ let
                       # smaller, static environment.
                       ${lib.toShellVars zshInteractiveLocalVars}
                       ${mkExportedShellVars zshInteractiveExportedVars}
-                      ${mkRawExportedShellVars zshInteractiveRawExportedVars}
 
                       autoload -U select-word-style
                       # only alphanumeric chars are considered WORDCHARS
