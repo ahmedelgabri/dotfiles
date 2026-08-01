@@ -332,19 +332,8 @@ pack.add {
 						vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
 					end
 
-					-- blink.cmp is in our config, so we don't need built-in completion
-					local has_blink = true
-
-					if
-						client:supports_method 'textDocument/completion' and not has_blink
-					then
-						vim.lsp.completion.enable(
-							true,
-							client.id,
-							bufnr,
-							{ autotrigger = true }
-						)
-					end
+					-- blink.cmp replaces built-in completion, so
+					-- vim.lsp.completion is intentionally never enabled
 
 					if
 						client.name == 'gopls'
