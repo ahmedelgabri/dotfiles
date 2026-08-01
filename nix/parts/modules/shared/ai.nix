@@ -60,6 +60,13 @@ let
               cp "$BK" "$TARGET"
             fi
           '';
+        mkClaudeTree =
+          { sub, target }:
+          config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/claude + "/${sub}";
+            sourceRoot = "${dotfilesConfig}/claude/${sub}";
+            targetRoot = target;
+          };
       in
       {
         xdg.configFile =
@@ -91,50 +98,47 @@ let
             syncPiAgentSettings = mkSyncSettings "${config.xdg.configHome}/pi/agent/settings.json";
           };
 
-          file = lib.mergeAttrsList [
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/skills;
-              sourceRoot = "${dotfilesConfig}/claude/skills";
-              targetRoot = ".agents/skills";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/agents;
-              sourceRoot = "${dotfilesConfig}/claude/agents";
-              targetRoot = ".claude/agents";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/docs;
-              sourceRoot = "${dotfilesConfig}/claude/docs";
-              targetRoot = ".claude/docs";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/commands;
-              sourceRoot = "${dotfilesConfig}/claude/commands";
-              targetRoot = ".claude/commands";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/hooks;
-              sourceRoot = "${dotfilesConfig}/claude/hooks";
-              targetRoot = ".claude/hooks";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/scripts;
-              sourceRoot = "${dotfilesConfig}/claude/scripts";
-              targetRoot = ".claude/scripts";
-            })
-            (config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/claude/skills;
-              sourceRoot = "${dotfilesConfig}/claude/skills";
-              targetRoot = ".claude/skills";
-            })
-            {
-              ".claude/CLAUDE.md".source =
-                config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
+          file = lib.mergeAttrsList (
+            map mkClaudeTree [
+              {
+                sub = "skills";
+                target = ".agents/skills";
+              }
+              {
+                sub = "agents";
+                target = ".claude/agents";
+              }
+              {
+                sub = "docs";
+                target = ".claude/docs";
+              }
+              {
+                sub = "commands";
+                target = ".claude/commands";
+              }
+              {
+                sub = "hooks";
+                target = ".claude/hooks";
+              }
+              {
+                sub = "scripts";
+                target = ".claude/scripts";
+              }
+              {
+                sub = "skills";
+                target = ".claude/skills";
+              }
+            ]
+            ++ [
+              {
+                ".claude/CLAUDE.md".source =
+                  config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
 
-              ".claude/settings.json".source =
-                config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/settings.json";
-            }
-          ];
+                ".claude/settings.json".source =
+                  config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/settings.json";
+              }
+            ]
+          );
         };
       };
 
