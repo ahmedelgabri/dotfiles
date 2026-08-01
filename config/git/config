@@ -256,10 +256,6 @@
 		awk '{ print $3 \" \" $2 }'; \
 	}; f"
 
-[filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
-
 # https://git-scm.com/docs/git-config#git-config-transferfsckObjects
 [transfer]
 	fsckObjects = true
