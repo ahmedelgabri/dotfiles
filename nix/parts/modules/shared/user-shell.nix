@@ -29,6 +29,19 @@ let
           mkRawExportedShellVars =
             vars: lib.concatLines (lib.mapAttrsToList (name: value: "export ${name}=${value}") vars);
 
+          # The shell-integration init code of these tools is deterministic
+          # for a pinned store path, so generate it once at build time instead
+          # of shelling out on every interactive shell startup; the file is
+          # regenerated automatically whenever the package hash changes.
+          # HOME is pointed at the sandbox tmpdir because some tools (mise,
+          # atuin) insist on touching state dirs even when printing init code.
+          mkShellInit =
+            name: cmd:
+            pkgs.runCommand "${name}-init.zsh" { } ''
+              export HOME="$TMPDIR"
+              ${cmd} > $out
+            '';
+
           fzfPreviewCommand = "COLORTERM=truecolor previewer {}";
           fzfCtrlTCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix --hidden --follow --no-ignore-vcs";
 
@@ -388,13 +401,12 @@ let
                       # This breaks p10k instant prompt if I inline the file, but sourcing works fine
                       source "${pkgs.grc}/etc/grc.zsh"
 
-                      source <(${lib.getExe pkgs.fzf} --zsh)
-                      source <(COMPLETE=zsh ${lib.getExe pkgs.jujutsu})
-
-                      eval "${"$"}(${lib.getExe pkgs.direnv} hook zsh)"
-                      eval "${"$"}(${lib.getExe pkgs.mise} activate zsh)"
-                      eval "${"$"}(${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r)"
-                      eval "${"$"}(${lib.getExe pkgs.zoxide} init zsh --hook pwd)"
+                      source ${mkShellInit "fzf" "${lib.getExe pkgs.fzf} --zsh"}
+                      source ${mkShellInit "jj-completion" "COMPLETE=zsh ${lib.getExe pkgs.jujutsu}"}
+                      source ${mkShellInit "direnv" "${lib.getExe pkgs.direnv} hook zsh"}
+                      source ${mkShellInit "mise" "${lib.getExe pkgs.mise} activate zsh"}
+                      source ${mkShellInit "atuin" "${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r"}
+                      source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
 
                       # Gitstatus is sourced lazily by my_git only after a Git repo is detected.
                       typeset -g _MY_GIT_GITSTATUS_PLUGIN=${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/gitstatus/gitstatus.plugin.zsh
