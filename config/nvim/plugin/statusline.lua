@@ -44,7 +44,6 @@ function M.render_active()
 		components.mode(),
 		components.paste(),
 		components.spell(),
-		components.diff_source(),
 		lsp.diagnostics(),
 		vim.bo.busy > 0 and '◐ ' or '',
 		lsp.progress(),

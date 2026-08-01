@@ -263,21 +263,4 @@ function M.git_conflicts()
 	)
 end
 
----@return string?
-function M.diff_source()
-	local bufnr, source, icon
-	bufnr = vim.api.nvim_get_current_buf()
-	source = vim.b[bufnr].diffCompGit
-
-	if not source then
-		return nil
-	end
-
-	if source == 'git' then
-		icon = require('mini.icons').get('directory', '.github')
-	end
-
-	return icon
-end
-
 return M
