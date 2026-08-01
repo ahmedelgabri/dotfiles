@@ -45,12 +45,6 @@ local function line_no_indicator()
 	return line_no_indicator_chars[index]
 end
 
----@param str string
----@return string
-local function firstToUpper(str)
-	return (str:gsub('^%l', string.upper))
-end
-
 ---@param data {buf: number}
 function M.format_diff_summary(data)
 	local summary = vim.b[data.buf].minidiff_summary
