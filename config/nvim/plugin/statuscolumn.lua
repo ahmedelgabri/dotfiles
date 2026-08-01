@@ -2,14 +2,47 @@ local M = {}
 
 __.statuscolumn = M
 
-function M.get_signs()
-	return vim.api.nvim_buf_get_extmarks(
+-- Sign providers (like MiniDiff) place extmarks asynchronously without
+-- bumping changedtick, and any change triggers a redraw, so the extmarks are
+-- fetched once per redraw cycle instead of once per line. Lines are evaluated
+-- top to bottom, so a non-increasing lnum marks the start of a new cycle.
+local cache = { buf = -1, last_lnum = math.huge, signs = {} }
+
+local function buf_signs(buf)
+	local marks = vim.api.nvim_buf_get_extmarks(
+		buf,
+		-1,
 		0,
 		-1,
-		{ vim.v.lnum - 1, 0 },
-		{ vim.v.lnum - 1, -1 },
 		{ type = 'sign', details = true }
 	)
+
+	local by_line = {}
+	for _, mark in ipairs(marks) do
+		local data = mark[4]
+		if data and data.sign_hl_group then
+			local lnum = mark[2] + 1
+			local line = by_line[lnum]
+			if not line then
+				line = {}
+				by_line[lnum] = line
+			end
+			line[#line + 1] = data
+		end
+	end
+
+	return by_line
+end
+
+function M.get_signs(lnum)
+	local buf = vim.api.nvim_get_current_buf()
+	if buf ~= cache.buf or lnum <= cache.last_lnum then
+		cache.buf = buf
+		cache.signs = buf_signs(buf)
+	end
+	cache.last_lnum = lnum
+
+	return cache.signs[lnum]
 end
 
 local fcs = vim.opt.fillchars:get()
@@ -21,17 +54,17 @@ function M.get_fold(lnum)
 		.. ' '
 end
 
-function M.get_filtered_signs(signs, condition)
-	local cond = function(data)
-		if type(condition) == 'function' then
-			return condition(data)
-		end
-		return true
-	end
+local function is_mini_diff_sign(data)
+	return data.sign_hl_group:find 'MiniDiff' ~= nil
+end
 
-	for _, sign in ipairs(signs) do
-		local data = sign[4]
-		if data and data.sign_hl_group and cond(data) then
+local function is_other_sign(data)
+	return not data.sign_hl_group:find 'MiniDiff'
+end
+
+function M.get_filtered_signs(signs, condition)
+	for _, data in ipairs(signs or {}) do
+		if condition(data) then
 			local str = '%#' .. data.sign_hl_group .. '#'
 
 			if data.sign_text then
@@ -59,23 +92,20 @@ function M.num()
 end
 
 function M.render()
-	local signs = M.get_signs()
+	local lnum = vim.v.lnum
+	local signs = M.get_signs(lnum)
 
 	return table.concat({
 		M.num(),
 		[[%=]],
 		-- Fold marker
-		M.get_fold(vim.v.lnum),
+		M.get_fold(lnum),
 		[[%=]],
 		-- Git signs
-		M.get_filtered_signs(signs, function(data)
-			return data.sign_hl_group:find 'MiniDiff'
-		end),
+		M.get_filtered_signs(signs, is_mini_diff_sign),
 		[[%=]],
 		-- Other signs
-		M.get_filtered_signs(signs, function(data)
-			return not data.sign_hl_group:find 'MiniDiff'
-		end),
+		M.get_filtered_signs(signs, is_other_sign),
 	}, '')
 end
 
