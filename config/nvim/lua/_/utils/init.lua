@@ -23,38 +23,6 @@ function M.get_icon(icon_name)
 	return ICONS[icon_name] or ''
 end
 
-function M.get_color(synID, what, mode)
-	local value =
-		vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(synID)), what, mode)
-
-	if mode == 'cterm' then
-		return tonumber(value)
-	else
-		return value
-	end
-end
-
-function M.t(str)
-	return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-function M.urlencode(str)
-	str = string.gsub(
-		str,
-		"([^0-9a-zA-Z !'()*._~-])", -- locale independent
-		function(c)
-			return string.format('%%%02X', string.byte(c))
-		end
-	)
-
-	str = string.gsub(str, ' ', '%%20')
-	return str
-end
-
-function M.notify(msg, level)
-	vim.notify(msg, level or vim.log.levels.INFO, { title = ':: Local ::' })
-end
-
 function M.plaintext()
 	vim.wo.linebreak = true
 	vim.wo.list = false
@@ -80,18 +48,6 @@ function M.plaintext()
 	vim.keymap.set({ 'i' }, ',', ',<c-g>u', { buf = 0 })
 end
 
-function M.firstToUpper(str)
-	return (str:gsub('^%l', string.upper))
-end
-
-function M.is_rocket()
-	return vim.fn.hostname() == 'rocket'
-end
-
-function M.is_x86_64()
-	return vim.uv.os_uname().machine == 'x86_64'
-end
-
 function M.get_border(highlight)
 	-- single border but heavier and with custom highlight when needed
 	-- https://github.com/neovim/neovim/blob/99e0facf3a001608287ec6db69b01c77443c7b9d/src/nvim/api/win_config.c#L935C19-L935C57
@@ -105,20 +61,6 @@ function M.get_border(highlight)
 		{ '┗', highlight or 'FloatBorder' },
 		{ '┃', highlight or 'FloatBorder' },
 	}
-end
-
--- From TJDevries
--- https://github.com/tjdevries/lazy-require.nvim
-function M.lazy_require(require_path)
-	return setmetatable({}, {
-		__index = function(_, key)
-			return require(require_path)[key]
-		end,
-
-		__newindex = function(_, key, value)
-			require(require_path)[key] = value
-		end,
-	})
 end
 
 -- Some LSP are part of npm packages, so the binaries live inside node_modules/.bin
