@@ -15,8 +15,7 @@ tmux/
 ├── scripts/
 │   ├── get-prayer                     # Prayer times (wrapper for next-prayer)
 │   ├── tmux-battery                   # Battery segment wrapper with charging icon
-│   ├── tmux-github-status             # GitHub incident indicator
-│   ├── tmux-npm-status                # npm incident indicator
+│   ├── tmux-statuspage                # statuspage.io incident indicator (GitHub, npm)
 │   ├── tmux-weather                   # Weather segment (via wttr.in)
 │   └── next-prayer/                   # Go CLI for prayer time calculation
 │       ├── cmd/next-prayer/main.go    # CLI entrypoint
@@ -196,13 +195,9 @@ Fetches weather from [wttr.in](https://wttr.in) via a `weather` CLI wrapper.
 Caches to `$TMPDIR/weather.tmp` for 1 hour. Guards against missing `weather`
 command and network unavailability (2s ping timeout).
 
-### `tmux-github-status` / `tmux-npm-status`
+### `tmux-statuspage`
 
-Poll the [GitHub](https://www.githubstatus.com/api) and
-[npm](https://status.npmjs.org/api) StatusPage APIs. Results are cached to
-`$TMPDIR` for 5 minutes. Curl timeout is 5 seconds. Only display an icon when
-there's an active incident. Icons are emitted via Unicode codepoints in the
-shell scripts rather than embedded raw glyphs.
+One parameterized script (`tmux-statuspage <name> <statuspage-id> <icon>`) that polls any [statuspage.io](https://www.githubstatus.com/api) status API; `tmux.conf` invokes it for GitHub and npm. Results are cached to `$TMPDIR` for 5 minutes per service. Curl timeout is 5 seconds. Only displays an icon when there's an active incident. Icons are passed as Unicode codepoint escapes rather than embedded raw glyphs.
 
 | Severity            | Color  |
 | ------------------- | ------ |
