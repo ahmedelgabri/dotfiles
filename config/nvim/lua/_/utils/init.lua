@@ -1,25 +1,26 @@
 local M = {}
 
-function M.get_icon(icon_name)
-	local ICONS = {
-		paste = '⍴',
-		spell = '✎',
-		branch = vim.env.PROMPT_GIT_BRANCH ~= nil and vim.fn.trim(
-			vim.env.PROMPT_GIT_BRANCH
-		) or '',
-		error = '×',
-		info = '𝒾',
-		warn = '⚐',
-		hint = '•',
-		lock = '',
-		conflict = ' ',
-		success = ' ',
-		virtual = '●',
-		search = '   ',
-		ellipsis = '… ',
-		-- success = ' '
-	}
+-- Built once at module load: the env var cannot change mid-session and
+-- get_icon is called several times per statusline redraw.
+local ICONS = {
+	paste = '⍴',
+	spell = '✎',
+	branch = vim.env.PROMPT_GIT_BRANCH ~= nil and vim.fn.trim(
+		vim.env.PROMPT_GIT_BRANCH
+	) or '',
+	error = '×',
+	info = '𝒾',
+	warn = '⚐',
+	hint = '•',
+	lock = '',
+	conflict = ' ',
+	success = ' ',
+	virtual = '●',
+	search = '   ',
+	ellipsis = '… ',
+}
 
+function M.get_icon(icon_name)
 	return ICONS[icon_name] or ''
 end
 
