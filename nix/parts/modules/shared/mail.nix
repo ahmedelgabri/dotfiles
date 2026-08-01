@@ -407,43 +407,39 @@ let
             };
           };
 
-          config =
-            with lib;
-            (mkMerge [
-              {
-                system.activationScripts.postActivation.text = ''
-                  echo ":: -> Running mail activationScript..."
+          config = {
+            system.activationScripts.postActivation.text = ''
+              echo ":: -> Running mail activationScript..."
 
-                  ${lib.concatStringsSep "\n" (
-                    map (account: ''
-                      if [ ! -e "${homeDir}/.mail/${account.name}" ]; then
-                        echo "Creating mail folder for account ${account.name} at ${homeDir}/.mail/${account.name}..."
-                        mkdir -p ${homeDir}/.mail/${account.name}
-                      fi
-                    '') localAccounts
-                  )}
-                '';
+              ${lib.concatStringsSep "\n" (
+                map (account: ''
+                  if [ ! -e "${homeDir}/.mail/${account.name}" ]; then
+                    echo "Creating mail folder for account ${account.name} at ${homeDir}/.mail/${account.name}..."
+                    mkdir -p ${homeDir}/.mail/${account.name}
+                  fi
+                '') localAccounts
+              )}
+            '';
 
-                my = {
-                  user = {
-                    packages = with pkgs; [
-                      aerc
-                      isync
-                      pass
-                      msmtp
-                      w3m
-                      notmuch
-                      urlscan
-                    ];
-                  };
-                };
+            my = {
+              user = {
+                packages = with pkgs; [
+                  aerc
+                  isync
+                  pass
+                  msmtp
+                  w3m
+                  notmuch
+                  urlscan
+                ];
+              };
+            };
 
-                environment.variables = {
-                  MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
-                  NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
-                };
-              }
-            ]);
+            environment.variables = {
+              MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
+              NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
+            };
+          };
         };
 
       darwinModule =
