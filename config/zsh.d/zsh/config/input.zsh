@@ -66,17 +66,6 @@ bindkey "${key_info[Control]}L" clear-screen
 # Bind Shift + Tab to go to the previous menu item.
 [[ -n ${key_info[BackTab]} ]] && bindkey ${key_info[BackTab]} reverse-menu-complete
 
-autoload -Uz is-at-least && if ! is-at-least 5.3; then
-  # Redisplay after completing, and avoid blank prompt after <Tab><Tab><Ctrl-C>
-  expand-or-complete-with-redisplay() {
-    print -Pn '...'
-    zle expand-or-complete
-    zle redisplay
-  }
-  zle -N expand-or-complete-with-redisplay
-  bindkey "${key_info[Control]}I" expand-or-complete-with-redisplay
-fi
-
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd '!' edit-command-line
