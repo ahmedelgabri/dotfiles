@@ -23,11 +23,12 @@ local function get_filepath_parts()
 	return { base, filename, prefix }
 end
 
+local line_no_indicator_chars =
+	{ '󰋙', '󰫃', '󰫄', '󰫅', '󰫆', '󰫇', '󰫈' }
+
 ---Display lineNoIndicator (from drzel/vim-line-no-indicator)
 ---@return string
 local function line_no_indicator()
-	local line_no_indicator_chars =
-		{ '󰋙', '󰫃', '󰫄', '󰫅', '󰫆', '󰫇', '󰫈' }
 	local current_line = vim.fn.line '.'
 	local total_lines = vim.fn.line '$'
 	local index = current_line
