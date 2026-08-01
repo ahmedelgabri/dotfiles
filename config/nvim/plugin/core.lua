@@ -43,17 +43,15 @@ pack.add {
 		src = 'https://github.com/wincent/loupe',
 		event = { 'UIEnter' },
 		config = function()
-			local hl = require '_.utils.highlight'
-
 			-- Loupe: load after startup (was event = 'VeryLazy')
 			vim.g.LoupeClearHighlightMap = 0
 			-- Not needed in Neovim (see `:help hl-CurSearch`).
 			vim.g.LoupeHighlightGroup = ''
 
 			local function set_up_loupe_highlight()
-				hl.group('QuickFixLine', { link = 'PmenuSel' })
+				vim.api.nvim_set_hl(0, 'QuickFixLine', { link = 'PmenuSel' })
 				vim.cmd 'highlight! clear Search'
-				hl.group('Search', { link = 'Underlined' })
+				vim.api.nvim_set_hl(0, 'Search', { link = 'Underlined' })
 			end
 
 			local loupe_group =
