@@ -76,10 +76,9 @@ for ((i = 0; i < empty; i++)); do bar+="░"; done
 # Build context bar display
 context_info="${bar} ${context_percent}%"
 
-git_branch=""
-if command git -C "$current_dir_full" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-	git_branch=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null || echo "detached")
-fi
+# One git spawn per render: an empty result covers both "not a repo" and
+# "detached HEAD", which is all the dropped rev-parse gate distinguished
+git_branch=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null)
 
 output="/$current_dir"
 output+=" ($git_branch) ${GRAY}|${NC}"
