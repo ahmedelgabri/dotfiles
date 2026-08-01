@@ -19,19 +19,20 @@ if [[ "${1-}" == "--json" ]]; then
 	json_flag="-json"
 fi
 
-# `// empty` maps missing keys to empty strings instead of the literal
-# string "null", which would otherwise be passed on as a flag value.
-latitude="$(jq -r '.location.latitude // empty' "$LOCATION_DATA" 2>/dev/null)"
-longitude="$(jq -r '.location.longitude // empty' "$LOCATION_DATA" 2>/dev/null)"
+# All four fields come from a single jq pass over the location file; `// ""`
+# maps missing keys to empty strings instead of the literal "null", which
+# would otherwise be passed on as a flag value.
+latitude="" longitude="" city="" country=""
+IFS=$'\t' read -r latitude longitude city country < <(
+	jq -r '[.location.latitude, .location.longitude, .locality, .countryCode]
+		| map(. // "" | tostring) | @tsv' "$LOCATION_DATA" 2>/dev/null
+) || true
 
 output=""
 
 # When location data is available use Mawaqit (mosque-specific times),
 # otherwise fall back to Aladhan (city-level calculation).
 if [[ -n "$latitude" && -n "$longitude" ]]; then
-	city="$(jq -r '.locality // empty' "$LOCATION_DATA" 2>/dev/null)"
-	country="$(jq -r '.countryCode // empty' "$LOCATION_DATA" 2>/dev/null)"
-
 	if result="$(next-prayer mawaqit ${json_flag:+"$json_flag"} \
 		-latitude "$latitude" -longitude "$longitude" \
 		-city "$city" -country "$country")"; then
