@@ -38,11 +38,6 @@ pack.add {
 							cursorline = true,
 						},
 					},
-					on_create = function()
-						-- disable indent plugins
-						vim.b.miniindentscope_disable = true
-						vim.b.snacks_indent = true
-					end,
 				},
 				previewers = {
 					previewer = {
