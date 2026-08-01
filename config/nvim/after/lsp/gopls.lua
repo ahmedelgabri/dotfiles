@@ -1,3 +1,5 @@
+local utils = require '_.utils'
+
 return {
 	settings = {
 		gopls = {
@@ -54,12 +56,5 @@ return {
 	init_options = {
 		usePlaceholders = true,
 	},
-	root_dir = function(_bufnr, on_dir)
-		local root =
-			vim.fs.root(0, { 'go.mod', '.git', vim.api.nvim_buf_get_name(0) })
-
-		if root then
-			on_dir(root)
-		end
-	end,
+	root_dir = utils.root_for({ 'go.mod', '.git' }, { with_buf_name = true }),
 }

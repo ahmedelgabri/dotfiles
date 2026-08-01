@@ -1,9 +1,5 @@
-return {
-	root_dir = function(_bufnr, on_dir)
-		local root = vim.fs.root(0, { 'deno.json', 'deno.jsonc' })
+local utils = require '_.utils'
 
-		if root then
-			on_dir(root)
-		end
-	end,
+return {
+	root_dir = utils.root_for { 'deno.json', 'deno.jsonc' },
 }

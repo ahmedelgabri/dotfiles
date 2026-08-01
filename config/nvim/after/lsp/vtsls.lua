@@ -1,3 +1,10 @@
+local utils = require '_.utils'
+
+local ts_root = utils.root_for(
+	{ 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+	{ with_buf_name = true }
+)
+
 -- Use the same settings for JS and TS.
 local lang_settings = {
 	suggest = { completeFunctionCalls = true },
@@ -9,23 +16,13 @@ local lang_settings = {
 }
 
 return {
-	root_dir = function(_bufnr, on_dir)
+	root_dir = function(bufnr, on_dir)
 		-- Don't attach if this is a Deno or Flow project
 		if vim.fs.root(0, { '.flowconfig', 'deno.json', 'deno.jsonc' }) then
 			return
 		end
 
-		local root = vim.fs.root(0, {
-			'tsconfig.json',
-			'jsconfig.json',
-			'package.json',
-			'.git',
-			vim.api.nvim_buf_get_name(0),
-		})
-
-		if root then
-			on_dir(root)
-		end
+		ts_root(bufnr, on_dir)
 	end,
 	settings = {
 		typescript = vim.tbl_deep_extend('force', lang_settings, {

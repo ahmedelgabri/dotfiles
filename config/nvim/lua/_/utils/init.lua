@@ -108,13 +108,28 @@ function M.remove(option, item)
 		:join ','
 end
 
-function M.web_roots(_, on_dir)
-	local root =
-		vim.fs.root(0, { 'package.json', '.git', vim.api.nvim_buf_get_name(0) })
+-- Returns an on_dir-style root_dir callback resolving the project root from
+-- the given markers; with_buf_name appends the buffer's own file as a
+-- last-priority marker so standalone files still get a workspace (vim.fs.root
+-- treats list order as priority, so it must come last).
+function M.root_for(markers, opts)
+	local with_buf_name = opts and opts.with_buf_name
 
-	if root then
-		on_dir(root)
+	return function(_bufnr, on_dir)
+		local search = markers
+		if with_buf_name then
+			search = { unpack(markers) }
+			search[#search + 1] = vim.api.nvim_buf_get_name(0)
+		end
+
+		local root = vim.fs.root(0, search)
+
+		if root then
+			on_dir(root)
+		end
 	end
 end
+
+M.web_roots = M.root_for({ 'package.json', '.git' }, { with_buf_name = true })
 
 return M
