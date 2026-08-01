@@ -14,6 +14,7 @@ end
 
 -- selene: allow(global_usage)
 _G.__ = {} -- global namespace for helpers called from vimscript expressions
+__.foldexpr = require '_.foldexpr' -- referenced by the foldexpr option below
 
 local utils = require '_.utils'
 
