@@ -24,36 +24,19 @@ EVENT_TYPE="${1:-unknown}"
 # Claude Code sends JSON data to hooks via stdin
 input=$(cat)
 
-# If input is empty, use empty object
-if [ -z "$input" ]; then
-	input_json="{}"
-else
-	# Validate input is valid JSON
-	if echo "$input" | jq empty 2>/dev/null; then
-		# Valid JSON - use as is
-		input_json="$input"
-	else
-		# Not valid JSON - wrap as string
-		input_json=$(jq -n --arg raw "$input" '{raw_input: $raw}')
-	fi
-fi
-
-# Create log entry with timestamp
-timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-log_entry=$(jq -n \
-	--arg ts "$timestamp" \
+# Build and append the log entry in a single jq run: jq supplies the UTC
+# timestamp, parses stdin as JSON when possible, and wraps anything else as
+# a raw string, so no validation pass or date fork is needed.
+jq -cn \
+	--arg raw "$input" \
 	--arg event "$EVENT_TYPE" \
 	--arg project_dir "${CLAUDE_PROJECT_DIR:-}" \
-	--argjson input "$input_json" \
 	'{
-    timestamp: $ts,
+    timestamp: (now | todate),
     event: $event,
     project_dir: $project_dir,
-    input: $input
-  }')
-
-# Append to log file (quoted variable)
-echo "$log_entry" >>"$LOG_FILE"
+    input: (if $raw == "" then {} else ($raw | try fromjson catch {raw_input: $raw}) end)
+  }' >>"$LOG_FILE"
 
 # Don't block any operations
 exit 0
