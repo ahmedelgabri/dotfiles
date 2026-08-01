@@ -1,5 +1,3 @@
-local au = require '_.utils.au'
-
 -- Heavily influnced by https://github.com/fabridamicelli/cronex.nvim and some code are copied from there
 local M = {}
 
@@ -121,15 +119,18 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 			{ row, end_pos }
 		)
 		mark_id = M.render(data)
+
+		-- Clear the explanation on the next cursor move. Registered only while
+		-- a mark is visible, so no cursor autocmd runs the rest of the time.
+		local group =
+			vim.api.nvim_create_augroup('cron-explainer-clear', { clear = true })
+		vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+			group = group,
+			callback = function(ev)
+				vim.api.nvim_buf_clear_namespace(ev.buf, ns, 0, -1)
+				mark_id = nil -- Reset mark_id as the extmark is now cleared
+				vim.api.nvim_clear_autocmds { group = group }
+			end,
+		})
 	end
 end, { desc = 'Explain a cron expression' })
-
-au.augroup('cron-explainer', {
-	{
-		event = { 'CursorMoved', 'CursorMovedI' },
-		callback = function(ev)
-			vim.api.nvim_buf_clear_namespace(ev.buf, ns, 0, -1)
-			mark_id = nil -- Reset mark_id as the extmark is now cleared
-		end,
-	},
-})
