@@ -11,36 +11,59 @@ CYAN='\033[0;36m'
 GRAY='\033[0;90m'
 NC='\033[0m' # No Color
 
-# Read JSON from stdin and extract all values in one jq call
+# Read JSON from stdin, extract all values, and do all number/cost/duration
+# formatting in the single jq call so the render path forks no awk/sed/basename
 {
 	read -r model
-	read -r context_size
-	read -r current_tokens
+	read -r context_percent
 	read -r current_dir_full
-	read -r added
-	read -r removed
-	read -r total_duration
-	read -r cost
-} < <(cat | jq -r '
-	.model.display_name,
-	(.context_window.context_window_size // 200000),
-	(if .context_window.current_usage then
-		(.context_window.current_usage.input_tokens +
-		 .context_window.current_usage.cache_creation_input_tokens +
-		 .context_window.current_usage.cache_read_input_tokens)
-	else 0 end),
-	.workspace.current_dir,
-	.cost.total_lines_added,
-	.cost.total_lines_removed,
-	.cost.total_duration_ms,
-	(.cost.total_cost_usd // 0)
+	read -r current_dir
+	read -r added_display
+	read -r removed_display
+	read -r duration_display
+	read -r cost_display
+} < <(jq -r '
+	def commafy:
+		tostring as $s | ($s | length) as $l
+		| if $l <= 3 then $s
+			else ($s[0:$l-3] | tonumber | commafy) + "," + $s[$l-3:]
+			end;
+
+	def fixed1:
+		((. * 10 | round) / 10 | tostring)
+		| if test("\\.") then . else . + ".0" end;
+
+	def money($n):
+		(. * pow(10; $n) | round | tostring) as $s | ($s | length) as $l
+		| if $l <= $n then "$0." + (("0" * ($n - $l)) // "") + $s
+			else "$" + $s[0:$l-$n] + "." + $s[$l-$n:]
+			end;
+
+	(.context_window.context_window_size // 200000) as $size
+	| (if .context_window.current_usage then
+			(.context_window.current_usage.input_tokens +
+			 .context_window.current_usage.cache_creation_input_tokens +
+			 .context_window.current_usage.cache_read_input_tokens)
+		else 0 end) as $tokens
+	| (.cost.total_lines_added) as $added
+	| (.cost.total_lines_removed) as $removed
+	| (.cost.total_duration_ms) as $ms
+	| (.cost.total_cost_usd // 0) as $cost
+	| .model.display_name,
+		($tokens * 100 / $size | floor),
+		.workspace.current_dir,
+		(.workspace.current_dir | sub(".*/"; "")),
+		(if $added > 0 then "+" + ($added | commafy) else "" end),
+		(if $removed > 0 then "-" + ($removed | commafy) else "" end),
+		(if $ms >= 3600000 then ($ms / 3600000 | fixed1) + "h"
+		 elif $ms >= 60000 then ($ms / 60000 | fixed1) + "m"
+		 elif $ms >= 1000 then ($ms / 1000 | fixed1) + "s"
+		 else ($ms | tostring) + "ms" end),
+		(if $cost <= 0 then ""
+		 elif $cost < 0.01 then $cost | money(4)
+		 elif $cost < 1 then $cost | money(3)
+		 else $cost | money(2) end)
 ')
-
-# Get directory basename for display
-current_dir=$(basename "$current_dir_full")
-
-# Calculate context percentage
-context_percent=$((current_tokens * 100 / context_size))
 
 # Build context progress bar (15 chars wide)
 bar_width=15
@@ -53,37 +76,6 @@ for ((i = 0; i < empty; i++)); do bar+="░"; done
 # Build context bar display
 context_info="${bar} ${context_percent}%"
 
-format_cost() {
-	local cost_usd=$1
-	awk -v cost="$cost_usd" 'BEGIN {
-		if (cost < 0.01)
-			printf "$%.4f", cost
-		else if (cost < 1)
-			printf "$%.3f", cost
-		else
-			printf "$%.2f", cost
-	}'
-}
-
-format_duration() {
-	local ms=$1
-	awk -v ms="$ms" 'BEGIN {
-		if (ms >= 3600000)
-			printf "%.1fh", ms / 3600000
-		else if (ms >= 60000)
-			printf "%.1fm", ms / 60000
-		else if (ms >= 1000)
-			printf "%.1fs", ms / 1000
-		else
-			printf "%dms", ms
-	}'
-}
-
-# Format lines with thousand separators (portable version)
-format_lines() {
-	printf "%d" "$1" | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'
-}
-
 git_branch=""
 if command git -C "$current_dir_full" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 	git_branch=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null || echo "detached")
@@ -93,18 +85,18 @@ output="/$current_dir"
 output+=" ($git_branch) ${GRAY}|${NC}"
 output+=" $model"
 
-if ((added > 0)); then
-	output+=" ${GREEN}+$(format_lines "$added")${NC}"
+if [ -n "$added_display" ]; then
+	output+=" ${GREEN}${added_display}${NC}"
 fi
 
-if ((removed > 0)); then
-	output+=" ${RED}-$(format_lines "$removed")${NC}"
+if [ -n "$removed_display" ]; then
+	output+=" ${RED}${removed_display}${NC}"
 fi
 
-output+=" in $(format_duration "$total_duration")"
+output+=" in ${duration_display}"
 
-if awk -v cost="$cost" 'BEGIN { exit !(cost > 0) }'; then
-	output+=" for $(format_cost "$cost")"
+if [ -n "$cost_display" ]; then
+	output+=" for ${cost_display}"
 fi
 
 output+=" ${GRAY}|${NC} $context_info"
