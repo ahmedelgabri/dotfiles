@@ -27,6 +27,7 @@
       inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
       inherit (inputs.git-wt.packages.${prev.stdenv.hostPlatform.system}) git-wt;
       inherit (inputs.ccpeek.packages.${prev.stdenv.hostPlatform.system}) ccpeek;
+      inherit (inputs.tap.packages.${prev.stdenv.hostPlatform.system}) tap;
       atuin = inputs.atuin.packages.${prev.stdenv.hostPlatform.system}.default;
       nixfmt-rs = inputs.nixfmt-rs.packages.${prev.stdenv.hostPlatform.system}.default;
     }

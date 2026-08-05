@@ -94,10 +94,11 @@ without an external clipboard helper script.
 
 ### Popups
 
-| Key          | Action                                        |
-| ------------ | --------------------------------------------- |
-| `prefix + p` | Toggle persistent popup shell (per directory) |
-| `prefix + t` | Quick popup shell (75×75%, non-persistent)    |
+| Key                   | Action                                        |
+| --------------------- | --------------------------------------------- |
+| `prefix + p`          | Toggle persistent popup shell (per directory) |
+| `prefix + t`          | Quick popup shell (75×75%, non-persistent)    |
+| `C-Space` (no prefix) | Agent-aware pane picker (`tap pick`)          |
 
 The persistent popup (`prefix + p`) creates a unique tmux session per working
 directory (named `popup_<basename>_<hash>`) that survives closing the popup. It
@@ -145,32 +146,38 @@ Position: **top**. Refresh interval: **15 seconds**.
 
 ### Pane Borders
 
-Borders are displayed at the **top** of each pane. In normal mode they use the terminal's muted ANSI color. In **copy mode**, a custom indicator appears:
+Borders are displayed at the **top** of each pane. In normal mode they use the
+terminal's muted ANSI color. In **copy mode**, a custom indicator appears:
 
 ```
   -- COPY --                                    (N results)  [offset/total]
 ```
 
 - Left: yellow `-- COPY --` marker
-- Right: scroll position as offset from top, plus search result count (with `+` suffix if the search timed out)
+- Right: scroll position as offset from top, plus search result count (with `+`
+  suffix if the search timed out)
 
-The default tmux position indicator is suppressed via a `pane-mode-changed` hook.
+The default tmux position indicator is suppressed via a `pane-mode-changed`
+hook.
 
 ### Colors
 
-The config uses `bg=terminal` and named ANSI slots throughout so it follows the terminal's dark/light palette without embedding xterm-256 grays. Structure (borders, separators, session name) uses `black`, dim text uses `bright black` — see the Color system section in the root README for the slot conventions.
+The config uses `bg=terminal` and named ANSI slots throughout so it follows the
+terminal's dark/light palette without embedding xterm-256 grays. Structure
+(borders, separators, session name) uses `black`, dim text uses `bright black` —
+see the Color system section in the root README for the slot conventions.
 
-| Element                    | ANSI color     |
-| -------------------------- | -------------- |
-| Prefix active              | bright blue    |
-| Current window             | blue           |
-| Zoomed window              | yellow         |
-| Activity                   | bright black   |
-| Bell                       | bright red     |
-| Command line messages      | bright red     |
-| Pane borders               | black          |
-| Separators / session name  | black          |
-| Status bar dim text        | bright black   |
+| Element                   | ANSI color   |
+| ------------------------- | ------------ |
+| Prefix active             | bright blue  |
+| Current window            | blue         |
+| Zoomed window             | yellow       |
+| Activity                  | bright black |
+| Bell                      | bright red   |
+| Command line messages     | bright red   |
+| Pane borders              | black        |
+| Separators / session name | black        |
+| Status bar dim text       | bright black |
 
 ## Terminal Support
 
@@ -182,7 +189,8 @@ Explicit terminal features and overrides are configured for:
 | Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)      |
 | Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`) |
 
-Escape sequence passthrough is enabled (`allow-passthrough on`) for shell theming and Yazi image previews.
+Escape sequence passthrough is enabled (`allow-passthrough on`) for shell
+theming and Yazi image previews.
 
 ## Status Bar Scripts
 
@@ -197,7 +205,12 @@ command and network unavailability (2s ping timeout).
 
 ### `tmux-statuspage`
 
-One parameterized script (`tmux-statuspage <name> <statuspage-id> <icon>`) that polls any [statuspage.io](https://www.githubstatus.com/api) status API; `tmux.conf` invokes it for GitHub and npm. Results are cached to `$TMPDIR` for 5 minutes per service. Curl timeout is 5 seconds. Only displays an icon when there's an active incident. Icons are passed as Unicode codepoint escapes rather than embedded raw glyphs.
+One parameterized script (`tmux-statuspage <name> <statuspage-id> <icon>`) that
+polls any [statuspage.io](https://www.githubstatus.com/api) status API;
+`tmux.conf` invokes it for GitHub and npm. Results are cached to `$TMPDIR` for 5
+minutes per service. Curl timeout is 5 seconds. Only displays an icon when
+there's an active incident. Icons are passed as Unicode codepoint escapes rather
+than embedded raw glyphs.
 
 | Severity            | Color  |
 | ------------------- | ------ |
@@ -223,7 +236,9 @@ Wrapper script that determines the prayer times source:
 When location data is available, the segment is prefixed with a location icon.
 The prayer time turns **red** when ≤30 minutes remain.
 
-With `--json` as the first argument, the script passes `-json` to `next-prayer` and prints the day's full schedule as JSON with no icon or tmux styling; this is the interface machine consumers like the Hammerspoon `prayer.lua` module use.
+With `--json` as the first argument, the script passes `-json` to `next-prayer`
+and prints the day's full schedule as JSON with no icon or tmux styling; this is
+the interface machine consumers like the Hammerspoon `prayer.lua` module use.
 
 ## `next-prayer` CLI
 
@@ -260,7 +275,10 @@ Aladhan. A new API call is only made when the cache file for the current
 source/mosque/date/location doesn't exist, so switching mosque or source takes
 effect immediately.
 
-The cache file name format is private to `next-prayer`; external consumers such as the Hammerspoon `prayer.lua` menubar module get the day's schedule through `get-prayer --json` (which passes `-json` to `next-prayer`) instead of reading the cache files.
+The cache file name format is private to `next-prayer`; external consumers such
+as the Hammerspoon `prayer.lua` menubar module get the day's schedule through
+`get-prayer --json` (which passes `-json` to `next-prayer`) instead of reading
+the cache files.
 
 ### Environment Variables
 

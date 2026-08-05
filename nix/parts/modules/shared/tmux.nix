@@ -12,6 +12,7 @@ let
 
           my.user.packages = with pkgs; [
             tmux
+            tap
             next-prayer
           ];
         };

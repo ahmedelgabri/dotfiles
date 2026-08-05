@@ -80,6 +80,14 @@
       };
     };
 
+    tap = {
+      url = "github:ahmedelgabri/tmux-agent-panel";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+      };
+    };
+
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
