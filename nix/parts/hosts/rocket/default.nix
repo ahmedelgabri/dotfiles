@@ -5,9 +5,11 @@ let
   hostConfiguration =
     { pkgs, ... }:
     {
-      networking = {
+      networking = rec {
         hostName = "rocket";
+        computerName = hostName;
       };
+
       ids.gids.nixbld = 30000;
 
       my = {

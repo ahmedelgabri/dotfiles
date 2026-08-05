@@ -8,8 +8,9 @@ let
       ...
     }:
     {
-      networking = {
+      networking = rec {
         hostName = "alcantara";
+        computerName = hostName;
       };
 
       my.user = {
