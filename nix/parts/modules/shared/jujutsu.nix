@@ -34,9 +34,6 @@ let
               # ${myConfig.nix_managed}
               #:schema https://docs.jj-vcs.dev/latest/config-schema.json
 
-
-              --when.hostnames = ["${myConfig.hostName}"]
-
               [user]
               ${optionalString (myConfig.email != "") "email = \"${myConfig.email}\""}
 
