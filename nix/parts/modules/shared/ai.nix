@@ -151,7 +151,6 @@ let
           homebrew = {
             brews = [ "openai/tools/tart" ];
             casks = [
-              "claude"
               "codex-app"
             ];
           };
