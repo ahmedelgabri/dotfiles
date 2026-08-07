@@ -114,15 +114,6 @@
 				]
 			},
 			{
-				"matcher": "Bash",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/validate-bash.sh"
-					}
-				]
-			},
-			{
 				"hooks": [
 					{
 						"async": true,
