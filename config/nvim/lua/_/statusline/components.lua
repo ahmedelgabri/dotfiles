@@ -239,22 +239,24 @@ function M.git_conflicts()
 		return nil
 	end
 
-	local ok, git_conflict = pcall(require, 'git-conflict')
+	-- Count "^<<<<<<< " rather than "^=======$": a bare ======= line occurs in
+	-- normal text (Markdown/RST setext headings), the start marker does not.
+	-- The timeout keeps huge buffers from stalling statusline redraws.
+	local result = vim.fn.searchcount {
+		pattern = [[^<<<<<<< ]],
+		recompute = 1,
+		maxcount = 99,
+		timeout = 50,
+	}
 
-	if not ok then
-		return nil
-	end
-
-	local count = git_conflict.conflict_count(0)
-
-	if count == 0 then
+	if (result.total or 0) == 0 then
 		return nil
 	end
 
 	return string.format(
 		'%%#DiagnosticSignError#%s%s%%*',
 		utils.get_icon 'conflict',
-		count
+		result.total
 	)
 end
 
