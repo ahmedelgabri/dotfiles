@@ -11,6 +11,7 @@
 
 # Usage:
 #   mx [session] [subdirectory (optional)]
+#   mx --list           print session/project candidates as TSV
 
 # To 'auto-launch' projects, you'll need a $PROJECTS dir where you keep code
 # sorted like so: $PROJECTS/<org or user>/<repo>.
@@ -33,6 +34,127 @@ MX_START=${MX_START:-"./.mx-start"}
 get_session() {
 	echo "$1" | awk -F"/" '{print $NF}'
 }
+
+# mx --list enumerates session candidates as TSV: <kind>\t<label>\t<abspath>
+#   kind    = 'sess' (session definition file) or 'dir' (project directory)
+#   label   = definition name, or dir path relative to $PROJECTS
+#   abspath = the definition file for 'sess', the directory for 'dir'
+#
+# Root rules:
+#   personal|trunk|forks|ahmedelgabri : every direct subdirectory
+#   work/<org>/<project>              : every project; .bare projects also
+#                                       list child worktrees (subdirs with .git)
+#   archive                           : project children are leaves; other
+#                                       children are grouping dirs whose child
+#                                       dirs are candidates
+#
+# Deliberately uses shell globs instead of fd: a bare fd honors the global
+# ignore file (config/.ignore) and would silently hide candidates, and fd -I
+# would cost an external process per depth-1 listing for no gain over the
+# builtin. nullglob makes missing roots and empty dirs a no-op, and plain */
+# globs skip files and dotdirs.
+
+shopt -s nullglob
+
+# Session definition search path; first hit wins
+SESSION_DIRS=(
+	"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}"
+	"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions"
+)
+
+emit() {
+	printf '%s\t%s\t%s\n' "$1" "$2" "$3"
+}
+
+# A git repo, a git-wt bare layout, or a (possibly non-colocated) jj repo.
+is_project() {
+	[ -e "$1/.git" ] || [ -e "$1/.bare" ] || [ -e "$1/.jj" ]
+}
+
+# In a .bare layout only children holding a .git entry are worktrees; the
+# filter keeps scratch dirs (e.g. work/miro/c/_) out of the candidate list.
+emit_worktrees() {
+	local proj="$1" label="$2" wt
+	for wt in "$proj"/*/; do
+		wt="${wt%/}"
+		[ -e "$wt/.git" ] || continue
+		emit dir "$label/$(basename "$wt")" "$wt"
+	done
+}
+
+list_sessions() {
+	local dir f name
+	local -A seen=()
+	# $HOST_CONFIGS wins over the repo-tracked dir
+	for dir in "${SESSION_DIRS[@]}"; do
+		[ -n "$dir" ] && [ -d "$dir" ] || continue
+		for f in "$dir"/*; do
+			[ -f "$f" ] || continue
+			name="$(basename "$f")"
+			[ -n "${seen[$name]-}" ] && continue
+			seen[$name]=1
+			emit sess "$name" "$f"
+		done
+	done
+}
+
+list_flat() {
+	local d
+	for d in "$PROJECTS/$1"/*/; do
+		d="${d%/}"
+		emit dir "$1/$(basename "$d")" "$d"
+	done
+}
+
+list_work() {
+	local org proj label
+	for org in "$PROJECTS/work"/*/; do
+		org="${org%/}"
+		for proj in "$org"/*/; do
+			proj="${proj%/}"
+			label="work/$(basename "$org")/$(basename "$proj")"
+			emit dir "$label" "$proj"
+			if [ -e "$proj/.bare" ]; then
+				emit_worktrees "$proj" "$label"
+			fi
+		done
+	done
+}
+
+list_archive() {
+	local d label sub
+	for d in "$PROJECTS/archive"/*/; do
+		d="${d%/}"
+		label="archive/$(basename "$d")"
+		if is_project "$d"; then
+			emit dir "$label" "$d"
+			if [ -e "$d/.bare" ]; then
+				emit_worktrees "$d" "$label"
+			fi
+		else
+			for sub in "$d"/*/; do
+				sub="${sub%/}"
+				emit dir "$label/$(basename "$sub")" "$sub"
+			done
+		fi
+	done
+}
+
+list_candidates() {
+	: "${PROJECTS:?PROJECTS is not set}"
+	list_sessions
+	list_work
+	list_flat trunk
+	list_flat personal
+	list_flat forks
+	list_flat ahmedelgabri
+	list_archive
+}
+
+if [ "${1-}" = "--list" ]; then
+	list_candidates
+	exit 0
+fi
 
 SESSION="$(get_session "${1:-$(pwd)}")"
 # tmux 1.9a+ doesn't like .'s in session names
