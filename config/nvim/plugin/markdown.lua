@@ -19,10 +19,10 @@ pack.add {
 	},
 	{
 		src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim',
-		ft = { 'markdown', 'md', 'codecompanion' },
+		ft = { 'markdown' },
 		config = function()
 			require('render-markdown').setup {
-				file_types = { 'markdown', 'md', 'codecompanion' },
+				file_types = { 'markdown' },
 				render_modes = { 'n', 'no', 'c', 't', 'i', 'ic' },
 				code = {
 					sign = false,

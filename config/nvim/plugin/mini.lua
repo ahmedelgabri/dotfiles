@@ -16,7 +16,7 @@ pack.add {
 			})
 
 			-- Configure mini modules
-			-- Eager: cmdline, input, pick, starter, misc (auto_root, termbg_sync, restore_cursor)
+			-- Eager: cmdline, input, starter, misc (auto_root, termbg_sync, restore_cursor)
 			require('mini.cmdline').setup {}
 
 			local input = require 'mini.input'
@@ -160,7 +160,7 @@ pack.add {
 					clues = {
 						-- TODO: I need to ogranize my key mappings better
 						-- Leader/movement groups.
-						{ mode = 'n', keys = '<leader>t', desc = '+tabs' },
+						{ mode = 'n', keys = '<leader>t', desc = '+tasks' },
 						{ mode = 'n', keys = '<leader>g', desc = '+git' },
 						{ mode = 'x', keys = '<leader>g', desc = '+git' },
 						{ mode = 'n', keys = '[', desc = '+prev' },
@@ -430,7 +430,6 @@ pack.add {
 					filetype = {
 						copilot = { glyph = '', hl = 'MiniIconsGrey' },
 						supermaven = { glyph = '', hl = 'MiniIconsGrey' },
-						codecompanion = { glyph = '󰚩', hl = 'MiniIconsGrey' },
 						gemini = { glyph = '⯌', hl = 'MiniIconsGrey' },
 						gemini_cli = { glyph = '⯌', hl = 'MiniIconsGrey' },
 						claude = { glyph = '', hl = 'MiniIconsGrey' },

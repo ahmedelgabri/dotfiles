@@ -3,7 +3,6 @@ local M = {}
 M.mkview_filetype_blocklist = {
 	diff = true,
 	gitcommit = true,
-	hgcommit = true,
 	ministarter = true,
 	snacks_dashboard = true,
 }
