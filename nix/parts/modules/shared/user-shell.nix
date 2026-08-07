@@ -120,7 +120,6 @@ let
                     DOCKER_CONFIG = "${xdg.configHome}/docker";
                     DOTFILES = dotfilesDir;
                     DO_NOT_TRACK = "1"; # Future proof? https://consoledonottrack.com/
-                    ELINKS_CONFDIR = "${xdg.configHome}/elinks";
                     GATSBY_TELEMETRY_DISABLED = "1";
                     # See: https://cli.github.com/telemetry
                     GH_TELEMETRY = "false";
@@ -143,7 +142,6 @@ let
                     PAGER = "less";
                     PERSONAL_STORAGE = "$HOME/Sync";
                     PROJECTS = "$HOME/${devFolder}";
-                    RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
                     ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
                     ZDOTDIR = "${xdg.configHome}/zsh";
                     # I use a single zk notes dir, so set it and forget
@@ -190,8 +188,6 @@ let
                     hcron
                     shellcheck
                     shfmt # Doesn't work with zsh, only sh & bash
-                    zsh-completions
-                    zsh-history-substring-search
                     (imagemagick.override {
                       ghostscriptSupport = true;
                     })
