@@ -336,9 +336,10 @@ tig, tmux, and the Zsh prompt synchronized automatically; Neovim's custom
 structural shades needed by an editor. `bat` and delta render syntax through a
 custom [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) that mirrors the
 Neovim theme's restraint (gray italic comments, blue strings and constants,
-default foreground for everything else) via bat's ANSI color encoding; run
-`bat cache --build` after changing it, otherwise bat and delta silently fall
-back to their default theme.
+default foreground for everything else) via bat's ANSI color encoding; the bat
+cache is rebuilt automatically on every Home Manager activation, so a rebuild
+picks up theme changes (or run `bat cache --build` by hand for an instant
+refresh).
 
 File listing colors come from one checked-in file,
 [`config/zsh.d/ls_colors`](./config/zsh.d/ls_colors), which
@@ -391,7 +392,7 @@ each other. When one changes, change them all:
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Full 16-slot palettes          | [`config/ghostty/themes/plain-dark`](./config/ghostty/themes/plain-dark) and [`plain-light`](./config/ghostty/themes/plain-light), [`config/kitty/themes/plain-dark.conf`](./config/kitty/themes/plain-dark.conf) and [`plain-light.conf`](./config/kitty/themes/plain-light.conf), and `terminal_palettes` in [`plain.lua`](./config/nvim/colors/plain.lua) |
 | Editor accents                 | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                                                                                        |
-| Syntax restraint rules         | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; rebuild the bat cache after editing the tmTheme                                                                                                                                    |
+| Syntax restraint rules         | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh)                                                                                                                                    |
 | Comment markers (TODO/FIXME/…) | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                       |
 
 ## Working on this repo
