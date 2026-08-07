@@ -52,6 +52,3 @@ spinner.fg=8
 [viewer]
 url.underline=true
 
-# Custom styles
-[user]
-foo.fg=1
