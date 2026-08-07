@@ -15,7 +15,7 @@ if [[ -n "${DEBUG-}" ]]; then
 	set -x
 fi
 
-LOCATION_DATA="$TMPDIR/.location.json"
+LOCATION_DATA="${TMPDIR:-/tmp}/.location.json"
 FALLBACK=""
 
 if jq -e . "$LOCATION_DATA" >/dev/null 2>&1; then
