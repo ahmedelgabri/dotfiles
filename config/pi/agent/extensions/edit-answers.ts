@@ -7,6 +7,7 @@ import type {
 	ExtensionAPI,
 	ExtensionContext,
 } from '@earendil-works/pi-coding-agent'
+import {Text} from '@earendil-works/pi-tui'
 import {mkdirSync, readFileSync, writeFileSync} from 'node:fs'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
@@ -48,10 +49,37 @@ async function editAnswer(
 	const file = join(dir, `answer-${Date.now()}.md`)
 	writeFileSync(file, markdown + '\n', 'utf8')
 
-	ctx.ui.notify(`Opening ${file}`, 'info')
-	spawnSync(process.env.EDITOR || 'vim', [file], {stdio: 'inherit'})
+	// Suspend the TUI around the editor like files.ts's openExternalEditor:
+	// the harness does not release the terminal (raw mode/alternate screen)
+	// for child processes on its own, nor repaint afterwards.
+	const edited = await ctx.ui.custom<string | null>((tui, theme, _kb, done) => {
+		const status = new Text(theme.fg('dim', `Opening ${file}...`))
 
-	const edited = readFileSync(file, 'utf8')
+		queueMicrotask(() => {
+			let result: string | null = null
+			try {
+				tui.stop()
+				const proc = spawnSync(process.env.EDITOR || 'vim', [file], {
+					stdio: 'inherit',
+				})
+				if (proc.status === 0) {
+					result = readFileSync(file, 'utf8')
+				}
+			} finally {
+				tui.start()
+				tui.requestRender(true)
+				done(result)
+			}
+		})
+
+		return status
+	})
+
+	if (edited === null) {
+		ctx.ui.notify('Edit cancelled', 'info')
+		return
+	}
+
 	ctx.ui.setEditorText(edited)
 }
 
