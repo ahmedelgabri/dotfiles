@@ -24,8 +24,11 @@ let
       { pkgs, ... }:
       {
         config = {
+          # Also installs the docker CLI; without the daemon the bare
+          # package was a client with nothing to talk to.
+          virtualisation.docker.enable = true;
+
           my.user.packages = with pkgs; [
-            docker
             obsidian
             signal-desktop
             slack
