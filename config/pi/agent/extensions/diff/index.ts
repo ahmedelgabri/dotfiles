@@ -648,7 +648,7 @@ const registerTools = (pi: ExtensionAPI) => {
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand('diff', {
 		description:
-			'Review a working diff, PR, commit, git ref, or jj revision in a browser and exchange annotations with pi',
+			'Review a branch diff, working diff, PR, commit, git ref, or jj revision in a browser and exchange annotations with pi',
 		handler: async (args, ctx) => {
 			if (!ctx.hasUI) {
 				ctx.ui.notify('/diff requires interactive or RPC mode', 'error')

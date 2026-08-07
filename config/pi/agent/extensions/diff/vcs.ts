@@ -62,6 +62,10 @@ interface DiffRequest {
 	target?: string
 	ref?: string
 	pathspec: string[]
+	// Set on the implicit default-branch diff: when it produces no changes
+	// (e.g. sitting on main with only uncommitted work in git), fall back to
+	// the working diff instead of showing nothing.
+	fallbackToWorking?: boolean
 }
 
 interface PullRequestMetadata {
@@ -369,6 +373,24 @@ const GIT_RANGE_PATTERN = /(?:^|[^/])\.\.\.?(?:$|[^/])/
 
 const isGitRange = (value: string): boolean => GIT_RANGE_PATTERN.test(value)
 
+// origin/HEAD and upstream/HEAD point at the remote's actual default branch,
+// so they come before the guessed remote branch names; local main/master stay
+// first so labels read naturally in the common case.
+const GIT_DEFAULT_BASE_REFS = [
+	'main',
+	'master',
+	'origin/HEAD',
+	'origin/main',
+	'origin/master',
+	'upstream/HEAD',
+	'upstream/main',
+	'upstream/master',
+]
+
+// trunk() covers the remote default branch (main/master/trunk on any remote),
+// so listing per-remote variants is unnecessary.
+const JJ_DEFAULT_BASE_REVS = ['main', 'master', 'trunk()']
+
 const splitGitRange = (
 	value: string,
 ): {left: string; right: string; separator: '..' | '...'} | null => {
@@ -422,6 +444,33 @@ const canResolveJjRevision = async (
 	revset: string,
 ): Promise<boolean> => (await resolveJjCommits(pi, jjRoot, revset)) !== null
 
+const resolveDefaultGitBaseRef = async (
+	pi: ExtensionAPI,
+	gitRoot: string,
+): Promise<string | null> => {
+	for (const ref of GIT_DEFAULT_BASE_REFS) {
+		if (await resolveGitCommit(pi, gitRoot, ref)) {
+			return ref
+		}
+	}
+	return null
+}
+
+const resolveDefaultJjBaseRev = async (
+	pi: ExtensionAPI,
+	jjRoot: string,
+): Promise<string | null> => {
+	for (const revset of JJ_DEFAULT_BASE_REVS) {
+		const commits = await resolveJjCommits(pi, jjRoot, revset)
+		// trunk() falls back to root() when no trunk exists; diffing against
+		// root() would show the entire history, so treat it as unresolved.
+		if (commits && !commits.every((commit) => /^0+$/.test(commit))) {
+			return revset
+		}
+	}
+	return null
+}
+
 const getPullRequestMetadata = async (
 	pi: ExtensionAPI,
 	cwd: string,
@@ -460,8 +509,39 @@ const resolveDiffRequest = async (
 ): Promise<DiffRequest> => {
 	const parsedArgs = splitDiffArgs(parseCommandArgs(args.trim()))
 	const first = parsedArgs.targetTokens[0]
+	if (parsedArgs.all.length === 0) {
+		const jjBase = jjRoot ? await resolveDefaultJjBaseRev(pi, jjRoot) : null
+		if (jjBase) {
+			return {
+				kind: 'jj-rev',
+				args: parsedArgs.all,
+				ref: `${jjBase}..@`,
+				pathspec: [],
+				fallbackToWorking: true,
+			}
+		}
+
+		const gitBase = gitRoot ? await resolveDefaultGitBaseRef(pi, gitRoot) : null
+		if (gitBase) {
+			return {
+				kind: 'ref',
+				args: parsedArgs.all,
+				ref: `${gitBase}...HEAD`,
+				pathspec: [],
+				fallbackToWorking: true,
+			}
+		}
+	}
+
 	if (!first) {
-		return {kind: 'working', args: parsedArgs.all, pathspec: []}
+		// A lone `--` opts out of the default branch diff; drop it so the git
+		// working path does not forward it as a literal pathspec that matches
+		// nothing (`git diff HEAD -- --` is silently empty).
+		const forwardedArgs =
+			parsedArgs.hasSeparator && parsedArgs.pathspecAfterSeparator.length === 0
+				? []
+				: parsedArgs.all
+		return {kind: 'working', args: forwardedArgs, pathspec: []}
 	}
 
 	if (isPrCommand(first)) {
@@ -857,14 +937,20 @@ export const createDiffSnapshotLoader = (
 			if (!gitRoot) {
 				throw new Error('/diff ref requires a Git repository')
 			}
-			return loadGitRefSnapshot(pi, ctx, request, gitRoot)
+			const snapshot = await loadGitRefSnapshot(pi, ctx, request, gitRoot)
+			if (snapshot.patch.trim() || !request.fallbackToWorking) {
+				return snapshot
+			}
 		}
 
 		if (request.kind === 'jj-rev') {
 			if (!jjRoot) {
 				throw new Error('/diff jj requires a Jujutsu repository')
 			}
-			return loadJjRevisionSnapshot(pi, ctx, request, jjRoot)
+			const snapshot = await loadJjRevisionSnapshot(pi, ctx, request, jjRoot)
+			if (snapshot.patch.trim() || !request.fallbackToWorking) {
+				return snapshot
+			}
 		}
 
 		if (jjRoot) {
