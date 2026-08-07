@@ -129,6 +129,9 @@ au.augroup('__myautocmds__', {
 			local path =
 				vim.fn.fnamemodify(vim.api.nvim_buf_get_name(args.buf), ':p:~:.')
 			vim.schedule(function()
+				if not vim.api.nvim_buf_is_valid(buf) then
+					return
+				end
 				print(
 					('Big file detected `%s`. Some Neovim features have been **disabled**.'):format(
 						path
@@ -138,12 +141,17 @@ au.augroup('__myautocmds__', {
 				if vim.fn.exists ':NoMatchParen' ~= 0 then
 					vim.cmd [[NoMatchParen]]
 				end
-				vim.wo[buf].foldmethod = 'manual'
-				vim.wo[buf].statuscolumn = ''
-				vim.wo[buf].conceallevel = 0
-				vim.b.completion = false
-				vim.b.minianimate_disable = true
-				vim.b.minihipatterns_disable = true
+				-- vim.wo needs a window handle; the buffer may no longer be
+				-- shown in one by the time the scheduled callback runs.
+				local win = vim.fn.bufwinid(buf)
+				if win ~= -1 then
+					vim.wo[win].foldmethod = 'manual'
+					vim.wo[win].statuscolumn = ''
+					vim.wo[win].conceallevel = 0
+				end
+				vim.b[buf].completion = false
+				vim.b[buf].minianimate_disable = true
+				vim.b[buf].minihipatterns_disable = true
 			end)
 		end,
 		desc = 'Disable features in big files',
