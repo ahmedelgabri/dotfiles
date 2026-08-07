@@ -4,7 +4,6 @@ set -ue -o pipefail
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 
-unalias ts 2>/dev/null || true
 ts() {
 	local session
 	local query="${1-}"

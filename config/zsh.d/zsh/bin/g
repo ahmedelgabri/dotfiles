@@ -5,7 +5,7 @@ set -ue -o pipefail
 # https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
 # Wrap git with hub
 
-command -v git >/dev/null || return 0
+command -v git >/dev/null || exit 0
 
 time_since_last_commit() {
 	local __LAST_COMMIT
@@ -22,7 +22,7 @@ elif command -v git >/dev/null 2>&1; then
 	__CMD=$(command -v git)
 fi
 
-[[ $__CMD != "" ]] || return
+[[ $__CMD != "" ]] || exit 1
 
 if [ $# -eq 0 ]; then
 	printf "%s\n\n" "$(time_since_last_commit)"
