@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ue -o pipefail
 
-if [ -n "$1" ]; then
+if [ -n "${1-}" ]; then
   BRANCH="$1"
 else
   BRANCH="$(git rev-parse --abbrev-ref HEAD)"
