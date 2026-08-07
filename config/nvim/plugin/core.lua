@@ -3,7 +3,7 @@ local au = require '_.utils.au'
 local pack = require '_.pack'
 
 pack.add {
-	{ src = 'https://github.com/tpope/vim-repeat', load = false },
+	{ src = 'https://github.com/tpope/vim-repeat' },
 	{
 		src = 'https://github.com/alexghergh/nvim-tmux-navigation',
 		load = false,
