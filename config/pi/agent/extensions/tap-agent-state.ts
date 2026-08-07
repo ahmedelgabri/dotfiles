@@ -12,7 +12,7 @@ export default function (pi: ExtensionAPI) {
 
 	async function tapState(args: string[]): Promise<void> {
 		try {
-			await pi.exec('tap', ['state', ...args])
+			await pi.exec('tap', ['state', '--agent', 'pi', ...args])
 		} catch {}
 	}
 
