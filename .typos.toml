@@ -1,3 +1,2 @@
 [files]
-extend-exclude = ["config/weechat/*.conf"]
 ignore-hidden = false
