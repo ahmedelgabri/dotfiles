@@ -21,6 +21,13 @@ fi
 LOG_FILE="$LOG_DIR/hook-events.jsonl"
 mkdir -p "$LOG_DIR"
 
+# One rotation generation keeps the log bounded (the previous file grew
+# unbounded to 28MB); checked on every event, so keep the check cheap.
+MAX_BYTES=$((32 * 1024 * 1024))
+if [ -f "$LOG_FILE" ] && [ "$(wc -c <"$LOG_FILE")" -gt "$MAX_BYTES" ]; then
+	mv "$LOG_FILE" "$LOG_FILE.1"
+fi
+
 EVENT_TYPE="${1:-unknown}"
 
 # Read all input from stdin

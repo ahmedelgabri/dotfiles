@@ -29,6 +29,12 @@ PROMPTS_DIR="$HOME/.claude/logs/${CLAUDE_PROJECT_DIR//[\/.]/-}"
 PROMPTS_FILE="$PROMPTS_DIR/PROMPTS.md"
 mkdir -p "$PROMPTS_DIR"
 
+# One rotation generation keeps the prompt log bounded.
+MAX_BYTES=$((1024 * 1024))
+if [ -f "$PROMPTS_FILE" ] && [ "$(wc -c <"$PROMPTS_FILE")" -gt "$MAX_BYTES" ]; then
+	mv "$PROMPTS_FILE" "$PROMPTS_FILE.1"
+fi
+
 # Read input from stdin
 input=$(cat)
 
