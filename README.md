@@ -215,6 +215,7 @@ Useful files to create there:
 | `$HOST_CONFIGS/hammerspoon/<hostname>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/) | Host-specific Lua config |
 | `$HOST_CONFIGS/pi/extensions`              | Machine-specific Pi extensions added to the generated Pi settings                                                            | Private extension        |
 | `$HOST_CONFIGS/pi/skills`                  | Machine-specific Pi skills added to the generated Pi settings                                                                | Private skill            |
+| `$HOST_CONFIGS/tmux/sessions/<name>`       | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README      | Work session layouts     |
 
 If you want GitHub to show commits as **Verified**, the email on the commit, the
 email on GitHub, and the email attached to the public key all need to match.

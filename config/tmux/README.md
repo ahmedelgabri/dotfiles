@@ -4,7 +4,7 @@ Personal tmux setup managed via
 [Home Manager](https://github.com/nix-community/home-manager) (Nix). Files are
 symlinked from the Nix store into `~/.config/tmux/`.
 
-Requires **tmux 3.5+** (currently running 3.6a).
+Requires **tmux 3.5+** (currently running 3.7b).
 
 ## File Structure
 
@@ -12,6 +12,7 @@ Requires **tmux 3.5+** (currently running 3.6a).
 tmux/
 ├── README.md                          # This file
 ├── tmux.conf                          # Main configuration
+├── sessions/                          # Named session definitions for mx
 ├── scripts/
 │   ├── get-prayer                     # Prayer times (wrapper for next-prayer)
 │   ├── tmux-battery                   # Battery segment wrapper with charging icon
@@ -312,11 +313,42 @@ Or via Nix (used by Home Manager):
 buildGoModule { ... }
 ```
 
+## Sessions (`mx`)
+
+Sessions are created and attached with the `mx` script from `config/zsh.d/zsh/bin/`, reachable from `^G` in zsh and `prefix + g` inside tmux:
+
+- `mx --list` enumerates candidates as TSV (`kind`, label, absolute path): named session definitions first, then project directories under `$PROJECTS`.
+- `mx --pick [query]` pipes that list into fzf (native `--popup` inside tmux) and launches the selection.
+- `mx` creates or attaches: `mx` (session for `$PWD`), `mx <name>` (definition lookup, then project lookup by label), `mx --dir <path>` (plain session rooted exactly there, used by the picker).
+
+`mx <name>` looks up definitions in `$HOST_CONFIGS/tmux/sessions/<name>` (host-local, wins) then `~/.config/tmux/sessions/<name>` (checked in, [sessions/](./sessions/README.md) documents the file contract). New sessions get the `_shared` windows linked at indexes 6-10.
+
+Project directories are enumerated per root under `$PROJECTS` (`~/dev`):
+
+| Root | Rule |
+| --- | --- |
+| `personal`, `trunk`, `forks`, `ahmedelgabri` | every direct subdirectory |
+| `work` | `work/<org>/<project>`; `.bare` projects also list child worktrees (subdirs with a `.git` entry) |
+| `archive` | project children (`.git`/`.bare`/`.jj`) are leaves; other children are grouping dirs whose child dirs are candidates |
+
+Session names are derived from the picked directory (`.` and `:` become `_`):
+
+| Picked dir | Session name |
+| --- | --- |
+| `trunk/X`, `personal/X`, `ahmedelgabri/X` | `X` |
+| `work/<org>/<p>` | `<p>` |
+| `work/<org>/<p>/<wt>` | `<p>/<wt>` (e.g. `c/master`) |
+| `forks/X` | `forks/X` |
+| `archive/...` | `archive/...`, in full |
+
+Caveat: `switch-client` from a `run-shell` binding resolves "current client" by tmux's best match, which is correct for single-attached-client use.
+
 ## Host-Specific Overrides
 
 The config sources `$HOST_CONFIGS/tmux.conf` at the end if it exists. This
 allows per-machine customization (e.g., different status bar segments, colors,
-or bindings) without modifying the shared config.
+or bindings) without modifying the shared config. Host-local session
+definitions live in `$HOST_CONFIGS/tmux/sessions/`.
 
 ## Dependencies
 
