@@ -91,7 +91,7 @@ let
                   df = "df -kh";
                   du = "du -kh";
                   fd = "fd --hidden";
-                  history-stat = ''fc -l 1 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head'';
+                  history-stat = ''fc -l 1 | awk '{print $2}' | sort | uniq -c | sort -n -r | head'';
                   history = "fc -il 1";
                   jobs = "jobs -l";
                   play = "mx ϟ";
