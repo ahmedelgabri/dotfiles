@@ -14,6 +14,7 @@
 #   mx <name>           session definition lookup, then project lookup by name
 #   mx --dir <path>     plain session rooted exactly at <path>
 #   mx --list           print session/project candidates as TSV
+#   mx --pick [query]   fuzzy-pick a candidate and launch it
 #
 # Session definitions are plain bash files sourced by mx, looked up as
 # $HOST_CONFIGS/tmux/sessions/<name> then $XDG_CONFIG_HOME/tmux/sessions/<name>.
@@ -36,7 +37,7 @@ if [[ -n "${DEBUG-}" ]]; then
 fi
 
 usage() {
-	echo "Usage: mx [<name>] | mx --dir <path> | mx --list" >&2
+	echo "Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query]" >&2
 	exit 64
 }
 
@@ -215,6 +216,43 @@ link_shared_windows() {
 	fi
 }
 
+# mx --pick [query] - fuzzy-pick a project or defined session, then launch it
+#   - Bypasses the finder when the query matches exactly one candidate (--select-1)
+#   - Exits cleanly when there is no match or on cancel (--exit-0)
+# Lines are --list TSV; fields 1-2 are shown, field 3 (abspath) rides along
+# so the selection never has to be re-derived from display text.
+mx_pick() {
+	local line kind label path
+	local fzf_opts=(
+		--query="${1-}"
+		--select-1
+		--exit-0
+		--no-multi
+		--delimiter=$'\t'
+		"--with-nth=1,2"
+		--nth=2
+		--tabstop=8
+		--scheme=path
+		--prompt="mx » "
+		"--preview=COLORTERM=truecolor previewer {3}"
+		"--preview-window=right:border-left:60%:hidden"
+	)
+
+	if [[ -n ${TMUX-} ]]; then
+		fzf_opts+=("--popup=center,70%,70%" --border=none)
+	else
+		fzf_opts+=(--height=40%)
+	fi
+
+	line="$(list_candidates | fzf "${fzf_opts[@]}")" || return 0
+	IFS=$'\t' read -r kind label path <<<"$line"
+
+	case "$kind" in
+	sess) main "$label" ;;
+	dir) main --dir "$path" ;;
+	esac
+}
+
 main() {
 	local root="" session_file="" name="" matches=""
 
@@ -228,6 +266,11 @@ main() {
 	--list)
 		[ $# -eq 1 ] || usage
 		list_candidates
+		exit 0
+		;;
+	--pick)
+		[ $# -le 2 ] || usage
+		mx_pick "${2-}"
 		exit 0
 		;;
 	--*)
