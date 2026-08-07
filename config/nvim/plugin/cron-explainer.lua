@@ -27,6 +27,7 @@ M.explain = function(cron_expression)
 	local cmd = M.get_cmd()
 	if not cmd then
 		vim.notify('cron explainer command not found', vim.log.levels.ERROR)
+		return
 	end
 
 	local cached = M._cache[cron_expression]
@@ -54,7 +55,14 @@ M.explain = function(cron_expression)
 
 	vim.fn.jobwait({ job_id }, 2000)
 
-	return vim.fn.split(output, ': ')[2]
+	-- Empty when the job times out or hcron prints something unexpected.
+	local description = vim.fn.split(output, ': ')[2]
+	if description == nil then
+		vim.notify('cron explainer produced no output', vim.log.levels.ERROR)
+		return
+	end
+
+	return description
 end
 
 M.cron_from_line = function(line)
@@ -106,7 +114,11 @@ vim.keymap.set({ 'n' }, '<leader>ec', function()
 		local data = M._cache[expression]
 
 		if not data then
-			data = vim.trim(M.explain(expression))
+			local explained = M.explain(expression)
+			if not explained then
+				return
+			end
+			data = vim.trim(explained)
 			M._cache[expression] = data
 		end
 
