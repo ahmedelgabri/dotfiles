@@ -209,14 +209,18 @@ let
                 if [ ! -e "${local_zshrc}" ]; then
                 	mkdir -p "$(dirname "${local_zshrc}")"
 
-                  cat > ${local_zshrc}<< EOF
+                  # Quoted delimiter: the $(...) lookups must land in the file
+                  # literally and run at shell startup, not expand while the
+                  # activation script writes it; <<- strips the leading tabs.
+                  cat > ${local_zshrc} <<- 'EOF'
                 	# vim:ft=zsh:
-                	[[ -z "$GITHUB_TOKEN" ]] && echo "⚠ GITHUB_TOKEN is not set"
-                	[[ -z "$HOMEBREW_GITHUB_API_TOKEN" ]] && echo "⚠ HOMEBREW_GITHUB_API_TOKEN is not set"
-                	[[ -z "$NPM_REGISTRY_TOKEN" ]] && echo "⚠ NPM_REGISTRY_TOKEN is not set"
-                	[[ -z "$GITHUB_REGISTRY_TOKEN" ]] && echo "⚠ GITHUB_REGISTRY_TOKEN is not set"
-                	[[ -z "$GH_PASS" ]] && echo "⚠ GH_PASS is not set"
-                EOF
+                	# Machine-local shell setup, sourced at the end of /etc/zshrc.
+                	# Keep secrets out of this file: store them in the macOS
+                	# keychain with `secret set <name>` and export a lookup, e.g.
+                	#
+                	#   export GITHUB_TOKEN="$(secret get github-token)"
+                	EOF
+                  chmod 600 ${local_zshrc}
                 fi
               '';
 
