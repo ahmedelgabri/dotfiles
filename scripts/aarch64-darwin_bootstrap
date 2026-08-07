@@ -13,11 +13,25 @@ print_main_banner
 if xcode-select -p >/dev/null 2>&1; then
 	log_info "Xcode already installed"
 else
-	log_success "Installing Xcode"
+	log_info "Installing Xcode (confirm the GUI prompt)"
 	xcode-select --install
 
-	log_success "Installing Rosetta"
+	# xcode-select --install returns immediately after opening the GUI
+	# prompt; wait for the CLT to actually land before nix needs it.
+	until xcode-select -p >/dev/null 2>&1; do
+		sleep 5
+	done
+	log_success "Xcode installed"
+fi
+
+# Independent of the Xcode branch: a machine with CLT present but Rosetta
+# absent still needs Rosetta (nix-homebrew's x86 prefix assumes it).
+if arch -arch x86_64 /usr/bin/true 2>/dev/null; then
+	log_info "Rosetta already installed"
+else
+	log_info "Installing Rosetta"
 	sudo softwareupdate --install-rosetta --agree-to-license
+	log_success "Rosetta installed"
 fi
 
 if [ -e "$DOTFILES_DIR/flake.nix" ]; then
