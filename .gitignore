@@ -2,6 +2,7 @@ scratch
 !.ignore
 result
 .claude
+.codex
 .opencode
 config/nvim/nvim-pack-lock.json
 config/pi/agent/extensions/node_modules
