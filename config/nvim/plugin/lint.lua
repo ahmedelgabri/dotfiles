@@ -3,7 +3,7 @@ local pack = require '_.pack'
 pack.add {
 	{
 		src = 'https://github.com/mfussenegger/nvim-lint',
-		ft = { 'zsh', 'nix', 'dockerfile', 'dotenv', 'yaml' },
+		ft = { 'zsh', 'nix', 'dockerfile', 'dotenv', 'yaml', 'yaml.github' },
 		config = function()
 			local au = require '_.utils.au'
 			local lint = require 'lint'
