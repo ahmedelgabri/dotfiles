@@ -42,7 +42,7 @@ let
           }
           // {
             "kitty/macos-launch-services-cmdline".text = ''
-              -o allow_remote_control=yes --single-instance --listen-on ${kittyListenSocket}
+              -o allow_remote_control=socket-only --single-instance --listen-on ${kittyListenSocket}
             '';
           };
       };
