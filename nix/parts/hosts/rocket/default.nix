@@ -52,7 +52,6 @@ let
 
       homebrew = {
         taps = [
-          "atlassian-labs/acli"
           "openai/tools"
           "JetBrains/homebrew-utils"
           "docker/homebrew-tap"
@@ -71,7 +70,6 @@ let
 
         brews = [
           "socat"
-          "acli"
           "kotlin-lsp"
         ];
       };

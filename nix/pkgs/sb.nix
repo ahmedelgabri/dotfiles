@@ -75,68 +75,71 @@ let
   # hard-coded because the cirruslabs Ubuntu image is aarch64 on Apple
   # Silicon. Bump JJ_VERSION manually.
   provisionScript = writeText "sb-provision.sh" /* bash */ ''
-    #!/usr/bin/env bash
-    set -Eeuo pipefail
-    export DEBIAN_FRONTEND=noninteractive
-    # Silence locale noise during the bootstrap window (before `locales`
-    # is installed). Dropped once the real locales are generated below.
-    export LC_ALL=C.UTF-8
+        #!/usr/bin/env bash
+        set -Eeuo pipefail
+        export DEBIAN_FRONTEND=noninteractive
+        # Silence locale noise during the bootstrap window (before `locales`
+        # is installed). Dropped once the real locales are generated below.
+        export LC_ALL=C.UTF-8
 
-    JJ_VERSION="0.40.0"
+        JJ_VERSION="0.40.0"
 
-    apt-get update -qq
+        apt-get update -qq
 
-    # Install and generate locales that match the host. SSH's SendEnv
-    # forwards LC_TIME=en_GB.UTF-8 so that one must be available too.
-    apt-get install -y -qq locales
-    locale-gen en_US.UTF-8 en_GB.UTF-8
-    update-locale LANG=en_US.UTF-8
-    unset LC_ALL
-    export LANG=en_US.UTF-8
+        # Install and generate locales that match the host. SSH's SendEnv
+        # forwards LC_TIME=en_GB.UTF-8 so that one must be available too.
+        apt-get install -y -qq locales
+        locale-gen en_US.UTF-8 en_GB.UTF-8
+        update-locale LANG=en_US.UTF-8
+        unset LC_ALL
+        export LANG=en_US.UTF-8
 
-    apt-get upgrade -y -qq
-    apt-get install -y -qq \
-      zsh git openssh-server curl wget ca-certificates gnupg \
-      build-essential ripgrep fd-find jq unzip
+        apt-get upgrade -y -qq
+        apt-get install -y -qq \
+          zsh git openssh-server curl wget ca-certificates gnupg \
+          build-essential ripgrep fd-find jq unzip
 
-    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-    apt-get install -y -qq nodejs
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+        apt-get install -y -qq nodejs
 
-    # Tarball is flat with a "./" prefix; extract only the binary.
-    curl -fsSL \
-      "https://github.com/jj-vcs/jj/releases/download/v''${JJ_VERSION}/jj-v''${JJ_VERSION}-aarch64-unknown-linux-musl.tar.gz" \
-      | tar -xzO ./jj > /usr/local/bin/jj
-    chmod +x /usr/local/bin/jj
+        # Tarball is flat with a "./" prefix; extract only the binary.
+        curl -fsSL \
+          "https://github.com/jj-vcs/jj/releases/download/v''${JJ_VERSION}/jj-v''${JJ_VERSION}-aarch64-unknown-linux-musl.tar.gz" \
+          | tar -xzO ./jj > /usr/local/bin/jj
+        chmod +x /usr/local/bin/jj
 
-    # Claude Code via the official installer, as the admin user.
-    # -i runs a clean login shell so HOME resets to /home/admin.
-    sudo -iu admin bash -c 'curl -fsSL https://claude.ai/install.sh | bash'
+        # Claude Code via the official installer, as the admin user.
+        # -i runs a clean login shell so HOME resets to /home/admin.
+        sudo -iu admin bash -c 'curl -fsSL https://claude.ai/install.sh | bash'
 
-    # pi is npm-only.
-    npm install -g @earendil-works/pi-coding-agent
+        # pi is npm-only.
+        npm install -g @earendil-works/pi-coding-agent
 
-    chsh -s /usr/bin/zsh admin
-    systemctl enable ssh
+        chsh -s /usr/bin/zsh admin
+        systemctl enable ssh
 
-    mkdir -p /etc/ssh/sshd_config.d
-    printf '%s\n' \
-      'AcceptEnv ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN OPENAI_API_KEY LANG LC_*' \
-      'StreamLocalBindUnlink yes' \
-      > /etc/ssh/sshd_config.d/sandbox.conf
-    sshd -t
+        mkdir -p /etc/ssh/sshd_config.d
+        printf '%s\n' \
+          'AcceptEnv ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN OPENAI_API_KEY LANG LC_*' \
+          'StreamLocalBindUnlink yes' \
+          > /etc/ssh/sshd_config.d/sandbox.conf
+    # `sshd -t` requires the privsep dir even in test mode; /run is tmpfs
+    # so it isn't present yet during provisioning (created at boot normally).
+    mkdir -p /run/sshd
+        sshd -t
 
-    # Ensure ~/.local/bin (where claude.ai/install.sh lands) is on PATH
-    # for both interactive and login shells.
-    for f in /home/admin/.zshrc /home/admin/.zprofile /home/admin/.profile; do
-      touch "$f"
-      if ! grep -q '\.local/bin' "$f"; then
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$f"
-      fi
-      chown admin:admin "$f"
-    done
+        # Ensure ~/.local/bin (where claude.ai/install.sh lands) is on PATH
+        # for both interactive and login shells.
+        for f in /home/admin/.zshrc /home/admin/.zprofile /home/admin/.profile; do
+          touch "$f"
+          if ! grep -q '\.local/bin' "$f"; then
+            echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$f"
+          fi
+          chown admin:admin "$f"
+        done
 
-    apt-get autoremove -y
-    apt-get clean
+        apt-get autoremove -y
+        apt-get clean
   '';
 in
 writeShellApplication {
