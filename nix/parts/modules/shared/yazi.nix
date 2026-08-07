@@ -14,21 +14,22 @@ let
             fzf
             fd
             ripgrep
-            (pkgs.writeShellScriptBin "yy" ''
-              set -ue -o pipefail
-
-              function ya() {
-              	local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
-              	yazi "$@" --cwd-file="$tmp"
-              	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-              		cd -- "$cwd"
-              	fi
-              	rm -f -- "$tmp"
-              }
-
-              ya "$@"
-            '')
           ];
+
+          # The cwd-on-exit wrapper must run inside the interactive shell:
+          # as an external script its final `cd` only moved the script's
+          # own process and was discarded on exit.
+          programs.zsh.interactiveShellInit = ''
+            function yy() {
+              local tmp cwd
+              tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+              yazi "$@" --cwd-file="$tmp"
+              if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+                cd -- "$cwd"
+              fi
+              rm -f -- "$tmp"
+            }
+          '';
         };
       };
 
