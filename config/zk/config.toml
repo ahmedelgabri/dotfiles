@@ -186,7 +186,6 @@ recents = "--sort created- --created-after 'last two weeks'"
 work = '--group work'
 personal = '--group personal'
 journal = '--group journal'
-todo = '--group todo'
 
 
 # COMMAND ALIASES
