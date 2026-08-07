@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""".pythonrc for history/completion & Django dev
+""".pythonrc for history/completion helpers
 
 This file is executed when the Python interactive shell is started if
 $PYTHONSTARTUP is in your environment and points to this file. It's just
@@ -139,106 +139,6 @@ Sheesh, I thought he'd never leave. Who invited that guy?
         % _c
     )
 )
-
-# Django Helpers
-################
-
-
-def SECRET_KEY():
-    "Generates a new SECRET_KEY that can be used in a project settings file."
-
-    from random import choice
-
-    return "".join(
-        [
-            choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)")
-            for i in range(50)
-        ]
-    )
-
-
-# If we're working with a Django project, set up the environment
-if "DJANGO_SETTINGS_MODULE" in os.environ:
-    from django.db.models.loading import get_models
-    from django.test.client import Client
-    from django.test.utils import setup_test_environment
-    from django.conf import settings as S
-
-    class DjangoModels(object):
-        """Loop through all the models in INSTALLED_APPS and import them."""
-
-        def __init__(self):
-            for m in get_models():
-                setattr(self, m.__name__, m)
-
-    A = DjangoModels()
-    C = Client()
-
-    WELCOME += (
-        """%(Green)s
-Django environment detected.
-* Your INSTALLED_APPS models are available as `A`.
-* Your project settings are available as `S`.
-* The Django test client is available as `C`.
-%(Normal)s"""
-        % _c
-    )
-
-    setup_test_environment()
-    S.DEBUG_PROPAGATE_EXCEPTIONS = True
-
-    WELCOME += (
-        """%(LightPurple)s
-Warning: the Django test environment has been set up; to restore the
-normal environment call `teardown_test_environment()`.
-
-Warning: DEBUG_PROPAGATE_EXCEPTIONS has been set to True.
-%(Normal)s"""
-        % _c
-    )
-
-
-# Salt Helpers
-##############
-if "SALT_CLIENT_CONFIG" in os.environ:
-    try:
-        import salt.config
-        import salt.client
-        import salt.runner
-    except ImportError:
-        pass
-    else:
-        __opts_client__ = salt.config.client_config(os.environ["SALT_CLIENT_CONFIG"])
-
-        # Instantiate LocalClient and RunnerClient
-        SLC = salt.client.LocalClient(mopts=__opts_client__)
-        SRUN = salt.runner.Runner(__opts_client__)
-
-if "SALT_MINION_CONFIG" in os.environ:
-    try:
-        import salt.config
-        import salt.client
-        import salt.loader
-    except ImportError:
-        pass
-    else:
-        # # Create the Salt __opts__ variable
-        __opts__ = salt.config.minion_config(os.environ.get("SALT_MINION_CONFIG"))
-
-        # Default to local mode to avoid timeouts if a master is not running.
-        # Can set this to 'remote' manually and re-instantiate if desired.
-        __opts__["file_client"] = "local"
-
-        # Instantiate the Caller class
-        SCALL = salt.client.Caller(mopts=__opts__)
-
-        # Populate grains if it hasn't been done already
-        if "grains" not in __opts__ or not __opts__["grains"]:
-            __opts__["grains"] = salt.loader.grains(__opts__)
-
-        # Populate template variables
-        __salt__ = salt.loader.minion_mods(__opts__)
-        __grains__ = __opts__["grains"]
 
 # Start an external editor with \e
 ##################################
