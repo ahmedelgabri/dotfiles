@@ -43,6 +43,6 @@ stdenvNoCC.mkDerivation rec {
       designed by Fabrizio Schiavi to be the ideal font for coding, math and engineering
     '';
     platforms = platforms.all;
-    licence = licences.unfree;
+    license = licenses.unfree;
   };
 }
