@@ -19,7 +19,7 @@ add_mirrors() {
 	fi
 
 	local USER=${GITHUB_USER:-ahmedelgabri}
-	local MIRRORS=("bitbucket.com" "gitlab.com" "codeberg.org")
+	local MIRRORS=("bitbucket.org" "gitlab.com" "codeberg.org")
 	local PUSH_URLS
 	PUSH_URLS=$(git remote get-url --push --all origin 2>/dev/null || true)
 
