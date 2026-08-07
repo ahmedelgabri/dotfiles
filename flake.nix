@@ -15,11 +15,18 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
+    # Only used as a dedup anchor: the inputs below follow it instead of
+    # each locking their own copy.
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixfmt-rs = {
       url = "github:Mic92/nixfmt-rs";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
@@ -68,7 +75,8 @@
       url = "github:ahmedelgabri/git-wt";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
@@ -76,7 +84,8 @@
       url = "github:ahmedelgabri/ccpeek";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
@@ -84,18 +93,26 @@
       url = "github:ahmedelgabri/tmux-agent-panel";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
 
     atuin = {
       url = "github:atuinsh/atuin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
 
     zsh-history-substring-search = {
