@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Inlined via builtins.readFile into writeShellApplication (see
+# nix/parts/outputs/apps.nix); never executed directly.
 
 set -Eueo pipefail
 
