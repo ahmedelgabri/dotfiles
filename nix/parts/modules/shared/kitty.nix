@@ -9,8 +9,12 @@ let
       config = {
         homebrew.casks = [ "kitty" ];
         environment.variables.KITTY_LISTEN_ON = kittyListenSocket;
+        # KITTY_INSTALLATION_DIR only exists inside kitty; unguarded, every
+        # other shell got a bogus ":/terminfo" entry appended.
         environment.extraInit = ''
-          export TERMINFO_DIRS="$TERMINFO_DIRS:$KITTY_INSTALLATION_DIR/terminfo"
+          if [ -n "$KITTY_INSTALLATION_DIR" ]; then
+            export TERMINFO_DIRS="$TERMINFO_DIRS:$KITTY_INSTALLATION_DIR/terminfo"
+          fi
         '';
       };
     };
