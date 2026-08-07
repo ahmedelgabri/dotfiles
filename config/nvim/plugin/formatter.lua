@@ -84,7 +84,7 @@ pack.add {
 			---@module "conform"
 			---@type conform.setupOpts
 			require('conform').setup {
-				log_level = vim.log.levels.DEBUG,
+				log_level = vim.log.levels.WARN,
 				formatters = {
 					injected = {
 						options = {
