@@ -94,7 +94,7 @@ pack.add {
 				{ 'tailwindcss', 'tailwindcss-language-server' },
 
 				{ 'dockerls', 'docker-langserver' },
-				{ 'docker_compose_language_service' },
+				{ 'docker_compose_language_service', 'docker-compose-langserver' },
 				{ 'docker_language_server', 'docker-language-server' },
 
 				{ 'ty' },
