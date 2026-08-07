@@ -445,9 +445,11 @@ const getGitStatusMap = async (
 		if (!entry || entry.length < 4) continue
 		const status = entry.slice(0, 2)
 		const statusLabel = status.replace(/\s/g, '') || status.trim()
-		let filePath = entry.slice(3)
+		// In porcelain -z output rename/copy records are "XY <new>\0<old>\0":
+		// entry.slice(3) is already the NEW path; only skip the ORIG_PATH
+		// field that follows.
+		const filePath = entry.slice(3)
 		if ((status.startsWith('R') || status.startsWith('C')) && entries[i + 1]) {
-			filePath = entries[i + 1]
 			i += 1
 		}
 		if (!filePath) continue
