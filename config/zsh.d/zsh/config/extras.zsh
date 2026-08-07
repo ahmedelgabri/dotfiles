@@ -69,6 +69,19 @@ zf() {
   [[ -n $selected ]] && builtin cd -- "$selected"
 }
 
+# Project/session picker. Runs mx --pick as a real command via accept-line
+# instead of inside the widget: outside tmux, mx ends in `tmux attach`,
+# which must own the terminal — zle holds it while a widget runs.
+if which mx &>/dev/null; then
+  fzf-mx-pick-widget() {
+    zle push-input
+    BUFFER="mx --pick"
+    zle accept-line
+  }
+  zle -N fzf-mx-pick-widget
+  bindkey '^G' fzf-mx-pick-widget
+fi
+
 # Only exit if we're not on the last pane/window of a tmux session; detach
 # instead so the session survives. Defined as a function so it can actually
 # override the shell builtin.
