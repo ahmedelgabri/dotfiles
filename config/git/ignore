@@ -13,7 +13,6 @@ Thumbs.db
 #############
 *.pyc
 *.map
-.mx-start
 .direnv
 .envrc
 .tern-port
