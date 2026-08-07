@@ -1,21 +1,44 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -ue -o pipefail
-# Usage: git-edit [conflicted|staged|edited|committed]
+# Usage: git-edit [conflicted|staged|edited|committed|status]
+
+# Collect NUL-separated filenames from fd 3 into an array so names with
+# spaces survive, then hand them to the editor on the shell's own
+# stdin/tty (an editor at the end of a pipeline would read the pipe).
+edit_files() {
+	local -a files=()
+	local f
+	while IFS= read -r -d '' f <&3; do
+		files+=("$f")
+	done
+	if [ ${#files[@]} -eq 0 ]; then
+		echo "git-edit: nothing to edit" >&2
+		return 0
+	fi
+	$EDITOR "${files[@]}"
+}
 
 case ${1-} in
 conflict | conflicts | conflicted)
-	$EDITOR $(git-conflicts)
+	edit_files 3< <(git-conflicts | tr '\n' '\0')
 	;;
 committed)
-	$EDITOR $(git diff HEAD^ --name-only --diff-filter=ACMR)
+	edit_files 3< <(git diff HEAD^ --name-only -z --diff-filter=ACMR)
 	;;
 staged)
-	$EDITOR $(git diff --staged --name-only --diff-filter=ACMR)
+	edit_files 3< <(git diff --staged --name-only -z --diff-filter=ACMR)
 	;;
 status)
-	$EDITOR $(git status --porcelain | awk '{print $2}')
+	edit_files 3< <(
+		git diff HEAD --name-only -z --diff-filter=ACMR
+		git ls-files --others --exclude-standard -z
+	)
 	;;
 edited)
-	$EDITOR $(git diff HEAD --name-only --diff-filter=ACMR)
+	edit_files 3< <(git diff HEAD --name-only -z --diff-filter=ACMR)
+	;;
+*)
+	echo "Usage: git-edit [conflicted|staged|edited|committed|status]" >&2
+	exit 1
 	;;
 esac
