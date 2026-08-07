@@ -1,36 +1,36 @@
 #!/usr/bin/env bash
 
+set -u -o pipefail
+
+command -v weather >/dev/null 2>&1 || exit 0
+
+TMP_WEATHER_FILE="${TMPDIR:-/tmp}/weather.tmp"
+REFRESH_RATE=$((60 * 60)) # seconds (1 hour)
+
 _load_weather() {
-	# check for weather command and internet connection
-	command -v weather >/dev/null 2>&1 || return 1
-	ping -q -c 1 -W 2 1.1.1.1 >/dev/null 2>&1 && {
-		weather "" "format=%c+%t+%h+%w+%m" >"$TMP_WEATHER_FILE"
-		printf "\n$(date +'%s')" >>"$TMP_WEATHER_FILE"
-	}
+	# Only refresh when online; keep serving stale data otherwise.
+	ping -q -c 1 -W 2 1.1.1.1 >/dev/null 2>&1 || return 0
+	weather "" "format=%c+%t+%h+%w+%m" >"$TMP_WEATHER_FILE"
+	printf '\n%s' "$(date +'%s')" >>"$TMP_WEATHER_FILE"
 }
 
-# Weather data
-weather_segment() {
-	local -r TMP_WEATHER_FILE="$TMPDIR/weather.tmp"
-	local -r REFRESH_RATE=$((60 * 60)) # seconds (1 hour)
+[[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
 
-	[[ -f "$TMP_WEATHER_FILE" ]] || _load_weather
+# Offline with no cache: stay silent instead of erroring on tail/head
+# against a nonexistent file every status refresh.
+[[ -f "$TMP_WEATHER_FILE" ]] || exit 0
 
-	local now
-	now="$(date +'%s')"
-	local epoch
-	epoch="$(tail -n 1 "$TMP_WEATHER_FILE")"
-	local delta
-	delta="$((now - epoch))"
+now="$(date +'%s')"
+epoch="$(tail -n 1 "$TMP_WEATHER_FILE")"
+delta="$((now - ${epoch:-0}))"
 
-	# check if it's time to update the data
-	[[ $delta -gt $REFRESH_RATE ]] && _load_weather
+[[ $delta -gt $REFRESH_RATE ]] && _load_weather
 
-	local weather
-	weather="$(head -n 1 "$TMP_WEATHER_FILE")"
-	weather="$(echo "${weather//+/}")"
+weather_data="$(head -n 1 "$TMP_WEATHER_FILE")"
+weather_data="${weather_data//+/}"
 
-	printf "%s" "$weather"
-}
+[[ -n "$weather_data" ]] || exit 0
 
-weather_segment
+# Emit the separator with the data (like tmux-battery) so an empty
+# segment leaves no dangling separator in the status bar.
+printf "#[fg=brightblack]%s#[fg=black] ⦁ " "$weather_data"
