@@ -1,18 +1,19 @@
 #!/bin/bash
 set -ue -o pipefail
 
-if [[ "$1" == '--raw' ]]; then
+RAW=0
+if [[ "${1-}" == '--raw' ]]; then
     RAW=1
     shift
 fi
 
-author=$1
-shift
+author=${1-}
 if [[ -z "$author" || "$author" == "--help" || "$author" == "-h" ]]; then
     echo "Usage: git author-stats <author name> [extra git log params]"
     echo "Example: git author-stats $USER --since=2017-01-01 --until=2017-01-31"
     exit
 fi
+shift
 
 git log --author="$author" --pretty=tformat: --numstat "$@" | awk -v RAW=$RAW '{
     added    += $1;
