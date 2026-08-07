@@ -1,7 +1,5 @@
 { inputs, ... }:
 let
-  host = inputs.self.lib.mkDarwin "aarch64-darwin" "rocket";
-
   hostConfiguration =
     { pkgs, ... }:
     {
@@ -75,20 +73,9 @@ let
       };
     };
 
-  systemImports = [
-    (inputs.self.lib.mkFeatureModule "darwin" {
-      features = inputs.self.lib.commonFeatures ++ [ "defaults" ];
-    })
-    hostConfiguration
-  ];
 in
-{
-  flake.modules.darwin.rocket = {
-    imports = systemImports;
-  };
-
-  flake = {
-    darwinConfigurations = host;
-    rocket = host.rocket.system;
-  };
+import ../mk-host.nix {
+  inherit inputs hostConfiguration;
+  runtime = "darwin";
+  name = "rocket";
 }

@@ -1,7 +1,5 @@
 { inputs, ... }:
 let
-  host = inputs.self.lib.mkDarwin "aarch64-darwin" "alcantara";
-
   hostConfiguration =
     {
       pkgs,
@@ -46,20 +44,9 @@ let
       };
     };
 
-  systemImports = [
-    (inputs.self.lib.mkFeatureModule "darwin" {
-      features = inputs.self.lib.commonFeatures ++ [ "defaults" ];
-    })
-    hostConfiguration
-  ];
 in
-{
-  flake.modules.darwin.alcantara = {
-    imports = systemImports;
-  };
-
-  flake = {
-    darwinConfigurations = host;
-    alcantara = host.alcantara.system;
-  };
+import ../mk-host.nix {
+  inherit inputs hostConfiguration;
+  runtime = "darwin";
+  name = "alcantara";
 }

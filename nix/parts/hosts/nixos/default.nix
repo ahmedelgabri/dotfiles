@@ -1,7 +1,5 @@
 { inputs, ... }:
 let
-  host = inputs.self.lib.mkNixos "x86_64-linux" "nixos";
-
   hostConfiguration =
     {
       lib,
@@ -125,17 +123,9 @@ let
       };
     };
 
-  systemImports = [
-    (inputs.self.lib.mkFeatureModule "nixos" {
-      features = inputs.self.lib.commonFeatures;
-    })
-    hostConfiguration
-  ];
 in
-{
-  flake.modules.nixos.nixos = {
-    imports = systemImports;
-  };
-
-  flake.nixosConfigurations = host;
+import ../mk-host.nix {
+  inherit inputs hostConfiguration;
+  runtime = "nixos";
+  name = "nixos";
 }
