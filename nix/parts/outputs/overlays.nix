@@ -12,16 +12,6 @@
         withEmacs = false;
       };
 
-      zsh-history-substring-search = prev.zsh-history-substring-search.overrideAttrs (_: {
-        version = "latest";
-        src = inputs.zsh-history-substring-search;
-      });
-
-      zsh-completions = prev.zsh-completions.overrideAttrs (_: {
-        version = "latest";
-        src = inputs.zsh-completions;
-      });
-
       llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
 
       inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;

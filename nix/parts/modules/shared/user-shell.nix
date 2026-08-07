@@ -281,7 +281,7 @@ let
                     	/usr/local/{bin,sbin}
                     )
 
-                    fpath+=(${pkgs.zsh-completions}/share/zsh/site-functions)
+                    fpath+=(${inputs.zsh-completions}/src)
                   ''
                 ];
 
