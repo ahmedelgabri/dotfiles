@@ -139,9 +139,11 @@ local mode_keymaps = {
 		},
 		{
 			modes = { 'n' },
-			action = vim.g.LoupeLoaded == 1 and '<Plug>(LoupeClearHighlight)'
-				or '<cmd>nohlsearch<CR>',
-			opts = { remap = true, desc = 'Clear Search highlight' },
+			-- Loupe's <Plug>(LoupeClearHighlight) is this same command, and
+			-- checking g:LoupeLoaded here always ran before loupe's UIEnter
+			-- load anyway, so bind the command directly.
+			action = '<cmd>nohlsearch<CR>',
+			opts = { desc = 'Clear Search highlight' },
 		},
 	},
 
