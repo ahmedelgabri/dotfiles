@@ -13,7 +13,9 @@ jobs:
   claude:
     runs-on: ubuntu-latest
     steps:
-      - uses: anthropics/claude-code-action@v1
+      # Pinned to a commit SHA so a moved/compromised v1 tag upstream cannot
+      # exfiltrate the ANTHROPIC_API_KEY secret; bump deliberately.
+      - uses: anthropics/claude-code-action@1623c36729ac1cd5895198cded705a287de7db79 # v1 (2026-08-07)
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Responds to @claude mentions in comments
