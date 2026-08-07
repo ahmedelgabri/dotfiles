@@ -895,7 +895,7 @@ pack.add {
 
 				-- Diff
 				require('mini.diff').setup {
-					sources = {
+					source = {
 						require 'mini.diff.jj',
 					},
 					view = {
