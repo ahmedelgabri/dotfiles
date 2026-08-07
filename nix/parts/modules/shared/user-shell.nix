@@ -142,13 +142,12 @@ let
                     NOTES_DIR = "${PERSONAL_STORAGE}/notes";
                     PAGER = "less";
                     PERSONAL_STORAGE = "$HOME/Sync";
-                    PROJECTS = "$HOME/${devFolder}/personal/dev";
+                    PROJECTS = "$HOME/${devFolder}";
                     RLWRAP_HOME = "${xdg.dataHome}/rlwrap";
                     ZCOMPDUMP_PATH = "${ZDOTDIR}/.zcompdump";
                     ZDOTDIR = "${xdg.configHome}/zsh";
                     # I use a single zk notes dir, so set it and forget
                     ZK_NOTEBOOK_DIR = "${NOTES_DIR}";
-                    WORK = "$HOME/${devFolder}/work";
                     _ZO_DATA_DIR = "${xdg.configHome}/zoxide";
                   };
 
