@@ -20,9 +20,6 @@ vim.filetype.add {
 		Brewfile = 'ruby',
 		['turbo.json'] = 'json5',
 		['nx.json'] = 'json5',
-		PULLREQ_EDITMSG = 'markdown.ghpull',
-		ISSUE_EDITMSG = 'markdown.ghissue',
-		RELEASE_EDITMSG = 'markdown.ghrelease',
 	},
 	pattern = {
 		['[jt]sconfig*.json'] = 'json5',

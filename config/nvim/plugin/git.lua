@@ -56,9 +56,5 @@ pack.add {
 		end,
 	},
 	-- { src = 'https://github.com/NicolasGB/jj.nvim' },
-	{
-		src = 'https://github.com/jez/vim-github-hub',
-		ft = { 'markdown.ghpull', 'markdown.ghissue', 'markdown.ghrelease' },
-	},
 	{ src = 'https://github.com/MunifTanjim/nui.nvim' },
 }

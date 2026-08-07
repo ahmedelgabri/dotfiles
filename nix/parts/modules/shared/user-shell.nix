@@ -350,9 +350,7 @@ let
                       fi
 
                       # Autocomplete the g script
-                      if (( ${"$"}+commands[hub] )); then
-                        compdef g=hub
-                      elif (( ${"$"}+commands[git] )); then
+                      if (( ${"$"}+commands[git] )); then
                         compdef g=git
                       fi
 

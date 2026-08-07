@@ -15,7 +15,6 @@ let
 
           my.user.packages = with pkgs; [
             delta
-            hub
             tig
             exiftool
             gh

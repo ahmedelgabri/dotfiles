@@ -2,31 +2,86 @@
 
 set -ue -o pipefail
 
-# https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
-# Wrap git with hub
+# Originally copied from https://github.com/pengwynn/dotfiles/blob/master/git/git.zsh
+#
+# Git wrapper. `g pull-request` reproduces hub's
+# `pull-request --push --draft --browse` on top of gh. It takes a shim,
+# a template lookup, and a follow-up command to match what hub — a tool
+# archived years ago — did with three flags. The dead CLI still has the
+# best DX for this flow; the maintained one gets to inherit it here.
+#
+# What the shim compensates for (verified against cli/cli,
+# pkg/cmd/pr/create/create.go): gh only auto-offers PR templates in its
+# interactive prompt flow via tpl.Choose(); in --editor mode it loads a
+# template only when --template is passed explicitly, otherwise the
+# editor opens with an empty body. So the shim finds the repo's template
+# file and passes the flag itself. The name is then resolved by
+# tpl.Select() against the template list GitHub serves over GraphQL
+# (listPullRequestTemplates in pkg/cmd/pr/shared/templates.go), not
+# against the local path — the file check only decides whether to pass
+# the flag. hub's --push has no gh equivalent because gh pushes the
+# branch itself, and --browse becomes a follow-up `gh pr view --web`.
 
-command -v git >/dev/null || exit 0
+GIT=$(command -v git) || exit 0
 
 time_since_last_commit() {
-	local __LAST_COMMIT
-	__LAST_COMMIT=$(git log --color=always -1 --pretty=format:"%C(238)%cr%Creset %C(blue)%h%Creset %s - %C(cyan)%aN %C(238)%(describe:tags,abbrev=0)%Creset" --date=auto:human 2>/dev/null)
+	local fmt='%C(238)%cr%Creset %C(blue)%h%Creset %s - %C(cyan)%aN'
 
-	printf "%s\n" "$__LAST_COMMIT"
+	# %(describe) walks history until it finds a reachable tag; in a large
+	# repo with no tags that means the entire graph. The refs check is O(1)
+	# and skips the walk where it can never succeed.
+	if [ -n "$("$GIT" for-each-ref --count=1 refs/tags 2>/dev/null)" ]; then
+		fmt+=' %C(238)%(describe:tags,abbrev=0)%Creset'
+	fi
+
+	"$GIT" log --color=always -1 --pretty=format:"$fmt" 2>/dev/null
 }
 
-__CMD=""
+pr_template() {
+	local root file
+	root=$("$GIT" rev-parse --show-toplevel 2>/dev/null) || return 0
 
-if command -v hub >/dev/null 2>&1; then
-	__CMD=$(command -v hub)
-elif command -v git >/dev/null 2>&1; then
-	__CMD=$(command -v git)
-fi
-
-[[ $__CMD != "" ]] || exit 1
+	for file in .github/PULL_REQUEST_TEMPLATE.md .github/pull_request_template.md \
+		PULL_REQUEST_TEMPLATE.md pull_request_template.md \
+		docs/PULL_REQUEST_TEMPLATE.md docs/pull_request_template.md; do
+		if [[ -f $root/$file ]]; then
+			basename "$file"
+			return 0
+		fi
+	done
+}
 
 if [ $# -eq 0 ]; then
 	printf "%s\n\n" "$(time_since_last_commit)"
-	"$__CMD" st 2>/dev/null || "$__CMD" status --short --branch
+	"$GIT" st 2>/dev/null || "$GIT" status --short --branch
+elif [ "$1" = "pull-request" ]; then
+	command -v gh >/dev/null || {
+		printf "g: pull-request requires gh\n" >&2
+		exit 1
+	}
+
+	shift
+	browse=0
+	args=()
+
+	for arg in "$@"; do
+		case "$arg" in
+		--push) ;; # gh pushes the branch automatically
+		--browse | -o) browse=1 ;;
+		*) args+=("$arg") ;;
+		esac
+	done
+
+	cmd=(gh pr create --editor)
+	template=$(pr_template)
+	[ -n "$template" ] && cmd+=(--template "$template")
+	cmd+=(${args[@]+"${args[@]}"})
+
+	"${cmd[@]}"
+
+	if [ "$browse" -eq 1 ]; then
+		exec gh pr view --web
+	fi
 else
-	"$__CMD" "$@"
+	"$GIT" "$@"
 fi
