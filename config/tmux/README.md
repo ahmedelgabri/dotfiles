@@ -98,6 +98,7 @@ without an external clipboard helper script.
 | --------------------- | --------------------------------------------- |
 | `prefix + p`          | Toggle persistent popup shell (per directory) |
 | `prefix + t`          | Quick popup shell (75×75%, non-persistent)    |
+| `prefix + g`          | Project/session picker (`mx --pick`)          |
 | `C-Space` (no prefix) | Agent-aware pane picker (`tap pick`)          |
 
 The persistent popup (`prefix + p`) creates a unique tmux session per working
