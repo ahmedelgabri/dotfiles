@@ -980,10 +980,25 @@ export const createDiffSnapshotLoader = (
 			['rev-parse', '--verify', 'HEAD'],
 			gitRoot,
 		)
+		// Everything after `--` is a pathspec to git, so a flag placed there
+		// (e.g. /diff -w) silently matches nothing and yields an empty diff;
+		// splice option-like args before the separator instead.
+		const flagArgs: string[] = []
+		const pathArgs: string[] = []
+		let afterSeparator = false
+		for (const arg of request.args) {
+			if (!afterSeparator && arg === '--') {
+				afterSeparator = true
+			} else if (!afterSeparator && arg.startsWith('-')) {
+				flagArgs.push(arg)
+			} else {
+				pathArgs.push(arg)
+			}
+		}
 		const gitArgs =
 			hasHead?.code === 0
-				? ['diff', '--no-color', 'HEAD', '--', ...request.args]
-				: ['diff', '--no-color', '--', ...request.args]
+				? ['diff', '--no-color', ...flagArgs, 'HEAD', '--', ...pathArgs]
+				: ['diff', '--no-color', ...flagArgs, '--', ...pathArgs]
 		const result = assertSuccessfulDiff(
 			await execOrNull(pi, 'git', gitArgs, gitRoot),
 			formatCommand('git', gitArgs),
