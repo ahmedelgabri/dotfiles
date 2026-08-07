@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # mx
-# version 1.1
+# version 2.0
 
 # Contributors:
 #   Wynn Netherland - http://github.com/pengwynn
@@ -10,18 +10,24 @@
 #   Ahmed El Gabri - https://github.com/ahmedelgabri
 
 # Usage:
-#   mx [session] [subdirectory (optional)]
+#   mx                  session for $PWD (name = basename of $PWD)
+#   mx <name>           session definition lookup, then project lookup by name
+#   mx --dir <path>     plain session rooted exactly at <path>
 #   mx --list           print session/project candidates as TSV
-
-# To 'auto-launch' projects, you'll need a $PROJECTS dir where you keep code
-# sorted like so: $PROJECTS/<org or user>/<repo>.
-# So, a typical workflow would look like:
-#   $ hub clone pengwynn/octonaut $PROJECTS/pengwynn/octonaut
-#   $ mx octonaut
-
-# If `mx` is called with a <session> name, and there is no valid repo inside
-# $PROJECTS, a new tmux session will be initialized in the current working
-# directory with a name of <session>
+#
+# Session definitions are plain bash files sourced by mx, looked up as
+# $HOST_CONFIGS/tmux/sessions/<name> then $XDG_CONFIG_HOME/tmux/sessions/<name>.
+# A definition may set MX_ROOT=<dir> and define mx_start(); mx creates the
+# detached session at MX_ROOT, exports MX_SESSION and MX_ROOT, then calls
+# mx_start synchronously. Inside mx_start every tmux command must target
+# "=$MX_SESSION" explicitly: when mx runs from inside tmux, unqualified
+# targets resolve against the caller's session, not the new one. mx_start
+# runs with errexit suppressed, so a failing command inside it does not
+# abort the layout or strand the session unattached.
+#
+# Project lookup resolves <name> against --list labels (exact match, or a
+# unique /<name> suffix), so `mx git-wt` and `mx c/master` work from
+# anywhere. No match falls back to a plain session at $PWD.
 
 set -ue -o pipefail
 
@@ -29,10 +35,34 @@ if [[ -n "${DEBUG-}" ]]; then
 	set -x
 fi
 
-MX_START=${MX_START:-"./.mx-start"}
+usage() {
+	echo "Usage: mx [<name>] | mx --dir <path> | mx --list" >&2
+	exit 64
+}
 
-get_session() {
-	echo "$1" | awk -F"/" '{print $NF}'
+sanitize() {
+	# tmux forbids '.' and ':' in session names
+	local s="${1//./_}"
+	printf '%s\n' "${s//:/_}"
+}
+
+# Session definition search path; first hit wins
+SESSION_DIRS=(
+	"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}"
+	"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions"
+)
+
+find_session_file() {
+	local dir f
+	for dir in "${SESSION_DIRS[@]}"; do
+		[ -n "$dir" ] || continue
+		f="$dir/$1"
+		if [ -f "$f" ]; then
+			printf '%s\n' "$f"
+			return 0
+		fi
+	done
+	return 1
 }
 
 # mx --list enumerates session candidates as TSV: <kind>\t<label>\t<abspath>
@@ -56,12 +86,6 @@ get_session() {
 
 shopt -s nullglob
 
-# Session definition search path; first hit wins
-SESSION_DIRS=(
-	"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}"
-	"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions"
-)
-
 emit() {
 	printf '%s\t%s\t%s\n' "$1" "$2" "$3"
 }
@@ -72,7 +96,7 @@ is_project() {
 }
 
 # In a .bare layout only children holding a .git entry are worktrees; the
-# filter keeps scratch dirs (e.g. work/miro/c/_) out of the candidate list.
+# filter keeps scratch dirs (e.g. work/<name>/c/_) out of the candidate list.
 emit_worktrees() {
 	local proj="$1" label="$2" wt
 	for wt in "$proj"/*/; do
@@ -151,65 +175,128 @@ list_candidates() {
 	list_archive
 }
 
-if [ "${1-}" = "--list" ]; then
-	list_candidates
-	exit 0
-fi
+resolve_dirs() {
+	# all --list dir candidates whose label is $1 or ends in /$1
+	list_candidates | awk -F'\t' -v n="$1" \
+		'$1 == "dir" && ($2 == n || substr($2, length($2) - length(n)) == "/" n) { print $3 }'
+}
 
-SESSION="$(get_session "${1:-$(pwd)}")"
-# tmux 1.9a+ doesn't like .'s in session names
-TMUX_SESSION_NAME="${SESSION//./_}"
+derive_name() {
+	local rel="${1#"${PROJECTS-}"/}"
+	case "$rel" in
+	work/*/*) rel="${rel#work/*/}" ;; # <project> or <project>/<worktree>
+	forks/* | archive/*) ;;           # duplication is structural; keep qualified
+	*) rel="${rel##*/}" ;;            # canonical homes: basename only
+	esac
+	printf '%s\n' "$rel"
+}
 
-if ! (tmux has-session -t "$SESSION" &>/dev/null); then
-	mx-init
+link_shared_windows() {
+	local name="$1"
 
-	WORKINGDIR=""
-
-	if [ -d "$WORK/$SESSION/${2-}" ]; then
-		WORKINGDIR="$WORK/$SESSION/$2"
-	elif [ -d "$WORK/$SESSION" ]; then
-		WORKINGDIR="$WORK/$SESSION"
-	elif [ -d "$PROJECTS/$SESSION" ]; then
-		WORKINGDIR="$PROJECTS/$SESSION"
-	else
-		WORKINGDIR="$PWD"
+	if tmux has-session -t "=_shared:mail" 2>/dev/null; then
+		tmux link-window -s _shared:mail -t "=$name:6"
 	fi
 
-	if [ -n "$WORKINGDIR" ]; then
-		cd "$WORKINGDIR"
-		tmux new-session -d -s "$TMUX_SESSION_NAME"
-		tmux select-window -t "$TMUX_SESSION_NAME"
-		# Sometimes I need to setup some project specific stuff & run some commands
-		if [ -x "$MX_START" ]; then
-			tmux send-keys "$MX_START" C-m
+	if tmux has-session -t "=_shared:rss" 2>/dev/null; then
+		tmux link-window -s _shared:rss -t "=$name:7"
+	fi
+
+	if tmux has-session -t "=_shared:HN" 2>/dev/null; then
+		tmux link-window -s _shared:HN -t "=$name:8"
+	fi
+
+	if tmux has-session -t "=_shared:dotfiles" 2>/dev/null; then
+		tmux link-window -s _shared:dotfiles -t "=$name:9"
+	fi
+
+	if tmux has-session -t "=_shared:notes" 2>/dev/null; then
+		tmux link-window -s _shared:notes -t "=$name:10"
+	fi
+}
+
+main() {
+	local root="" session_file="" name="" matches=""
+
+	case "${1-}" in
+	--dir)
+		[ $# -eq 2 ] || usage
+		[ -d "${2-}" ] || usage
+		root="$(cd "$2" && pwd)"
+		name="$(derive_name "$root")"
+		;;
+	--list)
+		[ $# -eq 1 ] || usage
+		list_candidates
+		exit 0
+		;;
+	--*)
+		usage
+		;;
+	'')
+		root="$PWD"
+		name="$(basename "$PWD")"
+		;;
+	*)
+		[ $# -eq 1 ] || usage
+		name="$1"
+		if ! session_file="$(find_session_file "$name")"; then
+			session_file=""
+			matches="$(resolve_dirs "$name")"
+			if [ -n "$matches" ]; then
+				if [ "$(printf '%s\n' "$matches" | wc -l)" -gt 1 ]; then
+					echo "mx: '$name' is ambiguous:" >&2
+					printf '%s\n' "$matches" | sed 's/^/  /' >&2
+					exit 1
+				fi
+				root="$matches"
+				# same session name whether typed or picked
+				name="$(derive_name "$root")"
+			else
+				root="$PWD"
+			fi
 		fi
+		;;
+	esac
+
+	local tmux_name
+	tmux_name="$(sanitize "$name")"
+
+	if ! tmux has-session -t "=$tmux_name" 2>/dev/null; then
+		mx-init
+
+		if [ -n "$session_file" ]; then
+			# shellcheck disable=SC1090
+			source "$session_file"
+			root="${MX_ROOT:-$PWD}"
+		fi
+
+		cd "$root"
+		export MX_SESSION="$tmux_name"
+		export MX_ROOT="$root"
+		tmux new-session -d -s "$tmux_name" -c "$root"
+
+		# linked before mx_start so 6-10 are taken and definition windows
+		# fill 2-5 then skip past - no "index in use" abort
+		link_shared_windows "$tmux_name"
+
+		if [ -n "$session_file" ] && declare -F mx_start >/dev/null; then
+			# `if !` suppresses errexit inside mx_start; a failing command in
+			# a definition must not strand a half-built session before attach
+			if ! mx_start; then
+				echo "mx: mx_start for $tmux_name failed" >&2
+				tmux display-message "mx: mx_start for $tmux_name failed" 2>/dev/null || true
+			fi
+		fi
+
+		tmux select-window -t "=$tmux_name:1"
 	fi
 
-	if tmux has-session -t _shared:mail 2>/dev/null; then
-		tmux link-window -s _shared:mail -t 6
+	if [ -z "${TMUX-}" ]; then
+		exec tmux attach -t "=$tmux_name"
+	else
+		exec tmux switch-client -t "=$tmux_name"
 	fi
+}
 
-	if tmux has-session -t _shared:rss 2>/dev/null; then
-		tmux link-window -s _shared:rss -t 7
-	fi
-
-	if tmux has-session -t _shared:HN 2>/dev/null; then
-		tmux link-window -s _shared:HN -t 8
-	fi
-
-	if tmux has-session -t _shared:dotfiles 2>/dev/null; then
-		tmux link-window -s _shared:dotfiles -t 9
-	fi
-
-	if tmux has-session -t _shared:notes 2>/dev/null; then
-		tmux link-window -s _shared:notes -t 10
-	fi
-
-	tmux select-window -t 1
-fi
-
-if [ -z "${TMUX-}" ]; then
-	tmux attach -t "$TMUX_SESSION_NAME"
-else
-	tmux switch-client -t "$TMUX_SESSION_NAME"
-fi
+main "$@"
