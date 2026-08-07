@@ -763,14 +763,13 @@ That means editor support improves after spoons have been installed.
 
 - `.DS_Store`
 - `Spoons/`
-- `hosts/`
 
 except for:
 
 - `Spoons/SpoonInstall.spoon/`
 
-Note that the active host-override mechanism in `init.lua` uses the external
-`~/.local/share/.../hammerspoon/` path, not `config/.hammerspoon/hosts/`.
+Note that the host-override mechanism in `init.lua` uses the external
+`~/.local/share/.../hammerspoon/` path, nothing inside this directory.
 
 ---
 
