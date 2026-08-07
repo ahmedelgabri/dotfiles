@@ -33,7 +33,12 @@ let
       };
 
     homeManager =
-      { config, inputs, myConfig, ... }:
+      {
+        config,
+        inputs,
+        myConfig,
+        ...
+      }:
       {
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {
@@ -68,7 +73,7 @@ let
             };
 
             "yazi/plugins/glow.yazi/main.lua" = {
-              source = "${inputs.yazi-glow}/init.lua";
+              source = "${inputs.yazi-glow}/main.lua";
             };
           };
       };

@@ -46,7 +46,7 @@ function Status:owner()
 end
 
 function Entity:icon()
-	local icon = self._file:icon()
+	local icon = th.icon:match(self._file)
 
 	if not icon then
 		return ui.Line ''

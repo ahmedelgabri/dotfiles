@@ -1,3 +1,38 @@
+# Built-in code previews share bat/delta's syntax theme; yazi's highlighter
+# understands the same ANSI alpha-encoding, so both modes adapt automatically.
+[mgr]
+syntect_theme = "~/.dotfiles/config/bat/themes/plain.tmTheme"
+
+# Mirrors config/zsh.d/ls_colors (yazi cannot read LS_COLORS): dirs blue,
+# symlinks italic cyan, executables bold yellow, junk dim, lockfiles gray,
+# agent/readme docs bright yellow, build files bold underlined yellow,
+# images magenta. Defining [filetype] replaces yazi's defaults entirely
+# (which color images yellow, executables green, and archives red).
+[filetype]
+rules = [
+	# Junk, backups, swap, and generated files.
+	{ url = "*{~,.bak,.orig,.part,.swn,.swo,.swp,.tmp}", dim = true },
+	{ url = "*{.log,.cache,.pyc,.DS_Store,.localized,.plist}", dim = true },
+	{ url = "*{.git,.github,go.sum}", dim = true },
+	# Lockfiles.
+	{ url = "*.lock", fg = "darkgray" },
+	{ url = "*{.lockfile,bun.lockb,package-lock.json}", fg = "darkgray" },
+	# Agent and readme docs.
+	{ url = "*{README,AGENTS,CLAUDE}.md", fg = "lightyellow" },
+	# Notable repo docs.
+	{ url = "*{README,README.txt,CHANGELOG,CHANGELOG.md,TODO,TODO.md,LICENSE}", bold = true },
+	# Build/manifest files you look at first in a repo.
+	{ url = "*{flake.nix,Makefile,justfile,Justfile,Dockerfile,Cargo.toml,package.json,go.mod}", fg = "yellow", bold = true, underline = true },
+	# Images.
+	{ mime = "image/*", fg = "magenta" },
+	# Special files.
+	{ url = "*", is = "orphan", fg = "red", italic = true },
+	{ url = "*", is = "link", fg = "cyan", italic = true },
+	{ url = "*", is = "exec", fg = "yellow", bold = true },
+	# Directories.
+	{ url = "*/", fg = "blue" },
+]
+
 [status]
 sep_left = { open = "", close = "" }
 sep_right = { open = "", close = "" }
