@@ -105,7 +105,7 @@ This setup installs `Pragmata Pro` through a custom Nix package that uses
 first rebuild:
 
 ```bash
-nix-store --add-fixed sha256 /path/to/PragmataPro <version >.zip
+nix-store --add-fixed sha256 /path/to/PragmataPro<version>.zip
 ```
 
 If you do not use `Pragmata Pro`, remove or replace `pkgs.pragmatapro` in the
