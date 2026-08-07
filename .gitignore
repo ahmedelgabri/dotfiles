@@ -5,3 +5,9 @@ result
 .opencode
 config/nvim/nvim-pack-lock.json
 config/pi/agent/extensions/node_modules
+# Machine-generated agent artifacts. Also in the global gitignore
+# (config/git/ignore), but that copy only protects checkouts where Home
+# Manager has already been deployed.
+PROMPTS.md
+CLAUDE.local.md
+.pi/todos
