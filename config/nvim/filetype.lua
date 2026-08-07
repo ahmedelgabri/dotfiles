@@ -41,7 +41,14 @@ vim.filetype.add {
 				if not path or not buf or vim.bo[buf].filetype == 'bigfile' then
 					return
 				end
-				if path ~= vim.fs.normalize(vim.api.nvim_buf_get_name(buf)) then
+				-- Compare resolved paths: files opened through a symlink (e.g.
+				-- /tmp -> /private/tmp on macOS) otherwise fail this guard and
+				-- silently skip bigfile detection.
+				local bufname = vim.api.nvim_buf_get_name(buf)
+				local real = vim.uv.fs_realpath(path) or path
+				local bufreal = vim.uv.fs_realpath(bufname)
+					or vim.fs.normalize(bufname)
+				if real ~= bufreal then
 					return
 				end
 				local size = vim.fn.getfsize(path)
