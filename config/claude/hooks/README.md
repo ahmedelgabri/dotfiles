@@ -5,18 +5,21 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 ## Configured hooks
 
-| Event              | Hook commands                                                           | Purpose                                                                               |
-| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `SessionStart`     | `log-event.sh SessionStart`, `inject-repo-info.sh`                      | Log session startup and inject repository VCS context.                                |
-| `PostCompact`      | `log-event.sh PostCompact`, `inject-repo-info.sh`                       | Log compaction and refresh repository VCS context afterward.                          |
-| `SessionEnd`       | `log-event.sh SessionEnd`                                               | Log session shutdown.                                                                 |
-| `UserPromptSubmit` | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit` | Log submitted prompts and append project prompts to `PROMPTS.md`.                     |
-| `PreToolUse`       | `log-event.sh PreToolUse`; for `Bash`, `validate-bash.sh`               | Log tool calls and block risky Bash commands that touch generated or sensitive paths. |
-| `PostToolUse`      | `log-event.sh PostToolUse`                                              | Log tool results.                                                                     |
-| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only --skip-scan --quiet ...`       | Log assistant stops and refresh the `ccpeek` index without per-stop secret scans.     |
-| `SubagentStop`     | `log-event.sh SubagentStop`                                             | Log subagent completion.                                                              |
-| `Notification`     | `log-event.sh Notification`, `terminal-notifier ...`                    | Log notifications and mirror them to macOS Notification Center outside Ghostty.       |
-| `PreCompact`       | `log-event.sh PreCompact`                                               | Log compaction before it runs.                                                        |
+| Event              | Hook commands                                                                             | Purpose                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| `SessionStart`     | `log-event.sh SessionStart`, `inject-repo-info.sh`, `tap state idle --agent claude`       | Log session startup, inject repository VCS context, publish idle agent status.   |
+| `PostCompact`      | `log-event.sh PostCompact`, `inject-repo-info.sh`                                         | Log compaction and refresh repository VCS context afterward.                     |
+| `SessionEnd`       | `log-event.sh SessionEnd`, `tap state clear --agent claude`                               | Log session shutdown and clear the published agent status.                       |
+| `UserPromptSubmit` | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit`, `tap state running --agent claude` | Log submitted prompts, append them to the central `PROMPTS.md`, mark agent busy. |
+| `PreToolUse`       | `log-event.sh PreToolUse`, `tap state running --agent claude`                             | Log tool calls and mark the agent busy.                                          |
+| `PostToolUse`      | `log-event.sh PostToolUse`                                                                | Log tool results.                                                                |
+| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only --skip-scan --quiet ...`, `tap state idle --agent claude` | Log assistant stops, refresh the `ccpeek` index, mark the agent idle.            |
+| `SubagentStop`     | `log-event.sh SubagentStop`                                                               | Log subagent completion.                                                         |
+| `Notification`     | `log-event.sh Notification`, `terminal-notifier ...`, `tap state notification --agent claude` | Log notifications, mirror them to macOS Notification Center, publish the status. |
+| `PreCompact`       | `log-event.sh PreCompact`                                                                 | Log compaction before it runs.                                                   |
+
+The `tap state` entries publish the agent's activity state so other tooling
+(e.g. the tmux statusline) can display it.
 
 ## Hook scripts
 
@@ -52,14 +55,6 @@ by Home Manager and wired from `config/claude/settings.json`.
   `~/.claude/logs/<project-slug>/PROMPTS.md` (same slug scheme as
   `log-event.sh`), separated by `---` when the file already exists.
 - **Behavior**: skips global sessions, empty prompts, and invalid project paths.
-
-### `validate-bash.sh`
-
-- **Events**: `PreToolUse` with matcher `Bash`.
-- **What it does**: blocks Bash commands that mention generated, dependency,
-  IDE, VCS, or secret-ish paths.
-- **Blocked patterns**: `node_modules/`, `.env`, `__pycache__/`, `.git/`,
-  `dist/`, `build/`, `.next/`, `.astro/`, `.vscode/`, `.idea/`.
 
 ## Viewing logs
 
@@ -158,7 +153,7 @@ Add a matcher to target specific tools:
 Test a hook manually:
 
 ```bash
-echo '{"tool_input": {"command": "ls node_modules"}}' | ./validate-bash.sh
+echo '{"prompt": "sample prompt"}' | CLAUDE_PROJECT_DIR=$PWD ./log-event.sh UserPromptSubmit
 ```
 
 ## Resources
