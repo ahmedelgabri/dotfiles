@@ -1,0 +1,23 @@
+name: Nix eval
+# The nixos host has no hardware exercising it, so evaluate every system
+# configuration in CI to catch regressions that local darwin rebuilds
+# would never surface.
+on:
+  push:
+    paths: ['flake.nix', 'flake.lock', 'nix/**']
+  pull_request:
+    paths: ['flake.nix', 'flake.lock', 'nix/**']
+  schedule:
+    - cron: '0 6 * * 1'
+permissions: {}
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - name: Evaluate all system configurations
+        run: |
+          nix eval --raw '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'
+          nix eval --raw '.#darwinConfigurations.rocket.system.drvPath'
+          nix eval --raw '.#darwinConfigurations.alcantara.system.drvPath'
