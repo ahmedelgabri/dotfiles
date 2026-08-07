@@ -29,6 +29,8 @@
             config.allowUnfree = true;
           };
 
+          formatter = pkgs.nixfmt;
+
           devShells.default = pkgs.mkShell {
             packages = with pkgs; [
               bun
