@@ -26,9 +26,12 @@ by Home Manager and wired from `config/claude/settings.json`.
   argument.
 - **What it does**: logs the hook event and raw JSON input.
 - **Log location**:
-  - `$CLAUDE_PROJECT_DIR/.claude/hook-events.jsonl` when Claude is running in a
-    project.
-  - `~/.claude/hook-events.jsonl` when no project directory is available.
+  - `~/.claude/logs/<project-slug>/hook-events.jsonl` when Claude is running in
+    a project — the slug encodes `$CLAUDE_PROJECT_DIR` the same way Claude
+    Code's own `~/.claude/projects` does (`/` and `.` become `-`). Logs live
+    outside the project tree so archives, backups, and build contexts never
+    ship them.
+  - `~/.claude/logs/hook-events.jsonl` when no project directory is available.
 - **Format**: JSON Lines, one JSON object per line.
 - **Fields**: `timestamp`, `event`, `project_dir`, `input`.
 
@@ -46,8 +49,8 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 - **Events**: `UserPromptSubmit`.
 - **What it does**: appends the submitted prompt text to
-  `$CLAUDE_PROJECT_DIR/PROMPTS.md`, separated by `---` when the file already
-  exists.
+  `~/.claude/logs/<project-slug>/PROMPTS.md` (same slug scheme as
+  `log-event.sh`), separated by `---` when the file already exists.
 - **Behavior**: skips global sessions, empty prompts, and invalid project paths.
 
 ### `validate-bash.sh`
@@ -61,27 +64,30 @@ by Home Manager and wired from `config/claude/settings.json`.
 ## Viewing logs
 
 ```bash
-# View project-specific logs if in a project
-cat .claude/hook-events.jsonl
+# Resolve the current project's log dir
+LOGS=~/.claude/logs/"${PWD//[\/.]/-}"
 
-# View global logs if not in a project
-cat ~/.claude/hook-events.jsonl
+# View project-specific logs
+cat "$LOGS"/hook-events.jsonl
+
+# View global logs (sessions without a project directory)
+cat ~/.claude/logs/hook-events.jsonl
 
 # Pretty print with jq
-cat .claude/hook-events.jsonl | jq
+cat "$LOGS"/hook-events.jsonl | jq
 
 # Filter by event type
-cat .claude/hook-events.jsonl | jq 'select(.event == "PreToolUse")'
-cat .claude/hook-events.jsonl | jq 'select(.event == "UserPromptSubmit")'
+cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "PreToolUse")'
+cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "UserPromptSubmit")'
 
 # Count events by type
-cat .claude/hook-events.jsonl | jq -r '.event' | sort | uniq -c
+cat "$LOGS"/hook-events.jsonl | jq -r '.event' | sort | uniq -c
 
 # View last 10 events
-tail -n 10 .claude/hook-events.jsonl | jq
+tail -n 10 "$LOGS"/hook-events.jsonl | jq
 
-# Filter by project
-cat ~/.claude/hook-events.jsonl | jq 'select(.project_dir == "/path/to/project")'
+# Search across all projects
+cat ~/.claude/logs/*/hook-events.jsonl | jq 'select(.project_dir == "/path/to/project")'
 ```
 
 ## Hook events used here

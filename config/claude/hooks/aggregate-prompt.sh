@@ -21,7 +21,13 @@ if [[ "$CLAUDE_PROJECT_DIR" == *".."* ]]; then
 	exit 0
 fi
 
-PROMPTS_FILE="$CLAUDE_PROJECT_DIR/PROMPTS.md"
+# Aggregate centrally under ~/.claude/logs, keyed by project: a plaintext
+# prompt history at the project root ships with archives, backups, and
+# build contexts — gitignore only protects the git channel. The slug
+# matches Claude Code's own ~/.claude/projects encoding.
+PROMPTS_DIR="$HOME/.claude/logs/${CLAUDE_PROJECT_DIR//[\/.]/-}"
+PROMPTS_FILE="$PROMPTS_DIR/PROMPTS.md"
+mkdir -p "$PROMPTS_DIR"
 
 # Read input from stdin
 input=$(cat)

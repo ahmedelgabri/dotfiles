@@ -3,20 +3,23 @@ set -ue -o pipefail
 
 # Universal hook logger - logs all hook events to a JSONL file
 
-# Use project directory if available, otherwise home directory
+# Log centrally under ~/.claude/logs, keyed by project: a transcript of
+# every prompt and tool input inside the project tree ships with archives,
+# backups, docker build contexts, and rsync deploys — gitignore only
+# protects the git channel. The slug matches Claude Code's own
+# ~/.claude/projects encoding.
 if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
 	# Validate project directory - no path traversal
 	if [[ "$CLAUDE_PROJECT_DIR" == *".."* ]]; then
 		echo "Error: Invalid project directory path" >&2
 		exit 0
 	fi
-	LOG_FILE="$CLAUDE_PROJECT_DIR/.claude/hook-events.jsonl"
-	# Ensure .claude directory exists
-	mkdir -p "$CLAUDE_PROJECT_DIR/.claude"
+	LOG_DIR="$HOME/.claude/logs/${CLAUDE_PROJECT_DIR//[\/.]/-}"
 else
-	LOG_FILE="$HOME/.claude/hook-events.jsonl"
-	mkdir -p "$HOME/.claude"
+	LOG_DIR="$HOME/.claude/logs"
 fi
+LOG_FILE="$LOG_DIR/hook-events.jsonl"
+mkdir -p "$LOG_DIR"
 
 EVENT_TYPE="${1:-unknown}"
 
