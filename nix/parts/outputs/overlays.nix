@@ -6,7 +6,7 @@
       pragmatapro = prev.callPackage ../../pkgs/pragmatapro.nix { };
       hcron = prev.callPackage ../../pkgs/hcron.nix { };
 
-      next-prayer = prev.callPackage ../../../config/tmux/scripts/next-prayer/next-prayer.nix { };
+      next-prayer = prev.callPackage ../../pkgs/next-prayer/next-prayer.nix { };
 
       notmuch = prev.notmuch.override {
         withEmacs = false;

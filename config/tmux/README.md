@@ -13,22 +13,11 @@ tmux/
 ├── README.md                          # This file
 ├── tmux.conf                          # Main configuration
 ├── sessions/                          # Named session definitions for mx
-├── scripts/
-│   ├── get-prayer                     # Prayer times (wrapper for next-prayer)
-│   ├── tmux-battery                   # Battery segment wrapper with charging icon
-│   ├── tmux-statuspage                # statuspage.io incident indicator (GitHub, npm)
-│   ├── tmux-weather                   # Weather segment (via wttr.in)
-│   └── next-prayer/                   # Go CLI for prayer time calculation
-│       ├── cmd/next-prayer/main.go    # CLI entrypoint
-│       ├── aladhan/aladhan.go         # Aladhan API provider
-│       ├── mawaqit/mawaqit.go         # Mawaqit API provider
-│       ├── config/config.go           # TOML config loading and precedence helpers
-│       ├── shared/shared.go           # Shared types, caching, and prayer logic
-│       ├── go.mod
-│       ├── go.sum
-│       ├── Makefile
-│       └── next-prayer.nix            # Nix build expression
-└── .gitignore
+└── scripts/
+    ├── get-prayer                     # Prayer times (wrapper for next-prayer)
+    ├── tmux-battery                   # Battery segment wrapper with charging icon
+    ├── tmux-statuspage                # statuspage.io incident indicator (GitHub, npm)
+    └── tmux-weather                   # Weather segment (via wttr.in)
 ```
 
 ## Prefix
@@ -244,8 +233,9 @@ the interface machine consumers like the Hammerspoon `prayer.lua` module use.
 
 ## `next-prayer` CLI
 
-A Go CLI tool that calculates the next Islamic prayer time. Built via Nix
-(`next-prayer.nix`) or `make build`.
+A Go CLI tool that calculates the next Islamic prayer time. The sources live
+in [nix/pkgs/next-prayer/](../../nix/pkgs/next-prayer/) (only the installed
+binary is needed here), built via Nix (`next-prayer.nix`) or `make build`.
 
 ### Usage
 
@@ -294,7 +284,7 @@ the cache files.
 ### Building
 
 ```sh
-cd scripts/next-prayer
+cd nix/pkgs/next-prayer
 
 # Build binary to ./bin/next-prayer
 make build
