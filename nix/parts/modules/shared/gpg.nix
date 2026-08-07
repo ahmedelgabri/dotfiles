@@ -16,7 +16,25 @@ let
             gnupg
             (pkgs.writeShellScriptBin "vcs-gpg" ''
               if [ -n "$GIT_COMMITTER_DATE" ]; then
-                ${lib.getExe pkgs.gnupg} --faked-system-time "$GIT_COMMITTER_DATE" "$@"
+                # git hands out committer dates as raw "@<epoch> <tz>",
+                # RFC 2822, or extended ISO 8601 — none of which gpg's
+                # --faked-system-time parses; it silently treats them as
+                # 1970-01-01. Normalize to a bare epoch ("!" freezes the
+                # clock) and fail loudly instead of signing with a bogus
+                # timestamp.
+                case "$GIT_COMMITTER_DATE" in
+                  @*)
+                    epoch="''${GIT_COMMITTER_DATE#@}"
+                    epoch="''${epoch%% *}"
+                    ;;
+                  *)
+                    if ! epoch="$(${pkgs.coreutils}/bin/date -d "$GIT_COMMITTER_DATE" +%s)"; then
+                      echo "vcs-gpg: cannot parse GIT_COMMITTER_DATE: $GIT_COMMITTER_DATE" >&2
+                      exit 2
+                    fi
+                    ;;
+                esac
+                ${lib.getExe pkgs.gnupg} --faked-system-time "$epoch!" "$@"
               else
                 ${lib.getExe pkgs.gnupg} "$@"
               fi
