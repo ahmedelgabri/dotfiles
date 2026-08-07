@@ -468,8 +468,11 @@ export default function (pi: ExtensionAPI) {
 			ctx.modelRegistry,
 		)
 
-		// Run extraction with loader UI
-		const extractionResult = await ctx.ui.custom<ExtractionResult | null>(
+		// Run extraction with loader UI; null means the user aborted, {error}
+		// carries real failures so they are not reported as cancellation.
+		const extractionResult = await ctx.ui.custom<
+			ExtractionResult | {error: string} | null
+		>(
 			(tui, theme, _kb, done) => {
 				const loader = new BorderedLoader(
 					tui,
@@ -505,16 +508,27 @@ export default function (pi: ExtensionAPI) {
 						.map((c) => c.text)
 						.join('\n')
 
-					return parseExtractionResult(responseText)
+					const parsed = parseExtractionResult(responseText)
+					if (parsed === null) {
+						throw new Error('could not parse the extraction response')
+					}
+					return parsed
 				}
 
 				doExtract()
 					.then(done)
-					.catch(() => done(null))
+					.catch((err) =>
+						done({error: err instanceof Error ? err.message : String(err)}),
+					)
 
 				return loader
 			},
 		)
+
+		if (extractionResult !== null && 'error' in extractionResult) {
+			ctx.ui.notify(`Extraction failed: ${extractionResult.error}`, 'error')
+			return
+		}
 
 		if (extractionResult === null) {
 			ctx.ui.notify('Cancelled', 'info')
