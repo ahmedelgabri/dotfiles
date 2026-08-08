@@ -1,3 +1,4 @@
+import {randomBytes} from 'node:crypto'
 import {readFileSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
 
@@ -38,10 +39,32 @@ const clientScript = (): string =>
 
 const styles = (): string => STYLES.replace(/<\/style/gi, '<\\/style')
 
-export const renderHtml = (token: string, ui?: unknown): string => `<!doctype html>
+// The import map pulls version-pinned modules from esm.sh with no integrity
+// hashes (esm.sh rebuilds would break them), so the CSP is what keeps a
+// compromised CDN response from exfiltrating the diff or the session token:
+// connect-src limits fetch/EventSource to this server, img-src blocks pixel
+// beacons, and form-action/base-uri close the non-fetch escape hatches.
+// style-src needs 'unsafe-inline' because @pierre/diffs injects <style> nodes
+// and shiki sets style attributes.
+const csp = (nonce: string): string =>
+	[
+		`default-src 'self'`,
+		`script-src 'nonce-${nonce}' https://esm.sh`,
+		`style-src 'self' 'unsafe-inline'`,
+		`img-src 'self' data:`,
+		`connect-src 'self'`,
+		`object-src 'none'`,
+		`base-uri 'none'`,
+		`form-action 'none'`,
+	].join('; ')
+
+export const renderHtml = (token: string, ui?: unknown): string => {
+	const nonce = randomBytes(16).toString('base64')
+	return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="${csp(nonce)}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
@@ -72,7 +95,7 @@ ${styles()}
 		</div>
 	</div>
 </div>
-<script type="importmap">
+<script type="importmap" nonce="${nonce}">
 ${json({
 	imports: {
 		preact: PREACT_CDN,
@@ -85,7 +108,7 @@ ${json({
 	},
 })}
 </script>
-<script>
+<script nonce="${nonce}">
 window.PI_DIFF_CONFIG = ${json({token, ui: ui ?? null})}
 const RESIZE_OBSERVER_NOISE = /^ResizeObserver loop/i
 window.addEventListener('error', (event) => {
@@ -112,9 +135,10 @@ window.addEventListener('unhandledrejection', (event) => {
 	}
 })
 </script>
-<script type="module">
+<script type="module" nonce="${nonce}">
 ${clientScript()}
 </script>
 </body>
 </html>
 `
+}
