@@ -16,7 +16,7 @@ pack.add {
 			})
 
 			-- Configure mini modules
-			-- Eager: cmdline, input, starter, misc (auto_root, termbg_sync, restore_cursor)
+			-- Eager: cmdline, input, starter, misc (auto_root, restore_cursor)
 			require('mini.cmdline').setup {}
 
 			local input = require 'mini.input'
@@ -48,7 +48,6 @@ pack.add {
 			misc.setup {}
 
 			misc.setup_auto_root()
-			misc.setup_termbg_sync()
 			misc.setup_restore_cursor()
 
 			local function setup_clue()
