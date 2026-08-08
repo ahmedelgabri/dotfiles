@@ -430,7 +430,6 @@ let
                   msmtp
                   w3m
                   notmuch
-                  urlscan
                 ];
               };
             };
