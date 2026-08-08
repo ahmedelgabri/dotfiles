@@ -8,11 +8,36 @@
 		"CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
 		"CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
 		"DISABLE_ERROR_REPORTING": "1",
-		"USE_BUILTIN_RIPGREP": "0"
+		"USE_BUILTIN_RIPGREP": "0",
+		"DISABLE_AUTOUPDATER": "1"
 	},
 	"includeCoAuthoredBy": false,
 	"permissions": {
-		"defaultMode": "auto"
+		"defaultMode": "auto",
+		"deny": [
+			"Glob",
+			"Grep",
+			"Edit(//**/.bashrc)",
+			"Edit(//**/.env)",
+			"Edit(//**/.env.*)",
+			"Edit(//**/.envrc)",
+			"Edit(//**/.profile)",
+			"Edit(//**/.zshenv)",
+			"Edit(//**/.zshrc)",
+			"Edit(//**/zprofile)",
+			"Edit(//**/zshenv)",
+			"Edit(//**/zshrc)",
+			"Read(//**/.bashrc)",
+			"Read(//**/.env)",
+			"Read(//**/.env.*)",
+			"Read(//**/.envrc)",
+			"Read(//**/.profile)",
+			"Read(//**/.zshenv)",
+			"Read(//**/.zshrc)",
+			"Read(//**/zprofile)",
+			"Read(//**/zshenv)",
+			"Read(//**/zshrc)"
+		]
 	},
 	"model": "claude-fable-5[1m]",
 	"hooks": {
@@ -34,9 +59,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state idle --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -71,9 +96,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state clear --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -96,9 +121,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state running --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -116,9 +141,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state running --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -152,9 +177,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state idle --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -187,9 +212,9 @@
 			{
 				"hooks": [
 					{
-						"async": true,
+						"type": "command",
 						"command": "tap state notification --agent claude",
-						"type": "command"
+						"async": true
 					}
 				]
 			}
@@ -226,5 +251,6 @@
 			}
 		}
 	},
-	"alwaysThinkingEnabled": true
+	"alwaysThinkingEnabled": true,
+	"theme": "auto"
 }
