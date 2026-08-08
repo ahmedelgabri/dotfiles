@@ -1,5 +1,4 @@
 ---
-name: shannon
 description:
   Interact with Neovim via RPC to annotate code, navigate files, and do
   walkthroughs
@@ -20,7 +19,7 @@ with the user's Neovim session via RPC.
 
 There are two ways to obtain the Neovim server address:
 
-1. **From a Shannon prompt** — Shannon prompts include a footer of the form:
+1. **From a Shannon prompt**: Shannon prompts include a footer of the form:
 
    ```
    (Shannon prompt via Neovim server /path/to/socket)
@@ -28,7 +27,7 @@ There are two ways to obtain the Neovim server address:
 
    Extract the server address from this footer.
 
-2. **Auto-discovery** — if no Shannon prompt has been received yet, run the
+2. **Auto-discovery**: if no Shannon prompt has been received yet, run the
    discovery script. Below, `$SKILL_DIR` is the absolute path to the directory
    containing this SKILL.md file; expand it to its absolute value before
    running, since the current working directory is not guaranteed to be the
@@ -55,41 +54,41 @@ API calls.
 **Open a file** (with optional 1-indexed line number):
 
 ```bash
-nvim --server 'luaeval("require(\"wincent.shannon.private.open\")(\"path/to/file\")")' <addr >--remote-expr
-nvim --server 'luaeval("require(\"wincent.shannon.private.open\")(\"path/to/file\", 42)")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("require(\"wincent.shannon.private.open\")(\"path/to/file\")")'
+nvim --server <addr> --remote-expr 'luaeval("require(\"wincent.shannon.private.open\")(\"path/to/file\", 42)")'
 ```
 
 **Jump to a line** (1-indexed) in the current buffer:
 
 ```bash
-nvim --server 'luaeval("require(\"wincent.shannon.private.jump\")(42)")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("require(\"wincent.shannon.private.jump\")(42)")'
 ```
 
 **Add virtual text annotation below a line** (1-indexed):
 
 ```bash
-nvim --server 'luaeval("require(\"wincent.shannon.private.annotate\")(42, \"text here\", \"DiagnosticInfo\")")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("require(\"wincent.shannon.private.annotate\")(42, \"text here\", \"DiagnosticInfo\")")'
 ```
 
 The third argument is a highlight group. Use these to convey meaning:
 
-- `DiagnosticInfo` — informational annotations (blue)
-- `DiagnosticWarn` — warnings (yellow)
-- `DiagnosticError` — errors/issues (red)
-- `DiagnosticHint` — hints/suggestions (green)
+- `DiagnosticInfo`: informational annotations (blue)
+- `DiagnosticWarn`: warnings (yellow)
+- `DiagnosticError`: errors/issues (red)
+- `DiagnosticHint`: hints/suggestions (green)
 
 If omitted, defaults to `DiagnosticInfo`.
 
 **Clear all Shannon annotations in current buffer:**
 
 ```bash
-nvim --server 'luaeval("vim.cmd.ShannonClearMarks()")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("vim.cmd.ShannonClearMarks()")'
 ```
 
 **Show a message in Neovim's command area:**
 
 ```bash
-nvim --server 'luaeval("vim.api.nvim_echo({{\"message\", \"WarningMsg\"}}, true, {})")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("vim.api.nvim_echo({{\"message\", \"WarningMsg\"}}, true, {})")'
 ```
 
 ## When to use RPC
@@ -113,10 +112,10 @@ Use RPC when:
 The Shannon plugin provides the following commands, which can be invoked via
 RPC:
 
-- `:ShannonNextMark` — jump to the next Shannon extmark in the current buffer
+- `:ShannonNextMark`: jump to the next Shannon extmark in the current buffer
   (wraps around).
-- `:ShannonPreviousMark` — jump to the previous Shannon extmark (wraps around).
-- `:ShannonClearMarks` — clear all Shannon extmarks in the current buffer.
+- `:ShannonPreviousMark`: jump to the previous Shannon extmark (wraps around).
+- `:ShannonClearMarks`: clear all Shannon extmarks in the current buffer.
 
 After adding annotations, tell the user they can navigate between marks with
 `:ShannonNextMark` / `:ShannonPreviousMark` (or their configured mappings). When
@@ -124,7 +123,7 @@ you are done with an annotation session and the user has finished reviewing,
 clear the marks via RPC:
 
 ```bash
-nvim --server 'luaeval("vim.cmd.ShannonClearMarks()")' <addr >--remote-expr
+nvim --server <addr> --remote-expr 'luaeval("vim.cmd.ShannonClearMarks()")'
 ```
 
 ## Important notes
