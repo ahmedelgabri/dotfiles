@@ -23,7 +23,6 @@ let
               ]
             ))
             ruff
-            basedpyright
             uv
             ty
           ];
