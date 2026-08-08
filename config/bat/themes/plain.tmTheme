@@ -118,6 +118,8 @@
 			<dict>
 				<key>foreground</key>
 				<string>#02000000</string>
+				<key>background</key>
+				<string>#10000000</string>
 			</dict>
 		</dict>
 		<dict>
@@ -129,6 +131,8 @@
 			<dict>
 				<key>foreground</key>
 				<string>#01000000</string>
+				<key>background</key>
+				<string>#11000000</string>
 			</dict>
 		</dict>
 		<dict>
@@ -140,6 +144,8 @@
 			<dict>
 				<key>foreground</key>
 				<string>#03000000</string>
+				<key>background</key>
+				<string>#12000000</string>
 			</dict>
 		</dict>
 		<dict>

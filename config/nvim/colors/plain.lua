@@ -237,7 +237,11 @@ highlight('Ignore', { fg = colors.bg })
 -- __DiffAdd__
 highlight('DiffAdd', { fg = colors.green, bg = colors.diff_add_bg })
 -- __DiffDelete__
-highlight('DiffDelete', { fg = colors.red, bg = colors.diff_delete_bg })
+-- Strike matches git/delta deletions; jj and tig cannot render it.
+highlight(
+	'DiffDelete',
+	{ fg = colors.red, bg = colors.diff_delete_bg, strikethrough = true }
+)
 -- __DiffChange__
 highlight('DiffChange', { fg = colors.yellow, bg = colors.diff_change_bg })
 -- __DiffText__
@@ -411,7 +415,11 @@ highlight(
 	'@diff.delta.diff',
 	{ fg = colors.yellow, bg = colors.diff_change_bg }
 )
-highlight('@diff.minus.diff', { fg = colors.red, bg = colors.diff_delete_bg })
+highlight('@diff.minus.diff', {
+	fg = colors.red,
+	bg = colors.diff_delete_bg,
+	strikethrough = true,
+})
 highlight('@diff.plus.diff', { fg = colors.green, bg = colors.diff_add_bg })
 highlight('@error', { link = 'Error' })
 highlight('@exception', { link = 'Error' })
@@ -584,6 +592,7 @@ highlight('DiffviewDiffChange', {
 })
 highlight('DiffviewDiffDelete', {
 	fg = colors.red,
+	strikethrough = true,
 })
 highlight('DiffviewDiffAddAsDelete', { link = 'DiffviewDiffDelete' })
 highlight('DiffviewDiffDeleteDim', { link = 'Comment' })

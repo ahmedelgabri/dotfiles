@@ -118,10 +118,10 @@ color  main-tracked            green    default
 # so their git-colors mappings are removed below; word-level changes get
 # reverse video like jj's diff tokens. Chunk and meta lines still come
 # from the git mapping.
-color  diff-add                green    default
-color  diff-del                red      default
-color  diff-add-highlight      green    default  reverse
-color  diff-del-highlight      red      default  reverse
+color  diff-add                green    16
+color  diff-del                red      17
+color  diff-add-highlight      green    16
+color  diff-del-highlight      red      17
 color  commit                  blue     default
 color  "Author: "              cyan     default
 color  "Commit: "              blue     default

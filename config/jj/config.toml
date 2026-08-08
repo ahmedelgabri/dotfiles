@@ -325,6 +325,21 @@ label("node",
 "diff removed token" = { underline = false }
 "diff added token" = { underline = false }
 "diff context" = { dim = true }
+# Diff lines share Neovim's DiffAdd/DiffDelete/DiffChange backgrounds
+# via the terminal palette's tint slots 16-18, adapting to light/dark.
+# jj reuses these labels for file-status lists (jj st, the log
+# template's summary), so A/M/D rows carry the same fg + tint —
+# deliberate, keeps both surfaces consistent. Status words follow the
+# system convention: modified/renamed yellow like git color.status and
+# nvim's change groups (jj default is cyan), untracked red, hunk
+# headers gray like git's diff.frag.
+"diff added" = { fg = "green", bg = "ansi-color-16" }
+"diff removed" = { fg = "red", bg = "ansi-color-17" }
+"diff modified" = { fg = "yellow", bg = "ansi-color-18" }
+"diff renamed" = { fg = "yellow", bg = "ansi-color-18" }
+"diff copied" = { fg = "green", bg = "ansi-color-16" }
+"diff untracked" = "red"
+"diff hunk_header" = "bright black"
 
 # Operations: drop bold, recolor yellow user, dim the timestamps.
 "operation user" = "cyan"

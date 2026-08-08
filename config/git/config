@@ -31,6 +31,16 @@
 
 [delta]
 	syntax-theme = plain
+	; Palette slots 16/17 hold Neovim's DiffAdd/DiffDelete backgrounds
+	; (defined in the terminal themes), and lines take the full green/red
+	; foreground like nvim diff windows (which don't syntax-highlight
+	; either). Strike marks deletions where the renderer supports it.
+	plus-style = green 16
+	minus-style = red 17 strike
+	; No word-level emphasis, matching nvim and jj (where the token
+	; underlines are disabled): emph renders exactly like the line.
+	plus-emph-style = green 16
+	minus-emph-style = red 17 strike
 	navigate = true # use n and N to move between diff sections
 	hyperlinks = true
 	file-modified-label = MODIFIED:
@@ -162,8 +172,11 @@
 [color "diff"]
 	meta = 238 italic
 	frag = 240
-	old = red strike
-	new = green italic
+	; fg + palette tint slots 16/17 = Neovim's DiffDelete/DiffAdd look,
+	; adapting to light/dark via the terminal themes. jj and tig cannot
+	; render strike, so it lives only here and in delta.
+	old = red 17 strike
+	new = green 16
 	whitespace = red reverse
 	commit = yellow bold
 
@@ -173,10 +186,10 @@
 	untracked = red
 
 [color "diff-highlight"]
-	oldNormal = red strike
-	oldHighlight = red strike 52
-	newNormal = green italic
-	newHighlight = green italic 22
+	oldNormal = red 17
+	oldHighlight = red 17
+	newNormal = green 16
+	newHighlight = green 16
 
 [pager]
 	show-branch = true

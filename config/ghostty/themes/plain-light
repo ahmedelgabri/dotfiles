@@ -23,3 +23,9 @@ palette = 12=#315f9c
 palette = 13=#774394
 palette = 14=#176f76
 palette = 15=#4d4d4c
+# Slots 16-18 extend the palette with Neovim's DiffAdd/Delete/Change
+# backgrounds so CLI diffs (git, delta, jj, tig, bat/yazi) share them
+# and adapt per mode.
+palette = 16=#e5eed5
+palette = 17=#f4dddd
+palette = 18=#f5e9c8
