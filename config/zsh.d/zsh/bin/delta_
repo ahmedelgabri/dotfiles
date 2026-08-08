@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -ue -o pipefail
 
-if [[ $COLUMNS -ge 120 ]]; then
+if [[ $COLUMNS -ge 160 ]]; then
 	command delta -w "$COLUMNS" --side-by-side --line-numbers-left-format "{nm:^4} " --line-numbers-right-format "{np:^4} " "$@"
 else
 	command delta "$@" -w "$COLUMNS"
