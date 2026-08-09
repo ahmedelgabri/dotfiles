@@ -152,7 +152,10 @@ end
 
 -- __Normal__
 highlight('Normal', { fg = colors.norm, bg = colors.bg })
-highlight('Cursor', { fg = colors.bg, bg = colors.norm })
+-- Same cursor blue as the ghostty/kitty themes; the TUI propagates this
+-- to the terminal cursor (OSC 12), so without it nvim repaints the
+-- cursor gray.
+highlight('Cursor', { fg = '#111111', bg = '#20bbfc' })
 highlight('Identifier', { link = 'Normal' })
 highlight('Function', { link = 'Identifier' })
 highlight('Type', { link = 'Normal' })

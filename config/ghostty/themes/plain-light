@@ -1,7 +1,7 @@
 # The light counterpart to plain-dark, based on Tomorrow with contrast-corrected accents.
 # Keep the palette in sync with config/kitty/themes/plain-light.conf and terminal_palettes in config/nvim/colors/plain.lua.
-cursor-color = #4271ae
-cursor-text = #fafafa
+cursor-color = #20bbfc
+cursor-text = #111111
 foreground = #4d4d4c
 background = #fafafa
 selection-foreground = #383a42

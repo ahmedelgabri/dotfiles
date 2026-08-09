@@ -1,6 +1,6 @@
 # A restrained Tomorrow Night-derived palette. ANSI slots are the color API for CLI/TUI tools.
 # Keep the palette in sync with config/kitty/themes/plain-dark.conf and terminal_palettes in config/nvim/colors/plain.lua.
-cursor-color = #81a2be
+cursor-color = #20bbfc
 cursor-text = #111111
 foreground = #c5c8c6
 background = #111111
