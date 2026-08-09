@@ -17,7 +17,12 @@ let
         }:
         let
           inherit (config.my.user) home;
-          inherit (config.my) devFolder hostConfigHome company dotfilesDir;
+          inherit (config.my)
+            devFolder
+            hostConfigHome
+            company
+            dotfilesDir
+            ;
           inherit (config.home-manager.users."${config.my.username}") xdg;
 
           local_zshrc = "${hostConfigHome}/zshrc";
@@ -91,11 +96,11 @@ let
                   df = "df -kh";
                   du = "du -kh";
                   fd = "fd --hidden";
-                  history-stat = ''fc -l 1 | awk '{print $2}' | sort | uniq -c | sort -n -r | head'';
+                  history-stat = "fc -l 1 | awk '{print $2}' | sort | uniq -c | sort -n -r | head";
                   history = "fc -il 1";
                   jobs = "jobs -l";
                   play = "mx ϟ";
-                  top = "htop";
+                  top = "btop";
                   l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
                   ll = "eza --icons --tree --group-directories-first --all --level=2";
                   lt = "eza --tree --group-directories-first --all";
@@ -155,7 +160,7 @@ let
                   direnv
                   fzf
                   grc
-                  htop
+                  btop
                   jq
                   pass
                   nix-direnv
