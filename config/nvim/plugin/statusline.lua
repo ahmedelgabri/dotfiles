@@ -9,6 +9,15 @@ __.statusline = M
 vim.o.laststatus = 2
 
 ---@return string
+local function get_macro_status()
+	local recording_register = vim.fn.reg_recording()
+	if recording_register == '' then
+		return ''
+	end
+	return string.format('%%#ErrorMsg#󰑊 Recording @%s%%*', recording_register)
+end
+
+---@return string
 function M.render_active()
 	if vim.bo.filetype == 'help' or vim.bo.filetype == 'man' then
 		return '%#StatusLineNC#%f%*'
@@ -40,6 +49,7 @@ function M.render_active()
 		vim.b.minidiff_summary_string,
 		components.git_conflicts(),
 		'%=',
+		get_macro_status(),
 		components.word_count(),
 		components.mode(),
 		components.paste(),
@@ -113,6 +123,17 @@ au.augroup('MyStatusLine', {
 		event = 'User',
 		pattern = 'MiniDiffUpdated',
 		callback = components.format_diff_summary,
+	},
+	{
+		event = { 'RecordingEnter', 'RecordingLeave' },
+		pattern = '*',
+		callback = function()
+			-- On RecordingLeave, reg_recording() is still set until after the
+			-- autocmd finishes, so defer the redraw to pick up the cleared state.
+			vim.schedule(function()
+				vim.cmd.redrawstatus()
+			end)
+		end,
 	},
 
 	-- https://www.reddit.com/r/neovim/comments/11215fn/comment/j8hs8vj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
