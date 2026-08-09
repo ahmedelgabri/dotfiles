@@ -1,7 +1,8 @@
 let
-  # Single owner of the remote-control socket path: emitted both as the
-  # KITTY_LISTEN_ON env var (for kitten clients in shells) and into the
-  # macOS launch-services command line kitty starts with.
+  # Single owner of the remote-control socket path: emitted as the
+  # KITTY_LISTEN_ON env var (for kitten clients in shells), into the
+  # macOS launch-services command line kitty starts with, and into the
+  # nix.conf fragment kitty.conf includes for CLI/Linux launches.
   kittyListenSocket = "unix:/tmp/kitty";
 
   module = {
@@ -47,6 +48,9 @@ let
           // {
             "kitty/macos-launch-services-cmdline".text = ''
               -o allow_remote_control=socket-only --single-instance --listen-on ${kittyListenSocket}
+            '';
+            "kitty/nix.conf".text = ''
+              listen_on ${kittyListenSocket}
             '';
           };
       };
