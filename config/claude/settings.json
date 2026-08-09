@@ -169,7 +169,7 @@
 					},
 					{
 						"type": "command",
-						"command": "ccpeek --index-only --skip-scan --quiet >> ~/Library/Logs/ccpeek-stdout.log 2>> ~/Library/Logs/ccpeek-stderr.log",
+						"command": "~/.claude/hooks/run-ccpeek.sh",
 						"async": true
 					}
 				]
@@ -205,7 +205,7 @@
 					},
 					{
 						"type": "command",
-						"command": "[[ -z \"$GHOSTTY_BIN_DIR\" ]] && jq -r '.message' | terminal-notifier -title Claude -subtitle \"Notification hook\" -activate com.mitchellh.ghostty || true"
+						"command": "~/.claude/hooks/notify.sh"
 					}
 				]
 			},

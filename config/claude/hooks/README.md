@@ -13,9 +13,9 @@ by Home Manager and wired from `config/claude/settings.json`.
 | `UserPromptSubmit` | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit`, `tap state running --agent claude` | Log submitted prompts, append them to the central `PROMPTS.md`, mark agent busy. |
 | `PreToolUse`       | `log-event.sh PreToolUse`, `tap state running --agent claude`                             | Log tool calls and mark the agent busy.                                          |
 | `PostToolUse`      | `log-event.sh PostToolUse`                                                                | Log tool results.                                                                |
-| `Stop`             | `log-event.sh Stop`, `ccpeek --index-only --skip-scan --quiet ...`, `tap state idle --agent claude` | Log assistant stops, refresh the `ccpeek` index, mark the agent idle.            |
+| `Stop`             | `log-event.sh Stop`, `run-ccpeek.sh`, `tap state idle --agent claude`                     | Log assistant stops, refresh the `ccpeek` index, mark the agent idle.            |
 | `SubagentStop`     | `log-event.sh SubagentStop`                                                               | Log subagent completion.                                                         |
-| `Notification`     | `log-event.sh Notification`, `terminal-notifier ...`, `tap state notification --agent claude` | Log notifications, mirror them to macOS Notification Center, publish the status. |
+| `Notification`     | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`         | Log notifications, mirror them to a desktop notification, publish the status.    |
 | `PreCompact`       | `log-event.sh PreCompact`                                                                 | Log compaction before it runs.                                                   |
 
 The `tap state` entries publish the agent's activity state so other tooling
@@ -55,6 +55,18 @@ The `tap state` entries publish the agent's activity state so other tooling
   `~/.claude/logs/<project-slug>/PROMPTS.md` (same slug scheme as
   `log-event.sh`), separated by `---` when the file already exists.
 - **Behavior**: skips global sessions, empty prompts, and invalid project paths.
+
+### `run-ccpeek.sh`
+
+- **Events**: `Stop`.
+- **What it does**: refreshes the `ccpeek` index; exits quietly when `ccpeek` is not installed. `settings.json` is shared across platforms, so the script resolves the log location at runtime.
+- **Log location**: `~/Library/Logs` on macOS, `$XDG_STATE_HOME` (default `~/.local/state`) elsewhere.
+
+### `notify.sh`
+
+- **Events**: `Notification`.
+- **What it does**: mirrors the notification message to a desktop notification — `terminal-notifier` on macOS, `notify-send` elsewhere — picking the notifier at runtime because `settings.json` is shared across platforms.
+- **Behavior**: skipped inside Ghostty (`GHOSTTY_BIN_DIR` set), which surfaces notifications itself; a no-op when no notifier is installed or the message is empty.
 
 ## Viewing logs
 
