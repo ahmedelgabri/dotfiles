@@ -23,7 +23,6 @@ setopt NO_BEEP              # Don't beep on errors (overrides /etc/zshrc in Cata
 
 setopt BANG_HIST              # Perform textual history expansion, csh-style, treating the character ‘!’ specially.
 setopt EXTENDED_HISTORY       # Write the history file in the ':start:elapsed;command' format.
-setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY          # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
 setopt HIST_IGNORE_DUPS       # Do not record an event that was just recorded again.
@@ -33,7 +32,7 @@ setopt HIST_IGNORE_SPACE      # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY            # Do not execute immediately upon history expansion.
 setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks from each command line being added to the history list.
-setopt APPEND_HISTORY         # append to history file
+setopt APPEND_HISTORY         # Append to the history file instead of replacing it. On by default, but kept explicit.
 setopt HIST_NO_STORE          # Don't store history commands
 setopt HIST_NO_FUNCTIONS      # Don't store function definitions
 setopt HIST_SAVE_BY_COPY      # When writing out a copy of the history file, zsh preserves the old file’s permissions and group information
