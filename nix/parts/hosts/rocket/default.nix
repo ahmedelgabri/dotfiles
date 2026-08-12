@@ -3,10 +3,10 @@ let
   hostConfiguration =
     { pkgs, ... }:
     {
-      networking = rec {
-        hostName = "rocket";
-        computerName = hostName;
-      };
+      # No networking.hostName/computerName: Kandji owns this machine's names
+      # (its Device Name enforcement resets ComputerName to the serial number
+      # at every check-in), so nothing here manages or reads them. The logical
+      # host name comes from my.hostName, set by mk-host.
 
       ids.gids.nixbld = 30000;
 

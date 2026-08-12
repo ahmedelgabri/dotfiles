@@ -538,7 +538,7 @@ let
                       SSL_CERT_FILE="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
                       GIT_SSL_CAINFO="${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
                       HOMEBREW_GIT_PATH="/Library/Developer/CommandLineTools/usr/bin/git" \
-                      darwin-rebuild switch --flake .
+                      darwin-rebuild switch --flake ".#${config.my.hostName}"
                     popd
                   '')
                 ]

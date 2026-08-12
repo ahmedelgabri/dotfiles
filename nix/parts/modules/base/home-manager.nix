@@ -16,7 +16,7 @@ let
 in
 {
   config = {
-    my.hostConfigHome = "${xdgHomes.dataHome}/${config.networking.hostName}";
+    my.hostConfigHome = "${xdgHomes.dataHome}/${config.my.hostName}";
     my.dotfilesDir = "${home}/.dotfiles";
 
     home-manager = {
@@ -58,11 +58,11 @@ in
             github_username
             company
             nix_managed
+            hostName
             hostConfigHome
             dotfilesDir
             modules
             ;
-          inherit (config.networking) hostName;
         };
       };
     };
@@ -76,6 +76,10 @@ in
           dataHome
           stateHome
           ;
+        # GUI apps (e.g. Hammerspoon) inherit neither shell env vars nor a
+        # reliable machine name (an MDM may rename it), so publish the logical
+        # host name as a file they can read.
+        dataFile."host-name".text = config.my.hostName;
       };
 
       home = {

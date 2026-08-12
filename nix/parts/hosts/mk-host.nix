@@ -30,6 +30,7 @@ in
 {
   flake = {
     modules.${runtime}.${name}.imports = [
+      { my.hostName = name; }
       featureModule
       hostConfiguration
     ];

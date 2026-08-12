@@ -124,8 +124,9 @@ nix --experimental-features 'nix-command flakes' run 'github:ahmedelgabri/dotfil
 > The value after `--` is the host name consumed by the bootstrap app, not a
 > flake reference like `.#rocket`.
 
-In my setup the host is usually the machine hostname. If omitted, it falls back
-to `$(hostname -s)`.
+The host is the flake attribute (e.g. `rocket`), independent of the machine's
+current hostname — MDM-managed machines may be renamed at any time. If omitted,
+it falls back to `$(hostname -s)`, so on such machines pass the host explicitly.
 
 Examples:
 
@@ -212,7 +213,7 @@ Useful files to create there:
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
 | `$HOST_CONFIGS/zshrc`                      | Machine-local shell setup; tokens live in the keychain (`secret set <name>`) and are exported as lookups, never literals     | `export GITHUB_TOKEN="$(secret get github-token)"` |
 | `$HOST_CONFIGS/gitconfig`                  | Local Git settings that should not be committed, especially GPG signing details                                              | `[user] signingkey =`    |
-| `$HOST_CONFIGS/hammerspoon/<hostname>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/) | Host-specific Lua config |
+| `$HOST_CONFIGS/hammerspoon/<host>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/); `<host>` is the logical host name read from `~/.local/share/host-name`, not the machine hostname | Host-specific Lua config |
 | `$HOST_CONFIGS/pi/extensions`              | Machine-specific Pi extensions added to the generated Pi settings                                                            | Private extension        |
 | `$HOST_CONFIGS/pi/skills`                  | Machine-specific Pi skills added to the generated Pi settings                                                                | Private skill            |
 | `$HOST_CONFIGS/tmux/sessions/<name>`       | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README      | Work session layouts     |

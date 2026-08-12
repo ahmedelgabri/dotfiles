@@ -7,7 +7,7 @@ hs.ipc.cliSaveHistory(true)
 hs.window.animationDuration = 0
 hs.application.enableSpotlightForNameSearches(true)
 
-local hostName = hs.host.localizedName()
+local hostName = utils.hostName() or hs.host.localizedName()
 local extraModuleDir = os.getenv 'HOME'
 	.. '/.local/share/'
 	.. hostName

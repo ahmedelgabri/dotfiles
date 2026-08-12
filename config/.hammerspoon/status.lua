@@ -111,7 +111,7 @@ local function buildSnapshot()
 	end) or {}
 
 	return {
-		host = hs.host.localizedName(),
+		host = utils.hostName() or hs.host.localizedName(),
 		layout = layoutStatus,
 		lifecycle = lifecycleStatus,
 		location = locationStatus,

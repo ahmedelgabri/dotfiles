@@ -40,11 +40,17 @@ pack.add {
 
 			require('luasnip.loaders.from_vscode').lazy_load {
 				lazy_paths = {
+					-- $HOST_CONFIGS is ~/.local/share/<host> keyed by the logical
+					-- host name; vim.fn.hostname() is only a fallback because the
+					-- MDM owns the machine name on work hosts.
 					string.format(
-						'%s/%s%s',
-						vim.env.XDG_DATA_HOME,
-						vim.fn.hostname(),
-						'/snippets'
+						'%s/snippets',
+						vim.env.HOST_CONFIGS
+							or string.format(
+								'%s/%s',
+								vim.env.XDG_DATA_HOME,
+								vim.fn.hostname()
+							)
 					),
 				},
 			}

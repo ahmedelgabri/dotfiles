@@ -218,6 +218,20 @@ function M.resolveApps(appConfig)
 	return resolved
 end
 
+function M.hostName()
+	-- ~/.local/share/host-name is written by Home Manager with the logical
+	-- host name (the flake attribute). Never derive this from the machine's
+	-- own names (ComputerName/LocalHostName/HostName): the MDM owns those and
+	-- resets them to the serial number.
+	local f = io.open(os.getenv 'HOME' .. '/.local/share/host-name')
+	if not f then
+		return nil
+	end
+	local name = f:read '*l'
+	f:close()
+	return name
+end
+
 function M.setup()
 	M.appMap = M.resolveApps(APP_SPECS)
 	return M.appMap

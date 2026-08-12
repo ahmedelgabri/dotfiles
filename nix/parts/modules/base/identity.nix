@@ -19,6 +19,10 @@ in
     company = mkOptStr "";
     devFolder = mkOptStr "code";
     nix_managed = mkOptStr "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
+    # Logical host name (the flake attribute), set by mk-host. Deliberately
+    # decoupled from networking.hostName: an MDM may own the machine's real
+    # names, so no configuration should key off them.
+    hostName = mkOptStr "";
     hostConfigHome = mkOptStr "";
     # Absolute path of the dotfiles checkout; set in base/home-manager.nix once
     # the user's home directory is known. Every out-of-store symlink and the
