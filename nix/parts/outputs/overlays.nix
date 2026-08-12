@@ -23,5 +23,14 @@
     }
     // prev.lib.optionalAttrs prev.stdenv.isDarwin {
       sb = prev.callPackage ../../pkgs/sb.nix { };
+
+      # aerc 0.22.0 dropped fsevents.FileEvents (to fix vsplit rerendering)
+      # but its watch loop still filters on file-level Item* flags, which
+      # directory-granularity events never carry. Every event is dropped, so
+      # the maildir view goes stale until restart. Forward directory events
+      # so the workers rescan. https://todo.sr.ht/~rjarry/aerc
+      aerc = prev.aerc.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../../pkgs/aerc-darwin-fsevents.patch ];
+      });
     };
 }

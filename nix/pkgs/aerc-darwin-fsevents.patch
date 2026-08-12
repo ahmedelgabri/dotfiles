@@ -1,0 +1,18 @@
+--- a/lib/watchers/fsevents.go
++++ b/lib/watchers/fsevents.go
+@@ -51,6 +51,15 @@
+ 					Operation: FSRemove,
+ 					Path:      ev.Path,
+ 				}
++			default:
++				// Without the FileEvents flag, macOS delivers
++				// directory-granularity events that carry none of
++				// the Item* flags. Forward them so the workers
++				// notice external changes and rescan.
++				w.ch <- &FSEvent{
++					Operation: FSCreate,
++					Path:      ev.Path,
++				}
+ 			}
+ 		}
+ 	}
