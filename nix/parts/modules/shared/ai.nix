@@ -109,6 +109,7 @@ let
           '') piAgentExtensionTypePackages
         );
         piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
+          lastChangelogVersion = pkgs.llm-agents.pi.version;
           extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
           skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
           themes = [ "${dotfilesConfig}/pi/agent/themes" ];
