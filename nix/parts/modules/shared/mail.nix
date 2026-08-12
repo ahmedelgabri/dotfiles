@@ -17,12 +17,17 @@ let
           ${lib.getExe' pkgs.gnupg "gpg-connect-agent"}
 
           echo "--- Starting mail sync at $(${lib.getExe' pkgs.coreutils "date"}) ---"
-          ${lib.getExe' pkgs.coreutils "timeout"} ${maxTimeout} ${lib.getExe pkgs.isync} -q -a
+          # Index whatever mbsync managed to fetch even when some channels
+          # fail, but preserve the failure in the exit status so launchd
+          # still reports it.
+          rc=0
+          ${lib.getExe' pkgs.coreutils "timeout"} ${maxTimeout} ${lib.getExe pkgs.isync} -q -a || rc=$?
 
-          echo "mbsync finished successfully. Indexing new mail..."
+          echo "mbsync exited with $rc. Indexing new mail..."
           ${lib.getExe pkgs.notmuch} --config=${xdgConfigHome}/notmuch/config new
 
           echo "Sync finished at $(${lib.getExe' pkgs.coreutils "date"})"
+          exit $rc
         '';
 
       commonModule =
