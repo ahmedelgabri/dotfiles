@@ -26,7 +26,8 @@ timezone = "local"
 # auto_sync = true
 
 ## enable or disable automatic update checks
-# update_check = true
+## Nix owns updates; also removes a phone-home network call.
+update_check = false
 
 ## address of the sync server
 # sync_address = "https://api.atuin.sh"
@@ -37,8 +38,10 @@ timezone = "local"
 # sync_frequency = "10m"
 
 ## which search mode to use
-## possible values: prefix, fulltext, fuzzy, skim
-# https://github.com/atuinsh/atuin/issues/2351#issuecomment-4059056094
+## possible values: prefix, fulltext, fuzzy, daemon-fuzzy
+## daemon-fuzzy (atuin >= 18.13) searches an in-memory index held by the
+## daemon; requires [daemon] enabled below.
+## https://docs.atuin.sh/latest/configuration/config/#search_mode
 search_mode = "daemon-fuzzy"
 
 ## which filter mode to use
@@ -47,7 +50,7 @@ search_mode = "daemon-fuzzy"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false)
-# workspaces = false
+workspaces = true
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
@@ -103,6 +106,19 @@ show_preview = true
 #   "^secret-cmd",
 #   "^innocuous-cmd .*--secret=.+",
 # ]
+## secrets_filter only catches known token shapes (AWS, GitHub, Slack,
+## Stripe); these cover the generic patterns. `atuin history prune` deletes
+## already-stored entries matching them.
+history_filter = [
+  "(?i)\\b[A-Z_]*(?:TOKEN|SECRET|PASSWORD|API_?KEY)[A-Z_]*=",
+  "(?i)--(?:password|token|secret|api-key)[= ]",
+  "(?i)authorization: ?(?:bearer|basic) ",
+  "^sshpass ",
+  "gh auth login --with-token",
+]
+
+## Failed commands are disproportionately typos and mis-pasted secrets.
+# store_failed = false
 
 ## prevent commands run with cwd matching any of these regexes from being written
 ## to history. Note that these regular expressions are unanchored, i.e. if they don't
@@ -165,15 +181,23 @@ enter_accept = true
 ## Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
 common_subcommands = [
   "apt",
+  "atuin",
+  "brew",
+  "bun",
   "cargo",
   "composer",
+  "devenv",
   "dnf",
   "docker",
+  "gh",
   "git",
   "g",         # Git function
   "go",
   "ip",
+  "jj",
   "kubectl",
+  "mise",
+  "nh",
   "nix",
   "nmcli",
   "npm",
@@ -236,3 +260,16 @@ autostart = true
 
 ## The port that should be used for TCP on non unix systems
 # tcp_port = 8889
+
+[tmux]
+## Render the search TUI in a tmux popup, matching the fzf widgets'
+## --popup geometry. Only affects direct `atuin search -i` use; the
+## ctrl-r fzf widget manages its own popup.
+enabled = true
+width = "80%"
+height = "80%"
+
+[ai]
+## Off by default in current builds, but pin it: no assistant, no
+## question-mark keybinding, no LLM access to history.
+enabled = false
