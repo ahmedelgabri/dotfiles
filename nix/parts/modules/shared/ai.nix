@@ -19,6 +19,7 @@ let
           llm-agents.agent-browser
           llama-cpp
           ccpeek
+          fabric-ai
         ];
       };
 
