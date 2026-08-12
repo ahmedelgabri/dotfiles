@@ -57,5 +57,9 @@ exit() {
   fi
 }
 
-# Avoid ssh issues with ssh and terminfo with new terminal apps
-[[ $TERM == "xterm-kitty" ]] || [[ $TERM == "xterm-ghostty" ]] && alias ssh="TERM=xterm-256color ssh"
+# Let Kitty provision its remote integration; keep the compatibility fallback for Ghostty.
+if [[ $TERM == "xterm-kitty" ]]; then
+  alias ssh="kitten ssh"
+else
+  alias ssh="TERM=xterm-256color ssh"
+fi
