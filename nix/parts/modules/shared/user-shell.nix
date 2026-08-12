@@ -164,6 +164,7 @@ let
                   jq
                   pass
                   nix-direnv
+                  nh
                   pandoc
                   ripgrep
                   rsync
