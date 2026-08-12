@@ -72,6 +72,24 @@ let
               	path = ${myConfig.hostConfigHome}/gitconfig
             '';
           };
+
+        home.activation = optionalAttrs pkgs.stdenv.isDarwin {
+          # The launchd agents written by `git maintenance start` hardcode the
+          # git binary's Nix store path; after a git bump + store GC they fail
+          # with EX_CONFIG and background maintenance silently stops. Re-run it
+          # on every rebuild so the agents point at the current package.
+          gitMaintenance = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            repo=$(${lib.getExe pkgs.git} config --global --get-all maintenance.repo 2>/dev/null | while IFS= read -r p; do
+              [ -d "$p" ] && { printf '%s' "$p"; break; }
+            done)
+
+            if [ -n "$repo" ]; then
+              echo ":: -> Refreshing git maintenance launchd agents..."
+              PATH="/bin:/usr/bin:$PATH" ${lib.getExe pkgs.git} -C "$repo" maintenance start --scheduler=launchctl \
+                || echo ":: !! git maintenance start failed"
+            fi
+          '';
+        };
       };
   };
 in
