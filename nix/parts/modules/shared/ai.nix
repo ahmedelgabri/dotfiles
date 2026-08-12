@@ -34,19 +34,80 @@ let
 
       let
         dotfilesConfig = "${myConfig.dotfilesDir}/config";
-        piCodingAgent = "${pkgs.llm-agents.pi}/lib/node_modules/@earendil-works/pi-coding-agent";
-        piCodingAgentNodeModules = "${piCodingAgent}/node_modules";
-        piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } ''
-          mkdir -p "$out/@earendil-works" "$out/@types"
+        # Types-only copies of pi's extension API, fetched from npm for tsc
+        # and editors; pi resolves these imports internally at runtime. The
+        # tree must not link into pi's store path: pi stopped shipping
+        # unpacked node_modules, and the links went dangling on every pi
+        # bump once the old store path was GC'd. Version drift against the
+        # installed pi is harmless for type checking. The pins are generated
+        # by the update-pi-extension-types command below (run by nixup).
+        piAgentExtensionTypePackages = lib.mapAttrsToList (name: pkg: { inherit name; } // pkg) (
+          builtins.fromJSON (builtins.readFile ./pi-extension-types.lock.json)
+        );
+        updatePiExtensionTypes = pkgs.writeShellApplication {
+          name = "update-pi-extension-types";
+          runtimeInputs = with pkgs; [
+            curl
+            jq
+            nix
+          ];
+          # The pi packages are published in lockstep with pi releases;
+          # typebox is pinned to whatever pi-coding-agent declares, and
+          # undici-types follows @types/node.
+          text = ''
+            registry="https://registry.npmjs.org"
+            lockfile="${myConfig.dotfilesDir}/nix/parts/modules/shared/pi-extension-types.lock.json"
 
-          ln -s ${piCodingAgent} "$out/@earendil-works/pi-coding-agent"
-          for package in ${piCodingAgentNodeModules}/@earendil-works/*; do
-            ln -s "$package" "$out/@earendil-works/$(basename "$package")"
-          done
-          ln -s ${piCodingAgentNodeModules}/typebox "$out/typebox"
-          ln -s ${piCodingAgentNodeModules}/@types/node "$out/@types/node"
-          ln -s ${piCodingAgentNodeModules}/undici-types "$out/undici-types"
-        '';
+            pi_version=$(curl -fsSL "$registry/@earendil-works%2Fpi-coding-agent/latest" | jq -r .version)
+            typebox_version=$(curl -fsSL "$registry/@earendil-works%2Fpi-coding-agent/$pi_version" | jq -r '.dependencies.typebox')
+            types_node_meta=$(curl -fsSL "$registry/@types%2Fnode/latest")
+            types_node_version=$(jq -r .version <<<"$types_node_meta")
+            # @types/node depends on undici-types with a ~x.y.z range;
+            # resolve it to the newest matching x.y.* release.
+            undici_range=$(jq -r '.dependencies["undici-types"]' <<<"$types_node_meta")
+            undici_prefix=''${undici_range#\~}
+            undici_prefix=''${undici_prefix%.*}
+            undici_version=$(curl -fsSL "$registry/undici-types" |
+              jq -r --arg p "$undici_prefix." '.versions | keys | map(select(startswith($p))) | last')
+
+            entry() {
+              local name=$1 version=$2 base url hash
+              base=''${name##*/}
+              url="$registry/$name/-/$base-$version.tgz"
+              hash=$(nix store prefetch-file --json "$url" | jq -r .hash)
+              printf '%s %s\n' "$name" "$version" >&2
+              jq -n --arg name "$name" --arg version "$version" --arg hash "$hash" \
+                '{($name): {version: $version, hash: $hash}}'
+            }
+
+            {
+              entry "@earendil-works/pi-coding-agent" "$pi_version"
+              entry "@earendil-works/pi-ai" "$pi_version"
+              entry "@earendil-works/pi-tui" "$pi_version"
+              entry "@earendil-works/pi-client" "$pi_version"
+              entry "typebox" "$typebox_version"
+              entry "@types/node" "$types_node_version"
+              entry "undici-types" "$undici_version"
+            } | jq -s add >"$lockfile"
+
+            echo "Wrote $lockfile"
+          '';
+        };
+        piAgentExtensionNodeModules = pkgs.runCommandLocal "pi-agent-extension-node-modules" { } (
+          lib.concatMapStrings (pkg: ''
+            mkdir -p "$(dirname "$out/${pkg.name}")" unpack
+            tar -xzf ${
+              pkgs.fetchurl {
+                url = "https://registry.npmjs.org/${pkg.name}/-/${baseNameOf pkg.name}-${pkg.version}.tgz";
+                inherit (pkg) hash;
+              }
+            } -C unpack
+            # Most npm tarballs unpack to package/, but not all (@types/node
+            # uses node/), so move whatever single root directory exists.
+            mv unpack/* "$out/${pkg.name}"
+            rmdir unpack
+          '') piAgentExtensionTypePackages
+        );
         piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
           extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
           skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
@@ -82,6 +143,8 @@ let
           };
 
         home = {
+          packages = [ updatePiExtensionTypes ];
+
           activation = {
             linkPiAgentExtensionNodeModules = config.lib.dag.entryAfter [ "writeBoundary" ] ''
               TARGET="${myConfig.dotfilesDir}/config/pi/agent/extensions/node_modules"

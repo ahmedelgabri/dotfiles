@@ -175,6 +175,10 @@ let
                   (pkgs.writeShellScriptBin "nixup" ''
                     pushd "$DOTFILES"/ || exit
                     nix flake update
+                    # Provided by the ai module; absent on hosts without it.
+                    if command -v update-pi-extension-types >/dev/null; then
+                      update-pi-extension-types
+                    fi
                     popd
                   '')
                 ];
