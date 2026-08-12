@@ -32,6 +32,46 @@ pack.add {
 		src = 'https://github.com/neovim/nvim-lspconfig',
 		event = { 'UIEnter' },
 		config = function()
+			local lsp_markdown = require '_.lsp_markdown'
+			local open_floating_preview = vim.lsp.util.open_floating_preview
+
+			vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
+				if not opts or opts.focus_id ~= 'textDocument/hover' then
+					return open_floating_preview(contents, syntax, opts)
+				end
+
+				local reflowed, links = lsp_markdown.reflow(
+					table.concat(contents, '\n'),
+					{ remove_separators = true }
+				)
+				contents = vim.split(reflowed, '\n', { plain = true })
+				opts = vim.tbl_extend('force', {}, opts, {
+					border = utils.get_border(),
+					max_height = 20,
+					max_width = 80,
+				})
+
+				local source_win = vim.api.nvim_get_current_win()
+				if vim.api.nvim_win_get_config(source_win).relative ~= '' then
+					source_win = nil
+				end
+
+				local bufnr, win = open_floating_preview(contents, syntax, opts)
+				if package.loaded['render-markdown'] then
+					vim.api.nvim_buf_call(bufnr, function()
+						require('render-markdown').buf_disable()
+					end)
+					local namespace =
+						vim.api.nvim_get_namespaces()['render-markdown.nvim']
+					if namespace then
+						vim.api.nvim_buf_clear_namespace(bufnr, namespace, 0, -1)
+					end
+				end
+
+				lsp_markdown.configure_hover(bufnr, win, links, source_win)
+				return bufnr, win
+			end
+
 			-- for debugging
 			-- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 			-- :lua print(vim.lsp.log.get_filename())
@@ -153,12 +193,7 @@ pack.add {
 						{
 							{ 'n' },
 							'K',
-							function()
-								vim.lsp.buf.hover {
-									width = 50,
-									max_width = 300,
-								}
-							end,
+							vim.lsp.buf.hover,
 							{ desc = 'Hover' },
 						},
 						{

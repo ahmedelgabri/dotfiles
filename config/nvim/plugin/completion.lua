@@ -1,7 +1,43 @@
 -- Completion and snippets
 local pack = require '_.pack'
 
+local lsp_markdown = require '_.lsp_markdown'
 local utils = require '_.utils'
+
+local function reflow_documentation_buffer(item, bufnr)
+	if not item.documentation then
+		return
+	end
+
+	local docs = require 'blink.cmp.lib.window.docs'
+	local detail_lines = type(item.detail) == 'string'
+			and docs.split_lines(item.detail)
+		or {}
+	local doc_start = #detail_lines > 0 and #detail_lines + 1 or 0
+	local lines = vim.api.nvim_buf_get_lines(bufnr, doc_start, -1, false)
+	local reflowed =
+		vim.split(lsp_markdown.reflow(table.concat(lines, '\n')), '\n', {
+			plain = true,
+		})
+
+	if vim.deep_equal(lines, reflowed) then
+		return
+	end
+
+	vim.api.nvim_set_option_value('modifiable', true, { buf = bufnr })
+	vim.api.nvim_buf_set_lines(bufnr, doc_start, -1, false, reflowed)
+	vim.api.nvim_set_option_value('modified', false, { buf = bufnr })
+	vim.api.nvim_set_option_value('modifiable', false, { buf = bufnr })
+
+	local highlight_ns = require('blink.cmp.config').appearance.highlight_ns
+	vim.api.nvim_buf_clear_namespace(bufnr, highlight_ns, doc_start, -1)
+	docs.highlight_with_treesitter(
+		bufnr,
+		'markdown',
+		doc_start,
+		doc_start + #reflowed
+	)
+end
 
 pack.add {
 	{ src = 'https://github.com/rafamadriz/friendly-snippets', load = false },
@@ -201,6 +237,16 @@ pack.add {
 					documentation = {
 						auto_show = true,
 						treesitter_highlighting = true,
+						draw = function(opts)
+							opts.default_implementation()
+							reflow_documentation_buffer(opts.item, opts.window:get_buf())
+							vim.schedule(function()
+								local win = opts.window:get_win()
+								if win and vim.api.nvim_win_is_valid(win) then
+									lsp_markdown.configure_window(win)
+								end
+							end)
+						end,
 						window = {
 							border = utils.get_border(),
 						},
