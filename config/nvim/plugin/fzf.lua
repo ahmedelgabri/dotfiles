@@ -69,6 +69,13 @@ pack.add {
 				},
 				buffers = {
 					_fzf_nth_devicons = true,
+					-- The provider defaults this to "{1}" which, combined with the
+					-- nbsp delimiter from `_fzf_nth_devicons`, sends the "[bufnr]"
+					-- column instead of the file path to the shell previewer.
+					field_index_expr = '{}',
+					-- With the nbsp delimiter the default "{2}" is the flags column;
+					-- the line number is the last field.
+					line_field_index = '{-1}',
 				},
 				files = {
 					cwd_prompt = false,
