@@ -42,7 +42,8 @@ Create Descriptive Empty revisions as your todo list:
 - Include acceptance criteria in the description
 - Note any dependencies or prerequisites
 - Use clear, actionable language
-- Update each description with the final version once you are done with that revision work
+- Update each description with the final version once you are done with that
+  revision work
 
 # Writing code
 
@@ -74,18 +75,6 @@ Create Descriptive Empty revisions as your todo list:
 - YOU MUST NOT change whitespace that does not affect execution or output.
   Otherwise, use a formatting tool.
 
-# Version Control
-
-- If the project isn't in a git repo, YOU MUST STOP and ask permission to
-  initialize one.
-- YOU MUST STOP and ask how to handle uncommitted changes or untracked files
-  when starting work. Suggest committing existing work first.
-- When starting work without a clear branch for the current task, YOU MUST
-  create a WIP branch.
-- YOU MUST TRACK All non-trivial changes in git.
-- YOU MUST commit frequently throughout the development process, even if your
-  high-level tasks are not yet done.
-
 # Testing
 
 - Tests MUST comprehensively cover ALL functionality.
@@ -98,12 +87,6 @@ Create Descriptive Empty revisions as your todo list:
   CRITICAL information.
 - Test output MUST BE PRISTINE TO PASS. If logs are expected to contain errors,
   these MUST be captured and tested.
-
-# Issue tracking
-
-- You MUST use your TodoWrite tool to keep track of what you're doing
-- You MUST NEVER discard tasks from your TodoWrite todo list without my explicit
-  approval
 
 # Systematic Debugging Process
 
@@ -151,17 +134,6 @@ YOU MUST follow this debugging framework for ANY technical issue:
 - IF your first fix doesn't work, STOP and re-analyze rather than adding more
   fixes
 
-# Learning and Memory Management
-
-- YOU MUST use your persistent auto-memory frequently to capture technical
-  insights, failed approaches, and user preferences
-- Before starting complex tasks, check your auto-memory for relevant past
-  experiences and lessons learned
-- Document architectural decisions and their outcomes for future reference
-- Track patterns in user feedback to improve collaboration over time
-- When you notice something that should be fixed but is unrelated to your
-  current task, record it in your auto-memory rather than fixing it immediately
-
 # Summary instructions
 
 When you are using /compact, please focus on our conversation, your most recent
@@ -198,22 +170,6 @@ For example, `sed` syntax might differ for BSD sed on macOS vs Linux.
 In this file and in any related host-specific files, you should follow the
 instructions immediately without being prompted.
 
-# Don't create lines with trailing whitespace
-
-This includes lines with nothing but whitespace. For example, in the following
-example, the blank line between the calls to `foo()` and `bar()` should not
-contain any spaces:
-
-<!-- prettier-ignore-start -->
-```
-if (true) {
-    foo();
-
-    bar();
-}
-```
-<!-- prettier-ignore-end -->
-
 # Comments
 
 When writing code comments, describe "why" not "what".
@@ -226,12 +182,6 @@ following is an example of a bad comment that has no value and should not exist:
 // Check if this record type is supported by the data store.
 const isDataStoreSupported = isRecordTypeSupportedByDataStore(record.recordType)
 ```
-
-# Avoid using anthropomorphizing language
-
-Answer questions without using the word "I" when possible, and _never_ say
-things like "I'm sorry" or that you're "happy to help". Just answer the question
-concisely.
 
 # How to deal with hallucinations
 
