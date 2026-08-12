@@ -243,11 +243,10 @@
 	# Show a markdown-formatted summary of commits from {REVIEW_BASE:-master} until HEAD
 	pr-summary = !git log --reverse --format=\"- **%s** (%h)%n%n%w(74,2,2)%b\" \"$(git review-base)\"..HEAD
 	# Review by commit
-	by-commit = !$EDITOR +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges\"
-	# split-diff style review using diffview.nvim
-	review = !$EDITOR +\"DiffviewOpen origin/$(git review-base)...HEAD --imply-local\"
-	# review a single file by commit
-	reviewf = "!f() { file=$(git --no-pager diff --name-only -z $(git review-base) | fzf --read0 --no-multi) || return; [ -n \"$file\" ] || return; \"$EDITOR\" -p \"$file\" +\"DiffviewFileHistory --range=origin/$(git review-base)...HEAD --right-only --no-merges %\"; }; f"
+	by-commit = !$EDITOR +\"Git log --no-merges --patch $(git review-base)..HEAD\"
+	review = !$EDITOR +Review
+	# Review a single file by commit
+	reviewf = "!f() { file=$(git --no-pager diff --name-only -z $(git review-base) | fzf --read0 --no-multi) || return; [ -n \"$file\" ] || return; \"$EDITOR\" -p \"$file\" +\"Git log --no-merges --patch $(git review-base)..HEAD -- %\"; }; f"
 	tag = tag -s
 	default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 	bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"
