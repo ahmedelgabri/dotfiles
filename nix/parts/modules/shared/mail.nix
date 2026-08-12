@@ -111,11 +111,8 @@ let
               map = {
                 enabled = false;
                 text = ''
-                  Archive=ARCHIVE
-                  Sent=SENT
-                  Drafts=DRAFT
-                  Spam=JUNK
-                  Trash=TRASH
+                  Drafts=Draft
+                  Spam=Junk
                 '';
               };
               mbsync = {
@@ -126,15 +123,17 @@ let
                   }
                   {
                     name = "Drafts";
-                    remote = "DRAFT";
+                    remote = "Draft";
                   }
                   {
                     name = "Archive";
-                    remote = "ARCHIVE";
+                    remote = "Archive";
                   }
                   {
+                    # The server also has a plain "Spam" folder, but "Junk" is
+                    # the one carrying the \Junk SPECIAL-USE flag.
                     name = "Spam";
-                    remote = "JUNK";
+                    remote = "Junk";
                   }
                   {
                     name = "Notes";
@@ -142,11 +141,11 @@ let
                   }
                   {
                     name = "Sent";
-                    remote = "SENT";
+                    remote = "Sent";
                   }
                   {
                     name = "Trash";
-                    remote = "TRASH";
+                    remote = "Trash";
                   }
                 ];
                 extra_exclusion_patterns = "";
@@ -186,10 +185,6 @@ let
                   {
                     name = "Drafts";
                     remote = ''"[Gmail]/Drafts"'';
-                  }
-                  {
-                    name = "Archive";
-                    remote = ''"[Gmail]/Archive"'';
                   }
                   {
                     name = "Spam";
@@ -739,7 +734,14 @@ let
                       Channel ${lower}-folders
                       Far :${account.name}-remote:
                       Near :${account.name}-local:
-                      Patterns * ${lib.concatMapStringsSep " " (f: "!${f.remote}") account.mbsync.folders}${
+                      Patterns * ${
+                        # Also exclude the local names: patterns match near-side
+                        # boxes too, so without them the catch-all channel
+                        # re-pairs the mapped channels' local folders.
+                        lib.concatStringsSep " " (
+                          lib.unique (lib.concatMap (f: [ "!${f.remote}" "!${f.name}" ]) account.mbsync.folders)
+                        )
+                      }${
                         lib.optionalString (
                           account.mbsync.extra_exclusion_patterns != ""
                         ) " ${account.mbsync.extra_exclusion_patterns}"
