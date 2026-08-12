@@ -54,6 +54,7 @@ let
               markdown-oxide
               copilot-language-server
               stylelint-lsp
+              astro-language-server
             ];
           };
         };

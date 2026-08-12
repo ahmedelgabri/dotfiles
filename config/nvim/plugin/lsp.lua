@@ -154,6 +154,7 @@ pack.add {
 				{ 'markdown_oxide', 'markdown-oxide' },
 				{ 'tinymist' }, -- typst LSP
 				{ 'kotlin_lsp', 'kotlin-lsp' },
+				{ 'astro', 'astro-ls' },
 			}
 
 			for _, value in ipairs(servers) do
