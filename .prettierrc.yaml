@@ -7,3 +7,8 @@ arrowParens: 'always'
 trailingComma: 'all'
 semi: false
 endOfLine: 'lf'
+overrides:
+  - files: config/claude/settings.json
+    options:
+      useTabs: false
+      tabWidth: 2

@@ -1,256 +1,256 @@
 {
-	"$schema": "https://json.schemastore.org/claude-code-settings.json",
-	"cleanupPeriodDays": 99999,
-	"env": {
-		"BASH_DEFAULT_TIMEOUT_MS": "120000",
-		"CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-		"CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS": "64000",
-		"CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
-		"CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
-		"DISABLE_ERROR_REPORTING": "1",
-		"USE_BUILTIN_RIPGREP": "0",
-		"DISABLE_AUTOUPDATER": "1"
-	},
-	"includeCoAuthoredBy": false,
-	"permissions": {
-		"defaultMode": "auto",
-		"deny": [
-			"Glob",
-			"Grep",
-			"Edit(//**/.bashrc)",
-			"Edit(//**/.env)",
-			"Edit(//**/.env.*)",
-			"Edit(//**/.envrc)",
-			"Edit(//**/.profile)",
-			"Edit(//**/.zshenv)",
-			"Edit(//**/.zshrc)",
-			"Edit(//**/zprofile)",
-			"Edit(//**/zshenv)",
-			"Edit(//**/zshrc)",
-			"Read(//**/.bashrc)",
-			"Read(//**/.env)",
-			"Read(//**/.env.*)",
-			"Read(//**/.envrc)",
-			"Read(//**/.profile)",
-			"Read(//**/.zshenv)",
-			"Read(//**/.zshrc)",
-			"Read(//**/zprofile)",
-			"Read(//**/zshenv)",
-			"Read(//**/zshrc)"
-		]
-	},
-	"model": "claude-fable-5[1m]",
-	"hooks": {
-		"SessionStart": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SessionStart",
-						"async": true
-					},
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/inject-repo-info.sh",
-						"statusMessage": "Loading repo VCS info…"
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state idle --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"PostCompact": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PostCompact",
-						"async": true
-					},
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/inject-repo-info.sh",
-						"statusMessage": "Loading repo VCS info…",
-						"asyncRewake": true
-					}
-				]
-			}
-		],
-		"SessionEnd": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SessionEnd",
-						"async": true
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state clear --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"UserPromptSubmit": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh UserPromptSubmit",
-						"async": true
-					},
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit",
-						"async": true
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state running --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"PreToolUse": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PreToolUse",
-						"async": true
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state running --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"PostToolUse": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PostToolUse",
-						"async": true
-					}
-				]
-			}
-		],
-		"Stop": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh Stop",
-						"async": true
-					},
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/run-ccpeek.sh",
-						"async": true
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state idle --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"SubagentStop": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh SubagentStop",
-						"async": true
-					}
-				]
-			}
-		],
-		"Notification": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh Notification",
-						"async": true
-					},
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/notify.sh"
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state notification --agent claude",
-						"async": true
-					}
-				]
-			}
-		],
-		"PreCompact": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "~/.claude/hooks/log-event.sh PreCompact",
-						"async": true
-					}
-				]
-			}
-		]
-	},
-	"statusLine": {
-		"type": "command",
-		"command": "~/.claude/scripts/statusline.sh"
-	},
-	"enabledPlugins": {
-		"claude-md-management@claude-plugins-official": true,
-		"feature-dev@claude-plugins-official": true,
-		"hookify@claude-plugins-official": true,
-		"skill-creator@claude-plugins-official": true,
-		"frontend-design@claude-plugins-official": true,
-		"qmd@qmd": true
-	},
-	"extraKnownMarketplaces": {
-		"qmd": {
-			"source": {
-				"source": "github",
-				"repo": "tobi/qmd"
-			}
-		}
-	},
-	"alwaysThinkingEnabled": true,
-	"theme": "auto"
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 99999,
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "120000",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS": "64000",
+    "CLAUDE_CODE_HIDE_ACCOUNT_INFO": "1",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
+    "DISABLE_ERROR_REPORTING": "1",
+    "USE_BUILTIN_RIPGREP": "0",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "defaultMode": "auto",
+    "deny": [
+      "Glob",
+      "Grep",
+      "Edit(//**/.bashrc)",
+      "Edit(//**/.env)",
+      "Edit(//**/.env.*)",
+      "Edit(//**/.envrc)",
+      "Edit(//**/.profile)",
+      "Edit(//**/.zshenv)",
+      "Edit(//**/.zshrc)",
+      "Edit(//**/zprofile)",
+      "Edit(//**/zshenv)",
+      "Edit(//**/zshrc)",
+      "Read(//**/.bashrc)",
+      "Read(//**/.env)",
+      "Read(//**/.env.*)",
+      "Read(//**/.envrc)",
+      "Read(//**/.profile)",
+      "Read(//**/.zshenv)",
+      "Read(//**/.zshrc)",
+      "Read(//**/zprofile)",
+      "Read(//**/zshenv)",
+      "Read(//**/zshrc)"
+    ]
+  },
+  "model": "claude-fable-5[1m]",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh SessionStart",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/inject-repo-info.sh",
+            "statusMessage": "Loading repo VCS info…"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state idle --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh PostCompact",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/inject-repo-info.sh",
+            "statusMessage": "Loading repo VCS info…",
+            "asyncRewake": true
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh SessionEnd",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state clear --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh UserPromptSubmit",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state running --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh PreToolUse",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state running --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh PostToolUse",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh Stop",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/run-ccpeek.sh",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state idle --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh SubagentStop",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh Notification",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tap state notification --agent claude",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/log-event.sh PreCompact",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/scripts/statusline.sh"
+  },
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "qmd@qmd": true
+  },
+  "extraKnownMarketplaces": {
+    "qmd": {
+      "source": {
+        "source": "github",
+        "repo": "tobi/qmd"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "theme": "auto"
 }
