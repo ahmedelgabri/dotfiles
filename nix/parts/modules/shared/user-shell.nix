@@ -405,7 +405,7 @@ let
                       source ${mkShellInit "jj-completion" "COMPLETE=zsh ${lib.getExe pkgs.jujutsu}"}
                       source ${mkShellInit "direnv" "${lib.getExe pkgs.direnv} hook zsh"}
                       source ${mkShellInit "mise" "${lib.getExe pkgs.mise} activate zsh"}
-                      source ${mkShellInit "atuin" "${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r"}
+                      source ${mkShellInit "atuin" "${lib.getExe pkgs.atuin} init zsh --disable-up-arrow"}
                       source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
 
                       # Gitstatus is sourced lazily by my_git only after a Git repo is detected.
