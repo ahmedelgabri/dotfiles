@@ -54,6 +54,13 @@ pr_template() {
 if [ $# -eq 0 ]; then
 	printf "%s\n\n" "$(time_since_last_commit)"
 	"$GIT" st 2>/dev/null || "$GIT" status --short --branch
+elif [ "$1" = "browse" ]; then
+	command -v gh >/dev/null || {
+		printf "g: browse requires gh\n" >&2
+		exit 1
+	}
+
+	exec gh repo view --web
 elif [ "$1" = "pull-request" ]; then
 	command -v gh >/dev/null || {
 		printf "g: pull-request requires gh\n" >&2
