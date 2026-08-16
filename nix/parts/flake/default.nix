@@ -77,7 +77,7 @@
             enable = true;
             channel.enable = false;
             nixPath =
-              if pkgs.stdenv.isDarwin then
+              if pkgs.stdenv.hostPlatform.isDarwin then
                 {
                   inherit (inputs) nixpkgs;
                   inherit (inputs) darwin;

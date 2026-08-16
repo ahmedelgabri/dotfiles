@@ -15,7 +15,7 @@
               inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
               typescript
             ]
-            ++ lib.optional stdenv.isDarwin sb;
+            ++ lib.optional stdenv.hostPlatform.isDarwin sb;
         };
 
         go = pkgs.mkShell {

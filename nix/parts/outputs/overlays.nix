@@ -21,7 +21,7 @@
       atuin = inputs.atuin.packages.${prev.stdenv.hostPlatform.system}.default;
       nixfmt-rs = inputs.nixfmt-rs.packages.${prev.stdenv.hostPlatform.system}.default;
     }
-    // prev.lib.optionalAttrs prev.stdenv.isDarwin {
+    // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
       sb = prev.callPackage ../../pkgs/sb.nix { };
 
       # aerc 0.22.0 dropped fsevents.FileEvents (to fix vsplit rerendering)

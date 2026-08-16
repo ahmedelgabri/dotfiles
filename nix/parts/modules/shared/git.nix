@@ -64,7 +64,7 @@ let
               [diff "exif"]
               	textconv = ${lib.getExe pkgs.exiftool}
 
-              ${optionalString pkgs.stdenv.isDarwin ''
+              ${optionalString pkgs.stdenv.hostPlatform.isDarwin ''
                 [diff "plist"]
                 	textconv = plutil -convert xml1 -o -''}
 
@@ -73,7 +73,7 @@ let
             '';
           };
 
-        home.activation = optionalAttrs pkgs.stdenv.isDarwin {
+        home.activation = optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
           # The launchd agents written by `git maintenance start` hardcode the
           # git binary's Nix store path; after a git bump + store GC they fail
           # with EX_CONFIG and background maintenance silently stops. Re-run it

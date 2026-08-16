@@ -40,7 +40,7 @@ _: {
           else
             { }
         )
-        // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+        // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
           sb = {
             type = "app";
             program = pkgs.lib.getExe pkgs.sb;
@@ -51,7 +51,7 @@ _: {
       packages = {
         inherit (pkgs) next-prayer;
       }
-      // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+      // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         inherit (pkgs) sb;
       };
     };

@@ -562,7 +562,7 @@ let
           remoteAccounts = lib.filter (acc: acc.mode == "remote") cfg.accounts;
           otherEmails = lib.tail (map (acc: acc.email) cfg.accounts);
           msmtpLogFile =
-            if pkgs.stdenv.isDarwin then
+            if pkgs.stdenv.hostPlatform.isDarwin then
               "${homeDir}/Library/Logs/msmtp.log"
             else
               "${config.xdg.stateHome}/msmtp.log";
