@@ -79,9 +79,11 @@ let
           # with EX_CONFIG and background maintenance silently stops. Re-run it
           # on every rebuild so the agents point at the current package.
           gitMaintenance = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            # The activation script runs with pipefail; git exits 1 when the
+            # key is unset, which would abort every later activation step.
             repo=$(${lib.getExe pkgs.git} config --global --get-all maintenance.repo 2>/dev/null | while IFS= read -r p; do
               [ -d "$p" ] && { printf '%s' "$p"; break; }
-            done)
+            done || true)
 
             if [ -n "$repo" ]; then
               echo ":: -> Refreshing git maintenance launchd agents..."
