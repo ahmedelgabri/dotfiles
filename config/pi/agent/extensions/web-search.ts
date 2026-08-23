@@ -1,6 +1,3 @@
-import {mkdtemp, writeFile} from 'node:fs/promises'
-import {tmpdir} from 'node:os'
-import {join} from 'node:path'
 import type {
 	ExtensionAPI,
 	TruncationResult,
@@ -9,10 +6,9 @@ import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
 	formatSize,
-	truncateHead,
-	withFileMutationQueue,
 } from '@earendil-works/pi-coding-agent'
 import {Type} from 'typebox'
+import {saveTruncatedOutput} from './lib/truncated-output.ts'
 
 const EXA_MCP_URL = 'https://mcp.exa.ai/mcp'
 const DEFAULT_RESULT_LIMIT = 5
@@ -189,42 +185,6 @@ function formatExaResults(results: ExaParsedResult[]): string {
 		.join('\n\n')
 }
 
-async function truncateSearchResults(output: string) {
-	const truncation = truncateHead(output, {
-		maxLines: DEFAULT_MAX_LINES,
-		maxBytes: DEFAULT_MAX_BYTES,
-	})
-
-	if (!truncation.truncated) {
-		return {
-			text: truncation.content,
-			truncation,
-			fullOutputPath: undefined,
-		}
-	}
-
-	const tempDir = await mkdtemp(join(tmpdir(), 'pi-web-search-'))
-	const tempFile = join(tempDir, 'results.txt')
-	await withFileMutationQueue(tempFile, async () => {
-		await writeFile(tempFile, output, 'utf8')
-	})
-
-	const omittedLines = truncation.totalLines - truncation.outputLines
-	const omittedBytes = truncation.totalBytes - truncation.outputBytes
-
-	let text = truncation.content
-	text += `\n\n[Output truncated: showing ${truncation.outputLines} of ${truncation.totalLines} lines`
-	text += ` (${formatSize(truncation.outputBytes)} of ${formatSize(truncation.totalBytes)}).`
-	text += ` ${omittedLines} lines (${formatSize(omittedBytes)}) omitted.`
-	text += ` Full output saved to: ${tempFile}]`
-
-	return {
-		text,
-		truncation,
-		fullOutputPath: tempFile,
-	}
-}
-
 async function searchExa(
 	query: string,
 	limit: number | undefined,
@@ -235,21 +195,21 @@ async function searchExa(
 	const results = parseExaResults(text)
 	const formatted =
 		results.length > 0 ? formatExaResults(results) : 'No results found.'
-	const truncated = await truncateSearchResults(formatted)
+	const {text: output, ...truncated} = await saveTruncatedOutput(
+		formatted,
+		'pi-web-search-',
+		'results.txt',
+	)
 
 	const details: WebSearchDetails = {
 		provider: 'exa-mcp',
 		query,
 		resultCount: results.length,
-	}
-
-	if (truncated.truncation.truncated) {
-		details.truncation = truncated.truncation
-		details.fullOutputPath = truncated.fullOutputPath
+		...truncated,
 	}
 
 	return {
-		content: [{type: 'text' as const, text: truncated.text}],
+		content: [{type: 'text' as const, text: output}],
 		details,
 	}
 }

@@ -40,7 +40,8 @@ const SCHEDULE_HINT =
 const DEFAULT_INTERVAL_MS = parseInterval(DEFAULT_INTERVAL)!
 const LEGACY_STATE_VERSION = 1
 const STATE_VERSION = 2
-const WORKER_VERSION = 3
+const WORKER_VERSION = 4
+const SLEEP_POLL_SECONDS = 30
 const STATUS_KEY = 'tmux-loop'
 const WIDGET_KEY = 'tmux-loop'
 const REPORT_ENTRY_TYPE = 'pi-loop-report'
@@ -577,25 +578,32 @@ next_daily_epoch() {
 	return 1
 }
 
-sleep_interruptible() {
+# Sleep in short slices and re-check the clock each time: a single long
+# /bin/sleep does not track wall-clock time across system suspend, so a loop
+# would wake late by however long the machine was asleep. Backgrounding sleep
+# keeps the wait interruptible by the stop signal.
+sleep_until_epoch() {
+	local now sleep_seconds
 	write_state sleeping
-	/bin/sleep "$1" &
-	wait $!
+	while true; do
+		now="$(epoch_now)"
+		(( now >= $1 )) && return 0
+		sleep_seconds=$(($1 - now))
+		(( sleep_seconds > ${SLEEP_POLL_SECONDS} )) && sleep_seconds=${SLEEP_POLL_SECONDS}
+		/bin/sleep "$sleep_seconds" &
+		wait $!
+	done
 }
 
 wait_for_daily_run() {
-	local now delay
 	if ! next_run_epoch="$(next_daily_epoch)"; then
 		log_worker "schedule_error daily_time=$PI_LOOP_DAILY_TIME"
 		next_run_epoch=""
 		write_state schedule_error
 		exit 73
 	fi
-	now="$(epoch_now)"
-	delay=$((next_run_epoch - now))
-	(( delay < 1 )) && delay=1
-	log_worker "daily_sleep iteration=$iteration delay_seconds=$delay next_run_epoch=$next_run_epoch local_time=$PI_LOOP_DAILY_TIME"
-	sleep_interruptible "$delay"
+	log_worker "daily_sleep iteration=$iteration delay_seconds=$((next_run_epoch - $(epoch_now))) next_run_epoch=$next_run_epoch local_time=$PI_LOOP_DAILY_TIME"
+	sleep_until_epoch "$next_run_epoch"
 }
 
 DATE_STYLE=bsd
@@ -672,7 +680,7 @@ while true; do
 		(( delay <= 0 )) && delay=$PI_LOOP_INTERVAL_SECONDS
 		next_run_epoch=$((now_epoch + delay))
 		log_worker "iteration_sleep iteration=$iteration delay_seconds=$delay next_run_epoch=$next_run_epoch"
-		sleep_interruptible "$delay"
+		sleep_until_epoch "$next_run_epoch"
 	fi
 done
 `

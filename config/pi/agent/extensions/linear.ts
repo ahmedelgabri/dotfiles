@@ -1,6 +1,3 @@
-import {mkdtemp, writeFile} from 'node:fs/promises'
-import {tmpdir} from 'node:os'
-import {join} from 'node:path'
 import type {
 	ExtensionAPI,
 	TruncationResult,
@@ -9,28 +6,25 @@ import {
 	DEFAULT_MAX_BYTES,
 	DEFAULT_MAX_LINES,
 	formatSize,
-	truncateHead,
-	withFileMutationQueue,
 } from '@earendil-works/pi-coding-agent'
 import {Type} from 'typebox'
+import {saveTruncatedOutput} from './lib/truncated-output.ts'
 
 const LINEAR_API_URL = 'https://api.linear.app/graphql'
 const REQUEST_TIMEOUT_MS = 30_000
-const MAX_QUERY_BYTES = 64 * 1024
-const MAX_VARIABLES_BYTES = 64 * 1024
+const MAX_INPUT_BYTES = 64 * 1024
 const MAX_RESPONSE_BYTES = 5 * 1024 * 1024
 
-interface GraphQLError {
-	message?: string
-	locations?: Array<{line?: number; column?: number}>
-	path?: Array<string | number>
-	extensions?: Record<string, unknown>
-}
+const RATE_LIMIT_HEADERS: Array<[keyof LinearRateLimitDetails, string]> = [
+	['requestRemaining', 'x-ratelimit-requests-remaining'],
+	['requestReset', 'x-ratelimit-requests-reset'],
+	['complexity', 'x-complexity'],
+	['complexityRemaining', 'x-ratelimit-complexity-remaining'],
+	['complexityReset', 'x-ratelimit-complexity-reset'],
+]
 
 interface GraphQLResponse {
-	data?: unknown
-	errors?: GraphQLError[]
-	extensions?: Record<string, unknown>
+	errors?: unknown[]
 }
 
 interface LinearRateLimitDetails {
@@ -49,36 +43,10 @@ interface LinearGraphQLDetails {
 	fullOutputPath?: string
 }
 
-interface RequestSignal {
-	signal: AbortSignal
-	timedOut: () => boolean
-	cleanup: () => void
-}
-
-function createRequestSignal(signal?: AbortSignal): RequestSignal {
-	const controller = new AbortController()
-	let didTimeOut = false
-
-	const abortFromCaller = () => controller.abort(signal?.reason)
-	if (signal?.aborted) {
-		abortFromCaller()
-	} else {
-		signal?.addEventListener('abort', abortFromCaller, {once: true})
-	}
-
-	const timeout = setTimeout(() => {
-		didTimeOut = true
-		controller.abort(new Error('Linear GraphQL request timed out'))
-	}, REQUEST_TIMEOUT_MS)
-
-	return {
-		signal: controller.signal,
-		timedOut: () => didTimeOut,
-		cleanup: () => {
-			clearTimeout(timeout)
-			signal?.removeEventListener('abort', abortFromCaller)
-		},
-	}
+function responseTooLarge(): Error {
+	return new Error(
+		`response exceeds ${formatSize(MAX_RESPONSE_BYTES)}. Narrow the query or paginate it.`,
+	)
 }
 
 function skipString(document: string, start: number): number {
@@ -106,7 +74,7 @@ function skipString(document: string, start: number): number {
 }
 
 /** Reject write and subscription operations without adding a GraphQL parser dependency. */
-export function assertReadOnlyDocument(document: string): void {
+function assertReadOnlyDocument(document: string): void {
 	let index = 0
 	let braceDepth = 0
 	let atDefinitionStart = true
@@ -149,10 +117,10 @@ export function assertReadOnlyDocument(document: string): void {
 			if (braceDepth === 0 && atDefinitionStart) {
 				const token = document.slice(start, index)
 				if (token === 'mutation') {
-					throw new Error('Linear GraphQL mutations are disabled.')
+					throw new Error('mutations are disabled.')
 				}
 				if (token === 'subscription') {
-					throw new Error('Linear GraphQL subscriptions are disabled.')
+					throw new Error('subscriptions are disabled.')
 				}
 				atDefinitionStart = false
 			}
@@ -166,19 +134,17 @@ export function assertReadOnlyDocument(document: string): void {
 async function readResponseBody(
 	response: Response,
 	signal: AbortSignal,
-): Promise<string> {
+): Promise<{body: string; bytes: number}> {
 	const contentLength = Number(response.headers.get('content-length'))
 	if (Number.isFinite(contentLength) && contentLength > MAX_RESPONSE_BYTES) {
-		throw new Error(
-			`Linear GraphQL response exceeds ${formatSize(MAX_RESPONSE_BYTES)}. Narrow the query or paginate it.`,
-		)
+		throw responseTooLarge()
 	}
 
-	if (!response.body) return ''
+	if (!response.body) return {body: '', bytes: 0}
 
 	const reader = response.body.getReader()
 	const decoder = new TextDecoder()
-	let bytesRead = 0
+	let bytes = 0
 	let body = ''
 
 	try {
@@ -187,17 +153,15 @@ async function readResponseBody(
 			const {done, value} = await reader.read()
 			if (done) break
 
-			bytesRead += value.byteLength
-			if (bytesRead > MAX_RESPONSE_BYTES) {
+			bytes += value.byteLength
+			if (bytes > MAX_RESPONSE_BYTES) {
 				await reader.cancel()
-				throw new Error(
-					`Linear GraphQL response exceeds ${formatSize(MAX_RESPONSE_BYTES)}. Narrow the query or paginate it.`,
-				)
+				throw responseTooLarge()
 			}
 			body += decoder.decode(value, {stream: true})
 		}
 		body += decoder.decode()
-		return body
+		return {body, bytes}
 	} finally {
 		reader.releaseLock()
 	}
@@ -205,47 +169,11 @@ async function readResponseBody(
 
 function rateLimitDetails(headers: Headers): LinearRateLimitDetails {
 	const details: LinearRateLimitDetails = {}
-	const values: Array<[keyof LinearRateLimitDetails, string]> = [
-		['requestRemaining', 'x-ratelimit-requests-remaining'],
-		['requestReset', 'x-ratelimit-requests-reset'],
-		['complexity', 'x-complexity'],
-		['complexityRemaining', 'x-ratelimit-complexity-remaining'],
-		['complexityReset', 'x-ratelimit-complexity-reset'],
-	]
-
-	for (const [key, header] of values) {
+	for (const [key, header] of RATE_LIMIT_HEADERS) {
 		const value = headers.get(header)
 		if (value) details[key] = value
 	}
-
 	return details
-}
-
-async function saveTruncatedOutput(output: string) {
-	const truncation = truncateHead(output, {
-		maxLines: DEFAULT_MAX_LINES,
-		maxBytes: DEFAULT_MAX_BYTES,
-	})
-
-	if (!truncation.truncated) {
-		return {text: truncation.content, truncation, fullOutputPath: undefined}
-	}
-
-	const tempDir = await mkdtemp(join(tmpdir(), 'pi-linear-'))
-	const tempFile = join(tempDir, 'response.json')
-	await withFileMutationQueue(tempFile, async () => {
-		await writeFile(tempFile, output, {encoding: 'utf8', mode: 0o600})
-	})
-
-	const omittedLines = truncation.totalLines - truncation.outputLines
-	const omittedBytes = truncation.totalBytes - truncation.outputBytes
-	let text = truncation.content
-	text += `\n\n[Output truncated: showing ${truncation.outputLines} of ${truncation.totalLines} lines`
-	text += ` (${formatSize(truncation.outputBytes)} of ${formatSize(truncation.totalBytes)}).`
-	text += ` ${omittedLines} lines (${formatSize(omittedBytes)}) omitted.`
-	text += ` Full output saved to: ${tempFile}]`
-
-	return {text, truncation, fullOutputPath: tempFile}
 }
 
 async function executeLinearGraphQL(
@@ -260,19 +188,21 @@ async function executeLinearGraphQL(
 		)
 	}
 
-	if (Buffer.byteLength(query, 'utf8') > MAX_QUERY_BYTES) {
-		throw new Error(`GraphQL query exceeds ${formatSize(MAX_QUERY_BYTES)}.`)
+	if (Buffer.byteLength(query, 'utf8') > MAX_INPUT_BYTES) {
+		throw new Error(`query exceeds ${formatSize(MAX_INPUT_BYTES)}.`)
 	}
 	assertReadOnlyDocument(query)
 
-	const variablesJson = JSON.stringify(variables)
-	if (Buffer.byteLength(variablesJson, 'utf8') > MAX_VARIABLES_BYTES) {
-		throw new Error(
-			`GraphQL variables exceed ${formatSize(MAX_VARIABLES_BYTES)}.`,
-		)
+	if (Buffer.byteLength(JSON.stringify(variables), 'utf8') > MAX_INPUT_BYTES) {
+		throw new Error(`variables exceed ${formatSize(MAX_INPUT_BYTES)}.`)
 	}
 
-	const requestSignal = createRequestSignal(signal)
+	const requestSignal = AbortSignal.any(
+		[signal, AbortSignal.timeout(REQUEST_TIMEOUT_MS)].filter(
+			(candidate): candidate is AbortSignal => candidate !== undefined,
+		),
+	)
+
 	try {
 		const response = await fetch(LINEAR_API_URL, {
 			method: 'POST',
@@ -282,15 +212,15 @@ async function executeLinearGraphQL(
 				Accept: 'application/json',
 			},
 			body: JSON.stringify({query, variables}),
-			signal: requestSignal.signal,
+			signal: requestSignal,
 		})
-		const body = await readResponseBody(response, requestSignal.signal)
+		const {body, bytes} = await readResponseBody(response, requestSignal)
 
 		if (!response.ok) {
 			const retryAfter = response.headers.get('retry-after')
 			const retryMessage = retryAfter ? ` Retry after ${retryAfter}.` : ''
 			throw new Error(
-				`Linear GraphQL returned HTTP ${response.status}.${retryMessage} ${body.slice(0, 1000)}`.trim(),
+				`returned HTTP ${response.status}.${retryMessage} ${body.slice(0, 1000)}`.trim(),
 			)
 		}
 
@@ -298,40 +228,40 @@ async function executeLinearGraphQL(
 		try {
 			parsed = JSON.parse(body) as unknown
 		} catch {
-			throw new Error('Linear GraphQL returned invalid JSON.')
+			throw new Error('returned invalid JSON.')
 		}
 		if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-			throw new Error('Linear GraphQL returned an unexpected response shape.')
+			throw new Error('returned an unexpected response shape.')
 		}
 		const result = parsed as GraphQLResponse
 
-		const output = JSON.stringify(result, null, 2)
-		const truncated = await saveTruncatedOutput(output)
+		const {text, ...truncated} = await saveTruncatedOutput(
+			JSON.stringify(result, null, 2),
+			'pi-linear-',
+			'response.json',
+		)
 		const details: LinearGraphQLDetails = {
 			hasErrors: Array.isArray(result.errors) && result.errors.length > 0,
-			responseBytes: Buffer.byteLength(body, 'utf8'),
+			responseBytes: bytes,
 			rateLimit: rateLimitDetails(response.headers),
-		}
-
-		if (truncated.truncation.truncated) {
-			details.truncation = truncated.truncation
-			details.fullOutputPath = truncated.fullOutputPath
+			...truncated,
 		}
 
 		return {
-			content: [{type: 'text' as const, text: truncated.text}],
+			content: [{type: 'text' as const, text}],
 			details,
 		}
 	} catch (error) {
-		if (signal?.aborted) throw new Error('Linear GraphQL request cancelled.')
-		if (requestSignal.timedOut()) {
+		if (
+			!signal?.aborted &&
+			error instanceof DOMException &&
+			error.name === 'TimeoutError'
+		) {
 			throw new Error(
-				`Linear GraphQL request timed out after ${REQUEST_TIMEOUT_MS / 1000} seconds.`,
+				`request timed out after ${REQUEST_TIMEOUT_MS / 1000} seconds.`,
 			)
 		}
 		throw error
-	} finally {
-		requestSignal.cleanup()
 	}
 }
 
@@ -352,7 +282,6 @@ export default function linearExtension(pi: ExtensionAPI) {
 				query: Type.String({
 					description: 'Read-only GraphQL query or introspection document',
 					minLength: 1,
-					maxLength: MAX_QUERY_BYTES,
 				}),
 				variables: Type.Optional(
 					Type.Object(
@@ -376,6 +305,10 @@ export default function linearExtension(pi: ExtensionAPI) {
 					signal,
 				)
 			} catch (error) {
+				if (signal?.aborted) {
+					throw new Error('Linear GraphQL request cancelled.')
+				}
+
 				const message = error instanceof Error ? error.message : String(error)
 				throw new Error(`Linear GraphQL failed: ${message}`)
 			}
