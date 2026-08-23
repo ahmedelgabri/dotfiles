@@ -120,6 +120,46 @@ pack.add {
 				},
 			})
 
+			local function supports_native_ts(bin)
+				local candidates = { utils.get_lsp_bin(bin) or '', vim.fn.exepath(bin) }
+
+				for _, candidate in ipairs(candidates) do
+					local ok, result = pcall(function()
+						return vim
+							.system({ candidate, '--version' }, { text = true })
+							:wait()
+					end)
+
+					if ok and result.code == 0 then
+						local version = vim.version.parse(result.stdout or '')
+						if version and version.major >= 7 then
+							return true
+						end
+					end
+				end
+
+				return false
+			end
+
+			local has_native_ts = supports_native_ts 'tsc'
+				or supports_native_ts 'tsgo'
+			local has_vtsls = utils.get_lsp_bin 'vtsls' ~= nil
+
+			-- Native builds before 7.0.0-dev.20260612.1 dereference null
+			-- initialization options while resolving CodeLens requests.
+			-- https://github.com/microsoft/typescript-go/pull/4281
+			local function has_buggy_tsc_codelens(client)
+				if client.name ~= 'tsc' or not client.server_info then
+					return false
+				end
+
+				local version = vim.version.parse(client.server_info.version or '')
+				return version ~= nil
+					and version.prerelease ~= nil
+					and vim.startswith(version.prerelease, 'dev.')
+					and vim.version.lt(version, '7.0.0-dev.20260612.1')
+			end
+
 			local servers = {
 				{ 'cssls', 'vscode-css-language-server' },
 				{ 'stylelint_lsp', 'stylelint-lsp' },
@@ -127,8 +167,8 @@ pack.add {
 				{ 'eslint', 'vscode-eslint-language-server' },
 				{ 'oxlint', utils.get_lsp_bin 'oxlint' },
 				{ 'oxfmt', utils.get_lsp_bin 'oxfmt' },
-				{ 'tsgo', utils.get_lsp_bin 'tsgo' ~= nil },
-				{ 'vtsls', utils.get_lsp_bin 'tsgo' == nil },
+				{ 'tsc', has_native_ts },
+				{ 'vtsls', not has_native_ts and has_vtsls },
 				{ 'denols', 'deno' },
 				{ 'biome', utils.get_lsp_bin 'biome' },
 				{ 'tailwindcss', 'tailwindcss-language-server' },
@@ -352,8 +392,9 @@ pack.add {
 					end
 
 					if client:supports_method 'textDocument/codeLens' then
-						vim.lsp.codelens.enable(true, {
+						vim.lsp.codelens.enable(not has_buggy_tsc_codelens(client), {
 							bufnr = bufnr,
+							client_id = client.id,
 						})
 					end
 
