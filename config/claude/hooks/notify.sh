@@ -6,15 +6,22 @@ set -ue -o pipefail
 # runtime instead of hardcoding the darwin-only terminal-notifier in the
 # hook command line.
 
-# GHOSTTY_BIN_DIR is only set inside Ghostty, which surfaces Claude
-# notifications itself; only sessions in other terminals need an explicit
-# desktop notification (the -activate flag focuses Ghostty on click).
-if [ -n "${GHOSTTY_BIN_DIR:-}" ]; then
+message=$(jq -r '.message // empty')
+message=$(printf '%s' "$message" | tr -d '\000-\037')
+if [ -z "$message" ]; then
 	exit 0
 fi
 
-message=$(jq -r '.message // empty')
-if [ -z "$message" ]; then
+# GHOSTTY_BIN_DIR is only set inside Ghostty, which surfaces Claude
+# notifications itself. tmux consumes those escape sequences, so send an
+# explicit passthrough sequence to the pane TTY when running inside tmux.
+if [ -n "${GHOSTTY_BIN_DIR:-}" ]; then
+	if [ -n "${TMUX:-}" ] && command -v tmux >/dev/null 2>&1; then
+		pane_tty=$(tmux display-message -p -t "${TMUX_PANE:-}" '#{pane_tty}' 2>/dev/null || true)
+		if [ -n "$pane_tty" ] && [ -w "$pane_tty" ]; then
+			printf '\033Ptmux;\033\033]777;notify;Claude;%s\007\033\134' "$message" >"$pane_tty"
+		fi
+	fi
 	exit 0
 fi
 
