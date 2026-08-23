@@ -7,10 +7,16 @@ import {
 	DEFAULT_MAX_LINES,
 	formatSize,
 } from '@earendil-works/pi-coding-agent'
+import {homedir} from 'node:os'
+import {join} from 'node:path'
 import {Type} from 'typebox'
 import {saveTruncatedOutput} from './lib/truncated-output.ts'
 
 const LINEAR_API_URL = 'https://api.linear.app/graphql'
+const CONFIG_HOME = process.env.XDG_CONFIG_HOME || join(homedir(), '.config')
+// Avoid depending on an interactive shell's PATH or resolving a project-local executable.
+const SECRET_COMMAND = join(CONFIG_HOME, 'zsh/bin/secret')
+const SECRET_TIMEOUT_MS = 60_000
 const REQUEST_TIMEOUT_MS = 30_000
 const MAX_INPUT_BYTES = 64 * 1024
 const MAX_RESPONSE_BYTES = 5 * 1024 * 1024
@@ -176,18 +182,40 @@ function rateLimitDetails(headers: Headers): LinearRateLimitDetails {
 	return details
 }
 
+async function getLinearApiKey(
+	pi: ExtensionAPI,
+	signal?: AbortSignal,
+): Promise<string> {
+	const result = await pi.exec(SECRET_COMMAND, ['get', 'linear-api-token'], {
+		signal,
+		timeout: SECRET_TIMEOUT_MS,
+	})
+	if (result.killed) {
+		throw new Error(
+			`keychain access timed out after ${SECRET_TIMEOUT_MS / 1000} seconds. Respond to any macOS Keychain access dialog and retry.`,
+		)
+	}
+	if (result.code !== 0) {
+		const reason = result.stderr.trim()
+		throw new Error(
+			reason ||
+				'could not read linear-api-token from the macOS login keychain.',
+		)
+	}
+
+	const apiKey = result.stdout.trim()
+	if (!apiKey) {
+		throw new Error('linear-api-token is empty in the macOS login keychain.')
+	}
+	return apiKey
+}
+
 async function executeLinearGraphQL(
+	pi: ExtensionAPI,
 	query: string,
 	variables: Record<string, unknown>,
 	signal?: AbortSignal,
 ) {
-	const apiKey = process.env.LINEAR_API_KEY?.trim()
-	if (!apiKey) {
-		throw new Error(
-			'LINEAR_API_KEY is not configured. Export a Linear API key restricted to Read permission before starting Pi.',
-		)
-	}
-
 	if (Buffer.byteLength(query, 'utf8') > MAX_INPUT_BYTES) {
 		throw new Error(`query exceeds ${formatSize(MAX_INPUT_BYTES)}.`)
 	}
@@ -197,6 +225,7 @@ async function executeLinearGraphQL(
 		throw new Error(`variables exceed ${formatSize(MAX_INPUT_BYTES)}.`)
 	}
 
+	const apiKey = await getLinearApiKey(pi, signal)
 	const requestSignal = AbortSignal.any(
 		[signal, AbortSignal.timeout(REQUEST_TIMEOUT_MS)].filter(
 			(candidate): candidate is AbortSignal => candidate !== undefined,
@@ -269,7 +298,7 @@ export default function linearExtension(pi: ExtensionAPI) {
 	pi.registerTool({
 		name: 'linear_graphql',
 		label: 'Linear GraphQL',
-		description: `Execute a model-generated, read-only GraphQL query against Linear. Supports schema introspection with __schema and __type; use targeted introspection such as __type(name: "Query") instead of fetching the entire schema. Mutations and subscriptions are rejected. Pass dynamic values through variables, request only needed fields, use explicit cursor pagination (normally first: 50 or less), and include pageInfo when more results may be needed. GraphQL validation errors are returned so the query can be corrected and retried. Output is truncated to ${DEFAULT_MAX_LINES} lines or ${formatSize(DEFAULT_MAX_BYTES)} (whichever is hit first), with complete truncated output saved to a private temp file. Requires LINEAR_API_KEY, which should have Linear's Read permission only.`,
+		description: `Execute a model-generated, read-only GraphQL query against Linear. Supports schema introspection with __schema and __type; use targeted introspection such as __type(name: "Query") instead of fetching the entire schema. Mutations and subscriptions are rejected. Pass dynamic values through variables, request only needed fields, use explicit cursor pagination (normally first: 50 or less), and include pageInfo when more results may be needed. GraphQL validation errors are returned so the query can be corrected and retried. Output is truncated to ${DEFAULT_MAX_LINES} lines or ${formatSize(DEFAULT_MAX_BYTES)} (whichever is hit first), with complete truncated output saved to a private temp file. Reads linear-api-token from the macOS login keychain; the key should have Linear's Read permission only.`,
 		promptSnippet:
 			"Query Linear's GraphQL API dynamically, including schema introspection",
 		promptGuidelines: [
@@ -300,6 +329,7 @@ export default function linearExtension(pi: ExtensionAPI) {
 		async execute(_toolCallId, params, signal) {
 			try {
 				return await executeLinearGraphQL(
+					pi,
 					params.query,
 					(params.variables ?? {}) as Record<string, unknown>,
 					signal,
