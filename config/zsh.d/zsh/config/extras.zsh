@@ -1,3 +1,51 @@
+# Use fzf for Atuin history so one picker can search shell and agent commands.
+# Ref: https://docs.atuin.sh/latest/guide/agent-hooks/
+if (( $+commands[atuin] )); then
+  fzf-atuin-history-widget() {
+    local selected
+    setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
+
+    local atuin_opts="--print0 --format '{relativetime}\\t{directory}\\t{command}'"
+    local fzf_opts=(
+      "--height=${FZF_TMUX_HEIGHT:-80%}"
+      "--tac"
+      $'--delimiter=\t'
+      "--with-nth=3.."
+      "--accept-nth=3.."
+      "--scheme=history"
+      "--preview=printf '%s\\n' {3..}"
+      "--preview-window=next:3:hidden:wrap"
+      "--bind=?:toggle-preview"
+      "--query=${LBUFFER}"
+      "--no-multi"
+      "--highlight-line"
+      "--read0"
+      "--track"
+      "--id-nth=3.."
+      "--header=CTRL-D directory · CTRL-R all · CTRL-A agents · CTRL-U user · CTRL-Y copy · ALT-M metadata"
+      "--bind=alt-m:change-with-nth(3..|1..),ctrl-y:execute-silent(printf '%s' {3..} | pbcopy)+abort"
+      "--bind=ctrl-d:reload(atuin search $atuin_opts -c ${(q)PWD}),ctrl-r:reload(atuin search $atuin_opts),ctrl-a:reload(atuin search $atuin_opts --author '\$all-agent'),ctrl-u:reload(atuin search $atuin_opts --author '\$all-user')"
+    )
+
+    if [[ -n ${TMUX-} ]]; then
+      fzf_opts+=("--popup=center,80%,80%" "--border=none")
+    fi
+
+    selected=$(eval "atuin search ${atuin_opts}" | fzf "${fzf_opts[@]}")
+
+    local ret=$?
+    if [[ -n $selected ]]; then
+      LBUFFER=$selected
+    fi
+
+    zle reset-prompt
+    return $ret
+  }
+
+  zle -N fzf-atuin-history-widget
+  bindkey '^R' fzf-atuin-history-widget
+fi
+
 # zoxide with fuzzy search
 # https://github.com/ajeetdsouza/zoxide/issues/34#issuecomment-2099442403
 zf() {

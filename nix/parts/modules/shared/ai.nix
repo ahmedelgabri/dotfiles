@@ -202,6 +202,9 @@ let
 
                 ".claude/settings.json".source =
                   config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/settings.json";
+
+                ".codex/hooks.json".source =
+                  config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/codex/hooks.json";
               }
             ]
           );
