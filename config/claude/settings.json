@@ -13,7 +13,6 @@
   },
   "includeCoAuthoredBy": false,
   "permissions": {
-    "defaultMode": "auto",
     "deny": [
       "Glob",
       "Grep",
@@ -37,7 +36,8 @@
       "Read(//**/zprofile)",
       "Read(//**/zshenv)",
       "Read(//**/zshrc)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "claude-fable-5[1m]",
   "hooks": {
@@ -342,6 +342,8 @@
       }
     }
   },
+  "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
+  "tui": "fullscreen",
   "theme": "auto"
 }
