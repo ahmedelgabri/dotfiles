@@ -4,7 +4,7 @@
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"moduleDetection": "force",
-		"lib": ["ESNext"],
+		"lib": ["ESNext", "DOM"],
 		"types": ["node"],
 		"allowJs": true,
 		"strict": true,
