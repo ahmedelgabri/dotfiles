@@ -22,6 +22,7 @@ pack.add {
 
 			require('fzf-lua').setup {
 				defaults = {
+					no_hide = true,
 					-- Git icons are very slow in large codea bases and not very useful
 					-- https://github.com/ibhagwan/fzf-lua/wiki#how-do-i-get-maximum-performance-out-of-fzf-lua
 					git_icons = false,
@@ -46,6 +47,7 @@ pack.add {
 					},
 				},
 				fzf_opts = {
+					['--border'] = 'thinblock',
 					['--pointer'] = '▶',
 					['--marker'] = '✓ ',
 					['--no-scrollbar'] = true,
