@@ -2,6 +2,7 @@
 set -ue -o pipefail
 
 FILE="$1"
+LINE="${2:-}"
 WIDTH="${FZF_PREVIEW_COLUMNS:-${COLUMNS:-80}}"
 HEIGHT="${FZF_PREVIEW_LINES:-${LINES:-24}}"
 X="${FZF_PREVIEW_TOP:-0}"
@@ -19,12 +20,20 @@ text/troff)
 	man -l "$1" | col -b
 	;;
 text/* | */xml | application/json | application/javascript)
-	if [[ $FILE == *.md ]]; then
+	if [[ $FILE == *.md && -z $LINE ]]; then
 		# Need `-s dark` to force color outside of interactive shell:
 		# https://github.com/charmbracelet/glow/issues/440
 		glow -s dark --width "$WIDTH" "$FILE"
 	else
-		bat --style=plain,changes --terminal-width "$WIDTH" --wrap never --color always "$FILE"
+		bat_style='plain,changes'
+		if [[ $LINE =~ ^[0-9]+$ ]]; then
+			bat_style='plain'
+		fi
+		bat_args=("--style=$bat_style" --terminal-width "$WIDTH" --wrap never --color always)
+		if [[ $LINE =~ ^[0-9]+$ ]]; then
+			bat_args+=(--highlight-line "$LINE")
+		fi
+		bat "${bat_args[@]}" "$FILE"
 	fi
 	;;
 application/pdf)

@@ -15,6 +15,8 @@
 				<string>#00000001</string>
 				<key>background</key>
 				<string>#00000001</string>
+				<key>lineHighlight</key>
+				<string>#3a3a3a</string>
 			</dict>
 		</dict>
 		<dict>

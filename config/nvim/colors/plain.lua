@@ -552,9 +552,6 @@ highlight('User4', { bg = nil, fg = colors.norm_very_subtle })
 highlight('WinBar', { bg = nil, fg = colors.norm_subtle })
 highlight('WinBarNC', { link = 'WinBar' })
 
--- FzfLua
-highlight('FzfLuaBorder', { link = 'Comment' })
-
 -- Render Markdown
 highlight('RenderMarkdownCode', { bg = colors.bg_very_subtle })
 highlight('RenderMarkdownH1Bg', { bg = nil })

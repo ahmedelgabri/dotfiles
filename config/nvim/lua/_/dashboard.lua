@@ -147,10 +147,7 @@ local function pack_update(opts)
 end
 
 local function pick_files()
-	local fzf_ok, fzf = pcall(require, 'fzf-lua')
-	if fzf_ok then
-		fzf.files()
-	end
+	pcall(vim.cmd.Files)
 end
 
 local function read_session_or_pick()

@@ -6,7 +6,7 @@ pack.add {
 		src = 'https://github.com/zk-org/zk-nvim',
 		config = function()
 			require('zk').setup {
-				picker = 'fzf_lua',
+				picker = 'fzf',
 				lsp = {
 					auto_attach = {
 						enabled = false,

@@ -65,11 +65,6 @@ pack.add {
 			set_up_loupe_highlight()
 		end,
 	},
-	{
-		src = 'https://github.com/junegunn/fzf',
-		name = 'fzf',
-		ft = { 'qf' },
-	},
 	{ src = 'https://github.com/kevinhwang91/nvim-bqf', ft = { 'qf' } },
 	{
 		src = 'https://github.com/jbyuki/venn.nvim',
