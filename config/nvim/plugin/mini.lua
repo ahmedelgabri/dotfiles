@@ -15,6 +15,20 @@ pack.add {
 				desc = 'Delete current buffer and open mini.starter if this was the last buffer',
 			})
 
+			local statuscolumn = require 'mini.statuscolumn'
+
+			local content = statuscolumn.gen_content.main({
+				{ format = 'l=f=s' },
+				{ ltype = 'wrap', lnum = '↳' },
+			}, {
+				click = statuscolumn.default_click,
+			})
+
+			statuscolumn.setup {
+				content = content,
+				dim_inactive = true,
+			}
+
 			-- Configure mini modules
 			-- Eager: cmdline, input, starter, misc (auto_root, restore_cursor)
 			require('mini.cmdline').setup {}

@@ -44,7 +44,7 @@ vim.o.softtabstop = 2 -- spaces inserted/removed when pressing <Tab>/<BS>
 vim.o.shiftwidth = 0 -- indent width for autoindent (0 = follow tabstop)
 vim.o.expandtab = false -- use real tab characters instead of spaces
 
-vim.o.signcolumn = 'yes' -- always show the sign column to avoid layout shifts
+vim.o.signcolumn = 'yes:2' -- always show two sign columns to avoid layout shifts
 
 vim.o.wildmode = 'noselect,full' -- show a navigable menu for command-line completion
 vim.o.wildignore = vim.o.wildignore
@@ -132,6 +132,7 @@ vim.o.fillchars = table.concat({
 	'fold:─',
 	'foldopen:▾',
 	'foldsep: ',
+	'foldinner: ',
 	'foldclose:▸',
 	'horiz:━',
 	'horizup:┻',
@@ -142,7 +143,7 @@ vim.o.fillchars = table.concat({
 	'verthoriz:╋',
 }, ',') -- glyphs used for window/fold/diff borders and separators
 
-vim.o.foldcolumn = '0' -- don't show the fold column gutter
+vim.o.foldcolumn = '1' -- show one fold level in the status column
 vim.o.foldlevel = 99 -- start with all folds open
 vim.o.foldnestmax = 20 -- maximum number of nested folds (20 is the cap)
 vim.o.foldminlines = 0 -- allow folding even single-line ranges
@@ -157,7 +158,7 @@ vim.o.smartindent = true -- smart auto-indenting for C-like syntax
 vim.o.wrap = false -- don't visually wrap long lines
 vim.o.breakindent = true -- visually indent wrapped lines to match the original
 vim.o.breakindentopt = 'list:-1' -- align wrapped list items under the item text
-vim.o.showbreak = '↳  ' -- prefix shown at the start of visually wrapped lines
+vim.o.showbreak = '' -- mark wrapped lines in the status column instead
 vim.o.hidden = true -- allow switching away from modified buffers
 
 vim.o.tildeop = true -- make `~` behave like an operator (e.g. `~w`)
