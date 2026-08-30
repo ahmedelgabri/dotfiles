@@ -20,8 +20,8 @@
     "hash": "sha256-sdCUJWDmSTbKnOMolJtabIJY6NCFEa3bfuu1TP2ghjo="
   },
   "@types/node": {
-    "version": "26.4.0",
-    "hash": "sha256-Go+3svMLRYnLRU8JxpNdc4GupnPyu+4Ib7Kh0bDxrcM="
+    "version": "26.4.1",
+    "hash": "sha256-hp8FPd93lY6FgeEEF592BKCwWP2nDEqvM4rs7JxsEok="
   },
   "undici-types": {
     "version": "8.3.0",
