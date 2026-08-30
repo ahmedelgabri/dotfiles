@@ -30,7 +30,9 @@ timezone = "local"
 update_check = false
 
 ## address of the sync server
-# sync_address = "https://api.atuin.sh"
+## Self-hosted on toasty (CT 106, LXC on Proxmox); reachable via LAN or
+## tailnet subnet routes. Payload is E2E-encrypted, so plain HTTP is fine.
+sync_address = "http://192.168.2.251:8888"
 
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
