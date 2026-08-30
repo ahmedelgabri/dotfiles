@@ -51,6 +51,7 @@ log-graph-prioritize = 'trunk() | present(@)'
 
 [aliases]
 fetch = ["git", "fetch", "--all-remotes"]
+sync = ["util", "exec", "--", "sh", "-c", "jj git fetch && jj new main"]
 g = ["git"]
 d = ["diff"]
 push = ["git", "push"]
