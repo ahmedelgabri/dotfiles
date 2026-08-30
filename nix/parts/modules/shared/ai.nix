@@ -8,6 +8,7 @@ let
       {
         environment.variables = {
           CLAUDE_CODE_TMPDIR = "$HOME/.claude/agent-tmp-stuff";
+          CODEX_HOME = "$HOME/.config/codex";
           PI_CODING_AGENT_DIR = "$HOME/.config/pi/agent";
         };
 
@@ -125,6 +126,12 @@ let
             targetRoot = "pi/agent";
           }
           // {
+            "codex/config.toml".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/codex/config.toml";
+            "codex/hooks.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/codex/hooks.json";
+            "codex/themes/plain.tmTheme".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/bat/themes/plain.tmTheme";
             "pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
           };
 

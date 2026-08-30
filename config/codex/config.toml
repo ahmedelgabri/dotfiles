@@ -1,0 +1,52 @@
+personality = "pragmatic"
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
+
+[tui]
+theme = "plain"
+
+[marketplaces.qmd]
+source_type = "git"
+source = "https://github.com/tobi/qmd.git"
+
+[plugins."qmd@qmd"]
+enabled = true
+
+# [mcp_servers.qmd]
+# command = "qmd"
+# args = ["mcp"]
+
+[mcp_servers.knowledge]
+command = "/etc/profiles/per-user/ahmed/bin/bun"
+args = ["$PROJECTS/personal/dev/my-knowledge-mcp/src/index.ts"]
+
+[mcp_servers.knowledge.env]
+NODE_ENV = "production"
+
+[features]
+context_management = true
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+followUpQueueMode = "queue"
+dock-icon-preference = "codex-system"
+mac-menu-bar-enabled = false
+preventSleepWhileRunning = true
+composerPlainTextMode = true
+show-context-window-usage = true
+external-agent-import-sync-enabled = true
+external-agent-import-sync-item-types = "all"
+usePointerCursors = true
+codeFontSize = 14
+browser-show-full-url = true
+open-local-url-in-target-preference = "external-browser"
+keepRemoteControlAwakeWhilePluggedIn = true
+git-always-force-push = true
+git-pull-request-merge-method = "squash"
+
+[desktop.appearanceLightChromeTheme.fonts]
+code = '"PragmataPro Mono Liga"'
+
+[desktop.appearanceDarkChromeTheme.fonts]
+code = '"PragmataPro Mono Liga"'
