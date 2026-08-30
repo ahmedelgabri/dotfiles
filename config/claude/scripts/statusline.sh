@@ -73,12 +73,42 @@ for ((i = 0; i < empty; i++)); do bar+="░"; done
 # Build context bar display
 context_info="${bar} ${context_percent}%"
 
-# One git spawn per render: an empty result covers both "not a repo" and
-# "detached HEAD", which is all the dropped rev-parse gate distinguished
-git_branch=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null)
+# A colocated jj repo also has a .git directory, so jj is tried first and its
+# failure exit doubles as "not a jj repo". --ignore-working-copy keeps the
+# statusline from snapshotting the working copy, which would race with the
+# user's own jj commands. The revset and template are the `prompt_revs()` and
+# `prompt_fields()` aliases in the jj config, shared with the shell prompt and
+# the pi footer so all three render the same data. For git, an empty result
+# covers both "not a repo" and "detached HEAD", which is all the dropped
+# rev-parse gate distinguished
+if jj_out=$(cd "$current_dir_full" 2>/dev/null && command jj log --ignore-working-copy --no-graph --color never \
+	-r 'prompt_revs()' -T 'prompt_fields()' 2>/dev/null); then
+	change=""
+	dirty=""
+	conflict=""
+	workspace=""
+	bookmarks=""
+	while IFS= read -r line; do
+		case "$line" in
+		change=*) change="${line#change=}" ;;
+		dirty=*) dirty="${line#dirty=}" ;;
+		conflict=*) conflict="${line#conflict=}" ;;
+		workspace=*) workspace="${line#workspace=}" ;;
+		# A merge @ can have several nearest bookmarked ancestors, one line each
+		bookmarks=*) bookmarks="${bookmarks:+$bookmarks,}${line#bookmarks=}" ;;
+		esac
+	done <<<"$jj_out"
+	workspace="${workspace%@}"
+	if [ "$workspace" = "default" ]; then
+		workspace=""
+	fi
+	vcs_info="${workspace:+[$workspace] }${change}${dirty}${conflict:+${RED}✗${NC}}${bookmarks:+ $bookmarks}"
+else
+	vcs_info=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null)
+fi
 
 output="/$current_dir"
-output+=" ($git_branch) ${GRAY}|${NC}"
+output+=" ($vcs_info) ${GRAY}|${NC}"
 output+=" $model"
 
 if [ -n "$added_display" ]; then

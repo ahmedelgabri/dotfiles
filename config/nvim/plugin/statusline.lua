@@ -1,5 +1,6 @@
 local au = require '_.utils.au'
 local components = require '_.statusline.components'
+local jj = require '_.statusline.jj'
 local lsp = require '_.statusline.lsp'
 
 local M = {}
@@ -36,14 +37,14 @@ function M.render_active()
 
 	if vim.bo.filetype == 'oil' then
 		return components.get_parts {
-			components.git_info(),
+			jj.info() or components.git_info(),
 			vim.fn.expand '%',
 		}
 	end
 
 	local line = components.get_parts {
 		'%#Statusline#',
-		components.git_info(),
+		jj.info() or components.git_info(),
 		components.filepath(),
 		components.readonly(),
 		vim.b.minidiff_summary_string,
@@ -123,6 +124,11 @@ au.augroup('MyStatusLine', {
 		event = 'User',
 		pattern = 'MiniDiffUpdated',
 		callback = components.format_diff_summary,
+	},
+	{
+		event = { 'BufEnter', 'DirChanged', 'FocusGained' },
+		pattern = '*',
+		callback = jj.update,
 	},
 	{
 		event = { 'RecordingEnter', 'RecordingLeave' },

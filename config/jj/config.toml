@@ -89,8 +89,29 @@ jsonlog = ["log", "--no-graph", "-T", "ndjson"]
 
 'blacklist()' = 'wip() | private()'
 
+# @ plus its nearest bookmarked ancestors, so a bookmark still shows while @
+# is an unnamed commit on top of it; when @ itself is bookmarked the union
+# collapses to @ alone. Consumed by the shell prompt, the Claude Code
+# statusline, and the pi footer together with the `prompt_fields()` template.
+'prompt_revs()' = '@ | heads(::@ & bookmarks())'
+
 
 [template-aliases]
+# Newline-delimited `key=value` lines describing @, evaluated over
+# `prompt_revs()`. The three prompt consumers parse these identically so they
+# always show the same data. `local_bookmarks` matches the local-only
+# `bookmarks()` revset; plain `bookmarks` would also list remote-only refs.
+'prompt_fields()' = '''
+if(self.contained_in("@"),
+  "change=" ++ change_id.shortest() ++ "\n" ++
+  "dirty=" ++ if(empty, "", "*") ++ "\n" ++
+  "conflict=" ++ if(conflict, "1", "") ++ "\n" ++
+  "workspace=" ++ working_copies ++ "\n",
+  ""
+) ++
+if(local_bookmarks, "bookmarks=" ++ local_bookmarks.map(|b| b.name()).join(",") ++ "\n", "")
+'''
+
 # Basic customizations.
 'format_short_change_id(id)' = 'id.shortest()'
 'format_short_signature(signature)' = '''if(signature.name(), signature.name(), label("text warning", "NO NAME"))'''

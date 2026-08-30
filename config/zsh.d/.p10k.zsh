@@ -2333,18 +2333,22 @@ _my_git_init
 ##############################################################################
 # my_jj: custom async jj segment
 #
-# Renders `[<workspace>] <change>@<sha>[ <bookmarks>][*]` for jj repos.
-# The `[<workspace>] ` prefix appears only when the current workspace
-# isn't the `default` one. Field details:
+# Renders `[<workspace>] <change>[*][✗][ <bookmarks>]` for jj
+# repos. The `[<workspace>] ` prefix appears only when the current workspace
+# isn't the `default` one. The fields come from the `prompt_fields()`
+# template alias in the jj config, shared with the Claude Code statusline and
+# the pi footer so all three render the same data:
 #
 #   workspace — current workspace name (jj template `working_copies`,
 #               with the trailing `@` stripped); omitted when `default`
 #   change    — shortest unique prefix of @'s change_id (jj's own
 #               short form, same as `format_short_change_id`)
-#   sha       — 7-char unique-prefix of @'s commit_id (git-style)
-#   bookmarks — comma-joined local bookmarks pointing at @, if any
 #   *         — present when @ has changes (non-empty), regardless of
 #               whether the working-copy commit already has a description
+#   bookmarks — comma-joined local bookmarks on @, or on its nearest
+#               bookmarked ancestors when @ itself has none
+#   ✗         — present when @ has unresolved conflicts
+#               (POWERLEVEL9K_MY_JJ_CONFLICT_ICON)
 #
 # Cached state is used immediately on first visit/new shell and rendered in
 # STALE_FOREGROUND while p10k's background worker refreshes it.
@@ -2356,10 +2360,9 @@ _my_git_init
 typeset -g POWERLEVEL9K_MY_JJ_FOREGROUND=${POWERLEVEL9K_MY_JJ_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_JJ_STALE_FOREGROUND=${POWERLEVEL9K_MY_JJ_STALE_FOREGROUND:-8}
 typeset -g POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-8}
-typeset -g POWERLEVEL9K_MY_JJ_AT_FOREGROUND=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-8}
-typeset -g POWERLEVEL9K_MY_JJ_SHA_FOREGROUND=${POWERLEVEL9K_MY_JJ_SHA_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND=${POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND:-4}
 typeset -g POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND=${POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND:-1}
+typeset -g POWERLEVEL9K_MY_JJ_CONFLICT_ICON=${POWERLEVEL9K_MY_JJ_CONFLICT_ICON:-✗}
 typeset -g POWERLEVEL9K_MY_JJ_VISUAL_IDENTIFIER_EXPANSION=
 
 typeset -gA _my_jj_state
@@ -2368,11 +2371,11 @@ typeset -g  _my_jj_last_root=''
 typeset -g  _my_jj_last_cache_serial=''
 
 _my_jj_blank() {
-  _my_jj_state=( workspace '' change '' sha '' bookmarks '' dirty '' stale '' probed_pwd '' )
+  _my_jj_state=( workspace '' change '' bookmarks '' dirty '' conflict '' stale '' probed_pwd '' )
 }
 
 _my_jj_cache_serial() {
-  REPLY="${_my_jj_state[workspace]:-}|${_my_jj_state[change]:-}|${_my_jj_state[sha]:-}|${_my_jj_state[bookmarks]:-}|${_my_jj_state[dirty]:-}"
+  REPLY="${_my_jj_state[workspace]:-}|${_my_jj_state[change]:-}|${_my_jj_state[bookmarks]:-}|${_my_jj_state[dirty]:-}|${_my_jj_state[conflict]:-}"
 }
 
 _my_jj_cache_path() {
@@ -2395,9 +2398,9 @@ _my_jj_store_cache() {
   local -A cache=(
     workspace "${_my_jj_state[workspace]:-}"
     change    "${_my_jj_state[change]:-}"
-    sha       "${_my_jj_state[sha]:-}"
     bookmarks "${_my_jj_state[bookmarks]:-}"
     dirty     "${_my_jj_state[dirty]:-}"
+    conflict  "${_my_jj_state[conflict]:-}"
   )
   local -a payload
   payload=( ${(qqkv)cache} )
@@ -2419,9 +2422,9 @@ _my_jj_load_cache() {
   _my_jj_state=(
     workspace  "${_my_jj_cached_state[workspace]:-}"
     change     "${_my_jj_cached_state[change]:-}"
-    sha        "${_my_jj_cached_state[sha]:-}"
     bookmarks  "${_my_jj_cached_state[bookmarks]:-}"
     dirty      "${_my_jj_cached_state[dirty]:-}"
+    conflict   "${_my_jj_cached_state[conflict]:-}"
     stale      1
     probed_pwd "$PWD"
   )
@@ -2436,11 +2439,18 @@ _my_jj_load_cache() {
 _my_jj_apply_output() {
   local out=$1 expected_pwd=$2
   if [[ -n $out ]]; then
-    local -A fields=( ok 0 pwd '' workspace '' change '' sha '' bookmarks '' dirty '' )
-    local line
+    local -A fields=( ok 0 pwd '' workspace '' change '' bookmarks '' dirty '' conflict '' )
+    local line key value
     for line in ${(f)out}; do
       [[ $line == *=* ]] || continue
-      fields[${line%%=*}]=${line#*=}
+      key=${line%%=*}
+      value=${line#*=}
+      # A merge @ can have several nearest bookmarked ancestors, one line each
+      if [[ $key == bookmarks && -n ${fields[bookmarks]} ]]; then
+        fields[bookmarks]+=",$value"
+      else
+        fields[$key]=$value
+      fi
     done
 
     [[ ${fields[pwd]} == "$expected_pwd" ]] || return 1
@@ -2454,9 +2464,9 @@ _my_jj_apply_output() {
     [[ $ws == "default" ]] && ws=
     _my_jj_state=(
       change     "${fields[change]}"
-      sha        "${fields[sha]}"
       bookmarks  "${fields[bookmarks]}"
       dirty      "${fields[dirty]}"
+      conflict   "${fields[conflict]}"
       workspace  "$ws"
       stale      ''
       probed_pwd "$expected_pwd"
@@ -2483,8 +2493,10 @@ _my_jj_async() {
   print -r -- "pwd=$pwd"
 
   local out
-  out=$(command jj log --no-graph -r @ -T \
-    '"change=" ++ change_id.shortest() ++ "\n" ++ "sha=" ++ commit_id.shortest(7) ++ "\n" ++ "bookmarks=" ++ bookmarks.map(|b| b.name()).join(",") ++ "\n" ++ "dirty=" ++ if(empty, "", "*") ++ "\n" ++ "workspace=" ++ working_copies' \
+  # --ignore-working-copy keeps the prompt from snapshotting, which would
+  # race the user's own jj commands; the dirty flag therefore reflects the
+  # last jj operation rather than live edits.
+  out=$(command jj log --ignore-working-copy --no-graph --color never -r 'prompt_revs()' -T 'prompt_fields()' \
     2>/dev/null) || { print -r -- 'ok=0'; return; }
 
   print -r -- 'ok=1'
@@ -2555,35 +2567,33 @@ prompt_my_jj() {
   local change=${_my_jj_state[change]:-}
   [[ -n $change ]] || return
 
-  local base ws_color at_color sha_color bookmark_color dirty_color
-  at_color=${POWERLEVEL9K_MY_JJ_AT_FOREGROUND:-242}
+  local base ws_color bookmark_color dirty_color
   if (( ${_my_jj_force_stale:-0} )) || [[ -n ${_my_jj_state[stale]:-} ]]; then
     base=$POWERLEVEL9K_MY_JJ_STALE_FOREGROUND
     ws_color=$base
-    sha_color=$base
     bookmark_color=$base
     dirty_color=$base
   else
     base=$POWERLEVEL9K_MY_JJ_FOREGROUND
     ws_color=${POWERLEVEL9K_MY_JJ_WORKSPACE_FOREGROUND:-$base}
-    sha_color=${POWERLEVEL9K_MY_JJ_SHA_FOREGROUND:-$base}
     bookmark_color=${POWERLEVEL9K_MY_JJ_BOOKMARK_FOREGROUND:-$base}
     dirty_color=${POWERLEVEL9K_MY_JJ_DIRTY_FOREGROUND:-$base}
   fi
 
   local safe_workspace=${_my_jj_state[workspace]//\%/%%}
   local safe_change=${change//\%/%%}
-  local safe_sha=${_my_jj_state[sha]//\%/%%}
   local safe_bookmarks=${_my_jj_state[bookmarks]//\%/%%}
 
   local content=""
   [[ -n ${_my_jj_state[workspace]} ]] && \
     content+="%F{$ws_color}[$safe_workspace]%F{$base} "
-  content+="$safe_change%F{$at_color}@%F{$sha_color}$safe_sha%F{$base}"
-  [[ -n ${_my_jj_state[bookmarks]} ]] && \
-    content+=" %F{$bookmark_color}$safe_bookmarks%F{$base}"
+  content+="$safe_change"
   [[ -n ${_my_jj_state[dirty]} ]] && \
     content+="%F{$dirty_color}${_my_jj_state[dirty]}%F{$base}"
+  [[ -n ${_my_jj_state[conflict]} ]] && \
+    content+="%F{$dirty_color}${POWERLEVEL9K_MY_JJ_CONFLICT_ICON}%F{$base}"
+  [[ -n ${_my_jj_state[bookmarks]} ]] && \
+    content+=" %F{$bookmark_color}$safe_bookmarks%F{$base}"
 
   p10k segment -f $base -t "$content"
 }
