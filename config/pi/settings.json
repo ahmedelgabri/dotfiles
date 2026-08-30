@@ -4,11 +4,12 @@
 	"defaultProvider": "openai-codex",
 	"defaultModel": "gpt-6-astra",
 	"enabledModels": [
-		"anthropic/claude-fable-5",
+		"anthropic/claude-fable-*",
 		"anthropic/claude-opus-5",
 		"anthropic/claude-sonnet-5",
 		"openai-codex/gpt-5.6*",
-		"openai-codex/gpt-6-astra"
+		"openai-codex/gpt-6-astra",
+		"xai/grok-4.6"
 	],
 	"showHardwareCursor": true,
 	"autocompleteMaxVisible": 10,
@@ -19,5 +20,8 @@
 	"collapseChangelog": false,
 	"quietStartup": false,
 	"treeFilterMode": "default",
-	"theme": "plain-dark"
+	"theme": "plain-dark",
+	"terminal": {
+		"hyperlinks": true
+	}
 }
