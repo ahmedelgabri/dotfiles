@@ -45,17 +45,9 @@ redirection overwrites files. When working in the dotfiles repository before the
 installed command has been updated, run `config/zsh.d/zsh/bin/mx --export` with
 the same arguments instead.
 
-The export preserves unlinked window names, pane counts, current pane
-directories, serialized tmux layouts, and active panes. It omits linked windows
-because `mx` appends `_shared` itself. It also omits running commands: tmux
-exposes the current process name but cannot recover the original command and
-arguments, so the exporter emits a comment for each pane instead of inventing a
-`send-keys` command.
+The export preserves unlinked window names, pane counts, current pane directories, serialized tmux layouts, active panes, and foreground commands recorded by the zsh integration. It omits linked windows because `mx` appends `_shared` itself. Commands started outside an integrated zsh or prefixed with a space are left as process-name comments because tmux cannot recover the original arguments.
 
-Review every exported command comment with the user. Add a restart command only
-when its full invocation is known. Do not inspect scrollback, shell history,
-pane contents, or pane environments unless the user asks; they can contain
-secrets and still may not reveal the original invocation reliably.
+Review every exported command with the user because arguments can contain secrets. Add or replace a restart command only when its full invocation is known. Do not inspect scrollback, shell history, pane contents, or pane environments unless the user asks; they can contain secrets and still may not reveal the original invocation reliably.
 
 Review the generated `MX_ROOT` and paths. The exporter chooses the first
 unlinked pane's current directory as `MX_ROOT`, uses `$HOME` and `$MX_ROOT`

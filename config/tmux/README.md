@@ -309,7 +309,7 @@ Sessions are created and attached with the `mx` script from `config/zsh.d/zsh/bi
 
 - `mx --list` enumerates candidates as TSV (`kind`, label, absolute path): named session definitions first, then project directories under `$PROJECTS`.
 - `mx --pick [query]` pipes that list into fzf (native `--popup` inside tmux) and launches the selection.
-- `mx --export [session]` prints a definition reconstructed from the current or named tmux session. Redirect stdout to the desired session file. The export preserves unlinked windows, pane directories, layouts, and active panes; running process names are emitted as comments because tmux cannot recover their original arguments.
+- `mx --export [session]` prints a definition reconstructed from the current or named tmux session. Redirect stdout to the desired session file. The export preserves unlinked windows, pane directories, layouts, active panes, and foreground commands recorded by zsh. Commands started outside an integrated zsh or prefixed with a space are emitted as process-name comments because tmux cannot recover their original arguments. Review exported commands for secrets before saving the definition.
 - `mx -h` and `mx --help` print usage and exit successfully.
 - `mx` creates or attaches: `mx` (session for `$PWD`), `mx <name>` (definition lookup, then project lookup by label), `mx --dir <path>` (plain session rooted exactly there, used by the picker).
 

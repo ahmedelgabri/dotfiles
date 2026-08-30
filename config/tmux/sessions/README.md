@@ -2,7 +2,7 @@
 
 Named session definitions for [`mx`](../../zsh.d/zsh/bin/mx). `mx <name>` looks up `$HOST_CONFIGS/tmux/sessions/<name>` first (host-local, not committed), then this directory (symlinked to `$XDG_CONFIG_HOME/tmux/sessions/`).
 
-`mx --export [session]` prints a starting definition from the current or named tmux session; redirect stdout to the desired file. It omits linked `_shared` windows, preserves pane directories and layouts, and writes current process names as comments for manual review because tmux cannot recover the original command arguments.
+`mx --export [session]` prints a starting definition from the current or named tmux session; redirect stdout to the desired file. It omits linked `_shared` windows and preserves pane directories, layouts, active panes, and foreground commands recorded by the zsh integration. Commands started outside an integrated zsh or prefixed with a space are left as process-name comments because tmux cannot recover their original arguments. Review exported commands for secrets before saving the definition.
 
 A definition is a plain bash file, `source`d by `mx` — no shebang or executable bit needed. It may set `MX_ROOT=<dir>` (the session's working directory) and define `mx_start()`, which `mx` calls synchronously right after creating the detached session, with cwd `$MX_ROOT` and `MX_SESSION`/`MX_ROOT` exported.
 

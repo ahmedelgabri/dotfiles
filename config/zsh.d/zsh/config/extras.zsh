@@ -69,6 +69,26 @@ zf() {
   [[ -n $selected ]] && builtin cd -- "$selected"
 }
 
+# Record the exact foreground command for mx --export. tmux only knows the
+# process name, and process inspection loses shell syntax and builtins.
+if [[ -n ${TMUX_PANE-} ]]; then
+  autoload -Uz add-zsh-hook
+
+  _mx_clear_command() {
+    command tmux set-option -pqu -t "$TMUX_PANE" @mx_command 2>/dev/null || true
+  }
+
+  _mx_record_command() {
+    _mx_clear_command
+    # Match HIST_IGNORE_SPACE so commands deliberately omitted from history
+    # are also omitted from exported session definitions.
+    [[ $1 == ' '* ]] || command tmux set-option -pq -t "$TMUX_PANE" @mx_command "$1" 2>/dev/null || true
+  }
+
+  add-zsh-hook preexec _mx_record_command
+  add-zsh-hook precmd _mx_clear_command
+fi
+
 # Project/session picker. Runs mx --pick as a real command via accept-line
 # instead of inside the widget: outside tmux, mx ends in `tmux attach`,
 # which must own the terminal — zle holds it while a widget runs.
