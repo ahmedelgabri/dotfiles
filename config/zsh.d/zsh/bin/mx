@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # mx
-# version 2.0
+# version 2.1
 
 # Contributors:
 #   Wynn Netherland - http://github.com/pengwynn
@@ -15,6 +15,9 @@
 #   mx --dir <path>     plain session rooted exactly at <path>
 #   mx --list           print session/project candidates as TSV
 #   mx --pick [query]   fuzzy-pick a candidate and launch it
+#   mx --export [session]
+#                       print a definition based on a tmux session
+#   mx -h|--help        print usage
 #
 # Session definitions are plain bash files sourced by mx, looked up as
 # $HOST_CONFIGS/tmux/sessions/<name> then $XDG_CONFIG_HOME/tmux/sessions/<name>.
@@ -36,9 +39,18 @@ if [[ -n "${DEBUG-}" ]]; then
 	set -x
 fi
 
+usage_text() {
+	echo "Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query] | mx --export [session]"
+}
+
 usage() {
-	echo "Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query]" >&2
+	usage_text >&2
 	exit 64
+}
+
+show_help() {
+	usage_text
+	exit 0
 }
 
 sanitize() {
@@ -103,7 +115,7 @@ emit_worktrees() {
 	for wt in "$proj"/*/; do
 		wt="${wt%/}"
 		[ -e "$wt/.git" ] || continue
-		emit dir "$label/$(basename "$wt")" "$wt"
+		emit dir "$label/${wt##*/}" "$wt"
 	done
 }
 
@@ -115,7 +127,7 @@ list_sessions() {
 		[ -n "$dir" ] && [ -d "$dir" ] || continue
 		for f in "$dir"/*; do
 			[ -f "$f" ] || continue
-			name="$(basename "$f")"
+			name="${f##*/}"
 			[ -n "${seen[$name]-}" ] && continue
 			seen[$name]=1
 			emit sess "$name" "$f"
@@ -127,17 +139,18 @@ list_flat() {
 	local d
 	for d in "$PROJECTS/$1"/*/; do
 		d="${d%/}"
-		emit dir "$1/$(basename "$d")" "$d"
+		emit dir "$1/${d##*/}" "$d"
 	done
 }
 
 list_work() {
-	local org proj label
+	local org org_name proj label
 	for org in "$PROJECTS/work"/*/; do
 		org="${org%/}"
+		org_name="${org##*/}"
 		for proj in "$org"/*/; do
 			proj="${proj%/}"
-			label="work/$(basename "$org")/$(basename "$proj")"
+			label="work/$org_name/${proj##*/}"
 			emit dir "$label" "$proj"
 			if [ -e "$proj/.bare" ]; then
 				emit_worktrees "$proj" "$label"
@@ -150,7 +163,7 @@ list_archive() {
 	local d label sub
 	for d in "$PROJECTS/archive"/*/; do
 		d="${d%/}"
-		label="archive/$(basename "$d")"
+		label="archive/${d##*/}"
 		if is_project "$d"; then
 			emit dir "$label" "$d"
 			if [ -e "$d/.bare" ]; then
@@ -159,7 +172,7 @@ list_archive() {
 		else
 			for sub in "$d"/*/; do
 				sub="${sub%/}"
-				emit dir "$label/$(basename "$sub")" "$sub"
+				emit dir "$label/${sub##*/}" "$sub"
 			done
 		fi
 	done
@@ -193,27 +206,131 @@ derive_name() {
 }
 
 link_shared_windows() {
-	local name="$1"
+	local name="$1" index window
 
-	if tmux has-session -t "=_shared:mail" 2>/dev/null; then
-		tmux link-window -s _shared:mail -t "=$name:6"
+	index="$(tmux list-windows -t "=$name" -F '#{window_index}' | tail -n 1)"
+	for window in mail rss HN dotfiles notes; do
+		if tmux has-session -t "=_shared:$window" 2>/dev/null; then
+			index=$((index + 1))
+			tmux link-window -s "=_shared:$window" -t "=$name:$index"
+		fi
+	done
+}
+
+# These helpers print shell code containing variables for the exported file.
+# shellcheck disable=SC2016
+export_root_expr() {
+	local path="$1" suffix
+	if [[ "$path" == "$HOME" ]]; then
+		printf '"$HOME"'
+	elif [[ "$path" == "$HOME/"* ]]; then
+		suffix="${path#"$HOME"/}"
+		printf '"$HOME"/%q' "$suffix"
+	else
+		printf '%q' "$path"
+	fi
+}
+
+# shellcheck disable=SC2016
+export_dir_expr() {
+	local path="$1" root="$2" suffix
+	if [[ "$path" == "$root" ]]; then
+		printf '"$MX_ROOT"'
+	elif [[ "$path" == "$root/"* ]]; then
+		suffix="${path#"$root"/}"
+		printf '"$MX_ROOT"/%q' "$suffix"
+	else
+		export_root_expr "$path"
+	fi
+}
+
+# Print a definition based on an existing session. Linked windows are omitted
+# because mx adds _shared after mx_start. Tmux can report the current process
+# name but not its original arguments, so commands are comments for review.
+# shellcheck disable=SC2016
+mx_export() {
+	local session="${1-}" linked first_window="" root="" window name layout
+	local pane path command active_pane i
+	local -a windows panes
+
+	if [[ -z "$session" ]]; then
+		if [[ -z ${TMUX-} ]]; then
+			echo "mx: --export needs a session name outside tmux" >&2
+			return 64
+		fi
+		session="$(tmux display-message -p '#{session_name}')"
 	fi
 
-	if tmux has-session -t "=_shared:rss" 2>/dev/null; then
-		tmux link-window -s _shared:rss -t "=$name:7"
+	if ! tmux has-session -t "=$session" 2>/dev/null; then
+		echo "mx: session not found: $session" >&2
+		return 1
 	fi
 
-	if tmux has-session -t "=_shared:HN" 2>/dev/null; then
-		tmux link-window -s _shared:HN -t "=$name:8"
+	mapfile -t windows < <(tmux list-windows -t "=$session" -F '#{window_index}')
+	for window in "${windows[@]}"; do
+		linked="$(tmux display-message -p -t "=$session:$window" '#{window_linked}')"
+		[[ "$linked" == 1 ]] && continue
+		mapfile -t panes < <(tmux list-panes -t "=$session:$window" -F '#{pane_index}')
+		[[ ${#panes[@]} -gt 0 ]] || continue
+		first_window="$window"
+		root="$(tmux display-message -p -t "=$session:$window.${panes[0]}" '#{pane_current_path}')"
+		break
+	done
+
+	if [[ -z "$first_window" ]]; then
+		echo "mx: session has no unlinked windows: $session" >&2
+		return 1
 	fi
 
-	if tmux has-session -t "=_shared:dotfiles" 2>/dev/null; then
-		tmux link-window -s _shared:dotfiles -t "=$name:9"
-	fi
+	printf '# Generated by mx --export from session %q.\n' "$session"
+	printf '# Linked windows are omitted; mx appends _shared after mx_start.\n'
+	printf '# Command comments only contain process names. Review the original arguments before adding send-keys.\n\n'
+	printf 'MX_ROOT=%s\n\n' "$(export_root_expr "$root")"
+	printf 'mx_start() {\n'
+	printf '\tlocal window pane\n'
+	printf '\tlocal -a panes\n\n'
 
-	if tmux has-session -t "=_shared:notes" 2>/dev/null; then
-		tmux link-window -s _shared:notes -t "=$name:10"
-	fi
+	for window in "${windows[@]}"; do
+		linked="$(tmux display-message -p -t "=$session:$window" '#{window_linked}')"
+		[[ "$linked" == 1 ]] && continue
+
+		name="$(tmux display-message -p -t "=$session:$window" '#{window_name}')"
+		layout="$(tmux display-message -p -t "=$session:$window" '#{window_layout}')"
+		mapfile -t panes < <(tmux list-panes -t "=$session:$window" -F '#{pane_index}')
+		[[ ${#panes[@]} -gt 0 ]] || continue
+
+		path="$(tmux display-message -p -t "=$session:$window.${panes[0]}" '#{pane_current_path}')"
+		if [[ "$window" == "$first_window" ]]; then
+			printf '\twindow=1\n'
+			printf '\ttmux rename-window -t "=$MX_SESSION:$window" %q\n' "$name"
+		else
+			printf '\twindow="$(tmux new-window -d -P -F %q -t "=$MX_SESSION:" -n %q -c %s)"\n' \
+				'#{window_index}' "$name" "$(export_dir_expr "$path" "$root")"
+		fi
+		printf '\tpanes=("$(tmux display-message -p -t "=$MX_SESSION:$window" %q)")\n' '#{pane_index}'
+
+		active_pane=0
+		for ((i = 0; i < ${#panes[@]}; i++)); do
+			pane="${panes[$i]}"
+			path="$(tmux display-message -p -t "=$session:$window.$pane" '#{pane_current_path}')"
+			command="$(tmux display-message -p -t "=$session:$window.$pane" '#{pane_current_command}')"
+			if [[ "$(tmux display-message -p -t "=$session:$window.$pane" '#{pane_active}')" == 1 ]]; then
+				active_pane="$i"
+			fi
+			printf '\t# pane %d command: %q\n' "$((i + 1))" "$command"
+			if ((i > 0)); then
+				printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window" -c %s)"\n' \
+					'#{pane_index}' "$(export_dir_expr "$path" "$root")"
+				printf '\tpanes+=("$pane")\n'
+			fi
+		done
+
+		if ((${#panes[@]} > 1)); then
+			printf '\ttmux select-layout -t "=$MX_SESSION:$window" %q\n' "$layout"
+		fi
+		printf '\ttmux select-pane -t "=$MX_SESSION:$window.${panes[%d]}"\n\n' "$active_pane"
+	done
+	printf '}\n'
 }
 
 # mx --pick [query] - fuzzy-pick a project or defined session, then launch it
@@ -273,6 +390,15 @@ main() {
 		mx_pick "${2-}"
 		exit 0
 		;;
+	--export)
+		[ $# -le 2 ] || usage
+		mx_export "${2-}"
+		exit $?
+		;;
+	-h | --help)
+		[ $# -eq 1 ] || usage
+		show_help
+		;;
 	--*)
 		usage
 		;;
@@ -319,10 +445,6 @@ main() {
 		export MX_ROOT="$root"
 		tmux new-session -d -s "$tmux_name" -c "$root"
 
-		# linked before mx_start so 6-10 are taken and definition windows
-		# fill 2-5 then skip past - no "index in use" abort
-		link_shared_windows "$tmux_name"
-
 		if [ -n "$session_file" ] && declare -F mx_start >/dev/null; then
 			# `if !` suppresses errexit inside mx_start; a failing command in
 			# a definition must not strand a half-built session before attach
@@ -332,6 +454,8 @@ main() {
 			fi
 		fi
 
+		# Definition windows come first; shared windows are appended afterwards.
+		link_shared_windows "$tmux_name"
 		tmux select-window -t "=$tmux_name:1"
 	fi
 
