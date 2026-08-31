@@ -28,12 +28,8 @@ let
             targetRoot = "ghostty";
           }
           // {
-            "ghostty/shaders" = {
-              recursive = true;
-              source = "${inputs.ghostty-cursor-shaders}";
-            };
             "ghostty/config.nix.local" = {
-              text = "custom-shader = shaders/cursor_tail.glsl";
+              text = "custom-shader = ${inputs.ghostty-cursor-shaders}/cursor_tail.glsl";
             };
           };
       };
