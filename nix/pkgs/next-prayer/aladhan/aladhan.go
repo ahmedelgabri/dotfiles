@@ -1,9 +1,7 @@
 package aladhan
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -79,7 +77,6 @@ func (a aladhan) GetAPI() (shared.ApiData, error) {
 		return shared.ApiData{}, fmt.Errorf("aladhan method is required")
 	}
 
-	client := &http.Client{}
 	query := url.Values{}
 	query.Set("city", a.params.City)
 	query.Set("country", a.params.Country)
@@ -95,24 +92,9 @@ func (a aladhan) GetAPI() (shared.ApiData, error) {
 	req.Header.Add("Host", "api.aladhan.com")
 	req.Header.Add("User-Agent", agents[rand.Intn(len(agents))])
 
-	resp, err := client.Do(req)
-	if err != nil {
-		return shared.ApiData{}, fmt.Errorf("request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return shared.ApiData{}, fmt.Errorf("aladhan API returned status %d", resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return shared.ApiData{}, fmt.Errorf("failed to read response: %w", err)
-	}
-
 	var obj Response
-	if err := json.Unmarshal(body, &obj); err != nil {
-		return shared.ApiData{}, fmt.Errorf("failed to parse response: %w", err)
+	if err := shared.FetchJSON(req, &obj); err != nil {
+		return shared.ApiData{}, fmt.Errorf("aladhan API: %w", err)
 	}
 
 	if obj.Code != http.StatusOK {

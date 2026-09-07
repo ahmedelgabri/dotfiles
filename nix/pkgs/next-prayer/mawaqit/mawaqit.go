@@ -2,9 +2,7 @@ package mawaqit
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 
@@ -82,26 +80,7 @@ func fetchJSON(url string, headers map[string]string, out any) error {
 		req.Header.Add(k, v)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("request failed with status %d", resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("failed to read response: %w", err)
-	}
-
-	if err := json.Unmarshal(body, out); err != nil {
-		return fmt.Errorf("failed to parse response: %w", err)
-	}
-
-	return nil
+	return shared.FetchJSON(req, out)
 }
 
 func getToken(user string, pass string) (string, error) {

@@ -1,6 +1,7 @@
 package shared
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -39,13 +40,12 @@ type Source interface {
 	GetAPI() (ApiData, error)
 }
 
-// CacheKey identifies the data source and the user's location for cache
-// keying. When any component changes (source, mosque, city, country, or the
-// day) the cache file name changes so prayer times are re-fetched. Without
-// the source and mosque, Mawaqit and Aladhan would share cache files and a
-// mosque switch would keep serving the old mosque's times for the day.
+// CacheKey identifies every input that can change a source's prayer times.
+// Variant carries source-specific parameters such as coordinates, calculation
+// method, and tuning. The date is added when the cache file name is built.
 type CacheKey struct {
 	Source  string
+	Variant string
 	Mosque  string
 	City    string
 	Country string
@@ -90,11 +90,18 @@ func sanitizePart(s string) string {
 	return strings.ReplaceAll(s, "/", "-")
 }
 
-// cacheFilename builds `.prayer-<source>[_<mosque>][_<city>_<country>]_<date>.json`.
-// The format is private to this package; external consumers (Hammerspoon,
-// scripts) should use the CLI's -json output instead of reading cache files.
+// cacheFilename builds `.prayer-<source>[_v-<hash>][_<mosque>][_<city>_<country>]_<date>.json`.
+// Variant holds source-specific request parameters which affect prayer times.
+// Hashing it keeps user input out of the file name while invalidating the cache
+// whenever those parameters change. The format is private to this package;
+// external consumers should use the CLI's -json output instead.
 func cacheFilename(key CacheKey, now time.Time) string {
 	parts := []string{key.Source}
+
+	if key.Variant != "" {
+		hash := sha256.Sum256([]byte(key.Variant))
+		parts = append(parts, fmt.Sprintf("v-%x", hash[:8]))
+	}
 
 	if mosque := sanitizePart(key.Mosque); mosque != "" {
 		parts = append(parts, mosque)

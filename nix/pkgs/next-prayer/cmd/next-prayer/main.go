@@ -139,6 +139,7 @@ func runMawaqit() {
 
 	key := shared.CacheKey{
 		Source:  "mawaqit",
+		Variant: fmt.Sprintf("lat=%g&lon=%g", params.Latitude, params.Longitude),
 		Mosque:  params.Mosque,
 		City:    config.ResolveString(*city, "", ""),
 		Country: config.ResolveString(*country, "", ""),
@@ -194,6 +195,7 @@ func runAladhan() {
 
 	key := shared.CacheKey{
 		Source:  "aladhan",
+		Variant: fmt.Sprintf("method=%d&tune=%s", params.Method, params.Tune),
 		City:    resolvedCity,
 		Country: resolvedCountry,
 	}

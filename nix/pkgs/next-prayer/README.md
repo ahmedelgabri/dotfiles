@@ -201,45 +201,34 @@ values:
 
 ## Caching
 
-Prayer times are cached daily in `$TMPDIR` to avoid repeated API calls. The
-cache key includes the source, mosque (Mawaqit only), location (city +
-country), and date, so the cache is automatically invalidated when:
+Prayer times are cached daily in `$TMPDIR` to avoid repeated API calls. The cache key includes the source, source-specific request parameters, mosque (Mawaqit only), location, and date, so the cache is automatically invalidated when:
 
 - A new day starts
-- The user's location changes (e.g. travelling)
-- The data source or the selected mosque changes
+- The user's coordinates change
+- The data source or selected mosque changes
+- The Aladhan calculation method or tuning changes
 
-Cache files are named
-`.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`, with empty
-parts omitted. Mawaqit cache files also include selected mosque metadata. A
-cached file whose timings fail validation is treated as a cache miss and
-refetched.
+Cache files are named `.prayer-<source>[_v-<parameters-hash>][_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`, with empty parts omitted. Mawaqit cache files also include selected mosque metadata. A cached file whose timings fail validation is treated as a cache miss and refetched.
 
 The cache file naming is an internal detail of this tool. External consumers such as the Hammerspoon `prayer.lua` menubar module use the `--json` output (via `get-prayer --json`) to get the day's schedule, the mosque metadata, and everything needed for notifications, instead of reading the cache files.
 
 ## tmux integration
 
-The companion script `get-prayer` is designed to be called from `tmux.conf`, and
-the Hammerspoon menubar module invokes it with `--json` to get its schedule:
+The companion script `get-prayer` is designed to be called from `tmux.conf`, and the Hammerspoon menubar module invokes it with `--json` to get its schedule:
 
 ```tmux
 set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
 ```
 
-`get-prayer` reads location data from `$TMPDIR/.location.json` (written by
-[Hammerspoon](https://www.hammerspoon.org/)) and decides which source to use:
+`get-prayer` reads location data from `$TMPDIR/.location.json` (written by [Hammerspoon](https://www.hammerspoon.org/)) and decides which source to use:
 
-- **Location available** → uses Mawaqit with the current lat/lon, passing city
-  and country for cache keying
-- **Location unavailable** → falls back to Aladhan using values from the config
-  file
+- **Location available** → uses Mawaqit with the current latitude and longitude
+- **Location unavailable** → falls back to Aladhan using values from the config file
 
 This means prayer times update automatically when:
 
 - tmux refreshes its status bar (controlled by `status-interval`)
-- The location changes (Hammerspoon writes new coordinates, the cache key
-  changes, and either the next tmux refresh or the menubar fallback fetches
-  fresh data)
+- The location changes (Hammerspoon writes new coordinates, the cache key changes, and either the next tmux refresh or the menubar fallback fetches fresh data)
 
 ## Building
 

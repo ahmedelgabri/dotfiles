@@ -35,6 +35,16 @@ func TestCacheFilename(t *testing.T) {
 			want: ".prayer-aladhan_amsterdam_nl_06-07-2026.json",
 		},
 		{
+			name: "source parameters use a stable hash",
+			key: CacheKey{
+				Source:  "aladhan",
+				Variant: "method=3&tune=0,0,0,0,0,0",
+				City:    "Amsterdam",
+				Country: "NL",
+			},
+			want: ".prayer-aladhan_v-f4786b2a9beb3e8a_amsterdam_nl_06-07-2026.json",
+		},
+		{
 			name: "source, mosque, and location",
 			key:  CacheKey{Source: "mawaqit", Mosque: "Blue Mosque", City: "Amsterdam", Country: "NL"},
 			want: ".prayer-mawaqit_blue-mosque_amsterdam_nl_06-07-2026.json",

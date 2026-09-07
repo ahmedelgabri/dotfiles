@@ -259,18 +259,9 @@ next-prayer aladhan -json
 
 ### Caching
 
-Prayer times are cached per day to
-`$TMPDIR/.prayer-<source>[_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`,
-where `<source>` is `mawaqit` or `aladhan` and the mosque part is present only
-for Mawaqit. City/country come from location data for Mawaqit or config for
-Aladhan. A new API call is only made when the cache file for the current
-source/mosque/date/location doesn't exist, so switching mosque or source takes
-effect immediately.
+Prayer times are cached per day to `$TMPDIR/.prayer-<source>[_v-<parameters-hash>][_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`, where `<source>` is `mawaqit` or `aladhan` and the mosque part is present only for Mawaqit. The parameter hash covers Mawaqit coordinates or the Aladhan calculation method and tuning. A new API call is made when the source, mosque, location, calculation settings, or date changes.
 
-The cache file name format is private to `next-prayer`; external consumers such
-as the Hammerspoon `prayer.lua` menubar module get the day's schedule through
-`get-prayer --json` (which passes `-json` to `next-prayer`) instead of reading
-the cache files.
+The cache file name format is private to `next-prayer`; external consumers such as the Hammerspoon `prayer.lua` menubar module get the day's schedule through `get-prayer --json` (which passes `-json` to `next-prayer`) instead of reading the cache files.
 
 ### Environment Variables
 
