@@ -305,8 +305,8 @@ let
                                   };
                                   source_cred_cmd = mkOption {
                                     type = types.str;
-                                    default = passCmd "source";
-                                    description = "Command to retrieve JMAP source credentials";
+                                    default = if config.service == "fastmail.com" then passCmd "source" else config.imap.password_cmd;
+                                    description = "Command to retrieve remote source credentials";
                                   };
                                   outgoing_server = mkOption {
                                     type = types.str;
