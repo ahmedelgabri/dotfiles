@@ -406,6 +406,7 @@ repo itself:
 | `nix develop`      | Provides the default development shell |
 | `nix fmt`          | Formats the Nix code with `nixfmt-rs`  |
 | `nix develop .#go` | Opens the Go-focused dev shell         |
+| `nix flake check --all-systems` | Runs formatting, type, shell, spelling, Go, and host evaluation checks |
 
 <!-- Reference links -->
 

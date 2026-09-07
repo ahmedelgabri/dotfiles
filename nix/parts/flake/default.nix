@@ -41,6 +41,7 @@
     ../hosts/nixos/default.nix
     ../outputs/overlays.nix
     ../outputs/pkgs.nix
+    ../outputs/checks.nix
     ../outputs/formatter.nix
     ../outputs/devshells.nix
     ../outputs/apps.nix
@@ -136,8 +137,6 @@
             info.enable = true;
             man.enable = true;
           };
-
-          programs.man.enable = true;
 
           my.user.home = "${homePrefix}/${config.my.username}";
 
