@@ -4,6 +4,7 @@
 		"module": "ESNext",
 		"moduleResolution": "bundler",
 		"moduleDetection": "force",
+		"preserveSymlinks": true,
 		"lib": ["ESNext", "DOM"],
 		"types": ["node"],
 		"allowJs": true,

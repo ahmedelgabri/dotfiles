@@ -12,12 +12,7 @@
  * taken from https://github.com/mitsuhiko/agent-stuff/blob/a3f8ab1108a48fec9e175f6cd5d9aaa4694ce29d/extensions/answer.ts
  */
 
-import {
-	complete,
-	type Model,
-	type Api,
-	type UserMessage,
-} from '@earendil-works/pi-ai'
+import type {Model, Api, UserMessage} from '@earendil-works/pi-ai'
 import type {
 	ExtensionAPI,
 	ExtensionContext,
@@ -482,21 +477,16 @@ export default function (pi: ExtensionAPI) {
 				loader.onAbort = () => done(null)
 
 				const doExtract = async () => {
-					const auth =
-						await ctx.modelRegistry.getApiKeyAndHeaders(extractionModel)
-					if (auth.ok === false) {
-						throw new Error(auth.error)
-					}
 					const userMessage: UserMessage = {
 						role: 'user',
 						content: [{type: 'text', text: lastAssistantText!}],
 						timestamp: Date.now(),
 					}
 
-					const response = await complete(
+					const response = await ctx.modelRegistry.complete(
 						extractionModel,
 						{systemPrompt: SYSTEM_PROMPT, messages: [userMessage]},
-						{apiKey: auth.apiKey, headers: auth.headers, signal: loader.signal},
+						{signal: loader.signal},
 					)
 
 					if (response.stopReason === 'aborted') {

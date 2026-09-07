@@ -50,13 +50,14 @@ import {
 	Container,
 	type Focusable,
 	Input,
+	type Keybinding,
 	Key,
 	Markdown,
 	SelectList,
 	Spacer,
 	type SelectItem,
 	Text,
-	TUI,
+	type TUI,
 	fuzzyMatch,
 	matchesKey,
 	truncateToWidth,
@@ -100,7 +101,7 @@ interface TodoSettings {
 }
 
 type KeybindingMatcher = {
-	matches: (keyData: string, keybindingId: string) => boolean
+	matches: (keyData: string, keybindingId: Keybinding) => boolean
 }
 
 const TodoParams = Type.Object({
@@ -1978,9 +1979,7 @@ export default function todosExtension(pi: ExtensionAPI) {
 			}
 
 			let nextPrompt: string | null = null
-			let rootTui: TUI | null = null
 			await ctx.ui.custom<void>((tui, theme, keybindings, done) => {
-				rootTui = tui
 				let selector: TodoSelectorComponent | null = null
 				let actionMenu: TodoActionMenuComponent | null = null
 				let deleteConfirm: TodoDeleteConfirmComponent | null = null
@@ -2263,7 +2262,6 @@ export default function todosExtension(pi: ExtensionAPI) {
 
 			if (nextPrompt) {
 				ctx.ui.setEditorText(nextPrompt)
-				rootTui?.requestRender()
 			}
 		},
 	})
