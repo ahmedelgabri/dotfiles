@@ -54,6 +54,7 @@
           runtimeImports,
           autoOptimiseStore,
           optimiseAutomatic,
+          trustedUsers,
           extraFonts,
           homePrefix,
           systemStateVersion,
@@ -91,7 +92,7 @@
                 ];
             package = pkgs.nix;
             settings = {
-              trusted-users = [ "@admin" ];
+              trusted-users = trustedUsers;
               experimental-features = [
                 "nix-command"
                 "flakes"
@@ -153,6 +154,7 @@
         ];
         autoOptimiseStore = false;
         optimiseAutomatic = true;
+        trustedUsers = [ "@admin" ];
         extraFonts = _: [ ];
         homePrefix = "/Users";
         systemStateVersion = 5;
@@ -166,6 +168,7 @@
         ];
         autoOptimiseStore = true;
         optimiseAutomatic = false;
+        trustedUsers = [ "@wheel" ];
         homePrefix = "/home";
         extraFonts =
           pkgs: with pkgs; [
