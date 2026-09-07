@@ -744,7 +744,12 @@ let
                         # boxes too, so without them the catch-all channel
                         # re-pairs the mapped channels' local folders.
                         lib.concatStringsSep " " (
-                          lib.unique (lib.concatMap (f: [ "!${f.remote}" "!${f.name}" ]) account.mbsync.folders)
+                          lib.unique (
+                            lib.concatMap (f: [
+                              "!${f.remote}"
+                              "!${f.name}"
+                            ]) account.mbsync.folders
+                          )
                         )
                       }${
                         lib.optionalString (

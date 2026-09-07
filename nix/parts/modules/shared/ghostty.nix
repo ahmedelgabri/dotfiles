@@ -19,7 +19,12 @@ let
       };
 
     homeManager =
-      { config, inputs, myConfig, ... }:
+      {
+        config,
+        inputs,
+        myConfig,
+        ...
+      }:
       {
         xdg.configFile =
           config.lib.file.mkOutOfStoreTree {

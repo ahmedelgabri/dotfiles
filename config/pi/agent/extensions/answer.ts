@@ -12,7 +12,13 @@
  * taken from https://github.com/mitsuhiko/agent-stuff/blob/a3f8ab1108a48fec9e175f6cd5d9aaa4694ce29d/extensions/answer.ts
  */
 
-import type {Model, Api, UserMessage} from '@earendil-works/pi-ai'
+import type {
+	Model,
+	Api,
+	AssistantMessage,
+	TextContent,
+	UserMessage,
+} from '@earendil-works/pi-ai'
 import type {
 	ExtensionAPI,
 	ExtensionContext,
@@ -40,6 +46,8 @@ interface ExtractedQuestion {
 interface ExtractionResult {
 	questions: ExtractedQuestion[]
 }
+
+type AssistantContent = AssistantMessage['content'][number]
 
 const SYSTEM_PROMPT = `You are a question extractor. Given text from a conversation, extract any questions that need answering.
 
@@ -442,8 +450,11 @@ export default function (pi: ExtensionAPI) {
 						return
 					}
 					const textParts = msg.content
-						.filter((c): c is {type: 'text'; text: string} => c.type === 'text')
-						.map((c) => c.text)
+						.filter(
+							(content: AssistantContent): content is TextContent =>
+								content.type === 'text',
+						)
+						.map((content: TextContent) => content.text)
 					if (textParts.length > 0) {
 						lastAssistantText = textParts.join('\n')
 						break

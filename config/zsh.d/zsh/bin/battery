@@ -51,7 +51,7 @@ battery_charge() {
 	case $(uname -s) in
 	"Darwin")
 		if ((pmset_on)) && command -v pmset &>/dev/null; then
-			if [ "$(pmset -g batt | grep -o 'AC Power')" ]; then
+			if pmset -g batt | grep -q 'AC Power'; then
 				BATT_CONNECTED=1
 			else
 				BATT_CONNECTED=0
@@ -60,7 +60,7 @@ battery_charge() {
 		else
 			maxcap=""
 			curcap=""
-			while read key value; do
+			while read -r key value; do
 				case $key in
 				"MaxCapacity")
 					maxcap=$value
@@ -69,7 +69,7 @@ battery_charge() {
 					curcap=$value
 					;;
 				"ExternalConnected")
-					if [ $value == "No" ]; then
+					if [ "$value" == "No" ]; then
 						BATT_CONNECTED=0
 					else
 						BATT_CONNECTED=1
@@ -85,24 +85,24 @@ battery_charge() {
 	"Linux")
 		case $(cat /etc/*-release) in
 		*"Arch Linux"* | *"Ubuntu"*)
-			battery_state=$(cat $battery_path/energy_now)
-			battery_full=$battery_path/energy_full
-			battery_current=$battery_path/energy_now
+			battery_state=$(cat "$battery_path/energy_now")
+			battery_full="$battery_path/energy_full"
+			battery_current="$battery_path/energy_now"
 			;;
 		*)
-			battery_state=$(cat $battery_path/status)
-			battery_full=$battery_path/charge_full
-			battery_current=$battery_path/charge_now
+			battery_state=$(cat "$battery_path/status")
+			battery_full="$battery_path/charge_full"
+			battery_current="$battery_path/charge_now"
 			;;
 		esac
-		if [ $battery_state == 'Discharging' ]; then
+		if [ "$battery_state" == 'Discharging' ]; then
 			BATT_CONNECTED=0
 		else
 			BATT_CONNECTED=1
 		fi
-		now=$(cat $battery_current)
-		full=$(cat $battery_full)
-		BATT_PCT=$((100 * $now / $full))
+		now=$(cat "$battery_current")
+		full=$(cat "$battery_full")
+		BATT_PCT=$((100 * now / full))
 		;;
 	esac
 }
@@ -175,7 +175,7 @@ print_status() {
 		else
 			if ((show_graph)); then
 				if command -v spark &>/dev/null; then
-					sparks=$(spark 0 ${BATT_PCT} 100)
+					sparks=$(spark 0 "$BATT_PCT" 100)
 					GRAPH=${sparks:1:1}
 				else
 					ascii=1
@@ -186,7 +186,7 @@ print_status() {
 				barlength=${#ascii_bar}
 
 				# Battery percentage rounded to the length of ascii_bar
-				rounded_n=$(($barlength * $BATT_PCT / 100 + 1))
+				rounded_n=$((barlength * BATT_PCT / 100 + 1))
 
 				# Creates the bar
 				GRAPH=$(printf "[%-${barlength}s]" "${ascii_bar:0:rounded_n}")
@@ -244,11 +244,11 @@ while getopts ":g:m:w:c:tizGab:p" opt; do
 		pmset_on=1
 		;;
 	b)
-		if [ -d $OPTARG ]; then
+		if [ -d "$OPTARG" ]; then
 			battery_path=$OPTARG
 		else
 			echo >&2 "Battery not found, trying to use default path..."
-			if [ ! -d $battery_path ]; then
+			if [ ! -d "$battery_path" ]; then
 				echo >&2 "Default battery path is also unreachable"
 				exit 1
 			fi

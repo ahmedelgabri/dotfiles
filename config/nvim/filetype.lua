@@ -43,8 +43,7 @@ vim.filetype.add {
 				-- silently skip bigfile detection.
 				local bufname = vim.api.nvim_buf_get_name(buf)
 				local real = vim.uv.fs_realpath(path) or path
-				local bufreal = vim.uv.fs_realpath(bufname)
-					or vim.fs.normalize(bufname)
+				local bufreal = vim.uv.fs_realpath(bufname) or vim.fs.normalize(bufname)
 				if real ~= bufreal then
 					return
 				end

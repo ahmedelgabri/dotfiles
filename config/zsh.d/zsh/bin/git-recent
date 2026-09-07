@@ -5,7 +5,7 @@ set -ue -o pipefail
 ##
 ## git-recent
 ##
-## list all local branches, sorted by last commit, formatted reall purdy
+## list all local branches, sorted by last commit, formatted real pretty
 ##
 
 # Windows needs more basic format (#8, git-for-windows/git#865)
@@ -29,7 +29,10 @@ while getopts "n:" opt; do
 			exit 1
 		fi
 		COUNT=${OPTARG}
-		shift
+		;;
+	\?)
+		echo "Invalid option: -$OPTARG" >&2
+		exit 1
 		;;
 	esac
 done
@@ -46,16 +49,16 @@ $spacer|\
 %(contents:subject)
 $spacer|"
 
-lessopts="--tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --no-init"
+lessopts=(--tabs=4 --quit-if-one-screen --RAW-CONTROL-CHARS --no-init)
 
 git for-each-ref \
 	--color=always \
-	--count=$COUNT \
+	--count="$COUNT" \
 	--sort=-committerdate \
 	"refs/heads/" \
 	--format="$format" |
 	column -ts '|' |
-	less "$lessopts"
+	less "${lessopts[@]}"
 
 # The above command:
 #   for all known branches,

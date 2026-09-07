@@ -71,9 +71,8 @@ local function resolveHandlerTarget(target)
 end
 
 local function resolveDefaultBrowser()
-	local configured = resolveHandlerTarget(
-		M.settings.urlDispatcher.default_handler
-	)
+	local configured =
+		resolveHandlerTarget(M.settings.urlDispatcher.default_handler)
 	if configured then
 		return configured
 	end
@@ -190,9 +189,7 @@ function M.buildURLDispatcherConfig()
 			decode_slack_redir_urls = settings.decode_slack_redir_urls ~= false,
 			set_system_handler = settings.set_system_handler ~= false,
 			url_patterns = buildDispatchRules(settings.url_patterns),
-			url_redir_decoders = utils.deepCopy(
-				settings.url_redir_decoders or {}
-			),
+			url_redir_decoders = utils.deepCopy(settings.url_redir_decoders or {}),
 		},
 	}
 end
@@ -261,10 +258,8 @@ function M.applyURLDispatcherConfig()
 end
 
 function M.configureURLDispatcher(overrides)
-	M.settings.urlDispatcher = mergeURLDispatcherConfig(
-		M.settings.urlDispatcher,
-		overrides or {}
-	)
+	M.settings.urlDispatcher =
+		mergeURLDispatcherConfig(M.settings.urlDispatcher, overrides or {})
 
 	if M.setupComplete then
 		return M.applyURLDispatcherConfig()

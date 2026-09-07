@@ -4,4 +4,5 @@ set -ue -o pipefail
 sw_vers
 echo
 system_profiler SPSoftwareDataType
-curl -s https://en.wikipedia.org/wiki/MacOS_version_history | grep -Eo "Version $(version=$(sw_vers -productVersion) && echo ${version%.*}): \"[^\s]+\"" | uniq
+version=$(sw_vers -productVersion)
+curl -s https://en.wikipedia.org/wiki/MacOS_version_history | grep -Eo "Version ${version%.*}: \"[^\s]+\"" | uniq

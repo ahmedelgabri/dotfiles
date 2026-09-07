@@ -141,7 +141,7 @@ let
           finder = {
             AppleShowAllExtensions = true;
             # QuitMenuItem = true;
-            _FXShowPosixPathInTitle = false; # In Big Sur this is so UGLY!
+            _FXShowPosixPathInTitle = false; # Keep the Finder title uncluttered.
             FXPreferredViewStyle = "Nlsv"; # List view
             ShowStatusBar = true;
           };

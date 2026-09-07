@@ -1,4 +1,4 @@
-import type {TextContent} from '@earendil-works/pi-ai'
+import type {AssistantMessage, TextContent} from '@earendil-works/pi-ai'
 import type {
 	ExtensionAPI,
 	ExtensionCommandContext,
@@ -9,6 +9,7 @@ import {homedir} from 'node:os'
 import {basename, dirname, extname, isAbsolute, join, resolve} from 'node:path'
 
 const DEFAULT_PREFIX = 'agent-message'
+type AssistantContent = AssistantMessage['content'][number]
 
 function timestampForFilename(timestamp = Date.now()): string {
 	return new Date(timestamp)
@@ -59,8 +60,11 @@ function latestAssistantMarkdown(ctx: ExtensionCommandContext): {
 			continue
 		}
 		const text = entry.message.content
-			.filter((block): block is TextContent => block.type === 'text')
-			.map((block) => block.text)
+			.filter(
+				(block: AssistantContent): block is TextContent =>
+					block.type === 'text',
+			)
+			.map((block: TextContent) => block.text)
 			.join('\n\n')
 			.trim()
 		if (text) {

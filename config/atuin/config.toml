@@ -119,7 +119,7 @@ history_filter = [
   "gh auth login --with-token",
 ]
 
-## Failed commands are disproportionately typos and mis-pasted secrets.
+## Failed commands are disproportionately typos and incorrectly pasted secrets.
 # store_failed = false
 
 ## prevent commands run with cwd matching any of these regexes from being written

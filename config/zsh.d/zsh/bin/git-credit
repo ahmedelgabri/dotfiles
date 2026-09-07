@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -ue -o pipefail
 #
 # A very slightly quicker way to credit an author on the latest commit.

@@ -1,4 +1,5 @@
 # vim:ft=bash
+# shellcheck shell=bash
 
 # https://github.com/direnv/direnv/wiki/Customizing-cache-location#human-readable-directories
 

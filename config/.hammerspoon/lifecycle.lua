@@ -75,13 +75,13 @@ end
 local function runPhase(name, fn)
 	local ok, result = xpcall(fn, debug.traceback)
 	if not ok then
-		log.ef("Lifecycle %s phase failed: %s", name, result)
+		log.ef('Lifecycle %s phase failed: %s', name, result)
 		completePhase(false)
 		return
 	end
 
 	if result == false then
-		log.wf("Lifecycle %s phase reported failure", name)
+		log.wf('Lifecycle %s phase reported failure', name)
 		completePhase(false)
 		return
 	end

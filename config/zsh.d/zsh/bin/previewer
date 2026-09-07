@@ -42,7 +42,7 @@ application/pdf)
 
 	if [ ! -e "$temp_image" ]; then
 		# Convert the first page of the PDF to an image
-		magick "$FILE[0]" -thumbnail x300 "$temp_image"
+		magick "${FILE}[0]" -thumbnail x300 "$temp_image"
 	fi
 
 	# Display the image and text side by side

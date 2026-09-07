@@ -239,8 +239,6 @@ let
                 enableGlobalCompInit = false;
                 enableBashCompletion = false;
 
-                enableAutosuggestions = true;
-
                 histSize = 10000000;
                 histFile = "${"$"}{ZDOTDIR}/.zsh_history";
 
@@ -461,7 +459,10 @@ let
               variables.BROWSER = "xdg-open";
             };
 
-            programs.zsh.enableSyntaxHighlighting = true;
+            programs.zsh = {
+              autosuggestions.enable = true;
+              syntaxHighlighting.enable = true;
+            };
           };
         };
 
@@ -504,7 +505,10 @@ let
                 ServiceIPC = false;
               };
             };
-            programs.zsh.enableFastSyntaxHighlighting = true;
+            programs.zsh = {
+              enableAutosuggestions = true;
+              enableFastSyntaxHighlighting = true;
+            };
 
             environment = {
               shellAliases = {

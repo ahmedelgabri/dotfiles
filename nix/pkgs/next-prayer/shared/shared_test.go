@@ -85,7 +85,7 @@ func TestValidateTimings(t *testing.T) {
 	garbage := validTimes
 	garbage.Fajr = "not a time"
 	if err := validateTimings(garbage); err == nil {
-		t.Error("unparseable Fajr accepted")
+		t.Error("unparsable Fajr accepted")
 	}
 }
 

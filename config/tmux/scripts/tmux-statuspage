@@ -7,7 +7,7 @@
 
 NAME="${1:?usage: tmux-statuspage <name> <statuspage-id> <icon>}"
 PAGE_ID="${2:?missing statuspage id}"
-ICON="$(printf -- "${3:?missing icon}")"
+ICON="$(printf '%b' "${3:?missing icon}")"
 
 CACHE_FILE="$TMPDIR/.tmux-${NAME}-status.tmp"
 CACHE_TTL=$((5 * 60)) # 5 minutes

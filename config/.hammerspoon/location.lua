@@ -138,8 +138,8 @@ function M.updateLocationData(opts)
 	end
 
 	local now = hs.timer.secondsSinceEpoch()
-	local minimumUpdateIntervalSeconds =
-		M.settings.minimumUpdateIntervalSeconds or 0
+	local minimumUpdateIntervalSeconds = M.settings.minimumUpdateIntervalSeconds
+		or 0
 	if
 		not opts.force
 		and M.lastUpdateAt > 0

@@ -3,16 +3,14 @@ set -ue -o pipefail
 # Code from: https://github.com/rec/gitz/blob/11b2604827fe85f261f3bceaa99fdcea621c41f3/git-st
 # Found on: https://www.reddit.com/r/git/comments/cfykfu/better_git_status/
 
-IFS=
-status="$(git -c color.status=always status -sb)"
-if [ $? -ne 0 ]; then
+if ! status="$(git -c color.status=always status -sb)"; then
   exit 1
 fi
 
 diff="$(git diff --color --stat HEAD 2>/dev/null | sed '$d; s/^ //' | cut -d '|' -f 2)"
 
-IFS=$'\n' status=($status)
-IFS=$'\n' diff=($diff)
+mapfile -t status <<< "$status"
+mapfile -t diff <<< "$diff"
 
 len=-1
 for i in $(seq 1 $((${#status[@]} - 1))); do

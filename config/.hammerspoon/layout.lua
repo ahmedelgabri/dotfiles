@@ -97,7 +97,8 @@ local function resolveBrowserCandidate(candidate)
 end
 
 local function resolveExternalBrowser()
-	local priority = M.config.externalBrowserPriority or utils.getBrowserPriority()
+	local priority = M.config.externalBrowserPriority
+		or utils.getBrowserPriority()
 
 	for _, candidate in ipairs(priority) do
 		local bundleID, resolved = resolveBrowserCandidate(candidate)

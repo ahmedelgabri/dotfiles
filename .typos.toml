@@ -1,2 +1,13 @@
 [files]
 ignore-hidden = false
+extend-exclude = ["nix/secrets/*.age"]
+
+[default.extend-identifiers]
+LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
+Pn = "Pn"
+enew = "enew"
+imput = "imput"
+rror = "rror"
+tatus = "tatus"
+ue = "ue"
+uffers = "uffers"
