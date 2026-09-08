@@ -254,7 +254,8 @@ let
                     export LESS_TERMCAP_me=$'\E[0m'      # Ends mode.
                     export LESS_TERMCAP_se=$'\E[0m'      # Ends standout-mode.
                     export LESS_TERMCAP_so=$'\E[7m'      # Begins standout-mode.
-                    export LESS_TERMCAP_ue=$'\E[0m'      # Ends underline.
+                    # Ends underline.
+                    export LESS_TERMCAP_ue=$'\E[0m' # spellchecker:disable-line
                     export LESS_TERMCAP_us=$'\E[1;32m'   # Begins underline.
                     # Remove path separator from WORDCHARS.
                     WORDCHARS=${"$"}{WORDCHARS//[\/]}

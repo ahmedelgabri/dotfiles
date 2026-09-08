@@ -75,7 +75,7 @@ or tools, ask which location to use.
 
 ## File contract
 
-A definition is a Bash fragment sourced by `mx` under `set -ue -o pipefail`. It
+A definition is a Bash fragment sourced by `mx` under `set -euo pipefail`. It
 needs no shebang and should not be executable.
 
 At top level, it may only:

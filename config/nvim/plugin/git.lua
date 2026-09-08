@@ -31,7 +31,7 @@ pack.add {
 				desc = '[G]it [B]rowse file',
 			})
 			vim.keymap.set({ 'n', 'v' }, '<leader>gs', ':Git<cr>', {
-				desc = '[G]it [S]tatus',
+				desc = '[G]it [S]tatus', -- spellchecker:disable-line
 			})
 
 			local fugitive_group =

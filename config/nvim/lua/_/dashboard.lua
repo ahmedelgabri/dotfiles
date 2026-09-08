@@ -211,7 +211,7 @@ local function bookmark_items()
 			icon = ' ',
 			desc = 'New File',
 			action = function()
-				vim.cmd.enew()
+				vim.cmd.enew() -- spellchecker:disable-line
 			end,
 		},
 		{

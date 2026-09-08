@@ -310,7 +310,7 @@ pack.add {
 							function()
 								vim.diagnostic.open_float(nil)
 							end,
-							{ desc = 'Show diagnostic [E]rror messages' },
+							{ desc = 'Show diagnostic [E]rror messages' }, -- spellchecker:disable-line
 						},
 						{
 							{ 'n' },
@@ -322,7 +322,7 @@ pack.add {
 								}
 								vim.cmd 'normal! zz'
 							end,
-							{ desc = 'Next [E]rror' },
+							{ desc = 'Next [E]rror' }, -- spellchecker:disable-line
 						},
 						{
 							{ 'n' },
@@ -334,7 +334,7 @@ pack.add {
 								}
 								vim.cmd 'normal! zz'
 							end,
-							{ desc = 'Previous [E]rror' },
+							{ desc = 'Previous [E]rror' }, -- spellchecker:disable-line
 						},
 					} do
 						local extra_opts = table.remove(item, 4)

@@ -108,7 +108,7 @@ pack.add {
 					with_preview({}, '{4}', true, '+{2}/2'),
 					false
 				)
-			end, { silent = true, desc = 'Search [B]uffers' })
+			end, { silent = true, desc = 'Search [B]uffers' }) -- spellchecker:disable-line
 
 			vim.keymap.set('n', '<leader>h', '<Cmd>Helptags<CR>', {
 				silent = true,

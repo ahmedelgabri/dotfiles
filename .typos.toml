@@ -2,12 +2,9 @@
 ignore-hidden = false
 extend-exclude = ["nix/secrets/*.age"]
 
-[default.extend-identifiers]
-LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
-Pn = "Pn"
-enew = "enew"
-imput = "imput"
-rror = "rror"
-tatus = "tatus"
-ue = "ue"
-uffers = "uffers"
+[default]
+extend-ignore-re = [
+  "(?Rm)^.*(#|//|--)\\s*spellchecker:disable-line$",
+  "(?m)^\\s*set -ue -o pipefail$",
+  "(?m)^eza:ue=36$",
+]

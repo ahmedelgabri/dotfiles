@@ -13,7 +13,7 @@ local APP_SPECS = {
 	},
 	helium = {
 		paths = { '/Applications/Helium.app' },
-		bundleIDs = { 'net.imput.helium' },
+		bundleIDs = { 'net.imput.helium' }, -- spellchecker:disable-line
 	},
 	safari = {
 		paths = {

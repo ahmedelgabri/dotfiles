@@ -29,7 +29,9 @@
 
         shellcheck = mkCheck "shellcheck" [ pkgs.shellcheck ] ''
           while IFS= read -r -d $'\0' file; do
-            case "$(head -n 1 "$file")" in
+            first_line=
+            IFS= read -r first_line < "$file" || true
+            case "$first_line" in
               *bash*|*'/bin/sh'*) shellcheck "$file" ;;
             esac
           done < <(find ${source} -type f -print0)
