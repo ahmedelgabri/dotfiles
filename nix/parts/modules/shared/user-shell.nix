@@ -142,7 +142,7 @@ let
                     LESS = "-F -g -i -M -R -S -w --redraw-on-quit --mouse --wheel-lines=3";
                     # LESSOPEN = "|${lib.getExe pkgs.lesspipe}.sh %s";
                     NEXT_TELEMETRY_DISABLED = "1";
-                    NOTES_DIR = "${PERSONAL_STORAGE}/notes";
+                    NOTES_DIR = "${PERSONAL_STORAGE}/notes/main";
                     PAGER = "less";
                     PERSONAL_STORAGE = "$HOME/Sync";
                     PROJECTS = "$HOME/${devFolder}";
