@@ -2,10 +2,13 @@ let
   module = {
     commonModule =
       {
+        config,
         pkgs,
         ...
       }:
       {
+        environment.etc."codex/config.toml".source = "${config.my.dotfilesDir}/config/codex/config.toml";
+
         environment.variables = {
           CLAUDE_CODE_TMPDIR = "$HOME/.claude/agent-tmp-stuff";
           CODEX_HOME = "$HOME/.config/codex";
@@ -126,10 +129,9 @@ let
             targetRoot = "pi/agent";
           }
           // {
-            "codex/config.toml".source =
-              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/codex/config.toml";
-            "codex/hooks.json".source =
-              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/codex/hooks.json";
+            "codex/hooks.json".source = pkgs.replaceVars ../../../../config/codex/hooks.json {
+              injectRepoInfo = "${config.home.homeDirectory}/.claude/hooks/inject-repo-info.sh";
+            };
             "codex/themes/plain.tmTheme".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/bat/themes/plain.tmTheme";
             "pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
