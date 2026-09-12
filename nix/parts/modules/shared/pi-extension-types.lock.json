@@ -3,10 +3,6 @@
     "version": "0.85.1",
     "hash": "sha256-H0mHKWSb3OZH0RYJk7TZK/PGFMyBkhO+4vkd008qevQ="
   },
-  "@earendil-works/pi-agent-core": {
-    "version": "0.85.1",
-    "hash": "sha256-SlecSco0Pc9zQXiRGRrMqNsIXP+5hZz9x5TYyyikrf4="
-  },
   "@earendil-works/pi-ai": {
     "version": "0.85.1",
     "hash": "sha256-r30RmGF5RFzm/oizfVfeIvgjwP/TplyuMcVVt/XpklM="
@@ -19,24 +15,16 @@
     "version": "0.85.1",
     "hash": "sha256-72ZDlzoXJcBfgPVbyZ8R8aNJgWmJcVDctobZyfamD+o="
   },
-  "@earendil-works/pi-telemetry": {
-    "version": "0.85.1",
-    "hash": "sha256-IhA6MsZXqx8MqN0LOtq0iSTFZjalqauLiaQ1WfsgExA="
-  },
-  "@earendil-works/chord": {
-    "version": "0.85.1",
-    "hash": "sha256-w7mDujFVdptIZ/I3AgWj79jaig8pLitvZf70DQhhwx8="
-  },
   "typebox": {
     "version": "1.3.7",
     "hash": "sha256-sdCUJWDmSTbKnOMolJtabIJY6NCFEa3bfuu1TP2ghjo="
   },
   "@types/node": {
-    "version": "26.4.1",
-    "hash": "sha256-hp8FPd93lY6FgeEEF592BKCwWP2nDEqvM4rs7JxsEok="
+    "version": "22.20.2",
+    "hash": "sha256-ZJIeubbKrjefLzpvALbkKyG950fxZ9OG07JcEL1rpcU="
   },
   "undici-types": {
-    "version": "8.3.0",
-    "hash": "sha256-B6chyyzQ3XmMJHV9400U6LZA/4/d74XWYuALOSViofI="
+    "version": "6.21.0",
+    "hash": "sha256-z6GppeGJiIUOVI9Pa2KcWNoy3DK+uxFuWOowHlFv0W0="
   }
 }
