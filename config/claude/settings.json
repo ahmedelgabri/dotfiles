@@ -39,7 +39,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5-1[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -338,5 +337,10 @@
   "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
-  "theme": "auto"
+  "theme": "auto",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  }
 }
