@@ -81,11 +81,11 @@ Example output:
   ]
 }`
 
-const CODEX_MODEL_ID = 'gpt-5.3'
-const HAIKU_MODEL_ID = 'claude-haiku-4-5'
+const CODEX_MODEL_ID = 'gpt-5.6-luna'
+const SONNET_MODEL_ID = 'claude-sonnet-5'
 
 /**
- * Prefer GPT-5.3 for extraction when available, otherwise fallback to haiku or the current model.
+ * Prefer GPT-5.6 Luna for extraction when available, otherwise fall back to Sonnet 5 or the current model.
  */
 async function selectExtractionModel(
 	currentModel: Model<Api>,
@@ -99,17 +99,17 @@ async function selectExtractionModel(
 		}
 	}
 
-	const haikuModel = modelRegistry.find('anthropic', HAIKU_MODEL_ID)
-	if (!haikuModel) {
+	const sonnetModel = modelRegistry.find('anthropic', SONNET_MODEL_ID)
+	if (!sonnetModel) {
 		return currentModel
 	}
 
-	const auth = await modelRegistry.getApiKeyAndHeaders(haikuModel)
+	const auth = await modelRegistry.getApiKeyAndHeaders(sonnetModel)
 	if (auth.ok === false) {
 		return currentModel
 	}
 
-	return haikuModel
+	return sonnetModel
 }
 
 /**
@@ -478,53 +478,51 @@ export default function (pi: ExtensionAPI) {
 		// carries real failures so they are not reported as cancellation.
 		const extractionResult = await ctx.ui.custom<
 			ExtractionResult | {error: string} | null
-		>(
-			(tui, theme, _kb, done) => {
-				const loader = new BorderedLoader(
-					tui,
-					theme,
-					`Extracting questions using ${extractionModel.id}...`,
-				)
-				loader.onAbort = () => done(null)
+		>((tui, theme, _kb, done) => {
+			const loader = new BorderedLoader(
+				tui,
+				theme,
+				`Extracting questions using ${extractionModel.id}...`,
+			)
+			loader.onAbort = () => done(null)
 
-				const doExtract = async () => {
-					const userMessage: UserMessage = {
-						role: 'user',
-						content: [{type: 'text', text: lastAssistantText!}],
-						timestamp: Date.now(),
-					}
-
-					const response = await ctx.modelRegistry.complete(
-						extractionModel,
-						{systemPrompt: SYSTEM_PROMPT, messages: [userMessage]},
-						{signal: loader.signal},
-					)
-
-					if (response.stopReason === 'aborted') {
-						return null
-					}
-
-					const responseText = response.content
-						.filter((c): c is {type: 'text'; text: string} => c.type === 'text')
-						.map((c) => c.text)
-						.join('\n')
-
-					const parsed = parseExtractionResult(responseText)
-					if (parsed === null) {
-						throw new Error('could not parse the extraction response')
-					}
-					return parsed
+			const doExtract = async () => {
+				const userMessage: UserMessage = {
+					role: 'user',
+					content: [{type: 'text', text: lastAssistantText!}],
+					timestamp: Date.now(),
 				}
 
-				doExtract()
-					.then(done)
-					.catch((err) =>
-						done({error: err instanceof Error ? err.message : String(err)}),
-					)
+				const response = await ctx.modelRegistry.complete(
+					extractionModel,
+					{systemPrompt: SYSTEM_PROMPT, messages: [userMessage]},
+					{signal: loader.signal},
+				)
 
-				return loader
-			},
-		)
+				if (response.stopReason === 'aborted') {
+					return null
+				}
+
+				const responseText = response.content
+					.filter((c): c is {type: 'text'; text: string} => c.type === 'text')
+					.map((c) => c.text)
+					.join('\n')
+
+				const parsed = parseExtractionResult(responseText)
+				if (parsed === null) {
+					throw new Error('could not parse the extraction response')
+				}
+				return parsed
+			}
+
+			doExtract()
+				.then(done)
+				.catch((err) =>
+					done({error: err instanceof Error ? err.message : String(err)}),
+				)
+
+			return loader
+		})
 
 		if (extractionResult !== null && 'error' in extractionResult) {
 			ctx.ui.notify(`Extraction failed: ${extractionResult.error}`, 'error')
