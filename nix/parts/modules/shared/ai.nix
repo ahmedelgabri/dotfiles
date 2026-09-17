@@ -216,9 +216,6 @@ let
         config = {
           homebrew = {
             brews = [ "openai/tools/tart" ];
-            casks = [
-              "codex-app"
-            ];
           };
           my.user.packages = with pkgs; [
             sb
