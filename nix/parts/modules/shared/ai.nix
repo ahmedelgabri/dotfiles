@@ -134,7 +134,14 @@ let
             };
             "codex/themes/plain.tmTheme".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/bat/themes/plain.tmTheme";
+
+            "codex/AGENTS.md".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
+
             "pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
+
+            "pi/agent/AGENTS.md".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
           };
 
         home = {
