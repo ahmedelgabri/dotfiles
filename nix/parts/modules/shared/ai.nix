@@ -130,7 +130,7 @@ let
           }
           // {
             "codex/hooks.json".source = pkgs.replaceVars ../../../../config/codex/hooks.json {
-              injectRepoInfo = "${config.home.homeDirectory}/.claude/hooks/inject-repo-info.sh";
+              injectRepoInfo = "${config.home.homeDirectory}/.dotfiles/config/claude/hooks/inject-repo-info.sh";
             };
             "codex/themes/plain.tmTheme".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/bat/themes/plain.tmTheme";
