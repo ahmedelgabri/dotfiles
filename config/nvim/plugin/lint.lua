@@ -25,6 +25,12 @@ pack.add {
 				['yaml.github'] = { 'actionlint' },
 			}
 
+			for ft, linters in pairs(lint.linters_by_ft) do
+				lint.linters_by_ft[ft] = vim.tbl_filter(function(name)
+					return vim.fn.executable(lint.linters[name].cmd) == 1
+				end, linters)
+			end
+
 			au.augroup('__LINT__', {
 				{
 					event = { 'BufReadPost', 'BufWritePost' },
