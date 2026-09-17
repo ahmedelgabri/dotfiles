@@ -145,21 +145,6 @@ pack.add {
 				or supports_native_ts 'tsgo'
 			local has_vtsls = utils.get_lsp_bin 'vtsls' ~= nil
 
-			-- Native builds before 7.0.0-dev.20260612.1 dereference null
-			-- initialization options while resolving CodeLens requests.
-			-- https://github.com/microsoft/typescript-go/pull/4281
-			local function has_buggy_tsc_codelens(client)
-				if client.name ~= 'tsc' or not client.server_info then
-					return false
-				end
-
-				local version = vim.version.parse(client.server_info.version or '')
-				return version ~= nil
-					and version.prerelease ~= nil
-					and vim.startswith(version.prerelease, 'dev.')
-					and vim.version.lt(version, '7.0.0-dev.20260612.1')
-			end
-
 			local servers = {
 				{ 'cssls', 'vscode-css-language-server' },
 				{ 'stylelint_lsp', 'stylelint-lsp' },
@@ -392,7 +377,7 @@ pack.add {
 					end
 
 					if client:supports_method 'textDocument/codeLens' then
-						vim.lsp.codelens.enable(not has_buggy_tsc_codelens(client), {
+						vim.lsp.codelens.enable(true, {
 							bufnr = bufnr,
 							client_id = client.id,
 						})
