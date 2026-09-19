@@ -7,12 +7,7 @@ import type {
 
 export type VcsKind = 'jj' | 'git'
 export type DiffStatus =
-	| 'added'
-	| 'modified'
-	| 'deleted'
-	| 'renamed'
-	| 'copied'
-	| 'unknown'
+	'added' | 'modified' | 'deleted' | 'renamed' | 'copied' | 'unknown'
 export type DiffSourceKind = 'working' | 'pr' | 'ref'
 
 type ExecResult = Awaited<ReturnType<ExtensionAPI['exec']>>
@@ -447,8 +442,9 @@ const canResolveJjRevision = async (
 const resolveDefaultGitBaseRef = async (
 	pi: ExtensionAPI,
 	gitRoot: string,
+	refs: readonly string[],
 ): Promise<string | null> => {
-	for (const ref of GIT_DEFAULT_BASE_REFS) {
+	for (const ref of refs) {
 		if (await resolveGitCommit(pi, gitRoot, ref)) {
 			return ref
 		}
@@ -506,6 +502,7 @@ const resolveDiffRequest = async (
 	jjRoot: string | null,
 	gitRoot: string | null,
 	args: string,
+	gitBaseRefs: readonly string[],
 ): Promise<DiffRequest> => {
 	const parsedArgs = splitDiffArgs(parseCommandArgs(args.trim()))
 	const first = parsedArgs.targetTokens[0]
@@ -521,7 +518,9 @@ const resolveDiffRequest = async (
 			}
 		}
 
-		const gitBase = gitRoot ? await resolveDefaultGitBaseRef(pi, gitRoot) : null
+		const gitBase = gitRoot
+			? await resolveDefaultGitBaseRef(pi, gitRoot, gitBaseRefs)
+			: null
 		if (gitBase) {
 			return {
 				kind: 'ref',
@@ -903,6 +902,7 @@ export const createDiffSnapshotLoader = (
 	pi: ExtensionAPI,
 	ctx: ExtensionCommandContext,
 	args: string,
+	gitBaseRefs: readonly string[] = GIT_DEFAULT_BASE_REFS,
 ) => {
 	// Roots and request kind are deterministic for fixed args, so resolve them
 	// once and reuse across refreshes instead of re-running jj/git/gh detection
@@ -916,7 +916,14 @@ export const createDiffSnapshotLoader = (
 		if (resolution) return resolution
 		const jjRoot = await getJjRoot(pi, ctx.cwd)
 		const gitRoot = await getGitRoot(pi, ctx.cwd)
-		const request = await resolveDiffRequest(pi, ctx.cwd, jjRoot, gitRoot, args)
+		const request = await resolveDiffRequest(
+			pi,
+			ctx.cwd,
+			jjRoot,
+			gitRoot,
+			args,
+			gitBaseRefs,
+		)
 		resolution = {jjRoot, gitRoot, request}
 		return resolution
 	}
