@@ -16,6 +16,11 @@
   coreutils,
 }:
 let
+  errorTrap = /* bash */ ''
+    set -E
+    trap 'status=$?; printf "[sb] line %s: %s failed with status %s\n" "$LINENO" "$BASH_COMMAND" "$status" >&2; exit "$status"' ERR
+  '';
+
   gitIni = formats.gitIni { };
   toml = formats.toml { };
 
@@ -77,6 +82,7 @@ let
   provisionScript = writeText "sb-provision.sh" /* bash */ ''
     #!/usr/bin/env bash
     set -Eeuo pipefail
+    ${errorTrap}
     export DEBIAN_FRONTEND=noninteractive
     # Silence locale noise during the bootstrap window (before `locales`
     # is installed). Dropped once the real locales are generated below.
@@ -86,17 +92,9 @@ let
 
     apt-get update -qq
 
-    # Install and generate locales that match the host. SSH's SendEnv
-    # forwards LC_TIME=en_GB.UTF-8 so that one must be available too.
-    apt-get install -y -qq locales
-    locale-gen en_US.UTF-8 en_GB.UTF-8
-    update-locale LANG=en_US.UTF-8
-    unset LC_ALL
-    export LANG=en_US.UTF-8
-
     apt-get upgrade -y -qq
     apt-get install -y -qq \
-      zsh git openssh-server curl wget ca-certificates gnupg \
+      locales zsh git openssh-server curl wget ca-certificates gnupg \
       build-essential ripgrep fd-find jq unzip
 
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
@@ -140,6 +138,50 @@ let
 
     apt-get autoremove -y
     apt-get clean
+
+    # Install and generate locales that match the host. SSH's SendEnv
+    # forwards LC_TIME=en_GB.UTF-8 so that one must be available too.
+    # Package maintainer scripts can reset locale.gen, so finalize it after
+    # all package transactions, and persist selections for future upgrades.
+    for locale in en_US.UTF-8 en_GB.UTF-8; do
+      if ! grep -qxF "$locale UTF-8" /etc/locale.gen; then
+        printf '%s UTF-8\n' "$locale" >> /etc/locale.gen
+      fi
+    done
+    printf '%s\n' \
+      'locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8, en_GB.UTF-8 UTF-8' \
+      'locales locales/default_environment_locale select en_US.UTF-8' \
+      | debconf-set-selections
+    locale-gen
+    update-locale LANG=en_US.UTF-8
+    unset LC_ALL
+    export LANG=en_US.UTF-8
+  '';
+
+  verifyScript = writeText "sb-verify.sh" /* bash */ ''
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+    ${errorTrap}
+    export LC_ALL=C.UTF-8
+
+    audit="$(dpkg --audit)"
+    if [ -n "$audit" ]; then
+      printf 'Broken or unconfigured packages:\n%s\n' "$audit" >&2
+      exit 1
+    fi
+    locales="$(locale -a)"
+    for expected in en_US.utf8 en_GB.utf8; do
+      if ! grep -qxF "$expected" <<< "$locales"; then
+        printf 'Missing locale: %s\n' "$expected" >&2
+        exit 1
+      fi
+    done
+    sshd -t
+    # sudo -i rewrites shell arguments, including newlines and dollar signs.
+    # Run each tool directly rather than passing a nested shell program.
+    for tool in git jj node claude pi; do
+      sudo -iu admin "$tool" --version
+    done
   '';
 in
 writeShellApplication {
@@ -162,9 +204,11 @@ writeShellApplication {
   ];
 
   text = ''
+    ${errorTrap}
     export SB_GIT_CONFIG="${gitConfigInVm}"
     export SB_JJ_CONFIG="${jjConfigInVm}"
     export SB_PROVISION_SCRIPT="${provisionScript}"
+    export SB_VERIFY_SCRIPT="${verifyScript}"
 
     # ── Logging ────────────────────────────────────────────────────────────
     # All helpers write to stderr so stdout is reserved for subcommand
@@ -205,6 +249,8 @@ writeShellApplication {
       -o UserKnownHostsFile=/dev/null
       -o LogLevel=ERROR
       -o ConnectTimeout=5
+      -o ServerAliveInterval=15
+      -o ServerAliveCountMax=8
       -o ControlPath=none
       -o PasswordAuthentication=yes
       -o PubkeyAuthentication=no
@@ -431,6 +477,44 @@ writeShellApplication {
       printf '%s\n' "$BASE_IMAGE"
     }
 
+    # Build state is global so the EXIT trap can still read it after the
+    # command returns and its local variables go out of scope.
+    finish_image_build() {
+      local status=$?
+      trap - EXIT ERR
+      trap "" INT TERM HUP
+      if [ "$status" -eq 0 ] && [ "$build_complete" = true ]; then
+        return
+      fi
+      [ "$status" -ne 0 ] || status=1
+
+      if [ -n "$build_ip" ]; then
+        sb_ssh "$build_ip" sync 2>/dev/null || info "Could not flush guest writes."
+      fi
+      if vm_exists "$build_vm"; then
+        tart stop "$build_vm" 2>/dev/null || true
+        if [ -n "$tart_pid" ] && ! vm_running "$build_vm"; then
+          wait "$tart_pid" 2>/dev/null || true
+        fi
+        info "Build failed; preserved '$build_vm' for inspection."
+        info "Inspect: tart run --no-graphics $build_vm"
+        info "Connect: ssh $VM_USER@\$(tart ip $build_vm) (password: $VM_PASS)"
+        info "Discard: tart delete $build_vm"
+      fi
+
+      # A failed promotion must not leave the public base name missing.
+      if vm_exists "$previous_vm"; then
+        if ! vm_exists "$BASE_IMAGE"; then
+          if ! tart rename "$previous_vm" "$BASE_IMAGE"; then
+            info "Restore the previous base with: tart rename $previous_vm $BASE_IMAGE"
+          fi
+        else
+          info "Previous base retained as '$previous_vm'."
+        fi
+      fi
+      exit "$status"
+    }
+
     # ── Commands ───────────────────────────────────────────────────────────
     cmd_build_image() {
       local force=false
@@ -445,13 +529,20 @@ writeShellApplication {
         if [ "$force" != true ]; then
           err "image '$BASE_IMAGE' already exists. Use --force to rebuild."
         fi
-        info "Deleting existing $BASE_IMAGE..."
-        tart delete "$BASE_IMAGE"
+        if vm_running "$BASE_IMAGE"; then
+          err "image '$BASE_IMAGE' is running; stop it before rebuilding."
+        fi
       fi
 
-      local build_vm="sb-build-$$"
-      # shellcheck disable=SC2064
-      trap "tart stop '$build_vm' 2>/dev/null || true; tart delete '$build_vm' 2>/dev/null || true" EXIT
+      build_vm="sb-build-$BASHPID"
+      previous_vm="$BASE_IMAGE-previous-$BASHPID"
+      build_ip=""
+      tart_pid=""
+      build_complete=false
+      trap finish_image_build EXIT
+      trap 'exit 130' INT
+      trap 'exit 143' TERM
+      trap 'exit 129' HUP
 
       info "Pulling $BASE_IMAGE_SOURCE..."
       tart pull "$BASE_IMAGE_SOURCE"
@@ -462,28 +553,48 @@ writeShellApplication {
 
       info "Starting build VM..."
       tart run --no-graphics "$build_vm" &
-      local tart_pid=$!
+      tart_pid=$!
 
-      local ip
-      ip="$(tart ip "$build_vm" --wait 120)"
-      info "Build VM IP: $ip"
+      build_ip="$(tart ip "$build_vm" --wait 120)"
+      info "Build VM IP: $build_ip"
 
-      wait_for_ssh "$ip"
+      wait_for_ssh "$build_ip"
 
       info "Copying provision script..."
-      sb_scp "$SB_PROVISION_SCRIPT" "$VM_USER@$ip:/tmp/provision.sh"
+      sb_scp "$SB_PROVISION_SCRIPT" "$VM_USER@$build_ip:/tmp/provision.sh"
 
       info "Running provision (this takes ~10 minutes)..."
-      sb_ssh "$ip" "chmod +x /tmp/provision.sh && sudo /tmp/provision.sh"
+      sb_ssh "$build_ip" "chmod +x /tmp/provision.sh && sudo /tmp/provision.sh"
+
+      # openssh-server upgrades can restart sshd during provisioning.
+      wait_for_ssh "$build_ip"
+      info "Verifying image..."
+      sb_scp "$SB_VERIFY_SCRIPT" "$VM_USER@$build_ip:/tmp/verify.sh"
+      sb_ssh "$build_ip" "sudo bash /tmp/verify.sh"
 
       info "Shutting down build VM..."
-      sb_ssh "$ip" "sudo shutdown -h now" || true
-      wait "$tart_pid" 2>/dev/null || true
+      sb_ssh "$build_ip" "sudo sync && sudo shutdown -h now" || info "SSH closed during shutdown; checking VM state."
+      local attempts=0
+      while vm_running "$build_vm"; do
+        attempts=$((attempts + 1))
+        [ "$attempts" -lt 60 ] || err "build VM did not shut down within 120 seconds"
+        sleep 2
+      done
+      wait "$tart_pid"
 
-      trap - EXIT
+      # Recheck in case the base was started while provisioning was running.
+      if vm_running "$BASE_IMAGE"; then
+        err "image '$BASE_IMAGE' is running; refusing to replace it."
+      fi
+      if vm_exists "$BASE_IMAGE"; then
+        tart rename "$BASE_IMAGE" "$previous_vm"
+      fi
       info "Saving as $BASE_IMAGE..."
-      tart clone "$build_vm" "$BASE_IMAGE"
-      tart delete "$build_vm"
+      tart rename "$build_vm" "$BASE_IMAGE"
+      if vm_exists "$previous_vm"; then
+        tart delete "$previous_vm"
+      fi
+      build_complete=true
       ok "Image '$BASE_IMAGE' ready."
     }
 

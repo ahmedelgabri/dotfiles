@@ -197,6 +197,8 @@ managed declaratively here, but it is installed and controlled through
 It also covers a few macOS-only dependencies that are awkward to source through
 Nix alone, such as `Tart`, which backs the `sb` sandbox helper.
 
+See [sandbox image build safety and validation](docs/upstream-adaptations.md#sandbox-image-builds) for rebuild, recovery, and test procedures.
+
 ## Machine-local configuration
 
 Not everything belongs in Git. This repo intentionally keeps some values outside
