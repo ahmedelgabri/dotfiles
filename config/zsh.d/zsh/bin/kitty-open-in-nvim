@@ -180,6 +180,12 @@ KITTY = shutil.which("kitty") or (
 
 
 def run(args: list[str], timeout: float = 5) -> subprocess.CompletedProcess[str]:
+    # Background launch actions receive an authorized socket FD rather than a
+    # filesystem address. Python otherwise closes it before kitty can use it.
+    listen_on = os.environ.get("KITTY_LISTEN_ON", "")
+    pass_fds = ()
+    if args[0] == KITTY and listen_on.startswith("fd:"):
+        pass_fds = (int(listen_on.removeprefix("fd:")),)
     return subprocess.run(
         args,
         check=False,
@@ -187,6 +193,7 @@ def run(args: list[str], timeout: float = 5) -> subprocess.CompletedProcess[str]
         stderr=subprocess.PIPE,
         text=True,
         timeout=timeout,
+        pass_fds=pass_fds,
     )
 
 

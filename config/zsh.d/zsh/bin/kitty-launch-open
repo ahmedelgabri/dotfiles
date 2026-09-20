@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Finder has no shell environment, and Nix's per-user Python must be found
+# before the system Python executes kitty-open-in-nvim.
+set -euo pipefail
+PATH="$HOME/.nix-profile/bin:/etc/profiles/per-user/$(id -un)/bin:/run/current-system/sw/bin:/opt/homebrew/bin:$PATH"
+export PATH
+
+url="${1:?file URL required}"
+file="${2:?file path required}"
+if [ ! -f "$file" ]; then
+  printf 'kitty-launch-open: not a regular file: %s\n' "$file" >&2
+  exit 1
+fi
+
+# Empty files are editable even though file(1) calls their encoding binary.
+if [ -s "$file" ]; then
+  encoding="$(file -L --brief --mime-encoding -- "$file")"
+  if [ "$encoding" = binary ]; then
+    exec open -- "$file"
+  fi
+fi
+
+# Keep editor creation out of the clicked-link handler. A failed Kitty action
+# does not cause Kitty to try another rule, so fallback belongs in this wrapper.
+if output="$("$(dirname "$0")/kitty-open-in-nvim" "$url" 2>&1)"; then
+  exit 0
+fi
+if [ -n "$output" ]; then
+  printf '%s\n' "$output" >&2
+fi
+exec kitty @ launch --type=os-window -- "${EDITOR:-nvim}" -- "$file"
