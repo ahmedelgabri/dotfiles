@@ -10,6 +10,12 @@ Kitty grants background launch actions remote control through an inherited socke
 
 A Home Manager switch is needed to install the wrapper symlink.
 
+## Spell dictionaries
+
+Home Manager installs pinned English and Dutch UTF-8 dictionaries and suggestion files in `$XDG_DATA_HOME/nvim/site/spell`. NLUUG and FU Berlin serve byte-identical files for all four downloads; `fetchurl.urls` provides mirror fallback and the fixed hashes prevent accepting changed content. ICM returned HTTP 502 during verification and is not included.
+
+These files are separate from `config/nvim/spell/spell.add` and its compiled `spell.add.spl`. Your accepted words remain writable and are not replaced. The configuration does not force replacement of existing differing files; Home Manager will report a collision instead. Run your normal Home Manager or system switch to install the files.
+
 ## Sandbox image builds
 
 `sb build-image` builds under a staging name, verifies package health, English locales, SSH configuration, and the installed Git, Jujutsu, Node, Claude, and Pi executables before publishing the base. Locale generation runs after package installation and persists the choices in debconf. SSH keepalives bound unresponsive connections, and error traps report the failing command, line, and status.

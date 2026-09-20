@@ -77,6 +77,7 @@ let
       homeManager =
         {
           lib,
+          pkgs,
           config,
           myConfig,
           ...
@@ -86,6 +87,27 @@ let
           # a rebuild.
           xdg.configFile."nvim".source =
             config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/nvim";
+
+          # Pin upstream dictionaries separately from spell.add, which remains
+          # writable and contains the user's accepted words.
+          xdg.dataFile =
+            lib.mapAttrs'
+              (name: hash: {
+                name = "nvim/site/spell/${name}";
+                value.source = pkgs.fetchurl {
+                  inherit name hash;
+                  urls = [
+                    "https://ftp.nluug.nl/pub/vim/runtime/spell/${name}"
+                    "https://ftp.fu-berlin.de/pub/unix/editors/vim/runtime/spell/${name}"
+                  ];
+                };
+              })
+              {
+                "en.utf-8.spl" = "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA=";
+                "en.utf-8.sug" = "sha256-W25eYWVYLS/Xob+kH7zoJCxyR2IixV0XwqorqTPJMuw=";
+                "nl.utf-8.spl" = "sha256-0T5HiYZeh9hrinbpGIlUaT4KcO6wTssUpMN9ElOzk+w=";
+                "nl.utf-8.sug" = "sha256-PgHEPifo0V3aMAnQHFuATCj56ViLZF3cwpFwUR6FmzI=";
+              };
 
           home.activation.vim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             echo ":: -> Running vim home-manager activation..."
