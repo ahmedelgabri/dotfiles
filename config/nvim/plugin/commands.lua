@@ -16,6 +16,10 @@ vim.api.nvim_create_user_command(
 	{ desc = 'Set background to dark' }
 )
 
+vim.api.nvim_create_user_command('Keynote', function(ev)
+	require '_.keynote' { ev.line1, ev.line2 }
+end, { range = '%', desc = 'Export highlighted HTML to the default browser' })
+
 -- Delete the current file and clear the buffer
 vim.api.nvim_create_user_command(
 	'Del',

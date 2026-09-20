@@ -16,6 +16,12 @@ Home Manager installs pinned English and Dutch UTF-8 dictionaries and suggestion
 
 These files are separate from `config/nvim/spell/spell.add` and its compiled `spell.add.spl`. Your accepted words remain writable and are not replaced. The configuration does not force replacement of existing differing files; Home Manager will report a collision instead. Run your normal Home Manager or system switch to install the files.
 
+## Presentation exports
+
+Use `:Keynote` to export the whole buffer or `:'<,'>Keynote` to export a visual selection. Numeric line ranges also work, such as `:10,20Keynote`. The command generates syntax-colored HTML using Neovim's bundled `nvim.tohtml`, requests `PragmataPro Mono Liga`, omits line numbers, and opens the file through `vim.ui.open`, which uses plain `open` on macOS. It does not require Chrome or control Keynote itself. Copy the rendered code from the default browser into your presentation.
+
+The source buffer, its contents, and its line-number setting remain unchanged. The exported file lives in Neovim's temporary directory and is removed when Neovim exits. Failed writes or browser launches report an error rather than pretending the export succeeded.
+
 ## Sandbox image builds
 
 `sb build-image` builds under a staging name, verifies package health, English locales, SSH configuration, and the installed Git, Jujutsu, Node, Claude, and Pi executables before publishing the base. Locale generation runs after package installation and persists the choices in debconf. SSH keepalives bound unresponsive connections, and error traps report the failing command, line, and status.
@@ -25,3 +31,9 @@ These files are separate from `config/nvim/spell/spell.add` and its compiled `sp
 Failed or interrupted builds stop and retain the staging VM instead of deleting the evidence. The failure output includes commands to start, connect to, and discard that VM. Inspect it with `tart run --no-graphics <name>` and `ssh admin@$(tart ip <name>)`, using the disposable guest password `admin`. Delete it when finished with `tart delete <name>`.
 
 The implementation keeps our project-oriented commands, registry behavior, and graceful successful shutdown. It adapts the verification and failure-handling ideas from [Wincent's VM manager](https://github.com/wincent/wincent/blob/df97b31ef8699f243e219b3aaf51b81f5f056c55/bin/vm) rather than replacing `sb`.
+
+## Validation history
+
+The implementation was validated with unit, integration, and end-to-end tests on macOS. The seven added test files and four feature-specific flake checks were removed at the owner's request to keep this dotfiles repository small. Existing tests and checks were left intact. Nix formatting, StyLua, ShellCheck, typos, and all-system flake evaluation passed during implementation.
+
+Real Kitty launch actions passed with and without tmux under a minimal macOS-style PATH. The HTML test opened a sample in the actual default browser. The real Tart run passed initial creation, refusal without `--force`, preservation after a failed forced build, successful replacement, and fresh-boot verification of all five tools. Installer diagnostics were captured and checked against explicit expected notices. All test VMs and downloaded OCI images were removed, leaving an empty Tart inventory and cache. No system or Home Manager switch was performed.
