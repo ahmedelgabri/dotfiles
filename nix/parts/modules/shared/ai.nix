@@ -215,6 +215,7 @@ let
         imports = [ module.commonModule ];
         config = {
           homebrew = {
+            taps = [ "openai/tools" ];
             brews = [ "openai/tools/tart" ];
           };
           my.user.packages = with pkgs; [

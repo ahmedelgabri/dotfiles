@@ -50,7 +50,6 @@ let
 
       homebrew = {
         taps = [
-          "openai/tools"
           "JetBrains/homebrew-utils"
           "docker/homebrew-tap"
         ];

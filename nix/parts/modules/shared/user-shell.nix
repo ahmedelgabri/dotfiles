@@ -133,7 +133,6 @@ let
                     GIT_CEILING_DIRECTORIES = dirOf home;
                     HOMEBREW_INSTALL_BADGE = "⚽️";
                     HOMEBREW_NO_ANALYTICS = "1";
-                    HOMEBREW_NO_REQUIRE_TAP_TRUST = "1";
                     HOST_CONFIGS = "${hostConfigHome}";
                     # Set the default Less options.
                     # Avoid -X: it skips terminal initialization, which disables

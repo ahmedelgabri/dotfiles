@@ -36,6 +36,7 @@ let
         enable = true;
         enableRosetta = pkgs.stdenv.hostPlatform.isAarch64;
         user = config.my.username;
+        trust.taps = map (tap: tap.name) config.homebrew.taps;
       };
 
       environment.variables = {
@@ -60,7 +61,6 @@ let
             SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
             GIT_SSL_CAINFO = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
             HOMEBREW_NO_ANALYTICS = "1";
-            HOMEBREW_NO_REQUIRE_TAP_TRUST = "1";
           };
         };
       };
