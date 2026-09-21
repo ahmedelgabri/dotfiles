@@ -1,30 +1,42 @@
 {
   "@earendil-works/pi-coding-agent": {
-    "version": "0.85.1",
-    "hash": "sha256-H0mHKWSb3OZH0RYJk7TZK/PGFMyBkhO+4vkd008qevQ="
+    "version": "0.86.1",
+    "hash": "sha256-jf+T5voD4NSY5yp40se7XwlPXgbuJo5qvQALophKC2o="
+  },
+  "@earendil-works/pi-agent-core": {
+    "version": "0.86.1",
+    "hash": "sha256-ahS7wxatLl50/w/m/ehXkNJjyhnQVUfjwE0JwsGaOaA="
   },
   "@earendil-works/pi-ai": {
-    "version": "0.85.1",
-    "hash": "sha256-r30RmGF5RFzm/oizfVfeIvgjwP/TplyuMcVVt/XpklM="
+    "version": "0.86.1",
+    "hash": "sha256-88Nb88YGsJ9iupLSx8ieY+DKGAdUcBAtVWVoTFJLfv0="
   },
   "@earendil-works/pi-tui": {
-    "version": "0.85.1",
-    "hash": "sha256-APAHyOdh5OVKNT6PgE57KVv+tRHMoha4c7y87j+6xB4="
+    "version": "0.86.1",
+    "hash": "sha256-JL4EYTbkcz3ggVAjoWxaZUtAXEW8xZ+QguU9UKbM9aU="
   },
   "@earendil-works/pi-client": {
-    "version": "0.85.1",
-    "hash": "sha256-72ZDlzoXJcBfgPVbyZ8R8aNJgWmJcVDctobZyfamD+o="
+    "version": "0.86.1",
+    "hash": "sha256-RVqQxC6ul7s8y5/FaOEp8QgqHU8RPNi3HodwpZnVAaw="
+  },
+  "@earendil-works/pi-telemetry": {
+    "version": "0.86.1",
+    "hash": "sha256-LliKwgo0779aGuxwOhSgkrm1Sud1Mqm7cDLGPnCqoAU="
+  },
+  "@earendil-works/chord": {
+    "version": "0.86.1",
+    "hash": "sha256-4aEf8pLRjX8kkbm9vw/vMdJjtPg9Gfg4ek+9qEGUAU4="
   },
   "typebox": {
-    "version": "1.3.7",
-    "hash": "sha256-sdCUJWDmSTbKnOMolJtabIJY6NCFEa3bfuu1TP2ghjo="
+    "version": "1.3.27",
+    "hash": "sha256-WiiLzT1o9EVn3oSxheBNIF731bU2AoRrw9sw/dIZ3aM="
   },
   "@types/node": {
-    "version": "22.20.2",
-    "hash": "sha256-ZJIeubbKrjefLzpvALbkKyG950fxZ9OG07JcEL1rpcU="
+    "version": "26.6.2",
+    "hash": "sha256-W/noK7M0627DL7U1NLn9lfzhDEThISVMkafTPD0NIrs="
   },
   "undici-types": {
-    "version": "6.21.0",
-    "hash": "sha256-z6GppeGJiIUOVI9Pa2KcWNoy3DK+uxFuWOowHlFv0W0="
+    "version": "8.9.0",
+    "hash": "sha256-Olh4Ucy/ECGyDqyKOOuBnX4qGrd6pHfLJMrlRzo+eMY="
   }
 }
