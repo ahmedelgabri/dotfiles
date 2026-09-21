@@ -6,8 +6,9 @@
  * per-month breakdown of cumulative LLM cost, message count, and number of
  * distinct sessions that contributed.
  *
- * Costs come from the `usage.cost.total` field stored on each assistant
- * message. Months are bucketed by the entry-level ISO timestamp (UTC).
+ * Costs come from `usage.cost.total` on assistant messages and standalone
+ * usage entries, including cache warming. Only assistant messages increment
+ * message counts. Months use the entry-level ISO timestamp (UTC).
  *
  * from: https://github.com/felixge/dotfiles/blob/a603b50cfa50e8d3c9966bcddf84e2a55d1a6b11/pi/.pi/agent/extensions/total-cost/index.ts
  */
@@ -111,16 +112,16 @@ async function computeTotals(): Promise<Totals> {
 				continue // tolerate corrupt/partial trailing lines
 			}
 
-			if (entry?.type !== 'message') continue
-			const message = entry.message
-			if (!message || message.role !== 'assistant') continue
+			const message = entry?.type === 'message' ? entry.message : undefined
+			const isAssistant = message?.role === 'assistant'
+			if (!isAssistant && entry?.type !== 'usage') continue
 
-			const cost = message.usage?.cost?.total
+			const cost = (isAssistant ? message.usage : entry.usage)?.cost?.total
 			if (typeof cost !== 'number' || !Number.isFinite(cost) || cost <= 0)
 				continue
 
 			// Prefer entry-level ISO timestamp; fall back to message timestamp (unix ms).
-			const month = bucketKey(entry.timestamp) ?? bucketKey(message.timestamp)
+			const month = bucketKey(entry.timestamp) ?? bucketKey(message?.timestamp)
 			if (!month) continue
 
 			let bucket = buckets.get(month)
@@ -129,11 +130,11 @@ async function computeTotals(): Promise<Totals> {
 				buckets.set(month, bucket)
 			}
 			bucket.cost += cost
-			bucket.messages += 1
+			bucket.messages += isAssistant ? 1 : 0
 			bucket.sessions.add(file)
 
 			totalCost += cost
-			totalMessages += 1
+			totalMessages += isAssistant ? 1 : 0
 			allSessions.add(file)
 		}
 	}

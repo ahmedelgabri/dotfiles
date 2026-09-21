@@ -30,7 +30,7 @@ With no arguments, Jujutsu uses the existing `/diff` default of `main`, `master`
 
 ## Review and apply
 
-Each reviewer inherits the model and thinking level selected when the review starts. The child processes use the installed `pi` executable and its configured credentials and models. They do not inherit conversation history, ephemeral provider registrations, or extension tools. Extension, skill, prompt-template, and theme discovery are disabled in the children; normal context-file loading remains enabled.
+Each reviewer inherits the model and thinking level selected when the review starts. If Pi exposes no thinking level for that model, the extension omits `--thinking` and lets the child resolve its default. The child processes use the installed `pi` executable and its configured credentials and models. They do not inherit conversation history, ephemeral provider registrations, or extension tools. Extension, skill, prompt-template, and theme discovery are disabled in the children; normal context-file loading remains enabled.
 
 The reviewers receive the same captured patch and one review angle. They can inspect files with `read` and search with `rg` and `fd` through `bash`. They are instructed not to modify files, run project code, or use network services. This is an instruction-level restriction, not a filesystem sandbox, because `bash` remains available.
 
@@ -48,7 +48,7 @@ The selected model must be available to a fresh Pi process. Four reviewers incur
 
 ## Validation
 
-From the repository root:
+The test scripts under `scripts/tests/` are kept local, not committed. With those scripts available, run from the repository root:
 
 ```sh
 bun test scripts/tests/pi-simplify.test.ts

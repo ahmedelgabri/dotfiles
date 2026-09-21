@@ -177,8 +177,9 @@ export default function (pi: ExtensionAPI) {
 	pi.on('before_agent_start', (event) => {
 		if (!repositoryRoot) return
 
-		return {
-			systemPrompt: `${event.systemPrompt}\n\n${JUJUTSU_REPO_INSTRUCTION}`,
+		const guidelines = event.systemPromptOptions.promptGuidelines
+		if (!guidelines.includes(JUJUTSU_REPO_INSTRUCTION)) {
+			guidelines.push(JUJUTSU_REPO_INSTRUCTION)
 		}
 	})
 
