@@ -7,7 +7,7 @@ Review changed code with four independent Pi processes, then have the current ag
 Home Manager links the extension on rebuild. In an existing Pi session, run `/reload` after rebuilding. To use it without rebuilding, start Pi with:
 
 ```sh
-pi -e ~/.dotfiles/config/pi/agent/extensions/simplify.ts
+pi -e ~/.dotfiles/config/pi/agent/extensions/simplify/index.ts
 ```
 
 Run `/simplify` in an idle interactive or RPC session. Print and JSON batch modes are rejected because Pi can exit before the asynchronous apply turn finishes.
@@ -24,7 +24,7 @@ Run `/simplify` in an idle interactive or RPC session. Print and JSON batch mode
 | `/simplify pr 42`                    | A GitHub PR, fetched through `gh`                                             |
 | `/simplify cancel`                   | Cancel the active review before the apply handoff                             |
 
-Other explicit targets follow the existing [`/diff` argument rules](diff/README.md#the-diff-command), including PR URLs and automatic ref detection. A bare Git branch name resolves to its tip commit; use a range to review all branch changes. To review a file named `cancel`, use `/simplify -- cancel`.
+Other explicit targets follow the existing [`/diff` argument rules](../diff/README.md#the-diff-command), including PR URLs and automatic ref detection. A bare Git branch name resolves to its tip commit; use a range to review all branch changes. To review a file named `cancel`, use `/simplify -- cancel`.
 
 With no arguments, Jujutsu uses the existing `/diff` default of `main`, `master`, or `trunk()` through `@`, falling back to the working revision. Git tries `@{upstream}`, `main`, then `HEAD~1` as the base and appends `git diff HEAD` when there are working changes. Git untracked files are not included, matching `git diff HEAD`. Explicit targets do not add unrelated working changes. The `/diff` command's own defaults are unchanged.
 

@@ -6,7 +6,7 @@ import type {
 import {mkdtemp, rm, writeFile} from 'node:fs/promises'
 import {tmpdir} from 'node:os'
 import {join} from 'node:path'
-import {createDiffSnapshotLoader, type DiffSnapshot} from './diff/vcs'
+import {createDiffSnapshotLoader, type DiffSnapshot} from '../diff/vcs'
 
 export const REVIEWERS = {
 	reuse:

@@ -2,7 +2,7 @@
  * Syncs pi theme with macOS system appearance (dark/light mode).
  *
  * Usage:
- *   pi -e examples/extensions/mac-system-theme.ts
+ *   pi -e ~/.dotfiles/config/pi/agent/extensions/mac-system-theme/index.ts
  */
 
 import {exec} from 'node:child_process'

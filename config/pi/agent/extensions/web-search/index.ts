@@ -8,7 +8,7 @@ import {
 	formatSize,
 } from '@earendil-works/pi-coding-agent'
 import {Type} from 'typebox'
-import {saveTruncatedOutput} from './lib/truncated-output.ts'
+import {saveTruncatedOutput} from '../lib/truncated-output.ts'
 
 const EXA_MCP_URL = 'https://mcp.exa.ai/mcp'
 const DEFAULT_RESULT_LIMIT = 5

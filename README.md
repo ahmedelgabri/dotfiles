@@ -46,7 +46,7 @@ application configuration in [config/](./config/). In practice it manages:
 
 Codex defaults are symlinked from [config/codex/config.toml](./config/codex/config.toml) to `/etc/codex/config.toml`. Hooks and themes remain in `~/.config/codex`, and Codex can write per-user settings to `~/.config/codex/config.toml`. Nix generates `hooks.json` with absolute paths to the host’s Atuin and tap packages and the user’s repository info hook; rebuild after editing the hook template.
 
-Pi's [`/simplify`](./config/pi/agent/extensions/simplify.md) command runs four parallel cleanup reviewers and sends their findings to the current agent to apply fixes.
+Pi's [extensions](./config/pi/agent/extensions/README.md) each live in a directory with an `index.ts` entrypoint. The [`/simplify`](./config/pi/agent/extensions/simplify/README.md) command runs four parallel cleanup reviewers and sends their findings to the current agent to apply fixes.
 
 ## Supported targets
 

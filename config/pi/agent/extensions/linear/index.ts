@@ -10,7 +10,7 @@ import {
 import {homedir} from 'node:os'
 import {join} from 'node:path'
 import {Type} from 'typebox'
-import {saveTruncatedOutput} from './lib/truncated-output.ts'
+import {saveTruncatedOutput} from '../lib/truncated-output.ts'
 
 const LINEAR_API_URL = 'https://api.linear.app/graphql'
 const CONFIG_HOME = process.env.XDG_CONFIG_HOME || join(homedir(), '.config')
