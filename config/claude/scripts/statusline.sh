@@ -10,7 +10,7 @@ NC=$'\033[0m' # No Color
 
 # Read JSON from stdin, extract all values, and do all number/cost/duration
 # formatting in the single jq call so the render path forks no awk/sed/basename
-if ! fields=$(jq -ers '
+if ! fields=$(jq -ers --arg home "$HOME" '
 	def nonnegative:
 		if type == "number" and . >= 0 then . else error("invalid number") end;
 
@@ -49,7 +49,10 @@ if ! fields=$(jq -ers '
 	| (.model.display_name // "Claude" | single_line),
 		($tokens * 100 / $size | floor),
 		$dir,
-		(if $dir == "" then "?" else $dir | sub(".*/"; "") end),
+		(if $dir == "" then "?"
+		 elif $dir == $home then "~"
+		 elif $dir | startswith($home + "/") then "~" + $dir[($home | length):]
+		 else $dir end),
 		(if $added > 0 then "+" + ($added | commafy) else "" end),
 		(if $removed > 0 then "-" + ($removed | commafy) else "" end),
 		(if $ms >= 3600000 then ($ms / 3600000 | fixed1) + "h"
@@ -93,9 +96,8 @@ context_info="${bar} ${context_percent}%"
 # statusline from snapshotting the working copy, which would race with the
 # user's own jj commands. The revset and template are the `prompt_revs()` and
 # `prompt_fields()` aliases in the jj config, shared with the shell prompt and
-# the pi footer so all three render the same data. For git, an empty result
-# covers both "not a repo" and "detached HEAD", which is all the dropped
-# rev-parse gate distinguished
+# the pi footer so all three render the same data.
+vcs_info=""
 if [ -n "$current_dir_full" ] && jj_out=$(cd "$current_dir_full" 2>/dev/null && command jj log --ignore-working-copy --no-graph --color never \
 	-r 'prompt_revs()' -T 'prompt_fields()' 2>/dev/null); then
 	change=""
@@ -118,11 +120,37 @@ if [ -n "$current_dir_full" ] && jj_out=$(cd "$current_dir_full" 2>/dev/null && 
 		workspace=""
 	fi
 	vcs_info="${workspace:+[$workspace] }${change}${dirty}${conflict:+${RED}✗${NC}}${bookmarks:+ $bookmarks}"
-else
-	vcs_info=$(command git -C "$current_dir_full" branch --show-current 2>/dev/null)
+elif [ -n "$current_dir_full" ] && git_out=$(command git --no-optional-locks -C "$current_dir_full" \
+	status --porcelain=v2 --branch --untracked-files=normal 2>/dev/null); then
+	branch=""
+	oid=""
+	dirty=""
+	conflict=""
+	ahead=""
+	behind=""
+	while IFS= read -r line; do
+		case "$line" in
+		'# branch.head '*) branch="${line#\# branch.head }" ;;
+		'# branch.oid '*) oid="${line#\# branch.oid }" ;;
+		'# branch.ab '*)
+			read -r _ _ ahead behind <<<"$line"
+			ahead="${ahead#+}"
+			behind="${behind#-}"
+			if [ "$ahead" = "0" ]; then ahead=""; fi
+			if [ "$behind" = "0" ]; then behind=""; fi
+			;;
+		'u '*)
+			dirty="*"
+			conflict="1"
+			;;
+		'1 '* | '2 '* | '? '*) dirty="*" ;;
+		esac
+	done <<<"$git_out"
+	if [ "$branch" = "(detached)" ]; then branch="${oid:0:7}"; fi
+	vcs_info="${branch}${dirty}${conflict:+${RED}✗${NC}}${ahead:+ ↑$ahead}${behind:+ ↓$behind}"
 fi
 
-output="/$current_dir"
+output="$current_dir"
 output+="${vcs_info:+ ($vcs_info)} ${GRAY}|${NC}"
 output+=" $model"
 
