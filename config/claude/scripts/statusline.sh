@@ -3,23 +3,21 @@
 # See: https://anthropic.mintlify.app/en/docs/claude-code/statusline
 
 # Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-GRAY='\033[0;90m'
-NC='\033[0m' # No Color
+RED=$'\033[0;31m'
+GREEN=$'\033[0;32m'
+GRAY=$'\033[0;90m'
+NC=$'\033[0m' # No Color
 
 # Read JSON from stdin, extract all values, and do all number/cost/duration
 # formatting in the single jq call so the render path forks no awk/sed/basename
-{
-	read -r model
-	read -r context_percent
-	read -r current_dir_full
-	read -r current_dir
-	read -r added_display
-	read -r removed_display
-	read -r duration_display
-	read -r cost_display
-} < <(jq -r '
+if ! fields=$(jq -ers '
+	def nonnegative:
+		if type == "number" and . >= 0 then . else error("invalid number") end;
+
+	def single_line:
+		if type == "string" and (test("[\u0000-\u001f\u007f]") | not)
+		then . else error("invalid text") end;
+
 	def commafy:
 		tostring as $s | ($s | length) as $l
 		| if $l <= 3 then $s
@@ -36,20 +34,22 @@ NC='\033[0m' # No Color
 			else "$" + $s[0:$l-$n] + "." + $s[$l-$n:]
 			end;
 
-	(.context_window.context_window_size // 200000) as $size
-	| (if .context_window.current_usage then
-			(.context_window.current_usage.input_tokens +
-			 .context_window.current_usage.cache_creation_input_tokens +
-			 .context_window.current_usage.cache_read_input_tokens)
-		else 0 end) as $tokens
-	| (.cost.total_lines_added) as $added
-	| (.cost.total_lines_removed) as $removed
-	| (.cost.total_duration_ms) as $ms
-	| (.cost.total_cost_usd // 0) as $cost
-	| .model.display_name,
+	if length == 1 and (.[0] | type == "object") then .[0]
+	else error("expected one session object") end
+	| (.context_window.context_window_size // 200000 | nonnegative
+		| if . > 0 then . else error("zero context size") end) as $size
+	| ((.context_window.current_usage.input_tokens // 0 | nonnegative) +
+		 (.context_window.current_usage.cache_creation_input_tokens // 0 | nonnegative) +
+		 (.context_window.current_usage.cache_read_input_tokens // 0 | nonnegative)) as $tokens
+	| (.cost.total_lines_added // 0 | nonnegative | floor) as $added
+	| (.cost.total_lines_removed // 0 | nonnegative | floor) as $removed
+	| (.cost.total_duration_ms // 0 | nonnegative) as $ms
+	| (.cost.total_cost_usd // 0 | nonnegative) as $cost
+	| (.workspace.current_dir // "" | single_line) as $dir
+	| (.model.display_name // "Claude" | single_line),
 		($tokens * 100 / $size | floor),
-		.workspace.current_dir,
-		(.workspace.current_dir | sub(".*/"; "")),
+		$dir,
+		(if $dir == "" then "?" else $dir | sub(".*/"; "") end),
 		(if $added > 0 then "+" + ($added | commafy) else "" end),
 		(if $removed > 0 then "-" + ($removed | commafy) else "" end),
 		(if $ms >= 3600000 then ($ms / 3600000 | fixed1) + "h"
@@ -60,11 +60,26 @@ NC='\033[0m' # No Color
 		 elif $cost < 0.01 then $cost | money(4)
 		 elif $cost < 1 then $cost | money(3)
 		 else $cost | money(2) end)
-')
+' 2>/dev/null); then
+	printf '%s\n' 'statusline: invalid session data' >&2
+	exit 1
+fi
+
+{
+	IFS= read -r model
+	IFS= read -r context_percent
+	IFS= read -r current_dir_full
+	IFS= read -r current_dir
+	IFS= read -r added_display
+	IFS= read -r removed_display
+	IFS= read -r duration_display
+	IFS= read -r cost_display
+} <<<"$fields"
 
 # Build context progress bar (15 chars wide)
 bar_width=15
 filled=$((context_percent * bar_width / 100))
+if ((filled > bar_width)); then filled=$bar_width; fi
 empty=$((bar_width - filled))
 bar=""
 for ((i = 0; i < filled; i++)); do bar+="█"; done
@@ -81,7 +96,7 @@ context_info="${bar} ${context_percent}%"
 # the pi footer so all three render the same data. For git, an empty result
 # covers both "not a repo" and "detached HEAD", which is all the dropped
 # rev-parse gate distinguished
-if jj_out=$(cd "$current_dir_full" 2>/dev/null && command jj log --ignore-working-copy --no-graph --color never \
+if [ -n "$current_dir_full" ] && jj_out=$(cd "$current_dir_full" 2>/dev/null && command jj log --ignore-working-copy --no-graph --color never \
 	-r 'prompt_revs()' -T 'prompt_fields()' 2>/dev/null); then
 	change=""
 	dirty=""
@@ -108,7 +123,7 @@ else
 fi
 
 output="/$current_dir"
-output+=" ($vcs_info) ${GRAY}|${NC}"
+output+="${vcs_info:+ ($vcs_info)} ${GRAY}|${NC}"
 output+=" $model"
 
 if [ -n "$added_display" ]; then
@@ -127,4 +142,4 @@ fi
 
 output+=" ${GRAY}|${NC} $context_info"
 
-echo -e "$output"
+printf '%s\n' "$output"
