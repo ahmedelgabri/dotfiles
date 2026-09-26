@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -ue -o pipefail
+
+# Shell commands run by coding agents (Claude Code, Codex, pi) are kept in
+# their own history next to .zsh_history instead of inside it, so they never
+# surface in up-arrow, substring search, or deja suggestions while staying
+# searchable from the Ctrl-R widget in config/zsh.d/zsh/config/extras.zsh.
+#
+# Usage:
+#   agent-history record <agent>    # Claude-Code-style hook JSON on stdin
+#   agent-history list [--dir DIR]  # NUL-separated "id\ttime\tdir\tcmd",
+#                                   # newest first; id is always empty
+#
+# Storage is SQLite: concurrent agents get atomic writes and a busy timeout
+# from the engine, and `list` is a query rather than a scan of a growing
+# file. The widget uses the same four columns for shell history, where id is
+# the history number.
+
+db="${ZDOTDIR:-$HOME}/.agent_history.db"
+
+# Generic credential shapes plus provider token shapes (AWS, GitHub, Slack,
+# Stripe). Agents paste tokens into commands more readily than a human typing
+# at a prompt does.
+secret_pattern='\b[A-Z_]*(TOKEN|SECRET|PASSWORD|API_?KEY)[A-Z_]*='
+secret_pattern+='|--(password|token|secret|api-key)[= ]'
+secret_pattern+='|authorization: ?(bearer|basic) '
+secret_pattern+='|^sshpass '
+secret_pattern+='|gh auth login --with-token'
+secret_pattern+='|AKIA[0-9A-Z]{16}'
+secret_pattern+='|gh[pousr]_[A-Za-z0-9]{36,}'
+secret_pattern+='|github_pat_[A-Za-z0-9_]{22,}'
+secret_pattern+='|xox[baprs]-[0-9A-Za-z-]{10,}'
+secret_pattern+='|hooks\.slack\.com/services/'
+secret_pattern+='|[sr]k_(live|test)_[0-9A-Za-z]{24,}'
+
+fail() {
+	echo "agent-history: $*" >&2
+	exit 1
+}
+
+# Waits up to five seconds for a writer holding the database, then fails.
+sql() {
+	sqlite3 -cmd '.timeout 5000' "$db" "$@"
+}
+
+ensure_db() {
+	# Only the first run creates files; 077 keeps the database and its WAL
+	# companions private without touching an existing database's mode.
+	umask 077
+	sql 'PRAGMA journal_mode = WAL;
+		CREATE TABLE IF NOT EXISTS commands (
+			id INTEGER PRIMARY KEY,
+			ts INTEGER NOT NULL,
+			agent TEXT NOT NULL,
+			cwd TEXT NOT NULL,
+			cmd TEXT NOT NULL
+		);
+		CREATE INDEX IF NOT EXISTS commands_ts ON commands (ts);
+		CREATE INDEX IF NOT EXISTS commands_cwd ON commands (cwd);' >/dev/null
+}
+
+# SQL string literal: single quotes doubled.
+quote() {
+	local s=${1//\'/\'\'}
+	printf "'%s'" "$s"
+}
+
+record() {
+	local agent="${1:?agent name required}"
+	local statement
+	# A payload without a Bash command (other tools, or a filtered secret) is
+	# a no-op; a payload that is not JSON at all is a real failure. jq builds
+	# the INSERT so the command never passes through shell word splitting.
+	statement=$(jq -r --arg agent "$agent" --arg re "$secret_pattern" '
+		def q: "'"'"'" + gsub("'"'"'"; "'"''"'") + "'"'"'";
+		(.tool_input.command // empty | strings) as $cmd
+		| select(($cmd | test($re; "i")) | not)
+		| "INSERT INTO commands (ts, agent, cwd, cmd) VALUES ("
+			+ (now | floor | tostring) + ", " + ($agent | q) + ", "
+			+ ((.cwd // "") | q) + ", " + ($cmd | q) + ");"
+	') || fail "could not parse hook payload"
+	[[ -n $statement ]] || return 0
+
+	ensure_db || fail "could not open $db"
+	sql "$statement" || fail "could not write $db"
+}
+
+list() {
+	local dir="" where=""
+	if [[ ${1:-} == --dir ]]; then
+		dir="${2:?directory required}"
+		# Strip trailing slashes so "DIR/" prefix matching works, and let the
+		# root match everything rather than looking for "//".
+		while [[ ${#dir} -gt 1 && $dir == */ ]]; do
+			dir="${dir%/}"
+		done
+		[[ $dir == / ]] && dir=""
+	fi
+	[[ -f $db ]] || return 0
+	if [[ -n $dir ]]; then
+		where="WHERE cwd = $(quote "$dir") OR substr(cwd, 1, length($(quote "$dir")) + 1) = $(quote "$dir/")"
+	fi
+	# sqlite3 cannot emit a NUL row separator from the command line, so the
+	# rows go out as JSON and jq frames them for fzf --read0.
+	sql -json "SELECT strftime('%Y-%m-%d %H:%M', ts, 'unixepoch', 'localtime') AS time, cwd, cmd
+		FROM commands $where ORDER BY ts DESC, id DESC;" |
+		jq -j '.[] | "\t\(.time)\t\(.cwd)\t\(.cmd)\u0000"'
+}
+
+case "${1:-}" in
+record | list)
+	cmd="$1"
+	shift
+	"$cmd" "$@"
+	;;
+*)
+	echo "usage: agent-history record <agent> | list [--dir DIR]" >&2
+	exit 64
+	;;
+esac

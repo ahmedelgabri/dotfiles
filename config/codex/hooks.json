@@ -2,15 +2,6 @@
 	"hooks": {
 		"PreToolUse": [
 			{
-				"matcher": "Bash",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "atuin hook claude-code"
-					}
-				]
-			},
-			{
 				"hooks": [
 					{
 						"type": "command",
@@ -26,7 +17,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "atuin hook claude-code"
+						"command": "agent-history record codex"
 					}
 				]
 			},

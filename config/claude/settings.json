@@ -146,15 +146,6 @@
             "async": true
           }
         ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "atuin hook claude-code"
-          }
-        ]
       }
     ],
     "PostToolUse": [
@@ -181,7 +172,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "atuin hook claude-code"
+            "command": "agent-history record claude",
+            "async": true
           }
         ]
       }
@@ -201,7 +193,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "atuin hook claude-code"
+            "command": "agent-history record claude",
+            "async": true
           }
         ]
       }
