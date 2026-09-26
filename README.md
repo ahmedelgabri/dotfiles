@@ -36,7 +36,7 @@ application configuration in [config/](./config/). In practice it manages:
 | Area                    | What is configured here                                                                                |
 | ----------------------- | ------------------------------------------------------------------------------------------------------ |
 | System management       | Nix, flake-parts, Home Manager, nix-darwin, host definitions, overlays, and small custom packages      |
-| Shell and terminal      | Zsh, tmux, Ghostty, Kitty, direnv, atuin, zoxide, eza, fzf, bat, ripgrep, and Yazi                     |
+| Shell and terminal      | Zsh, tmux, Ghostty, Kitty, direnv, deja, zoxide, eza, fzf, bat, ripgrep, and Yazi                      |
 | Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                              |
 | Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                              |
 | macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                                |

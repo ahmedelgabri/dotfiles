@@ -10,6 +10,7 @@ set -ue -o pipefail
 #   agent-history record <agent>    # Claude-Code-style hook JSON on stdin
 #   agent-history list [--dir DIR]  # NUL-separated "id\ttime\tdir\tcmd",
 #                                   # newest first; id is always empty
+#   agent-history import-atuin [PATH]  # copy agent-run rows out of atuin
 #
 # Storage is SQLite: concurrent agents get atomic writes and a busy timeout
 # from the engine, and `list` is a query rather than a scan of a growing
@@ -85,6 +86,29 @@ record() {
 	sql "$statement" || fail "could not write $db"
 }
 
+# atuin marks agent-run commands with author_kind 2 and applied the same
+# credential filters when recording them, so rows are copied as they are.
+# Re-running skips rows that are already present.
+import-atuin() {
+	local src="${1:-${XDG_DATA_HOME:-$HOME/.local/share}/atuin/history.db}"
+	local imported
+	[[ -r $src ]] || fail "no atuin database at $src"
+	ensure_db || fail "could not open $db"
+	imported=$(sql "ATTACH DATABASE $(quote "$src") AS atuin;
+		INSERT INTO commands (ts, agent, cwd, cmd)
+		SELECT h.timestamp / 1000000000,
+			CASE h.author WHEN 'claude-code' THEN 'claude' ELSE h.author END,
+			h.cwd, h.command
+		FROM atuin.history AS h
+		WHERE h.author_kind = 2 AND h.deleted_at IS NULL
+			AND NOT EXISTS (
+				SELECT 1 FROM commands AS c
+				WHERE c.ts = h.timestamp / 1000000000 AND c.cwd = h.cwd AND c.cmd = h.command)
+		ORDER BY h.timestamp;
+		SELECT changes();") || fail "could not import from $src"
+	echo "agent-history: imported $imported commands from $src"
+}
+
 list() {
 	local dir="" where=""
 	if [[ ${1:-} == --dir ]]; then
@@ -108,13 +132,13 @@ list() {
 }
 
 case "${1:-}" in
-record | list)
+record | list | import-atuin)
 	cmd="$1"
 	shift
 	"$cmd" "$@"
 	;;
 *)
-	echo "usage: agent-history record <agent> | list [--dir DIR]" >&2
+	echo "usage: agent-history record <agent> | list [--dir DIR] | import-atuin [PATH]" >&2
 	exit 64
 	;;
 esac

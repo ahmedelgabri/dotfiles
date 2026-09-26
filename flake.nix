@@ -107,14 +107,6 @@
       };
     };
 
-    atuin = {
-      url = "github:atuinsh/atuin";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
-
     zsh-history-substring-search = {
       url = "github:zsh-users/zsh-history-substring-search";
       flake = false;

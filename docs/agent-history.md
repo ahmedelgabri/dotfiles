@@ -7,6 +7,7 @@ Shell commands run by coding agents (Claude Code, Codex, pi) are recorded in `$Z
 `config/zsh.d/zsh/bin/agent-history` is the single writer and reader.
 
 - `agent-history record <agent>` reads a Claude-Code-style hook payload on stdin and inserts one row (`ts`, `agent`, `cwd`, `cmd`) into the `commands` table. Commands matching credential patterns (assignments or flags named token, secret, password, or API key; bearer and basic authorization headers; `sshpass`; `gh auth login --with-token`; AWS, GitHub, Slack, and Stripe token shapes) are dropped. The database is created with mode 0600 in WAL mode; concurrent agents are serialised by SQLite with a five-second busy timeout. A payload without a Bash command is a no-op; a payload that is not JSON, a busy database, or an unwritable one exits 1 with a message on stderr, which the agents surface as a warning without blocking the tool. The `sqlite3` CLI comes from macOS on Darwin and from the `sqlite` package in the NixOS module.
+- `agent-history import-atuin [PATH]` copies agent-run commands (`author_kind = 2`) out of an atuin history database, by default `~/.local/share/atuin/history.db`, mapping the `claude-code` author to `claude`. Rows already present are skipped, so it can be re-run. Atuin applied the same credential filters when it recorded them, so none are re-applied.
 - `agent-history list [--dir DIR]` prints NUL-separated `id\ttime\tdir\tcmd` records, newest first, for fzf. `id` is empty for agent records; the Ctrl-R widget uses the same columns for shell history, where `id` is the history event number. `--dir` matches DIR and everything under it; trailing slashes are ignored and `/` matches all records.
 
 ## Wiring
@@ -27,12 +28,14 @@ Ctrl-R in zsh opens one fzf picker (`fzf-history-widget` in `config/zsh.d/zsh/co
 
 Ghost-text suggestions come from [deja](https://github.com/Giammarco-Ferranti/deja), which replaced zsh-autosuggestions and learns only from the interactive shell, never from the agent history. The Nix module sources deja's cached `~/.local/share/deja/init.zsh` only when the script embeds the current package's binary path; otherwise it regenerates the script with the pinned binary and restarts the daemon detached. Deja's own staleness check stats the baked binary path, which is an immutable store path, so it would never notice a Nix upgrade and would go inert once the old path is garbage collected. Tab stays with completion (`DEJA_CYCLE_KEY` is empty). After the first switch, run `deja import --file $ZDOTDIR/.zsh_history` and `deja daemon --restart` once so existing history is suggested.
 
+## Deploying
+
+Switch the system once for the whole change, then `exec zsh` in open shells, `pkill -x atuin` to stop the daemon atuin autostarted, restart pi, run `agent-history import-atuin` to carry the agent commands atuin recorded into the new database, and run the one-time `deja import` and `deja daemon --restart` above. Atuin's local data under `~/.local/share/atuin` is not removed automatically; the import reads it in place.
+
 ## History
 
-- deja replaced zsh-autosuggestions in both the NixOS and nix-darwin modules.
-
-- The Ctrl-R widget replaced the atuin-backed fzf picker; fzf's stock history widget was not reused because it only knows one source.
-
-- The pi extension replaced the `atuin` extension. It records on `tool_result` because pi-agent-core only emits it for calls that actually executed, so blocked calls are skipped without inspecting result text.
-
 - Replaced `atuin hook claude-code` in the Claude and Codex hooks. Atuin tagged agent commands with an author so the Ctrl-R picker could filter them; without atuin, a dedicated file gives the same separation with plain zsh and fzf.
+- The pi extension replaced the `atuin` extension. It records on `tool_result` because pi-agent-core only emits it for calls that actually executed, so blocked calls are skipped without inspecting result text.
+- The Ctrl-R widget replaced the atuin-backed fzf picker; fzf's stock history widget was not reused because it only knows one source.
+- deja replaced zsh-autosuggestions in both the NixOS and nix-darwin modules.
+- atuin was removed: flake input, overlay, package, config tree, and shell init. Its sync server on the home server is a separate teardown.

@@ -35,8 +35,8 @@ let
           # for a pinned store path, so generate it once at build time instead
           # of shelling out on every interactive shell startup; the file is
           # regenerated automatically whenever the package hash changes.
-          # HOME is pointed at the sandbox tmpdir because some tools (mise,
-          # atuin) insist on touching state dirs even when printing init code.
+          # HOME is pointed at the sandbox tmpdir because some tools (mise)
+          # insist on touching state dirs even when printing init code.
           mkShellInit =
             name: cmd:
             pkgs.runCommand "${name}-init.zsh" { } ''
@@ -188,7 +188,6 @@ let
                   shell = pkgs.zsh;
                   packages = with pkgs; [
                     _1password-cli
-                    atuin
                     # buku
                     deja
                     eza
@@ -399,7 +398,6 @@ let
                       source ${mkShellInit "jj-completion" "COMPLETE=zsh ${lib.getExe pkgs.jujutsu}"}
                       source ${mkShellInit "direnv" "${lib.getExe pkgs.direnv} hook zsh"}
                       source ${mkShellInit "mise" "${lib.getExe pkgs.mise} activate zsh"}
-                      source ${mkShellInit "atuin" "${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r"}
                       source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
 
                       # Deja replaces zsh-autosuggestions. Its cached init script bakes in
@@ -581,11 +579,6 @@ let
               source = ../../../../config/zsh.d/zsh/bin;
               sourceRoot = "${dotfilesConfig}/zsh.d/zsh/bin";
               targetRoot = "zsh/bin";
-            }
-            // config.lib.file.mkOutOfStoreTree {
-              source = ../../../../config/atuin;
-              sourceRoot = "${dotfilesConfig}/atuin";
-              targetRoot = "atuin";
             }
             // {
               "zsh/.zshrc".text = "";
