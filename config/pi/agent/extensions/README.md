@@ -10,8 +10,8 @@ Each extension has a colocated README covering its usage, requirements, configur
 
 | Extension | Commands, tools, or behavior |
 | --- | --- |
+| [agent-history](agent-history/README.md) | Record Bash tool calls in the agent history file |
 | [answer](answer/README.md) | `/answer` and `Ctrl+.` extract questions into an interactive form |
-| [atuin](atuin/README.md) | Record Bash tool calls in Atuin history |
 | [diff](diff/README.md) | `/diff` opens browser reviews with annotation tools |
 | [edit-answers](edit-answers/README.md) | `/edit-answer` and `Ctrl+Shift+V` edit the latest response externally |
 | [jujutsu](jujutsu/README.md) | jj footer, Git-write guard, and `/jj-refresh` |

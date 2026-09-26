@@ -15,9 +15,12 @@ Shell commands run by coding agents (Claude Code, Codex, pi) are recorded in `$Z
 | --- | --- | --- |
 | Claude Code | `config/claude/settings.json` | `PostToolUse` and `PostToolUseFailure`, matcher `Bash`, async |
 | Codex | `config/codex/hooks.json` | `PostToolUse`, matcher `Bash` |
+| pi | `config/pi/agent/extensions/agent-history/` | `tool_result` for the `bash` tool, which pi emits only for calls that executed |
 
 Codex and pi only report calls that ran, whatever the exit status. Claude Code does the same through `PostToolUse` and additionally reports calls that did not run (denied, interrupted, tool error) through `PostToolUseFailure`, so its history also shows what the agent tried.
 
 ## History
+
+- The pi extension replaced the `atuin` extension. It records on `tool_result` because pi-agent-core only emits it for calls that actually executed, so blocked calls are skipped without inspecting result text.
 
 - Replaced `atuin hook claude-code` in the Claude and Codex hooks. Atuin tagged agent commands with an author so the Ctrl-R picker could filter them; without atuin, a dedicated file gives the same separation with plain zsh and fzf.
