@@ -1,49 +1,91 @@
-# Use fzf for Atuin history so one picker can search shell and agent commands.
-# Ref: https://docs.atuin.sh/latest/guide/agent-hooks/
-if (( $+commands[atuin] )); then
-  fzf-atuin-history-widget() {
-    local selected
-    setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
+# One fzf picker over shell history and the agent history written by
+# agent-history (config/zsh.d/zsh/bin). fzf's own history widget knows a
+# single source, so this borrows its lossless approach instead: rows are
+# "id\ttime\tdir\tcmd", and a shell row is resolved from $history[id] on
+# accept because `fc -l` renders a real newline and a literal "\n" the same
+# way. Agent rows carry an empty id and are used verbatim.
+#
+# Shell rows come from the interactive shell, but reload binds run in a
+# subprocess, so they go to a temp file once and CTRL-R reloads from there.
+fzf-history-rows() {
+  fc -rl -t '%Y-%m-%d %H:%M' 1 |
+    awk '{
+      sub(/^[ \t]+/, "")
+      id = $1
+      sub(/\*$/, "", id)
+      time = $2 " " $3
+      sub(/^[^ \t]+[ \t]+[^ \t]+[ \t]+[^ \t]+[ \t]+/, "")
+      print id "\t" time "\t\t" $0
+    }' | tr '\n' '\0'
+}
 
-    local atuin_opts="--print0 --format '{relativetime}\\t{directory}\\t{command}'"
+# Prints the command a selected row stands for.
+fzf-history-command() {
+  local row=$1 id rest
+  id=${row%%$'\t'*}
+  rest=${row#*$'\t'}
+  rest=${rest#*$'\t'}
+  rest=${rest#*$'\t'}
+  if [[ -n $id ]]; then
+    print -rn -- "${history[$id]}"
+  else
+    print -rn -- "$rest"
+  fi
+}
+
+fzf-history-widget() {
+  local selected tmp
+  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
+  zmodload -F zsh/parameter p:history 2>/dev/null || return 1
+
+  tmp=$(mktemp "${TMPDIR:-/tmp}/fzf-history.XXXXXX") || return 1
+  {
+    # >| because NO_CLOBBER is set and mktemp already created the file.
+    fzf-history-rows >|"$tmp"
+
     local fzf_opts=(
       "--height=${FZF_TMUX_HEIGHT:-80%}"
-      "--tac"
       $'--delimiter=\t'
-      "--with-nth=3.."
-      "--accept-nth=3.."
+      "--with-nth=4.."
       "--scheme=history"
-      "--preview=printf '%s\\n' {3..}"
+      "--preview=printf '%s\\n' {4..}"
       "--preview-window=next:3:hidden:wrap"
       "--bind=?:toggle-preview"
       "--query=${LBUFFER}"
       "--no-multi"
       "--highlight-line"
       "--read0"
-      "--id-nth=3.."
-      "--header=CTRL-D directory · CTRL-R all · CTRL-A agents · CTRL-U user · CTRL-Y copy · ALT-M metadata"
-      "--bind=alt-m:change-with-nth(3..|1..),ctrl-y:execute-silent(printf '%s' {3..} | pbcopy)+abort"
-      "--bind=ctrl-d:reload(atuin search $atuin_opts -c ${(q)PWD}),ctrl-r:reload(atuin search $atuin_opts),ctrl-a:reload(atuin search $atuin_opts --author '\$all-agent'),ctrl-u:reload(atuin search $atuin_opts --author '\$all-user')"
+      "--print0"
+      "--id-nth=4.."
+      "--header=CTRL-R shell · CTRL-A agents · CTRL-D agents here · CTRL-Y copy · ALT-M metadata"
+      "--bind=alt-m:change-with-nth(4..|2..),ctrl-y:execute-silent(printf '%s' {4..} | pbcopy)+abort"
+      "--bind=ctrl-r:reload(cat ${(q)tmp}),ctrl-a:reload(agent-history list),ctrl-d:reload(agent-history list --dir ${(q)PWD})"
     )
 
     if [[ -n ${TMUX-} ]]; then
       fzf_opts+=("--popup=center,80%,80%" "--border=none")
     fi
 
-    selected=$(eval "atuin search ${atuin_opts}" | fzf "${fzf_opts[@]}")
-
-    local ret=$?
-    if [[ -n $selected ]]; then
-      LBUFFER=$selected
-    fi
-
-    zle reset-prompt
-    return $ret
+    # fzf must run in the foreground to own the terminal, so $(...) it is;
+    # the sentinel keeps trailing newlines that $(...) would strip.
+    selected=$(fzf "${fzf_opts[@]}" <"$tmp"; print -n .)
+    selected=${selected%.}
+    selected=${selected%$'\0'}
+  } always {
+    rm -f "$tmp"
   }
 
-  zle -N fzf-atuin-history-widget
-  bindkey '^R' fzf-atuin-history-widget
-fi
+  if [[ -n $selected ]]; then
+    LBUFFER=$(fzf-history-command "$selected"; print -n .)
+    LBUFFER=${LBUFFER%.}
+  fi
+
+  zle reset-prompt
+  return 0
+}
+
+zle -N fzf-history-widget
+bindkey '^R' fzf-history-widget
 
 # zoxide with fuzzy search
 # https://github.com/ajeetdsouza/zoxide/issues/34#issuecomment-2099442403

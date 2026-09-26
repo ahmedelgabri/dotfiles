@@ -19,7 +19,13 @@ Shell commands run by coding agents (Claude Code, Codex, pi) are recorded in `$Z
 
 Codex and pi only report calls that ran, whatever the exit status. Claude Code does the same through `PostToolUse` and additionally reports calls that did not run (denied, interrupted, tool error) through `PostToolUseFailure`, so its history also shows what the agent tried.
 
+## Searching
+
+Ctrl-R in zsh opens one fzf picker (`fzf-history-widget` in `config/zsh.d/zsh/config/extras.zsh`). It starts on the shell history; CTRL-A switches to agent records, CTRL-D to agent records recorded under the current directory, CTRL-R back to the shell, CTRL-Y copies the command, ALT-M toggles the time and directory columns, and `?` shows a preview. Both sources use the same `id\ttime\tdir\tcmd` rows. Shell rows are rendered from `fc -l` for display only and resolved from `$history[id]` on accept, because `fc -l` shows a real newline and a literal `\n` identically. Agent rows are inserted verbatim. Shell rows are written to a temp file once per invocation so the reload keys, which run outside the shell, can return to them.
+
 ## History
+
+- The Ctrl-R widget replaced the atuin-backed fzf picker; fzf's stock history widget was not reused because it only knows one source.
 
 - The pi extension replaced the `atuin` extension. It records on `tool_result` because pi-agent-core only emits it for calls that actually executed, so blocked calls are skipped without inspecting result text.
 
