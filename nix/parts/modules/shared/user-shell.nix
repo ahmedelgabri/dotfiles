@@ -190,6 +190,7 @@ let
                     _1password-cli
                     atuin
                     # buku
+                    deja
                     eza
                     fd
                     ffmpeg
@@ -371,11 +372,6 @@ let
                       #
                       # https://superuser.com/a/1494647/322531
                       HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
-
-                      # For speed:
-                      # https://github.com/zsh-users/zsh-autosuggestions#disabling-automatic-widget-re-binding
-                      ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-                      ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
                     ''
                   ]
                   ++ map builtins.readFile [
@@ -405,6 +401,20 @@ let
                       source ${mkShellInit "mise" "${lib.getExe pkgs.mise} activate zsh"}
                       source ${mkShellInit "atuin" "${lib.getExe pkgs.atuin} init zsh --disable-up-arrow --disable-ctrl-r"}
                       source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
+
+                      # Deja replaces zsh-autosuggestions. Its cached init script bakes in
+                      # the store path of the binary that wrote it and only ever stats that
+                      # path, which never changes and vanishes after GC, so it cannot notice
+                      # a Nix upgrade by itself: regenerate it, and replace the daemon that
+                      # loaded its statistics from the old binary, whenever the cached script
+                      # does not belong to this package. Tab stays with completion.
+                      export DEJA_CYCLE_KEY=
+                      if [[ -r ~/.local/share/deja/init.zsh && "$(<~/.local/share/deja/init.zsh)" == *'DEJA_BIN="${lib.getExe pkgs.deja}"'* ]]; then
+                        source ~/.local/share/deja/init.zsh
+                      else
+                        eval "$(${lib.getExe pkgs.deja} init zsh)"
+                        { ${lib.getExe pkgs.deja} daemon --restart >/dev/null 2>&1 &! } 2>/dev/null
+                      fi
 
                       # Gitstatus is sourced lazily by my_git only after a Git repo is detected.
                       typeset -g _MY_GIT_GITSTATUS_PLUGIN=${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/gitstatus/gitstatus.plugin.zsh
@@ -463,7 +473,6 @@ let
             };
 
             programs.zsh = {
-              autosuggestions.enable = true;
               syntaxHighlighting.enable = true;
             };
           };
@@ -509,7 +518,6 @@ let
               };
             };
             programs.zsh = {
-              enableAutosuggestions = true;
               enableFastSyntaxHighlighting = true;
             };
 

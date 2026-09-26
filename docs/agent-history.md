@@ -23,7 +23,13 @@ Codex and pi only report calls that ran, whatever the exit status. Claude Code d
 
 Ctrl-R in zsh opens one fzf picker (`fzf-history-widget` in `config/zsh.d/zsh/config/extras.zsh`). It starts on the shell history; CTRL-A switches to agent records, CTRL-D to agent records recorded under the current directory, CTRL-R back to the shell, CTRL-Y copies the command, ALT-M toggles the time and directory columns, and `?` shows a preview. Both sources use the same `id\ttime\tdir\tcmd` rows. Shell rows are rendered from `fc -l` for display only and resolved from `$history[id]` on accept, because `fc -l` shows a real newline and a literal `\n` identically. Agent rows are inserted verbatim. Shell rows are written to a temp file once per invocation so the reload keys, which run outside the shell, can return to them.
 
+## Inline suggestions
+
+Ghost-text suggestions come from [deja](https://github.com/Giammarco-Ferranti/deja), which replaced zsh-autosuggestions and learns only from the interactive shell, never from the agent history. The Nix module sources deja's cached `~/.local/share/deja/init.zsh` only when the script embeds the current package's binary path; otherwise it regenerates the script with the pinned binary and restarts the daemon detached. Deja's own staleness check stats the baked binary path, which is an immutable store path, so it would never notice a Nix upgrade and would go inert once the old path is garbage collected. Tab stays with completion (`DEJA_CYCLE_KEY` is empty). After the first switch, run `deja import --file $ZDOTDIR/.zsh_history` and `deja daemon --restart` once so existing history is suggested.
+
 ## History
+
+- deja replaced zsh-autosuggestions in both the NixOS and nix-darwin modules.
 
 - The Ctrl-R widget replaced the atuin-backed fzf picker; fzf's stock history widget was not reused because it only knows one source.
 
