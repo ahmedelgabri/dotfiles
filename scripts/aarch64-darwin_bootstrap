@@ -51,4 +51,7 @@ log_success "$FLAKE installed"
 clone_dotfiles
 
 log_success "Done."
-log_info "Don't forget to generate SSH keys & import gpg keys"
+
+# Keys and the pass store are set up by hand afterwards, so failures here are
+# a to-do list rather than a bootstrap error.
+doctor || log_info "Finish the items marked [!!] above, then rerun: nix run ~/.dotfiles#doctor"

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Inlined via builtins.readFile into writeShellApplication (see
+# nix/parts/outputs/apps.nix); never executed directly.
+#
+# Read-only: probes must not create files, start agents, or print secrets.
+
+set -Eueo pipefail
+
+failures=0
+
+report() {
+	local description=$1
+	shift
+	if "$@"; then
+		printf '[ok] %s\n' "$description"
+	else
+		printf '[!!] %s\n' "$description"
+		failures=$((failures + 1))
+	fi
+}
+
+has_dotfiles_checkout() {
+	[[ -f "$HOME/.dotfiles/flake.nix" ]]
+}
+
+has_active_system() {
+	[[ -e /run/current-system ]]
+}
+
+# $SHELL can be stale in the running session, so read the account record.
+has_zsh_login_shell() {
+	local user shell
+	user=$(id -un)
+	if [[ "$(uname -s)" == Darwin ]]; then
+		shell=$(dscl . -read "/Users/$user" UserShell 2>/dev/null | awk '{print $2}')
+	else
+		shell=$(getent passwd "$user" | cut -d: -f7)
+	fi
+	[[ "${shell##*/}" == zsh ]]
+}
+
+has_ssh_key_pair() {
+	local public_key
+	for public_key in "$HOME"/.ssh/*.pub; do
+		[[ -f "${public_key%.pub}" ]] && return 0
+	done
+	return 1
+}
+
+# GPG creates a keyring and trustdb in an empty home, so only list keys when a
+# keyring already exists.
+has_gpg_secret_key() {
+	local home=${GNUPGHOME:-${XDG_CONFIG_HOME:-$HOME/.config}/gnupg}
+	local keys
+	[[ -f "$home/pubring.kbx" || -f "$home/pubring.gpg" ]] || return 1
+	# Captured first: `grep -q` exiting early would SIGPIPE gpg under pipefail.
+	keys=$(gpg --homedir "$home" --batch --no-autostart --no-auto-check-trustdb \
+		--with-colons --list-secret-keys 2>/dev/null) || return 1
+	grep -q '^sec:' <<<"$keys"
+}
+
+has_pass_store() {
+	[[ -f "${PASSWORD_STORE_DIR:-$HOME/.password-store}/.gpg-id" ]]
+}
+
+has_agenix_npmrc() {
+	local target
+	target=$(readlink "$HOME/.npmrc" 2>/dev/null) || return 1
+	[[ "$target" == /run/agenix/* && -r "$HOME/.npmrc" ]]
+}
+
+report "dotfiles checkout at ~/.dotfiles" has_dotfiles_checkout
+report "system generation active at /run/current-system" has_active_system
+report "login shell is zsh" has_zsh_login_shell
+report "SSH key pair in ~/.ssh" has_ssh_key_pair
+report "GPG secret key (git commits are signed)" has_gpg_secret_key
+report "pass store initialised" has_pass_store
+# agenix decrypts from a launchd daemon on darwin, so this can lag behind a
+# fresh activation.
+report "agenix decrypted ~/.npmrc (may lag right after activation)" has_agenix_npmrc
+
+if ((failures > 0)); then
+	printf '\n%d check(s) failed\n' "$failures"
+	exit 1
+fi
+
+printf '\nAll checks passed\n'

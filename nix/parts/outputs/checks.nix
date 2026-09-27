@@ -1,7 +1,12 @@
 { inputs, lib, ... }:
 {
   perSystem =
-    { pkgs, system, ... }:
+    {
+      config,
+      pkgs,
+      system,
+      ...
+    }:
     let
       source = inputs.self;
       piAgentExtensionNodeModules = import ../modules/shared/pi-extension-types.nix { inherit pkgs; };
@@ -69,6 +74,8 @@
           typos .
         '';
 
+        # Building runs writeShellApplication's shellcheck.
+        inherit (config.packages) doctor;
         inherit (pkgs) next-prayer agent-history;
       };
     };

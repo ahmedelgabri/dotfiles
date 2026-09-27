@@ -151,6 +151,7 @@ On the first run, the bootstrap app:
 | 2    | Applies the selected host configuration               |
 | 3    | Clones the repo into `~/.dotfiles` for later rebuilds |
 | 4    | Reuses the local clone on subsequent runs             |
+| 5    | Runs `doctor` to list the setup still left to do      |
 
 Platform-specific behavior:
 
@@ -158,6 +159,10 @@ Platform-specific behavior:
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
 | macOS (`aarch64-darwin`) | Installs Xcode Command Line Tools if missing, installs Rosetta when needed, then switches the system using `nix-darwin` |
 | Linux (`x86_64-linux`)   | Expects `nixos-rebuild` to exist already, then switches the system using `nixos-rebuild`                                |
+
+#### Checking what is left
+
+SSH keys, GPG keys and the `pass` store are set up by hand afterwards. Run `nix run ~/.dotfiles#doctor` to see what is still missing; see [scripts](./scripts/README.md#doctor) for what it checks.
 
 ### 4. Rebuild after the first install
 

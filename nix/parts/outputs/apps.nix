@@ -11,6 +11,12 @@ _: {
         text = builtins.readFile ../../../scripts/utils;
       };
 
+      doctor = pkgs.writeShellApplication {
+        name = "doctor";
+        runtimeInputs = [ pkgs.gnupg ];
+        text = builtins.readFile ../../../scripts/doctor;
+      };
+
       flakeRoot = ../../../.;
       bootstrapScript = ../../../scripts/${system}_bootstrap;
     in
@@ -24,7 +30,10 @@ _: {
                 program = pkgs.lib.getExe (
                   pkgs.writeShellApplication {
                     name = "bootstrap";
-                    runtimeInputs = [ pkgs.git ];
+                    runtimeInputs = [
+                      pkgs.git
+                      doctor
+                    ];
                     text = ''
                       export BOOTSTRAP_FLAKE_ROOT=${flakeRoot}
 
@@ -40,6 +49,13 @@ _: {
           else
             { }
         )
+        // {
+          doctor = {
+            type = "app";
+            program = pkgs.lib.getExe doctor;
+            meta.description = "Check that this machine finished setup";
+          };
+        }
         // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
           sb = {
             type = "app";
@@ -49,6 +65,7 @@ _: {
         };
 
       packages = {
+        inherit doctor;
         inherit (pkgs) next-prayer agent-history;
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
