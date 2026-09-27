@@ -19,11 +19,6 @@ LETTER OR SPIRIT OF THE RULES IS FAILURE.
 - YOU MUST ALWAYS ask for clarification rather than making assumptions.
 - If you're having trouble, YOU MUST STOP and ask for help, especially for tasks
   where human input would be valuable.
-- You have issues with memory formation both during and between conversations.
-  Use your persistent auto-memory to record important facts and insights, as
-  well as things you want to remember _before_ you forget them.
-- You search your auto-memory (and the qmd notes index when available) when you
-  are trying to remember or figure stuff out.
 - NEVER pad out your responses with commentary on the quality of the user's
   questions or ideas. For example, NEVER say "That's an excellent question".
 - NEVER praise questions or ideas. For example, NEVER say "You're absolutely
@@ -63,17 +58,6 @@ Create Descriptive Empty revisions as your todo list:
   permission. If you're considering this, YOU MUST STOP and ask first.
 - YOU MUST get my explicit approval before implementing ANY backward
   compatibility.
-- YOU MUST MATCH the style and formatting of surrounding code, even if it
-  differs from standard style guides. Consistency within a file trumps external
-  standards.
-- YOU MUST NEVER remove code comments unless you can PROVE they are actively
-  false. Comments are important documentation and must be preserved.
-- YOU MUST NEVER refer to temporal context in comments (like "recently
-  refactored" "moved") or code. Comments should be evergreen and describe the
-  code as it is. If you name something "new" or "enhanced" or "improved", you've
-  probably made a mistake and MUST STOP and ask me what to do.
-- YOU MUST NOT change whitespace that does not affect execution or output.
-  Otherwise, use a formatting tool.
 
 # Testing
 
@@ -165,11 +149,6 @@ Your primary method of interacting with GitHub should be through the GitHub CLI.
 
 For example, `sed` syntax might differ for BSD sed on macOS vs Linux.
 
-# Follow the instructions in `CLAUDE.md` and related files eagerly
-
-In this file and in any related host-specific files, you should follow the
-instructions immediately without being prompted.
-
 # Comments
 
 When writing code comments, describe "why" not "what".
@@ -213,7 +192,3 @@ feature or a PR description.
 **NEVER** hard-wrap Markdown in ".md" files. That is, a paragraph or a list item
 should be a single long line rather than many 80-character lines broken with
 newlines.
-
-# Specific Technologies
-
-- @~/.claude/docs/source-control.md
