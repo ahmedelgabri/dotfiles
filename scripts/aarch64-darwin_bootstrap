@@ -47,6 +47,16 @@ fi
 cache_options=$(host_cache_options "darwinConfigurations.$FLAKE")
 mapfile -t CACHE_OPTIONS <<<"$cache_options"
 
+# The Nix installer writes its own nix.conf, which nix-darwin refuses to
+# overwrite on the first switch. A symlink means nix-darwin already owns it.
+if [ -f /etc/nix/nix.conf ] && [ ! -L /etc/nix/nix.conf ]; then
+	if [ -e /etc/nix/nix.conf.before-nix-darwin ]; then
+		log_error "Both /etc/nix/nix.conf and /etc/nix/nix.conf.before-nix-darwin exist; remove one and rerun"
+	fi
+	log_info "Moving the installer's /etc/nix/nix.conf aside for nix-darwin"
+	sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.before-nix-darwin
+fi
+
 log_info "Installing flake -> $FLAKE"
 sudo nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --option eval-cache false "${CACHE_OPTIONS[@]}" --flake "$FLAKE_ROOT#$FLAKE"
 log_success "$FLAKE installed"

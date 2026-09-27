@@ -157,7 +157,7 @@ Platform-specific behavior:
 
 | Platform                 | Behavior                                                                                                                |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| macOS (`aarch64-darwin`) | Installs Xcode Command Line Tools if missing, installs Rosetta when needed, then switches the system using `nix-darwin` |
+| macOS (`aarch64-darwin`) | Installs Xcode Command Line Tools if missing, installs Rosetta when needed, moves the Nix installer's `/etc/nix/nix.conf` to `nix.conf.before-nix-darwin` (nix-darwin refuses to overwrite it), then switches the system using `nix-darwin` |
 | Linux (`x86_64-linux`)   | Expects `nixos-rebuild` to exist already, then switches the system using `nixos-rebuild`                                |
 
 #### Checking what is left
