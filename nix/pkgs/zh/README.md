@@ -31,6 +31,18 @@ erDiagram
 
 Every column except `id` is `NOT NULL`. `status` is `failed` only for Claude's `PostToolUseFailure` hook events; Codex and pi always record `ran`. `list` reads `commands` newest first (`ts DESC, id DESC`), deduplicated by `cmd` unless `--all`, and hides `failed` rows unless `--all`; `stats` groups every row in scope by command prefix.
 
+## Stats over zsh history
+
+`zh stats` counts the most used command prefixes across agent records and the interactive zsh history, printing `count\tfailed\tprefix`.
+
+- `--source shell|agents|all` picks the history; the default is `all`. zsh history has no directory, agent, or session, so `--dir`, `--repo`, `--agent`, and `--session` apply to agent records only: given without `--source` they select `agents`, and with `--source shell` or `all` they are a usage error, so a total never mixes filtered and unfiltered entries.
+- `--histfile PATH` reads another history file; the default is `${ZDOTDIR:-$HOME}/.zsh_history`. `$HISTFILE` is not used, since `zh` runs from hooks where it is unset. A missing file counts as empty.
+- `--since WHEN` and `--until WHEN` limit both sources and are both inclusive at the precision given: `YYYY-MM-DD` (a whole local day), `"YYYY-MM-DD HH:MM"` (a whole local minute), or a number of hours, days, or weeks before now such as `12h`, `3d`, or `2w` (fixed 1, 24, and 168 hours). `--since 2026-09-01 --until 2026-09-30` is September. A local time skipped by a DST change is an error; one repeated by a DST change means its earlier occurrence. Entries without a timestamp are left out whenever a bound is given.
+
+The history is read the way zsh reads it: metafied bytes are restored, continuation lines are joined before headers are recognised, and zsh's escapes for a trailing backslash and a leading colon are undone. A test has real zsh write a history file and checks every command reads back unchanged.
+
+Shell counts are the entries zsh kept, not every execution: `HIST_IGNORE_DUPS` and its siblings drop repeats that the agent database keeps, so compare counts within a source rather than across. zsh records no exit status, so shell entries never count toward `failed`. Shell entries pass through the same credential filter as agent records before grouping; the filter is best-effort, and the prefixes `stats` prints are only as clean as it is.
+
 ## Layout
 
 | File | Role |
@@ -40,6 +52,8 @@ Every column except `id` is `NOT NULL`. `status` is `failed` only for Claude's `
 | `src/record.rs` | hook payload parsing, credential filter, insert |
 | `src/query.rs` | filters, `list`, `show`, `forget`, `stats`, `import-atuin` |
 | `src/repo.rs` | jj/git root resolution for `--repo` |
+| `src/zsh.rs` | zsh history file reader for `stats` |
+| `src/when.rs` | `--since`/`--until` parsing and local-time resolution |
 | `tests/cli.rs` | integration tests that run the built binary against real SQLite |
 | `tests/fixtures/` | synthetic database, atuin database, hook payloads, and the golden case list |
 | `tests/golden/` | outputs the Bash implementation produced for each case |

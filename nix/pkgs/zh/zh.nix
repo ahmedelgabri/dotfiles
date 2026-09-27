@@ -3,6 +3,7 @@
   rustPlatform,
   git,
   jujutsu,
+  zsh,
 }:
 rustPlatform.buildRustPackage {
   pname = "zh";
@@ -20,10 +21,12 @@ rustPlatform.buildRustPackage {
 
   cargoLock.lockFile = ./Cargo.lock;
 
-  # The repo-root tests spawn both; each test run isolates their config.
+  # The repo-root tests spawn git and jj, each with isolated config; the
+  # history tests have zsh write a real history file to read back.
   nativeCheckInputs = [
     git
     jujutsu
+    zsh
   ];
 
   # The Claude/Codex hooks, the pi extension and the Ctrl-R widget still

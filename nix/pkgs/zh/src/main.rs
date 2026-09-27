@@ -12,6 +12,8 @@ mod db;
 mod query;
 mod record;
 mod repo;
+mod when;
+mod zsh;
 
 use std::ffi::OsString;
 use std::io::{self, Read};
@@ -19,7 +21,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 use clap::error::{ContextKind, ContextValue, ErrorKind};
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 
 /// An error that ends the program: `code` 1 for failures and argument errors
 /// inside a subcommand, 64 for usage errors, as the Bash implementation did.
@@ -67,7 +69,8 @@ enum Command {
         #[arg(value_name = "CMD")]
         cmd: String,
     },
-    /// Print "count\tfailed\tprefix" per command prefix, most used first
+    /// Print "count\tfailed\tprefix" per command prefix, most used first,
+    /// over agent records and the zsh history
     Stats {
         /// Words per prefix
         #[arg(
@@ -85,11 +88,34 @@ enum Command {
             overrides_with = "limit"
         )]
         limit: Option<String>,
+        /// Which history to count [default: all, or agents when an
+        /// agent-only filter is given]
+        #[arg(long, value_enum)]
+        source: Option<Source>,
+        /// zsh history file [default: ${ZDOTDIR:-$HOME}/.zsh_history]
+        #[arg(long, value_name = "PATH", allow_hyphen_values = true)]
+        histfile: Option<PathBuf>,
+        /// Only entries from WHEN on: YYYY-MM-DD, "YYYY-MM-DD HH:MM", or Nh/Nd/Nw ago
+        #[arg(long, value_name = "WHEN", allow_hyphen_values = true)]
+        since: Option<String>,
+        /// Only entries up to and including WHEN (same forms as --since)
+        #[arg(long, value_name = "WHEN", allow_hyphen_values = true)]
+        until: Option<String>,
         #[command(flatten)]
         filters: FilterArgs,
     },
     /// Copy agent-run rows out of an atuin database
     ImportAtuin { path: Option<PathBuf> },
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, ValueEnum)]
+pub enum Source {
+    /// The interactive zsh history
+    Shell,
+    /// Commands recorded from coding agents
+    Agents,
+    /// Both
+    All,
 }
 
 #[derive(Args, Default)]
@@ -133,8 +159,8 @@ fn main() -> ExitCode {
 }
 
 /// Exit codes follow the Bash implementation: no or unknown subcommand is a
-/// usage error (64), and so is anything wrong with a `stats` count, while
-/// other argument errors inside a subcommand fail with 1.
+/// usage error (64), and so is anything wrong with an option only `stats`
+/// has, while other argument errors inside a subcommand fail with 1.
 fn parse_error_code(args: &[OsString], error: &clap::Error) -> u8 {
     if matches!(
         error.kind(),
@@ -145,7 +171,7 @@ fn parse_error_code(args: &[OsString], error: &clap::Error) -> u8 {
     let subcommand = args.get(1).and_then(|a| a.to_str());
     match subcommand {
         Some(name) if SUBCOMMANDS.contains(&name) => {
-            if name == "stats" && concerns_stats_count(error) {
+            if name == "stats" && concerns_stats_option(error) {
                 64
             } else {
                 1
@@ -155,9 +181,18 @@ fn parse_error_code(args: &[OsString], error: &clap::Error) -> u8 {
     }
 }
 
-fn concerns_stats_count(error: &clap::Error) -> bool {
+const STATS_OPTIONS: [&str; 6] = [
+    "--words",
+    "--limit",
+    "--source",
+    "--histfile",
+    "--since",
+    "--until",
+];
+
+fn concerns_stats_option(error: &clap::Error) -> bool {
     match error.get(ContextKind::InvalidArg) {
-        Some(ContextValue::String(arg)) => arg.starts_with("--words") || arg.starts_with("--limit"),
+        Some(ContextValue::String(arg)) => STATS_OPTIONS.iter().any(|o| arg.starts_with(o)),
         _ => false,
     }
 }
@@ -177,11 +212,23 @@ fn run(command: Command) -> Result<(), Fail> {
         Command::Stats {
             words,
             limit,
+            source,
+            histfile,
+            since,
+            until,
             filters,
         } => {
             let words = count(words.as_deref().unwrap_or("2"))?;
             let limit = count(limit.as_deref().unwrap_or("30"))?;
-            query::stats(&filters, words, limit)
+            query::stats(&query::StatsArgs {
+                filters,
+                words,
+                limit,
+                source,
+                histfile,
+                since,
+                until,
+            })
         }
         Command::ImportAtuin { path } => query::import_atuin(path),
     }

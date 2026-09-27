@@ -9,15 +9,18 @@ use crate::{Fail, db};
 // Generic credential shapes plus provider token shapes (AWS, GitHub, Slack,
 // Stripe, Anthropic, OpenAI, GitLab, npm, Google) and PEM private keys.
 // Agents paste tokens into commands more readily than a human typing at a
-// prompt does. The sk- shapes keep a leading \b so names like "task-..." pass,
+// prompt does, and `stats` prints command prefixes from zsh history too.
+// Credential-named variables may carry digits, a tab can follow a
+// credential flag, and a URL can carry user:password@. The filter is
+// best-effort: it catches these shapes, not every secret. The sk- shapes keep a leading \b so names like "task-..." pass,
 // and the legacy OpenAI shape allows no dashes so kebab-case names do too.
 //
 // Matching is case-insensitive with simple case folding and Unicode word
 // boundaries, so a few shapes jq's Oniguruma caught, such as "PAßWORD=" (full
 // folding) or a zero-width joiner before "TOKEN=", are recorded.
 const SECRET_PATTERN: &str = concat!(
-    r"\b[A-Z_]*(TOKEN|SECRET|PASSWORD|API_?KEY)[A-Z_]*=",
-    r"|--(password|token|secret|api-key)[= ]",
+    r"\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|API_?KEY)[A-Z0-9_]*=",
+    r"|--(password|token|secret|api-key)[=\s]",
     r"|authorization: ?(bearer|basic) ",
     r"|^sshpass ",
     r"|gh auth login --with-token",
@@ -34,6 +37,7 @@ const SECRET_PATTERN: &str = concat!(
     r"|\bnpm_[A-Za-z0-9]{36}\b",
     r"|AIza[0-9A-Za-z_-]{35}",
     r"|-----BEGIN [A-Z ]*PRIVATE KEY",
+    r"|[a-z][a-z0-9+.-]*://[^/\s:@]+:[^/\s@]+@",
 );
 
 static SECRET: LazyLock<Regex> = LazyLock::new(|| {
@@ -211,6 +215,28 @@ mod tests {
         ];
         for command in commands {
             assert!(!is_secret(command), "{command}");
+        }
+    }
+
+    #[test]
+    fn drops_shapes_that_would_leak_into_stats_prefixes() {
+        for secret in [
+            "export PASSWORD2=hunter2",
+            "DB_PASSWORD_2=x ./run",
+            "curl --token\tabc https://x",
+            "git clone https://user:hunter2@example.com/r.git",
+            "psql postgres://app:s3cret@db/app",
+        ] {
+            assert!(is_secret(secret), "{secret}");
+        }
+        for fine in [
+            "ssh user@host",
+            "git clone git@github.com:x/y.git",
+            "curl http://localhost:8080/",
+            "psql postgres://app@db/app",
+            "echo 2PASSWORDS",
+        ] {
+            assert!(!is_secret(fine), "{fine}");
         }
     }
 

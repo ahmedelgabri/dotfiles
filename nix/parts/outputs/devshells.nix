@@ -37,9 +37,11 @@
             rustfmt
             clippy
             rust-analyzer
-            # nix/pkgs/zh tests spawn both to find repo roots.
+            # nix/pkgs/zh tests spawn jj and git to find repo roots, and zsh to
+            # write history files.
             jujutsu
             git
+            zsh
           ];
         };
       };

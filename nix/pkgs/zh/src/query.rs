@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 use rusqlite::{Connection, params_from_iter};
 
-use crate::{Fail, FilterArgs, db, repo};
+use crate::{Fail, FilterArgs, Source, db, record, repo, when, zsh};
 
 /// SQL predicates plus the values they bind, in `?N` order.
 #[derive(Debug, Default, PartialEq)]
@@ -215,11 +215,19 @@ pub fn forget(cmd: &str) -> Result<(), Fail> {
     Ok(())
 }
 
+/// Where the newest entry of a group came from, compared as a whole:
+/// timestamp, then agent records above shell entries at the same second,
+/// then the agent row id or the shell entry's position in the file.
+type Newest = (i64, u8, i64);
+
+const SHELL: u8 = 0;
+const AGENT: u8 = 1;
+
 #[derive(Debug, PartialEq)]
 struct Group {
     count: usize,
     failed: usize,
-    newest: (i64, i64),
+    newest: Newest,
 }
 
 /// First `words` whitespace-separated words joined by one space. The iterator
@@ -231,59 +239,191 @@ fn prefix(cmd: &str, words: usize) -> String {
         .join(" ")
 }
 
-fn group(
-    rows: impl IntoIterator<Item = (i64, i64, String, String)>,
+/// Commands folded into per-prefix groups as they stream past; nothing keeps
+/// whole commands around.
+struct Groups {
     words: usize,
-) -> Vec<(String, Group)> {
-    let mut groups: HashMap<String, Group> = HashMap::new();
-    for (id, ts, status, cmd) in rows {
-        let group = groups.entry(prefix(&cmd, words)).or_insert(Group {
-            count: 0,
-            failed: 0,
-            newest: (ts, id),
-        });
-        group.count += 1;
-        group.failed += usize::from(status == "failed");
-        group.newest = group.newest.max((ts, id));
-    }
-    let mut groups: Vec<_> = groups.into_iter().collect();
-    // Most used first; ties go to the most recently used, then by prefix, so
-    // the order is deterministic.
-    groups.sort_by(|(a_prefix, a), (b_prefix, b)| {
-        (Reverse(a.count), Reverse(a.newest), a_prefix).cmp(&(
-            Reverse(b.count),
-            Reverse(b.newest),
-            b_prefix,
-        ))
-    });
-    groups
+    map: HashMap<String, Group>,
 }
 
-/// Groups every record in scope, failed ones included, by the first N words
-/// of its command. Words are whitespace runs, not shell syntax, so an env
-/// prefix or `cd x &&` counts as words. The failed column counts calls Claude
-/// reported through PostToolUseFailure: worth a look, not a list of denials.
-pub fn stats(filters: &FilterArgs, words: usize, limit: usize) -> Result<(), Fail> {
+impl Groups {
+    fn new(words: usize) -> Self {
+        Groups {
+            words,
+            map: HashMap::new(),
+        }
+    }
+
+    fn add(&mut self, cmd: &str, failed: bool, newest: Newest) {
+        let group = self.map.entry(prefix(cmd, self.words)).or_insert(Group {
+            count: 0,
+            failed: 0,
+            newest,
+        });
+        group.count += 1;
+        group.failed += usize::from(failed);
+        group.newest = group.newest.max(newest);
+    }
+
+    /// Most used first; ties go to the most recently used, then by prefix,
+    /// one key compared as a whole so the order is total.
+    fn sorted(self) -> Vec<(String, Group)> {
+        let mut groups: Vec<_> = self.map.into_iter().collect();
+        groups.sort_by(|(a_prefix, a), (b_prefix, b)| {
+            (Reverse(a.count), Reverse(a.newest), a_prefix).cmp(&(
+                Reverse(b.count),
+                Reverse(b.newest),
+                b_prefix,
+            ))
+        });
+        groups
+    }
+}
+
+pub struct StatsArgs {
+    pub filters: FilterArgs,
+    pub words: usize,
+    pub limit: usize,
+    pub source: Option<Source>,
+    pub histfile: Option<PathBuf>,
+    pub since: Option<String>,
+    pub until: Option<String>,
+}
+
+fn usage(message: impl Into<String>) -> Fail {
+    Fail {
+        code: 64,
+        message: message.into(),
+    }
+}
+
+/// zsh history has no directory, agent or session, so those filters only
+/// make sense for agent records: they select agents when no source is
+/// given, and are an error with one that includes the shell, so a total
+/// never mixes filtered and unfiltered entries.
+fn resolve_source(args: &StatsArgs) -> Result<Source, Fail> {
+    let f = &args.filters;
+    let agent_only =
+        !(f.dir.is_empty() && f.repo.is_empty() && f.agent.is_empty() && f.session.is_empty());
+    let source = match (args.source, agent_only) {
+        (None, true) => Source::Agents,
+        (None, false) => Source::All,
+        (Some(Source::Agents), _) => Source::Agents,
+        (Some(_), true) => {
+            return Err(usage(
+                "--dir, --repo, --agent and --session apply to agent records only; use --source agents",
+            ));
+        }
+        (Some(source), false) => source,
+    };
+    if source == Source::Agents && args.histfile.is_some() {
+        return Err(usage("--histfile needs --source shell or all"));
+    }
+    Ok(source)
+}
+
+fn in_range(ts: Option<i64>, (since, until): (Option<i64>, Option<i64>)) -> bool {
+    if since.is_none() && until.is_none() {
+        return true;
+    }
+    // Entries without a timestamp cannot be placed in a range.
+    let Some(ts) = ts else { return false };
+    since.is_none_or(|s| ts >= s) && until.is_none_or(|u| ts < u)
+}
+
+fn add_agents(
+    groups: &mut Groups,
+    filters: &FilterArgs,
+    range: (Option<i64>, Option<i64>),
+) -> Result<(), Fail> {
     let Some((conn, path)) = db::open_existing()? else {
         return Ok(());
     };
-    let scope = Scope::from_filters(filters);
+    let mut scope = Scope::from_filters(filters);
+    if let Some(since) = range.0 {
+        let n = scope.bind(&since.to_string());
+        scope
+            .conditions
+            .push(format!("ts >= CAST(?{n} AS INTEGER)"));
+    }
+    if let Some(until) = range.1 {
+        let n = scope.bind(&until.to_string());
+        scope.conditions.push(format!("ts < CAST(?{n} AS INTEGER)"));
+    }
     let sql = format!(
         "SELECT id, ts, status, cmd FROM commands{}",
         scope.where_clause()
     );
     let fail = read_fail(&path);
     let mut stmt = conn.prepare(&sql).map_err(&fail)?;
-    let rows = stmt
-        .query_map(params_from_iter(&scope.params), |row| {
-            Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?))
-        })
-        .map_err(&fail)?
-        .collect::<rusqlite::Result<Vec<_>>>()
-        .map_err(&fail)?;
-    let groups = group(rows, words);
+    let mut rows = stmt.query(params_from_iter(&scope.params)).map_err(&fail)?;
+    while let Some(row) = rows.next().map_err(&fail)? {
+        let (id, ts, status, cmd): (i64, i64, String, String) = (
+            row.get(0).map_err(&fail)?,
+            row.get(1).map_err(&fail)?,
+            row.get(2).map_err(&fail)?,
+            row.get(3).map_err(&fail)?,
+        );
+        groups.add(&cmd, status == "failed", (ts, AGENT, id));
+    }
+    Ok(())
+}
+
+fn add_shell(
+    groups: &mut Groups,
+    histfile: Option<PathBuf>,
+    range: (Option<i64>, Option<i64>),
+) -> Result<(), Fail> {
+    let path = match histfile {
+        Some(path) => path,
+        None => db::zdotdir()?.join(".zsh_history"),
+    };
+    let bytes = match std::fs::read(&path) {
+        Ok(bytes) => bytes,
+        Err(error) if error.kind() == ErrorKind::NotFound => return Ok(()),
+        Err(error) => {
+            return Err(Fail::new(format!(
+                "could not read {}: {error}",
+                path.display()
+            )));
+        }
+    };
+    let mut position = 0;
+    zsh::for_each_entry(&bytes, |entry| {
+        position += 1;
+        // A prefix of a typed command can hold a secret as easily as an
+        // agent's can; the filter is best-effort for both.
+        if in_range(entry.ts, range) && !record::is_secret(&entry.cmd) {
+            groups.add(&entry.cmd, false, (entry.ts.unwrap_or(0), SHELL, position));
+        }
+    });
+    Ok(())
+}
+
+/// Groups every entry in scope, failed agent calls included, by the first N
+/// words of its command. Words are whitespace runs, not shell syntax, so an
+/// env prefix or `cd x &&` counts as words. The failed column counts calls
+/// Claude reported through PostToolUseFailure: worth a look, not a list of
+/// denials; zsh records no exit status, so shell entries never count there.
+/// Shell counts are the entries zsh kept, which the HIST_*_DUPS options thin
+/// out, not every execution.
+pub fn stats(args: &StatsArgs) -> Result<(), Fail> {
+    let source = resolve_source(args)?;
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0);
+    let range = when::range(args.since.as_deref(), args.until.as_deref(), now).map_err(usage)?;
+    let mut groups = Groups::new(args.words);
+    if source != Source::Shell {
+        add_agents(&mut groups, &args.filters, range)?;
+    }
+    if source != Source::Agents {
+        add_shell(&mut groups, args.histfile.clone(), range)?;
+    }
+    let groups = groups.sorted();
     emit(|out| {
-        for (prefix, group) in groups.iter().take(limit) {
+        for (prefix, group) in groups.iter().take(args.limit) {
             writeln!(out, "{}\t{}\t{prefix}", group.count, group.failed)?;
         }
         Ok(())
@@ -395,23 +535,30 @@ mod tests {
         assert_eq!(prefix("ls", 3), "ls");
     }
 
-    #[test]
-    fn groups_by_count_then_recency_then_prefix() {
-        let rows = [
-            (1, 10, "ran", "jj log -r @"),
-            (2, 11, "ran", "jj log --no-graph"),
-            (3, 12, "ran", "jj st"),
-            (4, 13, "failed", "nix build .#x"),
-            (5, 14, "ran", "nix build .#y"),
-            (6, 16, "failed", "jj st"),
-            (7, 17, "ran", "ls"),
-            (8, 17, "ran", "pwd"),
-        ]
-        .map(|(id, ts, status, cmd)| (id, ts, status.to_string(), cmd.to_string()));
-        let order: Vec<_> = group(rows, 2)
+    fn sorted(adds: &[(&str, bool, Newest)]) -> Vec<String> {
+        let mut groups = Groups::new(2);
+        for (cmd, failed, newest) in adds {
+            groups.add(cmd, *failed, *newest);
+        }
+        groups
+            .sorted()
             .into_iter()
             .map(|(p, g)| format!("{}\t{}\t{p}", g.count, g.failed))
-            .collect();
+            .collect()
+    }
+
+    #[test]
+    fn groups_by_count_then_recency_then_prefix() {
+        let order = sorted(&[
+            ("jj log -r @", false, (10, AGENT, 1)),
+            ("jj log --no-graph", false, (11, AGENT, 2)),
+            ("jj st", false, (12, AGENT, 3)),
+            ("nix build .#x", true, (13, AGENT, 4)),
+            ("nix build .#y", false, (14, AGENT, 5)),
+            ("jj st", true, (16, AGENT, 6)),
+            ("ls", false, (17, AGENT, 7)),
+            ("pwd", false, (17, AGENT, 8)),
+        ]);
         assert_eq!(
             order,
             [
@@ -422,5 +569,68 @@ mod tests {
                 "1\t0\tls"
             ]
         );
+    }
+
+    #[test]
+    fn ties_across_sources_have_one_total_order() {
+        // Same count and timestamp: agent records outrank shell entries, then
+        // the higher id or later file position, then the prefix.
+        let order = sorted(&[
+            ("b", false, (5, SHELL, 9)),
+            ("a", false, (5, AGENT, 1)),
+            ("c", false, (5, AGENT, 2)),
+            ("d", false, (5, SHELL, 3)),
+        ]);
+        assert_eq!(order, ["1\t0\tc", "1\t0\ta", "1\t0\tb", "1\t0\td"]);
+        // Order does not depend on insertion order.
+        let reversed = sorted(&[
+            ("d", false, (5, SHELL, 3)),
+            ("c", false, (5, AGENT, 2)),
+            ("a", false, (5, AGENT, 1)),
+            ("b", false, (5, SHELL, 9)),
+        ]);
+        assert_eq!(order, reversed);
+    }
+
+    #[test]
+    fn untimed_entries_fall_outside_any_range() {
+        assert!(in_range(None, (None, None)));
+        assert!(!in_range(None, (Some(0), None)));
+        assert!(in_range(Some(10), (Some(10), Some(11))));
+        assert!(!in_range(Some(11), (Some(10), Some(11))));
+    }
+
+    fn args(source: Option<Source>, agent: bool, histfile: bool) -> StatsArgs {
+        StatsArgs {
+            filters: FilterArgs {
+                agent: if agent { vec!["pi".into()] } else { vec![] },
+                ..Default::default()
+            },
+            words: 2,
+            limit: 30,
+            source,
+            histfile: histfile.then(|| PathBuf::from("/h")),
+            since: None,
+            until: None,
+        }
+    }
+
+    #[test]
+    fn source_rules() {
+        let ok = |a: StatsArgs| resolve_source(&a).map_err(|f| f.code);
+        assert_eq!(ok(args(None, false, false)), Ok(Source::All));
+        assert_eq!(ok(args(None, true, false)), Ok(Source::Agents));
+        assert_eq!(
+            ok(args(Some(Source::Shell), false, true)),
+            Ok(Source::Shell)
+        );
+        assert_eq!(
+            ok(args(Some(Source::Agents), true, false)),
+            Ok(Source::Agents)
+        );
+        assert_eq!(ok(args(Some(Source::Shell), true, false)), Err(64));
+        assert_eq!(ok(args(Some(Source::All), true, false)), Err(64));
+        assert_eq!(ok(args(Some(Source::Agents), false, true)), Err(64));
+        assert_eq!(ok(args(None, true, true)), Err(64));
     }
 }

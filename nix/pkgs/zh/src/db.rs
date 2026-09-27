@@ -24,12 +24,18 @@ const SCHEMA: &str = "
     CREATE INDEX IF NOT EXISTS commands_session ON commands (session);
 ";
 
-pub fn path() -> Result<PathBuf, Fail> {
-    let base = std::env::var_os("ZDOTDIR")
+/// `$ZDOTDIR`, or `$HOME` when it is unset or empty: where zsh keeps its own
+/// history, and so where the database lives next to it.
+pub fn zdotdir() -> Result<PathBuf, Fail> {
+    std::env::var_os("ZDOTDIR")
         .filter(|dir| !dir.is_empty())
         .or_else(|| std::env::var_os("HOME"))
-        .ok_or_else(|| Fail::new("neither ZDOTDIR nor HOME is set"))?;
-    Ok(PathBuf::from(base).join(".zh.db"))
+        .map(PathBuf::from)
+        .ok_or_else(|| Fail::new("neither ZDOTDIR nor HOME is set"))
+}
+
+pub fn path() -> Result<PathBuf, Fail> {
+    Ok(zdotdir()?.join(".zh.db"))
 }
 
 /// Opens the database for writing, creating it when missing.

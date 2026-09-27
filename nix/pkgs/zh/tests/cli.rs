@@ -652,3 +652,280 @@ fn import_reports_missing_sources() {
     assert_eq!(out.status.code(), Some(1));
     assert!(stderr(&out).contains(".local/share/atuin/history.db"));
 }
+
+/// A history file in zsh's EXTENDED_HISTORY format; `None` writes a plain
+/// line without a timestamp.
+fn history(entries: &[(Option<i64>, &str)]) -> String {
+    entries
+        .iter()
+        .map(|(ts, cmd)| match ts {
+            Some(ts) => format!(": {ts}:0;{cmd}\n"),
+            None => format!("{cmd}\n"),
+        })
+        .collect()
+}
+
+impl Home {
+    fn stats(&self, tz: &str, args: &[&str]) -> Output {
+        let mut all = vec!["stats"];
+        all.extend(args);
+        let mut cmd = self.command(&all);
+        cmd.env("TZ", tz);
+        cmd.output().unwrap()
+    }
+
+    fn stats_lines(&self, tz: &str, args: &[&str]) -> Vec<String> {
+        let out = self.stats(tz, args);
+        assert!(out.status.success(), "{args:?}: {}", stderr(&out));
+        String::from_utf8(out.stdout)
+            .unwrap()
+            .lines()
+            .map(str::to_owned)
+            .collect()
+    }
+}
+
+#[test]
+fn stats_counts_shell_history_and_agent_records() {
+    let home = Home::new();
+    fs::write(
+        home.path.join(".zsh_history"),
+        history(&[
+            (Some(100), "git status"),
+            (Some(101), "git status"),
+            (Some(102), "ls"),
+        ]),
+    )
+    .unwrap();
+    home.record("claude", &payload("git status", "/"));
+    home.record("claude", &payload("cargo test", "/"));
+    assert_eq!(
+        home.stats_lines("UTC0", &["--words", "2"]),
+        ["3\t0\tgit status", "1\t0\tcargo test", "1\t0\tls"]
+    );
+    assert_eq!(
+        home.stats_lines("UTC0", &["--source", "shell"]),
+        ["2\t0\tgit status", "1\t0\tls"]
+    );
+    assert_eq!(
+        home.stats_lines("UTC0", &["--source", "agents"]),
+        ["1\t0\tcargo test", "1\t0\tgit status"]
+    );
+    // An agent-only filter selects agents by itself.
+    assert_eq!(home.stats_lines("UTC0", &["--agent", "claude"]).len(), 2);
+    // --all keeps its meaning for stats: none.
+    assert_eq!(
+        home.stats_lines("UTC0", &["--all", "--source", "shell"])
+            .len(),
+        2
+    );
+}
+
+#[test]
+fn stats_reads_an_explicit_history_file_and_skips_secrets() {
+    let home = Home::new();
+    let file = home.path.join("other_history");
+    fs::write(
+        &file,
+        history(&[
+            (Some(1), "export GITHUB_TOKEN=abc"),
+            (Some(2), "git clone https://me:hunter2@example.com/r"),
+            (Some(3), "make"),
+        ]),
+    )
+    .unwrap();
+    assert_eq!(
+        home.stats_lines(
+            "UTC0",
+            &["--source", "shell", "--histfile", file.to_str().unwrap()]
+        ),
+        ["1\t0\tmake"]
+    );
+}
+
+#[test]
+fn each_source_is_read_only_when_selected() {
+    // Shell only: no database, then a corrupt one, makes no difference.
+    let home = Home::new();
+    fs::write(home.path.join(".zsh_history"), history(&[(Some(1), "ls")])).unwrap();
+    assert_eq!(
+        home.stats_lines("UTC0", &["--source", "shell"]),
+        ["1\t0\tls"]
+    );
+    fs::write(home.db(), vec![b'x'; 4096]).unwrap();
+    assert_eq!(
+        home.stats_lines("UTC0", &["--source", "shell"]),
+        ["1\t0\tls"]
+    );
+    let out = home.stats("UTC0", &[]);
+    assert_eq!(out.status.code(), Some(1));
+
+    // Agents only: an unreadable history file makes no difference; a missing
+    // one is an empty source; an unreadable one fails when it is read.
+    let home = Home::new();
+    home.record("claude", &payload("ls", "/"));
+    assert_eq!(home.stats_lines("UTC0", &[]), ["1\t0\tls"]);
+    let hist = home.path.join(".zsh_history");
+    fs::write(&hist, history(&[(Some(1), "pwd")])).unwrap();
+    fs::set_permissions(&hist, fs::Permissions::from_mode(0o000)).unwrap();
+    assert_eq!(
+        home.stats_lines("UTC0", &["--source", "agents"]),
+        ["1\t0\tls"]
+    );
+    let out = home.stats("UTC0", &["--source", "shell"]);
+    assert_eq!(out.status.code(), Some(1));
+    assert!(
+        stderr(&out).starts_with("zh: could not read "),
+        "{}",
+        stderr(&out)
+    );
+    fs::set_permissions(&hist, fs::Permissions::from_mode(0o600)).unwrap();
+}
+
+#[test]
+fn stats_source_and_time_usage_errors_exit_64() {
+    let home = Home::new();
+    for args in [
+        &["--agent", "pi", "--source", "shell"][..],
+        &["--dir", "/", "--source", "all"],
+        &["--histfile", "/h", "--source", "agents"],
+        &["--histfile", "/h", "--session", "s"],
+        &["--source", "bogus"],
+        &["--source"],
+        &["--since"],
+        &["--until"],
+        &["--since", "2026-02-30"],
+        &["--since", "2026-09-30 24:00"],
+        &["--since", "yesterday"],
+        &["--since", "-1d"],
+        &["--since", "2d", "--until", "3d"],
+        &["--since", "99999999999999999w"],
+    ] {
+        let out = home.stats("UTC0", args);
+        assert_eq!(out.status.code(), Some(64), "{args:?}: {}", stderr(&out));
+        assert!(!out.stderr.is_empty());
+    }
+}
+
+#[test]
+fn time_bounds_are_inclusive_at_their_precision() {
+    let home = Home::new();
+    fs::write(
+        home.path.join(".zsh_history"),
+        history(&[
+            (Some(1788220799), "aug31-last-second"),
+            (Some(1788220800), "sep01-first-second"),
+            (Some(1790791500), "sep30-1805-start"),
+            (Some(1790791559), "sep30-1805-end"),
+            (Some(1790791560), "sep30-1806"),
+            (Some(1790812799), "sep30-last-second"),
+            (Some(1790812800), "oct01-first-second"),
+            (None, "untimed"),
+        ]),
+    )
+    .unwrap();
+    let names = |args: &[&str]| -> Vec<String> {
+        let mut all = vec!["--source", "shell", "--words", "1"];
+        all.extend(args);
+        let mut v: Vec<String> = home
+            .stats_lines("UTC0", &all)
+            .into_iter()
+            .map(|l| l.rsplit('\t').next().unwrap().to_owned())
+            .collect();
+        v.sort();
+        v
+    };
+    assert_eq!(
+        names(&["--since", "2026-09-01", "--until", "2026-09-30"]),
+        [
+            "sep01-first-second",
+            "sep30-1805-end",
+            "sep30-1805-start",
+            "sep30-1806",
+            "sep30-last-second"
+        ]
+    );
+    assert_eq!(
+        names(&["--since", "2026-09-30 18:05", "--until", "2026-09-30 18:05"]),
+        ["sep30-1805-end", "sep30-1805-start"]
+    );
+    assert_eq!(names(&["--since", "2026-10-01"]), ["oct01-first-second"]);
+    assert!(names(&[]).contains(&"untimed".to_owned()));
+    assert!(!names(&["--until", "2026-12-31"]).contains(&"untimed".to_owned()));
+}
+
+#[test]
+fn relative_bounds_count_back_from_now() {
+    let home = Home::new();
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs() as i64;
+    fs::write(
+        home.path.join(".zsh_history"),
+        history(&[(Some(now - 3 * 3600), "old"), (Some(now - 3600), "recent")]),
+    )
+    .unwrap();
+    home.record("claude", &payload("agent-now", "/"));
+    home.sql(&format!(
+        "INSERT INTO commands (ts, agent, cwd, cmd) VALUES ({}, 'pi', '/', 'agent-old')",
+        now - 10 * 86400
+    ));
+    let lines = home.stats_lines("UTC0", &["--since", "2h", "--words", "1"]);
+    let mut names: Vec<_> = lines
+        .iter()
+        .map(|l| l.rsplit('\t').next().unwrap())
+        .collect();
+    names.sort();
+    assert_eq!(names, ["agent-now", "recent"]);
+    let lines = home.stats_lines("UTC0", &["--until", "1w", "--words", "1"]);
+    assert_eq!(lines, ["1\t0\tagent-old"]);
+}
+
+#[test]
+fn dst_times_resolve_explicitly() {
+    let home = Home::new();
+    fs::write(
+        home.path.join(".zsh_history"),
+        history(&[
+            (Some(1792889100), "berlin-0045z"),
+            (Some(1793511900), "newyork-0545z"),
+        ]),
+    )
+    .unwrap();
+    let berlin = "CET-1CEST,M3.5.0,M10.5.0/3";
+    let new_york = "EST5EDT,M3.2.0,M11.1.0";
+    // 02:30 happens twice in Berlin on 2026-10-25 (00:30Z and 01:30Z); the
+    // earlier one is used, so an entry at 00:45Z is after it.
+    let out = home.stats_lines(
+        berlin,
+        &[
+            "--source",
+            "shell",
+            "--since",
+            "2026-10-25 02:30",
+            "--until",
+            "2026-10-25",
+        ],
+    );
+    assert_eq!(out, ["1\t0\tberlin-0045z"]);
+    // 01:30 happens twice in New York on 2026-11-01 (05:30Z and 06:30Z).
+    let out = home.stats_lines(
+        new_york,
+        &[
+            "--source",
+            "shell",
+            "--since",
+            "2026-11-01 01:30",
+            "--until",
+            "2026-11-01",
+        ],
+    );
+    assert_eq!(out, ["1\t0\tnewyork-0545z"]);
+    // Skipped hours do not exist.
+    for (tz, when) in [(berlin, "2026-03-29 02:30"), (new_york, "2026-03-08 02:30")] {
+        let out = home.stats(tz, &["--source", "shell", "--since", when]);
+        assert_eq!(out.status.code(), Some(64), "{tz} {when}");
+        assert!(stderr(&out).contains("does not exist"), "{}", stderr(&out));
+    }
+}
