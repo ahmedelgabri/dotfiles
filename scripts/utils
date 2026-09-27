@@ -63,6 +63,20 @@ log_success() {
 	log "OK" "$GREEN" "$@"
 }
 
+# The host's extra binary caches only reach nix.conf once the first switch
+# has applied its configuration, so pass them to that switch; otherwise a
+# fresh machine builds everything missing from cache.nixos.org from source.
+# Prints one argument per line for `mapfile`.
+host_cache_options() {
+	local settings="$FLAKE_ROOT#$1.config.nix.settings"
+	local substituters keys
+	substituters=$(nix --experimental-features 'nix-command flakes' eval --raw "$settings.substituters" --apply toString)
+	keys=$(nix --experimental-features 'nix-command flakes' eval --raw "$settings.trusted-public-keys" --apply toString)
+	printf '%s\n' \
+		--option extra-substituters "$substituters" \
+		--option extra-trusted-public-keys "$keys"
+}
+
 print_main_banner() {
 	cd "$HOME"
 	command cat <<EOF

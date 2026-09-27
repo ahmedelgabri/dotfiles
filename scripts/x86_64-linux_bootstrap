@@ -24,8 +24,11 @@ else
 	log_error "Could not find a flake source for bootstrap"
 fi
 
+cache_options=$(host_cache_options "nixosConfigurations.$FLAKE")
+mapfile -t CACHE_OPTIONS <<<"$cache_options"
+
 log_info "Installing flake -> $FLAKE"
-sudo nixos-rebuild switch --flake "$FLAKE_ROOT#$FLAKE" --option eval-cache false
+sudo nixos-rebuild switch --flake "$FLAKE_ROOT#$FLAKE" --option eval-cache false "${CACHE_OPTIONS[@]}"
 log_success "$FLAKE installed"
 
 clone_dotfiles

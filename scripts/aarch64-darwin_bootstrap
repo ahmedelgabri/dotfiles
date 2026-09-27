@@ -44,8 +44,11 @@ else
 	log_error "Could not find a flake source for bootstrap"
 fi
 
+cache_options=$(host_cache_options "darwinConfigurations.$FLAKE")
+mapfile -t CACHE_OPTIONS <<<"$cache_options"
+
 log_info "Installing flake -> $FLAKE"
-sudo nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --option eval-cache false --flake "$FLAKE_ROOT#$FLAKE"
+sudo nix --experimental-features 'nix-command flakes' run nix-darwin -- switch --option eval-cache false "${CACHE_OPTIONS[@]}" --flake "$FLAKE_ROOT#$FLAKE"
 log_success "$FLAKE installed"
 
 clone_dotfiles

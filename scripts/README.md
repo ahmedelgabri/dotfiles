@@ -5,7 +5,7 @@ Shell scripts packaged by `nix/parts/outputs/apps.nix` with `writeShellApplicati
 | Script | Flake app | Purpose |
 | --- | --- | --- |
 | `aarch64-darwin_bootstrap`, `x86_64-linux_bootstrap` | `default` | First install of a host (see the root README) |
-| `utils` | — | Logging helpers and `clone_dotfiles`, sourced by both bootstrap scripts |
+| `utils` | — | Logging helpers, `clone_dotfiles`, and `host_cache_options`, sourced by both bootstrap scripts. The last passes the host's binary caches to the first switch, since they only reach `nix.conf` once that switch has applied them |
 | `doctor` | `doctor` | Checklist of the setup bootstrap cannot do |
 | `test-bootstrap` | `test-bootstrap` (macOS) | Runs bootstrap in a disposable Tart VM |
 
