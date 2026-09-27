@@ -15,6 +15,12 @@
     in
     {
       checks = {
+        # nixos-generate-config owns hardware-configuration.nix; regenerating
+        # it would bring back its unused `pkgs` argument.
+        deadnix = mkCheck "deadnix-check" [ pkgs.deadnix ] ''
+          deadnix --fail --exclude ${source}/nix/parts/hosts/nixos/hardware-configuration.nix -- ${source}
+        '';
+
         nix-format = mkCheck "nix-format-check" [ pkgs.nixfmt-rs ] ''
           find ${source} -name '*.nix' -print0 | xargs -0 nixfmt --check
         '';

@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.overlays.default =
-    final: prev:
+    _final: prev:
     {
       pragmatapro = prev.callPackage ../../pkgs/pragmatapro.nix { };
       hcron = prev.callPackage ../../pkgs/hcron.nix { };
