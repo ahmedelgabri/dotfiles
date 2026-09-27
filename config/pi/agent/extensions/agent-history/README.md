@@ -1,6 +1,6 @@
 # Agent history
 
-Record commands issued through Pi's `bash` tool in the agent-only history database, `$ZDOTDIR/.agent_history.db`, with agent `pi`. This runs automatically and adds no command, shortcut, or tool. See [docs/agent-history.md](../../../../../docs/agent-history.md) for the schema, the credential filter, and the Ctrl-R widget that searches it.
+Record commands issued through Pi's `bash` tool in the agent-only history database, `$ZDOTDIR/.agent_history.db`, with agent `pi`. This runs automatically and adds no command, shortcut, or tool.
 
 ## Requirements and behavior
 
