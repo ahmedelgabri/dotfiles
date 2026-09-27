@@ -3,7 +3,7 @@ set -ue -o pipefail
 
 # Shell commands run by coding agents (Claude Code, Codex, pi) are kept in
 # their own history next to .zsh_history instead of inside it, so they never
-# surface in up-arrow, substring search, or deja suggestions while staying
+# surface in up-arrow, substring search, or inline suggestions while staying
 # searchable from the Ctrl-R widget in config/zsh.d/zsh/config/extras.zsh.
 #
 # Usage:

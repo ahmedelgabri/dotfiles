@@ -24,13 +24,9 @@ Codex and pi only report calls that ran, whatever the exit status. Claude Code d
 
 Ctrl-R in zsh opens one fzf picker (`fzf-history-widget` in `config/zsh.d/zsh/config/extras.zsh`). It starts on the shell history; CTRL-A switches to agent records, CTRL-D to agent records recorded under the current directory, CTRL-R back to the shell, CTRL-Y copies the command, ALT-M toggles the time and directory columns, and `?` shows a preview. Both sources use the same `id\ttime\tdir\tcmd` rows. Shell rows come from one `printf` over zsh's `history` array, newest first, and are resolved from `$history[id]` on accept, so multi-line commands survive; `fc` is not used because ZLE refuses it ("no interactive history within ZLE") and a forked `fc` takes seconds for tens of thousands of entries. The array has no timestamps, so shell rows leave the time and directory columns empty; agent rows carry both and are inserted verbatim. Shell rows are written to a temp file once per invocation so the reload keys, which run outside the shell, can return to them.
 
-## Inline suggestions
-
-Ghost-text suggestions come from [deja](https://github.com/Giammarco-Ferranti/deja), which replaced zsh-autosuggestions and learns only from the interactive shell, never from the agent history. The Nix module sources deja's cached `~/.local/share/deja/init.zsh` only when the script embeds the current package's binary path; otherwise it regenerates the script with the pinned binary and restarts the daemon detached. Deja's own staleness check stats the baked binary path, which is an immutable store path, so it would never notice a Nix upgrade and would go inert once the old path is garbage collected. Tab stays with completion (`DEJA_CYCLE_KEY` is empty). After the first switch, run `deja import --file $ZDOTDIR/.zsh_history` and `deja daemon --restart` once so existing history is suggested.
-
 ## Deploying
 
-Switch the system once for the whole change, then `exec zsh` in open shells, `pkill -x atuin` to stop the daemon atuin autostarted, restart pi, run `agent-history import-atuin` to carry the agent commands atuin recorded into the new database, and run the one-time `deja import` and `deja daemon --restart` above. Atuin's local data under `~/.local/share/atuin` is not removed automatically; the import reads it in place.
+Switch the system once for the whole change, then `exec zsh` in open shells, `pkill -x atuin` to stop the daemon atuin autostarted, restart pi, and run `agent-history import-atuin` to carry the agent commands atuin recorded into the new database. Atuin's local data under `~/.local/share/atuin` is not removed automatically; the import reads it in place.
 
 ## History
 
@@ -39,3 +35,4 @@ Switch the system once for the whole change, then `exec zsh` in open shells, `pk
 - The Ctrl-R widget replaced the atuin-backed fzf picker; fzf's stock history widget was not reused because it only knows one source.
 - deja replaced zsh-autosuggestions in both the NixOS and nix-darwin modules.
 - atuin was removed: flake input, overlay, package, config tree, and shell init. Its sync server on the home server is a separate teardown.
+- deja was reverted and zsh-autosuggestions restored: deja only suggests from history and shows nothing for lines no history entry starts with, while zsh-autosuggestions with the `completion` strategy falls back to tab completion for paths and arguments never typed before.
