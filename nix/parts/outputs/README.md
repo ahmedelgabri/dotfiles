@@ -4,11 +4,13 @@ Each file here contributes one kind of flake output through flake-parts.
 
 ## Checks
 
-`checks.nix` backs `nix flake check`, which CI runs as `nix flake check --all-systems` on Ubuntu (`.github/workflows/nix-eval.yml`).
+`checks.nix` backs `nix flake check`. `nix run .#lint` (in `apps.nix`) runs it with `--all-systems` and then zizmor's online audits (see below); CI runs the same app on Ubuntu (`.github/workflows/nix-eval.yml`).
 
 | Check | What it enforces |
 | --- | --- |
 | `deadnix` | No unused Nix bindings or arguments. `nix/parts/hosts/nixos/hardware-configuration.nix` is excluded: `nixos-generate-config` owns it and would bring its unused argument back on every regeneration. |
+| `actionlint` | GitHub workflows are valid (syntax, expressions, runner labels), with shellcheck over their `run:` scripts |
+| `zizmor` | GitHub workflows and `dependabot.yml` pass zizmor's offline security audits. Checks have no network or token, so the online audits run separately (see below) |
 | `nix-format` | `nixfmt-rs` formatting |
 | `pi-extensions` | The pi extensions type-check with `tsc` |
 | `shellcheck` | Every bash or `sh` script in the repo |
@@ -25,4 +27,8 @@ On the Ubuntu runner, `--all-systems` evaluates these aarch64-darwin checks with
 
 ### Keeping CI current
 
-Workflows pin actions by commit SHA. `.github/dependabot.yml` bumps those pins (and their version comments) weekly in a single grouped PR with a `ci` commit prefix.
+Workflows pin actions by commit SHA. `.github/dependabot.yml` bumps those pins (and their version comments) weekly in a single grouped PR with a `ci` commit prefix, skipping releases younger than seven days, the same delay bun and pnpm use.
+
+### Online workflow audits
+
+zizmor's online audits (impostor commits, ref confusion, known-vulnerable actions, stale refs) resolve action references against the GitHub API, so they need network and a token, which flake checks cannot have. `nix run .#lint` runs them on `.github` after the flake checks, using `$GH_TOKEN` or `$GITHUB_TOKEN`, or else `gh auth token`. CI passes the job's `secrets.GITHUB_TOKEN` as `GITHUB_TOKEN` (Actions does not export it to steps on its own); the workflow's empty `permissions` still let it read the public action repositories the audits query.

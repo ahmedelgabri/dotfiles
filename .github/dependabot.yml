@@ -5,6 +5,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Same supply-chain delay as bun and pnpm: skip releases younger than a week.
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: ci
     groups:

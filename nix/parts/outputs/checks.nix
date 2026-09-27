@@ -45,6 +45,16 @@
             deadnix --fail --exclude ${source}/nix/parts/hosts/nixos/hardware-configuration.nix -- ${source}
           '';
 
+          # Also runs shellcheck on each workflow `run:` script.
+          actionlint = mkCheck "actionlint-check" [ pkgs.actionlint pkgs.shellcheck ] ''
+            actionlint -no-color ${source}/.github/workflows/*.yml
+          '';
+
+          # Offline audits only: the online ones need network and a GitHub token.
+          zizmor = mkCheck "zizmor-check" [ pkgs.zizmor ] ''
+            HOME=$TMPDIR zizmor --offline --no-progress ${source}/.github
+          '';
+
           nix-format = mkCheck "nix-format-check" [ pkgs.nixfmt-rs ] ''
             find ${source} -name '*.nix' -print0 | xargs -0 nixfmt --check
           '';

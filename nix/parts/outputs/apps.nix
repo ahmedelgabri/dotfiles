@@ -17,6 +17,35 @@ _: {
         text = builtins.readFile ../../../scripts/doctor;
       };
 
+      # Everything that checks the repo, locally and in CI. Flake checks have
+      # no network or token, so zizmor's online audits (impostor commits,
+      # known-vulnerable actions, ...) run here after them. `nix` comes from
+      # the caller's PATH.
+      lint = pkgs.writeShellApplication {
+        name = "lint";
+        runtimeInputs = [
+          pkgs.gh
+          pkgs.zizmor
+        ];
+        text = ''
+          if [ ! -f flake.nix ]; then
+            echo "Run from the root of the dotfiles checkout" >&2
+            exit 1
+          fi
+
+          # Evaluating darwin hosts on a Linux runner only works without
+          # import-from-derivation.
+          nix flake check --all-systems --no-write-lock-file --option allow-import-from-derivation false
+
+          # zizmor reads GH_TOKEN or GITHUB_TOKEN; ask gh only when neither is set.
+          if [ -z "''${GH_TOKEN:-}''${GITHUB_TOKEN:-}" ]; then
+            GH_TOKEN=$(gh auth token)
+            export GH_TOKEN
+          fi
+          zizmor --no-progress .github
+        '';
+      };
+
       flakeRoot = ../../../.;
       bootstrapScript = ../../../scripts/${system}_bootstrap;
 
@@ -66,6 +95,11 @@ _: {
             { }
         )
         // {
+          lint = {
+            type = "app";
+            program = pkgs.lib.getExe lint;
+            meta.description = "Run the flake checks and zizmor's online workflow audits";
+          };
           doctor = {
             type = "app";
             program = pkgs.lib.getExe doctor;
