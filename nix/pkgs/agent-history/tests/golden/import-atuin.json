@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "code": 0,
+      "stdout": "agent-history: imported 3 commands from {ATUIN}\n",
+      "stderr": ""
+    },
+    {
+      "code": 0,
+      "stdout": "agent-history: imported 0 commands from {ATUIN}\n",
+      "stderr": ""
+    }
+  ],
+  "rows": [
+    [
+      "claude",
+      "/r",
+      "ls -la",
+      "",
+      "ran",
+      ""
+    ],
+    [
+      "codex",
+      "/r/a",
+      "git status",
+      "",
+      "ran",
+      ""
+    ],
+    [
+      "pi",
+      "/r/b",
+      "pi thing",
+      "",
+      "ran",
+      ""
+    ]
+  ]
+}

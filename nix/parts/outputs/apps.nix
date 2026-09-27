@@ -49,7 +49,7 @@ _: {
         };
 
       packages = {
-        inherit (pkgs) next-prayer;
+        inherit (pkgs) next-prayer agent-history;
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         inherit (pkgs) sb;

@@ -1,0 +1,9 @@
+{"hook_event_name":"PostToolUse","session_id":"s1","cwd":"/r","tool_name":"Bash","tool_input":{"command":"ls -la","description":"List files"}}
+{"hook_event_name":"PostToolUseFailure","session_id":"s1","cwd":"/r","tool_name":"Bash","tool_input":{"command":"rm -rf nope","description":"Remove"}}
+{"cwd":"/r/b","tool_input":{"command":"codex cmd"}}
+{"cwd":"/r","tool_input":{"command":"echo 'quoted' \"double\""}}
+{"cwd":"/r/dir with spaces","tool_input":{"command":"  lead\n\tsecond line  "}}
+{"cwd":"/r","tool_input":{"command":"curl -H 'Authorization: Bearer abc' x"}}
+{"cwd":"/r","tool_input":{"command":"curl example.com","description":"GITHUB_TOKEN=abc"}}
+{"tool_name":"Read","tool_input":{"file_path":"/x"}}
+{"cwd":"/r","tool_input":{"command":""}}

@@ -46,7 +46,7 @@
           typos .
         '';
 
-        inherit (pkgs) next-prayer;
+        inherit (pkgs) next-prayer agent-history;
       };
     };
 }

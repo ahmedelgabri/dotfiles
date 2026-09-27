@@ -1,0 +1,59 @@
+{
+  "runs": [
+    {
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "rows": [
+    [
+      "claude",
+      "/r",
+      "ls -la",
+      "s1",
+      "ran",
+      "List files"
+    ],
+    [
+      "claude",
+      "/r",
+      "rm -rf nope",
+      "s1",
+      "failed",
+      "Remove"
+    ],
+    [
+      "claude",
+      "/r/b",
+      "codex cmd",
+      "",
+      "ran",
+      ""
+    ],
+    [
+      "claude",
+      "/r",
+      "echo 'quoted' \"double\"",
+      "",
+      "ran",
+      ""
+    ],
+    [
+      "claude",
+      "/r/dir with spaces",
+      "  lead\n\tsecond line  ",
+      "",
+      "ran",
+      ""
+    ],
+    [
+      "claude",
+      "/r",
+      "",
+      "",
+      "ran",
+      ""
+    ]
+  ]
+}

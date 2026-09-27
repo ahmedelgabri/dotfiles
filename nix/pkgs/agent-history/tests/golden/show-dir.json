@@ -1,0 +1,9 @@
+{
+  "runs": [
+    {
+      "code": 0,
+      "stdout": "2026-01-01 00:00  claude  ran\ndir: /r/a\nsession: s1\ndescription: first dup\n\necho dup\n",
+      "stderr": ""
+    }
+  ]
+}

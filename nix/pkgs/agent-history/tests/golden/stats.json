@@ -1,0 +1,9 @@
+{
+  "runs": [
+    {
+      "code": 0,
+      "stdout": "3\t1\techo dup\n2\t0\tjj log\n2\t1\tnix build\n1\t0\tfar future\n1\t0\tafter dst\n1\t0\tbefore dst\n1\t0\tsame second\n1\t0\tnbsp word\n1\t0\t\n1\t0\ttab inside\n1\t0\tline one\n1\t0\tspaced cmd\n1\t1\trm denied\n1\t0\tsolo\n",
+      "stderr": ""
+    }
+  ]
+}

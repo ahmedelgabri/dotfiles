@@ -7,6 +7,7 @@
       hcron = prev.callPackage ../../pkgs/hcron.nix { };
 
       next-prayer = prev.callPackage ../../pkgs/next-prayer/next-prayer.nix { };
+      agent-history = prev.callPackage ../../pkgs/agent-history/agent-history.nix { };
 
       notmuch = prev.notmuch.override {
         withEmacs = false;

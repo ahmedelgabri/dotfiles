@@ -1,0 +1,9 @@
+{
+  "runs": [
+    {
+      "code": 0,
+      "stdout": "3\t1\techo dup\n2\t1\tnix build\n",
+      "stderr": ""
+    }
+  ]
+}
