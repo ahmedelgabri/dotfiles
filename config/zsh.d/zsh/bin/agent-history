@@ -26,8 +26,10 @@ set -ue -o pipefail
 db="${ZDOTDIR:-$HOME}/.agent_history.db"
 
 # Generic credential shapes plus provider token shapes (AWS, GitHub, Slack,
-# Stripe). Agents paste tokens into commands more readily than a human typing
-# at a prompt does.
+# Stripe, Anthropic, OpenAI, GitLab, npm, Google) and PEM private keys.
+# Agents paste tokens into commands more readily than a human typing at a
+# prompt does. The sk- shapes keep a leading \b so names like "task-..." pass,
+# and the legacy OpenAI shape allows no dashes so kebab-case names do too.
 secret_pattern='\b[A-Z_]*(TOKEN|SECRET|PASSWORD|API_?KEY)[A-Z_]*='
 secret_pattern+='|--(password|token|secret|api-key)[= ]'
 secret_pattern+='|authorization: ?(bearer|basic) '
@@ -39,6 +41,13 @@ secret_pattern+='|github_pat_[A-Za-z0-9_]{22,}'
 secret_pattern+='|xox[baprs]-[0-9A-Za-z-]{10,}'
 secret_pattern+='|hooks\.slack\.com/services/'
 secret_pattern+='|[sr]k_(live|test)_[0-9A-Za-z]{24,}'
+secret_pattern+='|\bsk-ant-(api|admin|oat)[0-9]{2}-[A-Za-z0-9_-]{20,}'
+secret_pattern+='|\bsk-(proj|svcacct|admin)-[A-Za-z0-9_-]{40,}'
+secret_pattern+='|\bsk-[A-Za-z0-9]{48}\b'
+secret_pattern+='|glpat-[A-Za-z0-9_-]{20,}'
+secret_pattern+='|\bnpm_[A-Za-z0-9]{36}\b'
+secret_pattern+='|AIza[0-9A-Za-z_-]{35}'
+secret_pattern+='|-----BEGIN [A-Z ]*PRIVATE KEY'
 
 fail() {
 	echo "agent-history: $*" >&2
