@@ -28,6 +28,20 @@
             gotools
           ];
         };
+
+        rust = pkgs.mkShell {
+          name = "dotfiles-rust";
+          packages = with pkgs; [
+            cargo
+            rustc
+            rustfmt
+            clippy
+            rust-analyzer
+            # nix/pkgs/agent-history tests spawn both to find repo roots.
+            jujutsu
+            git
+          ];
+        };
       };
     };
 }
