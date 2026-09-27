@@ -14,7 +14,7 @@ pack.add {
 		event = { 'UIEnter' },
 	},
 	{
-		src = 'https://github.com/barrettruth/diffs.nvim',
+		src = 'https://forge.barrettruth.com/barrettruth/diffs.nvim',
 		config = function()
 			vim.g.diffs = {
 				integrations = {
