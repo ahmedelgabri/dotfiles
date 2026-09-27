@@ -16,6 +16,9 @@ set -ue -o pipefail
 #                                   # row, failed calls included
 #   agent-history show [FILTERS] -- CMD  # newest record of CMD in scope
 #   agent-history forget CMD        # delete every record of CMD
+#   agent-history stats [--words N] [--limit N] [FILTERS]
+#                                   # "count\tfailed\tprefix" per command
+#                                   # prefix, most used first
 #   agent-history import-atuin [PATH]  # copy agent-run rows out of atuin
 #
 # Storage is SQLite: concurrent agents get atomic writes and a busy timeout
@@ -179,7 +182,7 @@ repo_root() {
 	printf '%s' "$root"
 }
 
-# Fills the globals `conditions` (SQL predicates, ANDed by where_clause) and
+# Fills the globals `conditions` (SQL predicates joined with AND by where_clause) and
 # `all` from filter flags, and `rest` with whatever follows `--`.
 parse_filters() {
 	conditions=()
@@ -286,14 +289,68 @@ forget() {
 	echo "agent-history: forgot ${count##*$'\n'} records" >&2
 }
 
+# Groups every record in scope, failed ones included, by the first N words of
+# its command. Words are whitespace runs, not shell syntax, so an env prefix
+# or `cd x &&` counts as words. The failed column counts calls Claude reported
+# through PostToolUseFailure: worth a look, not a list of denials.
+stats() {
+	local conditions all rest words=2 limit=30 filters=()
+	while (($#)); do
+		case $1 in
+		--words)
+			words=${2:-}
+			shift 2 || shift
+			;;
+		--limit)
+			limit=${2:-}
+			shift 2 || shift
+			;;
+		*)
+			filters+=("$1")
+			shift
+			;;
+		esac
+	done
+	if [[ ! $words =~ ^[1-9][0-9]*$ || ! $limit =~ ^[1-9][0-9]*$ ]]; then
+		echo "agent-history: --words and --limit take positive integers" >&2
+		exit 64
+	fi
+	parse_filters --all "${filters[@]}"
+	((${#rest[@]} == 0)) || fail "stats takes no command"
+	[[ -f $db ]] || return 0
+	ensure_db || fail "could not open $db"
+	# sqlite3 prints nothing rather than [] for no rows, hence -s and add.
+	# The anchored match stops after N words: splitting whole commands, some
+	# of them long heredocs, takes seconds on a few thousand records.
+	sql -json "SELECT id, ts, status, cmd FROM commands$(where_clause);" |
+		jq -rs --argjson words "$words" --argjson limit "$limit" '
+			def prefix:
+				[.cmd | match("^\\s*(\\S+(?:\\s+\\S+){0,\($words - 1)})").captures[0].string]
+				| (first // "")
+				| [splits("\\s+")]
+				| join(" ");
+			(add // [])
+			| map(.prefix = prefix)
+			| group_by(.prefix)
+			| map({
+				prefix: .[0].prefix,
+				count: length,
+				failed: map(select(.status == "failed")) | length,
+				newest: max_by([.ts, .id]) | [.ts, .id]
+			})
+			| sort_by([-.count, -.newest[0], -.newest[1], .prefix])
+			| .[:$limit][]
+			| "\(.count)\t\(.failed)\t\(.prefix)"'
+}
+
 case "${1:-}" in
-record | list | show | forget | import-atuin)
+record | list | show | forget | stats | import-atuin)
 	cmd="$1"
 	shift
 	"$cmd" "$@"
 	;;
 *)
-	echo "usage: agent-history record <agent> | list [--dir DIR | --repo DIR] [--agent NAME] [--session ID] [--all] | show [FILTERS] -- CMD | forget CMD | import-atuin [PATH]" >&2
+	echo "usage: agent-history record <agent> | list [--dir DIR | --repo DIR] [--agent NAME] [--session ID] [--all] | show [FILTERS] -- CMD | forget CMD | stats [--words N] [--limit N] [FILTERS] | import-atuin [PATH]" >&2
 	exit 64
 	;;
 esac
