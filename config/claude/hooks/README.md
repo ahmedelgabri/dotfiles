@@ -60,7 +60,7 @@ The `tap state` entries publish the agent's activity state so other tooling
 ### `agent-history` (from `config/zsh.d/zsh/bin`)
 
 - **Events**: `PostToolUse` and `PostToolUseFailure`, matcher `Bash`; Codex wires the same command from `config/codex/hooks.json`.
-- **What it does**: appends the Bash command and its working directory to `$ZDOTDIR/.agent_history.db`, the agent-only history the zsh Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every command that ran, whatever its exit status; `PostToolUseFailure` fires for calls that did not run (denied, interrupted, tool error), so the history also shows what an agent tried. Commands matching credential patterns are dropped.
+- **What it does**: appends the Bash command, its working directory, the session id, Claude's description of the call, and whether it arrived through `PostToolUseFailure` to `$ZDOTDIR/.agent_history.db`, the agent-only history the zsh Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every command that ran, whatever its exit status; `PostToolUseFailure` fires for calls that did not run (denied, interrupted, tool error), so the history also shows what an agent tried. Commands matching credential patterns are dropped.
 - **Failure mode**: a bad payload or unwritable file exits 1 with a message on stderr; PostToolUse hooks only warn on a non-zero exit, so the agent is never blocked.
 
 ### `run-ccpeek.sh`

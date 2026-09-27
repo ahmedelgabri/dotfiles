@@ -8,8 +8,10 @@ set -ue -o pipefail
 #
 # Usage:
 #   agent-history record <agent>    # Claude-Code-style hook JSON on stdin
-#   agent-history list [--dir DIR]  # NUL-separated "id\ttime\tdir\tcmd",
-#                                   # newest first; id is always empty
+#   agent-history list [--dir DIR] [--session ID] [--all]
+#                                   # NUL-separated "id\ttime\tdir\tcmd",
+#                                   # newest first; id is always empty;
+#                                   # --all includes failed calls
 #   agent-history import-atuin [PATH]  # copy agent-run rows out of atuin
 #
 # Storage is SQLite: concurrent agents get atomic writes and a busy timeout
@@ -45,10 +47,26 @@ sql() {
 }
 
 ensure_db() {
+	local version err
 	# Only the first run creates files; 077 keeps the database and its WAL
 	# companions private without touching an existing database's mode.
 	umask 077
-	sql 'PRAGMA journal_mode = WAL;
+	version=$(sql 'PRAGMA user_version;') || return 1
+	((version >= 1)) && return 0
+
+	# Fresh and version-0 databases take the same path: the CREATE is a no-op
+	# for the latter and the ALTERs add what it lacks. The whole migration is
+	# one SQL argument, which sqlite3 abandons at the first error, so a failed
+	# ALTER can never fall through to bumping the version. BEGIN IMMEDIATE
+	# queues concurrent hooks; the one that loses fails on a duplicate column
+	# and finds the version already bumped by the winner.
+	#
+	# Switching to WAL returns "database is locked" at once, ignoring the busy
+	# timeout, while another process is switching the same file. The process
+	# that wins does the switch, and a real write failure still surfaces from
+	# the migration, so losing that race is not an error.
+	sql 'PRAGMA journal_mode = WAL;' >/dev/null 2>&1 || true
+	err=$(sql 'BEGIN IMMEDIATE;
 		CREATE TABLE IF NOT EXISTS commands (
 			id INTEGER PRIMARY KEY,
 			ts INTEGER NOT NULL,
@@ -56,8 +74,18 @@ ensure_db() {
 			cwd TEXT NOT NULL,
 			cmd TEXT NOT NULL
 		);
+		ALTER TABLE commands ADD COLUMN session TEXT NOT NULL DEFAULT '"''"';
+		ALTER TABLE commands ADD COLUMN status TEXT NOT NULL DEFAULT '"'ran'"';
+		ALTER TABLE commands ADD COLUMN description TEXT NOT NULL DEFAULT '"''"';
 		CREATE INDEX IF NOT EXISTS commands_ts ON commands (ts);
-		CREATE INDEX IF NOT EXISTS commands_cwd ON commands (cwd);' >/dev/null
+		CREATE INDEX IF NOT EXISTS commands_cwd ON commands (cwd);
+		CREATE INDEX IF NOT EXISTS commands_session ON commands (session);
+		PRAGMA user_version = 1;
+		COMMIT;' 2>&1 >/dev/null) && return 0
+	version=$(sql 'PRAGMA user_version;') || return 1
+	((version >= 1)) && return 0
+	echo "agent-history: $err" >&2
+	return 1
 }
 
 # SQL string literal: single quotes doubled.
@@ -72,13 +100,21 @@ record() {
 	# A payload without a Bash command (other tools, or a filtered secret) is
 	# a no-op; a payload that is not JSON at all is a real failure. jq builds
 	# the INSERT so the command never passes through shell word splitting.
+	# PostToolUseFailure is Claude's report of any failed call (denied,
+	# interrupted, tool error); Codex and pi never send it, so "failed" is the
+	# hook's classification, not an exit status.
 	statement=$(jq -r --arg agent "$agent" --arg re "$secret_pattern" '
 		def q: "'"'"'" + gsub("'"'"'"; "'"''"'") + "'"'"'";
+		def str: if type == "string" then . else "" end;
 		(.tool_input.command // empty | strings) as $cmd
-		| select(($cmd | test($re; "i")) | not)
-		| "INSERT INTO commands (ts, agent, cwd, cmd) VALUES ("
+		| (.tool_input.description | str) as $description
+		| select(any($cmd, $description; test($re; "i")) | not)
+		| "INSERT INTO commands (ts, agent, cwd, cmd, session, status, description) VALUES ("
 			+ (now | floor | tostring) + ", " + ($agent | q) + ", "
-			+ ((.cwd // "") | q) + ", " + ($cmd | q) + ");"
+			+ ((.cwd // "") | q) + ", " + ($cmd | q) + ", "
+			+ (.session_id | str | q) + ", "
+			+ (if .hook_event_name == "PostToolUseFailure" then "failed" else "ran" end | q) + ", "
+			+ ($description | q) + ");"
 	') || fail "could not parse hook payload"
 	[[ -n $statement ]] || return 0
 
@@ -109,25 +145,60 @@ import-atuin() {
 	echo "agent-history: imported $imported commands from $src"
 }
 
+dir_condition() {
+	local dir=$1
+	# Strip trailing slashes so "DIR/" prefix matching works, and let the
+	# root match everything rather than looking for "//".
+	while [[ ${#dir} -gt 1 && $dir == */ ]]; do
+		dir="${dir%/}"
+	done
+	[[ $dir == / ]] && return 0
+	conditions+=("cwd = $(quote "$dir") OR substr(cwd, 1, length($(quote "$dir")) + 1) = $(quote "$dir/")")
+}
+
+# Fills the globals `conditions` (SQL predicates, ANDed by where_clause) and
+# `all` from filter flags.
+parse_filters() {
+	conditions=()
+	all=""
+	while (($#)); do
+		case $1 in
+		--dir)
+			dir_condition "${2:?directory required}"
+			shift 2
+			;;
+		--session)
+			conditions+=("session = $(quote "${2:?session required}")")
+			shift 2
+			;;
+		--all)
+			all=1
+			shift
+			;;
+		*) fail "unknown option: $1" ;;
+		esac
+	done
+	[[ -n $all ]] || conditions+=("status != 'failed'")
+}
+
+# Each predicate is parenthesised so an OR inside one cannot escape the AND.
+where_clause() {
+	local keyword=WHERE condition
+	for condition in "${conditions[@]}"; do
+		printf ' %s (%s)' "$keyword" "$condition"
+		keyword=AND
+	done
+}
+
 list() {
-	local dir="" where=""
-	if [[ ${1:-} == --dir ]]; then
-		dir="${2:?directory required}"
-		# Strip trailing slashes so "DIR/" prefix matching works, and let the
-		# root match everything rather than looking for "//".
-		while [[ ${#dir} -gt 1 && $dir == */ ]]; do
-			dir="${dir%/}"
-		done
-		[[ $dir == / ]] && dir=""
-	fi
+	local conditions all
+	parse_filters "$@"
 	[[ -f $db ]] || return 0
-	if [[ -n $dir ]]; then
-		where="WHERE cwd = $(quote "$dir") OR substr(cwd, 1, length($(quote "$dir")) + 1) = $(quote "$dir/")"
-	fi
+	ensure_db || fail "could not open $db"
 	# sqlite3 cannot emit a NUL row separator from the command line, so the
 	# rows go out as JSON and jq frames them for fzf --read0.
 	sql -json "SELECT strftime('%Y-%m-%d %H:%M', ts, 'unixepoch', 'localtime') AS time, cwd, cmd
-		FROM commands $where ORDER BY ts DESC, id DESC;" |
+		FROM commands$(where_clause) ORDER BY ts DESC, id DESC;" |
 		jq -j '.[] | "\t\(.time)\t\(.cwd)\t\(.cmd)\u0000"'
 }
 
@@ -138,7 +209,7 @@ record | list | import-atuin)
 	"$cmd" "$@"
 	;;
 *)
-	echo "usage: agent-history record <agent> | list [--dir DIR] | import-atuin [PATH]" >&2
+	echo "usage: agent-history record <agent> | list [--dir DIR] [--session ID] [--all] | import-atuin [PATH]" >&2
 	exit 64
 	;;
 esac

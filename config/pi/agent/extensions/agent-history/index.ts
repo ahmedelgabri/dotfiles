@@ -16,7 +16,11 @@ const RECORD_TIMEOUT_MS = 10_000
 
 // Resolves with the recorder's stderr when it fails, so the caller can surface
 // the message without ever rejecting: recording must not affect the tool.
-function record(cwd: string, command: string): Promise<string | undefined> {
+function record(
+	cwd: string,
+	command: string,
+	sessionId: string,
+): Promise<string | undefined> {
 	return new Promise((resolve) => {
 		let stderr = ''
 		let child
@@ -41,7 +45,12 @@ function record(cwd: string, command: string): Promise<string | undefined> {
 		// would otherwise surface as an unhandled EPIPE.
 		child.stdin.on('error', () => {})
 		child.stdin.end(
-			JSON.stringify({tool_name: 'Bash', tool_input: {command}, cwd}),
+			JSON.stringify({
+				tool_name: 'Bash',
+				tool_input: {command},
+				cwd,
+				session_id: sessionId,
+			}),
 		)
 	})
 }
@@ -53,7 +62,11 @@ export default function (pi: ExtensionAPI) {
 		const command = event.input.command
 		if (typeof command !== 'string' || command.length === 0) return
 
-		const failure = await record(ctx.cwd, command)
+		const failure = await record(
+			ctx.cwd,
+			command,
+			ctx.sessionManager.getSessionId(),
+		)
 		if (failure) ctx.ui.notify(`agent-history: ${failure}`, 'warning')
 	})
 }
