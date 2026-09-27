@@ -189,8 +189,8 @@ let
                   packages = with pkgs; [
                     _1password-cli
                     # Called by the Claude/Codex hooks, the pi extension, and the
-                    # Ctrl-R widget; see nix/pkgs/agent-history/README.md.
-                    agent-history
+                    # Ctrl-R widget; see nix/pkgs/zh/README.md.
+                    zh
                     # buku
                     eza
                     fd

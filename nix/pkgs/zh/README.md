@@ -1,10 +1,10 @@
-# agent-history
+# zh
 
-Shell commands run by coding agents (Claude Code, Codex, pi) are kept in their own SQLite history next to `.zsh_history` instead of inside it, so they never surface in up-arrow, substring search, or inline suggestions while staying searchable from the Ctrl-R widget in `config/zsh.d/zsh/config/extras.zsh`. This is the recorder and query tool for that history: the Claude and Codex hooks and the pi `agent-history` extension call `agent-history record`, and the widget calls `list`, `show`, and `forget`. It replaced a Bash script and keeps its subcommands, output bytes, exit codes, and SQLite schema. The schema is created with all its columns on first write; tables from before `session`, `status`, and `description` existed are not migrated, since no database with that schema is in use.
+Shell commands run by coding agents (Claude Code, Codex, pi) are kept in their own SQLite history next to `.zsh_history` instead of inside it, so they never surface in up-arrow, substring search, or inline suggestions while staying searchable from the Ctrl-R widget in `config/zsh.d/zsh/config/extras.zsh`. `zh` is the recorder and query tool for that history: the Claude and Codex hooks and the pi `agent-history` extension call `zh record`, and the widget calls `list`, `show`, and `forget`. The package also installs `agent-history` as an alias of `zh` while callers move to the new name. It replaced a Bash script and keeps its subcommands, output bytes, exit codes, and SQLite schema. The schema is created with all its columns on first write; tables from before `session`, `status`, and `description` existed are not migrated, since no database with that schema is in use.
 
 ## Database
 
-`$ZDOTDIR/.agent_history.db` (falling back to `$HOME` when `ZDOTDIR` is unset or empty), created with mode 0600 in WAL mode. One table holds every record; `import-atuin` reads atuin's `history` table from a separate database attached for the duration of the import.
+`$ZDOTDIR/.zh.db` (falling back to `$HOME` when `ZDOTDIR` is unset or empty), created with mode 0600 in WAL mode. One table holds every record; `import-atuin` reads atuin's `history` table from a separate database attached for the duration of the import.
 
 ```mermaid
 erDiagram
@@ -55,7 +55,7 @@ cargo clippy --all-targets -- -D warnings
 cargo fmt --check
 ```
 
-`nix build .#agent-history` and `nix flake check` build the package and run the same tests in the sandbox; `git` and `jujutsu` are check inputs because the `--repo` tests create repositories. Dependencies are pinned by `Cargo.lock`, which the Nix build reads directly, so there is no vendor hash to update.
+`nix build .#zh` and `nix flake check` build the package and run the same tests in the sandbox; `git` and `jujutsu` are check inputs because the `--repo` tests create repositories. Dependencies are pinned by `Cargo.lock`, which the Nix build reads directly, so there is no vendor hash to update.
 
 ## Golden tests
 

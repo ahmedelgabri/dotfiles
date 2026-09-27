@@ -39,7 +39,7 @@ impl Fail {
 }
 
 #[derive(Parser)]
-#[command(name = "agent-history", about = "Agent-only shell history")]
+#[command(name = "zh", about = "Agent command history")]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -126,7 +126,7 @@ fn main() -> ExitCode {
     match result {
         Ok(()) => ExitCode::SUCCESS,
         Err(fail) => {
-            eprintln!("agent-history: {}", fail.message);
+            eprintln!("zh: {}", fail.message);
             ExitCode::from(fail.code)
         }
     }
@@ -213,36 +213,36 @@ mod tests {
 
     #[test]
     fn usage_errors_exit_64() {
-        assert_eq!(code(&["agent-history"]), 64);
-        assert_eq!(code(&["agent-history", "--bogus"]), 64);
-        assert_eq!(code(&["agent-history", "bogus"]), 64);
+        assert_eq!(code(&["zh"]), 64);
+        assert_eq!(code(&["zh", "--bogus"]), 64);
+        assert_eq!(code(&["zh", "bogus"]), 64);
     }
 
     #[test]
     fn help_exits_0_where_clap_sees_the_flag() {
-        assert_eq!(code(&["agent-history", "--help"]), 0);
-        assert_eq!(code(&["agent-history", "-h"]), 0);
-        assert_eq!(code(&["agent-history", "list", "--help"]), 0);
-        assert_eq!(code(&["agent-history", "stats", "-h"]), 0);
+        assert_eq!(code(&["zh", "--help"]), 0);
+        assert_eq!(code(&["zh", "-h"]), 0);
+        assert_eq!(code(&["zh", "list", "--help"]), 0);
+        assert_eq!(code(&["zh", "stats", "-h"]), 0);
         // A command, not a flag.
-        assert_eq!(code(&["agent-history", "show", "--", "--help"]), 255);
+        assert_eq!(code(&["zh", "show", "--", "--help"]), 255);
     }
 
     #[test]
     fn subcommand_argument_errors_exit_1() {
-        assert_eq!(code(&["agent-history", "list", "--bad"]), 1);
-        assert_eq!(code(&["agent-history", "list", "--dir"]), 1);
-        assert_eq!(code(&["agent-history", "list", "--", "x"]), 1);
-        assert_eq!(code(&["agent-history", "show", "x"]), 1);
-        assert_eq!(code(&["agent-history", "show", "--dir", "/a"]), 1);
-        assert_eq!(code(&["agent-history", "record"]), 1);
-        assert_eq!(code(&["agent-history", "stats", "--bogus"]), 1);
+        assert_eq!(code(&["zh", "list", "--bad"]), 1);
+        assert_eq!(code(&["zh", "list", "--dir"]), 1);
+        assert_eq!(code(&["zh", "list", "--", "x"]), 1);
+        assert_eq!(code(&["zh", "show", "x"]), 1);
+        assert_eq!(code(&["zh", "show", "--dir", "/a"]), 1);
+        assert_eq!(code(&["zh", "record"]), 1);
+        assert_eq!(code(&["zh", "stats", "--bogus"]), 1);
     }
 
     #[test]
     fn stats_count_errors_exit_64() {
-        assert_eq!(code(&["agent-history", "stats", "--words"]), 64);
-        assert_eq!(code(&["agent-history", "stats", "--limit"]), 64);
+        assert_eq!(code(&["zh", "stats", "--words"]), 64);
+        assert_eq!(code(&["zh", "stats", "--limit"]), 64);
         for bad in ["0", "-1", "x", "1.5", "--all", "--help", "01", ""] {
             assert_eq!(count(bad).unwrap_err().code, 64, "{bad}");
         }
@@ -252,20 +252,8 @@ mod tests {
     #[test]
     fn filters_repeat_and_combine() {
         let cli = Cli::try_parse_from([
-            "agent-history",
-            "list",
-            "--dir",
-            "/a",
-            "--repo",
-            "/b",
-            "--dir",
-            "/c",
-            "--agent",
-            "pi",
-            "--agent",
-            "claude",
-            "--all",
-            "--all",
+            "zh", "list", "--dir", "/a", "--repo", "/b", "--dir", "/c", "--agent", "pi", "--agent",
+            "claude", "--all", "--all",
         ])
         .unwrap();
         let Command::List { filters } = cli.command else {
@@ -280,14 +268,7 @@ mod tests {
     #[test]
     fn stats_counts_take_the_last_value() {
         let cli = Cli::try_parse_from([
-            "agent-history",
-            "stats",
-            "--words",
-            "1",
-            "--agent",
-            "pi",
-            "--words",
-            "3",
+            "zh", "stats", "--words", "1", "--agent", "pi", "--words", "3",
         ])
         .unwrap();
         let Command::Stats { words, filters, .. } = cli.command else {
@@ -311,44 +292,31 @@ mod tests {
     #[test]
     fn forget_parses_like_every_other_subcommand() {
         assert_eq!(
-            forgotten(&["agent-history", "forget", "echo dup"]),
+            forgotten(&["zh", "forget", "echo dup"]),
             Ok("echo dup".into())
         );
+        assert_eq!(forgotten(&["zh", "forget", "--", "-x"]), Ok("-x".into()));
+        assert_eq!(forgotten(&["zh", "forget", "--", "--"]), Ok("--".into()));
         assert_eq!(
-            forgotten(&["agent-history", "forget", "--", "-x"]),
-            Ok("-x".into())
-        );
-        assert_eq!(
-            forgotten(&["agent-history", "forget", "--", "--"]),
-            Ok("--".into())
-        );
-        assert_eq!(
-            forgotten(&["agent-history", "forget", "--", "--help"]),
+            forgotten(&["zh", "forget", "--", "--help"]),
             Ok("--help".into())
         );
         assert_eq!(
-            forgotten(&["agent-history", "forget", "--", "--weird cmd"]),
+            forgotten(&["zh", "forget", "--", "--weird cmd"]),
             Ok("--weird cmd".into())
         );
-        assert_eq!(forgotten(&["agent-history", "forget", "--help"]), Err(0));
-        assert_eq!(forgotten(&["agent-history", "forget", "-x"]), Err(1));
-        assert_eq!(
-            forgotten(&["agent-history", "forget", "--weird cmd"]),
-            Err(1)
-        );
-        assert_eq!(
-            forgotten(&["agent-history", "forget", "--weird", "cmd"]),
-            Err(1)
-        );
-        assert_eq!(forgotten(&["agent-history", "forget", "--"]), Err(1));
-        assert_eq!(forgotten(&["agent-history", "forget"]), Err(1));
-        assert_eq!(forgotten(&["agent-history", "forget", "a", "b"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget", "--help"]), Err(0));
+        assert_eq!(forgotten(&["zh", "forget", "-x"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget", "--weird cmd"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget", "--weird", "cmd"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget", "--"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget"]), Err(1));
+        assert_eq!(forgotten(&["zh", "forget", "a", "b"]), Err(1));
     }
 
     #[test]
     fn show_takes_a_hyphenated_command_after_the_separator() {
-        let cli =
-            Cli::try_parse_from(["agent-history", "show", "--dir", "/a", "--", "--x y"]).unwrap();
+        let cli = Cli::try_parse_from(["zh", "show", "--dir", "/a", "--", "--x y"]).unwrap();
         let Command::Show { cmd, .. } = cli.command else {
             panic!()
         };

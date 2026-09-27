@@ -121,7 +121,7 @@ _: {
 
       packages = {
         inherit doctor;
-        inherit (pkgs) next-prayer agent-history;
+        inherit (pkgs) next-prayer zh;
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         inherit (pkgs) sb;

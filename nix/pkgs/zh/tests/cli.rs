@@ -12,7 +12,7 @@ use std::time::{Duration, Instant};
 use rusqlite::Connection;
 use serde_json::Value;
 
-const BIN: &str = env!("CARGO_BIN_EXE_agent-history");
+const BIN: &str = env!("CARGO_BIN_EXE_zh");
 const FIXTURES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/fixtures");
 const GOLDEN: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/tests/golden");
 
@@ -31,7 +31,7 @@ impl Home {
     }
 
     fn db(&self) -> PathBuf {
-        self.path.join(".agent_history.db")
+        self.path.join(".zh.db")
     }
 
     fn command(&self, args: &[&str]) -> Command {
@@ -296,7 +296,7 @@ fn forget_and_show_take_hyphenated_commands_after_the_separator() {
     for cmd in ["--", "--help", "--weird cmd", "-x"] {
         let out = home.run(&["forget", "--", cmd]);
         assert_eq!(out.status.code(), Some(0), "{cmd}: {}", stderr(&out));
-        assert_eq!(stderr(&out), "agent-history: forgot 1 records\n", "{cmd}");
+        assert_eq!(stderr(&out), "zh: forgot 1 records\n", "{cmd}");
         left -= 1;
         assert_eq!(home.count("SELECT count(*) FROM commands"), left, "{cmd}");
     }
@@ -341,7 +341,7 @@ fn empty_zdotdir_falls_back_to_home() {
         .write_all(payload("ls", "/").as_bytes())
         .unwrap();
     assert!(child.wait().unwrap().success());
-    assert!(home.path.join("h/.agent_history.db").exists());
+    assert!(home.path.join("h/.zh.db").exists());
 }
 
 #[test]
@@ -457,7 +457,7 @@ fn a_lock_held_past_the_timeout_fails_with_context() {
     assert!(start.elapsed() >= Duration::from_secs(5));
     assert_eq!(out.status.code(), Some(1));
     assert!(
-        stderr(&out).starts_with("agent-history: could not write "),
+        stderr(&out).starts_with("zh: could not write "),
         "{}",
         stderr(&out)
     );
@@ -476,8 +476,7 @@ fn an_older_schema_is_rejected_unchanged() {
     let out = home.record("claude", &payload("ls", "/"));
     assert_eq!(out.status.code(), Some(1));
     assert!(
-        stderr(&out).starts_with("agent-history: could not write ")
-            && stderr(&out).contains("session"),
+        stderr(&out).starts_with("zh: could not write ") && stderr(&out).contains("session"),
         "{}",
         stderr(&out)
     );
@@ -502,7 +501,7 @@ fn corrupt_and_unwritable_databases_fail_with_context() {
     ] {
         assert_eq!(out.status.code(), Some(1));
         assert!(
-            stderr(&out).starts_with("agent-history: could not open "),
+            stderr(&out).starts_with("zh: could not open "),
             "{}",
             stderr(&out)
         );
@@ -514,7 +513,7 @@ fn corrupt_and_unwritable_databases_fail_with_context() {
     let out = home.record("claude", &payload("pwd", "/"));
     assert_eq!(out.status.code(), Some(1));
     assert!(
-        stderr(&out).starts_with("agent-history: could not "),
+        stderr(&out).starts_with("zh: could not "),
         "{}",
         stderr(&out)
     );
@@ -528,7 +527,7 @@ fn forget_scrubs_when_quiet_and_succeeds_beside_a_reader() {
     home.record("claude", &payload(&format!("echo {marker}"), "/"));
     home.record("claude", &payload("keep", "/"));
     let out = home.run(&["forget", &format!("echo {marker}")]);
-    assert_eq!(stderr(&out), "agent-history: forgot 1 records\n");
+    assert_eq!(stderr(&out), "zh: forgot 1 records\n");
     for suffix in ["", "-wal"] {
         if let Ok(bytes) = fs::read(format!("{}{suffix}", home.db().display())) {
             assert!(
@@ -546,7 +545,7 @@ fn forget_scrubs_when_quiet_and_succeeds_beside_a_reader() {
         .unwrap();
     let out = home.run(&["forget", "drop me"]);
     assert_eq!(out.status.code(), Some(0), "{}", stderr(&out));
-    assert_eq!(stderr(&out), "agent-history: forgot 1 records\n");
+    assert_eq!(stderr(&out), "zh: forgot 1 records\n");
     reader.execute_batch("COMMIT").unwrap();
     assert_eq!(home.list(&[]), ["keep"]);
 }
@@ -648,10 +647,7 @@ fn import_reports_missing_sources() {
     let home = Home::new();
     let out = home.run(&["import-atuin", "/no/such/atuin.db"]);
     assert_eq!(out.status.code(), Some(1));
-    assert_eq!(
-        stderr(&out),
-        "agent-history: no atuin database at /no/such/atuin.db\n"
-    );
+    assert_eq!(stderr(&out), "zh: no atuin database at /no/such/atuin.db\n");
     let out = home.run(&["import-atuin"]);
     assert_eq!(out.status.code(), Some(1));
     assert!(stderr(&out).contains(".local/share/atuin/history.db"));

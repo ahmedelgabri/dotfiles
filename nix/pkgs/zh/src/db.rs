@@ -29,7 +29,7 @@ pub fn path() -> Result<PathBuf, Fail> {
         .filter(|dir| !dir.is_empty())
         .or_else(|| std::env::var_os("HOME"))
         .ok_or_else(|| Fail::new("neither ZDOTDIR nor HOME is set"))?;
-    Ok(PathBuf::from(base).join(".agent_history.db"))
+    Ok(PathBuf::from(base).join(".zh.db"))
 }
 
 /// Opens the database for writing, creating it when missing.

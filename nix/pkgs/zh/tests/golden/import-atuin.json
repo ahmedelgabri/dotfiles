@@ -2,12 +2,12 @@
   "runs": [
     {
       "code": 0,
-      "stdout": "agent-history: imported 3 commands from {ATUIN}\n",
+      "stdout": "zh: imported 3 commands from {ATUIN}\n",
       "stderr": ""
     },
     {
       "code": 0,
-      "stdout": "agent-history: imported 0 commands from {ATUIN}\n",
+      "stdout": "zh: imported 0 commands from {ATUIN}\n",
       "stderr": ""
     }
   ],

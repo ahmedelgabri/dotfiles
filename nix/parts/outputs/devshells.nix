@@ -37,7 +37,7 @@
             rustfmt
             clippy
             rust-analyzer
-            # nix/pkgs/agent-history tests spawn both to find repo roots.
+            # nix/pkgs/zh tests spawn both to find repo roots.
             jujutsu
             git
           ];

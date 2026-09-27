@@ -5,7 +5,7 @@
   jujutsu,
 }:
 rustPlatform.buildRustPackage {
-  pname = "agent-history";
+  pname = "zh";
   version = "0.1.0";
 
   src = lib.fileset.toSource {
@@ -26,8 +26,14 @@ rustPlatform.buildRustPackage {
     jujutsu
   ];
 
+  # The Claude/Codex hooks, the pi extension and the Ctrl-R widget still
+  # call `agent-history`; the alias keeps them working until they call `zh`.
+  postInstall = ''
+    ln -s zh $out/bin/agent-history
+  '';
+
   meta = {
     description = "Agent-only shell history recorder and query tool";
-    mainProgram = "agent-history";
+    mainProgram = "zh";
   };
 }

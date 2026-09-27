@@ -211,7 +211,7 @@ pub fn forget(cmd: &str) -> Result<(), Fail> {
         .execute("DELETE FROM commands WHERE cmd = ?1", [cmd])
         .map_err(fail)?;
     let _ = conn.query_row("PRAGMA wal_checkpoint(TRUNCATE)", [], |_| Ok(()));
-    eprintln!("agent-history: forgot {count} records");
+    eprintln!("zh: forgot {count} records");
     Ok(())
 }
 
@@ -318,7 +318,7 @@ pub fn import_atuin(path: Option<PathBuf>) -> Result<(), Fail> {
     emit(|out| {
         writeln!(
             out,
-            "agent-history: imported {imported} commands from {}",
+            "zh: imported {imported} commands from {}",
             src.display()
         )
     })
