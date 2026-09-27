@@ -2,21 +2,19 @@
 # agent-history (config/zsh.d/zsh/bin). fzf's own history widget knows a
 # single source, so this borrows its lossless approach instead: rows are
 # "id\ttime\tdir\tcmd", and a shell row is resolved from $history[id] on
-# accept because `fc -l` renders a real newline and a literal "\n" the same
-# way. Agent rows carry an empty id and are used verbatim.
+# accept. Agent rows carry an empty id and are used verbatim.
 #
 # Shell rows come from the interactive shell, but reload binds run in a
 # subprocess, so they go to a temp file once and CTRL-R reloads from there.
+#
+# Shell rows are one printf over the history array (newest first): fc is
+# refused inside ZLE ("no interactive history within ZLE") and takes
+# seconds when forked into a subshell, while the printf finishes in tens of
+# milliseconds. The array carries no timestamps, so shell rows leave the
+# time and dir columns empty.
 fzf-history-rows() {
-  fc -rl -t '%Y-%m-%d %H:%M' 1 |
-    awk '{
-      sub(/^[ \t]+/, "")
-      id = $1
-      sub(/\*$/, "", id)
-      time = $2 " " $3
-      sub(/^[^ \t]+[ \t]+[^ \t]+[ \t]+[^ \t]+[ \t]+/, "")
-      print id "\t" time "\t\t" $0
-    }' | tr '\n' '\0'
+  (( $#history )) || return 0
+  printf '%s\t\t\t%s\0' "${(kv)history[@]}"
 }
 
 # Prints the command a selected row stands for.
