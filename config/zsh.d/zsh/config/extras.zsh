@@ -41,13 +41,31 @@ fzf-history-widget() {
     # >| because NO_CLOBBER is set and mktemp already created the file.
     fzf-history-rows >|"$tmp"
 
+    # The active agent source lives in the border label, which fzf exports
+    # to its child processes, so reloads, forget, and the preview all ask
+    # agent-history for the same scope. The scope reaches them through the
+    # environment rather than being spliced into each action, so the
+    # directory stays one argument whatever characters it holds.
+    local -x FZF_HISTORY_DIR=$PWD
+    local -x FZF_HISTORY_SCOPE='case $FZF_BORDER_LABEL in " here ") set -- --dir "$FZF_HISTORY_DIR" ;; *) set -- ;; esac'
+    local agent_rows='eval "$FZF_HISTORY_SCOPE"; agent-history list "$@"'
+    # fzf reads transform output as actions, so forget's own output is
+    # discarded and an error goes out through change-header:, whose colon
+    # form takes the rest literally even if the message holds ")" or "+".
+    local forget_row='[ -z {1} ] || exit 0
+if err=$(agent-history forget {s4..} 2>&1 >/dev/null); then
+  printf %s '"'reload:${agent_rows}'"'
+else
+  printf change-header:%s "$(printf %s "$err" | tr "\n" " ")"
+fi'
+
     local fzf_opts=(
       "--height=${FZF_TMUX_HEIGHT:-80%}"
       $'--delimiter=\t'
       "--with-nth=4.."
       "--scheme=history"
-      "--preview=printf '%s\\n' {4..}"
-      "--preview-window=next:3:hidden:wrap"
+      "--preview=if [ -n {1} ]; then printf '%s\\n' {4..}; else eval \"\$FZF_HISTORY_SCOPE\"; agent-history show \"\$@\" -- {s4..}; fi"
+      "--preview-window=next:7:hidden:wrap"
       "--bind=?:toggle-preview"
       "--query=${LBUFFER}"
       "--no-multi"
@@ -55,9 +73,13 @@ fzf-history-widget() {
       "--read0"
       "--print0"
       "--id-nth=4.."
-      "--header=CTRL-R shell · CTRL-A agents · CTRL-D agents here · CTRL-Y copy · ALT-M metadata"
+      "--header=CTRL-R shell · CTRL-A agents · CTRL-D agents here · CTRL-X forget · CTRL-Y copy · ALT-M metadata"
       "--bind=alt-m:change-with-nth(4..|2..),ctrl-y:execute-silent(printf '%s' {4..} | pbcopy)+abort"
-      "--bind=ctrl-r:reload(cat ${(q)tmp}),ctrl-a:reload(agent-history list),ctrl-d:reload(agent-history list --dir ${(q)PWD})"
+      "--bind=ctrl-r:change-border-label()+reload(cat ${(q)tmp})"
+      # The colon form must end a --bind, so each of these gets its own.
+      "--bind=ctrl-a:change-border-label( agents )+reload:${agent_rows}"
+      "--bind=ctrl-d:change-border-label( here )+reload:${agent_rows}"
+      "--bind=ctrl-x:transform:${forget_row}"
     )
 
     if [[ -n ${TMUX-} ]]; then

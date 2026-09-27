@@ -10,8 +10,11 @@ set -ue -o pipefail
 #   agent-history record <agent>    # Claude-Code-style hook JSON on stdin
 #   agent-history list [--dir DIR] [--session ID] [--all]
 #                                   # NUL-separated "id\ttime\tdir\tcmd",
-#                                   # newest first; id is always empty;
-#                                   # --all includes failed calls
+#                                   # newest first, one row per command;
+#                                   # id is always empty; --all keeps every
+#                                   # row, failed calls included
+#   agent-history show [FILTERS] -- CMD  # newest record of CMD in scope
+#   agent-history forget CMD        # delete every record of CMD
 #   agent-history import-atuin [PATH]  # copy agent-run rows out of atuin
 #
 # Storage is SQLite: concurrent agents get atomic writes and a busy timeout
@@ -157,12 +160,18 @@ dir_condition() {
 }
 
 # Fills the globals `conditions` (SQL predicates, ANDed by where_clause) and
-# `all` from filter flags.
+# `all` from filter flags, and `rest` with whatever follows `--`.
 parse_filters() {
 	conditions=()
 	all=""
+	rest=()
 	while (($#)); do
 		case $1 in
+		--)
+			shift
+			rest=("$@")
+			break
+			;;
 		--dir)
 			dir_condition "${2:?directory required}"
 			shift 2
@@ -191,25 +200,72 @@ where_clause() {
 }
 
 list() {
-	local conditions all
+	local conditions all rest newest_only="WHERE n = 1"
 	parse_filters "$@"
+	((${#rest[@]} == 0)) || fail "list takes no command"
 	[[ -f $db ]] || return 0
 	ensure_db || fail "could not open $db"
+	# Agents repeat the same commands constantly, so by default each command
+	# appears once, at its newest occurrence within the filters.
+	[[ -n $all ]] && newest_only=""
 	# sqlite3 cannot emit a NUL row separator from the command line, so the
 	# rows go out as JSON and jq frames them for fzf --read0.
 	sql -json "SELECT strftime('%Y-%m-%d %H:%M', ts, 'unixepoch', 'localtime') AS time, cwd, cmd
-		FROM commands$(where_clause) ORDER BY ts DESC, id DESC;" |
+		FROM (
+			SELECT id, ts, cwd, cmd,
+				ROW_NUMBER() OVER (PARTITION BY cmd ORDER BY ts DESC, id DESC) AS n
+			FROM commands$(where_clause)
+		) $newest_only
+		ORDER BY ts DESC, id DESC;" |
 		jq -j '.[] | "\t\(.time)\t\(.cwd)\t\(.cmd)\u0000"'
 }
 
+# The preview for a picker row. It takes the picker's filters so the
+# metadata comes from the row being shown, not a newer run of the same
+# command outside that scope.
+show() {
+	local conditions all rest
+	parse_filters "$@"
+	((${#rest[@]} == 1)) || fail "usage: show [FILTERS] -- CMD"
+	[[ -f $db ]] || return 0
+	ensure_db || fail "could not open $db"
+	conditions+=("cmd = $(quote "${rest[0]}")")
+	sql -json "SELECT strftime('%Y-%m-%d %H:%M', ts, 'unixepoch', 'localtime') AS time,
+			agent, status, cwd, session, description, cmd
+		FROM commands$(where_clause) ORDER BY ts DESC, id DESC LIMIT 1;" |
+		jq -r '.[]
+			| "\(.time)  \(.agent)  \(.status)", "dir: \(.cwd)",
+				(select(.session != "") | "session: \(.session)"),
+				(select(.description != "") | "description: \(.description)"),
+				"", .cmd'
+}
+
+# Removes every copy so an older duplicate cannot take the forgotten row's
+# place in the deduplicated list. secure_delete overwrites the freed content
+# and the checkpoint folds the WAL back into the database, but a busy
+# checkpoint is skipped, so this is logical deletion with best-effort
+# scrubbing, not secure erasure. Nothing matching is success: another picker
+# may have removed it first.
+forget() {
+	local count
+	(($# == 1)) || fail "usage: forget CMD"
+	[[ -f $db ]] || return 0
+	ensure_db || fail "could not open $db"
+	count=$(sql "PRAGMA secure_delete = ON;
+		DELETE FROM commands WHERE cmd = $(quote "$1");
+		SELECT changes();") || fail "could not write $db"
+	sql 'PRAGMA wal_checkpoint(TRUNCATE);' >/dev/null 2>&1 || true
+	echo "agent-history: forgot ${count##*$'\n'} records" >&2
+}
+
 case "${1:-}" in
-record | list | import-atuin)
+record | list | show | forget | import-atuin)
 	cmd="$1"
 	shift
 	"$cmd" "$@"
 	;;
 *)
-	echo "usage: agent-history record <agent> | list [--dir DIR] [--session ID] [--all] | import-atuin [PATH]" >&2
+	echo "usage: agent-history record <agent> | list [--dir DIR] [--session ID] [--all] | show [FILTERS] -- CMD | forget CMD | import-atuin [PATH]" >&2
 	exit 64
 	;;
 esac
