@@ -5,11 +5,10 @@
 	"defaultModel": "gpt-6-astra",
 	"enabledModels": [
 		"anthropic/claude-fable-*",
-		"anthropic/claude-opus-5",
-		"anthropic/claude-sonnet-5",
-		"openai-codex/gpt-5.6*",
-		"openai-codex/gpt-6-astra",
-		"xai/grok-4.6"
+		"anthropic/claude-opus-5*",
+		"anthropic/claude-sonnet-5*",
+		"openai-codex/gpt-6*",
+		"xai/grok-4.7"
 	],
 	"showHardwareCursor": true,
 	"autocompleteMaxVisible": 10,
