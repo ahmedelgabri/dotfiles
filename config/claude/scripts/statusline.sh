@@ -113,7 +113,7 @@ if ((compact)) && ((${#current_dir} > 24)); then
 fi
 
 # Build context progress bar
-bar_width=15
+bar_width=10
 if ((compact)); then bar_width=5; fi
 filled=$((context_percent * bar_width / 100))
 if ((filled > bar_width)); then filled=$bar_width; fi
