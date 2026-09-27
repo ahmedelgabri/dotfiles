@@ -57,7 +57,7 @@ The `tap state` entries publish the agent's activity state so other tooling
   `log-event.sh`), separated by `---` when the file already exists.
 - **Behavior**: skips global sessions, empty prompts, and invalid project paths.
 
-### `agent-history` (from `config/zsh.d/zsh/bin`)
+### `agent-history` (from `nix/pkgs/agent-history`)
 
 - **Events**: `PostToolUse` and `PostToolUseFailure`, matcher `Bash`; Codex wires the same command from `config/codex/hooks.json`.
 - **What it does**: appends the Bash command, its working directory, the session id, Claude's description of the call, and whether it arrived through `PostToolUseFailure` to `$ZDOTDIR/.agent_history.db`, the agent-only history the zsh Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every command that ran, whatever its exit status; `PostToolUseFailure` fires for calls that did not run (denied, interrupted, tool error), so the history also shows what an agent tried. Commands matching credential patterns are dropped.

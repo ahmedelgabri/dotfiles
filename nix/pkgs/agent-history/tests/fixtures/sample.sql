@@ -12,7 +12,6 @@ CREATE TABLE commands (
 CREATE INDEX commands_ts ON commands (ts);
 CREATE INDEX commands_cwd ON commands (cwd);
 CREATE INDEX commands_session ON commands (session);
-PRAGMA user_version = 1;
 INSERT INTO commands (id, ts, agent, cwd, cmd, session, status, description) VALUES
     (1, 1767225600, 'claude', '/r/a', 'echo dup', 's1', 'ran', 'first dup'),
     (2, 1767225660, 'pi', '/r/b', 'solo', 's2', 'ran', ''),

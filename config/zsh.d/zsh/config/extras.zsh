@@ -1,5 +1,5 @@
 # One fzf picker over shell history and the agent history written by
-# agent-history (config/zsh.d/zsh/bin). fzf's own history widget knows a
+# agent-history (nix/pkgs/agent-history). fzf's own history widget knows a
 # single source, so this borrows its lossless approach instead: rows are
 # "id\ttime\tdir\tcmd", and a shell row is resolved from $history[id] on
 # accept. Agent rows carry an empty id and are used verbatim.
@@ -67,7 +67,7 @@ printf "change-border-label( %s )+reload:%s" "$next" '"'${agent_rows}'"
     # discarded and an error goes out through change-header:, whose colon
     # form takes the rest literally even if the message holds ")" or "+".
     local forget_row='[ -z {1} ] || exit 0
-if err=$(agent-history forget {s4..} 2>&1 >/dev/null); then
+if err=$(agent-history forget -- {s4..} 2>&1 >/dev/null); then
   printf %s '"'reload:${agent_rows}'"'
 else
   printf change-header:%s "$(printf %s "$err" | tr "\n" " ")"

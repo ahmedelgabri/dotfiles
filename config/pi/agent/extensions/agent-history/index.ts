@@ -2,7 +2,7 @@
  * Agent history extension for pi.
  *
  * Records commands executed by pi's bash tool in the agent-only history file
- * through `agent-history record pi` (config/zsh.d/zsh/bin), the same writer the
+ * through `agent-history record pi` (nix/pkgs/agent-history), the same writer the
  * Claude Code and Codex hooks use. Listening on `tool_result` mirrors those
  * PostToolUse hooks: pi only emits it for calls that actually executed, so
  * blocked and aborted-before-spawn calls are never recorded, while commands

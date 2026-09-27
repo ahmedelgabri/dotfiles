@@ -449,9 +449,6 @@ let
               systemPackages = with pkgs; [
                 dwm
                 dmenu
-                # agent-history (config/zsh.d/zsh/bin) needs the sqlite3 CLI;
-                # macOS ships one, NixOS does not.
-                sqlite
                 xclip
               ];
 
