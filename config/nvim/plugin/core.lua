@@ -136,6 +136,23 @@ pack.add {
 		ft = { 'typescript', 'typescriptreact' },
 	},
 
+	{
+		src = 'https://github.com/tpope/vim-dadbod',
+		cmd = { 'DB' },
+	},
+	{
+		src = 'https://github.com/kristijanhusak/vim-dadbod-ui',
+		cmd = {
+			'DBUI',
+			'DBUIToggle',
+			'DBUIAddConnection',
+			'DBUIFindBuffer',
+		},
+		config = function()
+			vim.g.db_ui_use_nerd_fonts = 1
+		end,
+	},
+
 	-- {
 	-- 	src = 'https://github.com/aikhe/fleur.nvim',
 	-- 	priority = 1000,
