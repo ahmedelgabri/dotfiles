@@ -8,7 +8,8 @@ set -ue -o pipefail
 #
 # Usage:
 #   agent-history record <agent>    # Claude-Code-style hook JSON on stdin
-#   agent-history list [--dir DIR] [--session ID] [--all]
+#   agent-history list [--dir DIR | --repo DIR] [--agent NAME]
+#                      [--session ID] [--all]
 #                                   # NUL-separated "id\ttime\tdir\tcmd",
 #                                   # newest first, one row per command;
 #                                   # id is always empty; --all keeps every
@@ -159,6 +160,16 @@ dir_condition() {
 	conditions+=("cwd = $(quote "$dir") OR substr(cwd, 1, length($(quote "$dir")) + 1) = $(quote "$dir/")")
 }
 
+# The jj workspace or git worktree holding DIR, else DIR itself, so "agents
+# here" covers the whole checkout from any subdirectory.
+repo_root() {
+	local dir=$1 root
+	root=$(cd "$dir" 2>/dev/null && jj --ignore-working-copy root 2>/dev/null) ||
+		root=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null) ||
+		root=$dir
+	printf '%s' "$root"
+}
+
 # Fills the globals `conditions` (SQL predicates, ANDed by where_clause) and
 # `all` from filter flags, and `rest` with whatever follows `--`.
 parse_filters() {
@@ -174,6 +185,14 @@ parse_filters() {
 			;;
 		--dir)
 			dir_condition "${2:?directory required}"
+			shift 2
+			;;
+		--repo)
+			dir_condition "$(repo_root "${2:?directory required}")"
+			shift 2
+			;;
+		--agent)
+			conditions+=("agent = $(quote "${2:?agent required}")")
 			shift 2
 			;;
 		--session)
@@ -265,7 +284,7 @@ record | list | show | forget | import-atuin)
 	"$cmd" "$@"
 	;;
 *)
-	echo "usage: agent-history record <agent> | list [--dir DIR] [--session ID] [--all] | show [FILTERS] -- CMD | forget CMD | import-atuin [PATH]" >&2
+	echo "usage: agent-history record <agent> | list [--dir DIR | --repo DIR] [--agent NAME] [--session ID] [--all] | show [FILTERS] -- CMD | forget CMD | import-atuin [PATH]" >&2
 	exit 64
 	;;
 esac

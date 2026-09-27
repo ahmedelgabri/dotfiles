@@ -47,8 +47,22 @@ fzf-history-widget() {
     # environment rather than being spliced into each action, so the
     # directory stays one argument whatever characters it holds.
     local -x FZF_HISTORY_DIR=$PWD
-    local -x FZF_HISTORY_SCOPE='case $FZF_BORDER_LABEL in " here ") set -- --dir "$FZF_HISTORY_DIR" ;; *) set -- ;; esac'
+    local -x FZF_HISTORY_SCOPE='case $FZF_BORDER_LABEL in
+  " repo ") set -- --repo "$FZF_HISTORY_DIR" ;;
+  " claude ") set -- --agent claude ;;
+  " codex ") set -- --agent codex ;;
+  " pi ") set -- --agent pi ;;
+  *) set -- ;;
+esac'
     local agent_rows='eval "$FZF_HISTORY_SCOPE"; agent-history list "$@"'
+    # Each CTRL-A moves to the next agent, then back to all of them.
+    local next_agent='case $FZF_BORDER_LABEL in
+  " agents ") next=claude ;;
+  " claude ") next=codex ;;
+  " codex ") next=pi ;;
+  *) next=agents ;;
+esac
+printf "change-border-label( %s )+reload:%s" "$next" '"'${agent_rows}'"
     # fzf reads transform output as actions, so forget's own output is
     # discarded and an error goes out through change-header:, whose colon
     # form takes the rest literally even if the message holds ")" or "+".
@@ -73,12 +87,12 @@ fi'
       "--read0"
       "--print0"
       "--id-nth=4.."
-      "--header=CTRL-R shell · CTRL-A agents · CTRL-D agents here · CTRL-X forget · CTRL-Y copy · ALT-M metadata"
+      "--header=CTRL-R shell · CTRL-A agents (again: next agent) · CTRL-D agents in repo · CTRL-X forget · CTRL-Y copy · ALT-M metadata"
       "--bind=alt-m:change-with-nth(4..|2..),ctrl-y:execute-silent(printf '%s' {4..} | pbcopy)+abort"
       "--bind=ctrl-r:change-border-label()+reload(cat ${(q)tmp})"
       # The colon form must end a --bind, so each of these gets its own.
-      "--bind=ctrl-a:change-border-label( agents )+reload:${agent_rows}"
-      "--bind=ctrl-d:change-border-label( here )+reload:${agent_rows}"
+      "--bind=ctrl-a:transform:${next_agent}"
+      "--bind=ctrl-d:change-border-label( repo )+reload:${agent_rows}"
       "--bind=ctrl-x:transform:${forget_row}"
     )
 
