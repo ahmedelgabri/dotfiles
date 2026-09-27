@@ -117,11 +117,6 @@
       flake = false;
     };
 
-    ghostty-cursor-shaders = {
-      url = "github:sahaj-b/ghostty-cursor-shaders";
-      flake = false;
-    };
-
     # Extras
     # nixos-hardware.url = "github:nixos/nixos-hardware";
   };

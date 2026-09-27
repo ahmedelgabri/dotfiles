@@ -19,24 +19,13 @@ let
       };
 
     homeManager =
+      { config, myConfig, ... }:
       {
-        config,
-        inputs,
-        myConfig,
-        ...
-      }:
-      {
-        xdg.configFile =
-          config.lib.file.mkOutOfStoreTree {
-            source = ../../../../config/ghostty;
-            sourceRoot = "${myConfig.dotfilesDir}/config/ghostty";
-            targetRoot = "ghostty";
-          }
-          // {
-            "ghostty/config.nix.local" = {
-              text = "custom-shader = ${inputs.ghostty-cursor-shaders}/cursor_tail.glsl";
-            };
-          };
+        xdg.configFile = config.lib.file.mkOutOfStoreTree {
+          source = ../../../../config/ghostty;
+          sourceRoot = "${myConfig.dotfilesDir}/config/ghostty";
+          targetRoot = "ghostty";
+        };
       };
   };
 in
