@@ -85,3 +85,4 @@ The fixtures are synthetic. Never add real history to them.
 - The credential filter uses Rust's `regex`: simple case folding and Unicode word boundaries, so shapes like `PAßWORD=x` or a zero-width joiner before `TOKEN=` are recorded where jq's Oniguruma dropped them.
 - A non-string `cwd`, `session_id`, or `description` in a payload is recorded as empty instead of failing the record, and NUL characters are removed from every field.
 - Output to a closed pipe ends quietly with exit 0.
+- `list` shows a tab inside a record's directory as `␉` (the stored directory is unchanged), because the command starts after the third tab of each row.

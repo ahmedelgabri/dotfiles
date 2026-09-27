@@ -140,6 +140,10 @@ pub fn list(filters: &FilterArgs) -> Result<(), Fail> {
                     return Ok(());
                 }
             };
+            // Rows are tab-delimited and the command is everything after the
+            // third tab, so a tab in the directory would shift it; the
+            // directory column is only displayed, so show tabs as a symbol.
+            let cwd = cwd.replace('\t', "\u{2409}");
             write!(out, "\t{}\t{cwd}\t{cmd}\0", show_time(time))?;
         }
     })?;

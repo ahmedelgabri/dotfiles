@@ -78,7 +78,7 @@ fi'
       $'--delimiter=\t'
       "--with-nth=4.."
       "--scheme=history"
-      "--preview=if [ -n {1} ]; then printf '%s\\n' {4..}; else eval \"\$FZF_HISTORY_SCOPE\"; zh show \"\$@\" -- {s4..}; fi"
+      "--preview=if [ -n {1} ]; then printf '%s\\n' {s4..}; else eval \"\$FZF_HISTORY_SCOPE\"; zh show \"\$@\" -- {s4..}; fi"
       "--preview-window=next:7:hidden:wrap"
       "--bind=?:toggle-preview"
       "--query=${LBUFFER}"
@@ -88,7 +88,7 @@ fi'
       "--print0"
       "--id-nth=4.."
       "--header=CTRL-R shell · CTRL-A agents (again: next agent) · CTRL-D agents in repo · CTRL-X forget · CTRL-Y copy · ALT-M metadata"
-      "--bind=alt-m:change-with-nth(4..|2..),ctrl-y:execute-silent(printf '%s' {4..} | pbcopy)+abort"
+      "--bind=alt-m:change-with-nth(4..|2..),ctrl-y:execute-silent(printf '%s' {s4..} | pbcopy)+abort"
       "--bind=ctrl-r:change-border-label()+reload(cat ${(q)tmp})"
       # The colon form must end a --bind, so each of these gets its own.
       "--bind=ctrl-a:transform:${next_agent}"

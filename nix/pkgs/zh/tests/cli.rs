@@ -929,3 +929,19 @@ fn dst_times_resolve_explicitly() {
         assert!(stderr(&out).contains("does not exist"), "{}", stderr(&out));
     }
 }
+
+#[test]
+fn a_tab_in_the_directory_does_not_shift_the_command() {
+    let home = Home::new();
+    home.record("claude", &payload("echo real\twith tab", "/tmp/a\tb"));
+    let out = home.run(&["list"]);
+    let row = String::from_utf8(out.stdout).unwrap();
+    let fields: Vec<&str> = row.trim_end_matches('\0').splitn(4, '\t').collect();
+    assert_eq!(fields[2], "/tmp/a\u{2409}b");
+    assert_eq!(fields[3], "echo real\twith tab");
+    // The stored directory is unchanged; only the listing shows the symbol.
+    assert_eq!(
+        home.count("SELECT count(*) FROM commands WHERE cwd = '/tmp/a' || char(9) || 'b'"),
+        1
+    );
+}
