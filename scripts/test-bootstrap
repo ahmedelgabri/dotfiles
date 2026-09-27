@@ -1,0 +1,336 @@
+#!/usr/bin/env bash
+# Inlined via builtins.readFile into writeShellApplication (see
+# nix/parts/outputs/apps.nix); never executed directly.
+#
+# Runs the real bootstrap in a disposable Tart macOS VM. This is a full,
+# network-heavy workstation install, so every wait is bounded and the VM is
+# always cleaned up. Passes only when bootstrap exits 0.
+
+set -Eueo pipefail
+
+usage() {
+	cat <<EOF
+Usage: test-bootstrap [--host <host>] [--image <image>] [--keep]
+
+  --host   darwin host to bootstrap (default: alcantara)
+  --image  Tart image to clone (default: $DEFAULT_IMAGE)
+  --keep   leave the VM running afterwards for inspection
+EOF
+}
+
+DEFAULT_IMAGE=ghcr.io/cirruslabs/macos-tahoe-vanilla:latest
+HOST=alcantara
+IMAGE=$DEFAULT_IMAGE
+KEEP=0
+
+while (($# > 0)); do
+	case "$1" in
+	--host)
+		HOST=${2:?--host needs a value}
+		shift 2
+		;;
+	--image)
+		IMAGE=${2:?--image needs a value}
+		shift 2
+		;;
+	--keep)
+		KEEP=1
+		shift
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*)
+		usage >&2
+		exit 64
+		;;
+	esac
+done
+
+# Set by the Nix wrapper to the flake source this app was built from, so the
+# VM bootstraps exactly that revision.
+SOURCE=${TEST_BOOTSTRAP_SOURCE:?TEST_BOOTSTRAP_SOURCE is not set}
+
+command -v tart >/dev/null || {
+	echo "tart is not installed (brew install --cask tart)" >&2
+	exit 69
+}
+
+VM="dotfiles-bootstrap-$HOST-$(date +%Y%m%d-%H%M%S)"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-test-bootstrap/$VM"
+mkdir -p "$STATE_DIR"
+LOG="$STATE_DIR/test.log"
+exec > >(tee -a "$LOG") 2>&1
+
+TART_PID=
+GUEST_SCRIPT_PID=
+VM_CREATED=0
+
+step() {
+	printf '\n==> %s (%s)\n' "$*" "$(date +%H:%M:%S)"
+}
+
+cleanup() {
+	local status=$?
+	if [[ -n "$GUEST_SCRIPT_PID" ]]; then
+		kill "$GUEST_SCRIPT_PID" 2>/dev/null || true
+	fi
+	if ((VM_CREATED)); then
+		if ((KEEP)); then
+			step "Keeping VM $VM (ip: $(tart ip "$VM" 2>/dev/null || echo unknown)); delete with: tart stop $VM && tart delete $VM"
+		else
+			step "Deleting VM $VM"
+			tart stop --timeout 60 "$VM" >/dev/null 2>&1 || true
+			if [[ -n "$TART_PID" ]]; then
+				wait "$TART_PID" 2>/dev/null || true
+			fi
+			tart delete "$VM" || echo "Could not delete $VM; remove it with: tart delete $VM"
+		fi
+	fi
+	if ((status == 0)); then
+		step "PASS: $HOST bootstrapped in a fresh VM. Log: $LOG"
+	else
+		step "FAIL (exit $status). Log: $LOG"
+	fi
+	exit "$status"
+}
+trap cleanup EXIT
+# Without these the EXIT trap would see status 0 after a signal and report a
+# pass.
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+# Fails when `tart run` has exited, so waits stop instead of timing out.
+assert_vm_running() {
+	if [[ -n "$TART_PID" ]] && ! kill -0 "$TART_PID" 2>/dev/null; then
+		echo "tart run exited unexpectedly" >&2
+		return 1
+	fi
+}
+
+# Runs "$@" every 5 seconds until it succeeds or the timeout expires.
+wait_for() {
+	local timeout=$1 description=$2
+	shift 2
+	local deadline=$((SECONDS + timeout))
+	until "$@" >/dev/null 2>&1; do
+		assert_vm_running
+		if ((SECONDS >= deadline)); then
+			echo "Timed out after ${timeout}s waiting for $description" >&2
+			return 1
+		fi
+		sleep 5
+	done
+}
+
+# Only these options apply: the user's ssh config, keys and agent never reach
+# the guest.
+KNOWN_HOSTS="$STATE_DIR/known_hosts"
+SSH_OPTIONS=(
+	-F /dev/null
+	-o UserKnownHostsFile="$KNOWN_HOSTS"
+	-o StrictHostKeyChecking=accept-new
+	-o PubkeyAuthentication=no
+	-o "PreferredAuthentications=password,keyboard-interactive"
+	-o ForwardAgent=no
+	-o ConnectTimeout=10
+	-o ServerAliveInterval=15
+	-o ServerAliveCountMax=8
+	-o LogLevel=ERROR
+)
+# Credentials baked into the cirruslabs images.
+SSH_USER="admin"
+SSH_PASSWORD="admin"
+
+guest() {
+	SSHPASS=$SSH_PASSWORD sshpass -e ssh "${SSH_OPTIONS[@]}" "$SSH_USER@$VM_IP" "$@" </dev/null
+}
+
+# Runs stdin as a bash script in the guest, killed after $1 seconds; the
+# remaining arguments become the script's positional parameters. Bash defers
+# trapped signals until a foreground command finishes, so the step runs in
+# the background and `wait` lets Ctrl-C or TERM through immediately; `0<&0`
+# keeps the caller's stdin, which background commands otherwise lose.
+guest_script() {
+	local limit=$1
+	shift
+	SSHPASS=$SSH_PASSWORD timeout "$limit" sshpass -e ssh "${SSH_OPTIONS[@]}" "$SSH_USER@$VM_IP" "bash -s -- $*" 0<&0 &
+	GUEST_SCRIPT_PID=$!
+	wait "$GUEST_SCRIPT_PID"
+}
+
+guest_copy() {
+	SSHPASS=$SSH_PASSWORD sshpass -e scp "${SSH_OPTIONS[@]}" "$1" "$SSH_USER@$VM_IP:$2"
+}
+
+guest_rebooted() {
+	local boot_time
+	boot_time=$(guest sysctl -n kern.boottime) && [[ -n "$boot_time" && "$boot_time" != "$BOOT_TIME" ]]
+}
+
+# sshd accepts a first connection before the guest has finished booting, so
+# require two in a row.
+wait_for_ssh() {
+	local deadline=$((SECONDS + 600))
+	local successes=0
+	while ((successes < 2)); do
+		assert_vm_running
+		if ((SECONDS >= deadline)); then
+			echo "Timed out waiting for ssh as $SSH_USER" >&2
+			return 1
+		fi
+		if guest true >/dev/null 2>&1; then
+			successes=$((successes + 1))
+		else
+			successes=0
+		fi
+		sleep 5
+	done
+}
+
+boot_vm() {
+	tart run --no-graphics "$VM" >>"$STATE_DIR/tart-run.log" 2>&1 &
+	TART_PID=$!
+	wait_for 300 "the VM's IP address" tart ip "$VM"
+	VM_IP=$(tart ip "$VM")
+	wait_for_ssh
+}
+
+step "Reading $HOST from the flake"
+USERNAME=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.config.my.username")
+FONT_SOURCE=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.pkgs.pragmatapro.src")
+FONT_NAME=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.pkgs.pragmatapro.src.name")
+[[ -f "$FONT_SOURCE" ]] || {
+	echo "Font archive $FONT_SOURCE is not in the local store; add it first (see README)" >&2
+	exit 1
+}
+echo "user: $USERNAME, font: $FONT_NAME, image: $IMAGE"
+tart list --source oci --format json | grep -F "$IMAGE" >/dev/null || tart pull "$IMAGE"
+
+step "Creating VM $VM"
+tart clone "$IMAGE" "$VM"
+VM_CREATED=1
+tart set "$VM" --cpu 4 --memory 8192 --disk-size 150
+boot_vm
+
+step "Recording the guest image"
+guest sw_vers
+
+# `xcode-select --install` needs a GUI click; this is the headless route to
+# the same package.
+step "Installing Command Line Tools"
+guest_script 3600 <<'EOF'
+set -euo pipefail
+marker=/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+sudo touch "$marker"
+label=$(softwareupdate --list 2>&1 | sed -n 's/^\* Label: \(Command Line Tools.*\)$/\1/p' | sort -V | tail -1)
+[[ -n "$label" ]] || { echo "No Command Line Tools update offered" >&2; exit 1; }
+echo "Installing $label"
+sudo softwareupdate --install "$label" --verbose
+sudo rm -f "$marker"
+xcode-select -p
+EOF
+
+# nix-darwin talks to the user's GUI launchd domain, which only exists after
+# a real login, hence auto-login and a reboot.
+step "Creating $USERNAME with auto-login"
+USER_PASSWORD=$(head -c 12 /dev/urandom | base64 | tr -dc 'A-Za-z0-9')
+guest_script 300 "$USERNAME" "$USER_PASSWORD" <<'EOF'
+set -euo pipefail
+user=$1 password=$2
+sudo sysadminctl -addUser "$user" -password "$password" -admin -home "/Users/$user"
+sudo createhomedir -c -u "$user" >/dev/null
+echo "$user ALL=(ALL) NOPASSWD: ALL" | sudo tee "/etc/sudoers.d/test-bootstrap" >/dev/null
+sudo chmod 440 /etc/sudoers.d/test-bootstrap
+# `sysadminctl -autologin set` fails here (SACSetAutoLoginPassword error 22)
+# while exiting 0, so write what it would: the password XOR-ed with the
+# loginwindow key, NUL-terminated and padded to 12 bytes.
+perl -e '
+	my @key = (0x7D, 0x89, 0x52, 0x23, 0xD2, 0xBC, 0xDD, 0xEA, 0xA3, 0xB9, 0x1F);
+	my $password = shift;
+	my $length = length($password) + 1;
+	$length += 12 - ($length % 12) if $length % 12;
+	print join "", map {
+		chr((($_ < length $password) ? ord(substr($password, $_, 1)) : 0) ^ $key[$_ % @key])
+	} 0 .. $length - 1;
+' "$password" | sudo tee /etc/kcpassword >/dev/null
+sudo chmod 600 /etc/kcpassword
+sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser -string "$user"
+EOF
+# A reboot can finish between polls, so compare boot times instead of
+# waiting to see the guest go down.
+BOOT_TIME=$(guest sysctl -n kern.boottime)
+guest sudo shutdown -r now || true
+SSH_USER=$USERNAME
+SSH_PASSWORD=$USER_PASSWORD
+wait_for 600 "the guest to reboot" guest_rebooted
+# shellcheck disable=SC2016 # expands in the guest
+wait_for 300 "$USERNAME's GUI session" guest 'launchctl print "gui/$(id -u)"'
+guest sudo -n true
+
+# The image's boot container cannot grow: a recovery container sits right
+# after it and SIP refuses to delete it. The extra space becomes a separate
+# APFS container that holds /nix instead. Disk identifiers are renumbered on
+# reboot, so this runs right before installing Nix.
+step "Adding an APFS container for /nix"
+NIX_CONTAINER=$(guest_script 300 <<'EOF'
+set -euo pipefail
+# Moves the backup GPT header to the end of the grown disk.
+sudo diskutil repairDisk disk0 <<<y >/dev/null
+recovery=$(diskutil list disk0 | awk '/Apple_APFS_Recovery/ {print $NF}')
+boot_store=$(diskutil info / | awk -F': *' '/APFS Physical Store/ {print $2}')
+sudo diskutil addPartition "$recovery" APFS NixContainer 0 >&2
+# `diskutil list` shows partitions as "Container diskN", not by volume name;
+# the new one is the last plain APFS partition on the disk.
+partition=$(diskutil list disk0 | awk '/ Apple_APFS Container / {id = $NF} END {print id}')
+[[ -n "$partition" && "$partition" != "$boot_store" ]] || exit 1
+diskutil info "$partition" | awk -F': *' '/APFS Container/ {print $2}'
+EOF
+)
+[[ -n "$NIX_CONTAINER" ]] || {
+	echo "Could not create the /nix container" >&2
+	exit 1
+}
+echo "container: $NIX_CONTAINER"
+
+step "Installing Nix"
+guest_script 1800 "$NIX_CONTAINER" <<'EOF'
+set -euo pipefail
+curl --proto '=https' --tlsv1.2 -sSfL https://artifacts.nixos.org/nix-installer |
+	sh -s -- install macos --no-confirm --root-disk "$1"
+df -h /nix /
+EOF
+
+step "Adding $FONT_NAME to the guest store"
+guest_copy "$FONT_SOURCE" "/tmp/$FONT_NAME"
+guest_script 600 "$FONT_NAME" <<'EOF'
+set -euo pipefail
+# shellcheck disable=SC1091
+source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+sudo -H "$(command -v nix-store)" --add-fixed sha256 "/tmp/$1"
+rm "/tmp/$1"
+EOF
+
+# A seeded ~/.dotfiles becomes bootstrap's FLAKE_ROOT, so it switches to this
+# exact source instead of cloning GitHub HEAD.
+step "Seeding ~/.dotfiles from $SOURCE"
+tar -C "$SOURCE" --exclude ./.jj --exclude ./.git -cf - . |
+	SSHPASS=$SSH_PASSWORD sshpass -e ssh "${SSH_OPTIONS[@]}" "$SSH_USER@$VM_IP" \
+		'mkdir -p ~/.dotfiles && tar -C ~/.dotfiles -xf - && chmod -R u+w ~/.dotfiles'
+
+# Nix treats an unreachable binary cache as a miss and quietly builds
+# everything from source, so a guest DNS hiccup must fail here instead.
+step "Checking the guest can reach cache.nixos.org"
+wait_for 300 "the guest to reach cache.nixos.org" guest curl -fsS -o /dev/null https://cache.nixos.org/nix-cache-info
+
+step "Running bootstrap for $HOST"
+guest_script 10800 "$HOST" <<'EOF'
+set -euo pipefail
+# shellcheck disable=SC1091
+source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+cd ~/.dotfiles
+# No TTY and no TERM, like an unattended run; stdin is closed so any prompt
+# fails instead of hanging.
+env -u TERM nix --experimental-features 'nix-command flakes' run .#default -- "$1" </dev/null
+EOF

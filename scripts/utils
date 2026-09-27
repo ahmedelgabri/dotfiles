@@ -12,20 +12,28 @@ ARCH="$(arch)"
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
-tput sgr0
-RED=$(tput setaf 1)
-ORANGE=$(tput setaf 3)
-GREEN=$(tput setaf 2)
+# Without a usable terminal (no TTY or TERM, e.g. over plain ssh) tput fails,
+# which would abort bootstrap under `set -e`; print plain output instead.
+tput_or() {
+	local fallback=$1
+	shift
+	tput "$@" 2>/dev/null || printf '%s' "$fallback"
+}
+
+tput_or '' sgr0
+RED=$(tput_or '' setaf 1)
+ORANGE=$(tput_or '' setaf 3)
+GREEN=$(tput_or '' setaf 2)
 # shellcheck disable=SC2034
-PURPLE=$(tput setaf 5)
+PURPLE=$(tput_or '' setaf 5)
 # shellcheck disable=SC2034
-CYAN=$(tput setaf 4)
-BLUE=$(tput setaf 6)
+CYAN=$(tput_or '' setaf 4)
+BLUE=$(tput_or '' setaf 6)
 # shellcheck disable=SC2034
-WHITE=$(tput setaf 7)
+WHITE=$(tput_or '' setaf 7)
 # shellcheck disable=SC2034
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
+BOLD=$(tput_or '' bold)
+RESET=$(tput_or '' sgr0)
 
 log() {
 	local LABEL="[$1]"
@@ -33,13 +41,13 @@ log() {
 	shift
 	shift
 	local MSG=("$@")
-	printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput cols) - ${#LABEL})) | tr ' ' '='
+	printf "${COLOR}${LABEL}%*s${RESET}" $(($(tput_or 80 cols) - ${#LABEL})) | tr ' ' '='
 	for M in "${MSG[@]}"; do
 		# shellcheck disable=SC2219
-		let COL=$(tput cols)-2-${#M}
+		let COL=$(tput_or 80 cols)-2-${#M}
 		printf "%s%${COL}s${RESET}" "$COLOR* $M"
 	done
-	printf "${COLOR}%*s${RESET}\n\n\n" "$(tput cols)" | tr ' ' '='
+	printf "${COLOR}%*s${RESET}\n\n\n" "$(tput_or 80 cols)" | tr ' ' '='
 }
 
 log_error() {

@@ -19,6 +19,22 @@ _: {
 
       flakeRoot = ../../../.;
       bootstrapScript = ../../../scripts/${system}_bootstrap;
+
+      # tart comes from Homebrew (not in nixpkgs), so it is taken from PATH.
+      test-bootstrap = pkgs.writeShellApplication {
+        name = "test-bootstrap";
+        runtimeInputs = with pkgs; [
+          coreutils
+          gnutar
+          openssh
+          sshpass
+        ];
+        text = ''
+          export TEST_BOOTSTRAP_SOURCE=${flakeRoot}
+
+          ${builtins.readFile ../../../scripts/test-bootstrap}
+        '';
+      };
     in
     {
       apps =
@@ -62,6 +78,11 @@ _: {
             program = pkgs.lib.getExe pkgs.sb;
             meta.description = "Manage sandbox VMs for isolated development";
           };
+          test-bootstrap = {
+            type = "app";
+            program = pkgs.lib.getExe test-bootstrap;
+            meta.description = "Run bootstrap in a disposable Tart macOS VM";
+          };
         };
 
       packages = {
@@ -70,6 +91,7 @@ _: {
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         inherit (pkgs) sb;
+        inherit test-bootstrap;
       };
     };
 }
