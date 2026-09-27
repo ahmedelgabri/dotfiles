@@ -17,7 +17,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "agent-history record codex"
+						"command": "zh record codex"
 					}
 				]
 			},

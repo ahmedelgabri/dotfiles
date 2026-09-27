@@ -1,5 +1,5 @@
 # One fzf picker over shell history and the agent history written by
-# agent-history (nix/pkgs/agent-history). fzf's own history widget knows a
+# zh (nix/pkgs/zh). fzf's own history widget knows a
 # single source, so this borrows its lossless approach instead: rows are
 # "id\ttime\tdir\tcmd", and a shell row is resolved from $history[id] on
 # accept. Agent rows carry an empty id and are used verbatim.
@@ -43,7 +43,7 @@ fzf-history-widget() {
 
     # The active agent source lives in the border label, which fzf exports
     # to its child processes, so reloads, forget, and the preview all ask
-    # agent-history for the same scope. The scope reaches them through the
+    # zh for the same scope. The scope reaches them through the
     # environment rather than being spliced into each action, so the
     # directory stays one argument whatever characters it holds.
     local -x FZF_HISTORY_DIR=$PWD
@@ -54,7 +54,7 @@ fzf-history-widget() {
   " pi ") set -- --agent pi ;;
   *) set -- ;;
 esac'
-    local agent_rows='eval "$FZF_HISTORY_SCOPE"; agent-history list "$@"'
+    local agent_rows='eval "$FZF_HISTORY_SCOPE"; zh list "$@"'
     # Each CTRL-A moves to the next agent, then back to all of them.
     local next_agent='case $FZF_BORDER_LABEL in
   " agents ") next=claude ;;
@@ -67,7 +67,7 @@ printf "change-border-label( %s )+reload:%s" "$next" '"'${agent_rows}'"
     # discarded and an error goes out through change-header:, whose colon
     # form takes the rest literally even if the message holds ")" or "+".
     local forget_row='[ -z {1} ] || exit 0
-if err=$(agent-history forget -- {s4..} 2>&1 >/dev/null); then
+if err=$(zh forget -- {s4..} 2>&1 >/dev/null); then
   printf %s '"'reload:${agent_rows}'"'
 else
   printf change-header:%s "$(printf %s "$err" | tr "\n" " ")"
@@ -78,7 +78,7 @@ fi'
       $'--delimiter=\t'
       "--with-nth=4.."
       "--scheme=history"
-      "--preview=if [ -n {1} ]; then printf '%s\\n' {4..}; else eval \"\$FZF_HISTORY_SCOPE\"; agent-history show \"\$@\" -- {s4..}; fi"
+      "--preview=if [ -n {1} ]; then printf '%s\\n' {4..}; else eval \"\$FZF_HISTORY_SCOPE\"; zh show \"\$@\" -- {s4..}; fi"
       "--preview-window=next:7:hidden:wrap"
       "--bind=?:toggle-preview"
       "--query=${LBUFFER}"

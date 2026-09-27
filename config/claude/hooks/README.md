@@ -12,8 +12,8 @@ by Home Manager and wired from `config/claude/settings.json`.
 | `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                                                 | Log session shutdown and clear the published agent status.                                     |
 | `UserPromptSubmit`   | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit`, `tap state running --agent claude` | Log submitted prompts, append them to the central `PROMPTS.md`, mark agent busy.               |
 | `PreToolUse`         | `log-event.sh PreToolUse`, `tap state running --agent claude`                                               | Log tool calls and mark the agent busy.                                                        |
-| `PostToolUse`        | `log-event.sh PostToolUse`, `agent-history record claude`                                                   | Log tool results and record Bash commands in the agent history.                                |
-| `PostToolUseFailure` | `agent-history record claude`                                                                               | Record Bash commands whose call failed (denied, interrupted, tool error) in the agent history. |
+| `PostToolUse`        | `log-event.sh PostToolUse`, `zh record claude`                                                              | Log tool results and record Bash commands in the agent history.                                |
+| `PostToolUseFailure` | `zh record claude`                                                                                          | Record Bash commands whose call failed (denied, interrupted, tool error) in the agent history. |
 | `Stop`               | `log-event.sh Stop`, `run-ccpeek.sh`, `tap state idle --agent claude`                                       | Log assistant stops, refresh the `ccpeek` index, mark the agent idle.                          |
 | `SubagentStop`       | `log-event.sh SubagentStop`                                                                                 | Log subagent completion.                                                                       |
 | `Notification`       | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`                           | Log notifications, mirror them to a desktop notification, publish the status.                  |
@@ -57,10 +57,10 @@ The `tap state` entries publish the agent's activity state so other tooling
   `log-event.sh`), separated by `---` when the file already exists.
 - **Behavior**: skips global sessions, empty prompts, and invalid project paths.
 
-### `agent-history` (from `nix/pkgs/agent-history`)
+### `zh` (from `nix/pkgs/zh`)
 
 - **Events**: `PostToolUse` and `PostToolUseFailure`, matcher `Bash`; Codex wires the same command from `config/codex/hooks.json`.
-- **What it does**: appends the Bash command, its working directory, the session id, Claude's description of the call, and whether it arrived through `PostToolUseFailure` to `$ZDOTDIR/.agent_history.db`, the agent-only history the zsh Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every command that ran, whatever its exit status; `PostToolUseFailure` fires for calls that did not run (denied, interrupted, tool error), so the history also shows what an agent tried. Commands matching credential patterns are dropped.
+- **What it does**: appends the Bash command, its working directory, the session id, Claude's description of the call, and whether it arrived through `PostToolUseFailure` to `$ZDOTDIR/.zh.db`, the agent-only history the zsh Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every command that ran, whatever its exit status; `PostToolUseFailure` fires for calls that did not run (denied, interrupted, tool error), so the history also shows what an agent tried. Commands matching credential patterns are dropped.
 - **Failure mode**: a bad payload or unwritable file exits 1 with a message on stderr; PostToolUse hooks only warn on a non-zero exit, so the agent is never blocked.
 
 ### `run-ccpeek.sh`

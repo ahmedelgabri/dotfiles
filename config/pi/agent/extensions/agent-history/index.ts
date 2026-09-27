@@ -2,7 +2,7 @@
  * Agent history extension for pi.
  *
  * Records commands executed by pi's bash tool in the agent-only history file
- * through `agent-history record pi` (nix/pkgs/agent-history), the same writer the
+ * through `zh record pi` (nix/pkgs/zh), the same writer the
  * Claude Code and Codex hooks use. Listening on `tool_result` mirrors those
  * PostToolUse hooks: pi only emits it for calls that actually executed, so
  * blocked and aborted-before-spawn calls are never recorded, while commands
@@ -25,7 +25,7 @@ function record(
 		let stderr = ''
 		let child
 		try {
-			child = spawn('agent-history', ['record', 'pi'], {
+			child = spawn('zh', ['record', 'pi'], {
 				cwd,
 				stdio: ['pipe', 'ignore', 'pipe'],
 				timeout: RECORD_TIMEOUT_MS,

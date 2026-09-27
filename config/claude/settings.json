@@ -172,7 +172,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "agent-history record claude",
+            "command": "zh record claude",
             "async": true
           }
         ]
@@ -193,7 +193,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "agent-history record claude",
+            "command": "zh record claude",
             "async": true
           }
         ]
