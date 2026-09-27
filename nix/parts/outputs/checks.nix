@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, system, ... }:
     let
       source = inputs.self;
       piAgentExtensionNodeModules = import ../modules/shared/pi-extension-types.nix { inherit pkgs; };
@@ -12,9 +12,26 @@
           ${script}
           touch "$out"
         '';
+
+      # `nix flake check` skips darwinConfigurations. Writing the drvPath
+      # without its string context forces full evaluation without building
+      # the host's closure, so Linux CI can cover darwin hosts.
+      darwinHostEvalChecks =
+        lib.mapAttrs'
+          (
+            name: host:
+            lib.nameValuePair "${name}-eval" (
+              pkgs.writeText "${name}-eval" (builtins.unsafeDiscardStringContext host.system.drvPath)
+            )
+          )
+          (
+            lib.filterAttrs (
+              _: host: host.pkgs.stdenv.hostPlatform.system == system
+            ) inputs.self.darwinConfigurations
+          );
     in
     {
-      checks = {
+      checks = darwinHostEvalChecks // {
         # nixos-generate-config owns hardware-configuration.nix; regenerating
         # it would bring back its unused `pkgs` argument.
         deadnix = mkCheck "deadnix-check" [ pkgs.deadnix ] ''
