@@ -172,6 +172,7 @@ mx_start() {
 	# A failing command must not abort the rest of the layout.
 	false
 	tmux new-window -t "=$MX_SESSION:" -n after-failure -c "$MX_ROOT" 'exec sleep 600'
+	tmux set-option -p -t "=$MX_SESSION:3.1" @mx_command "$(printf 'touch "$HOME/multi one"\ntouch "$HOME/multi \303\251"')"
 	return 1
 }
 EOF
@@ -334,7 +335,8 @@ mx_start() {
 
 	window="$(tmux new-window -d -P -F \#\{window_index\} -t "=$MX_SESSION:" -n after-failure -c "$MX_ROOT")"
 	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
-	# pane 1 command unavailable; current process: @PROC@
+	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- $'touch "$HOME/multi one"\ntouch "$HOME/multi \303\251"'
+	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
 	tmux select-pane -t "=$MX_SESSION:$window.${panes[0]}"
 
 }
@@ -370,13 +372,14 @@ expect "--export only linked windows" 1 "" \
 # --- export round trip -----------------------------------------------------
 
 mx --export alpha >"$SESSIONS/gamma"
-if [[ -e "$HOME/replayed one" || -e "$HOME/replayed two" || -e "$HOME/replayed three" ]]; then
+if [[ -e "$HOME/replayed one" || -e "$HOME/replayed two" || -e "$HOME/replayed three" || -e "$HOME/multi one" ]]; then
 	fail "commands ran before the exported definition was used"
 fi
 expect "mx gamma" 1 "" "$NO_CLIENT" in_tmux mx gamma
 
 replayed() {
-	[[ -e "$HOME/replayed one" && -e "$HOME/replayed two" && -s "$HOME/replayed three" ]]
+	[[ -e "$HOME/replayed one" && -e "$HOME/replayed two" && -s "$HOME/replayed three" &&
+		-e "$HOME/multi one" && -e "$HOME/multi $(printf '\303\251')" ]]
 }
 wait_for "recorded commands to replay" replayed
 assert_eq "replayed command's pane" "$P/trunk" "$(cat "$HOME/replayed three")"

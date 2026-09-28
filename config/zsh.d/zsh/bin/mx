@@ -316,9 +316,10 @@ mx_export() {
 		tracked_command=""
 		# Do not turn the mx --export invocation itself into a startup command.
 		# The option is read separately because recorded commands may span
-		# lines, which would break the row format above.
+		# lines, which would break the row format above. -u for the same reason
+		# as that query: newlines and non-ASCII bytes would otherwise become '_'.
 		if [[ "$pane_id" != "${TMUX_PANE-}" ]]; then
-			tracked_command="$(tmux show-options -pqv -t "$pane_id" @mx_command)"
+			tracked_command="$(tmux -u show-options -pqv -t "$pane_id" @mx_command)"
 		fi
 		if [[ "$pane_active" == 1 ]]; then
 			active_pane="$i"
