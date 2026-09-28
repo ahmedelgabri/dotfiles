@@ -232,38 +232,33 @@ This means prayer times update automatically when:
 
 ## Building
 
-Local builds require Go 1.24+.
+Build from the repository root:
 
 ```bash
-# Build locally
-make build
-
-# Build with Nix
 nix build .#next-prayer
 ```
 
 ## Testing
 
-From the repository root, enter the Go shell and run the offline suite:
+Local tests require Go 1.24+. From the repository root, enter the Go shell and run the offline suite:
 
 ```bash
 nix develop .#go
 cd nix/pkgs/next-prayer
-make test
-go test -race -count=1 ./...
+go test -race -count=1 -coverprofile=coverage.out ./...
 go vet ./...
 ```
 
 The offline tests cover provider validation, HTTP requests and failures, mosque matching, configuration precedence, caching, JSON output, and CLI exit codes. HTTP integration tests use local servers. CLI tests build the real executable, isolate its config and cache directories, and block external API access. The existing `next-prayer` Nix check runs these tests during the package build.
 
-`make cov` opens the offline coverage report. CLI subprocess execution is not included in `go test`'s statement coverage, so the main package's percentage does not reflect its subprocess tests.
+Open the offline coverage report with `go tool cover -html=coverage.out`. CLI subprocess execution is not included in `go test`'s statement coverage, so the main package's percentage does not reflect its subprocess tests.
 
 ### Live end-to-end tests
 
 Export `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` through your usual secret-management workflow, then run:
 
 ```bash
-make test-e2e
+go test -tags=e2e -run '^TestLiveCLI$' -count=1 -timeout=3m ./cmd/next-prayer
 ```
 
 This suite calls the real Aladhan and Mawaqit APIs using Amsterdam as a test location. It discovers a mosque through `--list-mosques`, fetches JSON schedules with fresh caches, validates the selected mosque and prayer times, and checks cached JSON and text output with network access blocked. It does not mock API responses or read your normal config or cache. Credentials stay in the child process environment, not command arguments or fixtures, and failure messages redact them.
