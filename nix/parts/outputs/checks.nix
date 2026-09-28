@@ -49,6 +49,10 @@
             lua ${source}/tests/hammerspoon_prayer.lua ${source}
           '';
 
+          doctor-tests = mkCheck "doctor-tests" [ pkgs.python3 pkgs.bash pkgs.gawk pkgs.gnugrep ] ''
+            python3 ${source}/tests/doctor_test.py
+          '';
+
           bootstrap-args = mkCheck "bootstrap-args-check" [ pkgs.bash pkgs.hostname ] ''
             bash ${source}/tests/bootstrap-args.sh
           '';
