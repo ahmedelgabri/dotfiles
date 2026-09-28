@@ -21,12 +21,15 @@ fi
 
 # All four fields come from a single jq pass over the location file; `// ""`
 # maps missing keys to empty strings instead of the literal "null", which
-# would otherwise be passed on as a flag value.
+# would otherwise be passed on as a flag value. NUL separators preserve empty
+# fields and whitespace inside city names, unlike Bash's whitespace IFS.
 latitude="" longitude="" city="" country=""
-IFS=$'\t' read -r latitude longitude city country < <(
-	jq -r '[.location.latitude, .location.longitude, .locality, .countryCode]
-		| map(. // "" | tostring) | @tsv' "$LOCATION_DATA" 2>/dev/null
-) || true
+for field in latitude longitude city country; do
+	IFS= read -r -d '' "$field" || break
+done < <(
+	jq -j '[.location.latitude, .location.longitude, .locality, .countryCode]
+		| map(. // "" | tostring)[] + "\u0000"' "$LOCATION_DATA" 2>/dev/null
+)
 
 output=""
 
@@ -47,7 +50,7 @@ fi
 # Also reached when the Mawaqit call fails (auth or network errors), so the
 # status bar degrades to city-level times instead of going blank.
 if [[ -z "$output" ]]; then
-	output="$(next-prayer aladhan ${json_flag:+"$json_flag"})"
+	output="$(next-prayer aladhan ${json_flag:+"$json_flag"})" || exit "$?"
 fi
 
 printf "%s" "$output"

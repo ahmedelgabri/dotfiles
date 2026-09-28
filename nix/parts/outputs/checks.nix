@@ -39,6 +39,11 @@
       checks =
         darwinHostEvalChecks
         // {
+          get-prayer = mkCheck "get-prayer-check" [ pkgs.python3 pkgs.bash pkgs.jq pkgs.next-prayer ] ''
+            export NEXT_PRAYER_BIN=${pkgs.next-prayer}/bin/next-prayer
+            python3 ${source}/tests/get_prayer_test.py
+          '';
+
           bootstrap-args = mkCheck "bootstrap-args-check" [ pkgs.bash pkgs.hostname ] ''
             bash ${source}/tests/bootstrap-args.sh
           '';
