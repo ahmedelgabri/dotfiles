@@ -24,6 +24,9 @@ install:
 test:
 	go test -coverprofile=coverage.out ./...
 
+test-e2e:
+	go test -tags=e2e -run '^TestLiveCLI$$' -count=1 -timeout=3m ./cmd/next-prayer
+
 cov: | test
 	go tool cover -html=coverage.out
 

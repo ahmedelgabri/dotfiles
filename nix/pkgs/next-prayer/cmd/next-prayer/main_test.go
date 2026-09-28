@@ -7,6 +7,26 @@ import (
 	"github.com/ahmedelgabri/dotfiles/config/tmux/scripts/next-prayer/shared"
 )
 
+func TestFormatOutputBoundaries(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		remaining int
+		want      string
+	}{
+		{"past", -1, "Fajr: 04:00"},
+		{"now", 0, "#[fg=red]Fajr: 04:00#[default]"},
+		{"threshold", 30, "#[fg=red]Fajr: 04:00#[default]"},
+		{"outside threshold", 31, "Fajr: 04:00"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("TMUX", "")
+			if got := formatOutput(shared.Output{Item: "Fajr: 04:00", TimeRemaining: tc.remaining}); got != tc.want {
+				t.Errorf("output = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestFormatOutput(t *testing.T) {
 	t.Run("outside tmux", func(t *testing.T) {
 		// t.Setenv registers the restore; formatOutput checks presence via

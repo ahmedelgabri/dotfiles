@@ -241,3 +241,31 @@ make build
 # Build with Nix
 nix build .#next-prayer
 ```
+
+## Testing
+
+From the repository root, enter the Go shell and run the offline suite:
+
+```bash
+nix develop .#go
+cd nix/pkgs/next-prayer
+make test
+go test -race -count=1 ./...
+go vet ./...
+```
+
+The offline tests cover provider validation, HTTP requests and failures, mosque matching, configuration precedence, caching, JSON output, and CLI exit codes. HTTP integration tests use local servers. CLI tests build the real executable, isolate its config and cache directories, and block external API access. The existing `next-prayer` Nix check runs these tests during the package build.
+
+`make cov` opens the offline coverage report. CLI subprocess execution is not included in `go test`'s statement coverage, so the main package's percentage does not reflect its subprocess tests.
+
+### Live end-to-end tests
+
+Export `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` through your usual secret-management workflow, then run:
+
+```bash
+make test-e2e
+```
+
+This suite calls the real Aladhan and Mawaqit APIs using Amsterdam as a test location. It discovers a mosque through `--list-mosques`, fetches JSON schedules with fresh caches, validates the selected mosque and prayer times, and checks cached JSON and text output with network access blocked. It does not mock API responses or read your normal config or cache. Credentials stay in the child process environment, not command arguments or fixtures, and failure messages redact them.
+
+Live tests require both credentials and network access. They fail when either is unavailable and run separately from the offline suite and sandboxed Nix checks. `-count=1` prevents Go from reusing a previous test result.
