@@ -27,6 +27,7 @@ Related files outside this directory:
 | `config/zk/templates/` | Owns the actual note content templates used by `zk` for CLI and Neovim-created notes. |
 | `nix/parts/modules/shared/zk.nix` | Installs `zk` and links the `zk` config and templates. |
 | `nix/parts/modules/shared/vim.nix` | Installs `markdown-oxide` and Neovim support tooling. |
+| `nix/pkgs/markdown-oxide-follow-symlinks.patch` | Makes `markdown-oxide` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`. |
 
 ## Creation model
 
@@ -206,6 +207,13 @@ zk w 'Work note'
 zk j
 zk til 'Something I learned'
 ```
+
+## Symlinked folders
+
+The notebook can pull in folders from elsewhere through directory symlinks, e.g. `main/foo -> ../foo`. The tools don't follow those links upstream, so they are patched through the Nix overlay until the fixes are released.
+
+- `markdown-oxide` indexes notes behind a link under the link's path (`foo/note.md`). Links back to a parent folder are ignored, but a link to a folder that is already in the vault, or two links to the same folder, index the same notes twice. Upstream PR: https://github.com/Feel-ix-343/markdown-oxide/pull/522
+- Edits made outside Neovim (Obsidian, iCloud sync, the `zk` CLI) to notes behind a link are probably not picked up by `markdown-oxide` until restart, because the file watcher does not cross symlinks. Edits in Neovim buffers are.
 
 ## Troubleshooting
 

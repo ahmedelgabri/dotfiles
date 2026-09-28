@@ -13,6 +13,13 @@
         withEmacs = false;
       };
 
+      # markdown-oxide walks the vault without following symlinks, so notes
+      # in a folder linked into the vault are never indexed.
+      # https://github.com/Feel-ix-343/markdown-oxide/pull/522
+      markdown-oxide = prev.markdown-oxide.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../../pkgs/markdown-oxide-follow-symlinks.patch ];
+      });
+
       llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
 
       inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
