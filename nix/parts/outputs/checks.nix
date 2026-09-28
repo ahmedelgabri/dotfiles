@@ -44,6 +44,11 @@
             python3 ${source}/tests/get_prayer_test.py
           '';
 
+          hammerspoon-prayer = mkCheck "hammerspoon-prayer-check" [ pkgs.lua5_4 pkgs.stylua ] ''
+            stylua --config-path ${source}/.stylua.toml --check ${source}/tests/hammerspoon_prayer.lua
+            lua ${source}/tests/hammerspoon_prayer.lua ${source}
+          '';
+
           bootstrap-args = mkCheck "bootstrap-args-check" [ pkgs.bash pkgs.hostname ] ''
             bash ${source}/tests/bootstrap-args.sh
           '';

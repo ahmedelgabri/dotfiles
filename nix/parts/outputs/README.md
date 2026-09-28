@@ -17,6 +17,7 @@ Each file here contributes one kind of flake output through flake-parts.
 | `stylua` | Lua formatting under `config/` |
 | `typos` | Spelling |
 | `next-prayer` | The Go package builds and its offline unit and integration tests pass; [live API tests](../../pkgs/next-prayer/README.md#live-end-to-end-tests) run separately |
+| `hammerspoon-prayer` | Prayer selection, date rollover, notification scheduling, retries, and location changes with a controlled Lua runtime |
 | `get-prayer` | Prayer wrapper source selection, location parsing, fallback, JSON output, and failure status; see [tests](../../../tests/README.md) |
 | `bootstrap-args` | Bootstrap parses the host and run-only font flag, preserves the default, and rejects invalid arguments |
 | `bootstrap-fonts` | Normal hosts enable Pragmata Pro; font-free variants remove only that font and retain the host identity |
