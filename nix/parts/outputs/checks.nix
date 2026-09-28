@@ -53,6 +53,21 @@
             python3 ${source}/tests/doctor_test.py
           '';
 
+          python-startup = mkCheck "python-startup-check" [ pkgs.python3 pkgs.vim ] ''
+            python3 ${source}/tests/python_startup_test.py
+          '';
+
+          ruff = mkCheck "ruff-check" [ pkgs.ruff ] ''
+            cd ${source}
+            ruff check --no-cache .
+            ruff format --check --no-cache .
+          '';
+
+          ty = mkCheck "ty-check" [ pkgs.ty ] ''
+            cd ${source}
+            ty check .
+          '';
+
           bootstrap-args = mkCheck "bootstrap-args-check" [ pkgs.bash pkgs.hostname ] ''
             bash ${source}/tests/bootstrap-args.sh
           '';

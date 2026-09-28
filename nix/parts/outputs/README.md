@@ -12,6 +12,9 @@ Each file here contributes one kind of flake output through flake-parts.
 | `actionlint` | GitHub workflows are valid (syntax, expressions, runner labels), with shellcheck over their `run:` scripts |
 | `zizmor` | GitHub workflows and `dependabot.yml` pass zizmor's offline security audits. Checks have no network or token, so the online audits run separately (see below) |
 | `nix-format` | `nixfmt-rs` formatting |
+| `ruff` | All Python files pass Ruff's `ALL` rules, including preview rules, and formatter checks |
+| `ty` | All Python files pass type checking with every diagnostic treated as an error and strict equality and generic narrowing |
+| `python-startup` | Startup helpers, history, display hooks, and external editing with real Python and Vim/ex in an isolated home |
 | `pi-extensions` | The pi extensions and their colocated TypeScript tests type-check with `tsc` |
 | `pi-diff` | Node unit and integration tests for diff parsing, annotation persistence, preferences, real repositories, and conflict-file safety; [E2E instructions](../../../config/pi/agent/extensions/diff/README.md#tests) |
 | `shellcheck` | Every bash or `sh` script in the repo |

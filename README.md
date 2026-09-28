@@ -420,11 +420,13 @@ repo itself:
 
 | Command            | What it does                           |
 | ------------------ | -------------------------------------- |
-| `nix develop`      | Provides the default development shell |
+| `nix develop`      | Provides the default development shell, including Python, Ruff, and ty |
 | `nix fmt`          | Formats the Nix code with `nixfmt-rs`  |
 | `nix develop .#go` | Opens the Go-focused dev shell         |
 | `nix run .#lint`                | Runs every repo check CI runs: formatting, dead-code, type, shell, spelling, workflow, Go, and host evaluation [checks](./nix/parts/outputs/README.md#checks), plus zizmor's online audits |
 | `nix run .#test-bootstrap`      | Bootstraps a host in a disposable macOS VM; see [scripts](./scripts/README.md#test-bootstrap) |
+
+All Python files, including the interactive startup script, use the strict Ruff and ty settings in [`pyproject.toml`](./pyproject.toml). See [Python checks and tests](./tests/README.md#python-tooling) for local commands and the documented rule exceptions.
 
 <!-- Reference links -->
 

@@ -1,0 +1,48 @@
+[tool.ruff]
+target-version = "py314"
+preview = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+allowed-confusables = ["❯"] # Deliberate Python REPL prompt glyph.
+ignore = [
+  # The formatter owns trailing commas.
+  "missing-trailing-comma",
+  # This repository has no per-file copyright-header policy.
+  "missing-copyright-notice",
+  # Prefer no blank line before class docstrings and summaries on the first line.
+  "incorrect-blank-line-before-class",
+  "multi-line-summary-second-line",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# These are executable scripts, not importable packages.
+"config/python/.pythonrc.py" = [
+  "implicit-namespace-package",
+  # Preserve the upstream encoding header.
+  "utf8-encoding-declaration",
+]
+"tests/**/*.py" = [
+  "implicit-namespace-package",
+  # Descriptive unittest method names identify each case in test reports.
+  "undocumented-public-method",
+  # Keep unittest's assertions and diagnostics rather than migrating to pytest.
+  "pytest-unittest-assertion",
+  "pytest-unittest-raises-assertion",
+  # Harnesses launch controlled commands and arguments without a shell.
+  "suspicious-subprocess-import",
+  "subprocess-without-shell-equals-true",
+]
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.rules]
+all = "error"
+
+[tool.ty.analysis]
+strict-equality-semantics = true
+strict-generic-narrowing = true
+
+[tool.ty.terminal]
+error-on-warning = true

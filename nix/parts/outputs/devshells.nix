@@ -14,6 +14,9 @@
               nixfmt-rs
               inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
               typescript
+              python3
+              ruff
+              ty
             ]
             ++ lib.optional stdenv.hostPlatform.isDarwin sb;
         };

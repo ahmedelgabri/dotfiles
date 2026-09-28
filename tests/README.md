@@ -2,6 +2,34 @@
 
 Run these commands from the repository root. Offline unit and integration checks also run through `nix flake check`. `live/` contains E2E tests that use real APIs or runtimes without mocks. Some need network access or desktop services; others, such as doctor, run entirely locally.
 
+## Python tooling
+
+Use the default Nix shell to get the flake's pinned Python 3.14, Ruff, and ty versions. A globally installed Ruff may be too old for the configuration.
+
+```sh
+nix develop
+ruff check .
+ruff format --check .
+ty check .
+```
+
+To apply formatting, run `ruff format .`. Nix runs both Ruff checks through `checks.<system>.ruff` and type checking through `checks.<system>.ty`.
+
+[`pyproject.toml`](../pyproject.toml) enables Ruff `ALL`, preview rules, and ty's `all = "error"`, strict equality semantics, and strict generic narrowing. No repository Python files are excluded. The configuration explains the narrow Ruff exceptions: mutually exclusive docstring rules, formatter-owned commas, no per-file copyright-header policy, script layout, the retained upstream encoding header, descriptive unittest names and assertions, and intentional subprocess test harnesses. The chevron prompt glyph is explicitly allowed. A few source-line exceptions document deliberate REPL output, external editor execution, the standard-library `locals` parameter, and loading checked-in definitions for unit tests. ty has no rule suppressions.
+
+Python test helpers have explicit signatures and command-response types. Executable and regex lookups fail before a missing result can reach a subprocess or path constructor. Exit statuses remain asserted explicitly, including expected failures.
+
+## Python startup
+
+```sh
+nix build .#checks.aarch64-darwin.python-startup
+python3 tests/python_startup_test.py
+```
+
+The startup suite covers terminal colors, pretty-printing and the `_` binding, compiler state, failed-editor cleanup, real readline history, and editing through an actual `ex` executable with temporary paths containing spaces. The real-editor E2E uses no mocks; only the unit cases replace individual functions. Everything runs offline in isolated homes and temporary directories. The direct command requires Vim's `ex` on `PATH`; the Nix check supplies it.
+
+See [`config/python/README.md`](../config/python/README.md) for startup behavior and editor configuration.
+
 ## Prayer wrapper
 
 ```sh
