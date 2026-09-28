@@ -5,7 +5,7 @@ Shell scripts packaged by `nix/parts/outputs/apps.nix` with `writeShellApplicati
 | Script | Flake app | Purpose |
 | --- | --- | --- |
 | `aarch64-darwin_bootstrap`, `x86_64-linux_bootstrap` | `default` | First install of a host (see the root README) |
-| `utils` | — | Logging helpers, `clone_dotfiles`, and `host_cache_options`, sourced by both bootstrap scripts. The last passes the host's binary caches to the first switch, since they only reach `nix.conf` once that switch has applied them |
+| `utils` | — | Argument parsing, logging helpers, `clone_dotfiles`, and `host_cache_options`, sourced by both bootstrap scripts. The last passes the host's binary caches to the first switch, since they only reach `nix.conf` once that switch has applied them |
 | `doctor` | `doctor` | Checklist of the setup bootstrap cannot do |
 | `test-bootstrap` | `test-bootstrap` (macOS) | Runs bootstrap in a disposable Tart VM |
 
@@ -27,9 +27,9 @@ The probes are read-only: they never print secrets, create files or start agents
 
 ## test-bootstrap
 
-Bootstrap only runs on fresh machines, so it can break unnoticed. `nix run .#test-bootstrap -- --host <host>` runs it in a throwaway [Tart](https://tart.run) VM cloned from `ghcr.io/cirruslabs/macos-tahoe-vanilla` (override with `--image`; `--keep` leaves the VM running for inspection). It needs `tart` from Homebrew and the Pragmata Pro archive in the local Nix store. It is a full workstation install over the network, including every Homebrew cask, so it takes a long time.
+Bootstrap only runs on fresh machines, so it can break unnoticed. `nix run .#test-bootstrap -- --host <host>` runs it in a throwaway [Tart](https://tart.run) VM cloned from `ghcr.io/cirruslabs/macos-tahoe-vanilla` (override with `--image`; `--keep` leaves the VM running for inspection). It needs `tart` from Homebrew; no Pragmata Pro archive is required. It is a full workstation install over the network, including every Homebrew cask, so it takes a long time.
 
-The test passes only when bootstrap exits 0. `doctor` then reports SSH, GPG, pass and agenix as missing, which is expected: production keys are never copied into the VM, and its host key is not an agenix recipient. Logs go to `~/.local/state/dotfiles-test-bootstrap/<vm>/`.
+The guest runs `nix run github:ahmedelgabri/dotfiles -- <host> --without-pragmatapro` with no `~/.dotfiles` directory. This tests the published repository, not unpushed local changes. The font flag and matching host variants must be published before running the test. The test passes only when bootstrap exits 0 and creates a Git checkout containing `flake.nix`. `doctor` reports SSH, GPG, pass and agenix as missing, which is expected: production keys are never copied into the VM, and its host key is not an agenix recipient. Logs go to `~/.local/state/dotfiles-test-bootstrap/<vm>/`.
 
 Getting a stock macOS image to the point where bootstrap can run needs a few workarounds:
 
@@ -40,8 +40,8 @@ Getting a stock macOS image to the point where bootstrap can run needs a few wor
 | A reboot can finish between polls | Compare `kern.boottime` before and after instead of waiting for the guest to go down |
 | The boot container cannot grow: a recovery container follows it and SIP refuses to delete it | Add a separate APFS container in the extra disk space and install Nix onto it with `--root-disk` |
 | Disk identifiers are renumbered on reboot | Create that container after the reboot, right before installing Nix |
-| `requireFile` needs Pragmata Pro | Copy the archive from the host store under its original name and `nix-store --add-fixed` it |
-| Bootstrap would clone GitHub HEAD | Seed `~/.dotfiles` with the flake source the app was built from; bootstrap then uses it as its flake root |
+| `requireFile` needs Pragmata Pro | Pass `--without-pragmatapro` for this run; the default configuration still requires the font |
+| Bootstrap must create the checkout | Leave `~/.dotfiles` absent, run the published bootstrap, then verify its clone |
 | No TTY or `TERM` | `utils` falls back to plain output when `tput` fails, instead of aborting under `set -e` |
 
 SSH to the guest uses only command-line options (`-F /dev/null`, a per-run known_hosts file, no agent forwarding or public keys), so nothing from the host's SSH setup reaches the VM. Every wait has a timeout, cleanup is trapped before the VM exists, and the VM is deleted on any exit unless `--keep` is passed.

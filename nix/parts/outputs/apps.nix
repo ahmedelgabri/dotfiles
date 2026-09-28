@@ -54,15 +54,10 @@ _: {
         name = "test-bootstrap";
         runtimeInputs = with pkgs; [
           coreutils
-          gnutar
           openssh
           sshpass
         ];
-        text = ''
-          export TEST_BOOTSTRAP_SOURCE=${flakeRoot}
-
-          ${builtins.readFile ../../../scripts/test-bootstrap}
-        '';
+        text = builtins.readFile ../../../scripts/test-bootstrap;
       };
     in
     {

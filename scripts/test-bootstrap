@@ -48,9 +48,8 @@ while (($# > 0)); do
 	esac
 done
 
-# Set by the Nix wrapper to the flake source this app was built from, so the
-# VM bootstraps exactly that revision.
-SOURCE=${TEST_BOOTSTRAP_SOURCE:?TEST_BOOTSTRAP_SOURCE is not set}
+# Exercise the published install path rather than an unpublished local tree.
+SOURCE=github:ahmedelgabri/dotfiles
 
 command -v tart >/dev/null || {
 	echo "tart is not installed (brew install --cask tart)" >&2
@@ -160,10 +159,6 @@ guest_script() {
 	wait "$GUEST_SCRIPT_PID"
 }
 
-guest_copy() {
-	SSHPASS=$SSH_PASSWORD sshpass -e scp "${SSH_OPTIONS[@]}" "$1" "$SSH_USER@$VM_IP:$2"
-}
-
 guest_rebooted() {
 	local boot_time
 	boot_time=$(guest sysctl -n kern.boottime) && [[ -n "$boot_time" && "$boot_time" != "$BOOT_TIME" ]]
@@ -197,15 +192,9 @@ boot_vm() {
 	wait_for_ssh
 }
 
-step "Reading $HOST from the flake"
-USERNAME=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.config.my.username")
-FONT_SOURCE=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.pkgs.pragmatapro.src")
-FONT_NAME=$(nix eval --raw "path:$SOURCE#darwinConfigurations.$HOST.pkgs.pragmatapro.src.name")
-[[ -f "$FONT_SOURCE" ]] || {
-	echo "Font archive $FONT_SOURCE is not in the local store; add it first (see README)" >&2
-	exit 1
-}
-echo "user: $USERNAME, font: $FONT_NAME, image: $IMAGE"
+step "Reading $HOST from $SOURCE"
+USERNAME=$(nix eval --raw "$SOURCE#darwinConfigurations.$HOST-without-pragmatapro.config.my.username")
+echo "user: $USERNAME, image: $IMAGE"
 tart list --source oci --format json | grep -F "$IMAGE" >/dev/null || tart pull "$IMAGE"
 
 step "Creating VM $VM"
@@ -302,35 +291,20 @@ curl --proto '=https' --tlsv1.2 -sSfL https://artifacts.nixos.org/nix-installer 
 df -h /nix /
 EOF
 
-step "Adding $FONT_NAME to the guest store"
-guest_copy "$FONT_SOURCE" "/tmp/$FONT_NAME"
-guest_script 600 "$FONT_NAME" <<'EOF'
-set -euo pipefail
-# shellcheck disable=SC1091
-source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-sudo -H "$(command -v nix-store)" --add-fixed sha256 "/tmp/$1"
-rm "/tmp/$1"
-EOF
-
-# A seeded ~/.dotfiles becomes bootstrap's FLAKE_ROOT, so it switches to this
-# exact source instead of cloning GitHub HEAD.
-step "Seeding ~/.dotfiles from $SOURCE"
-tar -C "$SOURCE" --exclude ./.jj --exclude ./.git -cf - . |
-	SSHPASS=$SSH_PASSWORD sshpass -e ssh "${SSH_OPTIONS[@]}" "$SSH_USER@$VM_IP" \
-		'mkdir -p ~/.dotfiles && tar -C ~/.dotfiles -xf - && chmod -R u+w ~/.dotfiles'
-
 # Nix treats an unreachable binary cache as a miss and quietly builds
 # everything from source, so a guest DNS hiccup must fail here instead.
 step "Checking the guest can reach cache.nixos.org"
 wait_for 300 "the guest to reach cache.nixos.org" guest curl -fsS -o /dev/null https://cache.nixos.org/nix-cache-info
 
 step "Running bootstrap for $HOST"
-guest_script 10800 "$HOST" <<'EOF'
+guest_script 10800 "$HOST" "$SOURCE" <<'EOF'
 set -euo pipefail
 # shellcheck disable=SC1091
 source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-cd ~/.dotfiles
+[[ ! -e "$HOME/.dotfiles" && ! -L "$HOME/.dotfiles" ]]
 # No TTY and no TERM, like an unattended run; stdin is closed so any prompt
 # fails instead of hanging.
-env -u TERM nix --experimental-features 'nix-command flakes' run .#default -- "$1" </dev/null
+env -u TERM nix --experimental-features 'nix-command flakes' run "$2" -- "$1" --without-pragmatapro </dev/null
+[[ -d "$HOME/.dotfiles/.git" && -f "$HOME/.dotfiles/flake.nix" ]]
+git -C "$HOME/.dotfiles" rev-parse --verify HEAD
 EOF
