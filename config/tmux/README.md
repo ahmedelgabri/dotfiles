@@ -326,6 +326,8 @@ Session names are derived from the picked directory (`.` and `:` become `_`):
 
 Caveat: `switch-client` from a `run-shell` binding resolves "current client" by tmux's best match, which is correct for single-attached-client use.
 
+[`tests/mx.sh`](../../tests/README.md#mx) covers `mx` and `mx-init` against a real tmux server on a private socket and runs as the `mx` flake check.
+
 ## Host-Specific Overrides
 
 The config sources `$HOST_CONFIGS/tmux.conf` at the end if it exists. This

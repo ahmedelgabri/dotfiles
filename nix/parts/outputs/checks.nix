@@ -72,6 +72,10 @@
             bash ${source}/tests/bootstrap-args.sh
           '';
 
+          mx = mkCheck "mx-check" [ pkgs.bash pkgs.tmux ] ''
+            bash ${source}/tests/mx.sh
+          '';
+
           bootstrap-fonts = pkgs.writeText "bootstrap-fonts-check" (
             builtins.toJSON (
               import ../../../tests/bootstrap-fonts.nix {
