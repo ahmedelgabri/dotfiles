@@ -2,6 +2,10 @@
 ignore-hidden = false
 extend-exclude = ["nix/secrets/*.age"]
 
+[default.extend-words]
+# Dutch word
+Stichting = "Stichting"
+
 [default]
 extend-ignore-re = [
   "(?Rm)^.*(#|//|--)\\s*spellchecker:disable-line$",
