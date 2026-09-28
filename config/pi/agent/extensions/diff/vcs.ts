@@ -1,5 +1,5 @@
-import {readFile, writeFile} from 'node:fs/promises'
-import {isAbsolute, relative, resolve} from 'node:path'
+import {readFile, realpath, writeFile} from 'node:fs/promises'
+import {isAbsolute, relative, resolve, sep} from 'node:path'
 import type {
 	ExtensionAPI,
 	ExtensionCommandContext,
@@ -800,19 +800,25 @@ const loadJjRevisionSnapshot = async (
 }
 
 const hasConflictMarkers = (contents: string): boolean =>
-	/^<<<<<<<(?: |$)/m.test(contents) &&
-	/^=======$/m.test(contents) &&
-	/^>>>>>>>(?: |$)/m.test(contents)
+	/^<{7,}(?: |$)/m.test(contents) &&
+	(/^={7,}$/m.test(contents) || /^(?:%{7,}|\+{7,})(?: |$)/m.test(contents)) &&
+	/^>{7,}(?: |$)/m.test(contents)
 
-const safeRepoFilePath = (repoRoot: string, filePath: string): string => {
+const safeRepoFilePath = async (
+	repoRoot: string,
+	filePath: string,
+): Promise<string> => {
 	if (isAbsolute(filePath)) {
 		throw new Error('Conflict path must be repository-relative')
 	}
-	const absolutePath = resolve(repoRoot, filePath)
-	const relativePath = relative(repoRoot, absolutePath)
+	// Resolve both paths so symlinks cannot redirect conflict I/O outside the repo.
+	const root = await realpath(repoRoot)
+	const absolutePath = await realpath(resolve(root, filePath))
+	const relativePath = relative(root, absolutePath)
 	if (
 		relativePath === '' ||
-		relativePath.startsWith('..') ||
+		relativePath === '..' ||
+		relativePath.startsWith(`..${sep}`) ||
 		isAbsolute(relativePath)
 	) {
 		throw new Error(`Conflict path escapes repository: ${filePath}`)
@@ -841,14 +847,15 @@ const getJjConflictPaths = async (
 	pi: ExtensionAPI,
 	repoRoot: string,
 ): Promise<string[]> => {
-	const result = await execOrNull(pi, 'jj', ['diff', '--types'], repoRoot)
-	if (!result || result.code !== 0) return []
-	return uniquePaths(
-		result.stdout.split('\n').map((line) => {
-			const match = line.match(/^([A-Z-]{2})\s+(.+)$/)
-			return match?.[1].includes('C') ? match[2] : ''
-		}),
+	// A merge can inherit conflicts without changing anything relative to its parents.
+	const result = await execOrNull(
+		pi,
+		'jj',
+		['--color', 'never', 'file', 'list', '-T', 'if(conflict, path ++ "\\0")'],
+		repoRoot,
 	)
+	if (!result || result.code !== 0) return []
+	return result.stdout.split('\0').filter(Boolean)
 }
 
 export const loadConflictFiles = async (
@@ -863,7 +870,7 @@ export const loadConflictFiles = async (
 	for (const path of paths) {
 		try {
 			const contents = await readFile(
-				safeRepoFilePath(snapshot.repoRoot, path),
+				await safeRepoFilePath(snapshot.repoRoot, path),
 				'utf8',
 			)
 			files.push({path, contents, resolved: !hasConflictMarkers(contents)})
@@ -879,7 +886,7 @@ export const saveConflictFile = async (
 	contents: string,
 ): Promise<ConflictFile> => {
 	const resolved = !hasConflictMarkers(contents)
-	await writeFile(safeRepoFilePath(snapshot.repoRoot, path), contents, 'utf8')
+	await writeFile(await safeRepoFilePath(snapshot.repoRoot, path), contents, 'utf8')
 	if (resolved && snapshot.vcs === 'git') {
 		const result = await execOrNull(
 			pi,

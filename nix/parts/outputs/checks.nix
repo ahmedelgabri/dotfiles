@@ -88,6 +88,10 @@
             find ${source} -name '*.nix' -print0 | xargs -0 nixfmt --check
           '';
 
+          pi-diff = mkCheck "pi-diff-check" [ pkgs.nodejs pkgs.jujutsu pkgs.git ] ''
+            node --test ${source}/config/pi/agent/extensions/diff/diff.test.ts
+          '';
+
           pi-extensions = mkCheck "pi-extensions-check" [ pkgs.typescript ] ''
             cp -R ${source}/config/pi/agent/extensions source
             chmod -R u+w source

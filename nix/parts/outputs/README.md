@@ -12,7 +12,8 @@ Each file here contributes one kind of flake output through flake-parts.
 | `actionlint` | GitHub workflows are valid (syntax, expressions, runner labels), with shellcheck over their `run:` scripts |
 | `zizmor` | GitHub workflows and `dependabot.yml` pass zizmor's offline security audits. Checks have no network or token, so the online audits run separately (see below) |
 | `nix-format` | `nixfmt-rs` formatting |
-| `pi-extensions` | The pi extensions type-check with `tsc` |
+| `pi-extensions` | The pi extensions and their colocated TypeScript tests type-check with `tsc` |
+| `pi-diff` | Node unit and integration tests for diff parsing, annotation persistence, preferences, real repositories, and conflict-file safety; [E2E instructions](../../../config/pi/agent/extensions/diff/README.md#tests) |
 | `shellcheck` | Every bash or `sh` script in the repo |
 | `stylua` | Lua formatting under `config/` |
 | `typos` | Spelling |

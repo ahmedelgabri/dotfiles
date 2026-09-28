@@ -277,13 +277,11 @@ Override paths via env vars:
 
 ## Merge-conflict editor
 
-When a diff is loaded, the extension also asks the VCS for files in conflict
-(`git diff --name-only --diff-filter=U` or `jj diff --types` filtered for the
-`C` flag) and exposes them via `/api/conflicts`. The browser renders a
-side-by-side editor; saving via `/api/conflicts/write` writes the file back into
-the repo and, for git, runs `git add -- <path>` once the conflict markers are
-gone. Paths are validated with `safeRepoFilePath` to refuse anything that
-escapes the repo root.
+When a diff is loaded, the extension asks the VCS for files in conflict and exposes them via `/api/conflicts`. Git uses `git diff --name-only --diff-filter=U`. Jujutsu uses `jj file list` with a template that selects conflicted entries and emits NUL-delimited paths. This includes conflicts inherited from merge parents even when the working diff is empty, and preserves whitespace in filenames.
+
+The browser renders a side-by-side editor. Saving via `/api/conflicts/write` writes the file back into the repo and, for Git, stages it once the conflict markers are gone. Marker detection supports Git and Jujutsu's `diff`, `snapshot`, and `git` styles.
+
+Conflict files must already exist. `safeRepoFilePath` resolves the repository root and target to their real paths before checking containment. It rejects absolute paths and targets outside the repo, including file and directory symlinks that point outside. Symlinks to files inside the repo remain usable.
 
 ## Lifecycle & cleanup
 
@@ -321,6 +319,20 @@ escapes the repo root.
 - No diff content or annotation text is uploaded anywhere; only ESM modules from
   `esm.sh` are fetched by the browser, and only after the user has explicitly
   chosen to open the URL.
+
+## Tests
+
+Run from the repository root with Node 24+, Git, and Jujutsu on `PATH`:
+
+```sh
+node --test config/pi/agent/extensions/diff/diff.test.ts
+node --test config/pi/agent/extensions/diff/diff.e2e.test.ts
+nix build .#checks.aarch64-darwin.pi-diff
+```
+
+`diff.test.ts` contains offline unit and integration tests for argument and patch parsing, annotation persistence and limits, preferences, real Git/Jujutsu repositories, symlink containment, and Jujutsu conflict discovery and resolution. All three Jujutsu marker styles are exercised with real merges. Node's built-in test runner and TypeScript support require no test framework or transpiler. The local `package.json` declares these files as ES modules.
+
+`diff.e2e.test.ts` also requires `pi` on `PATH`. It launches the actual extension over RPC and exercises its token-protected HTTP API, annotations, replies, SSE, persistence on reopen, conflict writes, and shutdown. It creates temporary repositories and an isolated Pi configuration, omits browser launchers to exercise the URL fallback, and makes no model calls or external network requests. It does not test browser rendering or GitHub PR mode. This test runs separately from the sandboxed Nix check.
 
 ## Extending
 
