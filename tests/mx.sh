@@ -164,6 +164,7 @@ mx_start() {
 	tmux set-option -p -t "=$MX_SESSION:2.1" @mx_command 'touch "$HOME/replayed two"'
 	tmux split-window -v -t "=$MX_SESSION:2" -c "$DOTFILES" 'exec sleep 600'
 	tmux split-window -v -t "=$MX_SESSION:2" -c "$PROJECTS/trunk" 'exec sleep 600'
+	tmux set-option -p -t "=$MX_SESSION:2.3" @mx_command 'pwd >"$HOME/replayed three"'
 	tmux select-layout -t "=$MX_SESSION:2" even-vertical
 	tmux select-pane -t "=$MX_SESSION:2.2"
 	tmux select-pane -t "=$MX_SESSION:1.2"
@@ -311,7 +312,7 @@ mx_start() {
 	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
 	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- touch\ \"\$HOME/replayed\ one\"
 	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window" -c "$MX_ROOT"/src)"
+	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[0]}" -c "$MX_ROOT"/src)"
 	panes+=("$pane")
 	# pane 2 command unavailable; current process: @PROC@
 	tmux select-layout -t "=$MX_SESSION:$window" @LAYOUT1@
@@ -321,12 +322,13 @@ mx_start() {
 	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
 	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- touch\ \"\$HOME/replayed\ two\"
 	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window" -c @DOTFILES@)"
+	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[0]}" -c @DOTFILES@)"
 	panes+=("$pane")
 	# pane 2 command unavailable; current process: @PROC@
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window" -c "$HOME"/Projects/trunk)"
+	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[1]}" -c "$HOME"/Projects/trunk)"
 	panes+=("$pane")
-	# pane 3 command unavailable; current process: @PROC@
+	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[2]}" -- pwd\ \>\"\$HOME/replayed\ three\"
+	tmux send-keys -t "=$MX_SESSION:$window.${panes[2]}" C-m
 	tmux select-layout -t "=$MX_SESSION:$window" @LAYOUT2@
 	tmux select-pane -t "=$MX_SESSION:$window.${panes[1]}"
 
@@ -364,3 +366,24 @@ t link-window -s =_shared:notes -t =linked-only:9
 t kill-window -t =linked-only:1
 expect "--export only linked windows" 1 "" \
 	"mx: session has no unlinked windows: linked-only" mx --export linked-only
+
+# --- export round trip -----------------------------------------------------
+
+mx --export alpha >"$SESSIONS/gamma"
+if [[ -e "$HOME/replayed one" || -e "$HOME/replayed two" || -e "$HOME/replayed three" ]]; then
+	fail "commands ran before the exported definition was used"
+fi
+expect "mx gamma" 1 "" "$NO_CLIENT" in_tmux mx gamma
+
+replayed() {
+	[[ -e "$HOME/replayed one" && -e "$HOME/replayed two" && -s "$HOME/replayed three" ]]
+}
+wait_for "recorded commands to replay" replayed
+assert_eq "replayed command's pane" "$P/trunk" "$(cat "$HOME/replayed three")"
+
+GEOMETRY='#{?window_linked,,#{window_index} #{window_name} #{window_active} #{pane_index} #{pane_active} #{pane_left}#,#{pane_top} #{pane_width}x#{pane_height} #{pane_current_path}}'
+assert_eq "round-trip geometry" \
+	"$(t list-panes -s -t =alpha -F "$GEOMETRY" | sed '/^$/d')" \
+	"$(t list-panes -s -t =gamma -F "$GEOMETRY" | sed '/^$/d')"
+assert_eq "round-trip shared windows" "4 dotfiles
+5 notes" "$(t list-windows -t =gamma -F '#{?window_linked,#{window_index} #{window_name},}' | sed '/^$/d')"

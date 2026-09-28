@@ -325,8 +325,11 @@ mx_export() {
 				active_pane="$i"
 			fi
 			if ((i > 0)); then
-				printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window" -c %s)"\n' \
-					'#{pane_index}' "$(export_dir_expr "$path" "$root")"
+				# Split the previous pane, not the active one: a new pane goes
+				# right after its target, so this keeps panes in their original
+				# order for select-layout and keeps recorded indices valid.
+				printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window.${panes[%d]}" -c %s)"\n' \
+					'#{pane_index}' "$((i - 1))" "$(export_dir_expr "$path" "$root")"
 				printf '\tpanes+=("$pane")\n'
 			fi
 			if [[ -n "$tracked_command" ]]; then
