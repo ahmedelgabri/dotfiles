@@ -28,6 +28,7 @@ Related files outside this directory:
 | `nix/parts/modules/shared/zk.nix` | Installs `zk` and links the `zk` config and templates. |
 | `nix/parts/modules/shared/vim.nix` | Installs `markdown-oxide` and Neovim support tooling. |
 | `nix/pkgs/markdown-oxide-follow-symlinks.patch` | Makes `markdown-oxide` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`. |
+| `nix/pkgs/zk-follow-symlinks.patch` | Makes `zk index` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`. |
 
 ## Creation model
 
@@ -214,6 +215,9 @@ The notebook can pull in folders from elsewhere through directory symlinks, e.g.
 
 - `markdown-oxide` indexes notes behind a link under the link's path (`foo/note.md`). Links back to a parent folder are ignored, but a link to a folder that is already in the vault, or two links to the same folder, index the same notes twice. Upstream PR: https://github.com/Feel-ix-343/markdown-oxide/pull/522
 - Edits made outside Neovim (Obsidian, iCloud sync, the `zk` CLI) to notes behind a link are probably not picked up by `markdown-oxide` until restart, because the file watcher does not cross symlinks. Edits in Neovim buffers are.
+- `zk` indexes notes behind a link under the link's path too. It walks each folder once, so link cycles and links to a folder already in the notebook don't index a note twice, and it skips folders it can't read. Upstream PR: https://github.com/zk-org/zk/pull/769
+- Run `zk` from the notebook, not from inside a linked folder. `zk` resolves the working directory to the real folder (`<root>/foo`), which is outside the notebook, so `zk new .` there falls back to `$ZK_NOTEBOOK_DIR` and creates the note at the notebook root. Use `zk new foo` from the notebook, or `:N foo ...`, instead.
+- `:N` completion only lists real folders, not linked ones. Typing a linked folder name as the target still works.
 
 ## Troubleshooting
 

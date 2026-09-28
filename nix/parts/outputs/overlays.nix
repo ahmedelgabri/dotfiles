@@ -20,6 +20,13 @@
         patches = (old.patches or [ ]) ++ [ ../../pkgs/markdown-oxide-follow-symlinks.patch ];
       });
 
+      # `zk index` walks the notebook without following symlinks, so notes in
+      # a folder linked into the notebook are never indexed.
+      # https://github.com/zk-org/zk/pull/769
+      zk = prev.zk.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../../pkgs/zk-follow-symlinks.patch ];
+      });
+
       llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
 
       inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
