@@ -249,9 +249,9 @@ export_dir_expr() {
 # foreground command in a pane option because tmux only reports process names.
 # shellcheck disable=SC2016
 mx_export() {
-	local session="${1-}" linked first_window="" root="" window name layout
-	local pane pane_id path process tracked_command active_pane i
-	local -a windows panes
+	local session="${1-}" first_window="" root="" row window linked window_panes
+	local layout name pane_id pane_active process path tracked_command active_pane=0 i=0
+	local -a rows
 
 	if [[ -z "$session" ]]; then
 		if [[ -z ${TMUX-} ]]; then
@@ -266,14 +266,18 @@ mx_export() {
 		return 1
 	fi
 
-	mapfile -t windows < <(tmux list-windows -t "=$session" -F '#{window_index}')
-	for window in "${windows[@]}"; do
-		linked="$(tmux display-message -p -t "=$session:$window" '#{window_linked}')"
+	# One query for the whole session instead of several per pane. tmux rejects
+	# control characters in window names, and the path comes last so a stray
+	# separator in it stays part of the path. -u keeps the separators: a client
+	# outside tmux with a non-UTF-8 locale gets control characters as '_'.
+	mapfile -t rows < <(tmux -u list-panes -s -t "=$session" -F \
+		$'#{window_index}\x1f#{window_linked}\x1f#{window_panes}\x1f#{window_layout}\x1f#{window_name}\x1f#{pane_id}\x1f#{pane_active}\x1f#{pane_current_command}\x1f#{pane_current_path}')
+
+	for row in "${rows[@]}"; do
+		IFS=$'\x1f' read -r window linked _ _ _ _ _ _ path <<<"$row"
 		[[ "$linked" == 1 ]] && continue
-		mapfile -t panes < <(tmux list-panes -t "=$session:$window" -F '#{pane_index}')
-		[[ ${#panes[@]} -gt 0 ]] || continue
 		first_window="$window"
-		root="$(tmux display-message -p -t "=$session:$window.${panes[0]}" '#{pane_current_path}')"
+		root="$path"
 		break
 	done
 
@@ -291,59 +295,57 @@ mx_export() {
 	printf '\tlocal window pane\n'
 	printf '\tlocal -a panes\n\n'
 
-	for window in "${windows[@]}"; do
-		linked="$(tmux display-message -p -t "=$session:$window" '#{window_linked}')"
+	# Rows arrive grouped by window in pane order; i is the pane's position
+	# within its window.
+	for row in "${rows[@]}"; do
+		IFS=$'\x1f' read -r window linked window_panes layout name pane_id pane_active process path <<<"$row"
 		[[ "$linked" == 1 ]] && continue
 
-		name="$(tmux display-message -p -t "=$session:$window" '#{window_name}')"
-		layout="$(tmux display-message -p -t "=$session:$window" '#{window_layout}')"
-		mapfile -t panes < <(tmux list-panes -t "=$session:$window" -F '#{pane_index}')
-		[[ ${#panes[@]} -gt 0 ]] || continue
-
-		path="$(tmux display-message -p -t "=$session:$window.${panes[0]}" '#{pane_current_path}')"
-		if [[ "$window" == "$first_window" ]]; then
-			printf '\twindow=1\n'
-			printf '\ttmux rename-window -t "=$MX_SESSION:$window" %q\n' "$name"
-		else
-			printf '\twindow="$(tmux new-window -d -P -F %q -t "=$MX_SESSION:" -n %q -c %s)"\n' \
-				'#{window_index}' "$name" "$(export_dir_expr "$path" "$root")"
-		fi
-		printf '\tpanes=("$(tmux display-message -p -t "=$MX_SESSION:$window" %q)")\n' '#{pane_index}'
-
-		active_pane=0
-		for ((i = 0; i < ${#panes[@]}; i++)); do
-			pane="${panes[$i]}"
-			pane_id="$(tmux display-message -p -t "=$session:$window.$pane" '#{pane_id}')"
-			path="$(tmux display-message -p -t "$pane_id" '#{pane_current_path}')"
-			process="$(tmux display-message -p -t "$pane_id" '#{pane_current_command}')"
-			tracked_command=""
-			# Do not turn the mx --export invocation itself into a startup command.
-			if [[ "$pane_id" != "${TMUX_PANE-}" ]]; then
-				tracked_command="$(tmux show-options -pqv -t "$pane_id" @mx_command)"
-			fi
-			if [[ "$(tmux display-message -p -t "$pane_id" '#{pane_active}')" == 1 ]]; then
-				active_pane="$i"
-			fi
-			if ((i > 0)); then
-				# Split the previous pane, not the active one: a new pane goes
-				# right after its target, so this keeps panes in their original
-				# order for select-layout and keeps recorded indices valid.
-				printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window.${panes[%d]}" -c %s)"\n' \
-					'#{pane_index}' "$((i - 1))" "$(export_dir_expr "$path" "$root")"
-				printf '\tpanes+=("$pane")\n'
-			fi
-			if [[ -n "$tracked_command" ]]; then
-				printf '\ttmux send-keys -l -t "=$MX_SESSION:$window.${panes[%d]}" -- %q\n' "$i" "$tracked_command"
-				printf '\ttmux send-keys -t "=$MX_SESSION:$window.${panes[%d]}" C-m\n' "$i"
+		if ((i == 0)); then
+			if [[ "$window" == "$first_window" ]]; then
+				printf '\twindow=1\n'
+				printf '\ttmux rename-window -t "=$MX_SESSION:$window" %q\n' "$name"
 			else
-				printf '\t# pane %d command unavailable; current process: %q\n' "$((i + 1))" "$process"
+				printf '\twindow="$(tmux new-window -d -P -F %q -t "=$MX_SESSION:" -n %q -c %s)"\n' \
+					'#{window_index}' "$name" "$(export_dir_expr "$path" "$root")"
 			fi
-		done
-
-		if ((${#panes[@]} > 1)); then
-			printf '\ttmux select-layout -t "=$MX_SESSION:$window" %q\n' "$layout"
+			printf '\tpanes=("$(tmux display-message -p -t "=$MX_SESSION:$window" %q)")\n' '#{pane_index}'
+			active_pane=0
 		fi
-		printf '\ttmux select-pane -t "=$MX_SESSION:$window.${panes[%d]}"\n\n' "$active_pane"
+
+		tracked_command=""
+		# Do not turn the mx --export invocation itself into a startup command.
+		# The option is read separately because recorded commands may span
+		# lines, which would break the row format above.
+		if [[ "$pane_id" != "${TMUX_PANE-}" ]]; then
+			tracked_command="$(tmux show-options -pqv -t "$pane_id" @mx_command)"
+		fi
+		if [[ "$pane_active" == 1 ]]; then
+			active_pane="$i"
+		fi
+		if ((i > 0)); then
+			# Split the previous pane, not the active one: a new pane goes
+			# right after its target, so this keeps panes in their original
+			# order for select-layout and keeps recorded indices valid.
+			printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window.${panes[%d]}" -c %s)"\n' \
+				'#{pane_index}' "$((i - 1))" "$(export_dir_expr "$path" "$root")"
+			printf '\tpanes+=("$pane")\n'
+		fi
+		if [[ -n "$tracked_command" ]]; then
+			printf '\ttmux send-keys -l -t "=$MX_SESSION:$window.${panes[%d]}" -- %q\n' "$i" "$tracked_command"
+			printf '\ttmux send-keys -t "=$MX_SESSION:$window.${panes[%d]}" C-m\n' "$i"
+		else
+			printf '\t# pane %d command unavailable; current process: %q\n' "$((i + 1))" "$process"
+		fi
+
+		i=$((i + 1))
+		if ((i == window_panes)); then
+			if ((window_panes > 1)); then
+				printf '\ttmux select-layout -t "=$MX_SESSION:$window" %q\n' "$layout"
+			fi
+			printf '\ttmux select-pane -t "=$MX_SESSION:$window.${panes[%d]}"\n\n' "$active_pane"
+			i=0
+		fi
 	done
 	printf '}\n'
 }
