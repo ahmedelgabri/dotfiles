@@ -64,12 +64,20 @@
         {
           config,
           pkgs,
+          lib,
           inputs,
           ...
         }:
         {
           imports = [
             inputs.self.modules.generic.base
+            {
+              options.my.fonts.pragmatapro.enable = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Install Pragmata Pro from the locally supplied archive.";
+              };
+            }
           ]
           ++ runtimeImports inputs;
 
@@ -123,7 +131,8 @@
             optimise.automatic = optimiseAutomatic;
           };
 
-          fonts.packages = [ pkgs.pragmatapro ] ++ extraFonts pkgs;
+          fonts.packages =
+            lib.optional config.my.fonts.pragmatapro.enable pkgs.pragmatapro ++ extraFonts pkgs;
 
           nixpkgs = {
             config.allowUnfree = true;

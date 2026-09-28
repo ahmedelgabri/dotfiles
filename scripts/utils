@@ -12,6 +12,37 @@ ARCH="$(arch)"
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
+parse_bootstrap_args() {
+	local host='' without_pragmatapro=0
+	while (($# > 0)); do
+		case "$1" in
+		--without-pragmatapro)
+			without_pragmatapro=1
+			;;
+		-h | --help)
+			printf 'Usage: bootstrap [host] [--without-pragmatapro]\n'
+			exit 0
+			;;
+		-*)
+			printf 'Unknown bootstrap option: %s\n' "$1" >&2
+			return 64
+			;;
+		*)
+			if [[ -n "$host" ]]; then
+				printf 'Expected at most one host, got: %s\n' "$1" >&2
+				return 64
+			fi
+			host=$1
+			;;
+		esac
+		shift
+	done
+	FLAKE=${host:-$(hostname -s)}
+	if ((without_pragmatapro)); then
+		FLAKE+=-without-pragmatapro
+	fi
+}
+
 # Without a usable terminal (no TTY or TERM, e.g. over plain ssh) tput fails,
 # which would abort bootstrap under `set -e`; print plain output instead.
 tput_or() {

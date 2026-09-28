@@ -25,8 +25,7 @@ are composed from small feature modules, app configs live in
 > [!NOTE]
 >
 > `Pragmata Pro` is a commercial font and is **not** bundled with this repo.
-> This flake expects a `PragmataPro<version>.zip` archive to be available in the
-> Nix store. See [Font prerequisite](#2-font-prerequisite).
+> By default, this flake expects a `PragmataPro<version>.zip` archive in the Nix store. Bootstrap accepts `--without-pragmatapro` to skip it for that run. See [Font prerequisite](#2-font-prerequisite).
 
 ## What this repo manages
 
@@ -112,8 +111,13 @@ first rebuild:
 nix-store --add-fixed sha256 /path/to/PragmataPro<version>.zip
 ```
 
-If you do not use `Pragmata Pro`, remove or replace `pkgs.pragmatapro` in the
-flake before bootstrapping.
+To bootstrap before importing the archive, skip the font for that invocation:
+
+```bash
+nix --experimental-features 'nix-command flakes' run 'github:ahmedelgabri/dotfiles' -- alcantara --without-pragmatapro
+```
+
+Pragmata Pro remains enabled by default. The flag selects the `<host>-without-pragmatapro` configuration without editing the checkout or saving a preference. A later bootstrap or rebuild using the normal host includes the font again and requires the archive. Other fonts remain installed.
 
 ### 3. Bootstrap a machine
 

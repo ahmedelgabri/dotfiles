@@ -23,6 +23,12 @@ let
     else
       inputs.self.lib.mkNixos system name;
 
+  configurations = host // {
+    "${name}-without-pragmatapro" = host.${name}.extendModules {
+      modules = [ { my.fonts.pragmatapro.enable = false; } ];
+    };
+  };
+
   featureModule = inputs.self.lib.mkFeatureModule runtime {
     features = inputs.self.lib.commonFeatures ++ extraFeatures;
   };
@@ -38,14 +44,14 @@ in
   // (
     if runtime == "darwin" then
       {
-        darwinConfigurations = host;
+        darwinConfigurations = configurations;
         # Non-standard convenience output: `nix build .#<name>` builds the
         # system toplevel without switching.
         ${name} = host.${name}.system;
       }
     else
       {
-        nixosConfigurations = host;
+        nixosConfigurations = configurations;
       }
   );
 }

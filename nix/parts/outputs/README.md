@@ -17,7 +17,9 @@ Each file here contributes one kind of flake output through flake-parts.
 | `stylua` | Lua formatting under `config/` |
 | `typos` | Spelling |
 | `next-prayer` | The Go package builds and its tests pass |
-| `<host>-eval` | Every darwin host of the current system evaluates |
+| `bootstrap-args` | Bootstrap parses the host and run-only font flag, preserves the default, and rejects invalid arguments |
+| `bootstrap-fonts` | Normal hosts enable Pragmata Pro; font-free variants remove only that font and retain the host identity |
+| `<host>-eval` | Every darwin host of the current system evaluates, including its `-without-pragmatapro` variant |
 
 ### Darwin host evaluation
 

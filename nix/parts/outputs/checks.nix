@@ -39,6 +39,21 @@
       checks =
         darwinHostEvalChecks
         // {
+          bootstrap-args = mkCheck "bootstrap-args-check" [ pkgs.bash pkgs.hostname ] ''
+            bash ${source}/tests/bootstrap-args.sh
+          '';
+
+          bootstrap-fonts = pkgs.writeText "bootstrap-fonts-check" (
+            builtins.toJSON (
+              import ../../../tests/bootstrap-fonts.nix {
+                inherit lib;
+                hosts = lib.filterAttrs (_: host: host.pkgs.stdenv.hostPlatform.system == system) (
+                  inputs.self.darwinConfigurations // inputs.self.nixosConfigurations
+                );
+              }
+            )
+          );
+
           # nixos-generate-config owns hardware-configuration.nix; regenerating
           # it would bring back its unused `pkgs` argument.
           deadnix = mkCheck "deadnix-check" [ pkgs.deadnix ] ''

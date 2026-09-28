@@ -4,7 +4,7 @@
 
 set -Eueo pipefail
 
-FLAKE=${1:-$(hostname -s)}
+parse_bootstrap_args "$@"
 
 print_main_banner
 
