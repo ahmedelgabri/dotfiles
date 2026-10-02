@@ -142,6 +142,9 @@ let
 
             "pi/agent/AGENTS.md".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
+
+            "pi/agent/mcp.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/pi/agent/mcp.json";
           };
 
         home = {

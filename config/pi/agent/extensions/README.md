@@ -1,12 +1,12 @@
 # Pi extensions
 
-Each extension lives in `<name>/index.ts`, with its documentation and other extension-specific files in the same directory. Pi discovers these entrypoints automatically. Shared helpers stay in `lib/`, and the common `package.json`, `tsconfig.json`, and Nix-managed `node_modules` stay at the extensions root. `lib/` has no entrypoint, so Pi does not load it as an extension.
+Each extension lives in `<name>/index.ts`, with its documentation and other extension-specific files in the same directory. Pi discovers these entrypoints automatically. The common `package.json`, `tsconfig.json`, and Nix-managed `node_modules` stay at the extensions root.
 
 Pi's built-in `system` theme follows the terminal palette without a macOS polling extension. See [Pi configuration](../../README.md) for settings and activation.
 
 ## Extension reference
 
-Each extension has a colocated README covering its usage, requirements, configuration, and state where applicable. These guides document the existing behavior; they do not change extension code. `lib/` contains shared code rather than an independently loaded extension.
+Each extension has a colocated README covering its usage, requirements, configuration, and state where applicable. Linear and Exa use [native MCP configuration](../../README.md#native-mcp-servers), not custom extension tools.
 
 | Extension | Commands, tools, or behavior |
 | --- | --- |
@@ -15,7 +15,6 @@ Each extension has a colocated README covering its usage, requirements, configur
 | [diff](diff/README.md) | `/diff` opens browser reviews with annotation tools |
 | [edit-answers](edit-answers/README.md) | `/edit-answer` and `Ctrl+Shift+V` edit the latest response externally |
 | [jujutsu](jujutsu/README.md) | jj footer, Git-write guard, and `/jj-refresh` |
-| [linear](linear/README.md) | Read-only `linear_graphql` tool with keychain credentials |
 | [loop](loop/README.md) | `/loop` runs recurring tasks in detached tmux sessions |
 | [md](md/README.md) | `/md` saves the latest assistant response as Markdown |
 | [notify](notify/README.md) | Terminal notifications when the agent settles |
@@ -23,7 +22,6 @@ Each extension has a colocated README covering its usage, requirements, configur
 | [tap-agent-state](tap-agent-state/README.md) | Report Pi activity to tmux-agent-panel |
 | [todos](todos/README.md) | `/todos` manager and file-backed `todo` tool |
 | [total-cost](total-cost/README.md) | `/total-cost` summarizes recorded monthly session costs |
-| [web-search](web-search/README.md) | `web_search` tool using Exa's hosted endpoint |
 
 ## Activation
 

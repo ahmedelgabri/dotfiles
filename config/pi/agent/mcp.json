@@ -1,0 +1,17 @@
+{
+	"mcpServers": {
+		"exa": {
+			"url": "https://mcp.exa.ai/mcp",
+			"description": "Search the web and fetch current documentation and page contents.",
+			"exposure": "codemode"
+		},
+		"linear": {
+			"url": "https://mcp.linear.app/mcp",
+			"description": "Find and manage Linear issues, projects, and comments.",
+			"exposure": "codemode",
+			"headers": {
+				"Authorization": "!token=$(\"${XDG_CONFIG_HOME:-$HOME/.config}/zsh/bin/secret\" get linear-api-token) && test -n \"$token\" && printf 'Bearer %s' \"$token\""
+			}
+		}
+	}
+}
