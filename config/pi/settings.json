@@ -1,6 +1,7 @@
 {
 	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "high",
+	"defaultTools": ["+codemode"],
 	"defaultProvider": "openai-codex",
 	"defaultModel": "gpt-6-astra",
 	"enabledModels": [
@@ -17,9 +18,10 @@
 	"transport": "auto",
 	"hideThinkingBlock": false,
 	"collapseChangelog": false,
-	"quietStartup": false,
+	"quietStartup": "header",
+	"tuiMode": "fullscreen",
 	"treeFilterMode": "default",
-	"theme": "plain-dark",
+	"theme": "system",
 	"terminal": {
 		"hyperlinks": true
 	}

@@ -2,7 +2,7 @@
 
 Each extension lives in `<name>/index.ts`, with its documentation and other extension-specific files in the same directory. Pi discovers these entrypoints automatically. Shared helpers stay in `lib/`, and the common `package.json`, `tsconfig.json`, and Nix-managed `node_modules` stay at the extensions root. `lib/` has no entrypoint, so Pi does not load it as an extension.
 
-The directory migration moves all 14 standalone entrypoints, colocates the [`/simplify` documentation](simplify/README.md), and adjusts relative imports without changing extension behavior. The [`/diff` extension](diff/README.md) already uses this layout.
+Pi's built-in `system` theme follows the terminal palette without a macOS polling extension. See [Pi configuration](../../README.md) for settings and activation.
 
 ## Extension reference
 
@@ -17,7 +17,6 @@ Each extension has a colocated README covering its usage, requirements, configur
 | [jujutsu](jujutsu/README.md) | jj footer, Git-write guard, and `/jj-refresh` |
 | [linear](linear/README.md) | Read-only `linear_graphql` tool with keychain credentials |
 | [loop](loop/README.md) | `/loop` runs recurring tasks in detached tmux sessions |
-| [mac-system-theme](mac-system-theme/README.md) | Follow macOS appearance with the plain themes |
 | [md](md/README.md) | `/md` saves the latest assistant response as Markdown |
 | [notify](notify/README.md) | Terminal notifications when the agent settles |
 | [simplify](simplify/README.md) | `/simplify` runs four reviewers before parent-applied cleanup |
