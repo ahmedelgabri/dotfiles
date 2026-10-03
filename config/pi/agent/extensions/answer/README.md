@@ -4,7 +4,7 @@ Extract questions from the latest completed assistant response and answer them i
 
 ## Workflow
 
-The extension makes a separate model request to extract questions and any supporting context. It prefers authenticated `openai-codex/gpt-5.6-luna`, then `anthropic/claude-sonnet-5`, then the current model. A selected model and working Pi credentials are required. Extraction can incur model usage; it is not a local text parser.
+The extension makes a separate model request to extract questions and any supporting context. It prefers authenticated `openai/gpt-5.6-luna`, then `anthropic/claude-sonnet-5`, then the current model. A selected model and working Pi credentials are required. Extraction can incur model usage; it is not a local text parser.
 
 | Key | Action |
 | --- | --- |

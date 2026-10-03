@@ -81,8 +81,8 @@ Example output:
   ]
 }`
 
-const CODEX_MODEL_ID = 'gpt-5.6-luna'
-const SONNET_MODEL_ID = 'claude-sonnet-5'
+const MAIN_MODEL_ID = 'gpt-5.6-luna'
+const FALLBACK_MODEL_ID = 'claude-sonnet-5'
 
 /**
  * Prefer GPT-5.6 Luna for extraction when available, otherwise fall back to Sonnet 5 or the current model.
@@ -91,15 +91,15 @@ async function selectExtractionModel(
 	currentModel: Model<Api>,
 	modelRegistry: ModelRegistry,
 ): Promise<Model<Api>> {
-	const codexModel = modelRegistry.find('openai-codex', CODEX_MODEL_ID)
-	if (codexModel) {
-		const auth = await modelRegistry.getApiKeyAndHeaders(codexModel)
+	const openaiModel = modelRegistry.find('openai', MAIN_MODEL_ID)
+	if (openaiModel) {
+		const auth = await modelRegistry.getApiKeyAndHeaders(openaiModel)
 		if (auth.ok) {
-			return codexModel
+			return openaiModel
 		}
 	}
 
-	const sonnetModel = modelRegistry.find('anthropic', SONNET_MODEL_ID)
+	const sonnetModel = modelRegistry.find('anthropic', FALLBACK_MODEL_ID)
 	if (!sonnetModel) {
 		return currentModel
 	}
