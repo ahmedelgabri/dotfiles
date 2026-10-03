@@ -52,7 +52,7 @@ The test scripts under `scripts/tests/` are kept local, not committed. With thos
 
 ```sh
 bun test scripts/tests/pi-simplify.test.ts
-PI_PROVIDER=openai-codex PI_MODEL='your-authenticated-model-id' bun run scripts/tests/pi-simplify.e2e.ts
+PI_PROVIDER=openai PI_MODEL='your-authenticated-model-id' bun run scripts/tests/pi-simplify.e2e.ts
 ```
 
 The first command covers parsing, real Git and Jujutsu repositories, PR dispatch, four-way concurrency, model inheritance, failures, cancellation, stale diffs, and command lifecycle. Its child-process and PR-response substitutes are confined to unit and integration tests.
