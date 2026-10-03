@@ -123,6 +123,11 @@ button:hover {
 	background: var(--panel-3);
 	transform: translateY(-1px);
 }
+button[aria-pressed='true'] {
+	border-color: var(--pi-line);
+	background: var(--pi-soft);
+	color: var(--pi);
+}
 button:active {
 	transform: translateY(0);
 }
@@ -521,6 +526,15 @@ body.resizing-sidebar {
 .diff-host,
 .conflict-host {
 	min-width: 680px;
+}
+.diff-host.wrap-lines,
+.conflict-host.wrap-lines {
+	min-width: 0;
+}
+.diff-host.wrap-lines .raw-patch,
+.conflict-host.wrap-lines .raw-patch {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 }
 
 .conflict-viewer {

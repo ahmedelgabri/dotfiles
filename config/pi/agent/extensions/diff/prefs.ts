@@ -5,6 +5,7 @@ import {dirname, join} from 'node:path'
 export interface UiPrefs {
 	leftSidebarWidth: number
 	rightSidebarWidth: number
+	wrapLines: boolean
 }
 
 // Kept in sync with MIN/MAX_SIDEBAR_WIDTH in client.js.
@@ -14,6 +15,7 @@ const MAX_SIDEBAR_WIDTH = 720
 const DEFAULT_PREFS: UiPrefs = {
 	leftSidebarWidth: 280,
 	rightSidebarWidth: 340,
+	wrapLines: false,
 }
 
 const getPiAgentDir = (): string =>
@@ -44,6 +46,10 @@ export const coerceUiPrefs = (value: unknown): UiPrefs => {
 			record.rightSidebarWidth,
 			DEFAULT_PREFS.rightSidebarWidth,
 		),
+		wrapLines:
+			typeof record.wrapLines === 'boolean'
+				? record.wrapLines
+				: DEFAULT_PREFS.wrapLines,
 	}
 }
 

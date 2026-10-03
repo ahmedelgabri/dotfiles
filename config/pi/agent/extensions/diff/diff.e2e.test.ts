@@ -259,6 +259,18 @@ test(
 				assert.ok(
 					(await request<string>(url, '/')).toLowerCase().includes('<html'),
 				)
+				assert.deepEqual(
+					await request(url, '/api/prefs', {
+						leftSidebarWidth: 300,
+						rightSidebarWidth: 400,
+						wrapLines: true,
+					}),
+					{
+						leftSidebarWidth: 300,
+						rightSidebarWidth: 400,
+						wrapLines: true,
+					},
+				)
 				assert.deepEqual(await request(url, '/api/annotations', {}, 400), {
 					error: 'Invalid annotation payload',
 				})
@@ -298,6 +310,10 @@ test(
 				assert.equal(await readFile(outside, 'utf8'), 'unchanged\n')
 				await request(url, '/api/cancel', {})
 				const reopened = await startReview()
+				assert.match(
+					await request<string>(reopened, '/'),
+					/"wrapLines":true/,
+				)
 				const persisted = await annotationsFromEvents(reopened)
 				assert.equal(persisted.length, 1)
 				assert.equal(persisted[0].id, annotation.id)
