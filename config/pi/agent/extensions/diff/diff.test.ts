@@ -21,6 +21,7 @@ import {
 	savePersistedAnnotations,
 	type StoredReviewAnnotation,
 } from './annotations-store.ts'
+import {renderHtml} from './html.ts'
 import {coerceUiPrefs, loadUiPrefs, saveUiPrefs} from './prefs.ts'
 import {
 	createDiffSnapshotLoader,
@@ -340,19 +341,41 @@ test('concurrent annotation saves leave a complete JSON file', async () => {
 
 test('preferences clamp widths and survive a filesystem round trip', async () => {
 	assert.deepEqual(
-		coerceUiPrefs({leftSidebarWidth: 1, rightSidebarWidth: 900}),
-		{leftSidebarWidth: 220, rightSidebarWidth: 720},
+		coerceUiPrefs({
+			leftSidebarWidth: 1,
+			rightSidebarWidth: 900,
+			wrapLines: 'true',
+		}),
+		{leftSidebarWidth: 220, rightSidebarWidth: 720, wrapLines: false},
 	)
 	assert.deepEqual(await loadUiPrefs(), {
 		leftSidebarWidth: 280,
 		rightSidebarWidth: 340,
+		wrapLines: false,
 	})
 	const value = await saveUiPrefs({
 		leftSidebarWidth: '300.4',
 		rightSidebarWidth: 'bad',
+		wrapLines: true,
 	})
-	assert.deepEqual(value, {leftSidebarWidth: 300, rightSidebarWidth: 340})
+	assert.deepEqual(value, {
+		leftSidebarWidth: 300,
+		rightSidebarWidth: 340,
+		wrapLines: true,
+	})
 	assert.deepEqual(await loadUiPrefs(), value)
+})
+
+test('browser shell includes global and per-file wrapping controls', () => {
+	const page = renderHtml('test-token', {
+		leftSidebarWidth: 280,
+		rightSidebarWidth: 340,
+		wrapLines: true,
+	})
+	assert.match(page, /id="wrapAllButton"/)
+	assert.match(page, /id="wrapFileButton"/)
+	assert.match(page, /"wrapLines":true/)
+	assert.match(page, /overflow: wrapLines \? 'wrap' : 'scroll'/)
 })
 
 test('refreshes a real jj working diff while retaining its identity', async () => {
