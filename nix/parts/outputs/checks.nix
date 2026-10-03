@@ -111,6 +111,13 @@
             node --test ${source}/config/pi/agent/extensions/diff/diff.test.ts
           '';
 
+          # The test serves scripted and unresponsive model endpoints on loopback.
+          pi-simplify =
+            (mkCheck "pi-simplify-check" [ pkgs.nodejs pkgs.llm-agents.pi pkgs.git pkgs.jujutsu ] ''
+              node --test ${source}/config/pi/agent/extensions/simplify/simplify.test.ts
+            '').overrideAttrs
+              { __darwinAllowLocalNetworking = true; };
+
           pi-extensions = mkCheck "pi-extensions-check" [ pkgs.typescript ] ''
             cp -R ${source}/config/pi/agent/extensions source
             chmod -R u+w source

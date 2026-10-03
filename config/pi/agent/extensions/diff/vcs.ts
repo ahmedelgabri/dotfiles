@@ -78,7 +78,7 @@ const formatCommand = (command: string, args: string[]): string =>
 		...args.map((arg) => (/[\s"']/.test(arg) ? JSON.stringify(arg) : arg)),
 	].join(' ')
 
-const parseCommandArgs = (value: string): string[] => {
+export const parseCommandArgs = (value: string): string[] => {
 	const args: string[] = []
 	let current = ''
 	let quote: '"' | "'" | null = null
@@ -130,7 +130,7 @@ const parseCommandArgs = (value: string): string[] => {
 	}
 
 	if (quote) {
-		throw new Error('Unclosed quote in /diff arguments')
+		throw new Error('Unclosed quote in command arguments')
 	}
 
 	push()
@@ -168,7 +168,7 @@ export const execOrNull = async (
 	}
 }
 
-const getJjRoot = async (
+export const getJjRoot = async (
 	pi: ExtensionAPI,
 	cwd: string,
 ): Promise<string | null> => {
@@ -180,7 +180,7 @@ const getJjRoot = async (
 	return root || null
 }
 
-const getGitRoot = async (
+export const getGitRoot = async (
 	pi: ExtensionAPI,
 	cwd: string,
 ): Promise<string | null> => {
