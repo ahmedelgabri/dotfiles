@@ -1,42 +1,42 @@
 {
-	"@earendil-works/pi-coding-agent": {
-		"version": "1.0.0",
-		"hash": "sha256-Y47Tq75U73DL+Gc65LxTHnkWE3VqrARkTPzcxK8Pr68="
-	},
-	"@earendil-works/pi-agent-core": {
-		"version": "1.0.0",
-		"hash": "sha256-Hesl1GNtqSG6umBTdrfrCr0qs14Q5qkxoLjcInvoj58="
-	},
-	"@earendil-works/pi-ai": {
-		"version": "1.0.0",
-		"hash": "sha256-85uZwpuFmPF1sQhA5dKoGYPnwM5crk19+DoQB0R9LCs="
-	},
-	"@earendil-works/pi-tui": {
-		"version": "1.0.0",
-		"hash": "sha256-fSbDXzVy3jEhivFeMJ9rdFOV0eKNdJ1MBKnvORu0Mr4="
-	},
-	"@earendil-works/pi-client": {
-		"version": "1.0.0",
-		"hash": "sha256-oVnKrsWjpKU7jhKh2GFhx32VxEW4aDNJPyx3F0cD4AY="
-	},
-	"@earendil-works/pi-telemetry": {
-		"version": "1.0.0",
-		"hash": "sha256-0BreX9DytJNoe4Dk/aGwNCCCOSo7mJ526CXV1ptQA5A="
-	},
-	"@earendil-works/chord": {
-		"version": "1.0.0",
-		"hash": "sha256-Ec1cpf/ymlGH7kk9JaMLugLXHbQrMd6F2FXJnNoqCtQ="
-	},
-	"typebox": {
-		"version": "1.3.27",
-		"hash": "sha256-WiiLzT1o9EVn3oSxheBNIF731bU2AoRrw9sw/dIZ3aM="
-	},
-	"@types/node": {
-		"version": "26.6.4",
-		"hash": "sha256-vy2/Ec/M00aB/E1eTRUK/Od/1mECJHV9vmySyOUUlwA="
-	},
-	"undici-types": {
-		"version": "8.9.0",
-		"hash": "sha256-Olh4Ucy/ECGyDqyKOOuBnX4qGrd6pHfLJMrlRzo+eMY="
-	}
+  "@earendil-works/pi-coding-agent": {
+    "version": "1.0.2",
+    "hash": "sha256-7aWueHU0O9kC/+VXGPtlskBtewOr7MXLidjkuwnO7aI="
+  },
+  "@earendil-works/pi-agent-core": {
+    "version": "1.0.2",
+    "hash": "sha256-L2j20JCOurW4h4wSZR1BMkGMsa8CjAtVVXSmVkbsgDE="
+  },
+  "@earendil-works/pi-ai": {
+    "version": "1.0.2",
+    "hash": "sha256-isjl+r1l4PDsuFOLYhGCSFn1mXWUAF16A+H3CzhDihc="
+  },
+  "@earendil-works/pi-tui": {
+    "version": "1.0.2",
+    "hash": "sha256-kqY5cRjnuPkfjRwmACf8p5OLJWqg+zZLUG5P1M3LfIQ="
+  },
+  "@earendil-works/pi-client": {
+    "version": "1.0.2",
+    "hash": "sha256-wNSdxsJ16XApD9a9bFVT2fsOm8OeuLUyVS/LvraAKLM="
+  },
+  "@earendil-works/pi-telemetry": {
+    "version": "1.0.2",
+    "hash": "sha256-6xQqXrBFWwv65LMEJm0jTaRZcxTLLr7Umm+Guu0dogA="
+  },
+  "@earendil-works/chord": {
+    "version": "1.0.2",
+    "hash": "sha256-EYij2/AJLupj3E/MadpUlR6+YiQlKXCPIPqb8qYdInI="
+  },
+  "typebox": {
+    "version": "1.3.27",
+    "hash": "sha256-WiiLzT1o9EVn3oSxheBNIF731bU2AoRrw9sw/dIZ3aM="
+  },
+  "@types/node": {
+    "version": "26.6.4",
+    "hash": "sha256-vy2/Ec/M00aB/E1eTRUK/Od/1mECJHV9vmySyOUUlwA="
+  },
+  "undici-types": {
+    "version": "8.9.0",
+    "hash": "sha256-Olh4Ucy/ECGyDqyKOOuBnX4qGrd6pHfLJMrlRzo+eMY="
+  }
 }
