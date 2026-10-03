@@ -5,19 +5,17 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 ## Configured hooks
 
-| Event                | Hook commands                                                                                               | Purpose                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `tap state idle --agent claude`                         | Log session startup, inject repository VCS context, publish idle agent status.                 |
-| `PostCompact`        | `log-event.sh PostCompact`, `inject-repo-info.sh`                                                           | Log compaction and refresh repository VCS context afterward.                                   |
-| `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                                                 | Log session shutdown and clear the published agent status.                                     |
-| `UserPromptSubmit`   | `log-event.sh UserPromptSubmit`, `aggregate-prompt.sh UserPromptSubmit`, `tap state running --agent claude` | Log submitted prompts, append them to the central `PROMPTS.md`, mark agent busy.               |
-| `PreToolUse`         | `log-event.sh PreToolUse`, `tap state running --agent claude`                                               | Log tool calls and mark the agent busy.                                                        |
-| `PostToolUse`        | `log-event.sh PostToolUse`, `zh record claude`                                                              | Log tool results and record Bash commands in the agent history.                                |
-| `PostToolUseFailure` | `zh record claude`                                                                                          | Record Bash commands whose call failed (denied, interrupted, tool error) in the agent history. |
-| `Stop`               | `log-event.sh Stop`, `run-ccpeek.sh`, `tap state idle --agent claude`                                       | Log assistant stops, refresh the `ccpeek` index, mark the agent idle.                          |
-| `SubagentStop`       | `log-event.sh SubagentStop`                                                                                 | Log subagent completion.                                                                       |
-| `Notification`       | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`                           | Log notifications, mirror them to a desktop notification, publish the status.                  |
-| `PreCompact`         | `log-event.sh PreCompact`                                                                                   | Log compaction before it runs.                                                                 |
+| Event                | Hook commands                                                                       | Purpose                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `SessionStart` | `log-event.sh SessionStart`, `inject-repo-info.sh`, `tap state idle --agent claude` | Log session startup, inject repository VCS context, publish idle agent status. |
+| `PostCompact` | `inject-repo-info.sh` | Restore repository VCS context after compaction. |
+| `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                         | Log session shutdown and clear the published agent status.                                     |
+| `UserPromptSubmit`   | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
+| `PreToolUse`         | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
+| `PostToolUse`        | `zh record claude`                                                                  | Record Bash commands in the agent history.                                                     |
+| `PostToolUseFailure` | `zh record claude`                                                                  | Record Bash commands whose call failed (denied, interrupted, tool error) in the agent history. |
+| `Stop`               | `run-ccpeek.sh`, `tap state idle --agent claude`        | Refresh the `ccpeek` index, mark the agent idle.        |
+| `Notification`       | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`   | Log notifications, mirror them to a desktop notification, publish the status.                  |
 
 The `tap state` entries publish the agent's activity state so other tooling
 (e.g. the tmux statusline) can display it.
@@ -26,9 +24,8 @@ The `tap state` entries publish the agent's activity state so other tooling
 
 ### `log-event.sh`
 
-- **Events**: every configured event that passes the event name as the first
-  argument.
-- **What it does**: logs the hook event and raw JSON input.
+- **Events**: `SessionStart`, `SessionEnd`, `Notification`, passed as the first argument.
+- **What it does**: logs the hook event and raw JSON input. Only these events are logged because Claude Code's transcripts under `~/.claude/projects` never record their payloads (the `SessionStart` `source`, the `SessionEnd` `reason`, the `Notification` `message` and `notification_type`). Prompts, tool calls and results, stops, subagents, and compaction are already in the transcripts, and prompts also in `~/.claude/history.jsonl`. To inspect another event's payload while debugging a hook, wire `log-event.sh <Event>` for that event temporarily.
 - **Log location**:
   - `~/.claude/logs/<project-slug>/hook-events.jsonl` when Claude is running in
     a project — the slug encodes `$CLAUDE_PROJECT_DIR` the same way Claude
@@ -41,21 +38,8 @@ The `tap state` entries publish the agent's activity state so other tooling
 
 ### `inject-repo-info.sh`
 
-- **Events**: `SessionStart`, `PostCompact`.
-- **What it does**: detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git
-  repo and emits `hookSpecificOutput.additionalContext` so Claude knows which
-  VCS to use.
-- **Jujutsu behavior**: Jujutsu takes priority in colocated repos and the
-  injected context reminds Claude to avoid raw `git add`, `git stage`,
-  `git history`, and `git commit`.
-
-### `aggregate-prompt.sh`
-
-- **Events**: `UserPromptSubmit`.
-- **What it does**: appends the submitted prompt text to
-  `~/.claude/logs/<project-slug>/PROMPTS.md` (same slug scheme as
-  `log-event.sh`), separated by `---` when the file already exists.
-- **Behavior**: skips global sessions, empty prompts, and invalid project paths.
+- **Events**: `SessionStart` and `PostCompact` in Claude Code. Codex wires it from `config/codex/hooks.json`.
+- **What it does**: detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git repo and emits `hookSpecificOutput.additionalContext` so the agent knows which VCS to use. `PostCompact` restores this context after compaction.
 
 ### `zh` (from `nix/pkgs/zh`)
 
@@ -91,8 +75,8 @@ cat ~/.claude/logs/hook-events.jsonl
 cat "$LOGS"/hook-events.jsonl | jq
 
 # Filter by event type
-cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "PreToolUse")'
-cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "UserPromptSubmit")'
+cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "Notification")'
+cat "$LOGS"/hook-events.jsonl | jq 'select(.event == "SessionEnd")'
 
 # Count events by type
 cat "$LOGS"/hook-events.jsonl | jq -r '.event' | sort | uniq -c
@@ -107,16 +91,14 @@ cat ~/.claude/logs/*/hook-events.jsonl | jq 'select(.project_dir == "/path/to/pr
 ## Hook events used here
 
 - `SessionStart` — when Claude Code starts a session.
-- `PostCompact` — after compaction finishes.
+- `PostCompact`: after Claude Code compacts the conversation.
 - `SessionEnd` — when Claude Code exits a session.
 - `UserPromptSubmit` — when you submit a prompt.
 - `PreToolUse` — before a tool executes.
 - `PostToolUse` — after a tool completes.
 - `PostToolUseFailure` — after a tool call fails.
 - `Stop` — when Claude finishes responding.
-- `SubagentStop` — when a subagent finishes.
 - `Notification` — during Claude notifications.
-- `PreCompact` — before compaction starts.
 
 ## Hook behavior
 
@@ -173,7 +155,7 @@ Add a matcher to target specific tools:
 Test a hook manually:
 
 ```bash
-echo '{"prompt": "sample prompt"}' | CLAUDE_PROJECT_DIR=$PWD ./log-event.sh UserPromptSubmit
+echo '{"message": "sample notification"}' | CLAUDE_PROJECT_DIR=$PWD ./log-event.sh Notification
 ```
 
 ## Resources

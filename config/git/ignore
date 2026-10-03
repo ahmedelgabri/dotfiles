@@ -42,9 +42,7 @@ Session.vim
 # https://docs.claude.com/en/docs/claude-code/memory#determine-memory-type
 # These are mine, custom related to my hooks
 CLAUDE.local.md
-.claude/hook-events.jsonl
-PROMPTS.md
-.claude-notes
+.scratch
 .pi/todos
 
 # Mise      #

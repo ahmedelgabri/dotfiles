@@ -70,11 +70,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/log-event.sh PostCompact",
-            "async": true
-          },
-          {
-            "type": "command",
             "command": "~/.claude/hooks/inject-repo-info.sh",
             "statusMessage": "Loading repo VCS info…",
             "asyncRewake": true
@@ -107,20 +102,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/log-event.sh UserPromptSubmit",
-            "async": true
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/aggregate-prompt.sh UserPromptSubmit",
-            "async": true
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
             "command": "tap state running --agent claude",
             "async": true
           }
@@ -132,15 +113,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/log-event.sh PreToolUse",
-            "async": true
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
             "command": "tap state running --agent claude",
             "async": true
           }
@@ -148,15 +120,6 @@
       }
     ],
     "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/log-event.sh PostToolUse",
-            "async": true
-          }
-        ]
-      },
       {
         "hooks": [
           {
@@ -201,11 +164,6 @@
     "Stop": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/log-event.sh Stop",
-            "async": true
-          },
           {
             "type": "command",
             "command": "~/.claude/hooks/run-ccpeek.sh",
@@ -267,17 +225,6 @@
         ]
       }
     ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/log-event.sh SubagentStop",
-            "async": true
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "hooks": [
@@ -297,17 +244,6 @@
           {
             "type": "command",
             "command": "tap state notification --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/log-event.sh PreCompact",
             "async": true
           }
         ]
