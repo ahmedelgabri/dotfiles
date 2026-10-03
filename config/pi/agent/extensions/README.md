@@ -15,6 +15,7 @@ Each extension has a colocated README covering its usage, requirements, configur
 | [diff](diff/README.md)                         | `/diff` opens browser reviews with annotation tools                    |
 | [edit-answers](edit-answers/README.md)         | `/edit-answer` and `Ctrl+Shift+V` edit the latest response externally  |
 | [handoff](handoff/README.md) | `/handoff` drafts a focused prompt and opens a linked new session |
+| [headless](headless/README.md) | Tell agents in print and JSON runs to proceed instead of asking questions |
 | [jujutsu](jujutsu/README.md)                   | jj footer, Git-write guard, and `/jj-refresh`                          |
 | [loop](loop/README.md)                         | `/loop` runs recurring tasks in detached tmux sessions                 |
 | [md](md/README.md)                             | `/md` saves the latest assistant response as Markdown                  |
