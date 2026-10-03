@@ -47,9 +47,10 @@ through an isolated agent directory:
 
 ```sh
 python3 scripts/tests/pi-extension-layout.test.py
-bun test scripts/tests/pi-simplify.test.ts
 bun test scripts/tests/pi-upgrade.test.ts
 ```
 
 The discovery test starts the installed Pi CLI and checks registered commands,
 tools, and entrypoint paths without making model requests or mocking Pi APIs.
+
+Extensions with colocated `<name>.test.ts` suites, such as [`/simplify`](simplify/README.md#tests), document how to run them in their READMEs.

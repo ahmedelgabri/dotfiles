@@ -77,6 +77,6 @@ bash tests/mx.sh
 
 The suite runs the real `mx` and `mx-init` scripts against a real tmux server on a private socket in a temporary directory, so it never touches the caller's tmux server. It builds a `$PROJECTS` tree and session definition directories, then checks usage errors, `--list` output and definition precedence, name resolution and ambiguity, session naming, `_shared` creation and linking, `mx_start` environment and failure handling, and byte-exact `--export` output, including the self-pane exclusion and error cases. A round trip launches the exported definition and compares window names, pane order, geometry, directories, and active panes with the original session, and checks that recorded commands replay in the right panes. `PATH` holds only the tools the scripts need, so `mx-init` never launches mail, RSS, or HN clients from the host. Because nothing is attached, every launch ends with tmux's expected `no current client` error, which the suite asserts. `--pick` is not covered because it needs an interactive fzf.
 
-## Pi diff extension
+## Pi extensions
 
-The Node unit, integration, and E2E tests are colocated in [`config/pi/agent/extensions/diff/`](../config/pi/agent/extensions/diff/README.md#tests), not in this directory.
+The Node unit, integration, and E2E tests for the [diff](../config/pi/agent/extensions/diff/README.md#tests) and [simplify](../config/pi/agent/extensions/simplify/README.md#tests) extensions are colocated with them, not in this directory. Simplify's RPC client and scripted-model helpers are in [`lib/test-support.ts`](../config/pi/agent/extensions/lib/test-support.ts).
