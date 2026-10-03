@@ -208,8 +208,6 @@ Nix alone, such as `Tart`, which backs the `sb` sandbox helper.
 
 Each macOS host trusts its configured `homebrew.taps` through `nix-homebrew.trust.taps`, without disabling Homebrew's trust checks. The AI module declares `openai/tools` for Tart on both hosts; only `rocket` adds the JetBrains and Docker taps. Removing a tap from the configuration does not revoke its trust; use `brew untrust <tap>` to revoke it.
 
-See [sandbox image build safety and validation](docs/upstream-adaptations.md#sandbox-image-builds) for rebuild, recovery, and test procedures.
-
 ## Machine-local configuration
 
 Not everything belongs in Git. This repo intentionally keeps some values outside
