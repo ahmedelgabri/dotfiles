@@ -2,13 +2,13 @@
 	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "high",
 	"defaultTools": ["+codemode"],
-	"defaultProvider": "openai",
-	"defaultModel": "gpt-6-astra",
+	"defaultProvider": "openai-codex",
+	"defaultModel": "gpt-6.1-sol",
 	"enabledModels": [
 		"anthropic/claude-fable-*",
 		"anthropic/claude-opus-5*",
 		"anthropic/claude-sonnet-5*",
-		"openai/gpt-6*",
+		"openai-codex/gpt-6*",
 		"xai/grok-4.7"
 	],
 	"showHardwareCursor": true,
