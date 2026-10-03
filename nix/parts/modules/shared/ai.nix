@@ -98,7 +98,6 @@ let
           '';
         };
         piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
-          lastChangelogVersion = pkgs.llm-agents.pi.version;
           extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
           skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
           themes = [ "${dotfilesConfig}/pi/agent/themes" ];
@@ -109,8 +108,21 @@ let
             BK="${target}.bk"
             TARGET="${target}"
             if [ -f "$BK" ] || [ -L "$BK" ]; then
+              # pi records the last version whose changelog it showed; carry
+              # it across rebuilds so upgrades still surface the changelog.
+              LAST=""
+              if [ -f "$TARGET" ]; then
+                LAST=$(${lib.getExe pkgs.jq} -r '.lastChangelogVersion // empty' "$TARGET")
+              fi
               rm -f "$TARGET"
-              cp "$BK" "$TARGET"
+              if [ -n "$LAST" ]; then
+                ${lib.getExe pkgs.jq} --arg v "$LAST" '.lastChangelogVersion = $v' "$BK" >"$TARGET"
+              else
+                cp "$BK" "$TARGET"
+              fi
+              # The store copy is read-only; pi must be able to write the
+              # new marker after showing a changelog.
+              chmod u+w "$TARGET"
             fi
           '';
         mkClaudeTree =
