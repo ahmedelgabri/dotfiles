@@ -165,7 +165,8 @@ next-prayer aladhan --city Amsterdam --country NL --method 3
 
 ### JSON output
 
-Both commands accept `--json`, which prints today's full schedule as a single JSON object on stdout instead of the formatted next-prayer line:
+Both commands accept `--json`, which prints today's full schedule as a single
+JSON object on stdout instead of the formatted next-prayer line:
 
 ```json
 {
@@ -178,11 +179,14 @@ Both commands accept `--json`, which prints today's full schedule as a single JS
 		"maghrib": "21:24",
 		"isha": "23:07"
 	},
-	"mosque": { "name": "..." }
+	"mosque": {"name": "..."}
 }
 ```
 
-`source` is `mawaqit` or `aladhan`, `date` is `YYYY-MM-DD`, and `mosque` is present only for Mawaqit. This is the stable machine-readable interface for external consumers; the on-disk cache files are private and their naming may change.
+`source` is `mawaqit` or `aladhan`, `date` is `YYYY-MM-DD`, and `mosque` is
+present only for Mawaqit. This is the stable machine-readable interface for
+external consumers; the on-disk cache files are private and their naming may
+change.
 
 ### Aladhan calculation methods
 
@@ -201,34 +205,49 @@ values:
 
 ## Caching
 
-Prayer times are cached daily in `$TMPDIR` to avoid repeated API calls. The cache key includes the source, source-specific request parameters, mosque (Mawaqit only), location, and date, so the cache is automatically invalidated when:
+Prayer times are cached daily in `$TMPDIR` to avoid repeated API calls. The
+cache key includes the source, source-specific request parameters, mosque
+(Mawaqit only), location, and date, so the cache is automatically invalidated
+when:
 
 - A new day starts
 - The user's coordinates change
 - The data source or selected mosque changes
 - The Aladhan calculation method or tuning changes
 
-Cache files are named `.prayer-<source>[_v-<parameters-hash>][_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`, with empty parts omitted. Mawaqit cache files also include selected mosque metadata. A cached file whose timings fail validation is treated as a cache miss and refetched.
+Cache files are named
+`.prayer-<source>[_v-<parameters-hash>][_<mosque>][_<city>_<country>]_<DD-MM-YYYY>.json`,
+with empty parts omitted. Mawaqit cache files also include selected mosque
+metadata. A cached file whose timings fail validation is treated as a cache miss
+and refetched.
 
-The cache file naming is an internal detail of this tool. External consumers such as the Hammerspoon `prayer.lua` menubar module use the `--json` output (via `get-prayer --json`) to get the day's schedule, the mosque metadata, and everything needed for notifications, instead of reading the cache files.
+The cache file naming is an internal detail of this tool. External consumers
+such as the Hammerspoon `prayer.lua` menubar module use the `--json` output (via
+`get-prayer --json`) to get the day's schedule, the mosque metadata, and
+everything needed for notifications, instead of reading the cache files.
 
 ## tmux integration
 
-The companion script `get-prayer` is designed to be called from `tmux.conf`, and the Hammerspoon menubar module invokes it with `--json` to get its schedule:
+The companion script `get-prayer` is designed to be called from `tmux.conf`, and
+the Hammerspoon menubar module invokes it with `--json` to get its schedule:
 
 ```tmux
 set -g status-right "#(~/.config/tmux/scripts/get-prayer)"
 ```
 
-`get-prayer` reads location data from `$TMPDIR/.location.json` (written by [Hammerspoon](https://www.hammerspoon.org/)) and decides which source to use:
+`get-prayer` reads location data from `$TMPDIR/.location.json` (written by
+[Hammerspoon](https://www.hammerspoon.org/)) and decides which source to use:
 
 - **Location available** → uses Mawaqit with the current latitude and longitude
-- **Location unavailable** → falls back to Aladhan using values from the config file
+- **Location unavailable** → falls back to Aladhan using values from the config
+  file
 
 This means prayer times update automatically when:
 
 - tmux refreshes its status bar (controlled by `status-interval`)
-- The location changes (Hammerspoon writes new coordinates, the cache key changes, and either the next tmux refresh or the menubar fallback fetches fresh data)
+- The location changes (Hammerspoon writes new coordinates, the cache key
+  changes, and either the next tmux refresh or the menubar fallback fetches
+  fresh data)
 
 ## Building
 
@@ -240,7 +259,8 @@ nix build .#next-prayer
 
 ## Testing
 
-Local tests require Go 1.24+. From the repository root, enter the Go shell and run the offline suite:
+Local tests require Go 1.24+. From the repository root, enter the Go shell and
+run the offline suite:
 
 ```bash
 nix develop .#go
@@ -249,18 +269,33 @@ go test -race -count=1 -coverprofile=coverage.out ./...
 go vet ./...
 ```
 
-The offline tests cover provider validation, HTTP requests and failures, mosque matching, configuration precedence, caching, JSON output, and CLI exit codes. HTTP integration tests use local servers. CLI tests build the real executable, isolate its config and cache directories, and block external API access. The existing `next-prayer` Nix check runs these tests during the package build.
+The offline tests cover provider validation, HTTP requests and failures, mosque
+matching, configuration precedence, caching, JSON output, and CLI exit codes.
+HTTP integration tests use local servers. CLI tests build the real executable,
+isolate its config and cache directories, and block external API access. The
+existing `next-prayer` Nix check runs these tests during the package build.
 
-Open the offline coverage report with `go tool cover -html=coverage.out`. CLI subprocess execution is not included in `go test`'s statement coverage, so the main package's percentage does not reflect its subprocess tests.
+Open the offline coverage report with `go tool cover -html=coverage.out`. CLI
+subprocess execution is not included in `go test`'s statement coverage, so the
+main package's percentage does not reflect its subprocess tests.
 
 ### Live end-to-end tests
 
-Export `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` through your usual secret-management workflow, then run:
+Export `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` through your usual
+secret-management workflow, then run:
 
 ```bash
 go test -tags=e2e -run '^TestLiveCLI$' -count=1 -timeout=3m ./cmd/next-prayer
 ```
 
-This suite calls the real Aladhan and Mawaqit APIs using Amsterdam as a test location. It discovers a mosque through `--list-mosques`, fetches JSON schedules with fresh caches, validates the selected mosque and prayer times, and checks cached JSON and text output with network access blocked. It does not mock API responses or read your normal config or cache. Credentials stay in the child process environment, not command arguments or fixtures, and failure messages redact them.
+This suite calls the real Aladhan and Mawaqit APIs using Amsterdam as a test
+location. It discovers a mosque through `--list-mosques`, fetches JSON schedules
+with fresh caches, validates the selected mosque and prayer times, and checks
+cached JSON and text output with network access blocked. It does not mock API
+responses or read your normal config or cache. Credentials stay in the child
+process environment, not command arguments or fixtures, and failure messages
+redact them.
 
-Live tests require both credentials and network access. They fail when either is unavailable and run separately from the offline suite and sandboxed Nix checks. `-count=1` prevents Go from reusing a previous test result.
+Live tests require both credentials and network access. They fail when either is
+unavailable and run separately from the offline suite and sandboxed Nix checks.
+`-count=1` prevents Go from reusing a previous test result.

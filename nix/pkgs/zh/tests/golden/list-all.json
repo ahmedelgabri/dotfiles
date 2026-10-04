@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "\tnull\t/far\tfar future\u0000\t2026-03-08 07:30\t/dst\tafter dst\u0000\t2026-03-08 06:30\t/dst\tbefore dst\u0000\t2026-01-01 00:13\t/r/b\tsame second\u0000\t2026-01-01 00:13\t/r/b\tjj log --no-graph\u0000\t2026-01-01 00:12\t/r/a\tjj log -r @\u0000\t2026-01-01 00:11\t/r/a\tnix build .#y\u0000\t2026-01-01 00:10\t/r/a\tnix build .#x\u0000\t2026-01-01 00:09\t/r\tnbsp word em space\u0000\t2026-01-01 00:08\t/r\t\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:06\t/r/a/sub\tline one\n  line two\n\u0000\t2026-01-01 00:05\t/r/dir with spaces\t  spaced cmd  \u0000\t2026-01-01 00:04\t/r/a\trm denied\u0000\t2026-01-01 00:03\t/r/c\techo dup\u0000\t2026-01-01 00:02\t/r/b\techo dup\u0000\t2026-01-01 00:01\t/r/b\tsolo\u0000\t2026-01-01 00:00\t/r/a\techo dup\u0000",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "\tnull\t/far\tfar future\u0000\t2026-03-08 07:30\t/dst\tafter dst\u0000\t2026-03-08 06:30\t/dst\tbefore dst\u0000\t2026-01-01 00:13\t/r/b\tsame second\u0000\t2026-01-01 00:13\t/r/b\tjj log --no-graph\u0000\t2026-01-01 00:12\t/r/a\tjj log -r @\u0000\t2026-01-01 00:11\t/r/a\tnix build .#y\u0000\t2026-01-01 00:10\t/r/a\tnix build .#x\u0000\t2026-01-01 00:09\t/r\tnbsp word em space\u0000\t2026-01-01 00:08\t/r\t\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:06\t/r/a/sub\tline one\n  line two\n\u0000\t2026-01-01 00:05\t/r/dir with spaces\t  spaced cmd  \u0000\t2026-01-01 00:04\t/r/a\trm denied\u0000\t2026-01-01 00:03\t/r/c\techo dup\u0000\t2026-01-01 00:02\t/r/b\techo dup\u0000\t2026-01-01 00:01\t/r/b\tsolo\u0000\t2026-01-01 00:00\t/r/a\techo dup\u0000",
+			"stderr": ""
+		}
+	]
 }

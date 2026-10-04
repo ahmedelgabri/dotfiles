@@ -24,8 +24,10 @@ are composed from small feature modules, app configs live in
 
 > [!NOTE]
 >
-> `Pragmata Pro` is a commercial font and is **not** bundled with this repo.
-> By default, this flake expects a `PragmataPro<version>.zip` archive in the Nix store. Bootstrap accepts `--without-pragmatapro` to skip it for that run. See [Font prerequisite](#2-font-prerequisite).
+> `Pragmata Pro` is a commercial font and is **not** bundled with this repo. By
+> default, this flake expects a `PragmataPro<version>.zip` archive in the Nix
+> store. Bootstrap accepts `--without-pragmatapro` to skip it for that run. See
+> [Font prerequisite](#2-font-prerequisite).
 
 ## What this repo manages
 
@@ -43,9 +45,20 @@ application configuration in [config/](./config/). In practice it manages:
 | Notes and media         | zk, markdown-oxide, qmd, [Neovim notes workflow](./config/nvim/lua/_/notes/README.md), mpv, and yt-dlp |
 | AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                               |
 
-Codex defaults are symlinked from [config/codex/config.toml](./config/codex/config.toml) to `/etc/codex/config.toml`. Hooks and themes remain in `~/.config/codex`, and Codex can write per-user settings to `~/.config/codex/config.toml`. Nix generates `hooks.json` with the absolute path of the repository info hook; rebuild after editing the hook template.
+Codex defaults are symlinked from
+[config/codex/config.toml](./config/codex/config.toml) to
+`/etc/codex/config.toml`. Hooks and themes remain in `~/.config/codex`, and
+Codex can write per-user settings to `~/.config/codex/config.toml`. Nix
+generates `hooks.json` with the absolute path of the repository info hook;
+rebuild after editing the hook template.
 
-Pi's [configuration](./config/pi/README.md) covers native tools, display settings, and model setup. Its [extensions](./config/pi/agent/extensions/README.md) each live in a directory with an `index.ts` entrypoint. The [`/simplify`](./config/pi/agent/extensions/simplify/README.md) command runs four parallel cleanup reviewers over the codebase and sends their findings to the current agent to apply fixes.
+Pi's [configuration](./config/pi/README.md) covers native tools, display
+settings, and model setup. Its
+[extensions](./config/pi/agent/extensions/README.md) each live in a directory
+with an `index.ts` entrypoint. The
+[`/simplify`](./config/pi/agent/extensions/simplify/README.md) command runs four
+parallel cleanup reviewers over the codebase and sends their findings to the
+current agent to apply fixes.
 
 ## Supported targets
 
@@ -117,7 +130,10 @@ To bootstrap before importing the archive, skip the font for that invocation:
 nix --experimental-features 'nix-command flakes' run 'github:ahmedelgabri/dotfiles' -- alcantara --without-pragmatapro
 ```
 
-Pragmata Pro remains enabled by default. The flag selects the `<host>-without-pragmatapro` configuration without editing the checkout or saving a preference. A later bootstrap or rebuild using the normal host includes the font again and requires the archive. Other fonts remain installed.
+Pragmata Pro remains enabled by default. The flag selects the
+`<host>-without-pragmatapro` configuration without editing the checkout or
+saving a preference. A later bootstrap or rebuild using the normal host includes
+the font again and requires the archive. Other fonts remain installed.
 
 ### 3. Bootstrap a machine
 
@@ -159,14 +175,16 @@ On the first run, the bootstrap app:
 
 Platform-specific behavior:
 
-| Platform                 | Behavior                                                                                                                |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Platform                 | Behavior                                                                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | macOS (`aarch64-darwin`) | Installs Xcode Command Line Tools if missing, installs Rosetta when needed, moves the Nix installer's `/etc/nix/nix.conf` to `nix.conf.before-nix-darwin` (nix-darwin refuses to overwrite it), then switches the system using `nix-darwin` |
-| Linux (`x86_64-linux`)   | Expects `nixos-rebuild` to exist already, then switches the system using `nixos-rebuild`                                |
+| Linux (`x86_64-linux`)   | Expects `nixos-rebuild` to exist already, then switches the system using `nixos-rebuild`                                                                                                                                                    |
 
 #### Checking what is left
 
-SSH keys, GPG keys and the `pass` store are set up by hand afterwards. Run `nix run ~/.dotfiles#doctor` to see what is still missing; see [scripts](./scripts/README.md#doctor) for what it checks.
+SSH keys, GPG keys and the `pass` store are set up by hand afterwards. Run
+`nix run ~/.dotfiles#doctor` to see what is still missing; see
+[scripts](./scripts/README.md#doctor) for what it checks.
 
 ### 4. Rebuild after the first install
 
@@ -206,7 +224,11 @@ managed declaratively here, but it is installed and controlled through
 It also covers a few macOS-only dependencies that are awkward to source through
 Nix alone, such as `Tart`, which backs the `sb` sandbox helper.
 
-Each macOS host trusts its configured `homebrew.taps` through `nix-homebrew.trust.taps`, without disabling Homebrew's trust checks. The AI module declares `openai/tools` for Tart on both hosts; only `rocket` adds the JetBrains and Docker taps. Removing a tap from the configuration does not revoke its trust; use `brew untrust <tap>` to revoke it.
+Each macOS host trusts its configured `homebrew.taps` through
+`nix-homebrew.trust.taps`, without disabling Homebrew's trust checks. The AI
+module declares `openai/tools` for Tart on both hosts; only `rocket` adds the
+JetBrains and Docker taps. Removing a tap from the configuration does not revoke
+its trust; use `brew untrust <tap>` to revoke it.
 
 ## Machine-local configuration
 
@@ -224,14 +246,14 @@ $HOST_CONFIGS = ~/.local/share/<host>
 
 Useful files to create there:
 
-| Path                                       | Purpose                                                                                                                      | Example                  |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `$HOST_CONFIGS/zshrc`                      | Machine-local shell setup; tokens live in the keychain (`secret set <name>`) and are exported as lookups, never literals     | `export GITHUB_TOKEN="$(secret get github-token)"` |
-| `$HOST_CONFIGS/gitconfig`                  | Local Git settings that should not be committed, especially GPG signing details                                              | `[user] signingkey =`    |
-| `$HOST_CONFIGS/hammerspoon/<host>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/); `<host>` is the logical host name read from `~/.local/share/host-name`, not the machine hostname | Host-specific Lua config |
-| `$HOST_CONFIGS/pi/extensions`              | Machine-specific Pi extensions added to the generated Pi settings                                                            | Private extension        |
-| `$HOST_CONFIGS/pi/skills`                  | Machine-specific Pi skills added to the generated Pi settings                                                                | Private skill            |
-| `$HOST_CONFIGS/tmux/sessions/<name>`       | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README      | Work session layouts     |
+| Path                                   | Purpose                                                                                                                                                                                                                        | Example                                            |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `$HOST_CONFIGS/zshrc`                  | Machine-local shell setup; tokens live in the keychain (`secret set <name>`) and are exported as lookups, never literals                                                                                                       | `export GITHUB_TOKEN="$(secret get github-token)"` |
+| `$HOST_CONFIGS/gitconfig`              | Local Git settings that should not be committed, especially GPG signing details                                                                                                                                                | `[user] signingkey =`                              |
+| `$HOST_CONFIGS/hammerspoon/<host>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/); `<host>` is the logical host name read from `~/.local/share/host-name`, not the machine hostname | Host-specific Lua config                           |
+| `$HOST_CONFIGS/pi/extensions`          | Machine-specific Pi extensions added to the generated Pi settings                                                                                                                                                              | Private extension                                  |
+| `$HOST_CONFIGS/pi/skills`              | Machine-specific Pi skills added to the generated Pi settings                                                                                                                                                                  | Private skill                                      |
+| `$HOST_CONFIGS/tmux/sessions/<name>`   | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README                                                                                                         | Work session layouts                               |
 
 If you want GitHub to show commits as **Verified**, the email on the commit, the
 email on GitHub, and the email attached to the public key all need to match.
@@ -358,12 +380,12 @@ picks up theme changes (or run `bat cache --build` by hand for an instant
 refresh).
 
 File listing colors come from one checked-in file,
-[`config/zsh.d/ls_colors`](./config/zsh.d/ls_colors), which
-`user-shell.nix` splits at build time: lines prefixed `eza:` become
-`EZA_COLORS` (eza-only UI keys, plus `reset` to disable eza's built-in filetype
-styles) and the rest are joined into `LS_COLORS`, so eza, `ls`, `fd`, and zsh
-completions color files identically. The file header documents the SGR syntax
-and grouping; adding a color for a new extension is a one-line edit.
+[`config/zsh.d/ls_colors`](./config/zsh.d/ls_colors), which `user-shell.nix`
+splits at build time: lines prefixed `eza:` become `EZA_COLORS` (eza-only UI
+keys, plus `reset` to disable eza's built-in filetype styles) and the rest are
+joined into `LS_COLORS`, so eza, `ls`, `fd`, and zsh completions color files
+identically. The file header documents the SGR syntax and grouping; adding a
+color for a new extension is a one-line edit.
 
 The dark palette is a restrained
 [Tomorrow Night](https://github.com/tinted-theming/base16-schemes/blob/main/tomorrow-night.yaml)
@@ -404,27 +426,30 @@ re-renders even already-printed output the moment its palette flips.
 The palette is intentionally duplicated in a few places that cannot reference
 each other. When one changes, change them all:
 
-| What                           | Where                                                                                                                                                                                                                                                                                                                                                        |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What                                                                                                         | Where                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Full palettes (slots 0-15 plus the diff-tint slots 16-18 holding Neovim's DiffAdd/Delete/Change backgrounds) | [`config/ghostty/themes/plain-dark`](./config/ghostty/themes/plain-dark) and [`plain-light`](./config/ghostty/themes/plain-light), [`config/kitty/themes/plain-dark.conf`](./config/kitty/themes/plain-dark.conf) and [`plain-light.conf`](./config/kitty/themes/plain-light.conf), and `terminal_palettes` (slots 0-15 only; `:terminal` cannot remap higher slots) in [`plain.lua`](./config/nvim/colors/plain.lua) |
-| Editor accents                 | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                                                                                        |
-| Syntax restraint rules         | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh)                                                                                                                                    |
-| Comment markers (TODO/FIXME/…) | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                       |
+| Editor accents                                                                                               | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                                                                                                                                                 |
+| Syntax restraint rules                                                                                       | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh)                                                                                                                               |
+| Comment markers (TODO/FIXME/…)                                                                               | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                                                                                |
 
 ## Working on this repo
 
 The flake also exposes a few outputs that are useful when editing the dotfiles
 repo itself:
 
-| Command            | What it does                           |
-| ------------------ | -------------------------------------- |
-| `nix develop`      | Provides the default development shell, including Python, Ruff, and ty |
-| `nix fmt`          | Formats the Nix code with `nixfmt-rs`  |
-| `nix develop .#go` | Opens the Go-focused dev shell         |
-| `nix run .#lint`                | Runs every repo check CI runs: formatting, dead-code, type, shell, spelling, workflow, Go, and host evaluation [checks](./nix/parts/outputs/README.md#checks), plus zizmor's online audits |
-| `nix run .#test-bootstrap`      | Bootstraps a host in a disposable macOS VM; see [scripts](./scripts/README.md#test-bootstrap) |
+| Command                    | What it does                                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `nix develop`              | Provides the default development shell, including Python, Ruff, and ty                                                                                                                     |
+| `nix fmt`                  | Formats the Nix code with `nixfmt-rs`                                                                                                                                                      |
+| `nix develop .#go`         | Opens the Go-focused dev shell                                                                                                                                                             |
+| `nix run .#lint`           | Runs every repo check CI runs: formatting, dead-code, type, shell, spelling, workflow, Go, and host evaluation [checks](./nix/parts/outputs/README.md#checks), plus zizmor's online audits |
+| `nix run .#test-bootstrap` | Bootstraps a host in a disposable macOS VM; see [scripts](./scripts/README.md#test-bootstrap)                                                                                              |
 
-All Python files, including the interactive startup script, use the strict Ruff and ty settings in [`pyproject.toml`](./pyproject.toml). See [Python checks and tests](./tests/README.md#python-tooling) for local commands and the documented rule exceptions.
+All Python files, including the interactive startup script, use the strict Ruff
+and ty settings in [`pyproject.toml`](./pyproject.toml). See
+[Python checks and tests](./tests/README.md#python-tooling) for local commands
+and the documented rule exceptions.
 
 <!-- Reference links -->
 

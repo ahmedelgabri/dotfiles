@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "\t2026-01-01 00:13\t/r/b\tsame second\u0000\t2026-01-01 00:13\t/r/b\tjj log --no-graph\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:01\t/r/b\tsolo\u0000",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "\t2026-01-01 00:13\t/r/b\tsame second\u0000\t2026-01-01 00:13\t/r/b\tjj log --no-graph\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:01\t/r/b\tsolo\u0000",
+			"stderr": ""
+		}
+	]
 }

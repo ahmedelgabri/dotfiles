@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "3\t1\techo\n2\t0\tjj\n2\t1\tnix\n1\t0\tfar\n1\t0\tafter\n1\t0\tbefore\n1\t0\tsame\n1\t0\tnbsp\n1\t0\t\n1\t0\ttab\n1\t0\tline\n1\t0\tspaced\n1\t1\trm\n1\t0\tsolo\n",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "3\t1\techo\n2\t0\tjj\n2\t1\tnix\n1\t0\tfar\n1\t0\tafter\n1\t0\tbefore\n1\t0\tsame\n1\t0\tnbsp\n1\t0\t\n1\t0\ttab\n1\t0\tline\n1\t0\tspaced\n1\t1\trm\n1\t0\tsolo\n",
+			"stderr": ""
+		}
+	]
 }

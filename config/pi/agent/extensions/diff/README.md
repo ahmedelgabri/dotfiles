@@ -157,7 +157,7 @@ sequenceDiagram
 | `index.ts`             | Extension entrypoint. Registers the `/diff` command, the three `diff_*` tools, manages `ReviewSession`s, and serves the HTTP API.                                                           |
 | `vcs.ts`               | Source-of-truth for "where does the patch come from": parses `/diff` args, dispatches to `jj`, `git`, or `gh`, parses unified-diff headers into `DiffFile[]`, and surfaces merge conflicts. |
 | `annotations-store.ts` | On-disk persistence. Per-repo, per-source JSON files with atomic rename + legacy single-file migration.                                                                                     |
-| `prefs.ts`             | On-disk UI preferences (sidebar widths and global line wrapping). A single global JSON file with atomic rename; survives the random server port that defeats browser `localStorage`.         |
+| `prefs.ts`             | On-disk UI preferences (sidebar widths and global line wrapping). A single global JSON file with atomic rename; survives the random server port that defeats browser `localStorage`.        |
 | `html.ts`              | Tiny HTML shell with an `importmap` that pulls Preact, htm, marked, DOMPurify, `@pierre/diffs`, and `@pierre/trees` from `esm.sh`. Inlines `client.js` and `styles.css`.                    |
 | `client.js`            | Preact UI: file tree, diff renderer, annotation threads, merge-conflict editor, SSE wiring. Shipped as plain JS so no build step is needed.                                                 |
 | `styles.css`           | UI styling (light/dark via `light-dark()`).                                                                                                                                                 |
@@ -170,9 +170,18 @@ inside a collapsed folder, its parent folders are expanded automatically. The
 sidebar toolbar also has **Collapse all** and **Open all** buttons for large
 trees.
 
-Both sidebars are resizable by dragging their dividers (or focusing a divider and using the arrow keys). Because the server binds a fresh random port every session, `localStorage` — which is origin-scoped — would reset each time, so the widths are persisted server-side via `POST /api/prefs` and seeded back into the page on load.
+Both sidebars are resizable by dragging their dividers (or focusing a divider
+and using the arrow keys). Because the server binds a fresh random port every
+session, `localStorage` — which is origin-scoped — would reset each time, so the
+widths are persisted server-side via `POST /api/prefs` and seeded back into the
+page on load.
 
-The header has **Wrap all** and **Wrap file** controls. **Wrap all** changes the default for every file and persists it through `/api/prefs`; horizontal scrolling remains the initial default. **Wrap file** overrides that setting for the selected file during the active review. Changing **Wrap all** clears the per-file overrides so the new global setting applies consistently. Both regular diffs and merge-conflict files use the selected mode.
+The header has **Wrap all** and **Wrap file** controls. **Wrap all** changes the
+default for every file and persists it through `/api/prefs`; horizontal
+scrolling remains the initial default. **Wrap file** overrides that setting for
+the selected file during the active review. Changing **Wrap all** clears the
+per-file overrides so the new global setting applies consistently. Both regular
+diffs and merge-conflict files use the selected mode.
 
 ## The `/diff` command
 
@@ -275,11 +284,22 @@ Override paths via env vars:
 
 ## Merge-conflict editor
 
-When a diff is loaded, the extension asks the VCS for files in conflict and exposes them via `/api/conflicts`. Git uses `git diff --name-only --diff-filter=U`. Jujutsu uses `jj file list` with a template that selects conflicted entries and emits NUL-delimited paths. This includes conflicts inherited from merge parents even when the working diff is empty, and preserves whitespace in filenames.
+When a diff is loaded, the extension asks the VCS for files in conflict and
+exposes them via `/api/conflicts`. Git uses
+`git diff --name-only --diff-filter=U`. Jujutsu uses `jj file list` with a
+template that selects conflicted entries and emits NUL-delimited paths. This
+includes conflicts inherited from merge parents even when the working diff is
+empty, and preserves whitespace in filenames.
 
-The browser renders a side-by-side editor. Saving via `/api/conflicts/write` writes the file back into the repo and, for Git, stages it once the conflict markers are gone. Marker detection supports Git and Jujutsu's `diff`, `snapshot`, and `git` styles.
+The browser renders a side-by-side editor. Saving via `/api/conflicts/write`
+writes the file back into the repo and, for Git, stages it once the conflict
+markers are gone. Marker detection supports Git and Jujutsu's `diff`,
+`snapshot`, and `git` styles.
 
-Conflict files must already exist. `safeRepoFilePath` resolves the repository root and target to their real paths before checking containment. It rejects absolute paths and targets outside the repo, including file and directory symlinks that point outside. Symlinks to files inside the repo remain usable.
+Conflict files must already exist. `safeRepoFilePath` resolves the repository
+root and target to their real paths before checking containment. It rejects
+absolute paths and targets outside the repo, including file and directory
+symlinks that point outside. Symlinks to files inside the repo remain usable.
 
 ## Lifecycle & cleanup
 
@@ -328,9 +348,21 @@ node --test config/pi/agent/extensions/diff/diff.e2e.test.ts
 nix build .#checks.aarch64-darwin.pi-diff
 ```
 
-`diff.test.ts` contains offline unit and integration tests for argument and patch parsing, annotation persistence and limits, preferences including line wrapping, real Git/Jujutsu repositories, symlink containment, and Jujutsu conflict discovery and resolution. All three Jujutsu marker styles are exercised with real merges. Node's built-in test runner and TypeScript support require no test framework or transpiler. The local `package.json` declares these files as ES modules.
+`diff.test.ts` contains offline unit and integration tests for argument and
+patch parsing, annotation persistence and limits, preferences including line
+wrapping, real Git/Jujutsu repositories, symlink containment, and Jujutsu
+conflict discovery and resolution. All three Jujutsu marker styles are exercised
+with real merges. Node's built-in test runner and TypeScript support require no
+test framework or transpiler. The local `package.json` declares these files as
+ES modules.
 
-`diff.e2e.test.ts` also requires `pi` on `PATH`. It launches the actual extension over RPC and exercises its token-protected HTTP API, annotations, replies, SSE, persistence on reopen, conflict writes, and shutdown. It creates temporary repositories and an isolated Pi configuration, omits browser launchers to exercise the URL fallback, and makes no model calls or external network requests. It does not test browser rendering or GitHub PR mode. This test runs separately from the sandboxed Nix check.
+`diff.e2e.test.ts` also requires `pi` on `PATH`. It launches the actual
+extension over RPC and exercises its token-protected HTTP API, annotations,
+replies, SSE, persistence on reopen, conflict writes, and shutdown. It creates
+temporary repositories and an isolated Pi configuration, omits browser launchers
+to exercise the URL fallback, and makes no model calls or external network
+requests. It does not test browser rendering or GitHub PR mode. This test runs
+separately from the sandboxed Nix check.
 
 ## Extending
 

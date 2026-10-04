@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "\t2026-01-01 00:12\t/r/a\tjj log -r @\u0000\t2026-01-01 00:11\t/r/a\tnix build .#y\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:06\t/r/a/sub\tline one\n  line two\n\u0000\t2026-01-01 00:00\t/r/a\techo dup\u0000",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "\t2026-01-01 00:12\t/r/a\tjj log -r @\u0000\t2026-01-01 00:11\t/r/a\tnix build .#y\u0000\t2026-01-01 00:07\t/r/a\ttab\tinside\u0000\t2026-01-01 00:06\t/r/a/sub\tline one\n  line two\n\u0000\t2026-01-01 00:00\t/r/a\techo dup\u0000",
+			"stderr": ""
+		}
+	]
 }

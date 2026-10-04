@@ -23,7 +23,9 @@ fails.
 
 ## Validation
 
-Run the type check and the real-tmux regression suite from the repository root with Node.js 24 or later and tmux installed. The suite uses `node:test`, strict assertions, and Node child processes, with no Bun dependency.
+Run the type check and the real-tmux regression suite from the repository root
+with Node.js 24 or later and tmux installed. The suite uses `node:test`, strict
+assertions, and Node child processes, with no Bun dependency.
 
 ```sh
 tsc -p config/pi/agent/extensions/tsconfig.json

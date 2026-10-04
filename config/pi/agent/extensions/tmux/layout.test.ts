@@ -176,9 +176,10 @@ describe('unit: tmux layout planning', () => {
 			new RegExp(`less than ${MIN_PANE_WIDTH} columns`),
 		)
 		assert.throws(
-			() => planWorkerSplit('right', piPane, [
-				pane('%2', 142, MIN_PANE_HEIGHT * 2, 'worker'),
-			]),
+			() =>
+				planWorkerSplit('right', piPane, [
+					pane('%2', 142, MIN_PANE_HEIGHT * 2, 'worker'),
+				]),
 			new RegExp(`less than ${MIN_PANE_HEIGHT} rows`),
 		)
 	})
@@ -274,8 +275,6 @@ describe('end-to-end: concurrent worker creation', () => {
 		const workers = panes.filter(({name}) => name.startsWith('worker-'))
 		assert.equal(piPane?.width, 143)
 		assert.equal(workers.length, 7)
-		assert.ok(
-			Math.min(...workers.map(({height}) => height)) >= MIN_PANE_HEIGHT,
-		)
+		assert.ok(Math.min(...workers.map(({height}) => height)) >= MIN_PANE_HEIGHT)
 	})
 })

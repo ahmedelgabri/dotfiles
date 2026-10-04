@@ -168,13 +168,7 @@ type TodoToolDetails =
 	  }
 	| {
 			action:
-				| 'get'
-				| 'create'
-				| 'update'
-				| 'append'
-				| 'delete'
-				| 'claim'
-				| 'release'
+				'get' | 'create' | 'update' | 'append' | 'delete' | 'claim' | 'release'
 			todo: TodoRecord
 			error?: string
 	  }

@@ -450,7 +450,10 @@ This module creates a menubar item for the prayer times produced by
 
 ### What it does
 
-- Gets the day's schedule from `get-prayer --json`, which prefers Mawaqit (mosque-specific times) when location data is available and falls back to Aladhan (city-level calculation); `next-prayer` owns its on-disk cache, this module never reads the cache files.
+- Gets the day's schedule from `get-prayer --json`, which prefers Mawaqit
+  (mosque-specific times) when location data is available and falls back to
+  Aladhan (city-level calculation); `next-prayer` owns its on-disk cache, this
+  module never reads the cache files.
 - Shows the next prayer in Arabic in the menu bar, without the 🕋 emoji, and
   turns it red when it is within `warningThresholdMinutes`, matching
   `next-prayer`/`get-prayer` behavior.
@@ -467,8 +470,12 @@ This module creates a menubar item for the prayer times produced by
   notification fires at prayer time, with the Arabic prayer name as the title,
   `حان الان وقت صلاة <prayer>` as the body, and the Guidance app icon as the
   content image.
-- Watches `$TMPDIR/.location.json` for location changes (which force a fresh fetch) and refreshes every minute.
-- Fetches the schedule asynchronously through a login shell, then refreshes itself once the command exits; automatic retries are cooled down per day, while the menu `Refresh` action drops the in-memory schedule and forces another fetch.
+- Watches `$TMPDIR/.location.json` for location changes (which force a fresh
+  fetch) and refreshes every minute.
+- Fetches the schedule asynchronously through a login shell, then refreshes
+  itself once the command exits; automatic retries are cooled down per day,
+  while the menu `Refresh` action drops the in-memory schedule and forces
+  another fetch.
 
 ### Public functions
 

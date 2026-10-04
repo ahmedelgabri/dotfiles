@@ -310,10 +310,7 @@ test(
 				assert.equal(await readFile(outside, 'utf8'), 'unchanged\n')
 				await request(url, '/api/cancel', {})
 				const reopened = await startReview()
-				assert.match(
-					await request<string>(reopened, '/'),
-					/"wrapLines":true/,
-				)
+				assert.match(await request<string>(reopened, '/'), /"wrapLines":true/)
 				const persisted = await annotationsFromEvents(reopened)
 				assert.equal(persisted.length, 1)
 				assert.equal(persisted[0].id, annotation.id)
