@@ -16,6 +16,13 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
+"config/claude/skills/youtube-transcript/scripts/transcript.py" = [
+  # CLI output is the script's result, not debugging output.
+  "print",
+  # Launch the PATH-resolved yt-dlp executable with arguments, never a shell.
+  "suspicious-subprocess-import",
+  "subprocess-without-shell-equals-true",
+]
 # These are executable scripts, not importable packages.
 "config/python/.pythonrc.py" = [
   "implicit-namespace-package",
