@@ -31,12 +31,10 @@ let
             vars:
             lib.concatLines (lib.mapAttrsToList (name: value: "export ${lib.toShellVar name value}") vars);
 
-          # The shell-integration init code of these tools is deterministic
-          # for a pinned store path, so generate it once at build time instead
-          # of shelling out on every interactive shell startup; the file is
-          # regenerated automatically whenever the package hash changes.
-          # HOME is pointed at the sandbox tmpdir because some tools (mise)
-          # insist on touching state dirs even when printing init code.
+          # Cache only init code that is independent of the runtime environment.
+          # Regenerate it whenever the package hash changes to avoid running
+          # these generators on every interactive shell startup.
+          # Keep any generator state inside the sandbox.
           mkShellInit =
             name: cmd:
             pkgs.runCommand "${name}-init.zsh" { } ''
@@ -404,7 +402,8 @@ let
                       source ${mkShellInit "fzf" "${lib.getExe pkgs.fzf} --zsh"}
                       source ${mkShellInit "jj-completion" "COMPLETE=zsh ${lib.getExe pkgs.jujutsu}"}
                       source ${mkShellInit "direnv" "${lib.getExe pkgs.direnv} hook zsh"}
-                      source ${mkShellInit "mise" "${lib.getExe pkgs.mise} activate zsh"}
+                      # mise embeds HOME and PATH, so generate its activation at runtime.
+                      eval "$(${lib.getExe pkgs.mise} activate zsh)"
                       source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
 
                       # Gitstatus is sourced lazily by my_git only after a Git repo is detected.
