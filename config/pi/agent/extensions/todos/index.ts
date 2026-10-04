@@ -28,8 +28,6 @@
  *
  * Use `/todos` to bring up the visual todo manager or just let the LLM use them
  * naturally.
- *
- * taken from https://github.com/mitsuhiko/agent-stuff/blob/a3f8ab1108a48fec9e175f6cd5d9aaa4694ce29d/extensions/todos.ts
  */
 import {
 	DynamicBorder,
@@ -44,20 +42,19 @@ import {StringEnum} from '@earendil-works/pi-ai'
 import {Type} from 'typebox'
 import path from 'node:path'
 import fs from 'node:fs/promises'
-import {existsSync} from 'node:fs'
+import {existsSync, readFileSync, readdirSync} from 'node:fs'
 import crypto from 'node:crypto'
 import {
 	Container,
 	type Focusable,
 	Input,
-	type Keybinding,
 	Key,
 	Markdown,
 	SelectList,
 	Spacer,
 	type SelectItem,
 	Text,
-	type TUI,
+	TUI,
 	fuzzyMatch,
 	matchesKey,
 	truncateToWidth,
@@ -101,7 +98,7 @@ interface TodoSettings {
 }
 
 type KeybindingMatcher = {
-	matches: (keyData: string, keybindingId: Keybinding) => boolean
+	matches: (keyData: string, keybindingId: string) => boolean
 }
 
 const TodoParams = Type.Object({
@@ -851,7 +848,7 @@ function getTodoSettingsPath(todosDir: string): string {
 function normalizeTodoSettings(raw: Partial<TodoSettings>): TodoSettings {
 	const gc = raw.gc ?? DEFAULT_TODO_SETTINGS.gc
 	const gcDays = Number.isFinite(raw.gcDays)
-		? (raw.gcDays as number)
+		? raw.gcDays
 		: DEFAULT_TODO_SETTINGS.gcDays
 	return {
 		gc: Boolean(gc),
@@ -1189,6 +1186,39 @@ async function listTodos(todosDir: string): Promise<TodoFrontMatter[]> {
 			})
 		} catch {
 			// ignore unreadable todo
+		}
+	}
+
+	return sortTodos(todos)
+}
+
+function listTodosSync(todosDir: string): TodoFrontMatter[] {
+	let entries: string[] = []
+	try {
+		entries = readdirSync(todosDir)
+	} catch {
+		return []
+	}
+
+	const todos: TodoFrontMatter[] = []
+	for (const entry of entries) {
+		if (!entry.endsWith('.md')) continue
+		const id = entry.slice(0, -3)
+		const filePath = path.join(todosDir, entry)
+		try {
+			const content = readFileSync(filePath, 'utf8')
+			const {frontMatter} = splitFrontMatter(content)
+			const parsed = parseFrontMatter(frontMatter, id)
+			todos.push({
+				id,
+				title: parsed.title,
+				tags: parsed.tags ?? [],
+				status: parsed.status,
+				created_at: parsed.created_at,
+				assigned_to_session: parsed.assigned_to_session,
+			})
+		} catch {
+			// ignore
 		}
 	}
 
@@ -1973,7 +2003,9 @@ export default function todosExtension(pi: ExtensionAPI) {
 			}
 
 			let nextPrompt: string | null = null
+			let rootTui: TUI | null = null
 			await ctx.ui.custom<void>((tui, theme, keybindings, done) => {
+				rootTui = tui
 				let selector: TodoSelectorComponent | null = null
 				let actionMenu: TodoActionMenuComponent | null = null
 				let deleteConfirm: TodoDeleteConfirmComponent | null = null
@@ -2256,6 +2288,7 @@ export default function todosExtension(pi: ExtensionAPI) {
 
 			if (nextPrompt) {
 				ctx.ui.setEditorText(nextPrompt)
+				rootTui?.requestRender()
 			}
 		},
 	})
