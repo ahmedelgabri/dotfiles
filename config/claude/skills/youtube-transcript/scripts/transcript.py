@@ -110,7 +110,7 @@ def caption_tracks(info: dict[str, Any]) -> Iterator[tuple[str, str, bool]]:
     """
     for key, source in (("subtitles", "human"), ("automatic_captions", "automatic")):
         for language, formats in (info.get(key) or {}).items():
-            if language == "live_chat":
+            if not isinstance(language, str) or language == "live_chat":
                 continue
             for entry in formats:
                 if entry.get("ext") == "json3":
