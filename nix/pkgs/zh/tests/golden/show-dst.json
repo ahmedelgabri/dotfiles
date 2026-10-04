@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "2026-03-08 03:30  claude  ran\ndir: /dst\nsession: s4\n\nafter dst\n",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "2026-03-08 03:30  claude  ran\ndir: /dst\nsession: s4\n\nafter dst\n",
+			"stderr": ""
+		}
+	]
 }

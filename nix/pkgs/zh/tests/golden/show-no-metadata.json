@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "2026-01-01 00:01  pi  ran\ndir: /r/b\nsession: s2\n\nsolo\n",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "2026-01-01 00:01  pi  ran\ndir: /r/b\nsession: s2\n\nsolo\n",
+			"stderr": ""
+		}
+	]
 }

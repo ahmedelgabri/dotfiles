@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "1\t0\tjj log -r\n1\t0\tnix build .#y\n1\t1\tnix build .#x\n1\t0\ttab inside\n1\t0\tline one line\n1\t1\trm denied\n1\t0\techo dup\n",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "1\t0\tjj log -r\n1\t0\tnix build .#y\n1\t1\tnix build .#x\n1\t0\ttab inside\n1\t0\tline one line\n1\t1\trm denied\n1\t0\techo dup\n",
+			"stderr": ""
+		}
+	]
 }

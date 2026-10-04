@@ -36,8 +36,9 @@
 	--ok: light-dark(#3f7d33, #74d36a);
 	--ring: light-dark(#9a6a00, #f0b429);
 
-	--mono: 'PragmataPro Mono', 'PragmataPro', ui-monospace, 'SF Mono',
-		SFMono-Regular, Menlo, Consolas, monospace;
+	--mono:
+		'PragmataPro Mono', 'PragmataPro', ui-monospace, 'SF Mono', SFMono-Regular,
+		Menlo, Consolas, monospace;
 	--diffs-font-family: var(--mono);
 
 	--header-h: 56px;

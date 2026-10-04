@@ -886,7 +886,11 @@ export const saveConflictFile = async (
 	contents: string,
 ): Promise<ConflictFile> => {
 	const resolved = !hasConflictMarkers(contents)
-	await writeFile(await safeRepoFilePath(snapshot.repoRoot, path), contents, 'utf8')
+	await writeFile(
+		await safeRepoFilePath(snapshot.repoRoot, path),
+		contents,
+		'utf8',
+	)
 	if (resolved && snapshot.vcs === 'git') {
 		const result = await execOrNull(
 			pi,

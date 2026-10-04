@@ -1,10 +1,14 @@
 # Dotfiles tests
 
-Run these commands from the repository root. Offline unit and integration checks also run through `nix flake check`. `live/` contains E2E tests that use real APIs or runtimes without mocks. Some need network access or desktop services; others, such as doctor, run entirely locally.
+Run these commands from the repository root. Offline unit and integration checks
+also run through `nix flake check`. `live/` contains E2E tests that use real
+APIs or runtimes without mocks. Some need network access or desktop services;
+others, such as doctor, run entirely locally.
 
 ## Python tooling
 
-Use the default Nix shell to get the flake's pinned Python 3.14, Ruff, and ty versions. A globally installed Ruff may be too old for the configuration.
+Use the default Nix shell to get the flake's pinned Python 3.14, Ruff, and ty
+versions. A globally installed Ruff may be too old for the configuration.
 
 ```sh
 nix develop
@@ -13,11 +17,24 @@ ruff format --check .
 ty check .
 ```
 
-To apply formatting, run `ruff format .`. Nix runs both Ruff checks through `checks.<system>.ruff` and type checking through `checks.<system>.ty`.
+To apply formatting, run `ruff format .`. Nix runs both Ruff checks through
+`checks.<system>.ruff` and type checking through `checks.<system>.ty`.
 
-[`pyproject.toml`](../pyproject.toml) enables Ruff `ALL`, preview rules, and ty's `all = "error"`, strict equality semantics, and strict generic narrowing. No repository Python files are excluded. The configuration explains the narrow Ruff exceptions: mutually exclusive docstring rules, formatter-owned commas, no per-file copyright-header policy, script layout, the retained upstream encoding header, descriptive unittest names and assertions, and intentional subprocess test harnesses. The chevron prompt glyph is explicitly allowed. A few source-line exceptions document deliberate REPL output, external editor execution, the standard-library `locals` parameter, and loading checked-in definitions for unit tests. ty has no rule suppressions.
+[`pyproject.toml`](../pyproject.toml) enables Ruff `ALL`, preview rules, and
+ty's `all = "error"`, strict equality semantics, and strict generic narrowing.
+No repository Python files are excluded. The configuration explains the narrow
+Ruff exceptions: mutually exclusive docstring rules, formatter-owned commas, no
+per-file copyright-header policy, script layout, the retained upstream encoding
+header, descriptive unittest names and assertions, and intentional subprocess
+test harnesses. The chevron prompt glyph is explicitly allowed. A few
+source-line exceptions document deliberate REPL output, external editor
+execution, the standard-library `locals` parameter, and loading checked-in
+definitions for unit tests. ty has no rule suppressions.
 
-Python test helpers have explicit signatures and command-response types. Executable and regex lookups fail before a missing result can reach a subprocess or path constructor. Exit statuses remain asserted explicitly, including expected failures.
+Python test helpers have explicit signatures and command-response types.
+Executable and regex lookups fail before a missing result can reach a subprocess
+or path constructor. Exit statuses remain asserted explicitly, including
+expected failures.
 
 ## Python startup
 
@@ -26,9 +43,15 @@ nix build .#checks.aarch64-darwin.python-startup
 python3 tests/python_startup_test.py
 ```
 
-The startup suite covers terminal colors, pretty-printing and the `_` binding, compiler state, failed-editor cleanup, real readline history, and editing through an actual `ex` executable with temporary paths containing spaces. The real-editor E2E uses no mocks; only the unit cases replace individual functions. Everything runs offline in isolated homes and temporary directories. The direct command requires Vim's `ex` on `PATH`; the Nix check supplies it.
+The startup suite covers terminal colors, pretty-printing and the `_` binding,
+compiler state, failed-editor cleanup, real readline history, and editing
+through an actual `ex` executable with temporary paths containing spaces. The
+real-editor E2E uses no mocks; only the unit cases replace individual functions.
+Everything runs offline in isolated homes and temporary directories. The direct
+command requires Vim's `ex` on `PATH`; the Nix check supplies it.
 
-See [`config/python/README.md`](../config/python/README.md) for startup behavior and editor configuration.
+See [`config/python/README.md`](../config/python/README.md) for startup behavior
+and editor configuration.
 
 ## Prayer wrapper
 
@@ -38,11 +61,20 @@ python3 tests/get_prayer_test.py
 python3 tests/live/get_prayer_test.py
 ```
 
-The offline suite tests source selection and argument preservation with a substitute CLI, plus failure propagation with the real `next-prayer` executable. `NEXT_PRAYER_BIN` can select a built executable; otherwise it comes from `PATH`. Python, Bash, jq, and next-prayer are required.
+The offline suite tests source selection and argument preservation with a
+substitute CLI, plus failure propagation with the real `next-prayer` executable.
+`NEXT_PRAYER_BIN` can select a built executable; otherwise it comes from `PATH`.
+Python, Bash, jq, and next-prayer are required.
 
-The live E2E test uses both real provider APIs, discovers a mosque near Amsterdam, and checks JSON output and fallback with isolated config and cache directories. It requires `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` in the environment. No credentials are written to fixtures or passed as command arguments.
+The live E2E test uses both real provider APIs, discovers a mosque near
+Amsterdam, and checks JSON output and fallback with isolated config and cache
+directories. It requires `MAWAQIT_USERNAME` and `MAWAQIT_PASSWORD` in the
+environment. No credentials are written to fixtures or passed as command
+arguments.
 
-Missing location fields must remain empty rather than shifting subsequent arguments. If both providers fail, the wrapper returns the Aladhan failure status instead of reporting success.
+Missing location fields must remain empty rather than shifting subsequent
+arguments. If both providers fail, the wrapper returns the Aladhan failure
+status instead of reporting success.
 
 ## Hammerspoon prayer module
 
@@ -52,9 +84,18 @@ lua tests/hammerspoon_prayer.lua "$PWD"
 python3 tests/live/hammerspoon_prayer_test.py
 ```
 
-The Lua 5.4 suite runs the real prayer and utility modules with a controlled clock and substitute Hammerspoon services. It covers prayer selection, highlighting, year rollover, stale schedules, notification deduplication and late timers, fetch cooldowns, invalid responses, location watchers, and cleanup. Expected failure logs are asserted.
+The Lua 5.4 suite runs the real prayer and utility modules with a controlled
+clock and substitute Hammerspoon services. It covers prayer selection,
+highlighting, year rollover, stale schedules, notification deduplication and
+late timers, fetch cooldowns, invalid responses, location watchers, and cleanup.
+Expected failure logs are asserted.
 
-The E2E test requires a running Hammerspoon app with its `hs` CLI available. It loads a separate module instance, uses the real task and calendar APIs to fetch an Aladhan schedule through `get-prayer`, and verifies the resulting status. It does not replace the active prayer module, create a menubar item, or send notifications. Its config, cache, Lua modules, and task are isolated and cleaned up.
+The E2E test requires a running Hammerspoon app with its `hs` CLI available. It
+loads a separate module instance, uses the real task and calendar APIs to fetch
+an Aladhan schedule through `get-prayer`, and verifies the resulting status. It
+does not replace the active prayer module, create a menubar item, or send
+notifications. Its config, cache, Lua modules, and task are isolated and cleaned
+up.
 
 ## Doctor
 
@@ -64,9 +105,15 @@ python3 tests/doctor_test.py
 python3 tests/live/doctor_test.py
 ```
 
-Unit tests cover each setup probe, Darwin and Linux account-shell lookup, environment overrides, GPG's no-autostart flags, and reporting. Subprocess integration tests check the complete script's exit status and verify that it leaves an isolated home unchanged.
+Unit tests cover each setup probe, Darwin and Linux account-shell lookup,
+environment overrides, GPG's no-autostart flags, and reporting. Subprocess
+integration tests check the complete script's exit status and verify that it
+leaves an isolated home unchanged.
 
-The E2E test uses real account tools, GnuPG, and an ephemeral SSH key generated by `ssh-keygen`. It links the actual checkout into its temporary home, then verifies the reported setup state, unchanged files, and absence of a GPG agent socket. It never reads or copies your private keys or password store.
+The E2E test uses real account tools, GnuPG, and an ephemeral SSH key generated
+by `ssh-keygen`. It links the actual checkout into its temporary home, then
+verifies the reported setup state, unchanged files, and absence of a GPG agent
+socket. It never reads or copies your private keys or password store.
 
 ## mx
 
@@ -75,8 +122,26 @@ nix build .#checks.aarch64-darwin.mx
 bash tests/mx.sh
 ```
 
-The suite runs the real `mx` and `mx-init` scripts against a real tmux server on a private socket in a temporary directory, so it never touches the caller's tmux server. It builds a `$PROJECTS` tree and session definition directories, then checks usage errors, `--list` output and definition precedence, name resolution and ambiguity, session naming, `_shared` creation and linking, `mx_start` environment and failure handling, and byte-exact `--export` output, including the self-pane exclusion and error cases. A round trip launches the exported definition and compares window names, pane order, geometry, directories, and active panes with the original session, and checks that recorded commands replay in the right panes. `PATH` holds only the tools the scripts need, so `mx-init` never launches mail, RSS, or HN clients from the host. Because nothing is attached, every launch ends with tmux's expected `no current client` error, which the suite asserts. `--pick` is not covered because it needs an interactive fzf.
+The suite runs the real `mx` and `mx-init` scripts against a real tmux server on
+a private socket in a temporary directory, so it never touches the caller's tmux
+server. It builds a `$PROJECTS` tree and session definition directories, then
+checks usage errors, `--list` output and definition precedence, name resolution
+and ambiguity, session naming, `_shared` creation and linking, `mx_start`
+environment and failure handling, and byte-exact `--export` output, including
+the self-pane exclusion and error cases. A round trip launches the exported
+definition and compares window names, pane order, geometry, directories, and
+active panes with the original session, and checks that recorded commands replay
+in the right panes. `PATH` holds only the tools the scripts need, so `mx-init`
+never launches mail, RSS, or HN clients from the host. Because nothing is
+attached, every launch ends with tmux's expected `no current client` error,
+which the suite asserts. `--pick` is not covered because it needs an interactive
+fzf.
 
 ## Pi extensions
 
-The Node unit, integration, and E2E tests for the [diff](../config/pi/agent/extensions/diff/README.md#tests) and [simplify](../config/pi/agent/extensions/simplify/README.md#tests) extensions are colocated with them, not in this directory. Simplify's RPC client and scripted-model helpers are in [`lib/test-support.ts`](../config/pi/agent/extensions/lib/test-support.ts).
+The Node unit, integration, and E2E tests for the
+[diff](../config/pi/agent/extensions/diff/README.md#tests) and
+[simplify](../config/pi/agent/extensions/simplify/README.md#tests) extensions
+are colocated with them, not in this directory. Simplify's RPC client and
+scripted-model helpers are in
+[`lib/test-support.ts`](../config/pi/agent/extensions/lib/test-support.ts).

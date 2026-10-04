@@ -1,48 +1,61 @@
 # Notes setup
 
-This directory contains the Neovim-side notes integration for the dotfiles repository. The setup keeps `zk` as the source of truth for note creation, uses `markdown_oxide` for Markdown/wiki-link LSP behavior, and normalizes frontmatter independently of Obsidian.nvim.
+This directory contains the Neovim-side notes integration for the dotfiles
+repository. The setup keeps `zk` as the source of truth for note creation, uses
+`markdown_oxide` for Markdown/wiki-link LSP behavior, and normalizes frontmatter
+independently of Obsidian.nvim.
 
 ## Goals
 
 - Create notes consistently from the CLI and Neovim.
-- Keep note files compatible with the Obsidian desktop app by using plain Markdown, YAML frontmatter, and Obsidian-style wiki links.
-- Let `markdown_oxide` handle workspace-aware Markdown LSP features such as hover, definitions, diagnostics, and missing-link actions.
+- Keep note files compatible with the Obsidian desktop app by using plain
+  Markdown, YAML frontmatter, and Obsidian-style wiki links.
+- Let `markdown_oxide` handle workspace-aware Markdown LSP features such as
+  hover, definitions, diagnostics, and missing-link actions.
 - Keep frontmatter fallback behavior independent of Obsidian.nvim.
 
 ## Files
 
-| File | Purpose |
-| --- | --- |
-| `init.lua` | Defines Neovim commands such as `:Note`, `:N`, `:NoteWork`, and `:NoteFrontmatter`. It calls `zk-nvim` for note creation and then normalizes frontmatter. |
-| `frontmatter.lua` | Shared frontmatter normalization logic used by the Neovim commands. |
-| `README.md` | This document. |
+| File              | Purpose                                                                                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `init.lua`        | Defines Neovim commands such as `:Note`, `:N`, `:NoteWork`, and `:NoteFrontmatter`. It calls `zk-nvim` for note creation and then normalizes frontmatter. |
+| `frontmatter.lua` | Shared frontmatter normalization logic used by the Neovim commands.                                                                                       |
+| `README.md`       | This document.                                                                                                                                            |
 
 Related files outside this directory:
 
-| File | Purpose |
-| --- | --- |
-| `config/nvim/plugin/markdown.lua` | Loads Markdown plugins, configures `zk-nvim` with its LSP disabled, and calls `require('_.notes').setup()`. |
-| `config/nvim/plugin/lsp.lua` | Enables `markdown_oxide` as the Markdown LSP and makes navic prefer it for Markdown symbols. |
-| `config/zk/config.toml` | Owns CLI note creation aliases, filename templates, group rules, and default templates. |
-| `config/zk/templates/` | Owns the actual note content templates used by `zk` for CLI and Neovim-created notes. |
-| `nix/parts/modules/shared/zk.nix` | Installs `zk` and links the `zk` config and templates. |
-| `nix/parts/modules/shared/vim.nix` | Installs `markdown-oxide` and Neovim support tooling. |
-| `nix/pkgs/markdown-oxide-follow-symlinks.patch` | Makes `markdown-oxide` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`. |
-| `nix/pkgs/zk-follow-symlinks.patch` | Makes `zk index` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`. |
+| File                                            | Purpose                                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `config/nvim/plugin/markdown.lua`               | Loads Markdown plugins, configures `zk-nvim` with its LSP disabled, and calls `require('_.notes').setup()`. |
+| `config/nvim/plugin/lsp.lua`                    | Enables `markdown_oxide` as the Markdown LSP and makes navic prefer it for Markdown symbols.                |
+| `config/zk/config.toml`                         | Owns CLI note creation aliases, filename templates, group rules, and default templates.                     |
+| `config/zk/templates/`                          | Owns the actual note content templates used by `zk` for CLI and Neovim-created notes.                       |
+| `nix/parts/modules/shared/zk.nix`               | Installs `zk` and links the `zk` config and templates.                                                      |
+| `nix/parts/modules/shared/vim.nix`              | Installs `markdown-oxide` and Neovim support tooling.                                                       |
+| `nix/pkgs/markdown-oxide-follow-symlinks.patch` | Makes `markdown-oxide` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`.       |
+| `nix/pkgs/zk-follow-symlinks.patch`             | Makes `zk index` index notes in symlinked folders. Applied in `nix/parts/outputs/overlays.nix`.             |
 
 ## Creation model
 
-`zk` is the only source of truth for creating intentional notes. This means filename generation, template expansion, group-specific behavior, and default frontmatter all come from `config/zk/config.toml` and `config/zk/templates/`.
+`zk` is the only source of truth for creating intentional notes. This means
+filename generation, template expansion, group-specific behavior, and default
+frontmatter all come from `config/zk/config.toml` and `config/zk/templates/`.
 
-The Neovim commands call `zk-nvim`'s API, which delegates to `zk`. They do not duplicate template rendering in Lua. Lua only decides which `zk` options to pass and then normalizes frontmatter after the file exists.
+The Neovim commands call `zk-nvim`'s API, which delegates to `zk`. They do not
+duplicate template rendering in Lua. Lua only decides which `zk` options to pass
+and then normalizes frontmatter after the file exists.
 
-Prefer `:Note`/`:N` over the generic `:ZkNew` command for interactive note creation. `:ZkNew` remains available from `zk-nvim`, but `:Note` adds this repository's target parsing, command completion, and frontmatter normalization while still delegating note creation to `zk`.
+Prefer `:Note`/`:N` over the generic `:ZkNew` command for interactive note
+creation. `:ZkNew` remains available from `zk-nvim`, but `:Note` adds this
+repository's target parsing, command completion, and frontmatter normalization
+while still delegating note creation to `zk`.
 
 ## Neovim commands
 
 ### `:Note` and `:N`
 
-`:Note` is the real command. `:N` is a command-line abbreviation because `:N` is already a built-in Ex command.
+`:Note` is the real command. `:N` is a command-line abbreviation because `:N` is
+already a built-in Ex command.
 
 Examples:
 
@@ -61,14 +74,17 @@ Default behavior creates a note at the root of `$NOTES_DIR`:
 :N My root note
 ```
 
-If the first argument is a known alias or an existing top-level subdirectory, that target is used and the rest of the command becomes the title:
+If the first argument is a known alias or an existing top-level subdirectory,
+that target is used and the rest of the command becomes the title:
 
 ```vim
 :N work Team design note
 :N projects Side project note
 ```
 
-First-argument completion includes both configured aliases and top-level subdirectories under `$NOTES_DIR`. Hidden directories and `assets` are excluded from completion.
+First-argument completion includes both configured aliases and top-level
+subdirectories under `$NOTES_DIR`. Hidden directories and `assets` are excluded
+from completion.
 
 Bang form creates the note without opening it:
 
@@ -88,19 +104,23 @@ These commands are thin wrappers around `:Note` aliases:
 :NoteRfc <title>
 ```
 
-They exist for muscle memory and discoverability; the flexible `:Note`/`:N` command is the preferred base command.
+They exist for muscle memory and discoverability; the flexible `:Note`/`:N`
+command is the preferred base command.
 
 ### `:NoteFrontmatter`
 
-`:NoteFrontmatter` normalizes frontmatter in the current buffer without writing the file.
+`:NoteFrontmatter` normalizes frontmatter in the current buffer without writing
+the file.
 
 `:NoteFrontmatter!` normalizes frontmatter and writes the file.
 
-This command is useful for existing notes, notes created by tools outside the normal `zk` flow, or manual cleanup.
+This command is useful for existing notes, notes created by tools outside the
+normal `zk` flow, or manual cleanup.
 
 ## Frontmatter normalization
 
-Frontmatter normalization is implemented in `frontmatter.lua` and is deliberately independent of Obsidian.nvim.
+Frontmatter normalization is implemented in `frontmatter.lua` and is
+deliberately independent of Obsidian.nvim.
 
 Normalization guarantees these fields:
 
@@ -108,7 +128,8 @@ Normalization guarantees these fields:
 - `title`
 - `aliases`
 
-The normalizer preserves other existing frontmatter fields. It also sorts known keys in this order when it rewrites frontmatter:
+The normalizer preserves other existing frontmatter fields. It also sorts known
+keys in this order when it rewrites frontmatter:
 
 ```text
 id, title, date, aliases, tags, then all other keys in their existing order
@@ -133,7 +154,8 @@ YYYY-MM-DD HH:MM
 YYYY-MM-DD
 ```
 
-A date-only input falls back to midnight, so `2024-01-02` becomes `202401020000`.
+A date-only input falls back to midnight, so `2024-01-02` becomes
+`202401020000`.
 
 ### `title` fallback order
 
@@ -153,7 +175,8 @@ Plain Note.md -> Plain Note
 
 ### `aliases` fallback behavior
 
-The normalizer parses existing inline or list-style aliases, then adds the normalized title as an alias if it is missing.
+The normalizer parses existing inline or list-style aliases, then adds the
+normalized title as an alias if it is missing.
 
 Examples:
 
@@ -176,15 +199,20 @@ aliases: ['Existing', 'Title']
 
 Frontmatter normalization runs in these places:
 
-1. After creating a note through `:Note`, `:N`, or one of the convenience commands.
-2. When an empty Markdown file under `$NOTES_DIR` is opened or created in Neovim.
+1. After creating a note through `:Note`, `:N`, or one of the convenience
+   commands.
+2. When an empty Markdown file under `$NOTES_DIR` is opened or created in
+   Neovim.
 3. Manually via `:NoteFrontmatter`.
 
-The empty-file path is important for `markdown_oxide`: if its missing-link code action creates an empty Markdown file, opening that file in Neovim adds fallback frontmatter.
+The empty-file path is important for `markdown_oxide`: if its missing-link code
+action creates an empty Markdown file, opening that file in Neovim adds fallback
+frontmatter.
 
 ## LSP responsibilities
 
-`markdown_oxide` is the Markdown LSP. It owns workspace-aware Markdown behavior such as:
+`markdown_oxide` is the Markdown LSP. It owns workspace-aware Markdown behavior
+such as:
 
 - wiki-link resolution
 - hover
@@ -192,9 +220,12 @@ The empty-file path is important for `markdown_oxide`: if its missing-link code 
 - diagnostics for unresolved links
 - code actions for missing linked files
 
-`zk-nvim` is still installed, but its LSP auto-attach is disabled. It is used as a command/API layer for `zk` note creation and note pickers, not as the active Markdown LSP.
+`zk-nvim` is still installed, but its LSP auto-attach is disabled. It is used as
+a command/API layer for `zk` note creation and note pickers, not as the active
+Markdown LSP.
 
-Obsidian.nvim is intentionally not used. Obsidian app compatibility comes from the file format: plain Markdown, YAML frontmatter, and wiki links.
+Obsidian.nvim is intentionally not used. Obsidian app compatibility comes from
+the file format: plain Markdown, YAML frontmatter, and wiki links.
 
 ## CLI behavior
 
@@ -211,23 +242,42 @@ zk til 'Something I learned'
 
 ## Symlinked folders
 
-The notebook can pull in folders from elsewhere through directory symlinks, e.g. `main/foo -> ../foo`. The tools don't follow those links upstream, so they are patched through the Nix overlay until the fixes are released.
+The notebook can pull in folders from elsewhere through directory symlinks, e.g.
+`main/foo -> ../foo`. The tools don't follow those links upstream, so they are
+patched through the Nix overlay until the fixes are released.
 
-- `markdown-oxide` indexes notes behind a link under the link's path (`foo/note.md`). Links back to a parent folder are ignored, but a link to a folder that is already in the vault, or two links to the same folder, index the same notes twice. Upstream PR: https://github.com/Feel-ix-343/markdown-oxide/pull/522
-- Edits made outside Neovim (Obsidian, iCloud sync, the `zk` CLI) to notes behind a link are probably not picked up by `markdown-oxide` until restart, because the file watcher does not cross symlinks. Edits in Neovim buffers are.
-- `zk` indexes notes behind a link under the link's path too. It walks each folder once, so link cycles and links to a folder already in the notebook don't index a note twice, and it skips folders it can't read. Upstream PR: https://github.com/zk-org/zk/pull/769
-- Run `zk` from the notebook, not from inside a linked folder. `zk` resolves the working directory to the real folder (`<root>/foo`), which is outside the notebook, so `zk new .` there falls back to `$ZK_NOTEBOOK_DIR` and creates the note at the notebook root. Use `zk new foo` from the notebook, or `:N foo ...`, instead.
-- `:N` completion only lists real folders, not linked ones. Typing a linked folder name as the target still works.
+- `markdown-oxide` indexes notes behind a link under the link's path
+  (`foo/note.md`). Links back to a parent folder are ignored, but a link to a
+  folder that is already in the vault, or two links to the same folder, index
+  the same notes twice. Upstream PR:
+  https://github.com/Feel-ix-343/markdown-oxide/pull/522
+- Edits made outside Neovim (Obsidian, iCloud sync, the `zk` CLI) to notes
+  behind a link are probably not picked up by `markdown-oxide` until restart,
+  because the file watcher does not cross symlinks. Edits in Neovim buffers are.
+- `zk` indexes notes behind a link under the link's path too. It walks each
+  folder once, so link cycles and links to a folder already in the notebook
+  don't index a note twice, and it skips folders it can't read. Upstream PR:
+  https://github.com/zk-org/zk/pull/769
+- Run `zk` from the notebook, not from inside a linked folder. `zk` resolves the
+  working directory to the real folder (`<root>/foo`), which is outside the
+  notebook, so `zk new .` there falls back to `$ZK_NOTEBOOK_DIR` and creates the
+  note at the notebook root. Use `zk new foo` from the notebook, or
+  `:N foo ...`, instead.
+- `:N` completion only lists real folders, not linked ones. Typing a linked
+  folder name as the target still works.
 
 ## Troubleshooting
 
 ### `:N` does not appear as a normal user command
 
-`:N` is an abbreviation for `:Note` because `:N` is already a built-in Ex command. Use `:Note` if you want to bypass abbreviation behavior.
+`:N` is an abbreviation for `:Note` because `:N` is already a built-in Ex
+command. Use `:Note` if you want to bypass abbreviation behavior.
 
 ### A new note was created in the wrong directory
 
-`:Note` treats the first word as a target only if it is a configured alias or an existing top-level subdirectory under `$NOTES_DIR`. Otherwise the entire command is treated as the title and the note is created at the root.
+`:Note` treats the first word as a target only if it is a configured alias or an
+existing top-level subdirectory under `$NOTES_DIR`. Otherwise the entire command
+is treated as the title and the note is created at the root.
 
 ### Frontmatter was not added to a file created by another tool
 

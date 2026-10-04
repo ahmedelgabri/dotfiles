@@ -1,31 +1,188 @@
 [
-  {"name": "list", "db": "sample", "tz": "UTC0", "runs": [["list"]]},
-  {"name": "list-all", "db": "sample", "tz": "UTC0", "runs": [["list", "--all"]]},
-  {"name": "list-dir", "db": "sample", "tz": "UTC0", "runs": [["list", "--dir", "/r/a/"]]},
-  {"name": "list-agent-all", "db": "sample", "tz": "UTC0", "runs": [["list", "--agent", "pi", "--all"]]},
-  {"name": "list-session-dir", "db": "sample", "tz": "UTC0", "runs": [["list", "--session", "s1", "--dir", "/r"]]},
-  {"name": "list-repeated-filters", "db": "sample", "tz": "UTC0", "runs": [["list", "--dir", "/r", "--dir", "/r/a", "--agent", "claude", "--agent", "claude"]]},
-  {"name": "list-root", "db": "sample", "tz": "UTC0", "runs": [["list", "--dir", "/", "--agent", "codex", "--all"]]},
-  {"name": "list-dst", "db": "sample", "tz": "EST5EDT,M3.2.0,M11.1.0", "runs": [["list", "--dir", "/dst"]]},
-  {"name": "list-no-db", "db": "none", "tz": "UTC0", "runs": [["list"]]},
-  {"name": "show", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "echo dup"]]},
-  {"name": "show-all", "db": "sample", "tz": "UTC0", "runs": [["show", "--all", "--", "echo dup"]]},
-  {"name": "show-dir", "db": "sample", "tz": "UTC0", "runs": [["show", "--dir", "/r/a", "--", "echo dup"]]},
-  {"name": "show-failed-hidden", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "rm denied"]]},
-  {"name": "show-no-metadata", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "solo"]]},
-  {"name": "show-multiline", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "line one\n  line two\n"]]},
-  {"name": "show-null-time", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "far future"]]},
-  {"name": "show-dst", "db": "sample", "tz": "EST5EDT,M3.2.0,M11.1.0", "runs": [["show", "--", "after dst"]]},
-  {"name": "show-missing", "db": "sample", "tz": "UTC0", "runs": [["show", "--", "nope"]]},
-  {"name": "stats", "db": "sample", "tz": "UTC0", "runs": [["stats"]]},
-  {"name": "stats-words-1", "db": "sample", "tz": "UTC0", "runs": [["stats", "--words", "1"]]},
-  {"name": "stats-limit-agent", "db": "sample", "tz": "UTC0", "runs": [["stats", "--limit", "2", "--agent", "claude"]]},
-  {"name": "stats-last-wins", "db": "sample", "tz": "UTC0", "runs": [["stats", "--words", "1", "--dir", "/r/a", "--words", "3"]]},
-  {"name": "stats-empty-scope", "db": "sample", "tz": "UTC0", "runs": [["stats", "--agent", "nobody"]]},
-  {"name": "forget", "db": "sample", "tz": "UTC0", "runs": [["forget", "echo dup"], ["forget", "echo dup"], ["list", "--all"]]},
-  {"name": "forget-multiline", "db": "sample", "tz": "UTC0", "runs": [["forget", "line one\n  line two\n"], ["list", "--all", "--dir", "/r/a/sub"]]},
-  {"name": "forget-no-db", "db": "none", "tz": "UTC0", "runs": [["forget", "x"]]},
-  {"name": "record", "db": "none", "tz": "UTC0", "stdin": "record.jsonl", "runs": [["record", "claude"]], "rows": true},
-  {"name": "record-empty", "db": "none", "tz": "UTC0", "stdin": "", "runs": [["record", "claude"]], "rows": true},
-  {"name": "import-atuin", "db": "none", "tz": "UTC0", "runs": [["import-atuin", "{ATUIN}"], ["import-atuin", "{ATUIN}"]], "rows": true}
+	{"name": "list", "db": "sample", "tz": "UTC0", "runs": [["list"]]},
+	{
+		"name": "list-all",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["list", "--all"]]
+	},
+	{
+		"name": "list-dir",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["list", "--dir", "/r/a/"]]
+	},
+	{
+		"name": "list-agent-all",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["list", "--agent", "pi", "--all"]]
+	},
+	{
+		"name": "list-session-dir",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["list", "--session", "s1", "--dir", "/r"]]
+	},
+	{
+		"name": "list-repeated-filters",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [
+			[
+				"list",
+				"--dir",
+				"/r",
+				"--dir",
+				"/r/a",
+				"--agent",
+				"claude",
+				"--agent",
+				"claude"
+			]
+		]
+	},
+	{
+		"name": "list-root",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["list", "--dir", "/", "--agent", "codex", "--all"]]
+	},
+	{
+		"name": "list-dst",
+		"db": "sample",
+		"tz": "EST5EDT,M3.2.0,M11.1.0",
+		"runs": [["list", "--dir", "/dst"]]
+	},
+	{"name": "list-no-db", "db": "none", "tz": "UTC0", "runs": [["list"]]},
+	{
+		"name": "show",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "echo dup"]]
+	},
+	{
+		"name": "show-all",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--all", "--", "echo dup"]]
+	},
+	{
+		"name": "show-dir",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--dir", "/r/a", "--", "echo dup"]]
+	},
+	{
+		"name": "show-failed-hidden",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "rm denied"]]
+	},
+	{
+		"name": "show-no-metadata",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "solo"]]
+	},
+	{
+		"name": "show-multiline",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "line one\n  line two\n"]]
+	},
+	{
+		"name": "show-null-time",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "far future"]]
+	},
+	{
+		"name": "show-dst",
+		"db": "sample",
+		"tz": "EST5EDT,M3.2.0,M11.1.0",
+		"runs": [["show", "--", "after dst"]]
+	},
+	{
+		"name": "show-missing",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["show", "--", "nope"]]
+	},
+	{"name": "stats", "db": "sample", "tz": "UTC0", "runs": [["stats"]]},
+	{
+		"name": "stats-words-1",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["stats", "--words", "1"]]
+	},
+	{
+		"name": "stats-limit-agent",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["stats", "--limit", "2", "--agent", "claude"]]
+	},
+	{
+		"name": "stats-last-wins",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["stats", "--words", "1", "--dir", "/r/a", "--words", "3"]]
+	},
+	{
+		"name": "stats-empty-scope",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [["stats", "--agent", "nobody"]]
+	},
+	{
+		"name": "forget",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [
+			["forget", "echo dup"],
+			["forget", "echo dup"],
+			["list", "--all"]
+		]
+	},
+	{
+		"name": "forget-multiline",
+		"db": "sample",
+		"tz": "UTC0",
+		"runs": [
+			["forget", "line one\n  line two\n"],
+			["list", "--all", "--dir", "/r/a/sub"]
+		]
+	},
+	{
+		"name": "forget-no-db",
+		"db": "none",
+		"tz": "UTC0",
+		"runs": [["forget", "x"]]
+	},
+	{
+		"name": "record",
+		"db": "none",
+		"tz": "UTC0",
+		"stdin": "record.jsonl",
+		"runs": [["record", "claude"]],
+		"rows": true
+	},
+	{
+		"name": "record-empty",
+		"db": "none",
+		"tz": "UTC0",
+		"stdin": "",
+		"runs": [["record", "claude"]],
+		"rows": true
+	},
+	{
+		"name": "import-atuin",
+		"db": "none",
+		"tz": "UTC0",
+		"runs": [
+			["import-atuin", "{ATUIN}"],
+			["import-atuin", "{ATUIN}"]
+		],
+		"rows": true
+	}
 ]

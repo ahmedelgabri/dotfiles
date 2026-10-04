@@ -95,7 +95,8 @@ const authorLabel = (author) => (author === 'pi' ? 'pi' : 'you')
 const ICONS = {
 	layout:
 		'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 14.5h18"/>',
-	split: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>',
+	split:
+		'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>',
 	wrap: '<path d="M4 6h13M4 10h12a4 4 0 0 1 0 8h-3"/><path d="m15 15-3 3 3 3"/>',
 	refresh: '<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4.5v5h-5"/>',
 	send: '<path d="M12 19.5V5"/><path d="M6 11l6-6 6 6"/>',
@@ -304,9 +305,11 @@ const Header = ({
 				type="button"
 				aria-pressed=${currentFileWrapLines}
 				disabled=${!currentPath}
-				title=${currentPath
-					? 'Toggle line wrapping for ' + currentPath
-					: 'Select a file to change its line wrapping'}
+				title=${
+					currentPath
+						? 'Toggle line wrapping for ' + currentPath
+						: 'Select a file to change its line wrapping'
+				}
 				onClick=${onToggleCurrentFileWrapLines}
 			>
 				<${Icon} name="wrap" />
@@ -540,7 +543,8 @@ const FileTreePanel = ({files, currentPath, onSelect}) => {
 				) {
 					return
 				}
-				const key = event.key?.length === 1 ? event.key.toLowerCase() : event.key
+				const key =
+					event.key?.length === 1 ? event.key.toLowerCase() : event.key
 				if (key === 'j' || key === 'k') {
 					event.preventDefault()
 					event.stopPropagation()
@@ -627,15 +631,17 @@ const ReplyEntry = ({reply, onDelete}) => html`
 			<span class=${'annotation-author ' + reply.author}>
 				${authorLabel(reply.author)}
 			</span>
-			${onDelete
-				? html`<button
-						type="button"
-						class="link danger"
-						onClick=${() => onDelete(reply.id)}
-					>
-						Delete
-					</button>`
-				: null}
+			${
+				onDelete
+					? html`<button
+							type="button"
+							class="link danger"
+							onClick=${() => onDelete(reply.id)}
+						>
+							Delete
+						</button>`
+					: null
+			}
 		</div>
 		<div
 			class="reply-text markdown"
@@ -689,10 +695,12 @@ const AnnotationCard = ({
 	inline,
 }) => html`
 	<div
-		class=${'annotation-card' +
-		(inline ? ' inline' : '') +
-		' annotation-by-' +
-		annotation.author}
+		class=${
+			'annotation-card' +
+			(inline ? ' inline' : '') +
+			' annotation-by-' +
+			annotation.author
+		}
 	>
 		<div class="annotation-header">
 			<span class=${'annotation-author ' + annotation.author}>
@@ -704,43 +712,53 @@ const AnnotationCard = ({
 			class="annotation-text markdown"
 			dangerouslySetInnerHTML=${renderMarkdown(annotation.text)}
 		></div>
-		${annotation.replies.length > 0
-			? html`<div class="replies">
-					${annotation.replies.map(
+		${
+			annotation.replies.length > 0
+				? html`<div class="replies">
+						${annotation.replies.map(
 						(reply) =>
 							html`<${ReplyEntry}
 								key=${reply.id}
 								reply=${reply}
-								onDelete=${onDeleteReply
-									? (replyId) => onDeleteReply(annotation.id, replyId)
-									: null}
+								onDelete=${
+									onDeleteReply
+										? (replyId) => onDeleteReply(annotation.id, replyId)
+										: null
+								}
 							/>`,
 					)}
-				</div>`
-			: null}
-		${onAddReply
-			? html`<${ReplyForm}
-					onSubmit=${(text) => onAddReply(annotation.id, text)}
-				/>`
-			: null}
+					</div>`
+				: null
+		}
+		${
+			onAddReply
+				? html`<${ReplyForm}
+						onSubmit=${(text) => onAddReply(annotation.id, text)}
+					/>`
+				: null
+		}
 		<div class="annotation-actions">
-			${onJump
-				? html`<button
-						type="button"
-						onClick=${() => onJump(annotation.path, annotation)}
-					>
-						Show file
-					</button>`
-				: null}
-			${onDelete
-				? html`<button
-						type="button"
-						class="danger"
-						onClick=${() => onDelete(annotation.id)}
-					>
-						Delete
-					</button>`
-				: null}
+			${
+				onJump
+					? html`<button
+							type="button"
+							onClick=${() => onJump(annotation.path, annotation)}
+						>
+							Show file
+						</button>`
+					: null
+			}
+			${
+				onDelete
+					? html`<button
+							type="button"
+							class="danger"
+							onClick=${() => onDelete(annotation.id)}
+						>
+							Delete
+						</button>`
+					: null
+			}
 		</div>
 	</div>
 `
@@ -982,9 +1000,9 @@ const SidebarResizeHandle = ({side, width, onPointerDown, onKeyDown}) => html`
 		class=${'resize-handle resize-handle-' + side}
 		role="separator"
 		aria-orientation="vertical"
-		aria-label=${side === 'left'
-			? 'Resize file sidebar'
-			: 'Resize review sidebar'}
+		aria-label=${
+			side === 'left' ? 'Resize file sidebar' : 'Resize review sidebar'
+		}
 		aria-valuemin=${MIN_SIDEBAR_WIDTH}
 		aria-valuemax=${MAX_SIDEBAR_WIDTH}
 		aria-valuenow=${width}
@@ -1064,13 +1082,17 @@ const ConflictViewer = ({file, wrapLines, onSave}) => {
 					<div class="conflict-path">${file.path}</div>
 				</div>
 				<div class="conflict-actions">
-					${saveStatus
-						? html`<span
-								class=${'conflict-save-status' +
-								(saveStatus.startsWith('Saved') ? ' ok' : ' error')}
-								>${saveStatus}</span
-							>`
-						: null}
+					${
+						saveStatus
+							? html`<span
+									class=${
+									'conflict-save-status' +
+									(saveStatus.startsWith('Saved') ? ' ok' : ' error')
+								}
+									>${saveStatus}</span
+								>`
+							: null
+					}
 					<button
 						class=${unresolved ? '' : 'primary'}
 						type="button"
@@ -1119,19 +1141,21 @@ const ReviewPanel = ({
 		></textarea>
 		<div class="panel-title" style=${{marginTop: '16px'}}>Annotations</div>
 		<div class="annotation-list">
-			${annotations.length === 0
-				? html`<p class="empty">No annotations yet.</p>`
-				: annotations.map(
-						(annotation) =>
-							html`<${AnnotationCard}
-								key=${annotation.id}
-								annotation=${annotation}
-								onDelete=${onDeleteAnnotation}
-								onJump=${onJump}
-								onAddReply=${onAddReply}
-								onDeleteReply=${onDeleteReply}
-							/>`,
-					)}
+			${
+				annotations.length === 0
+					? html`<p class="empty">No annotations yet.</p>`
+					: annotations.map(
+							(annotation) =>
+								html`<${AnnotationCard}
+									key=${annotation.id}
+									annotation=${annotation}
+									onDelete=${onDeleteAnnotation}
+									onJump=${onJump}
+									onAddReply=${onAddReply}
+									onDeleteReply=${onDeleteReply}
+								/>`,
+						)
+			}
 		</div>
 		<p class="empty">
 			Click the + gutter button in the diff to add a line annotation. pi can add
@@ -1158,7 +1182,10 @@ const App = () => {
 	const [activeRange, setActiveRange] = useState(null)
 	const [submitting, setSubmitting] = useState(false)
 	const [leftSidebarWidth, setLeftSidebarWidth] = useState(() =>
-		readNumberPreference(LEFT_SIDEBAR_WIDTH_KEY, initialUi.leftSidebarWidth ?? 280),
+		readNumberPreference(
+			LEFT_SIDEBAR_WIDTH_KEY,
+			initialUi.leftSidebarWidth ?? 280,
+		),
 	)
 	const [rightSidebarWidth, setRightSidebarWidth] = useState(() =>
 		readNumberPreference(
@@ -1590,26 +1617,28 @@ const App = () => {
 					onKeyDown=${(event) => resizeSidebarByKeyboard('left', event)}
 				/>
 				<section class="diff-wrap">
-					${currentConflict
-						? html`<${ConflictViewer}
-								file=${currentConflict}
-								wrapLines=${currentFileWrapLines}
-								onSave=${saveConflict}
-							/>`
-						: html`<${DiffViewer}
-								patch=${patch}
-								diffs=${diffs}
-								currentPath=${currentPath}
-								layout=${layout}
-								wrapLines=${currentFileWrapLines}
-								annotations=${annotations}
-								activeRange=${activeRange}
-								draftRange=${draftRange}
-								onAddAnnotation=${addAnnotation}
-								onDeleteAnnotation=${deleteAnnotation}
-								onSaveDraft=${saveDraft}
-								onCancelDraft=${cancelDraft}
-							/>`}
+					${
+						currentConflict
+							? html`<${ConflictViewer}
+									file=${currentConflict}
+									wrapLines=${currentFileWrapLines}
+									onSave=${saveConflict}
+								/>`
+							: html`<${DiffViewer}
+									patch=${patch}
+									diffs=${diffs}
+									currentPath=${currentPath}
+									layout=${layout}
+									wrapLines=${currentFileWrapLines}
+									annotations=${annotations}
+									activeRange=${activeRange}
+									draftRange=${draftRange}
+									onAddAnnotation=${addAnnotation}
+									onDeleteAnnotation=${deleteAnnotation}
+									onSaveDraft=${saveDraft}
+									onCancelDraft=${cancelDraft}
+								/>`
+					}
 				</section>
 				<${SidebarResizeHandle}
 					side="right"

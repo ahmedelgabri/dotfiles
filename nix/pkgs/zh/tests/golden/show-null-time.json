@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "null  claude  ran\ndir: /far\ndescription: out of range\n\nfar future\n",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "null  claude  ran\ndir: /far\ndescription: out of range\n\nfar future\n",
+			"stderr": ""
+		}
+	]
 }

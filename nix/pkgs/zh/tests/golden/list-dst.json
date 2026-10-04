@@ -1,9 +1,9 @@
 {
-  "runs": [
-    {
-      "code": 0,
-      "stdout": "\t2026-03-08 03:30\t/dst\tafter dst\u0000\t2026-03-08 01:30\t/dst\tbefore dst\u0000",
-      "stderr": ""
-    }
-  ]
+	"runs": [
+		{
+			"code": 0,
+			"stdout": "\t2026-03-08 03:30\t/dst\tafter dst\u0000\t2026-03-08 01:30\t/dst\tbefore dst\u0000",
+			"stderr": ""
+		}
+	]
 }

@@ -1,30 +1,38 @@
 # Pi extensions
 
-Each extension lives in `<name>/index.ts`, with its documentation and other extension-specific files in the same directory. Pi discovers these entrypoints automatically. The common `package.json`, `tsconfig.json`, and Nix-managed `node_modules` stay at the extensions root.
+Each extension lives in `<name>/index.ts`, with its documentation and other
+extension-specific files in the same directory. Pi discovers these entrypoints
+automatically. The common `package.json`, `tsconfig.json`, and Nix-managed
+`node_modules` stay at the extensions root.
 
-Pi's built-in `system` theme follows the terminal palette without a macOS polling extension. See [Pi configuration](../../README.md) for settings and activation.
+Pi's built-in `system` theme follows the terminal palette without a macOS
+polling extension. See [Pi configuration](../../README.md) for settings and
+activation.
 
 ## Extension reference
 
-Each extension has a colocated README covering its usage, requirements, configuration, and state where applicable. Linear and Exa use [native MCP configuration](../../README.md#native-mcp-servers), not custom extension tools.
+Each extension has a colocated README covering its usage, requirements,
+configuration, and state where applicable. Linear and Exa use
+[native MCP configuration](../../README.md#native-mcp-servers), not custom
+extension tools.
 
-| Extension                                      | Commands, tools, or behavior                                           |
-| ---------------------------------------------- | ---------------------------------------------------------------------- |
-| [agent-history](agent-history/README.md)       | Record Bash tool calls in the agent history file                       |
-| [answer](answer/README.md)                     | `/answer` and `Ctrl+.` extract questions into an interactive form      |
-| [diff](diff/README.md)                         | `/diff` opens browser reviews with annotation tools                    |
-| [edit-answers](edit-answers/README.md)         | `/edit-answer` and `Ctrl+Shift+V` edit the latest response externally  |
-| [handoff](handoff/README.md) | `/handoff` drafts a focused prompt and opens a linked new session |
-| [headless](headless/README.md) | Tell agents in print and JSON runs to proceed instead of asking questions |
-| [jujutsu](jujutsu/README.md)                   | jj footer, Git-write guard, and `/jj-refresh`                          |
-| [loop](loop/README.md)                         | `/loop` runs recurring tasks in detached tmux sessions                 |
-| [md](md/README.md)                             | `/md` saves the latest assistant response as Markdown                  |
-| [notify](notify/README.md)                     | Terminal notifications when the agent settles                          |
-| [simplify](simplify/README.md)                 | `/simplify` runs four reviewers before parent-applied cleanup          |
-| [tap-agent-state](tap-agent-state/README.md)   | Report Pi activity to tmux-agent-panel                                 |
-| [todos](todos/README.md)                       | `/todos` manager and file-backed `todo` tool                           |
-| [total-cost](total-cost/README.md)             | `/total-cost` summarizes recorded monthly session costs                |
-| [tmux](tmux/README.md)                         | Manage named worker panes without shrinking Pi below usable dimensions |
+| Extension                                    | Commands, tools, or behavior                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| [agent-history](agent-history/README.md)     | Record Bash tool calls in the agent history file                          |
+| [answer](answer/README.md)                   | `/answer` and `Ctrl+.` extract questions into an interactive form         |
+| [diff](diff/README.md)                       | `/diff` opens browser reviews with annotation tools                       |
+| [edit-answers](edit-answers/README.md)       | `/edit-answer` and `Ctrl+Shift+V` edit the latest response externally     |
+| [handoff](handoff/README.md)                 | `/handoff` drafts a focused prompt and opens a linked new session         |
+| [headless](headless/README.md)               | Tell agents in print and JSON runs to proceed instead of asking questions |
+| [jujutsu](jujutsu/README.md)                 | jj footer, Git-write guard, and `/jj-refresh`                             |
+| [loop](loop/README.md)                       | `/loop` runs recurring tasks in detached tmux sessions                    |
+| [md](md/README.md)                           | `/md` saves the latest assistant response as Markdown                     |
+| [notify](notify/README.md)                   | Terminal notifications when the agent settles                             |
+| [simplify](simplify/README.md)               | `/simplify` runs four reviewers before parent-applied cleanup             |
+| [tap-agent-state](tap-agent-state/README.md) | Report Pi activity to tmux-agent-panel                                    |
+| [todos](todos/README.md)                     | `/todos` manager and file-backed `todo` tool                              |
+| [total-cost](total-cost/README.md)           | `/total-cost` summarizes recorded monthly session costs                   |
+| [tmux](tmux/README.md)                       | Manage named worker panes without shrinking Pi below usable dimensions    |
 
 ## Activation
 
@@ -55,4 +63,6 @@ bun test scripts/tests/pi-upgrade.test.ts
 The discovery test starts the installed Pi CLI and checks registered commands,
 tools, and entrypoint paths without making model requests or mocking Pi APIs.
 
-Extensions with colocated `<name>.test.ts` suites, such as [`/simplify`](simplify/README.md#tests), document how to run them in their READMEs.
+Extensions with colocated `<name>.test.ts` suites, such as
+[`/simplify`](simplify/README.md#tests), document how to run them in their
+READMEs.

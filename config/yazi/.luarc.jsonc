@@ -1,9 +1,9 @@
 {
 	"$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
 	"diagnostics": {
-		"globals": ["Header", "Status"]
+		"globals": ["Header", "Status"],
 	},
 	"workspace": {
-		"library": ["~/.config/yazi/plugins/types.yazi/"]
-	}
+		"library": ["~/.config/yazi/plugins/types.yazi/"],
+	},
 }
