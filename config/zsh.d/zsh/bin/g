@@ -10,17 +10,25 @@ set -ue -o pipefail
 # archived years ago — did with three flags. The dead CLI still has the
 # best DX for this flow; the maintained one gets to inherit it here.
 #
-# What the shim compensates for (verified against cli/cli,
+# What the shim compensates for (verified against cli/cli v2.101.0,
 # pkg/cmd/pr/create/create.go): gh only auto-offers PR templates in its
 # interactive prompt flow via tpl.Choose(); in --editor mode it loads a
 # template only when --template is passed explicitly, otherwise the
-# editor opens with an empty body. So the shim finds the repo's template
-# file and passes the flag itself. The name is then resolved by
-# tpl.Select() against the template list GitHub serves over GraphQL
-# (listPullRequestTemplates in pkg/cmd/pr/shared/templates.go), not
-# against the local path — the file check only decides whether to pass
-# the flag. hub's --push has no gh equivalent because gh pushes the
-# branch itself, and --browse becomes a follow-up `gh pr view --web`.
+# editor opens with an empty body. --template doesn't fit a shim: the
+# name goes to tpl.Select(), which compares it case-sensitively against
+# the filenames GitHub serves over GraphQL (listPullRequestTemplates in
+# pkg/cmd/pr/shared/templates.go) and aborts the command on a mismatch.
+# A local file check can't predict that name; on a case-insensitive
+# filesystem PULL_REQUEST_TEMPLATE.md matches pull_request_template.md.
+# So the shim fetches the template body from that same GraphQL list and
+# passes it with --body, which gh puts in the editor without any lookup.
+# `gh api` resolves {owner}/{repo} with the same SmartBaseRepoFunc as
+# `gh pr create`, so both see the same repository. When GitHub has no
+# template or the request fails, the local file is used instead, and
+# without either the body is an HTML comment saying so, which GitHub
+# hides when rendering. hub's --push has no gh equivalent because gh
+# pushes the branch itself, and --browse becomes a follow-up
+# `gh pr view --web`.
 
 GIT=$(command -v git) || exit 0
 
@@ -37,6 +45,15 @@ time_since_last_commit() {
 	"$GIT" log --color=always -1 --pretty=format:"$fmt" 2>/dev/null
 }
 
+# The $owner and $name in the query are GraphQL variables, not shell ones.
+# shellcheck disable=SC2016
+remote_pr_template() {
+	gh api graphql -F owner='{owner}' -F name='{repo}' -f query='
+		query($owner: String!, $name: String!) {
+			repository(owner: $owner, name: $name) { pullRequestTemplates { body } }
+		}' --jq '.data.repository.pullRequestTemplates[0].body // empty' 2>/dev/null
+}
+
 pr_template() {
 	local root file
 	root=$("$GIT" rev-parse --show-toplevel 2>/dev/null) || return 0
@@ -45,7 +62,7 @@ pr_template() {
 		PULL_REQUEST_TEMPLATE.md pull_request_template.md \
 		docs/PULL_REQUEST_TEMPLATE.md docs/pull_request_template.md; do
 		if [[ -f $root/$file ]]; then
-			basename "$file"
+			printf '%s\n' "$root/$file"
 			return 0
 		fi
 	done
@@ -80,8 +97,14 @@ elif [ "$1" = "pull-request" ]; then
 	done
 
 	cmd=(gh pr create --editor)
+	body=$(remote_pr_template) || body=
 	template=$(pr_template)
-	[ -n "$template" ] && cmd+=(--template "$template")
+	if [ -z "$body" ] && [ -n "$template" ]; then
+		body=$(<"$template")
+	fi
+	# Attached with "=" because gh would parse a separate argument starting
+	# with "-", such as a checklist, as a flag.
+	cmd+=(--body="${body:-<!-- No pull request template found. -->}")
 	cmd+=(${args[@]+"${args[@]}"})
 
 	"${cmd[@]}"
