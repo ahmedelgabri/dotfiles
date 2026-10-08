@@ -403,6 +403,10 @@ let
                       source ${mkShellInit "jj-completion" "COMPLETE=zsh ${lib.getExe pkgs.jujutsu}"}
                       source ${mkShellInit "direnv" "${lib.getExe pkgs.direnv} hook zsh"}
                       # mise embeds HOME and PATH, so generate its activation at runtime.
+                      # Without shims PATH only gets the tools active for the current
+                      # directory; with them, every installed tool's shim shadows the nix
+                      # binary and fails in directories with an untrusted mise.toml.
+                      export MISE_ACTIVATE_SHIMS=false
                       eval "$(${lib.getExe pkgs.mise} activate zsh)"
                       source ${mkShellInit "zoxide" "${lib.getExe pkgs.zoxide} init zsh --hook pwd"}
 
