@@ -12,6 +12,12 @@ vim.g.fzf_layout = vim.env.TMUX ~= nil and { popup = 'center,85%,85%' }
 		},
 	}
 
+-- Outside tmux fzf runs in a floating window that already gets 'winborder',
+-- so the --border in FZF_DEFAULT_OPTS would draw a second frame inside it.
+if vim.env.TMUX == nil then
+	vim.env.FZF_DEFAULT_OPTS = (vim.env.FZF_DEFAULT_OPTS or '') .. ' --no-border'
+end
+
 -- Keep this in sync with `git config alias.l`.
 local git_log_args =
 	[[--color=always --graph --pretty=format:"%C(blue)%h %Creset- %C(green)%>(12)(%cr) %Creset%s - %C(cyan)%aN %C(magenta)%d" --date=auto:human]]
