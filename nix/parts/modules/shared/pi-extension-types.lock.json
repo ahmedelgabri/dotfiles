@@ -4,40 +4,40 @@
     "version": "0.129.0"
   },
   "@earendil-works/pi-agent-core": {
-    "hash": "sha256-9xsJgPVH20N9fH5mzH6wJPpvb6+2g4w1b23kYqCtBBo=",
-    "version": "1.3.0"
+    "hash": "sha256-LeZ4KPkMWyqhb/gCiNIwabZ8SoLLz5zEmsPQMfKurNo=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-ai": {
-    "hash": "sha256-U0PhY5vzQ73DNE3zrWwxwFpQtoutB6xrzhCJDUtrimE=",
-    "version": "1.3.0"
+    "hash": "sha256-tA4rqLtvwzKQj4uW6DfcLR/ftF65zTgvWu0RFGKYHjw=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-codemode": {
-    "hash": "sha256-BK6OC69YgBeXDaIBcyZLZvY4ICZ6qbLaH6ZrfFUon6M=",
-    "version": "1.3.0"
+    "hash": "sha256-SXhFNVxJSxG3eZI8mI+IQSB0GCu9Wcf3BNivQLOkato=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-coding-agent": {
-    "hash": "sha256-rieF6HC4GoyOHURRCle17gv8npdGeawvqq2kqr7j08A=",
-    "version": "1.3.0"
+    "hash": "sha256-0VXBbvb6AJYPv1iykRU26AsF8zcA4LFPvQiWft4MdCg=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-mcp": {
-    "hash": "sha256-qYlidJJiBFtf948fpkMgkepd1RkmdYxmSl7zC6oaJWA=",
-    "version": "1.3.0"
+    "hash": "sha256-ziYzxIKu2XM9aoY6FW2itQRCbwBW/Sw0lfnnRNflZyY=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-telemetry": {
-    "hash": "sha256-6Q6gThfkka2Mvl/WCZCTIvslHPAavFdw5ruT0/wkU94=",
-    "version": "1.3.0"
+    "hash": "sha256-KLgy85OSHYMD21IARjoLDHFDzXUyhs2KgUzR38VI2cg=",
+    "version": "1.4.0"
   },
   "@earendil-works/pi-tui": {
-    "hash": "sha256-Hve2MKrGqXlvOVliv9Wy5YjADQUCuU2POuh3Iq9C710=",
-    "version": "1.3.0"
+    "hash": "sha256-sRLUShg18wwYm6XfnOuNszzb6MVCumzdzrDPcx5CFs4=",
+    "version": "1.4.0"
   },
   "@google/genai": {
     "hash": "sha256-hZ4H0/7hRTztPWDC1IzhuIiU0nhbI/PL2FDAYryh38Y=",
     "version": "2.21.0"
   },
   "@modelcontextprotocol/sdk": {
-    "hash": "sha256-Y6OWIoL/KdLOUylFwu3v2bfHGVuOwgwCfhIORJiwyxk=",
-    "version": "1.32.1"
+    "hash": "sha256-uNUlU6S3k3wP2b5gxAE68/RsmkHF3d45t90GcuT+Ge8=",
+    "version": "1.32.2"
   },
   "@silvia-odwyer/photon-node": {
     "hash": "sha256-WiMBXBzSw448SS3ZaSmYUke5L1LS/w+5SNKe3KUrxQo=",
@@ -68,8 +68,8 @@
     "version": "3.1.3"
   },
   "fast-uri": {
-    "hash": "sha256-hr4DO0BqdzfAUh7cj+PhXHrAy2teUJR4zJU5ou+qCGw=",
-    "version": "3.1.8"
+    "hash": "sha256-T1pn97YREKrns6046AZif1cS9MFQvTjrgEpWLmmp7l4=",
+    "version": "3.1.9"
   },
   "gaxios": {
     "hash": "sha256-Q5xMO0NQEckvnHJb1GHiJTpODG14DxtwV6RfWRxpmZw=",
@@ -116,8 +116,8 @@
     "version": "1.3.27"
   },
   "undici": {
-    "hash": "sha256-p2W15jq1xrG5GlkHLIj3hXs29HsJw3Z2IkHRdyec3v0=",
-    "version": "8.12.2"
+    "hash": "sha256-4D+i7TR1J8kVAmwEgQ07m8+Yk6IXazFKpMKclFYS0Yw=",
+    "version": "8.12.3"
   },
   "undici-types": {
     "hash": "sha256-Olh4Ucy/ECGyDqyKOOuBnX4qGrd6pHfLJMrlRzo+eMY=",
