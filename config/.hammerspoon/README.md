@@ -285,6 +285,7 @@ This module keeps the preferred browser on the **largest detected screen**.
 ### Notes
 
 - If no browser can be resolved, layout application is skipped.
+- Only maximizable windows are moved, so Picture-in-Picture windows keep their size and screen.
 - `priority` may be either a string or a list.
 - Candidates may be app keys like `firefox` or literal bundle IDs.
 - `layout.setup()` resets runtime state, but it does **not** clear the chosen

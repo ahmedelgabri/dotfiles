@@ -49,9 +49,27 @@ local function resolveScreens()
 	}
 end
 
+-- Picture-in-Picture windows are AXStandardWindow too, so `isStandard()` does
+-- not exclude them; they are the only browser windows that cannot be maximized.
+local function maximizableWindows(bundleID)
+	return function()
+		local app = hs.application.get(bundleID)
+		if not app then
+			return {}
+		end
+
+		return hs.fnutils.filter(app:allWindows(), function(win)
+			return win:isMaximizable()
+		end)
+	end
+end
+
 local function addLayoutRule(layout, bundleID, screen, unit)
 	if bundleID and screen then
-		table.insert(layout, { bundleID, nil, screen, unit, nil, nil })
+		table.insert(
+			layout,
+			{ bundleID, maximizableWindows(bundleID), screen, unit, nil, nil }
+		)
 	end
 end
 
