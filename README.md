@@ -305,6 +305,8 @@ It also supports two modes:
 | `local`  | Mail is synced to local Maildir folders and indexed with `notmuch` |
 | `remote` | `aerc` connects directly to the remote service                     |
 
+An account can list `aliases`, with `fnmatch` wildcards such as `*@example.com` for a catch-all domain; aerc replies from the alias a mail was sent to and leaves those addresses out of reply-all. Each account also takes a `color` (default `blue`). aerc renders unread mail addressed to that account's email domain in it, through a generated per-account styleset.
+
 When local accounts are enabled, synchronization runs automatically:
 
 | Platform | Scheduler              |

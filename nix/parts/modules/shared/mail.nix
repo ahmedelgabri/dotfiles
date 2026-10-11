@@ -249,6 +249,19 @@ let
                             description = "Email service provider";
                           };
 
+                          aliases = mkOption {
+                            type = types.listOf types.str;
+                            default = [ ];
+                            example = [ "*@example.com" ];
+                            description = "Other addresses that are you; replies keep them as From and reply-all leaves them out";
+                          };
+
+                          color = mkOption {
+                            type = types.str;
+                            default = "blue";
+                            description = "Styleset colour for unread mail addressed to this account's domain";
+                          };
+
                           mode = mkOption {
                             type = types.enum [
                               "local"
@@ -584,6 +597,17 @@ let
               sourceRoot = "${myConfig.dotfilesDir}/config/aerc/stylesets";
               targetRoot = ".config/aerc/stylesets";
             }
+            // lib.listToAttrs (
+              map (
+                account:
+                lib.nameValuePair ".config/aerc/stylesets/${lowerName account}" {
+                  text = builtins.readFile ../../../../config/aerc/stylesets/default + ''
+
+                    "msglist_unread.To,~/@${lib.escapeRegex (lib.last (lib.splitString "@" account.email))}/.fg"=${account.color}
+                  '';
+                }
+              ) cfg.accounts
+            )
             // {
               ".config/aerc/binds.conf".text =
                 builtins.readFile ../../../../config/aerc/binds.conf
@@ -604,8 +628,34 @@ let
 
               ".config/aerc/querymap".source =
                 config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/aerc/querymap";
-              ".config/aerc/aerc.conf".source =
-                config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/aerc/aerc.conf";
+
+              # Each account gets its own styleset so unread mail sent to the
+              # account's domain (rather than a list or alias) carries the
+              # account colour; aerc.conf gains the contextual sections that
+              # select them, so it is generated like binds.conf.
+              ".config/aerc/aerc.conf".text =
+                lib.replaceStrings
+                  [ "[hooks]\n" ]
+                  [
+                    # Start with the sidebar hidden on every account tab; `b`
+                    # brings it back. aerc has no setting for this and
+                    # :toggle-sidebar only acts on the current tab, so the
+                    # startup hook walks the tabs once and ends where it began.
+                    ''
+                      [hooks]
+                      aerc-startup=${
+                        lib.concatMapStringsSep " && " (
+                          _: "$AERC_BINARY :toggle-sidebar && $AERC_BINARY :next-tab"
+                        ) cfg.accounts
+                      }
+                    ''
+                  ]
+                  (builtins.readFile ../../../../config/aerc/aerc.conf)
+                + "\n"
+                + lib.concatMapStringsSep "\n" (account: ''
+                  [ui:account=${account.name}]
+                  styleset-name=${lowerName account}
+                '') cfg.accounts;
 
               ".config/aerc/accounts.conf".text = lib.concatStringsSep "\n" (
                 map (account: ''
@@ -621,6 +671,11 @@ let
                      account.mode == "remote"
                    ) "source-cred-cmd   = ${account.aerc.source_cred_cmd}"}
                   outgoing = msmtp -a ${lowerName account}
+                  ${lib.optionalString (account.aliases != [ ])
+                    "aliases           = ${
+                      lib.concatMapStringsSep ", " (alias: "${myConfig.name} <${alias}>") account.aliases
+                    }"
+                  }
                   copy-to           = Sent
                   postpone          = Drafts
                   archive           = Archive

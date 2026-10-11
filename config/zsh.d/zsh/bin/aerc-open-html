@@ -1,37 +1,96 @@
 #!/usr/bin/env python3
-# Open HTML email content in browser
+"""Open the HTML part of an email piped on stdin in the default browser."""
+
+from __future__ import annotations
 
 import email
+import re
 import subprocess
 import sys
 import tempfile
 from email import policy
-from email.message import EmailMessage
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from email.message import Message
 
 
-def find_html_part(msg: EmailMessage) -> str | None:
-    """Find HTML part in email message."""
+def decoded_text(part: Message) -> str:
+    """Decode a text part, tolerating wrong or missing charsets.
+
+    Returns:
+        The part's text; undecodable bytes are replaced rather than fatal.
+
+    """
+    payload = part.get_payload(decode=True)
+    if not isinstance(payload, bytes):
+        return str(part.get_payload())
+    charset = part.get_content_charset() or "utf-8"
+    try:
+        return payload.decode(charset, errors="replace")
+    except LookupError:
+        return payload.decode("utf-8", errors="replace")
+
+
+def html_part(msg: Message) -> Message | None:
+    """Pick the HTML body, not an attached .html file.
+
+    Returns:
+        The largest inline text/html part, or None when the mail has none.
+
+    """
+    candidates = [
+        part
+        for part in msg.walk()
+        if part.get_content_type() == "text/html" and not part.is_attachment()
+    ]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda part: len(part.get_payload(decode=True) or b""))
+
+
+def plain_as_html(msg: Message) -> str | None:
+    """Fall back to the plain text body so V always shows something.
+
+    Returns:
+        The text wrapped in a pre block, or None when there is no text part.
+
+    """
     for part in msg.walk():
-        if part.get_content_type() == "text/html":
-            return part.get_content()
+        if part.get_content_type() == "text/plain" and not part.is_attachment():
+            text = decoded_text(part).replace("&", "&amp;").replace("<", "&lt;")
+            return (
+                f"<pre style='white-space:pre-wrap;font-family:system-ui'>{text}</pre>"
+            )
     return None
 
 
+def with_charset(html: str) -> str:
+    """Make the browser decode the file as UTF-8 regardless of the sender's meta tag.
+
+    Returns:
+        The HTML with a UTF-8 charset declaration first in the document.
+
+    """
+    html = re.sub(r"<meta[^>]+charset=[^>]*>", "", html, flags=re.IGNORECASE)
+    return '<meta charset="utf-8">\n' + html
+
+
 def main() -> None:
-    msg_bytes = sys.stdin.buffer.read()
-    msg = email.message_from_bytes(msg_bytes, policy=policy.default)  # type: ignore[arg-type]
-    if not isinstance(msg, EmailMessage):
-        print("Failed to parse email", file=sys.stderr)
+    """Read the message, extract HTML, write it to a temp file, and open it."""
+    msg = email.message_from_bytes(sys.stdin.buffer.read(), policy=policy.default)
+    part = html_part(msg)
+    html = decoded_text(part) if part is not None else plain_as_html(msg)
+    if html is None:
+        sys.stderr.write("aerc-open-html: no HTML or text body in this message\n")
         sys.exit(1)
-
-    html_content = find_html_part(msg)
-    if not html_content:
-        print("No HTML content found in this email", file=sys.stderr)
-        sys.exit(1)
-
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".html", delete=False) as f:
-        f.write(html_content)
-    subprocess.run(["open", f.name], check=True)
+    with tempfile.NamedTemporaryFile(
+        "w", suffix=".html", delete=False, encoding="utf-8"
+    ) as handle:
+        handle.write(with_charset(html))
+        path = Path(handle.name)
+    subprocess.run(["open", str(path)], check=True)
 
 
 if __name__ == "__main__":
