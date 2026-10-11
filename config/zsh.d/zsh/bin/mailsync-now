@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run the scheduled mail sync job right away. aerc hooks call this after a
+# move, flag change, send, or quit so changes reach the server before the
+# next timer tick. Starting an already running job is a no-op, so bursts
+# of moves are safe.
+set -ue -o pipefail
+
+if command -v launchctl >/dev/null; then
+	launchctl kickstart "gui/$(id -u)/org.nixos.mailsync"
+else
+	systemctl --user start mailsync.service
+fi

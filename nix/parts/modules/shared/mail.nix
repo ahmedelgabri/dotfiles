@@ -558,6 +558,9 @@ let
           lowerName = account: lib.toLower account.name;
           localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
           remoteAccounts = lib.filter (acc: acc.mode == "remote") cfg.accounts;
+          localGmailAccounts = lib.filter (
+            acc: acc.mode == "local" && acc.service == "gmail.com"
+          ) cfg.accounts;
           msmtpLogFile =
             if pkgs.stdenv.hostPlatform.isDarwin then
               "${homeDir}/Library/Logs/msmtp.log"
@@ -607,6 +610,23 @@ let
                       D = :delete<Enter>
                       A = :archive flat<Enter>
                     '') remoteAccounts
+                  )
+                )
+                # Gmail has no archive folder: archiving means dropping the
+                # INBOX label while the message stays in All Mail. For a
+                # synced Gmail account that is a plain delete from the local
+                # INBOX, which mbsync propagates as an expunge; a move to
+                # Archive would instead create a Gmail label of that name.
+                + lib.optionalString (localGmailAccounts != [ ]) (
+                  "\n"
+                  + lib.concatStringsSep "\n" (
+                    map (account: ''
+                      [messages:account=${account.name}]
+                      A = :delete<Enter>
+
+                      [view:account=${account.name}]
+                      A = :delete<Enter>
+                    '') localGmailAccounts
                   )
                 );
 

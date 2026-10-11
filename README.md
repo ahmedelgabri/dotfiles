@@ -306,6 +306,8 @@ It also supports two modes:
 
 An account can list `aliases`, with `fnmatch` wildcards such as `*@example.com` for a catch-all domain; aerc replies from the alias a mail was sent to and leaves those addresses out of reply-all. Each account also takes a `color` (default `blue`). aerc renders unread mail addressed to that account's email domain in it, through a generated per-account styleset.
 
+On a synced Gmail account `A` deletes the message from the local INBOX instead of moving it to an `Archive` folder: mbsync propagates that as removing the INBOX label, which is what archiving means on Gmail, and the message stays in All Mail. aerc hooks run `mailsync-now` after moves, flag changes, sends, and on quit so changes reach the server before the next timer tick.
+
 When local accounts are enabled, synchronization runs automatically:
 
 | Platform | Scheduler              |
