@@ -219,7 +219,10 @@ function M.setup()
 		M.layoutWatcher:stop()
 	end
 
-	M.layoutWatcher = hs.screen.watcher.newWithActiveScreen(function()
+	-- Not `newWithActiveScreen`: with separate Spaces per display, focusing a
+	-- window on another screen fires it, and the layout pulls windows the
+	-- user moved there back to the largest screen.
+	M.layoutWatcher = hs.screen.watcher.new(function()
 		M.switchLayout()
 	end)
 	M.layoutWatcher:start()

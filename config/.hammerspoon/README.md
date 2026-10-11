@@ -271,7 +271,7 @@ This module keeps the preferred browser on the **largest detected screen**.
 - applies a one-rule Hammerspoon layout that maximizes that browser on the
   target screen
 - sends a notification when the target browser moves in a multi-monitor setup
-- watches screen changes and reapplies immediately
+- watches screen layout changes (monitor added, removed, or rearranged) and reapplies immediately; moving focus to another screen does not trigger it
 
 ### Public functions
 
