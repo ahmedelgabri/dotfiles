@@ -4,3 +4,4 @@ result/
 .direnv/
 config/.hammerspoon/Spoons
 .jj/
+.ruff_cache
