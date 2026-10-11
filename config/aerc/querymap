@@ -1,2 +1,0 @@
-inbox=tag:inbox and not tag:killed
-patches=subject:\[PATCH

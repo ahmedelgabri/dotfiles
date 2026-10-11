@@ -8,7 +8,6 @@ let
         {
           pkgs,
           lib,
-          xdgConfigHome,
           maxTimeout,
         }:
         pkgs.writeShellScript "mailsync" ''
@@ -17,16 +16,10 @@ let
           ${lib.getExe' pkgs.gnupg "gpg-connect-agent"}
 
           echo "--- Starting mail sync at $(${lib.getExe' pkgs.coreutils "date"}) ---"
-          # Index whatever mbsync managed to fetch even when some channels
-          # fail, but preserve the failure in the exit status so launchd
-          # still reports it.
           rc=0
           ${lib.getExe' pkgs.coreutils "timeout"} ${maxTimeout} ${lib.getExe pkgs.isync} -q -a || rc=$?
 
-          echo "mbsync exited with $rc. Indexing new mail..."
-          ${lib.getExe pkgs.notmuch} --config=${xdgConfigHome}/notmuch/config new
-
-          echo "Sync finished at $(${lib.getExe' pkgs.coreutils "date"})"
+          echo "mbsync exited with $rc at $(${lib.getExe' pkgs.coreutils "date"})"
           exit $rc
         '';
 
@@ -41,7 +34,6 @@ let
         let
           cfg = config.my.modules.mail;
           homeDir = config.my.user.home;
-          inherit (config.home-manager.users."${username}") xdg;
 
           # Helper functions for multi-account support
           localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
@@ -442,15 +434,10 @@ let
                   pass
                   msmtp
                   w3m
-                  notmuch
                 ];
               };
             };
 
-            environment.variables = {
-              MAILDIR = "$HOME/.mail"; # will be picked up by .notmuch-config for database.path
-              NOTMUCH_CONFIG = "${xdg.configHome}/notmuch/config";
-            };
           };
         };
 
@@ -485,7 +472,6 @@ let
                   };
                   command = mkMailSyncCommand {
                     inherit pkgs lib maxTimeout;
-                    xdgConfigHome = xdg.configHome;
                   };
 
                   serviceConfig = {
@@ -520,7 +506,6 @@ let
           maxTimeout = mkMailSyncTimeout lib localAccounts;
           mailSyncCommand = mkMailSyncCommand {
             inherit pkgs lib maxTimeout;
-            xdgConfigHome = xdg.configHome;
           };
         in
         {
@@ -573,7 +558,6 @@ let
           lowerName = account: lib.toLower account.name;
           localAccounts = lib.filter (acc: acc.mode == "local") cfg.accounts;
           remoteAccounts = lib.filter (acc: acc.mode == "remote") cfg.accounts;
-          otherEmails = lib.tail (map (acc: acc.email) cfg.accounts);
           msmtpLogFile =
             if pkgs.stdenv.hostPlatform.isDarwin then
               "${homeDir}/Library/Logs/msmtp.log"
@@ -625,9 +609,6 @@ let
                     '') remoteAccounts
                   )
                 );
-
-              ".config/aerc/querymap".source =
-                config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/aerc/querymap";
 
               # Each account gets its own styleset so unread mail sent to the
               # account's domain (rather than a list or alias) carries the
@@ -694,38 +675,6 @@ let
                     address-book-cmd = carddav-query -S ${lowerName account} %s''}
                 '') cfg.accounts
               );
-
-              ".config/notmuch/config".text = ''
-                # ${myConfig.nix_managed}
-                #  vim:ft=conf
-
-                [database]
-                path=${homeDir}/.mail
-
-                [user]
-                name=${myConfig.name}
-                primary_email=${primaryAccount.email}
-                ${lib.optionalString (otherEmails != [ ]) "other_email=${lib.concatStringsSep ";" otherEmails}"}
-
-                [new]
-                tags=unread;inbox;
-                ignore=.mbsyncstate;.DS_Store;.mbsyncstate.journal;.mbsyncstate.new;.mbsyncstate.lock;.uidvalidity
-
-                [search]
-                exclude_tags=deleted;spam;trash;
-
-                [query]
-                inbox=tag:inbox and tag:unread
-                sent=tag:sent
-                archive=not tag:inbox
-                github=tag:github or from:notifications@github.com
-                urgent=tag:urgent
-
-                [maildir]
-                synchronize_flags=true
-
-                [crypto]
-                gpg_path=${lib.getExe pkgs.gnupg} '';
 
               ".config/msmtp/config".text = ''
                 # ${myConfig.nix_managed}

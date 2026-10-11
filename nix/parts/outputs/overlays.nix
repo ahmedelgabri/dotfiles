@@ -9,10 +9,6 @@
       next-prayer = prev.callPackage ../../pkgs/next-prayer/next-prayer.nix { };
       zh = prev.callPackage ../../pkgs/zh/zh.nix { };
 
-      notmuch = prev.notmuch.override {
-        withEmacs = false;
-      };
-
       # markdown-oxide walks the vault without following symlinks, so notes
       # in a folder linked into the vault are never indexed.
       # https://github.com/Feel-ix-343/markdown-oxide/pull/522

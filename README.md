@@ -41,7 +41,7 @@ application configuration in [config/](./config/). In practice it manages:
 | Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                              |
 | Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                              |
 | macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                                |
-| Mail and communication  | aerc, isync/mbsync, notmuch, msmtp, and pass                                                           |
+| Mail and communication  | aerc, isync/mbsync, msmtp, and pass                                                                    |
 | Notes and media         | zk, markdown-oxide, qmd, [Neovim notes workflow](./config/nvim/lua/_/notes/README.md), mpv, and yt-dlp |
 | AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                               |
 
@@ -285,7 +285,6 @@ The stack looks like this:
 | Component                   | Role                      |
 | --------------------------- | ------------------------- |
 | [`isync` / `mbsync`][isync] | Synchronizes mail         |
-| [`notmuch`][notmuch]        | Indexes and searches mail |
 | [`aerc`][aerc]              | Mail client               |
 | `msmtp`                     | Handles outgoing mail     |
 | [`pass`][pass]              | Stores credentials        |
@@ -302,7 +301,7 @@ It also supports two modes:
 
 | Mode     | Behavior                                                           |
 | -------- | ------------------------------------------------------------------ |
-| `local`  | Mail is synced to local Maildir folders and indexed with `notmuch` |
+| `local`  | Mail is synced to local Maildir folders                            |
 | `remote` | `aerc` connects directly to the remote service                     |
 
 An account can list `aliases`, with `fnmatch` wildcards such as `*@example.com` for a catch-all domain; aerc replies from the alias a mail was sent to and leaves those addresses out of reply-all. Each account also takes a `color` (default `blue`). aerc renders unread mail addressed to that account's email domain in it, through a generated per-account styleset.
@@ -464,5 +463,4 @@ and the documented rule exceptions.
 [nix]: https://nixos.org/
 [nix-darwin]: https://github.com/nix-darwin/nix-darwin
 [nix-homebrew]: https://github.com/zhaofengli/nix-homebrew
-[notmuch]: https://notmuchmail.org/
 [pass]: https://www.passwordstore.org/
