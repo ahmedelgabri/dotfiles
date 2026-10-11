@@ -147,7 +147,7 @@ clone_dotfiles() {
 		# Setup repo origin & mirrors
 		cd "$DOTFILES_DIR" &&
 			git remote set-url origin git@github.com:ahmedelgabri/dotfiles.git &&
-			git remote add --mirror=push bitbucket git@bitbucket.org:ahmedelgabri/dotfiles.git &&
+			git remote add --mirror=push bitbucket git@ssh.bitbucket.org:ahmedelgabri/dotfiles.git &&
 			git remote add --mirror=push gitlab git@gitlab.com:ahmedelgabri/dotfiles.git
 
 	else
