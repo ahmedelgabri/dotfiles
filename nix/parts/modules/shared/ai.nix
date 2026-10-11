@@ -23,7 +23,6 @@ let
           llm-agents.agent-browser
           llama-cpp
           ccpeek
-          fabric-ai
         ];
       };
 
@@ -232,6 +231,7 @@ let
           homebrew = {
             taps = [ "openai/tools" ];
             brews = [ "openai/tools/tart" ];
+            casks = [ "claude" ];
           };
           my.user.packages = with pkgs; [
             sb
