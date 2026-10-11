@@ -177,10 +177,7 @@ rex.action {
 }
 
 -- Like tmux's `confirm-before kill-session`. Lua has no way to ask, so a small
--- popup does, and `read -k 1` takes the answer without Enter. Rex draws cells
--- with the default background as see-through in floating layers, which hides
--- a plain prompt in the text beneath; erasing the screen after setting a red
--- background paints every cell of the popup instead.
+-- popup does, and `read -k 1` takes the answer without Enter.
 rex.action {
 	name = 'session_kill_confirm',
 	title = 'Kill Session…',
@@ -192,7 +189,7 @@ rex.action {
 		open_popup(ctx, 0.4, 0.1, {
 			'zsh',
 			'-fc',
-			'printf "\\e[41;97m\\e[2J\\e[H kill-session %s? (y/n) " "$1"; read -k 1 answer; [[ $answer == y ]] && rex kill "$2"',
+			'printf "\\e[31;49m\\e[2J\\e[H kill-session %s? (y/n) " "$1"; read -k 1 answer; [[ $answer == y ]] && rex kill "$2"',
 			'session_kill_confirm',
 			view.label or ctx.session_id,
 			ctx.session_id,
@@ -310,7 +307,6 @@ local prefix = 'ctrl+a>'
 
 rex.bind(prefix .. 'ctrl+a', 'pane.send_key', { key = 'ctrl+a' })
 rex.bind(prefix .. 'r', 'client.config.reload')
-rex.bind(prefix .. 'ctrl+p', 'session.switch')
 rex.bind(prefix .. 'ctrl+q', 'session_kill_confirm')
 
 -- Tabs & panes
