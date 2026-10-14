@@ -122,6 +122,14 @@
             '').overrideAttrs
               { __darwinAllowLocalNetworking = true; };
 
+          # The test starts real Pi children against a scripted loopback model.
+          # The darwin sandbox has no `ps` on PATH, and process identity needs one.
+          pi-loop =
+            (mkCheck "pi-loop-check" [ pkgs.nodejs pkgs.llm-agents.pi pkgs.procps ] ''
+              node --test ${source}/config/pi/agent/extensions/loop/loop.test.ts
+            '').overrideAttrs
+              { __darwinAllowLocalNetworking = true; };
+
           pi-extensions = mkCheck "pi-extensions-check" [ pkgs.typescript ] ''
             cp -R ${source}/config/pi/agent/extensions source
             chmod -R u+w source

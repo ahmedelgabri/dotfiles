@@ -25,7 +25,7 @@ extension tools.
 | [handoff](handoff/README.md)                 | `/handoff` drafts a focused prompt and opens a linked new session         |
 | [headless](headless/README.md)               | Tell agents in print and JSON runs to proceed instead of asking questions |
 | [jujutsu](jujutsu/README.md)                 | jj footer, Git-write guard, and `/jj-refresh`                             |
-| [loop](loop/README.md)                       | `/loop` runs recurring tasks in detached tmux sessions                    |
+| [loop](loop/README.md)                       | `/loop` runs recurring tasks in background Pi processes                   |
 | [md](md/README.md)                           | `/md` saves the latest assistant response as Markdown                     |
 | [notify](notify/README.md)                   | Terminal notifications when the agent settles                             |
 | [simplify](simplify/README.md)               | `/simplify` runs four reviewers before parent-applied cleanup             |
@@ -64,5 +64,5 @@ The discovery test starts the installed Pi CLI and checks registered commands,
 tools, and entrypoint paths without making model requests or mocking Pi APIs.
 
 Extensions with colocated `<name>.test.ts` suites, such as
-[`/simplify`](simplify/README.md#tests), document how to run them in their
-READMEs.
+[`/simplify`](simplify/README.md#tests) and [`/loop`](loop/README.md#validation),
+document how to run them in their READMEs.

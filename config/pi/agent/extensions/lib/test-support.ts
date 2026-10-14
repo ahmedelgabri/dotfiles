@@ -109,6 +109,21 @@ export class PiRpc {
 		return {response, records: this.records.slice(from)}
 	}
 
+	/** The Pi process itself, so a test can signal exactly that process. */
+	get pid(): number | undefined {
+		return this.child.pid
+	}
+
+	/** Answer an extension UI request, such as a confirm dialog. */
+	respond(payload: Record<string, unknown>): void {
+		this.child.stdin.write(JSON.stringify(payload) + '\n')
+	}
+
+	/** Resolves with the exit code once Pi has exited. */
+	waitForExit(): Promise<number | null> {
+		return this.exited
+	}
+
 	async close(): Promise<number | null> {
 		this.child.stdin.end()
 		return this.exited
