@@ -17,7 +17,6 @@ through `/settings`; update the checked-in file for persistent preferences.
   loaded resource.
 - `theme: "system"` derives colors from the terminal and follows
   terminal-reported appearance changes. The macOS polling extension is removed.
-  The plain themes remain available for manual selection.
 
 Rebuild Home Manager before starting a fresh Pi session so it removes the
 retired extension's symlinks and installs the settings. Verify the system theme

@@ -1,4 +1,5 @@
 {
+	"$schema": "https://pi.dev/schemas/settings.schema.json",
 	"enableInstallTelemetry": false,
 	"defaultThinkingLevel": "high",
 	"defaultTools": ["+codemode"],
