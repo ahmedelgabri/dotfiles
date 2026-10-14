@@ -12,9 +12,13 @@ by Home Manager and wired from `config/claude/settings.json`.
 | `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                         | Log session shutdown and clear the published agent status.                                     |
 | `UserPromptSubmit`   | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
 | `PreToolUse`         | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
-| `PostToolUse`        | `zh record claude`                                                                  | Record Bash commands in the agent history.                                                     |
-| `PostToolUseFailure` | `zh record claude`                                                                  | Record Bash commands whose call failed (denied, interrupted, tool error) in the agent history. |
+| `PostToolUse`        | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands in the agent history.                                |
+| `PostToolUseFailure` | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands whose call failed (denied, interrupted, tool error). |
+| `PermissionRequest`  | `tap state blocked --agent claude`                                                  | Mark the agent blocked on a permission prompt.                                                 |
+| `Elicitation`        | `tap state waiting --agent claude`                                                  | Mark the agent waiting for an MCP elicitation answer.                                          |
+| `ElicitationResult`  | `tap state running --agent claude`                                                  | Mark the agent busy again once the elicitation is answered.                                    |
 | `Stop`               | `run-ccpeek.sh`, `tap state idle --agent claude`                                    | Refresh the `ccpeek` index, mark the agent idle.                                               |
+| `StopFailure`        | `tap state idle --agent claude`                                                     | Mark the agent idle when a turn ends in an error.                                              |
 | `Notification`       | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`   | Log notifications, mirror them to a desktop notification, publish the status.                  |
 
 The `tap state` entries publish the agent's activity state so other tooling
@@ -125,7 +129,11 @@ cat ~/.claude/logs/*/hook-events.jsonl | jq 'select(.project_dir == "/path/to/pr
 - `PreToolUse` — before a tool executes.
 - `PostToolUse` — after a tool completes.
 - `PostToolUseFailure` — after a tool call fails.
+- `PermissionRequest` — when a tool call waits on a permission prompt.
+- `Elicitation` — when an MCP server asks the user a question.
+- `ElicitationResult` — when the user answers an MCP elicitation.
 - `Stop` — when Claude finishes responding.
+- `StopFailure` — when a turn ends in an error.
 - `Notification` — during Claude notifications.
 
 ## Hook behavior
