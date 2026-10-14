@@ -98,6 +98,7 @@ let
                   history = "fc -il 1";
                   jobs = "jobs -l";
                   play = "mx ϟ";
+                  rplay = "rx ϟ";
                   top = "btop";
                   l = "eza --all --long --color-scale=all --group-directories-first --sort=type --hyperlink --icons=auto --octal-permissions";
                   ll = "eza --icons --tree --group-directories-first --all --level=2";
@@ -277,6 +278,7 @@ let
                     ##############################################################
 
                     path=(
+                    	${"$"}{REX_BIN_DIR}
                     	${"$"}{ZDOTDIR}/bin
                     	${"$"}{HOME}/.local/bin(N-/)
                     	${"$"}path

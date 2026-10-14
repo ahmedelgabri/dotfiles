@@ -19,6 +19,7 @@
     ../modules/shared/ripgrep.nix
     ../modules/shared/yazi.nix
     ../modules/shared/tmux.nix
+    ../modules/shared/rex.nix
     ../modules/shared/vim.nix
     ../modules/shared/ai.nix
     ../modules/shared/ghostty.nix

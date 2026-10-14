@@ -82,6 +82,7 @@
         "yazi"
         "ripgrep"
         "tmux"
+        "rex"
         "misc"
         "node"
         "go"

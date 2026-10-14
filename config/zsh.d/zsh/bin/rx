@@ -1,0 +1,314 @@
+#!/usr/bin/env bash
+
+# rx - open a Rex session, creating it first when it does not exist.
+#
+# Usage:
+#   rx                  session for $PWD (label = basename of $PWD)
+#   rx <name>           session from definition <name>.lua, else a plain
+#                       session labeled <name> at $PWD
+#   rx --export [session]
+#                       print a definition based on a Rex session
+#   rx -h|--help        print usage
+#
+# Definitions are Lua files looked up as
+# $HOST_CONFIGS/rex/sessions/<name>.lua then
+# $XDG_CONFIG_HOME/rex/sessions/<name>.lua; see config/rex/sessions/README.md.
+# Every new session also gets the windows from
+# $XDG_CONFIG_HOME/rex/rx/shared.lua.
+
+# `rex do` is a subcommand, not a loop keyword.
+# shellcheck disable=SC1010
+
+set -ue -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
+
+# REX_BIN_DIR puts rex on PATH only inside Rex terminals.
+if ! command -v rex >/dev/null; then
+	rex() {
+		"/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex" "$@"
+	}
+fi
+
+usage_text() {
+	echo "Usage: rx [<name>] | rx --export [session]"
+}
+
+usage() {
+	usage_text >&2
+	exit 64
+}
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/rex"
+SHARED_FILE="$CONFIG_DIR/rx/shared.lua"
+# Written by the zsh preexec hook in extras.zsh, one file per block
+COMMANDS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/rx/commands"
+
+# Session definition search path; first hit wins
+SESSION_DIRS=(
+	"${HOST_CONFIGS:+$HOST_CONFIGS/rex/sessions}"
+	"$CONFIG_DIR/sessions"
+)
+
+find_session_file() {
+	local dir f
+	for dir in "${SESSION_DIRS[@]}"; do
+		[ -n "$dir" ] || continue
+		f="$dir/$1.lua"
+		if [ -f "$f" ]; then
+			printf '%s\n' "$f"
+			return 0
+		fi
+	done
+	return 1
+}
+
+# Prints the ID of the session labeled RX_NAME, creating it when missing.
+# Rex allows duplicate labels, so the lookup must come before session.create.
+# Inputs travel as environment variables because `rex do key=value` args
+# guess types: a session named "true" or "1" would not arrive as a string.
+# shellcheck disable=SC2016
+OPEN_LUA='
+local name, root = os.getenv("RX_NAME"), os.getenv("RX_ROOT")
+local def, shared = os.getenv("RX_DEF"), os.getenv("RX_SHARED")
+
+local function call(method, args)
+	local result, err = rex.call(method, args)
+	if err ~= nil then error(method .. ": " .. err, 0) end
+	return result
+end
+
+for _, s in ipairs(call("session.list").sessions or {}) do
+	if s.label == name then return s.session_id end
+end
+
+local spec = {}
+-- Rex returns nil, not "", for an empty environment variable
+if def ~= nil and def ~= "" then
+	spec = dofile(def)
+	if type(spec) ~= "table" then error(def .. ": must return a table", 0) end
+	root = spec.root or root
+end
+
+-- Blocks without a cwd start in the session root; relative ones resolve
+-- against it, which keeps definitions short and portable.
+local function place(node)
+	if node.split then
+		place(node.split.before)
+		place(node.split.after)
+	elseif node.block then
+		local options = node.block.options or {}
+		node.block.options = options
+		if options.cwd == nil then
+			options.cwd = root
+		elseif options.cwd:sub(1, 1) ~= "/" then
+			options.cwd = root .. "/" .. options.cwd
+		end
+	end
+end
+
+local windows = {}
+local function add(list)
+	for _, w in ipairs(list) do
+		place(w.layout)
+		table.insert(windows, { window_label = w.label, layout = w.layout })
+	end
+end
+
+add(spec.windows or {})
+if #windows == 0 then
+	add({ { layout = rex.layout.block({ flavor = "com.superlogical.terminal.shell" }) } })
+end
+local shared_file = io.open(shared)
+if shared_file ~= nil then
+	shared_file:close()
+	add(dofile(shared))
+end
+
+return call("session.create", { label = name, initial_windows = windows }).session_id
+'
+
+# Prints a definition based on the target session. Windows from shared.lua
+# are skipped because rx appends them itself. Rex reports only a process's
+# argv0, so exact commands come from the zsh hook's files; a running program
+# without one becomes a comment. The block running this export is skipped so
+# `rx --export` does not replay itself.
+# shellcheck disable=SC2016
+EXPORT_LUA='
+local home, shared = os.getenv("HOME"), os.getenv("RX_SHARED")
+local commands, self = os.getenv("RX_COMMANDS"), os.getenv("RX_SELF")
+local terminal = "com.superlogical.terminal"
+
+local view, err = rex.session.view({})
+if err ~= nil then error(err, 0) end
+
+local skip = {}
+local shared_file = io.open(shared)
+if shared_file ~= nil then
+	shared_file:close()
+	for _, w in ipairs(dofile(shared)) do skip[w.label] = true end
+end
+
+local function q(s) return string.format("%q", s) end
+
+local function home_expr(path)
+	if path == home then return "os.getenv(\"HOME\")" end
+	if path:sub(1, #home + 1) == home .. "/" then
+		return "os.getenv(\"HOME\") .. " .. q(path:sub(#home + 1))
+	end
+	return q(path)
+end
+
+local function recorded(id)
+	local f = io.open(commands .. "/" .. id)
+	if f == nil then return nil end
+	local command = f:read("*a"):gsub("\n$", "")
+	f:close()
+	if command ~= "" then return command end
+end
+
+local function process(id)
+	local p = rex.block.call(terminal, "process", { block_id = id })
+	return (p or {}).foreground or {}
+end
+
+local windows, root = {}, nil
+for _, w in ipairs(view.windows) do
+	if not skip[w.label] then
+		local tiled, floating, flavors = nil, 0, {}
+		for _, layer in ipairs(w.layers) do
+			for _, b in ipairs(layer.blocks or {}) do flavors[b.block_id] = b.flavor end
+			if layer.kind == "tiled" then tiled = layer.layout else floating = floating + 1 end
+		end
+		if tiled ~= nil then
+			table.insert(windows, { label = w.label, layout = tiled, flavors = flavors, floating = floating })
+		end
+	end
+end
+
+-- The first block decides the root, like mx uses the first pane
+local function first_block(node)
+	if node.split then return first_block(node.split.before) end
+	return node.block_id
+end
+if #windows == 0 then error("session has no windows to export", 0) end
+root = process(first_block(windows[1].layout)).cwd or home
+
+local function cwd_expr(cwd)
+	if cwd == nil or cwd == root then return nil end
+	if cwd:sub(1, #root + 1) == root .. "/" then return q(cwd:sub(#root + 2)) end
+	return home_expr(cwd)
+end
+
+local function pad(n) return string.rep("\t", n) end
+
+local function emit(node, flavors, depth)
+	if node.split then
+		local s = node.split
+		return "rex.layout." .. s.direction .. "(\n"
+			.. pad(depth + 1) .. tostring(s.ratio) .. ",\n"
+			.. pad(depth + 1) .. emit(s.before, flavors, depth + 1) .. ",\n"
+			.. pad(depth + 1) .. emit(s.after, flavors, depth + 1) .. "\n"
+			.. pad(depth) .. ")"
+	end
+	local id = node.block_id
+	local fg = process(id)
+	local options = {}
+	local cwd = cwd_expr(fg.cwd)
+	if cwd ~= nil then table.insert(options, "cwd = " .. cwd) end
+	local command = id ~= self and recorded(id) or nil
+	local text = "rex.layout.block {\n"
+	if command ~= nil then
+		table.insert(options, "initial_input = " .. q(command .. "\n"))
+	elseif fg.argv0 ~= nil and fg.argv0:sub(1, 1) ~= "-" then
+		-- Login shells have a leading "-" in argv0; anything else is a program
+		text = text .. pad(depth + 1) .. "-- running " .. fg.argv0:gsub("\n", " ") .. " (command not recorded)\n"
+	end
+	text = text .. pad(depth + 1) .. "flavor = " .. q(flavors[id] or "com.superlogical.terminal.shell") .. ",\n"
+	if #options > 0 then
+		text = text .. pad(depth + 1) .. "options = { " .. table.concat(options, ", ") .. " },\n"
+	end
+	return text .. pad(depth) .. "}"
+end
+
+local out = {
+	"-- Generated by rx --export from session " .. q(view.label or view.session_id) .. ".",
+	"-- Windows from rx/shared.lua are omitted; rx appends them to new sessions.",
+	"-- Recorded commands are replayed. Review them for secrets before saving this file.",
+	"-- Programs without a recorded command remain comments with their process names.",
+	"",
+	"return {",
+	"\troot = " .. home_expr(root) .. ",",
+	"\twindows = {",
+}
+for _, w in ipairs(windows) do
+	table.insert(out, "\t\t{")
+	if w.label ~= nil then table.insert(out, "\t\t\tlabel = " .. q(w.label) .. ",") end
+	if w.floating > 0 then
+		table.insert(out, "\t\t\t-- " .. w.floating .. " floating layer(s) not exported")
+	end
+	table.insert(out, "\t\t\tlayout = " .. emit(w.layout, w.flavors, 3) .. ",")
+	table.insert(out, "\t\t},")
+end
+table.insert(out, "\t},")
+table.insert(out, "}")
+io.write(table.concat(out, "\n") .. "\n")
+'
+
+rx_export() {
+	local session="${1-}"
+
+	if [[ -z "$session" ]]; then
+		if [[ -z ${REX_SESSION-} ]]; then
+			echo "rx: --export needs a session name outside Rex" >&2
+			return 64
+		fi
+		session="$REX_SESSION"
+	fi
+
+	RX_SHARED="$SHARED_FILE" RX_COMMANDS="$COMMANDS_DIR" RX_SELF="${REX_BLOCK-}" \
+		rex do -s "$session" - <<<"$EXPORT_LUA"
+}
+
+main() {
+	local name="" root="$PWD" session_file="" id
+
+	case "${1-}" in
+	--export)
+		[ $# -le 2 ] || usage
+		rx_export "${2-}"
+		exit $?
+		;;
+	-h | --help)
+		[ $# -eq 1 ] || usage
+		usage_text
+		exit 0
+		;;
+	-*)
+		usage
+		;;
+	'')
+		name="$(basename "$PWD")"
+		;;
+	*)
+		[ $# -eq 1 ] || usage
+		name="$1"
+		session_file="$(find_session_file "$name")" || session_file=""
+		;;
+	esac
+
+	id="$(RX_NAME="$name" RX_ROOT="$root" RX_DEF="$session_file" RX_SHARED="$SHARED_FILE" \
+		rex do - <<<"$OPEN_LUA")"
+	# rex do prints the returned string as JSON; session IDs never contain quotes
+	id="${id//\"/}"
+
+	if [ -n "${REX_SESSION-}" ]; then
+		rex do session.select session_id="$id" >/dev/null
+	else
+		exec rex attach "$id"
+	fi
+}
+
+main "$@"

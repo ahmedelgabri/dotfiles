@@ -165,6 +165,32 @@ if [[ -n ${TMUX_PANE-} ]]; then
   add-zsh-hook precmd _mx_clear_command
 fi
 
+# The same for rx --export. Rex has no per-block options and reports only the
+# process name, so the command goes to a file named after the block. zf_rm
+# and zf_mkdir are builtins, which keeps the precmd hook from forking on
+# every prompt.
+if [[ -n ${REX_BLOCK-} ]]; then
+  autoload -Uz add-zsh-hook
+  zmodload -F zsh/files b:zf_rm b:zf_mkdir
+
+  _rx_command_file="${XDG_STATE_HOME:-$HOME/.local/state}/rx/commands/$REX_BLOCK"
+
+  _rx_clear_command() {
+    [[ -e $_rx_command_file ]] && zf_rm -f -- "$_rx_command_file"
+    return 0
+  }
+
+  _rx_record_command() {
+    _rx_clear_command
+    # HIST_IGNORE_SPACE, as for mx above
+    [[ $1 == ' '* ]] && return 0
+    zf_mkdir -p -- "${_rx_command_file:h}" && print -r -- "$1" >|"$_rx_command_file"
+  }
+
+  add-zsh-hook preexec _rx_record_command
+  add-zsh-hook precmd _rx_clear_command
+fi
+
 # Project/session picker. Runs mx --pick as a real command via accept-line
 # instead of inside the widget: outside tmux, mx ends in `tmux attach`,
 # which must own the terminal — zle holds it while a widget runs.

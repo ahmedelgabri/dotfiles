@@ -12,6 +12,12 @@ if [ -z "$message" ]; then
 	exit 0
 fi
 
+# Rex surfaces Claude notifications itself, so a second one here would
+# duplicate them.
+if [ -n "${REX_SESSION:-}" ]; then
+	exit 0
+fi
+
 # GHOSTTY_BIN_DIR is only set inside Ghostty, which surfaces Claude
 # notifications itself. tmux consumes those escape sequences, so send an
 # explicit passthrough sequence to the pane TTY when running inside tmux.

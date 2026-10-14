@@ -28,6 +28,9 @@ function notifyOSC99(title: string, body: string): void {
 }
 
 function notify(title: string, body: string): void {
+	// Rex shows agent notifications itself, so a second one here would duplicate them.
+	if (process.env.REX_SESSION) return
+
 	if (process.env.KITTY_WINDOW_ID) {
 		notifyOSC99(title, body)
 	} else {

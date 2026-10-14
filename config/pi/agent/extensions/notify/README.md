@@ -6,6 +6,7 @@ queued continuations have finished. There are no commands or extension settings.
 
 ## Terminal support
 
+- When `REX_SESSION` is set, send nothing. Rex shows agent notifications itself.
 - When `KITTY_WINDOW_ID` is set, use Kitty's OSC 99 notification protocol.
 - Otherwise, use OSC 777, supported by terminals such as Ghostty, WezTerm, and
   rxvt-unicode.
