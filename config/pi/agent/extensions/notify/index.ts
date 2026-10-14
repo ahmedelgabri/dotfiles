@@ -36,7 +36,10 @@ function notify(title: string, body: string): void {
 }
 
 export default function (pi: ExtensionAPI) {
-	pi.on('agent_settled', () => {
+	pi.on('agent_settled', (_event, ctx) => {
+		// Print, JSON, and RPC runs have no terminal to notify; the escape
+		// sequence would only end up in their captured output.
+		if (ctx.mode !== 'tui') return
 		notify('Pi', 'Ready for input')
 	})
 }

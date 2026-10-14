@@ -15,7 +15,6 @@ queued continuations have finished. There are no commands or extension settings.
 Notification visibility depends on the terminal and operating-system
 notification settings. No separate desktop notification executable is used.
 
-The extension writes escape sequences directly to stdout and does not check Pi's
-run mode. Disable it when clean print, JSON, or RPC stdout is required.
+Notifications are sent only in the interactive TUI. Print, JSON, and RPC runs, such as `/loop` runs, stay silent, so no escape sequence reaches their captured output.
 
 See [extension loading](../README.md#activation).
