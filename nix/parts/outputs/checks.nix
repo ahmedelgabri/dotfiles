@@ -76,6 +76,10 @@
             bash ${source}/tests/mx.sh
           '';
 
+          jj-templates = mkCheck "jj-templates-check" [ pkgs.bash pkgs.jujutsu ] ''
+            bash ${source}/tests/jj-templates.sh
+          '';
+
           bootstrap-fonts = pkgs.writeText "bootstrap-fonts-check" (
             builtins.toJSON (
               import ../../../tests/bootstrap-fonts.nix {

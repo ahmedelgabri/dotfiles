@@ -64,8 +64,7 @@ gr = ["log", "-r", "::@ & ~empty_description()", "-T", '''
   ")" ++
   " " ++
   description.first_line() ++
-  " - " ++
-  author.name() ++
+  surround(" - ", "", format_short_signature(author)) ++
   if(bookmarks, " (" ++ bookmarks ++ ")") ++
   "\n"
 ''']
@@ -114,10 +113,30 @@ if(local_bookmarks, "bookmarks=" ++ local_bookmarks.map(|b| b.name()).join(",") 
 
 # Basic customizations.
 'format_short_change_id(id)' = 'id.shortest()'
-'format_short_signature(signature)' = '''if(signature.name(), signature.name(), label("text warning", "NO NAME"))'''
-'format_short_signature_oneline(signature)' = '''separate(" ",
-  format_short_signature(signature),
+# My own commits leave the author out, so only other people (or my other
+# identities) stand out. Empty fields never match, so a host without a
+# configured identity still gets the NO NAME / NO EMAIL warnings.
+'is_current_user(signature)' = '''
+signature.name() && signature.email()
+  && signature.name() == config("user.name").as_string()
+  && signature.email() == config("user.email").as_string()
+'''
+'format_short_signature(signature)' = '''
+if(!is_current_user(signature), separate(" ",
+  if(signature.name(), signature.name(), label("text warning", "NO NAME")),
   surround("<", ">", if(signature.email(), signature.email(), label("text warning", "NO EMAIL")))
+))
+'''
+'format_short_signature_oneline(signature)' = 'format_short_signature(signature)'
+# jj's default, minus the name and email on my own commits; `jj show` uses it
+# for both author and committer.
+'format_detailed_signature(signature)' = '''
+separate(" ",
+  if(!is_current_user(signature), separate(" ",
+    coalesce(signature.name(), name_placeholder),
+    "<" ++ coalesce(signature.email(), email_placeholder) ++ ">",
+  )),
+  "(" ++ format_timestamp(signature.timestamp()) ++ ")",
 )
 '''
 
@@ -226,8 +245,7 @@ if(commit.root(),
         commit.working_copies(),
         if(commit.contained_in('first_parent(@)'), label("git_head", "git_head()")),
         render_jira(commit),
-        "-",
-        format_short_signature_oneline(commit.author()),
+        surround("- ", "", format_short_signature_oneline(commit.author())),
       ) ++ "\n",
       format_current_revision_summary(commit),
     ),
@@ -265,6 +283,17 @@ if(commit.root(),
 # Add change ID to the end of the commit
 commit_trailers = '''
 if(!trailers.contains_key("Change-Id"), format_gerrit_change_id_trailer(self))
+'''
+
+# jj's default, with an author column wide enough for most names and emails,
+# left blank on my own lines.
+file_annotate = '''
+join(" ",
+  commit.change_id().shortest(8),
+  pad_end(32, truncate_end(32, format_short_signature(commit.author()), "…")),
+  commit_timestamp(commit).local().format("%Y-%m-%d %H:%M:%S"),
+  pad_start(4, line_number),
+) ++ ": " ++ content
 '''
 
 # Replicate `git commit -v`

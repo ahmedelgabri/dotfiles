@@ -137,6 +137,15 @@ attached, every launch ends with tmux's expected `no current client` error,
 which the suite asserts. `--pick` is not covered because it needs an interactive
 fzf.
 
+## jj templates
+
+```sh
+nix build .#checks.aarch64-darwin.jj-templates
+bash tests/jj-templates.sh
+```
+
+The suite layers [`config/jj/config.toml`](../config/jj/config.toml) under a test identity through `JJ_CONFIG` and renders real jj output for a temporary repository. Commits come from the configured user, the same name with another email, and another person. The compact log, the oneline log, the `gr`/`oneline` aliases, and `jj show` must leave the author out only when both name and email match, and otherwise show the name and email. `jj file annotate` shows them in a 32-character column, truncated with `…` when longer, and leaves it blank for the configured user. `jj show` applies this to the committer too, so a commit by someone else and reworded by the configured user still names its author. With no configured email, an author without one still shows the `NO EMAIL` warning.
+
 ## Pi extensions
 
 The Node unit, integration, and E2E tests for the
