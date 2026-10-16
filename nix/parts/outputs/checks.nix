@@ -49,6 +49,12 @@
             lua ${source}/tests/hammerspoon_prayer.lua ${source}
           '';
 
+          # Rex runs its config with Lua 5.1.
+          rex-init = mkCheck "rex-init-check" [ pkgs.lua5_1 pkgs.stylua ] ''
+            stylua --config-path ${source}/.stylua.toml --check ${source}/tests/rex_init.lua
+            lua ${source}/tests/rex_init.lua ${source}
+          '';
+
           doctor-tests = mkCheck "doctor-tests" [ pkgs.python3 pkgs.bash pkgs.gawk pkgs.gnugrep ] ''
             python3 ${source}/tests/doctor_test.py
           '';
