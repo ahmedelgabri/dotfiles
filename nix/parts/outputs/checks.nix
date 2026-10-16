@@ -136,6 +136,13 @@
             '').overrideAttrs
               { __darwinAllowLocalNetworking = true; };
 
+          # Starts real Pi in print and RPC mode against a loopback model.
+          pi-notify =
+            (mkCheck "pi-notify-check" [ pkgs.nodejs pkgs.llm-agents.pi ] ''
+              node --test ${source}/config/pi/agent/extensions/notify/notify.test.ts
+            '').overrideAttrs
+              { __darwinAllowLocalNetworking = true; };
+
           pi-extensions = mkCheck "pi-extensions-check" [ pkgs.typescript ] ''
             cp -R ${source}/config/pi/agent/extensions source
             chmod -R u+w source

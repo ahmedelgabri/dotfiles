@@ -171,8 +171,9 @@ The suite layers [`config/jj/config.toml`](../config/jj/config.toml) under a tes
 ## Pi extensions
 
 The Node unit, integration, and E2E tests for the
-[diff](../config/pi/agent/extensions/diff/README.md#tests) and
-[simplify](../config/pi/agent/extensions/simplify/README.md#tests) extensions
-are colocated with them, not in this directory. Simplify's RPC client and
+[diff](../config/pi/agent/extensions/diff/README.md#tests),
+[simplify](../config/pi/agent/extensions/simplify/README.md#tests), and
+[notify](../config/pi/agent/extensions/notify/README.md#tests) extensions are
+colocated with them, not in this directory. Simplify's RPC client and
 scripted-model helpers are in
 [`lib/test-support.ts`](../config/pi/agent/extensions/lib/test-support.ts).
