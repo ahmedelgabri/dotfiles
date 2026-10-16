@@ -73,3 +73,55 @@ rex.action {
 }
 
 rex.bind('cmd+t', 'tab_new_next')
+
+-- The same programs as `VIM_PATTERN` in config/tmux/tmux.conf. fzf is one of
+-- them because it moves its cursor with ctrl+j and ctrl+k.
+local function runs_vim(block_id)
+	local fg = foreground(block_id)
+	if fg == nil then
+		return false
+	end
+	local name = fg.name:gsub('^%.', ''):gsub('%-wrapped$', ''):gsub('diff$', '')
+	return name:match '^g?view$' ~= nil
+		or name:match '^g?l?n?vim?x?$' ~= nil
+		or name == 'fzf'
+end
+
+-- Wraps to the far side at the edge, like tmux's `select-pane`.
+local function focus_pane(direction)
+	rex.session.focus_direction { direction = direction, wrap = true }
+end
+
+-- What nvim calls at the edge of the editor. It keeps a zoomed nvim in place,
+-- like `disable_when_zoomed` does for nvim-tmux-navigation, because
+-- `focus_direction` would unzoom it.
+rex.action {
+	name = 'pane_focus_unless_zoomed',
+	title = 'Focus Pane Unless Zoomed',
+	args = { direction = 'string' },
+	run = function(ctx, args)
+		local view, err = rex.session.view {}
+		if err ~= nil then
+			error(err, 0)
+		end
+		for _, w in ipairs(view.windows) do
+			if w.window_id == view.active_window_id and w.zoomed_block_id then
+				return
+			end
+		end
+		focus_pane(args.direction)
+	end,
+}
+
+-- Like vim-tmux-navigator: in vim the key goes to the editor, which moves
+-- between its own windows and hands back to Rex at its edge (see
+-- config/nvim/plugin/core.lua). Returning false sends the key to the block.
+for key, direction in pairs { h = 'left', j = 'down', k = 'up', l = 'right' } do
+	rex.bind('ctrl+' .. key, function(ctx)
+		if runs_vim(ctx.block_id) then
+			return false
+		end
+		focus_pane(direction)
+		return true
+	end)
+end

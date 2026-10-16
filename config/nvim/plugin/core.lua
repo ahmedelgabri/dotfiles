@@ -190,3 +190,27 @@ au.autocmd {
 		end
 	end,
 }
+
+-- nvim-tmux-navigation only talks to tmux. Rex passes ctrl+h/j/k/l to nvim
+-- (see config/rex/init.lua), so at the edge of the editor give the move back
+-- to Rex.
+if vim.env.REX_SESSION and not vim.env.TMUX then
+	for key, direction in pairs { h = 'left', j = 'down', k = 'up', l = 'right' } do
+		vim.keymap.set('n', '<C-' .. key .. '>', function()
+			if vim.fn.winnr(key) ~= vim.fn.winnr() then
+				vim.cmd.wincmd(key)
+				return
+			end
+			-- A keypress must never start a Rex server.
+			vim.system {
+				'rex',
+				'--autostart=false',
+				'do',
+				'-s',
+				vim.env.REX_SESSION,
+				'pane_focus_unless_zoomed',
+				'direction=' .. direction,
+			}
+		end, { desc = 'Go to the window or Rex pane ' .. direction })
+	end
+end
