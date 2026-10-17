@@ -47,52 +47,103 @@ let
         updatePiExtensionTypes = pkgs.writeShellApplication {
           name = "update-pi-extension-types";
           runtimeInputs = with pkgs; [
-            curl
+            gnutar
             jq
             nix
+            nodejs
+            ripgrep
           ];
-          # The pi packages are published in lockstep with pi releases;
-          # typebox is pinned to whatever pi-coding-agent declares, and
-          # undici-types follows @types/node.
+          # The package set follows the code: the extensions' bare imports
+          # (plus tsconfig `types`) are the roots, and each package's .d.ts
+          # imports pull in the rest. Versions come from whoever imports
+          # the package, so pi's own pins win over npm's latest.
           text = ''
             registry="https://registry.npmjs.org"
-            lockfile="${myConfig.dotfilesDir}/nix/parts/modules/shared/pi-extension-types.lock.json"
+            dotfiles="${myConfig.dotfilesDir}"
+            lockfile="$dotfiles/nix/parts/modules/shared/pi-extension-types.lock.json"
+            extensions="$dotfiles/config/pi/agent/extensions"
 
-            pi_version=$(curl -fsSL "$registry/@earendil-works%2Fpi-coding-agent/latest" | jq -r .version)
-            typebox_version=$(curl -fsSL "$registry/@earendil-works%2Fpi-coding-agent/$pi_version" | jq -r '.dependencies.typebox')
-            types_node_meta=$(curl -fsSL "$registry/@types%2Fnode/latest")
-            types_node_version=$(jq -r .version <<<"$types_node_meta")
-            # @types/node depends on undici-types with a ~x.y.z range;
-            # resolve it to the newest matching x.y.* release.
-            undici_range=$(jq -r '.dependencies["undici-types"]' <<<"$types_node_meta")
-            undici_prefix=''${undici_range#\~}
-            undici_prefix=''${undici_prefix%.*}
-            undici_version=$(curl -fsSL "$registry/undici-types" |
-              jq -r --arg p "$undici_prefix." '.versions | keys | map(select(startswith($p))) | last')
+            tmp=$(mktemp -d)
+            trap 'rm -rf "$tmp"' EXIT
 
-            entry() {
-              local name=$1 version=$2 base url hash
-              base=''${name##*/}
-              url="$registry/$name/-/$base-$version.tgz"
-              hash=$(nix store prefetch-file --json "$url" | jq -r .hash)
-              printf '%s %s\n' "$name" "$version" >&2
-              jq -n --arg name "$name" --arg version "$version" --arg hash "$hash" \
-                '{($name): {version: $version, hash: $hash}}'
+            # The installed pi comes from the locked llm-agents input, and
+            # npm's latest can run ahead of it.
+            pi_version=$(nix eval --raw --inputs-from "$dotfiles" llm-agents#pi.version)
+            pi_deps=$(npm view "@earendil-works/pi-coding-agent@$pi_version" dependencies --json)
+
+            declare -A builtin=()
+            while IFS= read -r module; do
+              builtin[$module]=1
+            done < <(node -p 'require("node:module").builtinModules.join("\n")')
+
+            # Print the npm packages imported by the files rg selects, with
+            # relative paths and Node built-ins left out. Static imports
+            # only count outside comment lines, so JSDoc examples such as
+            # `Buffer.from("abc")` or `import x from "foo"` don't match.
+            bare_imports() {
+              local spec scope rest
+              {
+                rg --no-filename --only-matching --replace '$1$2' "$@" \
+                  -e '^\s*(?:[^\s*/][^"\x27\n]*?)?\b(?:from|import)\s*["\x27]([^"\x27./][^"\x27]*)["\x27]' \
+                  -e '\bimport\(\s*["\x27]([^"\x27./][^"\x27]*)["\x27]\s*\)' ||
+                  [ $? -eq 1 ]
+              } | while IFS= read -r spec; do
+                case $spec in
+                  node:*) continue ;;
+                  @*) IFS=/ read -r scope rest _ <<<"$spec" && spec="$scope/$rest" ;;
+                  *) spec=''${spec%%/*} ;;
+                esac
+                [ -n "''${builtin[$spec]:-}" ] || printf '%s\n' "$spec"
+              done | sort -u
             }
 
-            {
-              entry "@earendil-works/pi-coding-agent" "$pi_version"
-              entry "@earendil-works/pi-agent-core" "$pi_version"
-              entry "@earendil-works/pi-ai" "$pi_version"
-              entry "@earendil-works/pi-tui" "$pi_version"
-              entry "@earendil-works/pi-client" "$pi_version"
-              entry "@earendil-works/pi-telemetry" "$pi_version"
-              entry "@earendil-works/chord" "$pi_version"
-              entry "typebox" "$typebox_version"
-              entry "@types/node" "$types_node_version"
-              entry "undici-types" "$undici_version"
-            } | jq -s add >"$lockfile"
+            # The .js files are browser code that loads its packages from a
+            # CDN import map, and tsc doesn't check JS.
+            queue=()
+            while IFS= read -r name; do
+              spec=$(jq -r --arg n "$name" '.[$n] // empty' <<<"$pi_deps")
+              [ "$name" = "@earendil-works/pi-coding-agent" ] && spec=$pi_version
+              queue+=("$name ''${spec:-latest}")
+            done < <({
+              bare_imports -g '*.ts' "$extensions"
+              jq -r '.compilerOptions.types[]? | "@types/" + .' "$extensions/tsconfig.json"
+            } | sort -u)
 
+            # node_modules is flat, so the first version queued for a name wins.
+            declare -A seen=()
+            lock='{}'
+            while [ ''${#queue[@]} -gt 0 ]; do
+              read -r name spec <<<"''${queue[0]}"
+              queue=("''${queue[@]:1}")
+              [ -z "''${seen[$name]:-}" ] || continue
+              seen[$name]=1
+
+              version=$(npm view "$name@$spec" version --json | jq -r 'if type == "array" then last else . end')
+              url="$registry/$name/-/''${name##*/}-$version.tgz"
+              prefetch=$(nix store prefetch-file --json "$url")
+              printf '%s %s\n' "$name" "$version" >&2
+              lock=$(jq --arg name "$name" --arg version "$version" --argjson prefetch "$prefetch" \
+                '. + {($name): {version: $version, hash: $prefetch.hash}}' <<<"$lock")
+
+              mkdir "$tmp/unpack"
+              tar -xzf "$(jq -r .storePath <<<"$prefetch")" -C "$tmp/unpack"
+              manifest=$(cat "$tmp"/unpack/*/package.json)
+              while IFS= read -r dep; do
+                [ "$dep" != "$name" ] || continue
+                spec=$(jq -r --arg n "$dep" \
+                  '.dependencies[$n] // .peerDependencies[$n] // .optionalDependencies[$n] // empty' <<<"$manifest")
+                if [ -z "$spec" ]; then
+                  echo "warning: $name imports undeclared $dep; skipping" >&2
+                  continue
+                fi
+                queue+=("$dep $spec")
+              done < <(bare_imports -g '*.d.ts' -g '*.d.mts' -g '*.d.cts' "$tmp/unpack")
+              rm -rf "$tmp/unpack"
+            done
+
+            # Replace the lockfile only after every fetch has succeeded.
+            jq -S . <<<"$lock" >"$tmp/lock.json"
+            mv "$tmp/lock.json" "$lockfile"
             echo "Wrote $lockfile"
           '';
         };
