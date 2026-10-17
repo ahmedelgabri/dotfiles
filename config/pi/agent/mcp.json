@@ -12,6 +12,11 @@
 			"headers": {
 				"Authorization": "!token=$(\"${XDG_CONFIG_HOME:-$HOME/.config}/zsh/bin/secret\" get linear-api-token) && test -n \"$token\" && printf 'Bearer %s' \"$token\""
 			}
+		},
+		"superlogical": {
+			"exposure": "codemode",
+			"description": "Documentation for Rex application",
+			"url": "https://www.superlogical.com/rex/community-mcp"
 		}
 	}
 }
