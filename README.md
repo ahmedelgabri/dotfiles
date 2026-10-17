@@ -258,7 +258,6 @@ Useful files to create there:
 | `$HOST_CONFIGS/pi/extensions`           | Machine-specific Pi extensions added to the generated Pi settings                                                                                                                                                              | Private extension                                  |
 | `$HOST_CONFIGS/pi/skills`               | Machine-specific Pi skills added to the generated Pi settings                                                                                                                                                                  | Private skill                                      |
 | `$HOST_CONFIGS/mx/sessions/<name>.lua`  | Host-local `mx` session definitions (win over `~/.config/mx/sessions/`); see [nix/pkgs/mx/README.md](./nix/pkgs/mx/README.md)                                                                                                                                                       |
-| `$HOST_CONFIGS/rex/sessions/<name>.lua` | Host-local `rx` (Rex) session definitions (win over [config/rex/sessions/](./config/rex/sessions/)); see that dir's README                                                                                                     | Work session layouts                               |
 
 If you want GitHub to show commits as **Verified**, the email on the commit, the
 email on GitHub, and the email attached to the public key all need to match.

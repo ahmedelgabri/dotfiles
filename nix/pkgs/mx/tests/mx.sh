@@ -34,7 +34,7 @@ for tool in tmux bash awk sed wc basename dirname tail tr mktemp cat cp mv env s
 done
 ln -s "$MX_BIN/mx" "$WORK/bin/mx"
 
-unset TMUX TMUX_PANE HOST_CONFIGS DEBUG XDG_STATE_HOME
+unset TMUX TMUX_PANE REX_SESSION REX_BLOCK REX_SERVER MX_BACKEND HOST_CONFIGS DEBUG XDG_STATE_HOME
 export LC_ALL=C
 export PATH="$WORK/bin"
 export SHELL="$WORK/bin/bash"
@@ -210,6 +210,8 @@ expect "--dir to missing path" 64 "" "$USAGE" mx --dir "$WORK/missing"
 expect "--pick with two queries" 64 "" "$USAGE" mx --pick a b
 expect "--export with two sessions" 64 "" "$USAGE" mx --export a b
 expect "two names" 64 "" "$USAGE" mx a b
+expect "unknown backend" 64 "" "mx: MX_BACKEND must be tmux or rex, not screen" \
+	env MX_BACKEND=screen mx --list
 
 run env -u PROJECTS mx --list
 assert_eq "--list without PROJECTS: status" 1 "$STATUS"
@@ -411,6 +413,9 @@ SELF_PANE=$(t display-message -p -t =alpha:2.1 '#{pane_id}')
 expect "--export from inside alpha" 0 "$EXPECTED_SELF" "" \
 	env TMUX_PANE="$SELF_PANE" TMUX="$SOCKET,0,0" mx --export
 
+# tmux running inside a Rex terminal is still tmux.
+expect "--export inside tmux inside Rex" 0 "$EXPECTED" "" \
+	env REX_SESSION=session:outer REX_BLOCK=block:outer TMUX="$SOCKET,0,0" mx --export alpha
 expect "--export outside tmux without session" 64 "" \
 	"mx: --export needs a session name outside tmux" mx --export
 expect "--export missing session" 1 "" "mx: session not found: nope" mx --export nope
@@ -487,9 +492,7 @@ return {
 			layout = {
 				split = 'horizontal',
 				ratio = 0.6962,
-				{
-					focus = true,
-				},
+				{},
 				{
 					cwd = 'src',
 					command = 'touch "\$HOME/should not run"',

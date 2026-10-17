@@ -2,21 +2,21 @@
 name: mx-session
 description:
   Write, update, export, migrate, and debug named session definition files for
-  the `mx` launcher. Use when asked to create an mx session, convert the
-  current session into a reusable file, change a layout under `mx/sessions`,
-  convert old tmux session files, or decide whether a window belongs in a
-  definition or `shared.lua`.
+  the `mx` launcher, which opens them in tmux or Rex. Use when asked to create
+  an mx session, convert the current tmux or Rex session into a reusable file,
+  change a layout under `mx/sessions`, convert old tmux or rx session files,
+  or decide whether a window belongs in a definition or `shared.lua`.
 ---
 
 # Write mx session files
 
 ## Start with the current implementation
 
-Read the active implementation before writing a definition. In the dotfiles repository, `mx` is a package in `nix/pkgs/mx/`: the `mx` and `mx-init` scripts, plus `lua/lib.lua` (loading, checking, and writing definitions) and `lua/tmux.lua` (building and exporting tmux sessions). `nix/pkgs/mx/README.md` documents the contract. If the documentation and the code differ, trust the code.
+Read the active implementation before writing a definition. In the dotfiles repository, `mx` is a package in `nix/pkgs/mx/`: the `mx` and `mx-init` scripts, plus `lua/lib.lua` (loading, checking, and writing definitions), `lua/tmux.lua` and `lua/rex.lua` (building and exporting sessions in each backend), and `lua/migrate.lua` (old rx files). `nix/pkgs/mx/README.md` documents the contract. If the documentation and the code differ, trust the code.
 
 ## Export an existing session
 
-Prefer `mx --export` over rebuilding a live session by hand. With no argument it reads the current session. Pass a session name to copy another session, or when you run it outside tmux:
+Prefer `mx --export` over rebuilding a live session by hand. With no argument it reads the current session: the tmux one inside tmux, else the Rex one inside a Rex terminal. Pass a session name (a Rex label works) to copy another session, or when you run it outside both:
 
 ```bash
 mx --export
@@ -41,7 +41,7 @@ The export keeps:
 - the active pane in each window
 - foreground commands recorded by the zsh integration
 
-It leaves out the linked shared windows, because `mx` adds them itself. A command started outside an integrated zsh, or with a leading space, becomes a `-- running <process>` comment, because tmux cannot recover its arguments.
+It leaves out the shared windows, because `mx` adds them itself, and Rex floating layers, which it notes in a comment. A command started outside an integrated zsh, or with a leading space, becomes a `-- running <process>` comment, because neither tmux nor Rex can recover its arguments.
 
 Review every exported command with the user, because arguments can contain secrets. Add or replace a restart command only when you know its full invocation. Do not inspect scrollback, shell history, pane contents, or pane environments unless the user asks. They can contain secrets, and they still may not show the original invocation reliably.
 
@@ -49,11 +49,11 @@ Review the generated `root` and paths. The exporter uses the first pane's direct
 
 ## Migrate old definitions
 
-Old bash definitions (`MX_ROOT` plus `mx_start()`) in `$HOST_CONFIGS/tmux/sessions/` or `~/.config/tmux/sessions/` convert with `mx --migrate`. It writes `<name>.lua` into the matching `mx/sessions/` directory and skips names that already have one. It runs `mx_start` against a private tmux server and records `send-keys` instead of running them. After migrating, review the output like an export: environment values such as `$EDITOR` are written as they were during the migration.
+Old tmux definitions (bash files with `MX_ROOT` and `mx_start()`) and old rx definitions (`<name>.lua` built with `rex.layout`) in `$HOST_CONFIGS/{tmux,rex}/sessions/` or `~/.config/{tmux,rex}/sessions/` convert with `mx --migrate`. It writes `<name>.lua` into the matching `mx/sessions/` directory, and it skips names that already have one. For tmux files it runs `mx_start` against a private tmux server and records `send-keys` instead of running them. For rx files it swaps in a stand-in `rex.layout`. After migrating, review the output like an export: environment values such as `$EDITOR` are written as they were during the migration.
 
 ## Choose the file and name
 
-`mx <name>` looks for `<name>.lua`. The name becomes the session name, with `.` and `:` changed to `_` for tmux.
+`mx <name>` looks for `<name>.lua`. The name becomes the session name, with `.` and `:` changed to `_`; Rex uses the same name as the label. Rex allows duplicate labels and `mx` opens the first match, so choose a name that no unrelated session uses.
 
 Choose the location by scope:
 
@@ -116,4 +116,9 @@ Check which file wins the lookup without launching anything:
 mx --list | awk -F '\t' -v name='new-session' '$1 == "sess" && $2 == name'
 ```
 
-To see what a definition builds, open it on a private tmux server, for example with `TMUX_TMPDIR=$(mktemp -d)`, and with `TMUX` unset. Do not use `mx <name>` on the real server as a test: it attaches or switches the current client, and an existing session skips the definition entirely. Never kill an existing session just to reload a changed definition unless the user explicitly approves that step.
+To see what a definition builds, open it on a private server:
+
+- tmux: run with `TMUX_TMPDIR=$(mktemp -d)` and with `TMUX` unset.
+- Rex: start `rex server run --listen unix://<short absolute path>`, with the socket under `mktemp -d` (socket paths are limited to about 104 bytes). Call `rex` with `-S unix://<path> --autostart=false`, and check `rex whoami` before any other command. Run `mx` with `MX_BACKEND=rex` and a `rex` wrapper that passes those flags, as `nix/pkgs/mx/tests/live-rex.sh` does.
+
+Do not use `mx <name>` on the real server as a test. It attaches, or switches the client or the Rex app, and an existing session skips the definition entirely. Never kill an existing session, or close all of its windows, just to reload a changed definition unless the user explicitly approves that step.

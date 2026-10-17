@@ -134,10 +134,13 @@ local function fill(args, target, layout, size, base)
 			layout_string(layout, size.w, size.h)
 		)
 	end
-	for i, pane in ipairs(panes) do
-		if pane.focus then
-			command(args, 'select-pane', '-t', target .. '.' .. (base + i - 1))
-		end
+	if #panes > 1 then
+		command(
+			args,
+			'select-pane',
+			'-t',
+			target .. '.' .. (base + lib.focus(panes) - 1)
+		)
 	end
 end
 
@@ -272,8 +275,6 @@ local function read_file(path)
 	end
 end
 
-local SHELLS = { sh = true, bash = true, zsh = true, fish = true, dash = true }
-
 function commands.export(name, commands_dir, migrated)
 	-- tmux rejects control characters in window names, and the path comes
 	-- last so a stray separator in it stays part of the path. -u keeps the
@@ -322,10 +323,7 @@ function commands.export(name, commands_dir, migrated)
 				cwd = path,
 				command = command,
 				focus = active == '1',
-				process = command == nil
-						and not SHELLS[process:gsub('^-', '')]
-						and process
-					or nil,
+				process = command == nil and lib.program(process) or nil,
 			}
 		end
 	end
@@ -347,11 +345,8 @@ function commands.export(name, commands_dir, migrated)
 	for _, w in ipairs(windows) do
 		w.layout = tree((parse(w.layout:gsub('^%x+,', ''), 1)))
 	end
-	-- A lone pane's focus says nothing, so only splits keep it.
 	for _, w in ipairs(windows) do
-		if not w.layout.split then
-			w.layout.focus = false
-		end
+		lib.panes(w.layout)[1].focus = false
 	end
 	local root = lib.panes(windows[1].layout)[1].cwd
 	local origin = migrated and lib.migrated(migrated) or lib.exported(name)

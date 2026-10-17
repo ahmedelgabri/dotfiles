@@ -181,7 +181,7 @@ if [[ -n ${TMUX_PANE-} || -n ${REX_BLOCK-} ]]; then
 fi
 
 # Project/session picker. Runs mx --pick as a real command via accept-line
-# instead of inside the widget: outside tmux, mx ends in `tmux attach`,
+# instead of inside the widget: outside tmux and Rex, mx ends in `tmux attach`,
 # which must own the terminal — zle holds it while a widget runs.
 if which mx &>/dev/null; then
   fzf-mx-pick-widget() {

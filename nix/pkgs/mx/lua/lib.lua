@@ -29,9 +29,11 @@ local helpers = {
 	end,
 }
 
+-- A nil root (an rx definition without one, during --migrate) keeps
+-- relative paths relative.
 local function resolve(cwd, root)
-	if cwd == nil then
-		return root
+	if cwd == nil or root == nil then
+		return cwd or root
 	end
 	if cwd:sub(1, 1) == '/' then
 		return cwd
@@ -73,13 +75,17 @@ end
 
 -- Returns { root = <abs path>, windows = { { label =, layout = } } } with
 -- every pane's cwd made absolute. A definition with no windows gets one
--- plain pane at root.
-function M.load(path, root)
+-- plain pane at root. `globals` adds names the file can see.
+function M.load(path, root, globals)
 	local chunk, err = loadfile(path)
 	if chunk == nil then
 		error(err, 0)
 	end
-	setfenv(chunk, setmetatable({ mx = helpers }, { __index = _G }))
+	local fenv = { mx = helpers }
+	for k, v in pairs(globals or {}) do
+		fenv[k] = v
+	end
+	setfenv(chunk, setmetatable(fenv, { __index = _G }))
 	local ok, spec = pcall(chunk)
 	if not ok then
 		error(path .. ': ' .. tostring(spec), 0)
@@ -112,6 +118,28 @@ function M.windows(def)
 		return def.windows
 	end
 	return { { layout = { cwd = def.root, focus = false } } }
+end
+
+local SHELLS = { sh = true, bash = true, zsh = true, fish = true, dash = true }
+
+-- The program a pane runs, or nil when it is only a shell (login shells
+-- have a leading "-").
+function M.program(name)
+	if name == nil or name == '' or SHELLS[name:gsub('^-', '')] then
+		return nil
+	end
+	return name
+end
+
+-- The index of the pane to focus. Both backends default to the first pane,
+-- so exports write `focus` only for a later one.
+function M.focus(panes)
+	for i, pane in ipairs(panes) do
+		if pane.focus then
+			return i
+		end
+	end
+	return 1
 end
 
 -- Panes in tree order, which is also the order both backends create them in.
@@ -163,7 +191,7 @@ local function cwd_expr(cwd, root, home)
 	if cwd == nil or cwd == root then
 		return nil
 	end
-	if cwd:sub(1, #root + 1) == root .. '/' then
+	if root ~= nil and cwd:sub(1, #root + 1) == root .. '/' then
 		return q(cwd:sub(#root + 2))
 	end
 	return home_expr(cwd, home)
@@ -234,9 +262,11 @@ function M.serialize(origin, root, windows, home)
 		'-- Programs without a recorded command stay as comments.',
 		'',
 		'return {',
-		'\troot = ' .. home_expr(root, home) .. ',',
-		'\twindows = {',
 	}
+	if root ~= nil then
+		table.insert(out, '\troot = ' .. home_expr(root, home) .. ',')
+	end
+	table.insert(out, '\twindows = {')
 	for _, w in ipairs(windows) do
 		table.insert(out, '\t\t{')
 		if w.label ~= nil then

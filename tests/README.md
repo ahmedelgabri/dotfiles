@@ -124,31 +124,13 @@ nix build .#mx && MX_BIN=$PWD/result/bin bash nix/pkgs/mx/tests/mx.sh
 
 The suite lives with the package; see [nix/pkgs/mx/README.md](../nix/pkgs/mx/README.md#tests) for what it covers.
 
-## rx
+## mx in Rex
 
 ```sh
-bash tests/live/rx.sh
+nix build .#mx && MX_BIN=$PWD/result/bin bash nix/pkgs/mx/tests/live-rex.sh
 ```
 
-The suite runs the real `rx` against a real Rex server that it starts on a
-private socket in a temporary directory. It needs the Rex app in
-`/Applications`, which is not in nixpkgs, so it is a live test with no Nix
-check. The `rex` CLI ignores `REX_SERVER` and silently falls back to the live
-server, so the suite reaches Rex only through a wrapper that pins `-S` to the
-private socket, and it aborts unless `rex whoami` reports that socket.
-
-It checks usage errors, plain sessions at `$PWD` and their reuse, definition
-layouts (split directions, ratios, default, relative, and absolute directories,
-typed commands), `$HOST_CONFIGS` precedence, shared windows, and that failing
-definitions create no session. It attaches through `script` and checks that the
-session is drawn. It also checks byte-exact `--export` output, including
-recorded commands, process-name comments, and the self-block exclusion, then
-launches the exported definition and compares its layout with the original.
-`PATH` holds only the tools the suite needs, so `shared.lua` never launches
-mail, RSS, or HN clients. Pane shells still load your login zsh config. Most
-launches end with Rex's expected `attach requires terminal output` error, which
-the suite asserts. `session.select`, used inside Rex, is not covered because it
-needs the app with Remote Control turned on.
+The suite runs the built `mx` with `MX_BACKEND=rex` against a real Rex server that it starts on a private socket. It needs the Rex app in `/Applications`, which is not in nixpkgs, so it is a live test with no Nix check. Every `rex` call goes through a wrapper that pins `-S` to the private socket, and the suite stops unless `rex whoami` reports that socket. [nix/pkgs/mx/README.md](../nix/pkgs/mx/README.md#tests) lists what it covers.
 
 ## Rex config
 
@@ -169,7 +151,7 @@ that `tab_new_next` passes the current tab's directory, places the tab after the
 current one, and raises API errors.
 
 The E2E suite starts a real Rex server on a private socket with the checkout's
-`init.lua`, behind the same `-S` wrapper and `rex whoami` guard as the rx suite.
+`init.lua`, behind the same `-S` wrapper and `rex whoami` guard as the mx Rex suite.
 It checks that new tabs open in the current tab's directory, both at the end and
 between tabs after a `cd`. It then presses ctrl+h/j/k/l through `client.key`,
 the path Rex.app uses, in a tab with a shell, a shell below it, and a real nvim

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # mx
-# version 2.2
+# version 3.0
 
 # Contributors:
 #   Wynn Netherland - http://github.com/pengwynn
@@ -17,9 +17,14 @@
 #   mx --pick [query]   fuzzy-pick a candidate and launch it
 #   mx --export [session]
 #                       print a definition based on a session
-#   mx --migrate        convert the old bash definitions in
-#                       {$HOST_CONFIGS,$XDG_CONFIG_HOME}/tmux/sessions
+#   mx --migrate        convert the old tmux and rx definitions in
+#                       {$HOST_CONFIGS,$XDG_CONFIG_HOME}/{tmux,rex}/sessions
 #   mx -h|--help        print usage
+#
+# Sessions live in Rex inside a Rex terminal, and in tmux inside tmux (also
+# tmux running in Rex) and everywhere else: `rex attach` only views a
+# session, so it cannot take over a terminal the way `tmux attach` does.
+# MX_BACKEND=tmux|rex overrides the choice.
 #
 # Session definitions are Lua files looked up as
 # $HOST_CONFIGS/mx/sessions/<name>.lua then
@@ -29,6 +34,9 @@
 # Project lookup resolves <name> against --list labels (exact match, or a
 # unique /<name> suffix), so `mx git-wt` and `mx c/master` work from
 # anywhere. No match falls back to a plain session at $PWD.
+
+# `rex do` is a subcommand, not a loop keyword.
+# shellcheck disable=SC1010
 
 set -ue -o pipefail
 
@@ -62,6 +70,27 @@ COMMANDS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/mx/commands"
 # The package installs the backends next to its bin directory.
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LUA_DIR="$HERE/../share/mx"
+
+# REX_BIN_DIR puts rex on PATH only inside Rex terminals.
+if ! command -v rex >/dev/null; then
+	rex() {
+		"/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex" "$@"
+	}
+fi
+
+case "${MX_BACKEND-}" in
+tmux | rex) BACKEND="$MX_BACKEND" ;;
+'')
+	BACKEND=tmux
+	if [[ -z ${TMUX-} && -n ${REX_SESSION-} ]]; then
+		BACKEND=rex
+	fi
+	;;
+*)
+	echo "mx: MX_BACKEND must be tmux or rex, not $MX_BACKEND" >&2
+	exit 64
+	;;
+esac
 
 # Session definition search path; first hit wins
 SESSION_DIRS=(
@@ -220,8 +249,60 @@ link_shared_windows() {
 		done
 }
 
+# Runs the Rex backend inside `rex do`, turning its "Error: " lines into
+# mx's. Callers pass the backend's inputs as environment variables.
+rex_lua() {
+	local err status=0
+	err="$(mktemp)"
+	MX_LUA_DIR="$LUA_DIR" MX_SHARED="$CONFIG_DIR/shared.lua" \
+		rex do "$@" "$LUA_DIR/rex.lua" 2>"$err" || status=$?
+	if ((status)); then
+		sed 's/^Error: /mx: /' "$err" >&2
+	fi
+	rm -f "$err"
+	return "$status"
+}
+
+rex_export() {
+	local session="${1-}"
+
+	if [[ -z "$session" ]]; then
+		if [[ -z ${REX_SESSION-} ]]; then
+			echo "mx: --export needs a session name outside Rex" >&2
+			return 64
+		fi
+		session="$REX_SESSION"
+	fi
+	MX_ACTION=export MX_COMMANDS="$COMMANDS_DIR" MX_SELF="${REX_BLOCK-}" \
+		rex_lua -s "$session"
+}
+
+# Opens or creates the session, then switches the Rex app to it, which needs
+# Remote Control turned on in the app.
+rex_open() {
+	local name="$1" session_file="$2" root="$3" id state
+
+	read -r id state < <(
+		MX_ACTION=open MX_NAME="$name" MX_ROOT="$root" MX_DEF="$session_file" \
+			rex_lua | tr -d '"'
+	)
+	MX_ACTION=finish MX_ROOT="$root" MX_DEF="$session_file" \
+		MX_CREATED="${state#existing}" rex_lua -s "$id" >/dev/null
+
+	if [ -n "${REX_SESSION-}" ]; then
+		rex do session.select session_id="$id" >/dev/null
+	else
+		exec rex attach "$id"
+	fi
+}
+
 mx_export() {
 	local session="${1-}"
+
+	if [ "$BACKEND" = rex ]; then
+		rex_export "$session"
+		return
+	fi
 
 	if [[ -z "$session" ]]; then
 		if [[ -z ${TMUX-} ]]; then
@@ -325,38 +406,50 @@ migrate_definition() (
 	luajit "$LUA_DIR/tmux.lua" export migrate "$COMMANDS_DIR" "$source"
 )
 
-# Converts every old definition that has no new one yet. Old files stay in
-# place.
-mx_migrate() {
-	local from to f name target status=0
-	local -a pairs=(
-		"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}" "${HOST_CONFIGS:+$HOST_CONFIGS/mx/sessions}"
-		"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions" "$CONFIG_DIR/sessions"
-	)
+# Converts each old definition in <from> that has no new one in <to> yet.
+# tmux definitions are bash files, rx ones <name>.lua; old files stay.
+migrate_dir() {
+	local kind="$1" from="$2" to="$3" f name target status=0
 
-	while ((${#pairs[@]})); do
-		from="${pairs[0]}" to="${pairs[1]}"
-		pairs=("${pairs[@]:2}")
-		[ -n "$from" ] && [ -d "$from" ] || continue
-		for f in "$from"/*; do
-			name="${f##*/}"
-			[ -f "$f" ] && [ "$name" != README.md ] || continue
-			target="$to/$name.lua"
-			if [ -e "$target" ]; then
-				echo "mx: skipped $f: $target exists" >&2
-				continue
-			fi
-			mkdir -p "$to"
-			if migrate_definition "$f" >"$target.tmp"; then
-				mv "$target.tmp" "$target"
-				echo "$f -> $target"
-			else
-				rm -f "$target.tmp"
-				echo "mx: could not convert $f" >&2
-				status=1
-			fi
-		done
+	[ -d "$from" ] || return 0
+	for f in "$from"/*; do
+		name="${f##*/}"
+		[ -f "$f" ] && [ "$name" != README.md ] || continue
+		if [ "$kind" = rex ]; then
+			[[ $name == *.lua ]] || continue
+			name="${name%.lua}"
+		fi
+		target="$to/$name.lua"
+		if [ -e "$target" ]; then
+			echo "mx: skipped $f: $target exists" >&2
+			continue
+		fi
+		mkdir -p "$to"
+		if if [ "$kind" = rex ]; then
+			luajit "$LUA_DIR/migrate.lua" "$f"
+		else
+			migrate_definition "$f"
+		fi >"$target.tmp"; then
+			mv "$target.tmp" "$target"
+			echo "$f -> $target"
+		else
+			rm -f "$target.tmp"
+			echo "mx: could not convert $f" >&2
+			status=1
+		fi
 	done
+	return "$status"
+}
+
+mx_migrate() {
+	local config="${XDG_CONFIG_HOME:-$HOME/.config}" status=0
+
+	if [ -n "${HOST_CONFIGS-}" ]; then
+		migrate_dir tmux "$HOST_CONFIGS/tmux/sessions" "$HOST_CONFIGS/mx/sessions" || status=1
+		migrate_dir rex "$HOST_CONFIGS/rex/sessions" "$HOST_CONFIGS/mx/sessions" || status=1
+	fi
+	migrate_dir tmux "$config/tmux/sessions" "$CONFIG_DIR/sessions" || status=1
+	migrate_dir rex "$config/rex/sessions" "$CONFIG_DIR/sessions" || status=1
 	return "$status"
 }
 
@@ -462,6 +555,11 @@ main() {
 
 	local tmux_name
 	tmux_name="$(sanitize "$name")"
+
+	if [ "$BACKEND" = rex ]; then
+		rex_open "$tmux_name" "$session_file" "$root"
+		exit 0
+	fi
 
 	if ! tmux has-session -t "=$tmux_name" 2>/dev/null; then
 		"$HERE/mx-init"
