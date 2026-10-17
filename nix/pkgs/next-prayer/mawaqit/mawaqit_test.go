@@ -149,7 +149,7 @@ func TestGetAPI(t *testing.T) {
 			}
 			_, _ = w.Write([]byte(`{"apiAccessToken":"test-token"}`))
 		case "/mosque/search":
-			if req.Header.Get("Authorization") != "test-token" {
+			if req.Header.Get("Api-Access-Token") != "test-token" {
 				t.Error("search did not use the returned token")
 			}
 			if req.URL.Query().Get("lat") != "52.367600" || req.URL.Query().Get("lon") != "4.904100" {

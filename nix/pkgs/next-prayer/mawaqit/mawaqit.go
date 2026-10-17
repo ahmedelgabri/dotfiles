@@ -133,7 +133,7 @@ func searchMosques(token string, lat float64, lon float64) (Response, error) {
 
 	var mosques Response
 	if err := fetchJSON(url, map[string]string{
-		"Authorization": token,
+		"Api-Access-Token": token,
 	}, &mosques); err != nil {
 		return nil, fmt.Errorf("mosque search: %w", err)
 	}
