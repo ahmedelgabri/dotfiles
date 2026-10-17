@@ -242,7 +242,7 @@ def run(args: argparse.Namespace) -> int:
     """
     url, video_id = video_url(args.url)
     executable = shutil.which("yt-dlp")
-    if not executable:
+    if executable is None:
         message = "yt-dlp is required but was not found in PATH."
         raise ValueError(message)
     output = (
