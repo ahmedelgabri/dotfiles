@@ -147,33 +147,6 @@ let
             echo "Wrote $lockfile"
           '';
         };
-        piAgentSettings = (builtins.fromJSON (builtins.readFile ../../../../config/pi/settings.json)) // {
-          extensions = [ "~/.local/share/${myConfig.hostName}/pi/extensions" ];
-          skills = [ "~/.local/share/${myConfig.hostName}/pi/skills" ];
-        };
-        mkSyncSettings =
-          target:
-          config.lib.dag.entryAfter [ "writeBoundary" ] ''
-            BK="${target}.bk"
-            TARGET="${target}"
-            if [ -f "$BK" ] || [ -L "$BK" ]; then
-              # pi records the last version whose changelog it showed; carry
-              # it across rebuilds so upgrades still surface the changelog.
-              LAST=""
-              if [ -f "$TARGET" ]; then
-                LAST=$(${lib.getExe pkgs.jq} -r '.lastChangelogVersion // empty' "$TARGET")
-              fi
-              rm -f "$TARGET"
-              if [ -n "$LAST" ]; then
-                ${lib.getExe pkgs.jq} --arg v "$LAST" '.lastChangelogVersion = $v' "$BK" >"$TARGET"
-              else
-                cp "$BK" "$TARGET"
-              fi
-              # The store copy is read-only; pi must be able to write the
-              # new marker after showing a changelog.
-              chmod u+w "$TARGET"
-            fi
-          '';
         mkConfigTree =
           { dir, target }:
           config.lib.file.mkOutOfStoreTree {
@@ -236,7 +209,8 @@ let
             "codex/AGENTS.md".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
 
-            "pi/agent/settings.json.bk".text = builtins.toJSON piAgentSettings + "\n";
+            "pi/agent/settings.json".source =
+              config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/pi/settings.json";
 
             "pi/agent/AGENTS.md".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/claude/CLAUDE-template.md";
@@ -262,8 +236,6 @@ let
               rm -f "$TARGET"
               ln -s "$SOURCE" "$TARGET"
             '';
-
-            syncPiAgentSettings = mkSyncSettings "${config.xdg.configHome}/pi/agent/settings.json";
           };
 
           file = lib.mergeAttrsList (

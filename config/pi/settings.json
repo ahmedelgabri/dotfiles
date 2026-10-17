@@ -1,29 +1,29 @@
 {
-	"$schema": "https://pi.dev/schemas/settings.schema.json",
-	"enableInstallTelemetry": false,
-	"defaultThinkingLevel": "high",
-	"defaultTools": ["+codemode"],
-	"defaultProvider": "openai-codex",
-	"defaultModel": "gpt-6.1-sol",
-	"enabledModels": [
-		"anthropic/claude-fable-*",
-		"anthropic/claude-opus-5*",
-		"anthropic/claude-sonnet-5*",
-		"openai-codex/gpt-6*",
-		"xai/grok-4.7"
-	],
-	"showHardwareCursor": true,
-	"autocompleteMaxVisible": 10,
-	"steeringMode": "one-at-a-time",
-	"followUpMode": "one-at-a-time",
-	"transport": "auto",
-	"hideThinkingBlock": false,
-	"collapseChangelog": false,
-	"quietStartup": "header",
-	"tuiMode": "fullscreen",
-	"treeFilterMode": "default",
-	"theme": "system",
-	"terminal": {
-		"hyperlinks": true
-	}
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
+  "enableInstallTelemetry": false,
+  "defaultThinkingLevel": "high",
+  "defaultTools": ["+codemode"],
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-6.1-sol",
+  "enabledModels": [
+    "anthropic/claude-fable-*",
+    "anthropic/claude-opus-5*",
+    "anthropic/claude-sonnet-5*",
+    "openai-codex/gpt-6*",
+    "xai/grok-4.7"
+  ],
+  "showHardwareCursor": true,
+  "autocompleteMaxVisible": 10,
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "transport": "auto",
+  "hideThinkingBlock": false,
+  "collapseChangelog": false,
+  "quietStartup": "header",
+  "tuiMode": "fullscreen",
+  "treeFilterMode": "default",
+  "theme": "system",
+  "terminal": {
+    "hyperlinks": true
+  }
 }

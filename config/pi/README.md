@@ -1,10 +1,6 @@
 # Pi configuration
 
-Home Manager reads [`settings.json`](settings.json), adds host-specific resource
-paths, and copies the generated settings into
-`$PI_CODING_AGENT_DIR/settings.json` on activation. This repository sets
-`PI_CODING_AGENT_DIR` to `~/.config/pi/agent`. A rebuild replaces changes made
-through `/settings`; update the checked-in file for persistent preferences.
+Home Manager symlinks [`settings.json`](settings.json) to `$PI_CODING_AGENT_DIR/settings.json`. This repository sets `PI_CODING_AGENT_DIR` to `~/.config/pi/agent`. Pi writes changes made through `/settings`, `/model`, and the changelog marker (`lastChangelogVersion`) straight into the checked-in file, so review them in the working copy and keep or revert them.
 
 ## Tools and display
 
