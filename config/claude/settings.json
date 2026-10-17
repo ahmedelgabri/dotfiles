@@ -52,11 +52,7 @@
             "type": "command",
             "command": "~/.claude/hooks/inject-repo-info.sh",
             "statusMessage": "Loading repo VCS info…"
-          }
-        ]
-      },
-      {
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "tap state idle --agent claude",
@@ -84,11 +80,7 @@
             "type": "command",
             "command": "~/.claude/hooks/log-event.sh SessionEnd",
             "async": true
-          }
-        ]
-      },
-      {
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "tap state clear --agent claude",
@@ -168,11 +160,7 @@
             "type": "command",
             "command": "~/.claude/hooks/run-ccpeek.sh",
             "async": true
-          }
-        ]
-      },
-      {
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "tap state idle --agent claude",
@@ -236,11 +224,7 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/notify.sh"
-          }
-        ]
-      },
-      {
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "tap state notification --agent claude",
@@ -272,11 +256,11 @@
   },
   "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
-  "tui": "fullscreen",
-  "theme": "auto",
   "modelSettings": {
     "claude-opus-5-5": {
       "effortLevel": "high"
     }
-  }
+  },
+  "tui": "fullscreen",
+  "theme": "auto"
 }
