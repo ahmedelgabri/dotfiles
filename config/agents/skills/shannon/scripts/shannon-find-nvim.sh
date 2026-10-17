@@ -4,11 +4,12 @@
 # shannon nvim plugin. Kept here so that the SKILL.md path
 # `scripts/shannon-find-nvim.sh` continues to resolve.
 #
-# Requires shannon to be installed at the standard nvim pack location.
+# Requires shannon to be installed by vim.pack, which keeps plugins under
+# stdpath("data")/site/pack/core/opt.
 
 set -eu
 
-CANONICAL="$HOME/.config/nvim/pack/bundle/opt/shannon/bin/find-nvim-socket"
+CANONICAL="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/pack/core/opt/shannon/bin/find-nvim-socket"
 
 if [ ! -x "$CANONICAL" ]; then
 	echo "error: shannon's find-nvim-socket not found at $CANONICAL" >&2
