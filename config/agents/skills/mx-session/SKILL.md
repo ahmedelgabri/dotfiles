@@ -1,190 +1,119 @@
 ---
 name: mx-session
 description:
-  Write, update, export, and debug named tmux session definition files for the
-  `mx` launcher. Use when asked to create an mx session, convert the current
-  tmux session into a reusable file, change a layout under `tmux/sessions`, or
-  decide whether a window belongs in an mx definition or `mx-init`.
+  Write, update, export, migrate, and debug named session definition files for
+  the `mx` launcher. Use when asked to create an mx session, convert the
+  current session into a reusable file, change a layout under `mx/sessions`,
+  convert old tmux session files, or decide whether a window belongs in a
+  definition or `shared.lua`.
 ---
 
 # Write mx session files
 
 ## Start with the current implementation
 
-Read the active implementation before writing a definition. In the dotfiles
-repository, the source files are `config/zsh.d/zsh/bin/mx` and
-`config/zsh.d/zsh/bin/mx-init`; `config/tmux/sessions/README.md` documents the
-contract. Treat the scripts as the source of truth if the documentation differs.
+Read the active implementation before writing a definition. In the dotfiles repository, `mx` is a package in `nix/pkgs/mx/`: the `mx` and `mx-init` scripts, plus `lua/lib.lua` (loading, checking, and writing definitions) and `lua/tmux.lua` (building and exporting tmux sessions). `nix/pkgs/mx/README.md` documents the contract. If the documentation and the code differ, trust the code.
 
-`mx-init` does not load session definition files. It creates the `_shared`
-session once. For each new named session, `mx` creates the session, calls that
-definition's `mx_start` function, then appends any available shared windows.
+## Export an existing session
 
-## Export an existing tmux session
-
-Prefer `mx --export` over reconstructing a live session by hand. It reads the
-current tmux session by default; pass a source session when copying another
-session or running outside tmux:
+Prefer `mx --export` over rebuilding a live session by hand. With no argument it reads the current session. Pass a session name to copy another session, or when you run it outside tmux:
 
 ```bash
 mx --export
 mx --export source-session
 ```
 
-The command writes the Bash definition to stdout. Redirect it to a temporary
-file for review or directly to the chosen tracked or host-local destination:
+The command prints the Lua definition to stdout. Redirect it to a temporary file for review, or straight to the chosen destination:
 
 ```bash
 tmp="$(mktemp)"
 mx --export >"$tmp"
-mx --export source-session > config/tmux/sessions/new-session
+mx --export source-session > ~/.config/mx/sessions/new-session.lua
 ```
 
-Check whether the destination already exists before redirecting because shell
-redirection overwrites files. When working in the dotfiles repository before the
-installed command has been updated, run `config/zsh.d/zsh/bin/mx --export` with
-the same arguments instead.
+Shell redirection overwrites files, so check whether the destination exists first. In the dotfiles repository, before the installed package has been rebuilt, run `nix build .#mx` and use `result/bin/mx` with the same arguments.
 
-The export preserves unlinked window names, pane counts, current pane
-directories, serialized tmux layouts, active panes, and foreground commands
-recorded by the zsh integration. It omits linked windows because `mx` appends
-`_shared` itself. Commands started outside an integrated zsh or prefixed with a
-space are left as process-name comments because tmux cannot recover the original
-arguments.
+The export keeps:
 
-Review every exported command with the user because arguments can contain
-secrets. Add or replace a restart command only when its full invocation is
-known. Do not inspect scrollback, shell history, pane contents, or pane
-environments unless the user asks; they can contain secrets and still may not
-reveal the original invocation reliably.
+- window labels
+- the split tree, with ratios
+- pane directories
+- the active pane in each window
+- foreground commands recorded by the zsh integration
 
-Review the generated `MX_ROOT` and paths. The exporter chooses the first
-unlinked pane's current directory as `MX_ROOT`, uses `$HOME` and `$MX_ROOT`
-where possible, and leaves unrelated paths explicit. Replace transient
-directories with stable environment-based paths when appropriate. Remove windows
-or panes that are incidental rather than part of the intended startup layout.
+It leaves out the linked shared windows, because `mx` adds them itself. A command started outside an integrated zsh, or with a leading space, becomes a `-- running <process>` comment, because tmux cannot recover its arguments.
+
+Review every exported command with the user, because arguments can contain secrets. Add or replace a restart command only when you know its full invocation. Do not inspect scrollback, shell history, pane contents, or pane environments unless the user asks. They can contain secrets, and they still may not show the original invocation reliably.
+
+Review the generated `root` and paths. The exporter uses the first pane's directory as `root`. It writes paths inside `root` as relative paths and paths under `$HOME` with `os.getenv 'HOME'`, and leaves other paths absolute. Replace temporary directories with stable environment-based paths where that makes sense. Remove windows or panes that are incidental rather than part of the intended startup layout.
+
+## Migrate old definitions
+
+Old bash definitions (`MX_ROOT` plus `mx_start()`) in `$HOST_CONFIGS/tmux/sessions/` or `~/.config/tmux/sessions/` convert with `mx --migrate`. It writes `<name>.lua` into the matching `mx/sessions/` directory and skips names that already have one. It runs `mx_start` against a private tmux server and records `send-keys` instead of running them. After migrating, review the output like an export: environment values such as `$EDITOR` are written as they were during the migration.
 
 ## Choose the file and name
 
-Use a filename with no extension unless the extension is intentionally part of
-the command. `mx <name>` looks for that exact filename, and the filename becomes
-the session name before `.` and `:` are changed to `_` for tmux.
+`mx <name>` looks for `<name>.lua`. The name becomes the session name, with `.` and `:` changed to `_` for tmux.
 
 Choose the location by scope:
 
-- Put machine-specific definitions in `$HOST_CONFIGS/tmux/sessions/<name>`.
-  These are host-local and must not be committed.
-- Put definitions shared by the dotfiles in `config/tmux/sessions/<name>`, which
-  is installed at `${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions/<name>`.
-- `$HOST_CONFIGS` wins when both locations contain the same name. Check for a
-  shadowing host-local file before changing the tracked definition.
+- Put machine-specific definitions in `$HOST_CONFIGS/mx/sessions/<name>.lua`. These are host-local and must not be committed.
+- Put definitions shared by every host in `config/mx/sessions/<name>.lua`, which is installed at `${XDG_CONFIG_HOME:-$HOME/.config}/mx/sessions/<name>.lua`.
+- When both locations hold the same name, `$HOST_CONFIGS` wins. Check for a shadowing host-local file before you change the tracked definition.
 
-If the requested scope is unclear and the layout contains machine-specific paths
-or tools, ask which location to use.
+If the scope is unclear and the layout has machine-specific paths or tools, ask which location to use.
 
 ## File contract
 
-A definition is a Bash fragment sourced by `mx` under `set -euo pipefail`. It
-needs no shebang and should not be executable.
+A definition is a Lua 5.1 file that returns a table:
 
-At top level, it may only:
+- `root`: the session directory. If omitted, `mx` uses the caller's current directory.
+- `windows`: a list of `{ label = <string>, layout = <node> }`.
+- A pane is `{ cwd = <dir>, command = <string>, focus = true }`, all optional. A relative `cwd` resolves against `root`. `command` is typed into the shell and followed by Enter.
+- A split is `{ split = 'horizontal' | 'vertical', ratio = <0..1>, <first>, <second> }`. `horizontal` means side by side. To get more than two panes, nest splits.
+- Conditions can use `mx.has(cmd)` and `mx.isdir(path)`.
 
-- Assign `MX_ROOT`, the directory where `mx` creates the session and its first
-  window. If omitted, `mx` uses the caller's current directory.
-- Define `mx_start`, which builds the layout after the detached session exists
-  and before shared windows are linked.
+Keep a definition as data. It runs whenever `mx` opens it, so it must not start programs or write files. Do not create sessions, link shared windows, or switch clients. `mx` owns that lifecycle.
 
-Do not run commands at source time, assign other top-level variables, or define
-helper functions. They would share and could overwrite `mx`'s namespace. Put
-temporary state in `local` variables inside `mx_start`. Quote expansions, and
-account for nounset when using optional environment variables.
-
-Do not create or attach the session, call `mx-init`, link shared windows, or
-switch clients. `mx` owns that lifecycle.
-
-## Layout rules
-
-The first session window already exists at index 1 with cwd `$MX_ROOT`. Rename
-or split it rather than creating a replacement.
-
-Every tmux command in `mx_start` must have an explicit target based on
-`$MX_SESSION`. This applies to `rename-window`, `new-window`, `split-window`,
-`send-keys`, `select-pane`, `select-layout`, and any other tmux command that
-accepts a target. Without the target, a call made from inside tmux can mutate
-the caller's session.
-
-Use exact targets with the leading `=`:
-
-```bash
--t "=$MX_SESSION:1"
--t "=$MX_SESSION:server"
--t "=$MX_SESSION:server.1"
-```
-
-Use `-c <dir>` on `new-window` and `split-window`. Do not send `cd` through
-`send-keys`.
-
-Create auto-indexed windows with `-t "=$MX_SESSION:"`. Definition windows are
-created first and stay contiguous. After `mx_start` returns, `mx` appends the
-available shared windows in `mail`, `rss`, `HN`, `dotfiles`, `notes` order. Do
-not rely on fixed indexes for shared windows because their indexes depend on the
-number of definition windows and which shared programs are available.
-
-`mx_start` runs synchronously with errexit suppressed so one failed layout
-command does not stop later commands or strand the user outside tmux. Do not
-rely on failure stopping the function. Keep dependent operations guarded when
-needed. `mx` selects window 1 after it appends the shared windows, so selecting
-another window in the definition will not determine the window shown on attach.
-Use `select-pane` if a particular pane in window 1 should be active.
+Definition windows come first. `mx` then appends the shared windows from `shared.lua`, and selects the first window. A window that every session should have belongs in `config/mx/shared.lua`, not in a definition.
 
 ## Template for a new layout
 
-Use `mx --export` when a live session already has the desired layout. Otherwise
-start from this shape and include only the requested windows and panes:
+Use `mx --export` when a live session already has the layout. Otherwise start from this shape, and include only the requested windows and panes:
 
-```bash
-MX_ROOT="$HOME/src/example"
-
-mx_start() {
-	tmux rename-window -t "=$MX_SESSION:1" "editor"
-	tmux split-window -h -l 30% -t "=$MX_SESSION:1" -c "$MX_ROOT"
-
-	tmux new-window -t "=$MX_SESSION:" -n "server" -c "$MX_ROOT"
-	tmux send-keys -t "=$MX_SESSION:server.1" "./run-server" C-m
-
-	tmux select-pane -t "=$MX_SESSION:1.1"
+```lua
+return {
+	root = os.getenv 'HOME' .. '/src/example',
+	windows = {
+		{
+			label = 'editor',
+			layout = {
+				split = 'horizontal',
+				ratio = 0.7,
+				{ command = 'nvim', focus = true },
+				{},
+			},
+		},
+		{
+			label = 'server',
+			layout = { command = './run-server' },
+		},
+	},
 }
 ```
 
-Use window names for later targets when possible. They are easier to read and do
-not depend on indexes. Use a full pane target when sending commands.
-
-Keep session-specific windows in the definition. A window that should be shared
-by every mx session belongs in `_shared`; changing that requires coordinated
-edits to `mx-init`, `link_shared_windows` in `mx`, and the session documentation
-rather than a definition alone.
-
 ## Validate without disrupting tmux
 
-Run syntax and static checks first:
+Check formatting:
 
 ```bash
-session_file=/path/to/session-file
-bash -n "$session_file"
-shellcheck -s bash "$session_file"
+stylua --config-path ~/.dotfiles/.stylua.toml --check /path/to/session.lua
 ```
 
-If ShellCheck is unavailable, `bash -n` is the required minimum. Review every
-tmux invocation for an explicit `"=$MX_SESSION..."` target and every new pane or
-window for `-c` when its cwd matters.
-
-Confirm which file wins lookup precedence without launching it:
+Check which file wins the lookup without launching anything:
 
 ```bash
 mx --list | awk -F '\t' -v name='new-session' '$1 == "sess" && $2 == name'
 ```
 
-Do not use `mx <name>` as a harmless syntax test. It attaches or switches the
-current client, and an existing session skips both the definition and
-`mx_start`. Never kill an existing tmux session merely to reload a changed
-definition unless the user explicitly approves that destructive step.
+To see what a definition builds, open it on a private tmux server, for example with `TMUX_TMPDIR=$(mktemp -d)`, and with `TMUX` unset. Do not use `mx <name>` on the real server as a test: it attaches or switches the current client, and an existing session skips the definition entirely. Never kill an existing session just to reload a changed definition unless the user explicitly approves that step.

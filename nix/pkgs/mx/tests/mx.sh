@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Exercises mx and mx-init against a real tmux server on a private socket.
+# Exercises the built mx package against a real tmux server on a private
+# socket: MX_BIN=<package>/bin bash nix/pkgs/mx/tests/mx.sh
 set -euo pipefail
 
-ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-BIN_SRC="$ROOT/config/zsh.d/zsh/bin"
+: "${MX_BIN:?set MX_BIN to the bin directory of the mx package}"
+ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)
 
 WORK=$(mktemp -d)
 # tmux reports resolved paths (/private/var on macOS), so compare against those
@@ -24,20 +25,16 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Only these tools are reachable, so mx-init cannot find aerc/newsraft/clx on
-# the host and launch them.
+# Only these tools are reachable, so shared.lua cannot find aerc/newsraft/clx
+# on the host and launch them.
 mkdir -p "$WORK/bin"
-for tool in tmux bash awk sed wc basename tail cat env sleep touch mkdir rm diff id chmod; do
+for tool in tmux bash awk sed wc basename dirname tail tr mktemp cat cp mv env sleep touch mkdir rm diff id chmod; do
 	tool_path=$(command -v "$tool")
 	ln -s "$tool_path" "$WORK/bin/$tool"
 done
-# The Nix build sandbox has no /usr/bin/env for the scripts' shebangs.
-for script in mx mx-init; do
-	printf '#!%s\nexec %q %q "$@"\n' "$WORK/bin/bash" "$WORK/bin/bash" "$BIN_SRC/$script" >"$WORK/bin/$script"
-	chmod +x "$WORK/bin/$script"
-done
+ln -s "$MX_BIN/mx" "$WORK/bin/mx"
 
-unset TMUX TMUX_PANE HOST_CONFIGS DEBUG
+unset TMUX TMUX_PANE HOST_CONFIGS DEBUG XDG_STATE_HOME
 export LC_ALL=C
 export PATH="$WORK/bin"
 export SHELL="$WORK/bin/bash"
@@ -48,10 +45,12 @@ export PROJECTS="$HOME/Projects"
 export NOTES_DIR="$WORK/notes"
 export DOTFILES="$WORK/dotfiles"
 export EDITOR=true
-SESSIONS="$XDG_CONFIG_HOME/tmux/sessions"
-HOST_SESSIONS="$WORK/host/tmux/sessions"
+SESSIONS="$XDG_CONFIG_HOME/mx/sessions"
+HOST_SESSIONS="$WORK/host/mx/sessions"
+COMMANDS="$HOME/.local/state/mx/commands"
 
-mkdir -p "$SESSIONS" "$HOST_SESSIONS" "$NOTES_DIR" "$DOTFILES"
+mkdir -p "$SESSIONS" "$HOST_SESSIONS" "$NOTES_DIR" "$DOTFILES" "$COMMANDS" "$XDG_CONFIG_HOME/tmux"
+cp "$ROOT/config/mx/shared.lua" "$XDG_CONFIG_HOME/mx/shared.lua"
 # Match the real config's indexing, which --export's `window=1` relies on,
 # and skip login rc files that could put host tools back on PATH.
 cat >"$XDG_CONFIG_HOME/tmux/tmux.conf" <<'EOF'
@@ -88,6 +87,13 @@ expect() {
 	assert_eq "$what: status" "$status" "$STATUS"
 	assert_eq "$what: stdout" "$out" "$OUT"
 	assert_eq "$what: stderr" "$err" "$ERR"
+}
+
+# Stands in for the zsh preexec hook in extras.zsh.
+record() {
+	local pane
+	pane=$(t display-message -p -t "$1" '#{pid}-#{pane_id}')
+	printf '%s\n' "$2" >"$COMMANDS/tmux-${pane/\%/}"
 }
 
 # mx always ends by handing the terminal to tmux. With no client to switch,
@@ -145,41 +151,54 @@ project archive/old2/scratch
 project archive/group/x
 project archive/group/y
 
-# shellcheck disable=SC2016 # Definitions expand when mx sources them.
-printf 'MX_ROOT="$PROJECTS/forks/lib"\n' >"$SESSIONS/shared-name"
-# shellcheck disable=SC2016 # Definitions expand when mx sources them.
-printf 'MX_ROOT="$PROJECTS/personal/app"\n' >"$HOST_SESSIONS/shared-name"
-: >"$HOST_SESSIONS/beta"
-mkdir "$SESSIONS/not-a-definition"
+cat >"$SESSIONS/shared-name.lua" <<'EOF'
+return { root = os.getenv 'PROJECTS' .. '/forks/lib' }
+EOF
+cat >"$HOST_SESSIONS/shared-name.lua" <<'EOF'
+return { root = os.getenv 'PROJECTS' .. '/personal/app' }
+EOF
+printf 'return {}\n' >"$HOST_SESSIONS/beta.lua"
+printf 'not a definition\n' >"$SESSIONS/README.md"
+mkdir "$SESSIONS/not-a-definition.lua"
+cat >"$SESSIONS/broken.lua" <<'EOF'
+return { windows = { { layout = { split = 'diagonal', {}, {} } } } }
+EOF
 
-cat >"$SESSIONS/alpha" <<'EOF'
-MX_ROOT="$PROJECTS/trunk/tool"
-
-mx_start() {
-	tmux set-option -t "=$MX_SESSION:" @probe "$MX_SESSION|$MX_ROOT|$PWD"
-	tmux rename-window -t "=$MX_SESSION:1" editor
-	tmux set-option -p -t "=$MX_SESSION:1.1" @mx_command 'touch "$HOME/replayed one"'
-	tmux split-window -h -l 30% -t "=$MX_SESSION:1" -c "$MX_ROOT/src" 'exec sleep 600'
-	tmux new-window -t "=$MX_SESSION:" -n 'build logs' -c "$HOME" 'exec sleep 600'
-	tmux set-option -p -t "=$MX_SESSION:2.1" @mx_command 'touch "$HOME/replayed two"'
-	tmux split-window -v -t "=$MX_SESSION:2" -c "$DOTFILES" 'exec sleep 600'
-	tmux split-window -v -t "=$MX_SESSION:2" -c "$PROJECTS/trunk" 'exec sleep 600'
-	tmux set-option -p -t "=$MX_SESSION:2.3" @mx_command 'pwd >"$HOME/replayed three"'
-	tmux select-layout -t "=$MX_SESSION:2" even-vertical
-	tmux select-pane -t "=$MX_SESSION:2.2"
-	tmux select-pane -t "=$MX_SESSION:1.2"
-	tmux select-window -t "=$MX_SESSION:2"
-	# A failing command must not abort the rest of the layout.
-	false
-	tmux new-window -t "=$MX_SESSION:" -n after-failure -c "$MX_ROOT" 'exec sleep 600'
-	tmux set-option -p -t "=$MX_SESSION:3.1" @mx_command "$(printf 'touch "$HOME/multi one"\ntouch "$HOME/multi \303\251"')"
-	return 1
+cat >"$SESSIONS/alpha.lua" <<'EOF'
+return {
+	root = os.getenv 'PROJECTS' .. '/trunk/tool',
+	windows = {
+		{
+			label = 'editor',
+			layout = {
+				split = 'horizontal',
+				ratio = 0.7,
+				{},
+				{ cwd = 'src', command = 'exec sleep 600', focus = true },
+			},
+		},
+		{
+			label = 'build logs',
+			layout = {
+				split = 'vertical',
+				ratio = 1 / 3,
+				{ cwd = os.getenv 'HOME', command = 'exec sleep 600' },
+				{
+					split = 'vertical',
+					ratio = 0.5,
+					{ cwd = os.getenv 'DOTFILES', command = 'exec sleep 600', focus = true },
+					{ cwd = '..', command = 'exec sleep 600' },
+				},
+			},
+		},
+		{ label = 'last', layout = { command = 'exec sleep 600' } },
+	},
 }
 EOF
 
 # --- usage -----------------------------------------------------------------
 
-USAGE="Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query] | mx --export [session]"
+USAGE="Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query] | mx --export [session] | mx --migrate"
 
 expect "--help" 0 "$USAGE" "" mx --help
 expect "-h" 0 "$USAGE" "" mx -h
@@ -200,9 +219,10 @@ assert_eq "--list without PROJECTS: status" 1 "$STATUS"
 # --- listing ---------------------------------------------------------------
 
 P=$PROJECTS
-expect "--list" 0 "sess	beta	$HOST_SESSIONS/beta
-sess	shared-name	$HOST_SESSIONS/shared-name
-sess	alpha	$SESSIONS/alpha
+expect "--list" 0 "sess	beta	$HOST_SESSIONS/beta.lua
+sess	shared-name	$HOST_SESSIONS/shared-name.lua
+sess	alpha	$SESSIONS/alpha.lua
+sess	broken	$SESSIONS/broken.lua
 dir	work/acme/app	$P/work/acme/app
 dir	work/acme/mono	$P/work/acme/mono
 dir	work/acme/mono/feature	$P/work/acme/mono/feature
@@ -218,8 +238,9 @@ dir	archive/old	$P/archive/old
 dir	archive/old2	$P/archive/old2
 dir	archive/old2/wt	$P/archive/old2/wt" "" env HOST_CONFIGS="$WORK/host" mx --list
 
-expect "--list without HOST_CONFIGS" 0 "sess	alpha	$SESSIONS/alpha
-sess	shared-name	$SESSIONS/shared-name" "" \
+expect "--list without HOST_CONFIGS" 0 "sess	alpha	$SESSIONS/alpha.lua
+sess	broken	$SESSIONS/broken.lua
+sess	shared-name	$SESSIONS/shared-name.lua" "" \
 	env PROJECTS="$WORK/no-projects" mx --list
 
 # --- launching -------------------------------------------------------------
@@ -244,11 +265,11 @@ fi
 
 launch app "$P/work/acme/app" acme/app
 
-# The first launch creates _shared; mail, rss and HN need tools that are not
-# on PATH, so only the directory-backed windows exist.
-assert_eq "_shared windows" "2 notes 1 $NOTES_DIR
-3 dotfiles 1 $DOTFILES
-3 dotfiles 2 $DOTFILES" "$(t list-panes -s -t =_shared -F '#{window_index} #{window_name} #{pane_index} #{pane_current_path}' | sed 1d)"
+# The first launch creates _shared from shared.lua; mail, rss and HN need
+# tools that are not on PATH, so only the directory-backed windows exist.
+assert_eq "_shared windows" "2 dotfiles 1 $DOTFILES
+2 dotfiles 2 $DOTFILES
+3 notes 1 $NOTES_DIR" "$(t list-panes -s -t =_shared -F '#{window_index} #{window_name} #{pane_index} #{pane_current_path}' | sed 1d)"
 assert_eq "shared windows linked after project windows" "1 0
 2 dotfiles 1
 3 notes 1" "$(t list-windows -t =app -F '#{window_index}#{?window_linked, #{window_name},} #{window_linked}')"
@@ -278,15 +299,27 @@ HOST_CONFIGS="$WORK/host" launch beta "$WORK" beta
 
 # --- definitions -----------------------------------------------------------
 
-expect "mx alpha" 1 "" "mx: mx_start for alpha failed
-$NO_CLIENT" in_tmux mx alpha
-assert_eq "mx_start environment" "alpha|$P/trunk/tool|$P/trunk/tool" "$(t show-options -v -t =alpha: @probe)"
+expect "broken definition" 1 "" \
+	"mx: $SESSIONS/broken.lua: windows[1].layout: split must be 'horizontal' or 'vertical'" \
+	in_tmux mx broken
+if t has-session -t =broken 2>/dev/null; then
+	fail "a broken definition created a session"
+fi
+
+expect "mx alpha" 1 "" "$NO_CLIENT" in_tmux mx alpha
 assert_eq "alpha windows" "1 editor 0
 2 build logs 0
-3 after-failure 0
+3 last 0
 4 dotfiles 1
 5 notes 1" "$(t list-windows -t =alpha -F '#{window_index} #{window_name} #{window_linked}')"
 assert_eq "alpha active window" 1 "$(t display-message -p -t "=alpha:" '#{window_index}')"
+assert_eq "alpha panes" "1 1 0 55x24 $P/trunk/tool
+1 2 1 24x24 $P/trunk/tool/src
+2 1 0 80x8 $HOME
+2 2 1 80x7 $DOTFILES
+2 3 0 80x7 $P/trunk
+3 1 1 80x24 $P/trunk/tool" \
+	"$(t list-panes -s -t =alpha -F '#{?window_linked,,#{window_index} #{pane_index} #{pane_active} #{pane_width}x#{pane_height} #{pane_current_path}}' | sed '/^$/d')"
 
 # --- export ----------------------------------------------------------------
 
@@ -295,66 +328,85 @@ for pane in 1.2 2.1 2.2 2.3 3.1; do
 done
 PROC=$(t display-message -p -t =alpha:1.2 '#{pane_current_command}')
 
+# shellcheck disable=SC2016 # Recorded commands expand when replayed.
+{
+	record "=alpha:1.1" 'touch "$HOME/replayed one"'
+	record "=alpha:2.1" 'touch "$HOME/replayed two"'
+	record "=alpha:2.3" 'pwd >"$HOME/replayed three"'
+	record "=alpha:3.1" "$(printf 'touch "$HOME/multi one"\ntouch "$HOME/multi \303\251"')"
+}
+
 EXPECTED=$(
 	cat <<'EOF'
-# Generated by mx --export from session alpha.
-# Linked windows are omitted; mx appends _shared after mx_start.
-# Running commands recorded by zsh are replayed. Review them for secrets before saving this file.
-# Commands without tracking metadata remain comments containing only process names.
+-- Generated by mx --export from session 'alpha'.
+-- Windows from shared.lua are omitted; mx adds them to new sessions.
+-- Recorded commands are replayed. Review them for secrets before saving.
+-- Programs without a recorded command stay as comments.
 
-MX_ROOT="$HOME"/Projects/trunk/tool
-
-mx_start() {
-	local window pane
-	local -a panes
-
-	window=1
-	tmux rename-window -t "=$MX_SESSION:$window" editor
-	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
-	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- touch\ \"\$HOME/replayed\ one\"
-	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[0]}" -c "$MX_ROOT"/src)"
-	panes+=("$pane")
-	# pane 2 command unavailable; current process: @PROC@
-	tmux select-layout -t "=$MX_SESSION:$window" @LAYOUT1@
-	tmux select-pane -t "=$MX_SESSION:$window.${panes[1]}"
-
-	window="$(tmux new-window -d -P -F \#\{window_index\} -t "=$MX_SESSION:" -n build\ logs -c "$HOME")"
-	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
-	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- touch\ \"\$HOME/replayed\ two\"
-	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[0]}" -c @DOTFILES@)"
-	panes+=("$pane")
-	# pane 2 command unavailable; current process: @PROC@
-	pane="$(tmux split-window -d -P -F \#\{pane_index\} -t "=$MX_SESSION:$window.${panes[1]}" -c "$HOME"/Projects/trunk)"
-	panes+=("$pane")
-	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[2]}" -- pwd\ \>\"\$HOME/replayed\ three\"
-	tmux send-keys -t "=$MX_SESSION:$window.${panes[2]}" C-m
-	tmux select-layout -t "=$MX_SESSION:$window" @LAYOUT2@
-	tmux select-pane -t "=$MX_SESSION:$window.${panes[1]}"
-
-	window="$(tmux new-window -d -P -F \#\{window_index\} -t "=$MX_SESSION:" -n after-failure -c "$MX_ROOT")"
-	panes=("$(tmux display-message -p -t "=$MX_SESSION:$window" \#\{pane_index\})")
-	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- $'touch "$HOME/multi one"\ntouch "$HOME/multi \303\251"'
-	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m
-	tmux select-pane -t "=$MX_SESSION:$window.${panes[0]}"
-
+return {
+	root = os.getenv 'HOME' .. '/Projects/trunk/tool',
+	windows = {
+		{
+			label = 'editor',
+			layout = {
+				split = 'horizontal',
+				ratio = 0.6962,
+				{
+					command = 'touch "$HOME/replayed one"',
+				},
+				{
+					-- running @PROC@ (command not recorded)
+					cwd = 'src',
+					focus = true,
+				},
+			},
+		},
+		{
+			label = 'build logs',
+			layout = {
+				split = 'vertical',
+				ratio = 0.3478,
+				{
+					cwd = os.getenv 'HOME',
+					command = 'touch "$HOME/replayed two"',
+				},
+				{
+					split = 'vertical',
+					ratio = 0.5,
+					{
+						-- running @PROC@ (command not recorded)
+						cwd = @DOTFILES@,
+						focus = true,
+					},
+					{
+						cwd = os.getenv 'HOME' .. '/Projects/trunk',
+						command = 'pwd >"$HOME/replayed three"',
+					},
+				},
+			},
+		},
+		{
+			label = 'last',
+			layout = {
+				command = 'touch "$HOME/multi one"\ntouch "$HOME/multi @E_ACUTE@"',
+			},
+		},
+	},
 }
 EOF
 )
 EXPECTED=${EXPECTED//@PROC@/$PROC}
-EXPECTED=${EXPECTED//@DOTFILES@/$(printf '%q' "$DOTFILES")}
-EXPECTED=${EXPECTED//@LAYOUT1@/$(printf '%q' "$(t display-message -p -t =alpha:1 '#{window_layout}')")}
-EXPECTED=${EXPECTED//@LAYOUT2@/$(printf '%q' "$(t display-message -p -t =alpha:2 '#{window_layout}')")}
+EXPECTED=${EXPECTED//@DOTFILES@/\'$DOTFILES\'}
+EXPECTED=${EXPECTED//@E_ACUTE@/$(printf '\303\251')}
 
 expect "--export alpha" 0 "$EXPECTED" "" mx --export alpha
 
 # The pane running mx --export would otherwise export its own invocation.
-# shellcheck disable=SC2016 # Literal generated code.
-REPLAY_TWO='	tmux send-keys -l -t "=$MX_SESSION:$window.${panes[0]}" -- touch\ \"\$HOME/replayed\ two\"
-	tmux send-keys -t "=$MX_SESSION:$window.${panes[0]}" C-m'
-[[ "$EXPECTED" == *"$REPLAY_TWO"* ]] || fail "expected export lacks the replay lines it should drop"
-EXPECTED_SELF=${EXPECTED/"$REPLAY_TWO"/"	# pane 1 command unavailable; current process: $PROC"}
+REPLAY_TWO="					cwd = os.getenv 'HOME',
+					command = 'touch \"\$HOME/replayed two\"',"
+[[ "$EXPECTED" == *"$REPLAY_TWO"* ]] || fail "expected export lacks the replay line it should drop"
+EXPECTED_SELF=${EXPECTED/"$REPLAY_TWO"/"					-- running $PROC (command not recorded)
+					cwd = os.getenv 'HOME',"}
 SELF_PANE=$(t display-message -p -t =alpha:2.1 '#{pane_id}')
 expect "--export from inside alpha" 0 "$EXPECTED_SELF" "" \
 	env TMUX_PANE="$SELF_PANE" TMUX="$SOCKET,0,0" mx --export
@@ -371,7 +423,7 @@ expect "--export only linked windows" 1 "" \
 
 # --- export round trip -----------------------------------------------------
 
-mx --export alpha >"$SESSIONS/gamma"
+mx --export alpha >"$SESSIONS/gamma.lua"
 if [[ -e "$HOME/replayed one" || -e "$HOME/replayed two" || -e "$HOME/replayed three" || -e "$HOME/multi one" ]]; then
 	fail "commands ran before the exported definition was used"
 fi
@@ -390,3 +442,84 @@ assert_eq "round-trip geometry" \
 	"$(t list-panes -s -t =gamma -F "$GEOMETRY" | sed '/^$/d')"
 assert_eq "round-trip shared windows" "4 dotfiles
 5 notes" "$(t list-windows -t =gamma -F '#{?window_linked,#{window_index} #{window_name},}' | sed '/^$/d')"
+
+# --- migrating old definitions ---------------------------------------------
+
+OLD_SESSIONS="$XDG_CONFIG_HOME/tmux/sessions"
+OLD_HOST_SESSIONS="$WORK/host/tmux/sessions"
+mkdir -p "$OLD_SESSIONS" "$OLD_HOST_SESSIONS"
+printf 'not a definition\n' >"$OLD_SESSIONS/README.md"
+cat >"$OLD_SESSIONS/legacy" <<'EOF'
+MX_ROOT="$PROJECTS/trunk/tool"
+
+mx_start() {
+	tmux rename-window -t "=$MX_SESSION:1" editor
+	tmux split-window -h -l 30% -t "=$MX_SESSION:1" -c "$MX_ROOT/src"
+	tmux send-keys -t "=$MX_SESSION:1.2" 'touch "$HOME/should not run"' C-m
+	tmux new-window -t "=$MX_SESSION:" -n logs -c "$HOME"
+	tmux send-keys -t "=$MX_SESSION:logs" -l 'tail -f log'
+	tmux send-keys -t "=$MX_SESSION:logs" Enter
+	tmux select-pane -t "=$MX_SESSION:1.1"
+}
+EOF
+# shellcheck disable=SC2016 # Definitions expand when mx sources them.
+printf 'MX_ROOT="$PROJECTS/personal/app"\n' >"$OLD_HOST_SESSIONS/plain"
+# alpha.lua already exists, so its old definition must be left alone.
+: >"$OLD_SESSIONS/alpha"
+
+SERVERS_BEFORE=$(t list-sessions -F '#{session_name}' | wc -l)
+expect "--migrate" 0 "$OLD_HOST_SESSIONS/plain -> $WORK/host/mx/sessions/plain.lua
+$OLD_SESSIONS/legacy -> $SESSIONS/legacy.lua" "mx: skipped $OLD_SESSIONS/alpha: $SESSIONS/alpha.lua exists" \
+	env HOST_CONFIGS="$WORK/host" mx --migrate
+
+EXPECTED=$(
+	cat <<EOF
+-- Converted by mx --migrate from '$OLD_SESSIONS/legacy'.
+-- Windows from shared.lua are omitted; mx adds them to new sessions.
+-- Recorded commands are replayed. Review them for secrets before saving.
+-- Programs without a recorded command stay as comments.
+
+return {
+	root = os.getenv 'HOME' .. '/Projects/trunk/tool',
+	windows = {
+		{
+			label = 'editor',
+			layout = {
+				split = 'horizontal',
+				ratio = 0.6962,
+				{
+					focus = true,
+				},
+				{
+					cwd = 'src',
+					command = 'touch "\$HOME/should not run"',
+				},
+			},
+		},
+		{
+			label = 'logs',
+			layout = {
+				cwd = os.getenv 'HOME',
+				command = 'tail -f log',
+			},
+		},
+	},
+}
+EOF
+)
+assert_eq "migrated legacy" "$EXPECTED" "$(cat "$SESSIONS/legacy.lua")"
+assert_eq "migrated plain root" "	root = os.getenv 'HOME' .. '/Projects/personal/app'," \
+	"$(sed -n '/^\troot = /p' "$WORK/host/mx/sessions/plain.lua")"
+[[ ! -e "$HOME/should not run" ]] || fail "--migrate ran a definition's commands"
+assert_eq "--migrate left no tmux server behind" "$SERVERS_BEFORE" "$(t list-sessions -F '#{session_name}' | wc -l)"
+
+expect "--migrate again" 0 "" "mx: skipped $OLD_HOST_SESSIONS/plain: $WORK/host/mx/sessions/plain.lua exists
+mx: skipped $OLD_SESSIONS/alpha: $SESSIONS/alpha.lua exists
+mx: skipped $OLD_SESSIONS/legacy: $SESSIONS/legacy.lua exists" \
+	env HOST_CONFIGS="$WORK/host" mx --migrate
+
+expect "mx legacy" 1 "" "$NO_CLIENT" in_tmux mx legacy
+assert_eq "migrated session panes" "1 editor 1 1 55x24 $P/trunk/tool
+1 editor 2 0 24x24 $P/trunk/tool/src
+2 logs 1 1 80x24 $HOME" \
+	"$(t list-panes -s -t =legacy -F '#{?window_linked,,#{window_index} #{window_name} #{pane_index} #{pane_active} #{pane_width}x#{pane_height} #{pane_current_path}}' | sed '/^$/d')"

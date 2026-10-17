@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -ue -o pipefail
+
+if [[ -n "${DEBUG-}" ]]; then
+	set -x
+fi
+
+# Builds the _shared tmux session that mx links into every new session, from
+# the windows in $XDG_CONFIG_HOME/mx/shared.lua.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if ! tmux has-session -t "=_shared" 2>/dev/null; then
+	luajit "$HERE/../share/mx/tmux.lua" shared \
+		"${XDG_CONFIG_HOME:-$HOME/.config}/mx/shared.lua"
+fi

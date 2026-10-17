@@ -116,7 +116,7 @@ _: {
 
       packages = {
         inherit doctor;
-        inherit (pkgs) next-prayer zh;
+        inherit (pkgs) mx next-prayer zh;
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         inherit (pkgs) sb;

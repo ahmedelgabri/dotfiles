@@ -145,50 +145,39 @@ zf() {
   [[ -n $selected ]] && builtin cd -- "$selected"
 }
 
-# Record the exact foreground command for mx --export. tmux only knows the
-# process name, and process inspection loses shell syntax and builtins.
-if [[ -n ${TMUX_PANE-} ]]; then
+# Record the exact foreground command for mx --export. tmux and Rex only
+# report process names, and process inspection loses shell syntax and
+# builtins, so the command goes to a file named after the pane. Inside tmux
+# running in Rex the tmux pane wins, because tmux is what mx exports there.
+# tmux reuses pane ids across servers, so its key includes the server pid.
+# zf_rm and zf_mkdir are builtins, which keeps the precmd hook from forking
+# on every prompt.
+if [[ -n ${TMUX_PANE-} || -n ${REX_BLOCK-} ]]; then
   autoload -Uz add-zsh-hook
+  zmodload -F zsh/files b:zf_rm b:zf_mkdir
+
+  if [[ -n ${TMUX_PANE-} ]]; then
+    _mx_command_key="tmux-${${TMUX#*,}%%,*}-${TMUX_PANE#%}"
+  else
+    _mx_command_key=$REX_BLOCK
+  fi
+  _mx_command_file="${XDG_STATE_HOME:-$HOME/.local/state}/mx/commands/$_mx_command_key"
 
   _mx_clear_command() {
-    command tmux set-option -pqu -t "$TMUX_PANE" @mx_command 2>/dev/null || true
+    [[ -e $_mx_command_file ]] && zf_rm -f -- "$_mx_command_file"
+    return 0
   }
 
   _mx_record_command() {
     _mx_clear_command
     # Match HIST_IGNORE_SPACE so commands deliberately omitted from history
     # are also omitted from exported session definitions.
-    [[ $1 == ' '* ]] || command tmux set-option -pq -t "$TMUX_PANE" @mx_command "$1" 2>/dev/null || true
+    [[ $1 == ' '* ]] && return 0
+    zf_mkdir -p -- "${_mx_command_file:h}" && print -r -- "$1" >|"$_mx_command_file"
   }
 
   add-zsh-hook preexec _mx_record_command
   add-zsh-hook precmd _mx_clear_command
-fi
-
-# The same for rx --export. Rex has no per-block options and reports only the
-# process name, so the command goes to a file named after the block. zf_rm
-# and zf_mkdir are builtins, which keeps the precmd hook from forking on
-# every prompt.
-if [[ -n ${REX_BLOCK-} ]]; then
-  autoload -Uz add-zsh-hook
-  zmodload -F zsh/files b:zf_rm b:zf_mkdir
-
-  _rx_command_file="${XDG_STATE_HOME:-$HOME/.local/state}/rx/commands/$REX_BLOCK"
-
-  _rx_clear_command() {
-    [[ -e $_rx_command_file ]] && zf_rm -f -- "$_rx_command_file"
-    return 0
-  }
-
-  _rx_record_command() {
-    _rx_clear_command
-    # HIST_IGNORE_SPACE, as for mx above
-    [[ $1 == ' '* ]] && return 0
-    zf_mkdir -p -- "${_rx_command_file:h}" && print -r -- "$1" >|"$_rx_command_file"
-  }
-
-  add-zsh-hook preexec _rx_record_command
-  add-zsh-hook precmd _rx_clear_command
 fi
 
 # Project/session picker. Runs mx --pick as a real command via accept-line

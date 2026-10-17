@@ -12,7 +12,6 @@ Requires **tmux 3.5+** (currently running 3.7b).
 tmux/
 ├── README.md                          # This file
 ├── tmux.conf                          # Main configuration
-├── sessions/                          # Named session definitions for mx
 └── scripts/
     ├── get-prayer                     # Prayer times (wrapper for next-prayer)
     ├── tmux-battery                   # Battery segment wrapper with charging icon
@@ -304,62 +303,14 @@ buildGoModule { ... }
 
 ## Sessions (`mx`)
 
-Sessions are created and attached with the `mx` script from
-`config/zsh.d/zsh/bin/`, reachable from `^G` in zsh and `prefix + g` inside
-tmux:
-
-- `mx --list` enumerates candidates as TSV (`kind`, label, absolute path): named
-  session definitions first, then project directories under `$PROJECTS`.
-- `mx --pick [query]` pipes that list into fzf (native `--popup` inside tmux)
-  and launches the selection.
-- `mx --export [session]` prints a definition reconstructed from the current or
-  named tmux session. Redirect stdout to the desired session file. The export
-  preserves unlinked windows, pane directories, layouts, active panes, and
-  foreground commands recorded by zsh. Commands started outside an integrated
-  zsh or prefixed with a space are emitted as process-name comments because tmux
-  cannot recover their original arguments. Review exported commands for secrets
-  before saving the definition.
-- `mx -h` and `mx --help` print usage and exit successfully.
-- `mx` creates or attaches: `mx` (session for `$PWD`), `mx <name>` (definition
-  lookup, then project lookup by label), `mx --dir <path>` (plain session rooted
-  exactly there, used by the picker).
-
-`mx <name>` looks up definitions in `$HOST_CONFIGS/tmux/sessions/<name>`
-(host-local, wins) then `~/.config/tmux/sessions/<name>` (checked in,
-[sessions/](./sessions/README.md) documents the file contract). Definition
-windows are created first, then the available `_shared` windows are appended in
-`mail`, `rss`, `HN`, `dotfiles`, `notes` order.
-
-Project directories are enumerated per root under `$PROJECTS` (`~/dev`):
-
-| Root                                         | Rule                                                                                                                 |
-| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `personal`, `trunk`, `forks`, `ahmedelgabri` | every direct subdirectory                                                                                            |
-| `work`                                       | `work/<org>/<project>`; `.bare` projects also list child worktrees (subdirs with a `.git` entry)                     |
-| `archive`                                    | project children (`.git`/`.bare`/`.jj`) are leaves; other children are grouping dirs whose child dirs are candidates |
-
-Session names are derived from the picked directory (`.` and `:` become `_`):
-
-| Picked dir                                | Session name                 |
-| ----------------------------------------- | ---------------------------- |
-| `trunk/X`, `personal/X`, `ahmedelgabri/X` | `X`                          |
-| `work/<org>/<p>`                          | `<p>`                        |
-| `work/<org>/<p>/<wt>`                     | `<p>/<wt>` (e.g. `c/master`) |
-| `forks/X`                                 | `forks/X`                    |
-| `archive/...`                             | `archive/...`, in full       |
-
-Caveat: `switch-client` from a `run-shell` binding resolves "current client" by
-tmux's best match, which is correct for single-attached-client use.
-
-[`tests/mx.sh`](../../tests/README.md#mx) covers `mx` and `mx-init` against a
-real tmux server on a private socket and runs as the `mx` flake check.
+Sessions are created and attached with [`mx`](../../nix/pkgs/mx/README.md), reachable from `^G` in zsh and `prefix + g` inside tmux. Its README documents session definitions, shared windows, `--export`, and `--migrate`.
 
 ## Host-Specific Overrides
 
 The config sources `$HOST_CONFIGS/tmux.conf` at the end if it exists. This
 allows per-machine customization (e.g., different status bar segments, colors,
 or bindings) without modifying the shared config. Host-local session definitions
-live in `$HOST_CONFIGS/tmux/sessions/`.
+live in `$HOST_CONFIGS/mx/sessions/`.
 
 ## Dependencies
 

@@ -44,7 +44,7 @@ usage() {
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/rex"
 SHARED_FILE="$CONFIG_DIR/rx/shared.lua"
 # Written by the zsh preexec hook in extras.zsh, one file per block
-COMMANDS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/rx/commands"
+COMMANDS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/mx/commands"
 
 # Session definition search path; first hit wins
 SESSION_DIRS=(

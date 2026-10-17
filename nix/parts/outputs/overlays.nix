@@ -8,6 +8,7 @@
 
       next-prayer = prev.callPackage ../../pkgs/next-prayer/next-prayer.nix { };
       zh = prev.callPackage ../../pkgs/zh/zh.nix { };
+      mx = prev.callPackage ../../pkgs/mx/mx.nix { };
 
       # markdown-oxide walks the vault without following symlinks, so notes
       # in a folder linked into the vault are never indexed.

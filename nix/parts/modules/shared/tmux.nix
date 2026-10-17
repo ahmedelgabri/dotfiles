@@ -12,6 +12,7 @@ let
 
           my.user.packages = with pkgs; [
             tmux
+            mx
             tap
             next-prayer
           ];
@@ -21,11 +22,17 @@ let
     homeManager =
       { config, myConfig, ... }:
       {
-        xdg.configFile = config.lib.file.mkOutOfStoreTree {
-          source = ../../../../config/tmux;
-          sourceRoot = "${myConfig.dotfilesDir}/config/tmux";
-          targetRoot = "tmux";
-        };
+        xdg.configFile =
+          config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/tmux;
+            sourceRoot = "${myConfig.dotfilesDir}/config/tmux";
+            targetRoot = "tmux";
+          }
+          // config.lib.file.mkOutOfStoreTree {
+            source = ../../../../config/mx;
+            sourceRoot = "${myConfig.dotfilesDir}/config/mx";
+            targetRoot = "mx";
+          };
       };
   };
 in

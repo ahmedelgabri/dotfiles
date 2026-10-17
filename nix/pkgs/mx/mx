@@ -16,18 +16,15 @@
 #   mx --list           print session/project candidates as TSV
 #   mx --pick [query]   fuzzy-pick a candidate and launch it
 #   mx --export [session]
-#                       print a definition based on a tmux session
+#                       print a definition based on a session
+#   mx --migrate        convert the old bash definitions in
+#                       {$HOST_CONFIGS,$XDG_CONFIG_HOME}/tmux/sessions
 #   mx -h|--help        print usage
 #
-# Session definitions are plain bash files sourced by mx, looked up as
-# $HOST_CONFIGS/tmux/sessions/<name> then $XDG_CONFIG_HOME/tmux/sessions/<name>.
-# A definition may set MX_ROOT=<dir> and define mx_start(); mx creates the
-# detached session at MX_ROOT, exports MX_SESSION and MX_ROOT, then calls
-# mx_start synchronously. Inside mx_start every tmux command must target
-# "=$MX_SESSION" explicitly: when mx runs from inside tmux, unqualified
-# targets resolve against the caller's session, not the new one. mx_start
-# runs with errexit suppressed, so a failing command inside it does not
-# abort the layout or strand the session unattached.
+# Session definitions are Lua files looked up as
+# $HOST_CONFIGS/mx/sessions/<name>.lua then
+# $XDG_CONFIG_HOME/mx/sessions/<name>.lua; see README.md next to this script.
+# Every new session also gets the windows from $XDG_CONFIG_HOME/mx/shared.lua.
 #
 # Project lookup resolves <name> against --list labels (exact match, or a
 # unique /<name> suffix), so `mx git-wt` and `mx c/master` work from
@@ -40,7 +37,7 @@ if [[ -n "${DEBUG-}" ]]; then
 fi
 
 usage_text() {
-	echo "Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query] | mx --export [session]"
+	echo "Usage: mx [<name>] | mx --dir <path> | mx --list | mx --pick [query] | mx --export [session] | mx --migrate"
 }
 
 usage() {
@@ -59,17 +56,24 @@ sanitize() {
 	printf '%s\n' "${s//:/_}"
 }
 
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mx"
+# Written by the zsh preexec hook in extras.zsh, one file per pane
+COMMANDS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/mx/commands"
+# The package installs the backends next to its bin directory.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LUA_DIR="$HERE/../share/mx"
+
 # Session definition search path; first hit wins
 SESSION_DIRS=(
-	"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}"
-	"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions"
+	"${HOST_CONFIGS:+$HOST_CONFIGS/mx/sessions}"
+	"$CONFIG_DIR/sessions"
 )
 
 find_session_file() {
 	local dir f
 	for dir in "${SESSION_DIRS[@]}"; do
 		[ -n "$dir" ] || continue
-		f="$dir/$1"
+		f="$dir/$1.lua"
 		if [ -f "$f" ]; then
 			printf '%s\n' "$f"
 			return 0
@@ -125,9 +129,10 @@ list_sessions() {
 	# $HOST_CONFIGS wins over the repo-tracked dir
 	for dir in "${SESSION_DIRS[@]}"; do
 		[ -n "$dir" ] && [ -d "$dir" ] || continue
-		for f in "$dir"/*; do
+		for f in "$dir"/*.lua; do
 			[ -f "$f" ] || continue
 			name="${f##*/}"
+			name="${name%.lua}"
 			[ -n "${seen[$name]-}" ] && continue
 			seen[$name]=1
 			emit sess "$name" "$f"
@@ -205,53 +210,18 @@ derive_name() {
 	printf '%s\n' "$rel"
 }
 
+# Every _shared window after its plain first one, in shared.lua order.
 link_shared_windows() {
-	local name="$1" index window
+	local name="$1" window
 
-	index="$(tmux list-windows -t "=$name" -F '#{window_index}' | tail -n 1)"
-	for window in mail rss HN dotfiles notes; do
-		if tmux has-session -t "=_shared:$window" 2>/dev/null; then
-			index=$((index + 1))
-			tmux link-window -s "=_shared:$window" -t "=$name:$index"
-		fi
-	done
+	tmux list-windows -t "=_shared" -F '#{window_id}' | tail -n +2 |
+		while read -r window; do
+			tmux link-window -a -s "$window" -t "=$name:{end}"
+		done
 }
 
-# These helpers print shell code containing variables for the exported file.
-# shellcheck disable=SC2016
-export_root_expr() {
-	local path="$1" suffix
-	if [[ "$path" == "$HOME" ]]; then
-		printf '"$HOME"'
-	elif [[ "$path" == "$HOME/"* ]]; then
-		suffix="${path#"$HOME"/}"
-		printf '"$HOME"/%q' "$suffix"
-	else
-		printf '%q' "$path"
-	fi
-}
-
-# shellcheck disable=SC2016
-export_dir_expr() {
-	local path="$1" root="$2" suffix
-	if [[ "$path" == "$root" ]]; then
-		printf '"$MX_ROOT"'
-	elif [[ "$path" == "$root/"* ]]; then
-		suffix="${path#"$root"/}"
-		printf '"$MX_ROOT"/%q' "$suffix"
-	else
-		export_root_expr "$path"
-	fi
-}
-
-# Print a definition based on an existing session. Linked windows are omitted
-# because mx adds _shared after mx_start. Interactive zsh hooks store the exact
-# foreground command in a pane option because tmux only reports process names.
-# shellcheck disable=SC2016
 mx_export() {
-	local session="${1-}" first_window="" root="" row window linked window_panes
-	local layout name pane_id pane_active process path tracked_command active_pane=0 i=0
-	local -a rows
+	local session="${1-}"
 
 	if [[ -z "$session" ]]; then
 		if [[ -z ${TMUX-} ]]; then
@@ -266,89 +236,128 @@ mx_export() {
 		return 1
 	fi
 
-	# One query for the whole session instead of several per pane. tmux rejects
-	# control characters in window names, and the path comes last so a stray
-	# separator in it stays part of the path. -u keeps the separators: a client
-	# outside tmux with a non-UTF-8 locale gets control characters as '_'.
-	mapfile -t rows < <(tmux -u list-panes -s -t "=$session" -F \
-		$'#{window_index}\x1f#{window_linked}\x1f#{window_panes}\x1f#{window_layout}\x1f#{window_name}\x1f#{pane_id}\x1f#{pane_active}\x1f#{pane_current_command}\x1f#{pane_current_path}')
+	luajit "$LUA_DIR/tmux.lua" export "$session" "$COMMANDS_DIR"
+}
 
-	for row in "${rows[@]}"; do
-		IFS=$'\x1f' read -r window linked _ _ _ _ _ _ path <<<"$row"
-		[[ "$linked" == 1 ]] && continue
-		first_window="$window"
-		root="$path"
-		break
-	done
+# Stands in for tmux while an old definition's mx_start runs: send-keys is
+# how those definitions typed commands, so the keys are written where the zsh
+# hook would have recorded them instead of being run.
+migrate_tmux() {
+	local target="" literal=0 text="" key file
 
-	if [[ -z "$first_window" ]]; then
-		echo "mx: session has no unlinked windows: $session" >&2
-		return 1
+	if [[ ${1-} != send-keys ]]; then
+		command tmux "$@"
+		return
 	fi
-
-	printf '# Generated by mx --export from session %q.\n' "$session"
-	printf '# Linked windows are omitted; mx appends _shared after mx_start.\n'
-	printf '# Running commands recorded by zsh are replayed. Review them for secrets before saving this file.\n'
-	printf '# Commands without tracking metadata remain comments containing only process names.\n\n'
-	printf 'MX_ROOT=%s\n\n' "$(export_root_expr "$root")"
-	printf 'mx_start() {\n'
-	printf '\tlocal window pane\n'
-	printf '\tlocal -a panes\n\n'
-
-	# Rows arrive grouped by window in pane order; i is the pane's position
-	# within its window.
-	for row in "${rows[@]}"; do
-		IFS=$'\x1f' read -r window linked window_panes layout name pane_id pane_active process path <<<"$row"
-		[[ "$linked" == 1 ]] && continue
-
-		if ((i == 0)); then
-			if [[ "$window" == "$first_window" ]]; then
-				printf '\twindow=1\n'
-				printf '\ttmux rename-window -t "=$MX_SESSION:$window" %q\n' "$name"
-			else
-				printf '\twindow="$(tmux new-window -d -P -F %q -t "=$MX_SESSION:" -n %q -c %s)"\n' \
-					'#{window_index}' "$name" "$(export_dir_expr "$path" "$root")"
-			fi
-			printf '\tpanes=("$(tmux display-message -p -t "=$MX_SESSION:$window" %q)")\n' '#{pane_index}'
-			active_pane=0
-		fi
-
-		tracked_command=""
-		# Do not turn the mx --export invocation itself into a startup command.
-		# The option is read separately because recorded commands may span
-		# lines, which would break the row format above. -u for the same reason
-		# as that query: newlines and non-ASCII bytes would otherwise become '_'.
-		if [[ "$pane_id" != "${TMUX_PANE-}" ]]; then
-			tracked_command="$(tmux -u show-options -pqv -t "$pane_id" @mx_command)"
-		fi
-		if [[ "$pane_active" == 1 ]]; then
-			active_pane="$i"
-		fi
-		if ((i > 0)); then
-			# Split the previous pane, not the active one: a new pane goes
-			# right after its target, so this keeps panes in their original
-			# order for select-layout and keeps recorded indices valid.
-			printf '\tpane="$(tmux split-window -d -P -F %q -t "=$MX_SESSION:$window.${panes[%d]}" -c %s)"\n' \
-				'#{pane_index}' "$((i - 1))" "$(export_dir_expr "$path" "$root")"
-			printf '\tpanes+=("$pane")\n'
-		fi
-		if [[ -n "$tracked_command" ]]; then
-			printf '\ttmux send-keys -l -t "=$MX_SESSION:$window.${panes[%d]}" -- %q\n' "$i" "$tracked_command"
-			printf '\ttmux send-keys -t "=$MX_SESSION:$window.${panes[%d]}" C-m\n' "$i"
-		else
-			printf '\t# pane %d command unavailable; current process: %q\n' "$((i + 1))" "$process"
-		fi
-
-		i=$((i + 1))
-		if ((i == window_panes)); then
-			if ((window_panes > 1)); then
-				printf '\ttmux select-layout -t "=$MX_SESSION:$window" %q\n' "$layout"
-			fi
-			printf '\ttmux select-pane -t "=$MX_SESSION:$window.${panes[%d]}"\n\n' "$active_pane"
-			i=0
-		fi
+	shift
+	while (($#)); do
+		case "$1" in
+		-t)
+			target="$2"
+			shift 2
+			;;
+		-l)
+			literal=1
+			shift
+			;;
+		--)
+			shift
+			break
+			;;
+		-*) shift ;;
+		*) break ;;
+		esac
 	done
-	printf '}\n'
+	for key in "$@"; do
+		if ((literal)); then
+			text+="$key"
+			continue
+		fi
+		case "$key" in
+		C-m | Enter | KPEnter) ;;
+		Space) text+=" " ;;
+		*) text+="$key" ;;
+		esac
+	done
+	[ -n "$text" ] || return 0
+	file="$COMMANDS_DIR/tmux-$(command tmux display-message -p -t "$target" '#{pid}-#{pane_id}' | tr -d %)"
+	if [ -e "$file" ]; then
+		printf '\n%s' "$text" >>"$file"
+	else
+		printf '%s' "$text" >"$file"
+	fi
+}
+
+# Prints the Lua definition for an old bash one: its mx_start runs against a
+# private tmux server, and the result is exported like any session.
+migrate_definition() (
+	local source="$1" root
+	local scratch
+	scratch="$(mktemp -d)"
+	# shellcheck disable=SC2064 # The path is fixed when the trap is set.
+	trap "TMUX_TMPDIR='$scratch' command tmux kill-server 2>/dev/null; rm -rf '$scratch'" EXIT
+
+	unset TMUX TMUX_PANE
+	export TMUX_TMPDIR="$scratch"
+	COMMANDS_DIR="$scratch/commands"
+	mkdir "$COMMANDS_DIR"
+
+	# shellcheck disable=SC1090
+	source "$source"
+	root="${MX_ROOT:-$HOME}"
+	cd "$root"
+	export MX_SESSION=migrate MX_ROOT="$root"
+	# Old definitions assume the indexing of the real tmux.conf. A plain sh
+	# in every pane keeps the user's shell config from typing anything.
+	command tmux -f /dev/null start-server \; \
+		set -g base-index 1 \; setw -g pane-base-index 1 \; \
+		set -g default-shell /bin/sh \; \
+		new-session -d -s migrate -c "$root"
+
+	if declare -F mx_start >/dev/null; then
+		# shellcheck disable=SC2329 # mx_start calls it.
+		tmux() { migrate_tmux "$@"; }
+		if ! mx_start; then
+			echo "mx: mx_start in $source failed; converted what it built" >&2
+		fi
+		unset -f tmux
+	fi
+	luajit "$LUA_DIR/tmux.lua" export migrate "$COMMANDS_DIR" "$source"
+)
+
+# Converts every old definition that has no new one yet. Old files stay in
+# place.
+mx_migrate() {
+	local from to f name target status=0
+	local -a pairs=(
+		"${HOST_CONFIGS:+$HOST_CONFIGS/tmux/sessions}" "${HOST_CONFIGS:+$HOST_CONFIGS/mx/sessions}"
+		"${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions" "$CONFIG_DIR/sessions"
+	)
+
+	while ((${#pairs[@]})); do
+		from="${pairs[0]}" to="${pairs[1]}"
+		pairs=("${pairs[@]:2}")
+		[ -n "$from" ] && [ -d "$from" ] || continue
+		for f in "$from"/*; do
+			name="${f##*/}"
+			[ -f "$f" ] && [ "$name" != README.md ] || continue
+			target="$to/$name.lua"
+			if [ -e "$target" ]; then
+				echo "mx: skipped $f: $target exists" >&2
+				continue
+			fi
+			mkdir -p "$to"
+			if migrate_definition "$f" >"$target.tmp"; then
+				mv "$target.tmp" "$target"
+				echo "$f -> $target"
+			else
+				rm -f "$target.tmp"
+				echo "mx: could not convert $f" >&2
+				status=1
+			fi
+		done
+	done
+	return "$status"
 }
 
 # mx --pick [query] - fuzzy-pick a project or defined session, then launch it
@@ -413,6 +422,11 @@ main() {
 		mx_export "${2-}"
 		exit $?
 		;;
+	--migrate)
+		[ $# -eq 1 ] || usage
+		mx_migrate
+		exit $?
+		;;
 	-h | --help)
 		[ $# -eq 1 ] || usage
 		show_help
@@ -427,6 +441,8 @@ main() {
 	*)
 		[ $# -eq 1 ] || usage
 		name="$1"
+		# A definition without `root` starts at $PWD.
+		root="$PWD"
 		if ! session_file="$(find_session_file "$name")"; then
 			session_file=""
 			matches="$(resolve_dirs "$name")"
@@ -439,8 +455,6 @@ main() {
 				root="$matches"
 				# same session name whether typed or picked
 				name="$(derive_name "$root")"
-			else
-				root="$PWD"
 			fi
 		fi
 		;;
@@ -450,31 +464,12 @@ main() {
 	tmux_name="$(sanitize "$name")"
 
 	if ! tmux has-session -t "=$tmux_name" 2>/dev/null; then
-		mx-init
-
-		if [ -n "$session_file" ]; then
-			# shellcheck disable=SC1090
-			source "$session_file"
-			root="${MX_ROOT:-$PWD}"
-		fi
-
-		cd "$root"
-		export MX_SESSION="$tmux_name"
-		export MX_ROOT="$root"
-		tmux new-session -d -s "$tmux_name" -c "$root"
-
-		if [ -n "$session_file" ] && declare -F mx_start >/dev/null; then
-			# `if !` suppresses errexit inside mx_start; a failing command in
-			# a definition must not strand a half-built session before attach
-			if ! mx_start; then
-				echo "mx: mx_start for $tmux_name failed" >&2
-				tmux display-message "mx: mx_start for $tmux_name failed" 2>/dev/null || true
-			fi
-		fi
-
+		"$HERE/mx-init"
+		# A definition that fails to load creates no session.
+		luajit "$LUA_DIR/tmux.lua" open "$tmux_name" "$session_file" "$root"
 		# Definition windows come first; shared windows are appended afterwards.
 		link_shared_windows "$tmux_name"
-		tmux select-window -t "=$tmux_name:1"
+		tmux select-window -t "=$tmux_name:^"
 	fi
 
 	if [ -z "${TMUX-}" ]; then

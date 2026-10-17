@@ -79,7 +79,7 @@
           '';
 
           mx = mkCheck "mx-check" [ pkgs.bash pkgs.tmux ] ''
-            bash ${source}/tests/mx.sh
+            MX_BIN=${pkgs.mx}/bin bash ${source}/nix/pkgs/mx/tests/mx.sh
           '';
 
           jj-templates = mkCheck "jj-templates-check" [ pkgs.bash pkgs.jujutsu ] ''
@@ -162,7 +162,7 @@
           '';
 
           stylua = mkCheck "stylua-check" [ pkgs.stylua ] ''
-            stylua --config-path ${source}/.stylua.toml --check ${source}/config
+            stylua --config-path ${source}/.stylua.toml --check ${source}/config ${source}/nix/pkgs/mx
           '';
 
           typos = mkCheck "typos-check" [ pkgs.typos ] ''
