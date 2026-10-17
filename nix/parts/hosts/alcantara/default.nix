@@ -27,6 +27,7 @@ let
           "monodraw"
           "sony-ps-remote-play"
           "helium-browser"
+          "blender"
         ];
 
         # Requires to be logged in to the AppStore
