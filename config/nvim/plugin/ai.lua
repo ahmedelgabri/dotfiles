@@ -2,7 +2,9 @@ local pack = require '_.pack'
 
 pack.add {
 	{
-		src = 'https://github.com/wincent/shannon',
+		-- The fork's `rex` branch adds Rex support; upstream is tmux-only.
+		src = 'https://github.com/ahmedelgabri/shannon',
+		version = 'rex',
 		config = function()
 			require('wincent.shannon').setup {
 				prefix = '<LocalLeader>a', -- keymap prefix

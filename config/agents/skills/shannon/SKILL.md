@@ -37,8 +37,9 @@ There are two ways to obtain the Neovim server address:
    $SKILL_DIR/scripts/shannon-find-nvim.sh
    ```
 
-   This finds the Neovim instance running in a sibling tmux pane and prints its
-   server socket path. It exits non-zero if no Neovim is found.
+   This finds the Neovim instance running in a sibling tmux pane or Rex
+   terminal and prints its server socket path. It exits non-zero if no Neovim
+   is found.
 
 ## Sending RPC commands to Neovim
 
