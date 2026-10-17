@@ -68,9 +68,9 @@ let
             FZF_CTRL_T_COMMAND = fzfCtrlTCommand;
             FZF_ALT_C_COMMAND = "${fzfCtrlTCommand} --type d .";
             FZF_DEFAULT_COMMAND = "${fzfCtrlTCommand} --type f";
-            FZF_ALT_C_OPTS = "--popup=center,70%,70% --border=none --preview='(${fzfPreviewCommand}) 2> /dev/null'";
+            FZF_ALT_C_OPTS = "--preview='(${fzfPreviewCommand}) 2> /dev/null'";
             FZF_CTRL_R_OPTS = "--preview 'echo {}' --preview-window down:3:wrap:hidden --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard'";
-            FZF_CTRL_T_OPTS = "--popup=center,85%,85% --border=none --preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})'";
+            FZF_CTRL_T_OPTS = "--preview-window right:border-left:60%:hidden --preview='(${fzfPreviewCommand})'";
             FZF_DEFAULT_OPTS = "--border thinblock --prompt='» ' --pointer='▶' --marker='✓ ' --reverse --tabstop 2 --color=bg+:-1,marker:010 --gutter ' ' --separator='' --bind '?:toggle-preview' --info inline-right";
           };
         in
@@ -332,6 +332,16 @@ let
                       # smaller, static environment.
                       ${lib.toShellVars zshInteractiveLocalVars}
                       ${mkExportedShellVars zshInteractiveExportedVars}
+
+                      # fzf ignores --popup outside tmux, and --border=none
+                      # would then leave a full-screen finder with no frame.
+                      if [[ -n ${"$"}{TMUX-} ]]; then
+                        FZF_CTRL_T_OPTS+=" --popup=center,85%,85% --border=none"
+                        FZF_ALT_C_OPTS+=" --popup=center,70%,70% --border=none"
+                      else
+                        FZF_CTRL_T_OPTS+=" --height=85%"
+                        FZF_ALT_C_OPTS+=" --height=70%"
+                      fi
 
                       autoload -U select-word-style
                       # only alphanumeric chars are considered WORDCHARS
