@@ -143,9 +143,25 @@ fzf.
 bash tests/live/rx.sh
 ```
 
-The suite runs the real `rx` against a real Rex server that it starts on a private socket in a temporary directory. It needs the Rex app in `/Applications`, which is not in nixpkgs, so it is a live test with no Nix check. The `rex` CLI ignores `REX_SERVER` and silently falls back to the live server, so the suite reaches Rex only through a wrapper that pins `-S` to the private socket, and it aborts unless `rex whoami` reports that socket.
+The suite runs the real `rx` against a real Rex server that it starts on a
+private socket in a temporary directory. It needs the Rex app in
+`/Applications`, which is not in nixpkgs, so it is a live test with no Nix
+check. The `rex` CLI ignores `REX_SERVER` and silently falls back to the live
+server, so the suite reaches Rex only through a wrapper that pins `-S` to the
+private socket, and it aborts unless `rex whoami` reports that socket.
 
-It checks usage errors, plain sessions at `$PWD` and their reuse, definition layouts (split directions, ratios, default, relative, and absolute directories, typed commands), `$HOST_CONFIGS` precedence, shared windows, and that failing definitions create no session. It attaches through `script` and checks that the session is drawn. It also checks byte-exact `--export` output, including recorded commands, process-name comments, and the self-block exclusion, then launches the exported definition and compares its layout with the original. `PATH` holds only the tools the suite needs, so `shared.lua` never launches mail, RSS, or HN clients. Pane shells still load your login zsh config. Most launches end with Rex's expected `attach requires terminal output` error, which the suite asserts. `session.select`, used inside Rex, is not covered because it needs the app with Remote Control turned on.
+It checks usage errors, plain sessions at `$PWD` and their reuse, definition
+layouts (split directions, ratios, default, relative, and absolute directories,
+typed commands), `$HOST_CONFIGS` precedence, shared windows, and that failing
+definitions create no session. It attaches through `script` and checks that the
+session is drawn. It also checks byte-exact `--export` output, including
+recorded commands, process-name comments, and the self-block exclusion, then
+launches the exported definition and compares its layout with the original.
+`PATH` holds only the tools the suite needs, so `shared.lua` never launches
+mail, RSS, or HN clients. Pane shells still load your login zsh config. Most
+launches end with Rex's expected `attach requires terminal output` error, which
+the suite asserts. `session.select`, used inside Rex, is not covered because it
+needs the app with Remote Control turned on.
 
 ## Rex config
 
@@ -155,9 +171,29 @@ lua tests/rex_init.lua "$PWD"
 bash tests/live/rex-init.sh
 ```
 
-The Lua 5.1 suite (the Lua that Rex runs) loads the real [`config/rex/init.lua`](../config/rex/init.lua) against a substitute `rex` table. It checks the keymap, which process names make ctrl+h/j/k/l pass through to the block (the programs tmux's `VIM_PATTERN` matches, including Nix `-wrapped` names), that every other program and a block that is not a terminal move Rex focus in the right direction with wrapping at the edges, that `pane_focus_unless_zoomed` does nothing while the active window is zoomed, and that `tab_new_next` passes the current tab's directory, places the tab after the current one, and raises API errors.
+The Lua 5.1 suite (the Lua that Rex runs) loads the real
+[`config/rex/init.lua`](../config/rex/init.lua) against a substitute `rex`
+table. It checks the keymap, which process names make ctrl+h/j/k/l pass through
+to the block (the programs tmux's `VIM_PATTERN` matches, including Nix
+`-wrapped` names), that every other program and a block that is not a terminal
+move Rex focus in the right direction with wrapping at the edges, that
+`pane_focus_unless_zoomed` does nothing while the active window is zoomed, and
+that `tab_new_next` passes the current tab's directory, places the tab after the
+current one, and raises API errors.
 
-The E2E suite starts a real Rex server on a private socket with the checkout's `init.lua`, behind the same `-S` wrapper and `rex whoami` guard as the rx suite. It checks that new tabs open in the current tab's directory, both at the end and between tabs after a `cd`. It then presses ctrl+h/j/k/l through `client.key`, the path Rex.app uses, in a tab with a shell, a shell below it, and a real nvim with two windows that loads the checkout's `config/nvim`. It covers moving between Rex panes, keys passed to nvim, nvim handing an edge move back to Rex, wrapping to the far side at every edge (Rex picks the far pane by position, not by recent use), a zoomed nvim staying in place without wrapping, and a zoomed shell unzooming like tmux's `select-pane`. Without an app, `tab_new_next` ends with Rex's expected `client action was not delivered` error, which the suite asserts. Whether Rex.app shows the focus change is not covered, because that needs the app.
+The E2E suite starts a real Rex server on a private socket with the checkout's
+`init.lua`, behind the same `-S` wrapper and `rex whoami` guard as the rx suite.
+It checks that new tabs open in the current tab's directory, both at the end and
+between tabs after a `cd`. It then presses ctrl+h/j/k/l through `client.key`,
+the path Rex.app uses, in a tab with a shell, a shell below it, and a real nvim
+with two windows that loads the checkout's `config/nvim`. It covers moving
+between Rex panes, keys passed to nvim, nvim handing an edge move back to Rex,
+wrapping to the far side at every edge (Rex picks the far pane by position, not
+by recent use), a zoomed nvim staying in place without wrapping, and a zoomed
+shell unzooming like tmux's `select-pane`. Without an app, `tab_new_next` ends
+with Rex's expected `client action was not delivered` error, which the suite
+asserts. Whether Rex.app shows the focus change is not covered, because that
+needs the app.
 
 ## jj templates
 
@@ -166,7 +202,16 @@ nix build .#checks.aarch64-darwin.jj-templates
 bash tests/jj-templates.sh
 ```
 
-The suite layers [`config/jj/config.toml`](../config/jj/config.toml) under a test identity through `JJ_CONFIG` and renders real jj output for a temporary repository. Commits come from the configured user, the same name with another email, and another person. The compact log, the oneline log, the `gr`/`oneline` aliases, and `jj show` must leave the author out only when both name and email match, and otherwise show the name and email. `jj file annotate` shows them in a 32-character column, truncated with `…` when longer, and leaves it blank for the configured user. `jj show` applies this to the committer too, so a commit by someone else and reworded by the configured user still names its author. With no configured email, an author without one still shows the `NO EMAIL` warning.
+The suite layers [`config/jj/config.toml`](../config/jj/config.toml) under a
+test identity through `JJ_CONFIG` and renders real jj output for a temporary
+repository. Commits come from the configured user, the same name with another
+email, and another person. The compact log, the oneline log, the `gr`/`oneline`
+aliases, and `jj show` must leave the author out only when both name and email
+match, and otherwise show the name and email. `jj file annotate` shows them in a
+32-character column, truncated with `…` when longer, and leaves it blank for the
+configured user. `jj show` applies this to the committer too, so a commit by
+someone else and reworded by the configured user still names its author. With no
+configured email, an author without one still shows the `NO EMAIL` warning.
 
 ## Pi extensions
 

@@ -64,5 +64,5 @@ The discovery test starts the installed Pi CLI and checks registered commands,
 tools, and entrypoint paths without making model requests or mocking Pi APIs.
 
 Extensions with colocated `<name>.test.ts` suites, such as
-[`/simplify`](simplify/README.md#tests) and [`/loop`](loop/README.md#validation),
-document how to run them in their READMEs.
+[`/simplify`](simplify/README.md#tests) and
+[`/loop`](loop/README.md#validation), document how to run them in their READMEs.

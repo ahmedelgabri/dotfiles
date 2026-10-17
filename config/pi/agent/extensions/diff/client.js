@@ -716,17 +716,17 @@ const AnnotationCard = ({
 			annotation.replies.length > 0
 				? html`<div class="replies">
 						${annotation.replies.map(
-						(reply) =>
-							html`<${ReplyEntry}
-								key=${reply.id}
-								reply=${reply}
-								onDelete=${
-									onDeleteReply
-										? (replyId) => onDeleteReply(annotation.id, replyId)
-										: null
-								}
-							/>`,
-					)}
+							(reply) =>
+								html`<${ReplyEntry}
+									key=${reply.id}
+									reply=${reply}
+									onDelete=${
+										onDeleteReply
+											? (replyId) => onDeleteReply(annotation.id, replyId)
+											: null
+									}
+								/>`,
+						)}
 					</div>`
 				: null
 		}
@@ -1086,9 +1086,9 @@ const ConflictViewer = ({file, wrapLines, onSave}) => {
 						saveStatus
 							? html`<span
 									class=${
-									'conflict-save-status' +
-									(saveStatus.startsWith('Saved') ? ' ok' : ' error')
-								}
+										'conflict-save-status' +
+										(saveStatus.startsWith('Saved') ? ' ok' : ' error')
+									}
 									>${saveStatus}</span
 								>`
 							: null

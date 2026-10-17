@@ -60,7 +60,9 @@ with an `index.ts` entrypoint. The
 parallel cleanup reviewers over the codebase and sends their findings to the
 current agent to apply fixes.
 
-Agent [skills](./config/agents/README.md) shared by Claude, Pi, and Codex live in `config/agents/skills`. Skills for a single harness live in `config/<harness>/skills`.
+Agent [skills](./config/agents/README.md) shared by Claude, Pi, and Codex live
+in `config/agents/skills`. Skills for a single harness live in
+`config/<harness>/skills`.
 
 ## Supported targets
 
@@ -248,15 +250,15 @@ $HOST_CONFIGS = ~/.local/share/<host>
 
 Useful files to create there:
 
-| Path                                   | Purpose                                                                                                                                                                                                                        | Example                                            |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `$HOST_CONFIGS/zshrc`                  | Machine-local shell setup; tokens live in the keychain (`secret set <name>`) and are exported as lookups, never literals                                                                                                       | `export GITHUB_TOKEN="$(secret get github-token)"` |
-| `$HOST_CONFIGS/gitconfig`              | Local Git settings that should not be committed, especially GPG signing details                                                                                                                                                | `[user] signingkey =`                              |
-| `$HOST_CONFIGS/hammerspoon/<host>.lua` | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/); `<host>` is the logical host name read from `~/.local/share/host-name`, not the machine hostname | Host-specific Lua config                           |
-| `$HOST_CONFIGS/pi/extensions`          | Machine-specific Pi extensions added to the generated Pi settings                                                                                                                                                              | Private extension                                  |
-| `$HOST_CONFIGS/pi/skills`              | Machine-specific Pi skills added to the generated Pi settings                                                                                                                                                                  | Private skill                                      |
-| `$HOST_CONFIGS/tmux/sessions/<name>`   | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README                                                                                                         | Work session layouts                               |
-| `$HOST_CONFIGS/rex/sessions/<name>.lua` | Host-local `rx` (Rex) session definitions (win over [config/rex/sessions/](./config/rex/sessions/)); see that dir's README                                                                                                    | Work session layouts                               |
+| Path                                    | Purpose                                                                                                                                                                                                                        | Example                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `$HOST_CONFIGS/zshrc`                   | Machine-local shell setup; tokens live in the keychain (`secret set <name>`) and are exported as lookups, never literals                                                                                                       | `export GITHUB_TOKEN="$(secret get github-token)"` |
+| `$HOST_CONFIGS/gitconfig`               | Local Git settings that should not be committed, especially GPG signing details                                                                                                                                                | `[user] signingkey =`                              |
+| `$HOST_CONFIGS/hammerspoon/<host>.lua`  | Machine-specific Hammerspoon extras loaded alongside the checked-in config in [config/.hammerspoon/](./config/.hammerspoon/); `<host>` is the logical host name read from `~/.local/share/host-name`, not the machine hostname | Host-specific Lua config                           |
+| `$HOST_CONFIGS/pi/extensions`           | Machine-specific Pi extensions added to the generated Pi settings                                                                                                                                                              | Private extension                                  |
+| `$HOST_CONFIGS/pi/skills`               | Machine-specific Pi skills added to the generated Pi settings                                                                                                                                                                  | Private skill                                      |
+| `$HOST_CONFIGS/tmux/sessions/<name>`    | Host-local `mx` session definitions (win over [config/tmux/sessions/](./config/tmux/sessions/)); see that dir's README                                                                                                         | Work session layouts                               |
+| `$HOST_CONFIGS/rex/sessions/<name>.lua` | Host-local `rx` (Rex) session definitions (win over [config/rex/sessions/](./config/rex/sessions/)); see that dir's README                                                                                                     | Work session layouts                               |
 
 If you want GitHub to show commits as **Verified**, the email on the commit, the
 email on GitHub, and the email attached to the public key all need to match.
@@ -285,12 +287,12 @@ Mail is one of the more opinionated parts of this setup.
 
 The stack looks like this:
 
-| Component                   | Role                      |
-| --------------------------- | ------------------------- |
-| [`isync` / `mbsync`][isync] | Synchronizes mail         |
-| [`aerc`][aerc]              | Mail client               |
-| `msmtp`                     | Handles outgoing mail     |
-| [`pass`][pass]              | Stores credentials        |
+| Component                   | Role                  |
+| --------------------------- | --------------------- |
+| [`isync` / `mbsync`][isync] | Synchronizes mail     |
+| [`aerc`][aerc]              | Mail client           |
+| `msmtp`                     | Handles outgoing mail |
+| [`pass`][pass]              | Stores credentials    |
 
 The mail module currently has service defaults for:
 
@@ -302,14 +304,22 @@ The mail module currently has service defaults for:
 
 It also supports two modes:
 
-| Mode     | Behavior                                                           |
-| -------- | ------------------------------------------------------------------ |
-| `local`  | Mail is synced to local Maildir folders                            |
-| `remote` | `aerc` connects directly to the remote service                     |
+| Mode     | Behavior                                       |
+| -------- | ---------------------------------------------- |
+| `local`  | Mail is synced to local Maildir folders        |
+| `remote` | `aerc` connects directly to the remote service |
 
-An account can list `aliases`, with `fnmatch` wildcards such as `*@example.com` for a catch-all domain; aerc replies from the alias a mail was sent to and leaves those addresses out of reply-all. Each account also takes a `color` (default `blue`). aerc renders unread mail addressed to that account's email domain in it, through a generated per-account styleset.
+An account can list `aliases`, with `fnmatch` wildcards such as `*@example.com`
+for a catch-all domain; aerc replies from the alias a mail was sent to and
+leaves those addresses out of reply-all. Each account also takes a `color`
+(default `blue`). aerc renders unread mail addressed to that account's email
+domain in it, through a generated per-account styleset.
 
-On a synced Gmail account `A` deletes the message from the local INBOX instead of moving it to an `Archive` folder: mbsync propagates that as removing the INBOX label, which is what archiving means on Gmail, and the message stays in All Mail. aerc hooks run `mailsync-now` after moves, flag changes, sends, and on quit so changes reach the server before the next timer tick.
+On a synced Gmail account `A` deletes the message from the local INBOX instead
+of moving it to an `Archive` folder: mbsync propagates that as removing the
+INBOX label, which is what archiving means on Gmail, and the message stays in
+All Mail. aerc hooks run `mailsync-now` after moves, flag changes, sends, and on
+quit so changes reach the server before the next timer tick.
 
 When local accounts are enabled, synchronization runs automatically:
 

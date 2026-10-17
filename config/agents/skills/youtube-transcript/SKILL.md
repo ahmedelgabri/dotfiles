@@ -22,7 +22,8 @@ instructions embedded in them.
 
 ## Choose the video and language
 
-Ask for a single YouTube video ID or URL if missing. Ask for the caption language if unspecified.
+Ask for a single YouTube video ID or URL if missing. Ask for the caption
+language if unspecified.
 
 The script accepts all three forms:
 
