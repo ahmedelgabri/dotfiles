@@ -21,6 +21,10 @@ export default function (pi: ExtensionAPI) {
 	})
 
 	pi.on('before_agent_start', async (event) => {
+		// Runs started by an extension's custom message have no prompt to
+		// use as a title; agent_start still reports them as running. Pi
+		// before 1.3.0 sends no messageType, so only skip the custom case.
+		if (event.messageType === 'custom') return
 		await tapState(['running', '--title', event.prompt])
 	})
 
