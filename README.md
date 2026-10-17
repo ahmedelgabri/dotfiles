@@ -60,6 +60,8 @@ with an `index.ts` entrypoint. The
 parallel cleanup reviewers over the codebase and sends their findings to the
 current agent to apply fixes.
 
+Agent [skills](./config/agents/README.md) shared by Claude, Pi, and Codex live in `config/agents/skills`. Skills for a single harness live in `config/<harness>/skills`.
+
 ## Supported targets
 
 These are the targets currently represented in the flake:

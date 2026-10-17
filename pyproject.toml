@@ -16,7 +16,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"config/claude/skills/youtube-transcript/scripts/transcript.py" = [
+"config/agents/skills/youtube-transcript/scripts/transcript.py" = [
   # CLI output is the script's result, not debugging output.
   "print",
   # Launch the PATH-resolved yt-dlp executable with arguments, never a shell.

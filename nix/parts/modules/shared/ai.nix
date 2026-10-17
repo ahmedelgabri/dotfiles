@@ -123,13 +123,50 @@ let
               chmod u+w "$TARGET"
             fi
           '';
-        mkClaudeTree =
-          { sub, target }:
+        mkConfigTree =
+          { dir, target }:
           config.lib.file.mkOutOfStoreTree {
-            source = ../../../../config/claude + "/${sub}";
-            sourceRoot = "${dotfilesConfig}/claude/${sub}";
+            source = ../../../../config + "/${dir}";
+            sourceRoot = "${dotfilesConfig}/${dir}";
             targetRoot = target;
           };
+        mkClaudeTree =
+          { sub, target }:
+          mkConfigTree {
+            dir = "claude/${sub}";
+            inherit target;
+          };
+        configHome = lib.removePrefix "${config.home.homeDirectory}/" config.xdg.configHome;
+        # Pi and Codex read ~/.agents/skills on their own, so shared skills
+        # only need extra links for harnesses that don't. Harness-specific
+        # trees come after the shared one so they win on a path collision.
+        skillTrees = [
+          {
+            dir = "agents/skills";
+            targets = [
+              ".agents/skills"
+              ".claude/skills"
+            ];
+          }
+          {
+            dir = "claude/skills";
+            targets = [ ".claude/skills" ];
+          }
+          {
+            dir = "pi/skills";
+            targets = [ "${configHome}/pi/agent/skills" ];
+          }
+          {
+            dir = "codex/skills";
+            targets = [ "${configHome}/codex/skills" ];
+          }
+        ];
+        mkSkillTrees =
+          { dir, targets }:
+          # Git does not track empty directories, so a harness may have none.
+          lib.optionals (builtins.pathExists (../../../../config + "/${dir}")) (
+            map (target: mkConfigTree { inherit dir target; }) targets
+          );
       in
       {
         xdg.configFile =
@@ -181,10 +218,6 @@ let
           file = lib.mergeAttrsList (
             map mkClaudeTree [
               {
-                sub = "skills";
-                target = ".agents/skills";
-              }
-              {
                 sub = "agents";
                 target = ".claude/agents";
               }
@@ -204,11 +237,8 @@ let
                 sub = "scripts";
                 target = ".claude/scripts";
               }
-              {
-                sub = "skills";
-                target = ".claude/skills";
-              }
             ]
+            ++ lib.concatMap mkSkillTrees skillTrees
             ++ [
               {
                 ".claude/CLAUDE.md".source =
