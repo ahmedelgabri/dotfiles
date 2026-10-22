@@ -30,7 +30,9 @@ browser (using [`@pierre/diffs`](https://www.npmjs.com/package/@pierre/diffs)
 for syntax-aware rendering and
 [`@pierre/trees`](https://www.npmjs.com/package/@pierre/trees) for the file
 tree), while keeping pi as the active reviewer that can drop comments, reply to
-yours, and react to your final review notes.
+yours, and react to your final review notes. Syntax highlighting uses the
+[`@pierre/highlights`](https://diffs.com/highlights) WebAssembly backend when
+`canUseWASM()` reports support and falls back to shiki-js otherwise.
 
 ## High-level architecture
 
@@ -158,7 +160,7 @@ sequenceDiagram
 | `vcs.ts`               | Source-of-truth for "where does the patch come from": parses `/diff` args, dispatches to `jj`, `git`, or `gh`, parses unified-diff headers into `DiffFile[]`, and surfaces merge conflicts. |
 | `annotations-store.ts` | On-disk persistence. Per-repo, per-source JSON files with atomic rename + legacy single-file migration.                                                                                     |
 | `prefs.ts`             | On-disk UI preferences (sidebar widths and global line wrapping). A single global JSON file with atomic rename; survives the random server port that defeats browser `localStorage`.        |
-| `html.ts`              | Tiny HTML shell with an `importmap` that pulls Preact, htm, marked, DOMPurify, `@pierre/diffs`, and `@pierre/trees` from `esm.sh`. Inlines `client.js` and `styles.css`.                    |
+| `html.ts`              | Tiny HTML shell with an `importmap` that pulls Preact, htm, marked, DOMPurify, `@pierre/diffs`, and `@pierre/trees` from `esm.sh`. Inlines `client.js` and `styles.css`. The CSP allows `wasm-unsafe-eval` for the Highlights lexers. |
 | `client.js`            | Preact UI: file tree, diff renderer, annotation threads, merge-conflict editor, SSE wiring. Shipped as plain JS so no build step is needed.                                                 |
 | `styles.css`           | UI styling (light/dark via `light-dark()`).                                                                                                                                                 |
 

@@ -22,6 +22,10 @@ const hasConflictMarkers = (contents) =>
 const resolveMergeConflict =
 	diffsLib.resolveMergeConflict || diffsLib.resolveConflict
 
+// Highlights (WASM lexers) needs WebAssembly with SIMD and a CSP that allows
+// it; shiki-js is the fallback where either is missing.
+const preferredHighlighter = diffsLib.canUseWASM() ? 'highlights' : 'shiki-js'
+
 const config = window.PI_DIFF_CONFIG
 // Server-provided UI prefs. The HTTP server picks a new random port every
 // session, so localStorage — being origin-scoped — resets each time; the server
@@ -894,6 +898,7 @@ const DiffViewer = ({
 			instance = new diffsLib.FileDiff({
 				theme: {dark: 'pierre-dark', light: 'pierre-light'},
 				themeType: 'system',
+				preferredHighlighter,
 				diffStyle: layout,
 				diffIndicators: 'bars',
 				hunkSeparators: 'line-info-basic',
@@ -1033,6 +1038,7 @@ const ConflictViewer = ({file, wrapLines, onSave}) => {
 		try {
 			const instance = new diffsLib.UnresolvedFile({
 				theme: {dark: 'pierre-dark', light: 'pierre-light'},
+				preferredHighlighter,
 				diffIndicators: 'bars',
 				overflow: wrapLines ? 'wrap' : 'scroll',
 				onMergeConflictAction(payload) {

@@ -2,7 +2,9 @@ import {randomBytes} from 'node:crypto'
 import {readFileSync} from 'node:fs'
 import {fileURLToPath} from 'node:url'
 
-const DIFFS_CDN = 'https://esm.sh/@pierre/diffs@1.1.21?bundle&target=es2022'
+// `?bundle` would inline every shiki grammar and the Highlights WASM lexers
+// into one 11 MB module; the plain build loads backends and grammars on demand.
+const DIFFS_CDN = 'https://esm.sh/@pierre/diffs@1.6.1?target=es2022'
 const TREES_CDN =
 	'https://esm.sh/@pierre/trees@1.0.0-beta.3?bundle&target=es2022'
 const PREACT_CDN = 'https://esm.sh/preact@10.25.4?target=es2022'
@@ -45,11 +47,14 @@ const styles = (): string => STYLES.replace(/<\/style/gi, '<\\/style')
 // connect-src limits fetch/EventSource to this server, img-src blocks pixel
 // beacons, and form-action/base-uri close the non-fetch escape hatches.
 // style-src needs 'unsafe-inline' because @pierre/diffs injects <style> nodes
-// and shiki sets style attributes.
+// and the highlighters set style attributes. script-src needs
+// 'wasm-unsafe-eval' so the Highlights backend can instantiate its WASM
+// lexers; without it canUseWASM() is false and rendering silently falls
+// back to shiki-js.
 const csp = (nonce: string): string =>
 	[
 		`default-src 'self'`,
-		`script-src 'nonce-${nonce}' https://esm.sh`,
+		`script-src 'nonce-${nonce}' 'wasm-unsafe-eval' https://esm.sh`,
 		`style-src 'self' 'unsafe-inline'`,
 		`img-src 'self' data:`,
 		`connect-src 'self'`,
