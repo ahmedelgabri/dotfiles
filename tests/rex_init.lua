@@ -25,6 +25,7 @@ local function load(state)
 		action = function(def)
 			fake.actions[def.name] = def
 		end,
+		mode = function() end,
 		layout = {
 			block = function(spec)
 				return { block = spec }
