@@ -5,11 +5,8 @@ let
     homeManager =
       { config, myConfig, ... }:
       {
-        xdg.configFile = config.lib.file.mkOutOfStoreTree {
-          source = ../../../../config/rex;
-          sourceRoot = "${myConfig.dotfilesDir}/config/rex";
-          targetRoot = "rex";
-        };
+        xdg.configFile."rex".source =
+          config.lib.file.mkOutOfStoreSymlink "${myConfig.dotfilesDir}/config/rex";
       };
   };
 in
