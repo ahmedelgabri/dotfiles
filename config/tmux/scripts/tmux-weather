@@ -33,4 +33,4 @@ weather_data="${weather_data//+/}"
 
 # Emit the separator with the data (like tmux-battery) so an empty
 # segment leaves no dangling separator in the status bar.
-printf "#[fg=brightblack]%s#[fg=black] ⦁ " "$weather_data"
+printf "#[fg=brightblack]%s#[fg=themedarkgrey] ⦁ " "$weather_data"

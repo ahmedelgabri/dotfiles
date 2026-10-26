@@ -4,7 +4,8 @@ Personal tmux setup managed via
 [Home Manager](https://github.com/nix-community/home-manager) (Nix). Files are
 symlinked from the Nix store into `~/.config/tmux/`.
 
-Requires **tmux 3.5+** (currently running 3.7b).
+Requires **tmux 3.8+** (theme detection, floating and modal panes, monitor
+hooks, and auto-hiding scrollbars).
 
 ## File Structure
 
@@ -14,6 +15,7 @@ tmux/
 ├── tmux.conf                          # Main configuration
 └── scripts/
     ├── get-prayer                     # Prayer times (wrapper for next-prayer)
+    ├── tmux-agent-alert               # Message when an agent stops running
     ├── tmux-battery                   # Battery segment wrapper with charging icon
     ├── tmux-statuspage                # statuspage.io incident indicator (GitHub, npm)
     └── tmux-weather                   # Weather segment (via wttr.in)
@@ -50,20 +52,22 @@ These work **without prefix** and also inside copy mode.
 
 All require prefix unless noted.
 
-| Key            | Action                               |
-| -------------- | ------------------------------------ |
-| `prefix + c`   | New window (inherits `$PWD`)         |
-| `prefix + v`   | Vertical split (left/right)          |
-| `prefix + s`   | Horizontal split (top/bottom)        |
-| `prefix + x`   | Kill pane (no confirmation)          |
-| `prefix + b`   | Break pane to new window             |
-| `prefix + C-o` | Rotate panes                         |
-| `prefix + q`   | Display pane numbers                 |
-| `prefix + C-p` | Choose tree (session/window picker)  |
-| `prefix + C-q` | Kill session (with confirmation)     |
-| `prefix + +`   | Main-horizontal layout               |
-| `prefix + =`   | Main-vertical layout                 |
-| `Arrow keys`   | Resize pane by 10 cells (repeatable) |
+| Key              | Action                                |
+| ---------------- | ------------------------------------- |
+| `prefix + c`     | New window (inherits `$PWD`)          |
+| `prefix + v`     | Vertical split (left/right)           |
+| `prefix + s`     | Horizontal split (top/bottom)         |
+| `prefix + x`     | Kill pane (no confirmation)           |
+| `prefix + b`     | Break pane to new window              |
+| `prefix + C-o`   | Rotate panes                          |
+| `prefix + q`     | Display pane numbers                  |
+| `prefix + C-p`   | Choose tree (session/window picker)   |
+| `prefix + Tab`   | Fuzzy window switcher (tmux default)  |
+| `prefix + S-Tab` | Fuzzy session switcher (tmux default) |
+| `prefix + C-q`   | Kill session (with confirmation)      |
+| `prefix + +`     | Main-horizontal layout                |
+| `prefix + =`     | Main-vertical layout                  |
+| `Arrow keys`     | Resize pane by 10 cells (repeatable)  |
 
 ### Copy Mode (vi)
 
@@ -72,10 +76,14 @@ All require prefix unless noted.
 | `v`          | Begin selection                |
 | `V`          | Select line                    |
 | `r`          | Toggle rectangle selection     |
+| `R`          | Toggle following pane output   |
 | `y`          | Yank to system clipboard       |
 | `Escape`     | Cancel                         |
 | Mouse drag   | Copies selection to clipboard  |
 | `prefix + *` | Save entire scrollback to file |
+
+The line under the cursor is highlighted. `R` replaces tmux's default `r`
+(refresh), which is taken by rectangle selection.
 
 Clipboard uses tmux-native copy commands plus OSC 52 via `set-clipboard on`.
 This keeps copy mode simple and works well in terminals like Kitty and Ghostty
@@ -86,14 +94,19 @@ without an external clipboard helper script.
 | Key                   | Action                                        |
 | --------------------- | --------------------------------------------- |
 | `prefix + p`          | Toggle persistent popup shell (per directory) |
-| `prefix + t`          | Quick popup shell (75×75%, non-persistent)    |
+| `prefix + t`          | Quick modal shell (75×75%, non-persistent)    |
 | `prefix + g`          | Project/session picker (`mx --pick`)          |
 | `C-Space` (no prefix) | Agent-aware pane picker (`tap pick`)          |
 
 The persistent popup (`prefix + p`) creates a unique tmux session per working
 directory (named `popup_<basename>_<hash>`) that survives closing the popup. It
 opens anchored to the right side (40% width, full height). The status bar is
-hidden inside popup sessions.
+hidden inside popup sessions. It stays a popup because floating panes cannot be
+hidden and shown again.
+
+The quick shell (`prefix + t`) is a modal floating pane, centred in the window.
+It blocks the other panes until the shell exits, and a click outside closes it.
+Unlike a popup, it can be moved and resized with the mouse.
 
 ## Mouse
 
@@ -104,6 +117,7 @@ Mouse is fully enabled:
 - Scroll wheel enters copy mode and scrolls history
 - Applications that capture the mouse (e.g., vim, less) receive mouse events
   directly
+- Scrollbars appear over the pane only while scrolling or hovering
 
 ## Status Bar
 
@@ -152,22 +166,39 @@ hook.
 
 ### Colors
 
-The config uses `bg=terminal` and named ANSI slots throughout so it follows the
-terminal's dark/light palette without embedding xterm-256 grays. Structure
-(borders, separators, session name) uses `black`, dim text uses `bright black` —
-see the Color system section in the root README for the slot conventions.
+The config uses `bg=terminal`, named ANSI slots, and tmux's theme colours so it
+follows the terminal's dark/light palette without embedding xterm-256 grays.
+tmux detects the terminal's mode and resolves `theme*` colours from the
+`dark-theme-*` or `light-theme-*` options, which map them to the plain palette.
+That also styles tmux's own UI (menus, popups, copy mode, scrollbars, choose
+tree) in both modes. Structure (borders, separators, session name) uses
+`themedarkgrey`, because ANSI `black` is near the background only in plain-dark;
+dim text uses `bright black` — see the Color system section in the root README
+for the slot conventions.
 
-| Element                   | ANSI color   |
-| ------------------------- | ------------ |
-| Prefix active             | bright blue  |
-| Current window            | blue         |
-| Zoomed window             | yellow       |
-| Activity                  | bright black |
-| Bell                      | bright red   |
-| Command line messages     | bright red   |
-| Pane borders              | black        |
-| Separators / session name | black        |
-| Status bar dim text       | bright black |
+| Element                   | Color                |
+| ------------------------- | -------------------- |
+| Prefix active             | bright blue          |
+| Current window            | blue                 |
+| Zoomed window             | yellow               |
+| Activity                  | bright black         |
+| Bell                      | bright red           |
+| Command line messages     | bright red           |
+| Pane borders              | themedarkgrey        |
+| Separators / session name | themedarkgrey        |
+| Status bar dim text       | bright black         |
+| Pane id / agent name      | bright black         |
+| Agent running             | cyan                 |
+| Agent waiting / blocked   | yellow `?` / red `▲` |
+
+## Agent Alerts
+
+When an agent's pane changes from `running` to `waiting` or `blocked` (tap sets
+`@agent_state`), every client not showing that window gets a 5 second message
+such as `? claude is waiting in dotfiles:2`. A monitor hook checks the state
+once a second. Monitor hooks only watch one session, so
+`tmux-agent-alert install` adds one to every session: new ones through the
+`session-created` hook, existing ones on config load.
 
 ## Terminal Support
 
@@ -207,6 +238,13 @@ than embedded raw glyphs.
 | Major / Critical    | Red    |
 | Minor / Maintenance | Yellow |
 | None (operational)  | Hidden |
+
+### `tmux-agent-alert`
+
+`install [session-id...]` adds the `@agent-alert` monitor hook to the given
+sessions, or to all of them. `notify <pane-id> <last-state> <state>` is what the
+hook runs: it filters transitions out of `running` and sends the message with
+`display-message -c` to each client whose current window is not the pane's.
 
 ### `tmux-battery`
 

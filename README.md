@@ -415,7 +415,9 @@ macOS appearance is the only switch. Ghostty selects
 `theme = dark:plain-dark,light:plain-light` natively, Kitty resolves its
 `*-theme.auto.conf` symlinks, and Neovim polls `AppleInterfaceStyle` on startup
 and `FocusGained` to set `background`, which reloads
-[`plain.lua`](./config/nvim/colors/plain.lua). Nothing else listens for
+[`plain.lua`](./config/nvim/colors/plain.lua). tmux 3.8 detects the terminal's
+mode and switches the palette for its `theme*` colours (see
+[config/tmux](./config/tmux/README.md#colors)). Nothing else listens for
 appearance changes: every other tool only emits ANSI indices, so the terminal
 re-renders even already-printed output the moment its palette flips.
 

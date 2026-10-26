@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Tells every client that is not showing the pane when an agent stops running
+# (tap sets the pane's @agent_state to running, waiting or blocked).
+# Usage: tmux-agent-alert install [session-id...]
+#        tmux-agent-alert notify <pane-id> <last-state> <state>
+#
+# A global monitor hook only watches the first session, so every session gets
+# its own. With no session ids, install covers all running sessions.
+
+set -u -o pipefail
+
+install() {
+	local session
+	if (($# == 0)); then
+		mapfile -t sessions < <(tmux list-sessions -F '#{session_id}')
+		set -- "${sessions[@]}"
+	fi
+	for session in "$@"; do
+		tmux set-hook -t "$session" -B '@agent-alert:%*:#{@agent_state}' \
+			"run-shell -b '$0 notify #{hook_pane} \"#{hook_last}\" \"#{hook_value}\"'"
+	done
+}
+
+notify() {
+	local pane=$1 last=$2 state=$3 window target name message client client_window
+	[[ "$last" == running ]] || return 0
+	IFS=$'\t' read -r window target name < <(
+		tmux display-message -p -t "$pane" '#{window_id}	#{session_name}:#{window_index}	#{@agent_name}'
+	)
+	case "$state" in
+	blocked) message="▲ $name is blocked in $target" ;;
+	waiting) message="? $name is waiting in $target" ;;
+	*) return 0 ;;
+	esac
+	tmux list-clients -F '#{client_name}	#{window_id}' |
+		while IFS=$'\t' read -r client client_window; do
+			[[ "$client_window" == "$window" ]] && continue
+			tmux display-message -l -c "$client" -d 5000 "$message"
+		done
+}
+
+case "${1:-}" in
+install)
+	shift
+	install "$@"
+	;;
+notify)
+	shift
+	notify "$@"
+	;;
+*)
+	echo "usage: tmux-agent-alert install [session-id...] | notify <pane-id> <last-state> <state>" >&2
+	exit 64
+	;;
+esac
