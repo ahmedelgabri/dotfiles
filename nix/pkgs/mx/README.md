@@ -23,7 +23,7 @@ mx --migrate        # convert old tmux and rx definitions to Lua
 | Shared windows | built once in `_shared` and linked into each session | copied into each session, because Rex cannot show one window in several sessions |
 | An emptied session | not possible: tmux removes a session with no windows | Rex keeps it, so `mx` builds its windows again |
 | `--pick` | an fzf popup | fzf inline, at 40% height |
-| Floating layers | none in tmux | not exported; `--export` notes them in a comment |
+| Floating panes and layers | floating panes (tmux 3.8) are not exported | not exported; `--export` notes them in a comment |
 
 Rex allows duplicate labels. `mx` opens the first session with a matching label, so pick names that no unrelated session uses.
 

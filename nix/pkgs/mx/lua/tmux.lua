@@ -215,32 +215,65 @@ end
 
 -- Export -------------------------------------------------------------------------
 
--- Parses a tmux layout cell into a binary tree whose leaves are pane ids.
--- `{}` cells are side by side, `[]` cells stacked; n children become a chain
--- of splits leaning right, each ratio from the cells' sizes.
-local function parse(s, pos)
-	local w, h, rest = s:match('^(%d+)x(%d+),%d+,%d+()', pos)
-	assert(w, 'bad layout: ' .. s)
-	w, h, pos = tonumber(w), tonumber(h), rest
-	local c = s:sub(pos, pos)
-	-- Only panes have an id after their offsets; splits have a bracket.
-	if c == ',' then
-		local id, after = s:match('^,(%d+)()', pos)
-		return { id = id, w = w, h = h }, after
+-- Decodes the JSON subset tmux writes for #{window_layout}: objects, arrays,
+-- integers, true, and strings without escapes.
+local function decode(s)
+	local pos = 1
+	local function value()
+		local c = s:sub(pos, pos)
+		if c == '{' or c == '[' then
+			local t, close = {}, c == '{' and '}' or ']'
+			pos = pos + 1
+			while s:sub(pos, pos) ~= close do
+				if c == '{' then
+					local key = s:match('^"([^"]*)":', pos)
+					assert(key, 'bad layout: ' .. s)
+					pos = pos + #key + 3
+					t[key] = value()
+				else
+					table.insert(t, value())
+				end
+				if s:sub(pos, pos) == ',' then
+					pos = pos + 1
+				end
+			end
+			pos = pos + 1
+			return t
+		end
+		local str = s:match('^"([^"]*)"', pos)
+		if str then
+			pos = pos + #str + 2
+			return str
+		end
+		if s:sub(pos, pos + 3) == 'true' then
+			pos = pos + 4
+			return true
+		end
+		local num = s:match('^-?%d+', pos)
+		assert(num, 'bad layout: ' .. s)
+		pos = pos + #num
+		return tonumber(num)
+	end
+	return value()
+end
+
+-- Parses a decoded tmux layout cell into a binary tree whose leaves are pane
+-- ids. 'h' cells are side by side, 'v' cells stacked; n children become a
+-- chain of splits leaning right, each ratio from the cells' sizes. Floating
+-- panes (those with a z-index) have no place in a definition, so they are
+-- dropped.
+local function parse(cell)
+	local w, h = cell.w, cell.h
+	if cell.t == 'p' then
+		return { id = cell.I:sub(2), w = w, h = h }
 	end
 	local children = {}
-	pos = pos + 1
-	while true do
-		local child
-		child, pos = parse(s, pos)
-		table.insert(children, child)
-		local sep = s:sub(pos, pos)
-		pos = pos + 1
-		if sep ~= ',' then
-			break
+	for _, child in ipairs(cell.c) do
+		if child.z == nil then
+			table.insert(children, parse(child))
 		end
 	end
-	local split = c == '{' and 'horizontal' or 'vertical'
+	local split = cell.t == 'h' and 'horizontal' or 'vertical'
 	local axis = split == 'horizontal' and 'w' or 'h'
 	local function chain(i)
 		if i == #children then
@@ -259,7 +292,7 @@ local function parse(s, pos)
 	end
 	local node = chain(1)
 	node.w, node.h = w, h
-	return node, pos
+	return node
 end
 
 local function read_file(path)
@@ -343,7 +376,7 @@ function commands.export(name, commands_dir, migrated)
 		}
 	end
 	for _, w in ipairs(windows) do
-		w.layout = tree((parse(w.layout:gsub('^%x+,', ''), 1)))
+		w.layout = tree(parse(decode(w.layout).L))
 	end
 	for _, w in ipairs(windows) do
 		lib.panes(w.layout)[1].focus = false
