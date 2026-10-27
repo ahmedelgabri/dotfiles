@@ -215,9 +215,12 @@ exit() {
   fi
 }
 
-# Let Kitty provision its remote integration; keep the compatibility fallback for Ghostty.
+# Let Kitty and Ghostty provision their remote terminfo; other terminals (and
+# tmux panes) keep the compatibility fallback.
 if [[ $TERM == "xterm-kitty" ]]; then
   alias ssh="kitten ssh"
+elif [[ $TERM_PROGRAM == "ghostty" ]]; then
+  alias ssh="ghostty +ssh --"
 else
   alias ssh="TERM=xterm-256color ssh"
 fi

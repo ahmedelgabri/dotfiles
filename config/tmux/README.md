@@ -208,7 +208,7 @@ Explicit terminal features and overrides are configured for:
 | -------- | ------------------------------------------------------------- |
 | All      | RGB colour, undercurl/style                                   |
 | Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)      |
-| Ghostty  | Extended keys, OSC 8 hyperlinks, overline (`\E[53m`/`\E[55m`) |
+| Ghostty  | Extended keys, OSC 8 hyperlinks                               |
 
 Escape sequence passthrough is enabled (`allow-passthrough on`) for shell
 theming and Yazi image previews.
