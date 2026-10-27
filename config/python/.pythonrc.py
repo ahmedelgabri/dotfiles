@@ -66,6 +66,7 @@ class TermColors(UserDict[str, str]):
         if os.environ.get("TERM") in {
             "xterm-color",
             "xterm-kitty",
+            "xterm-rex",
             "alacritty",
             "alacritty-direct",
             "xterm-256color",
