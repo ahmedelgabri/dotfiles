@@ -30,7 +30,9 @@ local function block_cwd(block_id)
 end
 
 -- The same programs as `VIM_PATTERN` in config/tmux/tmux.conf. fzf is one of
--- them because it moves its cursor with ctrl+j and ctrl+k.
+-- them because it moves its cursor with ctrl+j and ctrl+k. tap is added here
+-- because it runs fzf in its own process, and tmux needs no such entry because
+-- its key bindings don't apply inside a popup.
 local function runs_vim(block_id)
 	local fg = foreground(block_id)
 	if fg == nil then
@@ -40,6 +42,7 @@ local function runs_vim(block_id)
 	return name:match '^g?view$' ~= nil
 		or name:match '^g?l?n?vim?x?$' ~= nil
 		or name == 'fzf'
+		or name == 'tap'
 end
 
 -- Wraps to the far side at the edge, like tmux's `select-pane`.
@@ -176,6 +179,24 @@ rex.action {
 	end,
 }
 
+-- `tap pick` would open this popup itself, but actions run with the server's
+-- bare launchd PATH, which has neither `tap` nor `rex`. So open the popup here
+-- and run tap's inner picker the way `tap pick` does, with the opener's pane
+-- in TAP_CURRENT_PANE.
+rex.action {
+	name = 'popup_tap_pick',
+	title = 'Agent-Aware Pane Picker',
+	run = function(ctx, args)
+		open_popup(ctx, 0.85, 0.85, {
+			'env',
+			'TAP_CURRENT_PANE=' .. ctx.block_id,
+			'tap',
+			'pick',
+			'--in-popup',
+		})
+	end,
+}
+
 -- Like tmux's `confirm-before kill-session`. Lua has no way to ask, so a small
 -- popup does, and `read -k 1` takes the answer without Enter.
 rex.action {
@@ -274,7 +295,7 @@ rex.action {
 -- =======================================================================
 
 rex.bind('cmd+t', 'tab_new_next')
-rex.bind('ctrl+space', 'client.palette.toggle')
+rex.bind('ctrl+space', 'popup_tap_pick')
 
 -- =======================================================================
 -- = Key Bindings — Navigation

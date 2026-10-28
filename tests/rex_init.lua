@@ -64,6 +64,10 @@ local function load(state)
 				record('move_window', args.window_id, args.before_window_id)
 				return { revision = 1 }
 			end,
+			new_layer = function(args)
+				record('new_layer', args.layout.block, args.bounds)
+				return { layer_id = 'layer:new' }
+			end,
 		},
 		client = {
 			queue = function(name, args)
@@ -96,6 +100,7 @@ local directions = { h = 'left', j = 'down', k = 'up', l = 'right' }
 do
 	local fake = load {}
 	equal('cmd+t', fake.binds['cmd+t'], 'tab_new_next')
+	equal('ctrl+space', fake.binds['ctrl+space'], 'popup_tap_pick')
 	for key in pairs(directions) do
 		equal('ctrl+' .. key, type(fake.binds['ctrl+' .. key]), 'function')
 	end
@@ -104,7 +109,7 @@ do
 end
 
 -- The keys go to the block for the programs tmux's VIM_PATTERN matches,
--- including Nix wrappers such as .nvim-wrapped.
+-- including Nix wrappers such as .nvim-wrapped, and for tap's picker.
 for _, name in ipairs {
 	'vi',
 	'vim',
@@ -117,6 +122,7 @@ for _, name in ipairs {
 	'vimdiff',
 	'nvimdiff',
 	'fzf',
+	'tap',
 	'.nvim-wrapped',
 	'nvim-wrapped',
 } do
@@ -268,6 +274,26 @@ do
 	ok, err = pcall(run, { view_error = 'view failed' })
 	equal('tab view error raised', ok, false)
 	equal('tab view error message', err, 'view failed')
+end
+
+-- popup_tap_pick runs tap's inner picker with the opener's pane, as
+-- `tap pick` would.
+do
+	local fake = load { cwds = { ['block:a'] = '/work' } }
+	fake.actions.popup_tap_pick.run(
+		{ session_id = 'session:s', block_id = 'block:a' },
+		{}
+	)
+	local layers = calls_named(fake, 'new_layer')
+	equal('tap layers', #layers, 1)
+	local command = table.concat(layers[1][2].options.command, ' ')
+	equal(
+		'tap command',
+		command,
+		'env TAP_CURRENT_PANE=block:a tap pick --in-popup'
+	)
+	equal('tap cwd', layers[1][2].options.cwd, '/work')
+	equal('tap width', layers[1][3][3], 0.85)
 end
 
 print 'rex init.lua: ok'

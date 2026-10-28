@@ -421,15 +421,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792253640,
-        "narHash": "sha256-cyk2eanCQBDkkBnd3MGKh3uoOuAV7pxftDPm5vZwdsA=",
+        "lastModified": 1793140149,
+        "narHash": "sha256-17Crx/TdZ+buik3uKtpVehkFOpJJoFEC2ly1rY4TOJk=",
         "owner": "ahmedelgabri",
         "repo": "tmux-agent-panel",
-        "rev": "8dd3fba2ae1b311b6b92778d14e75c9a05964606",
+        "rev": "b3ddd5f242e2903e38c3fa8154a93ede7a68cf7d",
         "type": "github"
       },
       "original": {
         "owner": "ahmedelgabri",
+        "ref": "rex",
         "repo": "tmux-agent-panel",
         "type": "github"
       }

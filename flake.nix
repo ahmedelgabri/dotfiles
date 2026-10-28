@@ -86,7 +86,7 @@
     };
 
     tap = {
-      url = "github:ahmedelgabri/tmux-agent-panel";
+      url = "github:ahmedelgabri/tmux-agent-panel?ref=rex";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
