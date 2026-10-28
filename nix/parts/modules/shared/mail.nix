@@ -638,18 +638,30 @@ let
                 lib.replaceStrings
                   [ "[hooks]\n" ]
                   [
-                    # Start with the sidebar hidden on every account tab; `b`
-                    # brings it back. aerc has no setting for this and
-                    # :toggle-sidebar only acts on the current tab, so the
-                    # startup hook walks the tabs once and ends where it began.
-                    ''
-                      [hooks]
-                      aerc-startup=${
-                        lib.concatMapStringsSep " && " (
-                          _: "$AERC_BINARY :toggle-sidebar && $AERC_BINARY :next-tab"
-                        ) cfg.accounts
-                      }
-                    ''
+                    (
+                      # Start with the sidebar hidden on every account tab; `b`
+                      # brings it back. aerc has no setting for this and
+                      # :toggle-sidebar only acts on the current tab, so the
+                      # startup hook walks the tabs once and ends where it began.
+                      ''
+                        [hooks]
+                        aerc-startup=${
+                          lib.concatMapStringsSep " && " (
+                            _: "$AERC_BINARY :toggle-sidebar && $AERC_BINARY :next-tab"
+                          ) cfg.accounts
+                        }
+                      ''
+                      # Push moves, flags, and sent mail to the server now
+                      # instead of waiting for the next sync tick. Only hosts
+                      # with a local account run the sync job; elsewhere
+                      # `mailsync-now` has nothing to start and fails.
+                      + lib.optionalString (localAccounts != [ ]) ''
+                        mail-deleted=mailsync-now
+                        flag-changed=mailsync-now
+                        mail-sent=mailsync-now
+                        aerc-shutdown=mailsync-now
+                      ''
+                    )
                   ]
                   (builtins.readFile ../../../../config/aerc/aerc.conf)
                 + "\n"

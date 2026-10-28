@@ -34,6 +34,10 @@
               _: host: host.pkgs.stdenv.hostPlatform.system == system
             ) inputs.self.darwinConfigurations
           );
+
+      systemHosts = lib.filterAttrs (_: host: host.pkgs.stdenv.hostPlatform.system == system) (
+        inputs.self.darwinConfigurations // inputs.self.nixosConfigurations
+      );
     in
     {
       checks =
@@ -90,9 +94,16 @@
             builtins.toJSON (
               import ../../../tests/bootstrap-fonts.nix {
                 inherit lib;
-                hosts = lib.filterAttrs (_: host: host.pkgs.stdenv.hostPlatform.system == system) (
-                  inputs.self.darwinConfigurations // inputs.self.nixosConfigurations
-                );
+                hosts = systemHosts;
+              }
+            )
+          );
+
+          aerc-mailsync-hooks = pkgs.writeText "aerc-mailsync-hooks-check" (
+            builtins.toJSON (
+              import ../../../tests/aerc-mailsync-hooks.nix {
+                inherit lib;
+                hosts = systemHosts;
               }
             )
           );

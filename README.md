@@ -317,8 +317,10 @@ domain in it, through a generated per-account styleset.
 On a synced Gmail account `A` deletes the message from the local INBOX instead
 of moving it to an `Archive` folder: mbsync propagates that as removing the
 INBOX label, which is what archiving means on Gmail, and the message stays in
-All Mail. aerc hooks run `mailsync-now` after moves, flag changes, sends, and on
-quit so changes reach the server before the next timer tick.
+All Mail. When at least one account is local, aerc hooks run `mailsync-now`
+after moves, flag changes, sends, and on quit so changes reach the server before
+the next timer tick. Hosts with only remote accounts have no sync job, so they
+get no such hooks.
 
 When local accounts are enabled, synchronization runs automatically:
 
