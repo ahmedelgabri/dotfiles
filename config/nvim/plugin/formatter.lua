@@ -95,6 +95,15 @@ pack.add {
 						cwd = function()
 							return vim.uv.cwd()
 						end,
+						-- Prettier resolves its config from this path, so a symlink such
+						-- as ~/.claude/settings.json would miss the dotfiles .prettierrc
+						-- overrides and fall back to the --use-tabs default below.
+						args = function(_, ctx)
+							return {
+								'--stdin-filepath',
+								vim.uv.fs_realpath(ctx.filename) or ctx.filename,
+							}
+						end,
 						prepend_args = function(_, ctx)
 							return {
 								'--config-precedence',
