@@ -326,7 +326,23 @@ rex.bind('ctrl+shift+right', 'client.tab.move.forward')
 -- The tmux prefix, so the same keys work in config/tmux/tmux.conf and here.
 local prefix = 'ctrl+a>'
 
-rex.bind(prefix .. 'ctrl+a', 'pane.send_key', { key = 'ctrl+a' })
+-- rex.bind(prefix .. 'ctrl+a', 'pane.send_key', { key = 'ctrl+a' })
+rex.bind(prefix .. 'ctrl+a', 'send_ctrl_a')
+rex.action {
+	name = 'send_ctrl_a',
+	title = 'Send ctrl+a',
+	run = function(ctx)
+		if not ctx.block_id then
+			return { ok = false }
+		end
+		rex.block.call('com.superlogical.terminal', 'write', {
+			block_id = ctx.block_id,
+			data = '\001',
+		})
+		return { ok = true }
+	end,
+}
+
 rex.bind(prefix .. 'r', 'client.config.reload')
 rex.bind(prefix .. 'ctrl+q', 'session_kill_confirm')
 
