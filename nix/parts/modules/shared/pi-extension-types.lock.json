@@ -44,8 +44,8 @@
     "version": "0.3.4"
   },
   "@types/node": {
-    "hash": "sha256-5OR9rIYEaapap5BDprgzlimdnNbuI7MPyyB0YlrI298=",
-    "version": "26.6.5"
+    "hash": "sha256-fvAGhC96ZHho6dU1iBSMsFgAixB66mpygUNzC+4CBFY=",
+    "version": "26.6.6"
   },
   "ajv": {
     "hash": "sha256-svCzqJO7uMxe+2gU8IsUmeGeMdXdc2g/WJM4L0j257M=",
@@ -60,8 +60,8 @@
     "version": "5.3.0"
   },
   "express-rate-limit": {
-    "hash": "sha256-x8FTfH8uVNEyPDMt/QvncxnNkTAb3tXDDGpXXDiAL8g=",
-    "version": "8.7.1"
+    "hash": "sha256-vVobuYHhHKWseZg8M0RYSck7GeaP/nux3ofBFeNrE4M=",
+    "version": "8.7.2"
   },
   "fast-deep-equal": {
     "hash": "sha256-sBmgmA8nY43D+Fg2sOR48YjgDXpuWFLAgZ+ob1bke48=",
@@ -124,8 +124,8 @@
     "version": "8.9.0"
   },
   "ws": {
-    "hash": "sha256-yps3mLLhHOj6xnE/UO8FAaoSsJszBiPB3ECd/5Tnq8g=",
-    "version": "8.22.0"
+    "hash": "sha256-pc2xnHCQuBb/wQm22SjTUqorznPjj3O9lnjUhKYtL3U=",
+    "version": "8.22.1"
   },
   "zod": {
     "hash": "sha256-hO/RVb7ZMnAobnk/yVG+JwtTbL1bDusRHw+jlnIB1pg=",
