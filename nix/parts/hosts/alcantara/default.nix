@@ -14,7 +14,6 @@ let
       my.user = {
         packages = with pkgs; [
           llm-agents.amp
-          llm-agents.opencode
           docker
         ];
       };
