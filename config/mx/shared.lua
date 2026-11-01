@@ -6,7 +6,6 @@ local windows = {}
 
 for _, app in ipairs {
 	{ 'mail', 'aerc' },
-	{ 'rss', 'newsraft' },
 	{ 'HN', 'clx' },
 } do
 	if mx.has(app[2]) then

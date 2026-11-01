@@ -90,7 +90,7 @@ for tool in bash sh basename dirname cat sleep script stty grep sed head tail cu
 done
 ln -s "$MX_BIN/mx" "$WORK/bin/mx"
 
-# Only these tools are reachable, so shared.lua finds no aerc/newsraft/clx
+# Only these tools are reachable, so shared.lua finds no aerc/clx
 # and the suite never launches them. Outside a Rex terminal mx would pick
 # tmux, so the backend is forced.
 unset REX_SESSION REX_BLOCK REX_SERVER TMUX TMUX_PANE HOST_CONFIGS DEBUG

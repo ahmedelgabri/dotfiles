@@ -25,7 +25,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Only these tools are reachable, so shared.lua cannot find aerc/newsraft/clx
+# Only these tools are reachable, so shared.lua cannot find aerc/clx
 # on the host and launch them.
 mkdir -p "$WORK/bin"
 for tool in tmux bash awk sed wc basename dirname tail tr mktemp cat cp mv env sleep touch mkdir rm diff id chmod; do
@@ -267,7 +267,7 @@ fi
 
 launch app "$P/work/acme/app" acme/app
 
-# The first launch creates _shared from shared.lua; mail, rss and HN need
+# The first launch creates _shared from shared.lua; mail and HN need
 # tools that are not on PATH, so only the directory-backed windows exist.
 assert_eq "_shared windows" "2 dotfiles 1 $DOTFILES
 2 dotfiles 2 $DOTFILES

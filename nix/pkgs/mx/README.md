@@ -87,7 +87,7 @@ return {
 
 ## Shared windows
 
-`${XDG_CONFIG_HOME:-~/.config}/mx/shared.lua` ([`config/mx/shared.lua`](../../../config/mx/shared.lua)) uses the same format, without `root`. It lists the windows that every new session gets after its own windows: mail, rss, HN, dotfiles, and notes. Each one is added only when its program or directory exists. In tmux, `mx-init` builds them once in a `_shared` session, and `mx` links them into each new session in the same order. In Rex, each session gets its own copies.
+`${XDG_CONFIG_HOME:-~/.config}/mx/shared.lua` ([`config/mx/shared.lua`](../../../config/mx/shared.lua)) uses the same format, without `root`. It lists the windows that every new session gets after its own windows: mail, HN, dotfiles, and notes. Each one is added only when its program or directory exists. In tmux, `mx-init` builds them once in a `_shared` session, and `mx` links them into each new session in the same order. In Rex, each session gets its own copies.
 
 ## Export
 
@@ -124,7 +124,7 @@ The suite starts a real tmux server on a private socket in a temporary directory
 - `--migrate` output, skipping definitions that were already converted, and that it starts no extra session and runs none of the definition's commands
 - which backend runs: `MX_BACKEND` validation, and tmux inside a Rex terminal still uses tmux
 
-`PATH` holds only the tools the scripts need, so `shared.lua` never starts the host's mail, RSS, or HN clients. Nothing is attached, so every launch ends with tmux's expected `no current client` error, which the suite checks. `--pick` is not covered because it needs an interactive fzf.
+`PATH` holds only the tools the scripts need, so `shared.lua` never starts the host's mail or HN clients. Nothing is attached, so every launch ends with tmux's expected `no current client` error, which the suite checks. `--pick` is not covered because it needs an interactive fzf.
 
 The Rex backend needs the Rex app, which is not in nixpkgs, so it has a live test with no Nix check:
 

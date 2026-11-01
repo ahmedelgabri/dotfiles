@@ -202,7 +202,6 @@ let
                     })
                     ghostscript # to preview PDFs as images
                     poppler-utils # to preview PDFs as text
-                    newsraft
                     circumflex # HN CLI reader
                   ];
                 };
