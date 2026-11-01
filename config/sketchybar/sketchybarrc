@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# nix-darwin's services.sketchybar runs this from ~/.config/sketchybar, see
+# nix/parts/modules/darwin/sketchybar.nix. It sits over the auto-hidden menu bar.
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+
+# shellcheck source=SCRIPTDIR/segments.sh
+source "$HERE/segments.sh"
+
+sketchybar --bar position=top height=32 color=0xff111111 padding_left=10 padding_right=10
+
+sketchybar --default \
+	icon.drawing=off \
+	label.font="PragmataPro Liga:Regular:13.0" \
+	label.color=0xffc5c8c6 \
+	padding_left=6 padding_right=6
+
+# Left side, laid out from the screen edge inward.
+sketchybar --add item front_app left \
+	--set front_app label.font="PragmataPro Liga:Bold:13.0" script="$HERE/front_app.sh" \
+	--subscribe front_app front_app_switched
+
+# `agents` never draws: its script adds one `agent.*` item per agent after it.
+# updates=on keeps it running while hidden, and the poll catches panes that
+# close without an event.
+sketchybar --add event rex_agents_changed \
+	--add item agents left \
+	--set agents drawing=off updates=on update_freq=30 script="$HERE/agents.sh" \
+	--subscribe agents rex_agents_changed system_woke
+"$HERE/rex-watch.sh" >/dev/null 2>&1 &
+"$HERE/spinner.sh" >/dev/null 2>&1 &
+
+# Right-side items are laid out from the screen edge inward, so this list
+# runs right to left. Format: name:update_freq in seconds.
+# Like tmux, every segment but the rightmost is followed by a separator. Each
+# separator is its own item so it can hide together with an empty segment.
+rightmost=1
+for spec in date:15 cairo:15 prayer:60 wifi:60 battery:60 weather:300 github:300 npm:300; do
+	name="${spec%%:*}"
+	sep=""
+	if ((!rightmost)); then
+		sep="$name.sep"
+		sketchybar --add item "$sep" right --set "$sep" "${SEPARATOR[@]}"
+	fi
+	rightmost=0
+	sketchybar --add item "$name" right \
+		--set "$name" update_freq="${spec##*:}" script="$HERE/segment.sh $sep" \
+		--subscribe "$name" system_woke
+done
+
+sketchybar --update

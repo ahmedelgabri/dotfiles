@@ -25,6 +25,7 @@ let
       imports = [
         inputs.self.modules.darwin.hammerspoon
         inputs.self.modules.darwin.karabiner
+        inputs.self.modules.darwin.sketchybar
       ];
 
       system.primaryUser = config.my.username;

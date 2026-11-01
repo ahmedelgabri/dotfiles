@@ -10,6 +10,7 @@
     ../modules/darwin/default.nix
     ../modules/darwin/hammerspoon.nix
     ../modules/darwin/karabiner.nix
+    ../modules/darwin/sketchybar.nix
     ../modules/shared/user-shell.nix
     ../modules/shared/mail.nix
     ../modules/shared/gui.nix

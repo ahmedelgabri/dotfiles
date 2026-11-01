@@ -39,7 +39,7 @@ application configuration in [config/](./config/). In practice it manages:
 | Shell and terminal      | Zsh, tmux, Rex, Kitty, direnv, zoxide, eza, fzf, bat, ripgrep, and Yazi                                |
 | Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                              |
 | Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                              |
-| macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                                |
+| macOS automation        | Hammerspoon, Karabiner-Elements, SketchyBar, system defaults, and window management                    |
 | Mail and communication  | aerc, isync/mbsync, msmtp, and pass                                                                    |
 | Notes and media         | zk, markdown-oxide, qmd, [Neovim notes workflow](./config/nvim/lua/_/notes/README.md), mpv, and yt-dlp |
 | AI / agent tooling      | Claude, Pi, Codex, OpenCode, `sb`, and related llm-agents tooling/config                               |
@@ -92,7 +92,7 @@ Inside [nix/](./nix/), the interesting pieces are:
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [nix/parts/hosts/](./nix/parts/hosts/)                   | Per-machine host definitions                                                                |
 | [nix/parts/modules/shared/](./nix/parts/modules/shared/) | Reusable features such as `shell`, `git`, `vim`, `mail`, `yazi`, `ai`, `node`, and `python` |
-| [nix/parts/modules/darwin/](./nix/parts/modules/darwin/) | macOS-only modules such as defaults, Hammerspoon, and Karabiner                             |
+| [nix/parts/modules/darwin/](./nix/parts/modules/darwin/) | macOS-only modules such as defaults, Hammerspoon, Karabiner, and SketchyBar                 |
 | [nix/parts/outputs/](./nix/parts/outputs/)               | Flake outputs like apps, templates, overlays, formatter, and dev shells                     |
 | [nix/pkgs/](./nix/pkgs/)                                 | Small custom packages and overrides used by the configuration                               |
 | [nix/secrets/](./nix/secrets/)                           | age-encrypted or private inputs used by the setup                                           |
@@ -448,6 +448,7 @@ each other. When one changes, change them all:
 | Editor accents                                                                                               | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                   |
 | Syntax restraint rules                                                                                       | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh) |
 | Comment markers (TODO/FIXME/…)                                                                               | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                  |
+| SketchyBar colors                                                                                            | `palette_hex` in [`segments.sh`](./config/sketchybar/segments.sh) copies the dark accent hexes; the bar has no light mode                                                                                                                                                               |
 
 ## Working on this repo
 
