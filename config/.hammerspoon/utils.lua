@@ -25,9 +25,9 @@ local APP_SPECS = {
 		paths = { '/Applications/kitty.app' },
 		bundleIDs = { 'net.kovidgoyal.kitty' },
 	},
-	ghostty = {
-		paths = { '/Applications/Ghostty.app' },
-		bundleIDs = { 'com.mitchellh.ghostty' },
+	rex = {
+		paths = { '/Applications/Rex Beta.app' },
+		bundleIDs = { 'com.superlogical.rex' },
 	},
 	x = {
 		paths = {

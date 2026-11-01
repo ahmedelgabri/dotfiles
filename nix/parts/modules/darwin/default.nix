@@ -246,11 +246,6 @@ let
             # Turn on app auto-update
             "com.apple.commerce".AutoUpdate = true;
 
-            "com.mitchellh.ghostty" = {
-              SUHasLaunchedBefore = true;
-              SUSendProfileInfo = false;
-            };
-
             "com.raycast.macos" = {
               # cmd-space
               raycastGlobalHotkey = "Command-49";

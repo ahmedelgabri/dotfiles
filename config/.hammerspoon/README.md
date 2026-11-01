@@ -213,7 +213,7 @@ of known apps.
 Known app keys include:
 
 - browsers: `chrome`, `firefox`, `helium`, `safari`
-- terminals: `kitty`, `ghostty`
+- terminals: `kitty`, `rex`
 - chat/comms: `x`, `discord`, `slack`, `imessage`
 - calendar/password/video: `calendar`, `1password`, `zoom`, `meet`
 
@@ -625,7 +625,7 @@ The modal layers use:
 | `b`   | Helium          |
 | `s`   | Slack           |
 | `m`   | Messages        |
-| `t`   | Ghostty         |
+| `t`   | Rex             |
 | `c`   | Notion Calendar |
 | `z`   | Zoom            |
 | `d`   | Discord         |

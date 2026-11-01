@@ -84,12 +84,9 @@ The `tap state` entries publish the agent's activity state so other tooling
 
 - **Events**: `Notification`.
 - **What it does**: mirrors the notification message to a desktop notification —
-  Ghostty's OSC 777 protocol through tmux passthrough, `terminal-notifier` on
-  macOS outside Ghostty, or `notify-send` elsewhere — picking the notifier at
-  runtime because `settings.json` is shared across platforms.
-- **Behavior**: inside Ghostty, Claude's native notification handles sessions
-  outside tmux while the hook emits a tmux passthrough sequence for sessions
-  inside it; a no-op inside Rex (`REX_SESSION` set), which shows Claude's
+  `terminal-notifier` on macOS or `notify-send` elsewhere — picking the notifier
+  at runtime because `settings.json` is shared across platforms.
+- **Behavior**: a no-op inside Rex (`REX_SESSION` set), which shows Claude's
   notifications itself, when no notifier is installed, or when the message is
   empty.
 

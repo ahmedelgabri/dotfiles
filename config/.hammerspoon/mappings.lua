@@ -61,7 +61,7 @@ local M = {
 				b = { label = 'Helium', app = 'helium' },
 				s = { label = 'Slack', app = 'slack' },
 				m = { label = 'Messages', app = 'imessage' },
-				t = { label = 'Terminal', app = 'ghostty' },
+				t = { label = 'Terminal', app = 'rex' },
 				c = { label = 'Calendar', app = 'calendar' },
 				z = { label = 'Zoom', app = 'zoom' },
 				d = { label = 'Discord', app = 'discord' },

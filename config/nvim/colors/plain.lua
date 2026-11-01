@@ -104,7 +104,7 @@ local colors = themes[vim.o.background] or themes.dark
 
 -- Mirror the terminal's plain-dark/plain-light ANSI palettes so :terminal
 -- matches the outer terminal instead of Nvim's built-in 16 colors. Same
--- values as config/ghostty/themes/plain-* and config/kitty/themes/plain-*.conf.
+-- values as config/kitty/themes/plain-*.conf.
 local terminal_palettes = {
 	dark = {
 		'#303030',
@@ -152,7 +152,7 @@ end
 
 -- __Normal__
 highlight('Normal', { fg = colors.norm, bg = colors.bg })
--- Same cursor blue as the ghostty/kitty themes; the TUI propagates this
+-- Same cursor blue as the kitty themes; the TUI propagates this
 -- to the terminal cursor (OSC 12), so without it nvim repaints the
 -- cursor gray.
 highlight('Cursor', { fg = '#111111', bg = '#20bbfc' })

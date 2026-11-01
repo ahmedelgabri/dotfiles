@@ -1,5 +1,4 @@
 -- Core/misc plugins
-local au = require '_.utils.au'
 local pack = require '_.pack'
 
 pack.add {
@@ -176,19 +175,6 @@ pack.add {
 	-- 		vim.cmd [[highlight StatusLine guibg=NONE ctermbg=NONE]]
 	-- 	end,
 	-- },
-}
-
--- Ghostty: local plugin, lazy on FileType (not a git repo, just add to rtp)
-au.autocmd {
-	event = 'FileType',
-	pattern = 'ghostty',
-	callback = function()
-		local ghostty_path =
-			'/Applications/Ghostty.app/Contents/Resources/vim/vimfiles/'
-		if vim.uv.fs_stat(ghostty_path) then
-			vim.opt.rtp:prepend(ghostty_path)
-		end
-	end,
 }
 
 -- nvim-tmux-navigation only talks to tmux. Rex passes ctrl+h/j/k/l to nvim

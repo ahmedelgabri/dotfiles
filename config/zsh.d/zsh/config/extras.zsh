@@ -215,13 +215,11 @@ exit() {
   fi
 }
 
-# Let Kitty and Ghostty provision their remote terminfo, and Rex's ssh guard
+# Let Kitty provision its remote terminfo, and Rex's ssh guard
 # (config/.ssh/config) pick TERM per host; other terminals (and tmux panes)
 # keep the compatibility fallback.
 if [[ $TERM == "xterm-kitty" ]]; then
   alias ssh="kitten ssh"
-elif [[ $TERM_PROGRAM == "ghostty" ]]; then
-  alias ssh="ghostty +ssh --"
 elif [[ $TERM != "xterm-rex" ]]; then
   alias ssh="TERM=xterm-256color ssh"
 fi

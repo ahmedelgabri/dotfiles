@@ -96,7 +96,6 @@
         "mail"
         "mpv"
         "kitty"
-        "ghostty"
         "zk"
         "discord"
         "yt-dlp"

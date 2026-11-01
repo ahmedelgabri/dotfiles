@@ -204,11 +204,10 @@ once a second. Monitor hooks only watch one session, so
 
 Explicit terminal features and overrides are configured for:
 
-| Terminal | Support                                                       |
-| -------- | ------------------------------------------------------------- |
-| All      | RGB colour, undercurl/style                                   |
-| Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`)      |
-| Ghostty  | Extended keys, OSC 8 hyperlinks                               |
+| Terminal | Support                                                  |
+| -------- | -------------------------------------------------------- |
+| All      | RGB colour, undercurl/style                              |
+| Kitty    | Extended keys, OSC 8 hyperlinks, blinking text (`\E[5m`) |
 
 Escape sequence passthrough is enabled (`allow-passthrough on`) for shell
 theming and Yazi image previews.

@@ -19,8 +19,7 @@ are composed from small feature modules, app configs live in
 
 > Font is [Pragmata Pro](https://fsd.it/shop/fonts/pragmatapro/), theme is
 > [my own](./config/nvim/colors/plain.lua) fork of
-> [vim-colors-plain](./config/nvim/colors/plain.lua), Terminal is
-> [Ghostty][ghostty].
+> [vim-colors-plain](./config/nvim/colors/plain.lua), Terminal is Rex.
 
 > [!NOTE]
 >
@@ -37,7 +36,7 @@ application configuration in [config/](./config/). In practice it manages:
 | Area                    | What is configured here                                                                                |
 | ----------------------- | ------------------------------------------------------------------------------------------------------ |
 | System management       | Nix, flake-parts, Home Manager, nix-darwin, host definitions, overlays, and small custom packages      |
-| Shell and terminal      | Zsh, tmux, Ghostty, Kitty, direnv, zoxide, eza, fzf, bat, ripgrep, and Yazi                            |
+| Shell and terminal      | Zsh, tmux, Rex, Kitty, direnv, zoxide, eza, fzf, bat, ripgrep, and Yazi                                |
 | Editor and coding tools | Neovim, formatters, language servers, and Node/Bun/Python/Go/Rust tooling                              |
 | Source control          | Git, Jujutsu, gh, gh-dash, tig, and delta                                                              |
 | macOS automation        | Hammerspoon, Karabiner-Elements, system defaults, and window management                                |
@@ -80,12 +79,12 @@ If you do not pass a host during bootstrap, the scripts default to
 
 The repo is organized around a small number of top-level directories:
 
-| Path                       | Purpose                                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| [config/](./config/)       | Checked-in application configs for Neovim, tmux, git, Ghostty, Kitty, Yazi, aerc, Hammerspoon, Karabiner, Claude/Pi config, and more |
-| [nix/](./nix/)             | Flake composition, reusable modules, host definitions, overlays, custom packages, and encrypted/private files                        |
-| [scripts/](./scripts/)     | Bootstrap scripts used by `nix run` for macOS and NixOS                                                                              |
-| [templates/](./templates/) | Small flake templates for starting new projects                                                                                      |
+| Path                       | Purpose                                                                                                                          |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [config/](./config/)       | Checked-in application configs for Neovim, tmux, git, Rex, Kitty, Yazi, aerc, Hammerspoon, Karabiner, Claude/Pi config, and more |
+| [nix/](./nix/)             | Flake composition, reusable modules, host definitions, overlays, custom packages, and encrypted/private files                    |
+| [scripts/](./scripts/)     | Bootstrap scripts used by `nix run` for macOS and NixOS                                                                          |
+| [templates/](./templates/) | Small flake templates for starting new projects                                                                                  |
 
 Inside [nix/](./nix/), the interesting pieces are:
 
@@ -383,8 +382,8 @@ Available templates:
 ## Color system
 
 The `plain-dark` and `plain-light` terminal themes are the color source of
-truth. Ghostty and Kitty follow the OS appearance, while terminal applications
-consume named ANSI slots instead of embedding independent truecolor or xterm-256
+truth. Kitty follows the OS appearance, while terminal applications consume
+named ANSI slots instead of embedding independent truecolor or xterm-256
 palettes. This keeps `bat`, delta, Jujutsu, `LS_COLORS`/eza, fzf, Yazi, aerc,
 tig, tmux, and the Zsh prompt synchronized automatically; Neovim's custom
 [`plain`](./config/nvim/colors/plain.lua) theme uses the same accents with extra
@@ -413,15 +412,13 @@ retain error/success/warning semantics everywhere.
 
 ### How light/dark switching works
 
-macOS appearance is the only switch. Ghostty selects
-`theme = dark:plain-dark,light:plain-light` natively, Kitty resolves its
-`*-theme.auto.conf` symlinks, and Neovim polls `AppleInterfaceStyle` on startup
-and `FocusGained` to set `background`, which reloads
-[`plain.lua`](./config/nvim/colors/plain.lua). tmux 3.8 detects the terminal's
-mode and switches the palette for its `theme*` colours (see
-[config/tmux](./config/tmux/README.md#colors)). Nothing else listens for
-appearance changes: every other tool only emits ANSI indices, so the terminal
-re-renders even already-printed output the moment its palette flips.
+macOS appearance is the only switch. Kitty resolves its `*-theme.auto.conf`
+symlinks, and Neovim polls `AppleInterfaceStyle` on startup and `FocusGained` to
+set `background`, which reloads [`plain.lua`](./config/nvim/colors/plain.lua).
+tmux 3.8 detects the terminal's mode and switches the palette for its `theme*`
+colours (see [config/tmux](./config/tmux/README.md#colors)). Nothing else
+listens for appearance changes: every other tool only emits ANSI indices, so the
+terminal re-renders even already-printed output the moment its palette flips.
 
 ### Slot conventions
 
@@ -445,12 +442,12 @@ re-renders even already-printed output the moment its palette flips.
 The palette is intentionally duplicated in a few places that cannot reference
 each other. When one changes, change them all:
 
-| What                                                                                                         | Where                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Full palettes (slots 0-15 plus the diff-tint slots 16-18 holding Neovim's DiffAdd/Delete/Change backgrounds) | [`config/ghostty/themes/plain-dark`](./config/ghostty/themes/plain-dark) and [`plain-light`](./config/ghostty/themes/plain-light), [`config/kitty/themes/plain-dark.conf`](./config/kitty/themes/plain-dark.conf) and [`plain-light.conf`](./config/kitty/themes/plain-light.conf), and `terminal_palettes` (slots 0-15 only; `:terminal` cannot remap higher slots) in [`plain.lua`](./config/nvim/colors/plain.lua) |
-| Editor accents                                                                                               | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                                                                                                                                                 |
-| Syntax restraint rules                                                                                       | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh)                                                                                                                               |
-| Comment markers (TODO/FIXME/…)                                                                               | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                                                                                                                                                |
+| What                                                                                                         | Where                                                                                                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Full palettes (slots 0-15 plus the diff-tint slots 16-18 holding Neovim's DiffAdd/Delete/Change backgrounds) | [`config/kitty/themes/plain-dark.conf`](./config/kitty/themes/plain-dark.conf) and [`plain-light.conf`](./config/kitty/themes/plain-light.conf), and `terminal_palettes` (slots 0-15 only; `:terminal` cannot remap higher slots) in [`plain.lua`](./config/nvim/colors/plain.lua)      |
+| Editor accents                                                                                               | the `themes` table in `plain.lua` mirrors the terminal accent hexes, plus editor-only structural shades and diff/conflict backgrounds                                                                                                                                                   |
+| Syntax restraint rules                                                                                       | the treesitter groups in `plain.lua` and the scopes in [`plain.tmTheme`](./config/bat/themes/plain.tmTheme) express the same rules for Neovim and bat/delta respectively; the bat cache rebuild happens automatically at activation (or run `bat cache --build` for an instant refresh) |
+| Comment markers (TODO/FIXME/…)                                                                               | painted by mini.hipatterns extmarks configured in [`plugin/mini.lua`](./config/nvim/plugin/mini.lua), styled via `MiniHipatterns*` groups that link to `@comment.*` in `plain.lua` — marker styling must go through those groups, not treesitter alone                                  |
 
 ## Working on this repo
 
@@ -474,7 +471,6 @@ and the documented rule exceptions.
 
 [aerc]: https://aerc-mail.org/
 [agenix]: https://github.com/ryantm/agenix
-[ghostty]: https://ghostty.org/
 [home-manager]: https://github.com/nix-community/home-manager
 [homebrew]: https://brew.sh/
 [isync]: https://isync.sourceforge.io/

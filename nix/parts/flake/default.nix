@@ -22,7 +22,6 @@
     ../modules/shared/rex.nix
     ../modules/shared/vim.nix
     ../modules/shared/ai.nix
-    ../modules/shared/ghostty.nix
     ../modules/shared/zk.nix
     ../modules/shared/gpg.nix
     ../modules/shared/kitty.nix
