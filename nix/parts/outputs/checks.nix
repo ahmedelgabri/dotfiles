@@ -167,7 +167,7 @@
               first_line=
               IFS= read -r first_line < "$file" || true
               case "$first_line" in
-                *bash*|*'/bin/sh'*) shellcheck "$file" ;;
+                *bash*|*'/bin/sh'*) shellcheck -x "$file" ;;
               esac
             done < <(find ${source} -type f -print0)
           '';
