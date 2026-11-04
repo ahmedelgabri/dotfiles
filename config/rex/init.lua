@@ -100,12 +100,13 @@ end
 
 -- Like tmux's `display-popup -E`: a centred floating terminal in the current
 -- pane's directory that closes when its program exits.
-local function open_popup(ctx, width, height, command)
+local function open_popup(ctx, width, height, command, label)
 	local _, err = rex.session.new_layer {
 		bounds = { (1 - width) / 2, (1 - height) / 2, width, height },
 		focus = true,
 		layout = rex.layout.block {
 			flavor = 'com.superlogical.terminal.shell',
+			label = label,
 			options = { cwd = block_cwd(ctx.block_id), command = command },
 		},
 	}
@@ -163,11 +164,42 @@ rex.action {
 	end,
 }
 
+-- Like a tmux popup attached to its own session: one shell per tab that hides
+-- and comes back, and keeps running while minimized, so its history and jobs
+-- survive. Layers have no label of their own, so the block's label finds it.
+local scratch_label = 'scratch'
+
 rex.action {
-	name = 'popup_shell',
-	title = 'Popup Shell',
+	name = 'scratch_toggle',
+	title = 'Toggle Scratch Shell',
 	run = function(ctx, args)
-		open_popup(ctx, 0.75, 0.75)
+		local view, err = rex.session.view {}
+		if err ~= nil then
+			error(err, 0)
+		end
+		for _, w in ipairs(view.windows) do
+			if w.window_id == view.active_window_id then
+				for _, layer in ipairs(w.layers) do
+					local block = layer.kind == 'floating' and layer.blocks[1]
+					if block and block.label == scratch_label then
+						-- A visible scratch shell that lost focus comes to the front
+						-- instead of hiding, so the key always ends with it usable or gone.
+						local hide = layer.state ~= 'minimized'
+							and w.focused_block_id == block.block_id
+						local _, err = rex.session.set_layer_state {
+							layer_id = layer.layer_id,
+							state = hide and 'minimized' or 'normal',
+							focus = not hide,
+						}
+						if err ~= nil then
+							error(err, 0)
+						end
+						return
+					end
+				end
+			end
+		end
+		open_popup(ctx, 0.75, 0.75, nil, scratch_label)
 	end,
 }
 
@@ -193,27 +225,6 @@ rex.action {
 			'tap',
 			'pick',
 			'--in-popup',
-		})
-	end,
-}
-
--- Like tmux's `confirm-before kill-session`. Lua has no way to ask, so a small
--- popup does, and `read -k 1` takes the answer without Enter.
-rex.action {
-	name = 'session_kill_confirm',
-	title = 'Kill Session…',
-	run = function(ctx, args)
-		local view, err = rex.session.view {}
-		if err ~= nil then
-			error(err, 0)
-		end
-		open_popup(ctx, 0.4, 0.1, {
-			'zsh',
-			'-fc',
-			'printf "\\e[31;49m\\e[2J\\e[H kill-session %s? (y/n) " "$1"; read -k 1 answer; [[ $answer == y ]] && rex kill "$2"',
-			'session_kill_confirm',
-			view.label or ctx.session_id,
-			ctx.session_id,
 		})
 	end,
 }
@@ -344,7 +355,9 @@ rex.action {
 }
 
 rex.bind(prefix .. 'r', 'client.config.reload')
-rex.bind(prefix .. 'ctrl+q', 'session_kill_confirm')
+-- Unlike tmux's `confirm-before kill-session`, Rex asks first only when a
+-- program in the session is working, blocked or unread.
+rex.bind(prefix .. 'ctrl+q', 'session.close')
 
 -- Tabs & panes
 rex.bind(prefix .. 'c', 'tab_new_next')
@@ -363,5 +376,5 @@ end
 rex.bind('resize/enter', 'client.mode.exit')
 
 -- Popups
-rex.bind(prefix .. 't', 'popup_shell')
+rex.bind(prefix .. 't', 'scratch_toggle')
 rex.bind(prefix .. 'g', 'popup_mx_pick')
