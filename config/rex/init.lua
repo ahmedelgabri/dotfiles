@@ -211,24 +211,6 @@ rex.action {
 	end,
 }
 
--- `tap pick` would open this popup itself, but actions run with the server's
--- bare launchd PATH, which has neither `tap` nor `rex`. So open the popup here
--- and run tap's inner picker the way `tap pick` does, with the opener's pane
--- in TAP_CURRENT_PANE.
-rex.action {
-	name = 'popup_tap_pick',
-	title = 'Agent-Aware Pane Picker',
-	run = function(ctx, args)
-		open_popup(ctx, 0.85, 0.85, {
-			'env',
-			'TAP_CURRENT_PANE=' .. ctx.block_id,
-			'tap',
-			'pick',
-			'--in-popup',
-		})
-	end,
-}
-
 -- A stand-in for tmux's copy mode until Rex ships a native one. It opens the
 -- focused pane's text (screen plus scrollback) read-only in a full-window
 -- floating pane running a bare nvim (-u NONE, no plugins or colorscheme),
@@ -306,7 +288,7 @@ rex.action {
 -- =======================================================================
 
 rex.bind('cmd+t', 'tab_new_next')
-rex.bind('ctrl+space', 'popup_tap_pick')
+rex.bind('ctrl+space', 'pane.go_to')
 
 -- =======================================================================
 -- = Key Bindings — Navigation
