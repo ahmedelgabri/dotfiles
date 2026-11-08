@@ -52,6 +52,7 @@ const result = (fields: Partial<ExecResult> = {}): ExecResult => ({
 	stderr: '',
 	code: 0,
 	killed: false,
+	truncated: false,
 	...fields,
 })
 
