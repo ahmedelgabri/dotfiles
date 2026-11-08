@@ -5,7 +5,6 @@ let
         homebrew.casks = [
           "1password"
           "raycast"
-          "appcleaner"
           "imageoptim"
           "kap"
           "launchcontrol"
@@ -16,6 +15,7 @@ let
           "zoom"
           "telegram"
           "handy"
+          "peel"
         ];
       };
     };
