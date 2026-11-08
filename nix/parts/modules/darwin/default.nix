@@ -179,11 +179,13 @@ let
               ShowMountedServersOnDesktop = true;
               ShowRemovableMediaOnDesktop = true;
               _FXSortFoldersFirst = true;
+              FXEnableExtensionChangeWarning = false;
             };
             "com.apple.dock" = {
               # make the MacOS app switcher appear on all displays
               # https://til.codeinthehole.com/posts/how-to-make-the-macos-app-switcher-appear-on-all-displays/
               appswitcher-all-displays = true;
+              launchanim = false;
             };
             "com.apple.desktopservices" = {
               # Avoid creating .DS_Store files on network or USB volumes
