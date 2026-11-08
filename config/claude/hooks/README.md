@@ -13,7 +13,7 @@ by Home Manager and wired from `config/claude/settings.json`.
 | `UserPromptSubmit`   | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
 | `PreToolUse`         | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
 | `PostToolUse`        | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands in the agent history.                                |
-| `PostToolUseFailure` | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands whose call failed (denied, interrupted, tool error). |
+| `PostToolUseFailure` | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands whose call failed (denied, tool error).              |
 | `PermissionRequest`  | `tap state blocked --agent claude`                                                  | Mark the agent blocked on a permission prompt.                                                 |
 | `Elicitation`        | `tap state waiting --agent claude`                                                  | Mark the agent waiting for an MCP elicitation answer.                                          |
 | `ElicitationResult`  | `tap state running --agent claude`                                                  | Mark the agent busy again once the elicitation is answered.                                    |
@@ -65,8 +65,9 @@ The `tap state` entries publish the agent's activity state so other tooling
   `PostToolUseFailure` to `$ZDOTDIR/.zh.db`, the agent-only history the zsh
   Ctrl-R widget searches under CTRL-A and CTRL-D. `PostToolUse` fires for every
   command that ran, whatever its exit status; `PostToolUseFailure` fires for
-  calls that did not run (denied, interrupted, tool error), so the history also
-  shows what an agent tried. Commands matching credential patterns are dropped.
+  calls that did not run (denied, tool error), so the history also shows what
+  an agent tried. A call stopped with Esc sends neither event, so it is not
+  recorded. Commands matching credential patterns are dropped.
 - **Failure mode**: a bad payload or unwritable file exits 1 with a message on
   stderr; PostToolUse hooks only warn on a non-zero exit, so the agent is never
   blocked.

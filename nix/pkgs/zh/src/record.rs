@@ -87,9 +87,10 @@ pub fn parse(input: &str) -> Result<Vec<Pending>, serde_json::Error> {
         if is_secret(&cmd) || is_secret(&description) {
             continue;
         }
-        // PostToolUseFailure is Claude's report of any failed call (denied,
-        // interrupted, tool error); Codex and pi never send it, so "failed"
-        // is the hook's classification, not an exit status.
+        // PostToolUseFailure is Claude's report of a call that did not run
+        // (denied, tool error); a call stopped with Esc sends no event at all.
+        // Codex and pi never send it, so "failed" is the hook's
+        // classification, not an exit status.
         let failed =
             document.get("hook_event_name").and_then(Value::as_str) == Some("PostToolUseFailure");
         pending.push(Pending {
