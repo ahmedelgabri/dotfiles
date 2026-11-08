@@ -14,6 +14,9 @@ prepend_keymap = [
   # (Normally, "Search files by name via fd".)
   { on = "s", run = "plugin reveal-in-finder", desc = "Reveal in Finder" },
 
+  # Prompts for the archive name; its extension picks the format (zip, 7z, tar.gz, ...).
+  { on = "C", run = "plugin compress", desc = "Compress selected files" },
+
   # Mnemonic: "[T]oggle preview"
   { on = "T", run = "plugin toggle-pane min-preview", desc = "Hide or show preview" },
   # Mnemonic: "[F]ull-size preview"

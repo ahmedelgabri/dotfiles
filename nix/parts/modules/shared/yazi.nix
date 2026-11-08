@@ -59,6 +59,12 @@ let
               source = "${inputs.yazi-plugins}/git.yazi";
             };
 
+            # Uses the 7zz that the yazi wrapper already puts on its PATH.
+            "yazi/plugins/compress.yazi" = {
+              recursive = true;
+              source = "${inputs.yazi-plugins}/compress.yazi";
+            };
+
             "yazi/plugins/types.yazi" = {
               recursive = true;
               source = "${inputs.yazi-plugins}/types.yazi";
