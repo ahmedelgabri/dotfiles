@@ -23,7 +23,6 @@ let
           # "arq" # I need a specific version so I will handle it myself.
           "jdownloader"
           "signal"
-          "monodraw"
           "sony-ps-remote-play"
           "helium-browser"
           "blender"
