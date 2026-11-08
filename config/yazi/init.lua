@@ -4,7 +4,7 @@ require('folder-rules'):setup()
 
 -- Don't load it inside neovim, `yazi.nvim` has its own border
 if not os.getenv 'NVIM' then
-	require('full-border'):setup { type = ui.Border.PLAIN }
+	require('full-border'):setup { set = 'plain' }
 end
 
 -- https://yazi-rs.github.io/docs/tips#username-hostname-in-header
