@@ -38,6 +38,9 @@ url = ""
 [ui]
 # better tool support, syntax highlighting and one less thing to relearn
 conflict-marker-style = "git"
+# Resolve in $EDITOR with the markers above instead of the built-in TUI; unlike
+# the other merge tools, it also handles conflicts with more than two sides.
+merge-editor = ":editor"
 default-command = ["log"]
 diff-formatter = ":git"
 pager = ["delta_"]
