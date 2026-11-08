@@ -12,7 +12,7 @@ prepend_keymap = [
 
   # Mnemonic: "[s]how"
   # (Normally, "Search files by name via fd".)
-  { on = "s", run = "plugin --sync reveal-in-finder", desc = "Reveal in Finder" },
+  { on = "s", run = "plugin reveal-in-finder", desc = "Reveal in Finder" },
 
   # Mnemonic: "[T]oggle preview"
   { on = "T", run = "plugin toggle-pane min-preview", desc = "Hide or show preview" },
