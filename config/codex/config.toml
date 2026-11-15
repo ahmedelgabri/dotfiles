@@ -4,6 +4,7 @@ model_reasoning_effort = "high"
 
 [tui]
 theme = "plain"
+notification_method = "osc777"
 
 [marketplaces.qmd]
 source_type = "git"
