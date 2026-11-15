@@ -178,6 +178,18 @@ if [[ -n ${TMUX_PANE-} || -n ${REX_BLOCK-} ]]; then
 
   add-zsh-hook preexec _mx_record_command
   add-zsh-hook precmd _mx_clear_command
+
+  # Rex restores blocks with their ids after a server restart, but with a new
+  # shell, so a command that was running when the server stopped is still on
+  # file here. It goes on the prompt instead of running, because replaying an
+  # arbitrary command unasked can be destructive. A shell started any other
+  # way inherits _MX_SHELL_PID from a live shell: its parent when nested, or
+  # itself after `exec zsh`.
+  if [[ -z ${TMUX_PANE-} && -e $_mx_command_file ]] &&
+    ! { [[ -n ${_MX_SHELL_PID-} ]] && kill -0 $_MX_SHELL_PID 2>/dev/null; }; then
+    print -rz -- "$(<$_mx_command_file)"
+  fi
+  export _MX_SHELL_PID=$$
 fi
 
 # Project/session picker. Runs mx --pick as a real command via accept-line
