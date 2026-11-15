@@ -26,6 +26,7 @@ let
           "sony-ps-remote-play"
           "helium-browser"
           "blender"
+          "granola"
         ];
 
         # Requires to be logged in to the AppStore
