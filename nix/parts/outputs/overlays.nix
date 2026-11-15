@@ -24,6 +24,15 @@
         patches = (old.patches or [ ]) ++ [ ../../pkgs/zk-follow-symlinks.patch ];
       });
 
+      # The cargo setup hook exports RUSTONIG_SYSTEM_LIBONIG=1 by default, but
+      # the yazi flake's recipe declares no oniguruma, so onig_sys fails to
+      # find it. Opt out to keep the vendored build until upstream adds it.
+      # The wrapper must be rebuilt too, because the yazi flake builds it from
+      # its own packages and ignores an overlaid yazi-unwrapped.
+      yazi = prev.yazi.override {
+        yazi-unwrapped = prev.yazi-unwrapped.overrideAttrs { dontCargoUseSystemLibs = true; };
+      };
+
       llm-agents = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system};
 
       inherit (inputs.gh-gfm-preview.packages.${prev.stdenv.hostPlatform.system}) gh-gfm-preview;
