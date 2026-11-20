@@ -60,6 +60,11 @@
           },
           {
             "type": "command",
+            "command": "~/.claude/hooks/mx-resume.sh claude",
+            "timeout": 5
+          },
+          {
+            "type": "command",
             "command": "tap state idle --agent claude",
             "async": true
           }

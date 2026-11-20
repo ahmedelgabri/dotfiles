@@ -457,6 +457,16 @@ zrex send -b "$block" $'zsh\n'
 wait_for "nested shell with an empty prompt" empty_after zsh
 zrex send -b "$block" $'exec zsh\n'
 wait_for "exec zsh with an empty prompt" empty_after "exec zsh"
+
+# A coding agent writes how to resume its session to _MX_RESUME_FILE, and that
+# wins over the command that started it. The sh child stands in for the agent.
+zrex send -b "$block" $'sh -c \'mkdir -p "${_MX_RESUME_FILE%/*}" && printf "print resumed\\n" >"$_MX_RESUME_FILE"; sleep 1000\'\n'
+wait_for "recorded command" recorded
+wait_for "resume file" test -s "$XDG_STATE_HOME/mx/resume/$block"
+zrex server stop >/dev/null
+wait "$RESTORE_PID" 2>/dev/null || true
+restore_server
+wait_for "resume command on the prompt" last_line "% print resumed"
 zrex server stop >/dev/null
 
 echo "mx (Rex): all tests passed"

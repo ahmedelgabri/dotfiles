@@ -202,6 +202,7 @@ let
           // {
             "codex/hooks.json".source = pkgs.replaceVars ../../../../config/codex/hooks.json {
               injectRepoInfo = "${config.home.homeDirectory}/.dotfiles/config/claude/hooks/inject-repo-info.sh";
+              mxResume = "${config.home.homeDirectory}/.dotfiles/config/claude/hooks/mx-resume.sh";
             };
             "codex/themes/plain.tmTheme".source =
               config.lib.file.mkOutOfStoreSymlink "${dotfilesConfig}/bat/themes/plain.tmTheme";

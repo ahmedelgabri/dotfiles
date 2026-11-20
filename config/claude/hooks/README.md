@@ -7,7 +7,7 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 | Event                | Hook commands                                                                       | Purpose                                                                                        |
 | -------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `tap state idle --agent claude` | Log session startup, inject repository VCS context, publish idle agent status.                 |
+| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `mx-resume.sh`, `tap state idle --agent claude` | Log session startup, inject repository VCS context, record how to resume the session after a Rex restart, publish idle agent status. |
 | `PostCompact`        | `inject-repo-info.sh`                                                               | Restore repository VCS context after compaction.                                               |
 | `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                         | Log session shutdown and clear the published agent status.                                     |
 | `UserPromptSubmit`   | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
@@ -55,6 +55,12 @@ The `tap state` entries publish the agent's activity state so other tooling
 - **What it does**: detects whether `$CLAUDE_PROJECT_DIR` is a Jujutsu or Git
   repo and emits `hookSpecificOutput.additionalContext` so the agent knows which
   VCS to use. `PostCompact` restores this context after compaction.
+
+### `mx-resume.sh`
+
+- **Events**: `SessionStart`, which also fires after `/clear` and `--resume`, so the file follows the current session. Codex runs it too, as `mx-resume.sh codex` from `config/codex/hooks.json`, and asks you to approve it once with `/hooks`.
+- **What it does**: in a Rex pane, writes `cd -- <cwd> && claude --resume <session id>` (or `codex resume <session id>`) to `$_MX_RESUME_FILE`. After a Rex server restart, the pane's new zsh puts that line on the prompt instead of the command that started the agent, which would open a new session. See the restore paragraph in [`nix/pkgs/mx/README.md`](../../../nix/pkgs/mx/README.md).
+- **Behavior**: a no-op outside a Rex pane, and for an agent that the pane's shell did not start directly, such as one started by another agent, so a nested agent does not take over the pane. The resume line keeps no other flags, such as `--permission-mode`.
 
 ### `zh` (from `nix/pkgs/zh`)
 

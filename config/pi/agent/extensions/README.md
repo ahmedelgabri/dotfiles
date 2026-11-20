@@ -27,6 +27,7 @@ extension tools.
 | [jujutsu](jujutsu/README.md)                 | jj footer, Git-write guard, and `/jj-refresh`                             |
 | [loop](loop/README.md)                       | `/loop` runs recurring tasks in background Pi processes                   |
 | [md](md/README.md)                           | `/md` saves the latest assistant response as Markdown                     |
+| [mx-resume](mx-resume/README.md)             | Record how to resume the session after a Rex restart                      |
 | [notify](notify/README.md)                   | Terminal notifications when the agent settles                             |
 | [simplify](simplify/README.md)               | `/simplify` runs four reviewers before parent-applied cleanup             |
 | [tap-agent-state](tap-agent-state/README.md) | Report Pi activity to tmux-agent-panel                                    |

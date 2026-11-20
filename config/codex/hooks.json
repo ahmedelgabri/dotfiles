@@ -38,6 +38,11 @@
 						"type": "command",
 						"command": "@injectRepoInfo@",
 						"statusMessage": "Loading repo VCS info…"
+					},
+					{
+						"type": "command",
+						"command": "@mxResume@ codex",
+						"timeout": 5
 					}
 				]
 			},

@@ -97,6 +97,8 @@ tmux and Rex only report a process's name. To keep the exact commands, a zsh hoo
 
 The same file brings commands back after a Rex server restart. Rex restores each block with its old id but starts a new shell, so the command that was running when the server stopped is still on file. The new shell puts it on the prompt, and you press Enter to run it again. It does not run on its own, because replaying a command unasked can be destructive. A nested zsh, or one started with `exec zsh`, finds its parent's command on file too. It skips the command because the exported `_MX_SHELL_PID` names a shell that is still alive. tmux has no restore, so this is Rex only.
 
+A coding agent's start command would open a new session, so Claude Code, Codex and pi record how to resume theirs. The pane's zsh exports `_MX_RESUME_FILE` (`${XDG_STATE_HOME:-~/.local/state}/mx/resume/<block id>`). At session start, [`config/claude/hooks/mx-resume.sh`](../../../config/claude/hooks/README.md#mx-resumesh) writes `cd -- <dir> && claude --resume <id>` (or `codex resume <id>`) there, and the pi [`mx-resume`](../../../config/pi/agent/extensions/mx-resume/README.md) extension writes `cd -- <dir> && pi --session-id <id>`. After a restart, that line goes on the prompt instead of the recorded command. The next prompt deletes the file, like the command file. Only an agent whose parent is the pane's shell writes it, so agents that tools or other agents start do not take over the pane.
+
 ## Migrating old definitions
 
 `mx --migrate` converts the old definitions in `$HOST_CONFIGS/{tmux,rex}/sessions/` and `~/.config/{tmux,rex}/sessions/` to `<same place>/mx/sessions/<name>.lua`. It does not need Rex or your tmux server.
@@ -144,6 +146,6 @@ It starts a real Rex server on a private socket, and every `rex` call goes throu
 - byte-exact `--export` output, including recorded commands, process comments, and leaving out the block that runs the export
 - a round trip that opens the exported definition
 - migrating an `rx` definition and opening the result
-- that after a server restart a restored block gets the running command on its prompt without running it, and that a nested zsh and `exec zsh` do not. A second private server runs bare zsh with this checkout's `extras.zsh`, because the main server's shells load the installed `/etc/zshrc`
+- that after a server restart a restored block gets the running command on its prompt without running it, that a nested zsh and `exec zsh` do not, and that a resume line from an agent wins over the recorded command. A second private server runs bare zsh with this checkout's `extras.zsh`, because the main server's shells load the installed `/etc/zshrc`
 
 `session.select`, which `mx` uses inside Rex, is not covered because it needs the app with Remote Control turned on.
