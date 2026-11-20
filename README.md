@@ -431,11 +431,7 @@ terminal re-renders even already-printed output the moment its palette flips.
 - Red, green, and yellow keep error/success/warning semantics everywhere; blue
   marks constants, strings, and links. Anything that is not a signal stays on
   the default foreground.
-- The [`[delta]` config](./config/git/config) must not use
-  `--diff-so-fancy` (or any per-line foreground style): delta disables syntax
-  highlighting on lines whose style sets its own foreground, which hides the
-  plain theme everywhere except context lines. Delta's default tinted add/remove
-  backgrounds are chosen by its own light/dark detection.
+- Delta (the [`[delta]` section](./config/git/config)) draws added and removed lines like Neovim diff windows: the whole line in green or red on slot 16 or 17, Neovim's `DiffAdd`/`DiffDelete` backgrounds, and deletions struck through. A line style with its own foreground turns off delta's syntax highlighting on that line, so only context lines use `plain.tmTheme`; Neovim diff windows don't syntax-highlight changed lines either. Word-level emphasis is off, as in Neovim and Jujutsu.
 
 ### Sync points
 
