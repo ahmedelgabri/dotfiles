@@ -74,7 +74,7 @@ LUA_DIR="$HERE/../share/mx"
 # REX_BIN_DIR puts rex on PATH only inside Rex terminals.
 if ! command -v rex >/dev/null; then
 	rex() {
-		"/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex" "$@"
+		"/Applications/Rex.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex" "$@"
 	}
 fi
 

@@ -26,7 +26,7 @@ local APP_SPECS = {
 		bundleIDs = { 'net.kovidgoyal.kitty' },
 	},
 	rex = {
-		paths = { '/Applications/Rex Beta.app' },
+		paths = { '/Applications/Rex.app' },
 		bundleIDs = { 'com.superlogical.rex' },
 	},
 	x = {

@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
-REX_APP="/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex"
+REX_APP="/Applications/Rex.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex"
 
 if [[ ! -x "$REX_APP" ]]; then
 	printf 'FAIL: Rex is not installed at %s\n' "$REX_APP" >&2
