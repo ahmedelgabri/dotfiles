@@ -5,15 +5,17 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 ## Configured hooks
 
-| Event                | Hook commands                                                      | Purpose                                                                                       |
-| -------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `mx-resume.sh` | Log session startup, inject repository VCS context, record how to resume after a Rex restart. |
-| `PostCompact`        | `inject-repo-info.sh`                                              | Restore repository VCS context after compaction.                                              |
-| `SessionEnd`         | `log-event.sh SessionEnd`                                          | Log session shutdown.                                                                         |
-| `PostToolUse`        | `zh record claude` (matcher `Bash`)                                | Record Bash commands in the agent history.                                                    |
-| `PostToolUseFailure` | `zh record claude` (matcher `Bash`)                                | Record Bash commands whose call failed (denied, tool error).                                  |
-| `Stop`               | `run-ccpeek.sh`                                                    | Refresh the `ccpeek` index.                                                                   |
-| `Notification`       | `log-event.sh Notification`, `notify.sh`                           | Log notifications, mirror them to a desktop notification.                                     |
+| Event                | Hook commands                                                                                             | Purpose                                                                                                                             |
+| -------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `rex __internal session-start`, `mx-resume.sh claude` | Log session startup, inject repository VCS context, tell Claude its Rex session and pane, record how to resume after a Rex restart. |
+| `PostCompact`        | `inject-repo-info.sh`                                                                                     | Restore repository VCS context after compaction.                                                                                    |
+| `SessionEnd`         | `log-event.sh SessionEnd`                                                                                 | Log session shutdown.                                                                                                               |
+| `PostToolUse`        | `zh record claude` (matcher `Bash`)                                                                       | Record Bash commands in the agent history.                                                                                          |
+| `PostToolUseFailure` | `zh record claude` (matcher `Bash`)                                                                       | Record Bash commands whose call failed (denied, tool error).                                                                        |
+| `Stop`               | `run-ccpeek.sh`                                                                                           | Refresh the `ccpeek` index.                                                                                                         |
+| `Notification`       | `log-event.sh Notification`, `notify.sh`                                                                  | Log notifications, mirror them to a desktop notification.                                                                           |
+
+The `rex __internal session-start` hook is the one `rex skill setup` installs, with session naming off (`--feature-session-naming=false`), so Claude does not rename the Rex session. It is checked in because `settings.json` is managed by this repository, so setup finds it current and leaves the file alone; `config/codex/hooks.json` carries the Codex copy.
 
 ## Hook scripts
 

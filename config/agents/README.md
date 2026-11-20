@@ -4,6 +4,8 @@ Skills shared by every agent harness live in [skills/](./skills/). Home Manager
 links them into `~/.agents/skills`, which Pi and Codex read on their own, and
 into `~/.claude/skills`, because Claude Code does not read `~/.agents/skills`.
 
+The `rex` skill is not checked in. Install it from the Rex app with `rex skill setup`, which writes it to `~/.agents/skills/rex` and `~/.claude/skills/rex`. Its `SessionStart` hooks are already in `config/claude/settings.json` and `config/codex/hooks.json`, with session naming off, so setup only adds the skill. Pi has no command hooks; the [`rex-session-start`](../pi/agent/extensions/rex-session-start/README.md) pi extension adds the same context.
+
 A skill that only one harness should see goes in that harness's `skills`
 directory instead:
 
