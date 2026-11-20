@@ -7,7 +7,7 @@ import type {BatchItem} from './inbox.ts'
 export interface CardTools {
 	fg(color: string, text: string): string
 	bold(text: string): string
-	markdown(text: string, width: number): string[]
+	markdown(text: string, width: number): readonly string[]
 	truncate(text: string, width: number): string
 	width(text: string): number
 }
