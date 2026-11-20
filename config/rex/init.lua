@@ -203,11 +203,63 @@ rex.action {
 	end,
 }
 
+-- The server's PATH has only the system directories, so mx runs in a login
+-- shell, as it would in a pane. REX_SESSION makes mx use Rex and switch the
+-- app to the session, instead of falling back to tmux.
+local function run_mx(ctx, mx_args)
+	local argv = { '/bin/zsh', '-lc', 'mx "$@"', 'mx' }
+	for _, arg in ipairs(mx_args) do
+		table.insert(argv, arg)
+	end
+	local r, err = rex.exec(argv, {
+		cwd = block_cwd(ctx.block_id),
+		env = { REX_SESSION = ctx.session_id },
+		timeout = 30,
+	})
+	if r == nil then
+		error(err, 0)
+	end
+	if not r.ok then
+		local msg = r.stderr:gsub('%s+$', '')
+		error(msg ~= '' and msg or 'mx exited with status ' .. r.code, 0)
+	end
+	return r.stdout
+end
+
+-- `mx --pick` in the command palette instead of an fzf popup.
 rex.action {
-	name = 'popup_mx_pick',
+	name = 'mx_pick',
 	title = 'Pick Project or Session',
 	run = function(ctx, args)
-		open_popup(ctx, 0.7, 0.7, { 'mx', '--pick' })
+		local items, candidates = {}, {}
+		for line in run_mx(ctx, { '--list' }):gmatch '[^\n]+' do
+			local kind, label, path = line:match '^(%a+)\t([^\t]+)\t(.+)$'
+			if kind then
+				local id = kind .. ':' .. label
+				candidates[id] = { kind = kind, label = label, path = path }
+				table.insert(items, {
+					id = id,
+					title = label,
+					icon = kind == 'sess' and 'terminal' or 'folder',
+					detail = kind == 'sess' and 'session' or nil,
+				})
+			end
+		end
+
+		local id = rex.ui.pick {
+			title = 'mx',
+			placeholder = 'Filter projects and sessions',
+			items = items,
+		}
+		local picked = id and candidates[id]
+		if picked == nil then
+			return
+		end
+		if picked.kind == 'sess' then
+			run_mx(ctx, { picked.label })
+		else
+			run_mx(ctx, { '--dir', picked.path })
+		end
 	end,
 }
 
@@ -272,4 +324,4 @@ rex.bind('resize/enter', 'client.mode.exit')
 
 -- Popups
 rex.bind(prefix .. 't', 'scratch_toggle')
-rex.bind(prefix .. 'g', 'popup_mx_pick')
+rex.bind(prefix .. 'g', 'mx_pick')

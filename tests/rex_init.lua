@@ -10,7 +10,8 @@ end
 
 -- Loads config/rex/init.lua against a fake `rex`. `state.names` maps block IDs
 -- to foreground process names and `state.cwds` to their directories; a block
--- in neither is not a terminal, so its `process` call fails.
+-- in neither is not a terminal, so its `process` call fails. `state.exec`
+-- answers `rex.exec` and `state.pick` answers `rex.ui.pick`.
 local function load(state)
 	state.names = state.names or {}
 	state.cwds = state.cwds or {}
@@ -26,6 +27,16 @@ local function load(state)
 			fake.actions[def.name] = def
 		end,
 		mode = function() end,
+		exec = function(argv, opts)
+			record('exec', argv, opts)
+			return state.exec(argv)
+		end,
+		ui = {
+			pick = function(spec)
+				record('pick', spec)
+				return state.pick(spec)
+			end,
+		},
 		layout = {
 			block = function(spec)
 				return { block = spec }
@@ -270,6 +281,95 @@ do
 	ok, err = pcall(run, { view_error = 'view failed' })
 	equal('tab view error raised', ok, false)
 	equal('tab view error message', err, 'view failed')
+end
+
+-- mx_pick
+do
+	local list = table.concat({
+		'sess\tfoo\t/defs/foo.lua',
+		'dir\tpersonal/dev\t/code/personal/dev',
+		'',
+	}, '\n')
+
+	-- `choose` maps the picker's items to its answer; `fail` makes the mx call
+	-- whose last argument matches it exit 1.
+	local function run(choose, fail)
+		local fake = load {
+			cwds = { ['block:a'] = '/here' },
+			exec = function(argv)
+				if fail and argv[#argv] == fail.arg then
+					return { ok = false, code = 1, stdout = '', stderr = fail.stderr }
+				end
+				return {
+					ok = true,
+					code = 0,
+					stdout = argv[#argv] == '--list' and list or '',
+					stderr = '',
+				}
+			end,
+			pick = function(spec)
+				return choose(spec.items)
+			end,
+		}
+		fake.actions.mx_pick.run(
+			{ session_id = 'session:s', block_id = 'block:a' },
+			{}
+		)
+		return fake
+	end
+
+	-- Every mx call runs in a login shell from the pane's directory, with the
+	-- session that tells mx to use Rex.
+	local function mx_args(fake)
+		local found = {}
+		for _, call in ipairs(calls_named(fake, 'exec')) do
+			local argv, opts = call[2], call[3]
+			equal('shell', table.concat(argv, ' ', 1, 4), '/bin/zsh -lc mx "$@" mx')
+			equal('exec cwd', opts.cwd, '/here')
+			equal('exec session', opts.env.REX_SESSION, 'session:s')
+			table.insert(found, table.concat(argv, ' ', 5))
+		end
+		return found
+	end
+
+	local items
+	local fake = run(function(given)
+		items = given
+		return given[2].id
+	end)
+	equal('items', #items, 2)
+	equal('session title', items[1].title, 'foo')
+	equal('session icon', items[1].icon, 'terminal')
+	equal('dir title', items[2].title, 'personal/dev')
+	equal('dir icon', items[2].icon, 'folder')
+	local calls = mx_args(fake)
+	equal('dir calls', #calls, 2)
+	equal('list', calls[1], '--list')
+	equal('dir opens by path', calls[2], '--dir /code/personal/dev')
+
+	calls = mx_args(run(function(given)
+		return given[1].id
+	end))
+	equal('session opens by name', calls[2], 'foo')
+
+	-- A cancelled pick returns nil and opens nothing.
+	calls = mx_args(run(function()
+		return nil, 'cancelled'
+	end))
+	equal('cancel calls', #calls, 1)
+
+	local ok, err = pcall(
+		run,
+		function() end,
+		{ arg = '--list', stderr = 'boom\n' }
+	)
+	equal('list error raised', ok, false)
+	equal('list error message', err, 'boom')
+	ok, err = pcall(run, function(given)
+		return given[1].id
+	end, { arg = 'foo', stderr = '' })
+	equal('open error raised', ok, false)
+	equal('open error message', err, 'mx exited with status 1')
 end
 
 print 'rex init.lua: ok'

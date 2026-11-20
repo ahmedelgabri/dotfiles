@@ -7,7 +7,7 @@ mx                  # session for $PWD (name = basename of $PWD)
 mx <name>           # definition <name>.lua, else a project matching <name>, else $PWD
 mx --dir <path>     # plain session rooted exactly at <path>
 mx --list           # session and project candidates as TSV
-mx --pick [query]   # fuzzy-pick a candidate and open it (Ctrl-G in zsh, prefix-g in tmux)
+mx --pick [query]   # fuzzy-pick a candidate and open it (Ctrl-G in zsh, prefix-g in tmux and in Rex, where it shows the list in the command palette)
 mx --export [name]  # print a definition based on a running session
 mx --migrate        # convert old tmux and rx definitions to Lua
 ```

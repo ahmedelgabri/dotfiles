@@ -148,7 +148,7 @@ to the block (the programs tmux's `VIM_PATTERN` matches, including Nix
 move Rex focus in the right direction with wrapping at the edges, that
 `pane_focus_unless_zoomed` does nothing while the active window is zoomed, and
 that `tab_new_next` passes the current tab's directory, places the tab after the
-current one, and raises API errors.
+current one, and raises API errors. It also checks that `mx_pick` lists `mx --list` in the command palette, opens a session by name and a project by path through a login shell in the pane's directory with `REX_SESSION` set, opens nothing on cancel, and raises mx's errors.
 
 The E2E suite starts a real Rex server on a private socket with the checkout's
 `init.lua`, behind the same `-S` wrapper and `rex whoami` guard as the mx Rex suite.
