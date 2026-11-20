@@ -503,7 +503,11 @@ test('a run spawns the child directly with the loop environment', async () => {
 
 		await writeFile(join(entry.dir, FILES.stdout), 'all green')
 		exitWith(h.children[0], 0)
-		await waitUntil(() => entry.state === 'scheduled')
+		// The runtime sets entry.state before it writes status to the state
+		// file, so wait for the file, not the entry.
+		await waitUntil(
+			async () => (await readStateFile(entry.dir)).status === 'scheduled',
+		)
 		const done = await readStateFile(entry.dir)
 		assert.equal(done.attempt?.finalized, true)
 		assert.equal(done.lastExitCode, 0)
