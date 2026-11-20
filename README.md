@@ -431,7 +431,7 @@ terminal re-renders even already-printed output the moment its palette flips.
 - Red, green, and yellow keep error/success/warning semantics everywhere; blue
   marks constants, strings, and links. Anything that is not a signal stays on
   the default foreground.
-- The [`delta_`](./config/zsh.d/zsh/bin/delta_) wrapper must not pass
+- The [`[delta]` config](./config/git/config) must not use
   `--diff-so-fancy` (or any per-line foreground style): delta disables syntax
   highlighting on lines whose style sets its own foreground, which hides the
   plain theme everywhere except context lines. Delta's default tinted add/remove

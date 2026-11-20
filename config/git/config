@@ -29,11 +29,11 @@
 	; https://github.com/gbprod/tree-sitter-gitcommit/pull/79
 	commentChar = "#"
 	hooksPath = ~/.config/git/hooks
-	pager = delta_
+	pager = delta
 	; fsmonitor = true
 
 [interactive]
-	diffFilter = delta_ --color-only --features=interactive
+	diffFilter = delta --color-only --features=interactive
 	singleKey = true
 
 [delta]
@@ -49,6 +49,12 @@
 	plus-emph-style = green 16
 	minus-emph-style = red 17 strike
 	navigate = true # use n and N to move between diff sections
+	; Side-by-side only for hunks that both remove and add lines, and only
+	; from 160 columns; narrower terminals and add-only or remove-only hunks
+	; stay in one column.
+	side-by-side = hunk,160
+	line-numbers-left-format = "{nm:^4} "
+	line-numbers-right-format = "{np:^4} "
 	hyperlinks = true
 	file-modified-label = MODIFIED:
 	file-removed-label  = REMOVED:
