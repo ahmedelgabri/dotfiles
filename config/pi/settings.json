@@ -4,13 +4,14 @@
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6.1-sol",
+  "defaultModel": "gpt-6.2-sol",
   "enabledModels": [
     "anthropic/claude-fable-*",
     "anthropic/claude-opus-5*",
     "anthropic/claude-sonnet-5*",
     "openai-codex/gpt-6*",
-    "xai/grok-4.7"
+    "xai/grok-4.7",
+    "google/gemini-4-neon"
   ],
   "showHardwareCursor": true,
   "autocompleteMaxVisible": 10,
@@ -25,5 +26,6 @@
   "theme": "system",
   "terminal": {
     "hyperlinks": true
-  }
+  },
+  "lastChangelogVersion": "1.6.0"
 }
