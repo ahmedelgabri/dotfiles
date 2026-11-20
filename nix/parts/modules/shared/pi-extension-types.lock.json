@@ -4,40 +4,40 @@
     "version": "0.129.0"
   },
   "@earendil-works/pi-agent-core": {
-    "hash": "sha256-rh/7K2KPGR5wj7vvxvZjneddnaRu8j7tX7euvLGktm0=",
-    "version": "1.5.2"
+    "hash": "sha256-QXF0PHMEzFsU5l/9cM25Pm8yEJ2BiMC4ZPUlnoPCJ3s=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-ai": {
-    "hash": "sha256-1XFe+oNMI7/fEKBCtJ307hacyZAAvxbXmY+rLVM7Rfg=",
-    "version": "1.5.2"
+    "hash": "sha256-1oMS7FdLyVnLf+4m2k9IdtBnrtm7vnbodjWeYNIpR0c=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-codemode": {
-    "hash": "sha256-rIG/T08B7eGlNNbQ/KGrE6/WZQbACQTp1aB/WQrjAuA=",
-    "version": "1.5.2"
+    "hash": "sha256-IvfavTDuqsfjihM7cgCMz8N5cy8u2G12ApfLnThaQts=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-coding-agent": {
-    "hash": "sha256-aRveGGJztFfZ0cQdD9R7V4U7XoXe0a3Rofa3jmbCYfQ=",
-    "version": "1.5.2"
+    "hash": "sha256-hdXeQE4BnoUMkO6axtxsFiQNoSL9zgMUiVYIFkAwM2s=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-mcp": {
-    "hash": "sha256-6r6SjIgpnjrFPtZdTfSWEtntX+OAEGb3IR2w22Oxicc=",
-    "version": "1.5.2"
+    "hash": "sha256-yHKbgsKLohYf2IgChBYSROECSRT5pwLB422wGF1vv1U=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-schema": {
-    "hash": "sha256-XzUSl/90vsHtTGqXRHWuQfGU4CPBTwz2GkJ+T6F892o=",
-    "version": "1.5.2"
+    "hash": "sha256-owjfyJgcW63I4ROpfVOQeI1rzILtTiqicIhEQ474jSU=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-telemetry": {
-    "hash": "sha256-DSnb7oMMdK9xFQNcfLMmwenaL2kKP2+VYgWXCS2p+e4=",
-    "version": "1.5.2"
+    "hash": "sha256-eigjPr/ddRlAYZvmqHm9oP5usxrCBW6HmOFik8DDnsU=",
+    "version": "1.6.0"
   },
   "@earendil-works/pi-tui": {
-    "hash": "sha256-L912Ce5h58J1pSjjLWIJPCwpjT+SVK0wSEUd8gY+a9o=",
-    "version": "1.5.2"
+    "hash": "sha256-jifmqHbrCxzBPcq91hS6I/r66mztgappXW0zl+V/D6U=",
+    "version": "1.6.0"
   },
   "@google/genai": {
-    "hash": "sha256-hZ4H0/7hRTztPWDC1IzhuIiU0nhbI/PL2FDAYryh38Y=",
-    "version": "2.21.0"
+    "hash": "sha256-k7pdTS7CjfKwDcklY3y02GoRjsz9nT3KRw8pCMWOoFI=",
+    "version": "2.32.0"
   },
   "@modelcontextprotocol/sdk": {
     "hash": "sha256-uNUlU6S3k3wP2b5gxAE68/RsmkHF3d45t90GcuT+Ge8=",
@@ -64,8 +64,8 @@
     "version": "5.3.0"
   },
   "express-rate-limit": {
-    "hash": "sha256-TjSZvE7RQ0lM1IT7Rj5LqKuZbMCs0oZ8TpfnXtDsldQ=",
-    "version": "8.7.4"
+    "hash": "sha256-+ZjJHOKAmTCsCfhirwiFM2etTphnxXeGb7dK4CrQQEI=",
+    "version": "8.7.5"
   },
   "fast-deep-equal": {
     "hash": "sha256-sBmgmA8nY43D+Fg2sOR48YjgDXpuWFLAgZ+ob1bke48=",
@@ -108,8 +108,8 @@
     "version": "18.0.11"
   },
   "openai": {
-    "hash": "sha256-WXUy3LkFHuiqXtre21e3mLQq3WjMWuwdZ+mU0M+tB/E=",
-    "version": "7.19.0"
+    "hash": "sha256-fx3qyujRfvycAmIrAyhRx+KOFItisdp3R+uLQm6k26k=",
+    "version": "7.59.0"
   },
   "ts-algebra": {
     "hash": "sha256-9MOWj9get5UulIYOsjNVjIIDl9mZFJtuLGiauqNLxlw=",
@@ -120,8 +120,8 @@
     "version": "1.3.27"
   },
   "undici": {
-    "hash": "sha256-K/WxxBckYUcpyzg/IsZFBrZmWGnThd6GJ1LDN2P8zhs=",
-    "version": "7.30.2"
+    "hash": "sha256-OKU48IXEGuqnNVs71NoEm6P14zek2gkSsAZkNuuWVxk=",
+    "version": "8.13.0"
   },
   "undici-types": {
     "hash": "sha256-Olh4Ucy/ECGyDqyKOOuBnX4qGrd6pHfLJMrlRzo+eMY=",
