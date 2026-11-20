@@ -8,7 +8,6 @@ let
           "imageoptim"
           "kap"
           "launchcontrol"
-          "notion-calendar"
           "obsidian"
           "slack"
           "sync"
@@ -16,6 +15,7 @@ let
           "telegram"
           "handy"
           "peel"
+          "ahmedelgabri/tap/mycal"
         ];
       };
     };
