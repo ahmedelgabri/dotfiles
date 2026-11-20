@@ -45,6 +45,9 @@ export PROJECTS="$HOME/Projects"
 export NOTES_DIR="$WORK/notes"
 export DOTFILES="$WORK/dotfiles"
 export EDITOR=true
+# The pane shells save their history as kill-server ends them, which can land
+# in $HOME after cleanup's rm -rf has emptied it, and the rm then fails.
+export HISTFILE=
 SESSIONS="$XDG_CONFIG_HOME/mx/sessions"
 HOST_SESSIONS="$WORK/host/mx/sessions"
 COMMANDS="$HOME/.local/state/mx/commands"
