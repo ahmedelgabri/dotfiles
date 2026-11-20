@@ -30,9 +30,7 @@ local function block_cwd(block_id)
 end
 
 -- The same programs as `VIM_PATTERN` in config/tmux/tmux.conf. fzf is one of
--- them because it moves its cursor with ctrl+j and ctrl+k. tap is added here
--- because it runs fzf in its own process, and tmux needs no such entry because
--- its key bindings don't apply inside a popup.
+-- them because it moves its cursor with ctrl+j and ctrl+k.
 local function runs_vim(block_id)
 	local fg = foreground(block_id)
 	if fg == nil then
@@ -42,7 +40,6 @@ local function runs_vim(block_id)
 	return name:match '^g?view$' ~= nil
 		or name:match '^g?l?n?vim?x?$' ~= nil
 		or name == 'fzf'
-		or name == 'tap'
 end
 
 -- Wraps to the far side at the edge, like tmux's `select-pane`.

@@ -30,7 +30,6 @@ extension tools.
 | [mx-resume](mx-resume/README.md)             | Record how to resume the session after a Rex restart                      |
 | [notify](notify/README.md)                   | Terminal notifications when the agent settles                             |
 | [simplify](simplify/README.md)               | `/simplify` runs four reviewers before parent-applied cleanup             |
-| [tap-agent-state](tap-agent-state/README.md) | Report Pi activity to tmux-agent-panel                                    |
 | [todos](todos/README.md)                     | `/todos` manager and file-backed `todo` tool                              |
 | [total-cost](total-cost/README.md)           | `/total-cost` summarizes recorded monthly session costs                   |
 | [tmux](tmux/README.md)                       | Manage named worker panes without shrinking Pi below usable dimensions    |
@@ -42,10 +41,6 @@ Manager links each file individually, so existing top-level extension symlinks
 point to missing files until the rebuild replaces them with directory
 entrypoints. For an explicit load, use
 `pi -e /path/to/extensions/<name>/index.ts`.
-
-`tap-agent-state/index.ts` retains its upstream management notice. Check the
-layout after running `tap install`, which may recreate a top-level
-`tap-agent-state.ts` and cause duplicate registrations.
 
 ## Validation
 

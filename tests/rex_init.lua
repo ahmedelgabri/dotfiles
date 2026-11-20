@@ -116,7 +116,7 @@ do
 end
 
 -- The keys go to the block for the programs tmux's VIM_PATTERN matches,
--- including Nix wrappers such as .nvim-wrapped, and for tap's picker.
+-- including Nix wrappers such as .nvim-wrapped.
 for _, name in ipairs {
 	'vi',
 	'vim',
@@ -129,7 +129,6 @@ for _, name in ipairs {
 	'vimdiff',
 	'nvimdiff',
 	'fzf',
-	'tap',
 	'.nvim-wrapped',
 	'nvim-wrapped',
 } do

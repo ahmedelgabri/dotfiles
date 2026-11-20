@@ -15,7 +15,6 @@ tmux/
 ├── tmux.conf                          # Main configuration
 └── scripts/
     ├── get-prayer                     # Prayer times (wrapper for next-prayer)
-    ├── tmux-agent-alert               # Message when an agent stops running
     ├── tmux-battery                   # Battery segment wrapper with charging icon
     ├── tmux-statuspage                # statuspage.io incident indicator (GitHub, npm)
     └── tmux-weather                   # Weather segment (via wttr.in)
@@ -96,7 +95,6 @@ without an external clipboard helper script.
 | `prefix + p`          | Toggle persistent popup shell (per directory) |
 | `prefix + t`          | Quick modal shell (75×75%, non-persistent)    |
 | `prefix + g`          | Project/session picker (`mx --pick`)          |
-| `C-Space` (no prefix) | Agent-aware pane picker (`tap pick`)          |
 
 The persistent popup (`prefix + p`) creates a unique tmux session per working
 directory (named `popup_<basename>_<hash>`) that survives closing the popup. It
@@ -187,18 +185,7 @@ for the slot conventions.
 | Pane borders              | themedarkgrey        |
 | Separators / session name | themedarkgrey        |
 | Status bar dim text       | bright black         |
-| Pane id / agent name      | bright black         |
-| Agent running             | cyan                 |
-| Agent waiting / blocked   | yellow `?` / red `▲` |
 
-## Agent Alerts
-
-When an agent's pane changes from `running` to `waiting` or `blocked` (tap sets
-`@agent_state`), every client not showing that window gets a 5 second message
-such as `? claude is waiting in dotfiles:2`. A monitor hook checks the state
-once a second. Monitor hooks only watch one session, so
-`tmux-agent-alert install` adds one to every session: new ones through the
-`session-created` hook, existing ones on config load.
 
 ## Terminal Support
 
@@ -237,13 +224,6 @@ than embedded raw glyphs.
 | Major / Critical    | Red    |
 | Minor / Maintenance | Yellow |
 | None (operational)  | Hidden |
-
-### `tmux-agent-alert`
-
-`install [session-id...]` adds the `@agent-alert` monitor hook to the given
-sessions, or to all of them. `notify <pane-id> <last-state> <state>` is what the
-hook runs: it filters transitions out of `running` and sends the message with
-`display-message -c` to each client whose current window is not the pane's.
 
 ### `tmux-battery`
 

@@ -348,7 +348,6 @@
         "nix-homebrew": "nix-homebrew",
         "nixfmt-rs": "nixfmt-rs",
         "nixpkgs": "nixpkgs",
-        "tap": "tap",
         "treefmt-nix": "treefmt-nix",
         "yazi": "yazi",
         "yazi-glow": "yazi-glow",
@@ -405,33 +404,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tap": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt-nix": [
-          "treefmt-nix"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793497891,
-        "narHash": "sha256-o9KiHp1BqbGO8bN962KCY+/zWLJ2rbAT9KLYykzThLY=",
-        "owner": "ahmedelgabri",
-        "repo": "tmux-agent-panel",
-        "rev": "7e033ea48f85f75e4640f5ad1dbeae8b16e7fb06",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ahmedelgabri",
-        "ref": "rex",
-        "repo": "tmux-agent-panel",
         "type": "github"
       }
     },

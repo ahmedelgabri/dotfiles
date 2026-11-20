@@ -1,16 +1,5 @@
 {
 	"hooks": {
-		"PreToolUse": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state running --agent codex",
-						"async": true
-					}
-				]
-			}
-		],
 		"PostToolUse": [
 			{
 				"matcher": "Bash",
@@ -18,15 +7,6 @@
 					{
 						"type": "command",
 						"command": "zh record codex"
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state running --agent codex",
-						"async": true
 					}
 				]
 			}
@@ -43,58 +23,6 @@
 						"type": "command",
 						"command": "@mxResume@ codex",
 						"timeout": 5
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state idle --agent codex",
-						"async": true
-					}
-				]
-			}
-		],
-		"UserPromptSubmit": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state running --agent codex --title-stdin",
-						"async": true
-					}
-				]
-			}
-		],
-		"Stop": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state idle --agent codex",
-						"async": true
-					}
-				]
-			}
-		],
-		"PermissionRequest": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state blocked --agent codex",
-						"async": true
-					}
-				]
-			}
-		],
-		"SessionEnd": [
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "tap state clear --agent codex"
 					}
 				]
 			}

@@ -28,7 +28,7 @@ Agent glyphs match tmux's `window-status-format`: a cyan spinner while working, 
 ## How it works
 
 - The right-side segments run the tmux scripts in [config/tmux/scripts/](../tmux/scripts/), strip their `#[fg=…]` markup, and keep the first colour, so incident and low-battery colours survive.
-- Agents come straight from Rex, not from `tap`: Rex keeps the status that programs report with OSC 7501, and `agents.sh` reads it with `rex block call … program_status`. Claude Code reports it; other agents count only if they do too.
+- Agents come straight from Rex: Rex keeps the status that programs report with OSC 7501, and `agents.sh` reads it with `rex block call … program_status`. Claude Code reports it; other agents count only if they do too.
 - `segments.sh` exports `REX_AUTOSTART=0`, so the bar never starts a Rex server.
 
 ## Gotchas

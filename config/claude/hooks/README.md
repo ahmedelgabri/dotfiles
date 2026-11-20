@@ -5,24 +5,15 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 ## Configured hooks
 
-| Event                | Hook commands                                                                       | Purpose                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `mx-resume.sh`, `tap state idle --agent claude` | Log session startup, inject repository VCS context, record how to resume the session after a Rex restart, publish idle agent status. |
-| `PostCompact`        | `inject-repo-info.sh`                                                               | Restore repository VCS context after compaction.                                               |
-| `SessionEnd`         | `log-event.sh SessionEnd`, `tap state clear --agent claude`                         | Log session shutdown and clear the published agent status.                                     |
-| `UserPromptSubmit`   | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
-| `PreToolUse`         | `tap state running --agent claude`                                                  | Mark the agent busy.                                                                           |
-| `PostToolUse`        | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands in the agent history.                                |
-| `PostToolUseFailure` | `tap state running --agent claude`, `zh record claude` (matcher `Bash`)             | Keep the agent busy, record Bash commands whose call failed (denied, tool error).              |
-| `PermissionRequest`  | `tap state blocked --agent claude`                                                  | Mark the agent blocked on a permission prompt.                                                 |
-| `Elicitation`        | `tap state waiting --agent claude`                                                  | Mark the agent waiting for an MCP elicitation answer.                                          |
-| `ElicitationResult`  | `tap state running --agent claude`                                                  | Mark the agent busy again once the elicitation is answered.                                    |
-| `Stop`               | `run-ccpeek.sh`, `tap state idle --agent claude`                                    | Refresh the `ccpeek` index, mark the agent idle.                                               |
-| `StopFailure`        | `tap state idle --agent claude`                                                     | Mark the agent idle when a turn ends in an error.                                              |
-| `Notification`       | `log-event.sh Notification`, `notify.sh`, `tap state notification --agent claude`   | Log notifications, mirror them to a desktop notification, publish the status.                  |
-
-The `tap state` entries publish the agent's activity state so other tooling
-(e.g. the tmux statusline) can display it.
+| Event                | Hook commands                                                      | Purpose                                                                                       |
+| -------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `mx-resume.sh` | Log session startup, inject repository VCS context, record how to resume after a Rex restart. |
+| `PostCompact`        | `inject-repo-info.sh`                                              | Restore repository VCS context after compaction.                                              |
+| `SessionEnd`         | `log-event.sh SessionEnd`                                          | Log session shutdown.                                                                         |
+| `PostToolUse`        | `zh record claude` (matcher `Bash`)                                | Record Bash commands in the agent history.                                                    |
+| `PostToolUseFailure` | `zh record claude` (matcher `Bash`)                                | Record Bash commands whose call failed (denied, tool error).                                  |
+| `Stop`               | `run-ccpeek.sh`                                                    | Refresh the `ccpeek` index.                                                                   |
+| `Notification`       | `log-event.sh Notification`, `notify.sh`                           | Log notifications, mirror them to a desktop notification.                                     |
 
 ## Hook scripts
 

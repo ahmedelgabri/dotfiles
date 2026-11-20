@@ -85,14 +85,6 @@
       };
     };
 
-    tap = {
-      url = "github:ahmedelgabri/tmux-agent-panel?ref=rex";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
 
     llm-agents = {
       url = "github:numtide/llm-agents.nix";

@@ -62,11 +62,6 @@
             "type": "command",
             "command": "~/.claude/hooks/mx-resume.sh claude",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "tap state idle --agent claude",
-            "async": true
           }
         ]
       }
@@ -90,47 +85,11 @@
             "type": "command",
             "command": "~/.claude/hooks/log-event.sh SessionEnd",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "tap state clear --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state running --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state running --agent claude",
-            "async": true
           }
         ]
       }
     ],
     "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state running --agent claude",
-            "async": true
-          }
-        ]
-      },
       {
         "matcher": "Bash",
         "hooks": [
@@ -143,15 +102,6 @@
       }
     ],
     "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state running --agent claude",
-            "async": true
-          }
-        ]
-      },
       {
         "matcher": "Bash",
         "hooks": [
@@ -170,55 +120,6 @@
             "type": "command",
             "command": "~/.claude/hooks/run-ccpeek.sh",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "tap state idle --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "StopFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state idle --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state blocked --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "Elicitation": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state waiting --agent claude",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "ElicitationResult": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "tap state running --agent claude",
-            "async": true
           }
         ]
       }
@@ -234,11 +135,6 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/notify.sh"
-          },
-          {
-            "type": "command",
-            "command": "tap state notification --agent claude",
-            "async": true
           }
         ]
       }
