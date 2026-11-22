@@ -21,8 +21,8 @@ text/troff)
 	;;
 text/* | */xml | application/json | application/javascript)
 	if [[ $FILE == *.md && -z $LINE ]]; then
-		# Need `-s dark` to force color outside of interactive shell:
-		# https://github.com/charmbracelet/glow/issues/440
+		# Need `-s dark` to force color outside of interactive shell, glow
+		# ignores CLICOLOR_FORCE: https://github.com/charmbracelet/glow/issues/654
 		glow -s dark --width "$WIDTH" "$FILE"
 	else
 		bat_style='plain,changes'
