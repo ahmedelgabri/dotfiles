@@ -89,6 +89,8 @@ let
             NSAutomaticQuoteSubstitutionEnabled = false;
             NSAutomaticSpellingCorrectionEnabled = false;
             NSDocumentSaveNewDocumentsToCloud = false;
+            # Hide the icons macOS 26 added next to menu items
+            NSMenuEnableActionImages = false;
             NSNavPanelExpandedStateForSaveMode = true;
             NSNavPanelExpandedStateForSaveMode2 = true;
             NSTableViewDefaultSizeMode = 2;
