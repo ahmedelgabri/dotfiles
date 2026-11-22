@@ -6,10 +6,6 @@ pack.add {
 		version = 'main',
 		event = { 'BufRead', 'FileType' },
 		config = function(event)
-			-- https://github.com/nvim-treesitter/nvim-treesitter/issues/3356#issuecomment-1226348556
-			-- N.B! CC needs to be unset (not set to clang as in nix shells)
-			vim.env.CC = ''
-
 			vim.cmd.packadd 'nvim-treesitter-textobjects'
 			vim.cmd.packadd 'nvim-ts-context-commentstring'
 			vim.cmd.packadd 'nvim-ts-autotag'

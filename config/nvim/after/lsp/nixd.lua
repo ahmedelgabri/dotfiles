@@ -5,8 +5,6 @@ local host = vim.env.HOST_CONFIGS and vim.fs.basename(vim.env.HOST_CONFIGS)
 	or vim.fn.hostname()
 
 return {
-	-- https://github.com/nix-community/nixvim/issues/2390#issuecomment-2408101568
-	-- offset_encoding = 'utf-8',
 	settings = {
 		nixd = {
 			nixpkgs = {
