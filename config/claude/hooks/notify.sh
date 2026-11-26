@@ -14,7 +14,7 @@ fi
 
 # Rex surfaces Claude notifications itself, so a second one here would
 # duplicate them.
-if [ -n "${REX_SESSION:-}" ]; then
+if [ -n "${REX_BLOCK:-}" ]; then
 	exit 0
 fi
 

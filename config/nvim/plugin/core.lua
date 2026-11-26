@@ -180,7 +180,7 @@ pack.add {
 -- nvim-tmux-navigation only talks to tmux. Rex passes ctrl+h/j/k/l to nvim
 -- (see config/rex/init.lua), so at the edge of the editor give the move back
 -- to Rex.
-if vim.env.REX_SESSION and not vim.env.TMUX then
+if vim.env.REX_BLOCK and not vim.env.TMUX then
 	for key, direction in pairs { h = 'left', j = 'down', k = 'up', l = 'right' } do
 		vim.keymap.set('n', '<C-' .. key .. '>', function()
 			if vim.fn.winnr(key) ~= vim.fn.winnr() then
@@ -193,7 +193,7 @@ if vim.env.REX_SESSION and not vim.env.TMUX then
 				'--autostart=false',
 				'do',
 				'-s',
-				vim.env.REX_SESSION,
+				vim.env.REX_BLOCK,
 				'pane_focus_unless_zoomed',
 				'direction=' .. direction,
 			}

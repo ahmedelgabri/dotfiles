@@ -86,7 +86,7 @@ The `rex __internal session-start` hook is the one `rex skill setup` installs, w
 - **What it does**: mirrors the notification message to a desktop notification —
   `terminal-notifier` on macOS or `notify-send` elsewhere — picking the notifier
   at runtime because `settings.json` is shared across platforms.
-- **Behavior**: a no-op inside Rex (`REX_SESSION` set), which shows Claude's
+- **Behavior**: a no-op inside Rex (`REX_BLOCK` set), which shows Claude's
   notifications itself, when no notifier is installed, or when the message is
   empty.
 

@@ -82,7 +82,7 @@ case "${MX_BACKEND-}" in
 tmux | rex) BACKEND="$MX_BACKEND" ;;
 '')
 	BACKEND=tmux
-	if [[ -z ${TMUX-} && -n ${REX_SESSION-} ]]; then
+	if [[ -z ${TMUX-} && -n ${REX_BLOCK-} ]]; then
 		BACKEND=rex
 	fi
 	;;
@@ -267,11 +267,11 @@ rex_export() {
 	local session="${1-}"
 
 	if [[ -z "$session" ]]; then
-		if [[ -z ${REX_SESSION-} ]]; then
+		if [[ -z ${REX_BLOCK-} ]]; then
 			echo "mx: --export needs a session name outside Rex" >&2
 			return 64
 		fi
-		session="$REX_SESSION"
+		session="$REX_BLOCK"
 	fi
 	MX_ACTION=export MX_COMMANDS="$COMMANDS_DIR" MX_SELF="${REX_BLOCK-}" \
 		rex_lua -s "$session"
@@ -289,7 +289,7 @@ rex_open() {
 	MX_ACTION=finish MX_ROOT="$root" MX_DEF="$session_file" \
 		MX_CREATED="${state#existing}" rex_lua -s "$id" >/dev/null
 
-	if [ -n "${REX_SESSION-}" ]; then
+	if [ -n "${REX_BLOCK-}" ]; then
 		rex do session.select session_id="$id" >/dev/null
 	else
 		exec rex attach "$id"

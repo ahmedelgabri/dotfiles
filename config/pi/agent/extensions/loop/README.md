@@ -239,9 +239,8 @@ output. `PI_LOOP_DIR`, `PI_LOOP_ID`, `PI_LOOP_ITERATION`,
 ## Unattended execution
 
 Children load the normal Pi tools and extensions, including Bash. They do not
-receive the owner's pane identity (`TMUX`, `TMUX_PANE`, `REX_SESSION`,
-`REX_BLOCK`), because a run has no terminal: with it, pane-aware extensions
-would treat your Pi pane as the run's own, for example by splitting it for
+receive the owner's pane identity (`TMUX`, `TMUX_PANE`, `REX_BLOCK`), because a
+run has no terminal: with it, pane-aware extensions would treat your Pi pane as the run's own, for example by splitting it for
 worker panes or by reporting agent state for it. They receive instructions to
 treat external content as untrusted and avoid external mutations unless the
 original task explicitly requires them. These are model instructions, not a

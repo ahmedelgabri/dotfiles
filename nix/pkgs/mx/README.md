@@ -14,7 +14,7 @@ mx --migrate        # convert old tmux and rx definitions to Lua
 
 ## Backends
 
-`mx` uses Rex inside a Rex terminal (`REX_SESSION` set). It uses tmux inside tmux, including tmux that runs in a Rex terminal, and everywhere else. `rex attach` only shows a session and does not send keys, so Rex cannot take over a terminal the way `tmux attach` does. Set `MX_BACKEND=tmux` or `MX_BACKEND=rex` to choose one.
+`mx` uses Rex inside a Rex terminal (`REX_BLOCK` set). It uses tmux inside tmux, including tmux that runs in a Rex terminal, and everywhere else. `rex attach` only shows a session and does not send keys, so Rex cannot take over a terminal the way `tmux attach` does. Set `MX_BACKEND=tmux` or `MX_BACKEND=rex` to choose one.
 
 | | tmux | Rex |
 | --- | --- | --- |

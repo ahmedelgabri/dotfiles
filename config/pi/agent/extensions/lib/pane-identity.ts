@@ -7,7 +7,6 @@
 export const PANE_IDENTITY_VARIABLES = [
 	'TMUX',
 	'TMUX_PANE',
-	'REX_SESSION',
 	'REX_BLOCK',
 ]
 

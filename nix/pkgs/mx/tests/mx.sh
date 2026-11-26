@@ -418,7 +418,7 @@ expect "--export from inside alpha" 0 "$EXPECTED_SELF" "" \
 
 # tmux running inside a Rex terminal is still tmux.
 expect "--export inside tmux inside Rex" 0 "$EXPECTED" "" \
-	env REX_SESSION=session:outer REX_BLOCK=block:outer TMUX="$SOCKET,0,0" mx --export alpha
+	env REX_BLOCK=block:outer TMUX="$SOCKET,0,0" mx --export alpha
 expect "--export outside tmux without session" 64 "" \
 	"mx: --export needs a session name outside tmux" mx --export
 expect "--export missing session" 1 "" "mx: session not found: nope" mx --export nope

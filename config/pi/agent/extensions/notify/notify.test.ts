@@ -93,12 +93,12 @@ test('the TUI notification keeps its tmux and Kitty forms', () => {
 	)
 })
 
-test('a Rex session gets no notification from the extension', () => {
+test('a Rex pane gets no notification from the extension', () => {
 	const settled = settledHandler()
 	assert.equal(
 		captureStdout(() => settled({}, {mode: 'tui'}), {
 			...PLAIN,
-			REX_SESSION: 'session:1',
+			REX_BLOCK: 'block:1',
 		}),
 		'',
 	)

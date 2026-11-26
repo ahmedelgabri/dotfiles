@@ -201,7 +201,7 @@ rex.action {
 }
 
 -- The server's PATH has only the system directories, so mx runs in a login
--- shell, as it would in a pane. REX_SESSION makes mx use Rex and switch the
+-- shell, as it would in a pane. REX_BLOCK makes mx use Rex and switch the
 -- app to the session, instead of falling back to tmux.
 local function run_mx(ctx, mx_args)
 	local argv = { '/bin/zsh', '-lc', 'mx "$@"', 'mx' }
@@ -210,7 +210,7 @@ local function run_mx(ctx, mx_args)
 	end
 	local r, err = rex.exec(argv, {
 		cwd = block_cwd(ctx.block_id),
-		env = { REX_SESSION = ctx.session_id },
+		env = { REX_BLOCK = ctx.block_id },
 		timeout = 30,
 	})
 	if r == nil then

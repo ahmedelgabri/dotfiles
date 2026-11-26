@@ -321,14 +321,14 @@ do
 	end
 
 	-- Every mx call runs in a login shell from the pane's directory, with the
-	-- session that tells mx to use Rex.
+	-- pane that tells mx to use Rex.
 	local function mx_args(fake)
 		local found = {}
 		for _, call in ipairs(calls_named(fake, 'exec')) do
 			local argv, opts = call[2], call[3]
 			equal('shell', table.concat(argv, ' ', 1, 4), '/bin/zsh -lc mx "$@" mx')
 			equal('exec cwd', opts.cwd, '/here')
-			equal('exec session', opts.env.REX_SESSION, 'session:s')
+			equal('exec block', opts.env.REX_BLOCK, 'block:a')
 			table.insert(found, table.concat(argv, ' ', 5))
 		end
 		return found

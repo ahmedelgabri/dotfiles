@@ -77,11 +77,9 @@ test(
 	{timeout: 60_000},
 	async () => {
 		const prompt = await systemPrompt({
-			REX_SESSION: 'session:test',
 			REX_BLOCK: 'block:test',
 		})
-		assert.match(prompt, /<rex>[\s\S]*REX_SESSION=session:test[\s\S]*<\/rex>/)
-		assert.match(prompt, /REX_BLOCK=block:test/)
+		assert.match(prompt, /<rex>[\s\S]*REX_BLOCK=block:test[\s\S]*<\/rex>/)
 		// Session naming is off, as in the Claude and Codex hooks.
 		assert.doesNotMatch(prompt, /rex session rename/)
 	},

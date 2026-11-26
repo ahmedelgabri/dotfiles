@@ -37,7 +37,7 @@ test(
 				],
 				{
 					cwd: root,
-					// Inside Rex, an inherited REX_SESSION would silence the extension
+					// Inside Rex, an inherited REX_BLOCK would silence the extension
 					// and let the test pass for the wrong reason.
 					env: {
 						...withoutPaneIdentity(process.env),
