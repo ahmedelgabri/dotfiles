@@ -7,7 +7,7 @@ by Home Manager and wired from `config/claude/settings.json`.
 
 | Event                | Hook commands                                                                                             | Purpose                                                                                                                             |
 | -------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `rex __internal session-start`, `mx-resume.sh claude` | Log session startup, inject repository VCS context, tell Claude its Rex session and pane, record how to resume after a Rex restart. |
+| `SessionStart`       | `log-event.sh SessionStart`, `inject-repo-info.sh`, `rex __internal session-start` | Log session startup, inject repository VCS context, tell Claude its Rex session and pane and how to resume the session after a Rex restart. |
 | `PostCompact`        | `inject-repo-info.sh`                                                                                     | Restore repository VCS context after compaction.                                                                                    |
 | `SessionEnd`         | `log-event.sh SessionEnd`                                                                                 | Log session shutdown.                                                                                                               |
 | `PostToolUse`        | `zh record claude` (matcher `Bash`)                                                                       | Record Bash commands in the agent history.                                                                                          |
@@ -49,11 +49,11 @@ The `rex __internal session-start` hook is the one `rex skill setup` installs, w
   repo and emits `hookSpecificOutput.additionalContext` so the agent knows which
   VCS to use. `PostCompact` restores this context after compaction.
 
-### `mx-resume.sh`
+### `codex-resume.sh`
 
-- **Events**: `SessionStart`, which also fires after `/clear` and `--resume`, so the file follows the current session. Codex runs it too, as `mx-resume.sh codex` from `config/codex/hooks.json`, and asks you to approve it once with `/hooks`.
-- **What it does**: in a Rex pane, writes `cd -- <cwd> && claude --resume <session id>` (or `codex resume <session id>`) to `$_MX_RESUME_FILE`. After a Rex server restart, the pane's new zsh puts that line on the prompt instead of the command that started the agent, which would open a new session. See the restore paragraph in [`nix/pkgs/mx/README.md`](../../../nix/pkgs/mx/README.md).
-- **Behavior**: a no-op outside a Rex pane, and for an agent that the pane's shell did not start directly, such as one started by another agent, so a nested agent does not take over the pane. The resume line keeps no other flags, such as `--permission-mode`.
+- **Events**: Codex `SessionStart`, from `config/codex/hooks.json`, which also fires on `codex resume`, so the report follows the current session. Codex asks you to approve it once with `/hooks`. Claude Code does not use it: Rex's own hook reports Claude's session, with its flags.
+- **What it does**: reports `codex resume <session id>` and the session's directory to the terminal with [`resume-report`](../../zsh.d/zsh/bin/resume-report), using the [Program Resume Protocol](https://www.superlogical.com/rex/docs/build/program-resume). After a Rex server restart, Rex starts that command in the pane again, trusted by the `codex` rule that Rex ships.
+- **Behavior**: a no-op without `OSC7577_TOKEN`, which Rex gives a pane's shell. The report names the nearest `codex` process above the hook, because Rex checks that process against the command. The resume command keeps no other flags.
 
 ### `zh` (from `nix/pkgs/zh`)
 

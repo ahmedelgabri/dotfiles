@@ -1,0 +1,31 @@
+#!/bin/sh
+# Prints an OSC 7577 program resume report, so the terminal can start
+# COMMAND again in DIR after it restarts, in place of the process PID. See
+# https://www.superlogical.com/rex/docs/build/program-resume
+# Usage: resume-report PID DIR COMMAND [ARG...] >/dev/tty
+
+if [ $# -lt 3 ]; then
+	echo "usage: resume-report PID DIR COMMAND [ARG...]" >&2
+	exit 64
+fi
+
+# Only the terminal's first process gets a token, and a program that reports
+# removes it from its children, so without one there is nothing to report to.
+[ -n "${OSC7577_TOKEN-}" ] || exit 0
+
+b64() {
+	printf '%s' "$1" | base64 | tr -d '\n'
+}
+
+pid=$1
+cwd=$(b64 "$2")
+shift 2
+argv=
+for arg; do
+	argv=${argv:+$argv,}$(b64 "$arg")
+done
+
+body="pid=$pid:time=$(date +%s):argv=$argv:cwd=$cwd"
+# printf is a builtin here, so the token never shows in the process list.
+mac=$(printf '%s:%s' "$body" "$OSC7577_TOKEN" | { sha256sum 2>/dev/null || shasum -a 256; } | cut -c1-64)
+printf '\033]7577;%s:mac=%s\033\134' "$body" "$mac"

@@ -164,6 +164,23 @@ with Rex's expected `client action was not delivered` error, which the suite
 asserts. Whether Rex.app shows the focus change is not covered, because that
 needs the app.
 
+## resume-report
+
+```sh
+nix build .#checks.aarch64-darwin.resume-report
+bash tests/resume-report.sh
+```
+
+The suite runs the real [`resume-report`](../config/zsh.d/zsh/bin/resume-report) with a fixed clock and checks its output byte for byte against the lazygit example of the [Program Resume Protocol](https://www.superlogical.com/rex/docs/build/program-resume#valid-reports), whose `mac` is the real hash for its token. Without `OSC7577_TOKEN` it must print nothing.
+
+## Resume after a Rex restart
+
+```sh
+bash tests/live/rex-resume.sh
+```
+
+The E2E suite starts a real Rex server on a private socket with the checkout's [`init.lua`](../config/rex/init.lua), behind the same `-S` wrapper and `rex whoami` guard as the other Rex suites. Its panes run bare zsh with the checkout's `resume-report` on `PATH` and a pi state directory inside the suite's work directory. It starts actual pi with the [`rex-resume`](../config/pi/agent/extensions/rex-resume/README.md) extension and checks that Rex trusts its report through the `pi` rule, with the pane's directory and a `pi --session-id <uuid>` command. It then restarts the private server and checks that Rex starts that same command in the restored pane. Your own Rex server and sessions are never touched. Codex is not covered, because its hook needs Codex's approval through `/hooks`.
+
 ## jj templates
 
 ```sh

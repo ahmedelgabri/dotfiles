@@ -81,6 +81,9 @@ local function load(state)
 				record('queue', name, args.session_id, args.window_id)
 			end,
 		},
+		-- `rex config check` validates settings against the real Rex.
+		set = function() end,
+		match = {},
 	}
 	-- Stays global: the functions init.lua binds look `rex` up when they run.
 	dofile(root .. '/config/rex/init.lua')

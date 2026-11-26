@@ -86,6 +86,10 @@
             MX_BIN=${pkgs.mx}/bin bash ${source}/nix/pkgs/mx/tests/mx.sh
           '';
 
+          resume-report = mkCheck "resume-report-check" [ pkgs.bash ] ''
+            bash ${source}/tests/resume-report.sh
+          '';
+
           jj-templates = mkCheck "jj-templates-check" [ pkgs.bash pkgs.jujutsu ] ''
             bash ${source}/tests/jj-templates.sh
           '';

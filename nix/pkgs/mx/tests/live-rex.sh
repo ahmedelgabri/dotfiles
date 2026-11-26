@@ -24,15 +24,12 @@ WORK=$(mktemp -d)
 WORK=$(cd "$WORK" && pwd -P)
 SOCKET="$WORK/r.sock"
 SERVER_PID=""
-RESTORE_PID=""
 
 cleanup() {
-	local pid
-	for pid in "$SERVER_PID" "$RESTORE_PID"; do
-		[[ -n "$pid" ]] || continue
-		kill "$pid" 2>/dev/null || true
-		wait "$pid" 2>/dev/null || true
-	done
+	if [[ -n "$SERVER_PID" ]]; then
+		kill "$SERVER_PID" 2>/dev/null || true
+		wait "$SERVER_PID" 2>/dev/null || true
+	fi
 	rm -rf "$WORK"
 }
 trap cleanup EXIT
@@ -396,77 +393,5 @@ return {
 }" "$(cat "$SESSIONS/legacy.lua")"
 expect "migrated definition opens" 1 "" "$NO_TTY" mx legacy
 wait_for "migrated command" screen_has legacy 1 "legacy-marker"
-
-# --- restore -----------------------------------------------------------------
-
-# Rex restores each block with its id after a server restart, so the hook in
-# extras.zsh puts the command that was running back on the prompt. Pane shells
-# of the main server load the installed /etc/zshrc, so a second server runs
-# bare zsh with this checkout's extras.zsh. The suite's own _MX_SHELL_PID
-# would make every pane shell look nested.
-RESTORE_SOCKET="unix://$WORK/z.sock"
-mkdir -p "$WORK/zdot" "$WORK/restore"
-printf 'setopt no_global_rcs\n' >"$WORK/zdot/.zshenv"
-printf "PS1='%%%% '\nsource %q\n" "$ROOT/config/zsh.d/zsh/config/extras.zsh" >"$WORK/zdot/.zshrc"
-
-zrex() {
-	"$REX_APP" -S "$RESTORE_SOCKET" --autostart=false "$@"
-}
-restore_server() {
-	(
-		unset _MX_SHELL_PID
-		export ZDOTDIR="$WORK/zdot"
-		exec "$REX_APP" server run --listen "$RESTORE_SOCKET" \
-			--state-dir "$WORK/zstate" --config "$WORK/init.lua"
-	) >>"$WORK/zserver.log" 2>&1 &
-	RESTORE_PID=$!
-	wait_for "restore server" restore_up
-}
-restore_up() {
-	zrex ls >/dev/null 2>&1
-}
-last_line() {
-	[[ $(zrex capture -b "$block" --trim | tail -n 1) == "$1" ]]
-}
-# The typed line followed by an empty prompt, so nothing was put on it.
-empty_after() {
-	[[ $(zrex capture -b "$block" --trim | tail -n 2) == "% $1"$'\n'"%" ]]
-}
-recorded() {
-	[[ -e "$COMMANDS/$block" ]]
-}
-
-restore_server
-zrex new -c "$WORK/restore" restore >/dev/null
-block=$(zrex do -s restore -e 'return rex.session.view({}).windows[1].layers[1].layout.block_id')
-block=${block//\"/}
-wait_for "restore prompt" last_line "%"
-zrex send -b "$block" $'print ran >>ran; sleep 1000\n'
-wait_for "recorded command" recorded
-
-zrex server stop >/dev/null
-wait "$RESTORE_PID" 2>/dev/null || true
-restore_server
-wait_for "restored command on the prompt" last_line "% print ran >>ran; sleep 1000"
-assert_eq "restored command did not run" "ran" "$(cat "$WORK/restore/ran")"
-
-# A nested shell and `exec zsh` find the parent's command on file, too.
-zrex send -b "$block" $'\003'
-wait_for "cleared prompt" last_line "%"
-zrex send -b "$block" $'zsh\n'
-wait_for "nested shell with an empty prompt" empty_after zsh
-zrex send -b "$block" $'exec zsh\n'
-wait_for "exec zsh with an empty prompt" empty_after "exec zsh"
-
-# A coding agent writes how to resume its session to _MX_RESUME_FILE, and that
-# wins over the command that started it. The sh child stands in for the agent.
-zrex send -b "$block" $'sh -c \'mkdir -p "${_MX_RESUME_FILE%/*}" && printf "print resumed\\n" >"$_MX_RESUME_FILE"; sleep 1000\'\n'
-wait_for "recorded command" recorded
-wait_for "resume file" test -s "$XDG_STATE_HOME/mx/resume/$block"
-zrex server stop >/dev/null
-wait "$RESTORE_PID" 2>/dev/null || true
-restore_server
-wait_for "resume command on the prompt" last_line "% print resumed"
-zrex server stop >/dev/null
 
 echo "mx (Rex): all tests passed"

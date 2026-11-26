@@ -156,23 +156,15 @@ if [[ -n ${TMUX_PANE-} || -n ${REX_BLOCK-} ]]; then
   autoload -Uz add-zsh-hook
   zmodload -F zsh/files b:zf_rm b:zf_mkdir
 
-  # Coding agents started from this shell write how to resume their session
-  # to _MX_RESUME_FILE (config/claude/hooks/mx-resume.sh for Claude and Codex,
-  # the pi mx-resume extension), because their start command would open a new
-  # session. Only Rex restores panes, and a tmux server started in Rex hands
-  # its panes the Rex shell's value, so tmux panes drop it.
   if [[ -n ${TMUX_PANE-} ]]; then
     _mx_command_key="tmux-${${TMUX#*,}%%,*}-${TMUX_PANE#%}"
-    unset _MX_RESUME_FILE
   else
     _mx_command_key=$REX_BLOCK
-    export _MX_RESUME_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/mx/resume/$_mx_command_key"
   fi
   _mx_command_file="${XDG_STATE_HOME:-$HOME/.local/state}/mx/commands/$_mx_command_key"
 
   _mx_clear_command() {
     [[ -e $_mx_command_file ]] && zf_rm -f -- "$_mx_command_file"
-    [[ -n ${_MX_RESUME_FILE-} && -e $_MX_RESUME_FILE ]] && zf_rm -f -- "$_MX_RESUME_FILE"
     return 0
   }
 
@@ -186,22 +178,6 @@ if [[ -n ${TMUX_PANE-} || -n ${REX_BLOCK-} ]]; then
 
   add-zsh-hook preexec _mx_record_command
   add-zsh-hook precmd _mx_clear_command
-
-  # Rex restores blocks with their ids after a server restart, but with a new
-  # shell, so a command that was running when the server stopped is still on
-  # file here. It goes on the prompt instead of running, because replaying an
-  # arbitrary command unasked can be destructive. A shell started any other
-  # way inherits _MX_SHELL_PID from a live shell: its parent when nested, or
-  # itself after `exec zsh`.
-  if [[ -z ${TMUX_PANE-} && -e $_mx_command_file ]] &&
-    ! { [[ -n ${_MX_SHELL_PID-} ]] && kill -0 $_MX_SHELL_PID 2>/dev/null; }; then
-    if [[ -e $_MX_RESUME_FILE ]]; then
-      print -rz -- "$(<$_MX_RESUME_FILE)"
-    else
-      print -rz -- "$(<$_mx_command_file)"
-    fi
-  fi
-  export _MX_SHELL_PID=$$
 fi
 
 # Project/session picker. Runs mx --pick as a real command via accept-line

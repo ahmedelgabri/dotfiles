@@ -261,6 +261,16 @@ rex.action {
 }
 
 -- =======================================================================
+-- = Program Resume
+-- =======================================================================
+
+-- Rex ships rules for Claude Code and Codex but none for pi, whose rex-resume
+-- extension (config/pi/agent/extensions/rex-resume) reports this command.
+rex.set('resume.trust.pi', {
+	command = { 'pi', '--session-id', rex.match.uuid },
+})
+
+-- =======================================================================
 -- = Key Bindings — General
 -- =======================================================================
 
