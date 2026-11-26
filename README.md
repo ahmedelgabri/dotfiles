@@ -24,8 +24,9 @@ are composed from small feature modules, app configs live in
 > [!NOTE]
 >
 > `Pragmata Pro` is a commercial font and is **not** bundled with this repo. By
-> default, this flake expects a `PragmataPro<version>.zip` archive in the Nix
-> store. Bootstrap accepts `--without-pragmatapro` to skip it for that run. See
+> default, this flake expects the `PragmataPro.zip` and
+> `PragmataPro-Variable.zip` archives in the Nix store. Bootstrap accepts
+> `--without-pragmatapro` to skip them for that run. See
 > [Font prerequisite](#2-font-prerequisite).
 
 ## What this repo manages
@@ -120,11 +121,12 @@ curl --proto '=https' --tlsv1.2 -sSfL https://artifacts.nixos.org/nix-installer 
 ### 2. Font prerequisite
 
 This setup installs `Pragmata Pro` through a custom Nix package that uses
-`requireFile`. If you own the font, add the archive to the Nix store before the
-first rebuild:
+`requireFile`. If you own the font, add both archives (static and variable) to
+the Nix store before the first rebuild:
 
 ```bash
-nix-store --add-fixed sha256 /path/to/PragmataPro<version>.zip
+nix-store --add-fixed sha256 /path/to/PragmataPro.zip
+nix-store --add-fixed sha256 /path/to/PragmataPro-Variable.zip
 ```
 
 To bootstrap before importing the archive, skip the font for that invocation:
